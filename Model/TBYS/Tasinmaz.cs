@@ -1,0 +1,816 @@
+﻿using Model.Ortak;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using Utility.HelperClasses;
+using Utility.ProjeGlobal;
+
+namespace Model.TBYS
+{
+    [Serializable]
+    public class Tasinmaz : ParentClass
+    {
+        public string Cinsi { get; set; }
+        public string Ili { get; set; }
+        public string Ilcesi { get; set; }
+        public string SigortaDurumu { get; set; }
+        public string Adres { get; set; }
+        public string MulkiyetSekli { get; set; }
+        public string KullanimDurumu { get; set; }
+        public string SorumluBolge { get; set; }
+        public string EdinmeSekli { get; set; }
+        public string BagisYili { get; set; }
+        public string EmlakSicilNo { get; set; }
+        public decimal EmlakBeyanDegeri { get; set; }
+        public decimal TahminiRayicDegeri { get; set; }
+        public DateTime TapuTarihi { get; set; }
+        public string AdaNo { get; set; }
+        public string ParselNo { get; set; }
+        public string PaftaNo { get; set; }
+        public string Yuzolcumu { get; set; }
+        public string ArsaPayi { get; set; }
+        public string VakifHissesi { get; set; }
+        public string YevmiyeNo { get; set; }
+        public string CiltNo { get; set; }
+        public string KullanimSekli { get; set; }
+        public string SahifeNo { get; set; }
+        public string TasinmazFoto { get; set; }
+        public string TasinmazFoto1 { get; set; }
+        public string TasinmazFoto2 { get; set; }
+        public string TapuFoto { get; set; }
+        public string KrokiFoto { get; set; }
+        public string TahkikatFoto { get; set; }
+        public string Bagisci { get; set; }
+        public string KatMulkiyeti { get; set; }
+        public string Nitelik { get; set; }
+        public string BulunduguKat { get; set; }
+        public string Aciklama { get; set; }
+        public int EnvanterdeMi { get; set; }
+        public DateTime EnvantereGirisTarihi { get; set; }
+        public string EnvanterdenCikmaSebebi { get; set; }
+        public DateTime EnvanterdenCikmaTarihi { get; set; }
+        public decimal EnvanterdenCikmaBedeli { get; set; }
+        public int BagisciId { get; set; }
+        public string Mahalle { get; set; }
+        public string Koy { get; set; }
+        public string Cadde { get; set; }
+        public string Sokak { get; set; }
+        public string BagimsizBolumNo { get; set; }
+        public string Mevki { get; set; }
+        public string TamHisse { get; set; }
+        public string HisseMiktariPay { get; set; }
+        public string HisseMiktariPayda { get; set; }
+        public string ToplamKatSayisi { get; set; }
+        public string Metrekare { get; set; }
+
+        public override T Select<T>(int id)
+        {
+            string sqlString = string.Format(@"SELECT *
+                               FROM Tasinmaz_Table 
+                               WHERE EnvanterdeMi=1 AND Id={0}", id);
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            List<Tasinmaz> list = ToList<Tasinmaz>(dataTable);
+            Tasinmaz tasinmaz = new Tasinmaz();
+            tasinmaz = list.FirstOrDefault();
+            return (T)Convert.ChangeType(tasinmaz, typeof(T));
+
+        }
+        public Tasinmaz Select(int id)
+        {
+            string sqlString = string.Format(@"SELECT *
+                               FROM Tasinmaz_Table 
+                               WHERE Id={0}", id);
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            List<Tasinmaz> list = ToList<Tasinmaz>(dataTable);
+            Tasinmaz tasinmaz = new Tasinmaz();
+            tasinmaz = list.FirstOrDefault();
+            return tasinmaz;
+
+        }
+        public string SelectByIdBolumId(int tasinmazId, int bolumId)
+        {
+            string retVal = string.Empty;
+            string sqlString = string.Format(@"
+                SELECT A.Adres, A.Ili, A.Ilcesi, B.BolumNo 
+                FROM Tasinmaz_Table A
+                LEFT JOIN BagimsizBolum_Table B ON B.TasinmazId=A.Id AND B.Id={0}
+                WHERE A.Id={1}", bolumId, tasinmazId);
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            if (dataTable != null)
+            {
+                DataRow row = dataTable.Rows[0];
+                string adres = row["Adres"].ReturnEmptyIfNull().ToString();
+                string il = row["Ili"].ReturnEmptyIfNull().ToString();
+                string ilce = row["Ilcesi"].ReturnEmptyIfNull().ToString();
+                string bolumNo = row["BolumNo"].ReturnEmptyIfNull().ToString();
+                retVal = adres + " " + bolumNo + " " + ilce + "/" + il;
+            }
+            return retVal;
+
+        }
+        public Tasinmaz SelectById(int id)
+        {
+            string sqlString = string.Format(@"SELECT *
+                               FROM Tasinmaz_Table 
+                               WHERE Id={0}", id);
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            List<Tasinmaz> list = ToList<Tasinmaz>(dataTable);
+            Tasinmaz tasinmaz = new Tasinmaz();
+            tasinmaz = list.FirstOrDefault();
+            return tasinmaz;
+
+        }
+        public Tasinmaz SelectEnvanterdenCikanTasinmaz(int id)
+        {
+            string sqlString = string.Format(@"
+                SELECT *,Convert(nvarchar,replace (EnvanterdenCikmaBedeli,'.',',')) as EnvanterdenCikmaBedeli
+                FROM Tasinmaz_Table 
+                WHERE EnvanterdeMi=0 AND Id={0} ", id);
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+
+            List<Tasinmaz> list = ToList<Tasinmaz>(dataTable);
+            Tasinmaz tasinmaz = new Tasinmaz();
+            tasinmaz = list.FirstOrDefault();
+            return tasinmaz;
+
+        }
+        public override int Save()
+        {
+            try
+            {
+                GenericEntity<Tasinmaz> genericEntity = new GenericEntity<Tasinmaz>(ProjeConstants.SQL_INSERT);
+                OlusturmaTarihi = DateTime.Now;
+                string sqlString = genericEntity.GetQuery(this);
+                int id = dao.Insert(sqlString);
+
+                this.Id = id;
+                return id;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public DataTable SelectByBolgeReturnJson(string bolgeQS)
+        {
+            string sqlString = string.Format(@"
+                SELECT ROW_NUMBER() OVER(ORDER BY T.Id) AS Sirano, T.Id, T.Id TasinmazId, T.Ilcesi+'/'+T.Ili IliIlcesi,
+                    T.*,
+                    B.Adi+' '+B.Soyadi Bagisci, B.Id BagisciId, B.Sag_vefat                    
+                FROM Tasinmaz_Table T
+	                LEFT JOIN Bagis_Table A ON A.TasinmazId=T.Id
+	                LEFT JOIN TasinmazBagisci_Table B ON B.Id=A.BagisciId
+                    LEFT JOIN IL_Table C ON C.IlAdi=T.Ili
+                WHERE T.EnvanterdeMi=1 
+				    AND Bolge={0}", bolgeQS.ReturnQuotedValue());
+            DataTable dataTable = null;
+            try
+            {
+                dataTable = dao.selectFromDb(sqlString, "");
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            return dataTable;
+        }
+
+        public override bool Update()
+        {
+            bool isSuccess = false;
+            try
+            {
+                if (Id != 0)
+                {
+                    GenericEntity<Tasinmaz> genericEntity = new GenericEntity<Tasinmaz>(ProjeConstants.SQL_UPDATE);
+                    DegistirmeTarihi = DateTime.Now;
+                    string sqlString = genericEntity.GetQuery(this);
+                    isSuccess = dao.Update2Db(sqlString);
+                    if (isSuccess)
+                    {
+                        Bagis bagis = new Bagis();
+                        bagis = bagis.SelectByTasinmazId(this.Id);
+                        if (bagis != null)//bagis bilgilerini guncelle
+                        {
+                            bagis.BagisTarihi = this.EnvantereGirisTarihi;
+                            bagis.BagisYili = this.EnvantereGirisTarihi.Year;
+                            bagis.Update();
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return isSuccess;
+        }
+        public override bool Delete()
+        {
+            string sqlString = string.Format(@"DELETE 
+                               FROM Tasinmaz_Table
+                               WHERE Id={0}", Id);
+
+            bool isSuccess = dao.DeleteFromDb(sqlString, this);
+
+            return isSuccess;
+        }
+        public bool UpdateFotoDb()
+        {
+            bool isSuccess = false;
+            if (Id != 0)
+            {
+                string sqlString = string.Format(@"
+                                        UPDATE Tasinmaz_Table
+                                        SET TasinmazFoto={0},
+	                                        TasinmazFoto1={1},
+	                                        TasinmazFoto2={2},
+	                                        TahkikatFoto={3},
+	                                        KrokiFoto={4},
+	                                        TapuFoto={5},
+                                            Degistiren={6},
+                                            DegistirmeTarihi={7}
+                                        WHERE Id={8} ",
+                                            TasinmazFoto.ReturnQuotedValue(), TasinmazFoto1.ReturnQuotedValue(), TasinmazFoto2.ReturnQuotedValue(), TahkikatFoto.ReturnQuotedValue(),
+                                            KrokiFoto.ReturnQuotedValue(), TapuFoto.ReturnQuotedValue(),
+                                            Degistiren.ReturnQuotedValue(), DateTime.Now.ReturnTRDateFormat(), Id);
+
+                isSuccess = dao.Update2Db(sqlString);
+            }
+            return isSuccess;
+        }
+        public override List<T> SelectAll<T>()
+        {
+            string sqlString = string.Format(@"SELECT *
+                                FROM Tasinmaz_Table
+                                WHERE EnvanterdeMi=1 ");
+
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            List<Tasinmaz> list = ToList<Tasinmaz>(dataTable);
+
+            return (List<T>)Convert.ChangeType(list, typeof(List<T>));
+        }
+        public string SelectAllReturnJson()
+        {
+            string sqlString = SelectAllSQL();
+            DataTable dataTable = null;
+            try
+            {
+                dataTable = dao.selectFromDb(sqlString, "");
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            string json = ToJSON(dataTable);
+            return json;
+        }
+
+        /// <summary>
+        /// Bağışçısı olmayan envanterdeki taşınmazları getir Ortak bağışlar dahil
+        /// </summary>
+        /// <returns></returns>
+        public DataTable SelectBagiscisiOlmayanTasinmazlarByBagsciIdReturnDT()
+        {
+            string sqlString = string.Format(@"
+                SELECT A.Id TasinmazId,
+                    A.Id TasinmazId,A.MulkiyetSekli,A.KullanimSekli,A.Ili,A.Ilcesi,A.Adres
+	            FROM Tasinmaz_Table A
+		            LEFT JOIN Bagis_Table B ON B.TasinmazId= A.Id
+	            WHERE A.EnvanterdeMi=1 AND (B.BagisciId IS NULL OR B.BagisciId=0)
+                ");
+            DataTable dataTable = null;
+            try
+            {
+                dataTable = dao.selectFromDb(sqlString, "");
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            return dataTable;
+        }
+        public string SelectTasinmazBolumNoReturnJson(int envanterde, string kullanimDurumu)
+        {
+            string sqlString = string.Format(@"
+                SELECT 
+                    A.Id, A.Id TasinmazId,A.Cinsi, A.Ili, A.Ilcesi, A.Ili+'/'+A.Ilcesi IliIlcesi, 
+                                        A.SigortaDurumu, A.Adres,A.Adres+' '+A.Ili+'/'+A.Ilcesi AdresIliIlcesi,
+                                        A.MulkiyetSekli, A.KullanimDurumu, A.KatMulkiyeti, A.SorumluBolge, A.EdinmeSekli,A.BagisYili, A.EmlakSicilNo,
+                                        A.EmlakBeyanDegeri, A.TahminiRayicDegeri, A.TapuTarihi, A.AdaNo, A.ParselNo, A.PaftaNo, A.Yuzolcumu, A.ArsaPayi, A.VakifHissesi,
+                                        A.YevmiyeNo,A.CiltNo, A.SahifeNo, A.KullanimSekli, A.TasinmazFoto, A.TasinmazFoto1, A.TasinmazFoto2, A.TapuFoto, A.KrokiFoto, A.TahkikatFoto,
+                                        A.Nitelik,A.BulunduguKat, A.Aciklama,A.EnvantereGirisTarihi, 
+                                        B.BolumNo,B.Id BolumId
+
+                    FROM Tasinmaz_Table A
+	                    LEFT JOIN BagimsizBolum_Table B On B.TasinmazId = A.Id
+	                    LEFT JOIN KiraSozlesme_Table D ON D.Aktif=1 AND D.Id IN (SELECT SozlesmeId FROM SozlesmeTasinmaz_Table where TasinmazId= A.Id AND (BolumId IS NULL OR BolumId=0 OR BolumId=B.Id))
+                    WHERE A.EnvanterdeMi={0} AND A.KullanimDurumu={1}
+	                    AND D.Id IS NULL
+                    ORDER BY A.Id 
+                ", envanterde,kullanimDurumu.ReturnQuotedValue());
+            //string sqlString = string.Format(@"
+            //    SELECT ROW_NUMBER() OVER(ORDER BY A.Id) AS Sirano, A.Id, A.Id TasinmazId,A.Cinsi, A.Ili, A.Ilcesi, A.Ili+'/'+A.Ilcesi IliIlcesi, 
+            //        A.SigortaDurumu, A.Adres,A.Adres+' '+A.Ili+'/'+A.Ilcesi AdresIliIlcesi,
+            //        A.MulkiyetSekli, A.KullanimDurumu, A.KatMulkiyeti, A.SorumluBolge, A.EdinmeSekli,A.BagisYili, A.EmlakSicilNo,
+            //        A.EmlakBeyanDegeri, A.TahminiRayicDegeri, A.TapuTarihi, A.AdaNo, A.ParselNo, A.PaftaNo, A.Yuzolcumu, A.ArsaPayi, A.VakifHissesi,
+            //        A.YevmiyeNo,A.CiltNo, A.SahifeNo, A.KullanimSekli, A.TasinmazFoto, A.TasinmazFoto1, A.TasinmazFoto2, A.TapuFoto, A.KrokiFoto, A.TahkikatFoto,
+            //        A.Nitelik,A.BulunduguKat, A.Aciklama,A.EnvantereGirisTarihi, 
+            //        B.BolumNo,B.Id BolumId
+            //    FROM Tasinmaz_Table A
+            //        LEFT JOIN BagimsizBolum_Table B ON B.TasinmazId=A.Id
+            //    WHERE A.EnvanterdeMi=1 
+            //    ");
+            DataTable dataTable = null;
+            try
+            {
+                dataTable = dao.selectFromDb(sqlString, "");
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            string json = ToJSON(dataTable);
+            return json;
+        }
+        public string SelectEnvanterdeOlmayanTasinmazReturnJson()
+        {
+            string sqlString = string.Format(@"
+                SELECT ROW_NUMBER() OVER(ORDER BY A.Id) AS Sirano, A.Id, A.Id TasinmazId,A.Cinsi, A.Ili, A.Ilcesi, A.Ili+'/'+A.Ilcesi IliIlcesi, 
+                    A.SigortaDurumu, A.Adres,A.Adres+' '+A.Ili+'/'+A.Ilcesi AdresIliIlcesi,
+                    A.MulkiyetSekli, A.KullanimDurumu, A.KatMulkiyeti, A.SorumluBolge, A.EdinmeSekli,A.BagisYili, A.EmlakSicilNo,
+                    A.EmlakBeyanDegeri, A.TahminiRayicDegeri, A.TapuTarihi, A.AdaNo, A.ParselNo, A.PaftaNo, A.Yuzolcumu, A.ArsaPayi, A.VakifHissesi,
+                    A.YevmiyeNo,A.CiltNo, A.SahifeNo, A.KullanimSekli, A.TasinmazFoto, A.TasinmazFoto1, A.TasinmazFoto2, A.TapuFoto, A.KrokiFoto, A.TahkikatFoto,
+                    A.Nitelik,A.BulunduguKat,A.Aciklama,A.EnvantereGirisTarihi, 
+                    B.BolumNo,B.Id BolumId
+                FROM Tasinmaz_Table A
+                    LEFT JOIN BagimsizBolum_Table B ON B.TasinmazId=A.Id
+                WHERE A.EnvanterdeMi=2 
+                ");
+            DataTable dataTable = null;
+            try
+            {
+                dataTable = dao.selectFromDb(sqlString, "");
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            string json = ToJSON(dataTable);
+            return json;
+        }
+        public DataTable SelectEnvanterdeOlmayanTasinmazReturnDataTable()
+        {
+            string sqlString = string.Format(@"
+                SELECT ROW_NUMBER() OVER(ORDER BY A.Id) AS Sirano, A.Id, A.Id TasinmazId,A.Cinsi, A.Ili, A.Ilcesi, A.Ili+'/'+A.Ilcesi IliIlcesi, 
+                    A.SigortaDurumu, A.Adres,A.Adres+' '+A.Ili+'/'+A.Ilcesi AdresIliIlcesi,
+                    A.MulkiyetSekli, A.KullanimDurumu, A.KatMulkiyeti, A.SorumluBolge, A.EdinmeSekli,A.BagisYili, A.EmlakSicilNo,
+                    A.EmlakBeyanDegeri, A.TahminiRayicDegeri, A.TapuTarihi, A.AdaNo, A.ParselNo, A.PaftaNo, A.Yuzolcumu, A.ArsaPayi, A.VakifHissesi,
+                    A.YevmiyeNo,A.CiltNo, A.SahifeNo, A.KullanimSekli, A.TasinmazFoto, A.TasinmazFoto1, A.TasinmazFoto2, A.TapuFoto, A.KrokiFoto, A.TahkikatFoto,
+                    A.Nitelik,A.BulunduguKat,A.Aciklama,A.EnvantereGirisTarihi, 
+                    B.BolumNo,B.Id BolumId
+                FROM Tasinmaz_Table A
+                    LEFT JOIN BagimsizBolum_Table B ON B.TasinmazId=A.Id
+                WHERE A.EnvanterdeMi=2 
+                ");
+            DataTable dataTable = null;
+            try
+            {
+                dataTable = dao.selectFromDb(sqlString, "");
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+
+            return dataTable;
+        }
+        public DataTable SelectAllReturnDataTable()
+        {
+            string sqlString = SelectAllSQL();
+            DataTable dataTable = null;
+            try
+            {
+                dataTable = dao.selectFromDb(sqlString, "");
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            return dataTable;
+        }
+        private string SelectAllSQL()
+        {
+            string sqlString = string.Format(@"
+                SELECT ROW_NUMBER() OVER(ORDER BY T.Id) AS Sirano, T.Id, T.Id TasinmazId, T.Ilcesi+'/'+T.Ili IliIlcesi,
+                    T.*,
+                    B.Adi+' '+B.Soyadi Bagisci, B.Id BagisciId, B.Sag_vefat                    
+                FROM Tasinmaz_Table T
+	                LEFT OUTER JOIN Bagis_Table A ON A.TasinmazId=T.Id
+	                LEFT OUTER JOIN TasinmazBagisci_Table B ON B.Id=A.BagisciId
+                WHERE T.EnvanterdeMi=1 
+                ");
+            return sqlString;
+        }
+        public string SelectAllEnvanterdenCikanReturnJson()
+        {
+            string sqlString = SelectAllEnvanterdenCikanSQL();
+            DataTable dataTable = null;
+            try
+            {
+                dataTable = dao.selectFromDb(sqlString, "");
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            string json = ToJSON(dataTable);
+            return json;
+        }
+        public DataTable SelectAllEnvanterdenCikanReturnDataTable()
+        {
+            string sqlString = SelectAllEnvanterdenCikanSQL();
+            DataTable dataTable = null;
+            try
+            {
+                dataTable = dao.selectFromDb(sqlString, "");
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            return dataTable;
+        }
+        private string SelectAllEnvanterdenCikanSQL()
+        {
+            string sqlString = string.Format(@"
+                SELECT ROW_NUMBER() OVER(ORDER BY T.Id) AS Sirano, T.Id, T.Id TasinmazId,T.Cinsi, T.Ili, T.Ilcesi, T.Ili+'/'+T.Ilcesi IliIlcesi, T.SigortaDurumu, 
+                    T.Adres,T.Adres+' '+T.Ili+'/'+T.Ilcesi AdresIlIlce,
+	                T.MulkiyetSekli, T.KullanimDurumu, T.KatMulkiyeti, T.SorumluBolge, T.EdinmeSekli,T.BagisYili, T.EmlakSicilNo,
+                    T.EmlakBeyanDegeri, T.TahminiRayicDegeri, T.TapuTarihi, T.AdaNo, T.ParselNo, T.PaftaNo, T.Yuzolcumu, T.ArsaPayi, T.VakifHissesi,
+	                T.YevmiyeNo,T.CiltNo, T.SahifeNo, T.KullanimSekli, T.TasinmazFoto, T.TasinmazFoto1, T.TasinmazFoto2, T.TapuFoto, T.KrokiFoto, T.TahkikatFoto,
+	                T.Nitelik,T.BulunduguKat,T.Aciklama,T.EnvantereGirisTarihi,  YEAR(T.EnvanterdenCikmaTarihi) EnvanterdenCikmaYili,
+                    --B.Adi+' '+B.Soyadi Bagisci, B.Id BagisciId,
+                    T.EnvantereGirisTarihi,T.EnvanterdenCikmaTarihi,T.EnvanterdenCikmaSebebi,T.EnvanterdenCikmaBedeli
+                FROM Tasinmaz_Table T
+	                --INNER JOIN Bagis_Table A ON A.TasinmazId=T.Id
+	                --INNER JOIN TasinmazBagisci_Table B ON B.Id=A.BagisciId
+                WHERE T.EnvanterdeMi=0 
+                ");
+
+            return sqlString;
+        }
+        public List<Tasinmaz> SelectByIlAdi(string ilAdi)
+        {
+            string sqlString = string.Format(@"
+                SELECT * FROM Tasinmaz_Table
+                WHERE EnvanterdeMi=1 AND Ili={0}", ilAdi.ReturnQuotedValue());
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            List<Tasinmaz> list = ToList<Tasinmaz>(dataTable);
+            return list;
+        }
+        public Tasinmaz SelectNext(int tasinmazId)
+        {
+            Tasinmaz tasinmaz = new Tasinmaz();
+            string sqlString = string.Format(@"
+                SELECT * FROM Tasinmaz_Table
+                WHERE EnvanterdeMi=1 AND Id > {0}
+                ORDER BY Id ", tasinmazId.ReturnQuotedValue());
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            if (dataTable != null)
+            {
+                List<Tasinmaz> list = ToList<Tasinmaz>(dataTable);
+                tasinmaz = list.FirstOrDefault();
+            }
+            else
+            {
+                tasinmaz = SelectMin();
+
+            }
+            return tasinmaz;
+        }
+        public Tasinmaz SelectPrev(int tasinmazId)
+        {
+            Tasinmaz tasinmaz = new Tasinmaz();
+            string sqlString = string.Format(@"
+                SELECT * FROM Tasinmaz_Table
+                WHERE EnvanterdeMi=1 AND Id < {0}
+                ORDER BY Id DESC ", tasinmazId.ReturnQuotedValue());
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            if (dataTable != null)
+            {
+                List<Tasinmaz> list = ToList<Tasinmaz>(dataTable);
+                tasinmaz = list.FirstOrDefault();
+            }
+            else
+            {
+                tasinmaz = SelectMax();
+
+            }
+            return tasinmaz;
+        }
+        public Tasinmaz SelectMax()
+        {
+            string sqlString = string.Format(@"
+                SELECT MAX(Id) Id  
+                FROM Tasinmaz_Table 
+                WHERE EnvanterdeMi=1 ");
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            if (dataTable != null)
+            {
+                DataRow row = dataTable.Rows[0];
+                int tasinmazId = row["Id"].ConvertToInt();
+                Tasinmaz tasinmaz = new Tasinmaz();
+                tasinmaz = tasinmaz.Select<Tasinmaz>(tasinmazId);
+                return tasinmaz;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        public Tasinmaz SelectMin()
+        {
+            string sqlString = string.Format(@"
+                SELECT MIN(Id) Id  
+                FROM Tasinmaz_Table 
+                WHERE EnvanterdeMi=1 ");
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            if (dataTable != null)
+            {
+                DataRow row = dataTable.Rows[0];
+                int tasinmazId = row["Id"].ConvertToInt();
+                Tasinmaz tasinmaz = new Tasinmaz();
+                tasinmaz = tasinmaz.Select<Tasinmaz>(tasinmazId);
+                return tasinmaz;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        public decimal SelectTahminiRayicToplami(string bolge)
+        {
+            string bolgeStr = string.IsNullOrEmpty(bolge) ? string.Empty : string.Format(" AND SorumluBolge={0}", bolge.ReturnQuotedValue());
+            decimal toplam = 0;
+            string sqlString = string.Format(@"
+                SELECT SUM(TahminiRayicDegeri) Toplam 
+                FROM Tasinmaz_Table 
+                WHERE EnvanterdeMi=1 {0}",bolgeStr);
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            if (dataTable != null)
+            {
+                DataRow row = dataTable.Rows[0];
+                toplam = row["Toplam"].ConvertToDecimal();
+
+            }
+            return toplam;
+        }
+        public decimal SelectEmlakBeyanDegeriToplami(string bolge)
+        {
+            string bolgeStr = string.IsNullOrEmpty(bolge) ? string.Empty : string.Format(" AND SorumluBolge={0}", bolge.ReturnQuotedValue());
+            decimal toplam = 0;
+            string sqlString = string.Format(@"
+                SELECT SUM(EmlakBeyanDegeri) Toplam 
+                FROM Tasinmaz_Table 
+                WHERE EnvanterdeMi=1 {0}", bolgeStr);
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            if (dataTable != null)
+            {
+                DataRow row = dataTable.Rows[0];
+                toplam = row["Toplam"].ConvertToDecimal();
+
+            }
+            return toplam;
+        }
+        public decimal SelectEmlakBeyanDegeriToplamiBySigorta(string sigorta)
+        {
+            decimal toplam = 0;
+            string sqlString = string.Format(@"
+                SELECT SUM(EmlakBeyanDegeri) Toplam 
+                FROM Tasinmaz_Table 
+                WHERE EnvanterdeMi=1
+                    AND SigortaDurumu={0}", sigorta.ReturnQuotedValue());
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            if (dataTable != null)
+            {
+                DataRow row = dataTable.Rows[0];
+                toplam = row["Toplam"].ConvertToDecimal();
+
+            }
+            return toplam;
+        }
+        public decimal SelectTahminiRayicToplamiBySigorta(string sigorta)
+        {
+            decimal toplam = 0;
+            string sqlString = string.Format(@"
+                SELECT SUM(TahminiRayicDegeri) Toplam 
+                FROM Tasinmaz_Table 
+                WHERE EnvanterdeMi=1
+                    AND SigortaDurumu={0}", sigorta.ReturnQuotedValue());
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            if (dataTable != null)
+            {
+                DataRow row = dataTable.Rows[0];
+                toplam = row["Toplam"].ConvertToDecimal();
+
+            }
+            return toplam;
+        }
+        public decimal SelectTahminiRayicToplamiByKullanimDurumu(string kullanimDurumu, bool esitOlanlarMi)
+        {
+            string whereStr = string.Empty;
+            if (esitOlanlarMi)
+                whereStr = " AND KullanimDurumu = " + kullanimDurumu.ReturnQuotedValue();
+            else
+                whereStr = " AND KullanimDurumu != " + kullanimDurumu.ReturnQuotedValue();
+
+
+            decimal toplam = 0;
+            string sqlString = string.Format(@"
+                SELECT SUM(TahminiRayicDegeri) Toplam 
+                FROM Tasinmaz_Table 
+                WHERE EnvanterdeMi=1 {0} ", whereStr);
+
+
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            if (dataTable != null)
+            {
+                DataRow row = dataTable.Rows[0];
+                toplam = row["Toplam"].ConvertToDecimal();
+
+            }
+            return toplam;
+        }
+        public decimal SelectEmlakBeyanToplamiByKullanimDurumu(string kullanimDurumu, bool esitOlanlarMi)
+        {
+            string whereStr = string.Empty;
+            if (esitOlanlarMi)
+                whereStr = " AND KullanimDurumu = " + kullanimDurumu.ReturnQuotedValue();
+            else
+                whereStr = " AND KullanimDurumu != " + kullanimDurumu.ReturnQuotedValue();
+
+
+            decimal toplam = 0;
+            string sqlString = string.Format(@"
+                SELECT SUM(EmlakBeyanDegeri) Toplam 
+                FROM Tasinmaz_Table 
+                WHERE EnvanterdeMi=1 {0}", whereStr);
+
+
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            if (dataTable != null)
+            {
+                DataRow row = dataTable.Rows[0];
+                toplam = row["Toplam"].ConvertToDecimal();
+
+            }
+            return toplam;
+        }
+        public int SelectTasinmazAdetByBolgeMulkiyetSekli(string bolge, string mulkiyetSekli)
+        {
+            int Adet = 0;
+            string sqlString = string.Format(@"
+                SELECT COUNT(MulkiyetSekli) Adet 
+                FROM Tasinmaz_Table 
+                WHERE EnvanterdeMi=1 
+                    AND SorumluBolge ={0}
+                    AND MulkiyetSekli ={1}", bolge.ReturnQuotedValue(), mulkiyetSekli.ReturnQuotedValue());
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            if (dataTable != null)
+            {
+                DataRow row = dataTable.Rows[0];
+                Adet = row["Adet"].ConvertToInt();
+
+            }
+            return Adet;
+        }
+        public int SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(string bolge, string kullanimSekli, string kullanimDurumu, string mülkiyetSekli)
+        {
+            string whereStr = string.Empty;
+            if (!string.IsNullOrEmpty(kullanimDurumu))
+                whereStr = " AND KullanimDurumu = " + kullanimDurumu.ReturnQuotedValue();
+            if (!string.IsNullOrEmpty(mülkiyetSekli))
+                whereStr += " AND MulkiyetSekli = " + mülkiyetSekli.ReturnQuotedValue();
+
+
+            int Adet = 0;
+            string sqlString = string.Format(@"
+                SELECT COUNT(KullanimSekli) Adet 
+                FROM Tasinmaz_Table 
+                WHERE EnvanterdeMi=1 
+                    AND SorumluBolge ={0}
+                    AND KullanimSekli ={1}
+                    {2}", bolge.ReturnQuotedValue(), kullanimSekli.ReturnQuotedValue(), whereStr);
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            if (dataTable != null)
+            {
+                DataRow row = dataTable.Rows[0];
+                Adet = row["Adet"].ConvertToInt();
+
+            }
+            return Adet;
+        }
+        public int SelectTasinmazAdetByBolgeKullanimDurumu(string bolge, string kullanimDurumu, string mulkiyetSekli, bool esitOlanlarMi)
+        {
+            string whereStr;
+            if (esitOlanlarMi)
+                whereStr = " AND KullanimDurumu = " + kullanimDurumu.ReturnQuotedValue();
+            else
+                whereStr = " AND KullanimDurumu != " + kullanimDurumu.ReturnQuotedValue();
+
+            string mulkiyetStr = string.IsNullOrEmpty(mulkiyetSekli) ? string.Empty : " AND MulkiyetSekli=" + mulkiyetSekli.ReturnQuotedValue();
+
+            int Adet = 0;
+            string sqlString = string.Format(@"
+                SELECT COUNT(KullanimSekli) Adet 
+                FROM Tasinmaz_Table 
+                WHERE EnvanterdeMi=1 
+                    AND SorumluBolge ={0}
+                    {1}
+                    {2}", bolge.ReturnQuotedValue(), whereStr,mulkiyetStr);
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            if (dataTable != null)
+            {
+                DataRow row = dataTable.Rows[0];
+                Adet = row["Adet"].ConvertToInt();
+
+            }
+            return Adet;
+        }
+        public int SelectTasinmazAdetByIliMulkiyetSekliKullanimSekli(string ilAdi, string mulkiyetSekli, string kullanimSekli)
+        {
+            int Adet = 0;
+            string sqlString = string.Format(@"
+                SELECT COUNT(KullanimSekli) Adet 
+                FROM Tasinmaz_Table 
+                WHERE EnvanterdeMi=1 
+                    AND Ili ={0}
+                    AND MulkiyetSekli ={1}
+                    AND KullanimSekli ={2}", ilAdi.ReturnQuotedValue(), mulkiyetSekli.ReturnQuotedValue(), kullanimSekli.ReturnQuotedValue());
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            if (dataTable != null)
+            {
+                DataRow row = dataTable.Rows[0];
+                Adet = row["Adet"].ConvertToInt();
+            }
+            return Adet;
+        }
+        public int SelectTasinmazAdetByBolgeMulkiyetSekliSigorta(string bolge, string mulkiyetSekli, string sigorta)
+        {
+            int Adet = 0;
+            string sqlString = string.Format(@"
+                SELECT COUNT(MulkiyetSekli) Adet 
+                FROM Sigorta_Table A
+                    INNER JOIN Tasinmaz_Table B ON B.Id=A.TasinmazId
+                WHERE EnvanterdeMi=1 
+                    AND SorumluBolge ={0}
+                    AND MulkiyetSekli ={1}
+                    AND SigortaDurumu ={2}", bolge.ReturnQuotedValue(), mulkiyetSekli.ReturnQuotedValue(), sigorta.ReturnQuotedValue());
+            // SB bir tasinmaz için birden fazla sigorta yapılabilir hale geldiği için sorgu değişti. 24.01.2020
+            //string sqlString = string.Format(@"
+            //    SELECT COUNT(MulkiyetSekli) Adet 
+            //    FROM Tasinmaz_Table 
+            //    WHERE EnvanterdeMi=1 
+            //        AND SorumluBolge ={0}
+            //        AND MulkiyetSekli ={1}
+            //        AND SigortaDurumu ={2}", bolge.ReturnQuotedValue(), mulkiyetSekli.ReturnQuotedValue(), sigorta.ReturnQuotedValue());
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            if (dataTable != null)
+            {
+                DataRow row = dataTable.Rows[0];
+                Adet = row["Adet"].ConvertToInt();
+            }
+            return Adet;
+        }
+        public int SelectTasinmazAdetByBolgeKullanimSekliSigorta(string bolge, string kullanimSekli, string sigorta)
+        {
+            int Adet = 0;
+            string sqlString = string.Format(@"
+                SELECT COUNT(KullanimSekli) Adet 
+                FROM Sigorta_Table A
+                    INNER JOIN Tasinmaz_Table B ON B.Id=A.TasinmazId
+                WHERE EnvanterdeMi=1 
+                    AND SorumluBolge ={0}
+                    AND KullanimSekli ={1}
+                    AND SigortaDurumu ={2}", bolge.ReturnQuotedValue(), kullanimSekli.ReturnQuotedValue(), sigorta.ReturnQuotedValue());
+            //string sqlString = string.Format(@"
+            //    SELECT COUNT(KullanimSekli) Adet 
+            //    FROM Tasinmaz_Table 
+            //    WHERE EnvanterdeMi=1 
+            //        AND SorumluBolge ={0}
+            //        AND KullanimSekli ={1}
+            //        AND SigortaDurumu ={2}", bolge.ReturnQuotedValue(), kullanimSekli.ReturnQuotedValue(), sigorta.ReturnQuotedValue());
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            if (dataTable != null)
+            {
+                DataRow row = dataTable.Rows[0];
+                Adet = row["Adet"].ConvertToInt();
+            }
+            return Adet;
+        }
+    }
+}

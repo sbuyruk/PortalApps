@@ -1,0 +1,498 @@
+﻿using Microsoft.SharePoint;
+using Model.Ortak;
+using Model.TBYS;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Globalization;
+using System.IO;
+using System.Web.Script.Serialization;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using Utility.HelperClasses;
+using Utility.ProjeGlobal;
+
+namespace TBYS_WebParts.TasinmazBagisciListesiWP
+{
+    [ToolboxItemAttribute(false)]
+    public partial class TasinmazBagisciListesiWP : WebPart
+    {
+        // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
+        // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
+        // for production. Because the SecurityPermission attribute bypasses the security check for callers of
+        // your constructor, it's not recommended for production purposes.
+        // [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Assert, UnmanagedCode = true)]
+        public TasinmazBagisciListesiWP()
+        {
+        }
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+            InitializeControl();
+            this.ChromeType = PartChromeType.None;
+        }
+        private string SecilenIdQS
+        {
+            get
+            {
+
+                if (ViewState["SecilenId"] == null)
+                {
+                    if (Page.Request.QueryString["SecilenId"] != null)
+                    {
+                        ViewState["SecilenId"] = Page.Request.QueryString["SecilenId"];
+                    }
+                    else
+                    {
+                        ViewState["SecilenId"] = string.Empty;
+                    }
+                }
+                return ViewState["SecilenId"].ToString();
+            }
+
+            set
+            {
+                ViewState["SecilenId"] = value;
+            }
+        }
+        private string BolgeQS
+        {
+            get
+            {
+
+                if (ViewState["Bolge"] == null)
+                {
+                    if (Page.Request.QueryString["Bolge"] != null)
+                    {
+                        ViewState["Bolge"] = Page.Request.QueryString["Bolge"];
+                    }
+                    else
+                    {
+                        ViewState["Bolge"] = string.Empty;
+                    }
+                }
+                return ViewState["Bolge"].ToString();
+            }
+
+            set
+            {
+                ViewState["Bolge"] = value;
+            }
+        }
+        private string CurrentUserName
+        {
+            get
+            {
+
+                if (ViewState["CurrentUserName"] == null)
+                {
+                    ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUser();
+                }
+                return ViewState["CurrentUserName"].ToString();
+            }
+
+            set
+            {
+                ViewState["CurrentUserName"] = value;
+            }
+        }
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!Page.IsPostBack)
+                {
+                    BolgeQS = IKYSOrtak.PersonelinBolgesiniGetir(CurrentUserName);
+                    if (!string.IsNullOrEmpty(BolgeQS))
+                    {
+                        TitleLbl.Text = "Bağışçı Listesi" + " (" + BolgeQS + " Bölgesi)";
+                        YeniKayitBtn.Visible = false;
+                    }
+                    TabloOlustur(); 
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.PublishMessage(ex.Message, ProjeConstants.MESAJ_HATA);
+            }
+        }
+        private void RedirectToPage(string pageUrl)
+        {
+            try
+            {
+                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
+                Page.Response.Redirect(newUrl);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelper exHelper = new ExceptionHelper(ex);
+                exHelper.PublishException();
+            }
+        }
+        private void TabloOlustur()
+        {
+            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            UtilityHelper.ScriptCalistir(jsString);
+        }
+        private string TabloJson()
+        {
+            string jSon = string.Empty;
+
+            try
+            {
+                List<TasinmazBagisciListItem> list = GetDataList();
+                var serializer = new JavaScriptSerializer();
+                jSon = serializer.Serialize(list);
+            }
+            catch (Exception exception)
+            {
+                ExceptionHelper exceptionHelper = new ExceptionHelper();
+                exceptionHelper.Exceptions.Add(exception);
+                exceptionHelper.PublishException();
+            }
+            return jSon;
+        }
+
+        private List<TasinmazBagisciListItem> GetDataList()
+        {
+
+            DataTable dataTable = GetBagisciData();
+            List<string> bagisciBilgiFormuDosyalari = UtilityHelper.GetFileNameListFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, ProjeConstants.DOSYA_BAGISBILGIVETALEP_FORMU);
+            List<string> bagisciTaahhutFormuDosyalari = UtilityHelper.GetFileNameListFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, ProjeConstants.DOSYA_TAAHHUT_FORMU);
+            List<TasinmazBagisciListItem> list = new List<TasinmazBagisciListItem>();
+            foreach (DataRow row in dataTable.Rows)
+            {
+                int tasinmazBagisciId = row["TasinmazBagisciId"].ReturnZeroIfNull().ConvertToInt();
+                string adiSoyadi = row["AdiSoyadi"].ToString();
+                string toplamBagisAdedi = row["ToplamBagisAdedi"].ToString();
+                string sagVefat = row["Sag_vefat"].ToString();
+                string bolge = row["Bolge"].ToString();
+                string ilIlce = row["IlIlce"].ToString();
+                string foto = row["Foto"].ToString();
+
+                string pageUrl = ProjeConstants.PAGE_TASINMAZBAGISCI_GIRIS;
+
+                TasinmazBagisciListItem tasinmazBagisciListItem = new TasinmazBagisciListItem();
+                tasinmazBagisciListItem.TasinmazBagisciId = tasinmazBagisciId;
+                tasinmazBagisciListItem.AdiSoyadi = adiSoyadi.Trim();
+                tasinmazBagisciListItem.ToplamBagisAdedi = toplamBagisAdedi;
+                tasinmazBagisciListItem.Sag_vefat = sagVefat;
+                tasinmazBagisciListItem.Bolge = bolge;
+                tasinmazBagisciListItem.IlIlce = ilIlce.Trim();
+
+                tasinmazBagisciListItem.TasinmazBagisciKarti = "<a target='_blank' href=" + ProjeConstants.PAGE_TASINMAZBAGISCI_KARTI + "?SenderApp=TBL&BagisciId=" + tasinmazBagisciId + " class='btn btn-outline-info'>Bağışçı Kartı</a>";
+
+                tasinmazBagisciListItem.BagisciBilgiFormu = FormLinkiGetir(bagisciBilgiFormuDosyalari, ProjeConstants.DOSYA_BAGISBILGIVETALEP_FORMU,tasinmazBagisciId.ToString(), "Bağışçı Bilgi ve Talep Formu", "btn btn-outline-secondary");
+                tasinmazBagisciListItem.TaahhutFormu = FormLinkiGetir(bagisciTaahhutFormuDosyalari, ProjeConstants.DOSYA_TAAHHUT_FORMU,tasinmazBagisciId.ToString(), "Taahhut Formu", "btn btn-outline-secondary");
+
+                tasinmazBagisciListItem.Taahhutler = TaahhutModalGoster(tasinmazBagisciId);
+                tasinmazBagisciListItem.Duzenle = "<a href=" + pageUrl + @"?DestinationApp=TBD&BagisciId=" + tasinmazBagisciId + "  class='btn btn-outline-primary'>Düzenle</a>";
+                tasinmazBagisciListItem.Secildi = SecilenIdQS.Equals(tasinmazBagisciListItem.TasinmazBagisciId);
+                list.Add(tasinmazBagisciListItem);
+            }
+            return list;
+        }
+
+        
+
+        private string CreateDataTable(string jsonData)
+        {
+            string duzenleGorunsun = string.IsNullOrEmpty(BolgeQS) ? "{ targets:10, visible:true}," : "{ targets:10, visible:false},";
+            string tableString = @"
+            jQuery(document).ready(function() {
+
+                jQuery('#CustomDataTable').DataTable({
+                    'initComplete': function(settings, json) {//tablo yüklendiğinde
+                        var api = this.api();
+                        var row = api.row(function(idx, data, node) { //secilen Id'ye gider
+                            return data['Secildi'] == true;
+                        });
+                        if (row.length > 0)
+                        {
+                            row.select()
+                                .show()
+                                .draw(false);
+                        }
+                    },
+            data: " + jsonData + @",
+            columns:
+                    [
+                { data: 'TasinmazBagisciId' },
+                { data: 'AdiSoyadi' },
+                { data: 'ToplamBagisAdedi' },
+                { data: 'Sag_vefat' },
+                { data: 'Bolge' },
+                { data: 'IlIlce', 'width': '14%' },
+                { data: 'BagisciBilgiFormu' },
+                { data: 'TaahhutFormu' },
+                { data: 'Taahhutler' },
+                { data: 'TasinmazBagisciKarti' },
+                { data: 'Duzenle' },
+
+            ],
+            'order': [[0, 'asc']],//AdiSoyadi Sıralı
+            columnDefs:
+                [
+                " + duzenleGorunsun + @"
+                ],
+            'language': {
+                        'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                'decimal': ',',
+                'thousands': '.'
+            },
+            responsive: true,
+            destroy: true,
+            autoWidth: false,
+            dom: 'Bfrtip',
+            buttons:
+                    [
+                {
+                    extend: 'print',
+                    exportOptions:
+                        {
+                        columns: ':visible'
+                    }
+                    },
+                {
+                    extend: 'excel',
+                    exportOptions:
+                        {
+                        columns: ':visible'
+                    }
+                    },
+                {
+                    extend: 'pdf',
+                    exportOptions:
+                        {
+                        columns: ':visible'
+                    }
+                    },
+                {
+                    extend: 'copy',
+                    exportOptions:
+                        {
+                        columns: ':visible'
+                    }
+                    },
+                , 'pageLength', 'colvis'
+                    ]
+
+                });
+            });";
+            return tableString;
+        }
+        private string FormLinkiGetir(List<string> list, string form,string tasinmazBagisciId, string linkText, string classString)
+        {
+            string belgePdfLink = string.Empty;
+            string dosyaAdi = form + tasinmazBagisciId + ".pdf";
+            string dosyaUrl = UtilityHelper.TbysBelgelerURLGetir() + "/" + dosyaAdi;
+            bool dosyaVarMi = list.Contains(dosyaAdi);
+            if (dosyaVarMi)
+            {
+                belgePdfLink = @"<a class='"+classString+"' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + dosyaUrl + @">"+linkText+"</a>";
+            }
+            return belgePdfLink;
+        }
+        //private string BagisciBilgiFormuGetir( string tasinmazBagisciId)
+        //{
+        //    string belgePdfLink = string.Empty;
+        //    string dosyaAdi = ProjeConstants.DOSYA_BAGISBILGIVETALEP_FORMU + tasinmazBagisciId + ".pdf";
+        //    string dosyaUrl = UtilityHelper.TbysBelgelerURLGetir() + "/" + dosyaAdi;
+        //    bool dosyaVarMi = UtilityHelper.DosyaVarMi(UtilityHelper.TbysBelgelerURLGetir() , ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi);
+        //    if (dosyaVarMi)
+        //    {
+        //        belgePdfLink = @"<a class='btn btn-outline-secondary' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + dosyaUrl + @">Bağışçı Bilgi ve Talep Formu</a>";
+        //    }
+        //    return belgePdfLink;
+        //}
+        private string TaahhutFormuGetir( string tasinmazBagisciId)
+        {
+            string belgePdfLink = string.Empty;
+
+            string dosyaAdi = ProjeConstants.DOSYA_TAAHHUT_FORMU + tasinmazBagisciId + ".pdf";
+            string dosyaUrl = UtilityHelper.TbysBelgelerURLGetir() + "/" + dosyaAdi;
+            bool dosyaVarMi = UtilityHelper.DosyaVarMi(UtilityHelper.TbysBelgelerURLGetir() , ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi);
+            if (dosyaVarMi)
+            {
+                belgePdfLink = @"<a class='btn btn-outline-secondary' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + dosyaUrl + @">Taahhüt Formu</a>";
+            }
+            return belgePdfLink;
+        }
+
+        private DataTable GetBagisciData()
+        {
+            TasinmazBagisci tasinmazBagisci = new TasinmazBagisci();
+            DataTable dataTable = tasinmazBagisci.SelectAllCountBagisAdediReturnDataTable(BolgeQS);
+            return dataTable;
+        }
+        protected void YeniKayitBtn_Click(object sender, EventArgs e)
+        {
+            RedirectToPage(ProjeConstants.PAGE_TASINMAZBAGISCI_GIRIS);
+        }
+        protected void ExcelBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ExportToExcel();
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelper exHelper = new ExceptionHelper(ex);
+                exHelper.PublishException();
+            }
+        }
+        protected void ExportToExcel()
+        {
+            GridView GridView1 = new GridView();
+            GridView1.AllowPaging = false;
+
+            GridView1.DataSource = GetBagisciData();
+            GridView1.DataBind();
+
+            Page.Response.Clear();
+            Page.Response.Buffer = true;
+            Page.Response.AddHeader("content-disposition",
+             "attachment;filename=TasinmazBagisciRaporu" + DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + ".xls");
+            Page.Response.ContentEncoding = System.Text.Encoding.GetEncoding("windows-1254");
+            Page.Response.Charset = "windows-1254";//ISO-8859-9
+            Page.Response.ContentType = "application/vnd.ms-excel";
+            StringWriter sw = new StringWriter();
+            HtmlTextWriter hw = new HtmlTextWriter(sw);
+
+            for (int i = 0; i < GridView1.Rows.Count; i++)
+            {
+                //Apply text style to each Row
+                GridView1.Rows[i].Attributes.Add("class", "textmode");
+            }
+            GridView1.RenderControl(hw);
+
+            //style to format numbers to string
+            string style = @"<style> .textmode { mso-number-format:\@; } </style>";
+            Page.Response.Write(style);
+            Page.Response.Output.Write(sw.ToString());
+            Page.Response.Flush();
+            Page.Response.End();
+
+        }
+        protected void CloseBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
+                Page.Response.Redirect(newUrl);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelper exHelper = new ExceptionHelper(ex);
+                exHelper.PublishException();
+            }
+        }
+        private class TasinmazBagisciListItem
+        {
+            public int TasinmazBagisciId { get; set; }
+            public string AdiSoyadi { get; set; }
+            public string ToplamBagisAdedi { get; set; }
+            public string Sag_vefat { get; set; }
+            public string Bolge { get; set; }
+            public string IlIlce { get; set; }
+            public string BagisciBilgiFormu { get; set; }
+            public string TaahhutFormu { get; set; }
+            public string Taahhutler { get; set; }
+            public string TasinmazBagisciKarti { get; set; }
+            public string Duzenle { get; set; }
+            public bool Secildi { get; set; }
+        }
+        #region Modal
+        private string TaahhutModalGoster(int bagisciId)
+        {
+            
+            string retval = string.Empty;
+            TasinmazTaahhut tt = new TasinmazTaahhut();
+            List<TasinmazTaahhut> ttlist = tt.SelectByBagisciId(bagisciId);
+            if (ttlist.Count > 0)
+            {
+                retval = "<a href=# onclick=OpenModalTaahhut(" + bagisciId + "); class=\'btn btn-outline-secondary \'> Taahhütler</a>";
+            }
+            return retval;
+        }
+        private void TaahhutTableHeaders()
+        {
+            TaahhutTable.Rows.Clear();
+            TableHeaderRow th = new TableHeaderRow();
+
+            TableHeaderCell AdiSoyadiCell = new TableHeaderCell();
+            AdiSoyadiCell.Text = "Adı Soyadı";
+            TableHeaderCell IliIlcesiCell = new TableHeaderCell();
+            IliIlcesiCell.Text = "İkamet adresi";
+            TableHeaderCell TelefonCell = new TableHeaderCell();
+            TelefonCell.Text = "Telefon";
+            TableHeaderCell TasinmazCell = new TableHeaderCell();
+            TasinmazCell.Text = "Taşınmaz";
+            TableHeaderCell AciklamaCell = new TableHeaderCell();
+            AciklamaCell.Text = "Taahhüt Açıklama";
+            
+            th.Controls.Add(AdiSoyadiCell);
+            th.Controls.Add(IliIlcesiCell);
+            th.Controls.Add(TelefonCell);
+            th.Controls.Add(TasinmazCell);
+            th.Controls.Add(AciklamaCell);
+            TaahhutTable.Controls.Add(th);
+        }
+        private void TaahhutTablosunuDoldur(TasinmazBagisci bagisci)
+        {
+            //Column headers
+            TaahhutTableHeaders();
+            TasinmazTaahhut tt = new TasinmazTaahhut();
+            List<TasinmazTaahhut> list = tt.SelectByBagisciId(bagisci.Id);
+            foreach (TasinmazTaahhut item in list)
+            {
+                TableRow row = new TableRow();
+
+                TableCell AdiSoyadiCell = new TableCell();
+                AdiSoyadiCell.Text = item.Adi + " " + item.Soyadi;
+                row.Controls.Add(AdiSoyadiCell);
+
+                TableCell IliIlcesiCell = new TableCell();
+                Ilce ilce = new Ilce();
+                ilce = ilce.Select<Ilce>(item.Ilcesi);
+                IliIlcesiCell.Text = item.Adres+" "+ ilce != null ? ilce.IlAdi + "/" + ilce.IlceAdi : string.Empty;
+                row.Controls.Add(IliIlcesiCell);
+
+                TableCell TelefonCell = new TableCell();
+                TelefonCell.Text = item.Telefon;
+                row.Controls.Add(TelefonCell);
+
+                TableCell TasinmazCell = new TableCell();
+                Tasinmaz tasinmaz = new Tasinmaz();
+                tasinmaz = tasinmaz.Select<Tasinmaz>(item.TasinmazId);
+                TasinmazCell.Text = tasinmaz != null ? tasinmaz.Adres + " " + tasinmaz.Ilcesi + "/" + tasinmaz.Ili : string.Empty;
+                row.Controls.Add(TasinmazCell);
+
+                TableCell AciklamaCell = new TableCell();
+                AciklamaCell.Text = item.TaahhutAciklama;
+                AciklamaCell.Width = new Unit("40%");
+                row.Controls.Add(AciklamaCell);
+
+                TaahhutTable.Controls.Add(row);
+            }
+
+        }
+        #endregion
+
+        protected void TaahhutModalDoldurBtnBtn_Click(object sender, EventArgs e)
+        {
+            int bagisciId= ParamBagisciIdLbl.Value.ConvertToInt();
+            TasinmazBagisci bagisci = new TasinmazBagisci();
+            bagisci = bagisci.Select<TasinmazBagisci>(bagisciId);
+            if (bagisci != null)
+            {
+                TaahhutTablosunuDoldur(bagisci);
+            }
+        }
+    }
+}

@@ -1,0 +1,531 @@
+﻿using Model.Ortak;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Globalization;
+using System.Linq;
+using Utility.HelperClasses;
+using Utility.ProjeGlobal;
+
+namespace Model.TBYS
+{
+    [Serializable]
+    public class OdemePlani : ParentClass
+    {
+        public int SozlesmeId { get; set; }
+        public int Yil { get; set; }
+        public string Ay { get; set; }
+        public DateTime VadeBasTar { get; set; }
+        public DateTime VadeBitTar { get; set; }
+        public decimal KiraBedeli { get; set; }
+        public decimal OdenenTutar { get; set; }
+        public decimal AnaPara { get; set; }
+        public decimal FaizliBakiye { get; set; }
+        public decimal FaizOrani { get; set; }
+        public decimal FaizTutari { get; set; }
+        public DateTime OdemeBasTar { get; set; }
+        public DateTime OdemeBitTar { get; set; }
+        public int Sira { get; set; }
+        public string Aciklama { get; set; }
+        public override T Select<T>(int id)
+        {
+            string sqlString = string.Format(@"SELECT *
+                               FROM OdemePlani_Table 
+                               WHERE  Id={0}", id);
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            List<OdemePlani> list = ToList<OdemePlani>(dataTable);
+            OdemePlani odemePlani = new OdemePlani();
+            odemePlani = list.FirstOrDefault();
+            return (T)Convert.ChangeType(odemePlani, typeof(T));
+
+        }
+        public override int Save()
+        {
+
+            GenericEntity<OdemePlani> genericEntity = new GenericEntity<OdemePlani>(ProjeConstants.SQL_INSERT);
+            OlusturmaTarihi = DateTime.Now;
+            string sqlString = genericEntity.GetQuery(this);
+            int id = dao.Insert(sqlString);
+
+            this.Id = id;
+            return id;
+
+        }
+
+        public override bool Update()
+        {
+            bool isSuccess = false;
+            if (Id != 0)
+            {
+                GenericEntity<OdemePlani> genericEntity = new GenericEntity<OdemePlani>(ProjeConstants.SQL_UPDATE);
+                DegistirmeTarihi = DateTime.Now;
+                string sqlString = genericEntity.GetQuery(this);
+                isSuccess = dao.Update2Db(sqlString);
+
+            }
+            return isSuccess;
+        }
+        public override bool Delete()
+        {
+            string sqlString = string.Format(@"DELETE 
+                               FROM OdemePlani_Table
+                               WHERE Id={0}", Id);
+
+            bool isSuccess = dao.DeleteFromDb(sqlString, this);
+
+            return isSuccess;
+        }
+        public bool DeleteBySozlesmeId(int sozlesmeId)
+        {
+            string sqlString = string.Format(@"
+                DELETE OdemePlani_Table 
+                WHERE SozlesmeId={0}", sozlesmeId);
+            bool isSuccess = dao.DeleteFromDb(sqlString, this);
+            return isSuccess;
+        }
+        public override List<T> SelectAll<T>()
+        {
+            string sqlString = string.Format(@"SELECT *
+                               FROM OdemePlani_Table");
+
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            List<OdemePlani> list = ToList<OdemePlani>(dataTable);
+
+            return (List<T>)Convert.ChangeType(list, typeof(List<T>));
+        }
+
+
+        public DataTable SelectBorcluOdemePlanlariByBolgeTarih(string bolge, DateTime ilkTarih, DateTime sonTarih, int aySayisiBas, int aySayisiBit)
+        {
+            string sqlString = GetBorcluOdemePlanlariByBolgeTarihSqlScript(bolge, ilkTarih, sonTarih, aySayisiBas, aySayisiBit);
+
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            return dataTable;
+        }
+        public string SelectBorcluOdemePlanlariByBolgeTarihJson(string bolge, DateTime ilkTarih, DateTime sonTarih, int aySayisi, int aySayisiBit, ref int kayitSayisi)
+        {
+            string sqlString = GetBorcluOdemePlanlariByBolgeTarihSqlScript(bolge, ilkTarih, sonTarih, aySayisi, aySayisiBit);
+
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            kayitSayisi = dataTable == null ? 0 : dataTable.Rows.Count;
+            string json = ToJSON(dataTable);
+            return json;
+
+        }
+        private string GetBorcluOdemePlanlariByBolgeTarihSqlScript(string bolge, DateTime ilkTarih, DateTime sonTarih, int aySayisiBas, int aySayisiBit)
+        {
+            //string aySayisiStr = string.Format(" ((ABS(C.FaizliBakiye) - ABS(A.KiraBedeli))  / A.KiraBedeli) BETWEEN {0} AND {1}  AND ", (aySayisiBas - 0.5).ToString().Replace(",", "."), (aySayisiBit + 0.5).ToString().Replace(",", "."));
+            string aySayisiStr = string.Format(@"
+                (
+                    (
+                        A.TaksitSayisi>1 AND ((ABS(C.FaizliBakiye) - ABS(A.KiraBedeli))  / A.KiraBedeli) BETWEEN {2} AND {3}  
+                    )
+                    OR
+                    (
+                        A.TaksitSayisi<2 AND 
+                        (
+                            (C.VadeBitTar BETWEEN {0} AND {1} )
+						    AND 
+                            (ABS(FaizliBakiye/A.KiraBedeli)*C.Sira BETWEEN {2} AND {3}) 
+                        )
+                     ) 
+                ) ", ilkTarih.ReturnTRDateFormat(), sonTarih.ReturnDDMMYYYFormat(), (aySayisiBas - 0.5).ToString().Replace(",", "."), (aySayisiBit + 0.5).ToString().Replace(",", "."));
+
+            string bolgeStr = string.Format(string.IsNullOrEmpty(bolge)||bolge.Equals(ProjeConstants.HEPSI) ? " " : " A.Bolge ={0} AND ", bolge.ReturnQuotedValue());
+
+            string sqlString = string.Format(@"
+                SELECT 
+                    A.Id KiraSozlesmeId, A.Bolge, A.DosyaNo, B.Adi+' '+B.Soyadi Kiraci, 
+                    A.IlkSozlesmeTar, A.SozBasTar, A.SozBitTar, A.ArtisAyi, A.OdemeSekli, 
+                    A.KiraBedeli, C.AnaPara AnaPara,C.FaizTutari, C.FaizliBakiye, C.VadeBasTar, C.VadeBitTar, 
+                    FORMAT(C.FaizliBakiye,'###.00') FaizliBakiyeFormat,
+                    B.Adres, B.Ili,B.Ilcesi,B.Semt,
+	                A.TeminatOdemeTarihi,A.TeminatTutari,
+                    ABS(FaizliBakiye/A.KiraBedeli)*C.Sira AySayisi, A.TaksitSayisi
+                FROM KiraSozlesme_Table A
+                    INNER JOIN Kiraci_Table B ON B.Id=A.KiraciId
+                    LEFT JOIN OdemePlani_Table C ON C.SozlesmeId=A.Id 
+                WHERE 
+                    {0}
+                    C.FaizliBakiye < 0 AND (C.VadeBitTar BETWEEN {1} AND {2}) AND
+	                {3} AND 
+                    (
+                        A.SozBasTar<{2} AND A.SozBitTar >= {1} 
+						AND
+                        (--SB 12.08.2022 parantez icine aldım cift cikan kayitlar oluyordu
+							(
+								A.SozlesmeDurumu = 'Devam Ediyor' 
+								OR
+								(A.SozlesmeDurumu != 'Devam Ediyor' AND A.SozlesmeDurumu != 'Yenilendi' AND A.DurumDegismeTar BETWEEN {1} AND {2})
+							)
+						    OR 
+						    (A.SozlesmeDurumu='Yenilendi' AND A.SozBitTar>{2}) 
+                        )--SB 12.08.2022
+                    )
+                ORDER BY A.Bolge, A.DosyaNo,B.Adi
+
+                ", bolgeStr, ilkTarih.ReturnTRDateFormat(), sonTarih.ReturnDDMMYYYFormat(), aySayisiStr);
+            return sqlString;
+        }
+        public DataTable SelectMevcutOdemePlanlariByTarih(DateTime ilkTarih, DateTime sonTarih, string bolge)
+        {
+            string bolgeStr = string.Format(bolge.Equals(ProjeConstants.HEPSI) || string.IsNullOrEmpty(bolge) ? " " : " AND E.Bolge ={0} ", bolge.ReturnQuotedValue());
+            string sqlString = string.Format(@"
+                SELECT A.Id KiraSozlesmeId, E.Bolge, A.DosyaNo, G.Adi+' '+G.Soyadi Kiraci, D.Adres + ' ' + ISNULL(F.BolumNo,'') Adres, 
+                    A.IlkSozlesmeTar, A.SozBasTar, A.SozBitTar, A.ArtisAyi, A.OdemeSekli, 
+                    A.KiraBedeli, B.AnaPara AnaPara,B.FaizTutari, B.FaizliBakiye, B.VadeBasTar, 
+					D.KullanimSekli,D.Ili,D.Ilcesi,
+					A.TeminatOdemeTarihi,A.TeminatTutari
+                FROM KiraSozlesme_Table A
+                    LEFT JOIN OdemePlani_Table B ON B.SozlesmeId=A.Id AND B.Id in (SELECT Id FROM OdemePlani_Table WHERE VadeBasTar BETWEEN {0} AND {1} )
+                    LEFT JOIN SozlesmeTasinmaz_Table C On C.SozlesmeId=A.Id AND C.Id = (Select top 1 Id from SozlesmeTasinmaz_Table where SozlesmeId = A.Id) 
+                    LEFT JOIN Tasinmaz_Table D On D.Id=C.TasinmazId
+                    LEFT JOIN Il_Table E ON E.IlAdi=D.Ili
+                    LEFT JOIN BagimsizBolum_Table F On F.Id=C.BolumId
+	                LEFT JOIN Kiraci_Table G On G.Id=A.KiraciId
+                WHERE A.Aktif= 1
+                    {2} 
+                ORDER BY CASE WHEN A.DosyaNo = 0 THEN 2 ELSE 1 END,ISNULL(A.DosyaNo, 999999),  A.Id
+	                
+                ", ilkTarih.ReturnTRDateFormat(), sonTarih.ReturnTRDateFormat(), bolgeStr);
+
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            return dataTable;
+        }
+        public List<OdemePlani> SelectBySozlesmeId(int sozlesmeId)
+        {
+            string sqlString = string.Format(@"
+                SELECT * FROM OdemePlani_Table
+                WHERE SozlesmeId={0}
+                ORDER BY Sira ", sozlesmeId.ReturnQuotedValue());
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            List<OdemePlani> list = ToList<OdemePlani>(dataTable);
+            return list;
+
+        }
+        public OdemePlani SelectBySozlesmeIdSira(int sozlesmeId, int sira)
+        {
+            string sqlString = string.Format(@"
+                SELECT * FROM OdemePlani_Table
+                WHERE SozlesmeId={0} AND Sira={1}
+            ", sozlesmeId.ReturnQuotedValue(), sira.ReturnQuotedValue());
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            List<OdemePlani> list = ToList<OdemePlani>(dataTable);
+            OdemePlani odemePlani = list.FirstOrDefault<OdemePlani>();
+            return odemePlani;
+
+        }
+        public DataTable SelectKiraGeliriByBolgeAyYil(string bolge, int ay, int yil)
+        {
+            string sqlString = string.Format(@"
+				SELECT C.SorumluBolge Bolge,B.kiralamaAmaci, SUM(D.OdenenTutar) ToplamOdemeTutari, Count(A.Id) ToplamKiraciSayisi
+				FROM KiraSozlesme_Table A
+				    INNER JOIN Kiraci_Table B ON B.Id=A.KiraciId
+				    LEFT JOIN Odeme_Table D ON D.SozlesmeId=A.Id
+                    INNER JOIN OdemePlani_Table E ON E.Id=D.OdemePlaniId --odeme planında karşılığı olmayan ödemeleri dikkate almsasın diye SB 03.05.2021
+				INNER JOIN Tasinmaz_Table C ON C.Id=(SELECT TOP 1 TasinmazId FROM SozlesmeTasinmaz_Table WHERE SozlesmeId= A.Id)
+                WHERE C.SorumluBolge ={0}
+                    AND YEAR(D.OdemeTarihi) ={1}
+                    AND MONTH(D.OdemeTarihi) ={2}
+                GROUP BY C.SorumluBolge, B.KiralamaAmaci
+                ORDER BY C.SorumluBolge, B.KiralamaAmaci
+                
+            ", bolge.ReturnQuotedValue(), yil, ay);
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            return dataTable;
+            //SELECT E.Bolge, D.KullanimSekli, SUM(OdenenTutar) ToplamOdemeTutari, COUNT(DISTINCT(B.KiraciId)) ToplamKiraciSayisi
+            //    FROM Odeme_Table A
+            //        INNER JOIN KiraSozlesme_Table B ON B.Id = A.SozlesmeId
+            //        INNER JOIN Tasinmaz_Table D ON D.Id = (Select TOP 1 TasinmazId From SozlesmeTasinmaz_Table WHERE SozlesmeId = A.SozlesmeId) 
+            //        INNER JOIN Il_Table E ON E.IlAdi = D.Ili
+            //    WHERE E.Bolge ={ 0}
+            //AND YEAR(A.OdemeTarihi) ={ 1}
+            //AND MONTH(A.OdemeTarihi) ={ 2}
+            //GROUP BY E.Bolge, D.KullanimSekli
+        }
+        public OdemePlani SelectBySozlesmeIdOdemeTarihi(int sozlesmeId, DateTime odemeTarihi)
+        {
+            string vadeBasTarStr = string.Format(" AND {0} BETWEEN VadeBasTar AND DateADD(day,-1,DATEADD(month,1,VadeBasTar)) ", odemeTarihi.ReturnTRDateFormat());
+            string sqlString = string.Format(@"
+                SELECT * FROM OdemePlani_Table
+                WHERE Sira!=0 AND SozlesmeId={0} 
+                {1} 
+                ORDER BY VadeBasTar ", sozlesmeId.ReturnQuotedValue(), vadeBasTarStr);
+            //Sira!=0 olmalı çünkü ilk ay devir ayı
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            List<OdemePlani> list = ToList<OdemePlani>(dataTable);
+            OdemePlani odemePlani = list.FirstOrDefault<OdemePlani>();
+            return odemePlani;
+
+        }
+        public bool OdemePlaniVarMi(int sozlesmeId)
+        {
+            string sqlString = string.Format(@"SELECT * FROM OdemePlani_Table
+                               WHERE SozlesmeId={0}", sozlesmeId.ReturnQuotedValue());
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            List<OdemePlani> list = ToList<OdemePlani>(dataTable);
+            return list.Count > 0;
+
+        }
+        public OdemePlani SelectSonOdemePlaniBySozlesmeId(int sozlesmeId)
+        {
+            DateTime tarih = DateTime.MinValue;
+            string sqlString = string.Format(@"
+                SELECT *
+                FROM OdemePlani_Table 
+                WHERE SozlesmeId = {0}
+                ORDER BY VadeBasTar ", sozlesmeId);
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            List<OdemePlani> list = ToList<OdemePlani>(dataTable);
+            OdemePlani odemePlani = list.LastOrDefault<OdemePlani>();
+            return odemePlani;
+        }
+        public OdemePlani SelectIlkOdemePlaniBySozlesmeId(int sozlesmeId)
+        {
+            DateTime tarih = DateTime.MinValue;
+            string sqlString = string.Format(@"
+                SELECT *
+                FROM OdemePlani_Table 
+                WHERE SozlesmeId = {0} AND Sira=1
+                ", sozlesmeId);
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            List<OdemePlani> list = ToList<OdemePlani>(dataTable);
+            OdemePlani odemePlani = list.FirstOrDefault<OdemePlani>();
+            return odemePlani;
+        }
+        public DataTable SelectOdemePlaniListByTarihReturnDT(DateTime tarih)
+        {
+            string sqlString = string.Format(@"
+                SELECT A.Id SozlesmeId,A.DosyaNo,B.Adi, B.Soyadi, B.Adi+' '+ B.Soyadi KiraciAdi,
+	                D.Adres, G.BolumNo, F.OdemeBasTar,F.OdemeBitTar,F.KiraBedeli,F.OdenenTutar,F.FaizliBakiye
+                FROM KiraSozlesme_Table A
+                INNER JOIN Kiraci_Table B ON B.Id=A.KiraciId
+                    LEFT JOIN SozlesmeTasinmaz_Table C On C.Id=(Select top 1 Id from SozlesmeTasinmaz_Table where SozlesmeId=A.Id) 
+                    LEFT JOIN Tasinmaz_Table D On D.Id=C.TasinmazId
+                    LEFT JOIN BagimsizBolum_Table G ON G.Id=C.BolumId
+                    LEFT JOIN Il_Table E ON E.IlAdi=D.Ili
+                    LEFT JOIN OdemePlani_Table F ON F.Id=(Select MAX(Id) from OdemePlani_Table where SozlesmeId=A.Id AND VadeBasTar < {0}) 
+                WHERE Aktif=1
+                ORDER BY CASE WHEN A.DosyaNo=0 THEN 2 ELSE 1 END,ISNULL(A.DosyaNo,999999),  ISNULL(E.Bolge,'ZZZZZ'),  A.Id
+                ", tarih.ReturnTRDateFormat());
+            DataTable dataTable = null;
+            try
+            {
+                dataTable = dao.selectFromDb(sqlString, "");
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            return dataTable;
+        }
+        public bool OdemePlaniOlustur(KiraSozlesme kiraSozlesme)
+        {
+            IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
+            int taksitSayisi = kiraSozlesme.TaksitSayisi;
+            if (taksitSayisi < 1)
+            {
+                taksitSayisi = 1;
+            }
+            else if (taksitSayisi > 12)
+            {
+                taksitSayisi = 12;
+            }
+            bool isSaved = false;
+
+            DateTime sozBastarDate = kiraSozlesme.SozBasTar;//.AddMonths(1);//vade tarihi bir ay sonra olsun Zekayi Çalış 22/04/2019
+            DateTime bittarDate = sozBastarDate.AddMonths(taksitSayisi);
+
+            int odemeBitYil = bittarDate.Year;
+
+            string OdemeBitAy = bittarDate.ToString("MMMM", culturInfo);
+
+            DateTime vadeBasTarX = sozBastarDate;
+            DateTime vadeBitTarX = vadeBasTarX.AddMonths(1).AddDays(-1);
+            //taksitsayisi verilebilsin diye aşağısı kapatıldı
+            //if (kiraSozlesme.OdemeSekli == ProjeConstants.KIRA_ODMSEKLI_YILLIK)
+            //{
+            //    vadeBasTarX = kiraSozlesme.SozBitTar;
+            //    bittarDate = kiraSozlesme.SozBitTar;
+            //}
+            try
+            {
+                decimal aylikKira = kiraSozlesme.KiraBedeli;
+                if (kiraSozlesme.OdemeSekli.Equals(ProjeConstants.KIRA_ODMSEKLI_YILLIK))
+                {
+                    decimal odenecekTutar = kiraSozlesme.KiraBedeli / taksitSayisi;
+                    aylikKira = odenecekTutar;
+                }
+
+                OdemePlani odemePlaniDevir = new OdemePlani();
+                odemePlaniDevir = KayitEkleDevir(kiraSozlesme, kiraSozlesme.DevirAnaPara, kiraSozlesme.DevirFaizTutari, "Önceki Sözleşmeden devir", 0);
+
+                for (int i = 1; i <= taksitSayisi; i++)//taksitlere böl
+                {
+
+                    int yil = vadeBasTarX.Year;
+                    string ay = vadeBasTarX.ToString("MMMM", culturInfo);
+
+                    if ((ay + "/" + yil).Equals(OdemeBitAy + "/" + odemeBitYil))
+                    {
+                        break;
+                    }
+                    //odeme sozlesme bas ayda yapıldı o yüzden bit ayda ödeme olmasın
+                    OdemePlani odemePlani = new OdemePlani();
+                    odemePlani = kayitEkle(kiraSozlesme, yil, ay, vadeBasTarX, vadeBitTarX, sozBastarDate, bittarDate, aylikKira, i);
+                    //odemeBasTar ilk ay başlasın zekayi bey 16/11/2017
+                    vadeBasTarX = vadeBasTarX.AddMonths(1);
+                    vadeBitTarX = vadeBasTarX.AddMonths(1).AddDays(-1); //vadeBitTarX.AddMonths(1) -- bu şubat ayı için yanlış çalışıyor, 29 şubat ayın son günü, 1 ay ekleyince 29 mart oluyor, ama ayın sonu olmuyordu. SB
+                }
+                //sözlesme bitimine kadar olan aylar için satır ekle
+                for (int i = taksitSayisi+1; i <= 12; i++)
+                {
+                    int yil = vadeBasTarX.Year;
+                    string ay = vadeBasTarX.ToString("MMMM", culturInfo);
+
+                    OdemePlani odemePlani = new OdemePlani();
+                    odemePlani = kayitEkle(kiraSozlesme, yil, ay, vadeBasTarX, vadeBitTarX, sozBastarDate, bittarDate, 0, i);
+                    vadeBasTarX = vadeBasTarX.AddMonths(1);
+                    vadeBitTarX = vadeBasTarX.AddMonths(1).AddDays(-1);
+                }
+
+                isSaved = true;
+            }
+            catch (Exception)
+            {
+
+                isSaved = false;
+            }
+
+            return isSaved;
+        }
+        private OdemePlani kayitEkle(KiraSozlesme kiraSozlesme, int pYil, string pAy, DateTime pVadeBasTar, DateTime pVadeBitTar,
+            DateTime pOdemeBasTar, DateTime pOdemeBitTar, decimal aylikKira, int sira)
+        {
+
+            OdemePlani odemePlani = new OdemePlani();
+            odemePlani.SozlesmeId = kiraSozlesme.Id;
+            odemePlani.Yil = pYil;
+            odemePlani.Ay = pAy;
+            odemePlani.VadeBasTar = pVadeBasTar;
+            odemePlani.VadeBitTar = pVadeBitTar;
+            odemePlani.KiraBedeli = aylikKira;
+            odemePlani.AnaPara = 0;// aylikKira * (-1);
+            odemePlani.FaizTutari = 0;
+            odemePlani.OdenenTutar = 0;
+            odemePlani.OdemeBasTar = pOdemeBasTar;
+            odemePlani.OdemeBitTar = pOdemeBitTar;
+            odemePlani.Sira = sira;
+            odemePlani.Aciklama = "";
+            odemePlani.Save();
+            return odemePlani;
+        }
+        private OdemePlani KayitEkleDevir(KiraSozlesme kiraSozlesme, decimal devirAnaPara, decimal devirFaizTutari, string aciklama, int sira)
+        {
+            DateTime pVadeBitTar = kiraSozlesme.SozBasTar.AddDays(-1);
+            OdemePlani odemePlani = new OdemePlani();
+            odemePlani.SozlesmeId = kiraSozlesme.Id;
+            //VadeBasTar null veya boş olmalı 
+            //odemePlani.VadeBasTar = pVadeBasTar; 
+            
+            //VadeBitTar eklendi SB 20.01.2021 sebebi BölgelereGöeBorcluKiracılar raporunda içinde bulunulan ayda yeni sözleşmesi olanların devir borcu varsa dikkate almıyordu
+            odemePlani.VadeBitTar = pVadeBitTar;
+
+            odemePlani.AnaPara = devirAnaPara;
+            odemePlani.FaizTutari = devirFaizTutari;
+            odemePlani.FaizliBakiye = devirAnaPara + devirFaizTutari;
+            odemePlani.OdenenTutar = 0;
+            odemePlani.Aciklama = aciklama;
+            odemePlani.Sira = sira;
+            odemePlani.Save();
+            return odemePlani;
+        }
+
+        public List<OdemePlani> SelectByKiraciIdReturnList(int kiraciId)
+        {
+            string sqlString = string.Format(@"
+                SELECT * from OdemePlani_Table A
+                    Inner Join KiraSozlesme_Table B On B.Id=A.SozlesmeId
+                WHERE B.KiraciId={0}
+                ORDER BY SozlesmeId, Sira
+                ", kiraciId);
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            List<OdemePlani> list = ToList<OdemePlani>(dataTable);
+
+            return (list);
+        }
+        public OdemePlani SelectNext(int kiraciId)
+        {
+            OdemePlani odemePlani = new OdemePlani();
+            string sqlString = string.Format(@"SELECT * FROM OdemePlani_Table
+                                            WHERE Id > {0}
+                                            ORDER BY Id ", kiraciId.ReturnQuotedValue());
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            if (dataTable != null)
+            {
+                List<OdemePlani> list = ToList<OdemePlani>(dataTable);
+                odemePlani = list.FirstOrDefault();
+            }
+            else
+            {
+                odemePlani = SelectMin();
+
+            }
+            return odemePlani;
+        }
+        public OdemePlani SelectPrev(int kiraciId)
+        {
+            OdemePlani odemePlani = new OdemePlani();
+            string sqlString = string.Format(@"SELECT * FROM OdemePlani_Table
+                                            WHERE Id < {0}
+                                            ORDER BY Id ", kiraciId.ReturnQuotedValue());
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            if (dataTable != null)
+            {
+                List<OdemePlani> list = ToList<OdemePlani>(dataTable);
+                odemePlani = list.FirstOrDefault();
+            }
+            else
+            {
+                odemePlani = SelectMax();
+
+            }
+            return odemePlani;
+        }
+        public OdemePlani SelectMax()
+        {
+            string sqlString = string.Format(@"SELECT MAX(Id) Id  FROM OdemePlani_Table ");
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            if (dataTable != null)
+            {
+                DataRow row = dataTable.Rows[0];
+                int sozlesmeId = row["Id"].ConvertToInt();
+                OdemePlani odemePlani = new OdemePlani();
+                odemePlani = odemePlani.Select<OdemePlani>(sozlesmeId);
+                return odemePlani;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        public OdemePlani SelectMin()
+        {
+            string sqlString = string.Format(@"SELECT MIN(Id) Id  FROM OdemePlani_Table ");
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            if (dataTable != null)
+            {
+                DataRow row = dataTable.Rows[0];
+                int sozlesmeId = row["Id"].ConvertToInt();
+                OdemePlani odemePlani = new OdemePlani();
+                odemePlani = odemePlani.Select<OdemePlani>(sozlesmeId);
+                return odemePlani;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+    }
+}

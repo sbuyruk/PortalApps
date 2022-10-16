@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/" >
+  <Module Name="RandevuParametreGirisiWP" List="113" Url="_catalogs/wp">
+    <File Path="RandevuParametreGirisiWP\RandevuParametreGirisiWP.webpart" Url="MTS_WebParts_RandevuParametreGirisiWP.webpart" Type="GhostableInLibrary" >
+      <Property Name="Group" Value="Custom" />
+    </File>
+  </Module>
+</Elements>

@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="3f33e7f2-60ff-4042-944c-63b25dd63daa" solutionId="3f33e7f2-60ff-4042-944c-63b25dd63daa" resetWebServer="false" sharePointProductVersion="16.0" name="MYS_WebParts" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <assemblies>
+    <projectOutputAssembly location="TSKGV_Utility.dll" deploymentTarget="GlobalAssemblyCache" projectPath="..\TSKGV_Utility\TSKGV_Utility.csproj" />
+    <projectOutputAssembly location="Model.dll" deploymentTarget="GlobalAssemblyCache" projectPath="..\Model\Model.csproj" />
+    <projectOutputAssembly location="DAO.dll" deploymentTarget="GlobalAssemblyCache" projectPath="..\DAO\DAO.csproj" />
+  </assemblies>
+  <features>
+    <featureReference itemId="9bb94ad2-7f0e-4326-8bd9-96f7b5e57546" />
+  </features>
+</package>

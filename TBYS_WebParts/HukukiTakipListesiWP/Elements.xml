@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/" >
+  <Module Name="HukukiTakipListesiWP" List="113" Url="_catalogs/wp">
+    <File Path="HukukiTakipListesiWP\HukukiTakipListesiWP.webpart" Url="TBYS_WebParts_HukukiTakipListesiWP.webpart" Type="GhostableInLibrary" >
+      <Property Name="Group" Value="Custom" />
+    </File>
+  </Module>
+</Elements>

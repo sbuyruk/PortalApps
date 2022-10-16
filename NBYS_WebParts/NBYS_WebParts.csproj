@@ -1,0 +1,1024 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{942BCDA3-D968-4F80-A9EA-869DCA1AE159}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NBYS_WebParts</RootNamespace>
+    <AssemblyName>NBYS_WebParts</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetOfficeVersion>19.0</TargetOfficeVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{C1CDDADD-2546-481F-9697-4EA41081F2FC};{14822709-B5A1-4724-98CA-57A101D1B079};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <MinimumVisualStudioVersion>15.0</MinimumVisualStudioVersion>
+    <MinimumOfficeToolsVersion>14.1</MinimumOfficeToolsVersion>
+    <SandboxedSolution>False</SandboxedSolution>
+    <TargetFrameworkProfile />
+    <ProjectMode>SharePointCustomization</ProjectMode>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>14.0</OldToolsVersion>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="DocumentFormat.OpenXml, Version=2.5.5631.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.FileSystem.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.FileSystem.Primitives.4.3.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.Packaging, Version=4.0.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Packaging.4.7.0\lib\net46\System.IO.Packaging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Management.Automation, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Management.Automation.dll.10.0.10586.0\lib\net40\System.Management.Automation.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Microsoft.SharePoint" />
+    <Reference Include="Microsoft.SharePoint.Client.ServerRuntime" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ArmaganEditWP\ArmaganEditWP.ascx.cs">
+      <DependentUpon>ArmaganEditWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ArmaganEditWP\ArmaganEditWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ArmaganEditWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ArmaganListesiWP\ArmaganListesiWP.ascx.cs">
+      <DependentUpon>ArmaganListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ArmaganListesiWP\ArmaganListesiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ArmaganListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="BagisHareketListesiWP\BagisHareketListesiWP.ascx.cs">
+      <DependentUpon>BagisHareketListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="BagisHareketListesiWP\BagisHareketListesiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BagisHareketListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="BagisIadesiWP\BagisIadesiWP.ascx.cs">
+      <DependentUpon>BagisIadesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="BagisIadesiWP\BagisIadesiWP.ascx.g.cs">
+      <SubType>Code</SubType>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BagisIadesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="BankaDosyasiYuklemeWP\BankaDosyasiYuklemeWP.ascx.cs">
+      <DependentUpon>BankaDosyasiYuklemeWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="BankaDosyasiYuklemeWP\BankaDosyasiYuklemeWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BankaDosyasiYuklemeWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="BeratBasimiWP\BeratBasimiWP.ascx.cs">
+      <DependentUpon>BeratBasimiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="BeratBasimiWP\BeratBasimiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BeratBasimiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="BeratBelgesiYazisiWP\BeratBelgesiYazisiWP.ascx.cs">
+      <DependentUpon>BeratBelgesiYazisiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="BeratBelgesiYazisiWP\BeratBelgesiYazisiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BeratBelgesiYazisiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="BolgeArmaganRaporuWP\BolgeArmaganRaporuWP.ascx.cs">
+      <DependentUpon>BolgeArmaganRaporuWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="BolgeArmaganRaporuWP\BolgeArmaganRaporuWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BolgeArmaganRaporuWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="BolgelereGoreFTKRaporuWP\BolgelereGoreFTKRaporuWP.ascx.cs">
+      <DependentUpon>BolgelereGoreFTKRaporuWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="BolgelereGoreFTKRaporuWP\BolgelereGoreFTKRaporuWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BolgelereGoreFTKRaporuWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CokDefaBagisYapanBagisciListesiWP\CokDefaBagisYapanBagisciListesiWP.ascx.cs">
+      <DependentUpon>CokDefaBagisYapanBagisciListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="CokDefaBagisYapanBagisciListesiWP\CokDefaBagisYapanBagisciListesiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CokDefaBagisYapanBagisciListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="EkstreAktarmaEditWP\EkstreAktarmaEditWP.ascx.cs">
+      <DependentUpon>EkstreAktarmaEditWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="EkstreAktarmaEditWP\EkstreAktarmaEditWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EkstreAktarmaEditWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="EkstreListesiWP\EkstreListesiWP.ascx.cs">
+      <DependentUpon>EkstreListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="EkstreListesiWP\EkstreListesiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EkstreListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ExtreDosyaYuklemeWP\ExtreDosyaYuklemeWP.ascx.cs">
+      <DependentUpon>ExtreDosyaYuklemeWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ExtreDosyaYuklemeWP\ExtreDosyaYuklemeWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ExtreDosyaYuklemeWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="FTKFahriBaskanListesiWP\FTKFahriBaskanListesiWP.ascx.cs">
+      <DependentUpon>FTKFahriBaskanListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="FTKFahriBaskanListesiWP\FTKFahriBaskanListesiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FTKFahriBaskanListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="FTKHaritasiWP\FTKHaritasiWP.ascx.cs">
+      <DependentUpon>FTKHaritasiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="FTKHaritasiWP\FTKHaritasiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FTKHaritasiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="FTKIslemleriWP\FTKIslemleriWP.ascx.cs">
+      <DependentUpon>FTKIslemleriWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="FTKIslemleriWP\FTKIslemleriWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FTKIslemleriWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="FTKKisiGirisiWP\FTKKisiGirisiWP.ascx.cs">
+      <DependentUpon>FTKKisiGirisiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="FTKKisiGirisiWP\FTKKisiGirisiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FTKKisiGirisiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="FTKKisiListesiWP\FTKKisiListesiWP.ascx.cs">
+      <DependentUpon>FTKKisiListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="FTKKisiListesiWP\FTKKisiListesiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FTKKisiListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="FTKKuruluOlmayanIlIlceListesiWP\FTKKuruluOlmayanIlIlceListesiWP.ascx.cs">
+      <DependentUpon>FTKKuruluOlmayanIlIlceListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="FTKKuruluOlmayanIlIlceListesiWP\FTKKuruluOlmayanIlIlceListesiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FTKKuruluOlmayanIlIlceListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="FTKListesiWP\FTKListesiWP.ascx.cs">
+      <DependentUpon>FTKListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="FTKListesiWP\FTKListesiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FTKListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="FTKYazilariWP\FTKYazilariWP.ascx.cs">
+      <DependentUpon>FTKYazilariWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="FTKYazilariWP\FTKYazilariWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FTKYazilariWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="HomeWP\HomeWP.ascx.cs">
+      <DependentUpon>HomeWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="HomeWP\HomeWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HomeWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="NakitBagisciAdresListesiWP\NakitBagisciAdresListesiWP.ascx.cs">
+      <DependentUpon>NakitBagisciAdresListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="NakitBagisciAdresListesiWP\NakitBagisciAdresListesiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NakitBagisciAdresListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="NakitBagisciBagislariWP\NakitBagisciBagislariWP.ascx.cs">
+      <DependentUpon>NakitBagisciBagislariWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="NakitBagisciBagislariWP\NakitBagisciBagislariWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NakitBagisciBagislariWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="NakitBagisciBirlestirmeWP\NakitBagisciBirlestirmeWP.ascx.cs">
+      <DependentUpon>NakitBagisciBirlestirmeWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="NakitBagisciBirlestirmeWP\NakitBagisciBirlestirmeWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NakitBagisciBirlestirmeWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="NakitBagisciBulmaWP\NakitBagisciBulmaWP.ascx.cs">
+      <DependentUpon>NakitBagisciBulmaWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="NakitBagisciBulmaWP\NakitBagisciBulmaWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NakitBagisciBulmaWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="NakitBagisciByBankaWP\NakitBagisciByBankaWP.ascx.cs">
+      <DependentUpon>NakitBagisciByBankaWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="NakitBagisciByBankaWP\NakitBagisciByBankaWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NakitBagisciByBankaWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="NakitBagisciByTarihWP\NakitBagisciByTarihWP.ascx.cs">
+      <DependentUpon>NakitBagisciByTarihWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="NakitBagisciByTarihWP\NakitBagisciByTarihWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NakitBagisciByTarihWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="NakitBagisciEditWP\NakitBagisciEditWP.ascx.cs">
+      <DependentUpon>NakitBagisciEditWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="NakitBagisciEditWP\NakitBagisciEditWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NakitBagisciEditWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="NakitBagisciEslestirWP\NakitBagisciEslestirWP.ascx.cs">
+      <DependentUpon>NakitBagisciEslestirWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="NakitBagisciEslestirWP\NakitBagisciEslestirWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NakitBagisciEslestirWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="NakitBagisciListesiWP\NakitBagisciListesiWP.ascx.cs">
+      <DependentUpon>NakitBagisciListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="NakitBagisciListesiWP\NakitBagisciListesiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NakitBagisciListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="NakitBagisHareketSilmeWP\NakitBagisHareketSilmeWP.ascx.cs">
+      <DependentUpon>NakitBagisHareketSilmeWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="NakitBagisHareketSilmeWP\NakitBagisHareketSilmeWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NakitBagisHareketSilmeWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="NakitBagisHaritasiWP\NakitBagisHaritasiWP.ascx.cs">
+      <DependentUpon>NakitBagisHaritasiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="NakitBagisHaritasiWP\NakitBagisHaritasiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NakitBagisHaritasiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="NakitBagisRaporuByBolgeWP\NakitBagisRaporuByBolgeWP.ascx.cs">
+      <DependentUpon>NakitBagisRaporuByBolgeWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="NakitBagisRaporuByBolgeWP\NakitBagisRaporuByBolgeWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NakitBagisRaporuByBolgeWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="NakitBagisRaporuByYil_il\NakitBagisRaporuByYil_il.ascx.cs">
+      <DependentUpon>NakitBagisRaporuByYil_il.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="NakitBagisRaporuByYil_il\NakitBagisRaporuByYil_il.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NakitBagisRaporuByYil_il.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="NBYSParametreGirisiWP\NBYSParametreGirisiWP.ascx.cs">
+      <DependentUpon>NBYSParametreGirisiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="NBYSParametreGirisiWP\NBYSParametreGirisiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NBYSParametreGirisiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SMSAylikBagisCizelgesi\SMSAylikBagisCizelgesi.ascx.cs">
+      <DependentUpon>SMSAylikBagisCizelgesi.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="SMSAylikBagisCizelgesi\SMSAylikBagisCizelgesi.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SMSAylikBagisCizelgesi.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="SMSAylikCizelgeReadOnlyWP\SMSAylikCizelgeReadOnlyWP.ascx.cs">
+      <DependentUpon>SMSAylikCizelgeReadOnlyWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="SMSAylikCizelgeReadOnlyWP\SMSAylikCizelgeReadOnlyWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SMSAylikCizelgeReadOnlyWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="SPDosyaListesiWP\SPDosyaListesiWP.ascx.cs">
+      <DependentUpon>SPDosyaListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="SPDosyaListesiWP\SPDosyaListesiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SPDosyaListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="System\Linq\SystemCore_EnumerableDebugView.cs" />
+    <Compile Include="TasinmazArmaganListesiWP\TasinmazArmaganListesiWP.ascx.cs">
+      <DependentUpon>TasinmazArmaganListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="TasinmazArmaganListesiWP\TasinmazArmaganListesiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TasinmazArmaganListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="TasinmazArmaganWP\TasinmazArmaganWP.ascx.cs">
+      <DependentUpon>TasinmazArmaganWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="TasinmazArmaganWP\TasinmazArmaganWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TasinmazArmaganWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="TasinmazBagisciAdresListesiWP\TasinmazBagisciAdresListesiWP.ascx.cs">
+      <DependentUpon>TasinmazBagisciAdresListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="TasinmazBagisciAdresListesiWP\TasinmazBagisciAdresListesiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TasinmazBagisciAdresListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="TesekkurBasimiWP\TesekkurBasimiWP.ascx.cs">
+      <DependentUpon>TesekkurBasimiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="TesekkurBasimiWP\TesekkurBasimiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TesekkurBasimiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="TesekkurBelgesiYazisiWP\TesekkurBelgesiYazisiWP.ascx.cs">
+      <DependentUpon>TesekkurBelgesiYazisiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="TesekkurBelgesiYazisiWP\TesekkurBelgesiYazisiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TesekkurBelgesiYazisiWP.ascx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="ArmaganEditWP\ArmaganEditWP.webpart" />
+    <None Include="ArmaganEditWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{7c0a05f8-ed06-4853-999e-1f65a20bdd89}</SharePointProjectItemId>
+    </None>
+    <None Include="ArmaganListesiWP\ArmaganListesiWP.webpart" />
+    <None Include="ArmaganListesiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{74a3a3af-5437-4cdf-982d-54b16864c68a}</SharePointProjectItemId>
+    </None>
+    <None Include="BagisHareketListesiWP\BagisHareketListesiWP.webpart" />
+    <None Include="BagisHareketListesiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{2cdba60c-2d25-4723-9c9e-60306c988603}</SharePointProjectItemId>
+    </None>
+    <None Include="BagisIadesiWP\BagisIadesiWP.webpart" />
+    <None Include="BagisIadesiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{0bc2e9a7-fbf9-4327-8270-1ec805819109}</SharePointProjectItemId>
+    </None>
+    <None Include="BankaDosyasiYuklemeWP\BankaDosyasiYuklemeWP.webpart" />
+    <None Include="BankaDosyasiYuklemeWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{3577d867-532b-47f0-b091-bf0560eb7b10}</SharePointProjectItemId>
+    </None>
+    <None Include="BeratBasimiWP\BeratBasimiWP.webpart" />
+    <None Include="BeratBasimiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{11615e88-3805-4e35-9b2c-92a156e1c3bc}</SharePointProjectItemId>
+    </None>
+    <None Include="BeratBelgesiYazisiWP\BeratBelgesiYazisiWP.webpart" />
+    <None Include="BeratBelgesiYazisiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{bdc47342-dc4e-4b57-8484-849aa2728b50}</SharePointProjectItemId>
+    </None>
+    <None Include="BolgeArmaganRaporuWP\BolgeArmaganRaporuWP.webpart" />
+    <None Include="BolgeArmaganRaporuWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{3f894e56-1bbc-414c-b7ff-1b400792a385}</SharePointProjectItemId>
+    </None>
+    <None Include="BolgelereGoreFTKRaporuWP\BolgelereGoreFTKRaporuWP.webpart" />
+    <None Include="BolgelereGoreFTKRaporuWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{d3815139-6aaf-4555-87d6-002bdedf527e}</SharePointProjectItemId>
+    </None>
+    <None Include="CokDefaBagisYapanBagisciListesiWP\CokDefaBagisYapanBagisciListesiWP.webpart" />
+    <None Include="CokDefaBagisYapanBagisciListesiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{6a725ab5-7b4a-4322-becf-43e509b58e9c}</SharePointProjectItemId>
+    </None>
+    <None Include="Content\bootstrap-grid.css.map" />
+    <None Include="Content\bootstrap-grid.min.css.map" />
+    <None Include="Content\bootstrap-grid.rtl.css.map" />
+    <None Include="Content\bootstrap-grid.rtl.min.css.map" />
+    <None Include="Content\bootstrap-reboot.css.map" />
+    <None Include="Content\bootstrap-reboot.min.css.map" />
+    <None Include="Content\bootstrap-reboot.rtl.css.map" />
+    <None Include="Content\bootstrap-reboot.rtl.min.css.map" />
+    <None Include="Content\bootstrap-utilities.css.map" />
+    <None Include="Content\bootstrap-utilities.min.css.map" />
+    <None Include="Content\bootstrap-utilities.rtl.css.map" />
+    <None Include="Content\bootstrap-utilities.rtl.min.css.map" />
+    <None Include="Content\bootstrap.css.map" />
+    <None Include="Content\bootstrap.min.css.map" />
+    <None Include="Content\bootstrap.rtl.css.map" />
+    <None Include="Content\bootstrap.rtl.min.css.map" />
+    <None Include="EkstreAktarmaEditWP\EkstreAktarmaEditWP.webpart" />
+    <None Include="EkstreAktarmaEditWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{cc2a36f1-1dad-4476-a59a-038ffc68db90}</SharePointProjectItemId>
+    </None>
+    <None Include="EkstreListesiWP\EkstreListesiWP.webpart" />
+    <None Include="EkstreListesiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{b6a696b7-5149-412a-a7a4-0b87102dc3e3}</SharePointProjectItemId>
+    </None>
+    <None Include="ExtreDosyaYuklemeWP\ExtreDosyaYuklemeWP.webpart" />
+    <None Include="ExtreDosyaYuklemeWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{cc1f6a43-33c6-47bf-9ddb-55ed55258e9c}</SharePointProjectItemId>
+    </None>
+    <None Include="Features\Feature1\Feature1.feature">
+      <FeatureId>{d7d486bf-69ed-4072-aef3-f508451f76fc}</FeatureId>
+    </None>
+    <None Include="FTKFahriBaskanListesiWP\FTKFahriBaskanListesiWP.webpart" />
+    <None Include="FTKFahriBaskanListesiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{07f3fa56-3474-47cd-b34c-885e4110df20}</SharePointProjectItemId>
+    </None>
+    <None Include="FTKHaritasiWP\FTKHaritasiWP.webpart" />
+    <None Include="FTKHaritasiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{ea44a2ab-8a43-4840-9dff-17e976bcb311}</SharePointProjectItemId>
+    </None>
+    <None Include="FTKIslemleriWP\FTKIslemleriWP.webpart" />
+    <None Include="FTKIslemleriWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{9b58c479-4539-4894-af46-b559edf12052}</SharePointProjectItemId>
+    </None>
+    <None Include="FTKKisiGirisiWP\FTKKisiGirisiWP.webpart" />
+    <None Include="FTKKisiGirisiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{234fd2ce-f53d-48aa-a67d-e132c26bf869}</SharePointProjectItemId>
+    </None>
+    <None Include="FTKKisiListesiWP\FTKKisiListesiWP.webpart" />
+    <None Include="FTKKisiListesiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{a50260d0-87bb-41e2-9f73-fae8210b9ba4}</SharePointProjectItemId>
+    </None>
+    <None Include="FTKKuruluOlmayanIlIlceListesiWP\FTKKuruluOlmayanIlIlceListesiWP.webpart" />
+    <None Include="FTKKuruluOlmayanIlIlceListesiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{8c01ee66-d68b-4715-9985-233e540aae11}</SharePointProjectItemId>
+    </None>
+    <None Include="FTKListesiWP\FTKListesiWP.webpart" />
+    <None Include="FTKListesiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{2059d087-931c-4da5-ac3e-18d693d17c10}</SharePointProjectItemId>
+    </None>
+    <None Include="FTKYazilariWP\FTKYazilariWP.webpart" />
+    <None Include="FTKYazilariWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{c9301338-8d22-454b-a1b7-3c57c2d51869}</SharePointProjectItemId>
+    </None>
+    <None Include="HomeWP\HomeWP.webpart" />
+    <None Include="HomeWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{e5fbf28f-1bab-4e30-afc2-498fa626b8b7}</SharePointProjectItemId>
+    </None>
+    <None Include="key.snk" />
+    <None Include="NakitBagisciAdresListesiWP\NakitBagisciAdresListesiWP.webpart" />
+    <None Include="NakitBagisciAdresListesiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{37189505-67bb-4109-bf4c-48a9e39a5a63}</SharePointProjectItemId>
+    </None>
+    <None Include="NakitBagisciBagislariWP\NakitBagisciBagislariWP.webpart" />
+    <None Include="NakitBagisciBagislariWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{308863b1-058b-4909-b5b2-514cf79272fd}</SharePointProjectItemId>
+    </None>
+    <None Include="NakitBagisciBirlestirmeWP\NakitBagisciBirlestirmeWP.webpart" />
+    <None Include="NakitBagisciBirlestirmeWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{59d8829e-d179-44a6-96da-e70ff43cac3e}</SharePointProjectItemId>
+    </None>
+    <None Include="NakitBagisciBulmaWP\NakitBagisciBulmaWP.webpart" />
+    <None Include="NakitBagisciBulmaWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{a17558e0-ba82-40b7-b7a3-bd890320466c}</SharePointProjectItemId>
+    </None>
+    <None Include="NakitBagisciByBankaWP\NakitBagisciByBankaWP.webpart" />
+    <None Include="NakitBagisciByBankaWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{b8325fa6-756b-4046-9f31-22895115a6ef}</SharePointProjectItemId>
+    </None>
+    <None Include="NakitBagisciByTarihWP\NakitBagisciByTarihWP.webpart" />
+    <None Include="NakitBagisciByTarihWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{b280eaac-68cc-4643-b3f0-d3ed7d321976}</SharePointProjectItemId>
+    </None>
+    <None Include="NakitBagisciEditWP\NakitBagisciEditWP.webpart" />
+    <None Include="NakitBagisciEditWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{5f3ad759-faac-4491-b764-e55af99b1a8b}</SharePointProjectItemId>
+    </None>
+    <None Include="NakitBagisciEslestirWP\NakitBagisciEslestirWP.webpart" />
+    <None Include="NakitBagisciEslestirWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{b81a54c5-68a8-4e68-84df-42f085e45db2}</SharePointProjectItemId>
+    </None>
+    <None Include="NakitBagisciListesiWP\NakitBagisciListesiWP.webpart" />
+    <None Include="NakitBagisciListesiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{2b3a439f-d025-47c2-81c4-60248c172d1f}</SharePointProjectItemId>
+    </None>
+    <None Include="NakitBagisHareketSilmeWP\NakitBagisHareketSilmeWP.webpart" />
+    <None Include="NakitBagisHareketSilmeWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{9bbce974-6fd2-40d2-8e3f-a6f50532d71f}</SharePointProjectItemId>
+    </None>
+    <None Include="NakitBagisHaritasiWP\NakitBagisHaritasiWP.webpart" />
+    <None Include="NakitBagisHaritasiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{6c8cf057-0c29-4aff-bd98-bb818fb67050}</SharePointProjectItemId>
+    </None>
+    <None Include="NakitBagisRaporuByBolgeWP\NakitBagisRaporuByBolgeWP.webpart" />
+    <None Include="NakitBagisRaporuByBolgeWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{dde81f06-a7ec-47ea-b102-545a9c0b044e}</SharePointProjectItemId>
+    </None>
+    <None Include="NakitBagisRaporuByYil_il\NakitBagisRaporuByYil_il.webpart" />
+    <None Include="NakitBagisRaporuByYil_il\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{9c3fb5a1-0a2f-4aa1-84de-30df57b7eb03}</SharePointProjectItemId>
+    </None>
+    <None Include="NBYSParametreGirisiWP\NBYSParametreGirisiWP.webpart" />
+    <None Include="NBYSParametreGirisiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{df896929-1aba-4bae-b418-cee5116ca3b2}</SharePointProjectItemId>
+    </None>
+    <None Include="packages.config" />
+    <None Include="Package\Package.package">
+      <PackageId>{269a347e-530e-4354-acd9-ec02a9061adf}</PackageId>
+    </None>
+    <None Include="Package\Package.Template.xml">
+      <DependentUpon>Package.package</DependentUpon>
+    </None>
+    <None Include="Scripts\bootstrap.bundle.js.map" />
+    <None Include="Scripts\bootstrap.bundle.min.js.map" />
+    <None Include="Scripts\bootstrap.esm.js.map" />
+    <None Include="Scripts\bootstrap.esm.min.js.map" />
+    <None Include="Scripts\bootstrap.js.map" />
+    <None Include="Scripts\bootstrap.min.js.map" />
+    <None Include="Scripts\esm\popper-utils.js.map" />
+    <None Include="Scripts\esm\popper-utils.min.js.map" />
+    <None Include="Scripts\esm\popper.js.map" />
+    <None Include="Scripts\esm\popper.min.js.map" />
+    <None Include="Scripts\index.js.flow" />
+    <None Include="Scripts\jquery-3.5.1.min.map" />
+    <None Include="Scripts\jquery-3.5.1.slim.min.map" />
+    <None Include="Scripts\popper-utils.js.map" />
+    <None Include="Scripts\popper-utils.min.js.map" />
+    <None Include="Scripts\popper.js.map" />
+    <None Include="Scripts\popper.min.js.map" />
+    <None Include="Scripts\README.md" />
+    <None Include="Scripts\umd\popper-utils.js.map" />
+    <None Include="Scripts\umd\popper-utils.min.js.map" />
+    <None Include="Scripts\umd\popper.js.flow" />
+    <None Include="Scripts\umd\popper.js.map" />
+    <None Include="Scripts\umd\popper.min.js.map" />
+    <None Include="SMSAylikBagisCizelgesi\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{f8055777-7468-48da-a5ce-f2b302eaac3b}</SharePointProjectItemId>
+    </None>
+    <None Include="SMSAylikBagisCizelgesi\SMSAylikBagisCizelgesi.webpart" />
+    <None Include="SMSAylikCizelgeReadOnlyWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{90fc10e8-8edd-4222-96d2-31a6724eddd8}</SharePointProjectItemId>
+    </None>
+    <None Include="SMSAylikCizelgeReadOnlyWP\SMSAylikCizelgeReadOnlyWP.webpart" />
+    <None Include="SPDosyaListesiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{f0f59edc-e5fb-465f-9146-5c8d0e2105db}</SharePointProjectItemId>
+    </None>
+    <None Include="SPDosyaListesiWP\SPDosyaListesiWP.webpart" />
+    <None Include="TasinmazArmaganListesiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{acf1afe1-f421-4a30-99ac-cbc0655dccf2}</SharePointProjectItemId>
+    </None>
+    <None Include="TasinmazArmaganListesiWP\TasinmazArmaganListesiWP.webpart" />
+    <None Include="TasinmazArmaganWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{c5fe431f-e234-43bd-80a4-0c516a2a20c0}</SharePointProjectItemId>
+    </None>
+    <None Include="TasinmazArmaganWP\TasinmazArmaganWP.webpart" />
+    <None Include="TasinmazBagisciAdresListesiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{998e63b3-cc86-472a-a168-929a7338cc0f}</SharePointProjectItemId>
+    </None>
+    <None Include="TasinmazBagisciAdresListesiWP\TasinmazBagisciAdresListesiWP.webpart" />
+    <None Include="TesekkurBasimiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{a8d1dfbb-efc2-46a6-8ac4-c125624a9988}</SharePointProjectItemId>
+    </None>
+    <None Include="TesekkurBasimiWP\TesekkurBasimiWP.webpart" />
+    <None Include="TesekkurBelgesiYazisiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{ddffd125-4bc0-4aa7-997b-4a27b5225cb2}</SharePointProjectItemId>
+    </None>
+    <None Include="TesekkurBelgesiYazisiWP\TesekkurBelgesiYazisiWP.webpart" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ArmaganEditWP\ArmaganEditWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>ArmaganEditWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="ArmaganEditWP\Elements.xml" />
+    <Content Include="ArmaganListesiWP\ArmaganListesiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>ArmaganListesiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="ArmaganListesiWP\Elements.xml" />
+    <Content Include="BagisHareketListesiWP\BagisHareketListesiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>BagisHareketListesiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="BagisHareketListesiWP\Elements.xml" />
+    <Content Include="BagisIadesiWP\BagisIadesiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>BagisIadesiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="BagisIadesiWP\Elements.xml" />
+    <Content Include="BankaDosyasiYuklemeWP\BankaDosyasiYuklemeWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>BankaDosyasiYuklemeWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="BankaDosyasiYuklemeWP\Elements.xml" />
+    <Content Include="BeratBasimiWP\BeratBasimiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>BeratBasimiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="BeratBasimiWP\Elements.xml" />
+    <Content Include="BeratBelgesiYazisiWP\BeratBelgesiYazisiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>BeratBelgesiYazisiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="BeratBelgesiYazisiWP\Elements.xml" />
+    <Content Include="BolgeArmaganRaporuWP\BolgeArmaganRaporuWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>BolgeArmaganRaporuWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="BolgeArmaganRaporuWP\Elements.xml" />
+    <Content Include="BolgelereGoreFTKRaporuWP\BolgelereGoreFTKRaporuWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>BolgelereGoreFTKRaporuWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="BolgelereGoreFTKRaporuWP\Elements.xml" />
+    <Content Include="CokDefaBagisYapanBagisciListesiWP\CokDefaBagisYapanBagisciListesiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>CokDefaBagisYapanBagisciListesiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="CokDefaBagisYapanBagisciListesiWP\Elements.xml" />
+    <Content Include="Content\bootstrap-grid.css" />
+    <Content Include="Content\bootstrap-grid.min.css" />
+    <Content Include="Content\bootstrap-grid.rtl.css" />
+    <Content Include="Content\bootstrap-grid.rtl.min.css" />
+    <Content Include="Content\bootstrap-reboot.css" />
+    <Content Include="Content\bootstrap-reboot.min.css" />
+    <Content Include="Content\bootstrap-reboot.rtl.css" />
+    <Content Include="Content\bootstrap-reboot.rtl.min.css" />
+    <Content Include="Content\bootstrap-utilities.css" />
+    <Content Include="Content\bootstrap-utilities.min.css" />
+    <Content Include="Content\bootstrap-utilities.rtl.css" />
+    <Content Include="Content\bootstrap-utilities.rtl.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\bootstrap.rtl.css" />
+    <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="EkstreAktarmaEditWP\EkstreAktarmaEditWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>EkstreAktarmaEditWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="EkstreAktarmaEditWP\Elements.xml" />
+    <Content Include="EkstreListesiWP\EkstreListesiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>EkstreListesiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="EkstreListesiWP\Elements.xml" />
+    <Content Include="ExtreDosyaYuklemeWP\Elements.xml" />
+    <Content Include="ExtreDosyaYuklemeWP\ExtreDosyaYuklemeWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>ExtreDosyaYuklemeWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="Features\Feature1\Feature1.Template.xml">
+      <DependentUpon>Feature1.feature</DependentUpon>
+    </Content>
+    <Content Include="FTKFahriBaskanListesiWP\Elements.xml" />
+    <Content Include="FTKFahriBaskanListesiWP\FTKFahriBaskanListesiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>FTKFahriBaskanListesiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="FTKHaritasiWP\Elements.xml" />
+    <Content Include="FTKHaritasiWP\FTKHaritasiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>FTKHaritasiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="FTKIslemleriWP\Elements.xml" />
+    <Content Include="FTKIslemleriWP\FTKIslemleriWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>FTKIslemleriWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="FTKKisiGirisiWP\Elements.xml" />
+    <Content Include="FTKKisiGirisiWP\FTKKisiGirisiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>FTKKisiGirisiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="FTKKisiListesiWP\Elements.xml" />
+    <Content Include="FTKKisiListesiWP\FTKKisiListesiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>FTKKisiListesiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="FTKKuruluOlmayanIlIlceListesiWP\Elements.xml" />
+    <Content Include="FTKKuruluOlmayanIlIlceListesiWP\FTKKuruluOlmayanIlIlceListesiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>FTKKuruluOlmayanIlIlceListesiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="FTKListesiWP\Elements.xml" />
+    <Content Include="FTKListesiWP\FTKListesiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>FTKListesiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="FTKYazilariWP\Elements.xml" />
+    <Content Include="FTKYazilariWP\FTKYazilariWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>FTKYazilariWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="HomeWP\Elements.xml" />
+    <Content Include="HomeWP\HomeWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>HomeWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="NakitBagisciAdresListesiWP\Elements.xml" />
+    <Content Include="NakitBagisciAdresListesiWP\NakitBagisciAdresListesiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>NakitBagisciAdresListesiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="NakitBagisciBagislariWP\Elements.xml" />
+    <Content Include="NakitBagisciBagislariWP\NakitBagisciBagislariWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>NakitBagisciBagislariWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="NakitBagisciBirlestirmeWP\Elements.xml" />
+    <Content Include="NakitBagisciBirlestirmeWP\NakitBagisciBirlestirmeWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>NakitBagisciBirlestirmeWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="NakitBagisciBulmaWP\Elements.xml" />
+    <Content Include="NakitBagisciBulmaWP\NakitBagisciBulmaWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>NakitBagisciBulmaWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="NakitBagisciByBankaWP\Elements.xml" />
+    <Content Include="NakitBagisciByBankaWP\NakitBagisciByBankaWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>NakitBagisciByBankaWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="NakitBagisciByTarihWP\Elements.xml" />
+    <Content Include="NakitBagisciByTarihWP\NakitBagisciByTarihWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>NakitBagisciByTarihWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="NakitBagisciEditWP\Elements.xml" />
+    <Content Include="NakitBagisciEditWP\NakitBagisciEditWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>NakitBagisciEditWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="NakitBagisciEslestirWP\Elements.xml" />
+    <Content Include="NakitBagisciEslestirWP\NakitBagisciEslestirWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>NakitBagisciEslestirWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="NakitBagisciListesiWP\Elements.xml" />
+    <Content Include="NakitBagisciListesiWP\NakitBagisciListesiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>NakitBagisciListesiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="NakitBagisHareketSilmeWP\Elements.xml" />
+    <Content Include="NakitBagisHareketSilmeWP\NakitBagisHareketSilmeWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>NakitBagisHareketSilmeWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="NakitBagisHaritasiWP\Elements.xml" />
+    <Content Include="NakitBagisHaritasiWP\NakitBagisHaritasiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>NakitBagisHaritasiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="NakitBagisRaporuByBolgeWP\Elements.xml" />
+    <Content Include="NakitBagisRaporuByBolgeWP\NakitBagisRaporuByBolgeWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>NakitBagisRaporuByBolgeWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="NakitBagisRaporuByYil_il\Elements.xml" />
+    <Content Include="NakitBagisRaporuByYil_il\NakitBagisRaporuByYil_il.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>NakitBagisRaporuByYil_il.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="NBYSParametreGirisiWP\Elements.xml" />
+    <Content Include="NBYSParametreGirisiWP\NBYSParametreGirisiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>NBYSParametreGirisiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="Scripts\bootstrap.bundle.js" />
+    <Content Include="Scripts\bootstrap.bundle.min.js" />
+    <Content Include="Scripts\bootstrap.esm.js" />
+    <Content Include="Scripts\bootstrap.esm.min.js" />
+    <Content Include="Scripts\bootstrap.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\esm\popper-utils.js" />
+    <Content Include="Scripts\esm\popper-utils.min.js" />
+    <Content Include="Scripts\esm\popper.js" />
+    <Content Include="Scripts\esm\popper.min.js" />
+    <Content Include="Scripts\jquery-3.5.1.intellisense.js" />
+    <Content Include="Scripts\jquery-3.5.1.js" />
+    <Content Include="Scripts\jquery-3.5.1.min.js" />
+    <Content Include="Scripts\jquery-3.5.1.slim.js" />
+    <Content Include="Scripts\jquery-3.5.1.slim.min.js" />
+    <Content Include="Scripts\popper-utils.js" />
+    <Content Include="Scripts\popper-utils.min.js" />
+    <Content Include="Scripts\popper.js" />
+    <Content Include="Scripts\popper.min.js" />
+    <Content Include="Scripts\src\index.js" />
+    <Content Include="Scripts\src\methods\defaults.js" />
+    <Content Include="Scripts\src\methods\destroy.js" />
+    <Content Include="Scripts\src\methods\disableEventListeners.js" />
+    <Content Include="Scripts\src\methods\enableEventListeners.js" />
+    <Content Include="Scripts\src\methods\placements.js" />
+    <Content Include="Scripts\src\methods\update.js" />
+    <Content Include="Scripts\src\modifiers\applyStyle.js" />
+    <Content Include="Scripts\src\modifiers\arrow.js" />
+    <Content Include="Scripts\src\modifiers\computeStyle.js" />
+    <Content Include="Scripts\src\modifiers\flip.js" />
+    <Content Include="Scripts\src\modifiers\hide.js" />
+    <Content Include="Scripts\src\modifiers\index.js" />
+    <Content Include="Scripts\src\modifiers\inner.js" />
+    <Content Include="Scripts\src\modifiers\keepTogether.js" />
+    <Content Include="Scripts\src\modifiers\offset.js" />
+    <Content Include="Scripts\src\modifiers\preventOverflow.js" />
+    <Content Include="Scripts\src\modifiers\shift.js" />
+    <Content Include="Scripts\src\utils\clockwise.js" />
+    <Content Include="Scripts\src\utils\computeAutoPlacement.js" />
+    <Content Include="Scripts\src\utils\debounce.js" />
+    <Content Include="Scripts\src\utils\find.js" />
+    <Content Include="Scripts\src\utils\findCommonOffsetParent.js" />
+    <Content Include="Scripts\src\utils\findIndex.js" />
+    <Content Include="Scripts\src\utils\getBordersSize.js" />
+    <Content Include="Scripts\src\utils\getBoundaries.js" />
+    <Content Include="Scripts\src\utils\getBoundingClientRect.js" />
+    <Content Include="Scripts\src\utils\getClientRect.js" />
+    <Content Include="Scripts\src\utils\getFixedPositionOffsetParent.js" />
+    <Content Include="Scripts\src\utils\getOffsetParent.js" />
+    <Content Include="Scripts\src\utils\getOffsetRect.js" />
+    <Content Include="Scripts\src\utils\getOffsetRectRelativeToArbitraryNode.js" />
+    <Content Include="Scripts\src\utils\getOppositePlacement.js" />
+    <Content Include="Scripts\src\utils\getOppositeVariation.js" />
+    <Content Include="Scripts\src\utils\getOuterSizes.js" />
+    <Content Include="Scripts\src\utils\getParentNode.js" />
+    <Content Include="Scripts\src\utils\getPopperOffsets.js" />
+    <Content Include="Scripts\src\utils\getReferenceNode.js" />
+    <Content Include="Scripts\src\utils\getReferenceOffsets.js" />
+    <Content Include="Scripts\src\utils\getRoot.js" />
+    <Content Include="Scripts\src\utils\getRoundedOffsets.js" />
+    <Content Include="Scripts\src\utils\getScroll.js" />
+    <Content Include="Scripts\src\utils\getScrollParent.js" />
+    <Content Include="Scripts\src\utils\getStyleComputedProperty.js" />
+    <Content Include="Scripts\src\utils\getSupportedPropertyName.js" />
+    <Content Include="Scripts\src\utils\getViewportOffsetRectRelativeToArtbitraryNode.js" />
+    <Content Include="Scripts\src\utils\getWindow.js" />
+    <Content Include="Scripts\src\utils\getWindowSizes.js" />
+    <Content Include="Scripts\src\utils\includeScroll.js" />
+    <Content Include="Scripts\src\utils\index.js" />
+    <Content Include="Scripts\src\utils\isBrowser.js" />
+    <Content Include="Scripts\src\utils\isFixed.js" />
+    <Content Include="Scripts\src\utils\isFunction.js" />
+    <Content Include="Scripts\src\utils\isIE.js" />
+    <Content Include="Scripts\src\utils\isModifierEnabled.js" />
+    <Content Include="Scripts\src\utils\isModifierRequired.js" />
+    <Content Include="Scripts\src\utils\isNumeric.js" />
+    <Content Include="Scripts\src\utils\isOffsetContainer.js" />
+    <Content Include="Scripts\src\utils\removeEventListeners.js" />
+    <Content Include="Scripts\src\utils\runModifiers.js" />
+    <Content Include="Scripts\src\utils\setAttributes.js" />
+    <Content Include="Scripts\src\utils\setStyles.js" />
+    <Content Include="Scripts\src\utils\setupEventListeners.js" />
+    <Content Include="Scripts\umd\popper-utils.js" />
+    <Content Include="Scripts\umd\popper-utils.min.js" />
+    <Content Include="Scripts\umd\popper.js" />
+    <Content Include="Scripts\umd\popper.min.js" />
+    <Content Include="SMSAylikBagisCizelgesi\Elements.xml" />
+    <Content Include="SMSAylikBagisCizelgesi\SMSAylikBagisCizelgesi.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>SMSAylikBagisCizelgesi.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="SMSAylikCizelgeReadOnlyWP\Elements.xml" />
+    <Content Include="SMSAylikCizelgeReadOnlyWP\SMSAylikCizelgeReadOnlyWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>SMSAylikCizelgeReadOnlyWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="SPDosyaListesiWP\Elements.xml" />
+    <Content Include="SPDosyaListesiWP\SPDosyaListesiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>SPDosyaListesiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="TasinmazArmaganListesiWP\Elements.xml" />
+    <Content Include="TasinmazArmaganListesiWP\TasinmazArmaganListesiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>TasinmazArmaganListesiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="TasinmazArmaganWP\Elements.xml" />
+    <Content Include="TasinmazArmaganWP\TasinmazArmaganWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>TasinmazArmaganWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="TasinmazBagisciAdresListesiWP\Elements.xml" />
+    <Content Include="TasinmazBagisciAdresListesiWP\TasinmazBagisciAdresListesiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>TasinmazBagisciAdresListesiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="TesekkurBasimiWP\Elements.xml" />
+    <Content Include="TesekkurBasimiWP\TesekkurBasimiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>TesekkurBasimiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="TesekkurBelgesiYazisiWP\Elements.xml" />
+    <Content Include="TesekkurBelgesiYazisiWP\TesekkurBelgesiYazisiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>TesekkurBelgesiYazisiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DAO\DAO.csproj">
+      <Project>{1FA61ADE-6FB6-4FEA-95F1-D99C7523D18A}</Project>
+      <Name>DAO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Model\Model.csproj">
+      <Project>{84f644d0-0931-4536-9edc-cbe7a773f546}</Project>
+      <Name>Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utility\Utility.csproj">
+      <Project>{552062B0-D288-47F2-9B32-F556498254FE}</Project>
+      <Name>Utility</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="Scripts\index.d.ts" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(VSToolsPath)\SharePointTools\Microsoft.VisualStudio.SharePoint.targets" Condition="'$(VSToolsPath)' != ''" />
+</Project>

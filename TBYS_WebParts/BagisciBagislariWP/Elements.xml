@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/" >
+  <Module Name="BagisciBagislariWP" List="113" Url="_catalogs/wp">
+    <File Path="BagisciBagislariWP\BagisciBagislariWP.webpart" Url="TBYS_WebParts_BagisciBagislariWP.webpart" Type="GhostableInLibrary" >
+      <Property Name="Group" Value="TBYS_WebParts" />
+    </File>
+  </Module>
+</Elements>

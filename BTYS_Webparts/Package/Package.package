@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="3d287154-2872-4176-805c-7fde55cd97fc" solutionId="3d287154-2872-4176-805c-7fde55cd97fc" resetWebServer="false" sharePointProductVersion="19.0" name="BTYS_Webparts" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/PackageModel">
+  <assemblies>
+    <projectOutputAssembly location="DAO.dll" deploymentTarget="GlobalAssemblyCache" projectPath="..\DAO\DAO.csproj" />
+    <projectOutputAssembly location="Model.dll" deploymentTarget="GlobalAssemblyCache" projectPath="..\Model\Model.csproj" />
+    <projectOutputAssembly location="Utility.dll" deploymentTarget="GlobalAssemblyCache" projectPath="..\Utility\Utility.csproj" />
+  </assemblies>
+  <features>
+    <featureReference itemId="56163a17-095e-41a5-9ed8-296b467ed1ad" />
+  </features>
+</package>

@@ -1,0 +1,299 @@
+﻿using Model.Ortak;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using Utility.HelperClasses;
+using Utility.ProjeGlobal;
+
+namespace Model.NBYS
+{
+    public class FTK : ParentClass
+    {
+
+        public int FTKIslemId { get; set; }
+        public int Ili { get; set; }
+        public int Ilcesi { get; set; }
+        public string Bolge { get; set; }
+        public DateTime KurulusTarihi { get; set; }
+        public DateTime GuncellemeTarihi { get; set; }
+        public string FTKGorevi { get; set; }
+        public string Adi { get; set; }
+        public string Soyadi { get; set; }
+        public string Unvani { get; set; }
+        public string Telefon { get; set; }
+        public string KartNo { get; set; }
+        public int Sayac { get; set; }
+        public int KisiId { get; set; }
+        public string Aciklama { get; set; }
+
+        public override bool Delete()
+        {
+            try
+            {
+                if (Id != 0)
+                {
+                    GenericEntity<FTK> genericEntity = new GenericEntity<FTK>(ProjeConstants.SQL_DELETE);
+                    OlusturmaTarihi = DateTime.Now;
+                    string sqlString = genericEntity.GetQuery(this);
+                    bool isDeleted = dao.DeleteFromDb(sqlString, "");
+                    return isDeleted;
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        public override int Save()
+        {
+            try
+            {
+                GenericEntity<FTK> genericEntity = new GenericEntity<FTK>(ProjeConstants.SQL_INSERT);
+                OlusturmaTarihi = DateTime.Now;
+                string sqlString = genericEntity.GetQuery(this);
+                int id = dao.Insert(sqlString);
+
+                this.Id = id;
+                return id;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+        public FTK Select(int id)
+        {
+            GenericEntity<FTK> genericEntity = new GenericEntity<FTK>(ProjeConstants.SQL_SELECT);
+            OlusturmaTarihi = DateTime.Now;
+            Id = id;
+            string sqlString = genericEntity.GetQuery(this);
+
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            List<FTK> list = ToList<FTK>(dataTable);
+            FTK item = new FTK();
+            item = list.FirstOrDefault();
+            return item;
+        }
+        public DataTable SelectSonFTKListesiByIliIlcesiReturnDataTable(string bolge, int ili, int ilcesi, string kurulusTarihi, string guncellemeTarihi)
+        {
+            string kurulusTarihiStr = string.IsNullOrEmpty(kurulusTarihi) ? string.Empty : string.Format(" AND A.KurulusTarihi>={0} ", kurulusTarihi.ConvertToDatetime().ReturnTRDateFormat());
+            string guncellemeTarihiStr = string.IsNullOrEmpty(guncellemeTarihi.ConvertToDatetimeEmptyIfNull()) ? string.Empty : string.Format(" AND A.GuncellemeTarihi>={0} ", guncellemeTarihi.ConvertToDatetime().ReturnTRDateFormat());
+            string bolgeStr = string.IsNullOrEmpty(bolge) || bolge.Equals(ProjeConstants.HEPSI) ? string.Empty : string.Format(" AND B.Bolge={0} ", bolge.ReturnQuotedValue());
+            string iliStr = ili > 0 ? string.Format(" AND A.Ili={0} ",ili) : string.Empty;
+            string ilcesiStr = ilcesi == 0 ? string.Empty:
+                (ilcesi == ProjeConstants.SADECE_ILCELER_INT  ?" AND Ilcesi!="+ProjeConstants.VALILIK_INT: string.Format(" AND Ilcesi={0} ",ilcesi)) ;
+            
+            string sqlString = string.Format(@"
+                SELECT A.Id FTKId,* FROM FTK_Table A
+                    LEFT JOIN Il_Table B ON B.Id = A.Ili
+                    LEFT JOIN Ilce_Table C ON C.Id = A.Ilcesi AND C.IlId=A.Ili
+                WHERE Sayac= (SELECT MAX(Sayac) FROM FTK_Table WHERE FTKIslemId=A.FtkIslemId) --birden fazla guncellenen FTKların son guncellemesini dikkate alsın diye
+                    {0}
+                    {1}
+                    {2}
+                    {3}
+                    {4}
+                ORDER BY Ili,Ilcesi,FTKIslemId, KartNo
+            ", kurulusTarihiStr, guncellemeTarihiStr, bolgeStr, iliStr, ilcesiStr);
+
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            return dataTable;
+        }
+        public FTK SelectByIliIlcesi(int ili,int ilcesi, DateTime guncellemeTarihi)
+        {
+
+            string sqlString = string.Format(@"
+                SELECT * FROM FTK_Table
+                WHERE Ili={0} AND Ilcesi={1} AND GuncellemeTarihi={2}        
+            
+            ",ili,ilcesi,guncellemeTarihi.ReturnTRDateFormat());
+
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            List<FTK> list = ToList<FTK>(dataTable);
+            FTK item = new FTK();
+            item = list.FirstOrDefault();
+            return item;
+        }
+        public List<FTK> SelectSonFTKListesiByIliIlcesiReturnList(int ili, int ilcesi)
+        {
+            DataTable dataTable = SelectSonFTKListesiByIliIlcesiReturnDataTable(string.Empty,ili, ilcesi, string.Empty, string.Empty);
+            List<FTK> list = ToList<FTK>(dataTable);
+            return list;
+        }
+        public int SelectMaxSayac(int ili, int ilcesi)
+        {
+
+            string sqlString = string.Format(@"
+                select MAX(Sayac) Sayac from FTK_Table
+                WHERE Ili={0} AND Ilcesi={1}        
+            
+            ", ili, ilcesi);
+
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            int sayac = dataTable.Rows[0]["Sayac"].ConvertToInt();
+            return sayac;
+        }
+        public override T Select<T>(int id)
+        {
+            GenericEntity<FTK> genericEntity = new GenericEntity<FTK>(ProjeConstants.SQL_SELECT);
+            OlusturmaTarihi = DateTime.Now;
+            Id = id;
+            string sqlString = genericEntity.GetQuery(this);
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            List<FTK> list = ToList<FTK>(dataTable);
+            FTK item = new FTK();
+            item = list.FirstOrDefault();
+            return ((T)Convert.ChangeType(item, typeof(T)));
+        }
+        public int SelectKuruluOlanIlSayisiByBolge(string bolge)
+        {
+            string sqlString = string.Format(@"
+                SELECT Bolge,Ili,Ilcesi
+                FROM FTK_Table A
+                WHERE  Bolge={0} AND Ilcesi = {1}  
+                GROUP BY Bolge,Ili,Ilcesi", bolge.ReturnQuotedValue(),ProjeConstants.VALILIK_INT);
+
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            int adet = dataTable!=null ? dataTable.Rows.Count : 0;
+            return adet;
+            
+        }
+        public int SelectKuruluOlanIlceSayisiByBolge(string bolge)
+        {
+            string sqlString = string.Format(@"
+                SELECT Bolge,Ili,Ilcesi
+                FROM FTK_Table A
+                WHERE  Ilcesi > 0 AND Bolge={0} 
+                GROUP BY Bolge,Ili,Ilcesi", bolge.ReturnQuotedValue());
+
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            int adet = dataTable != null ? dataTable.Rows.Count : 0;
+            return adet;
+
+        }
+        public int SelectGuncellenenIlIlceSayisiByBolge(string bolge, DateTime guncellemeTarihi)
+        {
+            string sqlString = string.Format(@"
+                SELECT Bolge,Ili,Ilcesi
+                FROM FTK_Table A
+                WHERE A.Sayac= (SELECT MAX(Sayac) FROM FTK_Table WHERE FTKIslemId=A.FtkIslemId)
+                    AND (Bolge={0} AND GuncellemeTarihi >= {1})
+                GROUP BY Bolge,Ili,Ilcesi", bolge.ReturnQuotedValue(), guncellemeTarihi.ReturnTRDateFormat());
+
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            int adet = dataTable != null ? dataTable.Rows.Count : 0;
+            return adet;
+        }
+        public int SelectKuruluIlIlceSayisiByBolge(string bolge, DateTime kurulusTarihi)
+        {
+            string sqlString = string.Format(@"
+                SELECT Bolge,Ili,Ilcesi
+                FROM FTK_Table A
+                WHERE Bolge={0} AND KurulusTarihi >= {1}
+                GROUP BY Bolge,Ili,Ilcesi", bolge.ReturnQuotedValue(), kurulusTarihi.ReturnTRDateFormat());
+
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            int adet = dataTable != null ? dataTable.Rows.Count : 0;            
+            return adet;
+
+        }
+        public override List<T> SelectAll<T>()
+        {
+            string sqlString = string.Format(@"
+                SELECT *
+                FROM FTK_Table 
+                ORDER BY Ili,Ilcesi
+                ");
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            List<FTK> list = ToList<FTK>(dataTable);
+
+            return (List<T>)Convert.ChangeType(list, typeof(List<T>));
+        }
+        public override bool Update()
+        {
+            bool isSuccess = false;
+            try
+            {
+                if (Id != 0)
+                {
+                    GenericEntity<FTK> genericEntity = new GenericEntity<FTK>(ProjeConstants.SQL_UPDATE);
+                    DegistirmeTarihi = DateTime.Now;
+                    string sqlString = genericEntity.GetQuery(this);
+                    isSuccess = dao.Update2Db(sqlString);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return isSuccess;
+        }
+        public bool DeleteByIslemIdSayac(int ftkIslemId,int sayac)
+        {
+            string sqlString = string.Format(@"
+                DELETE FROM FTK_Table
+                WHERE  FTKIslemId = {0} AND Sayac = {1}", ftkIslemId,sayac);
+
+            bool isDeleted = dao.DeleteFromDb(sqlString, "");
+            return isDeleted;
+        }
+        public DataTable SelectFTKKuruluOlmayanIller(string bolge, int ilId)
+        {
+            string bolgeStr = string.IsNullOrEmpty(bolge) || bolge.Equals(ProjeConstants.HEPSI) ? string.Empty : string.Format(" AND Bolge={0} ", bolge.ReturnQuotedValue());
+            string iliStr = ilId < 1 ? string.Empty : string.Format(" AND A.Id={0}", ilId);
+            string sqlString = string.Format(@"
+                SELECT A.Id IlId,A.Bolge, A.IlAdi 
+                FROM Il_Table A 
+                WHERE (A.Id BETWEEN 0 AND 81 AND A.IlAdi != '') 
+                    {0}
+                    {1}
+                    AND  A.Id NOT IN (SELECT Ili FROM FTK_Table WHERE Ilcesi={2}) 
+                ORDER BY A.Bolge, A.Id    
+            ", bolgeStr, iliStr, ProjeConstants.VALILIK_INT);
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            return dataTable;
+        }
+        public DataTable SelectFTKKuruluOlmayanIlceler(string bolge, int ilId)
+        {
+            string bolgeStr = string.IsNullOrEmpty(bolge) || bolge.Equals(ProjeConstants.HEPSI) ? string.Empty : string.Format(" AND Bolge={0} ", bolge.ReturnQuotedValue());
+            string iliStr = ilId < 1 ? string.Empty : string.Format(" AND B.Id={0}", ilId);
+            string sqlString = string.Format(@"
+                SELECT A.Id IlceId,A.IlceAdi, B.Bolge, B.Id IlId, B.IlAdi 
+                FROM Ilce_Table A 
+	                INNER JOIN Il_Table B ON B.Id= A.IlId
+                WHERE A.IlceAdi!= {0} 
+                    AND (B.Id BETWEEN 0 AND 81 AND B.IlAdi != '') 
+                    AND  A.Id NOT IN (SELECT Ilcesi FROM FTK_Table WHERE Ilcesi > 0) 
+                    {1}
+                    {2}
+                    
+                ORDER BY B.Bolge, B.Id, A.Id     
+            ", ProjeConstants.ILCE_MERKEZ.ReturnQuotedValue(), bolgeStr, iliStr);
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            return dataTable;
+        }
+        public DataTable SelectFTKUyeleriByIliIlcesiReturnDataTable(int ili, int ilcesi)
+        {
+            string sqlString = string.Format(@"
+                SELECT  Id FTKId, KisiId FTKKisiId,
+                    *
+                FROM FTK_Table    
+                WHERE Ili={0} AND Ilcesi= {1}
+                ORDER BY FTKGorevi,Adi,Soyadi 
+            ", ili, ilcesi);
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+
+            return dataTable;
+        }
+
+    }
+}

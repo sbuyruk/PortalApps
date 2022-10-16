@@ -1,0 +1,58 @@
+﻿<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
+<%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %> 
+<%@ Register Tagprefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %> 
+<%@ Register Tagprefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
+<%@ Register Tagprefix="asp" Namespace="System.Web.UI" Assembly="System.Web.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" %>
+<%@ Import Namespace="Microsoft.SharePoint" %> 
+<%@ Register Tagprefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
+<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ToplantiKatilimTutanagiWP.ascx.cs" Inherits="MTS_WebParts.ToplantiKatilimTutanagiWP.ToplantiKatilimTutanagiWP" %>
+
+<style>
+    table { border: 1px solid red; } TD { border: 1px solid red; }
+</style>
+<script type="text/javascript">
+    //excele export ettikten donup sonra kalmasın diye
+    function setFormSubmitToFalse() {
+        setTimeout(function () { _spFormOnSubmitCalled = false; }, 3000);
+        return true;
+    }
+</script>
+<div class="container">
+    <div class="card shadow">
+        <div class="card-header">
+            <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
+            <h3 class="mb-2">
+                <asp:Label CssClass="col-form-label text-primary font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="Toplantı Katılım Tutanağı"></asp:Label>
+                <asp:Label CssClass="col-form-label" ID="IdLbl" runat="server"></asp:Label>
+                <asp:Label CssClass="col-form-label " ID="AdiLbl" runat="server"></asp:Label>
+            </h3>
+        </div>
+        <div class="card-body" id="MainCardDiv" runat="server">
+            <div class="form-group">
+                <div class="table">
+                    <asp:Table ID="KatilimciBilgileriTable" runat="server" CssClass="table table-sm table-hover table-striped table-bordered" >
+                        <asp:TableHeaderRow>
+                            <asp:TableHeaderCell ID="BaslikCell" ColumnSpan="7" CssClass="text-center" BorderStyle="Solid">TOPLANTI KATILIM TUTANAĞI</asp:TableHeaderCell>
+                        </asp:TableHeaderRow>
+                        <asp:TableHeaderRow>
+                            <asp:TableHeaderCell BorderStyle="Solid" RowSpan="2">SIRA NU</asp:TableHeaderCell>
+                            <asp:TableHeaderCell BorderStyle="Solid" RowSpan="2">ADI SOYADI</asp:TableHeaderCell>
+                            <asp:TableHeaderCell BorderStyle="Solid" RowSpan="2">ÜNVAN</asp:TableHeaderCell>
+                            <asp:TableHeaderCell BorderStyle="Solid" RowSpan="2">KURUM / KURULUŞ</asp:TableHeaderCell>
+                            <asp:TableHeaderCell BorderStyle="Solid" ColumnSpan="2">İLETİŞİM BİLGİLERİ</asp:TableHeaderCell>
+                            <asp:TableHeaderCell BorderStyle="Solid" RowSpan="2">İMZA</asp:TableHeaderCell>
+                        </asp:TableHeaderRow>
+                        <asp:TableHeaderRow>
+                            <asp:TableHeaderCell BorderStyle="Solid">TEL. NU.</asp:TableHeaderCell>
+                            <asp:TableHeaderCell BorderStyle="Solid">E-MAİL ADRESİ</asp:TableHeaderCell>
+                        </asp:TableHeaderRow>
+                    </asp:Table>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <asp:LinkButton CssClass="btn btn-outline-success float-right" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
+        </div>
+    </div>
+
+</div>

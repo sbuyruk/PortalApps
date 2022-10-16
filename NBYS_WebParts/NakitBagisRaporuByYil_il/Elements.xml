@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Elements xmlns="http://schemas.microsoft.com/sharepoint/" >
+  <Module Name="NakitBagisRaporuByYil_il" List="113" Url="_catalogs/wp">
+    <File Path="NakitBagisRaporuByYil_il\NakitBagisRaporuByYil_il.webpart" Url="NBYS_WebParts_NakitBagisRaporuByYil_il.webpart" Type="GhostableInLibrary" >
+      <Property Name="Group" Value="Custom" />
+    </File>
+  </Module>
+</Elements>

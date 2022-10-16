@@ -1,0 +1,280 @@
+﻿<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
+<%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %> 
+<%@ Register Tagprefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %> 
+<%@ Register Tagprefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
+<%@ Register Tagprefix="asp" Namespace="System.Web.UI" Assembly="System.Web.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" %>
+<%@ Import Namespace="Microsoft.SharePoint" %> 
+<%@ Register Tagprefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
+<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="KiraEkstreListesiWP.ascx.cs" Inherits="TBYS_WebParts.KiraEkstreListesiWP.KiraEkstreListesiWP" %>
+<style>
+    .ekstre-aktarildi {
+        color: grey;
+    }
+
+    .ekstre-aktarilmadi {
+        color: black;
+    }
+
+    .ekstre-aktarilabilir {
+        color: green;
+    }
+
+    .cakisma-var {
+        color: red;
+        font-weight: bold;
+    }
+    .uyari {
+        color: orange;
+        font-weight: bold;
+    }
+     /*tblfilter hücre içine sığmazsa wordwrap yapsın*/ 
+    .ui-datatable tbody td {
+        white-space: normal;
+    }
+    .ui-column-title {
+        white-space: normal;
+    }
+    .small-font{
+        font-size:small;
+    }
+    .sil-checkbox {
+        background-color: red!important;
+    }
+</style>
+<%-- Silinecek kayıtlar --%>
+<script type="text/javascript">
+    
+    var silinecekData = [];
+    function addRemoveEkstreIdToDeleteList(ekstreAktarmaId, chkbox) {
+        var isChecked = false;
+        if (chkbox.checked)
+            isChecked = true;
+        SilineceklerListesineEkleCikar(ekstreAktarmaId, isChecked);
+    }
+    function SilineceklerListesineEkleCikar(ekstreAktarmaId, isChecked) {
+        var index = silinecekData.indexOf(ekstreAktarmaId.toString());
+        if (isChecked && (index < 0)) {
+            silinecekData.push(ekstreAktarmaId.toString());
+        } else if (!isChecked && (index > -1)) {
+            silinecekData.splice(index, 1);
+        }
+        if (silinecekData.length > 0) {
+            document.getElementById('SilinecekBtnDiv').style.display = "block";
+        }
+        else {
+            document.getElementById('SilinecekBtnDiv').style.display = "none";
+        }
+    }
+    function SecilenleriSilTriggerBtnClicked() {
+        document.getElementById('<%= paramSilinecekArray.ClientID%>').value = silinecekData;
+        document.getElementById('<%= SecilenleriSilBtn.ClientID%>').click();
+    }
+</script>
+<script type="text/javascript">
+
+
+    //excele export ettikten donup sonra kalmasın diye
+    function setFormSubmitToFalse() {
+        setTimeout(function () { _spFormOnSubmitCalled = false; }, 3000);
+        return true;
+    }
+    function OpenModalOnay() {
+        $("#ModalOnayDiv").modal({ backdrop: true });
+    }
+
+    function CloseModalOnay() {
+        $("#ModalOnayDiv").modal('hide');
+    }
+    function OdemePlaniModalAc(kiraciId,odemeTarihi) {
+        document.getElementById('<%= ParamKiraciIdLbl.ClientID%>').value = kiraciId;
+        document.getElementById('<%= ParamOdemeTarihiLbl.ClientID%>').value = odemeTarihi;
+        document.getElementById('<%= OdemePlaniModalAcBtn.ClientID%>').click();
+    }
+    var tableData = [];
+    function EkleCikar(ekstreAktarmaId, isChecked) {
+        var index = tableData.indexOf(ekstreAktarmaId.toString());
+        if (isChecked && (index < 0)) {
+            tableData.push(ekstreAktarmaId.toString());
+        } else if (!isChecked && (index > -1)) {
+            tableData.splice(index, 1);
+        }
+        if (tableData.length > 0) {
+            document.getElementById('BtnDiv').style.display = "block";
+        }
+        else {
+            document.getElementById('BtnDiv').style.display = "none";
+        }
+    }
+    function addRemoveEkstreIdToList(ekstreAktarmaId, chkbox) {
+        var isChecked = false;
+        if (chkbox.checked)
+            isChecked = true;
+        EkleCikar(ekstreAktarmaId, isChecked);
+    }
+    function SecilenleriKaydetTriggerBtnClicked() {
+        document.getElementById('<%= paramArray.ClientID%>').value = tableData;
+        document.getElementById('<%= SecilenleriKaydetBtn.ClientID%>').click();
+    }
+    
+    window.onload = setStartupOptions;
+    function setStartupOptions() {
+        pageIndex = getParameterByName("PageIndex");
+        SetPageIndex();
+    }
+    //tabloda modal açılırken seçili olan pagination degerini pageIndex degiskeninde saklar ve modal açıldıktan sonra pageload sırasında sayfayı pageIndex degerine getirir
+    function SetPageIndex() {
+        $('#tblfilter').puidatatable('getPaginator').puipaginator('option', 'page', parseInt(pageIndex) - 1);
+        $('#sayfaTxt').val(parseInt(pageIndex));
+    }
+    function SayfayaGit() {
+        pageIndex = $('#sayfaTxt').val();
+        $('#tblfilter').puidatatable('getPaginator').puipaginator('option', 'page', pageIndex - 1);
+    }
+    var pageIndex = 0;
+    function getParameterByName(name) {
+        name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+        var regexS = "[\\?&]" + name + "=([^&#]*)";
+        var regex = new RegExp(regexS);
+        var results = regex.exec(window.location.href);
+        if (results == null)
+            return "";
+        else
+            return decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+
+</script>
+<div class="container">
+    <div class="card shadow">
+        <div class="card-header">
+            <asp:LinkButton ID="CloseBtn" CssClass="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
+            <h3>
+                <asp:Label CssClass="col-form-label text-danger font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="Kira Ekstre Aktarma"></asp:Label>
+                <asp:Label CssClass="col-form-label text-white" ID="IdLbl" runat="server"></asp:Label>
+                <asp:Label CssClass="col-form-label " ID="AdiLbl" runat="server"></asp:Label>
+            </h3>
+        </div>
+        <div class="card-body">
+            <div class="form-group">
+                <asp:CheckBox CssClass="col-3 form-control" ID="AktarilanlarHaricChk" AutoPostBack="true" runat="server" Text="Aktarılanları Gösterme " Checked="True" OnCheckedChanged="AktarilanlarHaricChk_CheckedChanged" TextAlign="Left" />
+                <asp:Label CssClass="col-2 col-form-label float-right" ID="RowCountLbl" runat="server" Text="" Font-Bold="True"></asp:Label>
+            </div>
+            <div class="form-group">
+                <div class="table loader table-striped table-hower table-bordered table-responsive">
+                    <input id="globalFilter" placeholder="Aranacak Kelime" size="30" />
+                    <asp:CheckBox ID="TumunuSecChk" AutoPostBack="true" runat="server" Text="Kayıt için Tüm Sayfayı Seç" Checked="false" OnCheckedChanged="TumunuSecChk_CheckedChanged" TextAlign="Left" />
+                    <input id="sayfaTxt" type="number" class="float-right" min="1" max="9" style="width: 40px; text-align: center;" onkeyup="SayfayaGit();" />
+                    <asp:Label ID="Label1" runat="server" Text="" CssClass="float-right">Sayfaya Git :</asp:Label>
+                    <div id="tblfilter"></div>
+                    <div id="messages"></div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div id="BtnDiv" style="display: none">
+                <input id="SecilenleriKaydetTriggerBtn" class="btn btn-success" type="button" value="Seçilenleri Kaydet" onclick="SecilenleriKaydetTriggerBtnClicked();" />
+            </div>
+            <div id="SilinecekBtnDiv" style="display: none">
+                <input id="SecilenleriSilTriggerBtn" class="btn btn-success" type="button" value="Seçilenleri Sil" onclick="SecilenleriSilTriggerBtnClicked();" />
+            </div>
+            <div id="InvisibleDiv" style="display: none">
+                <input id="paramArray" runat="server" type="text" />
+                <input id="paramSilinecekArray" runat="server" type="text" />
+                <input id="ParamKiraciIdLbl" runat="server" type="text" />
+                <input id="ParamOdemeTarihiLbl" runat="server" type="text" />
+                <asp:LinkButton ID="SecilenleriKaydetBtn" runat="server" CssClass="btn btn-success" Text=" Kaydet " OnClick="SecilenleriKaydetBtn_Click" />
+                <asp:LinkButton ID="SecilenleriSilBtn" runat="server" CssClass="btn btn-danger" Text=" Sil " OnClick="SecilenleriSilBtn_Click" />
+                <asp:LinkButton ID="OdemePlaniModalAcBtn" runat="server" CssClass="btn btn-success" Text="Odeme Plani Görüntüle" OnClick="OdemePlaniModalAcBtn_Click" />
+                
+            </div>
+            <asp:LinkButton CssClass="btn btn-outline-success float-right" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
+        </div>
+        <div class="modal" id="ModalOnayDiv" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <asp:UpdatePanel ID="KaydetSilUpdatePanel" runat="server" UpdateMode="Conditional">
+                            <ContentTemplate>
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3>
+                                            <asp:Label ID="ModalTitleLbl" CssClass="col-form-label" runat="server" Text=""></asp:Label></h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-group">
+                                            <h4>
+                                                <asp:Label ID="ModalSubTitleLbl" CssClass="col-form-label" runat="server" Text=""></asp:Label></h4>
+                                            <h4>
+                                                <asp:Label ID="UyariMesajiLbl" CssClass="col-form-label" runat="server" Text=""></asp:Label></h4>
+                                            <h4>
+                                                <asp:Label ID="OnayMesajiLbl" CssClass="col-form-label text-danger" runat="server" Text="İşlemi onaylıyor musunuz?"></asp:Label></h4>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <asp:LinkButton CssClass="btn btn-success" ID="KaydetNowBtn" runat="server" CausesValidation="false" Text="Seçilenleri Kaydet" OnClientClick="{return true;};" OnClick="KaydetNowBtn_Click" Visible="false" />
+                                        <asp:LinkButton CssClass="btn btn-danger" ID="SilNowBtn" runat="server" CausesValidation="false" Text="Seçilenleri Sil" OnClientClick="{return true;};" OnClick="SilNowBtn_Click" Visible="false" />
+                                        <button type="button" class="btn btn-default float-right" data-dismiss="modal">Kapat</button>
+                                    </div>
+                                </div>
+                            </ContentTemplate>
+                            <Triggers>
+                                <asp:AsyncPostBackTrigger ControlID="SecilenleriKaydetBtn" EventName="click" />
+                                <asp:AsyncPostBackTrigger ControlID="SecilenleriSilBtn" EventName="click" />
+                            </Triggers>
+                        </asp:UpdatePanel>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="OdemePlaniModal" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content" style="width: 550px;">
+                    <div class="modal-body">
+                        <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional">
+                            <ContentTemplate>
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h3>
+                                            <asp:Label ID="KiraciTitleLbl" CssClass="col-form-label" runat="server" Text=""></asp:Label></h3>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="card-body">
+                                            <asp:Label ID="DevirLbl" class="col-form-label" runat="server" Font-Bold="True"></asp:Label>
+                                            <asp:Table ID="OdemePlaniTable" runat="server" class="table table-sm">
+                                                <asp:TableHeaderRow>
+                                                    <asp:TableHeaderCell>Sıra No </asp:TableHeaderCell>
+                                                    <asp:TableHeaderCell>Yil </asp:TableHeaderCell>
+                                                    <asp:TableHeaderCell>Ay </asp:TableHeaderCell>
+                                                    <asp:TableHeaderCell>Kira Bedeli </asp:TableHeaderCell>
+                                                    <asp:TableHeaderCell>Ödenen Tutar</asp:TableHeaderCell>
+                                                    <%--<asp:TableHeaderCell>Ödeme Tarihi</asp:TableHeaderCell>--%>
+                                                </asp:TableHeaderRow>
+                                            </asp:Table>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                                    </div>
+                                </div>
+                            </ContentTemplate>
+                            <Triggers>
+                                <asp:AsyncPostBackTrigger ControlID="OdemePlaniModalAcBtn" EventName="click" />
+                            </Triggers>
+                        </asp:UpdatePanel>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <asp:UpdateProgress ID="updateProgress" runat="server">
+            <ProgressTemplate>
+                <div class='loaderMainContainer'>
+                    <div class='loaderContainer'>
+                        <div class='loaderCircle'></div>
+                    </div>
+                </div>
+            </ProgressTemplate>
+        </asp:UpdateProgress>
+
+    </div>
+</div>
