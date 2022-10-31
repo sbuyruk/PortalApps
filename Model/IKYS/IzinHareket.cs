@@ -138,7 +138,7 @@ namespace Model.IKYS
                     INNER JOIN BirimTanim_Table E ON E.Id= D.BirimId
                 WHERE --Mahsup=0 AND --SB 21.09.2020 Yeşim Hanımın talebi, Deniz özkanın 21.09.2020 tarihli izni o günkü görevli izinli personel listesinde çıkmadı o yüzden mahsup=0 kapatıldı
                     BaslangicTarihi<={0} AND BitisTarihi>={1}
-                ORDER BY BaslangicTarihi, ProtokolSiraNo ", bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat()); //TODO 8 saat olan Mazeret de dahil olsun
+                ORDER BY ProtokolSiraNo, BaslangicTarihi ", bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat()); //TODO 8 saat olan Mazeret de dahil olsun
 
             DataTable dataTable = dao.selectFromDb(sqlString, "");
 

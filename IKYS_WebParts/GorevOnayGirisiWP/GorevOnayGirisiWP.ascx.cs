@@ -78,6 +78,30 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 ViewState["PersonelId"] = value;
             }
         }
+        private string BirimTanimIdQS
+        {
+            get
+            {
+
+                if (ViewState["BirimTanimId"] == null)
+                {
+                    if (Page.Request.QueryString["BirimTanimId"] != null)
+                    {
+                        ViewState["BirimTanimId"] = Page.Request.QueryString["BirimTanimId"];
+                    }
+                    else
+                    {
+                        ViewState["BirimTanimId"] = string.Empty;
+                    }
+                }
+                return ViewState["BirimTanimId"].ToString();
+            }
+
+            set
+            {
+                ViewState["BirimTanimId"] = value;
+            }
+        }
         private string CurrentUserName
         {
             get
@@ -124,6 +148,11 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             try
             {
                 if (AuthQS.Equals("IKYS"))
+                {
+                    PersonelDiv.Attributes["style"] = "display:block";
+                    GorevOnayListesiBtn.Visible = true;
+                }
+                else if (AuthQS.Equals("BIRIM"))
                 {
                     PersonelDiv.Attributes["style"] = "display:block";
                     GorevOnayListesiBtn.Visible = true;
@@ -177,7 +206,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                     fillBitSaat();
                     fillParaBirimiDDL();
                     fillUlasimAraciDDL();
-                    fillPersonelDDL();
+                    fillPersonelDDL(personel);
                     fillPerSubeImzaDDL();
                     fillOnayImzaDDL();
                     fillGMImzaDDL();
@@ -204,7 +233,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 fillGMImzaDDL();
                 fillOnayMakamDDL();
                 Personel personel = PersonelGetir();
-                fillPersonelDDL();
+                fillPersonelDDL(personel);
 
                 if (personel != null)
                 {
@@ -225,12 +254,31 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
 
             }
         }
-        private void fillPersonelDDL()
+        private void fillPersonelDDL(Personel personel)
         {
             PersonelDDL.Items.Clear();
-            Personel personel = new Personel();
-            List<Personel> list = personel.SelectCalisanPersonel();
-            PersonelAdiLbl.Text = personel.Adi + " " + personel.Soyadi;
+            
+            List<Personel> list = new List<Personel>();
+
+            if (AuthQS.Equals("IKYS"))
+            {
+                Personel perdao = new Personel();
+                list = perdao.SelectCalisanPersonel();
+            }
+            else if (AuthQS.Equals("BIRIM"))
+            {
+                
+                list = BirimdekiPersoneliGetir(personel);
+            }
+            else
+            {
+                personel = PersonelGetir(PersonelIdQS.ConvertToInt());
+                if (personel != null)
+                {
+                    list.Add(personel);
+                }
+            }
+
             foreach (Personel item in list)
             {
                 ListItem li = new ListItem(item.Adi.ReturnEmptyIfNull().ToString() + " " + item.Soyadi.ReturnEmptyIfNull().ToString(), item.Id.ReturnZeroIfNull().ToString());
@@ -248,6 +296,81 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 PersonelIdQS = perItem.Value;
             }
         }
+        private string ChildBirimGetir(int parentId)
+        {
+            string retVal = parentId + ",";
+            BirimTanim bt = new BirimTanim();
+            List<BirimTanim> list = bt.SelectByParentId(parentId);
+            foreach (BirimTanim item in list)
+            {
+                //retVal += item.Id + ",";
+                string val = ChildBirimGetir(item.Id);
+                if (string.IsNullOrEmpty(val))
+                {
+                    return retVal;
+                }
+                retVal += val;
+            }
+            return retVal;
+        }
+        private string BirimListesiGetir(BirimTanim birimTanim)
+        {
+            string birimIdStr = string.Empty;
+            if (birimTanim != null)
+            {
+                string birim = ChildBirimGetir(birimTanim.Id);
+                birimIdStr = string.IsNullOrEmpty(birim) ? "" : birim.Substring(0, birim.Length - 1);
+            }
+
+            return birimIdStr;
+        }
+        private List<Personel> BirimdekiPersoneliGetir(Personel personel)
+        {
+            
+            List<Personel> list = new List<Personel>();
+            if (personel != null)
+            {
+                string birimListesiStr = string.Empty;
+                if (string.IsNullOrEmpty(BirimTanimIdQS))
+                {
+                    IsBilgileri ib = new IsBilgileri();
+                    ib = ib.SelectByPersonelId(personel.Id);
+                    if (ib != null)
+                    {
+                        int birimId = ib.BirimId;
+                        BirimTanimIdQS = ib.BirimId.ToString();
+                        //Personel perdao = new Personel();
+                        //list = perdao.SelectCalisanPersonelByBirimId(birimId);
+                    } 
+                }
+                
+                BirimTanim bt = new BirimTanim();
+                bt = bt.Select(BirimTanimIdQS.ConvertToInt());
+                if (bt != null)
+                {
+                    birimListesiStr = BirimListesiGetir(bt);
+                }
+                Personel perdao = new Personel();
+                list = perdao.SelectCalisanPersonelByBirimReturnList(birimListesiStr);
+            }
+            return list;
+        }
+        //private List<Personel> BirimdekiPersoneliGetir(Personel personel)
+        //{
+        //    List<Personel> list = new List<Personel>();
+        //    if (personel != null)
+        //    {
+        //        IsBilgileri ib = new IsBilgileri();
+        //        ib = ib.SelectByPersonelId(personel.Id);
+        //        if (ib != null)
+        //        {
+        //            int birimId = ib.BirimId;
+        //            Personel perdao = new Personel();
+        //            list = perdao.SelectCalisanPersonelByBirimId(birimId);
+        //        }
+        //    }
+        //    return list;
+        //}
         private void fillParaBirimiDDL()
         {
             ParaBirimiDDL.Items.Clear();
@@ -413,8 +536,17 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             if (gorevOnay != null)
             {
                 GorevOnayIdLbl.Text = gorevOnay.Id.ReturnEmptyIfNull().ToString();
+                Personel personel = PersonelGetir(gorevOnay.PersonelId);
+                if (personel != null)
+                {
+                    PersonelAdiLbl.Text = personel.Adi + " " + personel.Soyadi;
+
+                }
+                else
+                {
+                    PersonelAdiLbl.Text = "Personel bulunamadı";
+                }
                 
-                PersonelAdiLbl.Text = PersonelAdiGetir(gorevOnay.PersonelId);
                 SelectDDLValue(ParaBirimiDDL, gorevOnay.ParaBirimi.ToString());
                 SelectDDLValue(PersonelDDL, gorevOnay.PersonelId.ToString());
                 SelectDDLValue(OnayMakamDDL, gorevOnay.OnayMakam.ToString());
@@ -449,17 +581,13 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             }
         }
 
-        private string PersonelAdiGetir(int personelId)
+        private Personel PersonelGetir(int personelId)
         {
             Personel personel = new Personel();
             personel = personel.Select<Personel>(personelId);
             string personelAdi = string.Empty;
-            if (personel!=null)
-            {
-                personelAdi= personel.Adi +" "+personel.Soyadi;
-
-            }
-            return personelAdi;
+            
+            return personel;
         }
 
         private string SelectDDLValue(DropDownList ddlList, string value)

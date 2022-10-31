@@ -244,7 +244,9 @@ namespace Model.TBYS
         }
         public DataTable SelectKiraSozlesmeListReturnDT(int kiraciId, int aktif, string bolge)
         {
-            string bolgeStr = string.IsNullOrEmpty(bolge)||bolge.Equals(ProjeConstants.BOLGE_HEPSI) ? "" : " AND S.Bolge = " + bolge.ReturnQuotedValue();
+            string bolgeStr = string.IsNullOrEmpty(bolge) || 
+                bolge.Equals(ProjeConstants.BOLGE_HEPSI) || 
+                bolge.Equals(ProjeConstants.TBYS_YETKILI_BIRIM ) ? "" : " AND S.Bolge = " + bolge.ReturnQuotedValue();
             string aktifStr = aktif == ProjeConstants.KIRASOZLESME_AKTIF_HEPSI_INT ? "" : " AND S.Aktif = " + aktif;
             string kiracistr = kiraciId < 1 ? "" : " AND S.KiraciId=" + kiraciId ;
 

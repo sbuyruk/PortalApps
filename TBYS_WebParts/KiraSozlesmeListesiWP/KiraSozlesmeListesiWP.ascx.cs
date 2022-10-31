@@ -33,28 +33,28 @@ namespace TBYS_WebParts.KiraSozlesmeListesiWP
             InitializeControl();
             this.ChromeType = PartChromeType.None;
         }
-        private string BolgeQS
+        private string AuthQS
         {
             get
             {
 
-                if (ViewState["Bolge"] == null)
+                if (string.IsNullOrEmpty(ViewState["Auth"].ToString()))
                 {
-                    if (Page.Request.QueryString["Bolge"] != null)
+                    if (Page.Request.QueryString["Auth"] != null)
                     {
-                        ViewState["Bolge"] = Page.Request.QueryString["Bolge"];
+                        ViewState["Auth"] = Page.Request.QueryString["Auth"];
                     }
                     else
                     {
-                        ViewState["Bolge"] = string.Empty;
+                        ViewState["Auth"] = string.Empty;
                     }
                 }
-                return ViewState["Bolge"].ToString();
+                return ViewState["Auth"].ToString();
             }
 
             set
             {
-                ViewState["Bolge"] = value;
+                ViewState["Auth"] = value;
             }
         }
         private string SecilenIdQS
@@ -111,10 +111,10 @@ namespace TBYS_WebParts.KiraSozlesmeListesiWP
             {
                 if (!Page.IsPostBack)
                 {
-                    BolgeQS = IKYSOrtak.PersonelinBolgesiniGetir(UtilityHelper.GetCurrentUser());
-                    if (!string.IsNullOrEmpty(BolgeQS))
+                    AuthQS = IKYSOrtak.PersonelinBolgesiniGetir(UtilityHelper.GetCurrentUser());
+                    if (!string.IsNullOrEmpty(AuthQS) && !AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM))
                     {
-                        TitleLbl.Text = "Kira Sözleşme Listesi" + " (" + BolgeQS + " Bölgesi)";
+                        TitleLbl.Text = "Kira Sözleşme Listesi" + " (" + AuthQS + " Bölgesi)";
                     }
                     TabloOlustur();
                 }
@@ -133,7 +133,9 @@ namespace TBYS_WebParts.KiraSozlesmeListesiWP
         }
         private string CreateDataTable(string jsonData)
         {
-            string duzenleGorunsun = string.IsNullOrEmpty(BolgeQS) ? "{ targets:10, visible:true}," : "{ targets:10, visible:false},";
+            string duzenleGorunsun = string.IsNullOrEmpty(AuthQS) || !AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM) 
+                ? "{ targets:10, visible:false}," 
+                : "{ targets:10, visible:true},";
             string tableString = @"
                 if ( jQuery.fn.DataTable.isDataTable('#CustomModalDataTable') ) {
                     jQuery('#CustomModalDataTable').DataTable().destroy();
@@ -259,7 +261,7 @@ namespace TBYS_WebParts.KiraSozlesmeListesiWP
             }
 
             kiraSozlesme = new KiraSozlesme();
-            dataTable = kiraSozlesme.SelectKiraSozlesmeListReturnDT(0, AktifQS.ConvertToInt(),BolgeQS);
+            dataTable = kiraSozlesme.SelectKiraSozlesmeListReturnDT(0, AktifQS.ConvertToInt(),AuthQS);
 
             int SiraNo = 1;
             KiraSozlesmeListItem tempSozlesmeItem = null;

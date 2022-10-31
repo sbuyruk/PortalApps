@@ -57,28 +57,28 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP
                 ViewState["SecilenId"] = value;
             }
         }
-        private string BolgeQS
+        private string AuthQS
         {
             get
             {
 
-                if (ViewState["Bolge"] == null)
+                if (string.IsNullOrEmpty(ViewState["Auth"].ToString()))
                 {
-                    if (Page.Request.QueryString["Bolge"] != null)
+                    if (Page.Request.QueryString["Auth"] != null)
                     {
-                        ViewState["Bolge"] = Page.Request.QueryString["Bolge"];
+                        ViewState["Auth"] = Page.Request.QueryString["Auth"];
                     }
                     else
                     {
-                        ViewState["Bolge"] = string.Empty;
+                        ViewState["Auth"] = string.Empty;
                     }
                 }
-                return ViewState["Bolge"].ToString();
+                return ViewState["Auth"].ToString();
             }
 
             set
             {
-                ViewState["Bolge"] = value;
+                ViewState["Auth"] = value;
             }
         }
         private string CurrentUserName
@@ -104,10 +104,10 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP
             {
                 if (!Page.IsPostBack)
                 {
-                    BolgeQS = IKYSOrtak.PersonelinBolgesiniGetir(CurrentUserName);
-                    if (!string.IsNullOrEmpty(BolgeQS))
-                    {
-                        TitleLbl.Text = "Bağışçı Listesi" + " (" + BolgeQS + " Bölgesi)";
+                    AuthQS = IKYSOrtak.PersonelinBolgesiniGetir(CurrentUserName);
+                    if (!string.IsNullOrEmpty(AuthQS) && !AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM))
+                        {
+                        TitleLbl.Text = "Bağışçı Listesi" + " (" + AuthQS + " Bölgesi)";
                         YeniKayitBtn.Visible = false;
                     }
                     TabloOlustur(); 
@@ -201,7 +201,10 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP
 
         private string CreateDataTable(string jsonData)
         {
-            string duzenleGorunsun = string.IsNullOrEmpty(BolgeQS) ? "{ targets:10, visible:true}," : "{ targets:10, visible:false},";
+            string duzenleGorunsun = string.IsNullOrEmpty(AuthQS) || !AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM)
+                ? "{ targets:10, visible:false}," 
+                : "{ targets:10, visible:true},";
+
             string tableString = @"
             jQuery(document).ready(function() {
 
@@ -326,7 +329,7 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP
         private DataTable GetBagisciData()
         {
             TasinmazBagisci tasinmazBagisci = new TasinmazBagisci();
-            DataTable dataTable = tasinmazBagisci.SelectAllCountBagisAdediReturnDataTable(BolgeQS);
+            DataTable dataTable = tasinmazBagisci.SelectAllCountBagisAdediReturnDataTable(AuthQS);
             return dataTable;
         }
         protected void YeniKayitBtn_Click(object sender, EventArgs e)

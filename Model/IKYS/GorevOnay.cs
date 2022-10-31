@@ -211,7 +211,7 @@ namespace Model.IKYS
 				    INNER JOIN GorevTanim_Table D ON D.Id= C.GorevId
                 WHERE --BitisTarihi>GETDATE() AND 
                     BaslangicTarihi<={0} AND BitisTarihi>={1}
-                ORDER BY BitisTarihi DESC, BaslangicTarihi DESC ", bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat());
+                ORDER BY ProtokolSiraNo,BitisTarihi, BaslangicTarihi ", bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat());
 
             DataTable dataTable = dao.selectFromDb(sqlString, "");
 

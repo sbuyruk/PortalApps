@@ -55,6 +55,30 @@ namespace TBYS_WebParts.KiraciListesiWP
                 ViewState["SecilenId"] = value;
             }
         }
+        private string AuthQS
+        {
+            get
+            {
+
+                if (ViewState["Auth"] == null)
+                {
+                    if (Page.Request.QueryString["Auth"] != null)
+                    {
+                        ViewState["Auth"] = Page.Request.QueryString["Auth"];
+                    }
+                    else
+                    {
+                        ViewState["Auth"] = string.Empty;
+                    }
+                }
+                return ViewState["Auth"].ToString();
+            }
+
+            set
+            {
+                ViewState["Auth"] = value;
+            }
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -118,6 +142,9 @@ namespace TBYS_WebParts.KiraciListesiWP
         }
         private string CreateDataTable(string jsonData)
         {
+            string duzenleGorunsun = string.IsNullOrEmpty(AuthQS) || !AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM)
+                ? "{ targets:5, visible:false},{ targets:7, visible:false},{ targets:8, visible:false},{ targets:9, visible:false},"
+                : string.Empty;
             string tableString = @"
                 if ( jQuery.fn.DataTable.isDataTable('#CustomDataTable') ) {
                     jQuery('#CustomDataTable').DataTable().destroy();
@@ -151,7 +178,8 @@ namespace TBYS_WebParts.KiraciListesiWP
                             { data: 'Bakiye' },
                             { data: 'Duzenle' },               
                         ],
-                        'columnDefs': [
+                        'columnDefs': ["
+                            + duzenleGorunsun +@"
                             { 'width': '20%', 'targets': 1 },
                             { 'width': '25%', 'targets': 2 }
 

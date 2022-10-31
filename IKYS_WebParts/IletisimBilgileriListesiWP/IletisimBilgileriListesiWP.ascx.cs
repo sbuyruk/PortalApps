@@ -288,7 +288,7 @@ namespace IKYS_WebParts.IletisimBilgileriListesiWP
             IletisimTableHeaders();
             Personel personelDao = new Personel();
             string birimListesiStr = BirimListesiGetir(birimId);
-            DataTable dataTable = personelDao.SelectCalisanPersonelReturnDT(birimListesiStr);
+            DataTable dataTable = personelDao.SelectCalisanPersonelByBirimReturnDT(birimListesiStr);
 
             int birimIdTemp = 0;
             int sira = 0;

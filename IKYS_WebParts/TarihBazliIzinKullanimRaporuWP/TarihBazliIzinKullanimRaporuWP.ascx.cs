@@ -223,7 +223,7 @@ namespace IKYS_WebParts.TarihBazliIzinKullanimRaporuWP
                 Personel personel = PersonelGetir();
                 birimListesiStr = BirimListesiGetir(personel, null);
             }
-            dataTable = personelDao.SelectCalisanPersonelReturnDT(birimListesiStr);
+            dataTable = personelDao.SelectCalisanPersonelByBirimReturnDT(birimListesiStr);
             int birimIdTemp = 0;
             int sira = 0;
             if (dataTable != null)

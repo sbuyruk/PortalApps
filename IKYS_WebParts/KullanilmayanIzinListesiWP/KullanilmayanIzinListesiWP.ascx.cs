@@ -222,7 +222,7 @@ namespace IKYS_WebParts.KullanilmayanIzinListesiWP
                 Personel personel = PersonelGetir();
                 birimListesiStr = BirimListesiGetir(personel, null);
             }
-            dataTable = personelDao.SelectCalisanPersonelReturnDT(birimListesiStr);
+            dataTable = personelDao.SelectCalisanPersonelByBirimReturnDT(birimListesiStr);
             int sira = 0;
             if (dataTable != null)
             {

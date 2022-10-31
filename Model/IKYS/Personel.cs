@@ -366,7 +366,7 @@ namespace Model.IKYS
             }
             return dataTable;
         }
-        public DataTable SelectCalisanPersonelReturnDT(string birimListesiStr)
+        public DataTable SelectCalisanPersonelByBirimReturnDT(string birimListesiStr)
         {
             string birimStr = string.IsNullOrEmpty(birimListesiStr) ? " AND I.BirimId in ('') " : birimListesiStr.Equals("0") ? "" : string.Format(" AND I.BirimId in ({0}) ", birimListesiStr);
             string sqlString = string.Format(@"
@@ -392,6 +392,33 @@ namespace Model.IKYS
                 throw e;
             }
             return dataTable;
+        }
+        public List<Personel> SelectCalisanPersonelByBirimReturnList(string birimListesiStr)
+        {
+            string birimStr = string.IsNullOrEmpty(birimListesiStr) ? " AND I.BirimId in ('') " : birimListesiStr.Equals("0") ? "" : string.Format(" AND I.BirimId in ({0}) ", birimListesiStr);
+            string sqlString = string.Format(@"
+                                    SELECT P.*
+								    FROM Personel_Table P
+                                    INNER JOIN IsBilgileri_Table I on P.Id=I.PersonelId
+								    Left Outer Join  UnvanTanim_Table U on I.UnvanId=U.Id
+								    Left Outer Join  BirimTanim_Table B on I.BirimId=B.Id
+								    Left Outer Join  GorevTanim_Table G on I.GorevId=G.Id
+                                    Left Outer Join  IletisimBilgileri_Table L on L.PersonelId=P.Id
+                                    WHERE CalismaDurumu=1 {0}
+								    ORDER BY B.Sira,I.ProtokolSiraNo
+                                    ", birimStr);
+            DataTable dataTable = null;
+            try
+            {
+                dataTable = dao.selectFromDb(sqlString, "");
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            List<Personel> list = ToList<Personel>(dataTable);
+
+            return list;
         }
 
         public List<Personel> SelectByDogumGunu(int gun, int ay)

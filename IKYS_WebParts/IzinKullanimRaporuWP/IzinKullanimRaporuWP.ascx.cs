@@ -54,54 +54,6 @@ namespace IKYS_WebParts.IzinKullanimRaporuWP
                 ViewState["PersonelId"] = value;
             }
         }
-        private string SenderAppQS
-        {
-            get
-            {
-
-                if (ViewState["SenderApp"] == null)
-                {
-                    if (Page.Request.QueryString["SenderApp"] != null)
-                    {
-                        ViewState["SenderApp"] = Page.Request.QueryString["SenderApp"];
-                    }
-                    else
-                    {
-                        ViewState["SenderApp"] = string.Empty;
-                    }
-                }
-                return ViewState["SenderApp"].ToString();
-            }
-
-            set
-            {
-                ViewState["SenderApp"] = value;
-            }
-        }
-        private string DestinationAppQS
-        {
-            get
-            {
-
-                if (ViewState["DestinationApp"] == null)
-                {
-                    if (Page.Request.QueryString["DestinationApp"] != null)
-                    {
-                        ViewState["DestinationApp"] = Page.Request.QueryString["DestinationApp"];
-                    }
-                    else
-                    {
-                        ViewState["DestinationApp"] = string.Empty;
-                    }
-                }
-                return ViewState["DestinationApp"].ToString();
-            }
-
-            set
-            {
-                ViewState["DestinationApp"] = value;
-            }
-        }
         private string CurrentUserName
         {
             get
@@ -117,30 +69,6 @@ namespace IKYS_WebParts.IzinKullanimRaporuWP
             set
             {
                 ViewState["CurrentUserName"] = value;
-            }
-        }
-        private string IzinTanimIdQS
-        {
-            get
-            {
-
-                if (ViewState["IzinTanimId"] == null)
-                {
-                    if (Page.Request.QueryString["IzinTanimId"] != null)
-                    {
-                        ViewState["IzinTanimId"] = Page.Request.QueryString["IzinTanimId"];
-                    }
-                    else
-                    {
-                        ViewState["IzinTanimId"] = string.Empty;
-                    }
-                }
-                return ViewState["IzinTanimId"].ToString();
-            }
-
-            set
-            {
-                ViewState["IzinTanimId"] = value;
             }
         }
         private string AuthQS
@@ -173,7 +101,7 @@ namespace IKYS_WebParts.IzinKullanimRaporuWP
             {
                 if (!Page.IsPostBack)
                 {
-                    fillIzinTanim();
+                    FillIzinTanim();
                     YilDDLDoldur();
                     FillIzinTable(IzinTanimDDL.SelectedItem.Value.ConvertToInt());
                 }
@@ -223,7 +151,7 @@ namespace IKYS_WebParts.IzinKullanimRaporuWP
                 Personel personel = PersonelGetir();
                 birimListesiStr = BirimListesiGetir(personel, null);
             }
-            dataTable = personelDao.SelectCalisanPersonelReturnDT(birimListesiStr);
+            dataTable = personelDao.SelectCalisanPersonelByBirimReturnDT(birimListesiStr);
             int birimIdTemp = 0;
             int sira = 0;
             if (dataTable != null)
@@ -446,7 +374,7 @@ namespace IKYS_WebParts.IzinKullanimRaporuWP
 
             IzinTable.Controls.Add(th);
         }
-        private void fillIzinTanim()//sadece Ücretli ve mazeret izinleri için çalışsın
+        private void FillIzinTanim()//sadece Ücretli ve mazeret izinleri için çalışsın
         {
             IzinTanimDDL.Items.Clear();
             IzinTanim izinTanim = new IzinTanim();

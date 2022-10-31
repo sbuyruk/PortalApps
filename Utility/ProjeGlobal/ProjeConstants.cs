@@ -225,10 +225,15 @@ namespace Utility.ProjeGlobal
 
         #endregion
 
-
+        //Yetkililer
+        public const string TBYS_YETKILI_BIRIM = "IEYS";
+        public const string MTS_YETKILI_BIRIM = "GMOK";
+        public const string NBYS_YETKILI_BIRIM = "BTHI";
+        public const string IKYS_YETKILI_BIRIM = "IKYS";
 
         //TBYS Sabit değerler
         //Tasinmaz
+
 
         public const decimal YASAL_FAIZ_ORANI = 1.4M;
         

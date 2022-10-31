@@ -208,7 +208,7 @@ namespace Model.IKYS
                     LEFT JOIN IsBilgileri_Table D ON D.PersonelId= A.PersonelId
                     INNER JOIN BirimTanim_Table E ON E.Id= D.BirimId
                 WHERE BaslangicTarihi<={0} AND BitisTarihi>={1}
-                ORDER BY BaslangicTarihi, D.ProtokolSiraNo ", bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat());
+                ORDER BY ProtokolSiraNo,BaslangicTarihi ", bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat());
 
             DataTable dataTable = dao.selectFromDb(sqlString, "");
 

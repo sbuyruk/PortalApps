@@ -218,7 +218,9 @@ namespace Model.TBYS
         }
         public DataTable SelectAllCountBagisAdediReturnDataTable(string bolge)
         {
-            string bolgeStr = string.IsNullOrEmpty(bolge) ? string.Empty : string.Format(" WHERE E.Bolge={0}", bolge.ReturnQuotedValue());
+            string bolgeStr = string.IsNullOrEmpty(bolge) ||
+                bolge.Equals(ProjeConstants.BOLGE_HEPSI) ||
+                bolge.Equals(ProjeConstants.TBYS_YETKILI_BIRIM) ? string.Empty : string.Format(" WHERE E.Bolge={0}", bolge.ReturnQuotedValue());
             string sqlString = string.Format(@"
                  SELECT ROW_NUMBER() OVER (ORDER BY A.Id) AS Sirano, Count(C.Id) ToplamBagisAdedi, 
                     A.Id TasinmazBagisciId, E.Bolge,

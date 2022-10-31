@@ -280,7 +280,7 @@ namespace IKYS_WebParts.KisiselSayfaListesiWP
             Personel personel = PersonelGetir();
             string birimListesiStr = IKYSOrtak.BirimListesiGetir(personel);
             Personel personelDao = new Personel();
-            DataTable dataTable = personelDao.SelectCalisanPersonelReturnDT(birimListesiStr);
+            DataTable dataTable = personelDao.SelectCalisanPersonelByBirimReturnDT(birimListesiStr);
             return dataTable;
         }
 
