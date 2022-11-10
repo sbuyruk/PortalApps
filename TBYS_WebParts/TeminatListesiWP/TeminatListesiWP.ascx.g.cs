@@ -146,39 +146,19 @@ namespace TBYS_WebParts.TeminatListesiWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControlTree(global::TBYS_WebParts.TeminatListesiWP.TeminatListesiWP @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n<script type=\"text/javascript\">\r\n    //excele export ettikten donup sonra kalma" +
-                        "sın diye\r\n    function setFormSubmitToFalse() {\r\n        setTimeout(function () " +
-                        "{ _spFormOnSubmitCalled = false; }, 3000);\r\n        return true;\r\n    }\r\n    fun" +
-                        "ction setDataSet(myset) {\r\n        myjsons = myset;\r\n    }\r\n    var myjsons = [{" +
-                        "\r\n        \"KiraciAdi\": \"\", \"Bolge\": \"\", \"TeminatOdemeTarihi\": \"\", \"KiraBedeli\": " +
-                        "\"\", \"TeminatTutari\": \"\", \"OdenenTeminatTutari\": \"\", \"IadeTeminatTutari\": \"\", \"Ka" +
-                        "lanTeminatTutari\": \"\", \"Adres\": \"\",\r\n        \"Sozlesme\": \"\", \"Teminat\": \"\"\r\n    " +
-                        "}];\r\n    jQuery(document).ready(function () {\r\n\r\n        jQuery(\'#CustomDataTabl" +
-                        "e\').DataTable({\r\n            data: myjsons,\r\n            columns: [\r\n           " +
-                        "     { data: \"KiraciAdi\" },\r\n                { data: \"Bolge\" },\r\n               " +
-                        " { data: \"TeminatOdemeTarihi\" },\r\n                { data: \"KiraBedeli\" },\r\n     " +
-                        "           { data: \"TeminatTutari\" },\r\n                { data: \"OdenenTeminatTut" +
-                        "ari\" },\r\n                { data: \"IadeTeminatTutari\" },\r\n                { data:" +
-                        " \"KalanTeminatTutari\" },\r\n                { data: \"Adres\" },\r\n                { " +
-                        "data: \"Sozlesme\" },\r\n                { data: \"Teminat\" },\r\n\r\n            ],\r\n   " +
-                        "         \'order\': [[0, \'asc\']],//AdiSoyadi Sıralı\r\n            \"language\": {\r\n  " +
-                        "              \"url\": \"http://tskgv-portal/OrtakBelgeler/Turkish.txt\",\r\n         " +
-                        "       \"decimal\": \",\",\r\n                \"thousands\": \".\"\r\n            },\r\n      " +
-                        "      responsive: true,\r\n            dom: \'Bfrtip\',\r\n            //colon resizab" +
-                        "le\r\n            //initComplete: function (settings) {\r\n            //    $(\'#Cus" +
-                        "tomDataTable\').colResizable({ liveDrag: true });\r\n            //},\r\n            " +
-                        "buttons: [\r\n                {\r\n                    extend: \'print\',\r\n           " +
-                        "         exportOptions: {\r\n                        columns: \':visible\'\r\n        " +
-                        "            }\r\n                },\r\n                {\r\n                    extend" +
-                        ": \'excel\',\r\n                    exportOptions: {\r\n                        column" +
-                        "s: \':visible\'\r\n                    }\r\n                },\r\n                {\r\n   " +
-                        "                 extend: \'pdf\',\r\n                    exportOptions: {\r\n         " +
-                        "               columns: \':visible\'\r\n                    }\r\n                },\r\n " +
-                        "               {\r\n                    extend: \'copy\',\r\n                    expor" +
-                        "tOptions: {\r\n                        columns: \':visible\'\r\n                    }\r" +
-                        "\n                },\r\n                , \'pageLength\', \"colvis\"\r\n            ]\r\n  " +
-                        "      });\r\n    });\r\n</script>\r\n<div class=\"container \">\r\n    <div class=\"card sh" +
-                        "adow\">\r\n        <div class=\"card-header\">\r\n            "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+<script type=""text/javascript"">
+    //excele export ettikten donup sonra kalmasın diye
+    function setFormSubmitToFalse() {
+        setTimeout(function () { _spFormOnSubmitCalled = false; }, 3000);
+        return true;
+    }
+
+</script>
+<div class=""container col-xl"">
+    <div class=""card shadow"">
+        <div class=""card-header"">
+            "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl1;
             @__ctrl1 = this.@__BuildControlCloseBtn();
             @__parser.AddParsedSubObject(@__ctrl1);

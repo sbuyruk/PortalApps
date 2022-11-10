@@ -34,7 +34,30 @@ namespace TBYS_WebParts.TasinmazListesiWP
             InitializeControl();
             this.ChromeType = PartChromeType.None;
         }
+        private string AuthQS
+        {
+            get
+            {
 
+                if (ViewState["Auth"] == null || string.IsNullOrEmpty(ViewState["Auth"].ToString()))
+                {
+                    if (Page.Request.QueryString["Auth"] != null)
+                    {
+                        ViewState["Auth"] = Page.Request.QueryString["Auth"];
+                    }
+                    else
+                    {
+                        ViewState["Auth"] = string.Empty;
+                    }
+                }
+                return ViewState["Auth"].ToString();
+            }
+
+            set
+            {
+                ViewState["Auth"] = value;
+            }
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -63,7 +86,8 @@ namespace TBYS_WebParts.TasinmazListesiWP
         private void TabloOlustur()
         {
             var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            UtilityHelper.ScriptCalistir ("setDataSet(" + jsonData + ");");
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            UtilityHelper.ScriptCalistir(jsString);
         }
         private string TabloJson()
         {
@@ -164,6 +188,71 @@ namespace TBYS_WebParts.TasinmazListesiWP
             Tasinmaz tasinmaz = new Tasinmaz();
             DataTable dataTable = tasinmaz.SelectAllReturnDataTable();
             return dataTable;
+        }
+        private string CreateDataTable(string jsonData)
+        {
+            string duzenleGorunsun = string.IsNullOrEmpty(AuthQS) || !AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM)
+                ? "{ targets:9, visible:false},"
+                : "{ targets:9, visible:true},";
+            string tableString = @"
+                jQuery(document).ready(function () {
+
+                    jQuery('#CustomDataTable').DataTable({
+                        data: " + jsonData + @",
+                        columns: [
+                            { data: 'Id' },
+                            { data: 'KullanimSekli' },
+                            { data: 'MulkiyetSekli' },
+                            { data: 'IliIlcesi' },
+                            { data: 'Adres' },
+                            { data: 'Bagisci' },
+                            { data: 'BagisYili' },
+                            { data: 'SorumluBolge' },                            
+                            { data: 'TasinmazKarti' },
+                            { data: 'Duzenle' },
+                        ],
+                        'order': [[0, 'asc']],//Id Sıralı
+                        columnDefs:
+                            [
+                            " + duzenleGorunsun + @"
+                            ],
+                        'language': {
+                            'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                            'decimal': ',',
+                            'thousands': '.'
+                        },
+                        responsive: true,
+                        dom: 'Bfrtip',
+                        buttons: [
+                            {
+                                extend: 'print',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            {
+                                extend: 'excel',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            {
+                                extend: 'pdf',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            {
+                                extend: 'copy',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            , 'pageLength', 'colvis'
+                        ],
+                    });
+                });";
+            return tableString;
         }
         protected void ExportToExcel()
         {

@@ -100,7 +100,7 @@ namespace IKYS_WebParts.YoklamaListesiWP
             get
             {
 
-                if (ViewState["Auth"] == null)
+                if (ViewState["Auth"] == null || string.IsNullOrEmpty(ViewState["Auth"].ToString()))
                 {
                     if (Page.Request.QueryString["Auth"] != null)
                     {

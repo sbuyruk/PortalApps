@@ -29,6 +29,30 @@ namespace TBYS_WebParts.BorcluKiracilarWP
             InitializeControl();
             this.ChromeType = PartChromeType.None;
         }
+        private string AuthQS
+        {
+            get
+            {
+
+                if (ViewState["Auth"] == null || string.IsNullOrEmpty(ViewState["Auth"].ToString()))
+                {
+                    if (Page.Request.QueryString["Auth"] != null)
+                    {
+                        ViewState["Auth"] = Page.Request.QueryString["Auth"];
+                    }
+                    else
+                    {
+                        ViewState["Auth"] = string.Empty;
+                    }
+                }
+                return ViewState["Auth"].ToString();
+            }
+
+            set
+            {
+                ViewState["Auth"] = value;
+            }
+        }
         private string BolgeQS
         {
             get
@@ -165,9 +189,11 @@ namespace TBYS_WebParts.BorcluKiracilarWP
                     if (!string.IsNullOrEmpty(BolgeQS))
                     {
                         TitleLbl.Text = "Borçlu Kiracı Listesi" + " (" + BolgeQS + " Bölgesi)";
-                        OdemePlanlariniGuncelleBtn.Visible = false;
-
+                        
                     }
+                    bool yetkiliMi = !string.IsNullOrEmpty(AuthQS) && AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM);
+
+                    OdemePlanlariniGuncelleBtn.Visible = yetkiliMi;
                     BorcluKiraclariTabloyaDoldur();
                 }
                 catch (Exception ex)
@@ -252,7 +278,7 @@ namespace TBYS_WebParts.BorcluKiracilarWP
 
                     {
 
-
+                        
                         if (!bolge.Equals(tempBolge))// bolge değiştiyse başlık ekle
                         {
                             if (!ilkKayit)
@@ -288,7 +314,8 @@ namespace TBYS_WebParts.BorcluKiracilarWP
                         //bolgeCell.Text = bolge;
 
                         TableCell kiraciCell = new TableCell();
-                        if (string.IsNullOrEmpty(BolgeQS))
+                        bool yetkiliMi = !string.IsNullOrEmpty(AuthQS) || AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM);
+                        if (yetkiliMi)
                         {
                             HyperLink kiraciLnk = new HyperLink();
                             kiraciLnk.Text = kiraci;
@@ -300,7 +327,7 @@ namespace TBYS_WebParts.BorcluKiracilarWP
                         }
                         else
                         {
-                            //bölgeler için
+                            //görüntüleyenler için
                             kiraciCell.Text = "<a href=# onclick=OpenModal(" + kiraSozlesmeId + "); type=button class=\'btn btn-link font-weight-bold\'>" + kiraci + "</a>";
                         }
                             

@@ -175,6 +175,7 @@ namespace NBYS_WebParts.TasinmazArmaganListesiWP {
                                 <tr>
                                     <th>Kayıt No</th>
                                     <th>Bağışçı</th>
+                                    <th>Sağ/Vefat</th>
                                     <th>Adres</th>
                                     <th>İlçe/İl</th>
                                     <th>Telefon</th>
@@ -250,39 +251,26 @@ namespace NBYS_WebParts.TasinmazArmaganListesiWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControlTree(global::NBYS_WebParts.TasinmazArmaganListesiWP.TasinmazArmaganListesiWP @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n<script>\r\n    //excele export ettikten donup sonra kalmasın diye\r\n    functio" +
-                        "n setFormSubmitToFalse() {\r\n        setTimeout(function () { _spFormOnSubmitCall" +
-                        "ed = false; }, 3000);\r\n        return true;\r\n    }\r\n</script>\r\n<script type=\"tex" +
-                        "t/javascript\">\r\n    //excele export ettikten donup sonra kalmasın diye\r\n    func" +
-                        "tion setFormSubmitToFalse() {\r\n        setTimeout(function () { _spFormOnSubmitC" +
-                        "alled = false; }, 3000);\r\n        return true;\r\n    }\r\n    function setDataSet(m" +
-                        "yset) {\r\n        myjsons = myset;\r\n    }\r\n    var myjsons = [{\r\n        \"BagisId" +
-                        "\": \"\", \"AdiSoyadi\": \"\", \"Adres\": \"\", \"IlIlce\": \"\", \"Telefon\": \"\", \"BagisTarihi\":" +
-                        " \"\", \"Armagan\": \"\",\r\n        \"ArmaganDurumu\": \"\", \"BagisciKarti\": \"\"\r\n    }];\r\n " +
-                        "   jQuery(document).ready(function () {\r\n        jQuery.fn.dataTable.moment(\'DD." +
-                        "MM.YYYY\');//sort date\r\n        jQuery(\'#CustomDataTable\').DataTable({\r\n         " +
-                        "   data: myjsons,\r\n            columns: [\r\n                { data: \"BagisId\" },\r" +
-                        "\n                { data: \"AdiSoyadi\" },\r\n                { data: \"Adres\" },\r\n   " +
-                        "             { data: \"IlIlce\" },\r\n                { data: \"Telefon\" },\r\n        " +
-                        "        { data: \"BagisTarihi\" },\r\n                { data: \"Armagan\" },\r\n        " +
-                        "        { data: \"ArmaganDurumu\" },\r\n                { data: \"BagisciKarti\" },\r\n " +
-                        "           ],\r\n            columnDefs: [\r\n                { type: \'turkish\', tar" +
-                        "gets: [1, 2, 3] },\r\n            ],\r\n            \'order\': [[5, \'desc\'], [1, \'desc" +
-                        "\']],//AdiSoyadi Sıralı\r\n            \"language\": {\r\n                \"url\": \"http:" +
-                        "//tskgv-portal/OrtakBelgeler/Turkish.txt\",\r\n                \"decimal\": \",\",\r\n   " +
-                        "             \"thousands\": \".\"\r\n            },\r\n            responsive: true,\r\n  " +
-                        "          dom: \'Bfrtip\',\r\n            buttons: [\r\n                {\r\n           " +
-                        "         extend: \'print\',\r\n                    exportOptions: {\r\n               " +
-                        "         columns: \':visible\'\r\n                    }\r\n                },\r\n       " +
-                        "         {\r\n                    extend: \'excel\',\r\n                    exportOpti" +
-                        "ons: {\r\n                        columns: \':visible\'\r\n                    }\r\n    " +
-                        "            },\r\n                {\r\n                    extend: \'pdf\',\r\n         " +
-                        "           exportOptions: {\r\n                        columns: \':visible\'\r\n      " +
-                        "              }\r\n                },\r\n                {\r\n                    exte" +
-                        "nd: \'copy\',\r\n                    exportOptions: {\r\n                        colum" +
-                        "ns: \':visible\'\r\n                    }\r\n                },\r\n                , \'pa" +
-                        "geLength\', \"colvis\"\r\n            ],\r\n        });\r\n    });\r\n</script>\r\n<div class" +
-                        "=\"col-xl\">\r\n    <div class=\"card shadow\">\r\n        "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+
+<script>
+    //excele export ettikten donup sonra kalmasın diye
+    function setFormSubmitToFalse() {
+        setTimeout(function () { _spFormOnSubmitCalled = false; }, 3000);
+        return true;
+    }
+</script>
+<script type=""text/javascript"">
+    //excele export ettikten donup sonra kalmasın diye
+    function setFormSubmitToFalse() {
+        setTimeout(function () { _spFormOnSubmitCalled = false; }, 3000);
+        return true;
+    }
+
+</script>
+<div class=""col-xl"">
+    <div class=""card shadow"">
+        "));
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl1;
             @__ctrl1 = this.@__BuildControlCardHeader();
             @__parser.AddParsedSubObject(@__ctrl1);

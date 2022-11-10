@@ -33,6 +33,30 @@ namespace NBYS_WebParts.TasinmazArmaganListesiWP
             InitializeControl();
             this.ChromeType = PartChromeType.None;
         }
+        private string AuthQS
+        {
+            get
+            {
+
+                if (ViewState["Auth"] == null || string.IsNullOrEmpty(ViewState["Auth"].ToString()))
+                {
+                    if (Page.Request.QueryString["Auth"] != null)
+                    {
+                        ViewState["Auth"] = Page.Request.QueryString["Auth"];
+                    }
+                    else
+                    {
+                        ViewState["Auth"] = string.Empty;
+                    }
+                }
+                return ViewState["Auth"].ToString();
+            }
+
+            set
+            {
+                ViewState["Auth"] = value;
+            }
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -51,7 +75,8 @@ namespace NBYS_WebParts.TasinmazArmaganListesiWP
         private void TabloOlustur()
         {
             var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            UtilityHelper.ScriptCalistir("setDataSet(" + jsonData + ");");
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            UtilityHelper.ScriptCalistir(jsString);
         }
         private string TabloJson()
         {
@@ -72,7 +97,70 @@ namespace NBYS_WebParts.TasinmazArmaganListesiWP
             }
             return jSon;
         }
-       
+        private string CreateDataTable(string jsonData)
+        {
+            string duzenleGorunsun = String.Empty;
+
+            string tableString = @"
+                jQuery(document).ready(function () {
+                    jQuery.fn.dataTable.moment('DD.MM.YYYY');//sort date
+                    jQuery('#CustomDataTable').DataTable({
+                        data: " + jsonData + @",
+                        columns: [
+                            { data: 'BagisId' },
+                            { data: 'AdiSoyadi' },
+                            { data: 'Sag_vefat' },
+                            { data: 'Adres' },
+                            { data: 'IlIlce' },
+                            { data: 'Telefon' },
+                            { data: 'BagisTarihi' },
+                            { data: 'Armagan' },
+                            { data: 'ArmaganDurumu' },
+                            { data: 'BagisciKarti' },
+                        ],
+                        columnDefs: [
+                            { type: 'turkish', targets: [1, 2, 3] },
+                            " + duzenleGorunsun + @"
+                        ],
+                        'order': [[6, 'desc'], [1, 'desc']],//Tarih Sıralı
+                        'language': {
+                            'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                            'decimal': ',',
+                            'thousands': '.'
+                        },
+                        responsive: true,
+                        dom: 'Bfrtip',
+                        buttons: [
+                            {
+                                extend: 'print',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            {
+                                extend: 'excel',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            {
+                                extend: 'pdf',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            {
+                                extend: 'copy',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            , 'pageLength', 'colvis'
+                        ],
+                    });
+                });";
+            return tableString;
+        }
         protected void ExcelBtn_Click(object sender, EventArgs e)
         {
             try
@@ -149,6 +237,7 @@ namespace NBYS_WebParts.TasinmazArmaganListesiWP
                 string bagisId = row["BagisId"].ToString();
                 string tasinmazBagisciId = row["TasinmazBagisciId"].ToString();
                 string adiSoyadi = row["AdiSoyadi"].ToString();
+                string sag_vefat = row["Sag_vefat"].ToString();
                 string bagisTarihi = row["BagisTarihi"].ReturnEmptyIfNull().ConvertToDatetime().ToString("dd.MM.yyyy");
                 string armaganId = row["ArmaganId"].ReturnEmptyIfNull().ToString();
                 string armaganDurumu = row["ArmaganDurumu"].ToString();
@@ -168,6 +257,7 @@ namespace NBYS_WebParts.TasinmazArmaganListesiWP
                 bagisciItem.Sirano = SiraNo++.ToString();
                 bagisciItem.BagisId = bagisId;
                 bagisciItem.AdiSoyadi = adiSoyadi.ToString();
+                bagisciItem.Sag_vefat = sag_vefat;
                 bagisciItem.BagisTarihi = bagisTarihi.ConvertToDatetimeEmptyIfNull();
                 bagisciItem.ArmaganId = armaganId.ToString();
                 bagisciItem.ArmaganDurumu = armaganDurumu;
@@ -177,14 +267,30 @@ namespace NBYS_WebParts.TasinmazArmaganListesiWP
                 bagisciItem.Ili = ili;
                 bagisciItem.IlIlce = ilIlce;
                 bagisciItem.Telefon = telefon;
-
-                if (!string.IsNullOrEmpty(armaganId))
+                bool yetkiliMi = !string.IsNullOrEmpty(AuthQS) && AuthQS.Equals(ProjeConstants.NBYS_YETKILI_BIRIM);
+                
+                if (yetkiliMi)
                 {
-                    bagisciItem.Armagan = "<a href=" + ProjeConstants.PAGE_TASINMAZARMAGAN_DUZENLE + @"?DestinationApp=BD&BagisId=" + bagisId + " class=\'btn btn-outline-primary\'>Armağan Belgesi</a>";
+                    if (!string.IsNullOrEmpty(armaganId))
+                    {
+                        bagisciItem.Armagan = "<a href=" + ProjeConstants.PAGE_TASINMAZARMAGAN_DUZENLE + @"?DestinationApp=BD&BagisId=" + bagisId + " class=\'btn btn-outline-primary\'>Armağan Belgesi</a>";
+                    }
+                    else
+                    {
+                        bagisciItem.Armagan = "<a href=" + ProjeConstants.PAGE_TASINMAZARMAGAN_DUZENLE + @"?DestinationApp=BD&BagisId=" + bagisId + " class=\'btn btn-outline-success \'>Armağan Oluştur</a>";
+                    }
                 }
                 else
                 {
-                    bagisciItem.Armagan = "<a href=" + ProjeConstants.PAGE_TASINMAZARMAGAN_DUZENLE + @"?DestinationApp=BD&BagisId=" + bagisId + " class=\'btn btn-outline-success \'>Armağan Oluştur</a>";
+                    if (!string.IsNullOrEmpty(armaganId))
+                    {
+                        bagisciItem.Armagan = "Armağan Belgesi oluşturuldu";
+                    }
+                    else
+                    {
+                        bagisciItem.Armagan = "Armağan Belgesi oluşturulmadı";
+                    }
+                    
                 }
                 bagisciItem.BagisciKarti= "<a target='_blank' href=" + ProjeConstants.PAGE_TASINMAZBAGISCI_KARTI + "?SenderApp=TBL&BagisciId=" + tasinmazBagisciId + " class='btn btn-outline-info'>Taşınmaz Bağışçı Kartı</a>";
                 
@@ -205,6 +311,7 @@ namespace NBYS_WebParts.TasinmazArmaganListesiWP
             public string Sirano { get; set; }
             public string BagisId { get; set; }
             public string AdiSoyadi { get; set; }
+            public string Sag_vefat { get; set; }
             public string BagisTarihi { get; set; }
             public string ArmaganId { get; set; }
             public string Armagan { get; set; }

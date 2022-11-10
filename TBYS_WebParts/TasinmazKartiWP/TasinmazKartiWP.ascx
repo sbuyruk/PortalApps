@@ -62,7 +62,6 @@
                 <div class="card-footer">
                     
                     <asp:LinkButton CssClass="btn btn-outline-success float-right" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
-                    <asp:LinkButton CssClass="btn btn-outline-secondary float-right" ID="TasinmazaGitBtn" runat="server" Text="Taşınmaza Git" CausesValidation="false" OnClick="TasinmazaGitBtn_Click" />
                     <asp:LinkButton CssClass="btn btn-outline-secondary float-right" ID="TasinmazListesiBtn" runat="server" Text="Taşınmaz Listesi" CausesValidation="false" OnClick="TasinmazListesiBtn_Click" />
                 </div>
             </div>

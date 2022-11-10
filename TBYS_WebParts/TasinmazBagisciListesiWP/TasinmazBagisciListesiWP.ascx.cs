@@ -62,7 +62,7 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP
             get
             {
 
-                if (string.IsNullOrEmpty(ViewState["Auth"].ToString()))
+                 if (ViewState["Auth"]==null || string.IsNullOrEmpty(ViewState["Auth"].ToString()))
                 {
                     if (Page.Request.QueryString["Auth"] != null)
                     {

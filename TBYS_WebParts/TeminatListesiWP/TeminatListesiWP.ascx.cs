@@ -1,4 +1,5 @@
-﻿using Model.TBYS;
+﻿using Model.Ortak;
+using Model.TBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -30,6 +31,30 @@ namespace TBYS_WebParts.TeminatListesiWP
             base.OnInit(e);
             InitializeControl();
             this.ChromeType = PartChromeType.None;
+        }
+        private string AuthQS
+        {
+            get
+            {
+
+                if (ViewState["Auth"]==null || string.IsNullOrEmpty(ViewState["Auth"].ToString()))
+                {
+                    if (Page.Request.QueryString["Auth"] != null)
+                    {
+                        ViewState["Auth"] = Page.Request.QueryString["Auth"];
+                    }
+                    else
+                    {
+                        ViewState["Auth"] = string.Empty;
+                    }
+                }
+                return ViewState["Auth"].ToString();
+            }
+
+            set
+            {
+                ViewState["Auth"] = value;
+            }
         }
         private string KiraciIdQS
         {
@@ -74,9 +99,8 @@ namespace TBYS_WebParts.TeminatListesiWP
         {
             List<Tasinmaz> list = new List<Tasinmaz>();
             var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            //var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
-            System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler,
-                typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "setDataSet(" + jsonData + ");", true);
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            UtilityHelper.ScriptCalistir(jsString);
         }
         private string TabloJson()
         {
@@ -96,7 +120,79 @@ namespace TBYS_WebParts.TeminatListesiWP
             }
             return jSon;
         }
+        private string CreateDataTable(string jsonData)
+        {
+            string duzenleGorunsun = string.IsNullOrEmpty(AuthQS) || !AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM)
+                ? "{ targets:9, visible:false},{ targets:10, visible:false},"
+                : "{ targets:9, visible:true},{ targets:10, visible:true},";
 
+            string tableString = @"
+        jQuery(document).ready(function () {
+
+            jQuery('#CustomDataTable').DataTable({
+                data: " + jsonData + @",
+                columns: [
+                    { data: 'KiraciAdi' },
+                    { data: 'Bolge' },
+                    { data: 'TeminatOdemeTarihi' },
+                    { data: 'KiraBedeli' },
+                    { data: 'TeminatTutari' },
+                    { data: 'OdenenTeminatTutari' },
+                    { data: 'IadeTeminatTutari' },
+                    { data: 'KalanTeminatTutari' },
+                    { data: 'Adres', 'width': '20%' },
+                    { data: 'Sozlesme' },
+                    { data: 'Teminat' },
+
+                ],
+                'order': [[0, 'asc']],//AdiSoyadi Sıralı
+                columnDefs:
+                [
+                " + duzenleGorunsun + @"
+                ],
+                'language': {
+                        'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                    'decimal': ',',
+                    'thousands': '.'
+                },
+                responsive: true,
+                dom: 'Bfrtip',
+                buttons:
+                    [
+                    {
+                    extend: 'print',
+                        exportOptions:
+                        {
+                        columns: ':visible'
+                        }
+                    },
+                    {
+                    extend: 'excel',
+                        exportOptions:
+                        {
+                        columns: ':visible'
+                        }
+                    },
+                    {
+                    extend: 'pdf',
+                        exportOptions:
+                        {
+                        columns: ':visible'
+                        }
+                    },
+                    {
+                    extend: 'copy',
+                        exportOptions:
+                        {
+                        columns: ':visible'
+                        }
+                    },
+                    , 'pageLength', 'colvis'
+                ]
+            });
+        });";
+            return tableString;
+        }
         private List<TeminatListItem> GetDataList(bool isExcel)
         {
             int SiraNo = 1;

@@ -76,7 +76,7 @@ namespace IKYS_WebParts.IzinKullanimRaporuWP
             get
             {
 
-                if (ViewState["Auth"] == null)
+                if (ViewState["Auth"] == null || string.IsNullOrEmpty(ViewState["Auth"].ToString()))
                 {
                     if (Page.Request.QueryString["Auth"] != null)
                     {

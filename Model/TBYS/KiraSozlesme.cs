@@ -257,7 +257,7 @@ namespace Model.TBYS
 	                S.KefilTCKimlikNo, S.KefilAdresi, S.KefilTel,S.TeminatCinsi, 
                     S.TeminatTutari, S.OdenenTeminatTutari, S.IadeTeminatTutari, S.KalanTeminatTutari,
 	                S.TeminatAciklama, S.TeminatOdemeTarihi,
-	                K.Adi KiraciAdi, K.Soyadi KiraciSoyadi, S.SozlesmeDurumu, S.DurumDegismeTar, S.Aktif, S.SozlesmePDFDosyasi
+	                K.Adi KiraciAdi, K.Soyadi KiraciSoyadi, S.SozlesmeDurumu, S.DurumDegismeTar, S.Aktif, S.SozlesmePDFDosyasi,K.KiralamaAmaci
                 FROM KiraSozlesme_Table S
 					LEFT JOIN Kiraci_Table K on K.Id= S.KiraciId
 					LEFT OUTER JOIN SozlesmeTasinmaz_Table C On C.SozlesmeId=S.Id 

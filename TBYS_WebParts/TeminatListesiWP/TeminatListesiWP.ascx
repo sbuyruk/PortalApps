@@ -12,74 +12,9 @@
         setTimeout(function () { _spFormOnSubmitCalled = false; }, 3000);
         return true;
     }
-    function setDataSet(myset) {
-        myjsons = myset;
-    }
-    var myjsons = [{
-        "KiraciAdi": "", "Bolge": "", "TeminatOdemeTarihi": "", "KiraBedeli": "", "TeminatTutari": "", "OdenenTeminatTutari": "", "IadeTeminatTutari": "", "KalanTeminatTutari": "", "Adres": "",
-        "Sozlesme": "", "Teminat": ""
-    }];
-    jQuery(document).ready(function () {
 
-        jQuery('#CustomDataTable').DataTable({
-            data: myjsons,
-            columns: [
-                { data: "KiraciAdi" },
-                { data: "Bolge" },
-                { data: "TeminatOdemeTarihi" },
-                { data: "KiraBedeli" },
-                { data: "TeminatTutari" },
-                { data: "OdenenTeminatTutari" },
-                { data: "IadeTeminatTutari" },
-                { data: "KalanTeminatTutari" },
-                { data: "Adres" },
-                { data: "Sozlesme" },
-                { data: "Teminat" },
-
-            ],
-            'order': [[0, 'asc']],//AdiSoyadi Sıralı
-            "language": {
-                "url": "http://tskgv-portal/OrtakBelgeler/Turkish.txt",
-                "decimal": ",",
-                "thousands": "."
-            },
-            responsive: true,
-            dom: 'Bfrtip',
-            //colon resizable
-            //initComplete: function (settings) {
-            //    $('#CustomDataTable').colResizable({ liveDrag: true });
-            //},
-            buttons: [
-                {
-                    extend: 'print',
-                    exportOptions: {
-                        columns: ':visible'
-                    }
-                },
-                {
-                    extend: 'excel',
-                    exportOptions: {
-                        columns: ':visible'
-                    }
-                },
-                {
-                    extend: 'pdf',
-                    exportOptions: {
-                        columns: ':visible'
-                    }
-                },
-                {
-                    extend: 'copy',
-                    exportOptions: {
-                        columns: ':visible'
-                    }
-                },
-                , 'pageLength', "colvis"
-            ]
-        });
-    });
 </script>
-<div class="container ">
+<div class="container col-xl">
     <div class="card shadow">
         <div class="card-header">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>

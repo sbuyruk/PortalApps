@@ -21,86 +21,6 @@
         setTimeout(function () { _spFormOnSubmitCalled = false; }, 3000);
         return true;
     }
-    function setDataSet(myset) {
-        myjsons = myset;
-    }
-    var myjsons = [{
-        "Id": "", "KullanimSekli": "", "MulkiyetSekli": "", "IliIlcesi": "", "Adres": "", "Bagisci": "", "BagisYili": "",
-        "SorumluBolge": "", "EmlakSicilNo": "", "AdaNo": "", "ParselNo": "", "PaftaNo": "", "YevmiyeNo": "", "CiltNo": "", "SahifeNo": "", "Cinsi": "", "KullanimDurumu": "",
-        "TasinmazKarti": "", "Duzenle": ""
-    }];
-    jQuery(document).ready(function () {
-
-        jQuery('#CustomDataTable').DataTable({
-            data: myjsons,
-            columns: [
-                { data: "Id" },
-                { data: "KullanimSekli" },
-                { data: "MulkiyetSekli" },
-                { data: "IliIlcesi" },
-                { data: "Adres" },
-                { data: "Bagisci" },
-                { data: "BagisYili" },
-                { data: "SorumluBolge" },
-                { data: "EmlakSicilNo" },
-                { data: "AdaNo" },
-                { data: "ParselNo" },
-                { data: "PaftaNo" },
-                { data: "YevmiyeNo" },
-                { data: "CiltNo" },
-                { data: "SahifeNo" },
-                { data: "Cinsi" },
-                { data: "KullanimDurumu" },
-                { data: "TasinmazKarti" },
-                { data: "Duzenle" },
-            ],
-            'order': [[0, 'asc']],//Id Sıralı
-            "language": {
-                "url": "http://tskgv-portal/OrtakBelgeler/Turkish.txt",
-                "decimal": ",",
-                "thousands": "."
-            },
-            responsive: true,
-            dom: 'Bfrtip',
-            //colon resizable
-            //initComplete: function (settings) {
-            //    $('#CustomDataTable').colResizable({ liveDrag: true });
-            //},
-            buttons: [
-                {
-                    extend: 'print',
-                    exportOptions: {
-                        columns: ':visible'
-                    }
-                },
-                {
-                    extend: 'excel',
-                    exportOptions: {
-                        columns: ':visible'
-                    }
-                },
-                {
-                    extend: 'pdf',
-                    exportOptions: {
-                        columns: ':visible'
-                    }
-                },
-                {
-                    extend: 'copy',
-                    exportOptions: {
-                        columns: ':visible'
-                    }
-                },
-                , 'pageLength', "colvis"
-            ],
-            columnDefs: [
-                {
-                    targets: [8,9,10,11,12,13,14,15,16],
-                    visible: false
-                }
-            ]
-        });
-    });
 </script>
 <div class="col-xl">
     <div class="card shadow">
@@ -125,15 +45,6 @@
                             <th>Bagışçı</th>
                             <th>Bagış Yılı</th>
                             <th>SorumluBolge</th>
-                            <th>Emlak Sicil No</th>
-                            <th>AdaNo</th>
-                            <th>ParselNo</th>
-                            <th>PaftaNo</th>
-                            <th>YevmiyeNo</th>
-                            <th>CiltNo</th>
-                            <th>SahifeNo</th>
-                            <th>Cinsi</th>
-                            <th>KullanimDurumu</th>
                             <th>Taşınmaz Kartı</th>
                             <th>Düzenle</th>
                         </tr>

@@ -249,11 +249,11 @@ namespace Model.TBYS
         }
         public DataTable SelectTasinmazBagisciReturnDataTable(bool gizliBagiscilarHaric)
         {
-            string gizliBagiscilarHaricStr = gizliBagiscilarHaric ? " WHERE Gizli IS NULL OR Gizli=0 " : string.Empty;
+            string gizliBagiscilarHaricStr = gizliBagiscilarHaric ? " AND Gizli IS NULL OR Gizli=0 " : string.Empty;
             string sqlString = string.Format(@"
                 SELECT 
                     A.Id TasinmazBagisciId, E.Bolge,
-	                A.Adi+' '+ A.Soyadi AdiSoyadi,
+	                A.Adi+' '+ A.Soyadi AdiSoyadi,Sag_vefat,
                     A.TCKimlikNo, A.DogumYeri, A.DogumTarihi, A.Meslegi, A.SosyalGuvence, 
                     C.TasinmazId, C.BagisTarihi,C.ArmaganId, C.ArmaganDurumu, C.ArmaganTarihi, C.Id BagisId,
 	                A.Ili,A.Ilcesi, A.Adres,  
@@ -263,6 +263,7 @@ namespace Model.TBYS
                     LEFT JOIN Tasinmaz_Table D on D.Id=C.TasinmazId AND D.EnvanterdeMi=1
 					LEFT JOIN Il_Table E on E.IlAdi=A.Ili 
 					LEFT JOIN Armagan_Table F on F.Id=A.Ili 
+                WHERE D.EdinmeSekli='Bağış'
                 {0}
 				ORDER BY C.BagisTarihi DESC                               
                 ", gizliBagiscilarHaricStr);

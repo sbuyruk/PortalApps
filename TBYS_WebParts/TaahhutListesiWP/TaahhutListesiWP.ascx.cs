@@ -33,6 +33,30 @@ namespace TBYS_WebParts.TaahhutListesiWP
             InitializeControl();
             this.ChromeType = PartChromeType.None;
         }
+        private string AuthQS
+        {
+            get
+            {
+
+                if (ViewState["Auth"] == null || string.IsNullOrEmpty(ViewState["Auth"].ToString()))
+                {
+                    if (Page.Request.QueryString["Auth"] != null)
+                    {
+                        ViewState["Auth"] = Page.Request.QueryString["Auth"];
+                    }
+                    else
+                    {
+                        ViewState["Auth"] = string.Empty;
+                    }
+                }
+                return ViewState["Auth"].ToString();
+            }
+
+            set
+            {
+                ViewState["Auth"] = value;
+            }
+        }
         private string SecilenIdQS
         {
             get
@@ -257,7 +281,9 @@ namespace TBYS_WebParts.TaahhutListesiWP
 
         private string CreateDataTable(string jsonData)
         {
-            string duzenleGorunsun = string.IsNullOrEmpty(BolgeQS) ? "{ targets:10, visible:true}," : "{ targets:10, visible:false},";
+            string duzenleGorunsun = string.IsNullOrEmpty(AuthQS) || !AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM)
+                ? "{ targets:10, visible:false}," 
+                : "{ targets:10, visible:true},";
             string tableString = @"
             jQuery(document).ready(function() {
 
@@ -290,7 +316,7 @@ namespace TBYS_WebParts.TaahhutListesiWP
                 { data: 'Duzenle' },
 
             ],
-            'order': [[0, 'asc']],//AdiSoyadi Sıralı
+            'order': [[0, 'asc']],//Sırala
             columnDefs:
                 [
                 " + duzenleGorunsun + @"

@@ -20,68 +20,7 @@
         setTimeout(function () { _spFormOnSubmitCalled = false; }, 3000);
         return true;
     }
-    function setDataSet(myset) {
-        myjsons = myset;
-    }
-    var myjsons = [{
-        "BagisId": "", "AdiSoyadi": "", "Adres": "", "IlIlce": "", "Telefon": "", "BagisTarihi": "", "Armagan": "",
-        "ArmaganDurumu": "", "BagisciKarti": ""
-    }];
-    jQuery(document).ready(function () {
-        jQuery.fn.dataTable.moment('DD.MM.YYYY');//sort date
-        jQuery('#CustomDataTable').DataTable({
-            data: myjsons,
-            columns: [
-                { data: "BagisId" },
-                { data: "AdiSoyadi" },
-                { data: "Adres" },
-                { data: "IlIlce" },
-                { data: "Telefon" },
-                { data: "BagisTarihi" },
-                { data: "Armagan" },
-                { data: "ArmaganDurumu" },
-                { data: "BagisciKarti" },
-            ],
-            columnDefs: [
-                { type: 'turkish', targets: [1, 2, 3] },
-            ],
-            'order': [[5, 'desc'], [1, 'desc']],//AdiSoyadi Sıralı
-            "language": {
-                "url": "http://tskgv-portal/OrtakBelgeler/Turkish.txt",
-                "decimal": ",",
-                "thousands": "."
-            },
-            responsive: true,
-            dom: 'Bfrtip',
-            buttons: [
-                {
-                    extend: 'print',
-                    exportOptions: {
-                        columns: ':visible'
-                    }
-                },
-                {
-                    extend: 'excel',
-                    exportOptions: {
-                        columns: ':visible'
-                    }
-                },
-                {
-                    extend: 'pdf',
-                    exportOptions: {
-                        columns: ':visible'
-                    }
-                },
-                {
-                    extend: 'copy',
-                    exportOptions: {
-                        columns: ':visible'
-                    }
-                },
-                , 'pageLength', "colvis"
-            ],
-        });
-    });
+
 </script>
 <div class="col-xl">
     <div class="card shadow">
@@ -102,6 +41,7 @@
                                 <tr>
                                     <th>Kayıt No</th>
                                     <th>Bağışçı</th>
+                                    <th>Sağ/Vefat</th>
                                     <th>Adres</th>
                                     <th>İlçe/İl</th>
                                     <th>Telefon</th>

@@ -60,7 +60,7 @@ namespace TBYS_WebParts.KiraciListesiWP
             get
             {
 
-                if (ViewState["Auth"] == null)
+                if (ViewState["Auth"] == null || string.IsNullOrEmpty(ViewState["Auth"].ToString()))
                 {
                     if (Page.Request.QueryString["Auth"] != null)
                     {

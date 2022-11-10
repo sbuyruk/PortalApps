@@ -166,48 +166,27 @@ namespace TBYS_WebParts.TasinmazListesiWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControlTree(global::TBYS_WebParts.TasinmazListesiWP.TasinmazListesiWP @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n<style>\r\n    .ui-datatable tbody td {\r\n        white-space: normal;\r\n    }\r\n   " +
-                        " table tr td th {\r\n        font-size: small;\r\n    }\r\n</style>\r\n\r\n<script type=\"t" +
-                        "ext/javascript\">\r\n    //excele export ettikten donup sonra kalmasın diye\r\n    fu" +
-                        "nction setFormSubmitToFalse() {\r\n        setTimeout(function () { _spFormOnSubmi" +
-                        "tCalled = false; }, 3000);\r\n        return true;\r\n    }\r\n    function setDataSet" +
-                        "(myset) {\r\n        myjsons = myset;\r\n    }\r\n    var myjsons = [{\r\n        \"Id\": " +
-                        "\"\", \"KullanimSekli\": \"\", \"MulkiyetSekli\": \"\", \"IliIlcesi\": \"\", \"Adres\": \"\", \"Bag" +
-                        "isci\": \"\", \"BagisYili\": \"\",\r\n        \"SorumluBolge\": \"\", \"EmlakSicilNo\": \"\", \"Ad" +
-                        "aNo\": \"\", \"ParselNo\": \"\", \"PaftaNo\": \"\", \"YevmiyeNo\": \"\", \"CiltNo\": \"\", \"SahifeN" +
-                        "o\": \"\", \"Cinsi\": \"\", \"KullanimDurumu\": \"\",\r\n        \"TasinmazKarti\": \"\", \"Duzenl" +
-                        "e\": \"\"\r\n    }];\r\n    jQuery(document).ready(function () {\r\n\r\n        jQuery(\'#Cu" +
-                        "stomDataTable\').DataTable({\r\n            data: myjsons,\r\n            columns: [\r" +
-                        "\n                { data: \"Id\" },\r\n                { data: \"KullanimSekli\" },\r\n  " +
-                        "              { data: \"MulkiyetSekli\" },\r\n                { data: \"IliIlcesi\" }," +
-                        "\r\n                { data: \"Adres\" },\r\n                { data: \"Bagisci\" },\r\n    " +
-                        "            { data: \"BagisYili\" },\r\n                { data: \"SorumluBolge\" },\r\n " +
-                        "               { data: \"EmlakSicilNo\" },\r\n                { data: \"AdaNo\" },\r\n  " +
-                        "              { data: \"ParselNo\" },\r\n                { data: \"PaftaNo\" },\r\n     " +
-                        "           { data: \"YevmiyeNo\" },\r\n                { data: \"CiltNo\" },\r\n        " +
-                        "        { data: \"SahifeNo\" },\r\n                { data: \"Cinsi\" },\r\n             " +
-                        "   { data: \"KullanimDurumu\" },\r\n                { data: \"TasinmazKarti\" },\r\n    " +
-                        "            { data: \"Duzenle\" },\r\n            ],\r\n            \'order\': [[0, \'asc" +
-                        "\']],//Id Sıralı\r\n            \"language\": {\r\n                \"url\": \"http://tskgv" +
-                        "-portal/OrtakBelgeler/Turkish.txt\",\r\n                \"decimal\": \",\",\r\n          " +
-                        "      \"thousands\": \".\"\r\n            },\r\n            responsive: true,\r\n         " +
-                        "   dom: \'Bfrtip\',\r\n            //colon resizable\r\n            //initComplete: fu" +
-                        "nction (settings) {\r\n            //    $(\'#CustomDataTable\').colResizable({ live" +
-                        "Drag: true });\r\n            //},\r\n            buttons: [\r\n                {\r\n   " +
-                        "                 extend: \'print\',\r\n                    exportOptions: {\r\n       " +
-                        "                 columns: \':visible\'\r\n                    }\r\n                },\r" +
-                        "\n                {\r\n                    extend: \'excel\',\r\n                    ex" +
-                        "portOptions: {\r\n                        columns: \':visible\'\r\n                   " +
-                        " }\r\n                },\r\n                {\r\n                    extend: \'pdf\',\r\n " +
-                        "                   exportOptions: {\r\n                        columns: \':visible\'" +
-                        "\r\n                    }\r\n                },\r\n                {\r\n                " +
-                        "    extend: \'copy\',\r\n                    exportOptions: {\r\n                     " +
-                        "   columns: \':visible\'\r\n                    }\r\n                },\r\n             " +
-                        "   , \'pageLength\', \"colvis\"\r\n            ],\r\n            columnDefs: [\r\n        " +
-                        "        {\r\n                    targets: [8,9,10,11,12,13,14,15,16],\r\n           " +
-                        "         visible: false\r\n                }\r\n            ]\r\n        });\r\n    });\r" +
-                        "\n</script>\r\n<div class=\"col-xl\">\r\n    <div class=\"card shadow\">\r\n        <div cl" +
-                        "ass=\"card-header\">\r\n            "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+<style>
+    .ui-datatable tbody td {
+        white-space: normal;
+    }
+    table tr td th {
+        font-size: small;
+    }
+</style>
+
+<script type=""text/javascript"">
+    //excele export ettikten donup sonra kalmasın diye
+    function setFormSubmitToFalse() {
+        setTimeout(function () { _spFormOnSubmitCalled = false; }, 3000);
+        return true;
+    }
+</script>
+<div class=""col-xl"">
+    <div class=""card shadow"">
+        <div class=""card-header"">
+            "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl1;
             @__ctrl1 = this.@__BuildControlCloseBtn();
             @__parser.AddParsedSubObject(@__ctrl1);
@@ -239,15 +218,6 @@ namespace TBYS_WebParts.TasinmazListesiWP {
                             <th>Bagışçı</th>
                             <th>Bagış Yılı</th>
                             <th>SorumluBolge</th>
-                            <th>Emlak Sicil No</th>
-                            <th>AdaNo</th>
-                            <th>ParselNo</th>
-                            <th>PaftaNo</th>
-                            <th>YevmiyeNo</th>
-                            <th>CiltNo</th>
-                            <th>SahifeNo</th>
-                            <th>Cinsi</th>
-                            <th>KullanimDurumu</th>
                             <th>Taşınmaz Kartı</th>
                             <th>Düzenle</th>
                         </tr>

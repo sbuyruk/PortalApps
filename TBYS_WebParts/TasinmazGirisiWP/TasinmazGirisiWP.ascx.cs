@@ -327,6 +327,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
         {
             EdinmeSekliDDL.Items.Clear();
             EdinmeSekliDDL.Items.Add("Bağış");
+            EdinmeSekliDDL.Items.Add("Vasiyetin Tenfizi");
             EdinmeSekliDDL.Items.Add("Mahkeme Kararı");
             EdinmeSekliDDL.Items.Add("Satın Alma");
             EdinmeSekliDDL.Items.Add("Tashih/Cins Tashihi");
