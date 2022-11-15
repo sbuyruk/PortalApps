@@ -408,21 +408,30 @@ namespace TBYS_WebParts.TasinmazKartiWP
             TableCell r1c4 = new TableCell();
             r1c4.RowSpan = 3;
 
-            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
+            //string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+            //string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
+            string newUrl = UtilityHelper.TbysURLGetir() ;
             string imageFileName = bagisci.Adi.ReplaceTrChars() + bagisci.Soyadi.ReplaceTrChars() + ".jpg";
-            string imgUrl = newUrl + "/../" + ProjeConstants.RESIMLER_BAGISCI + "/_t/" + imageFileName;
+            string imgUrl = newUrl + "/" + ProjeConstants.RESIMLER_BAGISCI + "/_t/" + imageFileName;
             System.Web.UI.WebControls.Image image = new System.Web.UI.WebControls.Image();
-            dosyaVarmi = DosyaVarMi(ProjeConstants.RESIMLER_BAGISCI, imageFileName);
-            if (dosyaVarmi)
+           
+            try
             {
-                imageFileName = bagisci.Adi.ReplaceTrChars() + bagisci.Soyadi.ReplaceTrChars() + "_jpg.jpg";
-                imgUrl = newUrl + "/../" + ProjeConstants.RESIMLER_BAGISCI + "/_t/" + imageFileName;
-                image.ImageUrl = imgUrl;
+                dosyaVarmi = DosyaVarMi(ProjeConstants.RESIMLER_BAGISCI, imageFileName);
+                if (dosyaVarmi)
+                {
+                    imageFileName = bagisci.Adi.ReplaceTrChars() + bagisci.Soyadi.ReplaceTrChars() + "_jpg.jpg";
+                    imgUrl = newUrl + "/" + ProjeConstants.RESIMLER_BAGISCI + "/_t/" + imageFileName;
+                    image.ImageUrl = imgUrl;
+                }
+                else
+                {
+                    image.ImageUrl = dosyaVarmi ? imgUrl : newUrl + "/" + ProjeConstants.RESIMLER_BAGISCI + "/_t/bagisci_jpg.jpg"; ;
+                }
             }
-            else
+            catch (Exception)
             {
-                image.ImageUrl = dosyaVarmi ? imgUrl : newUrl + "/../" + ProjeConstants.RESIMLER_BAGISCI + "/_t/bagisci_jpg.jpg"; ;
+                image.ImageUrl = dosyaVarmi ? imgUrl : newUrl + "/" + ProjeConstants.RESIMLER_BAGISCI + "/_t/bagisci_jpg.jpg"; ;
             }
 
             //image.Attributes["onerror"] = "this.src='" + newUrl + "/../" + ProjeConstants.RESIMLER_BAGISCI + "/_t/bagisci_jpg.jpg';";
@@ -647,8 +656,9 @@ namespace TBYS_WebParts.TasinmazKartiWP
             row2.Controls.Add(r2c3);
             row2.Controls.Add(r2c4);
 
-            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
+            //string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+            //string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
+            string newUrl = UtilityHelper.TbysURLGetir() + "/" + ProjeConstants.RESIMLER_TASINMAZ + "/";
             string imageFileName1 = (string.IsNullOrEmpty(tasinmaz.TasinmazFoto) ? ProjeConstants.PARAM_TASINMAZ_TASINMAZFOTO : tasinmaz.TasinmazFoto) + "_jpg.jpg";
             string imageFileName2 = (string.IsNullOrEmpty(tasinmaz.TasinmazFoto1) ? ProjeConstants.PARAM_TASINMAZ_TASINMAZFOTO1 : tasinmaz.TasinmazFoto1) + "_jpg.jpg";
             string imageFileName3 = (string.IsNullOrEmpty(tasinmaz.TasinmazFoto2) ? ProjeConstants.PARAM_TASINMAZ_TASINMAZFOTO2 : tasinmaz.TasinmazFoto2) + "_jpg.jpg";
@@ -656,12 +666,12 @@ namespace TBYS_WebParts.TasinmazKartiWP
             string imageFileName5 = (string.IsNullOrEmpty(tasinmaz.KrokiFoto) ? ProjeConstants.PARAM_TASINMAZ_KROKIFOTO : tasinmaz.KrokiFoto) + "_jpg.jpg";
             string imageFileName6 = (string.IsNullOrEmpty(tasinmaz.KrokiFoto) ? ProjeConstants.PARAM_TASINMAZ_TAPUFOTO : tasinmaz.TapuFoto) + "_jpg.jpg";
 
-            string imgUrl1 = newUrl + "/../" + ProjeConstants.RESIMLER_TASINMAZ + "/_t/" + imageFileName1;
-            string imgUrl2 = newUrl + "/../" + ProjeConstants.RESIMLER_TASINMAZ + "/_t/" + imageFileName2;
-            string imgUrl3 = newUrl + "/../" + ProjeConstants.RESIMLER_TASINMAZ + "/_t/" + imageFileName3;
-            string imgUrl4 = newUrl + "/../" + ProjeConstants.RESIMLER_TASINMAZ + "/_t/" + imageFileName4;
-            string imgUrl5 = newUrl + "/../" + ProjeConstants.RESIMLER_TASINMAZ + "/_t/" + imageFileName5;
-            string imgUrl6 = newUrl + "/../" + ProjeConstants.RESIMLER_TASINMAZ + "/_t/" + imageFileName6;
+            string imgUrl2 = newUrl + "/_t/" + imageFileName2;
+            string imgUrl3 = newUrl + "/_t/" + imageFileName3;
+            string imgUrl4 = newUrl + "/_t/" + imageFileName4;
+            string imgUrl1 = newUrl + "/_t/" + imageFileName1;
+            string imgUrl5 = newUrl + "/_t/" + imageFileName5;
+            string imgUrl6 = newUrl + "/_t/" + imageFileName6;
 
             System.Web.UI.WebControls.Image image1 = new System.Web.UI.WebControls.Image();
             System.Web.UI.WebControls.Image image2 = new System.Web.UI.WebControls.Image();

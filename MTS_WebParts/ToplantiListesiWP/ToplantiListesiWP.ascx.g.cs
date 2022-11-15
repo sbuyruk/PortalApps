@@ -215,8 +215,7 @@ namespace MTS_WebParts.ToplantiListesiWP {
                             <thead>
                                 <tr>
  
-                                    <th>T.No</th>
-                                    <th>Başlangıç Zamanı</th>
+                                    <th>Başlama Zamanı</th>
                                     <th>Bitiş Zamanı</th>
                                     <th>Konusu</th>
                                     <th>Koordinatör</th>
@@ -224,7 +223,8 @@ namespace MTS_WebParts.ToplantiListesiWP {
                                     <th>İç Katılımcılar</th>
                                     <th>Dış Katılımcılar</th>
                                     <th>Bilgi</th>
-                                    <th>Çevrimiçi</th>
+                                    <th>Açıklama</th>
+                                    <th>Çev. İçi</th>
                                     <th>Düzenle</th>
                                 </tr>
                             </thead>

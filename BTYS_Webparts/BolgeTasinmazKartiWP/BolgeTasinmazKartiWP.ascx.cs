@@ -582,7 +582,7 @@ namespace BTYS_Webparts.BolgeTasinmazKartiWP
             row2.Controls.Add(r2c3);
             row2.Controls.Add(r2c4);
 
-            string newUrl = UtilityHelper.TbysURLGetir()+"/"+ProjeConstants.RESIMLER_TBYS + "/";
+            string newUrl = UtilityHelper.TbysURLGetir()+"/"+ProjeConstants.RESIMLER_TASINMAZ + "/";
             string imageFileName1 = (string.IsNullOrEmpty(tasinmaz.TasinmazFoto) ? ProjeConstants.PARAM_TASINMAZ_TASINMAZFOTO : tasinmaz.TasinmazFoto) + "_jpg.jpg";
             string imageFileName2 = (string.IsNullOrEmpty(tasinmaz.TasinmazFoto1) ? ProjeConstants.PARAM_TASINMAZ_TASINMAZFOTO1 : tasinmaz.TasinmazFoto1) + "_jpg.jpg";
             string imageFileName3 = (string.IsNullOrEmpty(tasinmaz.TasinmazFoto2) ? ProjeConstants.PARAM_TASINMAZ_TASINMAZFOTO2 : tasinmaz.TasinmazFoto2) + "_jpg.jpg";

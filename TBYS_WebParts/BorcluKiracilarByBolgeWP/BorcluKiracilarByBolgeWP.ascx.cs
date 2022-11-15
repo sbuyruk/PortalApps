@@ -271,7 +271,7 @@ namespace TBYS_WebParts.BorcluKiracilarByBolgeWP
             cellLnk.Text = value;
             if (value.ConvertToInt() > 0)
             {
-                string linkUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + page + "?Bolge=" + bolge + (aySayisiBas > 0 ? "&AySayisiBas=" + aySayisiBas : "") +
+                string linkUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + page + "?Auth=IEYS&Bolge=" + bolge + (aySayisiBas > 0 ? "&AySayisiBas=" + aySayisiBas : "") +
                     (aySayisiBit > 0 ? "&AySayisiBit=" + aySayisiBit : "") + "&SecilenAy=" + SecilenAyQS + "&SecilenYil=" + SecilenYilQS;
                 cellLnk.NavigateUrl = linkUrl;
             }

@@ -186,6 +186,7 @@ namespace MTS_WebParts.ToplantiListesiWP
                     string katilimci = !bilgi ? adiSoyadi: string.Empty;
                     string bilgiVerilenAdiSoyadi = bilgi ? adiSoyadi : string.Empty;
                     bool cevrimIci = row["CevrimIci"].ReturnZeroIfNull().ConvertToBool();
+                    string aciklama = row["Aciklama"].ReturnEmptyIfNull().ToString();
 
                     if (tempToplantiId == toplantiId)
                     {
@@ -218,6 +219,7 @@ namespace MTS_WebParts.ToplantiListesiWP
                         toplantiListItem.PasifToplanti = bitTar < DateTime.Now ? ProjeConstants.TOPLANTI_PASIF_BOOL : false;
                         toplantiListItem.SecilenToplanti = SecilenToplantiIdQS.Equals(toplantiListItem.ToplantiId);
                         toplantiListItem.CevrimIci = cevrimIci?"Evet":"Hayır";
+                        toplantiListItem.Aciklama = aciklama;
 
 
                         toplantiListItem.Katilimci += string.IsNullOrEmpty(katilimci)?string.Empty:katilimci + seperator;
@@ -267,34 +269,23 @@ namespace MTS_WebParts.ToplantiListesiWP
                     },
                     data: " + jsonData + @",
                     columns: [
-                        { data: 'ToplantiId' },
                         { data: 'BaslangicTarihi' },
                         { data: 'BitisTarihi' },
-                        { data: 'ToplantiKonusu' },
+                        { data: 'ToplantiKonusu'},
                         { data: 'Koordinator' },
-                        { data: 'ToplantiYeri' },
+                        { data: 'ToplantiYeri'},
                         { data: 'Katilimci' },
                         { data: 'DisKatilimcilar' },
                         { data: 'BilgiVerilenler' },
+                        { data: 'Aciklama' },
                         { data: 'CevrimIci' },
                         { data: 'Duzenle' },
 
                     ],
                     'columnDefs': [
-                        { type: 'turkish', targets: [3,4,5] },
-                        { 'width': '5%', 'targets': 1 },
-                        { 'width': '15%', 'targets': 6 },
-                        //{
-                        //    'targets': [0],
-                        //    'visible': false,
-                        //    'searchable': false
-                        //},
-                        //{
-                        //    'targets': [2],
-                        //    'orderable': false,
-                        //},
+                        { type: 'turkish', targets: [2,3,4,5] },
                     ],
-                    'order': [[2, 'asc']],//sort date desc
+                    'order': [[1, 'asc']],//sort date desc
                     'language': {
                     'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
                         'decimal': ',',
@@ -490,6 +481,7 @@ namespace MTS_WebParts.ToplantiListesiWP
             public string DisKatilimcilar { get; set; }
             public string BilgiVerilenler { get; set; }
             public string Koordinator { get; set; }
+            public string Aciklama { get; set; }
             public string Duzenle { get; set; }
             public bool PasifToplanti { get; set; }
             public bool SecilenToplanti { get; set; }
