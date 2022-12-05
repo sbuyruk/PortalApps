@@ -13,6 +13,12 @@
     table tr td th {
         font-size: small;
     }
+    thead {
+        display: table-header-group;
+    }
+    tfoot {
+        display: none;
+    }
 </style>
 
 <script type="text/javascript">
@@ -36,19 +42,31 @@
             <div class="form-group">
                 <table id="CustomDataTable" class="table table-striped row-border" width="100%">
                     <thead>
-                        <tr>
+                    </thead>
+                    <tfoot> 
+                        <tr >
                             <th>T.No</th>
                             <th>Kullanım Şekli</th>
                             <th>Mülkiyet Şekli</th>
                             <th>İl/İlçe</th>
                             <th>Adres</th>
                             <th>Bagışçı</th>
-                            <th>Bagış Yılı</th>
-                            <th>SorumluBolge</th>
+                            <th>"Bagış Yılı"</th>
+                            <th>Sorumlu Bölge</th>
                             <th>Taşınmaz Kartı</th>
                             <th>Düzenle</th>
+                            <th>Emlak Beyan Değeri</th>
+                            <th>Tahmini Rayiç Değeri</th>
+                            <th>Ada No</th>
+                            <th>Pafta No</th>
+                            <th>ParselNo</th>
+                            <th>Yüz Ölçümü</th>
+                            <th>Arsa Payı</th>
+                            <th>Vakıf Hissesi</th>
                         </tr>
-                    </thead>
+                    </tfoot>
+                    <tbody></tbody>
+                    
                 </table>
             </div>
         </div>

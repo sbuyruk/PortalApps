@@ -369,20 +369,9 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP {
             @__w.Write("\').value = id;\r\n        document.getElementById(\'");
                          @__w.Write( TaahhutModalDoldurBtn.ClientID);
 
-            @__w.Write(@"').click();
-        $(""#TaahhutModalUrlDiv"").modal({ backdrop: ""static"" });
-    }
-</script>
-
-
-<link rel=""stylesheet"" href=""/Style Library/tskgv/css/fancybox.css"" />
-<script src=""/Style Library/tskgv/js/fancybox.umd.js""></script>
-<script src=""/Style Library/tskgv/js/fancybox.esm.js""></script>
-
-<div class=""container col-xl "">
-    <div class=""card shadow"">
-        <div class=""card-header"">
-            ");
+            @__w.Write("\').click();\r\n        $(\"#TaahhutModalUrlDiv\").modal({ backdrop: \"static\" });\r\n   " +
+                    " }\r\n</script>\r\n\r\n<div class=\"container col-xl \">\r\n    <div class=\"card shadow\">\r" +
+                    "\n        <div class=\"card-header\">\r\n            ");
             parameterContainer.Controls[0].RenderControl(@__w);
             @__w.Write("\r\n            <h3 class=\"mb-1\">\r\n                ");
             parameterContainer.Controls[1].RenderControl(@__w);

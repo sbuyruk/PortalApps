@@ -234,12 +234,20 @@ namespace Model.IKYS
         {
 
             string sqlString = string.Format(@"
-                SELECT A.Id PersonelId, B.TCKimlikNo, A.SicilNo,A.Adi,Soyadi, IIF (A.Asker_sivil=0,'Sivil','(E) Asker') as Asker_Sivil,
-	                D.Adi Unvan, F.Adi Gorev, E.Adi BirimSube, A.KullaniciAdi,
-                    FORMAT(B.DogumTar,'dd.MM.yyyy') DogumTarihi,B.MedeniHali,B.EvlilikTar, B.KanGrubu,G.CepTelefonu,G.Adres,G.InternetEPosta,
-                    B.DogumTar,B.EvlilikTar, B.EvlilikKutlama, 
-                    IIF(FORMAT(C.EmeklilikTarihi,'dd.MM.yyyy')='01.01.1900','',FORMAT(C.EmeklilikTarihi,'dd.MM.yyyy')),
-                    C.ProtokolSiraNo
+                SELECT A.Id PersonelId, B.TCKimlikNo, A.SicilNo,A.Adi,A.Soyadi, IIF (A.Asker_sivil=0,'Sivil','(E) Asker') as Asker_Sivil,A.KullaniciAdi,
+					B.AnneAdi,B.BabaAdi, FORMAT(B.DogumTar,'dd.MM.yyyy') DogumTarihi,B.MedeniHali,B.EvlilikTar,B.Cinsiyet, B.KanGrubu,
+	                B.DogumTar,B.EvlilikTar, B.EvlilikKutlama, 
+					IIF(FORMAT(C.BaslamaTar,'dd.MM.yyyy')='01.01.1900','',FORMAT(C.BaslamaTar,'dd.MM.yyyy')) BaslamaTar,
+					C.CalismaDurumu,
+					IIF(FORMAT(C.AyrilmaTar,'dd.MM.yyyy')='01.01.1900','',FORMAT(C.AyrilmaTar,'dd.MM.yyyy')) AyrilmaTar,
+					C.AyrilmaSebebi,C.ProtokolSiraNo,C.SGKSicilNo,C.SGKBasTar,C.SGKDestekPrimi,C.VakifOncesiPrimGunSayisi,
+					IIF(FORMAT(C.EmeklilikTarihi,'dd.MM.yyyy')='01.01.1900','',FORMAT(C.EmeklilikTarihi,'dd.MM.yyyy')) EmeklilikTarihi,
+					IIF(FORMAT(C.IzinDonemiBasTar,'dd.MM.yyyy')='01.01.1900','',FORMAT(C.IzinDonemiBasTar,'dd.MM.yyyy')) IzinDonemiBasTar,                    
+					D.Adi Unvan, F.Adi Gorev, E.Adi BirimSube, 
+                    G.CepTelefonu,G.Adres,G.InternetEPosta,
+					H.TahsilDurumu,
+                    I.IlAdi + ' - '+ I.IlceAdi DogumYeri,
+                    J.Adi +' '+ J.Soyadi Esi, J.TcKimlikNo EsTcKimlikNo,J.Telefon EsTelefon
                 FROM Personel_Table A
                 INNER JOIN Kimlik_Table B on B.PersonelId=A.Id
                 INNER JOIN IsBilgileri_Table C on A.Id=C.PersonelId
@@ -247,9 +255,11 @@ namespace Model.IKYS
                 Left Outer Join BirimTanim_Table E on C.BirimId=E.Id
                 Left Outer Join GorevTanim_Table F on C.GorevId=F.Id
                 Left Outer Join IletisimBilgileri_Table G on G.PersonelId=A.Id
+                Left Join TahsilTanim_Table H on H.Id=A.Tahsili
+                Left Join Ilce_Table I on I.Id=B.DogumYeri
+                Left Join Aile_Table J on J.PersonelId=A.Id AND YakinlikDerecesi=1
                 WHERE CalismaDurumu=1
-                ORDER BY C.ProtokolSiraNo
-                                    ");
+                ORDER BY C.ProtokolSiraNo                                    ");
             DataTable dataTable = null;
             try
             {

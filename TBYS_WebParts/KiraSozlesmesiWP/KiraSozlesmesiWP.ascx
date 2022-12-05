@@ -44,9 +44,7 @@
     }
 
 </script>
-<link rel="stylesheet" href="/Style Library/tskgv/css/fancybox.css" />
-<script src="/Style Library/tskgv/js/fancybox.umd.js"></script>
-<script src="/Style Library/tskgv/js/fancybox.esm.js"></script>
+
 <div class="container ">
     <div class="card shadow">
         <div class="card-header" id="CardHeader" runat="server">

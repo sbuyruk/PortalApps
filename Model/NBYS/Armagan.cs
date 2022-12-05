@@ -397,7 +397,7 @@ namespace Model.NBYS
                     ,Tarih 
                     ,A.Durum
                     ,ISNULL(BelgedeYazanIsim, '') BelgedeYazanIsim
-                    ,A.BelgeGecersizMi, A.IadeMiktari, A.DovizCinsi
+                    ,A.BelgeGecersizMi, A.IadeMiktari, A.DovizCinsi,A.BagisMiktariYazmasin
                 FROM Armagan_Table A
                     INNER JOIN NakitBagisci_Table B ON B.Id=A.BagisciId
                     LEFT OUTER JOIN ArmaganTanim_Table D ON D.Id=A.ArmaganTanimId

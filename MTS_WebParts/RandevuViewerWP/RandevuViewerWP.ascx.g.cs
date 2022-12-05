@@ -1105,28 +1105,30 @@ namespace MTS_WebParts.RandevuViewerWP {
             @__w.Write("\r\n\r\n<link rel=\"stylesheet\" href=\"/Style%20Library/tskgv/js/fullcalendar/main.css\"" +
                     ">\r\n<script type=\"text/javascript\" src=\"/Style%20Library/tskgv/js/fullcalendar/ma" +
                     "in.js\"></script>\r\n<script type=\"text/javascript\" src=\"/Style%20Library/tskgv/js/" +
-                    "fullcalendar/locales/tr.js\"></script>\r\n\r\n\r\n<style>\r\n  body {\r\n    /*margin-top: " +
-                    "40px;*/\r\n    font-size: 14px;\r\n    font-family: Arial, Helvetica Neue, Helvetica" +
-                    ", sans-serif;\r\n  }\r\n\r\n  #external-events {\r\n    position: fixed;\r\n/*    left: 20" +
-                    "px;\r\n    top: 20px;*/\r\n    width: 200px;\r\n    padding: 0 10px;\r\n    border: 1px " +
-                    "solid #ccc;\r\n    background: #eee;\r\n    text-align: left;\r\n  }\r\n\r\n  #external-ev" +
-                    "ents h4 {\r\n    font-size: 16px;\r\n    margin-top: 0;\r\n    padding-top: 1em;\r\n  }\r" +
-                    "\n\r\n  #external-events .fc-event {\r\n    margin: 3px 0;\r\n    cursor: move;\r\n  }\r\n\r" +
-                    "\n  #external-events p {\r\n    margin: 1.5em 0;\r\n    font-size: 11px;\r\n    color: " +
-                    "#666;\r\n  }\r\n\r\n  #external-events p input {\r\n    margin: 0;\r\n    vertical-align: " +
-                    "middle;\r\n  }\r\n\r\n  #calendar-wrap {\r\n    /*margin-left: 200px;*/\r\n  }\r\n\r\n  #calen" +
-                    "dar {\r\n/*    max-width: 1100px;\r\n    margin: 0 auto;*/\r\n    margin-left:220px;\r\n" +
-                    "  }\r\n  .title-wrap {\r\n    white-space: normal !important;\r\n  }\r\n    .iptal-edild" +
-                    "i {\r\n        /*text-decoration: line-through !important;*/\r\n          background" +
-                    "-image: url(\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvM" +
-                    "jAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9J" +
-                    "zEwJyBmaWxsPSd3aGl0ZScvPgogIDxwYXRoIGQ9J00tMSwxIGwyLC0yCiAgICAgICAgICAgTTAsMTAgb" +
-                    "DEwLC0xMAogICAgICAgICAgIE05LDExIGwyLC0yJyBzdHJva2U9J2JsYWNrJyBzdHJva2Utd2lkdGg9J" +
-                    "zEnLz4KPC9zdmc+Cg==\"); \r\n          background-repeat: repeat;    }\r\n\r\n  #globalW" +
-                    "rapper * {\r\n    z-index: auto;\r\n  }\r\n\r\n</style>\r\n<script type=\"text/javascript\">" +
-                    "\r\n    function OpenToplantiModal() {\r\n        $(\"#ToplantiDetaylariModal\").modal" +
-                    "({ backdrop: true });\r\n    }\r\n    function ToplantiDetaylariModal(toplantiId) {\r" +
-                    "\n        document.getElementById(\'");
+                    "fullcalendar/locales/tr.js\"></script>\r\n\r\n\r\n<style>\r\n    \r\n    #AcikTarihliRandev" +
+                    "uListDiv {\r\n      background-color: lightblue;\r\n      height: 550px;\r\n      widt" +
+                    "h: auto;\r\n      overflow-y: scroll;\r\n    }\r\n  body {\r\n    /*margin-top: 40px;*/\r" +
+                    "\n    font-size: 14px;\r\n    font-family: Arial, Helvetica Neue, Helvetica, sans-s" +
+                    "erif;\r\n  }\r\n\r\n  #external-events {\r\n    position: fixed;\r\n/*    left: 20px;\r\n   " +
+                    " top: 20px;*/\r\n    width: 200px;\r\n    padding: 0;\r\n    border: 1px solid #ccc;\r\n" +
+                    "    background: #eee;\r\n    text-align: left;\r\n  }\r\n\r\n  #external-events h4 {\r\n  " +
+                    "  font-size: 16px;\r\n    margin-top: 0;\r\n    padding-top: 1em;\r\n  }\r\n\r\n  #externa" +
+                    "l-events .fc-event {\r\n    margin: 3px 0;\r\n    cursor: move;\r\n  }\r\n\r\n  #external-" +
+                    "events p {\r\n    margin: 1.5em 0;\r\n    font-size: 11px;\r\n    color: #666;\r\n  }\r\n\r" +
+                    "\n  #external-events p input {\r\n    margin: 0;\r\n    vertical-align: middle;\r\n  }\r" +
+                    "\n\r\n  #calendar-wrap {\r\n    /*margin-left: 200px;*/\r\n  }\r\n\r\n  #calendar {\r\n/*    " +
+                    "max-width: 1100px;\r\n    margin: 0 auto;*/\r\n    margin-left:220px;\r\n  }\r\n  .title" +
+                    "-wrap {\r\n    white-space: normal !important;\r\n  }\r\n    .iptal-edildi {\r\n        " +
+                    "/*text-decoration: line-through !important;*/\r\n          background-image: url(\"" +
+                    "data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIH" +
+                    "dpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPS" +
+                    "d3aGl0ZScvPgogIDxwYXRoIGQ9J00tMSwxIGwyLC0yCiAgICAgICAgICAgTTAsMTAgbDEwLC0xMAogIC" +
+                    "AgICAgICAgIE05LDExIGwyLC0yJyBzdHJva2U9J2JsYWNrJyBzdHJva2Utd2lkdGg9JzEnLz4KPC9zdm" +
+                    "c+Cg==\"); \r\n          background-repeat: repeat;    }\r\n\r\n  #globalWrapper * {\r\n " +
+                    "   z-index: auto;\r\n  }\r\n\r\n</style>\r\n<script type=\"text/javascript\">\r\n    functio" +
+                    "n OpenToplantiModal() {\r\n        $(\"#ToplantiDetaylariModal\").modal({ backdrop: " +
+                    "true });\r\n    }\r\n    function ToplantiDetaylariModal(toplantiId) {\r\n        docu" +
+                    "ment.getElementById(\'");
                          @__w.Write( paramToplantiIdLbl.ClientID);
 
             @__w.Write("\').value = toplantiId;\r\n        document.getElementById(\'");
@@ -1182,7 +1184,7 @@ namespace MTS_WebParts.RandevuViewerWP {
     <div id='wrap'>
      
         <div id='external-events'>
-            <div class=""form-group"">
+            <div class=""form-group"" >
                 <a href=""#"" class=""btn btn-info"" id=""downloadPDF"" onclick=""DoIt();"">Takvimi PDF'e Aktar</a>
             </div>
             <h4>Açık Tarihli Faaliyetler</h4>

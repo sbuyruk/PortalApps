@@ -65,6 +65,30 @@ namespace Portal_WebParts.DuyuruGirisiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.Label Label6;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.FileUpload xFileUpload;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.LinkButton LinkButton2;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.LinkButton LinkButton1;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.Label Label9;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.Image DisplayImage;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.Label Label2;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -89,6 +113,18 @@ namespace Portal_WebParts.DuyuruGirisiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.CheckBox AktifChk;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.Label Label3;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.DropDownList TekrarlaDDL;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.Label Label5;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -105,31 +141,11 @@ namespace Portal_WebParts.DuyuruGirisiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.Label Label3;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.DropDownList TekrarlaDDL;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.CheckBox AktifChk;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.CheckBox PopupChk;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.UpdatePanel TableUpdatePanel;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.Image DisplayImage;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.FileUpload xFileUpload;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -280,14 +296,106 @@ namespace Portal_WebParts.DuyuruGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlLabel6() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.Label6 = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "Label6";
+            @__ctrl.CssClass = "col-form-label";
+            @__ctrl.Text = "Resim Seçiniz";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.FileUpload @__BuildControlxFileUpload() {
+            global::System.Web.UI.WebControls.FileUpload @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.FileUpload();
+            this.xFileUpload = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "xFileUpload";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "btn form-control");
+            @__ctrl.ToolTip = "Yüklenecek Resmi Seçiniz";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onchange", "readURL(this,\'DisplayImage\')");
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlLinkButton2() {
+            global::System.Web.UI.WebControls.LinkButton @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
+            this.LinkButton2 = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.CssClass = "form-control btn btn-outline-success";
+            @__ctrl.ID = "LinkButton2";
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Varsayılan Resim  ->"));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlLinkButton1() {
+            global::System.Web.UI.WebControls.LinkButton @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
+            this.LinkButton1 = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.CssClass = "form-control btn btn-outline-danger";
+            @__ctrl.ID = "LinkButton1";
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Seçilen Resmi Sil"));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlLabel9() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.Label9 = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "Label9";
+            @__ctrl.CssClass = "col-form-label";
+            @__ctrl.Text = "Seçilen Resim";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.Image @__BuildControlDisplayImage() {
+            global::System.Web.UI.WebControls.Image @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Image();
+            this.DisplayImage = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "DisplayImage";
+            @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
+            @__ctrl.ImageUrl = "../DuyuruResimleri/duyuru-resmi-yok.jpg";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "img-thumbnail");
+            @__ctrl.Height = new System.Web.UI.WebControls.Unit(190D, global::System.Web.UI.WebControls.UnitType.Pixel);
+            @__ctrl.Width = new System.Web.UI.WebControls.Unit(250D, global::System.Web.UI.WebControls.UnitType.Pixel);
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onerror", "this.src=\'../DuyuruResimleri/duyuru-resmi-yok.jpg\';");
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlLabel2() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.Label2 = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "Label2";
-            @__ctrl.CssClass = "col-form-label";
-            @__ctrl.Text = "Metin";
+            @__ctrl.CssClass = "col-form-label ";
+            @__ctrl.Text = "Duyuru Metni";
             return @__ctrl;
         }
         
@@ -303,6 +411,8 @@ namespace Portal_WebParts.DuyuruGirisiWP {
             @__ctrl.CssClass = "form-control";
             @__ctrl.TextMode = global::System.Web.UI.WebControls.TextBoxMode.MultiLine;
             @__ctrl.Rows = 6;
+            @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
+            @__ctrl.MaxLength = 100;
             return @__ctrl;
         }
         
@@ -364,9 +474,57 @@ namespace Portal_WebParts.DuyuruGirisiWP {
             @__ctrl.ID = "BasSaatDDL";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control ");
             @__ctrl.AutoPostBack = true;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "height:auto");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: auto");
             @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.BasSaatDDL_SelectedIndexChanged);
             @__ctrl.SelectedIndexChanged += new System.EventHandler(this.BasSaatDDL_SelectedIndexChanged);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.CheckBox @__BuildControlAktifChk() {
+            global::System.Web.UI.WebControls.CheckBox @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.CheckBox();
+            this.AktifChk = @__ctrl;
+            @__ctrl.TemplateControl = this;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "AktifChk";
+            @__ctrl.Checked = true;
+            @__ctrl.ToolTip = "Duyuru Aktifse işaretli olmalıdır";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlLabel3() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.Label3 = @__ctrl;
+            @__ctrl.TemplateControl = this;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "Label3";
+            @__ctrl.CssClass = "col-form-label";
+            @__ctrl.Text = "Tekrarlama";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.DropDownList @__BuildControlTekrarlaDDL() {
+            global::System.Web.UI.WebControls.DropDownList @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.DropDownList();
+            this.TekrarlaDDL = @__ctrl;
+            @__ctrl.TemplateControl = this;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "TekrarlaDDL";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control ");
+            @__ctrl.AutoPostBack = true;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: auto");
+            @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.TekrarlaDDL_SelectedIndexChanged);
+            @__ctrl.SelectedIndexChanged += new System.EventHandler(this.TekrarlaDDL_SelectedIndexChanged);
             return @__ctrl;
         }
         
@@ -428,58 +586,9 @@ namespace Portal_WebParts.DuyuruGirisiWP {
             @__ctrl.ID = "BitSaatDDL";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control ");
             @__ctrl.AutoPostBack = true;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "height:auto");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: auto");
             @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.BitSaatDDL_SelectedIndexChanged);
             @__ctrl.SelectedIndexChanged += new System.EventHandler(this.BitSaatDDL_SelectedIndexChanged);
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControlLabel3() {
-            global::System.Web.UI.WebControls.Label @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.Label();
-            this.Label3 = @__ctrl;
-            @__ctrl.TemplateControl = this;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "Label3";
-            @__ctrl.CssClass = "col-form-label";
-            @__ctrl.Text = "Tekrarlama";
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.DropDownList @__BuildControlTekrarlaDDL() {
-            global::System.Web.UI.WebControls.DropDownList @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.DropDownList();
-            this.TekrarlaDDL = @__ctrl;
-            @__ctrl.TemplateControl = this;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "TekrarlaDDL";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control ");
-            @__ctrl.AutoPostBack = true;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "height:auto");
-            @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.TekrarlaDDL_SelectedIndexChanged);
-            @__ctrl.SelectedIndexChanged += new System.EventHandler(this.TekrarlaDDL_SelectedIndexChanged);
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.CheckBox @__BuildControlAktifChk() {
-            global::System.Web.UI.WebControls.CheckBox @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.CheckBox();
-            this.AktifChk = @__ctrl;
-            @__ctrl.TemplateControl = this;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "AktifChk";
-            @__ctrl.CssClass = "form-control col-6";
-            @__ctrl.Text = " Duyuru Aktif";
-            @__ctrl.Checked = true;
             return @__ctrl;
         }
         
@@ -493,9 +602,8 @@ namespace Portal_WebParts.DuyuruGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "PopupChk";
-            @__ctrl.CssClass = "form-control col-6";
-            @__ctrl.Text = " Popup Göster";
             @__ctrl.Checked = true;
+            @__ctrl.ToolTip = "Duyuru penceresi açılacaksa işaretlenmelidir.";
             return @__ctrl;
         }
         
@@ -504,69 +612,83 @@ namespace Portal_WebParts.DuyuruGirisiWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControl__control2(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    <div class=\"form-group row\">\r\n             " +
-                        "                           <div class=\"form-group col-6\">\r\n                     " +
-                        "                       "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    <div class=\"row\">\r\n                        " +
+                        "                <div class=\"form-group col-6\">\r\n                                " +
+                        "            <div class=\"form-group\">\r\n                                          " +
+                        "      "));
             global::System.Web.UI.WebControls.Label @__ctrl1;
             @__ctrl1 = this.@__BuildControlLabel4();
             @__parser.AddParsedSubObject(@__ctrl1);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                            "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                                "));
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl2;
             @__ctrl2 = this.@__BuildControlYayinBasTarTxt();
             @__parser.AddParsedSubObject(@__ctrl2);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                        </div>\r\n                               " +
-                        "         <div class=\"form-group col-6\">\r\n                                       " +
-                        "     "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                            </div>\r\n                           " +
+                        "                 <div class=\"form-group\">\r\n                                     " +
+                        "           "));
             global::System.Web.UI.WebControls.Label @__ctrl3;
             @__ctrl3 = this.@__BuildControlLabel7();
             @__parser.AddParsedSubObject(@__ctrl3);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                            "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                                "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl4;
             @__ctrl4 = this.@__BuildControlBasSaatDDL();
             @__parser.AddParsedSubObject(@__ctrl4);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-                                        </div>
-                                    </div>
-                                    <div class=""form-group row"">
-                                        <div class=""form-group col-6"">
-                                            "));
-            global::System.Web.UI.WebControls.Label @__ctrl5;
-            @__ctrl5 = this.@__BuildControlLabel5();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                            </div>\r\n\r\n                         " +
+                        "                   <div class=\"checkbox pt-3\">\r\n                                " +
+                        "                <label>\r\n                                                    "));
+            global::System.Web.UI.WebControls.CheckBox @__ctrl5;
+            @__ctrl5 = this.@__BuildControlAktifChk();
             @__parser.AddParsedSubObject(@__ctrl5);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                            "));
-            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl6;
-            @__ctrl6 = this.@__BuildControlYayinBitTarTxt();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                                                    Duyuru Aktif
+                                                </label>
+                                            </div>
+
+                                            <div class=""form-group"">
+                                                "));
+            global::System.Web.UI.WebControls.Label @__ctrl6;
+            @__ctrl6 = this.@__BuildControlLabel3();
             @__parser.AddParsedSubObject(@__ctrl6);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                        </div>\r\n                               " +
-                        "         <div class=\"form-group col-6\">\r\n                                       " +
-                        "     "));
-            global::System.Web.UI.WebControls.Label @__ctrl7;
-            @__ctrl7 = this.@__BuildControlLabel8();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                                "));
+            global::System.Web.UI.WebControls.DropDownList @__ctrl7;
+            @__ctrl7 = this.@__BuildControlTekrarlaDDL();
             @__parser.AddParsedSubObject(@__ctrl7);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                            "));
-            global::System.Web.UI.WebControls.DropDownList @__ctrl8;
-            @__ctrl8 = this.@__BuildControlBitSaatDDL();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                                            </div>
+                                        </div>
+                                        <div class=""form-group col-6"">
+                                            <div class=""form-group"">
+                                                "));
+            global::System.Web.UI.WebControls.Label @__ctrl8;
+            @__ctrl8 = this.@__BuildControlLabel5();
             @__parser.AddParsedSubObject(@__ctrl8);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                        </div>\r\n                               " +
-                        "     </div>\r\n                                    <div class=\"form-group\">\r\n     " +
-                        "                                   "));
-            global::System.Web.UI.WebControls.Label @__ctrl9;
-            @__ctrl9 = this.@__BuildControlLabel3();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                                "));
+            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl9;
+            @__ctrl9 = this.@__BuildControlYayinBitTarTxt();
             @__parser.AddParsedSubObject(@__ctrl9);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                        "));
-            global::System.Web.UI.WebControls.DropDownList @__ctrl10;
-            @__ctrl10 = this.@__BuildControlTekrarlaDDL();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                            </div>\r\n                           " +
+                        "                 <div class=\"form-group\">\r\n                                     " +
+                        "           "));
+            global::System.Web.UI.WebControls.Label @__ctrl10;
+            @__ctrl10 = this.@__BuildControlLabel8();
             @__parser.AddParsedSubObject(@__ctrl10);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    </div>\r\n                                   " +
-                        " <div class=\"form-group row\">\r\n                                        "));
-            global::System.Web.UI.WebControls.CheckBox @__ctrl11;
-            @__ctrl11 = this.@__BuildControlAktifChk();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                                "));
+            global::System.Web.UI.WebControls.DropDownList @__ctrl11;
+            @__ctrl11 = this.@__BuildControlBitSaatDDL();
             @__parser.AddParsedSubObject(@__ctrl11);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                        "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                            </div>\r\n                           " +
+                        "                 <div class=\"checkbox pt-3\">\r\n                                  " +
+                        "              <label>\r\n                                                    "));
             global::System.Web.UI.WebControls.CheckBox @__ctrl12;
             @__ctrl12 = this.@__BuildControlPopupChk();
             @__parser.AddParsedSubObject(@__ctrl12);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    </div>\r\n                                "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                                                    Popup Pencere Aç
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -584,40 +706,6 @@ namespace Portal_WebParts.DuyuruGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Image @__BuildControlDisplayImage() {
-            global::System.Web.UI.WebControls.Image @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.Image();
-            this.DisplayImage = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "DisplayImage";
-            @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
-            @__ctrl.ImageUrl = "/DuyuruResimleri/duyuru.jpg";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "img-thumbnail");
-            @__ctrl.Height = new System.Web.UI.WebControls.Unit(190D, global::System.Web.UI.WebControls.UnitType.Pixel);
-            @__ctrl.Width = new System.Web.UI.WebControls.Unit(250D, global::System.Web.UI.WebControls.UnitType.Pixel);
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onerror", "this.src=\'/DuyuruResimleri/duyuru.jpg\';");
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.FileUpload @__BuildControlxFileUpload() {
-            global::System.Web.UI.WebControls.FileUpload @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.FileUpload();
-            this.xFileUpload = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "xFileUpload";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "btn form-control");
-            @__ctrl.ToolTip = "Yüklenecek Resmi Seçiniz";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onchange", "readURL(this,\'DisplayImage\')");
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.WebControls.DropDownList @__BuildControlPersonelDDL() {
             global::System.Web.UI.WebControls.DropDownList @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.DropDownList();
@@ -626,7 +714,7 @@ namespace Portal_WebParts.DuyuruGirisiWP {
             @__ctrl.ID = "PersonelDDL";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control");
             @__ctrl.AutoPostBack = true;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "height:auto");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: auto");
             @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.PersonelDDL_SelectedIndexChanged);
             @__ctrl.SelectedIndexChanged += new System.EventHandler(this.PersonelDDL_SelectedIndexChanged);
             return @__ctrl;
@@ -915,9 +1003,14 @@ namespace Portal_WebParts.DuyuruGirisiWP {
                         "(personelFU.files && personelFU.files[0]) {\r\n            var reader = new FileRe" +
                         "ader();\r\n            reader.onload = function (e) {\r\n                $(\'#\' + sen" +
                         "der).attr(\'src\', e.target.result);\r\n\r\n            }\r\n            reader.readAsDa" +
-                        "taURL(personelFU.files[0]);\r\n        }\r\n    }\r\n</script>\r\n<div class=\"container " +
-                        "shadow\">\r\n    <div class=\"card\">\r\n        <div class=\"card-header\">\r\n           " +
-                        " "));
+                        "taURL(personelFU.files[0]);\r\n        }\r\n    }\r\n\r\n    //summernote editor\r\n    $(" +
+                        "document).ready(function () {\r\n        $(\'#MetinTxt\').summernote({\r\n            " +
+                        "toolbar: [\r\n                // [groupName, [list of button]]\r\n                [\'" +
+                        "style\', [\'bold\', \'italic\', \'underline\', \'clear\']],\r\n                [\'fontsize\'," +
+                        " [\'fontsize\']],\r\n                [\'color\', [\'color\']],\r\n                [\'para\'," +
+                        " [\'ul\', \'ol\', \'paragraph\']],\r\n            ]\r\n        });\r\n    });\r\n\r\n</script>\r\n" +
+                        "\r\n\r\n<div class=\"container shadow\">\r\n    <div class=\"card\">\r\n        <div class=\"" +
+                        "card-header\">\r\n            "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl1;
             @__ctrl1 = this.@__BuildControlCloseBtn();
             @__parser.AddParsedSubObject(@__ctrl1);
@@ -940,77 +1033,122 @@ namespace Portal_WebParts.DuyuruGirisiWP {
 
             <div class=""row"">
                 <div class=""col-7"">
-                    <div class=""form-group"">
-                        <div class=""form-group"">
-                            "));
+                    <div class=""card"">
+                        <div class=""card-header text-center p-0"">
+
+                                <label class=""col-form-label font-weight-bold"">Duyuru Bilgileri</label>
+
+                        </div>
+
+                        <div class=""card-body"">
+                            <div class=""row"">
+                                <div class=""col-6"">
+                                    <div class=""form-group"">
+                                        "));
             global::System.Web.UI.WebControls.Label @__ctrl5;
             @__ctrl5 = this.@__BuildControlLabel1();
             @__parser.AddParsedSubObject(@__ctrl5);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                        "));
             global::System.Web.UI.WebControls.TextBox @__ctrl6;
             @__ctrl6 = this.@__BuildControlBaslikTxt();
             @__parser.AddParsedSubObject(@__ctrl6);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"form-group\"" +
-                        ">\r\n                            "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    </div>\r\n                                   " +
+                        " <div class=\"form-group\">\r\n                                        "));
             global::System.Web.UI.WebControls.Label @__ctrl7;
-            @__ctrl7 = this.@__BuildControlLabel2();
+            @__ctrl7 = this.@__BuildControlLabel6();
             @__parser.AddParsedSubObject(@__ctrl7);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl8;
-            @__ctrl8 = this.@__BuildControlMetinTxt();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    </div>\r\n                                   " +
+                        " <div class=\"form-group\">\r\n                                        "));
+            global::System.Web.UI.WebControls.FileUpload @__ctrl8;
+            @__ctrl8 = this.@__BuildControlxFileUpload();
             @__parser.AddParsedSubObject(@__ctrl8);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n                   " +
-                        " <div class=\"form-group row\">\r\n                        <div class=\"col-6 \">\r\n   " +
-                        "                         "));
-            global::System.Web.UI.UpdatePanel @__ctrl9;
-            @__ctrl9 = this.@__BuildControlTableUpdatePanel();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    </div>\r\n                                   " +
+                        " <div class=\"form-group\">\r\n                                        "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl9;
+            @__ctrl9 = this.@__BuildControlLinkButton2();
             @__parser.AddParsedSubObject(@__ctrl9);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"col-6\">\r\n  " +
-                        "                          <div class=\"form-group\">\r\n                            " +
-                        "    "));
-            global::System.Web.UI.WebControls.Image @__ctrl10;
-            @__ctrl10 = this.@__BuildControlDisplayImage();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    </div>\r\n                                   " +
+                        " <div class=\"form-group\">\r\n                                        "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl10;
+            @__ctrl10 = this.@__BuildControlLinkButton1();
             @__parser.AddParsedSubObject(@__ctrl10);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <div class=\"for" +
-                        "m-group\">\r\n                                "));
-            global::System.Web.UI.WebControls.FileUpload @__ctrl11;
-            @__ctrl11 = this.@__BuildControlxFileUpload();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    </div>\r\n                                </d" +
+                        "iv>\r\n                                <div class=\"col-6\">\r\n                      " +
+                        "              <div class=\"form-group\">\r\n                                        " +
+                        ""));
+            global::System.Web.UI.WebControls.Label @__ctrl11;
+            @__ctrl11 = this.@__BuildControlLabel9();
             @__parser.AddParsedSubObject(@__ctrl11);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    </div>\r\n                                   " +
+                        " <div class=\"form-group\">\r\n                                        "));
+            global::System.Web.UI.WebControls.Image @__ctrl12;
+            @__ctrl12 = this.@__BuildControlDisplayImage();
+            @__parser.AddParsedSubObject(@__ctrl12);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    </div>\r\n                                </d" +
+                        "iv>\r\n                            </div>\r\n                            <div class=" +
+                        "\"form-group\">\r\n                                "));
+            global::System.Web.UI.WebControls.Label @__ctrl13;
+            @__ctrl13 = this.@__BuildControlLabel2();
+            @__parser.AddParsedSubObject(@__ctrl13);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                "));
+            global::System.Web.UI.WebControls.TextBox @__ctrl14;
+            @__ctrl14 = this.@__BuildControlMetinTxt();
+            @__parser.AddParsedSubObject(@__ctrl14);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+
                             </div>
                         </div>
+
+                        
                     </div>
+
                 </div>
                 <div class=""col-5"">
                     <div class=""card"">
                         <div class=""card-header text-center font-weight-bold p-0"">
                             <div class=""form-group m-0 p-0"">
-                                <label class=""col-form-label"" >Duyuru Yapılacak Personel</label>
+                                <label class=""col-form-label"">Duyuru Ayarları</label>
+                            </div>
+                        </div>
+                        <div class=""card-body"">
+
+                            "));
+            global::System.Web.UI.UpdatePanel @__ctrl15;
+            @__ctrl15 = this.@__BuildControlTableUpdatePanel();
+            @__parser.AddParsedSubObject(@__ctrl15);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+
+                        </div>
+                    </div>
+                    <div class=""card"">
+                        <div class=""card-header text-center font-weight-bold p-0"">
+                            <div class=""form-group m-0 p-0"">
+                                <label class=""col-form-label"">Duyuru Yapılacak Personel</label>
                             </div>
                         </div>
                         <div class=""card-body m-0"">
                             "));
-            global::System.Web.UI.UpdatePanel @__ctrl12;
-            @__ctrl12 = this.@__BuildControlUpdatePanel1();
-            @__parser.AddParsedSubObject(@__ctrl12);
+            global::System.Web.UI.UpdatePanel @__ctrl16;
+            @__ctrl16 = this.@__BuildControlUpdatePanel1();
+            @__parser.AddParsedSubObject(@__ctrl16);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n                </d" +
                         "iv>\r\n            </div>\r\n\r\n\r\n        </div>\r\n        <div class=\"card-footer\">\r\n" +
                         "            "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl13;
-            @__ctrl13 = this.@__BuildControlKaydetBtn();
-            @__parser.AddParsedSubObject(@__ctrl13);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl17;
+            @__ctrl17 = this.@__BuildControlKaydetBtn();
+            @__parser.AddParsedSubObject(@__ctrl17);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl14;
-            @__ctrl14 = this.@__BuildControlGuncelleBtn();
-            @__parser.AddParsedSubObject(@__ctrl14);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl18;
+            @__ctrl18 = this.@__BuildControlGuncelleBtn();
+            @__parser.AddParsedSubObject(@__ctrl18);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl15;
-            @__ctrl15 = this.@__BuildControlSilBtn();
-            @__parser.AddParsedSubObject(@__ctrl15);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl19;
+            @__ctrl19 = this.@__BuildControlSilBtn();
+            @__parser.AddParsedSubObject(@__ctrl19);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl16;
-            @__ctrl16 = this.@__BuildControlDuyuruListBtn();
-            @__parser.AddParsedSubObject(@__ctrl16);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl20;
+            @__ctrl20 = this.@__BuildControlDuyuruListBtn();
+            @__parser.AddParsedSubObject(@__ctrl20);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
         </div>
     </div>
@@ -1027,19 +1165,19 @@ namespace Portal_WebParts.DuyuruGirisiWP {
                     <div class=""text-center"">
                         <h3>
                             "));
-            global::System.Web.UI.WebControls.Label @__ctrl17;
-            @__ctrl17 = this.@__BuildControlSilLbl();
-            @__parser.AddParsedSubObject(@__ctrl17);
+            global::System.Web.UI.WebControls.Label @__ctrl21;
+            @__ctrl21 = this.@__BuildControlSilLbl();
+            @__parser.AddParsedSubObject(@__ctrl21);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("</h3>\r\n                    </div>\r\n                    <div class=\"card-body\">\r\n " +
                         "                       "));
-            global::System.Web.UI.WebControls.Label @__ctrl18;
-            @__ctrl18 = this.@__BuildControlSilmeMesajiLbl();
-            @__parser.AddParsedSubObject(@__ctrl18);
+            global::System.Web.UI.WebControls.Label @__ctrl22;
+            @__ctrl22 = this.@__BuildControlSilmeMesajiLbl();
+            @__parser.AddParsedSubObject(@__ctrl22);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                </div>\r\n            </div>\r\n       " +
                         "     <div class=\"modal-footer\">\r\n                "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl19;
-            @__ctrl19 = this.@__BuildControlDeleteNowBtn();
-            @__parser.AddParsedSubObject(@__ctrl19);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl23;
+            @__ctrl23 = this.@__BuildControlDeleteNowBtn();
+            @__parser.AddParsedSubObject(@__ctrl23);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"mod" +
                         "al\">Kapat</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n"));
         }

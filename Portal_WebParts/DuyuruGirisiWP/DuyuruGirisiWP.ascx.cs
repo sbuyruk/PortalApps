@@ -228,7 +228,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
             Duyuru duyuru = new Duyuru();
             duyuru = duyuru.Select<Duyuru>(DuyuruIdQS.ConvertToInt());
             BaslikTxt.Text = duyuru.Baslik;
-            MetinTxt.Text = duyuru.Metin;
+            MetinTxt.Text= duyuru.Metin;
             DateTime basTar = duyuru.YayinBasTar;
             DateTime bitTar = duyuru.YayinBitTar;
             string basSaat = basTar.ToString("HH") + ":" + basTar.ToString("mm");
@@ -238,10 +238,11 @@ namespace Portal_WebParts.DuyuruGirisiWP
             AktifChk.Checked = duyuru.Aktif;
             PopupChk.Checked = duyuru.Popup;
 
-            string fotostr = string.IsNullOrEmpty(duyuru.Resim) ? "duyuru" : duyuru.Resim;
             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
             string hostUrl = currentUrl.Substring(0, currentUrl.LastIndexOf(System.Web.HttpContext.Current.Request.Url.AbsolutePath));
-            string imgUrl = hostUrl + ProjeConstants.PATH_RESIMLER_DUYURU + fotostr.ReplaceTrChars() + ".jpg";
+            string imgUrl = string.IsNullOrEmpty(duyuru.Resim)
+                ? hostUrl + ProjeConstants.PATH_RESIMLER_DUYURU +"duyuru-resmi-yok.jpg"
+                : hostUrl + ProjeConstants.PATH_RESIMLER_DUYURU + duyuru.Resim.ReplaceTrChars() + ".jpg";
 
             DisplayImage.ImageUrl = imgUrl;
 
@@ -469,11 +470,11 @@ namespace Portal_WebParts.DuyuruGirisiWP
                 kayitGeceliMi = AlanlariGecerle();
                 if (kayitGeceliMi)
                 {
-                    int duyuruId = DuyuruyuKaydet();
-                    if (duyuruId > 0)
+                    Duyuru duyuru = DuyuruyuKaydet();
+                    if (duyuru != null)
                     {
-                        ResmiKaydet(duyuruId);
-                        RedirectToPage(ProjeConstants.PAGE_DUYURU_LIST + "?Mesaj=true&SecilenId=" + duyuruId );
+                        ResmiKaydet(duyuru);
+                        RedirectToPage(ProjeConstants.PAGE_DUYURU_LIST + "?Mesaj=true&SecilenId=" + duyuru.Id );
                     }
 
                 }
@@ -499,7 +500,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
                 {
                     if (DuyuruyuGuncelle())
                     {
-                        ResmiKaydet(DuyuruIdQS.ConvertToInt());
+                        
                     }
                 }
                 else
@@ -537,19 +538,18 @@ namespace Portal_WebParts.DuyuruGirisiWP
             //RedirectToPage(ProjeConstants.PAGE_DUYURU_LIST + "?PageIndex=" + PageIndexQS+"&DestinationApp=" + SenderAppQS);
             RedirectToPage(ProjeConstants.PAGE_DUYURU_LIST);
         }
-        private void ResmiKaydet(int duyuruId)
+        private void ResmiKaydet(Duyuru duyuru)
         {
             if (xFileUpload.HasFile)
             {
-                string resim = "Duyuru" + duyuruId;
-                SaveImageFiles2SP(resim);
+                string resim = "Duyuru" + duyuru.Id;
+                
+                duyuru.Resim= SaveImageFiles2SP(resim);
+                
             }
-            else
-            {
-                //MessageHelper.PublishMessage("Resim Seçmediniz.", ProjeConstants.MESAJ_HATA);
-            }
+            duyuru.Update();
         }
-        private void SaveImageFiles2SP(string fotoFile)
+        private string SaveImageFiles2SP(string fotoFile)
         {
             string SPImageListName = ProjeConstants.RESIMLER_DUYURU;
 
@@ -562,13 +562,15 @@ namespace Portal_WebParts.DuyuruGirisiWP
                 Exception ex = new Exception("Resim Kaydedilemedi.");
                 exhelper.Exceptions.Add(ex);
                 exhelper.PublishException();
+                return string.Empty;   
             }
             else
-            {
+            {                
                 MessageHelper.PublishMessage("İşlem Tamamlandı.Resim yüklendi.", ProjeConstants.MESAJ_BASARILI);
+                return fotoFile;
             }
         }
-        private int DuyuruyuKaydet()
+        private Duyuru DuyuruyuKaydet()
         {
             int duyuruId = 0;
             try
@@ -592,7 +594,6 @@ namespace Portal_WebParts.DuyuruGirisiWP
 
                 if (duyuruId > 0)
                 {
-                    duyuru.Resim = "Duyuru" + duyuru.Id;
                     duyuru.Degistiren = UtilityHelper.GetCurrentUser();
                     duyuru.Update();
                     if (duyuru != null)
@@ -601,14 +602,16 @@ namespace Portal_WebParts.DuyuruGirisiWP
                         dg.SaveDuyuru(duyuru);
                     }
                 }
+                return duyuru;
             }
             catch (Exception ex)
             {
                 ExceptionHelper exhelper = new ExceptionHelper(ex);
                 exhelper.Exceptions.Add(new Exception("Duyuru kayıt edilemedi."));
                 exhelper.PublishException();
+                return null;
             }
-            return duyuruId;
+           
         }
         private bool DuyuruyuGuncelle()
         {
@@ -635,7 +638,6 @@ namespace Portal_WebParts.DuyuruGirisiWP
                     duyuru.YayinBitTar = UtilityHelper.TariheSaatEkle(bittar, bitsaat);
                     duyuru.Tekrar = TekrarlaDDL.SelectedItem.Value;
                     duyuru.DuyuruAlicilari = DuyuruAlicilariniAl();
-                    duyuru.Resim = "Duyuru" + duyuru.Id;
                     duyuru.Aktif = AktifChk.Checked;
                     duyuru.Popup = PopupChk.Checked;
                     duyuru.Degistiren = UtilityHelper.GetCurrentUser();
@@ -645,8 +647,10 @@ namespace Portal_WebParts.DuyuruGirisiWP
                     {
                         if (duyuru != null)
                         {
-                            DuyuruGosterim dg = new DuyuruGosterim();
-                            dg.SaveDuyuru(duyuru);
+                            ResmiKaydet(duyuru);
+                            DuyuruGosterim duyuruGosterim = new DuyuruGosterim();
+                            duyuruGosterim.SaveDuyuru(duyuru);
+                            
                         }
                         MessageHelper.PublishMessage("Duyuru güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                     }

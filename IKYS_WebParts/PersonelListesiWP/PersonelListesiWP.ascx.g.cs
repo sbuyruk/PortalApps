@@ -172,44 +172,19 @@ namespace IKYS_WebParts.PersonelListesiWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControlTree(global::IKYS_WebParts.PersonelListesiWP.PersonelListesiWP @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n<script type=\"text/javascript\">\r\n    //excele export ettikten donup sonra kalma" +
-                        "sın diye\r\n    function setFormSubmitToFalse() {\r\n        setTimeout(function () " +
-                        "{ _spFormOnSubmitCalled = false; }, 3000);\r\n        return true;\r\n    }\r\n\r\n</scr" +
-                        "ipt>\r\n<script type=\"text/javascript\">\r\n    function setDataSet(myset) {\r\n       " +
-                        " myjsons = myset;\r\n    }\r\n    var myjsons = [{\r\n        \"ProtokolSiraNo\": \"\", \"A" +
-                        "di\": \"\", \"Soyadi\": \"\", \"Unvan\": \"\", \"BirimSube\": \"\", \"PersonelKarti\": \"\", \"Kisis" +
-                        "elSayfa\": \"\", \"Duzenle\": \"\"\r\n    }];\r\n    jQuery(document).ready(function () {\r\n" +
-                        "\r\n        jQuery(\'#CustomDataTable\').DataTable({\r\n            \'initComplete\': fu" +
-                        "nction (settings, json) {//tablo yüklendiğinde\r\n                var api = this.a" +
-                        "pi();\r\n                var row = api.row(function (idx, data, node) { //secilen " +
-                        "Id\'ye gider\r\n                    return data[\'Secildi\'] == true;\r\n              " +
-                        "  });\r\n                if (row.length > 0) {\r\n                    row.select()\r\n" +
-                        "                        .show()\r\n                        .draw(false);\r\n        " +
-                        "        }\r\n            },\r\n            data: myjsons,\r\n            columns: [\r\n " +
-                        "               { data: \"ProtokolSiraNo\" },\r\n                { data: \"Adi\" },\r\n  " +
-                        "              { data: \"Soyadi\" },\r\n                { data: \"Unvan\" },\r\n         " +
-                        "       { data: \"BirimSube\" },\r\n                { data: \"PersonelKarti\" },\r\n     " +
-                        "           { data: \"KisiselSayfa\" },\r\n                { data: \"Duzenle\" },\r\n\r\n  " +
-                        "          ],\r\n            columnDefs: [\r\n                { type: \'turkish\', targ" +
-                        "ets:[1,2] },\r\n                { type: \'num\', targets: 0 }\r\n            ],\r\n     " +
-                        "       \'order\': [[0, \'asc\']],//AdiSoyadi Sıralı\r\n            \"language\": {\r\n    " +
-                        "            \"url\": \"http://tskgv-portal/OrtakBelgeler/Turkish.txt\",\r\n           " +
-                        "     \"decimal\": \",\",\r\n                \"thousands\": \".\"\r\n            },\r\n        " +
-                        "    responsive: true,\r\n            dom: \'Bfrtip\',\r\n            //colon resizable" +
-                        "\r\n            //initComplete: function (settings) {\r\n            //    $(\'#Custo" +
-                        "mDataTable\').colResizable({ liveDrag: true });\r\n            //},\r\n            bu" +
-                        "ttons: [\r\n                {\r\n                    extend: \'print\',\r\n             " +
-                        "       exportOptions: {\r\n                        columns: \':visible\'\r\n          " +
-                        "          }\r\n                },\r\n                {\r\n                    extend: " +
-                        "\'excel\',\r\n                    exportOptions: {\r\n                        columns:" +
-                        " \':visible\'\r\n                    }\r\n                },\r\n                {\r\n     " +
-                        "               extend: \'pdf\',\r\n                    exportOptions: {\r\n           " +
-                        "             columns: \':visible\'\r\n                    }\r\n                },\r\n   " +
-                        "             {\r\n                    extend: \'copy\',\r\n                    exportO" +
-                        "ptions: {\r\n                        columns: \':visible\'\r\n                    }\r\n " +
-                        "               },\r\n                , \'pageLength\', \"colvis\"\r\n            ]\r\n    " +
-                        "    });\r\n    });\r\n</script>\r\n<div class=\"container\">\r\n    <div class=\"card shado" +
-                        "w\">\r\n        <div class=\"card-header \">\r\n            "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+<script type=""text/javascript"">
+    //excele export ettikten donup sonra kalmasın diye
+    function setFormSubmitToFalse() {
+        setTimeout(function () { _spFormOnSubmitCalled = false; }, 3000);
+        return true;
+    }
+
+</script>
+<div class=""container col-xl"">
+    <div class=""card shadow"">
+        <div class=""card-header "">
+            "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl1;
             @__ctrl1 = this.@__BuildControlCloseBtn();
             @__parser.AddParsedSubObject(@__ctrl1);
@@ -225,30 +200,31 @@ namespace IKYS_WebParts.PersonelListesiWP {
             global::System.Web.UI.WebControls.Label @__ctrl4;
             @__ctrl4 = this.@__BuildControlAdiLbl();
             @__parser.AddParsedSubObject(@__ctrl4);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-            </h3>
-
-        </div>
-        <div class=""card-body"">
-           <div class=""form-group"">
-                <table id=""CustomDataTable"" class=""table table-striped row-border"" width=""100%"">
-                    <thead>
-                        <tr>
-                            <th>Sıra No</th>
-                            <th>Adı</th>
-                            <th>Soyadı</th>
-                            <th>Ünvan</th>
-                            <th>Birim/Şube</th>
-                            <th>Personel Kartı</th>
-                            <th>Kişisel Sayfa</th>
-                            <th>Düzenle</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-        </div>
-        <div class=""card-footer"">
-            "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            </h3>\r\n\r\n        </div>\r\n        <div class=\"card-body\">\r\n         " +
+                        "  <div class=\"form-group\">\r\n                <table id=\"CustomDataTable\" class=\"t" +
+                        "able table-striped row-border\" width=\"100%\">\r\n                    <thead>\r\n     " +
+                        "                   <tr>\r\n                            <th>Sıra No</th>\r\n         " +
+                        "                   <th>Adı</th>\r\n                            <th>Soyadı</th>\r\n  " +
+                        "                          <th>Ünvan</th>\r\n                            <th>Birim/" +
+                        "Şube</th>\r\n                            <th>Personel Kartı</th>\r\n                " +
+                        "            <th>Kişisel Sayfa</th>\r\n                            <th>Düzenle</th>" +
+                        "\r\n                            <th>Sicil No</th>\r\n                            <th" +
+                        ">Tahsili</th>\r\n                            <th>Kullanici Adi</th>\r\n             " +
+                        "               <th>TCKimlikNo</th>\r\n                            <th>Anne Adı</th" +
+                        ">\r\n                            <th>Baba Adı</th>\r\n                            <t" +
+                        "h>Doğum Yeri</th>\r\n                            <th>Doğum Tar.</th>\r\n            " +
+                        "                <th>Medeni Hali</th>\r\n                            <th>Evlilik Ta" +
+                        "r.</th>\r\n                            <th>Cinsiyet</th>\r\n                        " +
+                        "    <th>Kan Grubu</th>\r\n                            <th>İşe Başlama Tar.</th>\r\n " +
+                        "                           <th>İzin Dönemi Baş. Tar.</th>\r\n                     " +
+                        "       <th>SGK Sicil No</th>\r\n                            <th>Vakıf Öncesi Prim " +
+                        "Günü</th>\r\n                            <th>Emeklilik Tarihi</th>\r\n              " +
+                        "              <th>Calışma Durumu</th>\r\n                            <th>Cep Telef" +
+                        "onu</th>\r\n                            <th>Adres</th>\r\n                          " +
+                        "  <th>Eşi</th>\r\n                            <th>Eş TC Kimlik No</th>\r\n          " +
+                        "                  <th>Eş telefon</th>\r\n                        </tr>\r\n          " +
+                        "          </thead>\r\n                </table>\r\n            </div>\r\n        </div>" +
+                        "\r\n        <div class=\"card-footer\">\r\n            "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl5;
             @__ctrl5 = this.@__BuildControlExcelBtn();
             @__parser.AddParsedSubObject(@__ctrl5);

@@ -354,7 +354,7 @@ namespace MTS_WebParts.KisiGirisiWP
             try
             {
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
+                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));// + "/" + ProjeConstants.PAGE_HOME;
                 Page.Response.Redirect(newUrl);
             }
             catch (Exception ex)

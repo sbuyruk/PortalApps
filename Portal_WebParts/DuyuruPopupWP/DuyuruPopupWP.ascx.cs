@@ -204,10 +204,12 @@ namespace Portal_WebParts.DuyuruPopupWP
                     dgId = dg.Id;
                 }
 
-                string fotostr = string.IsNullOrEmpty(duyuru.Resim) ? "duyuru" : duyuru.Resim;
+               
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string hostUrl = currentUrl.Substring(0, currentUrl.LastIndexOf(System.Web.HttpContext.Current.Request.Url.AbsolutePath));
-                string imgUrl = hostUrl + ProjeConstants.PATH_RESIMLER_DUYURU + fotostr.ReplaceTrChars() + ".jpg";
+                string imgUrl = string.IsNullOrEmpty(duyuru.Resim)
+                    ?string.Empty
+                    : hostUrl + ProjeConstants.PATH_RESIMLER_DUYURU + duyuru.Resim.ReplaceTrChars() + ".jpg";
 
                 HtmlGenericControl modalDiv = new HtmlGenericControl("div");
                 modalDiv.ID = "modalDiv" + duyuru.Id.ToString();
@@ -249,33 +251,29 @@ namespace Portal_WebParts.DuyuruPopupWP
                 baslikDiv.InnerText = duyuru.Baslik;
                 baslikDiv.Controls.Add(baslikLbl);
 
-                HtmlGenericControl resimDiv = new HtmlGenericControl("div");
-                resimDiv.ID = "resimDiv" + duyuru.Id.ToString();
-                resimDiv.Attributes["class"] = "form-group";
+                if (!string.IsNullOrEmpty(imgUrl))
+                {
+                    HtmlGenericControl resimDiv = new HtmlGenericControl("div");
+                    resimDiv.ID = "resimDiv" + duyuru.Id.ToString();
+                    resimDiv.Attributes["class"] = "form-group";
 
-                modalContentDiv.Controls.Add(resimDiv);
+                    modalContentDiv.Controls.Add(resimDiv);
 
-                HtmlGenericControl resimImg = new HtmlGenericControl("img");
-                resimImg.ID = "resimImg" + duyuru.Id.ToString();
-                resimImg.Attributes["class"] = "img-thumbnail";
-                resimImg.Attributes["src"] = imgUrl;
-                //resimImg.Attributes.Add("onerror", "this.src='../DuyuruResimleri/duyuru.jpg'");
-                resimImg.Attributes["style"] = "height:300px";
-                resimDiv.Controls.Add(resimImg);
+                    HtmlGenericControl resimImg = new HtmlGenericControl("img");
+                    resimImg.ID = "resimImg" + duyuru.Id.ToString();
+                    resimImg.Attributes["class"] = "img-thumbnail";
+                    resimImg.Attributes["src"] = imgUrl;
+                    resimImg.Attributes["style"] = "height:300px";
+                    resimDiv.Controls.Add(resimImg); 
+                }
 
                 HtmlGenericControl metinDiv = new HtmlGenericControl("div");
                 metinDiv.ID = "metinDiv" + duyuru.Id.ToString();
-                metinDiv.Attributes["class"] = "form-group ";
+                metinDiv.Attributes["class"] = "form-group border m-2 p-2";
                 modalContentDiv.Controls.Add(metinDiv);
 
-                TextBox metinLbl = new TextBox();
-                metinLbl.ID = "metinLbl" + duyuru.Id.ToString();
-                metinLbl.CssClass = "form-control text-justify";
-                metinLbl.TextMode = TextBoxMode.MultiLine;
-                metinLbl.Rows = duyuru.Metin.Length > 500 ? 20 : 10;// 10;
-                metinLbl.Text = duyuru.Metin;
-                metinLbl.ReadOnly = true;
-                metinDiv.Controls.Add(metinLbl);
+                metinDiv.InnerHtml = duyuru.Metin;
+
 
                 HtmlGenericControl modalFooterDiv = new HtmlGenericControl("div");
                 modalFooterDiv.ID = "modalFooterDiv" + duyuru.Id.ToString();

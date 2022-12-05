@@ -75,7 +75,8 @@ namespace IKYS_WebParts.PersonelListesiWP
         private void TabloOlustur()
         {
             var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            UtilityHelper.ScriptCalistir("setDataSet(" + jsonData + ");");
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            UtilityHelper.ScriptCalistir(jsString);
         }
 
         private string TabloJson()
@@ -106,12 +107,37 @@ namespace IKYS_WebParts.PersonelListesiWP
             foreach (DataRow row in dataTable.Rows)
             {
                 int personelId = row["PersonelId"].ConvertToInt();
-                string protokolSiraNo = row["ProtokolSiraNo"].ToString();
+                int protokolSiraNo = row["ProtokolSiraNo"].ReturnZeroIfNull().ConvertToInt();
                 string adi = row["Adi"].ToString();
                 string soyadi = row["Soyadi"].ToString();
                 string unvan = row["Unvan"].ToString();
                 string birimSube = row["BirimSube"].ToString();
 
+                int sicilNo = row["SicilNo"].ReturnZeroIfNull().ConvertToInt();
+                string tahsili = row["TahsilDurumu"].ToString();
+                string kullaniciAdi = row["KullaniciAdi"].ToString(); 
+                string tCKimlikNo = row["TCKimlikNo"].ReturnZeroIfNull().ToString();
+                string anneAdi = row["AnneAdi"].ReturnEmptyIfNull().ToString();
+                string babaAdi = row["BabaAdi"].ReturnEmptyIfNull().ToString();
+                string dogumYeri = row["DogumYeri"].ReturnEmptyIfNull().ToString();
+                string dogumTar = row["DogumTar"].ReturnEmptyIfNull().ConvertToDatetime().ConvertToDatetimeEmptyIfNull();
+                string medeniHali = row["MedeniHali"].ReturnEmptyIfNull().ConvertToInt() == 1 ? "Evli" : "Bekar";
+                string evlilikTar = row["EvlilikTar"].ReturnEmptyIfNull().ConvertToDatetime().ConvertToDatetimeEmptyIfNull();
+                string cinsiyet = row["Cinsiyet"].ReturnEmptyIfNull().ToString();
+                string kanGrubu = row["KanGrubu"].ReturnEmptyIfNull().ToString();
+                string baslamaTar = row["BaslamaTar"].ReturnEmptyIfNull().ConvertToDatetime().ConvertToDatetimeEmptyIfNull();
+                string izinDonemiBasTar = row["IzinDonemiBasTar"].ReturnEmptyIfNull().ConvertToDatetime().ConvertToDatetimeEmptyIfNull();
+                string sGKSicilNo = row["SGKSicilNo"].ReturnEmptyIfNull().ToString();
+                string vakifOncesiPrimGunSayisi = row["VakifOncesiPrimGunSayisi"].ReturnEmptyIfNull().ToString();
+                string emeklilikTarihi = row["EmeklilikTarihi"].ReturnEmptyIfNull().ConvertToDatetime().ConvertToDatetimeEmptyIfNull();
+                string calismaDurumu = row["CalismaDurumu"].ReturnEmptyIfNull().ConvertToInt()==0?"Ayrıldı":"Çalışıyor";
+                string ayrilmaTar = row["AyrilmaTar"].ReturnEmptyIfNull().ConvertToDatetime().ConvertToDatetimeEmptyIfNull();
+                string ayrilmaSebebi = row["AyrilmaSebebi"].ReturnEmptyIfNull().ToString();
+                string ceptelefonu = row["CepTelefonu"].ReturnEmptyIfNull().ToString();
+                string adres = row["Adres"].ReturnEmptyIfNull().ToString();
+                string esi = row["Esi"].ReturnEmptyIfNull().ToString();
+                string esTcKimlikNo = row["EsTcKimlikNo"].ReturnEmptyIfNull().ToString();
+                string esTelefon = row["EsTelefon"].ReturnEmptyIfNull().ToString();
 
 
                 PersonelListItem personelListItem = new PersonelListItem();
@@ -126,23 +152,184 @@ namespace IKYS_WebParts.PersonelListesiWP
                 personelListItem.PersonelKarti = "<a href=" + ProjeConstants.PAGE_PERSONEL_KARTI + "?PersonelId=" + personelId + " class='btn btn-outline-primary'>Per.Kartı</a>";
                 personelListItem.KisiselSayfa = "<a href=" + ProjeConstants.PAGE_KISISELSAYFA + "?PersonelId=" + personelId + " class='btn btn-outline-primary'>Kişis.Say.</a>";
                 personelListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_PERSONEL_EDIT + "?DestinationApp=PerD&PersonelId=" + personelId + " class='btn btn-outline-primary'>Düzenle</a>";
-
+                //ekleneneler
+                personelListItem.SicilNo = sicilNo;
+                personelListItem.Tahsili = tahsili;
+                personelListItem.KullaniciAdi = kullaniciAdi;
+                personelListItem.TCKimlikNo = tCKimlikNo;
+                personelListItem.AnneAdi = anneAdi;
+                personelListItem.BabaAdi = babaAdi;
+                personelListItem.DogumYeri = dogumYeri;
+                personelListItem.DogumTar = dogumTar;
+                personelListItem.MedeniHali = medeniHali;
+                personelListItem.EvlilikTar = evlilikTar;
+                personelListItem.Cinsiyet = cinsiyet;
+                personelListItem.KanGrubu = kanGrubu;
+                personelListItem.BaslamaTar = baslamaTar;
+                personelListItem.IzinDonemiBasTar = izinDonemiBasTar;
+                personelListItem.SGKSicilNo = sGKSicilNo;
+                personelListItem.VakifOncesiPrimGunSayisi = vakifOncesiPrimGunSayisi;
+                personelListItem.EmeklilikTarihi = emeklilikTarihi;
+                personelListItem.CalismaDurumu = calismaDurumu;
+                personelListItem.AyrilmaTar = ayrilmaTar;
+                personelListItem.AyrilmaSebebi = ayrilmaSebebi;
+                personelListItem.CepTelefonu= ceptelefonu;
+                personelListItem.Adres = adres;
+                personelListItem.Esi= esi;
+                personelListItem.EsTcKimlikNo = esTcKimlikNo;
+                personelListItem.EsTelefon = esTelefon;
+                //
                 list.Add(personelListItem);
             }
             return list;
         }
+        private string CreateDataTable(string jsonData)
+        {
+            string tableString = @"
+                 jQuery(document).ready(function () {
+
+                        jQuery('#CustomDataTable').DataTable({
+                            'initComplete': function (settings, json) {//tablo yüklendiğinde
+                                var api = this.api();
+                                var row = api.row(function (idx, data, node) { //secilen Id'ye gider
+                                    return data['Secildi'] == true;
+                                });
+                                if (row.length > 0) {
+                                    row.select()
+                                        .show()
+                                        .draw(false);
+                                }
+                            },
+                            data: " + jsonData + @",
+                            columns: [
+                                { data: 'ProtokolSiraNo' },
+                                { data: 'Adi' },
+                                { data: 'Soyadi' },
+                                { data: 'Unvan' },
+                                { data: 'BirimSube' },
+                                { data: 'PersonelKarti'},
+                                { data: 'KisiselSayfa'},
+                                { data: 'Duzenle'},
+                                { data: 'SicilNo' },
+                                { data: 'Tahsili' },
+                                { data: 'KullaniciAdi' },
+                                { data: 'TCKimlikNo' },
+                                { data: 'AnneAdi' },
+                                { data: 'BabaAdi' },
+                                { data: 'DogumYeri' },
+                                { data: 'DogumTar' },
+                                { data: 'MedeniHali' },
+                                { data: 'EvlilikTar' },
+                                { data: 'Cinsiyet' },
+                                { data: 'KanGrubu' },
+                                { data: 'BaslamaTar' },
+                                { data: 'IzinDonemiBasTar' },
+                                { data: 'SGKSicilNo' },
+                                { data: 'VakifOncesiPrimGunSayisi' },
+                                { data: 'EmeklilikTarihi' },
+                                { data: 'CalismaDurumu' },
+                                { data: 'CepTelefonu' },
+                                { data: 'Adres' },
+                                { data: 'Esi' },
+                                { data: 'EsTcKimlikNo' },
+                                { data: 'EsTelefon' },
+
+                            ],
+                            columnDefs: [
+                                { type: 'turkish', targets:[1,2] },
+                                { type: 'num', targets: 0 },
+                                { 'visible': false, targets: [8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]},
+                            ],
+                            'order': [[0, 'asc']],// Sıralı
+                            'language': {
+                                'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                                'decimal': ',',
+                                'thousands': '.'
+                            },
+                            responsive: true,
+                            dom: 'Bfrtip',
+                            buttons: [
+                                {
+                                    extend: 'print',
+                                    exportOptions: {
+                                        columns: ':visible'
+                                    }
+                                },
+                                {
+                                    extend: 'excel',
+                                    exportOptions: {
+                                        columns: ':visible'
+                                    }
+                                },
+                                {
+                                    extend: 'pdf',
+                                    exportOptions: {
+                                        columns: ':visible'
+                                    }
+                                },
+                                {
+                                    extend: 'copy',
+                                    exportOptions: {
+                                        columns: ':visible'
+                                    }
+                                },
+                                , 'pageLength', 'colvis'
+                            ]
+                        });
+                    });";
+            return tableString;
+        }
         private class PersonelListItem
         {
             public string PersonelId { get; set; }
-            public string ProtokolSiraNo { get; set; }
+            
             public string Adi { get; set; }
             public string Soyadi { get; set; }
-            public string Unvan { get; set; }
-            public string BirimSube { get; set; }
             public string PersonelKarti { get; set; }
             public string KisiselSayfa { get; set; }
             public string Duzenle { get; set; }
-            public bool Secildi { get; set; }
+            public int SicilNo { get; set; }
+            public string Tahsili { get; set; }
+            public string KullaniciAdi { get; set; }
+            public string Asker_sivil { get; set; }
+            public bool Secildi{ get; set; }
+            //Kimlik
+            public string TCKimlikNo { get; set; }
+            public string AnneAdi { get; set; }
+            public string BabaAdi { get; set; }
+            public string DogumYeri { get; set; }
+            public string DogumTar { get; set; }
+            public string MedeniHali { get; set; }
+            public string EvlilikTar { get; set; }
+            public string Cinsiyet { get; set; }
+            public string EskiSoyadi { get; set; }
+            public string KanGrubu { get; set; }
+            public bool DogumGunuKutlama { get; set; }
+            public bool EvlilikKutlama { get; set; }
+            //isBilgileri
+            public int UnvanId { get; set; }
+            public int GorevId { get; set; }
+            public int BirimId { get; set; }
+            public string BaslamaTar { get; set; }
+            public string IzinDonemiBasTar { get; set; }
+            public string CalismaDurumu { get; set; }
+            public string AyrilmaTar { get; set; }
+            public string AyrilmaSebebi { get; set; }
+            public int ProtokolSiraNo { get; set; }
+            public string SGKSicilNo { get; set; }
+            public string SGKBasTar { get; set; }
+            public string VakifOncesiPrimGunSayisi { get; set; }
+            public bool SGKDestekPrimi { get; set; }
+            public string EmeklilikTarihi { get; set; }
+            public string Unvan { get; set; }
+            public string BirimSube { get; set; }
+            //iletisim
+            public string CepTelefonu { get; set; }
+            public string Adres { get; set; }
+            //Aile
+            public string Esi { get; set; }
+            public string EsTcKimlikNo { get; set; }
+            public string EsTelefon { get; set; }
         }
         private DataTable GetDataTable()
         {

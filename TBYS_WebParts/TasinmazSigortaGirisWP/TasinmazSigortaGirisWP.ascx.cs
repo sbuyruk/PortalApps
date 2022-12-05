@@ -230,7 +230,9 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             sigorta = sigorta.Select<Sigorta>(SigortaIdQS.ConvertToInt());
             if (sigorta != null)
             {
+
                 SigortaFormunuDoldur(sigorta);
+                PDFGoster(sigorta);
                 TasinmazIdQS = sigorta.TasinmazId.ToString();
                 DateTime sigortaBitisTarihi = sigorta.SigortaBitTar.ConvertToDatetime();
                 if (sigortaBitisTarihi <= DateTime.MinValue)
@@ -340,11 +342,10 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             SigortaCinsiDDL.Items.Add(ProjeConstants.SIGORTA_DASK_IHTIYARI);
             SigortaCinsiDDL.Items.Add(ProjeConstants.SIGORTA_DEPREM_IHTIYARI);
         }
-        private bool UpdateSigorta()
+        private bool UpdateSigorta(Sigorta sigorta)
         {
             bool guncellendiMi = false;
-            Sigorta sigorta = new Sigorta();
-            sigorta = sigorta.Select<Sigorta>(SigortaIdQS.ConvertToInt());
+            
             if (sigorta != null)
             {
                 sigorta.AdresKodu = AdresKoduTxt.Text;
@@ -521,16 +522,22 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
         {
             try
             {
-                bool guncellendiMi = UpdateSigorta();
-                if (guncellendiMi)
+                Sigorta sigorta = new Sigorta();
+                sigorta = sigorta.Select<Sigorta>(SigortaIdQS.ConvertToInt());
+                if (sigorta!=null)
                 {
-                    MessageHelper.PublishMessage("Sigorta Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    bool guncellendiMi = UpdateSigorta(sigorta);
+                    if (guncellendiMi)
+                    {
+                        MessageHelper.PublishMessage("Sigorta Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    }
+                    else
+                    {
+                        MessageHelper.PublishMessage("Sigorta Güncellenemedi", ProjeConstants.MESAJ_HATA);
+                    } 
                 }
-                else
-                {
-                    MessageHelper.PublishMessage("Sigorta Güncellenemedi", ProjeConstants.MESAJ_HATA);
-                }
-
+                PDFKaydet(sigorta);
+                PDFGoster(sigorta);
 
             }
             catch (Exception ex)
@@ -642,5 +649,114 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
         {
             BagimsizBolumNoTxt.Text = BagimsizBolumDDL.SelectedItem.Text;
         }
+        #region dosya yukle/goruntule
+        protected void BelgeSilBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string dosyaAdi = ProjeConstants.DOSYA_SIGORTAPOLICESI_DASK + SigortaIdQS + ".pdf";
+                if (UtilityHelper.DeleteFileFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi))
+                {
+                    MessageHelper.PublishMessage(dosyaAdi + " Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    BelgeSilBtn.Visible = false;
+                    DosyaLnk.Visible = false;
+                    BelgeYukleFU.Visible = true;
+                    Sigorta sigorta = new Sigorta();
+                    sigorta = sigorta.Select<Sigorta>(SigortaIdQS.ConvertToInt());
+                    if (sigorta != null)
+                        SigortaFormunuDoldur(sigorta);
+                }
+                else
+                {
+                    MessageHelper.PublishMessage(dosyaAdi + " Silinemedi", ProjeConstants.MESAJ_HATA);
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelper eh = new ExceptionHelper(ex);
+                eh.PublishException();
+            }
+        }
+        private void PDFKaydet(Sigorta sigorta)
+        {
+            try
+            {
+                if (BelgeYukleFU.HasFile)
+                {
+                    string hedefDosyaAdi = ProjeConstants.DOSYA_SIGORTAPOLICESI_DASK + sigorta.Id + ".pdf";
+                    bool isOk = UtilityHelper.UploadFileToSharePoint(BelgeYukleFU, ProjeConstants.TBYSBELGELERI_LIB, hedefDosyaAdi);
+                    if (isOk)
+                    {
+                        sigorta.PDFDosyasi = hedefDosyaAdi;
+                        sigorta.Update();
+                        DosyaLnk.Visible = true;
+                        BelgeSilBtn.Visible = true;
+                        BelgeYukleFU.Visible = false;
+                    }
+                    else
+                    {
+                        DosyaLnk.Visible = false;
+                        BelgeSilBtn.Visible = false;
+                        BelgeYukleFU.Visible = true;
+
+                    }
+                }
+                else
+                {
+                    DosyaLnk.Visible = false;
+                    BelgeSilBtn.Visible = false;
+                }
+            }
+            catch (Exception exception)
+            {
+                Exception ex = new Exception("Dosya Yüklenemedi");
+                ExceptionHelper exhelper = new ExceptionHelper(exception);
+                exhelper.Exceptions.Add(ex);
+                exhelper.PublishException();
+            }
+        }
+        private void PDFGoster(Sigorta sigorta)
+        {
+            try
+            {
+                if (sigorta != null)
+                {
+                    string dosyaAdi = sigorta.PDFDosyasi;
+                    string dosyaUrl = UtilityHelper.TbysBelgelerURLGetir() + "/" + dosyaAdi;
+                    bool dosyaVarMi = UtilityHelper.DosyaVarMi(UtilityHelper.TbysBelgelerURLGetir(), ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi);
+                    if (dosyaVarMi)
+                    {
+                        string belgePdfLink = @"'<a class=\'btn btn-secondary\' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + dosyaUrl + @"> Poliçe Görüntüle </a>'";
+
+                        DosyaLnk.Target = "_blank";
+                        DosyaLnk.HRef = dosyaUrl;
+
+                        DosyaLnk.Visible = true;
+                        BelgeSilBtn.Visible = true;
+                        BelgeYukleFU.Visible = false;
+                    }
+                    else
+                    {
+                        DosyaLnk.Visible = false;
+                        BelgeSilBtn.Visible = false;
+                        BelgeYukleFU.Visible = true;
+                    }
+
+                }
+                else
+                {
+                    MessageHelper.PublishMessage("Poliçe bulunamadı.", ProjeConstants.MESAJ_HATA);
+                }
+
+            }
+            catch (Exception exception)
+            {
+                Exception ex = new Exception("PDF Yüklenemedi");
+                ExceptionHelper exhelper = new ExceptionHelper(exception);
+                exhelper.Exceptions.Add(ex);
+                exhelper.PublishException();
+            }
+        }
+        #endregion
     }
 }

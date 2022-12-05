@@ -78,7 +78,7 @@
 
                             <!-- Tab panes -->
                             <div class="tab-content" runat="server">
-                                <div class="tab-pane container active card mt-1 " id="KimlikDiv">
+                                <div class=" active card mt-1 " id="KimlikDiv">
                                     <div class="card-columns">
                                         <div class="card border-0">
                                             <div class="form-group m-0">
@@ -92,18 +92,18 @@
                                                 <asp:TextBox ID="SoyadiTxt" runat="server" CssClass="form-control" ToolTip="Soyadı" type="text"></asp:TextBox>
                                             </div>
                                             <div class="row">
-                                                <div class="col form-group">
+                                                <div class="col">
                                                     <label class="col-form-label" for="DogumTarihiTxt">Doğum Tarihi</label>
                                                     <input runat="server" type="text" id="DogumTarihiTxt" name="DogumTarihiTxt" class="form-control DateTimePickerV1" readonly="readonly" />
                                                 </div>
-                                                <div class="col form-group">
+                                                <div class="col">
                                                     <label class="col-form-label" for="DogumGunuKutlamaChk">Kutlama</label>
                                                     <asp:CheckBox ID="DogumGunuKutlamaChk" runat="server" CssClass="form-control" Text="    " Checked="True" />
                                                 </div>
                                             </div>
                                             
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="DogumIliDDL">Doğ.Yeri İl</label>
+                                                <label class="col-form-label" for="DogumIliDDL" >Doğ.Yeri İl</label>
                                                 <asp:DropDownList ID="DogumIliDDL" runat="server" CssClass="form-control" Style="height: auto" OnSelectedIndexChanged="DogumIliDDL_SelectedIndexChanged" AutoPostBack="true" />
                                             </div>
                                             <div class="form-group m-0">
@@ -130,20 +130,18 @@
                                                 <asp:DropDownList ID="MedeniHaliDDL" runat="server"  CssClass="form-control" Style="height: auto" OnSelectedIndexChanged="MedeniHaliDDL_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
                                             </div>
                                             <div class="row">
-                                                <div class="col-8 form-group" id="EvlilikTarihiDiv" runat="server">
+                                                <div class="col-8" id="EvlilikTarihiDiv" runat="server">
                                                     <label class="col-form-label" for="EvlilikTarihiTxt">Evlilik Tarihi</label>
                                                     <div class="input-group">
                                                         <input runat="server" type="text" id="EvlilikTarihiTxt" name="EvlilikTarihiTxt" class="form-control DateTimePickerV1" readonly="readonly" />
                                                         <input type="button" id="clear-evlilikTar" value="Sil" onclick="clearEvlilikTar()" />
                                                     </div>
                                                 </div>
-                                                <div class="col form-group">
+                                                <div class="col">
                                                     <label class="col-form-label" for="EvlilikKutlamaChk">Kutlama</label>
                                                     <asp:CheckBox ID="EvlilikKutlamaChk" runat="server" CssClass="form-control" Text="    " Checked="True" />
                                                 </div>
                                             </div>
-                                            
-
                                         </div>
                                         <div class="card border-0">
                                             <div class="form-group m-0">
@@ -163,6 +161,10 @@
                                                 <asp:DropDownList ID="AskerSivilDDL" runat="server" CssClass="form-control" Style="height: auto"></asp:DropDownList>
                                             </div>
                                             <div class="form-group m-0">
+                                                <label class="col-form-label" for="TahsiliDDL">Tahsili</label>
+                                                <asp:DropDownList ID="TahsiliDDL" runat="server" CssClass="form-control" Style="height: auto"></asp:DropDownList>
+                                            </div>
+                                            <div class="form-group m-0">
                                                 <label class="col-form-label" for="KullaniciAdiTxt">Kullanıcı Adı</label>
                                                 <asp:TextBox ID="KullaniciAdiTxt" runat="server" CssClass="form-control" ToolTip="Bilgisayar Kullanıcı Adı" type="text"></asp:TextBox>
                                             </div>
@@ -173,7 +175,7 @@
                                     </div>
 
                                 </div>
-                                <div class="tab-pane container fade card mt-1 " id="IsBilgileriDiv">
+                                <div class="container fade card mt-1 " id="IsBilgileriDiv">
                                     <div class="card-columns">
                                         <div class="card border-0">
                                             <div class="form-group m-0">
@@ -241,10 +243,10 @@
                                         <asp:LinkButton ID="UpdateIsBilgileriBtn" CssClass="btn btn-outline-primary" runat="server" Text="İş Bilgilerini Kaydet" OnClick="UpdateIsBilgileriBtn_Click" />
                                     </div>
                                 </div>
-                                <div class="tab-pane container fade card mt-1 " id="AileDiv">
+                                <div class="container fade card mt-1 " id="AileDiv">
                                     <div class="card">
                                         <div class="btn-secondary">
-                                            <a class="btn-block text-center " data-toggle="collapse" data-target="#AileMainPanel" aria-expanded="false" aria-controls="AileMainPanel" style="font-weight: bold">Aile Bilgileri</a>
+                                            <a class="text-white  text-center " data-toggle="collapse" data-target="#AileMainPanel" aria-expanded="false" aria-controls="AileMainPanel" style="font-weight: bold">Aile Bilgileri</a>
                                         </div>
                                     </div>
                                     <div class="card">
@@ -259,7 +261,7 @@
                                         <asp:LinkButton ID="AileDuzenleBtn" CssClass="btn btn-outline-primary" runat="server" Text="Aile Bilgilerini Düzenle" OnClick="AileDuzenleBtn_Click" />
                                     </div>
                                 </div>
-                                <div class="tab-pane container fade card m-1 " id="IletisimDiv">
+                                <div class="container fade card m-1 " id="IletisimDiv">
                                     <div class="row p-1">
                                         <div class="col-4 ">
                                             <div class="form-group m-0">
@@ -323,11 +325,11 @@
                                         <asp:LinkButton ID="UpdateIletisimBtn" CssClass="btn btn-outline-primary" runat="server" Text="İletişim Bilgilerini Kaydet" OnClick="UpdateIletisimBtn_Click" />
                                     </div>
                                 </div>
-                                <div class="tab-pane container fade card mt-1 " id="EgitimDiv">
+                                <div class="container fade card mt-1 " id="EgitimDiv">
                                     <div class="card-body">
                                         <div class="card">
                                             <div class="btn-secondary">
-                                                <a class="btn-block text-center " data-toggle="collapse" data-target="#OkulDiv" aria-expanded="false" aria-controls="OkulDiv" style="font-weight: bold">Mezun Olduğu Okullar</a>
+                                                <a class="text-white  text-center " data-toggle="collapse" data-target="#OkulDiv" aria-expanded="false" aria-controls="OkulDiv" style="font-weight: bold">Mezun Olduğu Okullar</a>
                                             </div>
                                         </div>
                                         <div class="card">
@@ -340,7 +342,7 @@
                                         </div>
                                         <div class="card">
                                             <div class="btn-secondary">
-                                                <a class="btn-block text-center " data-toggle="collapse" data-target="#KursDiv" aria-expanded="false" aria-controls="KursDiv" style="font-weight: bold">Gördüğü Kurslar</a>
+                                                <a class="text-white  text-center " data-toggle="collapse" data-target="#KursDiv" aria-expanded="false" aria-controls="KursDiv" style="font-weight: bold">Gördüğü Kurslar</a>
                                             </div>
                                         </div>
                                         <div class="card">
@@ -353,7 +355,7 @@
                                         </div>
                                         <div class="card">
                                             <div class="btn-secondary">
-                                                <a class="btn-block text-center " data-toggle="collapse" data-target="#IsTecrubeDiv" aria-expanded="false" aria-controls="IsTecrubeDiv" style="font-weight: bold">İş Tecrübesi</a>
+                                                <a class="text-white  text-center " data-toggle="collapse" data-target="#IsTecrubeDiv" aria-expanded="false" aria-controls="IsTecrubeDiv" style="font-weight: bold">İş Tecrübesi</a>
                                             </div>
                                         </div>
                                         <div class="card">
@@ -370,12 +372,12 @@
                                     </div>
 
                                 </div>
-                                <div class="tab-pane container fade card mt-1 " id="IzinDiv">
+                                <div class="container fade card mt-1 " id="IzinDiv">
 
                                     <div class="card-body">
                                         <div class="card">
                                             <div class="btn-secondary">
-                                                <a class="btn-block text-center " data-toggle="collapse" data-target="#IzinBilgileriDiv" aria-expanded="false" aria-controls="IzinBilgileriDiv" style="font-weight: bold">İzin Bilgileri</a>
+                                                <a class="text-white  text-center " data-toggle="collapse" data-target="#IzinBilgileriDiv" aria-expanded="false" aria-controls="IzinBilgileriDiv" style="font-weight: bold">İzin Bilgileri</a>
                                             </div>
                                         </div>
                                         <div class="card">
@@ -388,7 +390,7 @@
                                         </div>
                                         <div class="card">
                                             <div class="btn-secondary">
-                                                <a class="btn-block text-center " data-toggle="collapse" data-target="#KullanilanIzinlerDiv" aria-expanded="false" aria-controls="KullanilanIzinlerDiv" style="font-weight: bold">Dönem İçinde Kullanılan İzinler</a>
+                                                <a class="text-white  text-center " data-toggle="collapse" data-target="#KullanilanIzinlerDiv" aria-expanded="false" aria-controls="KullanilanIzinlerDiv" style="font-weight: bold">Dönem İçinde Kullanılan İzinler</a>
                                             </div>
                                         </div>
                                         <div class="card">
@@ -430,7 +432,7 @@
                                         </div>
                                         <div class="card">
                                             <div class="btn-secondary">
-                                                <a class="btn-block text-center " data-toggle="collapse" data-target="#IzinTalepleriDiv" aria-expanded="false" aria-controls="IzinTalepleriDiv" style="font-weight: bold">İzin Talepleri</a>
+                                                <a class="text-white  text-center " data-toggle="collapse" data-target="#IzinTalepleriDiv" aria-expanded="false" aria-controls="IzinTalepleriDiv" style="font-weight: bold">İzin Talepleri</a>
                                             </div>
                                         </div>
                                         <div class="card">

@@ -10,8 +10,13 @@ using Utility.ProjeGlobal;
 
 namespace Model.MTS
 {
+    [Serializable]
     public class Randevu : ParentClass
     {
+        public Randevu()
+        {
+        }
+
         public string RandevuTipi { get; set; }
         public int RandevuAmaci { get; set; }
         public string RandevuKonusu { get; set; }
@@ -26,7 +31,30 @@ namespace Model.MTS
         public string BaslangicSaati { get; set; }
         public string BitisSaati { get; set; }
         public string Aciklama { get; set; }
+        public override bool Equals(object obj)
+        {
+            var other = obj as Randevu;
 
+            if (other == null)
+                return false;
+
+            if (RandevuTipi != other.RandevuTipi 
+                || RandevuAmaci != other.RandevuAmaci
+                || RandevuKonusu != other.RandevuKonusu
+                || RandevuYeri != other.RandevuYeri
+                || TumGun != other.TumGun
+                || AcikTarih != other.AcikTarih
+                || IcIrtibatId != other.IcIrtibatId
+                || DisIrtibatId != other.DisIrtibatId
+                || BaslangicTarihi != other.BaslangicTarihi
+                || BitisTarihi != other.BitisTarihi
+                || BaslangicSaati != other.BaslangicSaati
+                || BitisSaati != other.BitisSaati
+                || Aciklama != other.Aciklama)
+                return false;
+
+            return true;
+        }
         public override bool Delete()
         {
             try
@@ -410,6 +438,55 @@ namespace Model.MTS
                 ", kriter);
 
             return sqlString;
+        }
+
+        //public bool Equals(Randevu other)
+        //{
+        //    return !(other is null) &&
+        //           RandevuTipi == other.RandevuTipi &&
+        //           RandevuAmaci == other.RandevuAmaci &&
+        //           RandevuKonusu == other.RandevuKonusu &&
+        //           RandevuYeri == other.RandevuYeri &&
+        //           RandevuDurumu == other.RandevuDurumu &&
+        //           TumGun == other.TumGun &&
+        //           AcikTarih == other.AcikTarih &&
+        //           IcIrtibatId == other.IcIrtibatId &&
+        //           DisIrtibatId == other.DisIrtibatId &&
+        //           BaslangicTarihi == other.BaslangicTarihi &&
+        //           BitisTarihi == other.BitisTarihi &&
+        //           BaslangicSaati == other.BaslangicSaati &&
+        //           BitisSaati == other.BitisSaati &&
+        //           Aciklama == other.Aciklama;
+        //}
+
+        public override int GetHashCode()
+        {
+            int hashCode = 477006145;
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(RandevuTipi);
+            hashCode = hashCode * -1521134295 + RandevuAmaci.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(RandevuKonusu);
+            hashCode = hashCode * -1521134295 + RandevuYeri.GetHashCode();
+            hashCode = hashCode * -1521134295 + RandevuDurumu.GetHashCode();
+            hashCode = hashCode * -1521134295 + TumGun.GetHashCode();
+            hashCode = hashCode * -1521134295 + AcikTarih.GetHashCode();
+            hashCode = hashCode * -1521134295 + IcIrtibatId.GetHashCode();
+            hashCode = hashCode * -1521134295 + DisIrtibatId.GetHashCode();
+            hashCode = hashCode * -1521134295 + BaslangicTarihi.GetHashCode();
+            hashCode = hashCode * -1521134295 + BitisTarihi.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(BaslangicSaati);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(BitisSaati);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Aciklama);
+            return hashCode;
+        }
+
+        public static bool operator ==(Randevu left, Randevu right)
+        {
+            return EqualityComparer<Randevu>.Default.Equals(left, right);
+        }
+
+        public static bool operator !=(Randevu left, Randevu right)
+        {
+            return !(left == right);
         }
     }
 }

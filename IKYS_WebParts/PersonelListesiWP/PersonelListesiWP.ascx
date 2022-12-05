@@ -14,86 +14,7 @@
     }
 
 </script>
-<script type="text/javascript">
-    function setDataSet(myset) {
-        myjsons = myset;
-    }
-    var myjsons = [{
-        "ProtokolSiraNo": "", "Adi": "", "Soyadi": "", "Unvan": "", "BirimSube": "", "PersonelKarti": "", "KisiselSayfa": "", "Duzenle": ""
-    }];
-    jQuery(document).ready(function () {
-
-        jQuery('#CustomDataTable').DataTable({
-            'initComplete': function (settings, json) {//tablo yüklendiğinde
-                var api = this.api();
-                var row = api.row(function (idx, data, node) { //secilen Id'ye gider
-                    return data['Secildi'] == true;
-                });
-                if (row.length > 0) {
-                    row.select()
-                        .show()
-                        .draw(false);
-                }
-            },
-            data: myjsons,
-            columns: [
-                { data: "ProtokolSiraNo" },
-                { data: "Adi" },
-                { data: "Soyadi" },
-                { data: "Unvan" },
-                { data: "BirimSube" },
-                { data: "PersonelKarti" },
-                { data: "KisiselSayfa" },
-                { data: "Duzenle" },
-
-            ],
-            columnDefs: [
-                { type: 'turkish', targets:[1,2] },
-                { type: 'num', targets: 0 }
-            ],
-            'order': [[0, 'asc']],//AdiSoyadi Sıralı
-            "language": {
-                "url": "http://tskgv-portal/OrtakBelgeler/Turkish.txt",
-                "decimal": ",",
-                "thousands": "."
-            },
-            responsive: true,
-            dom: 'Bfrtip',
-            //colon resizable
-            //initComplete: function (settings) {
-            //    $('#CustomDataTable').colResizable({ liveDrag: true });
-            //},
-            buttons: [
-                {
-                    extend: 'print',
-                    exportOptions: {
-                        columns: ':visible'
-                    }
-                },
-                {
-                    extend: 'excel',
-                    exportOptions: {
-                        columns: ':visible'
-                    }
-                },
-                {
-                    extend: 'pdf',
-                    exportOptions: {
-                        columns: ':visible'
-                    }
-                },
-                {
-                    extend: 'copy',
-                    exportOptions: {
-                        columns: ':visible'
-                    }
-                },
-                , 'pageLength', "colvis"
-            ]
-        });
-    });
-</script>
-<div class="container">
+<div class="container col-xl">
     <div class="card shadow">
         <div class="card-header ">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
@@ -117,6 +38,29 @@
                             <th>Personel Kartı</th>
                             <th>Kişisel Sayfa</th>
                             <th>Düzenle</th>
+                            <th>Sicil No</th>
+                            <th>Tahsili</th>
+                            <th>Kullanici Adi</th>
+                            <th>TCKimlikNo</th>
+                            <th>Anne Adı</th>
+                            <th>Baba Adı</th>
+                            <th>Doğum Yeri</th>
+                            <th>Doğum Tar.</th>
+                            <th>Medeni Hali</th>
+                            <th>Evlilik Tar.</th>
+                            <th>Cinsiyet</th>
+                            <th>Kan Grubu</th>
+                            <th>İşe Başlama Tar.</th>
+                            <th>İzin Dönemi Baş. Tar.</th>
+                            <th>SGK Sicil No</th>
+                            <th>Vakıf Öncesi Prim Günü</th>
+                            <th>Emeklilik Tarihi</th>
+                            <th>Calışma Durumu</th>
+                            <th>Cep Telefonu</th>
+                            <th>Adres</th>
+                            <th>Eşi</th>
+                            <th>Eş TC Kimlik No</th>
+                            <th>Eş telefon</th>
                         </tr>
                     </thead>
                 </table>

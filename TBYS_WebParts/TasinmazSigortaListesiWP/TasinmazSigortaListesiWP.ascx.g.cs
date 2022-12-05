@@ -485,12 +485,12 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP {
                         "                   <th>Taşınmazın Adresi</th>\r\n                                 " +
                         "                   <th>Teminatlar</th>\r\n                                        " +
                         "            <th>Sig.Bit.Tar.</th>\r\n                                             " +
-                        "       <th>Taşınmaz Kartı</th>\r\n                                                " +
-                        "    <th>Düzenle</th>\r\n                                                </tr>\r\n   " +
-                        "                                         </thead>\r\n                             " +
-                        "           </table>\r\n                                    </div>\r\n               " +
-                        "                 </div>\r\n                            </div>\r\n\r\n                 " +
-                        "       "));
+                        "       <th>Poliçe</th>\r\n                                                    <th>" +
+                        "Taşınmaz Kartı</th>\r\n                                                    <th>Düz" +
+                        "enle</th>\r\n                                                </tr>\r\n              " +
+                        "                              </thead>\r\n                                        " +
+                        "</table>\r\n                                    </div>\r\n                          " +
+                        "      </div>\r\n                            </div>\r\n\r\n                        "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]

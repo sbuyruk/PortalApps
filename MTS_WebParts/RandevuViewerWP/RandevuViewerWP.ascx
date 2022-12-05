@@ -13,6 +13,13 @@
 
 
 <style>
+    <%-- scroll için --%>
+    #AcikTarihliRandevuListDiv {
+      background-color: lightblue;
+      height: 550px;
+      width: auto;
+      overflow-y: scroll;
+    }
   body {
     /*margin-top: 40px;*/
     font-size: 14px;
@@ -24,7 +31,7 @@
 /*    left: 20px;
     top: 20px;*/
     width: 200px;
-    padding: 0 10px;
+    padding: 0;
     border: 1px solid #ccc;
     background: #eee;
     text-align: left;
@@ -121,11 +128,11 @@
     <div id='wrap'>
      
         <div id='external-events'>
-            <div class="form-group">
+            <div class="form-group" >
                 <a href="#" class="btn btn-info" id="downloadPDF" onclick="DoIt();">Takvimi PDF'e Aktar</a>
             </div>
             <h4>Açık Tarihli Faaliyetler</h4>
-            <div id="AcikTarihliRandevuListDiv" runat="server" ClientIDMode="Static" >
+            <div id="AcikTarihliRandevuListDiv" runat="server" ClientIDMode="Static">
 
             </div>
         </div>

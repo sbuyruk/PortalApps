@@ -136,6 +136,11 @@ namespace TBYS_WebParts.TasinmazListesiWP
                 string ciltNo = row["CiltNo"].ToString();
                 string sahifeNo = row["SahifeNo"].ToString();
                 string cinsi = row["Cinsi"].ToString();
+                string yuzolcumu = row["Yuzolcumu"].ToString();
+                string arsaPayi = row["ArsaPayi"].ToString();
+                string vakifHissesi = row["VakifHissesi"].ToString();
+                string emlakBeyanDegeri = row["EmlakBeyanDegeri"].ReturnZeroIfNull().ConvertToDecimal().ToString("N", culturInfo);
+                string tahminiRayicDegeri = row["TahminiRayicDegeri"].ReturnZeroIfNull().ConvertToDecimal().ToString("N", culturInfo);
 
 
                 TasinmazListesiListItem tasinmazListesiListItem = new TasinmazListesiListItem();
@@ -148,7 +153,11 @@ namespace TBYS_WebParts.TasinmazListesiWP
                 tasinmazListesiListItem.BagisYili = bagisYili.Trim();
 
                 tasinmazListesiListItem.TasinmazKarti = "<a target='_blank' href=" + ProjeConstants.PAGE_TASINMAZ_KARTI + "?SenderApp=TL&TasinmazId=" + tasinmazId + " class='btn btn-outline-info'>Taşınmaz Kartı</a>";
-                tasinmazListesiListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_TASINMAZ_GIRIS + "?DestinationApp=TD&TasinmazId=" + tasinmazId + " class='btn btn-outline-primary'>Düzenle</a>";
+                bool duzenleGorunsunMu = !string.IsNullOrEmpty(AuthQS) && AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM);
+                if (duzenleGorunsunMu)
+                {
+                    tasinmazListesiListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_TASINMAZ_GIRIS + "?DestinationApp=TD&TasinmazId=" + tasinmazId + " class='btn btn-outline-primary'>Düzenle</a>"; 
+                }
 
                 tasinmazListesiListItem.KullanimDurumu = kullanimDurumu;
                 tasinmazListesiListItem.SorumluBolge = sorumluBolge;
@@ -160,6 +169,14 @@ namespace TBYS_WebParts.TasinmazListesiWP
                 tasinmazListesiListItem.CiltNo = ciltNo;
                 tasinmazListesiListItem.SahifeNo = sahifeNo;
                 tasinmazListesiListItem.Cinsi = cinsi;
+                tasinmazListesiListItem.EmlakBeyanDegeri = emlakBeyanDegeri;
+                tasinmazListesiListItem.TahminiRayicDegeri = tahminiRayicDegeri;
+                tasinmazListesiListItem.AdaNo = adaNo;
+                tasinmazListesiListItem.ParselNo = parselNo;
+                tasinmazListesiListItem.PaftaNo = paftaNo;
+                tasinmazListesiListItem.Yuzolcumu = yuzolcumu;
+                tasinmazListesiListItem.ArsaPayi = arsaPayi;
+                tasinmazListesiListItem.VakifHissesi = vakifHissesi;
 
 
 
@@ -195,29 +212,44 @@ namespace TBYS_WebParts.TasinmazListesiWP
                 ? "{ targets:9, visible:false},"
                 : "{ targets:9, visible:true},";
             string tableString = @"
-                jQuery(document).ready(function () {
+                $(document).ready(function () {
+                    // Setup - add a text input to each footer cell
+                    $('#CustomDataTable tfoot tr')
+                        .clone(true)
+                        .addClass('filters')
+                        .appendTo('#CustomDataTable thead');
 
-                    jQuery('#CustomDataTable').DataTable({
+                      var table =  $('#CustomDataTable').DataTable({
                         data: " + jsonData + @",
                         columns: [
-                            { data: 'Id' },
-                            { data: 'KullanimSekli' },
+                            { data: 'Id', 'width': '4%'   },
+                            { data: 'KullanimSekli' , 'width': '10%' },
                             { data: 'MulkiyetSekli' },
-                            { data: 'IliIlcesi' },
-                            { data: 'Adres' },
+                            { data: 'IliIlcesi', 'width': '10%'},
+                            { data: 'Adres', 'width': '15%'},
                             { data: 'Bagisci' },
                             { data: 'BagisYili' },
                             { data: 'SorumluBolge' },                            
                             { data: 'TasinmazKarti' },
                             { data: 'Duzenle' },
+                            { data: 'EmlakBeyanDegeri' },
+                            { data: 'TahminiRayicDegeri' },
+                            { data: 'AdaNo' },
+                            { data: 'ParselNo' },
+                            { data: 'PaftaNo' },
+                            { data: 'Yuzolcumu' },
+                            { data: 'ArsaPayi' },
+                            { data: 'VakifHissesi' },
                         ],
                         'order': [[0, 'asc']],//Id Sıralı
                         columnDefs:
                             [
                             " + duzenleGorunsun + @"
+                            { 'visible': false, targets: [10,11,12,13,14,15,16,17]},
+                            {  targets : [10,11],className: 'dt-body-right'},
                             ],
                         'language': {
-                            'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                            'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                             'decimal': ',',
                             'thousands': '.'
                         },
@@ -250,7 +282,59 @@ namespace TBYS_WebParts.TasinmazListesiWP
                             },
                             , 'pageLength', 'colvis'
                         ],
+                        initComplete: function () {
+                            var api = this.api();
+ 
+                            // For each column
+                            api
+                                .columns([6])
+                                .eq(0)
+                                .each(function (colIdx) {
+                                    // Set the header cell to contain the input element
+                                    var cell = $('.filters th').eq(
+                                        $(api.column(colIdx).header()).index()
+                                    );
+                                    var title = $(cell).text();
+                                    $(cell).html('<input type=text  placeholder=' + title + ' />');
+ 
+                                    // On every keypress in this input
+                                    $(
+                                        'input',
+                                        $('.filters th').eq($(api.column(colIdx).header()).index())
+                                    )
+                                        .off('keyup change')
+                                        .on('change', function (e) {
+                                            // Get the search value
+                                            $(this).attr('title', $(this).val());
+                                            var regexr = '({search})'; //$(this).parents('th').find('select').val();
+ 
+                                            var cursorPosition = this.selectionStart;
+                                            // Search the column for that value
+                                            api
+                                                .column(colIdx)
+                                                .search(
+                                                    this.value != ''
+                                                        ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                                        : '',
+                                                    this.value != '',
+                                                    this.value == ''
+                                                )
+                                                .draw();
+                                        })
+                                        .on('keyup', function (e) {
+                                            e.stopPropagation();
+ 
+                                            $(this).trigger('change');
+                                            $(this)
+                                                .focus()[0]
+                                                .setSelectionRange(cursorPosition, cursorPosition);
+                                        });
+                                });
+                            table.columns.adjust().draw();
+                        },
                     });
+                   
+
                 });";
             return tableString;
         }
@@ -315,14 +399,19 @@ namespace TBYS_WebParts.TasinmazListesiWP
             
             public string SorumluBolge { get; set; }
             public string EmlakSicilNo { get; set; }
-            public string AdaNo { get; set; }
-            public string ParselNo { get; set; }
-            public string PaftaNo { get; set; }
             public string YevmiyeNo { get; set; }
             public string CiltNo { get; set; }
             public string SahifeNo { get; set; }
             public string Cinsi { get; set; }
             public string KullanimDurumu { get; set; }
+            public string EmlakBeyanDegeri { get; set; }
+            public string TahminiRayicDegeri { get; set; }
+            public string AdaNo { get; set; }
+            public string ParselNo { get; set; }
+            public string PaftaNo { get; set; }
+            public string Yuzolcumu { get; set; }
+            public string ArsaPayi { get; set; }
+            public string VakifHissesi { get; set; }
         }
     }
 }

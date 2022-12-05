@@ -393,7 +393,10 @@ namespace MTS_WebParts.ToplantiListesiWP
             {
                 string userName = CurrentUserName.Substring(CurrentUserName.LastIndexOf("\\") + 1, CurrentUserName.Length - CurrentUserName.LastIndexOf("\\") - 1);
                 personel = personel.SelectByUserName(userName);
-                PersonelIdQS = personel.Id.ToString();
+                if (personel != null)
+                    PersonelIdQS = personel.Id.ToString();
+                else
+                    MessageHelper.PublishMessage("Personel bulunamadı",ProjeConstants.MESAJ_HATA);
             }
 
             return personel;

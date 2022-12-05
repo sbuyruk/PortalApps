@@ -166,16 +166,8 @@ namespace TBYS_WebParts.VasiyetciListesiWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControlTree(global::TBYS_WebParts.VasiyetciListesiWP.VasiyetciListesiWP @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-
-<link rel=""stylesheet"" href=""/Style Library/tskgv/css/fancybox.css"" />
-<script src=""/Style Library/tskgv/js/fancybox.umd.js""></script>
-<script src=""/Style Library/tskgv/js/fancybox.esm.js""></script>
-
-<div class=""container col-xl"">
-    <div class=""card shadow"">
-        <div class=""card-header"">
-            "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n<div class=\"container col-xl\">\r\n    <div class=\"card shadow\">\r\n        <div c" +
+                        "lass=\"card-header\">\r\n            "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl1;
             @__ctrl1 = this.@__BuildControlCloseBtn();
             @__parser.AddParsedSubObject(@__ctrl1);
@@ -213,7 +205,6 @@ namespace TBYS_WebParts.VasiyetciListesiWP {
                     </thead>
                 </table>
             </div>
-            
         </div>
         <div class=""card-footer"">
             "));

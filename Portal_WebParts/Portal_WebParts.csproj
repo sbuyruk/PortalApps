@@ -107,14 +107,6 @@
       <DependentUpon>DuyuruPopupWP.ascx</DependentUpon>
     </Compile>
     <Compile Include="DuyuruPopupWP\TextArea.cs" />
-    <Compile Include="DuyuruWP\DuyuruWP.ascx.cs">
-      <DependentUpon>DuyuruWP.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="DuyuruWP\DuyuruWP.ascx.g.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DuyuruWP.ascx</DependentUpon>
-    </Compile>
     <Compile Include="GunlukNobetcilerMoveWP\GunlukNobetcilerMoveWP.ascx.cs">
       <DependentUpon>GunlukNobetcilerMoveWP.ascx</DependentUpon>
     </Compile>
@@ -194,10 +186,6 @@
     <None Include="DuyuruPopupWP\DuyuruPopupWP.webpart" />
     <None Include="DuyuruPopupWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{e236225e-2943-4c94-a364-fca04bfa1b20}</SharePointProjectItemId>
-    </None>
-    <None Include="DuyuruWP\DuyuruWP.webpart" />
-    <None Include="DuyuruWP\SharePointProjectItem.spdata">
-      <SharePointProjectItemId>{23c2b2d9-0a58-45bd-b2ea-0bec921969a2}</SharePointProjectItemId>
     </None>
     <None Include="Features\Feature1\Feature1.feature">
       <FeatureId>{ab83d726-7c76-44ad-b4a3-be98ec7a02c9}</FeatureId>
@@ -290,11 +278,6 @@
       <LastGenOutput>DuyuruPopupWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="DuyuruPopupWP\Elements.xml" />
-    <Content Include="DuyuruWP\DuyuruWP.ascx">
-      <Generator>SharePointWebPartCodeGenerator</Generator>
-      <LastGenOutput>DuyuruWP.ascx.g.cs</LastGenOutput>
-    </Content>
-    <Content Include="DuyuruWP\Elements.xml" />
     <Content Include="Features\Feature1\Feature1.Template.xml">
       <DependentUpon>Feature1.feature</DependentUpon>
     </Content>

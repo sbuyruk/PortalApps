@@ -498,6 +498,7 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
                             { data: 'Adres' },
                             { data: 'TeminatListesi' },
                             { data: 'SigortaBitTar' },
+                            { data: 'Police' },
                             { data: 'TasinmazKarti' },
                             { data: 'Duzenle' },               
                         ],
@@ -556,6 +557,8 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
         }
         private List<SigortaListItem> GetDataList()
         {
+            List<string> policeDosyalari = UtilityHelper.GetFileNameListFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, ProjeConstants.DOSYA_SIGORTAPOLICESI_DASK);
+
             Sigorta sigorta = new Sigorta();
             //DataTable dataTable = sigorta.SelectAllReturnDataTable();
             DataTable dataTable = sigorta.SelectByTeminatSigortaCinsiReturnDataTable(SigortaCinsiQS, VadesiGelenlerChk.Checked, DepremQS.ConvertToBool(), YanginQS.ConvertToBool(), Makine100000QS.ConvertToBool(),
@@ -593,12 +596,25 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
                 sigortaItem.KullanimSekli = kullanimSekli;
                 sigortaItem.TeminatListesi = teminatListesi;
                 sigortaItem.Adres = tamAdres;
+                sigortaItem.Police = FormLinkiGetir(policeDosyalari, ProjeConstants.DOSYA_SIGORTAPOLICESI_DASK, sigortaId,"Poliçe", "btn btn-outline-secondary");
                 sigortaItem.TasinmazKarti = "<a href=" + ProjeConstants.PAGE_TASINMAZ_KARTI + "?DestinationApp=TD&SenderApp=OL&TasinmazId=" + tasinmazId + " class='btn btn-outline-primary'>Taşınmaz Kartı</a>";
                 sigortaItem.Duzenle = "<a href=" + ProjeConstants.PAGE_TASINMAZSIGORTA_GIRIS + "?DestinationApp=SigortaD&SenderApp=SigortaL&SigortaId=" + sigortaId + "&TasinmazId="+tasinmazId+" class='btn btn-outline-primary'>Düzenle</a>";
                 sigortaItem.Secildi = SecilenIdQS.Equals(sigortaItem.SigortaId);
                 list.Add(sigortaItem);
             }
             return list;
+        }
+        private string FormLinkiGetir(List<string> list, string form, string sigortaId, string linkText, string classString)
+        {
+            string belgePdfLink = string.Empty;
+            string dosyaAdi = form + sigortaId + ".pdf";
+            string dosyaUrl = UtilityHelper.TbysBelgelerURLGetir() + "/" + dosyaAdi;
+            bool dosyaVarMi = list.Contains(dosyaAdi);
+            if (dosyaVarMi)
+            {
+                belgePdfLink = @"<a class='" + classString + "' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + dosyaUrl + @">" + linkText + "</a>";
+            }
+            return belgePdfLink;
         }
         private class SigortaListItem
         {
@@ -616,6 +632,7 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
             public string Duzenle { get; set; }
             public bool Secildi { get; set; }
             public bool Renkli { get; set; }
+            public string Police { get; set; }
         }
     }
 }

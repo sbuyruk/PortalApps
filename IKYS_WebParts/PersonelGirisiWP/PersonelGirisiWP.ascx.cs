@@ -457,7 +457,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
             KullaniciAdiTxt.Text = personel.KullaniciAdi.ReturnEmptyIfNull().ToString();
             if (AskerSivilDDL.Items.FindByValue(personel.Asker_sivil.ReturnZeroIfNull().ToString()) != null)
                 AskerSivilDDL.SelectedValue = AskerSivilDDL.Items.FindByValue(personel.Asker_sivil.ReturnZeroIfNull().ToString()).Value;
-
+            UtilityHelper.SetDDLValue(TahsiliDDL, personel.Tahsili.ToString());
         }
         private void fillIletisimBilgileri(Personel personel)
         {
@@ -1253,6 +1253,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
             fillAyrilmaSebebiDDL();
             fillAskerSivilDDL();
             fillIlData();
+            TahsiliDDLDoldur();
         }
         private void fillGorevTanimDDL()
         {
@@ -1383,6 +1384,18 @@ namespace IKYS_WebParts.PersonelGirisiWP
             AskerSivilDDL.Items.Add(li);
             AskerSivilDDL.Items.Add(li1);
         }
+        private void TahsiliDDLDoldur()
+        {
+            TahsiliDDL.Items.Clear();
+
+            TahsilTanim tahsilTanim = new TahsilTanim();
+            List<TahsilTanim> list = tahsilTanim.SelectAll<TahsilTanim>();
+            foreach (TahsilTanim item in list)
+            {
+                TahsiliDDL.Items.Add(new ListItem(item.TahsilDurumu, item.Id.ToString()));
+            }
+
+        }
         private void fillIlData()
         {
             if (DogumIliDDL.SelectedItem == null)
@@ -1498,6 +1511,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
             personel.SicilNo = SicilNoTxt.Text.ConvertToInt();
             personel.KullaniciAdi = KullaniciAdiTxt.Text;
             personel.Asker_sivil = AskerSivilDDL.SelectedValue.ConvertToInt();
+            personel.Tahsili=TahsiliDDL.SelectedValue.ConvertToInt();
             personel.Id = personel.Save();
             return personel;
         }
@@ -1511,6 +1525,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
                 personel.SicilNo = SicilNoTxt.Text.ConvertToInt();
                 personel.KullaniciAdi = KullaniciAdiTxt.Text;
                 personel.Asker_sivil = AskerSivilDDL.SelectedValue.ConvertToInt();
+                personel.Tahsili = TahsiliDDL.SelectedValue.ConvertToInt();
                 perSaved = personel.Update();
             }
             return perSaved;

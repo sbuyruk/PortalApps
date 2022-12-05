@@ -18,6 +18,7 @@ namespace Utility.ProjeGlobal
         public const string NBYSBELGELERI_LIB = "NBYSBelgeleri";
 
         public const string PATH_TBYS_URL = "/YonetimBirimleri/InsaatVeEmlakYonetimiSubesi";
+        public const string PATH_TURKISHTXT_URL = "/OrtakBelgeler/Turkish.txt";
 
         public const int RESIM_VESIKALIK_EN = 142;
         public const int RESIM_VESIKALIK_BOY = 190;
@@ -845,6 +846,7 @@ namespace Utility.ProjeGlobal
         public static string DOSYA_TAAHHUT_FORMU = "TaahhutFormu";
         public static string DOSYA_VASIYET = "Vasiyet";
         public static string DOSYA_KIRASOZLESMESI = "KiraSozlesmesi";
+        public static string DOSYA_SIGORTAPOLICESI_DASK = "SigortaPolicesiDask";
 
         public static string COKBAGISYAPAN_BASLAMATARIHI = "01.01.2018";
 

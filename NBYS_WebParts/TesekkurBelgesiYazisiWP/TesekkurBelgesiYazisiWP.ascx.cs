@@ -784,11 +784,13 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
                 {
                     string nakitBagisciAdi = row["NakitBagisciAdi"].ToString();
                     string belgedeYazanIsim = row["BelgedeYazanIsim"].ToString();
+                    bool bagisMiktariYazmasin = row["BagisMiktariYazmasin"].ReturnFalseIfNull().ConvertToBool();
                     string belgeNo = row["ArmaganId"].ToString();
                     string nakitBagisciTC = row["NakitBagisciTC"].ToString();
                     DateTime tarih = row["Tarih"].ConvertToDatetime();
 
                     decimal tutar = row["Tutar"].ConvertToDecimal();
+                    string tutarStr = bagisMiktariYazmasin ? string.Empty : tutar.ToString("N", culturInfo) + " TL'lık";
 
                     //create key value pair, key represents words to be replace and 
                     //values represent values in document in place of keys.
@@ -797,7 +799,7 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
                     keyValues.Add("BelgeNoVar", belgeNo);
                     keyValues.Add("BagisciAdiVar", string.IsNullOrEmpty(belgedeYazanIsim) ? nakitBagisciAdi : belgedeYazanIsim);
                     keyValues.Add("BagisTarihiVar", tarih.ToString("dd MMMM yyyy"));
-                    keyValues.Add("TutarVar", tutar.ToString("N", culturInfo) + " TL");
+                    keyValues.Add("TutarVar", tutarStr);
 
                     keyValues.Add("ImzaVar", ImzalayanTxt.Text);
                     keyValues.Add("UnvanVar", ImzalayanUnvanTxt.Text);
@@ -983,7 +985,7 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
                 string siteUrl = SPContext.Current.Web.Url;
                 using (SPSite spSite = new SPSite(siteUrl))
                 {
-                    Console.WriteLine("Querying for Test.docx");
+                    //Console.WriteLine("Querying for template.docx");
                     SPList list = SPContext.Current.Web.Lists[ProjeConstants.NBYSBELGELERI_LIB];
                     SPQuery query = new SPQuery();
                     query.ViewFields = @"<FieldRef Name='FileLeafRef' />";

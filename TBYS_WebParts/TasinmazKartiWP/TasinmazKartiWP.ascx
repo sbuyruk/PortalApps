@@ -24,6 +24,7 @@
         return true;
     }
 </script>
+
 <div class="container shadow">
     <asp:UpdatePanel ID="TableUpdatePanel" runat="server">
         <ContentTemplate>

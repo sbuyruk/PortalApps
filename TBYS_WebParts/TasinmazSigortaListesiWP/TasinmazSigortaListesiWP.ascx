@@ -98,6 +98,7 @@
                                                     <th>Taşınmazın Adresi</th>
                                                     <th>Teminatlar</th>
                                                     <th>Sig.Bit.Tar.</th>
+                                                    <th>Poliçe</th>
                                                     <th>Taşınmaz Kartı</th>
                                                     <th>Düzenle</th>
                                                 </tr>

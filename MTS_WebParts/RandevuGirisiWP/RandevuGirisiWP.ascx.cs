@@ -1,4 +1,5 @@
-﻿using Model.IKYS;
+﻿using Microsoft.SharePoint.ApplicationPages.Calendar.Exchange;
+using Model.IKYS;
 using Model.MTS;
 using Model.NBYS;
 using Model.Ortak;
@@ -9,7 +10,6 @@ using System.ComponentModel;
 using System.Data;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Web.Script.Serialization;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -63,6 +63,32 @@ namespace MTS_WebParts.RandevuGirisiWP
                 ViewState["RandevuId"] = value;
             }
         }
+        private TempRandevu TempRandevuQS
+        {
+            get
+            {
+                return (TempRandevu)ViewState["TempRandevu"];
+            }
+
+            set
+            {
+                ViewState["TempRandevu"] = value;
+            }
+        }
+        //private Randevu RandevuQS { get; set; } //Postback dışında güncellenmeli
+        private List<string> KatilimciListQS //{ get; set; }//Postback dışında güncellenmeli
+        {
+            get
+            {
+                return (List<string>)ViewState["KatilimciList"];
+            }
+
+            set
+            {
+                ViewState["KatilimciList"] = value;
+            }
+        }
+
         private string MesajQS
         {
             get
@@ -186,14 +212,15 @@ namespace MTS_WebParts.RandevuGirisiWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
+            lblTime.Text = "Son güncelleme = " + DateTime.Now.ToString("hh:mm:ss");
             try
             {
                 if (!Page.IsPostBack) // sayfa ilk kez açılıyorsa (bu sayfanın içindeki butona basılma anı hariç)
                 {
-                    fillRandevuTipiDDL();
-                    fillRandevuAmaciDDL();
-                    fillRandevuDurumuDDL();
-                    fillRandevuYeriDDL();
+                    RandevuTipiDDLDoldur();
+                    RandevuAmaciDDLDoldur();
+                    RandevuDurumuDDLDoldur();
+                    RandevuYeriDDLDoldur();
                     BaslangicSaatiDDLDoldur();
                     BitisSaatiDDLDoldur();
                     if (string.IsNullOrEmpty(RandevuIdQS))
@@ -202,8 +229,16 @@ namespace MTS_WebParts.RandevuGirisiWP
                     }
                     else
                     {
-                        DuzenleAc();
-                        KatilimciBilgileriniDoldur();
+                        Randevu randevu = new Randevu();
+                        randevu = randevu.Select(RandevuIdQS.ConvertToInt());
+                        if (randevu != null)
+                        {
+                            TempRandevuQS = new TempRandevu(randevu);
+                            DuzenleAc(randevu);
+                            KatilimciBilgileriniDoldur(randevu, true);
+                            //List<KatilimciListItem> list = GetDataList(true);
+                            //KatilimciListQS = list.Select(a => a.AniObjesi).ToList();
+                        }
                     }
                 }
             }
@@ -213,13 +248,11 @@ namespace MTS_WebParts.RandevuGirisiWP
                 exhelper.PublishException();
             }
         }
-        private void RandevuFormunuDoldur()
+        private void RandevuFormunuDoldur(Randevu randevu)
         {
-            Randevu randevu = new Randevu();
-            randevu = randevu.Select(RandevuIdQS.ConvertToInt());
             if (randevu != null)
             {
-                IdLbl.Text = " ( Randevu No: " + randevu.Id.ToString() + " )";
+                IdLbl.Text = " ( Faaliyet No: " + randevu.Id.ToString() + " )";
                 TumGunChk.Checked = randevu.TumGun;
                 AcikTarihChk.Checked = randevu.AcikTarih;
                 RandevuKonusuTxt.Text = randevu.RandevuKonusu;
@@ -237,26 +270,29 @@ namespace MTS_WebParts.RandevuGirisiWP
 
                 IcIrtibatIdQS = randevu.IcIrtibatId.ToString();
                 DisIrtibatIdQS = randevu.DisIrtibatId.ToString();
-
-                //RandevuDurumuImg.ImageUrl = RandevuDurumuImgGetir(RandevuDurumuDDL.SelectedItem.Value.ConvertToInt());
-
-
             }
 
         }
-        private void KatilimciBilgileriniDoldur()
+        private void KatilimciBilgileriniDoldur(Randevu randevu, bool buttonsEnabled)
         {
-            Randevu randevu = new Randevu();
-            randevu = randevu.Select(RandevuIdQS.ConvertToInt());
             if (randevu != null)
             {
                 AramaGorusmeBilgileriniDoldur(randevu);
-                IcIrtibatNoktasiDoldur(randevu.IcIrtibatId);
-                DisIrtibatNoktasiDoldur(randevu.DisIrtibatId);
-                TabloOlustur();
+                IcIrtibatNoktasiDoldur(randevu.IcIrtibatId, buttonsEnabled);
+                DisIrtibatNoktasiDoldur(randevu.DisIrtibatId, buttonsEnabled);
+
+                TabloOlustur(buttonsEnabled);
+                if (buttonsEnabled)
+                {
+                    TempRandevuQS.IcIrtibatId=randevu.IcIrtibatId;
+                    TempRandevuQS.DisIrtibatId=randevu.DisIrtibatId;
+                }
+                
+
             }
 
         }
+
         private void GirisiAc()
         {
             KatilimciBilgileriDiv.Attributes["style"] = "display:none";
@@ -269,7 +305,7 @@ namespace MTS_WebParts.RandevuGirisiWP
             BaslangicTarihiTxt.Text = DateTime.Today.ConvertToDatetimeEmptyIfNull();
             BitisTarihiTxt.Text = DateTime.Today.ConvertToDatetimeEmptyIfNull();
         }
-        private void DuzenleAc()
+        private void DuzenleAc(Randevu randevu)
         {
             if (RandevuIdQS.ConvertToInt() > 0)
             {
@@ -278,7 +314,7 @@ namespace MTS_WebParts.RandevuGirisiWP
                 GuncelleBtn.Visible = true;
                 RandevuKartiBtn.Visible = true;
                 //RandevuSilBtn.Visible = true;
-                RandevuFormunuDoldur();
+                RandevuFormunuDoldur(randevu);
                 if (!string.IsNullOrEmpty(MesajQS))
                 {
                     MessageHelper.PublishMessage("Faaliyet Kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
@@ -438,6 +474,7 @@ namespace MTS_WebParts.RandevuGirisiWP
 
                     if (guncellendiMi)
                     {
+                        TempRandevuQS = new TempRandevu(randevu);
                         InitialDateQS = randevu.BaslangicTarihi.ToString("yyyy-MM-dd");
                         //KatilimciBilgileriniDoldur();
                         MessageHelper.PublishMessage("Faaliyet güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
@@ -556,7 +593,7 @@ namespace MTS_WebParts.RandevuGirisiWP
         private void KatilimciModalAc(int katilimciTipi)
         {
             TabloModalOlustur();
-            System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "KatilimciSecimiModal();", true);
+            UtilityHelper.ScriptCalistir("KatilimciSecimiModal();");
         }
         protected void SecilenKatilimciyiKaydetNowBtn_Click(object sender, EventArgs e)
         {
@@ -580,14 +617,21 @@ namespace MTS_WebParts.RandevuGirisiWP
             {
                 MessageHelper.PublishMessage("Katılımcı Bulunamadı", ProjeConstants.MESAJ_HATA);
             }
+            Randevu randevu = new Randevu();
+            randevu = randevu.Select(RandevuIdQS.ConvertToInt());
+            if (randevu != null)
+            {
+                KatilimciBilgileriniDoldur(randevu, true);
+            }
 
-            KatilimciBilgileriniDoldur();
+
         }
         //katılımcı seçme ve ekleme
         protected void KatilimciEkleBtn_Click(object sender, EventArgs e)
         {
             KatilimciModalAc(ProjeConstants.RANDEVU_KATILIMCI_IC_INT);
         }
+
         protected void KatilimciCikarBtn_Click(object sender, EventArgs e)
         {
             int randevukatilimId = paramRandevuKatilimIdLbl.Value.ConvertToInt();
@@ -600,7 +644,7 @@ namespace MTS_WebParts.RandevuGirisiWP
                     if (randevuKatilim.Delete())
                     {
                         AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
-                        bool aniObjeleriSilindi = aniObjesiDagitim.Delete(randevuKatilim.RandevuId, randevuKatilim.KatilimciId, randevuKatilim.KatilimciTipi);
+                        int aniObjeleriSilindi = aniObjesiDagitim.Delete(randevuKatilim.RandevuId, randevuKatilim.KatilimciId, randevuKatilim.KatilimciTipi);
                     }
                 }
 
@@ -609,9 +653,14 @@ namespace MTS_WebParts.RandevuGirisiWP
             {
                 MessageHelper.PublishMessage("Katılımcı Bulunamadı", ProjeConstants.MESAJ_HATA);
             }
-            KatilimciBilgileriniDoldur();
+            Randevu randevu = new Randevu();
+            randevu = randevu.Select(RandevuIdQS.ConvertToInt());
+            if (randevu != null)
+            {
+                KatilimciBilgileriniDoldur(randevu, true);
+            }
         }
-        private void fillRandevuTipiDDL()
+        private void RandevuTipiDDLDoldur()
         {
             ListItem li = new ListItem(ProjeConstants.RANDEVU_VERILEN);
             ListItem li2 = new ListItem(ProjeConstants.RANDEVU_ALINAN);
@@ -620,7 +669,7 @@ namespace MTS_WebParts.RandevuGirisiWP
             RandevuTipiDDL.Items.Add(li);
             RandevuTipiDDL.Items.Add(li2);
         }
-        private void fillRandevuAmaciDDL()
+        private void RandevuAmaciDDLDoldur()
         {
             ListItem li5 = new ListItem(ProjeConstants.RANDEVU_AMACI_TOPLANTI, ProjeConstants.RANDEVU_AMACI_TOPLANTI_INT);
             ListItem li = new ListItem(ProjeConstants.RANDEVU_AMACI_ZIYARET, ProjeConstants.RANDEVU_AMACI_ZIYARET_INT);
@@ -638,7 +687,7 @@ namespace MTS_WebParts.RandevuGirisiWP
             RandevuAmaciDDL.Items.Add(li4);
             RandevuAmaciDDL.Items.Add(li6);
         }
-        private void fillRandevuDurumuDDL()
+        private void RandevuDurumuDDLDoldur()
         {
             ListItem li = new ListItem(ProjeConstants.RANDEVU_DURUMU_PLANLANDI, ProjeConstants.RANDEVU_DURUMU_PLANLANDI_INT.ToString());
             ListItem li2 = new ListItem(ProjeConstants.RANDEVU_DURUMU_ONAYLANDI, ProjeConstants.RANDEVU_DURUMU_ONAYLANDI_INT.ToString());
@@ -649,7 +698,7 @@ namespace MTS_WebParts.RandevuGirisiWP
             RandevuDurumuDDL.Items.Add(li2);
             RandevuDurumuDDL.Items.Add(li3);
         }
-        private void fillRandevuYeriDDL()
+        private void RandevuYeriDDLDoldur()
         {
             RandevuYeriDDL.Items.Clear();
             RandevuParametre randevuParametre = new RandevuParametre();
@@ -674,7 +723,7 @@ namespace MTS_WebParts.RandevuGirisiWP
                 exHelper.PublishException();
             }
         }
-        private void IcIrtibatNoktasiDoldur(int personelId)
+        private void IcIrtibatNoktasiDoldur(int personelId, bool buttonsEnabled)
         {
             Personel personel = new Personel();
             personel = personel.Select(personelId);
@@ -682,7 +731,7 @@ namespace MTS_WebParts.RandevuGirisiWP
             {
                 IcIrtibatIdQS = personel.Id.ToString();
                 IcIrtibatLbl.Text = "İç İrtibat Noktası : " + personel.Adi + " " + personel.Soyadi;
-                IcIrtibatCikarBtn.Visible = true;
+                IcIrtibatCikarBtn.Visible = buttonsEnabled;
             }
             else
             {
@@ -690,7 +739,7 @@ namespace MTS_WebParts.RandevuGirisiWP
                 IcIrtibatCikarBtn.Visible = false;
             }
         }
-        private void DisIrtibatNoktasiDoldur(int kisiId)
+        private void DisIrtibatNoktasiDoldur(int kisiId, bool buttonsEnabled)
         {
             Kisi kisi = new Kisi();
             kisi = kisi.Select(kisiId);
@@ -698,7 +747,7 @@ namespace MTS_WebParts.RandevuGirisiWP
             {
                 DisIrtibatLbl.Text = "Dış İrtibat Noktası : " + kisi.Adi + " " + kisi.Soyadi;
                 DisIrtibatIdQS = kisi.Id.ToString();
-                DisIrtibatCikarBtn.Visible = true;
+                DisIrtibatCikarBtn.Visible = buttonsEnabled;
             }
             else
             {
@@ -708,10 +757,11 @@ namespace MTS_WebParts.RandevuGirisiWP
         }
         protected void IrtibatSecBtn_Click(object sender, EventArgs e)
         {
+            Randevu randevu = null;
             int katilimciId = paramRandevuKatilimciIdLbl.Value.ConvertToInt();
             if (katilimciId > 0)
             {
-                Randevu randevu = new Randevu();
+                randevu = new Randevu();
                 randevu = randevu.Select(RandevuIdQS.ConvertToInt());
                 if (randevu != null)
                 {
@@ -728,22 +778,31 @@ namespace MTS_WebParts.RandevuGirisiWP
                     randevu.Update();
                 }
             }
-            KatilimciBilgileriniDoldur();
+
+            if (randevu != null)
+            {
+                KatilimciBilgileriniDoldur(randevu, true);
+            }
         }
         protected void RandevuDurumuDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
             //RandevuDurumuImg.ImageUrl = RandevuDurumuImgGetir(RandevuDurumuDDL.SelectedItem.Value.ConvertToInt());
         }
-        private void TabloOlustur()
+        private void TabloOlustur(bool buttonsEnabled)
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            var jsonData = TabloJson(buttonsEnabled); //veri çekilip json a çeviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
-            System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler,
-                typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), jsString, true);
+            UtilityHelper.ScriptCalistir(jsString);
         }
         private string CreateDataTable(string jsonData)
         {
-            string tableString = @"jQuery('#CustomDataTable').DataTable({
+            string tableString = @"
+             if ( jQuery.fn.DataTable.isDataTable('#CustomDataTable') ) {
+                    jQuery('#CustomDataTable').DataTable().destroy();
+                }
+                jQuery('#CustomDataTable tbody').empty();
+
+            jQuery('#CustomDataTable').DataTable({
             data: " + jsonData + @",
             columns: [
                 { data: 'Adi' },
@@ -784,13 +843,18 @@ namespace MTS_WebParts.RandevuGirisiWP
 
             return tableString;
         }
-        private string TabloJson()
+        private string TabloJson(bool buttonsEnable)
         {
             string jSon = string.Empty;
 
             try
             {
-                List<KatilimciListItem> list = GetDataList();
+                List<KatilimciListItem> list = GetDataList(buttonsEnable);
+                if (buttonsEnable)
+                {
+                    KatilimciListQS = list.Select(a => a.AniObjesi).ToList();
+                }
+
                 var serializer = new JavaScriptSerializer();
                 jSon = serializer.Serialize(list);
             }
@@ -802,10 +866,10 @@ namespace MTS_WebParts.RandevuGirisiWP
             }
             return jSon;
         }
-        private List<KatilimciListItem> GetDataList()
+        private List<KatilimciListItem> GetDataList(bool buttonsEnable)
         {
             Randevu randevuDao = new Randevu();
-            System.Data.DataTable dataTable = randevuDao.SelectAllByKatilimciRandevuReturnDataTable(RandevuIdQS.ConvertToInt(),ProjeConstants.HEPSI_INT);
+            DataTable dataTable = randevuDao.SelectAllByKatilimciRandevuReturnDataTable(RandevuIdQS.ConvertToInt(), ProjeConstants.HEPSI_INT);
             int SiraNo = 1;
             List<KatilimciListItem> list = new List<KatilimciListItem>();
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
@@ -834,18 +898,30 @@ namespace MTS_WebParts.RandevuGirisiWP
                     }
                     else
                     {
-                        katilimciItem.AniObjesi = "<a href='#' class='btn btn-outline-primary' onclick=AniObjesiBtnClick(" + katilimciId + "," + RandevuIdQS + "," + katilimciTipi + ")>Anı Objesi Ekle</a>";
-
+                        string aniObjeleri = AniObjeleriniGetir(katilimciItem.KatilimciId.ConvertToInt(), katilimciItem.KatilimciTipi.ConvertToInt(), RandevuIdQS.ConvertToInt());
+                        if (buttonsEnable)
+                            katilimciItem.AniObjesi = aniObjeleri + "</br> <a href='#' class='btn btn-outline-primary' onclick=AniObjesiBtnClick(" + katilimciId + "," + RandevuIdQS + "," + katilimciTipi + ")>Anı Objesi Ekle</a>";
+                        else
+                            katilimciItem.AniObjesi = aniObjeleri;
                     }
 
                     katilimciItem.KisiKarti = "<a  target='_blank' href=" + ProjeConstants.PAGE_KISI_KARTI + "?KatilimciId=" + katilimciId + "&KatilimciTipi=" + katilimciTipi + " class='btn btn-outline-info'>Kişi Kartı</a>";
-                    katilimciItem.Cikar = "<a href='#' class='btn btn-outline-danger' onclick=KatilimciCikarBtnClick(" + katilimId + ")>Çıkar</a>";
+                    if (buttonsEnable)
+                        katilimciItem.Cikar = "<a href='#' class='btn btn-outline-danger' onclick=KatilimciCikarBtnClick(" + katilimId + ")>Çıkar</a>";
 
                     list.Add(katilimciItem);
                 }
             }
             return list;
         }
+
+        private string AniObjeleriniGetir(int katilimciId, int katilimciTipi, int randevuId)
+        {
+            AniObjesiDagitim aniobjesiDagitim = new AniObjesiDagitim();
+            string aniObjeleri = aniobjesiDagitim.SelectByKatilimcidKatilimciTipiRandevuId(katilimciId, katilimciTipi, randevuId);
+            return (aniObjeleri);
+        }
+
         private void TabloModalOlustur()
         {
             var jsonData = TabloModalJson(); //veri çekilip json a çeviriliyor
@@ -995,23 +1071,7 @@ namespace MTS_WebParts.RandevuGirisiWP
             }
             return katilimciTipStr;
         }
-        private class KatilimciListItem
-        {
-            public string Sirano { get; set; }
-            public string KatilimciId { get; set; }
-            public string KatilimciTipi { get; set; }
-            public string KatilimciTipiStr { get; set; }
-            public string AdiSoyadi { get; set; }
-            public string Adi { get; set; }
-            public string Soyadi { get; set; }
-            public string Kurumu { get; set; }
-            public string AniObjesi { get; set; }
-            public string KisiKarti { get; set; }
-            public string Cikar { get; set; }
-            public string KatilimciSec { get; set; }
-            public string IrtibatSec { get; set; }
-
-        }
+        
         protected void IcIrtibatCikarBtn_Click(object sender, EventArgs e)
         {
             Randevu randevu = new Randevu();
@@ -1022,7 +1082,7 @@ namespace MTS_WebParts.RandevuGirisiWP
                 randevu.Update();
                 IcIrtibatLbl.Text = string.Empty;
                 IcIrtibatCikarBtn.Visible = false;
-                KatilimciBilgileriniDoldur();
+                KatilimciBilgileriniDoldur(randevu, true);
             }
         }
         protected void DisIrtibatCikarBtn_Click(object sender, EventArgs e)
@@ -1035,7 +1095,7 @@ namespace MTS_WebParts.RandevuGirisiWP
                 randevu.Update();
                 DisIrtibatLbl.Text = string.Empty;
                 DisIrtibatCikarBtn.Visible = false;
-                KatilimciBilgileriniDoldur();
+                KatilimciBilgileriniDoldur(randevu, true);
             }
         }
         #region Arama/Gorusme bilgileri
@@ -1164,7 +1224,7 @@ namespace MTS_WebParts.RandevuGirisiWP
                     DataRow row = dataTable.Rows[counter];
 
                     TableRow tableRow = new TableRow();
-                    for (int i = 0; i < 3; i++)
+                    for (int i = 0; i < 4; i++)
                     {
                         row = dataTable.Rows[counter];
 
@@ -1177,7 +1237,7 @@ namespace MTS_WebParts.RandevuGirisiWP
                         TableCell degerCell = new TableCell();
 
                         HtmlGenericControl newdiv = new HtmlGenericControl("DIV");
-                        newdiv.Attributes.Add("class", "checkbox");
+                        newdiv.ID = "newDiv" + aniObjesiId;
 
                         HtmlGenericControl label = new HtmlGenericControl("label");
                         newdiv.Controls.Add(label);
@@ -1190,6 +1250,11 @@ namespace MTS_WebParts.RandevuGirisiWP
                         {
                             aniObjesiIdStr += "," + aniObjesiId.ToString();
                             aniObjesiAdetStr += "," + adet.ToString();
+                            newdiv.Attributes.Add("class", "checkbox font-weight-bold text-danger");
+                        }
+                        else
+                        {
+                            newdiv.Attributes.Add("class", "checkbox");
                         }
 
                         label.Controls.Add(chkBox);
@@ -1205,11 +1270,11 @@ namespace MTS_WebParts.RandevuGirisiWP
                         adetTxt.Text = adet.ToString();
 
                         adetTxt.Enabled = chkBox.Checked;
-                        adetTxt.Attributes.Add("onchange", "ChangeAniObjesiAdet(" + aniObjesiId + "," + chkBox.ID.ReturnQuotedValue() + "," + adetTxt.Text + ",this);");
+                        adetTxt.Attributes.Add("onchange", "ChangeAniObjesiAdet(" + aniObjesiId + "," + chkBox.ID.ReturnQuotedValue() + "," + adetTxt.Text + ",this," + newdiv.ID.ReturnQuotedValue()+ ");");
 
                         adetCell.Controls.Add(adetTxt);
 
-                        chkBox.Attributes.Add("onclick", "AddRemoveAniObjesiIdToList(" + aniObjesiId + ",this," + adetTxt.Text + "," + adetTxt.ID.ReturnQuotedValue() + ");");
+                        chkBox.Attributes.Add("onclick", "AddRemoveAniObjesiIdToList(" + aniObjesiId + ",this,"  + newdiv.ID.ReturnQuotedValue() + "," + adetTxt.Text + "," + adetTxt.ID.ReturnQuotedValue() + ");");
 
                         tableRow.Controls.Add(degerCell);
                         tableRow.Controls.Add(adetCell);
@@ -1245,7 +1310,7 @@ namespace MTS_WebParts.RandevuGirisiWP
                 //paramAniObjesiAdetArray.Value = string.Empty;
             }
 
-            System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "AniObjesiModal();", true);
+            UtilityHelper.ScriptCalistir("AniObjesiModal();");
         }
         #endregion
         protected void RandevuKartiBtn_Click(object sender, EventArgs e)
@@ -1327,6 +1392,13 @@ namespace MTS_WebParts.RandevuGirisiWP
             {
                 MessageHelper.PublishMessage("Hiç kayıt seçilmedi. Devam etmek için en az bir kayıt seçiniz.", ProjeConstants.MESAJ_BILGI);
             }
+            Randevu randevu = new Randevu();
+            randevu = randevu.Select(RandevuIdQS.ConvertToInt());
+            if (randevu != null)
+            {
+                KatilimciBilgileriniDoldur(randevu, true);
+            }
+               
         }
         private void GetirilenAniObjesiKaydet(int randevuId, int katilimciId, int katilimciTipi)
         {
@@ -1370,5 +1442,246 @@ namespace MTS_WebParts.RandevuGirisiWP
             AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
             aniObjesiDagitim.Delete(randevuId, katilimciId, katilimciTipi, joined);
         }
+        #region timer
+        
+        protected void RefreshTimer_Tick(object sender, EventArgs e)
+        {
+            lblTime.Text = DateTime.Now.ToString("hh:mm:ss");
+            
+            Randevu sonHali = new Randevu();
+            sonHali = sonHali.Select(RandevuIdQS.ConvertToInt());
+            TempRandevu tempRandevuSonHali = new TempRandevu(sonHali);
+            if (!tempRandevuSonHali.Equals(TempRandevuQS))
+            {
+                //randevu değişti
+                DisableComponents();
+                AddRefreshLink(RandevuIdQS.ConvertToInt(), TopBarDiv, "Randevu bilgileri değişti... Sayfayı yenilemek için lütfen tıklayın.", tempRandevuSonHali);
+                CloseModals();
+                KatilimciBilgileriniDoldur(sonHali, false);
+                KatilimciEkleBtn.Visible = false;
+                StopTimer();
+
+            }
+            List<KatilimciListItem> katilimciListSonHali = GetDataList(true);
+            List<string> first = KatilimciListQS;
+            List<string> second = katilimciListSonHali.Select(a => a.AniObjesi).ToList();
+            var firstNotSecond = first.Except(second).ToList();
+            var secondNotFirst = second.Except(first).ToList();
+
+            bool katilimciListesiDegisti = firstNotSecond.Any() || secondNotFirst.Any();
+
+            if (katilimciListesiDegisti)
+            {
+                DisableComponents();
+                AddRefreshLink(RandevuIdQS.ConvertToInt(), TopBarDiv, "Katilimci bilgileri değişti... Listeyi yenilemek için lütfen tıklayın.",tempRandevuSonHali);
+                CloseModals();
+                KatilimciBilgileriniDoldur(sonHali,false);
+                KatilimciEkleBtn.Visible = false;
+                StopTimer();
+            }
+        }
+
+        private void CloseModals()
+        {
+            UtilityHelper.ScriptCalistir("CloseModals();");
+        }
+
+        private void StopTimer()
+        {
+            RefreshTimer.Enabled= false;
+        }
+
+        private void AddRefreshLink(int randevuId, HtmlGenericControl divName, string message, TempRandevu tempRandevuSonHali)
+        {
+            HyperLink refreshLink = HyperLinkGetir(randevuId, message);
+                //+ " TempRandevuQS.Id=" + TempRandevuQS.Id+" RandevuIdQS="+RandevuIdQS
+                //+ " TempRandevuQS.Id=" + TempRandevuQS.Id+ " =? " +tempRandevuSonHali.Id
+                //+ " TempRandevuQS.IcIrtibatId=" + TempRandevuQS.IcIrtibatId+ " =? " +tempRandevuSonHali.IcIrtibatId
+                //+ " TempRandevuQS.DisIrtibatId=" + TempRandevuQS.DisIrtibatId+ " =? " +tempRandevuSonHali.DisIrtibatId
+                //+ " TempRandevuQS.RandevuYeri=" + TempRandevuQS.RandevuYeri+ " =? " +tempRandevuSonHali.RandevuYeri
+                //+ " TempRandevuQS.Aciklama=" + TempRandevuQS.Aciklama+ " =? " +tempRandevuSonHali.Aciklama
+                //+ " TempRandevuQS.AcikTarih=" + TempRandevuQS.AcikTarih+ " =? " +tempRandevuSonHali.AcikTarih
+                //+ " TempRandevuQS.BaslangicSaati=" + TempRandevuQS.BaslangicSaati+ " =? " +tempRandevuSonHali.BaslangicSaati
+                //+ " TempRandevuQS.BaslangicTarihi=" + TempRandevuQS.BaslangicTarihi+ " =? " +tempRandevuSonHali.BaslangicTarihi
+                //+ " TempRandevuQS.BitisSaati=" + TempRandevuQS.BitisSaati+ " =? " +tempRandevuSonHali.BitisSaati
+                //+ " TempRandevuQS.BitisTarihi=" + TempRandevuQS.BitisTarihi+ " =? " +tempRandevuSonHali.BitisTarihi
+                //+ " TempRandevuQS.RandevuAmaci=" + TempRandevuQS.RandevuAmaci+ " =? " +tempRandevuSonHali.RandevuAmaci
+                //+ " TempRandevuQS.RandevuDurumu=" + TempRandevuQS.RandevuDurumu+ " =? " +tempRandevuSonHali.RandevuDurumu
+                //+ " TempRandevuQS.RandevuKonusu=" + TempRandevuQS.RandevuKonusu+ " =? " +tempRandevuSonHali.RandevuKonusu
+                //+ " TempRandevuQS.RandevuTipi=" + TempRandevuQS.RandevuTipi+ " =? " +tempRandevuSonHali.RandevuTipi
+                //+ " TempRandevuQS.RandevuYeri=" + TempRandevuQS.RandevuYeri+ " =? " +tempRandevuSonHali.RandevuYeri
+                //+ " TempRandevuQS.TumGun=" + TempRandevuQS.TumGun + " =? " +tempRandevuSonHali.TumGun
+                //+ " TempRandevuQS.RandevuTipi=" + TempRandevuQS.RandevuTipi + tempRandevuSonHali.RandevuTipi);
+            divName.Controls.Add(refreshLink);
+
+        }
+
+        private void DisableComponents()
+        {
+            RandevuTipiDDL.Enabled=false;
+            RandevuAmaciDDL.Enabled = false;
+            BaslangicTarihiTxt.Enabled=false;
+            BasSaatDDL.Enabled=false;   
+            BitisTarihiTxt.Enabled = false;
+            BitSaatDDL.Enabled=false;
+            RandevuYeriDDL.Enabled=false;
+            RandevuDurumuDDL.Enabled=false;
+            RandevuKonusuTxt.Enabled=false;
+            TumGunChk.Enabled=false;
+            AcikTarihChk.Enabled=false;
+            AciklamaTxt.Enabled=false;
+            KaydetBtn.Visible=false;
+            GuncelleBtn.Visible=false;
+            IcIrtibatCikarBtn.Visible=false;
+            DisIrtibatCikarBtn.Visible=false;
+        }
+        private HyperLink HyperLinkGetir(int randevuId, string message)
+        {
+            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+            HyperLink hyperLink = new HyperLink
+            {
+                Text = message,
+                CssClass="form-control btn btn-warning font-weight-bold",
+            };
+
+            if (randevuId > 0)
+            {
+                string linkUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_RANDEVU_GIRIS + "?RandevuId=" + randevuId;
+
+                hyperLink.NavigateUrl = linkUrl;
+            }
+            return hyperLink;
+        }
+        #endregion
+        #region classes
+        private class KatilimciListItem
+        {
+            public string Sirano { get; set; }
+            public string KatilimciId { get; set; }
+            public string KatilimciTipi { get; set; }
+            public string KatilimciTipiStr { get; set; }
+            public string AdiSoyadi { get; set; }
+            public string Adi { get; set; }
+            public string Soyadi { get; set; }
+            public string Kurumu { get; set; }
+            public string AniObjesi { get; set; }
+            public string KisiKarti { get; set; }
+            public string Cikar { get; set; }
+            public string KatilimciSec { get; set; }
+            public string IrtibatSec { get; set; }
+
+        }
+        [Serializable]
+        private class TempRandevu : IEquatable<TempRandevu>
+        {
+            public TempRandevu(Randevu randevu)
+            {
+                Id = randevu.Id;
+                RandevuTipi = randevu.RandevuTipi;
+                RandevuAmaci = randevu.RandevuAmaci;
+                RandevuKonusu = randevu.RandevuKonusu;
+                RandevuYeri = randevu.RandevuYeri;
+                RandevuDurumu = randevu.RandevuDurumu;
+                TumGun = randevu.TumGun;
+                AcikTarih = randevu.AcikTarih;
+                IcIrtibatId = randevu.IcIrtibatId;
+                DisIrtibatId = randevu.DisIrtibatId;
+                BaslangicTarihi = randevu.BaslangicTarihi;
+                BitisTarihi = randevu.BitisTarihi;
+                BaslangicSaati = randevu.BaslangicSaati;
+                BitisSaati = randevu.BitisSaati;
+                Aciklama = randevu.Aciklama;
+            }
+
+            public int Id { get; set; }
+            public string RandevuTipi { get; set; }
+            public int RandevuAmaci { get; set; }
+            public string RandevuKonusu { get; set; }
+            public int RandevuYeri { get; set; }
+            public int RandevuDurumu { get; set; }
+            public bool TumGun { get; set; }
+            public bool AcikTarih { get; set; }
+            public int IcIrtibatId { get; set; }
+            public int DisIrtibatId { get; set; }
+            public DateTime BaslangicTarihi { get; set; }
+            public DateTime BitisTarihi { get; set; }
+            public string BaslangicSaati { get; set; }
+            public string BitisSaati { get; set; }
+            public string Aciklama { get; set; }
+            public override bool Equals(object obj)
+            {
+                var other = obj as Randevu;
+
+                if (other == null)
+                    return false;
+
+                if (RandevuTipi != other.RandevuTipi
+                    || RandevuAmaci != other.RandevuAmaci
+                    || RandevuKonusu != other.RandevuKonusu
+                    || RandevuYeri != other.RandevuYeri
+                    || TumGun != other.TumGun
+                    || AcikTarih != other.AcikTarih
+                    || IcIrtibatId != other.IcIrtibatId
+                    || DisIrtibatId != other.DisIrtibatId
+                    || BaslangicTarihi != other.BaslangicTarihi
+                    || BitisTarihi != other.BitisTarihi
+                    || BaslangicSaati != other.BaslangicSaati
+                    || BitisSaati != other.BitisSaati
+                    || Aciklama != other.Aciklama)
+                    return false;
+
+                return true;
+            }
+
+            public bool Equals(TempRandevu other)
+            {
+                return !(other is null) &&
+                       RandevuTipi == other.RandevuTipi &&
+                       RandevuAmaci == other.RandevuAmaci &&
+                       RandevuKonusu == other.RandevuKonusu &&
+                       RandevuYeri == other.RandevuYeri &&
+                       RandevuDurumu == other.RandevuDurumu &&
+                       TumGun == other.TumGun &&
+                       AcikTarih == other.AcikTarih &&
+                       IcIrtibatId == other.IcIrtibatId &&
+                       DisIrtibatId == other.DisIrtibatId &&
+                       BaslangicTarihi == other.BaslangicTarihi &&
+                       BitisTarihi == other.BitisTarihi &&
+                       BaslangicSaati == other.BaslangicSaati &&
+                       BitisSaati == other.BitisSaati &&
+                       Aciklama == other.Aciklama;
+            }
+
+            public override int GetHashCode()
+            {
+                int hashCode = 477006145;
+                hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(RandevuTipi);
+                hashCode = hashCode * -1521134295 + RandevuAmaci.GetHashCode();
+                hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(RandevuKonusu);
+                hashCode = hashCode * -1521134295 + RandevuYeri.GetHashCode();
+                hashCode = hashCode * -1521134295 + RandevuDurumu.GetHashCode();
+                hashCode = hashCode * -1521134295 + TumGun.GetHashCode();
+                hashCode = hashCode * -1521134295 + AcikTarih.GetHashCode();
+                hashCode = hashCode * -1521134295 + IcIrtibatId.GetHashCode();
+                hashCode = hashCode * -1521134295 + DisIrtibatId.GetHashCode();
+                hashCode = hashCode * -1521134295 + BaslangicTarihi.GetHashCode();
+                hashCode = hashCode * -1521134295 + BitisTarihi.GetHashCode();
+                hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(BaslangicSaati);
+                hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(BitisSaati);
+                hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Aciklama);
+                return hashCode;
+            }
+
+            public static bool operator ==(TempRandevu left, TempRandevu right)
+            {
+                return EqualityComparer<TempRandevu>.Default.Equals(left, right);
+            }
+
+            public static bool operator !=(TempRandevu left, TempRandevu right)
+            {
+                return !(left == right);
+            }
+        }
+        #endregion
     }
 }

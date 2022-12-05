@@ -1,4 +1,5 @@
-﻿using Microsoft.SharePoint;
+﻿using DocumentFormat.OpenXml.Drawing.Charts;
+using Microsoft.SharePoint;
 using Model.Ortak;
 using Model.TBYS;
 using System;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
@@ -408,12 +410,10 @@ namespace TBYS_WebParts.TasinmazKartiWP
             TableCell r1c4 = new TableCell();
             r1c4.RowSpan = 3;
 
-            //string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-            //string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
             string newUrl = UtilityHelper.TbysURLGetir() ;
             string imageFileName = bagisci.Adi.ReplaceTrChars() + bagisci.Soyadi.ReplaceTrChars() + ".jpg";
             string imgUrl = newUrl + "/" + ProjeConstants.RESIMLER_BAGISCI + "/_t/" + imageFileName;
-            System.Web.UI.WebControls.Image image = new System.Web.UI.WebControls.Image();
+            Image image = new Image();
            
             try
             {
@@ -659,48 +659,35 @@ namespace TBYS_WebParts.TasinmazKartiWP
             //string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
             //string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
             string newUrl = UtilityHelper.TbysURLGetir() + "/" + ProjeConstants.RESIMLER_TASINMAZ + "/";
-            string imageFileName1 = (string.IsNullOrEmpty(tasinmaz.TasinmazFoto) ? ProjeConstants.PARAM_TASINMAZ_TASINMAZFOTO : tasinmaz.TasinmazFoto) + "_jpg.jpg";
-            string imageFileName2 = (string.IsNullOrEmpty(tasinmaz.TasinmazFoto1) ? ProjeConstants.PARAM_TASINMAZ_TASINMAZFOTO1 : tasinmaz.TasinmazFoto1) + "_jpg.jpg";
-            string imageFileName3 = (string.IsNullOrEmpty(tasinmaz.TasinmazFoto2) ? ProjeConstants.PARAM_TASINMAZ_TASINMAZFOTO2 : tasinmaz.TasinmazFoto2) + "_jpg.jpg";
-            string imageFileName4 = (string.IsNullOrEmpty(tasinmaz.TahkikatFoto) ? ProjeConstants.PARAM_TASINMAZ_TAHKIKATFOTO : tasinmaz.TahkikatFoto) + "_jpg.jpg";
-            string imageFileName5 = (string.IsNullOrEmpty(tasinmaz.KrokiFoto) ? ProjeConstants.PARAM_TASINMAZ_KROKIFOTO : tasinmaz.KrokiFoto) + "_jpg.jpg";
-            string imageFileName6 = (string.IsNullOrEmpty(tasinmaz.KrokiFoto) ? ProjeConstants.PARAM_TASINMAZ_TAPUFOTO : tasinmaz.TapuFoto) + "_jpg.jpg";
+            string imageFileName1 = (string.IsNullOrEmpty(tasinmaz.TasinmazFoto) ? ProjeConstants.PARAM_TASINMAZ_TASINMAZFOTO : tasinmaz.TasinmazFoto) + ".jpg";
+            string imageFileName2 = (string.IsNullOrEmpty(tasinmaz.TasinmazFoto1) ? ProjeConstants.PARAM_TASINMAZ_TASINMAZFOTO1 : tasinmaz.TasinmazFoto1) + ".jpg";
+            string imageFileName3 = (string.IsNullOrEmpty(tasinmaz.TasinmazFoto2) ? ProjeConstants.PARAM_TASINMAZ_TASINMAZFOTO2 : tasinmaz.TasinmazFoto2) + ".jpg";
+            string imageFileName4 = (string.IsNullOrEmpty(tasinmaz.TahkikatFoto) ? ProjeConstants.PARAM_TASINMAZ_TAHKIKATFOTO : tasinmaz.TahkikatFoto) + ".jpg";
+            string imageFileName5 = (string.IsNullOrEmpty(tasinmaz.KrokiFoto) ? ProjeConstants.PARAM_TASINMAZ_KROKIFOTO : tasinmaz.KrokiFoto) + ".jpg";
+            string imageFileName6 = (string.IsNullOrEmpty(tasinmaz.TapuFoto) ? ProjeConstants.PARAM_TASINMAZ_TAPUFOTO : tasinmaz.TapuFoto) + ".jpg";
 
-            string imgUrl2 = newUrl + "/_t/" + imageFileName2;
-            string imgUrl3 = newUrl + "/_t/" + imageFileName3;
-            string imgUrl4 = newUrl + "/_t/" + imageFileName4;
-            string imgUrl1 = newUrl + "/_t/" + imageFileName1;
-            string imgUrl5 = newUrl + "/_t/" + imageFileName5;
-            string imgUrl6 = newUrl + "/_t/" + imageFileName6;
+            string imgUrl1 = newUrl + imageFileName1;
+            string imgUrl2 = newUrl + imageFileName2;
+            string imgUrl3 = newUrl + imageFileName3;
+            string imgUrl4 = newUrl + imageFileName4;
+            string imgUrl5 = newUrl + imageFileName5;
+            string imgUrl6 = newUrl + imageFileName6;
 
-            System.Web.UI.WebControls.Image image1 = new System.Web.UI.WebControls.Image();
-            System.Web.UI.WebControls.Image image2 = new System.Web.UI.WebControls.Image();
-            System.Web.UI.WebControls.Image image3 = new System.Web.UI.WebControls.Image();
-            System.Web.UI.WebControls.Image image4 = new System.Web.UI.WebControls.Image();
-            System.Web.UI.WebControls.Image image5 = new System.Web.UI.WebControls.Image();
-            System.Web.UI.WebControls.Image image6 = new System.Web.UI.WebControls.Image();
+            string aTag1 = ATagEkle(imgUrl1);
+            string aTag2 = ATagEkle(imgUrl2);
+            string aTag3 = ATagEkle(imgUrl3);
+            string aTag4 = ATagEkle(imgUrl4);
+            string aTag5 = ATagEkle(imgUrl5);
+            string aTag6 = ATagEkle(imgUrl6);
 
-            image1.Attributes["onerror"] = "this.src='" + imgUrl1 + "';";
-            image2.Attributes["onerror"] = "this.src='" + imgUrl2 + "';";
-            image3.Attributes["onerror"] = "this.src='" + imgUrl3 + "';";
-            image4.Attributes["onerror"] = "this.src='" + imgUrl4 + "';";
-            image5.Attributes["onerror"] = "this.src='" + imgUrl5 + "';";
-            image6.Attributes["onerror"] = "this.src='" + imgUrl6 + "';";
+            r1c1.Text=aTag1;
+            r1c2.Text=aTag2;
+            r1c3.Text=aTag3;
+            r1c4.Text=aTag4;
+            r2c1.Text=aTag5;
+            r2c2.Text=aTag6;
 
-            image1.ImageUrl = imgUrl1;
-            image2.ImageUrl = imgUrl2;
-            image3.ImageUrl = imgUrl3;
-            image4.ImageUrl = imgUrl4;
-            image5.ImageUrl = imgUrl5;
-            image6.ImageUrl = imgUrl6;
-
-            r1c1.Controls.Add(image1);
-            r1c2.Controls.Add(image2);
-            r1c3.Controls.Add(image3);
-            r1c4.Controls.Add(image4);
-            r2c1.Controls.Add(image5);
-            r2c2.Controls.Add(image6);
-
+           
             BorderEkle(row1);
             BorderEkle(row2);
             AlignCells(row1);
@@ -713,6 +700,21 @@ namespace TBYS_WebParts.TasinmazKartiWP
             ResimTable.Controls.Add(row1);
             ResimTable.Controls.Add(row2);
         }
+
+        private string ATagEkle(string url)
+        {
+            var aTag = //"@\"<a  class='bg-secondary' data-fancybox data-type=img data-width=960 data-height=720 href=" + UtilityHelper.TbysBelgelerURLGetir() + "/" + image1 + @"></a>" ;
+
+            @"
+            <a
+                data-fancybox data-type=image data-width=960 data-height=720
+                data-src=" + url+@"
+                data-sizes='(max-width: 600px) 480px, 800px'>
+                <img src=" + url+@" width=200 height=150 />
+            </a> ";
+            return aTag;
+        }
+
         private void RedirectToPage(string pageUrl)
         {
             try

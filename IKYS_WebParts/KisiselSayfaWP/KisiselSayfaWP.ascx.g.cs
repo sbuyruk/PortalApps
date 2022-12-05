@@ -2033,8 +2033,8 @@ namespace IKYS_WebParts.KisiselSayfaWP {
         </div>
         <div class=""card-body"">
             <div class=""card"">
-                <div class=""btn-secondary"">
-                    <a class=""btn-block text-center "" data-toggle=""collapse"" data-target=""#KimlikDiv"" aria-expanded=""false"" aria-controls=""KimlikDiv"" style=""font-weight: bold"">Kimlik Bilgileri</a>
+                <div class=""btn-secondary text-center"">
+                    <a class=""text-white "" data-toggle=""collapse"" data-target=""#KimlikDiv"" aria-expanded=""false"" aria-controls=""KimlikDiv"" style=""font-weight: bold"">Kimlik Bilgileri</a>
                 </div>
             </div>
             <div class=""card"">
@@ -2047,8 +2047,8 @@ namespace IKYS_WebParts.KisiselSayfaWP {
                 </div>
             </div>
             <div class=""card"">
-                <div class=""btn-secondary"">
-                    <a class=""btn-block text-center "" data-toggle=""collapse"" data-target=""#IsBilgileriDiv"" aria-expanded=""false"" aria-controls=""IsBilgileriDiv"" style=""font-weight: bold"">İş Bilgileri</a>
+                <div class=""btn-secondary text-center"">
+                    <a class=""text-white"" data-toggle=""collapse"" data-target=""#IsBilgileriDiv"" aria-expanded=""false"" aria-controls=""IsBilgileriDiv"" style=""font-weight: bold"">İş Bilgileri</a>
                 </div>
             </div>
             <div class=""card"">
@@ -2062,8 +2062,8 @@ namespace IKYS_WebParts.KisiselSayfaWP {
 
             </div>
             <div class=""card"">
-                <div class=""btn-secondary"">
-                    <a class=""btn-block text-center "" data-toggle=""collapse"" data-target=""#IletisimDiv"" aria-expanded=""false"" aria-controls=""IletisimDiv"" style=""font-weight: bold"">İletisim Bilgileri</a>
+                <div class=""btn-secondary text-center"">
+                    <a class=""text-white"" data-toggle=""collapse"" data-target=""#IletisimDiv"" aria-expanded=""false"" aria-controls=""IletisimDiv"" style=""font-weight: bold"">İletisim Bilgileri</a>
                 </div>
             </div>
             <div class=""card"">
@@ -2076,8 +2076,8 @@ namespace IKYS_WebParts.KisiselSayfaWP {
                 </div>
             </div>
             <div class=""card"">
-                <div class=""btn-secondary"">
-                    <a class=""btn-block text-center "" data-toggle=""collapse"" data-target=""#AileDiv"" aria-expanded=""false"" aria-controls=""AileDiv"" style=""font-weight: bold"">Aile Bilgileri</a>
+                <div class=""btn-secondary text-center"">
+                    <a class=""text-white"" data-toggle=""collapse"" data-target=""#AileDiv"" aria-expanded=""false"" aria-controls=""AileDiv"" style=""font-weight: bold"">Aile Bilgileri</a>
                 </div>
             </div>
             <div class=""card"">
@@ -2090,8 +2090,8 @@ namespace IKYS_WebParts.KisiselSayfaWP {
                 </div>
             </div>
             <div class=""card"">
-                <div class=""btn-secondary"">
-                    <a class=""btn-block text-center "" data-toggle=""collapse"" data-target=""#IzinDiv"" aria-expanded=""true"" aria-controls=""IzinDiv"" style=""font-weight: bold"">İzin Bilgileri</a>
+                <div class=""btn-secondary text-center"">
+                    <a class=""text-white"" data-toggle=""collapse"" data-target=""#IzinDiv"" aria-expanded=""true"" aria-controls=""IzinDiv"" style=""font-weight: bold"">İzin Bilgileri</a>
                 </div>
             </div>
             <div class=""card"">

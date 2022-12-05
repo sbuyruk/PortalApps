@@ -30,6 +30,7 @@ namespace Model.TBYS
         public string TeminatListesi { get; set; }
         public string TeminatAciklama { get; set; }
         public string BagimsizBolumNo { get; set; }
+        public string PDFDosyasi { get; set; }
         public string Aciklama { get; set; }
         public override T Select<T>(int id)
         {

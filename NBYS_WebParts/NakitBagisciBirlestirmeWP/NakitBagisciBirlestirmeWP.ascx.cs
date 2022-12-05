@@ -225,15 +225,9 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
                                         columns: [
                                             { field: 'Adi', headerText: 'Adi', sortable:true,filter: true,headerClass:'genisSutun',
                                                 content: function (rowData)
-                                                    {
-                                                        var pageUrl='BagisciAyrinti.aspx?NakitBagisciId='+rowData.NakitBagisciId;
-                                                        pageUrl='&apos;'+pageUrl+'&apos;';
-                                                        var pageTitle='&apos;&apos;';
-                                                        var pageWidth='&apos;1000&apos;';
-                                                        var pageHeight='&apos;600&apos;';
-                                                         var clickFunction='SharepointPopupNoReload('+pageUrl+','+pageTitle+','+pageWidth+','+pageHeight+');';
-                                                        return $('<a class=\'btn btn-link\' href=# onclick='+clickFunction+'>'+rowData.Adi+'</a>')
-                                                    }
+                                                {
+                                                    return $('<a href=# onclick=OpenModal('+rowData.NakitBagisciId+'); class=\'text-link \'>'+rowData.Adi+'</a>')
+                                                }
                                             },
                                             { field: 'TCKimlikNo', headerText: 'TCKimlikNo', sortable:true,filter: true },
                                             { field: 'Ili', headerText: 'Ili', sortable:true, sortable:true,filter: true },

@@ -14,12 +14,15 @@
     .icKatilimci {
         background-color: lightgray !important;
     }
+
     .disKatilimci {
         background-color: lightcyan !important;
     }
+
     .nakitBagisci {
         background-color: lightyellow !important;
     }
+
     .tasinmazBagisci {
         background-color: wheat !important;
     }
@@ -145,6 +148,10 @@
     function AniObjesiModal() {
         $("#AniObjesiModal").modal({ backdrop: false });
     }
+    function CloseModals() {
+        $("#AniObjesiModal").modal('hide');
+        $("#KatilimciSecimiModal").modal('hide');
+    }
     function AniObjesiBtnClick(katilimciId, randevuId, katilimciTipi) {
 
         document.getElementById('<%= GetirilenAniObjesiTxt.ClientID%>').value = "";
@@ -200,7 +207,7 @@
         document.getElementById('<%= paramAniObjesiIdArray.ClientID%>').value = aniObjesiIdArray;
         document.getElementById('<%= paramAniObjesiAdetArray.ClientID%>').value = aniObjesiAdetArray;
     }
-    function AddRemoveAniObjesiIdToList(aniObjesiId, chkbox, adet, textId) {
+    function AddRemoveAniObjesiIdToList(aniObjesiId, chkbox, divId, adet, textId) {
 
         var id = GetClientID(textId);
         var txtName = document.getElementById(id);
@@ -212,14 +219,26 @@
         }
         txtName.value = adet;
         txtName.disabled = !chkbox.checked;
-        chkbox.className = "text-primary";
+        ChangeDivColor(divId, chkbox);
+
         EkleCikar(aniObjesiId, chkbox.checked, adet);
     }
-    function ChangeAniObjesiAdet(aniObjesiId, chkboxId, adet, textbox) {
+    function ChangeDivColor(divId, chkbox) {
+        var div = GetClientID(divId);
+        var divName = document.getElementById(div);
+
+        if (chkbox.checked) {
+            divName.className = "checkbox font-weight-bold text-danger";
+        } else {
+            divName.className = "checkbox text-primary";
+        }
+    }
+    function ChangeAniObjesiAdet(aniObjesiId, chkboxId, adet, textbox, divId) {
         var id = GetClientID(chkboxId);
         var chkName = document.getElementById(id);
         chkName.checked = textbox.value > 0;
         textbox.disabled = !chkName.checked;
+        ChangeDivColor(divId, chkName);
         EkleCikar(aniObjesiId, chkName.checked, textbox.value);
     }
     function SecilenleriKaydetTriggerBtnClicked() {
@@ -236,21 +255,27 @@
                 <asp:Label CssClass="col-form-label text-primary font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="Faaliyet Düzenleme"></asp:Label>
                 <asp:Label CssClass="col-form-label" ID="IdLbl" runat="server"></asp:Label>
                 <asp:Label CssClass="col-form-label " ID="AdiLbl" runat="server"></asp:Label>
-                <%--<asp:Image ID="RandevuDurumuImg" ClientIDMode="Static" runat="server" ImageUrl="~/OrtakResimler/randevu-planlandi.png" CssClass="float-right" />--%>
+                <asp:UpdatePanel ID="UpdatePanel5" runat="server">
+                    <ContentTemplate>
+                        <asp:Label ID="lblTime" CssClass="col-form-label text-secondary" runat="server" />
+                        <asp:Timer ID="RefreshTimer" runat="server" OnTick="RefreshTimer_Tick" Interval="10000" />
+                        <div class="form-group text-right text-danger" id="TopBarDiv" runat="server"></div>
+                    </ContentTemplate>
+                </asp:UpdatePanel>
             </h3>
         </div>
         <div class="card-body alert-success">
             <div class="form-group">
                 <div class="form-group">
-                    <div class="row">
-                        <div class="col">
-                            <asp:UpdatePanel ID="UpdatePanel4" runat="server" UpdateMode="Conditional" ViewStateMode="Enabled">
-                                <ContentTemplate>
+                    <asp:UpdatePanel ID="UpdatePanel4" runat="server" UpdateMode="Conditional" ViewStateMode="Enabled">
+                        <ContentTemplate>
+                            <div class="row">
+                                <div class="col">
                                     <div class="row">
                                         <div class="col">
                                             <div class="form-group">
                                                 <asp:Label CssClass="col-form-label" runat="server" Text="Faaliyet Tipi"></asp:Label>
-                                                <asp:DropDownList ID="RandevuTipiDDL" CssClass="form-control" runat="server" Style="height: auto"></asp:DropDownList>
+                                                <asp:DropDownList ID="RandevuTipiDDL" CssClass="form-control" runat="server" Style="height: auto" Enabled="True"></asp:DropDownList>
                                                 <asp:RequiredFieldValidator runat="server" ControlToValidate="RandevuTipiDDL" ForeColor="Red" ErrorMessage="Faaliyet Tipi Seçiniz"> </asp:RequiredFieldValidator>
                                             </div>
                                             <div class="form-group">
@@ -270,33 +295,28 @@
                                             </div>
                                         </div>
                                     </div>
-                                </ContentTemplate>
-
-                            </asp:UpdatePanel>
-                        </div>
-                        <div class="col">
-                            <div class="row">
-                                <div class="form-group col ">
-                                    <asp:Label CssClass="col-from-label" runat="server" Text="Başlangıç Tarihi"></asp:Label>
-                                    <asp:TextBox ID="BaslangicTarihiTxt" CssClass="form-control input-date" runat="server" ClientIDMode="Static"></asp:TextBox>
-                                    <asp:RequiredFieldValidator runat="server" ControlToValidate="BaslangicTarihiTxt" ForeColor="Red" ErrorMessage="Başlama Tarihi Seçiniz"> </asp:RequiredFieldValidator>
                                 </div>
-                                <div class="form-group col">
-                                    <asp:Label CssClass="col-from-label" runat="server" Text="Bitiş Tarihi"></asp:Label>
-                                    <asp:TextBox ID="BitisTarihiTxt" CssClass="form-control input-date " runat="server" ClientIDMode="Static" ></asp:TextBox>
-                                    <asp:RequiredFieldValidator runat="server" ControlToValidate="BitisTarihiTxt" ForeColor="Red" ErrorMessage="Bitiş Tarihi Seçiniz"> </asp:RequiredFieldValidator>
-                                </div>
-                                <div class="form-group col">
-                                    <div class="checkbox pt-3">
-                                        <label>
-                                            <asp:CheckBox ID="TumGunChk" runat="server" Checked="false" ToolTip="Tüm gün geçerli randevular için işaretleyiniz." />
-                                            Tüm Gün
-                                        </label>
+                                <div class="col">
+                                    <div class="row">
+                                        <div class="form-group col ">
+                                            <asp:Label CssClass="col-from-label" runat="server" Text="Başlangıç Tarihi"></asp:Label>
+                                            <asp:TextBox ID="BaslangicTarihiTxt" CssClass="form-control input-date" runat="server" ClientIDMode="Static"></asp:TextBox>
+                                            <asp:RequiredFieldValidator runat="server" ControlToValidate="BaslangicTarihiTxt" ForeColor="Red" ErrorMessage="Başlama Tarihi Seçiniz"> </asp:RequiredFieldValidator>
+                                        </div>
+                                        <div class="form-group col">
+                                            <asp:Label CssClass="col-from-label" runat="server" Text="Bitiş Tarihi"></asp:Label>
+                                            <asp:TextBox ID="BitisTarihiTxt" CssClass="form-control input-date " runat="server" ClientIDMode="Static"></asp:TextBox>
+                                            <asp:RequiredFieldValidator runat="server" ControlToValidate="BitisTarihiTxt" ForeColor="Red" ErrorMessage="Bitiş Tarihi Seçiniz"> </asp:RequiredFieldValidator>
+                                        </div>
+                                        <div class="form-group col">
+                                            <div class="checkbox pt-3">
+                                                <label>
+                                                    <asp:CheckBox ID="TumGunChk" runat="server" Checked="false" ToolTip="Tüm gün geçerli randevular için işaretleyiniz." />
+                                                    Tüm Gün
+                                                </label>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                            <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional" ViewStateMode="Enabled">
-                                <ContentTemplate>
                                     <div class="row">
                                         <div class="form-group col">
                                             <asp:Label runat="server" CssClass="col-form-label" Text="Başlangıç Saati"></asp:Label>
@@ -317,28 +337,30 @@
                                             </div>
                                         </div>
                                     </div>
-                                </ContentTemplate>
-                            </asp:UpdatePanel>
-                        </div>
-                    </div>
-                    <div id="RandevuKonusuDiv" class="row">
-                        <div class="form-group col">
-                            <asp:Label CssClass="col-form-label" runat="server" Text="Faaliyet Konusu"></asp:Label>
-                            <asp:TextBox ID="RandevuKonusuTxt" CssClass="form-control" runat="server" Text=""></asp:TextBox>
-                            <asp:RequiredFieldValidator runat="server" ControlToValidate="RandevuKonusuTxt" ForeColor="Red" ErrorMessage="Faaliyet Konusu Giriniz"> </asp:RequiredFieldValidator>
-                        </div>
-                        <div class="form-group col">
-                            <asp:Label CssClass="col-form-label" runat="server" Text="Açıklama"></asp:Label>
-                            <asp:TextBox ID="AciklamaTxt" CssClass="form-control" runat="server" Text="" TextMode="MultiLine" Rows="2"></asp:TextBox>
-                        </div>
-                    </div>
+                                </div>
+                            </div>
+                            <div id="RandevuKonusuDiv" class="row">
+                                <div class="form-group col">
+                                    <asp:Label CssClass="col-form-label" runat="server" Text="Faaliyet Konusu"></asp:Label>
+                                    <asp:TextBox ID="RandevuKonusuTxt" CssClass="form-control" runat="server" Text=""></asp:TextBox>
+                                    <asp:RequiredFieldValidator runat="server" ControlToValidate="RandevuKonusuTxt" ForeColor="Red" ErrorMessage="Faaliyet Konusu Giriniz"> </asp:RequiredFieldValidator>
+                                </div>
+                                <div class="form-group col">
+                                    <asp:Label CssClass="col-form-label" runat="server" Text="Açıklama"></asp:Label>
+                                    <asp:TextBox ID="AciklamaTxt" CssClass="form-control" runat="server" Text="" TextMode="MultiLine" Rows="4"></asp:TextBox>
+                                </div>
+                            </div>
+                        </ContentTemplate>
+                        <Triggers>
+                            <asp:AsyncPostBackTrigger ControlID="RefreshTimer" EventName="tick" />
+                        </Triggers>
+                    </asp:UpdatePanel>
                 </div>
 
                 <div class="card" id="KatilimciBilgileriDiv" runat="server" style="display: none">
-                    <div class="card-body mb-5">
-                        <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional" ViewStateMode="Enabled">
-                            <ContentTemplate>
-
+                    <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional" ViewStateMode="Enabled">
+                        <ContentTemplate>
+                            <div class="card-body mb-5">
                                 <div class="form-group">
                                     <table id="CustomDataTable" class="table table-striped table-bordered" width="100%">
                                         <thead>
@@ -368,28 +390,45 @@
                                     <asp:LinkButton ID="DisIrtibatCikarBtn" runat="server" CssClass="btn btn-outline-danger" Text="Çıkar" OnClick="DisIrtibatCikarBtn_Click" CausesValidation="false" />
                                 </div>
 
-                            </ContentTemplate>
-                            <Triggers>
-                                <asp:AsyncPostBackTrigger ControlID="KatilimciCikarBtn" EventName="click" />
-                                <asp:AsyncPostBackTrigger ControlID="IrtibatSecBtn" EventName="click" />
-                                <asp:AsyncPostBackTrigger ControlID="SecilenKatilimciyiKaydetNowBtn" EventName="click" />
-                            </Triggers>
-                        </asp:UpdatePanel>
-                    </div>
+                            </div>
+
+                        </ContentTemplate>
+                        <Triggers>
+                            <asp:AsyncPostBackTrigger ControlID="KatilimciCikarBtn" EventName="click" />
+                            <asp:AsyncPostBackTrigger ControlID="IrtibatSecBtn" EventName="click" />
+                            <asp:AsyncPostBackTrigger ControlID="SecilenKatilimciyiKaydetNowBtn" EventName="click" />
+                        </Triggers>
+                    </asp:UpdatePanel>
                     <div class="card-footer">
-                        <asp:LinkButton ID="KatilimciEkleBtn" runat="server" CssClass="btn btn-outline-success" Text="Katılımcı Ekle" OnClick="KatilimciEkleBtn_Click" CausesValidation="false" />
+                        <asp:UpdatePanel ID="UpdatePanel8" runat="server" UpdateMode="Conditional" ViewStateMode="Enabled">
+                        <ContentTemplate>
+                        <div class="form-group" id="KatilimciEkleBtnDiv" runat="server">
+                            <asp:LinkButton ID="KatilimciEkleBtn" runat="server" CssClass="btn btn-outline-success " Text="Katılımcı Ekle" OnClick="KatilimciEkleBtn_Click" CausesValidation="false" />
+                        </div>
+                            </ContentTemplate>
+                        <Triggers>
+                            <asp:AsyncPostBackTrigger ControlID="RefreshTimer" EventName="tick" />
+                        </Triggers>
+                    </asp:UpdatePanel>
                     </div>
                 </div>
             </div>
         </div>
         <div class="card-footer">
-            <asp:LinkButton ID="KaydetBtn" CssClass="btn btn-outline-success" runat="server" Text="Faaliyeti Kaydet" OnClick="KaydetBtn_Click"></asp:LinkButton>
-            <asp:LinkButton ID="GuncelleBtn" CssClass="btn btn-outline-primary" runat="server" Text="Güncelle" OnClick="GuncelleBtn_Click"></asp:LinkButton>
-            <asp:LinkButton ID="RandevuSilBtn" CssClass="btn btn-outline-danger" runat="server" Text="Faaliyeti Sil" OnClick="RandevuSilBtn_Click" Enabled="False" Visible="False"></asp:LinkButton>
-            <asp:LinkButton ID="RandevuKartiBtn" CssClass="btn btn-outline-secondary" runat="server" Text="Faaliyet Kartı" OnClick="RandevuKartiBtn_Click" Visible="False"></asp:LinkButton>
-            <asp:LinkButton ID="RandevuTakvimiBtn" CssClass="btn btn-outline-info float-right" runat="server" Text="Faaliyet Takvimi" OnClick="RandevuTakvimiBtn_Click" CausesValidation="false"></asp:LinkButton>
-            <asp:LinkButton ID="RandevuListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Faaliyet Listesi" OnClick="RandevuListesiBtn_Click" CausesValidation="false"></asp:LinkButton>
-            <asp:LinkButton ID="KisiListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Kişi Listesi" OnClick="KisiListesiBtn_Click" CausesValidation="false"></asp:LinkButton>
+            <asp:UpdatePanel ID="UpdatePanel3" runat="server" UpdateMode="Conditional" ViewStateMode="Enabled">
+                <ContentTemplate>
+                    <asp:LinkButton ID="KaydetBtn" CssClass="btn btn-outline-success" runat="server" Text="Faaliyeti Kaydet" OnClick="KaydetBtn_Click"></asp:LinkButton>
+                    <asp:LinkButton ID="GuncelleBtn" CssClass="btn btn-outline-primary" runat="server" Text="Güncelle" OnClick="GuncelleBtn_Click"></asp:LinkButton>
+                    <asp:LinkButton ID="RandevuSilBtn" CssClass="btn btn-outline-danger" runat="server" Text="Faaliyeti Sil" OnClick="RandevuSilBtn_Click" Enabled="False" Visible="False"></asp:LinkButton>
+                    <asp:LinkButton ID="RandevuKartiBtn" CssClass="btn btn-outline-secondary" runat="server" Text="Faaliyet Kartı" OnClick="RandevuKartiBtn_Click" Visible="False"></asp:LinkButton>
+                    <asp:LinkButton ID="RandevuTakvimiBtn" CssClass="btn btn-outline-info float-right" runat="server" Text="Faaliyet Takvimi" OnClick="RandevuTakvimiBtn_Click" CausesValidation="false"></asp:LinkButton>
+                    <asp:LinkButton ID="RandevuListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Faaliyet Listesi" OnClick="RandevuListesiBtn_Click" CausesValidation="false"></asp:LinkButton>
+                    <asp:LinkButton ID="KisiListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Kişi Listesi" OnClick="KisiListesiBtn_Click" CausesValidation="false"></asp:LinkButton>
+                </ContentTemplate>
+                <Triggers>
+                    <asp:AsyncPostBackTrigger ControlID="RefreshTimer" EventName="tick" />
+                </Triggers>
+            </asp:UpdatePanel>
         </div>
     </div>
     <div id="KatilimciHiddenDiv" style="display: none">
@@ -483,7 +522,7 @@
 <asp:UpdatePanel ID="UpdatePanel7" runat="server" UpdateMode="Conditional" ViewStateMode="Enabled">
     <ContentTemplate>
         <div class="modal" id="AniObjesiModal" role="dialog">
-            <div class="modal-dialog modal-lg">
+            <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header text-danger">
                         <h3 class="col-form-label font-weight-bold" id="AniObjesiHeaderLbl" runat="server"></h3>
@@ -491,7 +530,7 @@
                     <div class="modal-body ">
                         <div class="form-group">
                             <asp:Label CssClass="col-form-label font-weight-bold" runat="server" Text="Getirilen Anı Objesi"></asp:Label>
-                            <asp:TextBox ID="GetirilenAniObjesiTxt" CssClass="form-control" runat="server" Text="" TextMode="MultiLine" Rows="3"></asp:TextBox>
+                            <asp:TextBox ID="GetirilenAniObjesiTxt" CssClass="form-control" runat="server" Text="" TextMode="MultiLine" Rows="2"></asp:TextBox>
                         </div>
                         <div id="InvisibleDiv" style="display: none">
                             <input id="paramAniObjesiIdArray" runat="server" type="text" />
@@ -500,10 +539,10 @@
                         </div>
                         <div class="form-group">
                             <asp:Label CssClass="col-form-label font-weight-bold" runat="server" Text="Verilen Anı Objesi"></asp:Label>
-                            <asp:Table ID="CustomAniObjesiModalDataTable" runat="server" class="table table-striped table-bordered" Width="100%"></asp:Table>
+                            <asp:Table ID="CustomAniObjesiModalDataTable" runat="server" class="table-striped table-bordered" Width="100%"></asp:Table>
                             <asp:PlaceHolder ID="ModalPlaceHolder" runat="server"></asp:PlaceHolder>
                         </div>
-                        
+
                     </div>
                     <div class="modal-footer">
                         <div id="BtnDiv" style="display: block">

@@ -142,7 +142,7 @@ namespace TBYS_WebParts.KiraSozlesmeListesiWP
                 }
                 jQuery('#CustomModalDataTable tbody').empty();
 
-                jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
+                jQuery.fn.dataTable.moment('DD.MM.YYYY');//sort date
                 jQuery(document).ready(function () {
                     jQuery('#CustomDataTable').DataTable({
                         'initComplete': function (settings, json) {//tablo yüklendiğinde
@@ -176,7 +176,7 @@ namespace TBYS_WebParts.KiraSozlesmeListesiWP
                             " + duzenleGorunsun + @"
                         ],
                         'language': {
-                            'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                            'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                             'decimal': ',',
                             'thousands': '.'
                         },

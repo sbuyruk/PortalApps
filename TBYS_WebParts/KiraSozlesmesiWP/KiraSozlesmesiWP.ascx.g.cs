@@ -1812,17 +1812,8 @@ namespace TBYS_WebParts.KiraSozlesmesiWP {
                     "lementById(\'");
                          @__w.Write( DevirAlBtn.ClientID);
 
-            @__w.Write(@"').click();
-
-    }
-
-</script>
-<link rel=""stylesheet"" href=""/Style Library/tskgv/css/fancybox.css"" />
-<script src=""/Style Library/tskgv/js/fancybox.umd.js""></script>
-<script src=""/Style Library/tskgv/js/fancybox.esm.js""></script>
-<div class=""container "">
-    <div class=""card shadow"">
-        ");
+            @__w.Write("\').click();\r\n\r\n    }\r\n\r\n</script>\r\n\r\n<div class=\"container \">\r\n    <div class=\"ca" +
+                    "rd shadow\">\r\n        ");
             parameterContainer.Controls[0].RenderControl(@__w);
             @__w.Write("\r\n        <div class=\"card-body\">\r\n            ");
             parameterContainer.Controls[1].RenderControl(@__w);

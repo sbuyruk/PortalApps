@@ -23,7 +23,7 @@
 
                 <div class="card">
                     <div class="btn-secondary">
-                        <a class="btn-block text-center " data-toggle="collapse" data-target="#OkulDiv" aria-expanded="false" aria-controls="OkulDiv" style="font-weight: bold">Mezun Olduğu Okullar</a>
+                        <a class="text-white  text-center " data-toggle="collapse" data-target="#OkulDiv" aria-expanded="false" aria-controls="OkulDiv" style="font-weight: bold">Mezun Olduğu Okullar</a>
                     </div>
                 </div>
                 <div class="card">
@@ -73,7 +73,7 @@
                 </div>
                 <div class="card">
                     <div class="btn-secondary">
-                        <a class="btn-block text-center " data-toggle="collapse" data-target="#KursDiv" aria-expanded="false" aria-controls="KursDiv" style="font-weight: bold">Gördüğü Kurslar</a>
+                        <a class="text-white  text-center " data-toggle="collapse" data-target="#KursDiv" aria-expanded="false" aria-controls="KursDiv" style="font-weight: bold">Gördüğü Kurslar</a>
                     </div>
                 </div>
                 <div class="card">
@@ -123,7 +123,7 @@
                 </div>
                 <div class="card">
                     <div class="btn-secondary">
-                        <a class="btn-block text-center " data-toggle="collapse" data-target="#IsTecrubeDiv" aria-expanded="false" aria-controls="IsTecrubeDiv" style="font-weight: bold">İş Tecrübesi</a>
+                        <a class="text-white  text-center " data-toggle="collapse" data-target="#IsTecrubeDiv" aria-expanded="false" aria-controls="IsTecrubeDiv" style="font-weight: bold">İş Tecrübesi</a>
                     </div>
                 </div>
                 <div class="card">
@@ -174,7 +174,7 @@
                 </div>
                 <div class="card">
                     <div class="btn-secondary">
-                        <a class="btn-block text-center " data-toggle="collapse" data-target="#YabanciDilDiv" aria-expanded="false" aria-controls="YabanciDilDiv" style="font-weight: bold">Yabancı Dil Notları</a>
+                        <a class="text-white  text-center " data-toggle="collapse" data-target="#YabanciDilDiv" aria-expanded="false" aria-controls="YabanciDilDiv" style="font-weight: bold">Yabancı Dil Notları</a>
                     </div>
                 </div>
                 <div class="card">

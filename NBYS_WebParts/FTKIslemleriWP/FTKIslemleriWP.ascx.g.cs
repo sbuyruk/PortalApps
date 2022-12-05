@@ -1509,18 +1509,8 @@ namespace NBYS_WebParts.FTKIslemleriWP {
             @__w.Write("\').value = ftkkisiId;\r\n        document.getElementById(\'");
                          @__w.Write( FTKKisiDuzenleBtn.ClientID);
 
-            @__w.Write(@"').click();
-    }
-</script>
-
-<link rel=""stylesheet"" href=""/Style Library/tskgv/css/fancybox.css"" />
-<script src=""/Style Library/tskgv/js/fancybox.umd.js""></script>
-<script src=""/Style Library/tskgv/js/fancybox.esm.js""></script>
-
-<div class=""col-xl "">
-    <div class=""card shadow"">
-        <div class=""card-header"">
-            ");
+            @__w.Write("\').click();\r\n    }\r\n</script>\r\n\r\n<div class=\"col-xl \">\r\n    <div class=\"card shad" +
+                    "ow\">\r\n        <div class=\"card-header\">\r\n            ");
             parameterContainer.Controls[0].RenderControl(@__w);
             @__w.Write("\r\n        </div>\r\n        <div class=\"card-body alert-secondary\">\r\n            <d" +
                     "iv class=\"row\">\r\n                <div class=\"col-4\">\r\n                    ");

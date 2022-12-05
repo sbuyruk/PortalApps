@@ -142,6 +142,33 @@ namespace DAO.Ortak
                 return isDeleted;
             }
         }
+        public int DeleteFromDb(string sqlString, string aciklama, bool dummy)
+        {
+            int deleted = 0;
+            string connectString = DBProcess.getConnectString();
+            SqlConnection con = new SqlConnection(connectString);
+            using (con)
+            {
+                try
+                {
+                    if (con.State == ConnectionState.Closed)
+                    {
+                        con.Open();
+                        SqlCommand cmd = new SqlCommand(sqlString, con);
+                        deleted = cmd.ExecuteNonQuery();
+                        con.Close();
+                        SorguyuLogla("DELETE", true, sqlString, aciklama);
+                    }
+                }
+                catch (Exception e)
+                {
+                    deleted = 0;
+                    throw e;
+                }
+
+                return deleted;
+            }
+        }
         public bool DeleteFromDb<T>(string sqlString, T objectToDelete)
         {
             string eskiDeger = "Silinen Kayıt: " +GetEskiDeger(objectToDelete);

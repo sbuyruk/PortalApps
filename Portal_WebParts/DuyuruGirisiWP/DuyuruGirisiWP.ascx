@@ -59,7 +59,23 @@
             reader.readAsDataURL(personelFU.files[0]);
         }
     }
+
+    //summernote editor
+    $(document).ready(function () {
+        $('#MetinTxt').summernote({
+            toolbar: [
+                // [groupName, [list of button]]
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+            ]
+        });
+    });
+
 </script>
+
+
 <div class="container shadow">
     <div class="card">
         <div class="card-header">
@@ -74,66 +90,113 @@
 
             <div class="row">
                 <div class="col-7">
-                    <div class="form-group">
-                        <div class="form-group">
-                            <asp:Label ID="Label1" runat="server" CssClass="col-form-label" Text="Duyuru Başlığı"></asp:Label>
-                            <asp:TextBox ID="BaslikTxt" runat="server" CssClass="form-control"></asp:TextBox>
+                    <div class="card">
+                        <div class="card-header text-center p-0">
+
+                                <label class="col-form-label font-weight-bold">Duyuru Bilgileri</label>
+
                         </div>
-                        <div class="form-group">
-                            <asp:Label ID="Label2" runat="server" CssClass="col-form-label" Text="Metin"></asp:Label>
-                            <asp:TextBox ID="MetinTxt" runat="server" CssClass="form-control" TextMode="MultiLine" Rows="6"></asp:TextBox>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-6 ">
-                            <asp:UpdatePanel ID="TableUpdatePanel" runat="server">
-                                <ContentTemplate>
-                                    <div class="form-group row">
-                                        <div class="form-group col-6">
-                                            <asp:Label ID="Label4" runat="server" CssClass="col-form-label" Text="Yayin Baş.Tarihi"></asp:Label>
-                                            <input type="text" id="YayinBasTarTxt" name="YayinBasTarTxt" class="form-control DateTimePickerV1" runat="server" readonly="readonly" />
-                                        </div>
-                                        <div class="form-group col-6">
-                                            <asp:Label ID="Label7" runat="server" CssClass="col-form-label" Text="Başlama Saati"></asp:Label>
-                                            <asp:DropDownList ID="BasSaatDDL" runat="server" class="form-control " OnSelectedIndexChanged="BasSaatDDL_SelectedIndexChanged" AutoPostBack="true" style="height:auto" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <div class="form-group col-6">
-                                            <asp:Label ID="Label5" runat="server" CssClass="col-form-label" Text="Yayin Bit.Tarihi"></asp:Label>
-                                            <input type="text" id="YayinBitTarTxt" name="YayinBitTarTxt" class="form-control " runat="server" readonly="readonly" />
-                                        </div>
-                                        <div class="form-group col-6">
-                                            <asp:Label ID="Label8" runat="server" CssClass="col-form-label" Text="Bitiş Saati"></asp:Label>
-                                            <asp:DropDownList ID="BitSaatDDL" runat="server" class="form-control " OnSelectedIndexChanged="BitSaatDDL_SelectedIndexChanged" AutoPostBack="true" style="height:auto" />
-                                        </div>
+
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <asp:Label ID="Label1" runat="server" CssClass="col-form-label" Text="Duyuru Başlığı"></asp:Label>
+                                        <asp:TextBox ID="BaslikTxt" runat="server" CssClass="form-control"></asp:TextBox>
                                     </div>
                                     <div class="form-group">
-                                        <asp:Label ID="Label3" runat="server" CssClass="col-form-label" Text="Tekrarlama"></asp:Label>
-                                        <asp:DropDownList ID="TekrarlaDDL" runat="server" class="form-control " OnSelectedIndexChanged="TekrarlaDDL_SelectedIndexChanged" AutoPostBack="true" style="height:auto" />
+                                        <asp:Label ID="Label6" runat="server" CssClass="col-form-label" Text="Resim Seçiniz"></asp:Label>
                                     </div>
-                                    <div class="form-group row">
-                                        <asp:CheckBox ID="AktifChk" runat="server" CssClass="form-control col-6" Text=" Duyuru Aktif" Checked="True" />
-                                        <asp:CheckBox ID="PopupChk" runat="server" CssClass="form-control col-6" Text=" Popup Göster" Checked="True" />
+                                    <div class="form-group">
+                                        <asp:FileUpload ID="xFileUpload" class="btn form-control" runat="server" ToolTip="Yüklenecek Resmi Seçiniz" type="text" onchange="readURL(this,'DisplayImage')" />
                                     </div>
-                                </ContentTemplate>
-                            </asp:UpdatePanel>
-                        </div>
-                        <div class="col-6">
-                            <div class="form-group">
-                                <asp:Image ID="DisplayImage" ClientIDMode="Static" runat="server" ImageUrl="/DuyuruResimleri/duyuru.jpg" class="img-thumbnail" Height="190" Width="250" onerror="this.src='/DuyuruResimleri/duyuru.jpg';" />
+                                    <div class="form-group">
+                                        <asp:LinkButton CssClass="form-control btn btn-outline-success" ID="LinkButton2" runat="server" >Varsayılan Resim  -></asp:LinkButton>
+                                    </div>
+                                    <div class="form-group">
+                                        <asp:LinkButton CssClass="form-control btn btn-outline-danger" ID="LinkButton1" runat="server" >Seçilen Resmi Sil</asp:LinkButton>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <asp:Label ID="Label9" runat="server" CssClass="col-form-label" Text="Seçilen Resim"></asp:Label>
+                                    </div>
+                                    <div class="form-group">
+                                        <asp:Image ID="DisplayImage" ClientIDMode="Static" runat="server" ImageUrl="../DuyuruResimleri/duyuru-resmi-yok.jpg" class="img-thumbnail" Height="190" Width="250" onerror="this.src='../DuyuruResimleri/duyuru-resmi-yok.jpg';" />
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-group">
-                                <asp:FileUpload ID="xFileUpload" class="btn form-control" runat="server" ToolTip="Yüklenecek Resmi Seçiniz" type="text" onchange="readURL(this,'DisplayImage')" />
+                                <asp:Label ID="Label2" runat="server" CssClass="col-form-label " Text="Duyuru Metni"></asp:Label>
+                                <asp:TextBox ID="MetinTxt" runat="server" CssClass="form-control" TextMode="MultiLine" Rows="6" ClientIDMode="Static" maxlength="100"></asp:TextBox>
+
                             </div>
                         </div>
+
+                        
                     </div>
+
                 </div>
                 <div class="col-5">
                     <div class="card">
                         <div class="card-header text-center font-weight-bold p-0">
                             <div class="form-group m-0 p-0">
-                                <label class="col-form-label" >Duyuru Yapılacak Personel</label>
+                                <label class="col-form-label">Duyuru Ayarları</label>
+                            </div>
+                        </div>
+                        <div class="card-body">
+
+                            <asp:UpdatePanel ID="TableUpdatePanel" runat="server">
+                                <ContentTemplate>
+                                    <div class="row">
+                                        <div class="form-group col-6">
+                                            <div class="form-group">
+                                                <asp:Label ID="Label4" runat="server" CssClass="col-form-label" Text="Yayin Baş.Tarihi"></asp:Label>
+                                                <input type="text" id="YayinBasTarTxt" name="YayinBasTarTxt" class="form-control DateTimePickerV1" runat="server" readonly="readonly" />
+                                            </div>
+                                            <div class="form-group">
+                                                <asp:Label ID="Label7" runat="server" CssClass="col-form-label" Text="Başlama Saati"></asp:Label>
+                                                <asp:DropDownList ID="BasSaatDDL" runat="server" class="form-control " OnSelectedIndexChanged="BasSaatDDL_SelectedIndexChanged" AutoPostBack="true" Style="height: auto" />
+                                            </div>
+
+                                            <div class="checkbox pt-3">
+                                                <label>
+                                                    <asp:CheckBox ID="AktifChk" runat="server" Checked="true" ToolTip="Duyuru Aktifse işaretli olmalıdır" />
+                                                    Duyuru Aktif
+                                                </label>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <asp:Label ID="Label3" runat="server" CssClass="col-form-label" Text="Tekrarlama"></asp:Label>
+                                                <asp:DropDownList ID="TekrarlaDDL" runat="server" class="form-control " OnSelectedIndexChanged="TekrarlaDDL_SelectedIndexChanged" AutoPostBack="true" Style="height: auto" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <div class="form-group">
+                                                <asp:Label ID="Label5" runat="server" CssClass="col-form-label" Text="Yayin Bit.Tarihi"></asp:Label>
+                                                <input type="text" id="YayinBitTarTxt" name="YayinBitTarTxt" class="form-control " runat="server" readonly="readonly" />
+                                            </div>
+                                            <div class="form-group">
+                                                <asp:Label ID="Label8" runat="server" CssClass="col-form-label" Text="Bitiş Saati"></asp:Label>
+                                                <asp:DropDownList ID="BitSaatDDL" runat="server" class="form-control " OnSelectedIndexChanged="BitSaatDDL_SelectedIndexChanged" AutoPostBack="true" Style="height: auto" />
+                                            </div>
+                                            <div class="checkbox pt-3">
+                                                <label>
+                                                    <asp:CheckBox ID="PopupChk" runat="server" Checked="true" ToolTip="Duyuru penceresi açılacaksa işaretlenmelidir." />
+                                                    Popup Pencere Aç
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ContentTemplate>
+                            </asp:UpdatePanel>
+
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header text-center font-weight-bold p-0">
+                            <div class="form-group m-0 p-0">
+                                <label class="col-form-label">Duyuru Yapılacak Personel</label>
                             </div>
                         </div>
                         <div class="card-body m-0">
@@ -143,7 +206,7 @@
                                         <div class="form-group row">
                                             <div class="form-group col-6 ">
                                                 <label class="col-form-label" for="PersonelDDL">Personel Seçimi</label>
-                                                <asp:DropDownList ID="PersonelDDL" runat="server" class="form-control" AutoPostBack="True" OnSelectedIndexChanged="PersonelDDL_SelectedIndexChanged" style="height:auto"/>
+                                                <asp:DropDownList ID="PersonelDDL" runat="server" class="form-control" AutoPostBack="True" OnSelectedIndexChanged="PersonelDDL_SelectedIndexChanged" Style="height: auto" />
                                             </div>
                                             <div class="form-group col-6 ">
                                                 <label class="col-form-label text-white" for="HepsiniEkleBtn">Hepsini Ekle</label>
