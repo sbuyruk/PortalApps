@@ -173,7 +173,7 @@ namespace IKYS_WebParts.TarihBazliIzinKullanimRaporuWP
             {
                 if (!Page.IsPostBack)
                 {
-                    fillIzinTanim();
+                    FillIzinTanim();
                     YilDDLDoldur();
                     FillIzinTable(IzinTanimDDL.SelectedItem.Value.ConvertToInt());
                 }
@@ -449,7 +449,7 @@ namespace IKYS_WebParts.TarihBazliIzinKullanimRaporuWP
 
             IzinTable.Controls.Add(th);
         }
-        private void fillIzinTanim()//sadece Ücretli ve mazeret izinleri için çalışsın
+        private void FillIzinTanim()//sadece Ücretli ve mazeret izinleri için çalışsın
         {
             IzinTanimDDL.Items.Clear();
             IzinTanim izinTanim = new IzinTanim();

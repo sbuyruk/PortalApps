@@ -7,7 +7,13 @@
 <%@ Register TagPrefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="DuyuruGirisiWP.ascx.cs" Inherits="Portal_WebParts.DuyuruGirisiWP.DuyuruGirisiWP" %>
 
+
 <script type="text/javascript">
+    function ClearDuyuruResmi() {
+        $('#SecilenResmiSilBtn').on('click', function () {
+            $('#DisplayImage').attr('src', '');
+        });
+    }
     function OpenModal() {
         $("#ModalOnayDiv").modal({ backdrop: false });
     }
@@ -111,10 +117,10 @@
                                         <asp:FileUpload ID="xFileUpload" class="btn form-control" runat="server" ToolTip="Yüklenecek Resmi Seçiniz" type="text" onchange="readURL(this,'DisplayImage')" />
                                     </div>
                                     <div class="form-group">
-                                        <asp:LinkButton CssClass="form-control btn btn-outline-success" ID="LinkButton2" runat="server" >Varsayılan Resim  -></asp:LinkButton>
+                                        <asp:LinkButton CssClass="form-control btn btn-outline-success" ID="LinkButton2" runat="server" OnClick="SecilenResmiSilBtn_Click">Varsayılan Resim  -></asp:LinkButton>
                                     </div>
                                     <div class="form-group">
-                                        <asp:LinkButton CssClass="form-control btn btn-outline-danger" ID="LinkButton1" runat="server" >Seçilen Resmi Sil</asp:LinkButton>
+                                        <asp:LinkButton CssClass="form-control btn btn-outline-danger" ID="SecilenResmiSilBtn" runat="server" OnClientClick="ClearDuyuruResmi();">Seçilen Resmi Sil</asp:LinkButton>
                                     </div>
                                 </div>
                                 <div class="col-6">

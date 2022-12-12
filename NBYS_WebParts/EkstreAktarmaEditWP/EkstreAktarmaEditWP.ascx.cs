@@ -208,7 +208,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
                 EslestirBtn.Visible = false;
             }
 
-            fillExtreAktarmaForm();
+            FillExtreAktarmaForm();
             FillNakitBagisciBilgileri();
         }
         private void OpenGiris()
@@ -256,7 +256,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
                 }
             }
         }
-        private void fillExtreAktarmaForm()
+        private void FillExtreAktarmaForm()
         {
             int ekstreAktarmaId = EkstreAktarmaIdQS.ConvertToInt();
             EkstreAktarma ekstreAktarma = new EkstreAktarma();

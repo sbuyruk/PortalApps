@@ -37,7 +37,7 @@ namespace NBYS_WebParts.NakitBagisHaritasiWP
             string ingIlAdi = paramLbl.Value;
             Il il = new Il();
             il = il.SelectByIngAdi(ingIlAdi);
-            fillData2IlinfoTable(il.Id);
+            FillData2IlinfoTable(il.Id);
 
         }
 
@@ -66,7 +66,7 @@ namespace NBYS_WebParts.NakitBagisHaritasiWP
 
         }
 
-        private void fillData2IlinfoTable(int ilId)
+        private void FillData2IlinfoTable(int ilId)
         {
             //createHeaderColumns();
             NakitBagisHareket nbh = new NakitBagisHareket();
@@ -126,7 +126,7 @@ namespace NBYS_WebParts.NakitBagisHaritasiWP
             TitleLbl.CssClass = "btn-primary";
             TitleLbl.Text = il.IlAdi + " İli Nakit Bağış Bilgileri ";
 
-            fillData2IlinfoTable(il.Id);
+            FillData2IlinfoTable(il.Id);
             //ShowModal("Test");
             ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "OpenModal();", true);
         }

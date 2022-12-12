@@ -41,7 +41,7 @@ namespace Utility.ProjeGlobal
         public const int BOS_INT = 0;
         public const string DATE_TR = "dd.MM.yyyy";
         public static DateTime REFERANS_TARIHI = new DateTime(1987, 01, 01);
-        public static DateTime NULL_TARIH = new DateTime(1987, 01, 01);
+        public static DateTime NULL_TARIH = new DateTime(1900, 01, 01);
         public static DateTime SINIRLIKIRAARTISI_BASLAMATARIHI = new DateTime(2022, 07, 01);
         public static DateTime SINIRLIKIRAARTISI_BITISTARIHI = new DateTime(2023, 07, 01);
         public static decimal SINIRLIKIRAARTISI_ORANI = 25.0M;

@@ -282,11 +282,11 @@ namespace IKYS_WebParts.YoklamaGirisiWP
                 if (personel != null)
                 {
                     PersonelAdiLbl.Text = personel.Adi + " " + personel.Soyadi;
-                    fillBasSaat();
-                    fillBitSaat();
-                    fillBulunmamaSebebiDDL();
+                    FillBasSaat();
+                    FillBitSaat();
+                    FillBulunmamaSebebiDDL();
                     YoklamaFormunuDoldur();
-                    fillPersonelDDL();
+                    FillPersonelDDL();
 
                 }
             }
@@ -298,11 +298,11 @@ namespace IKYS_WebParts.YoklamaGirisiWP
             DeleteBtn.Visible = false;
             if (!Page.IsPostBack)
             {
-                fillBasSaat();
-                fillBitSaat();
-                fillBulunmamaSebebiDDL();
+                FillBasSaat();
+                FillBitSaat();
+                FillBulunmamaSebebiDDL();
                 Personel personel = PersonelGetir();
-                fillPersonelDDL();
+                FillPersonelDDL();
 
                 if (personel != null)
                 {
@@ -324,7 +324,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
 
             }
         }
-        private void fillPersonelDDL()
+        private void FillPersonelDDL()
         {
             PersonelDDL.Items.Clear();
             Personel personel = new Personel();
@@ -347,7 +347,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
                 PersonelIdQS = perItem.Value;
             }
         }
-        private void fillBulunmamaSebebiDDL()
+        private void FillBulunmamaSebebiDDL()
         {
             BulunmamaSebebiDDL.Items.Clear();
             BulunmamaSebebi bs = new BulunmamaSebebi();
@@ -359,7 +359,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
                 BulunmamaSebebiDDL.Items.Add(li);
             }
         }
-        private void fillBasSaat()
+        private void FillBasSaat()
         {
             BasSaatDDL.Items.Clear();
             TimeSpan bastarTS = new TimeSpan(6, 0, 0);
@@ -388,7 +388,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
                 }
             }
         }
-        private void fillBitSaat()
+        private void FillBitSaat()
         {
             string bitsaatStr = BitSaatDDL.SelectedItem == null ? "23:59" : BitSaatDDL.SelectedItem.Text;
             BitSaatDDL.Items.Clear();
@@ -721,7 +721,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
         }
         protected void BasSaatDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            fillBitSaat();
+            FillBitSaat();
         }
         protected void BulunmamaSebebiDDL_SelectedIndexChanged(object sender, EventArgs e)
         {

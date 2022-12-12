@@ -69,11 +69,19 @@ namespace TBYS_WebParts.OdemePlaniWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.LinkButton OdemePlaniSilBtn;
+        protected global::System.Web.UI.WebControls.Label GecikmeZammiTipiLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.CheckBox GecikmeZammmiTipiChk;
+        protected global::System.Web.UI.WebControls.LinkButton GecikmeZammmiGunlukBtn;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.LinkButton GecikmeZammmiAylikBtn;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.LinkButton OdemePlaniSilBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -358,13 +366,61 @@ namespace TBYS_WebParts.OdemePlaniWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlGecikmeZammiTipiLbl() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.GecikmeZammiTipiLbl = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "GecikmeZammiTipiLbl";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-form-label");
+            @__ctrl.Text = "Gecikme Zammı Hesabı=";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlGecikmeZammmiGunlukBtn() {
+            global::System.Web.UI.WebControls.LinkButton @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
+            this.GecikmeZammmiGunlukBtn = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "GecikmeZammmiGunlukBtn";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "btn btn-outline-danger  ");
+            @__ctrl.Visible = false;
+            @__ctrl.Text = "Günlük Yap";
+            @__ctrl.Click -= new System.EventHandler(this.GecikmeZammmiGunlukBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.GecikmeZammmiGunlukBtn_Click);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlGecikmeZammmiAylikBtn() {
+            global::System.Web.UI.WebControls.LinkButton @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
+            this.GecikmeZammmiAylikBtn = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "GecikmeZammmiAylikBtn";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "btn btn-outline-danger  ");
+            @__ctrl.Visible = false;
+            @__ctrl.Text = "Aylık Yap";
+            @__ctrl.Click -= new System.EventHandler(this.GecikmeZammmiAylikBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.GecikmeZammmiAylikBtn_Click);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlOdemePlaniSilBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.OdemePlaniSilBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "OdemePlaniSilBtn";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "btn btn-outline-danger  float-right mb-1");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "btn btn-outline-danger  float-right ");
             @__ctrl.Visible = false;
             @__ctrl.Text = "Ödeme Planı Sil";
             @__ctrl.Click -= new System.EventHandler(this.OdemePlaniSilBtn_Click);
@@ -375,43 +431,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.CheckBox @__BuildControlGecikmeZammmiTipiChk() {
-            global::System.Web.UI.WebControls.CheckBox @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.CheckBox();
-            this.GecikmeZammmiTipiChk = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GecikmeZammmiTipiChk";
-            @__ctrl.CssClass = "float-right  mr-3";
-            @__ctrl.AutoPostBack = true;
-            @__ctrl.Text = "Günlük Gecikme Zammı Uygula ";
-            @__ctrl.Checked = false;
-            @__ctrl.TextAlign = global::System.Web.UI.WebControls.TextAlign.Right;
-            @__ctrl.CheckedChanged -= new System.EventHandler(this.GecikmeZammmiTipiChk_CheckedChanged);
-            @__ctrl.CheckedChanged += new System.EventHandler(this.GecikmeZammmiTipiChk_CheckedChanged);
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControl__control3() {
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
-            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-group");
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "display: block");
-            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
-            global::System.Web.UI.WebControls.CheckBox @__ctrl1;
-            @__ctrl1 = this.@__BuildControlGecikmeZammmiTipiChk();
-            @__parser.AddParsedSubObject(@__ctrl1);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        "));
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control7() {
+        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control6() {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -423,7 +443,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control8() {
+        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control7() {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -435,7 +455,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control9() {
+        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control8() {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -448,7 +468,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control10() {
+        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control9() {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -461,7 +481,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control11() {
+        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control10() {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -474,7 +494,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control12() {
+        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control11() {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -487,7 +507,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control13() {
+        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control12() {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -500,7 +520,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control14() {
+        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control13() {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -513,7 +533,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control15() {
+        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control14() {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -525,53 +545,53 @@ namespace TBYS_WebParts.OdemePlaniWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control6(System.Web.UI.WebControls.TableCellCollection @__ctrl) {
+        private void @__BuildControl__control5(System.Web.UI.WebControls.TableCellCollection @__ctrl) {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl1;
-            @__ctrl1 = this.@__BuildControl__control7();
+            @__ctrl1 = this.@__BuildControl__control6();
             @__ctrl.Add(@__ctrl1);
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl2;
-            @__ctrl2 = this.@__BuildControl__control8();
+            @__ctrl2 = this.@__BuildControl__control7();
             @__ctrl.Add(@__ctrl2);
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl3;
-            @__ctrl3 = this.@__BuildControl__control9();
+            @__ctrl3 = this.@__BuildControl__control8();
             @__ctrl.Add(@__ctrl3);
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl4;
-            @__ctrl4 = this.@__BuildControl__control10();
+            @__ctrl4 = this.@__BuildControl__control9();
             @__ctrl.Add(@__ctrl4);
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl5;
-            @__ctrl5 = this.@__BuildControl__control11();
+            @__ctrl5 = this.@__BuildControl__control10();
             @__ctrl.Add(@__ctrl5);
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl6;
-            @__ctrl6 = this.@__BuildControl__control12();
+            @__ctrl6 = this.@__BuildControl__control11();
             @__ctrl.Add(@__ctrl6);
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl7;
-            @__ctrl7 = this.@__BuildControl__control13();
+            @__ctrl7 = this.@__BuildControl__control12();
             @__ctrl.Add(@__ctrl7);
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl8;
-            @__ctrl8 = this.@__BuildControl__control14();
+            @__ctrl8 = this.@__BuildControl__control13();
             @__ctrl.Add(@__ctrl8);
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl9;
-            @__ctrl9 = this.@__BuildControl__control15();
+            @__ctrl9 = this.@__BuildControl__control14();
             @__ctrl.Add(@__ctrl9);
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderRow @__BuildControl__control5() {
+        private global::System.Web.UI.WebControls.TableHeaderRow @__BuildControl__control4() {
             global::System.Web.UI.WebControls.TableHeaderRow @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderRow();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            this.@__BuildControl__control6(@__ctrl.Cells);
+            this.@__BuildControl__control5(@__ctrl.Cells);
             return @__ctrl;
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control4(System.Web.UI.WebControls.TableRowCollection @__ctrl) {
+        private void @__BuildControl__control3(System.Web.UI.WebControls.TableRowCollection @__ctrl) {
             global::System.Web.UI.WebControls.TableHeaderRow @__ctrl1;
-            @__ctrl1 = this.@__BuildControl__control5();
+            @__ctrl1 = this.@__BuildControl__control4();
             @__ctrl.Add(@__ctrl1);
         }
         
@@ -585,14 +605,14 @@ namespace TBYS_WebParts.OdemePlaniWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "AyrintiTable";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "table table-hover table-striped table-sm ");
-            this.@__BuildControl__control4(@__ctrl.Rows);
+            this.@__BuildControl__control3(@__ctrl.Rows);
             return @__ctrl;
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControl__control16() {
+        private global::System.Web.UI.WebControls.Label @__BuildControl__control15() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -626,7 +646,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControl__control17() {
+        private global::System.Web.UI.WebControls.Label @__BuildControl__control16() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -658,7 +678,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControl__control18() {
+        private global::System.Web.UI.WebControls.Label @__BuildControl__control17() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -686,7 +706,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControl__control19() {
+        private global::System.Web.UI.WebControls.Label @__BuildControl__control18() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -729,7 +749,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                "));
             global::System.Web.UI.WebControls.Label @__ctrl1;
-            @__ctrl1 = this.@__BuildControl__control19();
+            @__ctrl1 = this.@__BuildControl__control18();
             @__parser.AddParsedSubObject(@__ctrl1);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl2;
@@ -753,7 +773,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n                        <div class=\"row\">\r\n                            <div c" +
                         "lass=\"form-group col-2\">\r\n                                "));
             global::System.Web.UI.WebControls.Label @__ctrl1;
-            @__ctrl1 = this.@__BuildControl__control16();
+            @__ctrl1 = this.@__BuildControl__control15();
             @__parser.AddParsedSubObject(@__ctrl1);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                "));
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl2;
@@ -762,7 +782,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <div class=\"for" +
                         "m-group col-2\">\r\n                                "));
             global::System.Web.UI.WebControls.Label @__ctrl3;
-            @__ctrl3 = this.@__BuildControl__control17();
+            @__ctrl3 = this.@__BuildControl__control16();
             @__parser.AddParsedSubObject(@__ctrl3);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                "));
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl4;
@@ -771,7 +791,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <div class=\"for" +
                         "m-group col-6\">\r\n                                "));
             global::System.Web.UI.WebControls.Label @__ctrl5;
-            @__ctrl5 = this.@__BuildControl__control18();
+            @__ctrl5 = this.@__BuildControl__control17();
             @__parser.AddParsedSubObject(@__ctrl5);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                "));
             global::System.Web.UI.WebControls.TextBox @__ctrl6;
@@ -801,25 +821,34 @@ namespace TBYS_WebParts.OdemePlaniWP {
             global::System.Web.UI.WebControls.LinkButton @__ctrl1;
             @__ctrl1 = this.@__BuildControlOdemePlaniEkleBtn();
             @__parser.AddParsedSubObject(@__ctrl1);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"form-group\"" +
-                        ">\r\n                            "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl2;
-            @__ctrl2 = this.@__BuildControlOdemePlaniSilBtn();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"form-group " +
+                        "\">\r\n                            "));
+            global::System.Web.UI.WebControls.Label @__ctrl2;
+            @__ctrl2 = this.@__BuildControlGecikmeZammiTipiLbl();
             @__parser.AddParsedSubObject(@__ctrl2);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        "));
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl3;
-            @__ctrl3 = this.@__BuildControl__control3();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl3;
+            @__ctrl3 = this.@__BuildControlGecikmeZammmiGunlukBtn();
             @__parser.AddParsedSubObject(@__ctrl3);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                    <div id=\"PlanAyrintiDiv\">\r\n    " +
-                        "                    <div class=\"mt-2\">\r\n                            "));
-            global::System.Web.UI.WebControls.Table @__ctrl4;
-            @__ctrl4 = this.@__BuildControlAyrintiTable();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl4;
+            @__ctrl4 = this.@__BuildControlGecikmeZammmiAylikBtn();
             @__parser.AddParsedSubObject(@__ctrl4);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl5;
+            @__ctrl5 = this.@__BuildControlOdemePlaniSilBtn();
+            @__parser.AddParsedSubObject(@__ctrl5);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n                   " +
+                        " <div id=\"PlanAyrintiDiv\">\r\n                        <div class=\"mt-2\">\r\n        " +
+                        "                    "));
+            global::System.Web.UI.WebControls.Table @__ctrl6;
+            @__ctrl6 = this.@__BuildControlAyrintiTable();
+            @__parser.AddParsedSubObject(@__ctrl6);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n                   " +
                         " "));
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl5;
-            @__ctrl5 = this.@__BuildControlOdemeYapDiv();
-            @__parser.AddParsedSubObject(@__ctrl5);
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl7;
+            @__ctrl7 = this.@__BuildControlOdemeYapDiv();
+            @__parser.AddParsedSubObject(@__ctrl7);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                "));
             return @__ctrl;
         }
@@ -1009,7 +1038,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control23() {
+        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control22() {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -1021,7 +1050,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control24() {
+        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control23() {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -1033,7 +1062,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control25() {
+        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control24() {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -1046,7 +1075,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control26() {
+        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control25() {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -1058,38 +1087,38 @@ namespace TBYS_WebParts.OdemePlaniWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control22(System.Web.UI.WebControls.TableCellCollection @__ctrl) {
+        private void @__BuildControl__control21(System.Web.UI.WebControls.TableCellCollection @__ctrl) {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl1;
-            @__ctrl1 = this.@__BuildControl__control23();
+            @__ctrl1 = this.@__BuildControl__control22();
             @__ctrl.Add(@__ctrl1);
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl2;
-            @__ctrl2 = this.@__BuildControl__control24();
+            @__ctrl2 = this.@__BuildControl__control23();
             @__ctrl.Add(@__ctrl2);
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl3;
-            @__ctrl3 = this.@__BuildControl__control25();
+            @__ctrl3 = this.@__BuildControl__control24();
             @__ctrl.Add(@__ctrl3);
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl4;
-            @__ctrl4 = this.@__BuildControl__control26();
+            @__ctrl4 = this.@__BuildControl__control25();
             @__ctrl.Add(@__ctrl4);
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderRow @__BuildControl__control21() {
+        private global::System.Web.UI.WebControls.TableHeaderRow @__BuildControl__control20() {
             global::System.Web.UI.WebControls.TableHeaderRow @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderRow();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            this.@__BuildControl__control22(@__ctrl.Cells);
+            this.@__BuildControl__control21(@__ctrl.Cells);
             return @__ctrl;
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control20(System.Web.UI.WebControls.TableRowCollection @__ctrl) {
+        private void @__BuildControl__control19(System.Web.UI.WebControls.TableRowCollection @__ctrl) {
             global::System.Web.UI.WebControls.TableHeaderRow @__ctrl1;
-            @__ctrl1 = this.@__BuildControl__control21();
+            @__ctrl1 = this.@__BuildControl__control20();
             @__ctrl.Add(@__ctrl1);
         }
         
@@ -1104,7 +1133,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "OdemePlaniTable";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "table table-sm table-striped table-bordered");
-            this.@__BuildControl__control20(@__ctrl.Rows);
+            this.@__BuildControl__control19(@__ctrl.Rows);
             return @__ctrl;
         }
         
@@ -1251,7 +1280,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control30() {
+        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control29() {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -1264,7 +1293,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control31() {
+        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control30() {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -1277,7 +1306,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control32() {
+        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control31() {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -1290,7 +1319,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control33() {
+        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control32() {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -1303,7 +1332,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control34() {
+        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control33() {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -1316,7 +1345,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control35() {
+        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control34() {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -1329,7 +1358,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control36() {
+        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control35() {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -1342,47 +1371,47 @@ namespace TBYS_WebParts.OdemePlaniWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control29(System.Web.UI.WebControls.TableCellCollection @__ctrl) {
+        private void @__BuildControl__control28(System.Web.UI.WebControls.TableCellCollection @__ctrl) {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl1;
-            @__ctrl1 = this.@__BuildControl__control30();
+            @__ctrl1 = this.@__BuildControl__control29();
             @__ctrl.Add(@__ctrl1);
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl2;
-            @__ctrl2 = this.@__BuildControl__control31();
+            @__ctrl2 = this.@__BuildControl__control30();
             @__ctrl.Add(@__ctrl2);
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl3;
-            @__ctrl3 = this.@__BuildControl__control32();
+            @__ctrl3 = this.@__BuildControl__control31();
             @__ctrl.Add(@__ctrl3);
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl4;
-            @__ctrl4 = this.@__BuildControl__control33();
+            @__ctrl4 = this.@__BuildControl__control32();
             @__ctrl.Add(@__ctrl4);
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl5;
-            @__ctrl5 = this.@__BuildControl__control34();
+            @__ctrl5 = this.@__BuildControl__control33();
             @__ctrl.Add(@__ctrl5);
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl6;
-            @__ctrl6 = this.@__BuildControl__control35();
+            @__ctrl6 = this.@__BuildControl__control34();
             @__ctrl.Add(@__ctrl6);
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl7;
-            @__ctrl7 = this.@__BuildControl__control36();
+            @__ctrl7 = this.@__BuildControl__control35();
             @__ctrl.Add(@__ctrl7);
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderRow @__BuildControl__control28() {
+        private global::System.Web.UI.WebControls.TableHeaderRow @__BuildControl__control27() {
             global::System.Web.UI.WebControls.TableHeaderRow @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderRow();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            this.@__BuildControl__control29(@__ctrl.Cells);
+            this.@__BuildControl__control28(@__ctrl.Cells);
             return @__ctrl;
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control27(System.Web.UI.WebControls.TableRowCollection @__ctrl) {
+        private void @__BuildControl__control26(System.Web.UI.WebControls.TableRowCollection @__ctrl) {
             global::System.Web.UI.WebControls.TableHeaderRow @__ctrl1;
-            @__ctrl1 = this.@__BuildControl__control28();
+            @__ctrl1 = this.@__BuildControl__control27();
             @__ctrl.Add(@__ctrl1);
         }
         
@@ -1396,7 +1425,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "GecikmeZammiTable";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "table table-striped table-hover table-sm table-bordered");
-            this.@__BuildControl__control27(@__ctrl.Rows);
+            this.@__BuildControl__control26(@__ctrl.Rows);
             return @__ctrl;
         }
         
@@ -1690,7 +1719,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control37(System.Web.UI.Control @__ctrl) {
+        private void @__BuildControl__control36(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            <div class=\'loaderMainContainer\'>\r\n                <div class=\'load" +
                         "erContainer\'>\r\n                    <div class=\'loaderCircle\'></div>\r\n           " +
@@ -1704,7 +1733,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
             global::System.Web.UI.UpdateProgress @__ctrl;
             @__ctrl = new global::System.Web.UI.UpdateProgress();
             this.updateProgress = @__ctrl;
-            @__ctrl.ProgressTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control37));
+            @__ctrl.ProgressTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control36));
             @__ctrl.ID = "updateProgress";
             return @__ctrl;
         }

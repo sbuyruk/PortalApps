@@ -193,6 +193,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>RandevuViewerWP.ascx</DependentUpon>
     </Compile>
+    <Compile Include="TestWP\TestWP.ascx.cs">
+      <DependentUpon>TestWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="TestWP\TestWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TestWP.ascx</DependentUpon>
+    </Compile>
     <Compile Include="ToplantiGirisiWP\ToplantiGirisiWP.ascx.cs">
       <DependentUpon>ToplantiGirisiWP.ascx</DependentUpon>
     </Compile>
@@ -308,6 +316,10 @@
     </None>
     <None Include="Scripts\jquery-3.5.1.min.map" />
     <None Include="Scripts\jquery-3.5.1.slim.min.map" />
+    <None Include="TestWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{95862460-30ac-49f0-aa54-c87f1c9a127d}</SharePointProjectItemId>
+    </None>
+    <None Include="TestWP\TestWP.webpart" />
     <None Include="ToplantiGirisiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{d4c749ec-4073-49d3-b78c-fdad377c9afa}</SharePointProjectItemId>
     </None>
@@ -495,6 +507,11 @@
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
+    <Content Include="TestWP\Elements.xml" />
+    <Content Include="TestWP\TestWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>TestWP.ascx.g.cs</LastGenOutput>
+    </Content>
     <Content Include="ToplantiGirisiWP\Elements.xml" />
     <Content Include="ToplantiGirisiWP\ToplantiGirisiWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>

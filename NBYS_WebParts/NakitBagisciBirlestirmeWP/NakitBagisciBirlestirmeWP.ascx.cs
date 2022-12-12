@@ -125,7 +125,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
                         AsilBagisciKayitGetir();
 
                         //BirlesecekBagisciKayitGetir();
-                        //fillSecilenAsilBagisciTable();
+                        //FillSecilenAsilBagisciTable();
                     }
                 }
             }
@@ -198,7 +198,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
                                                             if(rowData.Adi.indexOf('BİLİNMEYEN')>=0){
                                                                 return $('');
                                                             }else{
-                                                                return $('<a class=\'btn btn-outline-info \' onclick=fillAsilBagisciTable('+rowData.NakitBagisciId+')>Seç</a>')
+                                                                return $('<a class=\'btn btn-outline-info \' onclick=FillAsilBagisciTable('+rowData.NakitBagisciId+')>Seç</a>')
                                                             }
                                                         }
                                                     }
@@ -292,7 +292,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
             {
                 SecilenAsilBagisciId = secilenNb.Id.ReturnZeroIfNull().ToString();
 
-                fillSecilenAsilBagisciTable();
+                FillSecilenAsilBagisciTable();
                 BirlesecekBagisciAraTxt.Text = AsilBagisciAraTxt.Text;
                 BagisciSecTableDiv.Attributes["style"] = "display:none";
                 AsilBagisciAraDiv.Attributes["style"] = "display:none";
@@ -309,13 +309,13 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
             if (secilenNb != null)
             {
                 //BirlesecekBagisciId = secilenNb.Id.ReturnZeroIfNull().ToString();
-                fillSecilenBirlesecekBagisciTable();
+                FillSecilenBirlesecekBagisciTable();
                 BagisciSecTableDiv.Attributes["style"] = "display:none";
                 BirlesecekBagisciAraDiv.Attributes["style"] = "display:none";
                 BirlesecekBagisciDiv.Attributes["style"] = "display:block";
 
             }
-            fillSecilenAsilBagisciTable();
+            FillSecilenAsilBagisciTable();
         }
         private void SecilenAsilBagisciTableHeaders()
         {
@@ -341,7 +341,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
 
             AsilBagisciTable.Controls.Add(th);
         }
-        private void fillSecilenAsilBagisciTable()
+        private void FillSecilenAsilBagisciTable()
         {
             NakitBagisci secilenBagisci = new NakitBagisci();
             secilenBagisci = secilenBagisci.Select<NakitBagisci>(SecilenAsilBagisciId.ConvertToInt());
@@ -411,7 +411,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
 
             BirlesecekBagisciTable.Controls.Add(th);
         }
-        private void fillSecilenBirlesecekBagisciTable()
+        private void FillSecilenBirlesecekBagisciTable()
         {
             SecilenBirlesecekBagisciTableHeaders();
             string value = paramArray.Value;
@@ -786,8 +786,8 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
         }
         protected void BirlestirRBL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            fillSecilenAsilBagisciTable();
-            fillSecilenBirlesecekBagisciTable();
+            FillSecilenAsilBagisciTable();
+            FillSecilenBirlesecekBagisciTable();
             if (BirlestirRBL.SelectedIndex == 0)
             {
                 BirlestirSubDiv.Visible = false;
@@ -816,7 +816,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
         {
 
             BirlesecekBagisciKayitGetir();
-            fillSecilenAsilBagisciTable();
+            FillSecilenAsilBagisciTable();
 
         }
         protected void TamamBtn_Click(object sender, EventArgs e)
@@ -825,8 +825,8 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
             //PUTableDiv.Visible = false;
             FooterDiv.Visible = true;
             AsilBagisciBagislariDiv.Visible = true;
-            fillSecilenAsilBagisciTable();
-            fillSecilenBirlesecekBagisciTable();
+            FillSecilenAsilBagisciTable();
+            FillSecilenBirlesecekBagisciTable();
             BirlesecekBagisciAraDiv.Attributes["style"] = "display:none";
             BagisciSecTableDiv.Attributes["style"] = "display:none";
             BirlesecekBagisciDiv.Attributes["style"] = "display:block";
@@ -839,7 +839,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
         protected void BirlesecekBagisciAraTxt_TextChanged(object sender, EventArgs e)
         {
             BirlesecekBagisciKayitGetir();
-            fillSecilenAsilBagisciTable();
+            FillSecilenAsilBagisciTable();
         }
         protected void BagisciDuzenleHiddenBtn_Click(object sender, EventArgs e)
         {

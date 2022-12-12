@@ -233,29 +233,33 @@ namespace MTS_WebParts.FaaliyetROViewerWP
                     {
                         string adi = row["Adi"].ToString();
                         string soyadi = row["Soyadi"].ToString();
-                        DateTime dogumGunu = row["DogumTar"].ConvertToDatetime();
-                        DateTime dogumGunuBuYil = new DateTime(DateTime.Today.Year + i, dogumGunu.Month, dogumGunu.Day);
-                        bool medeniHali = row["MedeniHali"].ConvertToInt() > 0;
+                        DateTime dogumTar = row["DogumTar"].ConvertToDatetime();
+                        DateTime dogumGunuBuYil = new DateTime(DateTime.Today.Year + i, dogumTar.Month, dogumTar.Day);
+                        bool dogumGunuKutlama = row["DogumGunuKutlama"].ConvertToBool();
+                        bool medeniHali = row["MedeniHali"].ConvertToInt() == 1 ? true : false;
                         DateTime evlilikTar = row["EvlilikTar"].ConvertToDatetime();
                         DateTime evlilikTarBuYil = new DateTime(DateTime.Today.Year + i, evlilikTar.Month, evlilikTar.Day);
                         bool evlilikKutlama = row["EvlilikKutlama"].ConvertToBool();
 
 
-                        CalendarEvent dogumGunuitem = new CalendarEvent();
-                        dogumGunuitem.state = ProjeConstants.RANDEVU_DURUMU_ONAYLANDI_INT.ToString();
-                        dogumGunuitem.id = 999;//999 önemli taşınamayan event
-                        dogumGunuitem.purpose = ProjeConstants.RANDEVU_AMACI_DOGUMGUNU_INT;
-                        dogumGunuitem.title = "D.Günü :" + adi + " " + soyadi;
-                        dogumGunuitem.start = string.Format("{0:s}", dogumGunuBuYil);
-                        dogumGunuitem.end = string.Format("{0:s}", dogumGunuBuYil);
-                        dogumGunuitem.url = "";
-                        dogumGunuitem.allDay = true;
-                        dogumGunuitem.startEditable = false;
+                        if (dogumTar > ProjeConstants.NULL_TARIH && dogumGunuKutlama)
+                        {
+                            CalendarEvent dogumGunuitem = new CalendarEvent();
+                            dogumGunuitem.state = ProjeConstants.RANDEVU_DURUMU_ONAYLANDI_INT.ToString();
+                            dogumGunuitem.id = 999;//999 önemli taşınamayan event
+                            dogumGunuitem.purpose = ProjeConstants.RANDEVU_AMACI_DOGUMGUNU_INT;
+                            dogumGunuitem.title = "D.Günü :" + adi + " " + soyadi;
+                            dogumGunuitem.start = string.Format("{0:s}", dogumGunuBuYil);
+                            dogumGunuitem.end = string.Format("{0:s}", dogumGunuBuYil);
+                            dogumGunuitem.url = "";
+                            dogumGunuitem.allDay = true;
+                            dogumGunuitem.startEditable = false;
 
-                        randevu.RenkBelirle(dogumGunuitem);
-                        eventItems.Add(dogumGunuitem);
+                            randevu.RenkBelirle(dogumGunuitem);
+                            eventItems.Add(dogumGunuitem);
+                        }
 
-                        if (medeniHali && evlilikKutlama)
+                        if (evlilikTar > ProjeConstants.NULL_TARIH && medeniHali && evlilikKutlama)
                         {
                             CalendarEvent evlilikYildonumuItem = new CalendarEvent();
                             evlilikYildonumuItem.state = ProjeConstants.RANDEVU_DURUMU_ONAYLANDI_INT.ToString();

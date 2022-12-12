@@ -236,7 +236,7 @@ namespace Model.IKYS
             string sqlString = string.Format(@"
                 SELECT A.Id PersonelId, B.TCKimlikNo, A.SicilNo,A.Adi,A.Soyadi, IIF (A.Asker_sivil=0,'Sivil','(E) Asker') as Asker_Sivil,A.KullaniciAdi,
 					B.AnneAdi,B.BabaAdi, FORMAT(B.DogumTar,'dd.MM.yyyy') DogumTarihi,B.MedeniHali,B.EvlilikTar,B.Cinsiyet, B.KanGrubu,
-	                B.DogumTar,B.EvlilikTar, B.EvlilikKutlama, 
+	                B.DogumTar,B.DogumGunuKutlama,B.EvlilikTar, B.EvlilikKutlama, 
 					IIF(FORMAT(C.BaslamaTar,'dd.MM.yyyy')='01.01.1900','',FORMAT(C.BaslamaTar,'dd.MM.yyyy')) BaslamaTar,
 					C.CalismaDurumu,
 					IIF(FORMAT(C.AyrilmaTar,'dd.MM.yyyy')='01.01.1900','',FORMAT(C.AyrilmaTar,'dd.MM.yyyy')) AyrilmaTar,
@@ -244,7 +244,7 @@ namespace Model.IKYS
 					IIF(FORMAT(C.EmeklilikTarihi,'dd.MM.yyyy')='01.01.1900','',FORMAT(C.EmeklilikTarihi,'dd.MM.yyyy')) EmeklilikTarihi,
 					IIF(FORMAT(C.IzinDonemiBasTar,'dd.MM.yyyy')='01.01.1900','',FORMAT(C.IzinDonemiBasTar,'dd.MM.yyyy')) IzinDonemiBasTar,                    
 					D.Adi Unvan, F.Adi Gorev, E.Adi BirimSube, 
-                    G.CepTelefonu,G.Adres,G.InternetEPosta,
+                    G.CepTelefonu,G.Adres,G.InternetEPosta,K.IlceAdi IkametIlcesi,K.IlAdi IkametIli,
 					H.TahsilDurumu,
                     I.IlAdi + ' - '+ I.IlceAdi DogumYeri,
                     J.Adi +' '+ J.Soyadi Esi, J.TcKimlikNo EsTcKimlikNo,J.Telefon EsTelefon
@@ -258,8 +258,9 @@ namespace Model.IKYS
                 Left Join TahsilTanim_Table H on H.Id=A.Tahsili
                 Left Join Ilce_Table I on I.Id=B.DogumYeri
                 Left Join Aile_Table J on J.PersonelId=A.Id AND YakinlikDerecesi=1
+				Left Join Ilce_Table K on K.Id=G.Ilcesi
                 WHERE CalismaDurumu=1
-                ORDER BY C.ProtokolSiraNo                                    ");
+                ORDER BY C.ProtokolSiraNo                               ");
             DataTable dataTable = null;
             try
             {
@@ -430,7 +431,7 @@ namespace Model.IKYS
 
             return list;
         }
-
+        //DogumGunuKutlama=1 olanları döndürür
         public List<Personel> SelectByDogumGunu(int gun, int ay)
         {
 
@@ -456,6 +457,7 @@ namespace Model.IKYS
 
             return list;
         }
+        //EvlilikKutlama=1 olanları döndürür
         public List<Personel> SelectByEvlilikTar(int gun, int ay)
         {
 

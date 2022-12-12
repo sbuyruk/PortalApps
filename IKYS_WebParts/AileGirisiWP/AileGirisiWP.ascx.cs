@@ -79,17 +79,17 @@ namespace IKYS_WebParts.AileGirisiWP
         {
             if (!Page.IsPostBack)
             {
-                fillYakinlikDerecesiDDL();
-                fillMeslekDDL();
+                FillYakinlikDerecesiDDL();
+                FillMeslekDDL();
             }
             Personel personelDao = new Personel();
             Personel personel = personelDao.Select<Personel>(PersonelIdQS.ConvertToInt());
             if (personel != null)
             {
-                fillAileBilgileriTable(personel);
+                FillAileBilgileriTable(personel);
             }
         }
-        private void fillAileBilgileriTable(Personel personel)
+        private void FillAileBilgileriTable(Personel personel)
         {
             ClearTableRows();
             TitleLbl.Text = personel.Adi + " " + personel.Soyadi + " Aile Bilgileri";
@@ -161,7 +161,7 @@ namespace IKYS_WebParts.AileGirisiWP
                 SilBtn.Click += delegate
                 {
                     aile.Delete();
-                    fillAileBilgileriTable(personel);
+                    FillAileBilgileriTable(personel);
                 };
                 SilCell.Controls.Add(SilBtn);
                 row.Controls.Add(SilCell);
@@ -170,7 +170,7 @@ namespace IKYS_WebParts.AileGirisiWP
             }
 
         }
-        private void fillYakinlikDerecesiDDL()
+        private void FillYakinlikDerecesiDDL()
         {
             YakDerecesiDDL.Items.Clear();
             ListItem li = new ListItem("", "");
@@ -180,7 +180,7 @@ namespace IKYS_WebParts.AileGirisiWP
             YakDerecesiDDL.Items.Add(li1);
             YakDerecesiDDL.Items.Add(li2);
         }
-        private void fillMeslekDDL()
+        private void FillMeslekDDL()
         {
             YakMeslekDDL.Items.Clear();
             Meslek meslekDao = new Meslek();
@@ -243,7 +243,7 @@ namespace IKYS_WebParts.AileGirisiWP
                 Personel personel = personelDao.Select<Personel>(PersonelIdQS.ConvertToInt());
                 if (personel != null)
                 {
-                    fillAileBilgileriTable(personel);
+                    FillAileBilgileriTable(personel);
                 }
             }
         }

@@ -173,11 +173,11 @@ namespace IKYS_WebParts.IzinHareketEditWP
                 if (personel != null)
                 {
                     PersonelAdiLbl.Text = personel.Adi + " " + personel.Soyadi;
-                    fillVekilImzaDDL();
-                    fillAmirImzaDDL();
-                    fillOnayImzaDDL();
-                    fillIzinBasSaat();
-                    fillIzinBitSaat();
+                    FillVekilImzaDDL();
+                    FillAmirImzaDDL();
+                    FillOnayImzaDDL();
+                    FillIzinBasSaat();
+                    FillIzinBitSaat();
                     FillIzinHareketForm();
                     GorunumuAyarla();
                 }
@@ -310,7 +310,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
             }
             return string.Empty;
         }
-        private void fillVekilImzaDDL()
+        private void FillVekilImzaDDL()
         {
             VekilImzaDDL.Items.Clear();
             Personel personel = new Personel();
@@ -323,7 +323,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
                 VekilImzaDDL.Items.Add(li);
             }
         }
-        private void fillAmirImzaDDL()
+        private void FillAmirImzaDDL()
         {
             AmirImzaDDL.Items.Clear();
             Personel personel = new Personel();
@@ -336,7 +336,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
                 AmirImzaDDL.Items.Add(li);
             }
         }
-        private void fillOnayImzaDDL()
+        private void FillOnayImzaDDL()
         {
             OnayImzaDDL.Items.Clear();
             Personel personel = new Personel();
@@ -350,7 +350,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
             }
 
         }
-        private void fillIzinBasSaat()
+        private void FillIzinBasSaat()
         {
             IzinBasSaatDDL.Items.Clear();
             TimeSpan bastarTS = new TimeSpan(7, 0, 0);
@@ -379,7 +379,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
                 }
             }
         }
-        private void fillIzinBitSaat()
+        private void FillIzinBitSaat()
         {
             IzinBitSaatDDL.Items.Clear();
             string bassaatStr = IzinBasSaatDDL.SelectedItem == null ? "07:05" : IzinBasSaatDDL.SelectedItem.Text;
@@ -599,7 +599,7 @@ namespace IKYS_WebParts.IzinHareketEditWP
         }
         protected void IzinBasSaatDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            fillIzinBitSaat();
+            FillIzinBitSaat();
         }
         protected void UpdateBtn_Click(object sender, EventArgs e)
         {

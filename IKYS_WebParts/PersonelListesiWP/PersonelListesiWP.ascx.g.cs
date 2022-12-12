@@ -221,10 +221,11 @@ namespace IKYS_WebParts.PersonelListesiWP {
                         "Günü</th>\r\n                            <th>Emeklilik Tarihi</th>\r\n              " +
                         "              <th>Calışma Durumu</th>\r\n                            <th>Cep Telef" +
                         "onu</th>\r\n                            <th>Adres</th>\r\n                          " +
-                        "  <th>Eşi</th>\r\n                            <th>Eş TC Kimlik No</th>\r\n          " +
-                        "                  <th>Eş telefon</th>\r\n                        </tr>\r\n          " +
-                        "          </thead>\r\n                </table>\r\n            </div>\r\n        </div>" +
-                        "\r\n        <div class=\"card-footer\">\r\n            "));
+                        "  <th>İli</th>\r\n                            <th>İlçesi</th>\r\n                   " +
+                        "         <th>Eşi</th>\r\n                            <th>Eş TC Kimlik No</th>\r\n   " +
+                        "                         <th>Eş telefon</th>\r\n                        </tr>\r\n   " +
+                        "                 </thead>\r\n                </table>\r\n            </div>\r\n       " +
+                        " </div>\r\n        <div class=\"card-footer\">\r\n            "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl5;
             @__ctrl5 = this.@__BuildControlExcelBtn();
             @__parser.AddParsedSubObject(@__ctrl5);

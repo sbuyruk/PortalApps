@@ -107,7 +107,7 @@ namespace TBYS_WebParts.BagisciYakinlariWP
             bagisci = bagisci.Select<TasinmazBagisci>(BagisciIdQS.ConvertToInt());
             if (bagisci != null)
             {
-                fillBagisciYakinlari2Table(bagisci);
+                FillBagisciYakinlari2Table(bagisci);
             }
         }
         private void BagisciYakinlariTableHeaders()
@@ -130,7 +130,7 @@ namespace TBYS_WebParts.BagisciYakinlariWP
             th.Controls.Add(YakinlikDerecesiCell);
             BagisciYakinlariTable.Controls.Add(th);
         }
-        private void fillBagisciYakinlari2Table(TasinmazBagisci bagisci)
+        private void FillBagisciYakinlari2Table(TasinmazBagisci bagisci)
         {
             AdiLbl.Text = " Bağışçı : " + bagisci.Adi + " " + bagisci.Soyadi;
             BagisciIdLbl.Text = bagisci.Id + "";

@@ -230,13 +230,17 @@ namespace Model.TBYS
         }
         public List<Odeme> SelectByKiraciVadeBasTarVadeBitTar(int sozlesmeId,int kiraciId, DateTime ilkTarih, DateTime ikinciTarih)
         {
+            DateTime tarih1= new DateTime(ilkTarih.Year,ilkTarih.Month,ilkTarih.Day);
+            DateTime tarih2= new DateTime(ikinciTarih.Year, ikinciTarih.Month, ikinciTarih.Day);
+            DateTime tarihbas = UtilityHelper.TariheSaatEkle(tarih1, "00:00"); 
+            DateTime tarihbit = UtilityHelper.TariheSaatEkle(tarih2, "23:59"); 
             string sqlString = string.Format(@"
 				SELECT * 
                 FROM Odeme_Table A
                 WHERE KiraciId= {0} AND SozlesmeId={1}
                     AND OdemeTarihi BETWEEN {2} AND {3}
                 ORDER BY A.OdemeTarihi 
-            ", kiraciId,sozlesmeId, ilkTarih.ReturnTRDateFormat(), ikinciTarih.ReturnTRDateFormat());
+            ", kiraciId,sozlesmeId, tarihbas.ConvertToDDMMYYYHHmmFormat().ReturnQuotedValue(), tarihbit.ConvertToDDMMYYYHHmmFormat().ReturnQuotedValue());
 
             DataTable dataTable = dao.selectFromDb(sqlString, "");
             List<Odeme> list = ToList<Odeme>(dataTable);

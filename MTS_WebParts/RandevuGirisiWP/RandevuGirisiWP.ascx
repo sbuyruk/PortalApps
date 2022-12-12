@@ -255,15 +255,17 @@
                 <asp:Label CssClass="col-form-label text-primary font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="Faaliyet Düzenleme"></asp:Label>
                 <asp:Label CssClass="col-form-label" ID="IdLbl" runat="server"></asp:Label>
                 <asp:Label CssClass="col-form-label " ID="AdiLbl" runat="server"></asp:Label>
-                <asp:UpdatePanel ID="UpdatePanel5" runat="server">
+                <asp:UpdatePanel ID="UpdatePanel5" runat="server" UpdateMode="Conditional" >
                     <ContentTemplate>
                         <asp:Label ID="lblTime" CssClass="col-form-label text-secondary" runat="server" />
-                        <asp:Timer ID="RefreshTimer" runat="server" OnTick="RefreshTimer_Tick" Interval="10000" />
+                        <asp:Timer ID="RefreshTimer" runat="server" OnTick="RefreshTimer_Tick" />
                         <div class="form-group text-right text-danger" id="TopBarDiv" runat="server"></div>
                     </ContentTemplate>
                 </asp:UpdatePanel>
             </h3>
+            
         </div>
+
         <div class="card-body alert-success">
             <div class="form-group">
                 <div class="form-group">
@@ -339,21 +341,19 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="RandevuKonusuDiv" class="row">
-                                <div class="form-group col">
-                                    <asp:Label CssClass="col-form-label" runat="server" Text="Faaliyet Konusu"></asp:Label>
-                                    <asp:TextBox ID="RandevuKonusuTxt" CssClass="form-control" runat="server" Text=""></asp:TextBox>
-                                    <asp:RequiredFieldValidator runat="server" ControlToValidate="RandevuKonusuTxt" ForeColor="Red" ErrorMessage="Faaliyet Konusu Giriniz"> </asp:RequiredFieldValidator>
-                                </div>
-                                <div class="form-group col">
-                                    <asp:Label CssClass="col-form-label" runat="server" Text="Açıklama"></asp:Label>
-                                    <asp:TextBox ID="AciklamaTxt" CssClass="form-control" runat="server" Text="" TextMode="MultiLine" Rows="4"></asp:TextBox>
-                                </div>
+                            <div class="form-group">
+                                <asp:Label CssClass="col-form-label" runat="server" Text="Faaliyet Konusu"></asp:Label>
+                                <asp:TextBox ID="RandevuKonusuTxt" CssClass="form-control" runat="server" Text=""></asp:TextBox>
+                                <asp:RequiredFieldValidator runat="server" ControlToValidate="RandevuKonusuTxt" ForeColor="Red" ErrorMessage="Faaliyet Konusu Giriniz"> </asp:RequiredFieldValidator>
+                            </div>
+                            <div class="form-group">
+                                <asp:Label CssClass="col-form-label" runat="server" Text="Açıklama"></asp:Label>
+                                <asp:TextBox ID="AciklamaTxt" CssClass="form-control" runat="server" Text="" TextMode="MultiLine" Rows="5"></asp:TextBox>
                             </div>
                         </ContentTemplate>
-                        <Triggers>
+<%--                        <Triggers>
                             <asp:AsyncPostBackTrigger ControlID="RefreshTimer" EventName="tick" />
-                        </Triggers>
+                        </Triggers>--%>
                     </asp:UpdatePanel>
                 </div>
 

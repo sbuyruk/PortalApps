@@ -1,12 +1,12 @@
 ﻿<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
-<%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
-<%@ Register TagPrefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
-<%@ Register TagPrefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
-<%@ Register TagPrefix="asp" Namespace="System.Web.UI" Assembly="System.Web.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" %>
-<%@ Import Namespace="Microsoft.SharePoint" %>
-<%@ Register TagPrefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
-<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="PersonelGirisiWP.ascx.cs" Inherits="IKYS_WebParts.PersonelGirisiWP.PersonelGirisiWP" %>
-<script type="text/javascript" src="/Style Library/tskgv/js/primeui.min.js"></script>
+<%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %> 
+<%@ Register Tagprefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %> 
+<%@ Register Tagprefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
+<%@ Register Tagprefix="asp" Namespace="System.Web.UI" Assembly="System.Web.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" %>
+<%@ Import Namespace="Microsoft.SharePoint" %> 
+<%@ Register Tagprefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
+<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="PersonelBilgiGirisiWP.ascx.cs" Inherits="IKYS_WebParts.PersonelBilgiGirisiWP.PersonelBilgiGirisiWP" %>
+
 <script type="text/javascript">
 
     function setActiveTab(activeTab) {
@@ -30,17 +30,16 @@
             var reader = new FileReader();
             reader.onload = function (e) {
                 $('#' + sender).attr('src', e.target.result);
-                
+
             }
             reader.readAsDataURL(personelFU.files[0]);
         }
     }
 </script>
 
-<div class="container shadow w-75">
-
-    <div class="card">
-
+<div class="container">
+    <div class="card shadow">
+        
         <div class="card-header" id="CardHeader" runat="server">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-2">
@@ -51,34 +50,31 @@
         <div class="card-body">
             <asp:UpdatePanel ID="UpdatePanel3" runat="server">
                 <ContentTemplate>
-                    <div class="form-group m-0 row nopadding">
-                        <div class="form-group m-0 col-md-10 nopadding">
-                            <!-- Nav tabs -->
-                            <ul class="nav nav-tabs"  role="tablist">
-                                <li  class="nav-item" runat="server" id="KimlikNav">
+                    <div class="row">
+                        <div class="col-9">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li class="nav-item" runat="server" id="KimlikNav">
                                     <a class="nav-link active" data-toggle="tab" id="KimlikLi" href="#KimlikDiv">Kimlik</a>
                                 </li>
                                 <li class="nav-item"  runat="server" id="IsBilgileriNav">
-                                    <a class="nav-link" id="IsBilgileriLi" data-toggle="tab" href="#IsBilgileriDiv">İş Bilgileri</a>
+                                    <a class="nav-link" data-toggle="tab" href="#IsBilgileriDiv">İş Bilgileri</a>
                                 </li>
-                                <li runat="server" class="nav-item" id="IletisimNav">
-                                    <a class="nav-link" id="IletisimLi" data-toggle="tab" href="#IletisimDiv">İletişim Bilgileri</a>
+                                <li class="nav-item"  runat="server" id="AileNav">
+                                    <a class="nav-link" data-toggle="tab" href="#AileDiv">Aile Bilgileri</a>
                                 </li>
-                                <li runat="server" class="nav-item" id="AileNav">
-                                    <a class="nav-link" id="AileLi" data-toggle="tab" href="#AileDiv">Aile</a>
+                                <li class="nav-item"  runat="server" id="IletisimNav">
+                                    <a class="nav-link" data-toggle="tab" href="#IletisimDiv">İletişim Bilgileri</a>
                                 </li>
-                                <li runat="server" class="nav-item" id="EgitimNav">
-                                    <a class="nav-link" id="EgitimLi" data-toggle="tab" href="#EgitimDiv">Eğitim/iş Tecrübesi</a>
+                                <li class="nav-item"  runat="server" id="EgitimNav">
+                                    <a class="nav-link" data-toggle="tab" href="#EgitimDiv">Eğitim/İş Tecrübesi</a>
                                 </li>
-                                <li runat="server" class="nav-item" id="IzinNav">
-                                    <a class="nav-link" id="IzinLi" data-toggle="tab" href="#IzinDiv">İzin</a>
+                                <li class="nav-item" runat="server" id="IzinNav">
+                                    <a class="nav-link" data-toggle="tab" href="#IzinDiv">İzin Bilgileri</a>
                                 </li>
-
                             </ul>
-
                             <!-- Tab panes -->
-                            <div class="tab-content" runat="server">
-                                <div class="tab-pane active card mt-1" role="tabpanel" id="KimlikDiv">
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="KimlikDiv" role="tabpanel">
                                     <div class="card-columns">
                                         <div class="card border-0">
                                             <div class="form-group m-0">
@@ -101,9 +97,9 @@
                                                     <asp:CheckBox ID="DogumGunuKutlamaChk" runat="server" CssClass="form-control" Text="    " Checked="True" />
                                                 </div>
                                             </div>
-                                            
+
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="DogumIliDDL" >Doğ.Yeri İl</label>
+                                                <label class="col-form-label" for="DogumIliDDL">Doğ.Yeri İl</label>
                                                 <asp:DropDownList ID="DogumIliDDL" runat="server" CssClass="form-control" Style="height: auto" OnSelectedIndexChanged="DogumIliDDL_SelectedIndexChanged" AutoPostBack="true" />
                                             </div>
                                             <div class="form-group m-0">
@@ -127,7 +123,7 @@
                                             </div>
                                             <div class="form-group m-0">
                                                 <label class="col-form-label" for="MedeniHaliDDL">Medeni Hali</label>
-                                                <asp:DropDownList ID="MedeniHaliDDL" runat="server"  CssClass="form-control" Style="height: auto" OnSelectedIndexChanged="MedeniHaliDDL_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
+                                                <asp:DropDownList ID="MedeniHaliDDL" runat="server" CssClass="form-control" Style="height: auto" OnSelectedIndexChanged="MedeniHaliDDL_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
                                             </div>
                                             <div class="row">
                                                 <div class="col-8" id="EvlilikTarihiDiv" runat="server">
@@ -150,7 +146,7 @@
                                             </div>
                                             <div class="form-group m-0">
                                                 <label class="col-form-label" for="CinsiyetDDL">Cinsiyet</label>
-                                                <asp:DropDownList ID="CinsiyetDDL" runat="server"  CssClass="form-control" Style="height: auto"></asp:DropDownList>
+                                                <asp:DropDownList ID="CinsiyetDDL" runat="server" CssClass="form-control" Style="height: auto"></asp:DropDownList>
                                             </div>
                                             <div class="form-group m-0">
                                                 <label class="col-form-label" for="KanGrubuDDL">Kan Grubu</label>
@@ -173,9 +169,8 @@
                                     <div class="card-footer">
                                         <asp:LinkButton ID="UpdateKimlikBtn" CssClass="btn btn-outline-primary" runat="server" Text="Kimlik Bilgilerini Kaydet" OnClick="UpdateKimlikBtn_Click" />
                                     </div>
-
                                 </div>
-                                <div class="tab-pane" role="tabpanel" id="IsBilgileriDiv">
+                                <div class="tab-pane" id="IsBilgileriDiv" role="tabpanel">
                                     <div class="card-columns">
                                         <div class="card border-0">
                                             <div class="form-group m-0">
@@ -243,7 +238,7 @@
                                         <asp:LinkButton ID="UpdateIsBilgileriBtn" CssClass="btn btn-outline-primary" runat="server" Text="İş Bilgilerini Kaydet" OnClick="UpdateIsBilgileriBtn_Click" />
                                     </div>
                                 </div>
-                                <div class="tab-pane" role="tabpanel"  id="AileDiv">
+                                <div class="tab-pane" id="AileDiv" role="tabpanel">
                                     <div class="card">
                                         <div class="btn-secondary">
                                             <a class="text-white  text-center " data-toggle="collapse" data-target="#AileMainPanel" aria-expanded="false" aria-controls="AileMainPanel" style="font-weight: bold">Aile Bilgileri</a>
@@ -261,7 +256,7 @@
                                         <asp:LinkButton ID="AileDuzenleBtn" CssClass="btn btn-outline-primary" runat="server" Text="Aile Bilgilerini Düzenle" OnClick="AileDuzenleBtn_Click" />
                                     </div>
                                 </div>
-                                <div class="tab-pane" role="tabpanel"  id="IletisimDiv">
+                                <div class="tab-pane" id="IletisimDiv" role="tabpanel">
                                     <div class="row p-1">
                                         <div class="col-4 ">
                                             <div class="form-group m-0">
@@ -320,12 +315,11 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <div class="card-footer">
                                         <asp:LinkButton ID="UpdateIletisimBtn" CssClass="btn btn-outline-primary" runat="server" Text="İletişim Bilgilerini Kaydet" OnClick="UpdateIletisimBtn_Click" />
                                     </div>
                                 </div>
-                                <div class="tab-pane"  role="tabpanel" id="EgitimDiv">
+                                <div class="tab-pane" id="EgitimDiv" role="tabpanel">
                                     <div class="card-body">
                                         <div class="card">
                                             <div class="btn-secondary">
@@ -370,10 +364,8 @@
                                     <div class="card-footer">
                                         <asp:LinkButton ID="UpdateEgitimBtn" CssClass="btn btn-outline-primary" runat="server" Text="Eğitim Bilgilerini Düzenle" OnClick="UpdateEgitimBtn_Click" />
                                     </div>
-
                                 </div>
-                                <div class="tab-pane"  role="tabpanel" id="IzinDiv">
-
+                                <div class="tab-pane" id="IzinDiv" role="tabpanel">
                                     <div class="card-body">
                                         <div class="card">
                                             <div class="btn-secondary">
@@ -444,31 +436,33 @@
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group m-0 col-md-2 nopadding">
-                            <div class="row form-group m-0">
-                                <div class="row form-group m-0 ">
-                                    <asp:Image ID="DisplayImage" ClientIDMode="Static" runat="server" ImageUrl="../PersonelResimleri/_t/personel_jpg.jpg" CssClass="img-thumbnail" Height="190" Width="140" onerror="this.src='../PersonelResimleri/_t/personel_jpg.jpg';" />
-                                    <%--<div class="controls alignRight">
+                        <div class="col-3">
+                            <div class="form-group m-0 col-md-2 nopadding">
+                                <div class="row form-group m-0">
+                                    <div class="row form-group m-0 ">
+                                        <asp:Image ID="DisplayImage" ClientIDMode="Static" runat="server" ImageUrl="../PersonelResimleri/_t/personel_jpg.jpg" Height="190" Width="140" onerror="this.src='../PersonelResimleri/_t/personel_jpg.jpg';" />
+                                        <%--<div class="controls alignRight">
                                         <asp:Image ID="PersonelFotoImg" runat="server" ImageUrl="/PersonelResimleri/personel.jpg" Height="190" Width="140" />
                                     </div>--%>
-                                </div>
-                                <div class="row form-group m-0 ">
-                                    <asp:FileUpload ID="xFileUpload" Width="140" class="btn form-control" runat="server" ToolTip="Yüklenecek Resmi Seçiniz" type="text" onchange="readURL(this,'DisplayImage')" />
-                                    <%--<div class="form-group">--%>
-                                    <%--<asp:Image ID="PersonelImg" runat="server" />--%>
-                                    <%--<asp:FileUpload ID="fileBrowserFoto" class="form-control" runat="server" ToolTip="Personelin Resmi" type="text" onchange="readURL(this,'PersonelFotoImg')" />--%>
-                                    <%--</div>--%>
-                                </div>
-                                <div class="row form-group m-0 ">
-                                    <asp:LinkButton ID="ResmiKaydetBtn" ClientIDMode="Static" CssClass="btn btn-outline-primary mt-2" runat="server" Text="Resmi Kaydet" OnClick="ResmiKaydetBtn_Click" Width="140px" />
+                                    </div>
+                                    <div class="row form-group m-0 ">
+                                        <asp:FileUpload ID="xFileUpload" Width="140" class="btn form-control" runat="server" ToolTip="Yüklenecek Resmi Seçiniz" type="text" onchange="readURL(this,'DisplayImage')" />
+                                        <%--<div class="form-group">--%>
+                                        <%--<asp:Image ID="PersonelImg" runat="server" />--%>
+                                        <%--<asp:FileUpload ID="fileBrowserFoto" class="form-control" runat="server" ToolTip="Personelin Resmi" type="text" onchange="readURL(this,'PersonelFotoImg')" />--%>
+                                        <%--</div>--%>
+                                    </div>
+                                    <div class="row form-group m-0 ">
+                                        <asp:LinkButton ID="ResmiKaydetBtn" ClientIDMode="Static" CssClass="btn btn-outline-primary mt-2" runat="server" Text="Resmi Kaydet" OnClick="ResmiKaydetBtn_Click" Width="140px" />
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                   
                 </ContentTemplate>
                 <Triggers>
                     <asp:AsyncPostBackTrigger ControlID="DogumIliDDL" EventName="SelectedIndexChanged" />
@@ -486,7 +480,5 @@
             <asp:LinkButton ID="DeleteBtn" Visible="false" CssClass="btn btn-danger" runat="server" CausesValidation="false" Text="Sil" OnClick="DeleteBtn_Click"
                 OnClientClick="if(confirm(' Silme İşlemini Onaylıyor musunuz?')){return true;} else{return false;};" />
         </div>
-
     </div>
-
 </div>

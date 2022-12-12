@@ -58,6 +58,8 @@
                             <th>Calışma Durumu</th>
                             <th>Cep Telefonu</th>
                             <th>Adres</th>
+                            <th>İli</th>
+                            <th>İlçesi</th>
                             <th>Eşi</th>
                             <th>Eş TC Kimlik No</th>
                             <th>Eş telefon</th>

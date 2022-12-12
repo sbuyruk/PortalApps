@@ -93,16 +93,16 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
             {
                 if (!Page.IsPostBack)
                 {
-                    fillIzinTanim();
-                    fillIzinBasSaat();
-                    fillIzinBitSaat();
-                    fillPersonelDDL();
+                    FillIzinTanim();
+                    FillIzinBasSaat();
+                    FillIzinBitSaat();
+                    FillPersonelDDL();
                     SetLayoutByIzinTipi();
                     UyariLbl1.Text = " * Tüm personele izin girmek için, hariç tutmak istediğiniz personeli seçerek listeye ekleyiniz ve 'Tüm Personele İzin Gir' seçeneğini işaretleyiniz.";
                     UyariLbl2.Text = " * Sadece bir kısım personele izin girecekseniz, izin girmek istediğiniz personeli seçerek listeye ekleyiniz ve aşağıdan 'Sadece Seçilen Personele İzin Gir' seçeneğini işaretleyiniz.";
                     UyariLbl3.Text = " * Yapılan işlemler geriye alınamayacağından lütfen kaydetmeden önce dikkatle kontrol ediniz.";
                 }
-                fillHaricTutulanTable();//CikarBtn event çalışması için pagekload'da postback sışında bulunmalı
+                FillHaricTutulanTable();//CikarBtn event çalışması için pagekload'da postback sışında bulunmalı
             }
             catch (Exception exception)
             {
@@ -110,7 +110,7 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
                 exHelper.PublishException();
             }
         }
-        private void fillPersonelDDL()
+        private void FillPersonelDDL()
         {
             PersonelDDL.Items.Clear();
             Personel personel = new Personel();
@@ -122,7 +122,7 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
                 PersonelDDL.Items.Add(li);
             }
         }
-        private void fillIzinTanim()
+        private void FillIzinTanim()
         {
             IzinTanimDDL.Items.Clear();
             ListItem li = new ListItem("Ücretli", "1");
@@ -131,7 +131,7 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
             IzinTanimDDL.Items.Add(li1);
 
         }
-        private void fillIzinBasSaat()
+        private void FillIzinBasSaat()
         {
             IzinBasSaatDDL.Items.Clear();
             TimeSpan bastarTS = new TimeSpan(7, 0, 0);
@@ -160,7 +160,7 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
                 }
             }
         }
-        private void fillIzinBitSaat()
+        private void FillIzinBitSaat()
         {
             IzinBitSaatDDL.Items.Clear();
             string bassaatStr = IzinBasSaatDDL.SelectedItem == null ? "07:05" : IzinBasSaatDDL.SelectedItem.Text;
@@ -403,7 +403,7 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
         }
         protected void IzinBasSaatDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            fillIzinBitSaat();
+            FillIzinBitSaat();
         }
         protected void PersonelDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -414,7 +414,7 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
                 if (!SecilenPersonelList.Contains(personel.Id))
                 {
                     SecilenPersonelList.Add(personel.Id);
-                    fillHaricTutulanTable();
+                    FillHaricTutulanTable();
                 }
 
             }
@@ -427,7 +427,7 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
             }
 
         }
-        private void fillHaricTutulanTable()
+        private void FillHaricTutulanTable()
         {
             SecilenPersonelTable.Rows.Clear();
             int SiraNo = 0;
@@ -454,7 +454,7 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
                     SilBtn.Click += delegate
                     {
                         SecilenPersonelList.Remove(personel.Id);
-                        fillHaricTutulanTable();
+                        FillHaricTutulanTable();
                     };
                     SilCell.Controls.Add(SilBtn);
                     row.Controls.Add(SilCell);
@@ -491,7 +491,7 @@ namespace IKYS_WebParts.TopluIzinGirisiWP
                         IzinBitTarTxt.Value = "";
                         AciklamaLbl.Text = "";
                         SecilenPersonelList.Clear();
-                        fillHaricTutulanTable();
+                        FillHaricTutulanTable();
 
                         //MailGonder(personel);
                         MessageHelper.PublishMessage("Toplu izin girişi tamamlandı", ProjeConstants.MESAJ_BASARILI, 2000);

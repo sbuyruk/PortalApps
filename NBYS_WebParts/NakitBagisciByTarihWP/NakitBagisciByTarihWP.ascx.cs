@@ -100,7 +100,7 @@ namespace NBYS_WebParts.NakitBagisciByTarihWP
                 if (!Page.IsPostBack)
                 {
                     setDefaultValues();
-                    fillSonucTable();
+                    FillSonucTable();
                     //SMSTablosunuDoldur();
                 }
 
@@ -119,7 +119,7 @@ namespace NBYS_WebParts.NakitBagisciByTarihWP
             BasTarTxt.Value = ayinIlkGunu.ConvertToDatetimeEmptyIfNull();
             BitTarTxt.Value = ayinSonGunu.ConvertToDatetimeEmptyIfNull();
         }
-        private void fillSonucTable()
+        private void FillSonucTable()
         {
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
 
@@ -403,7 +403,7 @@ namespace NBYS_WebParts.NakitBagisciByTarihWP
 
         protected void ListeleBtn_Click(object sender, EventArgs e)
         {
-            fillSonucTable();
+            FillSonucTable();
             //SMSTablosunuDoldur();
         }
     }

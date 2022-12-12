@@ -135,6 +135,8 @@ namespace IKYS_WebParts.PersonelListesiWP
                 string ayrilmaSebebi = row["AyrilmaSebebi"].ReturnEmptyIfNull().ToString();
                 string ceptelefonu = row["CepTelefonu"].ReturnEmptyIfNull().ToString();
                 string adres = row["Adres"].ReturnEmptyIfNull().ToString();
+                string ikametIli = row["IkametIli"].ReturnEmptyIfNull().ToString();
+                string ikametIlcesi = row["IkametIlcesi"].ReturnEmptyIfNull().ToString();
                 string esi = row["Esi"].ReturnEmptyIfNull().ToString();
                 string esTcKimlikNo = row["EsTcKimlikNo"].ReturnEmptyIfNull().ToString();
                 string esTelefon = row["EsTelefon"].ReturnEmptyIfNull().ToString();
@@ -175,6 +177,8 @@ namespace IKYS_WebParts.PersonelListesiWP
                 personelListItem.AyrilmaSebebi = ayrilmaSebebi;
                 personelListItem.CepTelefonu= ceptelefonu;
                 personelListItem.Adres = adres;
+                personelListItem.IkametIli = ikametIli;
+                personelListItem.IkametIlcesi = ikametIlcesi;
                 personelListItem.Esi= esi;
                 personelListItem.EsTcKimlikNo = esTcKimlikNo;
                 personelListItem.EsTelefon = esTelefon;
@@ -230,6 +234,8 @@ namespace IKYS_WebParts.PersonelListesiWP
                                 { data: 'CalismaDurumu' },
                                 { data: 'CepTelefonu' },
                                 { data: 'Adres' },
+                                { data: 'IkametIli' },
+                                { data: 'IkametIlcesi' },
                                 { data: 'Esi' },
                                 { data: 'EsTcKimlikNo' },
                                 { data: 'EsTelefon' },
@@ -238,7 +244,7 @@ namespace IKYS_WebParts.PersonelListesiWP
                             columnDefs: [
                                 { type: 'turkish', targets:[1,2] },
                                 { type: 'num', targets: 0 },
-                                { 'visible': false, targets: [8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30]},
+                                { 'visible': false, targets: [8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32]},
                             ],
                             'order': [[0, 'asc']],// Sıralı
                             'language': {
@@ -326,6 +332,8 @@ namespace IKYS_WebParts.PersonelListesiWP
             //iletisim
             public string CepTelefonu { get; set; }
             public string Adres { get; set; }
+            public string IkametIli { get; set; }
+            public string IkametIlcesi { get; set; }
             //Aile
             public string Esi { get; set; }
             public string EsTcKimlikNo { get; set; }

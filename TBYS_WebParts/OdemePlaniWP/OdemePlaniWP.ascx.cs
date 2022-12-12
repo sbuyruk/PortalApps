@@ -135,6 +135,17 @@ namespace TBYS_WebParts.OdemePlaniWP
                     if (!Page.IsPostBack)
                     {
                         TBYSOrtak.BakiyeBorcHesapla(kiraSozlesme);
+                        if (kiraSozlesme.GecikmeZammiTipi.Equals(ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_GUNLUK))
+                        {
+                            GecikmeZammiTipiLbl.Text = "Gecikme Zammı : " + ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_GUNLUK;
+                        }
+                        else
+                        {
+                            GecikmeZammiTipiLbl.Text = "Gecikme Zammı : " + ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_AYLIK;
+
+                        }
+                        GecikmeZammmiGunlukBtn.Visible = !kiraSozlesme.GecikmeZammiTipi.Equals(ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_GUNLUK);
+                        GecikmeZammmiAylikBtn.Visible = !kiraSozlesme.GecikmeZammiTipi.Equals(ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_AYLIK); ;
                     }
 
                     OdemePlaniTablosunuDoldur(kiraSozlesme);
@@ -202,7 +213,7 @@ namespace TBYS_WebParts.OdemePlaniWP
                     VadeBasTarTxt.Value = op.VadeBasTar.ConvertToDatetimeEmptyIfNull();
                     VadeBitTarTxt.Value = op.VadeBitTar.ConvertToDatetimeEmptyIfNull();
                     var openPopup = "OpenModalOnay();";
-                    System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), openPopup, true);
+                    UtilityHelper.ScriptCalistir(openPopup);
                 };
                 VadeBasTarCell.Controls.Add(VadeBasTarBtn);
 
@@ -238,7 +249,7 @@ namespace TBYS_WebParts.OdemePlaniWP
 
                 TableCell GecikmeZammiOraniCell = new TableCell();
                 GecikmeZammiOraniCell.CssClass = "text-right";
-                if (kiraSozlesme.GecikmeZammiTipi.Equals("Aylık") || op.FaizOrani == 0)
+                if (kiraSozlesme.GecikmeZammiTipi.Equals(ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_AYLIK) || op.FaizOrani == 0)
                 {
                     GecikmeZammiOraniCell.Text = op.FaizOrani.ToString("N", culturInfo);
                 }
@@ -257,7 +268,7 @@ namespace TBYS_WebParts.OdemePlaniWP
                         VadeBasTarLbl.Text = vadeBastar + " - " + vadeBittar;
 
                         var openPopup = "OpenModalOnay();";
-                        System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), openPopup, true);
+                        UtilityHelper.ScriptCalistir(openPopup);
                     };
                     GecikmeZammiOraniCell.Controls.Add(GecikmeZammiOraniBtn);
                 }
@@ -265,7 +276,7 @@ namespace TBYS_WebParts.OdemePlaniWP
                 TableCell FaizTutariCell = new TableCell();
                 FaizTutariCell.CssClass = "text-right";
 
-                if (kiraSozlesme.GecikmeZammiTipi.Equals("Aylık") || op.FaizTutari == 0)
+                if (kiraSozlesme.GecikmeZammiTipi.Equals(ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_AYLIK) || op.FaizTutari == 0)
                 {
                     FaizTutariCell.Text = op.FaizTutari.ToString("N", culturInfo);
                 }
@@ -284,7 +295,7 @@ namespace TBYS_WebParts.OdemePlaniWP
                         VadeBasTarLbl.Text = vadeBastar + " - " + vadeBittar;
 
                         var openPopup = "OpenModalOnay();";
-                        System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), openPopup, true);
+                        UtilityHelper.ScriptCalistir(openPopup);
                     };
                     FaizTutariCell.Controls.Add(GecikmeZammiTutariBtn);
                 }
@@ -471,15 +482,15 @@ namespace TBYS_WebParts.OdemePlaniWP
                 {
                     OdemePlaniEkleBtn.Visible = true;
                     OdemePlaniSilBtn.Visible = false;
-                    //TumunuOdeBtn.Visible = false;
-                    GecikmeZammmiTipiChk.Visible = false;
+                    GecikmeZammmiGunlukBtn.Visible = false;
+                    GecikmeZammmiAylikBtn.Visible = false;
                 }
                 else// odeme planı var
                 {
                     OdemePlaniEkleBtn.Visible = false;
                     OdemePlaniSilBtn.Visible = true;
-                    //TumunuOdeBtn.Visible = true;
-                    GecikmeZammmiTipiChk.Visible = true;
+                    GecikmeZammmiGunlukBtn.Visible = !kiraSozlesme.GecikmeZammiTipi.Equals(ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_GUNLUK); 
+                    GecikmeZammmiAylikBtn.Visible = !kiraSozlesme.GecikmeZammiTipi.Equals(ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_AYLIK);
                 }
             }
             if (!kiraSozlesme.Aktif)//bitmiş bir kira sözleşmesi
@@ -868,13 +879,26 @@ namespace TBYS_WebParts.OdemePlaniWP
                 RedirectToPage(ProjeConstants.PAGE_ODEMEPLANI + "?SenderApp=" + SenderAppQS + "&KiraSozlesmeId=" + KiraSozlesmeIdQS);
             }
         }
-        protected void GecikmeZammmiTipiChk_CheckedChanged(object sender, EventArgs e)
+
+        protected void GecikmeZammmiGunlukBtn_Click(object sender, EventArgs e)
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
             kiraSozlesme = kiraSozlesme.Select<KiraSozlesme>(KiraSozlesmeIdQS.ConvertToInt());
             if (kiraSozlesme != null)
             {
-                kiraSozlesme.GecikmeZammiTipi = GecikmeZammmiTipiChk.Checked ? "Günlük" : "Aylık";
+                kiraSozlesme.GecikmeZammiTipi = ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_GUNLUK;
+                kiraSozlesme.Update();
+            }
+
+            RedirectToPage(ProjeConstants.PAGE_ODEMEPLANI + "?SenderApp=" + SenderAppQS + "&KiraSozlesmeId=" + KiraSozlesmeIdQS);
+        }
+        protected void GecikmeZammmiAylikBtn_Click(object sender, EventArgs e)
+        {
+            KiraSozlesme kiraSozlesme = new KiraSozlesme();
+            kiraSozlesme = kiraSozlesme.Select<KiraSozlesme>(KiraSozlesmeIdQS.ConvertToInt());
+            if (kiraSozlesme != null)
+            {
+                kiraSozlesme.GecikmeZammiTipi = ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_AYLIK;
                 kiraSozlesme.Update();
             }
 

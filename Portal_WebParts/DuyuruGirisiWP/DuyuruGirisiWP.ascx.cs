@@ -731,6 +731,36 @@ namespace Portal_WebParts.DuyuruGirisiWP
                 exceptionHelper.PublishException();
             }
         }
+        protected void SecilenResmiSilBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(DuyuruIdQS))
+                {
+                    Duyuru duyuru = new Duyuru();
+                    duyuru = duyuru.Select(DuyuruIdQS.ConvertToInt());
+                    if (duyuru != null)
+                    {
+                        duyuru.Resim=null;
+                        duyuru.Update();
+                    }
+                    //duyuruyu sil,
+                    //resmi sil
+                    //duyru listesine git
+                }
+                else
+                {
+                    MessageHelper.PublishMessage("Duyuru bulunamadı.", ProjeConstants.MESAJ_HATA, 2000);
+                }
+            }
+            catch (Exception exception)
+            {
+                ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
+                Exception exceptionInfo = new Exception("Duyuru Silinemedi");
+                exceptionHelper.Exceptions.Add(exceptionInfo);
+                exceptionHelper.PublishException();
+            }
+        }
         private void RedirectToPage(string pageUrl)
         {
             try

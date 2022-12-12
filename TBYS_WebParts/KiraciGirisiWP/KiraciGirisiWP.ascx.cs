@@ -66,7 +66,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
                 kiraci = kiraci.Select<Kiraci>(KiraciIdQS.ConvertToInt());
                 if (!Page.IsPostBack)
                 {
-                    fillIlData();
+                    FillIlData();
                     KiralamaAmaciDDLDoldur();
                     if (kiraci != null)
                     {
@@ -86,7 +86,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
             {
                 if (!Page.IsPostBack)
                 {
-                    fillIlData();
+                    FillIlData();
                     KiralamaAmaciDDLDoldur();
                     OpenKiraciGirisi();
                 }
@@ -100,7 +100,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
             TitleLbl.Text = "Kiracı Güncelleme";
             IdLbl.Visible = true;
 
-            fillKiraci2Form(kiraci);
+            FillKiraci2Form(kiraci);
             PrevBtn.Visible = true;
             NextBtn.Visible = true;
         }
@@ -112,7 +112,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
             PrevBtn.Visible = false;
             NextBtn.Visible = false;
         }
-        private bool fillKiraci2Form(Kiraci kiraci)
+        private bool FillKiraci2Form(Kiraci kiraci)
         {
             bool dataFilledToModal = true;
             try
@@ -125,8 +125,8 @@ namespace TBYS_WebParts.KiraciGirisiWP
                 ListItem ilItem = IliDDL.Items.FindByValue(IliDDL.Items.FindByText(kiraci.Ili).Value);
                 if (ilItem != null)
                     IliDDL.SelectedValue = ilItem.Value;
-                fillIlceDDL();
-                fillBolgeTxt();
+                FillIlceDDL();
+                FillBolgeTxt();
                 if (KiralamaAmaciDDL.Items.FindByText(kiraci.KiralamaAmaci) != null)
                     KiralamaAmaciDDL.SelectedValue = KiralamaAmaciDDL.Items.FindByText(kiraci.KiralamaAmaci).Value;
                 if (IlcesiDDL.Items.FindByText(kiraci.Ilcesi) != null)
@@ -224,7 +224,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
             isUpdated = kiraci.Update();
             return kiraci;
         }
-        private void fillIlData()
+        private void FillIlData()
         {
             if (IliDDL.SelectedItem == null)
             {
@@ -235,12 +235,12 @@ namespace TBYS_WebParts.KiraciGirisiWP
                 {
                     IliDDL.Items.Add(new ListItem(il.IlAdi, il.Id.ToString()));
                 }
-                fillIlceDDL();
-                fillBolgeTxt();
+                FillIlceDDL();
+                FillBolgeTxt();
             }
 
         }
-        private void fillIlceDDL()
+        private void FillIlceDDL()
         {
             IlcesiDDL.Items.Clear();
             Ilce pIlce = new Ilce();
@@ -260,7 +260,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
             KiralamaAmaciDDL.Items.Add("Bis");
             KiralamaAmaciDDL.Items.Add("Tesis");
         }
-        private void fillBolgeTxt()
+        private void FillBolgeTxt()
         {
             Il il = new Il();
             il = il.SelectByIlAdi(IliDDL.SelectedItem.ToString());
@@ -430,8 +430,8 @@ namespace TBYS_WebParts.KiraciGirisiWP
         }
         protected void IliDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            fillIlceDDL();
-            fillBolgeTxt();
+            FillIlceDDL();
+            FillBolgeTxt();
         }
         protected void SaveBtn_Click(object sender, EventArgs e)
         {

@@ -212,11 +212,15 @@ namespace MTS_WebParts.RandevuGirisiWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            lblTime.Text = "Son güncelleme = " + DateTime.Now.ToString("hh:mm:ss");
+            
             try
             {
                 if (!Page.IsPostBack) // sayfa ilk kez açılıyorsa (bu sayfanın içindeki butona basılma anı hariç)
                 {
+                    lblTime.Text = DateTime.Now.ToString("HH:mm ss");
+                    RefreshTimer.Interval = 10000;
+                    RefreshTimer.Enabled = true;
+
                     RandevuTipiDDLDoldur();
                     RandevuAmaciDDLDoldur();
                     RandevuDurumuDDLDoldur();
@@ -1446,7 +1450,6 @@ namespace MTS_WebParts.RandevuGirisiWP
         
         protected void RefreshTimer_Tick(object sender, EventArgs e)
         {
-            lblTime.Text = DateTime.Now.ToString("hh:mm:ss");
             
             Randevu sonHali = new Randevu();
             sonHali = sonHali.Select(RandevuIdQS.ConvertToInt());
@@ -1479,6 +1482,8 @@ namespace MTS_WebParts.RandevuGirisiWP
                 KatilimciEkleBtn.Visible = false;
                 StopTimer();
             }
+            //System.Threading.Thread.Sleep(9000);
+            lblTime.Text = DateTime.Now.ToString("HH:mm ss");
         }
 
         private void CloseModals()

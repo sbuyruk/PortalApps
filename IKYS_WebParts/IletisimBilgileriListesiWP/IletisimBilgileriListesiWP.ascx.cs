@@ -172,7 +172,7 @@ namespace IKYS_WebParts.IletisimBilgileriListesiWP
             {
                 if (!Page.IsPostBack)
                 {
-                    fillBirimDDL();
+                    FillBirimDDL();
                     int birimId = BirimDDL.SelectedItem == null ? 1 : BirimDDL.SelectedItem.Value.ConvertToInt();
                     FillIletisimTable(birimId);
                 }
@@ -189,7 +189,7 @@ namespace IKYS_WebParts.IletisimBilgileriListesiWP
             string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
             Page.Response.Redirect(newUrl);
         }
-        private void fillBirimDDL()
+        private void FillBirimDDL()
         {
             BirimDDL.Items.Clear();
             BirimTanim birimDao = new BirimTanim();

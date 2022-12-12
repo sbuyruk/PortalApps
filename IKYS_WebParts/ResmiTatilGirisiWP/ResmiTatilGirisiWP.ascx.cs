@@ -145,10 +145,10 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
             {
                 AyDDLDoldur(BasAyDDL);
                 AyDDLDoldur(BitAyDDL);
-                fillBasSaatDDL();
-                fillBitSaatDDL();
-                fillGecerlilikDDL();
-                fillResmiTatilForm();
+                FillBasSaatDDL();
+                FillBitSaatDDL();
+                FillGecerlilikDDL();
+                FillResmiTatilForm();
             }
         }
         private void OpenTatilGiris()
@@ -159,14 +159,14 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
             if (!Page.IsPostBack)
             {
 
-                fillBasSaatDDL();
-                fillBitSaatDDL();
-                fillGecerlilikDDL();
+                FillBasSaatDDL();
+                FillBitSaatDDL();
+                FillGecerlilikDDL();
                 AyDDLDoldur(BasAyDDL);
                 AyDDLDoldur(BitAyDDL);
             }
         }
-        private void fillResmiTatilForm()
+        private void FillResmiTatilForm()
         {
 
             ResmiTatil resmiTatil = new ResmiTatil();
@@ -364,7 +364,7 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
                 !string.IsNullOrEmpty(bittar.ConvertToDatetimeEmptyIfNull()));
             return isOK;
         }
-        private void fillBasSaatDDL()
+        private void FillBasSaatDDL()
         {
             BasSaatDDL.Items.Clear();
             ListItem li1 = new ListItem("00:00", "00:00");
@@ -372,7 +372,7 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
             ListItem li2 = new ListItem("13:00", "13:00");
             BasSaatDDL.Items.Add(li2);
         }
-        private void fillBitSaatDDL()
+        private void FillBitSaatDDL()
         {
             BitSaatDDL.Items.Clear();
             ListItem li2 = new ListItem("23:59", "23:59");
@@ -383,7 +383,7 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
         }
         private const string GIRILEN_YIL_GECERLI = "0";
         private const string TUM_YILLAR_GECERLI = "1";
-        private void fillGecerlilikDDL()
+        private void FillGecerlilikDDL()
         {
             GecerlilikDDL.Items.Clear();
             ListItem li0 = new ListItem("Sadece girilen yıl için geçerli", GIRILEN_YIL_GECERLI);

@@ -202,16 +202,16 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 if (personel != null)
                 {
                     PersonelAdiLbl.Text = personel.Adi + " " + personel.Soyadi;
-                    fillBasSaat();
-                    fillBitSaat();
-                    fillParaBirimiDDL();
-                    fillUlasimAraciDDL();
-                    fillPersonelDDL(personel);
-                    fillPerSubeImzaDDL();
-                    fillOnayImzaDDL();
-                    fillGMImzaDDL();
-                    fillOnayMakamDDL();
-                    fillGorevOnayForm();
+                    FillBasSaat();
+                    FillBitSaat();
+                    FillParaBirimiDDL();
+                    FillUlasimAraciDDL();
+                    FillPersonelDDL(personel);
+                    FillPerSubeImzaDDL();
+                    FillOnayImzaDDL();
+                    FillGMImzaDDL();
+                    FillOnayMakamDDL();
+                    FillGorevOnayForm();
 
                 }
             }
@@ -224,16 +224,16 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             RaporAlBtn.Visible = false;
             if (!Page.IsPostBack)
             {
-                fillBasSaat();
-                fillBitSaat();
-                fillParaBirimiDDL();
-                fillUlasimAraciDDL();
-                fillPerSubeImzaDDL();
-                fillOnayImzaDDL();
-                fillGMImzaDDL();
-                fillOnayMakamDDL();
+                FillBasSaat();
+                FillBitSaat();
+                FillParaBirimiDDL();
+                FillUlasimAraciDDL();
+                FillPerSubeImzaDDL();
+                FillOnayImzaDDL();
+                FillGMImzaDDL();
+                FillOnayMakamDDL();
                 Personel personel = PersonelGetir();
-                fillPersonelDDL(personel);
+                FillPersonelDDL(personel);
 
                 if (personel != null)
                 {
@@ -254,7 +254,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
 
             }
         }
-        private void fillPersonelDDL(Personel personel)
+        private void FillPersonelDDL(Personel personel)
         {
             PersonelDDL.Items.Clear();
             
@@ -371,7 +371,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
         //    }
         //    return list;
         //}
-        private void fillParaBirimiDDL()
+        private void FillParaBirimiDDL()
         {
             ParaBirimiDDL.Items.Clear();
 
@@ -384,7 +384,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             ListItem li3 = new ListItem("Sterlin", "Sterlin");
             ParaBirimiDDL.Items.Add(li3);
         }
-        private void fillUlasimAraciDDL()
+        private void FillUlasimAraciDDL()
         {
             UlasimAraciDDL.Items.Clear();
             ListItem li = new ListItem(ProjeConstants.ULASIMARACI_BOS);
@@ -399,7 +399,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             UlasimAraciDDL.Items.Add(li3);
 
         }
-        private void fillBasSaat()
+        private void FillBasSaat()
         {
             BasSaatDDL.Items.Clear();
             TimeSpan bastarTS = new TimeSpan(0, 0, 0);
@@ -416,7 +416,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 nextTS = nextTS + aralikTS;
             }
         }
-        private void fillBitSaat()
+        private void FillBitSaat()
         {
             string bitsaatStr = BitSaatDDL.SelectedItem == null ? "17:00" : BitSaatDDL.SelectedItem.Text;
             BitSaatDDL.Items.Clear();
@@ -446,7 +446,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             }
 
         }
-        private void fillPerSubeImzaDDL()
+        private void FillPerSubeImzaDDL()
         {
             PerSubeImzaDDL.Items.Clear();
             Personel personel = new Personel();
@@ -465,7 +465,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
 
             }
         }
-        private void fillOnayImzaDDL()
+        private void FillOnayImzaDDL()
         {
             OnayImzaDDL.Items.Clear();
             Personel personel = new Personel();
@@ -487,7 +487,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
 
             }
         }
-        private void fillGMImzaDDL()
+        private void FillGMImzaDDL()
         {
             GMImzaDDL.Items.Clear();
             Personel personel = new Personel();
@@ -512,7 +512,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
 
             }
         }
-        private void fillOnayMakamDDL()
+        private void FillOnayMakamDDL()
         {
             OnayMakamDDL.Items.Clear();
             GorevTanim gorevDao = new GorevTanim();
@@ -529,7 +529,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
         /// Güncelle butonunu aç
         /// Kaydet butonunu sakla
         /// </summary>
-        private void fillGorevOnayForm()
+        private void FillGorevOnayForm()
         {
             GorevOnay gorevOnay = new GorevOnay();
             gorevOnay = gorevOnay.Select<GorevOnay>(GorevOnayIdQS.ConvertToInt());

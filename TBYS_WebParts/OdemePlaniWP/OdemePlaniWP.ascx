@@ -54,11 +54,11 @@
                         <div class="form-group ">
                             <asp:LinkButton ID="OdemePlaniEkleBtn" class="btn btn-outline-success mb-1" runat="server" Visible="false" Text="Ödeme Planı Ekle" OnClick="OdemePlaniEkleBtn_Click"></asp:LinkButton>
                         </div>
-                        <div class="form-group">
-                            <asp:LinkButton ID="OdemePlaniSilBtn" class="btn btn-outline-danger  float-right mb-1" runat="server" Visible="false" Text="Ödeme Planı Sil" OnClick="OdemePlaniSilBtn_Click"></asp:LinkButton>
-                        </div>
-                        <div class="form-group" style="display: block" runat="server">
-                            <asp:CheckBox ID="GecikmeZammmiTipiChk" CssClass="float-right  mr-3" AutoPostBack="true" runat="server" Text="Günlük Gecikme Zammı Uygula " Checked="false" OnCheckedChanged="GecikmeZammmiTipiChk_CheckedChanged" TextAlign="Right" />
+                        <div class="form-group ">
+                            <asp:Label ID="GecikmeZammiTipiLbl" class="col-form-label" runat="server" Text="Gecikme Zammı Hesabı=" ></asp:Label>
+                            <asp:LinkButton ID="GecikmeZammmiGunlukBtn" class="btn btn-outline-danger  " runat="server" Visible="false" Text="Günlük Yap" OnClick="GecikmeZammmiGunlukBtn_Click"></asp:LinkButton>
+                            <asp:LinkButton ID="GecikmeZammmiAylikBtn" class="btn btn-outline-danger  " runat="server" Visible="false" Text="Aylık Yap" OnClick="GecikmeZammmiAylikBtn_Click"></asp:LinkButton>
+                            <asp:LinkButton ID="OdemePlaniSilBtn" class="btn btn-outline-danger  float-right " runat="server" Visible="false" Text="Ödeme Planı Sil" OnClick="OdemePlaniSilBtn_Click"></asp:LinkButton>
                         </div>
                     </div>
                     <div id="PlanAyrintiDiv">

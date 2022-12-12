@@ -11,17 +11,18 @@ using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
 
-namespace IKYS_WebParts.PersonelGirisiWP
+
+namespace IKYS_WebParts.PersonelBilgiGirisiWP
 {
     [ToolboxItemAttribute(false)]
-    public partial class PersonelGirisiWP : WebPart
+    public partial class PersonelBilgiGirisiWP : WebPart
     {
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
         // your constructor, it's not recommended for production purposes.
         // [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Assert, UnmanagedCode = true)]
-        public PersonelGirisiWP()
+        public PersonelBilgiGirisiWP()
         {
         }
 
@@ -244,7 +245,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
                     Personel personelDao = new Personel();
                     Personel personel = personelDao.Select<Personel>(PersonelIdQS.ConvertToInt());
                     if (personel != null)
-                        FillAileBilgileriTable(personel);
+                        AileBilgileriTablosunuDoldur(personel);
                 }
                 // Postback veya değil farketmez.
                 // (querystring içinde) activeTab varsa o taba odaklan (Kaydet butonlarında ActiveTabQSi set etmek gerekir mi?)
@@ -317,14 +318,14 @@ namespace IKYS_WebParts.PersonelGirisiWP
                 FillKimlikBilgileri(personel);
                 FillIsBilgileri(personel);
                 FillIletisimBilgileri(personel);
-                FillAileBilgileriTable(personel);
+                AileBilgileriTablosunuDoldur(personel);
                 FillOkulBilgileri(personel);
                 FillIsTecrubesi(personel);
                 FillKursBilgileri(personel);
 
                 IsBilgileri ib = new IsBilgileri();
                 ib = ib.SelectByPersonelId(personel.Id);
-                if (ib!=null)//SB 27.10.2021 Yeşim hanım işten ayrılan personelin de izin bilgilerini görmek istedi //(ib.CalismaDurumu == ProjeConstants.PER_CALISIYOR_INT) 
+                if (ib != null)//SB 27.10.2021 Yeşim hanım işten ayrılan personelin de izin bilgilerini görmek istedi //(ib.CalismaDurumu == ProjeConstants.PER_CALISIYOR_INT) 
                 {
                     FillUcretliIzinDonemleriTable(personel);
                     FillIzinHareketleriTable(personel);
@@ -489,7 +490,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
             InternetEPostaTxt.Text = iletsimBilgileri.InternetEPosta;
             OzelEPostaTxt.Text = iletsimBilgileri.OzelEPosta;
         }
-        private void FillAileBilgileriTable(Personel personel)
+        private void AileBilgileriTablosunuDoldur(Personel personel)
         {
             Aile aileDao = new Aile();
             List<Aile> list = aileDao.SelectByPersonelId(personel.Id);
@@ -917,7 +918,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
                 row.Controls.Add(BitTarCell);
 
                 TableCell SureCell = new TableCell();
-                SureCell.Text = item.Sure + " " + item.Birim + (item.IzinTipi==ProjeConstants.IZINTIPI_SUTIZNI_INT?"(Günde 1 Saat 30 Dk.)":"");
+                SureCell.Text = item.Sure + " " + item.Birim + (item.IzinTipi == ProjeConstants.IZINTIPI_SUTIZNI_INT ? "(Günde 1 Saat 30 Dk.)" : "");
                 row.Controls.Add(SureCell);
                 DigerIzinlerTable.Controls.Add(row);
             }
@@ -1511,7 +1512,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
             personel.SicilNo = SicilNoTxt.Text.ConvertToInt();
             personel.KullaniciAdi = KullaniciAdiTxt.Text;
             personel.Asker_sivil = AskerSivilDDL.SelectedValue.ConvertToInt();
-            personel.Tahsili=TahsiliDDL.SelectedValue.ConvertToInt();
+            personel.Tahsili = TahsiliDDL.SelectedValue.ConvertToInt();
             personel.Id = personel.Save();
             return personel;
         }
@@ -1835,7 +1836,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
             }
         }
         protected void PersonelListesiBtn_Click(object sender, EventArgs e)
-        {            
+        {
             if (SenderAppQS.Equals("EPL"))
             {
                 RedirectToPage(ProjeConstants.PAGE_ESKIPERSONEL_LIST + "?SecilenId=" + PersonelIdQS);

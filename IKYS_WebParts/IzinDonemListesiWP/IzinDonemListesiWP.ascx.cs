@@ -82,7 +82,7 @@ namespace IKYS_WebParts.IzinDonemListesiWP
                         MessageHelper.PublishMessage("Kayıt Tamamlandı", ProjeConstants.MESAJ_BASARILI, 2000);
                         MesajQS = string.Empty;
                     }
-                    fillPersonelDDL();
+                    FillPersonelDDL();
                 }
                 Personel personel = new Personel();
                 personel = personel.Select<Personel>(PersonelDDL.SelectedItem.Value.ConvertToInt());
@@ -412,7 +412,7 @@ namespace IKYS_WebParts.IzinDonemListesiWP
                 exHelper.PublishException();
             }
         }
-        private void fillPersonelDDL()
+        private void FillPersonelDDL()
         {
             PersonelDDL.Items.Clear();
             Personel personel = new Personel();

@@ -106,8 +106,8 @@ namespace IKYS_WebParts.UcretliMahsupWP
                         MessageHelper.PublishMessage("Mahsup Tamamlandı", ProjeConstants.MESAJ_BASARILI, 2000);
                         MesajQS = string.Empty;
                     }
-                    fillPersonelDDL();
-                    fillDonemDDL();
+                    FillPersonelDDL();
+                    FillDonemDDL();
                     TabloOlustur();
                 }
                 
@@ -141,7 +141,7 @@ namespace IKYS_WebParts.UcretliMahsupWP
                 exHelper.PublishException();
             }
         }
-        private void fillPersonelDDL()
+        private void FillPersonelDDL()
         {
             PersonelDDL.Items.Clear();
             Personel personel = new Personel();
@@ -157,7 +157,7 @@ namespace IKYS_WebParts.UcretliMahsupWP
 
 
         }
-        private void fillDonemDDL()
+        private void FillDonemDDL()
         {
             DonemDDL.Items.Clear();
             int personelId = PersonelDDL.SelectedItem.Value.ConvertToInt();
@@ -174,7 +174,7 @@ namespace IKYS_WebParts.UcretliMahsupWP
                 }
             }
         }
-        private void fillModalDonemDDL(Personel personel, int izinHareketId)
+        private void FillModalDonemDDL(Personel personel, int izinHareketId)
         {
             ModalDonemDDL.Items.Clear();
             if (personel.Id > 0)
@@ -199,10 +199,10 @@ namespace IKYS_WebParts.UcretliMahsupWP
 
                 }
 
-                fillOnayLbl(personel, donemSayisi > 0);
+                FillOnayLbl(personel, donemSayisi > 0);
             }
         }
-        private void fillOnayLbl(Personel personel, bool isUygunDonemVar)
+        private void FillOnayLbl(Personel personel, bool isUygunDonemVar)
         {
             IzinHareket izinHareket = new IzinHareket();
             izinHareket = izinHareket.Select<IzinHareket>(paramIzinHareketIdLbl.Value.ConvertToInt());
@@ -221,7 +221,7 @@ namespace IKYS_WebParts.UcretliMahsupWP
             }
 
         }
-        private void fillModalIzinBilgileriTable(Personel personel)
+        private void FillModalIzinBilgileriTable(Personel personel)
         {
             DateTime today = DateTime.Today;
             IsBilgileri ib = new IsBilgileri();
@@ -331,15 +331,15 @@ namespace IKYS_WebParts.UcretliMahsupWP
                 if (personel != null)
                 {
                     PersonelAdiLbl.Text = personel.Adi + " " + personel.Soyadi;
-                    fillModalDonemDDL(personel, izinHareketId);
-                    fillModalIzinBilgileriTable(personel);
+                    FillModalDonemDDL(personel, izinHareketId);
+                    FillModalIzinBilgileriTable(personel);
 
                 }
             } 
         }
         protected void PersonelDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            fillDonemDDL();
+            FillDonemDDL();
             TabloOlustur();
         }
         protected void DonemDDL_SelectedIndexChanged(object sender, EventArgs e)

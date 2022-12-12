@@ -112,6 +112,19 @@ namespace Model.TBYS
 
             return list;
         }
+        public List<GecikmeZammi> SelectByBaslangicTarihi(DateTime vadeBaslangicTarihi, DateTime vadeBitisTarihi)
+        {
+            string sqlString = string.Format(@"
+                SELECT *
+                FROM GecikmeZammi_Table
+				WHERE BaslangicTarihi <= {1} AND (BitisTarihi is null OR  BitisTarihi>={0}) AND (BitisTarihi is null OR BitisTarihi>={0})
+                ORDER BY BaslangicTarihi DESC ", vadeBaslangicTarihi.ReturnTRDateFormat(), vadeBitisTarihi.ReturnTRDateFormat());
+
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            List<GecikmeZammi> list = ToList<GecikmeZammi>(dataTable);
+
+            return list;
+        }
         public GecikmeZammi SelectSonDegisenByTarih(DateTime sonOdemeTar)
         {
 
