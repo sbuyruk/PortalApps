@@ -554,7 +554,7 @@ namespace MTS_WebParts.KisiGirisiWP
 
                     if (IrtibatPersoneliChk.Checked)
                         randevu.DisIrtibatId = KisiIdQS.ConvertToInt();
-                    randevu.Olusturan = UtilityHelper.GetCurrentUser();
+                    randevu.Olusturan = UtilityHelper.GetCurrentUserName();
                     randevu.Id = randevu.Save();
                     if (randevu.Id > 0)
                     {
@@ -564,7 +564,7 @@ namespace MTS_WebParts.KisiGirisiWP
                             randevuKatilim.RandevuId = randevu.Id;
                             randevuKatilim.KatilimciId = KisiIdQS.ConvertToInt();
                             randevuKatilim.KatilimciTipi = ProjeConstants.RANDEVU_KATILIMCI_DIS_INT;
-                            randevuKatilim.Olusturan = UtilityHelper.GetCurrentUser();
+                            randevuKatilim.Olusturan = UtilityHelper.GetCurrentUserName();
                             int randevuKatilimId = randevuKatilim.Save();
                             if (randevuKatilimId > 0)
                             {

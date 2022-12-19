@@ -210,7 +210,7 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP
 
             //}
 
-            string currentUser = UtilityHelper.GetCurrentUser();
+            string currentUser = UtilityHelper.GetCurrentUserLoginName();
             if (!string.IsNullOrEmpty(value))
             {
                 KiraEkstreAktarma eaDao = new KiraEkstreAktarma();
@@ -244,7 +244,7 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP
 
             //}
 
-            string currentUser = UtilityHelper.GetCurrentUser();
+            string currentUser = UtilityHelper.GetCurrentUserLoginName();
             if (!string.IsNullOrEmpty(value))
             {
                 try
@@ -859,7 +859,7 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP
 
                 if (aktarilacaklar.Count > 0)
                 {
-                    string currentUser = UtilityHelper.GetCurrentUser();
+                    string currentUser = UtilityHelper.GetCurrentUserLoginName();
                     var exceptionHelper = OdemeIslemleriniYap(aktarilacaklar, currentUser); //seçilenler diğer tablolara dağıtılıyor 
                     if (exceptionHelper.Exceptions.Count > 0)
                     {

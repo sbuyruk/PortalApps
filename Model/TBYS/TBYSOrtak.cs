@@ -500,7 +500,7 @@ namespace Model.Ortak
                         {
                             odemePlani = odemePlani.SelectIlkOdemePlaniBySozlesmeId(kiraSozlesme.Id);//odemeyi ilk OdemePlanina kaydet 
                             Odeme odeme = new Odeme();
-                            odeme = odeme.OdemeyiKaydetOdemePlaniniGuncelle(kiraSozlesme, odemePlani, odemeTarihi, odenenTutar, aciklama, UtilityHelper.GetCurrentUser());
+                            odeme = odeme.OdemeyiKaydetOdemePlaniniGuncelle(kiraSozlesme, odemePlani, odemeTarihi, odenenTutar, aciklama, UtilityHelper.GetCurrentUserLoginName());
                             odemeYapildiMi = true;
                             odemeId = odeme.Id;
                         }
@@ -525,7 +525,7 @@ namespace Model.Ortak
                                 else
                                 {
                                     Odeme odeme = new Odeme();
-                                    odeme = odeme.OdemeyiKaydetOdemePlaniniGuncelle(kiraSozlesme, odemePlani, odemeTarihi, odenenTutar, aciklama, UtilityHelper.GetCurrentUser());
+                                    odeme = odeme.OdemeyiKaydetOdemePlaniniGuncelle(kiraSozlesme, odemePlani, odemeTarihi, odenenTutar, aciklama, UtilityHelper.GetCurrentUserLoginName());
                                     odemeYapildiMi = true;
                                     odemeId = odeme.Id;
                                 }
@@ -538,7 +538,7 @@ namespace Model.Ortak
                                 if (odemePlani != null)
                                 {
                                     Odeme odeme = new Odeme();
-                                    odeme = odeme.OdemeyiKaydetOdemePlaniniGuncelle(kiraSozlesme, odemePlani, odemeTarihi, odenenTutar, aciklama, UtilityHelper.GetCurrentUser());
+                                    odeme = odeme.OdemeyiKaydetOdemePlaniniGuncelle(kiraSozlesme, odemePlani, odemeTarihi, odenenTutar, aciklama, UtilityHelper.GetCurrentUserLoginName());
                                     odemeYapildiMi = true;
                                     odemeId = odeme.Id;
                                 }
@@ -562,7 +562,7 @@ namespace Model.Ortak
                             else
                             {
                                 Odeme odeme = new Odeme();
-                                odeme = odeme.OdemeyiKaydetOdemePlaniniGuncelle(kiraSozlesme, odemePlani, odemeTarihi, odenenTutar, aciklama, UtilityHelper.GetCurrentUser());
+                                odeme = odeme.OdemeyiKaydetOdemePlaniniGuncelle(kiraSozlesme, odemePlani, odemeTarihi, odenenTutar, aciklama, UtilityHelper.GetCurrentUserLoginName());
                                 odemeYapildiMi = true;
                                 odemeId = odeme.Id;
                             }

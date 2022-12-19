@@ -89,7 +89,7 @@ namespace BTYS_Webparts.BolgeNakitBagisciListesiWP
 
                 if (ViewState["CurrentUserName"] == null)
                 {
-                    ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUser();
+                    ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUserLoginName();
                 }
                 return ViewState["CurrentUserName"].ToString();
             }

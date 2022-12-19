@@ -51,6 +51,7 @@
     <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Syncfusion.EJ2, Version=18.4.0.35, Culture=neutral, PublicKeyToken=3d67ed1f87d44c89, processorArchitecture=MSIL">
       <HintPath>..\packages\Syncfusion.EJ2.AspNet.Core.18.4.0.35\lib\net451\Syncfusion.EJ2.dll</HintPath>
     </Reference>
@@ -151,6 +152,14 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>KisiListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MtsOlayListesiWP\MtsOlayListesiWP.ascx.cs">
+      <DependentUpon>MtsOlayListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MtsOlayListesiWP\MtsOlayListesiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MtsOlayListesiWP.ascx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandevuGirisiWP\RandevuGirisiWP.ascx.cs">
@@ -287,6 +296,10 @@
     <None Include="KisiListesiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{c3624114-82c4-4c1d-b10e-482017fab5d0}</SharePointProjectItemId>
     </None>
+    <None Include="MtsOlayListesiWP\MtsOlayListesiWP.webpart" />
+    <None Include="MtsOlayListesiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{3e42f4d0-5dc2-4251-b188-a33b9bc5470a}</SharePointProjectItemId>
+    </None>
     <None Include="packages.config" />
     <None Include="Package\Package.package">
       <PackageId>{a573589e-4cea-43f6-a1c4-0cf53afd9e81}</PackageId>
@@ -396,6 +409,11 @@
     <Content Include="KisiListesiWP\KisiListesiWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>KisiListesiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="MtsOlayListesiWP\Elements.xml" />
+    <Content Include="MtsOlayListesiWP\MtsOlayListesiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>MtsOlayListesiWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="RandevuGirisiWP\Elements.xml" />
     <Content Include="RandevuGirisiWP\RandevuGirisiWP.ascx">

@@ -64,7 +64,7 @@ namespace Model.Ortak
             tarih = tarih.Add(saat);
             return tarih;
         }
-        public static string GetCurrentUser()
+        public static string GetCurrentUserLoginName()
         {
             string userName = string.Empty;
             using (SPSite site = new SPSite(SPContext.Current.Web.Url))
@@ -79,6 +79,22 @@ namespace Model.Ortak
                 }
             }
             return userName;
+        }
+        public static string GetCurrentUserName()
+        {
+            string name = string.Empty;
+            using (SPSite site = new SPSite(SPContext.Current.Web.Url))
+            {
+                using (SPWeb currentWeb = site.OpenWeb())
+                {
+                    SPUser user = currentWeb.CurrentUser;
+                    if (user != null)
+                    {
+                        name = user.Name;
+                    }
+                }
+            }
+            return name;
         }
         public static void SetDDLValue(DropDownList ddl, string value)
         {

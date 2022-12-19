@@ -215,7 +215,7 @@ namespace MTS_WebParts.RandevuGirisiWP
             
             try
             {
-                if (!Page.IsPostBack) // sayfa ilk kez açılıyorsa (bu sayfanın içindeki butona basılma anı hariç)
+                if (!Page.IsPostBack) // sayfa ilk kez açılıyorsa 
                 {
                     lblTime.Text = DateTime.Now.ToString("HH:mm ss");
                     RefreshTimer.Interval = 10000;
@@ -409,7 +409,7 @@ namespace MTS_WebParts.RandevuGirisiWP
                 randevu.Aciklama = AciklamaTxt.Text;
                 randevu.IcIrtibatId = IcIrtibatIdQS.ConvertToInt();
                 randevu.DisIrtibatId = DisIrtibatIdQS.ConvertToInt();
-                randevu.Olusturan = UtilityHelper.GetCurrentUser();
+                randevu.Olusturan = UtilityHelper.GetCurrentUserName();
 
                 if (string.IsNullOrEmpty(RandevuKonusuTxt.Text))
                 {
@@ -417,10 +417,13 @@ namespace MTS_WebParts.RandevuGirisiWP
                 }
                 else
                 {
+                    
                     randevuId = randevu.Id = randevu.Save();
                     if (randevuId > 0)
                     {
                         RandevuIdQS = randevuId.ToString();
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.GirisOlayKaydet(randevu, ProjeConstants.MTS, ProjeConstants.MTS_FAALIYET);
                         RedirectToPage(ProjeConstants.PAGE_RANDEVU_GIRIS + "?RandevuId=" + RandevuIdQS + "&Mesaj=true");
                         MessageHelper.PublishMessage("Faaliyet Kaydedildi.", ProjeConstants.MESAJ_BASARILI, 2000);
                         KatilimciBilgileriDiv.Attributes["style"] = "display:block";
@@ -449,7 +452,8 @@ namespace MTS_WebParts.RandevuGirisiWP
 
                 Randevu randevu = new Randevu();
                 randevu = randevu.Select(RandevuIdQS.ConvertToInt());
-                randevu.Degistiren = UtilityHelper.GetCurrentUser();
+                Randevu randevuIlkHali= randevu.Select(RandevuIdQS.ConvertToInt());
+                randevu.Degistiren = UtilityHelper.GetCurrentUserName();
                 if (randevu == null)
                 {
                     MessageHelper.PublishMessage("Faaliyet bulunamadı", ProjeConstants.MESAJ_HATA, 5000);
@@ -474,6 +478,7 @@ namespace MTS_WebParts.RandevuGirisiWP
                     randevu.Aciklama = AciklamaTxt.Text;
                     randevu.IcIrtibatId = IcIrtibatIdQS.ConvertToInt();
                     randevu.DisIrtibatId = DisIrtibatIdQS.ConvertToInt();
+                    randevu.Degistiren= UtilityHelper.GetCurrentUserName();
                     guncellendiMi = randevu.Update();
 
                     if (guncellendiMi)
@@ -482,6 +487,7 @@ namespace MTS_WebParts.RandevuGirisiWP
                         InitialDateQS = randevu.BaslangicTarihi.ToString("yyyy-MM-dd");
                         //KatilimciBilgileriniDoldur();
                         MessageHelper.PublishMessage("Faaliyet güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        
                     }
                     else
                     {
@@ -493,7 +499,7 @@ namespace MTS_WebParts.RandevuGirisiWP
             catch (Exception ex)
             {
                 ExceptionHelper exhelper = new ExceptionHelper(ex);
-                exhelper.Exceptions.Add(new Exception("Duyuru güncellenemedi."));
+                exhelper.Exceptions.Add(new Exception("Faaliyet güncellenemedi."));
                 exhelper.PublishException();
             }
         }
@@ -552,7 +558,7 @@ namespace MTS_WebParts.RandevuGirisiWP
             SilMesajiLbl.Text = "Faaliyete ait tüm bilgiler, katılımcılar ve anı objeleri silinecektir. Silmek istediğinizden eminmisiniz?";
             SilModalBaslikLbl.Text = "Faaliyet Silinecek";
             RandevuSilNowBtn.Visible = true;
-            System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), openModal, true);
+            UtilityHelper.ScriptCalistir(openModal);
         }
         /// RandevuKatilim_Tabeledan bu randevu Id'li kayıtları sil
         /// AramaGorusme_Table'da bu randevuId'li kayıtların randevuId'sini 0 yap
@@ -570,8 +576,10 @@ namespace MTS_WebParts.RandevuGirisiWP
                     silindi = randevu.Delete();
                     if (silindi)
                     {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(randevu, ProjeConstants.MTS, ProjeConstants.MTS_FAALIYET);
                         RandevuKatilim randevuKatilim = new RandevuKatilim();
-                        bool katilimSilindi = randevuKatilim.DeleteByRandevuId(RandevuIdQS.ConvertToInt());
+                        int katilimSilindi = randevuKatilim.DeleteByRandevuId(RandevuIdQS.ConvertToInt());
                         //AramaGorusme aramaGorusme = new AramaGorusme();
                         //bool agIslendi=aramaGorusme.UpdateRandevuId(RandevuIdQS.ConvertToInt(),"Randevu Silindi");
                         //AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
@@ -1377,7 +1385,7 @@ namespace MTS_WebParts.RandevuGirisiWP
                             item.RandevuId = randevuId;
                             item.KatilimciId = katilimciId;
                             item.KatilimciTipi = katilimciTipi;
-                            item.Olusturan = UtilityHelper.GetCurrentUser();
+                            item.Olusturan = UtilityHelper.GetCurrentUserName();
                             item.Save();
                         }
                         else //eski adetle adet farklı  update et
@@ -1386,7 +1394,7 @@ namespace MTS_WebParts.RandevuGirisiWP
                             item.RandevuId = randevuId;
                             item.KatilimciId = katilimciId;
                             item.KatilimciTipi = katilimciTipi;
-                            item.Degistiren = UtilityHelper.GetCurrentUser();
+                            item.Degistiren = UtilityHelper.GetCurrentUserName();
                             item.Update();
                         }
                     }
@@ -1419,14 +1427,14 @@ namespace MTS_WebParts.RandevuGirisiWP
 
                 aniObjesiDagitim.GetirilenAniObjesi = GetirilenAniObjesiTxt.Text;
                 aniObjesiDagitim.VerilenAlinan = ProjeConstants.ANIOBJESI_GETIRILEN_INT;
-                aniObjesiDagitim.Olusturan = UtilityHelper.GetCurrentUser();
+                aniObjesiDagitim.Olusturan = UtilityHelper.GetCurrentUserName();
                 aniObjesiDagitim.Save();
 
             }
             else if (aniObjesiDagitim != null)
             {
                 aniObjesiDagitim.GetirilenAniObjesi = GetirilenAniObjesiTxt.Text;
-                aniObjesiDagitim.Degistiren = UtilityHelper.GetCurrentUser();
+                aniObjesiDagitim.Degistiren = UtilityHelper.GetCurrentUserName();
                 aniObjesiDagitim.Update();
             }
 

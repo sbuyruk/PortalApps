@@ -298,7 +298,7 @@ namespace NBYS_WebParts.NakitBagisciEditWP
             nakitBagisci.Ulasilamiyor = UlasilamiyorChk.Checked;
             nakitBagisci.BelgeIstemiyor = BelgeIstemiyorChk.Checked;
             nakitBagisci.DergiGonderilmesin = DergiGonderilmesinChk.Checked;
-            var user = UtilityHelper.GetCurrentUser();
+            var user = UtilityHelper.GetCurrentUserLoginName();
             nakitBagisci.Degistiren = user;
 
             nakitBagisci.Id = nakitBagisci.Save();
@@ -330,7 +330,7 @@ namespace NBYS_WebParts.NakitBagisciEditWP
             nakitBagisci.Ulasilamiyor = UlasilamiyorChk.Checked;
             nakitBagisci.BelgeIstemiyor = BelgeIstemiyorChk.Checked;
             nakitBagisci.DergiGonderilmesin = DergiGonderilmesinChk.Checked;
-            var user = UtilityHelper.GetCurrentUser();
+            var user = UtilityHelper.GetCurrentUserLoginName();
             nakitBagisci.Degistiren = user;
 
             isSaved = nakitBagisci.Update();

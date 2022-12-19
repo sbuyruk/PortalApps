@@ -105,7 +105,7 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
 
                 if (ViewState["CurrentUserName"] == null)
                 {
-                    ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUser();
+                    ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUserLoginName();
                 }
                 return ViewState["CurrentUserName"].ToString();
             }
@@ -309,14 +309,14 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
                 tasinmaz.EnvanterdenCikmaSebebi = CikarmaSebebiDDL.SelectedItem.Value;
                 tasinmaz.EnvanterdenCikmaBedeli = BedelTxt.Value.ConvertToDecimal();
                 tasinmaz.EnvanterdenCikmaTarihi = EnvanterdenCikmaTarTxt.Value.ConvertToDatetime();
-                tasinmaz.Degistiren = UtilityHelper.GetCurrentUser();
+                tasinmaz.Degistiren = UtilityHelper.GetCurrentUserLoginName();
                 Bagis bagis = new Bagis();
                 bagis = bagis.SelectByTasinmazId(tasinmaz.Id);
                 if (bagis != null)
                 {
                     tasinmaz.BagisciId = bagis.BagisciId;
                     bagis.Envanterde = ProjeConstants.ENVANTERDEN_CIKTI;
-                    bagis.Degistiren = UtilityHelper.GetCurrentUser();
+                    bagis.Degistiren = UtilityHelper.GetCurrentUserLoginName();
                     guncellendiMi = bagis.Update();
                 }
                 tasinmaz.Aciklama = AciklamaTxt.Text;

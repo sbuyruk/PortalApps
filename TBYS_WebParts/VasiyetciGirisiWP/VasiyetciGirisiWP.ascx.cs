@@ -320,7 +320,7 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
                 yeniVasiyetci.VasiyetcininTalebi = VasiyetcininTalebiTxt.Text;
                 yeniVasiyetci.Aciklama = AciklamaTxt.Text;
                 yeniVasiyetci.VasiyetinDurumu = VasiyetinDurumuDDL.SelectedItem.Text;
-                yeniVasiyetci.Olusturan = UtilityHelper.GetCurrentUser();
+                yeniVasiyetci.Olusturan = UtilityHelper.GetCurrentUserLoginName();
                 if (string.IsNullOrEmpty(AdiTxt.Text))
                 {
                     MessageHelper.PublishMessage("Vasiyetçi Adı Boş Olamaz.", ProjeConstants.MESAJ_HATA, 2000);
@@ -398,7 +398,7 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
                     vasiyetci.VasiyetcininTalebi = VasiyetcininTalebiTxt.Text;
                     vasiyetci.Aciklama = AciklamaTxt.Text;
                     vasiyetci.VasiyetinDurumu = VasiyetinDurumuDDL.SelectedItem.Text;
-                    vasiyetci.Degistiren = UtilityHelper.GetCurrentUser();
+                    vasiyetci.Degistiren = UtilityHelper.GetCurrentUserLoginName();
                 }
 
 

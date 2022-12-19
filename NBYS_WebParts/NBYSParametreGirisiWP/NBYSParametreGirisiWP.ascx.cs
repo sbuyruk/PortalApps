@@ -352,7 +352,7 @@ namespace NBYS_WebParts.NBYSParametreGirisiWP
                         param.Sira = YeniSiraTxt.Text.ConvertToInt();
                         param.Anahtar = YeniAnahtarTxt.Text;
                         param.Deger = YeniDegerTxt.Text;
-                        param.Olusturan = UtilityHelper.GetCurrentUser();
+                        param.Olusturan = UtilityHelper.GetCurrentUserLoginName();
                         int id = param.Save();
                         if (id > 0)
                         {

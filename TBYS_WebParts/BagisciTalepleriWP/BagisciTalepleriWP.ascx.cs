@@ -199,7 +199,7 @@ namespace TBYS_WebParts.BagisciTalepleriWP
 
                 bt.Aciklama = TalepAciklamaTxt.Text;
                 bt.BagisciId = BagisciIdQS.ConvertToInt();
-                bt.Degistiren = UtilityHelper.GetCurrentUser();
+                bt.Degistiren = UtilityHelper.GetCurrentUserLoginName();
                 bt.DegistirmeTarihi = DateTime.Today;
                 bt.Irtibat = IrtibatTxt.Text;
                 bt.Talep = TalepTxt.Text;
@@ -229,7 +229,7 @@ namespace TBYS_WebParts.BagisciTalepleriWP
                 if (bt != null)
                 {
                     bt.Aciklama = TalepAciklamaTxt.Text;
-                    bt.Degistiren = UtilityHelper.GetCurrentUser();
+                    bt.Degistiren = UtilityHelper.GetCurrentUserLoginName();
                     bt.DegistirmeTarihi = DateTime.Today;
                     bt.Irtibat = IrtibatTxt.Text;
                     bt.Talep = TalepTxt.Text;

@@ -63,7 +63,7 @@ namespace Portal_WebParts.DuyuruPopupWP
 
                 if (ViewState["CurrentUserName"] == null)
                 {
-                    ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUser();
+                    ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUserLoginName();
                 }
                 return ViewState["CurrentUserName"].ToString();
             }
@@ -375,7 +375,7 @@ namespace Portal_WebParts.DuyuruPopupWP
                 if (dg != null)
                 {
                     DuyuruOkuma duyuruOkuma = new DuyuruOkuma();
-                    duyuruOkuma.Olusturan = UtilityHelper.GetCurrentUser();
+                    duyuruOkuma.Olusturan = UtilityHelper.GetCurrentUserLoginName();
                     duyuruOkuma.OkumaTarihi = DateTime.Now;
                     Personel personel = new Personel();
                     string userName = CurrentUserName.Substring(CurrentUserName.LastIndexOf("\\") + 1, CurrentUserName.Length - CurrentUserName.LastIndexOf("\\") - 1);

@@ -147,6 +147,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>KutlamaMoveWP.ascx</DependentUpon>
     </Compile>
+    <Compile Include="OlayListesiWP\OlayListesiWP.ascx.cs">
+      <DependentUpon>OlayListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="OlayListesiWP\OlayListesiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OlayListesiWP.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="YetlilendirmeWP\YetlilendirmeWP.ascx.cs">
       <DependentUpon>YetlilendirmeWP.ascx</DependentUpon>
@@ -210,6 +218,10 @@
     <None Include="KutlamaMoveWP\KutlamaMoveWP.webpart" />
     <None Include="KutlamaMoveWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{00c68a23-86c8-4adc-895f-912f3c0aabe9}</SharePointProjectItemId>
+    </None>
+    <None Include="OlayListesiWP\OlayListesiWP.webpart" />
+    <None Include="OlayListesiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{c591681a-fe12-4670-ae75-d410db7152f6}</SharePointProjectItemId>
     </None>
     <None Include="packages.config" />
     <None Include="Package\Package.package">
@@ -305,6 +317,11 @@
     <Content Include="KutlamaMoveWP\KutlamaMoveWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>KutlamaMoveWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="OlayListesiWP\Elements.xml" />
+    <Content Include="OlayListesiWP\OlayListesiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>OlayListesiWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />

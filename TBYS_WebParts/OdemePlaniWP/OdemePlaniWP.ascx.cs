@@ -61,7 +61,7 @@ namespace TBYS_WebParts.OdemePlaniWP
 
                 if (ViewState["CurrentUserName"] == null)
                 {
-                    ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUser();
+                    ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUserLoginName();
                 }
                 return ViewState["CurrentUserName"].ToString();
             }

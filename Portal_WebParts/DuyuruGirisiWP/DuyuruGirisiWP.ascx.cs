@@ -589,12 +589,12 @@ namespace Portal_WebParts.DuyuruGirisiWP
                 duyuru.DuyuruAlicilari = DuyuruAlicilariniAl();
                 duyuru.Aktif = AktifChk.Checked;
                 duyuru.Popup = PopupChk.Checked;
-                duyuru.Olusturan = UtilityHelper.GetCurrentUser();
+                duyuru.Olusturan = UtilityHelper.GetCurrentUserLoginName();
                 duyuruId = duyuru.Id = duyuru.Save();
 
                 if (duyuruId > 0)
                 {
-                    duyuru.Degistiren = UtilityHelper.GetCurrentUser();
+                    duyuru.Degistiren = UtilityHelper.GetCurrentUserLoginName();
                     duyuru.Update();
                     if (duyuru != null)
                     {
@@ -640,7 +640,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
                     duyuru.DuyuruAlicilari = DuyuruAlicilariniAl();
                     duyuru.Aktif = AktifChk.Checked;
                     duyuru.Popup = PopupChk.Checked;
-                    duyuru.Degistiren = UtilityHelper.GetCurrentUser();
+                    duyuru.Degistiren = UtilityHelper.GetCurrentUserLoginName();
                     guncellendiMi = duyuru.Update();
 
                     if (guncellendiMi)

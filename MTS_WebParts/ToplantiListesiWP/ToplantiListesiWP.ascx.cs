@@ -88,7 +88,7 @@ namespace MTS_WebParts.ToplantiListesiWP
 
                 if (ViewState["CurrentUserName"] == null)
                 {
-                    ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUser();
+                    ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUserName();
                 }
                 return ViewState["CurrentUserName"].ToString();
             }
@@ -225,7 +225,7 @@ namespace MTS_WebParts.ToplantiListesiWP
                         toplantiListItem.Katilimci += string.IsNullOrEmpty(katilimci)?string.Empty:katilimci + seperator;
                         toplantiListItem.BilgiVerilenler += string.IsNullOrEmpty(bilgiVerilenAdiSoyadi) ? string.Empty : bilgiVerilenAdiSoyadi + seperator;
                         //kullanici bilgisini al
-                        string currentuser = UtilityHelper.GetCurrentUser();
+                        string currentuser = UtilityHelper.GetCurrentUserName();
 
                         if (toplantiListItem.BitisTarihi.ConvertToDatetime() < DateTime.Now)
                         {

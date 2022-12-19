@@ -502,7 +502,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
         //}
         private void BagisciyiBirlestirAtomic()
         {
-            string currentUser = UtilityHelper.GetCurrentUser();
+            string currentUser = UtilityHelper.GetCurrentUserLoginName();
             string mesaj1 = string.Empty;
             NakitBagisci asilBagisci = new NakitBagisci();
             asilBagisci = asilBagisci.Select<NakitBagisci>(SecilenAsilBagisciId.ConvertToInt());
@@ -548,7 +548,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
                                         item.Aciklama = item.Aciklama + "(" + item.BagisciId + " tarafından yapılan bağış birleştirildi) ";
                                         item.BagisciId = SecilenAsilBagisciId.ConvertToInt();
                                         bagiscisiDegisenNbhs += "," + item.Id;
-                                        item.Degistiren = UtilityHelper.GetCurrentUser();
+                                        item.Degistiren = UtilityHelper.GetCurrentUserLoginName();
 
                                         DBObject nbhDbo = new DBObject();
                                         nbhDbo.SQLString = item.GetUpdateSQL("");
@@ -596,7 +596,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
                                         item.Aciklama = item.Aciklama + "(" + item.BagisciId + " tarafından yapılan bağış birleştirildi) ";
                                         item.BagisciId = SecilenAsilBagisciId.ConvertToInt();
                                         bagiscisiDegisenArmagans += "," + item.Id;
-                                        item.Degistiren = UtilityHelper.GetCurrentUser();
+                                        item.Degistiren = UtilityHelper.GetCurrentUserLoginName();
                                         DBObject armaganDbo = new DBObject();
                                         armaganDbo.SQLString = item.GetUpdateSQL("");
                                         armaganDbo.SQLType = ProjeConstants.SQL_UPDATE;
@@ -769,7 +769,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
         {
             try
             {
-                string currentUser = UtilityHelper.GetCurrentUser();
+                string currentUser = UtilityHelper.GetCurrentUserLoginName();
                 SilinenKayit sk = new SilinenKayit();
                 sk.Silen = currentUser;
                 sk.SilinmeSebebi = BirlestirmeSebebiTxt.Text;

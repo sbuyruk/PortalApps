@@ -327,7 +327,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
                 tt.EvrakTarihi = EvrakTarihiTxt.Text.ConvertToDatetime();
                 tt.Ili = IliDDL.SelectedItem.Value.ConvertToInt();
                 tt.Ilcesi = IlcesiDDL.SelectedItem.Value.ConvertToInt();
-                tt.Olusturan = UtilityHelper.GetCurrentUser();
+                tt.Olusturan = UtilityHelper.GetCurrentUserLoginName();
                 tt.OlusturmaTarihi = DateTime.Today;
                 tt.Sag_vefat = SagVefatDDL.SelectedItem.Text;
                 if (SagVefatDDL.SelectedItem.Text.Equals(ProjeConstants.BAGISCI_VEFAT))
@@ -368,7 +368,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
                     tt.EvrakTarihi = EvrakTarihiTxt.Text.ConvertToDatetime();
                     tt.Ili = IliDDL.SelectedItem.Value.ConvertToInt();
                     tt.Ilcesi = IlcesiDDL.SelectedItem.Value.ConvertToInt();
-                    tt.Degistiren = UtilityHelper.GetCurrentUser();
+                    tt.Degistiren = UtilityHelper.GetCurrentUserLoginName();
                     tt.DegistirmeTarihi = DateTime.Today;
                     tt.Soyadi = SoyadiTxt.Text;
                     tt.Sag_vefat = SagVefatDDL.SelectedItem.Text;
@@ -454,7 +454,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
                             yeniTaahhut.Ilcesi = ilce.Id;
                             yeniTaahhut.Ili = ilce.IlId;
                         }
-                        yeniTaahhut.Olusturan = UtilityHelper.GetCurrentUser();
+                        yeniTaahhut.Olusturan = UtilityHelper.GetCurrentUserLoginName();
                         yeniTaahhut.Sag_vefat = tasinmazBagisci.Sag_vefat;
                         yeniTaahhut.Soyadi = tasinmazBagisci.Soyadi;
                         yeniTaahhut.TaahhutAciklama = "Bağışçıya taahhüt verilmiştir.";

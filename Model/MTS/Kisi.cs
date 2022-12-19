@@ -31,40 +31,21 @@ namespace Model.MTS
         public string Dahili3 { get; set; }
         public DateTime DogumTarihi { get; set; }
         public bool Kutlama { get; set; }
-        public override bool Delete()
-        {
-            try
-            {
-                if (Id != 0)
-                {
-                    GenericEntity<Kisi> genericEntity = new GenericEntity<Kisi>(ProjeConstants.SQL_DELETE);
-                    OlusturmaTarihi = DateTime.Now;
-                    string sqlString = genericEntity.GetQuery(this);
-                    bool isDeleted = dao.DeleteFromDb(sqlString, "");
-                    return isDeleted;
-                }
-                else
-                {
-                    return false;
-                }
-
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-        }
 
         public override int Save()
         {
+            bool saveLog = ProjeConstants.SAVE_LOG;
             try
             {
                 GenericEntity<Kisi> genericEntity = new GenericEntity<Kisi>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
                 string sqlString = genericEntity.GetQuery(this);
                 int id = dao.Insert(sqlString);
-
+                if (id > 0 && saveLog)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.MTS, ProjeConstants.MTS_KISI);
+                }
                 this.Id = id;
                 return id;
             }
@@ -74,6 +55,84 @@ namespace Model.MTS
                 throw ex;
             }
 
+        }
+        public override bool Update()
+        {
+            bool updateLog = ProjeConstants.UPDATE_LOG;
+            bool isSuccess = false;
+            try
+            {
+                if (updateLog)
+                {
+
+                    if (this != null)
+                    {
+                        Kisi item = Select<Kisi>(Id);
+                        if (Id != 0)
+                        {
+                            GenericEntity<Kisi> genericEntity = new GenericEntity<Kisi>(ProjeConstants.SQL_UPDATE);
+                            DegistirmeTarihi = DateTime.Now;
+                            string sqlString = genericEntity.GetQuery(this);
+                            isSuccess = dao.Update2Db(sqlString);
+                        }
+                        if (isSuccess)
+                        {
+                            OlayKayit olayKayit = new OlayKayit();
+                            olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.MTS, ProjeConstants.MTS_KISI);
+                        }
+                    }
+
+                }
+                if (Id != 0)
+                {
+                    GenericEntity<Kisi> genericEntity = new GenericEntity<Kisi>(ProjeConstants.SQL_UPDATE);
+                    DegistirmeTarihi = DateTime.Now;
+                    string sqlString = genericEntity.GetQuery(this);
+                    isSuccess = dao.Update2Db(sqlString);
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return isSuccess;
+        }
+        public override bool Delete()
+        {
+            bool deleteLog = ProjeConstants.DELETE_LOG;
+            try
+            {
+                bool isDeleted = false;
+                if (Id != 0)
+                {
+                    GenericEntity<Kisi> genericEntity = new GenericEntity<Kisi>(ProjeConstants.SQL_DELETE);
+                    string sqlString = genericEntity.GetQuery(this);
+                    if (deleteLog)
+                    {
+                        Kisi item = Select<Kisi>(Id);
+                        if (item != null)
+                        {
+                            isDeleted = dao.DeleteFromDb(sqlString, "");
+                        }
+                        else isDeleted = false;
+                        if (isDeleted)
+                        {
+                            OlayKayit olayKayit = new OlayKayit();
+                            olayKayit.SilmeOlayKaydet(item, ProjeConstants.MTS, ProjeConstants.MTS_KISI);
+                        }
+                    }
+                    else
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+                }
+                return isDeleted;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         public Kisi Select(int id)
         {
@@ -111,25 +170,6 @@ namespace Model.MTS
             List<Kisi> list = ToList<Kisi>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
-        }
-        public override bool Update()
-        {
-            bool isSuccess = false;
-            try
-            {
-                if (Id != 0)
-                {
-                    GenericEntity<Kisi> genericEntity = new GenericEntity<Kisi>(ProjeConstants.SQL_UPDATE);
-                    DegistirmeTarihi = DateTime.Now;
-                    string sqlString = genericEntity.GetQuery(this);
-                    isSuccess = dao.Update2Db(sqlString);
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            return isSuccess;
         }
         public DataTable SelectAllReturnDT()
         {

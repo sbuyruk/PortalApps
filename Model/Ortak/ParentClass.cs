@@ -21,7 +21,7 @@ namespace Model.Ortak
         public abstract T Select<T>(int id);
         public abstract int Save();
         public abstract bool Update();
-        public abstract bool Delete();
+        public abstract bool Delete();        
         public abstract List<T> SelectAll<T>() where T : class;
 
         public List<T> ToList<T>(DataTable dataTable) where T : new()

@@ -83,7 +83,7 @@ namespace NBYS_WebParts.NakitBagisciByTarihWP
 
                 if (ViewState["CurrentUserName"] == null)
                 {
-                    ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUser();
+                    ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUserLoginName();
                 }
                 return ViewState["CurrentUserName"].ToString();
             }

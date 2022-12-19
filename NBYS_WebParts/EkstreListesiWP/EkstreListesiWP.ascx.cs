@@ -620,7 +620,7 @@ namespace NBYS_WebParts.EkstreListesiWP
 
             //}
 
-            string currentUser = UtilityHelper.GetCurrentUser();
+            string currentUser = UtilityHelper.GetCurrentUserLoginName();
             if (!string.IsNullOrEmpty(value))
             {
                 EkstreAktarma eaDao = new EkstreAktarma();
@@ -654,7 +654,7 @@ namespace NBYS_WebParts.EkstreListesiWP
 
             //}
 
-            string currentUser = UtilityHelper.GetCurrentUser();
+            string currentUser = UtilityHelper.GetCurrentUserLoginName();
             if (!string.IsNullOrEmpty(value))
             {
                 try

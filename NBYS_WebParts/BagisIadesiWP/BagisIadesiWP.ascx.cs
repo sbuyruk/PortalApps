@@ -428,7 +428,7 @@ namespace NBYS_WebParts.BagisIadesiWP
                         nbh.BagisMiktari = 0;
                         nbh.Aciklama = nbh.Aciklama + nb.Adi + " tarfından " + nbh.BagisTarihi.ConvertToDatetimeEmptyIfNull() + " tarihinde yapılan " +
                             nbh.BagisMiktari.ToString("N", culturInfo) + " " + nbh.DovizCinsi + " Bağış iade edilmiştir.";
-                        nbh.IadeEden = UtilityHelper.GetCurrentUser();
+                        nbh.IadeEden = UtilityHelper.GetCurrentUserLoginName();
 
                         DbClass db = new DbClass();
                         //herbir nesne için bir dbo yarat
@@ -447,7 +447,7 @@ namespace NBYS_WebParts.BagisIadesiWP
                         if (armagan != null)//armagan varsa
                         {
                             armagan.BelgeGecersizMi = ProjeConstants.TRUE_INT;
-                            armagan.GecersizYapan = UtilityHelper.GetCurrentUser();
+                            armagan.GecersizYapan = UtilityHelper.GetCurrentUserLoginName();
                             armagan.GecersizYapmaTarihi = DateTime.Now;
                             armagan.GecersizNBHareketId = nbh.Id;
                             armagan.Durum = ProjeConstants.DURUM_PARAIADE;
@@ -471,7 +471,7 @@ namespace NBYS_WebParts.BagisIadesiWP
                         if (savedDBOList.Count > 0)
                         {
                             if (armaganDbo.Success)//armagan tablosunda işlem oldu mu. //yeniden armağan hesaplanacak
-                                TekrarArmaganHesapla(nbh, UtilityHelper.GetCurrentUser());
+                                TekrarArmaganHesapla(nbh, UtilityHelper.GetCurrentUserLoginName());
                             RedirectToPage(ProjeConstants.PAGE_BAGISIADE + "?Param=" + BagisAraTxt.Text);
                         }
                     }

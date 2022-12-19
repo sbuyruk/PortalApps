@@ -647,7 +647,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
             }
             yeniKayitbitenKiraSozlesme.KiraciId = KiraciIdQS.ConvertToInt();
             yeniKayitbitenKiraSozlesme.KiraBedeli = 0;
-            yeniKayitbitenKiraSozlesme.Olusturan = UtilityHelper.GetCurrentUser();
+            yeniKayitbitenKiraSozlesme.Olusturan = UtilityHelper.GetCurrentUserLoginName();
 
             yeniKayitbitenKiraSozlesme.DevirAnaPara = 0;
             yeniKayitbitenKiraSozlesme.DevirFaizliBakiye = 0;
@@ -655,7 +655,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
             yeniKayitbitenKiraSozlesme.DurumDegismeTar = yeniKayitbitenKiraSozlesme.SozBitTar.ConvertToDatetimeEmptyIfNull().Equals("") ? DateTime.Today : yeniKayitbitenKiraSozlesme.SozBitTar;
             yeniKayitbitenKiraSozlesme.SozlesmeDurumu = ProjeConstants.KIRASOZLESME_DURUMU_YENILENDI;
 
-            yeniKayitbitenKiraSozlesme.Olusturan = UtilityHelper.GetCurrentUser();
+            yeniKayitbitenKiraSozlesme.Olusturan = UtilityHelper.GetCurrentUserLoginName();
             yeniKayitbitenKiraSozlesme.Aktif = false;
             yeniKayitbitenKiraSozlesme.SaveSozlesme();
             if (yeniKayitbitenKiraSozlesme.Id > 0)
@@ -673,7 +673,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
                         ekST.SozlesmeId = yeniKayitbitenKiraSozlesme.Id;
                         ekST.BolumId = item.BolumId;
                         ekST.TasinmazId = item.TasinmazId;
-                        ekST.Olusturan = UtilityHelper.GetCurrentUser();
+                        ekST.Olusturan = UtilityHelper.GetCurrentUserLoginName();
                         ekST.Save();
                     }
 

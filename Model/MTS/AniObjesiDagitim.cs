@@ -1,6 +1,4 @@
-﻿using DocumentFormat.OpenXml.Wordprocessing;
-using Microsoft.SharePoint.ApplicationPages.Calendar.Exchange;
-using Model.Ortak;
+﻿using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -28,11 +26,16 @@ namespace Model.MTS
         {
             try
             {
+                bool saveLog = ProjeConstants.SAVE_LOG;
                 GenericEntity<AniObjesiDagitim> genericEntity = new GenericEntity<AniObjesiDagitim>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
                 string sqlString = genericEntity.GetQuery(this);
                 int id = dao.Insert(sqlString);
-
+                if (id > 0 && saveLog)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.MTS, ProjeConstants.MTS_ANIOBJESI_DAGITIM);
+                }
                 this.Id = id;
                 return id;
             }
@@ -42,6 +45,129 @@ namespace Model.MTS
                 throw ex;
             }
 
+        }
+        public override bool Update()
+        {
+            bool updateLog = ProjeConstants.UPDATE_LOG;
+            bool isSuccess = false;
+            try
+            {
+                if (updateLog)
+                {
+                    
+                    if (this != null)
+                    {
+                        AniObjesiDagitim item = Select<AniObjesiDagitim>(Id);
+                        if (Id != 0)
+                        {
+                            GenericEntity<AniObjesiDagitim> genericEntity = new GenericEntity<AniObjesiDagitim>(ProjeConstants.SQL_UPDATE);
+                            DegistirmeTarihi = DateTime.Now;
+                            string sqlString = genericEntity.GetQuery(this);
+                            isSuccess = dao.Update2Db(sqlString);
+                        }
+                        if (isSuccess)
+                        {
+                            OlayKayit olayKayit = new OlayKayit();
+                            olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.MTS, ProjeConstants.MTS_ANIOBJESI_DAGITIM);
+                        }
+                    }
+                        
+                }
+                if (Id != 0)
+                {
+                    GenericEntity<AniObjesiDagitim> genericEntity = new GenericEntity<AniObjesiDagitim>(ProjeConstants.SQL_UPDATE);
+                    DegistirmeTarihi = DateTime.Now;
+                    string sqlString = genericEntity.GetQuery(this);
+                    isSuccess = dao.Update2Db(sqlString);
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return isSuccess;
+        }
+        public override bool Delete()
+        {
+            bool deleteLog = ProjeConstants.DELETE_LOG;
+            try
+            {
+                bool isDeleted;
+                if (Id != 0)
+                {
+                    GenericEntity<AniObjesiDagitim> genericEntity = new GenericEntity<AniObjesiDagitim>(ProjeConstants.SQL_DELETE);
+                    string sqlString = genericEntity.GetQuery(this);
+                    if (deleteLog)
+                    {
+                        AniObjesiDagitim item = Select<AniObjesiDagitim>(Id);
+                        if (item!=null)
+                        {
+                            isDeleted = dao.DeleteFromDb(sqlString, "");
+                        }
+                        else isDeleted = false;
+                        if (isDeleted)
+                        {
+                            OlayKayit olayKayit = new OlayKayit();
+                            olayKayit.SilmeOlayKaydet(item, ProjeConstants.MTS, ProjeConstants.MTS_ANIOBJESI_DAGITIM);
+                        }
+                    }
+                    else
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+
+
+
+                    return isDeleted;
+                }
+                else
+                {
+                    return false;
+                }
+                
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        public int Delete(int randevuId, int katilimciId, int katilimciTipi, string aniObjesiIdList="")
+        {
+            bool deleteLog = ProjeConstants.DELETE_LOG;
+            int deleted;
+            string aniObjesiIdListStr=string.IsNullOrEmpty(aniObjesiIdList)?string.Empty:string.Format(" AND AniObjesiId IN ({0})",aniObjesiIdList);
+            string sqlString = string.Format(@"
+                DELETE FROM AniObjesiDagitim_Table
+                WHERE RandevuId={0} AND KatilimciId={1} AND KatilimciTipi={2}
+                {3}
+            ", randevuId, katilimciId, katilimciTipi,aniObjesiIdListStr);
+
+            if (deleteLog)
+            {
+                string wherestr = string.Format("WHERE RandevuId={0} AND KatilimciId={1} AND KatilimciTipi={2} {3}", randevuId, katilimciId, katilimciTipi, aniObjesiIdListStr);
+                GenericEntity<AniObjesiDagitim> genericEntitySelect = new GenericEntity<AniObjesiDagitim>(ProjeConstants.SQL_SELECT);
+                string sqlStringSelect = genericEntitySelect.GetQuery(this, wherestr);
+                DataTable dataTable = dao.selectFromDb(sqlStringSelect, "");
+                List<AniObjesiDagitim> list = ToList<AniObjesiDagitim>(dataTable);
+                if (list.Count > 0)
+                    deleted = dao.DeleteFromDb(sqlString, "", true);
+                else deleted = 0;
+                if (deleted > 0)
+                {
+                    foreach (AniObjesiDagitim item in list)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.MTS, ProjeConstants.MTS_ANIOBJESI_DAGITIM);
+                    }
+                }
+            }
+            else
+            {
+                deleted = dao.DeleteFromDb(sqlString, "", true);
+            }
+            return deleted;
         }
         public AniObjesiDagitim Select(int id)
         {
@@ -154,25 +280,6 @@ namespace Model.MTS
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
         }
-        public override bool Update()
-        {
-            bool isSuccess = false;
-            try
-            {
-                if (Id != 0)
-                {
-                    GenericEntity<AniObjesiDagitim> genericEntity = new GenericEntity<AniObjesiDagitim>(ProjeConstants.SQL_UPDATE);
-                    DegistirmeTarihi = DateTime.Now;
-                    string sqlString = genericEntity.GetQuery(this);
-                    isSuccess = dao.Update2Db(sqlString);
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            return isSuccess;
-        }
         public List<AniObjesiDagitim> SelectByAniObjesiId(int parametreId)
         {
             string sqlString = string.Format(@"
@@ -186,39 +293,6 @@ namespace Model.MTS
 
             return list;
         }
-        public override bool Delete()
-        {
-            try
-            {
-                if (Id != 0)
-                {
-                    WriteToTraceFile("Delete1");
-                    GenericEntity<AniObjesiDagitim> genericEntity = new GenericEntity<AniObjesiDagitim>(ProjeConstants.SQL_DELETE);
-                    OlusturmaTarihi = DateTime.Now;
-                    string sqlString = genericEntity.GetQuery(this);
-                    bool isDeleted = dao.DeleteFromDb(sqlString, "");
-                    if (isDeleted)
-                    {
-                        Trace.TraceInformation("Adım DELETE1 Silme başarılı mı = " + isDeleted.ConvertToBool().ToString() + " DeleteStr=" + sqlString, ProjeConstants.MESAJ_BILGI);
-                        // You must close or flush the trace to empty the output buffer.
-                        Trace.Flush();
-                    }
-
-                    return isDeleted;
-                }
-                else
-                {
-                    return false;
-                }
-                
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-        }
-
         private void WriteToTraceFile(string adim)
         {
             Trace.TraceInformation("Tarih Saat = " + DateTime.Now.ConvertToDDMMYYYHHmmFormat());
@@ -233,7 +307,6 @@ namespace Model.MTS
             // You must close or flush the trace to empty the output buffer.
             Trace.Flush();
         }
-
         public string ToJSON(List<AniObjesiDagitim> list)
         {
             string json = "[]";
@@ -274,39 +347,6 @@ namespace Model.MTS
                 throw;
             }
             return json;
-        }
-        public int Delete(int randevuId, int katilimciId, int katilimciTipi, string aniObjesiIdStr)
-        {
-            WriteToTraceFile("Delete2");
-            string sqlString = string.Format(@"
-                DELETE FROM AniObjesiDagitim_Table
-                WHERE RandevuId={0} AND KatilimciId={1} AND KatilimciTipi={2}
-                    AND AniObjesiId IN ({3})", randevuId, katilimciId, katilimciTipi, aniObjesiIdStr);
-            int deleted = dao.DeleteFromDb(sqlString, "RandevuId="+randevuId+" KatilimciId="+katilimciId+" AniObjesiId="+aniObjesiIdStr, true);
-            if (deleted > 0)
-            {
-                Trace.TraceInformation("Adım DELETE2 Silme başarılı mı = " + deleted.ToString() + " DeleteStr=" + sqlString, ProjeConstants.MESAJ_BILGI);
-                // You must close or flush the trace to empty the output buffer.
-                Trace.Flush();
-            }
-
-            return deleted;
-        }
-        public int Delete(int randevuId, int katilimciId, int katilimciTipi)
-        {
-            WriteToTraceFile("Delete3");
-            string sqlString = string.Format(@"
-                DELETE FROM AniObjesiDagitim_Table
-                WHERE RandevuId={0} AND KatilimciId={1} AND KatilimciTipi={2}
-            ", randevuId, katilimciId, katilimciTipi);
-            int deleted = dao.DeleteFromDb(sqlString, "", true);
-            if (deleted > 0)
-            {
-                Trace.TraceInformation("Adım DELETE3 Silinen adet = " + deleted.ToString() + " DeleteStr=" + sqlString, ProjeConstants.MESAJ_BILGI);
-                // You must close or flush the trace to empty the output buffer.
-                Trace.Flush();
-            }
-            return deleted;
         }
     }
 }

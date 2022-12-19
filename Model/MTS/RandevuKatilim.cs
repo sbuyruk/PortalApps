@@ -15,42 +15,21 @@ namespace Model.MTS
         public int KatilimciId { get; set; }
         public int KatilimciTipi { get; set; }
         public string Aciklama { get; set; }
-
-
-        public override bool Delete()
-        {
-            try
-            {
-                if (Id != 0)
-                {
-                    GenericEntity<RandevuKatilim> genericEntity = new GenericEntity<RandevuKatilim>(ProjeConstants.SQL_DELETE);
-                    OlusturmaTarihi = DateTime.Now;
-                    string sqlString = genericEntity.GetQuery(this);
-                    bool isDeleted = dao.DeleteFromDb(sqlString, "");
-                    return isDeleted;
-                }
-                else
-                {
-                    return false;
-                }
-
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-        }
-
+       
         public override int Save()
         {
+            bool saveLog = ProjeConstants.SAVE_LOG;
             try
             {
                 GenericEntity<RandevuKatilim> genericEntity = new GenericEntity<RandevuKatilim>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
                 string sqlString = genericEntity.GetQuery(this);
                 int id = dao.Insert(sqlString);
-
+                if (id > 0 && saveLog)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.MTS, ProjeConstants.MTS_RANDEVUKATILIM);
+                }
                 this.Id = id;
                 return id;
             }
@@ -142,9 +121,31 @@ namespace Model.MTS
         }
         public override bool Update()
         {
+            bool updateLog = ProjeConstants.UPDATE_LOG;
             bool isSuccess = false;
             try
             {
+                if (updateLog)
+                {
+
+                    if (this != null)
+                    {
+                        RandevuKatilim item = Select<RandevuKatilim>(Id);
+                        if (Id != 0)
+                        {
+                            GenericEntity<RandevuKatilim> genericEntity = new GenericEntity<RandevuKatilim>(ProjeConstants.SQL_UPDATE);
+                            DegistirmeTarihi = DateTime.Now;
+                            string sqlString = genericEntity.GetQuery(this);
+                            isSuccess = dao.Update2Db(sqlString);
+                        }
+                        if (isSuccess)
+                        {
+                            OlayKayit olayKayit = new OlayKayit();
+                            olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.MTS, ProjeConstants.MTS_RANDEVUKATILIM);
+                        }
+                    }
+
+                }
                 if (Id != 0)
                 {
                     GenericEntity<RandevuKatilim> genericEntity = new GenericEntity<RandevuKatilim>(ProjeConstants.SQL_UPDATE);
@@ -152,6 +153,7 @@ namespace Model.MTS
                     string sqlString = genericEntity.GetQuery(this);
                     isSuccess = dao.Update2Db(sqlString);
                 }
+
             }
             catch (Exception)
             {
@@ -159,15 +161,76 @@ namespace Model.MTS
             }
             return isSuccess;
         }
-        public bool DeleteByRandevuId(int randevuid)
+        public override bool Delete()
         {
-            string sqlString = string.Format(@"
-                DELETE RandevuKatilim_Table 
-                WHERE RandevuId={0}", randevuid);
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
-            return isSuccess;
-
+            bool deleteLog = ProjeConstants.DELETE_LOG;
+            try
+            {
+                bool isDeleted=false;
+                if (Id != 0)
+                {
+                    GenericEntity<RandevuKatilim> genericEntity = new GenericEntity<RandevuKatilim>(ProjeConstants.SQL_DELETE);
+                    string sqlString = genericEntity.GetQuery(this);
+                    if (deleteLog)
+                    {
+                        RandevuKatilim item = Select<RandevuKatilim>(Id);
+                        if (item != null)
+                        {
+                            isDeleted = dao.DeleteFromDb(sqlString, "");
+                        }
+                        else isDeleted = false;
+                        if (isDeleted)
+                        {
+                            OlayKayit olayKayit = new OlayKayit();
+                            olayKayit.SilmeOlayKaydet(item, ProjeConstants.MTS, ProjeConstants.MTS_RANDEVUKATILIM);
+                        }
+                    }
+                    else
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+                }
+                return isDeleted;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
+        public int DeleteByRandevuId(int randevuid)
+        {
+            
+            bool deleteLog = ProjeConstants.DELETE_LOG;
+            int deleted;
+            string randevuIdStr = randevuid < 1? string.Empty : string.Format(" WHERE RandevuId={0} ", randevuid);
+            string sqlString = string.Format(@"
+                DELETE FROM RandevuKatilim_Table
+            ", randevuIdStr);
 
+            if (deleteLog)
+            {
+                string wherestr = string.Format(" WHERE RandevuId={0}", randevuid);
+                GenericEntity<RandevuKatilim> genericEntitySelect = new GenericEntity<RandevuKatilim>(ProjeConstants.SQL_SELECT);
+                string sqlStringSelect = genericEntitySelect.GetQuery(this, wherestr);
+                DataTable dataTable = dao.selectFromDb(sqlStringSelect, "");
+                List<RandevuKatilim> list = ToList<RandevuKatilim>(dataTable);
+                if (list.Count > 0)
+                    deleted = dao.DeleteFromDb(sqlString, "", true);
+                else deleted = 0;
+                if (deleted > 0)
+                {
+                    foreach (RandevuKatilim item in list)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.MTS, ProjeConstants.MTS_RANDEVUKATILIM);
+                    }
+                }
+            }
+            else
+            {
+                deleted = dao.DeleteFromDb(sqlString, "", true);
+            }
+            return deleted;
+        }
     }
 }

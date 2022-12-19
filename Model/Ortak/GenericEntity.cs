@@ -22,6 +22,8 @@ namespace Model.Ortak
         {
             if (_sqlOption == ProjeConstants.SQL_SELECT)
                 return GetSelect(t);
+            else if (_sqlOption == ProjeConstants.SQL_SELECTWITHFILTER)
+                return GetUpdate(t);
             else if (_sqlOption == ProjeConstants.SQL_UPDATE)
                 return GetUpdate(t);
             else if (_sqlOption == ProjeConstants.SQL_DELETE)
@@ -29,10 +31,11 @@ namespace Model.Ortak
             else
                 return GetInsert(t);
         }
+        
         public string GetQuery(T t, string extId)
         {
             if (_sqlOption == ProjeConstants.SQL_SELECT)
-                return GetSelect(t);
+                return GetSelect(t,extId);
             else if (_sqlOption == ProjeConstants.SQL_UPDATE)
                 return GetUpdate(t, extId);
             else if (_sqlOption == ProjeConstants.SQL_DELETE)
@@ -194,7 +197,6 @@ namespace Model.Ortak
             }
             return retVal;
         }
-
         private string GetSelect(T modelType)
         {
             Type type = typeof(T);
@@ -218,7 +220,26 @@ namespace Model.Ortak
                 idstr.AppendFormat("{0}={1} ", "Id", value.ToString());
                 sbQry.AppendFormat(" Where {0}", idstr.ToString());
             }
+            return sbQry.ToString();
+        }
+        private string GetSelect(T modelType, string wherestr)
+        {
+            Type type = typeof(T);
+            StringBuilder sbQry = new StringBuilder();
+            System.Reflection.PropertyInfo[] propInfo = type.GetProperties();
+            foreach (System.Reflection.PropertyInfo pi in propInfo)
+            {
+                if (sbQry.ToString() == string.Empty)
+                    sbQry.AppendFormat("Select {0}", pi.Name);
+                else
+                    sbQry.AppendFormat(", {0}", pi.Name);
+            }
 
+            if (sbQry.ToString() != string.Empty)
+            {
+                sbQry.AppendFormat(" From {0} ", type.Name.Replace("Entity", string.Empty) + "_Table");
+                sbQry.AppendFormat(!string.IsNullOrEmpty(wherestr)?" {0}":string.Empty, wherestr.ToString());
+            }
 
             return sbQry.ToString();
         }

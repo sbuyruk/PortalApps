@@ -333,7 +333,7 @@ namespace MTS_WebParts.RandevuParametreGirisiWP
                         randevuParametre.Grup = GrupLbl.Text;
                         randevuParametre.Sira = YeniSiraTxt.Text.ConvertToInt();
                         randevuParametre.Deger = YeniDegerTxt.Text;
-                        randevuParametre.Olusturan = UtilityHelper.GetCurrentUser();
+                        randevuParametre.Olusturan = UtilityHelper.GetCurrentUserName();
                         int id = randevuParametre.Save();
                         if (id > 0)
                         {

@@ -328,7 +328,7 @@ namespace MTS_WebParts.ToplantiParametreGirisiWP
                         toplantiParametre.Grup = GrupLbl.Text;
                         toplantiParametre.Sira = YeniSiraTxt.Text.ConvertToInt();
                         toplantiParametre.Deger = YeniDegerTxt.Text;
-                        toplantiParametre.Olusturan = UtilityHelper.GetCurrentUser();
+                        toplantiParametre.Olusturan = UtilityHelper.GetCurrentUserName();
                         int id = toplantiParametre.Save();
                         if (id > 0)
                         {

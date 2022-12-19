@@ -406,7 +406,7 @@ namespace MTS_WebParts.AramaGirisiWP
             aramaGorusme.KatilimciTipi = KatilimciTipiQS.ConvertToInt();
             aramaGorusme.Konu = KonuTxt.Text;
             aramaGorusme.GorusmeSekli = GorusmeSekliDDL.SelectedItem.Text;
-            aramaGorusme.Olusturan = UtilityHelper.GetCurrentUser();
+            aramaGorusme.Olusturan = UtilityHelper.GetCurrentUserName();
             aramaGorusme.RandevuId = RandevuIdQS.ConvertToInt();
             aramaGorusme.GorusmeSaglandi = GorusmeSaglandiChk.Checked;
             aramaGorusme.RandevuIstendi = RandevuIstendiChk.Checked;
@@ -439,7 +439,7 @@ namespace MTS_WebParts.AramaGirisiWP
                 aramaGorusme.KatilimciTipi = KatilimciTipiQS.ConvertToInt();
                 aramaGorusme.Konu = KonuTxt.Text;
                 aramaGorusme.GorusmeSekli = GorusmeSekliDDL.SelectedItem.Text;
-                aramaGorusme.Olusturan = UtilityHelper.GetCurrentUser();
+                aramaGorusme.Olusturan = UtilityHelper.GetCurrentUserName();
                 aramaGorusme.RandevuId = RandevuIdQS.ConvertToInt();
                 aramaGorusme.GorusmeSaglandi = GorusmeSaglandiChk.Checked;
                 aramaGorusme.RandevuIstendi = RandevuIstendiChk.Checked;
@@ -571,7 +571,7 @@ namespace MTS_WebParts.AramaGirisiWP
                         else if (aramaGorusme.KatilimciTipi == ProjeConstants.RANDEVU_KATILIMCI_IC_INT)
                             randevu.IcIrtibatId = aramaGorusme.ArayanId;
 
-                        randevu.Olusturan = UtilityHelper.GetCurrentUser();
+                        randevu.Olusturan = UtilityHelper.GetCurrentUserName();
                         randevu.Id = randevu.Save();
                         if (randevu.Id > 0)
                         {

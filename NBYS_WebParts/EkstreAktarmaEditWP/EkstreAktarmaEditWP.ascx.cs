@@ -460,7 +460,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
             ekstreAktarma.FisNo = FisNoTxt.Text;
             ekstreAktarma.TuzelKisi = TuzelKisiChk.Checked;
             ekstreAktarma.BelgeIstemiyor = BelgeIstemiyorChk.Checked;
-            ekstreAktarma.Olusturan = UtilityHelper.GetCurrentUser();
+            ekstreAktarma.Olusturan = UtilityHelper.GetCurrentUserLoginName();
             ekstreAktarma.Aciklama = AciklamaTxt.Text;
             ekstreAktarma.BagisTarihi = BagisTarihiTxt.Value.ConvertToDatetime();
             ekstreAktarma.IslemTarihi = IslemTarihiTxt.Text.ConvertToDatetime();
@@ -491,7 +491,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
             ekstreAktarma.FisNo = FisNoTxt.Text;
             ekstreAktarma.TuzelKisi = TuzelKisiChk.Checked;
             ekstreAktarma.BelgeIstemiyor = BelgeIstemiyorChk.Checked;
-            ekstreAktarma.Degistiren = UtilityHelper.GetCurrentUser();
+            ekstreAktarma.Degistiren = UtilityHelper.GetCurrentUserLoginName();
             ekstreAktarma.Aciklama = AciklamaTxt.Text;
             ekstreAktarma.BagisTarihi = BagisTarihiTxt.Value.ConvertToDatetime();
             ekstreAktarma.IslemTarihi = IslemTarihiTxt.Text.ConvertToDatetime();

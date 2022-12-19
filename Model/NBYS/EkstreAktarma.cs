@@ -2200,7 +2200,7 @@ namespace Model.NBYS
             int yeniId = 0;
             NakitBagisci nbToSave = new NakitBagisci();
             nbToSave = new NakitBagisci();
-            nbToSave.Olusturan = UtilityHelper.GetCurrentUser();
+            nbToSave.Olusturan = UtilityHelper.GetCurrentUserLoginName();
 
             //herbir nesne için bir dbo yarat
             //önce nakitbağışçıyı kaydet
@@ -2216,7 +2216,7 @@ namespace Model.NBYS
             //guncellenecek alanları nesnelerde guncelle
             //sonra Id ile bilinmeyenden Ad üret ve güncelle
             NakitBagisci nbToUpdate = new NakitBagisci();
-            nbToUpdate.Degistiren = UtilityHelper.GetCurrentUser();
+            nbToUpdate.Degistiren = UtilityHelper.GetCurrentUserLoginName();
             nbToUpdate.Adi = ProjeConstants.NAKITBAGISCI_BILINMEYEN + "_{0}";
             nbToUpdate.Aciklama = nbToUpdate.Aciklama + ProjeConstants.NAKITBAGISCI_BILINMEYEN + " Bağışçı Id= " + "{0}";
 

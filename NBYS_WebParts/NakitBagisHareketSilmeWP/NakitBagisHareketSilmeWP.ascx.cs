@@ -360,7 +360,7 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
         /// </summary>
         private void SecilenBagisiSil()
         {
-            string currentUser = UtilityHelper.GetCurrentUser();
+            string currentUser = UtilityHelper.GetCurrentUserLoginName();
             NakitBagisHareket nbh = new NakitBagisHareket();
             nbh = nbh.Select<NakitBagisHareket>(paramBagisHareketIdLbl.Value.ConvertToInt());
             if (nbh != null)
@@ -447,7 +447,7 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
                             isBagisciSilindi = bagisci.Delete();
                         }
                         if (skArmaganDbo.Success)//armagan tablosunda işlem oldu mu. //yeniden armağan hesaplanacak
-                            isArmaganYenidenHesaplandi = TekrarArmaganHesapla(nbh, UtilityHelper.GetCurrentUser());
+                            isArmaganYenidenHesaplandi = TekrarArmaganHesapla(nbh, UtilityHelper.GetCurrentUserLoginName());
                         ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "CloseModal();", true);
                         MessageHelper.PublishMessage("Bağış Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
                         RedirectToPage(ProjeConstants.PAGE_BAGISSIL + "?Mesaj=true");//+ BagisAraTxt.Text);

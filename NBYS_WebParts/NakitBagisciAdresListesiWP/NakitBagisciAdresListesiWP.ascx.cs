@@ -678,7 +678,7 @@ namespace NBYS_WebParts.NakitBagisciAdresListesiWP
                 nb = nb.Select<NakitBagisci>(paramNakitBagisciIdLbl.Value.ConvertToInt());
                 if (nb != null)
                 {
-                    nb.Degistiren = UtilityHelper.GetCurrentUser();
+                    nb.Degistiren = UtilityHelper.GetCurrentUserLoginName();
                     if (isDergiGonderLbl.Value.Equals("gonder"))
                     {
                         nb.DergiGonderilmesin = ProjeConstants.DERGI_GONDERILSIN;

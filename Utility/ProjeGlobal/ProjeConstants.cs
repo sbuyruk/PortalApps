@@ -4,6 +4,21 @@ namespace Utility.ProjeGlobal
 {
     public static class ProjeConstants
     {
+        //Programlar
+        public const string TBYS = "TBYS";
+        public const string MTS = "MTS";
+        public const string NBYS = "NBYS";
+        public const string FTKS = "FTKS";
+        public const string TYS = "TYS";
+        public const string PORTAL = "Portal";
+        public const string IKYS = "IKYS";
+        //moduller
+        public const string MTS_FAALIYET = "Faaliyet";
+        public const string MTS_KISI = "Kisi";
+        public const string MTS_ARAMAGORUSME = "Arama/Görüşme";
+        public const string MTS_ANIOBJESI_DAGITIM = "Anı Objesi Dağıtım";
+        public const string MTS_ANIOBJESI = "Anı Objesi";
+        public const string MTS_RANDEVUKATILIM = "Randevu Katılım";
         #region Resimler
         public const string IMAGE_PATH = "Resimler/";
         public const string RESIMLER_PERSONEL = "PersonelResimleri";
@@ -62,7 +77,15 @@ namespace Utility.ProjeGlobal
         public const int SQL_UPDATE = 1;
         public const int SQL_DELETE = 2;
         public const int SQL_INSERT = 3;
+        public const int SQL_SELECTWITHFILTER = 4;
         public const string GIZLI_STRING = "GİZLİ";
+
+        public const bool DELETE_LOG = true;
+        public const bool UPDATE_LOG = true;
+        public const bool SAVE_LOG = true;
+        
+        public const char DELIMITER = ';';
+
 
         #endregion
 

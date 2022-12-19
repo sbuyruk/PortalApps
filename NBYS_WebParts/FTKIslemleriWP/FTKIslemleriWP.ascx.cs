@@ -615,7 +615,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
                     ftkIslemleri.KurulusTarihi = FTKKurulusTarihiTxt.Text.ConvertToDatetime();
                     ftkIslemleri.GuncellemeTarihi = FTKGuncellemeTarihiTxt.Text.ConvertToDatetime();
                     ftkIslemleri.Aciklama = AciklamaTxt.Text;
-                    ftkIslemleri.Degistiren = UtilityHelper.GetCurrentUser();
+                    ftkIslemleri.Degistiren = UtilityHelper.GetCurrentUserLoginName();
 
                     if (string.IsNullOrEmpty(IliDDL.SelectedItem.ToString()))
                     {
@@ -682,7 +682,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
             string aciklama = string.Empty;
             if (sayac > 0)
             {
-                aciklama = DateTime.Now.ConvertToTimeSpanReturnInHHmm() + " tarihinde " + UtilityHelper.GetCurrentUser()+ " tarafından kayıt düzeltmesi yapıldı.";
+                aciklama = DateTime.Now.ConvertToTimeSpanReturnInHHmm() + " tarihinde " + UtilityHelper.GetCurrentUserLoginName()+ " tarafından kayıt düzeltmesi yapıldı.";
             }
             sayac = sayac > 0 ? sayac:  SayacHesapla(ftkIslem.Ili, ftkIslem.Ilcesi) + 1;
            
@@ -706,7 +706,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
                 ftk.KartNo = item.KartNo;
                 ftk.Sayac = sayac;
                 ftk.KisiId = item.Id;
-                ftk.Olusturan = UtilityHelper.GetCurrentUser();
+                ftk.Olusturan = UtilityHelper.GetCurrentUserLoginName();
                 ftk.Aciklama = ftk.Aciklama +"</br>" + aciklama;
                 kaydedildiMi=ftk.Save()>0;
             }
@@ -730,7 +730,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
                 ftkIslemleri.KurulusTarihi = FTKKurulusTarihiTxt.Text.ConvertToDatetime();
                 ftkIslemleri.GuncellemeTarihi= FTKGuncellemeTarihiTxt.Text.ConvertToDatetime();
                 ftkIslemleri.Aciklama = AciklamaTxt.Text;
-                ftkIslemleri.Olusturan = UtilityHelper.GetCurrentUser();
+                ftkIslemleri.Olusturan = UtilityHelper.GetCurrentUserLoginName();
 
                 if (string.IsNullOrEmpty(IliDDL.SelectedItem.ToString()))
                 {

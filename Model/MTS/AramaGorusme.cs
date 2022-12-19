@@ -19,16 +19,102 @@ namespace Model.MTS
         public string Aciklama { get; set; }
         public bool GorusmeSaglandi { get; set; }
         public bool RandevuIstendi { get; set; }
-        public override bool Delete()
+        public override int Save()
         {
             try
             {
+                bool saveLog = ProjeConstants.SAVE_LOG;
+                GenericEntity<AramaGorusme> genericEntity = new GenericEntity<AramaGorusme>(ProjeConstants.SQL_INSERT);
+                OlusturmaTarihi = DateTime.Now;
+                string sqlString = genericEntity.GetQuery(this);
+                int id = dao.Insert(sqlString);
+                if (id > 0 && saveLog)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.MTS, ProjeConstants.MTS_ARAMAGORUSME);
+                }
+                this.Id = id;
+                return id;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+        public override bool Update()
+        {
+            bool updateLog = ProjeConstants.UPDATE_LOG;
+            bool isSuccess = false;
+            try
+            {
+                if (updateLog)
+                {
+                    if (this != null)
+                    {
+                        AramaGorusme item = Select<AramaGorusme>(Id);
+                        if (Id != 0)
+                        {
+                            GenericEntity<AramaGorusme> genericEntity = new GenericEntity<AramaGorusme>(ProjeConstants.SQL_UPDATE);
+                            DegistirmeTarihi = DateTime.Now;
+                            string sqlString = genericEntity.GetQuery(this);
+                            isSuccess = dao.Update2Db(sqlString);
+                        }
+                        if (isSuccess)
+                        {
+                            OlayKayit olayKayit = new OlayKayit();
+                            olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.MTS, ProjeConstants.MTS_ARAMAGORUSME);
+                        }
+                    }
+
+                }
+                if (Id != 0)
+                {
+                    GenericEntity<AramaGorusme> genericEntity = new GenericEntity<AramaGorusme>(ProjeConstants.SQL_UPDATE);
+                    DegistirmeTarihi = DateTime.Now;
+                    string sqlString = genericEntity.GetQuery(this);
+                    isSuccess = dao.Update2Db(sqlString);
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return isSuccess;
+        }
+        public override bool Delete()
+        {
+            bool deleteLog = ProjeConstants.DELETE_LOG;
+            try
+            {
+                bool isDeleted;
                 if (Id != 0)
                 {
                     GenericEntity<AramaGorusme> genericEntity = new GenericEntity<AramaGorusme>(ProjeConstants.SQL_DELETE);
-                    OlusturmaTarihi = DateTime.Now;
                     string sqlString = genericEntity.GetQuery(this);
-                    bool isDeleted = dao.DeleteFromDb(sqlString, "");
+                    if (deleteLog)
+                    {
+                        AramaGorusme item = Select<AramaGorusme>(Id);
+                        if (item != null)
+                        {
+                            isDeleted = dao.DeleteFromDb(sqlString, "");
+                        }
+                        else isDeleted = false;
+                        if (isDeleted)
+                        {
+                            OlayKayit olayKayit = new OlayKayit();
+                            olayKayit.SilmeOlayKaydet(item, ProjeConstants.MTS, ProjeConstants.MTS_ARAMAGORUSME);
+                        }
+                    }
+                    else
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+
+
+
                     return isDeleted;
                 }
                 else
@@ -42,25 +128,6 @@ namespace Model.MTS
 
                 throw ex;
             }
-        }
-        public override int Save()
-        {
-            try
-            {
-                GenericEntity<AramaGorusme> genericEntity = new GenericEntity<AramaGorusme>(ProjeConstants.SQL_INSERT);
-                OlusturmaTarihi = DateTime.Now;
-                string sqlString = genericEntity.GetQuery(this);
-                int id = dao.Insert(sqlString);
-
-                this.Id = id;
-                return id;
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-
         }
         public AramaGorusme Select(int id)
         {
@@ -177,25 +244,6 @@ namespace Model.MTS
             DataTable dataTable = dao.selectFromDb(sqlString, "");
 
             return dataTable;
-        }
-        public override bool Update()
-        {
-            bool isSuccess = false;
-            try
-            {
-                if (Id != 0)
-                {
-                    GenericEntity<AramaGorusme> genericEntity = new GenericEntity<AramaGorusme>(ProjeConstants.SQL_UPDATE);
-                    DegistirmeTarihi = DateTime.Now;
-                    string sqlString = genericEntity.GetQuery(this);
-                    isSuccess = dao.Update2Db(sqlString);
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            return isSuccess;
         }
     }
 }

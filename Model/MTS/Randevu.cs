@@ -57,14 +57,32 @@ namespace Model.MTS
         }
         public override bool Delete()
         {
+            bool deleteLog = ProjeConstants.DELETE_LOG;
             try
             {
+                bool isDeleted;
                 if (Id != 0)
                 {
                     GenericEntity<Randevu> genericEntity = new GenericEntity<Randevu>(ProjeConstants.SQL_DELETE);
-                    OlusturmaTarihi = DateTime.Now;
                     string sqlString = genericEntity.GetQuery(this);
-                    bool isDeleted = dao.DeleteFromDb(sqlString, "");
+                    if (deleteLog)
+                    {
+                        Randevu item = Select<Randevu>(Id);
+                        if (item != null)
+                        {
+                            isDeleted = dao.DeleteFromDb(sqlString, "");
+                        }
+                        else isDeleted = false;
+                        if (isDeleted)
+                        {
+                            OlayKayit olayKayit = new OlayKayit();
+                            olayKayit.SilmeOlayKaydet(item, ProjeConstants.MTS, ProjeConstants.MTS_FAALIYET);
+                        }
+                    }
+                    else
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
                     return isDeleted;
                 }
                 else
@@ -81,13 +99,18 @@ namespace Model.MTS
         }
         public override int Save()
         {
+            bool saveLog = ProjeConstants.SAVE_LOG;
             try
             {
                 GenericEntity<Randevu> genericEntity = new GenericEntity<Randevu>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
                 string sqlString = genericEntity.GetQuery(this);
                 int id = dao.Insert(sqlString);
-
+                if (id > 0 && saveLog)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.MTS, ProjeConstants.MTS_ANIOBJESI_DAGITIM);
+                }
                 this.Id = id;
                 return id;
             }
@@ -137,9 +160,31 @@ namespace Model.MTS
         }
         public override bool Update()
         {
+            bool updateLog = ProjeConstants.UPDATE_LOG;
             bool isSuccess = false;
             try
             {
+                if (updateLog)
+                {
+
+                    if (this != null)
+                    {
+                        Randevu item = Select<Randevu>(Id);
+                        if (Id != 0)
+                        {
+                            GenericEntity<Randevu> genericEntity = new GenericEntity<Randevu>(ProjeConstants.SQL_UPDATE);
+                            DegistirmeTarihi = DateTime.Now;
+                            string sqlString = genericEntity.GetQuery(this);
+                            isSuccess = dao.Update2Db(sqlString);
+                        }
+                        if (isSuccess)
+                        {
+                            OlayKayit olayKayit = new OlayKayit();
+                            olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.MTS, ProjeConstants.MTS_FAALIYET);
+                        }
+                    }
+
+                }
                 if (Id != 0)
                 {
                     GenericEntity<Randevu> genericEntity = new GenericEntity<Randevu>(ProjeConstants.SQL_UPDATE);
@@ -147,6 +192,7 @@ namespace Model.MTS
                     string sqlString = genericEntity.GetQuery(this);
                     isSuccess = dao.Update2Db(sqlString);
                 }
+
             }
             catch (Exception)
             {
@@ -439,25 +485,6 @@ namespace Model.MTS
 
             return sqlString;
         }
-
-        //public bool Equals(Randevu other)
-        //{
-        //    return !(other is null) &&
-        //           RandevuTipi == other.RandevuTipi &&
-        //           RandevuAmaci == other.RandevuAmaci &&
-        //           RandevuKonusu == other.RandevuKonusu &&
-        //           RandevuYeri == other.RandevuYeri &&
-        //           RandevuDurumu == other.RandevuDurumu &&
-        //           TumGun == other.TumGun &&
-        //           AcikTarih == other.AcikTarih &&
-        //           IcIrtibatId == other.IcIrtibatId &&
-        //           DisIrtibatId == other.DisIrtibatId &&
-        //           BaslangicTarihi == other.BaslangicTarihi &&
-        //           BitisTarihi == other.BitisTarihi &&
-        //           BaslangicSaati == other.BaslangicSaati &&
-        //           BitisSaati == other.BitisSaati &&
-        //           Aciklama == other.Aciklama;
-        //}
 
         public override int GetHashCode()
         {

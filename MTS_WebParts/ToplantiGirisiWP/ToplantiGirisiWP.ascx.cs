@@ -208,7 +208,7 @@ namespace MTS_WebParts.ToplantiGirisiWP
 
                 if (ViewState["CurrentUserName"] == null)
                 {
-                    ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUser();
+                    ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUserName();
                 }
                 return ViewState["CurrentUserName"].ToString();
             }
@@ -720,7 +720,7 @@ namespace MTS_WebParts.ToplantiGirisiWP
                 toplanti.IkramOnayi = IkramOnayiChk.Checked;
                 toplanti.IkramMalzemesi = IkramMalzemesiTxt.Text;
                 toplanti.UniqueId = Guid.NewGuid();
-                toplanti.Olusturan = UtilityHelper.GetCurrentUser();
+                toplanti.Olusturan = UtilityHelper.GetCurrentUserName();
 
                 if (string.IsNullOrEmpty(ToplantiKonusuTxt.Text))
                 {
@@ -778,7 +778,7 @@ namespace MTS_WebParts.ToplantiGirisiWP
 
                 Toplanti toplanti = new Toplanti();
                 toplanti = toplanti.Select(ToplantiIdQS.ConvertToInt());
-                toplanti.Degistiren = UtilityHelper.GetCurrentUser();
+                toplanti.Degistiren = UtilityHelper.GetCurrentUserName();
                 if (toplanti == null)
                 {
                     MessageHelper.PublishMessage("Toplantı bulunamadı", ProjeConstants.MESAJ_HATA, 5000);
@@ -803,7 +803,7 @@ namespace MTS_WebParts.ToplantiGirisiWP
                     toplanti.CevrimIci = CevrimIciTplantiChk.Checked;
                     toplanti.IkramOnayi = IkramOnayiChk.Checked;
                     toplanti.IkramMalzemesi= IkramMalzemesiTxt.Text;
-                    toplanti.Degistiren = UtilityHelper.GetCurrentUser();
+                    toplanti.Degistiren = UtilityHelper.GetCurrentUserName();
                     if (string.IsNullOrEmpty(ToplantiKonusuTxt.Text))
                     {
                         MessageHelper.PublishMessage("Toplantı Konusu Boş Olamaz.", ProjeConstants.MESAJ_HATA, 2000);

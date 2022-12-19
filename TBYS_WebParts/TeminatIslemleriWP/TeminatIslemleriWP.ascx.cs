@@ -284,7 +284,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                     kiraSozlesme.TeminatTutari = TeminatTutariTxt.Value.ConvertToDecimal();
                     kiraSozlesme.OdenenTeminatTutari = OdenenTeminatTxt.Value.ConvertToDecimal();
                     kiraSozlesme.KalanTeminatTutari = KalanTeminatTxt.Value.ConvertToDecimal();
-                    kiraSozlesme.Degistiren = UtilityHelper.GetCurrentUser();
+                    kiraSozlesme.Degistiren = UtilityHelper.GetCurrentUserLoginName();
                     kiraSozlesme.IadeTeminatTutari = IadeTeminatTxt.Value.ConvertToDecimal();
                     kiraSozlesme.TeminatCinsi = string.IsNullOrEmpty(TeminatCinsiTxt.Value) ? ProjeConstants.DOVIZ_TL : TeminatCinsiTxt.Value;
                     kiraSozlesme.TeminatOdemeTarihi = TeminatTarihiTxt.Value.ConvertToDatetime();
@@ -324,7 +324,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                     opl = opl.SelectBySozlesmeIdOdemeTarihi(kiraSozlesme.Id, odemeTarihi);
                     int yeniOdemePlaniId = opl != null ? opl.Id : odeme.OdemePlaniId;
                     guncellendiMi = odeme.OdemeyiVeOdemePlaniniGuncelle(kiraSozlesme.Id, odeme.OdemePlaniId, yeniOdemePlaniId,
-                    odemeId, odemeTarihi, odenenTutar, aciklama, UtilityHelper.GetCurrentUser());
+                    odemeId, odemeTarihi, odenenTutar, aciklama, UtilityHelper.GetCurrentUserLoginName());
                 }
 
             }
@@ -402,7 +402,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                 teminatIslem.IslemTarihi = UtilityHelper.TariheSaatEkle(IslemTarihiTxt.Value.ConvertToDatetime(), IslemSaatiTxt.Value);
                 teminatIslem.IslemTipi = IslemTipiDDL.SelectedValue;
                 teminatIslem.IslemTutari = IslemTutariTxt.Value.ConvertToDecimal();
-                teminatIslem.Olusturan = UtilityHelper.GetCurrentUser();
+                teminatIslem.Olusturan = UtilityHelper.GetCurrentUserLoginName();
                 int teminatIslemId = teminatIslem.Save();
                 if (teminatIslemId > 0)
                 {
@@ -445,7 +445,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                 teminatIslem.IslemTarihi = UtilityHelper.TariheSaatEkle(IslemTarihiTxt.Value.ConvertToDatetime(), IslemSaatiTxt.Value);
                 teminatIslem.IslemTipi = IslemTipiDDL.SelectedValue;
                 teminatIslem.IslemTutari = IslemTutariTxt.Value.ConvertToDecimal();
-                teminatIslem.Degistiren = UtilityHelper.GetCurrentUser();
+                teminatIslem.Degistiren = UtilityHelper.GetCurrentUserLoginName();
                 if (teminatIslem.Update())
                 {
                     KiraSozlesme kiraSozlesme = new KiraSozlesme();

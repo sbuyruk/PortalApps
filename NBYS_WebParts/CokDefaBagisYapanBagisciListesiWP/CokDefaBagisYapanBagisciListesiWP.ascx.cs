@@ -226,7 +226,7 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
                     {
                         DateTime bastar = ProjeConstants.COKBAGISYAPAN_BASLAMATARIHI.ConvertToDatetime();
                         DateTime bittar = DateTime.Today;
-                        armaganId = EkstreAktarma.ArmaganiKaydetVeyaGuncelle(bastar, bittar, nakitBagisciId, sonBagisTarihi, toplamBagis, hakedilenArmaganTanim.Id, UtilityHelper.GetCurrentUser(), nakitBagisci, nakitBagisHareketListesi);
+                        armaganId = EkstreAktarma.ArmaganiKaydetVeyaGuncelle(bastar, bittar, nakitBagisciId, sonBagisTarihi, toplamBagis, hakedilenArmaganTanim.Id, UtilityHelper.GetCurrentUserLoginName(), nakitBagisci, nakitBagisHareketListesi);
                     }
                     else
                     {
