@@ -103,9 +103,12 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP
             try
             {
                 if (!Page.IsPostBack)
-                {
-                    AuthQS = IKYSOrtak.PersonelinBolgesiniGetir(CurrentUserName);
-                    if (!string.IsNullOrEmpty(AuthQS) && !AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM))
+                {                    
+
+                    if (!string.IsNullOrEmpty(AuthQS) &&
+                        (AuthQS.Equals(ProjeConstants.BOLGE_ISTANBUL) ||
+                            AuthQS.Equals(ProjeConstants.BOLGE_IZMIR) ||
+                            AuthQS.Equals(ProjeConstants.BOLGE_MERSIN)))
                         {
                         TitleLbl.Text = "Bağışçı Listesi" + " (" + AuthQS + " Bölgesi)";
                         YeniKayitBtn.Visible = false;
@@ -190,7 +193,12 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP
                 tasinmazBagisciListItem.TaahhutFormu = FormLinkiGetir(bagisciTaahhutFormuDosyalari, ProjeConstants.DOSYA_TAAHHUT_FORMU,tasinmazBagisciId.ToString(), "Taahhut Formu", "btn btn-outline-secondary");
 
                 tasinmazBagisciListItem.Taahhutler = TaahhutModalGoster(tasinmazBagisciId);
-                tasinmazBagisciListItem.Duzenle = "<a href=" + pageUrl + @"?DestinationApp=TBD&BagisciId=" + tasinmazBagisciId + "  class='btn btn-outline-primary'>Düzenle</a>";
+                
+                bool duzenleGorunsunMu = !string.IsNullOrEmpty(AuthQS) && AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM);
+                if (duzenleGorunsunMu)
+                {
+                    tasinmazBagisciListItem.Duzenle = "<a href=" + pageUrl + @"?DestinationApp=TBD&BagisciId=" + tasinmazBagisciId + "  class='btn btn-outline-primary'>Düzenle</a>";
+                }
                 tasinmazBagisciListItem.Secildi = SecilenIdQS.Equals(tasinmazBagisciListItem.TasinmazBagisciId);
                 list.Add(tasinmazBagisciListItem);
             }

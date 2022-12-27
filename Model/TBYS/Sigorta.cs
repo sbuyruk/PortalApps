@@ -182,24 +182,12 @@ namespace Model.TBYS
                             ");
             return sqlString;
         }
-        public string SelectByTeminatSigortaCinsiReturnJson(string sigortaCinsi, bool vadesiGelenler,bool isDeprem, bool isYangin, bool isMakine100000, bool isMakine5000, bool isJenerator, bool isAsansor, bool isKazan)
+        
+        public DataTable SelectByTeminatSigortaCinsiReturnDataTable(string sigortaCinsi, bool vadesiGelenler, bool isDeprem, bool isYangin, bool isMakine100000, bool isMakine5000, bool isJenerator, bool isAsansor, bool isKazan, string bolge)
         {
-            string sqlString = SelectByTeminatSigortaCinsiSQL(sigortaCinsi, vadesiGelenler,isDeprem, isYangin, isMakine100000, isMakine5000, isJenerator, isAsansor, isKazan);
-            DataTable dataTable = null;
-            try
-            {
-                dataTable = dao.selectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-            string json = ToJSON(dataTable);
-            return json;
-        }
-        public DataTable SelectByTeminatSigortaCinsiReturnDataTable(string sigortaCinsi, bool vadesiGelenler, bool isDeprem, bool isYangin, bool isMakine100000, bool isMakine5000, bool isJenerator, bool isAsansor, bool isKazan)
-        {
-            string sqlString = SelectByTeminatSigortaCinsiSQL(sigortaCinsi, vadesiGelenler, isDeprem, isYangin, isMakine100000, isMakine5000, isJenerator, isAsansor, isKazan);
+            string bolgeStr = string.Empty;
+            
+            string sqlString = SelectByTeminatSigortaCinsiSQL(sigortaCinsi, vadesiGelenler, isDeprem, isYangin, isMakine100000, isMakine5000, isJenerator, isAsansor, isKazan, bolge);
             DataTable dataTable = null;
             try
             {
@@ -212,9 +200,18 @@ namespace Model.TBYS
             return dataTable;
 
         }
-        private string SelectByTeminatSigortaCinsiSQL(string sigortaCinsi, bool vadesiGelenler, bool isDeprem, bool isYangin, bool isMakine100000, bool isMakine5000, bool isJenerator, bool isAsansor, bool isKazan)
+        private string SelectByTeminatSigortaCinsiSQL(string sigortaCinsi, bool vadesiGelenler, bool isDeprem, bool isYangin, bool isMakine100000, bool isMakine5000, bool isJenerator, bool isAsansor, bool isKazan, string bolge)
         {
-            string sigortaCinsiStr = string.IsNullOrEmpty(sigortaCinsi) || sigortaCinsi.Equals(ProjeConstants.HEPSI) ? " SigortaCinsi is not null " : " SigortaCinsi = " + sigortaCinsi.ReturnQuotedValue();
+            string bolgeStr = string.Empty;
+            if (!string.IsNullOrEmpty(bolge))
+            {
+                if (bolge.Equals(ProjeConstants.BOLGE_ISTANBUL) ||
+                    bolge.Equals(ProjeConstants.BOLGE_IZMIR) ||
+                    bolge.Equals(ProjeConstants.BOLGE_MERSIN))
+                    bolgeStr = string.Format(" AND Bolge={0}", bolge.ReturnQuotedValue());
+            }
+
+            string sigortaCinsiStr = string.IsNullOrEmpty(sigortaCinsi) || sigortaCinsi.Equals(ProjeConstants.HEPSI) ? " AND SigortaCinsi is not null " : " SigortaCinsi = " + sigortaCinsi.ReturnQuotedValue();
             string depremStr = isDeprem ? string.Format(" TeminatListesi Like '%{0}%'", "1") : "";
             string yanginStr = isYangin ? string.Format(" TeminatListesi Like '%{0}%'", "2") : "";
             string makine100000Str = isMakine100000 ? string.Format(" TeminatListesi Like '%{0}%'", "3") : "";
@@ -235,7 +232,7 @@ namespace Model.TBYS
             teminatStr = andStr + teminatStr + (isDeprem || isYangin || isMakine100000 || isMakine5000 || isJenerator || isAsansor || isKazan ? " ) " : "");
 
           
-                string vadeStr = vadesiGelenler?string.Format(" AND SigortaBitTar <{0}", DateTime.Today.AddMonths(1).ReturnTRDateFormat()):string.Empty;
+            string vadeStr = vadesiGelenler?string.Format(" AND SigortaBitTar <{0}", DateTime.Today.AddMonths(1).ReturnTRDateFormat()):string.Empty;
             
             string sqlString = string.Format(@"
                 SELECT A.Id SigortaId, B.SorumluBolge, A.TasinmazId,B.SorumluBolge,A.SigortaCinsi,A.AdresKodu,A.PoliceNo,A.SigortaBasTar,A.SigortaBitTar,A.YapiTarzi,A.InsaYili,
@@ -246,12 +243,14 @@ namespace Model.TBYS
                 FROM Sigorta_Table A
                     INNER JOIN Tasinmaz_Table B ON B.Id=A.TasinmazId AND (B.EnvanterdeMi=1 OR B.EnvanterdeMi=2) 
                     LEFT JOIN BagimsizBolum_Table C ON C.Id=A.BolumId AND C.TasinmazId=B.Id
-                WHERE 
+                    LEFT JOIN IL_Table D ON D.IlAdi=B.Ili
+                WHERE 1>0
                     {0}
                     {1} 
                     {2}
+                    {3}
                 ORDER BY B.SorumluBolge, B.Ili,B.Ilcesi, A.Id, SigortaBasTar DESC
-                            ", sigortaCinsiStr, teminatStr,vadeStr);
+                            ", sigortaCinsiStr, teminatStr,vadeStr, bolgeStr);
             return sqlString;
         }
         public List<Sigorta> SelectBySigortaId(int sigortaId)

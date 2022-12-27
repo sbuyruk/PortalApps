@@ -293,6 +293,19 @@ namespace Model.MTS
 
             return list;
         }
+        public List<AniObjesiDagitim> SelectByRandevuId(int parametreId)
+        {
+            string sqlString = string.Format(@"
+                SELECT *
+                FROM AniObjesiDagitim_Table 
+                WHERE RandevuId={0}
+                ", parametreId);
+
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            List<AniObjesiDagitim> list = ToList<AniObjesiDagitim>(dataTable);
+
+            return list;
+        }
         private void WriteToTraceFile(string adim)
         {
             Trace.TraceInformation("Tarih Saat = " + DateTime.Now.ConvertToDDMMYYYHHmmFormat());

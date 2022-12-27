@@ -252,11 +252,12 @@
         <div class="card-header">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-2">
-                <asp:Label CssClass="col-form-label text-primary font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="Faaliyet Düzenleme"></asp:Label>
-                <asp:Label CssClass="col-form-label" ID="IdLbl" runat="server"></asp:Label>
-                <asp:Label CssClass="col-form-label " ID="AdiLbl" runat="server"></asp:Label>
+
                 <asp:UpdatePanel ID="UpdatePanel5" runat="server" UpdateMode="Conditional" >
                     <ContentTemplate>
+                        <asp:Label CssClass="col-form-label text-primary font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="Faaliyet Düzenleme"></asp:Label>
+                        <asp:Label CssClass="col-form-label" ID="IdLbl" runat="server"></asp:Label>
+                        <asp:Label CssClass="col-form-label " ID="AdiLbl" runat="server"></asp:Label>
                         <asp:Label ID="lblTime" CssClass="col-form-label text-secondary" runat="server" />
                         <asp:Timer ID="RefreshTimer" runat="server" OnTick="RefreshTimer_Tick" />
                         <div class="form-group text-right text-danger" id="TopBarDiv" runat="server"></div>
@@ -419,7 +420,7 @@
                 <ContentTemplate>
                     <asp:LinkButton ID="KaydetBtn" CssClass="btn btn-outline-success" runat="server" Text="Faaliyeti Kaydet" OnClick="KaydetBtn_Click"></asp:LinkButton>
                     <asp:LinkButton ID="GuncelleBtn" CssClass="btn btn-outline-primary" runat="server" Text="Güncelle" OnClick="GuncelleBtn_Click"></asp:LinkButton>
-                    <asp:LinkButton ID="RandevuSilBtn" CssClass="btn btn-outline-danger" runat="server" Text="Faaliyeti Sil" OnClick="RandevuSilBtn_Click" Enabled="False" Visible="False"></asp:LinkButton>
+                    <asp:LinkButton ID="RandevuSilBtn" CssClass="btn btn-outline-danger" runat="server" Text="Faaliyeti Sil" OnClick="RandevuSilBtn_Click" Visible="False"></asp:LinkButton>
                     <asp:LinkButton ID="RandevuKartiBtn" CssClass="btn btn-outline-secondary" runat="server" Text="Faaliyet Kartı" OnClick="RandevuKartiBtn_Click" Visible="False"></asp:LinkButton>
                     <asp:LinkButton ID="RandevuTakvimiBtn" CssClass="btn btn-outline-info float-right" runat="server" Text="Faaliyet Takvimi" OnClick="RandevuTakvimiBtn_Click" CausesValidation="false"></asp:LinkButton>
                     <asp:LinkButton ID="RandevuListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Faaliyet Listesi" OnClick="RandevuListesiBtn_Click" CausesValidation="false"></asp:LinkButton>

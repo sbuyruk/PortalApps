@@ -111,7 +111,7 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
             if (!Page.IsPostBack)
             {
                 BitisTarihiTxt.Text = DateTime.Today.ConvertToDatetimeEmptyIfNull();
-                BaslangicTarihiTxt.Text = DateTime.Today.AddMonths(-3).ConvertToDatetimeEmptyIfNull();
+                BaslangicTarihiTxt.Text = DateTime.Today.AddYears(-1).ConvertToDatetimeEmptyIfNull();
                 AramaGorusmeDDLDoldur();
                 KatilimciBilgileriniDoldur();
 
@@ -274,6 +274,7 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
         {
             DateTime bitis = BitisTarihiTxt.Text.ConvertToDatetime();
             bitis = UtilityHelper.TariheSaatEkle(bitis, "23:59");
+            BaslikLbl.InnerText = BaslangicTarihiTxt.Text + " - " + BitisTarihiTxt.Text + "Tarihleri Arasında Yapılan Arama/Görüşmeler";
             AramaGorusme arama = new AramaGorusme();
 
             DataTable dataTable = arama.SelectAllReturnDT(ArayanIdQS.ConvertToInt(), KatilimciTipiQS.ConvertToInt(), GorusmeSekliDDL.SelectedItem.Value,

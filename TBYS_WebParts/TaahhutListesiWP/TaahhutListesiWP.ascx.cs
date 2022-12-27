@@ -232,7 +232,13 @@ namespace TBYS_WebParts.TaahhutListesiWP
                 tasinmazBagisciListItem.TaahhutFormu = FormLinkiGetir(bagisciTaahhutFormuDosyalari, ProjeConstants.DOSYA_TAAHHUT_FORMU, item.BagisciId.ToString(), "Taahhüt Formu", "btn btn-outline-secondary");
                 tasinmazBagisciListItem.Bolge = BolgeGetir(item.BagisciId);
                 tasinmazBagisciListItem.Bagisci = BagisciBilgisiGetir(item.BagisciId);
-                tasinmazBagisciListItem.Duzenle = "<a href=" + pageUrl + @"?DestinationApp=TBD&BagisciId=" + item.BagisciId + "  class='btn btn-outline-primary'>Düzenle</a>";
+                
+                bool duzenleGorunsunMu = !string.IsNullOrEmpty(AuthQS) && AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM);
+                if (duzenleGorunsunMu)
+                {
+                    tasinmazBagisciListItem.Duzenle = "<a href=" + pageUrl + @"?DestinationApp=TBD&BagisciId=" + item.BagisciId + "  class='btn btn-outline-primary'>Düzenle</a>";
+                }
+
                 tasinmazBagisciListItem.Secildi = SecilenIdQS.Equals(item.Id);
                 //Listede yoksa ekle
                 //Varsa güncelle

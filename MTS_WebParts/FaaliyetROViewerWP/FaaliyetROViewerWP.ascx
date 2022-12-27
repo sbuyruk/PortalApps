@@ -24,7 +24,8 @@
     white-space: break-spaces;
     word-break: break-word;
     font-weight:normal;
-    border:ridge;
+    border:solid;
+    border-width:thin;
   }
 
   #calendar-wrap {
@@ -32,6 +33,9 @@
   }
 
   #calendar {
+      font-size:small;
+      height:1116px;
+      width:1600px;
 /*    max-width: 1100px;
     margin: 0 auto;
     margin-left:220px; */
@@ -69,10 +73,10 @@
 <script type="text/javascript">
     function DoIt() {
         var element = document.getElementById('calendar');
-
+        var fileName = $("h2").html();
         var opt = {
             margin: [0, 0],
-            filename: 'myfile.pdf',
+            filename: fileName,
             enableLinks: false,
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 2 },

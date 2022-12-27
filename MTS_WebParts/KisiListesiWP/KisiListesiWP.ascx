@@ -93,7 +93,7 @@
         });
     });
 </script>
-<div class="container ">
+<div class="container col-xl">
     <div class="card shadow">
         <div class="card-header">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>

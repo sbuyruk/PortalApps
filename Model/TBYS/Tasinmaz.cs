@@ -156,6 +156,13 @@ namespace Model.TBYS
 
         public DataTable SelectByBolgeReturnJson(string bolgeQS)
         {
+            string bolgeStr = string.Empty;
+            if (!string.IsNullOrEmpty(bolgeQS)) {
+                if (bolgeQS.Equals(ProjeConstants.BOLGE_ISTANBUL)||
+                    bolgeQS.Equals(ProjeConstants.BOLGE_IZMIR) ||
+                    bolgeQS.Equals(ProjeConstants.BOLGE_MERSIN))
+                bolgeStr = string.Format(" AND Bolge={0}", bolgeQS.ReturnQuotedValue());
+            }
             string sqlString = string.Format(@"
                 SELECT ROW_NUMBER() OVER(ORDER BY T.Id) AS Sirano, T.Id, T.Id TasinmazId, T.Ilcesi+'/'+T.Ili IliIlcesi,
                     T.*,
@@ -165,7 +172,7 @@ namespace Model.TBYS
 	                LEFT JOIN TasinmazBagisci_Table B ON B.Id=A.BagisciId
                     LEFT JOIN IL_Table C ON C.IlAdi=T.Ili
                 WHERE T.EnvanterdeMi=1 
-				    AND Bolge={0}", bolgeQS.ReturnQuotedValue());
+				    {0}", bolgeStr);
             DataTable dataTable = null;
             try
             {

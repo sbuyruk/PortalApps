@@ -31,6 +31,30 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
             InitializeControl();
             this.ChromeType = PartChromeType.None;
         }
+        private string AuthQS
+        {
+            get
+            {
+
+                if (ViewState["Auth"] == null || string.IsNullOrEmpty(ViewState["Auth"].ToString()))
+                {
+                    if (Page.Request.QueryString["Auth"] != null)
+                    {
+                        ViewState["Auth"] = Page.Request.QueryString["Auth"];
+                    }
+                    else
+                    {
+                        ViewState["Auth"] = string.Empty;
+                    }
+                }
+                return ViewState["Auth"].ToString();
+            }
+
+            set
+            {
+                ViewState["Auth"] = value;
+            }
+        }
         private string SecilenIdQS
         {
             get
@@ -334,7 +358,7 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
             Sigorta sigorta = new Sigorta();
             //DataTable dataTable = sigorta.SelectAllReturnDataTable();
             DataTable dataTable = sigorta.SelectByTeminatSigortaCinsiReturnDataTable(SigortaCinsiQS, VadesiGelenlerChk.Checked, DepremQS.ConvertToBool(), YanginQS.ConvertToBool(), Makine100000QS.ConvertToBool(),
-                Makine5000QS.ConvertToBool(), JeneratorQS.ConvertToBool(), AsansorQS.ConvertToBool(), KazanQS.ConvertToBool());
+                Makine5000QS.ConvertToBool(), JeneratorQS.ConvertToBool(), AsansorQS.ConvertToBool(), KazanQS.ConvertToBool(), AuthQS);
             return dataTable;
         }
         protected void ExcelBtn_Click(object sender, EventArgs e)
@@ -468,6 +492,10 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
         }
         private string CreateDataTable(string jsonData)
         {
+            string duzenleGorunsun = string.IsNullOrEmpty(AuthQS) || !AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM)
+                ? "{ targets:10, visible:false},"
+                : "{ targets:10, visible:true},";
+
             string tableString = @"
                 if ( jQuery.fn.DataTable.isDataTable('#CustomModalDataTable') ) {
                     jQuery('#CustomModalDataTable').DataTable().destroy();
@@ -503,6 +531,7 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
                             { data: 'Duzenle' },               
                         ],
                         'columnDefs': [
+                            " + duzenleGorunsun + @"
                             { 'width': '25%', 'targets': 5 }
                         ],
                         'language': {
@@ -561,8 +590,9 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
 
             Sigorta sigorta = new Sigorta();
             //DataTable dataTable = sigorta.SelectAllReturnDataTable();
+
             DataTable dataTable = sigorta.SelectByTeminatSigortaCinsiReturnDataTable(SigortaCinsiQS, VadesiGelenlerChk.Checked, DepremQS.ConvertToBool(), YanginQS.ConvertToBool(), Makine100000QS.ConvertToBool(),
-                Makine5000QS.ConvertToBool(), JeneratorQS.ConvertToBool(), AsansorQS.ConvertToBool(), KazanQS.ConvertToBool());
+                Makine5000QS.ConvertToBool(), JeneratorQS.ConvertToBool(), AsansorQS.ConvertToBool(), KazanQS.ConvertToBool(),AuthQS);
 
             int SiraNo = 1;
 
@@ -598,7 +628,11 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
                 sigortaItem.Adres = tamAdres;
                 sigortaItem.Police = FormLinkiGetir(policeDosyalari, ProjeConstants.DOSYA_SIGORTAPOLICESI_DASK, sigortaId,"Poliçe", "btn btn-outline-secondary");
                 sigortaItem.TasinmazKarti = "<a href=" + ProjeConstants.PAGE_TASINMAZ_KARTI + "?DestinationApp=TD&SenderApp=OL&TasinmazId=" + tasinmazId + " class='btn btn-outline-primary'>Taşınmaz Kartı</a>";
-                sigortaItem.Duzenle = "<a href=" + ProjeConstants.PAGE_TASINMAZSIGORTA_GIRIS + "?DestinationApp=SigortaD&SenderApp=SigortaL&SigortaId=" + sigortaId + "&TasinmazId="+tasinmazId+" class='btn btn-outline-primary'>Düzenle</a>";
+                bool duzenleGorunsunMu = !string.IsNullOrEmpty(AuthQS) && AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM);
+                if (duzenleGorunsunMu)
+                {
+                    sigortaItem.Duzenle = "<a href=" + ProjeConstants.PAGE_TASINMAZSIGORTA_GIRIS + "?DestinationApp=SigortaD&SenderApp=SigortaL&SigortaId=" + sigortaId + "&TasinmazId=" + tasinmazId + " class='btn btn-outline-primary'>Düzenle</a>";
+                }
                 sigortaItem.Secildi = SecilenIdQS.Equals(sigortaItem.SigortaId);
                 list.Add(sigortaItem);
             }

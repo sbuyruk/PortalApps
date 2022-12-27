@@ -110,7 +110,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
         private List<TasinmazListesiListItem> GetDataList()
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            DataTable dataTable = tasinmaz.SelectAllReturnDataTable();
+            DataTable dataTable = tasinmaz.SelectByBolgeReturnJson(AuthQS);
 
             List<TasinmazListesiListItem> list = new List<TasinmazListesiListItem>();
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);

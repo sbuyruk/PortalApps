@@ -1924,20 +1924,22 @@ namespace MTS_WebParts.FaaliyetROViewerWP {
                     ": 40px;*/\r\n    font-size: 14px;\r\n    font-family: Arial, Helvetica Neue, Helveti" +
                     "ca, sans-serif;\r\n  }\r\n\r\n  .fc-daygrid-dot-event .fc-event-title {\r\n    white-spa" +
                     "ce: break-spaces;\r\n    word-break: break-word;\r\n    font-weight:normal;\r\n    bor" +
-                    "der:ridge;\r\n  }\r\n\r\n  #calendar-wrap {\r\n    /*margin-left: 200px;*/\r\n  }\r\n\r\n  #ca" +
-                    "lendar {\r\n/*    max-width: 1100px;\r\n    margin: 0 auto;\r\n    margin-left:220px; " +
-                    "*/\r\n  }\r\n  .title-wrap {\r\n    white-space: normal !important;\r\n    }\r\n    .iptal" +
-                    "-edildi {\r\n        /*text-decoration: line-through !important;*/\r\n            ba" +
-                    "ckground-image: url(\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53M" +
-                    "y5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZ" +
-                    "WlnaHQ9JzEwJyBmaWxsPSd3aGl0ZScvPgogIDxwYXRoIGQ9J00tMSwxIGwyLC0yCiAgICAgICAgICAgT" +
-                    "TAsMTAgbDEwLC0xMAogICAgICAgICAgIE05LDExIGwyLC0yJyBzdHJva2U9J2JsYWNrJyBzdHJva2Utd" +
-                    "2lkdGg9JzEnLz4KPC9zdmc+Cg==\"); \r\n            background-repeat: repeat;    \r\n   " +
-                    " }\r\n\r\n  #globalWrapper * {\r\n    z-index: auto;\r\n  }\r\n</style>\r\n<script type=\"tex" +
-                    "t/javascript\">\r\n    function OpenToplantiModal() {\r\n        $(\"#ToplantiDetaylar" +
-                    "iModal\").modal({ backdrop: true });\r\n    }\r\n    function OpenFaaliyetModal() {\r\n" +
-                    "        $(\"#FaaliyetDetaylariModal\").modal({ backdrop: true });\r\n    }\r\n    func" +
-                    "tion ToplantiDetaylariModal(toplantiId) {\r\n        document.getElementById(\'");
+                    "der:solid;\r\n    border-width:thin;\r\n  }\r\n\r\n  #calendar-wrap {\r\n    /*margin-left" +
+                    ": 200px;*/\r\n  }\r\n\r\n  #calendar {\r\n      font-size:small;\r\n      height:1116px;\r\n" +
+                    "      width:1600px;\r\n/*    max-width: 1100px;\r\n    margin: 0 auto;\r\n    margin-l" +
+                    "eft:220px; */\r\n  }\r\n  .title-wrap {\r\n    white-space: normal !important;\r\n    }\r" +
+                    "\n    .iptal-edildi {\r\n        /*text-decoration: line-through !important;*/\r\n   " +
+                    "         background-image: url(\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cD" +
+                    "ovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdG" +
+                    "g9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSd3aGl0ZScvPgogIDxwYXRoIGQ9J00tMSwxIGwyLC0yCiAgIC" +
+                    "AgICAgICAgTTAsMTAgbDEwLC0xMAogICAgICAgICAgIE05LDExIGwyLC0yJyBzdHJva2U9J2JsYWNrJy" +
+                    "BzdHJva2Utd2lkdGg9JzEnLz4KPC9zdmc+Cg==\"); \r\n            background-repeat: repea" +
+                    "t;    \r\n    }\r\n\r\n  #globalWrapper * {\r\n    z-index: auto;\r\n  }\r\n</style>\r\n<scrip" +
+                    "t type=\"text/javascript\">\r\n    function OpenToplantiModal() {\r\n        $(\"#Topla" +
+                    "ntiDetaylariModal\").modal({ backdrop: true });\r\n    }\r\n    function OpenFaaliyet" +
+                    "Modal() {\r\n        $(\"#FaaliyetDetaylariModal\").modal({ backdrop: true });\r\n    " +
+                    "}\r\n    function ToplantiDetaylariModal(toplantiId) {\r\n        document.getElemen" +
+                    "tById(\'");
                          @__w.Write( paramToplantiIdLbl.ClientID);
 
             @__w.Write("\').value = toplantiId;\r\n        document.getElementById(\'");
@@ -1957,10 +1959,10 @@ namespace MTS_WebParts.FaaliyetROViewerWP {
 <script type=""text/javascript"">
     function DoIt() {
         var element = document.getElementById('calendar');
-
+        var fileName = $(""h2"").html();
         var opt = {
             margin: [0, 0],
-            filename: 'myfile.pdf',
+            filename: fileName,
             enableLinks: false,
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 2 },

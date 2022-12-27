@@ -81,6 +81,10 @@ namespace MTS_WebParts.AramaGorusmeListesiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl BaslikLbl;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.HtmlControls.HtmlInputText paramRandevuKatilimciIdLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -299,7 +303,7 @@ namespace MTS_WebParts.AramaGorusmeListesiWP {
             this.BaslangicTarihiTxt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "BaslangicTarihiTxt";
-            @__ctrl.CssClass = "form-control input-date";
+            @__ctrl.CssClass = "form-control DateTimePickerV1 input-date";
             @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
             @__ctrl.AutoPostBack = true;
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("placeholder", "dd.mm.yyyy");
@@ -330,12 +334,24 @@ namespace MTS_WebParts.AramaGorusmeListesiWP {
             this.BitisTarihiTxt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "BitisTarihiTxt";
-            @__ctrl.CssClass = "form-control input-date";
+            @__ctrl.CssClass = "form-control DateTimePickerV1 input-date";
             @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
             @__ctrl.AutoPostBack = true;
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("placeholder", "dd.mm.yyyy");
             @__ctrl.TextChanged -= new System.EventHandler(this.BitisTarihiTxt_TextChanged);
             @__ctrl.TextChanged += new System.EventHandler(this.BitisTarihiTxt_TextChanged);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControlBaslikLbl() {
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
+            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("h2");
+            this.BaslikLbl = @__ctrl;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "font-weight-bold text-center");
+            @__ctrl.ID = "BaslikLbl";
             return @__ctrl;
         }
         
@@ -620,33 +636,36 @@ namespace MTS_WebParts.AramaGorusmeListesiWP {
             global::System.Web.UI.WebControls.TextBox @__ctrl14;
             @__ctrl14 = this.@__BuildControlBitisTarihiTxt();
             @__parser.AddParsedSubObject(@__ctrl14);
-            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl15;
-            @__ctrl15 = this.@__BuildControlparamRandevuKatilimciIdLbl();
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl15;
+            @__ctrl15 = this.@__BuildControlBaslikLbl();
             @__parser.AddParsedSubObject(@__ctrl15);
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl16;
-            @__ctrl16 = this.@__BuildControlparamRandevuKatilimciTipiLbl();
+            @__ctrl16 = this.@__BuildControlparamRandevuKatilimciIdLbl();
             @__parser.AddParsedSubObject(@__ctrl16);
-            global::System.Web.UI.WebControls.LinkButton @__ctrl17;
-            @__ctrl17 = this.@__BuildControlSecilenKatilimciyiGetirBtn();
+            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl17;
+            @__ctrl17 = this.@__BuildControlparamRandevuKatilimciTipiLbl();
             @__parser.AddParsedSubObject(@__ctrl17);
             global::System.Web.UI.WebControls.LinkButton @__ctrl18;
-            @__ctrl18 = this.@__BuildControlYeniAramaGirisiBtn();
+            @__ctrl18 = this.@__BuildControlSecilenKatilimciyiGetirBtn();
             @__parser.AddParsedSubObject(@__ctrl18);
             global::System.Web.UI.WebControls.LinkButton @__ctrl19;
-            @__ctrl19 = this.@__BuildControlYeniKisiBtn();
+            @__ctrl19 = this.@__BuildControlYeniAramaGirisiBtn();
             @__parser.AddParsedSubObject(@__ctrl19);
             global::System.Web.UI.WebControls.LinkButton @__ctrl20;
-            @__ctrl20 = this.@__BuildControlRandevuTakvimiBtn();
+            @__ctrl20 = this.@__BuildControlYeniKisiBtn();
             @__parser.AddParsedSubObject(@__ctrl20);
             global::System.Web.UI.WebControls.LinkButton @__ctrl21;
-            @__ctrl21 = this.@__BuildControlRandevuListesiBtn();
+            @__ctrl21 = this.@__BuildControlRandevuTakvimiBtn();
             @__parser.AddParsedSubObject(@__ctrl21);
             global::System.Web.UI.WebControls.LinkButton @__ctrl22;
-            @__ctrl22 = this.@__BuildControlKisiListesiBtn();
+            @__ctrl22 = this.@__BuildControlRandevuListesiBtn();
             @__parser.AddParsedSubObject(@__ctrl22);
-            global::System.Web.UI.UpdatePanel @__ctrl23;
-            @__ctrl23 = this.@__BuildControlUpdatePanel6();
+            global::System.Web.UI.WebControls.LinkButton @__ctrl23;
+            @__ctrl23 = this.@__BuildControlKisiListesiBtn();
             @__parser.AddParsedSubObject(@__ctrl23);
+            global::System.Web.UI.UpdatePanel @__ctrl24;
+            @__ctrl24 = this.@__BuildControlUpdatePanel6();
+            @__parser.AddParsedSubObject(@__ctrl24);
             @__ctrl.SetRenderMethodDelegate(new System.Web.UI.RenderMethod(this.@__Render__control1));
         }
         
@@ -694,57 +713,58 @@ namespace MTS_WebParts.AramaGorusmeListesiWP {
                          @__w.Write( SecilenKatilimciyiGetirBtn.ClientID);
 
             @__w.Write("\').click();\r\n    }\r\n</script>\r\n<script type=\"text/javascript\">\r\n    //On Page Loa" +
-                    "d.\r\n    $(function () {\r\n        SetDatePicker();\r\n    });\r\n    //ikinci tarih i" +
-                    "çin\r\n    function SetDatePicker() {\r\n\r\n        $(\"[id$=BaslangicTarihiTxt],[id$=" +
-                    "BitisTarihiTxt]\").datepicker({\r\n            dateFormat: \"dd.mm.yy\",\r\n           " +
-                    " firstDay: 1,\r\n            monthNames: [\"Ocak\", \"Şubat\", \"Mart\", \"Nisan\", \"Mayıs" +
-                    "\", \"Haziran\", \"Temmuz\", \"Ağustos\", \"Eylül\", \"Ekim\", \"Kasım\", \"Aralık\"],\r\n       " +
-                    "     monthNamesShort: [\"Oca\", \"Şub\", \"Mar\", \"Nis\", \"May\", \"Haz\", \"Tem\", \"Ağu\", \"" +
-                    "Eyl\", \"Eki\", \"Kas\", \"Ara\"],\r\n            dayNames: [\"Pazar\", \"Pazartesi\", \"Salı\"" +
-                    ", \"Çarşamba\", \"Perşembe\", \"Cuma\", \"Cumartesi\"],\r\n            dayNamesMin: [\"Pz\"," +
-                    " \"Pt\", \"Sl\", \"Çr\", \"Pr\", \"Cu\", \"Ct\"],\r\n            showAnim: \"fold\",\r\n          " +
-                    "  changeMonth: true,\r\n            changeYear: true,\r\n\r\n        }).on(\"change\", f" +
-                    "unction () {\r\n            if (this.id == \'BaslangicTarihiTxt\') {\r\n              " +
-                    "  var dateMin = $(\'[id$=BaslangicTarihiTxt]\').datepicker(\"getDate\");\r\n          " +
-                    "      var rMin = new Date(dateMin.getFullYear(), dateMin.getMonth(), dateMin.get" +
-                    "Date());\r\n                var rMax = new Date(dateMin.getFullYear(), dateMin.get" +
-                    "Month(), dateMin.getDate() + 90);\r\n\r\n                $(\'[id$=BitisTarihiTxt]\').d" +
-                    "atepicker(\"option\", \"minDate\", rMin);\r\n                $(\'[id$=BitisTarihiTxt]\')" +
-                    ".datepicker(\"option\", \"maxDate\", rMax);\r\n            }\r\n\r\n        });\r\n\r\n    }\r\n" +
-                    "    function setDataSet(myset) {\r\n        myjsons = myset;\r\n    }\r\n    var myjso" +
-                    "ns = [{\r\n        \"AramaGorusmeId\": \"\", \"AdiSoyadi\": \"\", \"Tarih\": \"\", \"Konu\": \"\"," +
-                    " \"Kurumu\": \"\", \"Randevu\": \"\", \"Duzenle\": \"\"\r\n    }];\r\n\r\n    jQuery(document).rea" +
-                    "dy(function () {\r\n        jQuery.fn.dataTable.moment(\'DD.MM.YYYY HH:mm\');//sort " +
-                    "date\r\n        jQuery(\'#CustomDataTable\').DataTable({\r\n            \'initComplete\'" +
-                    ": function (settings, json) {//tablo yüklendiğinde\r\n                var api = th" +
-                    "is.api();\r\n                var row = api.row(function (idx, data, node) { //seci" +
-                    "len Id\'ye gider\r\n                    return data[\'Secildi\'] == true;\r\n          " +
-                    "      });\r\n                if (row.length > 0) {\r\n                    row.select" +
-                    "()\r\n                        .show()\r\n                        .draw(false);\r\n    " +
-                    "            }\r\n            },\r\n            data: myjsons,\r\n            columns: " +
-                    "[\r\n                { data: \"AramaId\" },\r\n                { data: \"AdiSoyadi\" },\r" +
-                    "\n                { data: \"Tarih\" },\r\n                { data: \"Konu\" },\r\n        " +
-                    "        { data: \"Kurumu\" },\r\n                { data: \"Randevu\" },\r\n             " +
-                    "   { data: \"Duzenle\" },\r\n            ],\r\n            \'order\': [[2, \'desc\']],//Ad" +
-                    "iSoyadi Sıralı\r\n            \"language\": {\r\n                \"url\": \"http://tskgv-" +
-                    "portal/OrtakBelgeler/Turkish.txt\",\r\n                \"decimal\": \",\",\r\n           " +
-                    "     \"thousands\": \".\"\r\n            },\r\n            responsive: true,\r\n          " +
-                    "  dom: \'Bfrtip\',\r\n            buttons: [\r\n                {\r\n                   " +
-                    " extend: \'print\',\r\n                    exportOptions: {\r\n                       " +
-                    " columns: \':visible\'\r\n                    }\r\n                },\r\n               " +
-                    " {\r\n                    extend: \'excel\',\r\n                    exportOptions: {\r\n" +
-                    "                        columns: \':visible\'\r\n                    }\r\n            " +
-                    "    },\r\n                {\r\n                    extend: \'pdf\',\r\n                 " +
-                    "   exportOptions: {\r\n                        columns: \':visible\'\r\n              " +
-                    "      }\r\n                },\r\n                {\r\n                    extend: \'cop" +
-                    "y\',\r\n                    exportOptions: {\r\n                        columns: \':vi" +
-                    "sible\'\r\n                    }\r\n                },\r\n                , \'pageLength" +
-                    "\', \"colvis\"\r\n            ],\r\n            \"createdRow\": function (row, data, data" +
-                    "Index) {\r\n                if (!data.GorusmeSaglandi) {\r\n                    if (" +
-                    "data[\'Secildi\'] == false)\r\n                        $(row).addClass(\'gorusmeSagla" +
-                    "namadi\');\r\n\r\n                }\r\n            },//set row color \r\n        });\r\n   " +
-                    " });\r\n</script>\r\n<div class=\"container\">\r\n    <div class=\"card shadow\">\r\n       " +
-                    " <div class=\"card-header\">\r\n            ");
+                    "d.\r\n    //$(function () {\r\n    //    SetDatePicker();\r\n    //});\r\n    ////ikinci" +
+                    " tarih için\r\n    //function SetDatePicker() {\r\n\r\n    //    $(\"[id$=BaslangicTari" +
+                    "hiTxt],[id$=BitisTarihiTxt]\").datepicker({\r\n    //        dateFormat: \"dd.mm.yy\"" +
+                    ",\r\n    //        firstDay: 1,\r\n    //        monthNames: [\"Ocak\", \"Şubat\", \"Mart" +
+                    "\", \"Nisan\", \"Mayıs\", \"Haziran\", \"Temmuz\", \"Ağustos\", \"Eylül\", \"Ekim\", \"Kasım\", \"" +
+                    "Aralık\"],\r\n    //        monthNamesShort: [\"Oca\", \"Şub\", \"Mar\", \"Nis\", \"May\", \"H" +
+                    "az\", \"Tem\", \"Ağu\", \"Eyl\", \"Eki\", \"Kas\", \"Ara\"],\r\n    //        dayNames: [\"Pazar" +
+                    "\", \"Pazartesi\", \"Salı\", \"Çarşamba\", \"Perşembe\", \"Cuma\", \"Cumartesi\"],\r\n    //   " +
+                    "     dayNamesMin: [\"Pz\", \"Pt\", \"Sl\", \"Çr\", \"Pr\", \"Cu\", \"Ct\"],\r\n    //        sho" +
+                    "wAnim: \"fold\",\r\n    //        changeMonth: true,\r\n    //        changeYear: true" +
+                    ",\r\n\r\n    //    }).on(\"change\", function () {\r\n    //        if (this.id == \'Basl" +
+                    "angicTarihiTxt\') {\r\n    //            var dateMin = $(\'[id$=BaslangicTarihiTxt]\'" +
+                    ").datepicker(\"getDate\");\r\n    //            var rMin = new Date(dateMin.getFullY" +
+                    "ear(), dateMin.getMonth(), dateMin.getDate());\r\n    //            var rMax = new" +
+                    " Date(dateMin.getFullYear(), dateMin.getMonth(), dateMin.getDate() + 90);\r\n\r\n   " +
+                    " //            $(\'[id$=BitisTarihiTxt]\').datepicker(\"option\", \"minDate\", rMin);\r" +
+                    "\n    //            $(\'[id$=BitisTarihiTxt]\').datepicker(\"option\", \"maxDate\", rMa" +
+                    "x);\r\n    //        }\r\n\r\n    //    });\r\n\r\n    //}\r\n    function setDataSet(myset)" +
+                    " {\r\n        myjsons = myset;\r\n    }\r\n    var myjsons = [{\r\n        \"AramaGorusme" +
+                    "Id\": \"\", \"AdiSoyadi\": \"\", \"Tarih\": \"\", \"Konu\": \"\", \"Kurumu\": \"\", \"Randevu\": \"\", " +
+                    "\"Duzenle\": \"\"\r\n    }];\r\n\r\n    jQuery(document).ready(function () {\r\n        jQue" +
+                    "ry.fn.dataTable.moment(\'DD.MM.YYYY HH:mm\');//sort date\r\n        jQuery(\'#CustomD" +
+                    "ataTable\').DataTable({\r\n            \'initComplete\': function (settings, json) {/" +
+                    "/tablo yüklendiğinde\r\n                var api = this.api();\r\n                var" +
+                    " row = api.row(function (idx, data, node) { //secilen Id\'ye gider\r\n             " +
+                    "       return data[\'Secildi\'] == true;\r\n                });\r\n                if " +
+                    "(row.length > 0) {\r\n                    row.select()\r\n                        .s" +
+                    "how()\r\n                        .draw(false);\r\n                }\r\n            },\r" +
+                    "\n            data: myjsons,\r\n            columns: [\r\n                { data: \"Ar" +
+                    "amaId\" },\r\n                { data: \"AdiSoyadi\" },\r\n                { data: \"Tari" +
+                    "h\" },\r\n                { data: \"Konu\" },\r\n                { data: \"Kurumu\" },\r\n " +
+                    "               { data: \"Randevu\" },\r\n                { data: \"Duzenle\" },\r\n     " +
+                    "       ],\r\n            \'order\': [[2, \'desc\']],//AdiSoyadi Sıralı\r\n            \"l" +
+                    "anguage\": {\r\n                \"url\": \"http://tskgv-portal/OrtakBelgeler/Turkish.t" +
+                    "xt\",\r\n                \"decimal\": \",\",\r\n                \"thousands\": \".\"\r\n       " +
+                    "     },\r\n            responsive: true,\r\n            dom: \'Bfrtip\',\r\n            " +
+                    "buttons: [\r\n                {\r\n                    extend: \'print\',\r\n           " +
+                    "         exportOptions: {\r\n                        columns: \':visible\'\r\n        " +
+                    "            }\r\n                },\r\n                {\r\n                    extend" +
+                    ": \'excel\',\r\n                    exportOptions: {\r\n                        column" +
+                    "s: \':visible\'\r\n                    }\r\n                },\r\n                {\r\n   " +
+                    "                 extend: \'pdf\',\r\n                    exportOptions: {\r\n         " +
+                    "               columns: \':visible\'\r\n                    }\r\n                },\r\n " +
+                    "               {\r\n                    extend: \'copy\',\r\n                    expor" +
+                    "tOptions: {\r\n                        columns: \':visible\'\r\n                    }\r" +
+                    "\n                },\r\n                , \'pageLength\', \"colvis\"\r\n            ],\r\n " +
+                    "           \"createdRow\": function (row, data, dataIndex) {\r\n                if (" +
+                    "!data.GorusmeSaglandi) {\r\n                    if (data[\'Secildi\'] == false)\r\n   " +
+                    "                     $(row).addClass(\'gorusmeSaglanamadi\');\r\n\r\n                }" +
+                    "\r\n            },//set row color \r\n        });\r\n    });\r\n</script>\r\n<div class=\"c" +
+                    "ontainer\">\r\n    <div class=\"card shadow\">\r\n        <div class=\"card-header\">\r\n  " +
+                    "          ");
             parameterContainer.Controls[0].RenderControl(@__w);
             @__w.Write("\r\n            <h3 class=\"mb-2\">\r\n                ");
             parameterContainer.Controls[1].RenderControl(@__w);
@@ -787,13 +807,11 @@ namespace MTS_WebParts.AramaGorusmeListesiWP {
             parameterContainer.Controls[12].RenderControl(@__w);
             @__w.Write("\r\n                                ");
             parameterContainer.Controls[13].RenderControl(@__w);
+            @__w.Write("\r\n                            </div>\r\n                        </div>\r\n           " +
+                    "         </div>\r\n                </div>\r\n            </div>\r\n            <div cl" +
+                    "ass=\"form-group\">\r\n                ");
+            parameterContainer.Controls[14].RenderControl(@__w);
             @__w.Write(@"
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class=""form-group"">
                 <div class=""form-group"">
                     <table id=""CustomDataTable"" class=""table table-striped table-bordered table-hover table-sm"" width=""100%"">
                         <thead>
@@ -813,14 +831,12 @@ namespace MTS_WebParts.AramaGorusmeListesiWP {
         </div>
         <div id=""KatilimciHiddenDiv"" style=""display: none"">
             ");
-            parameterContainer.Controls[14].RenderControl(@__w);
-            @__w.Write("\r\n            ");
             parameterContainer.Controls[15].RenderControl(@__w);
             @__w.Write("\r\n            ");
             parameterContainer.Controls[16].RenderControl(@__w);
-            @__w.Write("\r\n        </div>\r\n        <div class=\"card-footer\">\r\n            ");
-            parameterContainer.Controls[17].RenderControl(@__w);
             @__w.Write("\r\n            ");
+            parameterContainer.Controls[17].RenderControl(@__w);
+            @__w.Write("\r\n        </div>\r\n        <div class=\"card-footer\">\r\n            ");
             parameterContainer.Controls[18].RenderControl(@__w);
             @__w.Write("\r\n            ");
             parameterContainer.Controls[19].RenderControl(@__w);
@@ -828,8 +844,10 @@ namespace MTS_WebParts.AramaGorusmeListesiWP {
             parameterContainer.Controls[20].RenderControl(@__w);
             @__w.Write("\r\n            ");
             parameterContainer.Controls[21].RenderControl(@__w);
-            @__w.Write("\r\n        </div>\r\n    </div>\r\n    ");
+            @__w.Write("\r\n            ");
             parameterContainer.Controls[22].RenderControl(@__w);
+            @__w.Write("\r\n        </div>\r\n    </div>\r\n    ");
+            parameterContainer.Controls[23].RenderControl(@__w);
             @__w.Write("\r\n</div>\r\n");
         }
         

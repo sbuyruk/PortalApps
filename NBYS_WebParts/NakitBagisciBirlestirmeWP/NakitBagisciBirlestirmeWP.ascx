@@ -32,11 +32,11 @@
 
     .bagis-header-color {
         color: blueviolet;
-        font-weight:bold;
+        font-weight: bold;
     }
 </style>
 <script>
-    function fillAsilBagisciTable(bagisciId) {
+    function FillAsilBagisciTable(bagisciId) {
 
         document.getElementById('<%= paramLbl.ClientID%>').value = bagisciId;
         document.getElementById('<%= AsilBagisciHiddenBtn.ClientID%>').click();
@@ -53,18 +53,18 @@
         document.getElementById('<%= BagisciDuzenleHiddenBtn.ClientID%>').click();
     }
     function OpenModal(nakitBagisciId) {
-        document.getElementById('<%= paramLbl.ClientID%>').value = nakitBagisciId;
-            $("#ModalUrlDiv").modal({ backdrop: false });
-            document.getElementById('<%= ModalDoldurBtn.ClientID%>').click();
+        document.getElementById('<%= paramNakitBagisciIdLbl.ClientID%>').value = nakitBagisciId;
 
+        $("#ModalUrlDiv").modal({ backdrop: false });
+        document.getElementById('<%= ModalDoldurBtn.ClientID%>').click();
     }
 
     var tableData = [];
 
-    function addRemoveBagisciToList(nakitBagisciId,chkbox) {
-        var isChecked=false;
-        if (chkbox.checked) 
-            isChecked=true;
+    function addRemoveBagisciToList(nakitBagisciId, chkbox) {
+        var isChecked = false;
+        if (chkbox.checked)
+            isChecked = true;
         var index = tableData.indexOf(nakitBagisciId);
         if (isChecked && (index < 0)) {
             tableData.push(nakitBagisciId);
@@ -78,7 +78,7 @@
 <%--            document.getElementById('<%= FooterDiv.ClientID%>').style.visibility = "none";
             document.getElementById('<%= BirlestirSubDiv.ClientID%>').style.visibility = "none";--%>
         }
-            
+
     }
     function TamamBtnClicked() {
         document.getElementById('<%= paramArray.ClientID%>').value = tableData;
@@ -87,93 +87,103 @@
     }
 </script>
 
-<div class="container shadow">
-    <asp:UpdatePanel ID="upPanel" runat="server" UpdateMode="Conditional">
-        <ContentTemplate>
-            <div class="card">
-                <div class="card-header ">
-                    <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
-                    <h3 class="mb-1">
-                        <asp:Label CssClass="col-form-label bagis-header-color" runat="server" Text="Nakit Bağışçı Birleştirme"></asp:Label>
-                    </h3>
-                </div>
-                <div class="card-body border border-default" runat="server" id="PUTableDiv">
-                    <div class="card" id="AsilBagisciDiv" runat="server" style="display: none">
-                        <div class="card-body">
-                            <div style="display: none">
-                                <input id="paramLbl" runat="server" text="Label" style="border-style: none;" text-align="center" />
-                                <asp:LinkButton ID="AsilBagisciHiddenBtn" runat="server" CausesValidation="false" Text="" OnClientClick="{return true;};" OnClick="AsilBagisciHiddenBtn_Click" />
-                            </div>
-                            <asp:Table ID="AsilBagisciTable" runat="server" class="table table-primary m-0">
-                            </asp:Table>
-                            <div class="table" id="AsilBagisciBagislariDiv" runat="server" style="max-height: 250px; overflow: auto;" visible="false">
-                            </div>
-                        </div>
-                        <div class="card-footer">
-                        </div>
+<div class="container ">
+    <div style="display: none">
+        <input id="paramNakitBagisciIdLbl" runat="server" text="Label" style="border-style: none;" text-align="center" />
+    </div>
+    <div class="card shadow">
+        <div class="card-header ">
+            <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
+            <h3 class="mb-1">
+                <asp:Label CssClass="col-form-label bagis-header-color" runat="server" Text="Nakit Bağışçı Birleştirme"></asp:Label>
+            </h3>
+        </div>
+        <div class="card-body border border-default" runat="server" id="PUTableDiv">
+            <div class="card" id="AsilBagisciDiv" runat="server" style="display: none">
+                <div class="card-body">
+                    <div style="display: none">
+                        <input id="paramLbl" runat="server" text="Label" style="border-style: none;" text-align="center" />
+                        <asp:LinkButton ID="AsilBagisciHiddenBtn" runat="server" CausesValidation="false" Text="" OnClientClick="{return true;};" OnClick="AsilBagisciHiddenBtn_Click" />
                     </div>
-                    <div class="form-group border border-info" id="AsilBagisciAraDiv" runat="server" style="display: block">
-                        <div class="input-group col-6">
-                            <label class="col-form-label m-1" for="AsilBagisciAraTxt">Asil Bagisci Ara :</label>
-                            <asp:TextBox ID="AsilBagisciAraTxt" runat="server" CssClass="form-control m-1" AutoPostBack="true" OnTextChanged="AsilBagisciAraTxt_TextChanged" />
-                            <asp:LinkButton CssClass="btn btn-info m-1" ID="AraBtn" runat="server" CausesValidation="false" Text="Ara" OnClientClick="{return true;};" OnClick="AsilBagisciAraBtn_Click" />
-                        </div>
-                    </div>
-                    <div class="form-group border bagis-border-color" id="BirlesecekBagisciAraDiv" runat="server" style="display: none">
-                        <div class="input-group col-6">
-                            <label class="col-form-label m-1" for="AranacakBagisciTxt">Birlesecek Bagisci Ara :</label>
-                            <asp:TextBox ID="BirlesecekBagisciAraTxt" runat="server" CssClass="form-control m-1" AutoPostBack="true" OnTextChanged="BirlesecekBagisciAraTxt_TextChanged" />
-                            <asp:LinkButton CssClass="btn bagis-color m-1" ID="BirlesecekBagisciAraBtn" runat="server" CausesValidation="false" Text="Ara" OnClientClick="{return true;};" OnClick="BirlesecekBagisciAraBtn_Click" />
-                        </div>
-                    </div>
-                    <div class="form-group border bagis-border-color" id="BagisciSecTableDiv" runat="server" style="display: none">
-                        <div class="form-group table loader">
-                            <input class="form-control col-6" id="globalFilter" placeholder="Aranacak Kelime" size="30" />
-                            <div id="tblfilter"></div>
-                            <div id="messages"></div>
-                        </div>
-                    </div>
-                    <div class="card" id="BirlesecekBagisciDiv" runat="server" style="display: none">
-                        <div class="card-body">
-                            <div style="display: none">
-                                <input id="Text1" runat="server" text="Label" style="border-style: none;" text-align="center" />
-                                <asp:LinkButton ID="BirlesecekBagisciHiddenBtn" runat="server" CausesValidation="false" Text="" OnClientClick="{return true;};" OnClick="BirlesecekBagisciHiddenBtn_Click" />
-                                <asp:LinkButton ID="BagisciDuzenleHiddenBtn" runat="server" CausesValidation="false" Text="" OnClientClick="{return true;};" OnClick="BagisciDuzenleHiddenBtn_Click" />
-                            </div>
-                            <asp:Table ID="BirlesecekBagisciTable" runat="server" class="table table-warning m-0">
-                            </asp:Table>
-                        </div>
-                        <div class="card-footer" id="TamamDiv" runat="server">
-                            <input id="TamamTriggerBtn" class="btn btn-success" type="button" value="Tamam" onclick="TamamBtnClicked();"/>
-                            <%--<asp:LinkButton ID="TamamBtn" CssClass="btn btn-primary" runat="server" CausesValidation="false" Text="Tamam" OnClick="TamamBtn_Click" />--%>
-                            <div style="display: none">
-                                <input id="paramArray" runat="server" type="text" />
-                                <asp:LinkButton ID="TamamBtn" runat="server" CausesValidation="false" OnClick="TamamBtn_Click">Tamam</asp:LinkButton>
-                            </div>
-                        </div>
+                    <asp:Table ID="AsilBagisciTable" runat="server" class="table table-primary m-0">
+                    </asp:Table>
+                    <div class="table" id="AsilBagisciBagislariDiv" runat="server" style="max-height: 250px; overflow: auto;" visible="false">
                     </div>
                 </div>
                 <div class="card-footer">
-                    <div>
-                        <asp:LinkButton ID="BasadonBtn" CssClass="btn btn-secondary float-right" runat="server" CausesValidation="false" Text="Başa Dön" OnClick="BasadonBtn_Click" />
+                </div>
+            </div>
+            <div class="form-group border border-info" id="AsilBagisciAraDiv" runat="server" style="display: block">
+                <div class="input-group col-6">
+                    <label class="col-form-label m-1" for="AsilBagisciAraTxt">Asil Bagisci Ara :</label>
+                    <asp:TextBox ID="AsilBagisciAraTxt" runat="server" CssClass="form-control m-1" AutoPostBack="true" OnTextChanged="AsilBagisciAraTxt_TextChanged" />
+                    <asp:LinkButton CssClass="btn btn-info m-1" ID="AraBtn" runat="server" CausesValidation="false" Text="Ara" OnClientClick="{return true;};" OnClick="AsilBagisciAraBtn_Click" />
+                </div>
+            </div>
+            <div class="form-group border bagis-border-color" id="BirlesecekBagisciAraDiv" runat="server" style="display: none">
+                <div class="input-group col-6">
+                    <label class="col-form-label m-1" for="AranacakBagisciTxt">Birlesecek Bagisci Ara :</label>
+                    <asp:TextBox ID="BirlesecekBagisciAraTxt" runat="server" CssClass="form-control m-1" AutoPostBack="true" OnTextChanged="BirlesecekBagisciAraTxt_TextChanged" />
+                    <asp:LinkButton CssClass="btn bagis-color m-1" ID="BirlesecekBagisciAraBtn" runat="server" CausesValidation="false" Text="Ara" OnClientClick="{return true;};" OnClick="BirlesecekBagisciAraBtn_Click" />
+                </div>
+            </div>
+            <div class="form-group border bagis-border-color" id="BagisciSecTableDiv" runat="server" style="display: none">
+                <div class="form-group">
+                    <table id="CustomDataTable" class="table table-striped row-border" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Adı</th>
+                                <th>TC Kimlik No</th>
+                                <th>İli</th>
+                                <th>İlçesi</th>
+                                <th>Telefon</th>
+                                <th>Adres</th>
+                                <th>Düzenle</th>
+                                <th>Seç</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <div class="card" id="BirlesecekBagisciDiv" runat="server" style="display: none">
+                <div class="card-body">
+                    <div style="display: none">
+                        <input id="Text1" runat="server" text="Label" style="border-style: none;" text-align="center" />
+                        <asp:LinkButton ID="BirlesecekBagisciHiddenBtn" runat="server" CausesValidation="false" Text="" OnClientClick="{return true;};" OnClick="BirlesecekBagisciHiddenBtn_Click" />
+                        <asp:LinkButton ID="BagisciDuzenleHiddenBtn" runat="server" CausesValidation="false" Text="" OnClientClick="{return true;};" OnClick="BagisciDuzenleHiddenBtn_Click" />
                     </div>
-                    <div id="FooterDiv" runat="server">
-                        <asp:RadioButtonList ID="BirlestirRBL" runat="server" CssClass="form-check-label" OnSelectedIndexChanged="BirlestirRBL_SelectedIndexChanged" BorderStyle="Solid" RepeatDirection="Horizontal" AutoPostBack="true">
-                            <asp:ListItem Text="Birleştirmek İstemiyorum " Value="Birlestirme" Selected="true"></asp:ListItem>
-                            <asp:ListItem Text="Birleştirmek İstiyorum " Value="Birlestir"></asp:ListItem>
-                        </asp:RadioButtonList><div id="BirlestirDiv" runat="server">
-                            <div id="BirlestirSubDiv" runat="server" visible="false">
-                                <label class="col-form-label">Birleştirme Sebebi</label>
-                                <asp:TextBox ID="BirlestirmeSebebiTxt" runat="server"></asp:TextBox><p class="text-danger">Lütfen Dikkat!</p>
-                                <p class="text-danger">Birleştir düğmesine bastığınızda seçilen kişilere ait tüm bağış kayıtları ASİL olarak seçilen kişi üzerine aktarılacaktır. Yapılan işlem geri alınamaz.</p>
-                                <asp:LinkButton ID="BirlestirBtn" CssClass="btn btn-danger" runat="server" Text="Kişileri Birleştir" OnClick="BirlestirBtn_Click" Visible="false" />
-                            </div>
-                        </div>
+                    <asp:Table ID="BirlesecekBagisciTable" runat="server" class="table table-warning m-0">
+                    </asp:Table>
+                </div>
+                <div class="card-footer" id="TamamDiv" runat="server">
+                    <input id="TamamTriggerBtn" class="btn btn-success" type="button" value="Tamam" onclick="TamamBtnClicked();" />
+                    <div style="display: none">
+                        <input id="paramArray" runat="server" type="text" />
+                        <asp:LinkButton ID="TamamBtn" runat="server" CausesValidation="false" OnClick="TamamBtn_Click">Tamam</asp:LinkButton>
                     </div>
                 </div>
             </div>
-        </ContentTemplate>
-    </asp:UpdatePanel>
+        </div>
+        <div class="card-footer">
+            <div>
+                <asp:LinkButton ID="BasadonBtn" CssClass="btn btn-secondary float-right" runat="server" CausesValidation="false" Text="Başa Dön" OnClick="BasadonBtn_Click" />
+            </div>
+            <div id="FooterDiv" runat="server">
+                <asp:RadioButtonList ID="BirlestirRBL" runat="server" CssClass="form-check-label" OnSelectedIndexChanged="BirlestirRBL_SelectedIndexChanged" BorderStyle="Solid" RepeatDirection="Horizontal" AutoPostBack="true">
+                    <asp:ListItem Text="Birleştirmek İstemiyorum " Value="Birlestirme" Selected="true"></asp:ListItem>
+                    <asp:ListItem Text="Birleştirmek İstiyorum " Value="Birlestir"></asp:ListItem>
+                </asp:RadioButtonList><div id="BirlestirDiv" runat="server">
+                    <div id="BirlestirSubDiv" runat="server" visible="false">
+                        <label class="col-form-label">Birleştirme Sebebi</label>
+                        <asp:TextBox ID="BirlestirmeSebebiTxt" runat="server"></asp:TextBox><p class="text-danger">Lütfen Dikkat!</p>
+                        <p class="text-danger">Birleştir düğmesine bastığınızda seçilen kişilere ait tüm bağış kayıtları ASİL olarak seçilen kişi üzerine aktarılacaktır. Yapılan işlem geri alınamaz.</p>
+                        <asp:LinkButton ID="BirlestirBtn" CssClass="btn btn-danger" runat="server" Text="Kişileri Birleştir" OnClick="BirlestirBtn_Click" Visible="false" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <asp:UpdateProgress ID="updateProgress" runat="server">
         <ProgressTemplate>
             <div class='loaderMainContainer'>
@@ -185,21 +195,21 @@
     </asp:UpdateProgress>
 </div>
 <div class="modal" id="ModalUrlDiv" role="dialog">
-    <div class="modal-dialog ">
+    <div class="modal-dialog modal-lg">
         <!-- Modal content-->
-        <div class="modal-content" style="width: 1030px;">
+        <div class="modal-content">
             <asp:UpdatePanel runat="server" ID="UpdatePanel1" UpdateMode="Conditional">
                 <ContentTemplate>
                     <div class="modal-header">
                         <h3>
                             <asp:Label ID="BagisciAdiLbl" runat="server" Text="Bağışçı Bilgileri" Font-Bold="True"></asp:Label>
-
                         </h3>
                     </div>
                     <div class="modal-body">
                         <div style="display: none">
                             <asp:LinkButton ID="ModalDoldurBtn" runat="server" CausesValidation="false" Text="" OnClick="ModalDoldurBtn_Click" />
                         </div>
+
                         <div class="m-1 text-center" id="NakitBagisciDiv">
                             <asp:Table CssClass="table text-center table-bordered table-striped" ID="BagisciTable" runat="server">
                                 <asp:TableHeaderRow>
@@ -215,11 +225,22 @@
                         <div>
                             <h3>
                                 <br />
-                                <asp:Label ID="Label1" runat="server" Text="Bağışçının Yaptığı Nakit Bağışlar" Font-Bold="True"></asp:Label>
+                                <asp:Label ID="BagisBilgileriLbl" runat="server" Text="Bağışçının Yaptığı Nakit Bağışlar" Font-Bold="True"></asp:Label>
                             </h3>
                         </div>
-                        <div class="table loader">
-                            <div id="modaltblfilter" class="table" style="width: 1000px; height: 400px;"></div>
+                        <div class="form-group">
+                            <table id="CustomModalDataTable" class="table table-bordered table-striped" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Bağış Tarihi</th>
+                                        <th>Bağış Miktarı</th>
+                                        <th>Banka</th>
+                                        <th>Armağan</th>
+                                        <th>Armağan Tutarı</th>
+                                        <th>Armağan Durumu</th>
+                                    </tr>
+                                </thead>
+                            </table>
                         </div>
                     </div>
                     <div class="modal-footer">

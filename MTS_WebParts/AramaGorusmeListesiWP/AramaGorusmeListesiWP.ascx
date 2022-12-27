@@ -42,36 +42,36 @@
 </script>
 <script type="text/javascript">
     //On Page Load.
-    $(function () {
-        SetDatePicker();
-    });
-    //ikinci tarih için
-    function SetDatePicker() {
+    //$(function () {
+    //    SetDatePicker();
+    //});
+    ////ikinci tarih için
+    //function SetDatePicker() {
 
-        $("[id$=BaslangicTarihiTxt],[id$=BitisTarihiTxt]").datepicker({
-            dateFormat: "dd.mm.yy",
-            firstDay: 1,
-            monthNames: ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"],
-            monthNamesShort: ["Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara"],
-            dayNames: ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"],
-            dayNamesMin: ["Pz", "Pt", "Sl", "Çr", "Pr", "Cu", "Ct"],
-            showAnim: "fold",
-            changeMonth: true,
-            changeYear: true,
+    //    $("[id$=BaslangicTarihiTxt],[id$=BitisTarihiTxt]").datepicker({
+    //        dateFormat: "dd.mm.yy",
+    //        firstDay: 1,
+    //        monthNames: ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"],
+    //        monthNamesShort: ["Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara"],
+    //        dayNames: ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"],
+    //        dayNamesMin: ["Pz", "Pt", "Sl", "Çr", "Pr", "Cu", "Ct"],
+    //        showAnim: "fold",
+    //        changeMonth: true,
+    //        changeYear: true,
 
-        }).on("change", function () {
-            if (this.id == 'BaslangicTarihiTxt') {
-                var dateMin = $('[id$=BaslangicTarihiTxt]').datepicker("getDate");
-                var rMin = new Date(dateMin.getFullYear(), dateMin.getMonth(), dateMin.getDate());
-                var rMax = new Date(dateMin.getFullYear(), dateMin.getMonth(), dateMin.getDate() + 90);
+    //    }).on("change", function () {
+    //        if (this.id == 'BaslangicTarihiTxt') {
+    //            var dateMin = $('[id$=BaslangicTarihiTxt]').datepicker("getDate");
+    //            var rMin = new Date(dateMin.getFullYear(), dateMin.getMonth(), dateMin.getDate());
+    //            var rMax = new Date(dateMin.getFullYear(), dateMin.getMonth(), dateMin.getDate() + 90);
 
-                $('[id$=BitisTarihiTxt]').datepicker("option", "minDate", rMin);
-                $('[id$=BitisTarihiTxt]').datepicker("option", "maxDate", rMax);
-            }
+    //            $('[id$=BitisTarihiTxt]').datepicker("option", "minDate", rMin);
+    //            $('[id$=BitisTarihiTxt]').datepicker("option", "maxDate", rMax);
+    //        }
 
-        });
+    //    });
 
-    }
+    //}
     function setDataSet(myset) {
         myjsons = myset;
     }
@@ -182,19 +182,20 @@
                         <div class="col-2">
                             <div class="form-group">
                                 <asp:Label runat="server" CssClass="col-form-label font-weight-bold">Başlangıç</asp:Label>
-                                <asp:TextBox ID="BaslangicTarihiTxt" CssClass="form-control input-date" runat="server" ClientIDMode="Static" AutoPostBack="true" OnTextChanged="BaslangicTarihiTxt_TextChanged" placeholder="dd.mm.yyyy"></asp:TextBox>
+                                <asp:TextBox ID="BaslangicTarihiTxt" CssClass="form-control DateTimePickerV1 input-date" runat="server" ClientIDMode="Static" AutoPostBack="true" OnTextChanged="BaslangicTarihiTxt_TextChanged" placeholder="dd.mm.yyyy"></asp:TextBox>
                             </div>
                         </div>
                         <div class="col-2">
                             <div class="form-group">
                                 <asp:Label runat="server" CssClass="col-form-label font-weight-bold">Bitiş</asp:Label>
-                                <asp:TextBox ID="BitisTarihiTxt" CssClass="form-control input-date" runat="server" ClientIDMode="Static" AutoPostBack="true" OnTextChanged="BitisTarihiTxt_TextChanged" placeholder="dd.mm.yyyy"></asp:TextBox>
+                                <asp:TextBox ID="BitisTarihiTxt" CssClass="form-control DateTimePickerV1 input-date" runat="server" ClientIDMode="Static" AutoPostBack="true" OnTextChanged="BitisTarihiTxt_TextChanged" placeholder="dd.mm.yyyy"></asp:TextBox>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="form-group">
+                <h2 class="font-weight-bold text-center" id="BaslikLbl" runat="server"></h2>
                 <div class="form-group">
                     <table id="CustomDataTable" class="table table-striped table-bordered table-hover table-sm" width="100%">
                         <thead>

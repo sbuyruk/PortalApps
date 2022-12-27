@@ -222,8 +222,8 @@ namespace MTS_WebParts.KisiListesiWP {
                         "\n                    exportOptions: {\r\n                        columns: \':visibl" +
                         "e\'\r\n                    }\r\n                },\r\n                , \'pageLength\', \"" +
                         "colvis\"\r\n            ]\r\n            \r\n\r\n\r\n        });\r\n    });\r\n</script>\r\n<div " +
-                        "class=\"container \">\r\n    <div class=\"card shadow\">\r\n        <div class=\"card-hea" +
-                        "der\">\r\n            "));
+                        "class=\"container col-xl\">\r\n    <div class=\"card shadow\">\r\n        <div class=\"ca" +
+                        "rd-header\">\r\n            "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl1;
             @__ctrl1 = this.@__BuildControlCloseBtn();
             @__parser.AddParsedSubObject(@__ctrl1);

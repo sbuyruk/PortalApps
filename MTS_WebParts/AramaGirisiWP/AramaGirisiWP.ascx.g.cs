@@ -639,6 +639,7 @@ namespace MTS_WebParts.AramaGirisiWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "AramaListesi";
             @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CausesValidation = false;
             @__ctrl.Text = "Arama/Görüşme Listesi";
             @__ctrl.Click -= new System.EventHandler(this.AramaListesiBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.AramaListesiBtn_Click);

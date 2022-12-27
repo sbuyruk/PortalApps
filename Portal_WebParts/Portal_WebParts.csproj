@@ -156,6 +156,46 @@
       <DependentUpon>OlayListesiWP.ascx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ToplantiGirisiWP\ToplantiGirisiWP.ascx.cs">
+      <DependentUpon>ToplantiGirisiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ToplantiGirisiWP\ToplantiGirisiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ToplantiGirisiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ToplantiKatilimTutanagiWP\ToplantiKatilimTutanagiWP.ascx.cs">
+      <DependentUpon>ToplantiKatilimTutanagiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ToplantiKatilimTutanagiWP\ToplantiKatilimTutanagiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ToplantiKatilimTutanagiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ToplantiListesiWP\ToplantiListesiWP.ascx.cs">
+      <DependentUpon>ToplantiListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ToplantiListesiWP\ToplantiListesiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ToplantiListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ToplantiParametreGirisiWP\ToplantiParametreGirisiWP.ascx.cs">
+      <DependentUpon>ToplantiParametreGirisiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ToplantiParametreGirisiWP\ToplantiParametreGirisiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ToplantiParametreGirisiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ToplantiViewerWP\ToplantiViewerWP.ascx.cs">
+      <DependentUpon>ToplantiViewerWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ToplantiViewerWP\ToplantiViewerWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ToplantiViewerWP.ascx</DependentUpon>
+    </Compile>
     <Compile Include="YetlilendirmeWP\YetlilendirmeWP.ascx.cs">
       <DependentUpon>YetlilendirmeWP.ascx</DependentUpon>
     </Compile>
@@ -253,6 +293,26 @@
     <None Include="Scripts\umd\popper.js.flow" />
     <None Include="Scripts\umd\popper.js.map" />
     <None Include="Scripts\umd\popper.min.js.map" />
+    <None Include="ToplantiGirisiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{14d8dacd-e159-49f9-8fc0-e4f51af1dfe0}</SharePointProjectItemId>
+    </None>
+    <None Include="ToplantiGirisiWP\ToplantiGirisiWP.webpart" />
+    <None Include="ToplantiKatilimTutanagiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{8212a9be-5dcc-4ce7-b0bd-3abf16812978}</SharePointProjectItemId>
+    </None>
+    <None Include="ToplantiKatilimTutanagiWP\ToplantiKatilimTutanagiWP.webpart" />
+    <None Include="ToplantiListesiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{0354803f-3183-435c-8f27-29cd73f39818}</SharePointProjectItemId>
+    </None>
+    <None Include="ToplantiListesiWP\ToplantiListesiWP.webpart" />
+    <None Include="ToplantiParametreGirisiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{89a5928e-6950-46b1-a456-cd1e800f86f2}</SharePointProjectItemId>
+    </None>
+    <None Include="ToplantiParametreGirisiWP\ToplantiParametreGirisiWP.webpart" />
+    <None Include="ToplantiViewerWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{b027d8f1-e00b-49b9-89fe-d9ffd3ffac33}</SharePointProjectItemId>
+    </None>
+    <None Include="ToplantiViewerWP\ToplantiViewerWP.webpart" />
     <None Include="YetlilendirmeWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{377665da-c467-4cb3-9504-0e7b811a5ba9}</SharePointProjectItemId>
     </None>
@@ -409,6 +469,31 @@
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
+    <Content Include="ToplantiGirisiWP\Elements.xml" />
+    <Content Include="ToplantiGirisiWP\ToplantiGirisiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>ToplantiGirisiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="ToplantiKatilimTutanagiWP\Elements.xml" />
+    <Content Include="ToplantiKatilimTutanagiWP\ToplantiKatilimTutanagiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>ToplantiKatilimTutanagiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="ToplantiListesiWP\Elements.xml" />
+    <Content Include="ToplantiListesiWP\ToplantiListesiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>ToplantiListesiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="ToplantiParametreGirisiWP\Elements.xml" />
+    <Content Include="ToplantiParametreGirisiWP\ToplantiParametreGirisiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>ToplantiParametreGirisiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="ToplantiViewerWP\Elements.xml" />
+    <Content Include="ToplantiViewerWP\ToplantiViewerWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>ToplantiViewerWP.ascx.g.cs</LastGenOutput>
+    </Content>
     <Content Include="YetlilendirmeWP\Elements.xml" />
     <Content Include="YetlilendirmeWP\YetlilendirmeWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>

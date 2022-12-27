@@ -288,13 +288,20 @@ namespace TBYS_WebParts.KiraciListesiWP
                 }
                 
                 int sonSozlesmeId = ks != null ? ks.Id : sozlesmeId.ConvertToInt();
-                kiraciItem.Sozlesme = ks != null ? ("<a href=" + ProjeConstants.PAGE_KIRASOZLESMESI + "?KiraSozlesmeId=" + sonSozlesmeId + " class='btn btn-outline-secondary'>Sözleşme</a>")
-                    :string.Empty;
-                kiraciItem.Teminat = ks != null ? ("<a  target='_blank' href=" + ProjeConstants.PAGE_TEMINAT_ISLEMLERI + "?KiraSozlesmeId=" + sonSozlesmeId + " class='btn btn-outline-secondary'>Teminat</a>")
-                    :string.Empty;
-                kiraciItem.Bakiye = "<a  target='_blank' href=" + ProjeConstants.PAGE_KIRA_BAKIYEDEVRI + "?KiraciId=" + kiraciId + " class='btn btn-outline-secondary'>Bakiye Devri</a>";
-                kiraciItem.KiraKarti = "<a  target='_blank' href=" + ProjeConstants.PAGE_KIRAKARTI + "?KiraciId=" + kiraciId + " class='btn btn-outline-secondary'>Kira Kartı</a>";
-                kiraciItem.Duzenle = "<a href=" + ProjeConstants.PAGE_KIRACI_GIRIS + "?DestinationApp=KD&SenderApp=KL&KiraciId=" + kiraciId + " class='btn btn-outline-primary'>Düzenle</a>";
+                 kiraciItem.KiraKarti = "<a  target='_blank' href=" + ProjeConstants.PAGE_KIRAKARTI + "?KiraciId=" + kiraciId + " class='btn btn-outline-secondary'>Kira Kartı</a>";
+                
+                bool duzenleGorunsunMu = !string.IsNullOrEmpty(AuthQS) && AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM);
+                if (duzenleGorunsunMu)
+                {
+                    kiraciItem.Sozlesme = ks != null ? ("<a href=" + ProjeConstants.PAGE_KIRASOZLESMESI + "?KiraSozlesmeId=" + sonSozlesmeId + " class='btn btn-outline-secondary'>Sözleşme</a>")
+                    : string.Empty;
+                    kiraciItem.Teminat = ks != null ? ("<a  target='_blank' href=" + ProjeConstants.PAGE_TEMINAT_ISLEMLERI + "?KiraSozlesmeId=" + sonSozlesmeId + " class='btn btn-outline-secondary'>Teminat</a>")
+                        : string.Empty;
+                    kiraciItem.Bakiye = "<a  target='_blank' href=" + ProjeConstants.PAGE_KIRA_BAKIYEDEVRI + "?KiraciId=" + kiraciId + " class='btn btn-outline-secondary'>Bakiye Devri</a>";
+
+                    kiraciItem.Duzenle = "<a href=" + ProjeConstants.PAGE_KIRACI_GIRIS + "?DestinationApp=KD&SenderApp=KL&KiraciId=" + kiraciId + " class='btn btn-outline-primary'>Düzenle</a>";
+                }
+
                 kiraciItem.Secildi = SecilenIdQS.Equals(kiraciItem.KiraciId);
                 kiraciItem.Aktif = aktif;
                 list.Add(kiraciItem);
