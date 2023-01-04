@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MTS_WebParts.RandevuViewerWP {
+namespace MTS_WebParts.FaaliyetViewerWP {
     using System.Web.UI.WebControls.Expressions;
     using System.Web.UI.HtmlControls;
     using System.Collections;
@@ -37,7 +37,7 @@ namespace MTS_WebParts.RandevuViewerWP {
     using System.CodeDom.Compiler;
     
     
-    public partial class RandevuViewerWP {
+    public partial class FaaliyetViewerWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -144,7 +144,7 @@ namespace MTS_WebParts.RandevuViewerWP {
         protected global::System.Web.UI.UpdatePanel UpdatePanel1;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebPartCodeGenerator", "17.0.0.0")]
-        public static implicit operator global::System.Web.UI.TemplateControl(RandevuViewerWP target) 
+        public static implicit operator global::System.Web.UI.TemplateControl(FaaliyetViewerWP target) 
         {
             return target == null ? null : target.TemplateControl;
         }
@@ -1072,7 +1072,7 @@ namespace MTS_WebParts.RandevuViewerWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControlTree(global::MTS_WebParts.RandevuViewerWP.RandevuViewerWP @__ctrl) {
+        private void @__BuildControlTree(global::MTS_WebParts.FaaliyetViewerWP.FaaliyetViewerWP @__ctrl) {
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl1;
             @__ctrl1 = this.@__BuildControlAcikTarihliRandevuListDiv();
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
@@ -1102,33 +1102,34 @@ namespace MTS_WebParts.RandevuViewerWP {
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
         private void @__Render__control1(System.Web.UI.HtmlTextWriter @__w, System.Web.UI.Control parameterContainer) {
-            @__w.Write("\r\n\r\n<link rel=\"stylesheet\" href=\"/Style%20Library/tskgv/js/fullcalendar/main.css\"" +
-                    ">\r\n<script type=\"text/javascript\" src=\"/Style%20Library/tskgv/js/fullcalendar/ma" +
-                    "in.js\"></script>\r\n<script type=\"text/javascript\" src=\"/Style%20Library/tskgv/js/" +
-                    "fullcalendar/locales/tr.js\"></script>\r\n\r\n\r\n<style>\r\n    \r\n    #AcikTarihliRandev" +
-                    "uListDiv {\r\n      background-color: lightblue;\r\n      height: 550px;\r\n      widt" +
-                    "h: auto;\r\n      overflow-y: scroll;\r\n    }\r\n  body {\r\n    /*margin-top: 40px;*/\r" +
-                    "\n    font-size: 14px;\r\n    font-family: Arial, Helvetica Neue, Helvetica, sans-s" +
-                    "erif;\r\n  }\r\n\r\n  #external-events {\r\n    position: fixed;\r\n/*    left: 20px;\r\n   " +
-                    " top: 20px;*/\r\n    width: 200px;\r\n    padding: 0;\r\n    border: 1px solid #ccc;\r\n" +
-                    "    background: #eee;\r\n    text-align: left;\r\n  }\r\n\r\n  #external-events h4 {\r\n  " +
-                    "  font-size: 16px;\r\n    margin-top: 0;\r\n    padding-top: 1em;\r\n  }\r\n\r\n  #externa" +
-                    "l-events .fc-event {\r\n    margin: 3px 0;\r\n    cursor: move;\r\n  }\r\n\r\n  #external-" +
-                    "events p {\r\n    margin: 1.5em 0;\r\n    font-size: 11px;\r\n    color: #666;\r\n  }\r\n\r" +
-                    "\n  #external-events p input {\r\n    margin: 0;\r\n    vertical-align: middle;\r\n  }\r" +
-                    "\n\r\n  #calendar-wrap {\r\n    /*margin-left: 200px;*/\r\n  }\r\n\r\n  #calendar {\r\n/*    " +
-                    "max-width: 1100px;\r\n    margin: 0 auto;*/\r\n    margin-left:220px;\r\n  }\r\n  .title" +
-                    "-wrap {\r\n    white-space: normal !important;\r\n  }\r\n    .iptal-edildi {\r\n        " +
-                    "/*text-decoration: line-through !important;*/\r\n          background-image: url(\"" +
-                    "data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIH" +
-                    "dpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPS" +
-                    "d3aGl0ZScvPgogIDxwYXRoIGQ9J00tMSwxIGwyLC0yCiAgICAgICAgICAgTTAsMTAgbDEwLC0xMAogIC" +
-                    "AgICAgICAgIE05LDExIGwyLC0yJyBzdHJva2U9J2JsYWNrJyBzdHJva2Utd2lkdGg9JzEnLz4KPC9zdm" +
-                    "c+Cg==\"); \r\n          background-repeat: repeat;    }\r\n\r\n  #globalWrapper * {\r\n " +
-                    "   z-index: auto;\r\n  }\r\n\r\n</style>\r\n<script type=\"text/javascript\">\r\n    functio" +
-                    "n OpenToplantiModal() {\r\n        $(\"#ToplantiDetaylariModal\").modal({ backdrop: " +
-                    "true });\r\n    }\r\n    function ToplantiDetaylariModal(toplantiId) {\r\n        docu" +
-                    "ment.getElementById(\'");
+            @__w.Write("\r\n\r\n<script type=\"text/javascript\" src=\"/Style%20Library/lib/fullcalendar/index.g" +
+                    "lobal.js\"></script>\r\n<script type=\"text/javascript\" src=\"/Style%20Library/tskgv/" +
+                    "js/fullcalendar/locales/tr.js\"></script>\r\n<style>\r\n    \r\n    #AcikTarihliRandevu" +
+                    "ListDiv {\r\n      background-color: lightblue;\r\n      height: 550px;\r\n      width" +
+                    ": auto;\r\n      overflow-y: scroll;\r\n    }\r\n  body {\r\n    /*margin-top: 40px;*/\r\n" +
+                    "    font-size: 14px;\r\n    font-family: Arial, Helvetica Neue, Helvetica, sans-se" +
+                    "rif;\r\n  }\r\n\r\n  #external-events {\r\n    position: fixed;\r\n/*    left: 20px;\r\n    " +
+                    "top: 20px;*/\r\n    width: 200px;\r\n    padding: 0;\r\n    border: 1px solid #ccc;\r\n " +
+                    "   background: #eee;\r\n    text-align: left;\r\n  }\r\n\r\n  #external-events h4 {\r\n   " +
+                    " font-size: 16px;\r\n    margin-top: 0;\r\n    padding-top: 1em;\r\n  }\r\n\r\n  #external" +
+                    "-events .fc-event {\r\n    margin: 3px 0;\r\n    cursor: move;\r\n  }\r\n\r\n  #external-e" +
+                    "vents p {\r\n    margin: 1.5em 0;\r\n    font-size: 11px;\r\n    color: #666;\r\n  }\r\n\r\n" +
+                    "  #external-events p input {\r\n    margin: 0;\r\n    vertical-align: middle;\r\n  }\r\n" +
+                    "  #calendar {\r\n/*    max-width: 1100px;\r\n    margin: 0 auto;*/\r\n    margin-left:" +
+                    "220px;\r\n  }\r\n  .title-wrap {\r\n    white-space: normal !important;\r\n  }\r\n    .ipt" +
+                    "al-edildi {\r\n        /*text-decoration: line-through !important;*/\r\n          ba" +
+                    "ckground-image: url(\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53M" +
+                    "y5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZ" +
+                    "WlnaHQ9JzEwJyBmaWxsPSd3aGl0ZScvPgogIDxwYXRoIGQ9J00tMSwxIGwyLC0yCiAgICAgICAgICAgT" +
+                    "TAsMTAgbDEwLC0xMAogICAgICAgICAgIE05LDExIGwyLC0yJyBzdHJva2U9J2JsYWNrJyBzdHJva2Utd" +
+                    "2lkdGg9JzEnLz4KPC9zdmc+Cg==\"); \r\n          background-repeat: repeat;    }\r\n\r\n  " +
+                    "#globalWrapper * {\r\n    z-index: auto;\r\n  }\r\n\r\n</style>\r\n<script type=\"text/java" +
+                    "script\">\r\n    //excele export ettikten donup sonra kalmasın diye\r\n    function s" +
+                    "etFormSubmitToFalse() {\r\n        setTimeout(function () { _spFormOnSubmitCalled " +
+                    "= false; }, 3000);\r\n        return true;\r\n    }\r\n    function OpenToplantiModal(" +
+                    ") {\r\n        $(\"#ToplantiDetaylariModal\").modal({ backdrop: true });\r\n    }\r\n   " +
+                    " function ToplantiDetaylariModal(toplantiId) {\r\n        document.getElementById(" +
+                    "\'");
                          @__w.Write( paramToplantiIdLbl.ClientID);
 
             @__w.Write("\').value = toplantiId;\r\n        document.getElementById(\'");
@@ -1150,49 +1151,48 @@ namespace MTS_WebParts.RandevuViewerWP {
             @__w.Write("\').value = newView;\r\n        document.getElementById(\'");
                          @__w.Write( RandevuKaydetNowBtn.ClientID);
 
-            @__w.Write(@"').click();
-    }
-</script>
-<script type=""text/javascript"">
-    function DoIt () {
-        var element = document.getElementById('calendar');
-        
-        var opt = {
-            margin: [0,-1,0,0],
-            filename: 'myfile.pdf',
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2 },
-            jsPDF: { unit: 'in', format: 'A3', orientation: 'landscape' }
-        };
-
-        // New Promise-based usage:
-        html2pdf().set(opt).from(element).save();
-
-        // Old monolithic-style usage:
-        //html2pdf(element, opt);
-    }
-
-    
-</script>
-<script src=""/Style Library/tskgv/js/jspdf.js""></script>
-<script src=""/Style Library/tskgv/js/jspdf.plugin.addimage.js""></script>
-<script src=""/Style Library/tskgv/js/html2canvas.min.js""></script>
-<script src=""/Style Library/tskgv/js/html2pdf.bundle.min.js""></script>
-
-<div class=""col-xl"">
-
-    <div id='wrap'>
-     
-        <div id='external-events'>
-            <div class=""form-group"" >
-                <a href=""#"" class=""btn btn-info"" id=""downloadPDF"" onclick=""DoIt();"">Takvimi PDF'e Aktar</a>
-            </div>
-            <h4>Açık Tarihli Faaliyetler</h4>
-            ");
+            @__w.Write("\').click();\r\n    }\r\n</script>\r\n<script type=\"text/javascript\">\r\n\r\n    function Ex" +
+                    "portToExcel() {\r\n        window.open(\'data:application/vnd.ms-excel,\' + encodeUR" +
+                    "IComponent($(\'div[id=calendar]\').html()));\r\n        e.preventDefault();\r\n    }\r\n" +
+                    "    function DoIt () {\r\n        var element = document.getElementById(\'calendar\'" +
+                    ");\r\n        var fileName = $(\"h2\").html();\r\n        var opt = {\r\n            mar" +
+                    "gin: [0,-1,0,0],\r\n            filename: fileName,\r\n            enableLinks: fals" +
+                    "e,\r\n            image: { type: \'jpeg\', quality: 0.98 },\r\n            html2canvas" +
+                    ": { scale: 2 },\r\n            jsPDF: { unit: \'in\', format: \'A3\', orientation: \'la" +
+                    "ndscape\' }\r\n        };\r\n\r\n        // New Promise-based usage:\r\n        html2pdf(" +
+                    ").set(opt).from(element).save();\r\n    }  \r\n\r\n</script>\r\n\r\n<script type=\"text/jav" +
+                    "ascript\">\r\n    \r\n    function fnExcelReport() {\r\n        var tab_text = \"<table " +
+                    "border=\'2px\'><tr bgcolor=\'#87AFC6\'>\";\r\n        var textRange; var j = 0;\r\n      " +
+                    "  tab = document.getElementsByClassName(\'fc-scrollgrid\')[0];\r\n\r\n        for (j =" +
+                    " 0; j < tab.rows.length; j++) {\r\n            tab_text = tab_text + tab.rows[j].i" +
+                    "nnerHTML + \"</tr>\";\r\n            //tab_text=tab_text+\"</tr>\";\r\n        }\r\n\r\n    " +
+                    "    tab_text = tab_text + \"</table>\";\r\n        tab_text = tab_text.replace(/<A[^" +
+                    ">]*>|<\\/A>/g, \"\");//remove if u want links in your table\r\n        tab_text = tab" +
+                    "_text.replace(/<img[^>]*>/gi, \"\"); // remove if u want images in your table\r\n   " +
+                    "     tab_text = tab_text.replace(/<input[^>]*>|<\\/input>/gi, \"\"); // reomves inp" +
+                    "ut params\r\n\r\n        var ua = window.navigator.userAgent;\r\n        var msie = ua" +
+                    ".indexOf(\"MSIE \");\r\n\r\n        if (msie > 0 || !!navigator.userAgent.match(/Tride" +
+                    "nt.*rv\\:11\\./))      // If Internet Explorer\r\n        {\r\n            txtArea1.do" +
+                    "cument.open(\"txt/html\", \"replace\");\r\n            txtArea1.document.write(tab_tex" +
+                    "t);\r\n            txtArea1.document.close();\r\n            txtArea1.focus();\r\n    " +
+                    "        sa = txtArea1.document.execCommand(\"SaveAs\", true, \"Say Thanks to Sumit." +
+                    "xls\");\r\n        }\r\n        else                 //other browser not tested on IE" +
+                    " 11\r\n            sa = window.open(\'data:application/vnd.ms-excel,\' + encodeURICo" +
+                    "mponent(tab_text));\r\n\r\n        return (sa);\r\n    }\r\n</script>\r\n<script src=\"/Sty" +
+                    "le Library/tskgv/js/jspdf.js\"></script>\r\n<script src=\"/Style Library/tskgv/js/js" +
+                    "pdf.plugin.addimage.js\"></script>\r\n<script src=\"/Style Library/tskgv/js/html2can" +
+                    "vas.min.js\"></script>\r\n<script src=\"/Style Library/tskgv/js/html2pdf.bundle.min." +
+                    "js\"></script>\r\n\r\n<div class=\"col-xl\">\r\n\r\n    <div id=\'wrap\'>\r\n     \r\n        <di" +
+                    "v id=\'external-events\'>\r\n            <div class=\"form-group\" >\r\n                " +
+                    "<a href=\"#\" class=\"btn btn-info\" id=\"downloadPDF\" onclick=\"DoIt();\">Takvimi PDF\'" +
+                    "e Aktar</a>\r\n                <a href=\"#\" id=\"btnExport\" onclick=\"fnExcelReport()" +
+                    ";\"> EXPORT </a>\r\n                <iframe id=\"txtArea1\" style=\"display:none\"></if" +
+                    "rame>\r\n            </div>\r\n            <h4>Açık Tarihli Faaliyetler</h4>\r\n      " +
+                    "      ");
             parameterContainer.Controls[0].RenderControl(@__w);
-            @__w.Write("\r\n        </div>\r\n         \r\n        <div id=\'calendar-wrap\'>\r\n            <div i" +
-                    "d=\'calendar\'></div>\r\n        </div>\r\n    </div>\r\n    <div id=\"RandevuHiddenDiv\" " +
-                    "style=\"display: none\">\r\n        ");
+            @__w.Write("\r\n        </div>\r\n        <div id=\"calendar-wrap\">\r\n            \r\n            <di" +
+                    "v id=\"calendar\"></div>\r\n        </div>\r\n    </div>\r\n    <div id=\"RandevuHiddenDi" +
+                    "v\" style=\"display: none\">\r\n        ");
             parameterContainer.Controls[1].RenderControl(@__w);
             @__w.Write("\r\n        ");
             parameterContainer.Controls[2].RenderControl(@__w);

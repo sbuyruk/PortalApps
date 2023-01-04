@@ -121,7 +121,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
         {
             string gorevOnayIdStr = string.Empty;
             GorevOnay gorevOnay = new GorevOnay();
-            DataTable dataTable = gorevOnay.SelectAllReturnDT();
+            DataTable dataTable = gorevOnay.SelectAllReturnDT(0);
 
             List<GorevOnayListItem> list = new List<GorevOnayListItem>();
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);

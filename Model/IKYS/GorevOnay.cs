@@ -167,10 +167,10 @@ namespace Model.IKYS
                             WHERE Id={0}", Id);
             return sqlString;
         }
-        public string SelectAllReturnJson()
+        public string SelectAllReturnJson(int personelId)
         {
 
-            string sqlString = SelectAllSQL();
+            string sqlString = SelectAllSQL(personelId);
             DataTable dataTable = null;
             try
             {
@@ -183,9 +183,9 @@ namespace Model.IKYS
             string json = ToJSON(dataTable);
             return json;
         }
-        public DataTable SelectAllReturnDT()
+        public DataTable SelectAllReturnDT(int personelId)
         {
-            string sqlString = SelectAllSQL();
+            string sqlString = SelectAllSQL(personelId);
             DataTable dataTable = null;
             try
             {
@@ -236,15 +236,17 @@ namespace Model.IKYS
             return gorevOnay;
 
         }
-        private string SelectAllSQL()
+        private string SelectAllSQL(int personelId)
         {
+            string personelIdStr = personelId > 0 ? string.Format(" WHERE PersonelId={0}",personelId):string.Empty;
             string sqlstr = string.Format(@" 
                     SELECT A.Id GorevOnayId, P.Adi+' '+P.Soyadi AdiSoyadi, A.Secildi,A.UlasimAraci,
                         A.PersonelId,A.GorevinSebebi,A.GorevinYeri,A.BaslangicTarihi,A.BitisTarihi,A.Sure,A.Avans,A.Yevmiye,A.ParaBirimi,
                         A.AracTahsisi,A.AracPlakasi,A.PerSubeImza,A.PerSubeVekil,A.OnayImza,A.OnayMakam,A.OnayMakamVekil,A.GMImza,A.GMVekil, A.Aciklama
                     FROM GorevOnay_Table A
-                        INNER JOIN Personel_Table P On A.PersonelId=P.Id     
-                    ORDER BY A.BaslangicTarihi DESC, A.BitisTarihi DESC ");
+                        INNER JOIN Personel_Table P On A.PersonelId=P.Id 
+                    {0}
+                    ORDER BY A.BaslangicTarihi DESC, A.BitisTarihi DESC ", personelIdStr);
             return sqlstr;
         }
 

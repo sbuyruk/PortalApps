@@ -616,6 +616,7 @@ namespace Model.NBYS
                 LEFT JOIN Armagan_Table E ON E.Id=A.ArmaganId
                 LEFT JOIN ArmaganTanim_Table F ON F.Id=E.ArmaganTanimId
                 WHERE Bolge={0} AND BagisTarihi BETWEEN {1} AND {2}
+                    AND E.Durum NOT IN ('Ulaşılamıyor', 'Belge İstemiyor') --30.12.2022 Deniz Hanım aradı, Zeki Alb. ve Kemal Alb.. tarafından bu şeklde olmasının istendiğini iletti
                 ORDER BY BagisMiktari DESC,Adi, BagisTarihi DESC
             ", bolge.ReturnQuotedValue(), ilkTarih.ReturnTRDateFormat(),sonTarih.ReturnTRDateFormat());
             DataTable dataTable;

@@ -121,6 +121,22 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>FaaliyetROViewerWP.ascx</DependentUpon>
     </Compile>
+    <Compile Include="FaaliyetViewerCustomWP\FaaliyetViewerCustomWP.ascx.cs">
+      <DependentUpon>FaaliyetViewerCustomWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="FaaliyetViewerCustomWP\FaaliyetViewerCustomWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FaaliyetViewerCustomWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="FaaliyetViewerWP\FaaliyetViewerWP.ascx.cs">
+      <DependentUpon>FaaliyetViewerWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="FaaliyetViewerWP\FaaliyetViewerWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FaaliyetViewerWP.ascx</DependentUpon>
+    </Compile>
     <Compile Include="HaftalikGorunumWP\HaftalikGorunumWP.ascx.cs">
       <DependentUpon>HaftalikGorunumWP.ascx</DependentUpon>
     </Compile>
@@ -194,14 +210,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>RandevuParametreGirisiWP.ascx</DependentUpon>
     </Compile>
-    <Compile Include="RandevuViewerWP\RandevuViewerWP.ascx.cs">
-      <DependentUpon>RandevuViewerWP.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="RandevuViewerWP\RandevuViewerWP.ascx.g.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RandevuViewerWP.ascx</DependentUpon>
-    </Compile>
     <Compile Include="TestWP\TestWP.ascx.cs">
       <DependentUpon>TestWP.ascx</DependentUpon>
     </Compile>
@@ -232,6 +240,14 @@
     <None Include="FaaliyetROViewerWP\FaaliyetROViewerWP.webpart" />
     <None Include="FaaliyetROViewerWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{9826d525-f66b-48a5-844d-73178c142eb0}</SharePointProjectItemId>
+    </None>
+    <None Include="FaaliyetViewerCustomWP\FaaliyetViewerCustomWP.webpart" />
+    <None Include="FaaliyetViewerCustomWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{1b562562-8854-4344-a1a1-b9cb8f646fd8}</SharePointProjectItemId>
+    </None>
+    <None Include="FaaliyetViewerWP\FaaliyetViewerWP.webpart" />
+    <None Include="FaaliyetViewerWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{69d7f1de-30f0-43a8-a856-e45f1834d5b4}</SharePointProjectItemId>
     </None>
     <None Include="Features\Feature1\Feature1.feature">
       <FeatureId>{21882eb9-9762-4dc8-b20b-bef99d4b76cf}</FeatureId>
@@ -283,10 +299,6 @@
     <None Include="RandevuParametreGirisiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{6a0901dd-a410-4064-8518-8254c95d03d6}</SharePointProjectItemId>
     </None>
-    <None Include="RandevuViewerWP\RandevuViewerWP.webpart" />
-    <None Include="RandevuViewerWP\SharePointProjectItem.spdata">
-      <SharePointProjectItemId>{d7bc804a-cd95-44c4-811d-718e3e3ee547}</SharePointProjectItemId>
-    </None>
     <None Include="Scripts\jquery-3.5.1.min.map" />
     <None Include="Scripts\jquery-3.5.1.slim.min.map" />
     <None Include="TestWP\SharePointProjectItem.spdata">
@@ -323,6 +335,16 @@
     <Content Include="FaaliyetROViewerWP\FaaliyetROViewerWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>FaaliyetROViewerWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="FaaliyetViewerCustomWP\Elements.xml" />
+    <Content Include="FaaliyetViewerCustomWP\FaaliyetViewerCustomWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>FaaliyetViewerCustomWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="FaaliyetViewerWP\Elements.xml" />
+    <Content Include="FaaliyetViewerWP\FaaliyetViewerWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>FaaliyetViewerWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="Features\Feature1\Feature1.Template.xml">
       <DependentUpon>Feature1.feature</DependentUpon>
@@ -374,11 +396,6 @@
     <Content Include="RandevuParametreGirisiWP\RandevuParametreGirisiWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>RandevuParametreGirisiWP.ascx.g.cs</LastGenOutput>
-    </Content>
-    <Content Include="RandevuViewerWP\Elements.xml" />
-    <Content Include="RandevuViewerWP\RandevuViewerWP.ascx">
-      <Generator>SharePointWebPartCodeGenerator</Generator>
-      <LastGenOutput>RandevuViewerWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\fullcalendar\fullcalendar.js" />
     <Content Include="Scripts\fullcalendar\fullcalendar.min.js" />

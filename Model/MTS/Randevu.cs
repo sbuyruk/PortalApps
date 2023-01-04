@@ -260,6 +260,19 @@ namespace Model.MTS
 
             return list;
         }
+        public List<Randevu> SelectByTarihReturnList(DateTime tarih)
+        {
+            DateTime bastar = new DateTime(tarih.Year,tarih.Month,tarih.Day);
+            DateTime bittar = UtilityHelper.TariheSaatEkle(tarih, "23:59");
+            string sqlString = string.Format(@"
+                SELECT * FROM Randevu_Table
+                WHERE (BaslangicTarihi <={0} AND BitisTarihi >= {1}) ORDER BY BaslangicTarihi 
+            ", bittar.ReturnTRDateFormat(),bastar.ReturnTRDateFormat());
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            List<Randevu> list = ToList<Randevu>(dataTable);
+
+            return list;
+        }
         public DataTable SelectAllByKatilimciRandevuReturnDataTable( int randevuId, int monthBefore)
         {
             string randevuIdStr = randevuId == ProjeConstants.HEPSI_INT ? "" : " AND A.RandevuId=" + randevuId;

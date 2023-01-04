@@ -199,6 +199,26 @@
                     <asp:LinkButton CssClass="btn btn-outline-secondary float-right mr-2" ID="GorevOnayListesiBtn" runat="server" Text="Görev Onay Listesi" CausesValidation="false" OnClick="GorevOnayListesiBtn_Click" Visible="False" />
                 </div>
             </div>
+            <div class="card shadow">
+                <div class="card-header">
+                    <h2 class="col-form-label font-weight-bold">Görev/Onay Listesi</h2>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <table id="CustomDataTable" class="table table-striped row-border" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Adı Soyadı</th>
+                                    <th>Görevin Sebebi</th>
+                                    <th>Gidiş Tarihi</th>
+                                    <th>Dönüş Tarihi</th>
+                                    <th>Görevin Yeri</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
             <div class="modal" id="ModalOnayDiv" role="dialog">
                 <div class="modal-dialog">
                     <!-- Modal content-->

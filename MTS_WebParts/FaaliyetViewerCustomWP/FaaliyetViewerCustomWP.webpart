@@ -2,12 +2,12 @@
 <webParts>
   <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
     <metaData>
-      <type name="MTS_WebParts.RandevuViewerWP.RandevuViewerWP, $SharePoint.Project.AssemblyFullName$" />
+      <type name="MTS_WebParts.FaaliyetViewerCustomWP.FaaliyetViewerCustomWP, $SharePoint.Project.AssemblyFullName$" />
       <importErrorMessage>$Resources:core,ImportErrorMessage;</importErrorMessage>
     </metaData>
     <data>
       <properties>
-        <property name="Title" type="string">MTS_WebParts - RandevuViewerWP</property>
+        <property name="Title" type="string">MTS_WebParts - FaaliyetViewerCustomWP</property>
         <property name="Description" type="string">My Visual Web Part</property>
       </properties>
     </data>

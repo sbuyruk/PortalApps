@@ -1062,21 +1062,26 @@ namespace IKYS_WebParts.GorevOnayGirisiWP {
             global::System.Web.UI.WebControls.LinkButton @__ctrl29;
             @__ctrl29 = this.@__BuildControlGorevOnayListesiBtn();
             @__parser.AddParsedSubObject(@__ctrl29);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-                </div>
-            </div>
-            <div class=""modal"" id=""ModalOnayDiv"" role=""dialog"">
-                <div class=""modal-dialog"">
-                    <!-- Modal content-->
-                    <div class=""modal-content"" style=""width: 550px;"">
-
-                        <div class=""modal-body"">
-                            <div style=""display: none"">
-                            </div>
-                            <div>
-                                <div class=""text-center"">
-                                    <h3>
-                                        "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                </div>\r\n            </div>\r\n            <div class=\"card shadow" +
+                        "\">\r\n                <div class=\"card-header\">\r\n                    <h2 class=\"co" +
+                        "l-form-label font-weight-bold\">Görev/Onay Listesi</h2>\r\n                </div>\r\n" +
+                        "                <div class=\"card-body\">\r\n                    <div class=\"form-gr" +
+                        "oup\">\r\n                        <table id=\"CustomDataTable\" class=\"table table-st" +
+                        "riped row-border\" width=\"100%\">\r\n                            <thead>\r\n          " +
+                        "                      <tr>\r\n                                    <th>Adı Soyadı</" +
+                        "th>\r\n                                    <th>Görevin Sebebi</th>\r\n              " +
+                        "                      <th>Gidiş Tarihi</th>\r\n                                   " +
+                        " <th>Dönüş Tarihi</th>\r\n                                    <th>Görevin Yeri</th" +
+                        ">\r\n                                </tr>\r\n                            </thead>\r\n" +
+                        "                        </table>\r\n                    </div>\r\n                </" +
+                        "div>\r\n            </div>\r\n            <div class=\"modal\" id=\"ModalOnayDiv\" role=" +
+                        "\"dialog\">\r\n                <div class=\"modal-dialog\">\r\n                    <!-- " +
+                        "Modal content-->\r\n                    <div class=\"modal-content\" style=\"width: 5" +
+                        "50px;\">\r\n\r\n                        <div class=\"modal-body\">\r\n                   " +
+                        "         <div style=\"display: none\">\r\n                            </div>\r\n      " +
+                        "                      <div>\r\n                                <div class=\"text-ce" +
+                        "nter\">\r\n                                    <h3>\r\n                              " +
+                        "          "));
             global::System.Web.UI.WebControls.Label @__ctrl30;
             @__ctrl30 = this.@__BuildControlSilLbl();
             @__parser.AddParsedSubObject(@__ctrl30);

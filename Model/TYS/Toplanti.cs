@@ -238,6 +238,23 @@ namespace Model.MTS
 
             return dataTable;
         }
+        public List<Toplanti> SelectByKatilimciTarih(int katilimciId, DateTime tarih)
+        {
+            DateTime bastar = new DateTime(tarih.Year, tarih.Month, tarih.Day);
+            DateTime bittar = UtilityHelper.TariheSaatEkle(tarih, "23:59");
+            string sqlString = string.Format(@"
+                SELECT C.Adi, C.Soyadi, B.KatilimciId, A.Id ToplantiId, B.Id KatilimId , D.ProtokolSiraNo , 
+                    A.*         
+                FROM Toplanti_Table A  
+	                LEFT JOIN ToplantiKatilim_Table B ON A.Id=B.ToplantiId
+	                LEFT JOIN Personel_Table C ON C.Id = B.KatilimciId
+					LEFT JOIN IsBilgileri_Table D ON D.PersonelId = C.Id
+                WHERE B.KatilimciId = {0} AND (BaslangicTarihi <={1} AND BitisTarihi >= {2}) ORDER BY BaslangicTarihi  
+            ", katilimciId, bittar.ReturnTRDateFormat(), bastar.ReturnTRDateFormat());
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            List<Toplanti> list = ToList<Toplanti>(dataTable);
+            return list;
+        }
         public string SelectAllReturnJson()
         {
 

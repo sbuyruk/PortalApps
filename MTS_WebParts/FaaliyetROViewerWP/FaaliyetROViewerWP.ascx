@@ -33,12 +33,8 @@
   }
 
   #calendar {
-      font-size:small;
       height:1116px;
       width:1600px;
-/*    max-width: 1100px;
-    margin: 0 auto;
-    margin-left:220px; */
   }
   .title-wrap {
     white-space: normal !important;

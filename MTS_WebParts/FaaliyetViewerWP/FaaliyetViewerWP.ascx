@@ -5,13 +5,10 @@
 <%@ Register Tagprefix="asp" Namespace="System.Web.UI" Assembly="System.Web.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" %>
 <%@ Import Namespace="Microsoft.SharePoint" %> 
 <%@ Register Tagprefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
-<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="RandevuViewerWP.ascx.cs" Inherits="MTS_WebParts.RandevuViewerWP.RandevuViewerWP" %>
+<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="FaaliyetViewerWP.ascx.cs" Inherits="MTS_WebParts.FaaliyetViewerWP.FaaliyetViewerWP" %>
 
-<link rel="stylesheet" href="/Style%20Library/tskgv/js/fullcalendar/main.css">
-<script type="text/javascript" src="/Style%20Library/tskgv/js/fullcalendar/main.js"></script>
+<script type="text/javascript" src="/Style%20Library/lib/fullcalendar/index.global.js"></script>
 <script type="text/javascript" src="/Style%20Library/tskgv/js/fullcalendar/locales/tr.js"></script>
-
-
 <style>
     <%-- scroll için --%>
     #AcikTarihliRandevuListDiv {
@@ -58,11 +55,6 @@
     margin: 0;
     vertical-align: middle;
   }
-
-  #calendar-wrap {
-    /*margin-left: 200px;*/
-  }
-
   #calendar {
 /*    max-width: 1100px;
     margin: 0 auto;*/
@@ -82,6 +74,11 @@
 
 </style>
 <script type="text/javascript">
+    //excele export ettikten donup sonra kalmasın diye
+    function setFormSubmitToFalse() {
+        setTimeout(function () { _spFormOnSubmitCalled = false; }, 3000);
+        return true;
+    }
     function OpenToplantiModal() {
         $("#ToplantiDetaylariModal").modal({ backdrop: true });
     }
@@ -98,12 +95,18 @@
     }
 </script>
 <script type="text/javascript">
+
+    function ExportToExcel() {
+        window.open('data:application/vnd.ms-excel,' + encodeURIComponent($('div[id=calendar]').html()));
+        e.preventDefault();
+    }
     function DoIt () {
         var element = document.getElementById('calendar');
-        
+        var fileName = $("h2").html();
         var opt = {
             margin: [0,-1,0,0],
-            filename: 'myfile.pdf',
+            filename: fileName,
+            enableLinks: false,
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 2 },
             jsPDF: { unit: 'in', format: 'A3', orientation: 'landscape' }
@@ -111,12 +114,43 @@
 
         // New Promise-based usage:
         html2pdf().set(opt).from(element).save();
+    }  
 
-        // Old monolithic-style usage:
-        //html2pdf(element, opt);
-    }
+</script>
 
+<script type="text/javascript">
     
+    function fnExcelReport() {
+        var tab_text = "<table border='2px'><tr bgcolor='#87AFC6'>";
+        var textRange; var j = 0;
+        tab = document.getElementsByClassName('fc-scrollgrid')[0];
+
+        for (j = 0; j < tab.rows.length; j++) {
+            tab_text = tab_text + tab.rows[j].innerHTML + "</tr>";
+            //tab_text=tab_text+"</tr>";
+        }
+
+        tab_text = tab_text + "</table>";
+        tab_text = tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
+        tab_text = tab_text.replace(/<img[^>]*>/gi, ""); // remove if u want images in your table
+        tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+        var ua = window.navigator.userAgent;
+        var msie = ua.indexOf("MSIE ");
+
+        if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+        {
+            txtArea1.document.open("txt/html", "replace");
+            txtArea1.document.write(tab_text);
+            txtArea1.document.close();
+            txtArea1.focus();
+            sa = txtArea1.document.execCommand("SaveAs", true, "Say Thanks to Sumit.xls");
+        }
+        else                 //other browser not tested on IE 11
+            sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
+
+        return (sa);
+    }
 </script>
 <script src="/Style Library/tskgv/js/jspdf.js"></script>
 <script src="/Style Library/tskgv/js/jspdf.plugin.addimage.js"></script>
@@ -130,15 +164,17 @@
         <div id='external-events'>
             <div class="form-group" >
                 <a href="#" class="btn btn-info" id="downloadPDF" onclick="DoIt();">Takvimi PDF'e Aktar</a>
+                <a href="#" id="btnExport" onclick="fnExcelReport();"> EXPORT </a>
+                <iframe id="txtArea1" style="display:none"></iframe>
             </div>
             <h4>Açık Tarihli Faaliyetler</h4>
             <div id="AcikTarihliRandevuListDiv" runat="server" ClientIDMode="Static">
 
             </div>
         </div>
-         
-        <div id='calendar-wrap'>
-            <div id='calendar'></div>
+        <div id="calendar-wrap">
+            
+            <div id="calendar"></div>
         </div>
     </div>
     <div id="RandevuHiddenDiv" style="display: none">
@@ -263,7 +299,5 @@
             </div>
         </div>
     </ContentTemplate>
-<%--    <Triggers>
-        <asp:AsyncPostBackTrigger ControlID="ToplantiDetaylariBtn" EventName="click" />
-    </Triggers>--%>
+
 </asp:UpdatePanel>

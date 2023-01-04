@@ -12,19 +12,20 @@ using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
 
-namespace MTS_WebParts.RandevuViewerWP
+namespace MTS_WebParts.FaaliyetViewerWP
 {
     [ToolboxItemAttribute(false)]
-    public partial class RandevuViewerWP : WebPart
+    public partial class FaaliyetViewerWP : WebPart
     {
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
         // your constructor, it's not recommended for production purposes.
         // [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Assert, UnmanagedCode = true)]
-        public RandevuViewerWP()
+        public FaaliyetViewerWP()
         {
         }
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -84,13 +85,13 @@ namespace MTS_WebParts.RandevuViewerWP
             if (!Page.IsPostBack)
             {
                 KayitGetir();
-                AcikTarihliRandevuListesiniGetir(); 
+                AcikTarihliRandevuListesiniGetir();
             }
         }
         private void KayitGetir()
         {
             var randevuJsonData = RandevuListesiniGetir();
-            var resmiTatilJsonData = ResmiTatilListesiniGetir(); 
+            var resmiTatilJsonData = ResmiTatilListesiniGetir();
             var kisiDogumGunleriJsonData = KisiDogumGunuListesiniGetir();
             var toplantiJsonData = ToplantiListesiniGetir();
             var personelDogumGunleriJsonData = PersonelDogumGunuListesiniGetir();
@@ -107,9 +108,9 @@ namespace MTS_WebParts.RandevuViewerWP
             toplantiJsonData = string.IsNullOrEmpty(toplantiJsonData) ? string.Empty : toplantiJsonData.Replace("[{", "{").Replace("}]", "},");
             personelDogumGunleriJsonData = string.IsNullOrEmpty(personelDogumGunleriJsonData) ? string.Empty : personelDogumGunleriJsonData.Replace("[{", "{").Replace("}]", "},");
 
-            string jsonArrayString = 
-                "[" + 
-                randevuJsonData + 
+            string jsonArrayString =
+                "[" +
+                randevuJsonData +
                 resmiTatilJsonData +
                 kisiDogumGunleriJsonData +
                 toplantiJsonData +
@@ -159,10 +160,10 @@ namespace MTS_WebParts.RandevuViewerWP
             foreach (var item in kisiListesi)
             {
 
-                for (int i = -1 ; i < 2; i++)//geçen yıl, bu yıl ve gelecek yıl için d.günü göster
+                for (int i = -1; i < 2; i++)//geçen yıl, bu yıl ve gelecek yıl için d.günü göster
                 {
                     DateTime dogumGunu = item.DogumTarihi;
-                    DateTime dogumGunuBuYil = new DateTime(DateTime.Today.Year +i, dogumGunu.Month, dogumGunu.Day);
+                    DateTime dogumGunuBuYil = new DateTime(DateTime.Today.Year + i, dogumGunu.Month, dogumGunu.Day);
 
                     CalendarEvent dogumGunuitem = new CalendarEvent();
                     dogumGunuitem.state = ProjeConstants.RANDEVU_DURUMU_ONAYLANDI_INT.ToString();
@@ -179,7 +180,7 @@ namespace MTS_WebParts.RandevuViewerWP
                     dogumGunuitem.startEditable = false;
 
                     randevu.RenkBelirle(dogumGunuitem);
-                    eventItems.Add(dogumGunuitem); 
+                    eventItems.Add(dogumGunuitem);
                 }
             }
 
@@ -193,7 +194,7 @@ namespace MTS_WebParts.RandevuViewerWP
             List<CalendarEvent> eventItems = new List<CalendarEvent>();
             Randevu randevu = new Randevu();
 
-            if (dataTable!=null)
+            if (dataTable != null)
             {
                 foreach (DataRow row in dataTable.Rows)
                 {
@@ -202,11 +203,11 @@ namespace MTS_WebParts.RandevuViewerWP
                         string adi = row["Adi"].ToString();
                         string soyadi = row["Soyadi"].ToString();
                         DateTime dogumTar = row["DogumTar"].ConvertToDatetime();
-                        DateTime dogumGunuBuYil = new DateTime(DateTime.Today.Year+i, dogumTar.Month, dogumTar.Day);
+                        DateTime dogumGunuBuYil = new DateTime(DateTime.Today.Year + i, dogumTar.Month, dogumTar.Day);
                         bool dogumGunuKutlama = row["DogumGunuKutlama"].ConvertToBool();
                         bool medeniHali = row["MedeniHali"].ConvertToInt() == 1 ? true : false;
                         DateTime evlilikTar = row["EvlilikTar"].ConvertToDatetime();
-                        DateTime evlilikTarBuYil = new DateTime(DateTime.Today.Year+i, evlilikTar.Month, evlilikTar.Day);
+                        DateTime evlilikTarBuYil = new DateTime(DateTime.Today.Year + i, evlilikTar.Month, evlilikTar.Day);
                         bool evlilikKutlama = row["EvlilikKutlama"].ConvertToBool();
 
 
@@ -224,7 +225,7 @@ namespace MTS_WebParts.RandevuViewerWP
                             dogumGunuitem.startEditable = false;
 
                             randevu.RenkBelirle(dogumGunuitem);
-                            eventItems.Add(dogumGunuitem); 
+                            eventItems.Add(dogumGunuitem);
                         }
 
                         if (evlilikTar > ProjeConstants.NULL_TARIH && medeniHali && evlilikKutlama)
@@ -242,9 +243,9 @@ namespace MTS_WebParts.RandevuViewerWP
 
                             randevu.RenkBelirle(evlilikYildonumuItem);
                             eventItems.Add(evlilikYildonumuItem);
-                        } 
+                        }
                     }
-                } 
+                }
             }
             string json = randevu.ToJSON(eventItems);
             return json;
@@ -260,32 +261,17 @@ namespace MTS_WebParts.RandevuViewerWP
             DateTime basTar = new DateTime(DateTime.Today.AddYears(-1).Year, 1, 1);
             DateTime bitTar = new DateTime(DateTime.Today.AddYears(1).Year, 12, 31);
             ResmiTatil resmiTatil = new ResmiTatil();
-            string json = resmiTatil.SelectAllReturnJson(basTar,bitTar);
+            string json = resmiTatil.SelectAllReturnJson(basTar, bitTar);
             return json;
         }
         private string CreateJsString(string jsonData)
         {
-            string initialDate = string.IsNullOrEmpty(InitialDateQS) ? 
+            string initialDate = string.IsNullOrEmpty(InitialDateQS) ?
                 DateTime.Today.ToString("yyyy-MM-dd").ReturnQuotedValue().ToString() :
-                InitialDateQS.ReturnQuotedValue().ToString(); 
+                InitialDateQS.ReturnQuotedValue().ToString();
             string calendarView = string.IsNullOrEmpty(CalendarViewQS) ? "'dayGridMonth'" : CalendarViewQS.ReturnQuotedValue().ToString();
             string calendarStr = @" 
             document.addEventListener('DOMContentLoaded', function() {
-
-                /* initialize the external events
-                -----------------------------------------------------------------*/
-
-                //var containerEl = document.getElementById('external-events-list');
-                //new FullCalendar.Draggable(containerEl, {
-                //  itemSelector: '.fc-event',
-                //  eventData: function(eventEl) {
-                //    return {
-                //      title: eventEl.innerText.trim()
-                //    }
-                //  }
-                //});
-
-                //// the individual way to do it
                  var containerEl = document.getElementById('AcikTarihliRandevuListDiv');
                  var eventEls = Array.prototype.slice.call(
                    containerEl.querySelectorAll('.fc-event')
@@ -420,18 +406,18 @@ namespace MTS_WebParts.RandevuViewerWP
             outerDiv.Controls.Add(innerDiv);
             AcikTarihliRandevuListDiv.Controls.Add(outerDiv);
         }
-        private HyperLink HyperLinkGetir(int randevuId, string randevuKonusu )
+        private HyperLink HyperLinkGetir(int randevuId, string randevuKonusu)
         {
             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
             HyperLink hyperLink = new HyperLink
             {
                 Text = string.IsNullOrEmpty(randevuKonusu) ? "Konu Yok" : randevuKonusu
             };
-            
+
             if (randevuId > 0)
             {
                 string linkUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_RANDEVU_GIRIS + "?RandevuId=" + randevuId;
-                    
+
                 hyperLink.NavigateUrl = linkUrl;
             }
             return hyperLink;
@@ -472,7 +458,7 @@ namespace MTS_WebParts.RandevuViewerWP
                     randevu.AcikTarih = ProjeConstants.RANDEVU_ACIKTARIHLI_DEGIL.ConvertToBool();
                     if (randevu.Update())
                     {
-                        RedirectToPage(ProjeConstants.PAGE_FAALIYET_TAKVIM+ "?CalendarView=" + CalendarViewQS + "&InitialDate=" + InitialDateQS);
+                        RedirectToPage(ProjeConstants.PAGE_FAALIYET_TAKVIM + "?CalendarView=" + CalendarViewQS + "&InitialDate=" + InitialDateQS);
                     }
 
                 }
@@ -513,7 +499,7 @@ namespace MTS_WebParts.RandevuViewerWP
 
                 Personel personel = new Personel();
                 List<Personel> list = personel.SelectKatilimcilarByToplantiIdList(toplanti.Id);
-                
+
                 foreach (var item in list)
                 {
                     IcKatilimcilarCell.Text += item.Adi + " " + item.Soyadi + "</br>";
@@ -576,5 +562,6 @@ namespace MTS_WebParts.RandevuViewerWP
             return yetkiliStr;
         }
         #endregion
+
     }
 }

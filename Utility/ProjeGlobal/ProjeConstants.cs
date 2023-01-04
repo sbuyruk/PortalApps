@@ -226,8 +226,9 @@ namespace Utility.ProjeGlobal
         public const string PAGE_KISI_LIST = "KisiListesi.aspx";
         public const string PAGE_RANDEVU_GIRIS = "RandevuGirisi.aspx";
         public const string PAGE_RANDEVU_LIST = "RandevuListesi.aspx";
-        public const string PAGE_FAALIYET_TAKVIM = "RandevuViewer.aspx";
+        public const string PAGE_FAALIYET_TAKVIM = "FaaliyetViewer.aspx";
         public const string PAGE_FAALIYET_TAKVIM_RO = "FaaliyetROViewer.aspx";
+        public const string PAGE_FAALIYET_TAKVIM_CUSTOM = "FaaliyetViewerCustom.aspx";
         public const string PAGE_RANDEVU_KARTI = "RandevuKarti.aspx";
 
         //FTK

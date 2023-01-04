@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <feature xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="fcb6536c-1926-404f-98a4-d2c90b5e6e96" featureId="fcb6536c-1926-404f-98a4-d2c90b5e6e96" imageUrl="" scope="Site" solutionId="00000000-0000-0000-0000-000000000000" title="MTS_WebParts Feature1" version="" deploymentPath="$SharePoint.Project.FileNameWithoutExtension$_$SharePoint.Feature.FileNameWithoutExtension$" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/FeatureModel">
   <projectItems>
-    <projectItemReference itemId="d7bc804a-cd95-44c4-811d-718e3e3ee547" />
     <projectItemReference itemId="be9b927a-6eed-4ca1-abe0-d609cb2d28d0" />
     <projectItemReference itemId="8038ca8f-f398-4fa9-9f5a-daca4d761227" />
     <projectItemReference itemId="c3624114-82c4-4c1d-b10e-482017fab5d0" />
