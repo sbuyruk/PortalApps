@@ -867,7 +867,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
             SilMesajiLbl.Text = "Toplantıya ait tüm bilgiler silinecek ve toplantı katılımcılarına iptal e-postası gönderilecektir. </br>Silmek istediğinizden eminmisiniz?";
             SilModalBaslikLbl.Text = "Toplantı Silinecek";
             ToplantiSilNowBtn.Visible = true;
-            System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), openModal, true);
+            UtilityHelper.ScriptCalistir(openModal);
         }
         protected void ToplantiSilBtn_Click(object sender, EventArgs e)
         {

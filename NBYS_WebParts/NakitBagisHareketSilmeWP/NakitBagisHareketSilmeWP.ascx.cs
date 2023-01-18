@@ -180,7 +180,7 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
                         { data: 'BagisMiktari', 
                             'width': '10%', 
                             'className': 'text-right' ,
-                            render: $.fn.dataTable.render.number( '.', ',', 2 ) //format money as ###.###,00
+                            //render: $.fn.dataTable.render.number( '.', ',', 2 ) //format money as ###.###,00
                         },
                         { data: 'BagisTarihi' },
                         { data: 'Banka' },

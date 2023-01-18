@@ -196,14 +196,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ToplantiViewerWP.ascx</DependentUpon>
     </Compile>
-    <Compile Include="YetlilendirmeWP\YetlilendirmeWP.ascx.cs">
-      <DependentUpon>YetlilendirmeWP.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="YetlilendirmeWP\YetlilendirmeWP.ascx.g.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>YetlilendirmeWP.ascx</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -313,10 +305,6 @@
       <SharePointProjectItemId>{b027d8f1-e00b-49b9-89fe-d9ffd3ffac33}</SharePointProjectItemId>
     </None>
     <None Include="ToplantiViewerWP\ToplantiViewerWP.webpart" />
-    <None Include="YetlilendirmeWP\SharePointProjectItem.spdata">
-      <SharePointProjectItemId>{377665da-c467-4cb3-9504-0e7b811a5ba9}</SharePointProjectItemId>
-    </None>
-    <None Include="YetlilendirmeWP\YetlilendirmeWP.webpart" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-grid.css" />
@@ -493,11 +481,6 @@
     <Content Include="ToplantiViewerWP\ToplantiViewerWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>ToplantiViewerWP.ascx.g.cs</LastGenOutput>
-    </Content>
-    <Content Include="YetlilendirmeWP\Elements.xml" />
-    <Content Include="YetlilendirmeWP\YetlilendirmeWP.ascx">
-      <Generator>SharePointWebPartCodeGenerator</Generator>
-      <LastGenOutput>YetlilendirmeWP.ascx.g.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup>

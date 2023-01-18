@@ -145,7 +145,7 @@ namespace TBYS_WebParts.KiraciListesiWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "KiraciSecimiDDL";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control");
-            @__ctrl.Height = new System.Web.UI.WebControls.Unit(34D, global::System.Web.UI.WebControls.UnitType.Pixel);
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "height:auto");
             @__ctrl.AutoPostBack = true;
             @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.KiraciSecimiDDL_SelectedIndexChanged);
             @__ctrl.SelectedIndexChanged += new System.EventHandler(this.KiraciSecimiDDL_SelectedIndexChanged);

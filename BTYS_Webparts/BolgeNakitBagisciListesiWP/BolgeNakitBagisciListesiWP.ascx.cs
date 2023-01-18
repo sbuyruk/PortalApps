@@ -129,13 +129,14 @@ namespace BTYS_Webparts.BolgeNakitBagisciListesiWP
         {
             AyDDL.Items.Clear();
             DateTime bugun = DateTime.Today;
-
+            
             for (int i = 0; i < 12; i++)
             {
                 DateTime tarih = bugun.AddMonths(-i); 
                 ListItem li = new ListItem(tarih.ToString("MMMM") , tarih.ToString("MM"));
                 AyDDL.Items.Add(li);
             }
+            AyDDL.Items.Add(new ListItem("Tüm Aylar", "0"));
         }
         private void YilDDLDoldur()
         {
@@ -349,10 +350,11 @@ namespace BTYS_Webparts.BolgeNakitBagisciListesiWP
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             NakitBagisHareket nakitBagis = new NakitBagisHareket();
             
-            int ay = AyDDL.SelectedItem.Value.ConvertToInt();
+            int ay = AyDDL.SelectedItem.Value.ConvertToInt()==0?1: AyDDL.SelectedItem.Value.ConvertToInt();
             int yil = YilDDL.SelectedItem.Value.ConvertToInt();
             DateTime ilkTarih = new DateTime(yil, ay, 1);
-            DateTime sonTarih = ilkTarih.AddMonths(1).AddDays(-1);
+            DateTime sonTarih = AyDDL.SelectedItem.Value.ConvertToInt() == 0 ? ilkTarih.AddYears(1).AddDays(-1):
+                ilkTarih.AddMonths(1).AddDays(-1);
 
             DataTable dataTable = nakitBagis.SelectByBolgeTarih(BolgeQS,ilkTarih,sonTarih);
 

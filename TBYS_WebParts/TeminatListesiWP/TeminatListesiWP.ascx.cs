@@ -211,74 +211,77 @@ namespace TBYS_WebParts.TeminatListesiWP
             int tasinmazAdedi = 0;
             string ilkAdres = string.Empty;
 
-            foreach (DataRow row in dataTable.Rows)
+            if (dataTable!=null)
             {
-                string ili = string.Empty;
-                string ilcesi = string.Empty;
-                string adres = string.Empty;
-
-                string kiraciAdi = row["KiraciAdi"].ToString();
-                string kiraciSoyadi = row["KiraciSoyadi"].ToString();
-                string bolge = row["Bolge"].ToString();
-                string ilkSozlesmeTar = row["IlkSozlesmeTar"].ReturnEmptyIfNull().ConvertToDatetimeEmptyIfNull();
-                string teminatOdemeTarihi = row["TeminatOdemeTarihi"].ReturnEmptyIfNull().ConvertToDatetimeEmptyIfNull();
-                string artisAyi = row["ArtisAyi"].ToString();
-                decimal kiraBedeli = row["KiraBedeli"].ConvertToDecimal();
-                decimal teminatTutari = row["TeminatTutari"].ConvertToDecimal();
-                decimal odenenTeminatTutari = row["OdenenTeminatTutari"].ConvertToDecimal();
-                decimal iadeTeminatTutari = row["IadeTeminatTutari"].ConvertToDecimal();
-                decimal kalanTeminatTutari = row["KalanTeminatTutari"].ConvertToDecimal();
-
-
-                int kiraSozlesmeId = row["KiraSozlesmeId"].ConvertToInt();
-                string BolumNo = row["BolumNo"].ToString();
-                adres = row["Adres"].ToString() + " " + BolumNo;
-                ili = row["Ili"].ToString();
-                ilcesi = row["Ilcesi"].ToString();
-                if (tasinmazAdedi == 0)
+                foreach (DataRow row in dataTable.Rows)
                 {
-                    ilkAdres = adres;
-                }
-                if (tempSozlesmeId == kiraSozlesmeId)
-                {
-                    tempSozlesmeId = kiraSozlesmeId;
-                    list.Remove(tempSozlesmeItem);
+                    string ili = string.Empty;
+                    string ilcesi = string.Empty;
+                    string adres = string.Empty;
 
-                    tasinmazAdedi++;
-                    tempSozlesmeItem.Adres = "@" + ilkAdres + "( Toplam " + tasinmazAdedi + " adet taşınmaz.)";
-                    list.Add(tempSozlesmeItem);
-                }
-                else
-                {
-                    TeminatListItem teminatItem = new TeminatListItem();
-                    teminatItem.Sirano = SiraNo++.ToString();
-                    teminatItem.SozlesmeId = kiraSozlesmeId.ToString();
-                    teminatItem.KiraciAdi = kiraciAdi + " " + kiraciSoyadi;
-                    teminatItem.Bolge = bolge;
-                    teminatItem.SozlesmeTarihi = ilkSozlesmeTar;
-                    teminatItem.TeminatOdemeTarihi = teminatOdemeTarihi.ConvertToDatetimeEmptyIfNull();
-                    teminatItem.KiraBedeli = kiraBedeli.ToString("N", culturInfo);
-                    teminatItem.TeminatTutari = teminatTutari.ToString("N", culturInfo);
-                    teminatItem.OdenenTeminatTutari = odenenTeminatTutari.ToString("N", culturInfo);
-                    teminatItem.IadeTeminatTutari = iadeTeminatTutari.ToString("N", culturInfo);
-                    teminatItem.KalanTeminatTutari = kalanTeminatTutari.ToString("N", culturInfo);
+                    string kiraciAdi = row["KiraciAdi"].ToString();
+                    string kiraciSoyadi = row["KiraciSoyadi"].ToString();
+                    string bolge = row["Bolge"].ToString();
+                    string ilkSozlesmeTar = row["IlkSozlesmeTar"].ReturnEmptyIfNull().ConvertToDatetimeEmptyIfNull();
+                    string teminatOdemeTarihi = row["TeminatOdemeTarihi"].ReturnEmptyIfNull().ConvertToDatetimeEmptyIfNull();
+                    string artisAyi = row["ArtisAyi"].ToString();
+                    decimal kiraBedeli = row["KiraBedeli"].ConvertToDecimal();
+                    decimal teminatTutari = row["TeminatTutari"].ConvertToDecimal();
+                    decimal odenenTeminatTutari = row["OdenenTeminatTutari"].ConvertToDecimal();
+                    decimal iadeTeminatTutari = row["IadeTeminatTutari"].ConvertToDecimal();
+                    decimal kalanTeminatTutari = row["KalanTeminatTutari"].ConvertToDecimal();
 
-                    teminatItem.Adres = "- " + adres;
-                    teminatItem.Ilcesi = ilcesi;
-                    teminatItem.Ili = ili;
-                    list.Add(teminatItem);
-                    tempSozlesmeItem = teminatItem;
-                    tasinmazAdedi = 1;
 
-                    if (!isExcel)
+                    int kiraSozlesmeId = row["KiraSozlesmeId"].ConvertToInt();
+                    string BolumNo = row["BolumNo"].ToString();
+                    adres = row["Adres"].ToString() + " " + BolumNo;
+                    ili = row["Ili"].ToString();
+                    ilcesi = row["Ilcesi"].ToString();
+                    if (tasinmazAdedi == 0)
                     {
-                        teminatItem.Sozlesme = "<a href=" + ProjeConstants.PAGE_KIRASOZLESMESI + "?KiraSozlesmeId=" + kiraSozlesmeId + " class='btn btn-outline-primary'>Sözleşme</a>";
-                        teminatItem.Teminat = "<a href=" + ProjeConstants.PAGE_TEMINAT_ISLEMLERI + "?KiraSozlesmeId=" + kiraSozlesmeId + " class='btn btn-outline-primary'>Teminat</a>";
+                        ilkAdres = adres;
                     }
+                    if (tempSozlesmeId == kiraSozlesmeId)
+                    {
+                        tempSozlesmeId = kiraSozlesmeId;
+                        list.Remove(tempSozlesmeItem);
 
-                }
-                tempSozlesmeId = kiraSozlesmeId;
+                        tasinmazAdedi++;
+                        tempSozlesmeItem.Adres = "@" + ilkAdres + "( Toplam " + tasinmazAdedi + " adet taşınmaz.)";
+                        list.Add(tempSozlesmeItem);
+                    }
+                    else
+                    {
+                        TeminatListItem teminatItem = new TeminatListItem();
+                        teminatItem.Sirano = SiraNo++.ToString();
+                        teminatItem.SozlesmeId = kiraSozlesmeId.ToString();
+                        teminatItem.KiraciAdi = kiraciAdi + " " + kiraciSoyadi;
+                        teminatItem.Bolge = bolge;
+                        teminatItem.SozlesmeTarihi = ilkSozlesmeTar;
+                        teminatItem.TeminatOdemeTarihi = teminatOdemeTarihi.ConvertToDatetimeEmptyIfNull();
+                        teminatItem.KiraBedeli = kiraBedeli.ToString("N", culturInfo);
+                        teminatItem.TeminatTutari = teminatTutari.ToString("N", culturInfo);
+                        teminatItem.OdenenTeminatTutari = odenenTeminatTutari.ToString("N", culturInfo);
+                        teminatItem.IadeTeminatTutari = iadeTeminatTutari.ToString("N", culturInfo);
+                        teminatItem.KalanTeminatTutari = kalanTeminatTutari.ToString("N", culturInfo);
 
+                        teminatItem.Adres = "- " + adres;
+                        teminatItem.Ilcesi = ilcesi;
+                        teminatItem.Ili = ili;
+                        list.Add(teminatItem);
+                        tempSozlesmeItem = teminatItem;
+                        tasinmazAdedi = 1;
+
+                        if (!isExcel)
+                        {
+                            teminatItem.Sozlesme = "<a href=" + ProjeConstants.PAGE_KIRASOZLESMESI + "?KiraSozlesmeId=" + kiraSozlesmeId + " class='btn btn-outline-primary'>Sözleşme</a>";
+                            teminatItem.Teminat = "<a href=" + ProjeConstants.PAGE_TEMINAT_ISLEMLERI + "?KiraSozlesmeId=" + kiraSozlesmeId + " class='btn btn-outline-primary'>Teminat</a>";
+                        }
+
+                    }
+                    tempSozlesmeId = kiraSozlesmeId;
+
+                } 
             }
             return list;
         }

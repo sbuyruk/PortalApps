@@ -15,18 +15,29 @@
         }
 
     }
-    function OpenSPPopup(queryString) {
-        var pageUrl = 'NakitBagisciListesi.aspx?Secim=true' + queryString;
-        var pageTitle = 'Bağışçı Ayrıntıları';
-        var pageWidth = '1000';
-        var pageHeight = '700';
-        SharepointPopupNoReload(pageUrl, pageTitle, pageWidth, pageHeight);
+    function Hesapla() {
+        dtutar = document.getElementById('<%= DovizTutariTxt.ClientID%>').value ;
+        dkur = document.getElementById('<%= DovizKuruTxt.ClientID%>').value; 
+        dtutar = parseFloat(dtutar.replace('.', '').replace(',', '.'));
+        dkur = parseFloat(dkur.replace('.', '').replace(',', '.'));
+        var tutarTl = dkur * dtutar;
+        var str = tutarTl + "";
+        str= parseFloat(str.replace('.', ',').replace(' ', ''));
+        document.getElementById('<%= HesaplananTlLbl.ClientID%>').value = tutarTl;
     }
+
+    function TutaraYaz() {
+
+        var tutarTl = document.getElementById('<%= HesaplananTlLbl.ClientID%>').value;
+
+        document.getElementById('<%= TutarTlTxt.ClientID%>').value = tutarTl;
+    }
+
 </script>
-<div class="container shadow w-75">
+<div class="container w-75">
     <asp:UpdatePanel ID="UpPanel" runat="server">
         <ContentTemplate>
-            <div class="card">
+            <div class="card shadow">
                 <div class="card-header" id="CardHeader" runat="server">
                     <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
                     <h3 class="mb-2">
@@ -43,14 +54,13 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-4 border border-dark alert-secondary">
+                        <div class="col-4 border border-dark alert-secondary m-2">
                             <div class="form-group">
                                 <label class="col-form-label">Adı</label>
                                 <div class="">
                                     <asp:TextBox ID="AdiTxt" runat="server" CssClass="form-control" type="text" />
                                     <asp:Label Visible="false" ID="NakitBagisciIdLbl" runat="server" type="text" />
-                                    <!--TODO seç butonu düzeltilecek-->
-                                    <asp:LinkButton Visible="false" ID="NakitBagisciSecBtn" CssClass="btn btn-secondary" CausesValidation="false" runat="server" OnClick="NakitBagisciSecBtn_Click">Seç...</asp:LinkButton>
+                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="AdiTxt" ForeColor="Red" ErrorMessage="Zorunlu Alan"> </asp:RequiredFieldValidator>
                                 </div>
 
                                 <div style="display: none">
@@ -73,49 +83,78 @@
                                 <asp:CheckBox ID="TuzelKisiChk" runat="server" CssClass="form-control custom-checkbox" type="text" />
                             </div>
                         </div>
-                        <div class="col border border-dark alert-light ml-2">
+                        <div class="col border border-dark alert-light m-2">
                             <div class="row">
                                 <div class="col">
                                     <div class="form-group ">
-                                        <label class="col-form-label">Bağış Tarihi</label>
-                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="BagisTarihiTxt" ForeColor="Red" ErrorMessage="Zorunlu Alan"> </asp:RequiredFieldValidator>
-                                        <input type="text" id="BagisTarihiTxt" name="BagisTarihiTxt" class="form-control DateTimePickerV1 " runat="server" readonly="readonly" />
-                                    </div>
-                                    <div class="form-group ">
-                                        <label class="col-form-label">Tutar</label>
-                                        <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="TutarTxt" ForeColor="Red" ErrorMessage="Zorunlu Alan"> </asp:RequiredFieldValidator>
-                                        <asp:TextBox ID="TutarTxt" runat="server" CssClass="form-control input-money" type="text" />
-                                    </div>
-                                    <div class="form-group ">
                                         <label class="col-form-label">Banka</label>
-                                        <%--<asp:TextBox ID="BankaTxt" runat="server" Enabled="false" class="form-control" type="text" />--%>
-                                        <asp:DropDownList ID="BankaDDL" runat="server" CssClass="form-control small" style="height:auto"></asp:DropDownList>
+                                        <asp:DropDownList ID="BankaDDL" runat="server" CssClass="form-control small" Style="height: auto"></asp:DropDownList>
+                                    </div>
+                                    <div class="row p-1">
+                                        <div class="col form-group ">
+                                            <label class="col-form-label">Bağış Tarihi</label>
+                                            <input type="text" id="BagisTarihiTxt" name="BagisTarihiTxt" class="form-control DateTimePickerV1 " runat="server" readonly="readonly" />
+                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="BagisTarihiTxt" ForeColor="Red" ErrorMessage="Zorunlu Alan"> </asp:RequiredFieldValidator>
+                                        </div>
+                                        <div class="col form-group ">
+                                            <label class="col-form-label">Tutar (TL)</label>
+                                            <asp:TextBox ID="TutarTlTxt" runat="server" CssClass="form-control input-money text-right" type="text" />
+                                            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="TutarTlTxt" ForeColor="Red" ErrorMessage="Zorunlu Alan"> </asp:RequiredFieldValidator>
+                                        </div>
                                     </div>
                                     <div class="form-group ">
-                                        <label class="col-form-label">İl</label>
-                                        <asp:DropDownList ID="IliDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="IliDDL_SelectedIndexChanged" AutoPostBack="true" style="height:auto"/>
+                                        <label class="col-form-label">Para Birimi</label>
+                                        <asp:DropDownList ID="DovizCinsiDDL" runat="server" CssClass="form-control small" style="height:auto" AutoPostBack="True" OnSelectedIndexChanged="DovizCinsiDDLIli_SelectedIndexChanged"></asp:DropDownList>
                                     </div>
-                                    <div class="form-group ">
-                                        <label class="col-form-label">İlçe</label>
-                                        <%--<asp:TextBox ID="IlcesiTxt" Enabled="false" runat="server" class="form-control" type="text" />--%>
-                                        <asp:DropDownList ID="IlcesiDDL" runat="server" CssClass="form-control small" style="height:auto"></asp:DropDownList>
+                                    <div class="form-group border border-dark p-2" id="DovizDiv" runat="server" style="display:none">
+                                        <div class="row">
+                                            <div class="col form-group ">
+                                                <label class="col-form-label">Dözviz Tutarı</label>
+                                                <asp:TextBox ID="DovizTutariTxt" runat="server" CssClass="form-control input-money text-right" onkeyup="Hesapla()" type="text" />
+                                            </div>
+                                            <div class="col form-group ">
+                                                <label class="col-form-label">Kur</label>
+                                                <asp:TextBox ID="DovizKuruTxt" runat="server" CssClass="form-control input-money text-right" onkeyup="Hesapla()" type="text" />
+                                            </div>
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col form-group ">
+                                                <label class="col-form-label">Kur Tarihi</label>
+                                                <asp:TextBox ID="KurTarihiTxt" runat="server" CssClass="form-control DateTimePickerV1 input-date" type="text" />
+                                            </div>
+                                            <div class="col form-group ">
+                                                <asp:TextBox ID="HesaplananTlLbl" runat="server" CssClass="form-control input-money text-right" type="text" Enabled="False" />
+                                                <asp:LinkButton ID="TutaraYazBtn" runat="server" CssClass="form-control btn btn-secondary" OnClientClick="TutaraYaz();" CausesValidation="False">Tutara Yaz</asp:LinkButton>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="form-group ">
-                                        <label class="col-form-label">Fiş No</label>
-                                        <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="FisNoTxt" ForeColor="Red" ErrorMessage="Zorunlu Alan"> </asp:RequiredFieldValidator>--%>
-                                        <asp:TextBox ID="FisNoTxt" runat="server" CssClass="form-control" type="text" />
-                                    </div>
+
+                                   
                                 </div>
                                 <div class="col">
-                                    <div class="form-group ">
-                                        <label class="col-form-label">Telefon1</label>
-                                        <asp:TextBox ID="Telefon1Txt" runat="server" CssClass="form-control" type="text" />
+                                    <div class="row">
+                                        <div class="col form-group ">
+                                            <label class="col-form-label">İl</label>
+                                            <asp:DropDownList ID="IliDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="IliDDL_SelectedIndexChanged" AutoPostBack="true" Style="height: auto" />
+                                        </div>
+                                        <div class="col form-group ">
+                                            <label class="col-form-label">İlçe</label>
+                                            <%--<asp:TextBox ID="IlcesiTxt" Enabled="false" runat="server" class="form-control" type="text" />--%>
+                                            <asp:DropDownList ID="IlcesiDDL" runat="server" CssClass="form-control small" Style="height: auto"></asp:DropDownList>
+                                        </div>
                                     </div>
-                                    <div class="form-group ">
-                                        <label class="col-form-label">Telefon2</label>
-
-                                        <asp:TextBox ID="Telefon2Txt" runat="server" CssClass="form-control" type="text" />
+                                    <div class="row">
+                                        <div class="col form-group ">
+                                            <label class="col-form-label">Telefon1</label>
+                                            <asp:TextBox ID="Telefon1Txt" runat="server" CssClass="form-control" type="text" />
+                                        </div>
+                                        <div class="col form-group ">
+                                            <label class="col-form-label">Telefon2</label>
+                                            <asp:TextBox ID="Telefon2Txt" runat="server" CssClass="form-control" type="text" />
+                                        </div>
                                     </div>
+                                    
                                     <div class="form-group ">
                                         <label class="col-form-label">Posta Kodu</label>
                                         <asp:TextBox ID="PostaKoduTxt" runat="server" CssClass="form-control" type="text" />
@@ -128,6 +167,11 @@
                                         <label class="col-form-label">Belge İstemiyor</label>
                                         <asp:CheckBox ID="BelgeIstemiyorChk" runat="server" CssClass="form-control custom-checkbox" type="text" />
                                     </div>
+                                    <div class="form-group ">
+                                        <label class="col-form-label">Fiş No</label>
+                                        <%--<asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="FisNoTxt" ForeColor="Red" ErrorMessage="Zorunlu Alan"> </asp:RequiredFieldValidator>--%>
+                                        <asp:TextBox ID="FisNoTxt" runat="server" CssClass="form-control" type="text" />
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group ">
@@ -139,16 +183,15 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <asp:LinkButton CssClass="btn btn-outline-primary float-left" ID="KaydetBtn" runat="server" Text="Kaydet" OnClick="KaydetBtn_Click" />
-                    <asp:LinkButton CssClass="btn btn-outline-primary float-left" ID="EslestirBtn" runat="server" Text="Eşleştir..." OnClick="EslestirBtn_Click" Visible="false" />
-                    <asp:LinkButton CssClass="btn btn-outline-secondary float-right mr-2" ID="BackBtn" runat="server" Text="Geri" CausesValidation="false" OnClick="BackBtn_Click" />
-                    <asp:LinkButton CssClass="btn btn-outline-secondary float-right" ID="EkstreListesiBtn" runat="server" Text="Ekstre Listesi" CausesValidation="false" OnClick="EkstreListesiBtn_Click" />
+                    <asp:LinkButton CssClass="btn btn-outline-primary m-2" ID="KaydetBtn" runat="server" Text="Kaydet" OnClick="KaydetBtn_Click" />
+                    <asp:LinkButton CssClass="btn btn-outline-primary m-2" ID="EslestirBtn" runat="server" Text="Eşleştir" OnClick="EslestirBtn_Click" Visible="false" />
+                    <asp:LinkButton CssClass="btn btn-outline-secondary float-right m-2" ID="BackBtn" runat="server" Text="Geri..." CausesValidation="false" OnClick="BackBtn_Click" />
+                    <asp:LinkButton CssClass="btn btn-outline-secondary float-right m-2" ID="EkstreListesiBtn" runat="server" Text="Ekstre Listesi" CausesValidation="false" OnClick="EkstreListesiBtn_Click" />
                 </div>
             </div>
         </ContentTemplate>
         <Triggers>
             <asp:AsyncPostBackTrigger ControlID="IliDDL" EventName="SelectedIndexChanged" />
-            <asp:AsyncPostBackTrigger ControlID="NakitBagisciSecBtn" EventName="Click" />
             <asp:PostBackTrigger ControlID="chkBilinmeyen" />
         </Triggers>
     </asp:UpdatePanel>

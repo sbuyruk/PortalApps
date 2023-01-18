@@ -33,7 +33,7 @@
             <div class="row form-group m-0 mb-3 p-2 border">
                 <label class="col-form-label col-2" for="KiraciDDL">Kiracı Seçimi</label>
                 <div class="col-3">
-                    <asp:DropDownList ID="KiraciSecimiDDL" runat="server" class="form-control" Height="34px" AutoPostBack="true" OnSelectedIndexChanged="KiraciSecimiDDL_SelectedIndexChanged"></asp:DropDownList>
+                    <asp:DropDownList ID="KiraciSecimiDDL" runat="server" class="form-control" style="height:auto" AutoPostBack="true" OnSelectedIndexChanged="KiraciSecimiDDL_SelectedIndexChanged"></asp:DropDownList>
                 </div>
             </div>
             <asp:UpdatePanel ID="upPanel" runat="server">

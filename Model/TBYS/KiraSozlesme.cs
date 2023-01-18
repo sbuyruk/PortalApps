@@ -266,7 +266,7 @@ namespace Model.TBYS
 					LEFT JOIN Il_Table E ON E.IlAdi=D.Ili
                 WHERE 1 > 0 
                 {0} {1} {2} -- AND D.EnvanterdeMi=1 envanterde olmayan ama kirada olanlar var
-				ORDER BY DosyaNo", aktifStr, kiracistr,bolgeStr);
+				ORDER BY DosyaNo, S.Id", aktifStr, kiracistr,bolgeStr);
             DataTable dataTable = null;
             try
             {
@@ -307,7 +307,39 @@ namespace Model.TBYS
             }
             return dataTable;
         }
+        public DataTable SelectGerceklesenKiraArtislariReturnDT(DateTime bastar)
+        {
+            DateTime buAyBasi = new DateTime(DateTime.Today.Year,DateTime.Today.Month,1);
+            string sqlString = string.Format(@"
+                SELECT A.Id KiraSozlesmeId, C.Adres, C.Ili,C.Ilcesi,C.Semt,A.Bolge,
+                    A.IlkSozlesmeTar,
+	                A.SozBasTar ,
+	                A.SozBitTar ,
+	                B.SozBasTar OncekiSozBasTar,
+	                B.SozBitTar OncekiSozBitTar,
+	                A.ArtisAyi,
+	                A.KiraBedeli,
+	                B.KiraBedeli OncekiKiraBedeli,
+	                A.Aktif, A.OdemeSekli,               
+	                A.KiraciId, C.Adi KiraciAdi, C.Soyadi KiraciSoyadi,C.KiralamaAmaci
+                FROM KiraSozlesme_Table A
+                INNER JOIN KiraSozlesme_Table B ON A.KiraciId=B.KiraciId AND B.SozBitTar=A.SozBasTar AND B.Aktif=0
+	                LEFT JOIN Kiraci_Table C on C.Id= A.KiraciId
+	                WHERE A.Aktif=1 AND A.SozBasTar >={0} AND A.SozBasTar<{1}
+                    ORDER BY A.Bolge, SozBitTar DESC
 
+            ", bastar.ReturnTRDateFormat(),buAyBasi.ReturnTRDateFormat());
+            DataTable dataTable;
+            try
+            {
+                dataTable = dao.selectFromDb(sqlString, "");
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            return dataTable;
+        }
         public bool UpdateByKiraciId(string bolge, int kiraciId)
         {
             bool isUpdated = false;

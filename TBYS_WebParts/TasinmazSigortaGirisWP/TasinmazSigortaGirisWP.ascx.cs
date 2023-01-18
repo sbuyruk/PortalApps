@@ -326,9 +326,20 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                         ListItem li = new ListItem(item.BolumNo, item.Id.ToString());
                         BagimsizBolumDDL.Items.Add(li);
                     }
-                    if (BagimsizBolumDDL.Items.FindByValue(sigorta.BolumId.ReturnZeroIfNull().ToString()) != null)
-                        BagimsizBolumDDL.SelectedValue = BagimsizBolumDDL.Items.FindByValue(sigorta.BolumId.ReturnZeroIfNull().ToString()).Value;
-                    BagimsizBolumNoTxt.Text = BagimsizBolumDDL.SelectedItem.Text;
+                    if (list.Count > 0)
+                    {
+                        if (BagimsizBolumDDL.Items.FindByValue(sigorta.BolumId.ReturnZeroIfNull().ToString()) != null)
+                        {
+                            BagimsizBolumDDL.SelectedValue = BagimsizBolumDDL.Items.FindByValue(sigorta.BolumId.ReturnZeroIfNull().ToString()).Value;
+                            BagimsizBolumNoTxt.Text = BagimsizBolumDDL.SelectedItem.Text;
+                        }
+                    }
+                       
+                    else {
+                        BagimsizBolumNoTxt.Text = string.Empty;
+                        MessageHelper.PublishMessage("Taşınmazın kat mülkiyeti bulunmamasına rağmen taşınmaza ait bağımsız bölüm bulunmamaktadır.", ProjeConstants.MESAJ_HATA);
+                    }
+                    
                 }
             }
             

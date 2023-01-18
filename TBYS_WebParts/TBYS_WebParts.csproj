@@ -193,6 +193,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GenelSozlesmeListesiWP.ascx</DependentUpon>
     </Compile>
+    <Compile Include="GerceklesenKiraArtislariWP\GerceklesenKiraArtislariWP.ascx.cs">
+      <DependentUpon>GerceklesenKiraArtislariWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="GerceklesenKiraArtislariWP\GerceklesenKiraArtislariWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GerceklesenKiraArtislariWP.ascx</DependentUpon>
+    </Compile>
     <Compile Include="HukukiTakipListesiWP\HukukiTakipListesiWP.ascx.cs">
       <DependentUpon>HukukiTakipListesiWP.ascx</DependentUpon>
     </Compile>
@@ -720,6 +728,10 @@
     <None Include="GenelSozlesmeListesiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{4308dbb6-9509-440a-9737-933c408e64a8}</SharePointProjectItemId>
     </None>
+    <None Include="GerceklesenKiraArtislariWP\GerceklesenKiraArtislariWP.webpart" />
+    <None Include="GerceklesenKiraArtislariWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{392feb41-0b1e-45a1-a116-463c752ff60f}</SharePointProjectItemId>
+    </None>
     <None Include="HukukiTakipListesiWP\HukukiTakipListesiWP.webpart" />
     <None Include="HukukiTakipListesiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{1be3b08c-228e-4a21-9bd8-126df0588e7f}</SharePointProjectItemId>
@@ -1060,6 +1072,11 @@
     <Content Include="GenelSozlesmeListesiWP\GenelSozlesmeListesiWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>GenelSozlesmeListesiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="GerceklesenKiraArtislariWP\Elements.xml" />
+    <Content Include="GerceklesenKiraArtislariWP\GerceklesenKiraArtislariWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>GerceklesenKiraArtislariWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="HukukiTakipListesiWP\Elements.xml" />
     <Content Include="HukukiTakipListesiWP\HukukiTakipListesiWP.ascx">

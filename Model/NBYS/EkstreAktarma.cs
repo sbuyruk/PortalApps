@@ -25,10 +25,13 @@ namespace Model.NBYS
         public string Aciklama { get; set; }
         public DateTime BagisTarihi { get; set; }
         public string BankaAdi { get; set; }
+        public string DovizCinsi { get; set; }
         public decimal Tutar { get; set; }
+        public decimal DovizTutari { get; set; }
+        public decimal DovizKuru { get; set; }
+        public DateTime KurTarihi { get; set; }
         public string DosyaYolu { get; set; }
         public bool AktarildiMi { get; set; }
-        public string DovizCinsi { get; set; }
         public string Eposta { get; set; }
         public string PostaKodu { get; set; }
         public DateTime IslemTarihi { get; set; }
@@ -38,16 +41,6 @@ namespace Model.NBYS
         public int NakitBagisciId { get; set; }
         public bool BelgeIstemiyor { get; set; }
         public string FisNo { get; set; }
-        public override bool Delete()
-        {
-            string sqlString = string.Format(@"DELETE 
-                               FROM EkstreAktarma_Table
-                               WHERE Id={0}", Id);
-
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
-
-            return isSuccess;
-        }
         public override int Save()
         {
             try
@@ -67,6 +60,35 @@ namespace Model.NBYS
             }
 
         }
+        public override bool Update()
+        {
+            bool isSuccess = false;
+            try
+            {
+                if (Id != 0)
+                {
+                    GenericEntity<EkstreAktarma> genericEntity = new GenericEntity<EkstreAktarma>(ProjeConstants.SQL_UPDATE);
+                    DegistirmeTarihi = DateTime.Now;
+                    string sqlString = genericEntity.GetQuery(this);
+                    isSuccess = dao.Update2Db(sqlString);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return isSuccess;
+        }
+        public override bool Delete()
+        {
+            string sqlString = string.Format(@"DELETE 
+                               FROM EkstreAktarma_Table
+                               WHERE Id={0}", Id);
+
+            bool isSuccess = dao.DeleteFromDb(sqlString, this);
+
+            return isSuccess;
+        }
         public override T Select<T>(int id)
         {
             string sqlString = string.Format(@"SELECT *
@@ -78,11 +100,18 @@ namespace Model.NBYS
             ekstreAktarma = list.FirstOrDefault();
             return (T)Convert.ChangeType(ekstreAktarma, typeof(T));
         }
+        public override List<T> SelectAll<T>()
+        {
+            string sqlString = string.Format(@"SELECT *
+                               FROM EkstreAktarma_Table");
+
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            List<EkstreAktarma> list = ToList<EkstreAktarma>(dataTable);
+
+            return (List<T>)Convert.ChangeType(list, typeof(List<T>));
+        }
         public List<EkstreAktarma> SelectByIslemTarihi(DateTime processTime)
         {
-            //string sqlString = string.Format(@"SELECT *
-            //                                 FROM EkstreAktarma_Table
-            //                                 WHERE  DATEDIFF(day,IslemTarihi,{0})=0",processTime.ReturnTRDateFormat());
             string sqlString = string.Format(@"
                 SELECT *,
                     Telefon1 + IIF(ISNULL(Telefon1,'')!='' AND ISNULL(Telefon2,'')!='',' - ','') + Telefon2 Telefon
@@ -103,7 +132,7 @@ namespace Model.NBYS
             string bankaStr = string.IsNullOrEmpty(banka) ? "" : " AND BankaAdi= " + banka.ReturnQuotedValue(); ;
             string sqlString = string.Format(@"
                 SELECT Id EkstreAktarmaId, BankaAdi, TCKimlikNo, Adi, Soyadi, ISNULL(Adi,'')  +' ' +ISNULL(Soyadi,'') AdiSoyadi,
-                    BagisTarihi, Tutar, DovizCinsi, AktarildiMi,Adres, Aciklama,Telefon1,Telefon2,
+                    BagisTarihi, Tutar, DovizCinsi, DovizTutari, DovizKuru, KurTarihi, AktarildiMi,Adres, Aciklama,Telefon1,Telefon2,
                     Telefon1 + IIF(ISNULL(Telefon1,'')!='' AND ISNULL(Telefon2,'')!='',' - ','') + Telefon2 Telefon
                 FROM EkstreAktarma_Table
                 WHERE IslemTarihi={0}
@@ -178,35 +207,6 @@ namespace Model.NBYS
             EkstreAktarma ea = new EkstreAktarma();
             ea = list.FirstOrDefault();
             return ea;
-        }
-        public override List<T> SelectAll<T>()
-        {
-            string sqlString = string.Format(@"SELECT *
-                               FROM EkstreAktarma_Table");
-
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
-            List<EkstreAktarma> list = ToList<EkstreAktarma>(dataTable);
-
-            return (List<T>)Convert.ChangeType(list, typeof(List<T>));
-        }
-        public override bool Update()
-        {
-            bool isSuccess = false;
-            try
-            {
-                if (Id != 0)
-                {
-                    GenericEntity<EkstreAktarma> genericEntity = new GenericEntity<EkstreAktarma>(ProjeConstants.SQL_UPDATE);
-                    DegistirmeTarihi = DateTime.Now;
-                    string sqlString = genericEntity.GetQuery(this);
-                    isSuccess = dao.Update2Db(sqlString);
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            return isSuccess;
         }
 
         public static ExceptionHelper SaveAkBankFile(Stream fileStream, DateTime processTime, string currentUser)
@@ -663,38 +663,6 @@ namespace Model.NBYS
         /// </summary>
         /// <param name="checkedRows"></param>
         /// <returns></returns>
-        public List<EkstreAktarma> selectByIdList(List<int> checkedRows, ref int rowCount)
-        {
-            List<EkstreAktarma> eaList = new List<EkstreAktarma>();
-            string idListStr = string.Empty;
-            int counter = 0;
-            foreach (int itemId in checkedRows)
-            {
-                if (counter++ == checkedRows.Count)
-                    idListStr += itemId;
-                else
-                    idListStr += itemId + ",";
-            }
-            idListStr = !string.IsNullOrEmpty(idListStr) ? idListStr.Substring(0, idListStr.Length - 1) : string.Empty;//son virgülü at
-            if (!string.IsNullOrEmpty(idListStr))
-            {
-                string sqlString = string.Format(@"
-                SELECT *
-                FROM EkstreAktarma_Table
-                WHERE Id in ({0})
-                ORDER BY AktarildiMi, BagisTarihi desc, Adi
-                ", idListStr);
-                DataTable dataTable = dao.selectFromDb(sqlString, "");
-                List<EkstreAktarma> list = ToList<EkstreAktarma>(dataTable);
-                rowCount = dataTable != null ? dataTable.Rows.Count : 0;
-                return list;
-            }
-            else
-            {
-                return new List<EkstreAktarma>();
-            }
-
-        }
         public List<EkstreAktarma> selectByIdList(string idListStr)
         {
             if (!string.IsNullOrEmpty(idListStr))
@@ -1247,53 +1215,6 @@ namespace Model.NBYS
             }
             return exceptionHelper;
         }
-        //public static ExceptionHelper SaveVakifBankKatilimFile(Stream fileStream, DateTime processTime, string currentUser)
-        //{
-        //    CultureInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
-        //    ExceptionHelper exceptionHelper = new ExceptionHelper();
-        //    try
-        //    {
-        //        var vakifBankData = ExcelHelper.ReadXLSXAsDataTable(fileStream, true);
-        //        if (vakifBankData != null)
-        //        {
-
-        //            foreach (DataRow row in vakifBankData.Rows)
-        //            {
-        //                EkstreAktarma ekstreAktarma = new EkstreAktarma();
-        //                try
-        //                {
-        //                    var bagisTarihi = row[0].ReturnEmptyIfNull().ToString();
-        //                    var tutar = row[3].ReturnEmptyIfNull().ToString();
-        //                    var detay = row[4].ReturnEmptyIfNull().ToString();
-        //                    var adres = string.Empty;// adres bilgisi gelmiyor
-
-        //                    ekstreAktarma.Tutar = tutar.ConvertToDecimal();
-        //                    ekstreAktarma.BagisTarihi = bagisTarihi.ConvertToDatetime();
-        //                    ekstreAktarma.Aciklama = detay;
-        //                    ekstreAktarma.Adres = adres.ReturnEmptyIfNull().ToString().Trim().ToUpper(culturInfo); ;
-        //                    ekstreAktarma.BelgeIstemiyor = ekstreAktarma.Aciklama.Contains(ProjeConstants.DURUM_BELGE_ISTEMIYOR) || ekstreAktarma.Adres.Contains(ProjeConstants.DURUM_BELGE_ISTEMIYOR) ? true : false;
-        //                    ekstreAktarma.BankaAdi = ProjeConstants.BANKA_VAKIF_KATILIM;
-        //                    ekstreAktarma.IslemTarihi = processTime;
-        //                    ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
-        //                    ekstreAktarma.Olusturan = currentUser;
-
-        //                    ekstreAktarma.Save();
-        //                }
-        //                catch (Exception ex)
-        //                {
-        //                    Exception exceprion = new Exception(string.Format("HATA SATIRI {0}:{1} ->", ProjeConstants.BANKA_VAKIF_KATILIM, ""), ex);
-        //                    exceptionHelper.Exceptions.Add(exceprion);
-        //                }
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        exceptionHelper.Exceptions.Add(ex);
-        //    }
-        //    return exceptionHelper;
-        //}
-
         public static ExceptionHelper SaveTEBBankFile(Stream filePath, DateTime processTime, string currentUser)
         {
             ExceptionHelper exceptionHelper = new ExceptionHelper();
@@ -2376,7 +2297,14 @@ namespace Model.NBYS
                 nakitBagisHareket.BankaId = bankaTanim.Id;
             }
             nakitBagisHareket.Adresi = ekstreAktarma.Adres.ReturnEmptyIfNull().ToString().Trim().ToUpper(culturInfo);
-            nakitBagisHareket.DovizCinsi = ekstreAktarma.DovizCinsi;
+            nakitBagisHareket.DovizCinsi = string.IsNullOrEmpty(ekstreAktarma.DovizCinsi)?ProjeConstants.DOVIZ_TL: ekstreAktarma.DovizCinsi;
+            if (!ekstreAktarma.DovizCinsi.Equals(ProjeConstants.DOVIZ_TL))
+            {
+                nakitBagisHareket.DovizTutari = ekstreAktarma.DovizTutari;
+                nakitBagisHareket.DovizKuru = ekstreAktarma.DovizKuru;
+                nakitBagisHareket.KurTarihi = ekstreAktarma.KurTarihi;
+            }
+                
             nakitBagisHareket.Telefon = UtilityHelper.TelefonFormatla(ekstreAktarma.Telefon1.ReturnEmptyIfNull().ToString());
             nakitBagisHareket.Ili = GetIlId(ekstreAktarma.Ili);
             nakitBagisHareket.Ilcesi = ilce != null ? ilce.Id : 0;

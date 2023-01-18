@@ -263,15 +263,14 @@ namespace Model.NBYS
             return nakitBagisci;
 
         }
-        public List<NakitBagisci> SelectByAd(string adi)
+        public DataTable SelectByAd(string adi)
         {
             string sqlString = string.Format(@"SELECT *
                                FROM NakitBagisci_Table 
-                               WHERE  Adi={0} ", adi.ReturnQuotedValue());
+                               WHERE  Adi LIKE '%{0}%' ", adi);
             DataTable dataTable = dao.selectFromDb(sqlString, "");
-            List<NakitBagisci> list = ToList<NakitBagisci>(dataTable);
 
-            return list;
+            return dataTable;
 
         }
         public List<NakitBagisci> SelectBagisciByEkstreAktarmaId(int ekstreAktarmaId, string telefon1, string telefon2)

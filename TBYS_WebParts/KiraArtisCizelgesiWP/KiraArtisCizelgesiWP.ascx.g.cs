@@ -75,10 +75,6 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP {
             "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl MainCardDiv;
         
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.LinkButton ExcelBtn;
-        
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebPartCodeGenerator", "17.0.0.0")]
         public static implicit operator global::System.Web.UI.TemplateControl(KiraArtisCizelgesiWP target) 
         {
@@ -277,24 +273,6 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.LinkButton @__BuildControlExcelBtn() {
-            global::System.Web.UI.WebControls.LinkButton @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
-            this.ExcelBtn = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-success float-right";
-            @__ctrl.ID = "ExcelBtn";
-            @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
-            @__ctrl.Text = "Excele Aktar";
-            @__ctrl.OnClientClick = "javascript:setFormSubmitToFalse()";
-            @__ctrl.Click -= new System.EventHandler(this.ExcelBtn_Click);
-            @__ctrl.Click += new System.EventHandler(this.ExcelBtn_Click);
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControlTree(global::TBYS_WebParts.KiraArtisCizelgesiWP.KiraArtisCizelgesiWP @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n<style>\r\n    .bes-yil{ \r\n        color: orange;\r\n        font-weight:bold;\r\n   " +
@@ -368,11 +346,8 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP {
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl2;
             @__ctrl2 = this.@__BuildControlMainCardDiv();
             @__parser.AddParsedSubObject(@__ctrl2);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n        <div class=\"card-footer\">\r\n            "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl3;
-            @__ctrl3 = this.@__BuildControlExcelBtn();
-            @__parser.AddParsedSubObject(@__ctrl3);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n        </div>\r\n    </div>\r\n\r\n</div>\r\n"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n        <div class=\"card-footer\">\r\n            \r\n        </div>\r\n    </div>\r\n\r\n" +
+                        "</div>\r\n"));
         }
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +

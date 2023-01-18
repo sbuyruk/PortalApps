@@ -83,6 +83,7 @@
     <Compile Include="Ortak\Extentions.cs" />
     <Compile Include="Ortak\Olay.cs" />
     <Compile Include="Ortak\OlayKayit.cs" />
+    <Compile Include="Portal\ProgramYetki.cs" />
     <Compile Include="Ortak\Variance.cs" />
     <Compile Include="TBYS\BagisciBagis.cs" />
     <Compile Include="NBYS\NBYSOrtak.cs" />

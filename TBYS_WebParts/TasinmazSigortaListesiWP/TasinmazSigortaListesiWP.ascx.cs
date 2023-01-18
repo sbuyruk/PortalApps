@@ -423,7 +423,7 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
         protected void DepremChk_CheckedChanged(object sender, EventArgs e)
         {
             TeminatSecimiDegisti();
-            RedirectToPage(ProjeConstants.PAGE_TASINMAZSIGORTA_LIST + "?SigortaCinsi=" + SigortaCinsiQS +
+            RedirectToPage(ProjeConstants.PAGE_TASINMAZSIGORTA_LIST + "?Auth="+AuthQS+"&SigortaCinsi=" + SigortaCinsiQS +
                 "&Deprem=" + DepremQS + "&Yangin=" + YanginQS +
                 "&Makine100000=" + Makine100000QS + "&Makine5000=" + Makine5000QS +
                 "&Jenerator=" + JeneratorQS + "&Asansor=" + AsansorQS + "&Kazan=" + KazanQS);
@@ -442,7 +442,7 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
         protected void SigortaCinsiDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
             TeminatSecimiDegisti();
-            RedirectToPage(ProjeConstants.PAGE_TASINMAZSIGORTA_LIST + "?SigortaCinsi=" + SigortaCinsiQS +
+            RedirectToPage(ProjeConstants.PAGE_TASINMAZSIGORTA_LIST + "?Auth=" + AuthQS + "&SigortaCinsi=" + SigortaCinsiQS +
                 "&Deprem=" + DepremQS + "&Yangin=" + YanginQS +
                 "&Makine100000=" + Makine100000QS + "&Makine5000=" + Makine5000QS +
                 "&Jenerator=" + JeneratorQS + "&Asansor=" + AsansorQS + "&Kazan=" + KazanQS);

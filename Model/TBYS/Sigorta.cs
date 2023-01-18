@@ -211,7 +211,7 @@ namespace Model.TBYS
                     bolgeStr = string.Format(" AND Bolge={0}", bolge.ReturnQuotedValue());
             }
 
-            string sigortaCinsiStr = string.IsNullOrEmpty(sigortaCinsi) || sigortaCinsi.Equals(ProjeConstants.HEPSI) ? " AND SigortaCinsi is not null " : " SigortaCinsi = " + sigortaCinsi.ReturnQuotedValue();
+            string sigortaCinsiStr = string.IsNullOrEmpty(sigortaCinsi) || sigortaCinsi.Equals(ProjeConstants.HEPSI) ? " AND SigortaCinsi is not null " : " AND SigortaCinsi = " + sigortaCinsi.ReturnQuotedValue();
             string depremStr = isDeprem ? string.Format(" TeminatListesi Like '%{0}%'", "1") : "";
             string yanginStr = isYangin ? string.Format(" TeminatListesi Like '%{0}%'", "2") : "";
             string makine100000Str = isMakine100000 ? string.Format(" TeminatListesi Like '%{0}%'", "3") : "";

@@ -375,6 +375,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>NBYSParametreGirisiWP.ascx</DependentUpon>
     </Compile>
+    <Compile Include="NBYSYetkilendirmeWP\NBYSYetkilendirmeWP.ascx.cs">
+      <DependentUpon>NBYSYetkilendirmeWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="NBYSYetkilendirmeWP\NBYSYetkilendirmeWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NBYSYetkilendirmeWP.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SMSAylikBagisCizelgesi\SMSAylikBagisCizelgesi.ascx.cs">
       <DependentUpon>SMSAylikBagisCizelgesi.ascx</DependentUpon>
@@ -607,6 +615,10 @@
     <None Include="NBYSParametreGirisiWP\NBYSParametreGirisiWP.webpart" />
     <None Include="NBYSParametreGirisiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{df896929-1aba-4bae-b418-cee5116ca3b2}</SharePointProjectItemId>
+    </None>
+    <None Include="NBYSYetkilendirmeWP\NBYSYetkilendirmeWP.webpart" />
+    <None Include="NBYSYetkilendirmeWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{3f3802f9-28fe-4a06-86c3-390eb5c7ef07}</SharePointProjectItemId>
     </None>
     <None Include="packages.config" />
     <None Include="Package\Package.package">
@@ -870,6 +882,11 @@
     <Content Include="NBYSParametreGirisiWP\NBYSParametreGirisiWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>NBYSParametreGirisiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="NBYSYetkilendirmeWP\Elements.xml" />
+    <Content Include="NBYSYetkilendirmeWP\NBYSYetkilendirmeWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>NBYSYetkilendirmeWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />

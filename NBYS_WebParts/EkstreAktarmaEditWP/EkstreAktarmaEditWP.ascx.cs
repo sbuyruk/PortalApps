@@ -74,30 +74,6 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
                 ViewState["NakitBagisciId"] = value;
             }
         }
-        private string SecilenIlQS
-        {
-            get
-            {
-
-                if (ViewState["SecilenIl"] == null)
-                {
-                    if (Page.Request.QueryString["SecilenIl"] != null)
-                    {
-                        ViewState["SecilenIl"] = Page.Request.QueryString["SecilenIl"];
-                    }
-                    else
-                    {
-                        ViewState["SecilenIl"] = string.Empty;
-                    }
-                }
-                return ViewState["SecilenIl"].ToString();
-            }
-
-            set
-            {
-                ViewState["SecilenIl"] = value;
-            }
-        }
         private string BankaQS
         {
             get
@@ -175,9 +151,10 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
             {
                 if (!Page.IsPostBack)
                 {
-                    FillBanka();
-                    FillIlData();
-                    FillIlceData();
+                    BankaDDLDoldur();
+                    IlDDLoldur();
+                    IlceDDLDoldur();
+                    DovizCinsiDDLDoldur();
                     if (string.IsNullOrEmpty(EkstreAktarmaIdQS))
                     {
                         OpenGiris();
@@ -197,7 +174,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
         private void OpenDuzenle()
         {
             //CardHeader.Attributes["Class"] = "btn-primary";
-            KaydetBtn.CssClass = "btn btn-outline-primary float-left";
+            KaydetBtn.CssClass = "btn btn-outline-primary m-2";
             KaydetBtn.Text = "Güncelle";
             if (SenderAppQS.Equals("EkstreListesi") || SenderAppQS.Equals("NBE"))
             {
@@ -208,8 +185,8 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
                 EslestirBtn.Visible = false;
             }
 
-            FillExtreAktarmaForm();
-            FillNakitBagisciBilgileri();
+            ExtreAktarmaFormunuDoldur();
+            NakitBagisciBilgileriniDoldur();
         }
         private void OpenGiris()
         {
@@ -219,9 +196,9 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
             DateTime today = DateTime.Now;
             IslemTarihiTxt.Text = today.ToString(ProjeConstants.DATE_TR);
             NakitBagisciIdLbl.Text = "0";
-            FillNakitBagisciBilgileri();
+            NakitBagisciBilgileriniDoldur();
         }
-        private void FillNakitBagisciBilgileri()
+        private void NakitBagisciBilgileriniDoldur()
         {
             if (!string.IsNullOrEmpty(NakitBagisciIdQS))
             {
@@ -247,7 +224,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
                     {
                         IliDDL.SelectedValue = IliDDL.Items.FindByValue(ilstr).Value;
                     }
-                    FillIlceData();
+                    IlceDDLDoldur();
                     string ilcestr = nb.Ilcesi;
                     if (IlcesiDDL.Items.FindByValue(ilcestr) != null)
                     {
@@ -256,8 +233,9 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
                 }
             }
         }
-        private void FillExtreAktarmaForm()
+        private void ExtreAktarmaFormunuDoldur()
         {
+            IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             int ekstreAktarmaId = EkstreAktarmaIdQS.ConvertToInt();
             EkstreAktarma ekstreAktarma = new EkstreAktarma();
             ekstreAktarma = ekstreAktarma.Select<EkstreAktarma>(ekstreAktarmaId);
@@ -268,30 +246,46 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
             Telefon1Txt.Text = ekstreAktarma.Telefon1.ReturnEmptyIfNull().ToString();
             Telefon2Txt.Text = ekstreAktarma.Telefon2.ReturnEmptyIfNull().ToString();
             AdresTxt.Text = ekstreAktarma.Adres.ReturnEmptyIfNull().ToString();
-            //IliTxt.Text = ekstreAktarma.Ili.ReturnEmptyIfNull().ToString();
-            //IlcesiTxt.Text = ekstreAktarma.Ilcesi.ReturnEmptyIfNull().ToString();
-            TextInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true).TextInfo;
-            //string ilstr = ekstreAktarma.Ili.ReturnEmptyIfNull().ToString();
-            string ilstr = culturInfo.ToUpper(ekstreAktarma.Ili.ReturnEmptyIfNull().ToString());
+
+            TextInfo culturInfoTR = new CultureInfo(ProjeConstants.CULTUREINFO, true).TextInfo;
+            string ilstr = culturInfoTR.ToUpper(ekstreAktarma.Ili.ReturnEmptyIfNull().ToString());
             if (IliDDL.Items.FindByText(ilstr) != null)
             {
                 IliDDL.SelectedValue = IliDDL.Items.FindByText(ilstr).Value;
             }
-            FillIlceData();
-            string ilcestr = culturInfo.ToUpper(ekstreAktarma.Ilcesi.ReturnEmptyIfNull().ToString());
+            IlceDDLDoldur();
+            string ilcestr = culturInfoTR.ToUpper(ekstreAktarma.Ilcesi.ReturnEmptyIfNull().ToString());
             if (IlcesiDDL.Items.FindByText(ilcestr) != null)
             {
                 IlcesiDDL.SelectedValue = IlcesiDDL.Items.FindByText(ilcestr).Value;
             }
-            //BankaTxt.Text = ekstreAktarma.BankaAdi.ReturnEmptyIfNull().ToString();
             string bankaStr = ekstreAktarma.BankaAdi.ReturnEmptyIfNull().ToString();//culturInfo.ToUpper(ekstreAktarma.BankaAdi.ReturnEmptyIfNull().ToString()); 
             if (BankaDDL.Items.FindByText(bankaStr) != null)
             {
                 BankaDDL.SelectedValue = BankaDDL.Items.FindByText(bankaStr).Value;
             }
+            string dovizCinsiStr = ekstreAktarma.DovizCinsi.ReturnEmptyIfNull().ToString();
+            if (DovizCinsiDDL.Items.FindByText(dovizCinsiStr) != null)
+            {
+                DovizCinsiDDL.SelectedValue = DovizCinsiDDL.Items.FindByText(dovizCinsiStr).Value;
+            }
+            if (DovizCinsiDDL.SelectedItem.Value.Equals(ProjeConstants.DOVIZ_TL))
+            {
+                DovizDiv.Attributes["style"] = "display:none";
+            }
+            else
+            {
+                DovizDiv.Attributes["style"] = "display:block";
+            }
+            DovizKuruTxt.Text = ekstreAktarma.DovizKuru.ReturnZeroIfNull().ConvertToDecimal().ToString("N",culturInfo);
+            DovizTutariTxt.Text = ekstreAktarma.DovizTutari.ReturnZeroIfNull().ConvertToDecimal().ToString("N",culturInfo);
+            HesaplananTlLbl.Text = (ekstreAktarma.DovizTutari.ReturnZeroIfNull().ConvertToDecimal() * ekstreAktarma.DovizKuru.ReturnZeroIfNull().ConvertToDecimal()).ToString("N", culturInfo);
+
+            KurTarihiTxt.Text= ekstreAktarma.KurTarihi.ConvertToDatetimeEmptyIfNull();   
+            
             EPostaTxt.Text = ekstreAktarma.Eposta.ReturnEmptyIfNull().ToString();
             PostaKoduTxt.Text = ekstreAktarma.PostaKodu.ReturnEmptyIfNull().ToString();
-            TutarTxt.Text = ekstreAktarma.Tutar.ReturnEmptyIfNull().ToString();
+            TutarTlTxt.Text = ekstreAktarma.Tutar.ReturnEmptyIfNull().ToString();
             FisNoTxt.Text = ekstreAktarma.FisNo.ReturnEmptyIfNull().ToString();
             TuzelKisiChk.Checked = ekstreAktarma.TuzelKisi.ConvertToBool();
             BelgeIstemiyorChk.Checked = ekstreAktarma.BelgeIstemiyor.ConvertToBool();
@@ -300,7 +294,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
             AciklamaTxt.Text = ekstreAktarma.Aciklama.ReturnEmptyIfNull().ToString();
             NakitBagisciIdLbl.Text = ekstreAktarma.NakitBagisciId.ReturnZeroIfNull().ToString();
         }
-        private void ClearExtreAktarmaForm()
+        private void ExtreAktarmaFormunuTemizle()
         {
 
             AdiTxt.Text = string.Empty;
@@ -310,7 +304,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
             AdresTxt.Text = string.Empty;
             EPostaTxt.Text = string.Empty;
             PostaKoduTxt.Text = string.Empty;
-            TutarTxt.Text = string.Empty;
+            TutarTlTxt.Text = string.Empty;
             FisNoTxt.Text = string.Empty;
             TuzelKisiChk.Checked = false;
             BelgeIstemiyorChk.Checked = false;
@@ -326,7 +320,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
                 IlcesiDDL.SelectedValue = IlcesiDDL.Items.FindByValue(ProjeConstants.ILCE_BOS.ToString()).Value;
             NakitBagisciIdLbl.Text = "0";
         }
-        private void FillIlData()
+        private void IlDDLoldur()
         {
             if (IliDDL.SelectedItem == null)
             {
@@ -345,7 +339,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
             if (IliDDL.Items.FindByValue(ProjeConstants.IL_BOS.ToString()) != null)
                 IliDDL.SelectedValue = IliDDL.Items.FindByValue(ProjeConstants.IL_BOS.ToString()).Value;
         }
-        private void FillIlceData()
+        private void IlceDDLDoldur()
         {
 
             if (IliDDL.SelectedItem != null)
@@ -366,7 +360,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
                 IlcesiDDL.SelectedValue = IlcesiDDL.Items.FindByValue(ProjeConstants.ILCE_BOS.ToString()).Value;
 
         }
-        private void FillBanka()
+        private void BankaDDLDoldur()
         {
 
             if (BankaDDL.SelectedItem == null)
@@ -384,6 +378,16 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
             if (BankaDDL.Items.FindByValue(ProjeConstants.BANKA_BOS_INT.ToString()) != null)
                 BankaDDL.SelectedValue = BankaDDL.Items.FindByValue(ProjeConstants.BANKA_BOS_INT.ToString()).Value;
         }
+        private void DovizCinsiDDLDoldur()
+        {
+            if (DovizCinsiDDL.SelectedItem == null)
+            {
+                DovizCinsiDDL.Items.Clear();
+                DovizCinsiDDL.Items.Add(new ListItem(ProjeConstants.DOVIZ_TL, ProjeConstants.DOVIZ_TL));
+                DovizCinsiDDL.Items.Add(new ListItem(ProjeConstants.DOVIZ_EURO, ProjeConstants.DOVIZ_EURO));
+                DovizCinsiDDL.Items.Add(new ListItem(ProjeConstants.DOVIZ_USD, ProjeConstants.DOVIZ_USD));
+            }
+        }
         protected void KaydetBtn_Click(object sender, EventArgs e)
         {
             try
@@ -391,8 +395,6 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
                 bool isSaved = false;
                 if (string.IsNullOrWhiteSpace(AdiTxt.Text))
                 {
-                    //System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler,
-                    //    typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "Alert.danger('Bağışçı Adı boş olamaz. Lütfen bağışçı adını giriniz.')", true);
                     MessageHelper.PublishMessage("Bağışçı Adı boş olamaz. Lütfen bağışçı adını giriniz.", ProjeConstants.MESAJ_HATA);
                 }
                 else
@@ -405,9 +407,9 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
                         isSaved = SaveEkstreAktarma();
                         if (isSaved)
                         {
-                            ClearExtreAktarmaForm();
-                            FillBanka();
-                            FillIlData();
+                            ExtreAktarmaFormunuTemizle();
+                            BankaDDLDoldur();
+                            IlDDLoldur();
                         }
                     }
                     else
@@ -439,7 +441,6 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
             }
 
         }
-
         private bool SaveEkstreAktarma()
         {
             CultureInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
@@ -453,10 +454,13 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
             ekstreAktarma.Ili = IliDDL.SelectedItem.Text.ReturnEmptyIfNull().ToString();
             ekstreAktarma.Ilcesi = IlcesiDDL.SelectedItem.Text.ReturnEmptyIfNull().ToString();
             ekstreAktarma.BankaAdi = BankaDDL.SelectedItem.Text.ReturnEmptyIfNull().ToString();
-            ekstreAktarma.DovizCinsi = "TL";
+            ekstreAktarma.DovizCinsi = DovizCinsiDDL.SelectedItem==null? ProjeConstants.DOVIZ_TL : DovizCinsiDDL.SelectedItem.Value;
             ekstreAktarma.Eposta = EPostaTxt.Text.ReturnEmptyIfNull().ToString();
             ekstreAktarma.PostaKodu = PostaKoduTxt.Text.ReturnEmptyIfNull().ToString();
-            ekstreAktarma.Tutar = TutarTxt.Text.ConvertToDecimal();
+            ekstreAktarma.Tutar = TutarTlTxt.Text.ConvertToDecimal();
+            ekstreAktarma.DovizTutari = DovizTutariTxt.Text.ConvertToDecimal();
+            ekstreAktarma.DovizKuru = DovizKuruTxt.Text.ConvertToDecimal();
+            ekstreAktarma.KurTarihi = KurTarihiTxt.Text.ConvertToDatetime();
             ekstreAktarma.FisNo = FisNoTxt.Text;
             ekstreAktarma.TuzelKisi = TuzelKisiChk.Checked;
             ekstreAktarma.BelgeIstemiyor = BelgeIstemiyorChk.Checked;
@@ -484,10 +488,13 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
             ekstreAktarma.Ili = IliDDL.SelectedItem.Text.ReturnEmptyIfNull().ToString();
             ekstreAktarma.Ilcesi = IlcesiDDL.SelectedItem.Text.ReturnEmptyIfNull().ToString();
             ekstreAktarma.BankaAdi = BankaDDL.SelectedItem.Text.ReturnEmptyIfNull().ToString();
-            ekstreAktarma.DovizCinsi = "TL";
             ekstreAktarma.Eposta = EPostaTxt.Text.ReturnEmptyIfNull().ToString();
             ekstreAktarma.PostaKodu = PostaKoduTxt.Text.ReturnEmptyIfNull().ToString();
-            ekstreAktarma.Tutar = TutarTxt.Text.ConvertToDecimal();
+            ekstreAktarma.Tutar = TutarTlTxt.Text.ConvertToDecimal();
+            ekstreAktarma.DovizCinsi = DovizCinsiDDL.SelectedItem == null ? ProjeConstants.DOVIZ_TL : DovizCinsiDDL.SelectedItem.Value;
+            ekstreAktarma.DovizTutari = DovizTutariTxt.Text.ConvertToDecimal();
+            ekstreAktarma.DovizKuru = DovizKuruTxt.Text.ConvertToDecimal();
+            ekstreAktarma.KurTarihi = KurTarihiTxt.Text.ConvertToDatetime();
             ekstreAktarma.FisNo = FisNoTxt.Text;
             ekstreAktarma.TuzelKisi = TuzelKisiChk.Checked;
             ekstreAktarma.BelgeIstemiyor = BelgeIstemiyorChk.Checked;
@@ -547,7 +554,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
         }
         protected void IliDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            FillIlceData();
+            IlceDDLDoldur();
         }
         protected void chkBilinmeyen_CheckedChanged(object sender, EventArgs e)
         {
@@ -570,22 +577,6 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
             NakitBagisci nb = new NakitBagisci();
             nb = nb.Select<NakitBagisci>(NakitBagisciIdQS.ConvertToInt());
         }
-        protected void NakitBagisciSecBtn_Click(object sender, EventArgs e)
-        {
-
-            try
-            {
-                string queryString = "&EkstreAktarmaId=" + EkstreAktarmaIdQS;
-                var jsString = "OpenSPPopup('" + queryString + "');";
-                System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), jsString, true);
-
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
-        }
 
         protected void EkstreListesiBtn_Click(object sender, EventArgs e)
         {
@@ -595,6 +586,17 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
         protected void EslestirBtn_Click(object sender, EventArgs e)
         {
             RedirectToPage(ProjeConstants.PAGE_NAKITBAGISCI_ESLESTIR + "?IslemTarihi=" + IslemTarihiTxt.Text + "&EkstreAktarmaId =" + EkstreAktarmaIdQS + "&Banka=" + BankaQS);
+        }
+        protected void DovizCinsiDDLIli_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (DovizCinsiDDL.SelectedItem.Value.Equals(ProjeConstants.DOVIZ_TL)) 
+            { 
+                DovizDiv.Attributes["style"] = "display:none";
+            }
+            else
+            {
+                DovizDiv.Attributes["style"] = "display:block";
+            }
         }
     }
 }

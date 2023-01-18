@@ -50,8 +50,15 @@
         document.getElementById('<%= paramBagisHareketIdLbl.ClientID%>').value = bagisHareketId;
         document.getElementById('<%= BagisiIadeEtBtn.ClientID%>').click();
     }
+    function IadeBilgisiDegistirClick(bagisHareketId) {
+        document.getElementById('<%= paramBagisHareketIdLbl.ClientID%>').value = bagisHareketId;
+        document.getElementById('<%= IadeDegistirBtn.ClientID%>').click();
+    }
     function ParaIadeModalOnay() {
         $("#ParaIadeModalOnayDiv").modal({ backdrop: "static" });
+    }
+    function ParaIadeDegistirModalOnay() {
+        $("#ParaIadeDegistirModalOnayDiv").modal({ backdrop: "static" });
     }
 
 </script>
@@ -179,6 +186,7 @@
                     <div class="modal-body">
                         <div style="display: none">
                             <asp:LinkButton ID="BagisiIadeEtBtn" runat="server" CausesValidation="false" OnClick="BagisiIadeEtBtn_Click" />
+                            <asp:LinkButton ID="IadeDegistirBtn" runat="server" CausesValidation="false" OnClick="IadeDegistirBtn_Click" />
                         </div>
                         <div class="card" runat="server" id="ParaIadeDiv">
                             <div class="card-header text-center">
@@ -186,7 +194,14 @@
                                     <asp:Label ID="Label3" class="col-form-label" runat="server" Text="Para İade Edilecek"></asp:Label></h3>
                             </div>
                             <div class="card-body">
-                                <input id="IadeSebebiTxt" textmode="MultiLine" rows="3" runat="server" placeholder="Para iade sebebini giriniz" class="form-control" type="text" />
+                                <div class="form-group">
+                                    <asp:Label ID="Label2" class="col-form-label" runat="server" Text="İade Sebebi"></asp:Label></h3>
+                                    <input id="IadeSebebiTxt" textmode="MultiLine" rows="3" runat="server" placeholder="Para iade sebebini giriniz" class="form-control" type="text" />
+                                </div>
+                                <div class="form-group">
+                                    <asp:Label ID="Label4" class="col-form-label" runat="server" Text="İade Tarihi"></asp:Label>
+                                    <asp:TextBox ID="IadeTarihiTxt" CssClass="DateTimePickerV1 input-date" placeholder="dd.mm.yyyy" runat="server" Text="" ClientIDMode="Static" ></asp:TextBox>
+                                </div>
                                 <asp:Label ID="IadeMesajiLbl" CssClass="col-form-label" runat="server" Text=""></asp:Label>
                                 <asp:Label ID="OnayMesajiLbl" CssClass="col-form-label text-danger" runat="server" Text="Para İadesini Onaylıyor musunuz?"></asp:Label>
                             </div>
@@ -201,6 +216,51 @@
                     <div class="modal-footer">
                     </div>
                 </ContentTemplate>
+            </asp:UpdatePanel>
+        </div>
+    </div>
+</div>
+<div class="modal" id="ParaIadeDegistirModalOnayDiv" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content" style="width: 550px;">
+            <asp:UpdatePanel runat="server" ID="UpdatePanel2" UpdateMode="Conditional">
+                <ContentTemplate>
+                    <div class="modal-body">
+                        <div style="display: none">
+                            <asp:LinkButton ID="LinkButton1" runat="server" CausesValidation="false" OnClick="BagisiIadeEtBtn_Click" />
+                        </div>
+                        <div class="card" runat="server" id="Div1">
+                            <div class="card-header text-center">
+                                <h3>
+                                    <asp:Label ID="Label5" class="col-form-label" runat="server" Text="İade Bilgileri Değişecek"></asp:Label></h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <asp:Label ID="Label6" class="col-form-label font-weight-bold" runat="server" Text="İade Sebebi"></asp:Label></h3>
+                                    <input id="IadeSebebiDegistirTxt" textmode="MultiLine" rows="3" runat="server" placeholder="Para iade sebebini giriniz" class="form-control" type="text" />
+                                </div>
+                                <div class="form-group">
+                                    <asp:Label ID="Label7" class="col-form-label font-weight-bold" runat="server" Text="İade Tarihi"></asp:Label>
+                                    <asp:TextBox ID="IadeTarihiDegistirTxt" CssClass=" col-6 form-control DateTimePickerV1 input-date" placeholder="dd.mm.yyyy" runat="server" Text="" ClientIDMode="Static"></asp:TextBox>
+                                </div>
+                                <asp:Label ID="IadeMesajiDegistirLbl" CssClass="col-form-label" runat="server" Text=""></asp:Label>
+                                <asp:Label ID="OnayMesajiDegistirLbl" CssClass="col-form-label text-primary" runat="server" Text="İade Değişikliğini Onaylıyor musunuz?"></asp:Label>
+                            </div>
+                            <div class="card-footer">
+                                <asp:LinkButton CssClass="btn btn-primary" ID="IadeDegistirNowBtn" runat="server" CausesValidation="false" Text="Güncelle" OnClientClick="{return true;};" OnClick="IadeDegistirNowBtn_Click" />
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                            </div>
+                        </div>
+                        <div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </ContentTemplate>
+                <Triggers>
+                    <asp:AsyncPostBackTrigger ControlID="IadeDegistirBtn" EventName="click" />
+                </Triggers>
             </asp:UpdatePanel>
         </div>
     </div>

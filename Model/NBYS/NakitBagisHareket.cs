@@ -26,6 +26,9 @@ namespace Model.NBYS
         public DateTime IadeTarihi { get; set; }
         public string IadeSebebi { get; set; }
         public string IadeEden { get; set; }
+        public decimal DovizTutari { get; set; }
+        public decimal DovizKuru { get; set; }
+        public DateTime KurTarihi { get; set; }
         //Methods
         public override bool Delete()
         {
@@ -616,7 +619,7 @@ namespace Model.NBYS
                 LEFT JOIN Armagan_Table E ON E.Id=A.ArmaganId
                 LEFT JOIN ArmaganTanim_Table F ON F.Id=E.ArmaganTanimId
                 WHERE Bolge={0} AND BagisTarihi BETWEEN {1} AND {2}
-                    AND E.Durum NOT IN ('Ulaşılamıyor', 'Belge İstemiyor') --30.12.2022 Deniz Hanım aradı, Zeki Alb. ve Kemal Alb.. tarafından bu şeklde olmasının istendiğini iletti
+                    --AND E.Durum NOT IN ('Ulaşılamıyor', 'Belge İstemiyor') --30.12.2022 Deniz Hanım aradı, Zeki Alb. ve Kemal Alb.. tarafından bu şeklde olmasının istendiğini iletti
                 ORDER BY BagisMiktari DESC,Adi, BagisTarihi DESC
             ", bolge.ReturnQuotedValue(), ilkTarih.ReturnTRDateFormat(),sonTarih.ReturnTRDateFormat());
             DataTable dataTable;
@@ -647,6 +650,56 @@ namespace Model.NBYS
                 WHERE B.Id={0}
                 ORDER BY BagisTarihi DESC 
             ", nakitBagisciId);
+            DataTable dataTable;
+            try
+            {
+                dataTable = dao.selectFromDb(sqlString, "");
+            }
+            catch (Exception e)
+            {
+                Exception ex = new Exception("sql=" + sqlString, e);
+                throw ex;
+            }
+            return dataTable;
+        }
+        public DataTable SelectByBagisTarihiBankaId(DateTime bagisTarihi, int bankaId=0)
+        {
+            string bankaStr = bankaId == 0 ? string.Empty : string.Format(" AND BankaId={0}", bankaId);
+            string sqlString = string.Format(@"
+                
+                SELECT BagisTarihi, SUM(BagisMiktari) ToplamBagis, B.BankaGrup Banka 
+                FROM NakitBagisHareket_Table A
+	                LEFT JOIN BankaTanim_Table B ON B.Id=A.BankaId
+                WHERE BagisTarihi={0} 
+                {1}
+                GROUP BY BagisTarihi, B.BankaGrup
+                ORDER BY BagisTarihi 
+            ", bagisTarihi.ReturnTRDateFormat(), bankaStr);
+            DataTable dataTable;
+            try
+            {
+                dataTable = dao.selectFromDb(sqlString, "");
+            }
+            catch (Exception e)
+            {
+                Exception ex = new Exception("sql=" + sqlString, e);
+                throw ex;
+            }
+            return dataTable;
+        }
+        public DataTable SelectByTarihBankaId(DateTime bastar, DateTime bittar, string bankaGrup)
+        {
+            string bankaGrupStr = string.IsNullOrEmpty(bankaGrup) ? string.Empty : string.Format(" AND BankaGrup={0}", bankaGrup.ReturnQuotedValue());
+            string sqlString = string.Format(@"
+                
+                SELECT BagisTarihi, SUM(BagisMiktari) ToplamBagis, B.BankaGrup Banka 
+                FROM NakitBagisHareket_Table A
+	                LEFT JOIN BankaTanim_Table B ON B.Id=A.BankaId
+                WHERE BagisTarihi >= {0} AND BagisTarihi <= {1}
+                {2}
+                GROUP BY BagisTarihi, B.BankaGrup
+                ORDER BY BagisTarihi 
+            ", bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat(), bankaGrupStr);
             DataTable dataTable;
             try
             {

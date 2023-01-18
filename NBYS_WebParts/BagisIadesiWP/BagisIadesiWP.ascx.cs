@@ -128,6 +128,7 @@ namespace NBYS_WebParts.BagisIadesiWP
                     if (iadeEdildiMi )
                     {
                         iadeLink = "<span class=bagis-iade-edildi>" + bagisHareketItem.IadeMiktari + " "+ dovizCinsi + " Parası İade edildi</span>";
+                        iadeLink += "<br><a href=# onclick=IadeBilgisiDegistirClick(" + bagisHareketId + "); class=\'btn btn-outline-primary \'>Değiştir</a>";
                     }
                     else
                     {
@@ -338,7 +339,6 @@ namespace NBYS_WebParts.BagisIadesiWP
             NakitBagisHareket nbh = new NakitBagisHareket();
             int rowCount = 0;
             var json = nbh.SelectByBagisciIdReturnJSon(nakitBagisciId, ref rowCount);
-            //RowCountLbl.Text = rowCount.ToString();
             return json;
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
@@ -390,12 +390,14 @@ namespace NBYS_WebParts.BagisIadesiWP
                     string armaganTanim = at == null ? "" : " Bu bağışa ait " + at.Armagan + " bulunmaktadır.";
                     armaganiVarMsg = armaganTanim + " (Armagan Durumu: '" + armagan.Durum + "') Onayladığınız takdirde armağan geçersiz hale getirilecek ve Para iade edilecektir.";
                 }
+                IadeTarihiTxt.Text = DateTime.Today.ConvertToDatetimeEmptyIfNull();
                 IadeMesajiLbl.Text = iadeMiktariMsg + armaganiVarMsg;
                 ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "ParaIadeModalOnay();", true);
             }
             else
             {
                 IadeSebebiTxt.Visible = false;
+                IadeTarihiTxt.Visible = false;
                 IadeMesajiLbl.Text = " Seçilen bağış bilgilerine ulaşılamadı";
                 BagisiIadeEtNowBtn.Visible = false;
                 ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "ParaIadeModalOnay();", true);
@@ -423,10 +425,10 @@ namespace NBYS_WebParts.BagisIadesiWP
                     {
                         nbh.IadeEdildiMi = true;
                         nbh.IadeMiktari = nbh.BagisMiktari;
-                        nbh.IadeTarihi = DateTime.Today;
                         nbh.IadeSebebi = IadeSebebiTxt.Value;
+                        nbh.IadeTarihi = IadeTarihiTxt.Text.ConvertToDatetime();
                         nbh.BagisMiktari = 0;
-                        nbh.Aciklama = nbh.Aciklama + nb.Adi + " tarfından " + nbh.BagisTarihi.ConvertToDatetimeEmptyIfNull() + " tarihinde yapılan " +
+                        nbh.Aciklama = nbh.Aciklama + nb.Adi + " tarafından " + nbh.BagisTarihi.ConvertToDatetimeEmptyIfNull() + " tarihinde yapılan " +
                             nbh.BagisMiktari.ToString("N", culturInfo) + " " + nbh.DovizCinsi + " Bağış iade edilmiştir.";
                         nbh.IadeEden = UtilityHelper.GetCurrentUserLoginName();
 
@@ -492,6 +494,77 @@ namespace NBYS_WebParts.BagisIadesiWP
             {
                 ExceptionHelper exh = new ExceptionHelper();
                 exh.Exceptions.Add(new Exception("Armağan durumu kaydedilirken hata oluştu. "));
+                exh.Exceptions.Add(ex);
+                exh.PublishException();
+            }
+        }
+        protected void IadeDegistirBtn_Click(object sender, EventArgs e)
+        {
+            IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
+
+            NakitBagisHareket nbh = new NakitBagisHareket();
+            nbh = nbh.Select<NakitBagisHareket>(paramBagisHareketIdLbl.Value.ConvertToInt());
+
+            if (nbh != null)//bu bagis varsa
+            {
+
+                NakitBagisci nb = new NakitBagisci();
+                nb = nb.Select<NakitBagisci>(nbh.BagisciId);
+                string bagisciAdi = nb == null ? "" : nb.Adi + " " + nb.Soyadi ;
+
+                IadeTarihiDegistirTxt.Text = nbh.IadeTarihi.ConvertToDatetimeEmptyIfNull();
+                IadeSebebiDegistirTxt.Value = nbh.IadeSebebi;
+                OnayMesajiDegistirLbl.Text = bagisciAdi + " tarafından yapılan bağışın iade sebebi ve iade tarihini güncelleyebilirsiniz.";
+                UtilityHelper.ScriptCalistir("ParaIadeDegistirModalOnay();");
+            }
+            else
+            {
+                IadeSebebiDegistirTxt.Visible = false;
+                IadeTarihiDegistirTxt.Visible = false;
+                IadeMesajiDegistirLbl.Text = " Seçilen bağış bilgilerine ulaşılamadı";
+                IadeDegistirNowBtn.Visible = false;
+                UtilityHelper.ScriptCalistir("ParaIadeDegistirModalOnay();");
+            }
+        }
+        protected void IadeDegistirNowBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                NakitBagisHareket nbh = new NakitBagisHareket();
+                nbh = nbh.Select<NakitBagisHareket>(paramBagisHareketIdLbl.Value.ConvertToInt());
+
+                if (nbh != null)
+                {
+                    NakitBagisci nb = new NakitBagisci();
+                    nb = nb.Select<NakitBagisci>(nbh.BagisciId);
+                    if (nb != null)
+                    {
+                        nbh.IadeSebebi = IadeSebebiDegistirTxt.Value;
+                        nbh.IadeTarihi = IadeTarihiDegistirTxt.Text.ConvertToDatetime();
+                        nbh.Aciklama += " İade tarhi ve sebebi güncellenmiştir.";
+                        bool updated = nbh.Update();                      
+                        if (updated)
+                        {
+                            RedirectToPage(ProjeConstants.PAGE_BAGISIADE + "?Param=" + BagisAraTxt.Text);
+                        }
+                    }
+                    else
+                    {
+                        MessageHelper.PublishMessage(" Bağışçı bulunamadı. Para İadesi Güncellenemedi. ", ProjeConstants.MESAJ_HATA);
+                        TabloOlustur();
+                    }
+                }
+                else
+                {
+                    MessageHelper.PublishMessage("Bağış kaydı bulunamadı. Para İadesi Güncellenemedi.", ProjeConstants.MESAJ_HATA);
+                    TabloOlustur();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelper exh = new ExceptionHelper();
+                exh.Exceptions.Add(new Exception("İade güncellenirken hata oluştu. "));
                 exh.Exceptions.Add(ex);
                 exh.PublishException();
             }

@@ -61,5 +61,18 @@ namespace Model.NBYS
             bankaTanim = list.FirstOrDefault();
             return bankaTanim;
         }
+        public List<string> SelectByBankaGrup()
+        {
+            string sqlString = string.Format(@"
+                SELECT BankaGrup
+                FROM BankaTanim_Table
+                GROUP BY BankaGrup");
+
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            List<string> list = dataTable.AsEnumerable()
+                           .Select(r => r.Field<string>("BankaGrup"))
+                           .ToList();
+            return list;
+        }
     }
 }

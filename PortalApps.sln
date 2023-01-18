@@ -36,6 +36,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BTYS_Webparts", "BTYS_Webpa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility", "Utility\Utility.csproj", "{552062B0-D288-47F2-9B32-F556498254FE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MFYS_WebParts", "MFYS_WebParts\MFYS_WebParts.csproj", "{5F4F5384-E3A9-489D-863C-860BE07F36D3}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1FA61ADE-6FB6-4FEA-95F1-D99C7523D18A} = {1FA61ADE-6FB6-4FEA-95F1-D99C7523D18A}
+		{552062B0-D288-47F2-9B32-F556498254FE} = {552062B0-D288-47F2-9B32-F556498254FE}
+		{84F644D0-0931-4536-9EDC-CBE7A773F546} = {84F644D0-0931-4536-9EDC-CBE7A773F546}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -94,6 +101,12 @@ Global
 		{552062B0-D288-47F2-9B32-F556498254FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{552062B0-D288-47F2-9B32-F556498254FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{552062B0-D288-47F2-9B32-F556498254FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F4F5384-E3A9-489D-863C-860BE07F36D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F4F5384-E3A9-489D-863C-860BE07F36D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F4F5384-E3A9-489D-863C-860BE07F36D3}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{5F4F5384-E3A9-489D-863C-860BE07F36D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F4F5384-E3A9-489D-863C-860BE07F36D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F4F5384-E3A9-489D-863C-860BE07F36D3}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

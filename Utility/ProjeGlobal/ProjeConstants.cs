@@ -12,13 +12,15 @@ namespace Utility.ProjeGlobal
         public const string TYS = "TYS";
         public const string PORTAL = "Portal";
         public const string IKYS = "IKYS";
-        //moduller
+        //moduller MTS
         public const string MTS_FAALIYET = "Faaliyet";
         public const string MTS_KISI = "Kisi";
         public const string MTS_ARAMAGORUSME = "Arama/Görüşme";
         public const string MTS_ANIOBJESI_DAGITIM = "Anı Objesi Dağıtım";
         public const string MTS_ANIOBJESI = "Anı Objesi";
         public const string MTS_RANDEVUKATILIM = "Randevu Katılım";
+        //moduller  NBYS
+        public const string NBYS_BOLGE_NAKITBAGISCILISTESİ = "BolgeNakitBagisciListesi";
         #region Resimler
         public const string IMAGE_PATH = "Resimler/";
         public const string RESIMLER_PERSONEL = "PersonelResimleri";

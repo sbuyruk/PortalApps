@@ -743,8 +743,17 @@ namespace NBYS_WebParts.EkstreListesiWP
                     ekstreAktarmaListItem.Telefon2 = dataRow["Telefon2"].ToString();
                     ekstreAktarmaListItem.BagisTarihi = dataRow["BagisTarihi"].ToString().ConvertToDatetimeEmptyIfNull();
                     decimal tutar = dataRow["Tutar"].ConvertToDecimal();
+                    ekstreAktarmaListItem.Tutar = tutar > 0 ? tutar.ToString("N", culturInfo) : "";
                     string dovizCinsi = dataRow["DovizCinsi"].ToString();
-                    ekstreAktarmaListItem.Tutar = tutar > 0 ? tutar.ToString("N", culturInfo) + " " + dovizCinsi : "";
+                    ekstreAktarmaListItem.DovizCinsi=dovizCinsi;
+                    if (!dovizCinsi.Equals(ProjeConstants.DOVIZ_TL))
+                    {
+                        decimal dovizTutari = dataRow["DovizTutari"].ConvertToDecimal();
+                        ekstreAktarmaListItem.DovizTutari = dovizTutari > 0 ? dovizTutari.ToString("N", culturInfo) : "";
+                        decimal dovizKuru = dataRow["DovizKuru"].ConvertToDecimal();
+                        ekstreAktarmaListItem.DovizKuru = dovizKuru> 0 ? dovizKuru.ToString("N", culturInfo) : "";
+                        ekstreAktarmaListItem.KurTarihi = dataRow["KurTarihi"].ToString().ConvertToDatetimeEmptyIfNull();
+                    }
                     bool aktarildiMi = dataRow["AktarildiMi"].ConvertToBool();
                     ekstreAktarmaListItem.AktarildiMi = aktarildiMi.ToString();
                     //ekstreAktarmaListItem.CakismaVarMi = aktarildiMi ? "False" : CakismaKontrolu(ekstreAktarmaListItem.EkstreAktarmaId.ConvertToInt(),ekstreAktarmaListItem.AdiSoyadi, ekstreAktarmaListItem.Telefon1, ekstreAktarmaListItem.Telefon2).ToString();
@@ -959,6 +968,10 @@ namespace NBYS_WebParts.EkstreListesiWP
             public string BankaAdi { get; set; }
             public string Tutar { get; set; }
             public string AktarildiMi { get; set; }
+            public string DovizCinsi { get; set; }
+            public string DovizTutari { get; set; }
+            public string DovizKuru { get; set; }
+            public string KurTarihi { get; set; }
             public string CakismaVarMi { get; set; }
 
         }

@@ -1010,12 +1010,17 @@ namespace Portal_WebParts.DuyuruGirisiWP {
                         " + sender).attr(\'src\', e.target.result);\r\n\r\n            }\r\n            reader.re" +
                         "adAsDataURL(personelFU.files[0]);\r\n        }\r\n    }\r\n\r\n    //summernote editor\r\n" +
                         "    $(document).ready(function () {\r\n        $(\'#MetinTxt\').summernote({\r\n      " +
-                        "      toolbar: [\r\n                // [groupName, [list of button]]\r\n            " +
-                        "    [\'style\', [\'bold\', \'italic\', \'underline\', \'clear\']],\r\n                [\'font" +
-                        "size\', [\'fontsize\']],\r\n                [\'color\', [\'color\']],\r\n                [\'" +
-                        "para\', [\'ul\', \'ol\', \'paragraph\']],\r\n            ]\r\n        });\r\n    });\r\n\r\n</scr" +
-                        "ipt>\r\n\r\n\r\n<div class=\"container shadow\">\r\n    <div class=\"card\">\r\n        <div c" +
-                        "lass=\"card-header\">\r\n            "));
+                        "      //toolbar: [\r\n            //    // [groupName, [list of button]]\r\n        " +
+                        "    //    [\'style\', [\'bold\', \'italic\', \'underline\', \'clear\']],\r\n            //  " +
+                        "  [\'fontsize\', [\'fontsize\']],\r\n            //    [\'color\', [\'color\']],\r\n        " +
+                        "    //    [\'para\', [\'ul\', \'ol\', \'paragraph\']],\r\n            //]\r\n            lan" +
+                        "g: \'tr-TR\', // default: \'en-US\'\r\n            height: 300,                 // set" +
+                        " editor height\r\n            minHeight: null,             // set minimum height o" +
+                        "f editor\r\n            maxHeight: null,             // set maximum height of edit" +
+                        "or\r\n            focus: true                  // set focus to editable area after" +
+                        " initializing summe\r\n        });\r\n    });\r\n\r\n</script>\r\n\r\n\r\n<div class=\"containe" +
+                        "r shadow\">\r\n    <div class=\"card\">\r\n        <div class=\"card-header\">\r\n         " +
+                        "   "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl1;
             @__ctrl1 = this.@__BuildControlCloseBtn();
             @__parser.AddParsedSubObject(@__ctrl1);
