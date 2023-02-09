@@ -243,7 +243,7 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
                                 continue;
                             }
                             int kiraciId = 0;
-                            bool buIsimdeBirdenCokKiraciVarMi = BuIsimdeBirdenCokKiraciVarMi(adi);
+                            bool buIsimdeBirdenCokKiraciVarMi = BuIsimdeBirdenCokKiraciVarMi(adi, ref kiraciId);
                             if (buIsimdeBirdenCokKiraciVarMi)
                             {
                                 kiraEkstreAktarma.Uyari = true;
@@ -275,7 +275,7 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
                             kiraEkstreAktarma.IslemNo = islemno;
                             kiraEkstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                             kiraEkstreAktarma.Olusturan = currentUser;
-
+                            kiraEkstreAktarma.OdemeSebebiId = OdemeSebebiBelirle(kiraEkstreAktarma);
                             kiraEkstreAktarma.Save();
                         }
                         catch (Exception ex)
@@ -292,6 +292,71 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
             }
             return exceptionHelper;
         }
+
+        private int OdemeSebebiBelirle(KiraEkstreAktarma kiraEkstreAktarma)
+        {
+            int odemeSebebiId = ProjeConstants.ODEMESEBEBI_DIGER_INT;
+            if (kiraEkstreAktarma.Aciklama.Contains(ProjeConstants.ODEMESEBEBI_KIRA))
+            {
+                odemeSebebiId = ProjeConstants.ODEMESEBEBI_KIRA_INT;
+            }
+            else if ((kiraEkstreAktarma.Aciklama.Contains("KİRA BEDELİ"))||
+                (kiraEkstreAktarma.Aciklama.Contains("kira bedeli"))||
+                (kiraEkstreAktarma.Aciklama.Contains("kira"))||
+                (kiraEkstreAktarma.Aciklama.Contains("KİRA")))
+            {
+                odemeSebebiId = ProjeConstants.ODEMESEBEBI_KIRA_INT;
+            }
+             else if (kiraEkstreAktarma.Aciklama.Contains(ProjeConstants.ODEMESEBEBI_KESINTEMINAT))
+            {
+                odemeSebebiId = ProjeConstants.ODEMESEBEBI_KESINTEMINAT_INT;
+            }
+            else if (kiraEkstreAktarma.Aciklama.Contains(ProjeConstants.ODEMESEBEBI_GECICITEMINAT))
+            {
+                odemeSebebiId = ProjeConstants.ODEMESEBEBI_GECICITEMINAT_INT;
+            }
+            else if (kiraEkstreAktarma.Aciklama.Contains(ProjeConstants.ODEMESEBEBI_AIDAT))
+            {
+                odemeSebebiId = ProjeConstants.ODEMESEBEBI_AIDAT_INT;
+            }
+            else if ((kiraEkstreAktarma.Aciklama.Contains(ProjeConstants.ODEMESEBEBI_SIGORTA))||
+                    (kiraEkstreAktarma.Aciklama.Contains("SİGORTA")))
+            {
+                odemeSebebiId = ProjeConstants.ODEMESEBEBI_SIGORTA_INT;
+            }
+            else if (kiraEkstreAktarma.Aciklama.Contains(ProjeConstants.ODEMESEBEBI_AVUKATLIKUCRETI))
+            {
+                odemeSebebiId = ProjeConstants.ODEMESEBEBI_AVUKATLIKUCRETI_INT;
+            }
+            else if (kiraEkstreAktarma.Aciklama.Contains(ProjeConstants.ODEMESEBEBI_YARGILAMAUCRETI))
+            {
+                odemeSebebiId = ProjeConstants.ODEMESEBEBI_YARGILAMAUCRETI_INT;
+            }            
+            else if ((kiraEkstreAktarma.Aciklama.Contains(ProjeConstants.ODEMESEBEBI_AVANSIADESI))||
+                    (kiraEkstreAktarma.Aciklama.Contains("AVANS İADE")))
+            {
+                odemeSebebiId = ProjeConstants.ODEMESEBEBI_AVANSIADESI_INT;
+            }
+            else if ((kiraEkstreAktarma.Aciklama.Contains(ProjeConstants.TEMINAT_ODEMESI))||
+                (kiraEkstreAktarma.Aciklama.Contains("Teminat"))||
+                (kiraEkstreAktarma.Aciklama.Contains("TEMİNAT")))
+            {
+                odemeSebebiId = ProjeConstants.ODEMESEBEBI_KESINTEMINAT_INT;
+            }            
+            else
+            {
+                if (kiraEkstreAktarma.KiraciId.ConvertToInt() > 0)
+                {
+                    odemeSebebiId = ProjeConstants.ODEMESEBEBI_KIRA_INT;
+                }
+                else
+                {
+                    odemeSebebiId = ProjeConstants.ODEMESEBEBI_DIGER_INT;
+                }
+            }
+            return odemeSebebiId;
+        }
+
         private int KiraciOtomatikEslestir(string adi)
         {
             int kiraciId = 0;
@@ -325,7 +390,7 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
             }
             return kiraciId;
         }
-        private bool BuIsimdeBirdenCokKiraciVarMi(string adi)
+        private bool BuIsimdeBirdenCokKiraciVarMi(string adi, ref int kiraciId)
         {
             bool varMi = false;
             if (!string.IsNullOrEmpty(adi))
@@ -336,7 +401,9 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
                 if (kiraciList.Count > 1)
                 {
                     varMi = true;
+                    kiraciId = kiraciList[0].Id;
                 }
+                
             }
             return varMi;
         }

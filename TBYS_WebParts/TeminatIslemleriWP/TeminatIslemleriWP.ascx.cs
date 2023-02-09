@@ -1,4 +1,5 @@
-﻿using Model.Ortak;
+﻿using Model.NBYS;
+using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Data;
 using System.Globalization;
 using System.Web.Script.Serialization;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
@@ -96,18 +98,20 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                         if (kiraci != null)
                         {
                             KiraciIdQS = kiraci.Id.ToString();
-                            AdiLbl.Text = kiraci == null ? "" : kiraci.Adi + " " + kiraci.Soyadi + ": " + kiraSozlesme.SozBasTar.ConvertToDatetimeEmptyIfNull() + " - " + kiraSozlesme.SozBitTar.ConvertToDatetimeEmptyIfNull() + " Tarihli Sözleşme";
+                            AdiLbl.Text = kiraci == null ? "" : kiraci.Adi + " " + kiraci.Soyadi ;
+                            SozlesmeLbl.Text = " ( " +kiraSozlesme.SozBasTar.ConvertToDatetimeEmptyIfNull() + " - " + kiraSozlesme.SozBitTar.ConvertToDatetimeEmptyIfNull() + " Tarihli Sözleşme )";
                         }
                         TBYSOrtak.TeminatIslemleriniHesaplaVeKaydet(kiraSozlesme);
-                        TeminatBilgileriniDoldur(kiraSozlesme);
                         IslemTipiDDLDoldur();
+                        TeminatCinsiDDLDoldur();
+                        TeminatBilgileriniDoldur(kiraSozlesme);
                     }
                     else
                     {
                         MessageHelper.PublishMessage("Kira Sözlesmesi Bulunamadı.", ProjeConstants.MESAJ_HATA);
                     }
                 }
-                TeminatIslemleriTablosunuDoldur(kiraSozlesme.KiraciId);
+                TabloOlustur(kiraSozlesme.KiraciId);
             }
             catch (Exception exception)
             {
@@ -120,7 +124,8 @@ namespace TBYS_WebParts.TeminatIslemleriWP
         {
             if (kiraSozlesme != null)
             {
-                TeminatCinsiTxt.Value = string.IsNullOrEmpty(kiraSozlesme.TeminatCinsi) ? ProjeConstants.DOVIZ_TL : kiraSozlesme.TeminatCinsi;
+                string teminatCinsi = string.IsNullOrEmpty(kiraSozlesme.TeminatCinsi) ? ProjeConstants.TEMINATCINSI_NAKIT_TL : kiraSozlesme.TeminatCinsi;
+                UtilityHelper.SetDDLValue(TeminatCinsiDDL, teminatCinsi);
                 TeminatTarihiTxt.Value = kiraSozlesme.TeminatOdemeTarihi.ConvertToDatetimeEmptyIfNull();
                 TeminatAciklamaTxt.Text = kiraSozlesme.TeminatAciklama;
                 TeminatTutariTxt.Value = kiraSozlesme.TeminatTutari.ToString("N", culturInfo);
@@ -129,117 +134,6 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                 KalanTeminatTxt.Value = kiraSozlesme.KalanTeminatTutari.ToString("N", culturInfo);
             }
 
-        }
-        private void TeminatIslemleriTablosunuDoldur(int kiraciId)
-        {
-            var jsonData = GetJson(kiraciId);
-            var jsString = CreateJsString(jsonData); //javascript kodu hazırlanıyor.
-            System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), jsString, true);
-        }
-        //private void TeminatIslemleriniHesaplaVeKaydet(KiraSozlesme kiraSozlesme)
-        //{
-        //    decimal toplamOdeme = 0m;
-        //    decimal toplamIade = 0m;
-        //    TeminatIslem teminatIslemDao = new TeminatIslem();
-        //    DataTable dataTable = teminatIslemDao.SelectSumIslemTutariByKiraciIdGroupByIslemTipi(kiraSozlesme.KiraciId);
-        //    if (dataTable != null)
-        //    {
-        //        foreach (DataRow row in dataTable.Rows)
-        //        {
-        //            string islemTipi = row["IslemTipi"].ToString();
-        //            decimal islemToplami = row["IslemToplami"].ReturnZeroIfNull().ConvertToDecimal();
-
-
-        //            switch (islemTipi)
-        //            {
-        //                case ProjeConstants.TEMINAT_ODEMESI:
-        //                    {
-        //                        toplamOdeme += islemToplami;
-        //                        break;
-        //                    }
-        //                case ProjeConstants.TEMINAT_GECICITEMINATODEMESI:
-        //                    {
-        //                        toplamOdeme += islemToplami;
-        //                        break;
-        //                    }
-        //                case ProjeConstants.TEMINAT_KIRACIYAIADE:
-        //                    {
-        //                        toplamIade += islemToplami;
-        //                        break;
-        //                    }
-        //                case ProjeConstants.TEMINAT_KIRAYAMAHSUP:
-        //                    {
-        //                        toplamIade += islemToplami;
-        //                        break;
-        //                    }
-        //                case ProjeConstants.TEMINAT_HASARAMAHSUP:
-        //                    {
-        //                        toplamIade += islemToplami;
-        //                        break;
-        //                    }
-        //                case ProjeConstants.TEMINAT_AIDATAMAHSUP:
-        //                    {
-        //                        toplamIade += islemToplami;
-        //                        break;
-        //                    }
-        //                case ProjeConstants.TEMINAT_VAKFABAGIS:
-        //                    {
-        //                        toplamIade += islemToplami;
-        //                        break;
-        //                    }
-        //                default:
-        //                    break;
-        //            }
-
-
-        //        }
-
-        //    }
-        //    kiraSozlesme.OdenenTeminatTutari = toplamOdeme;
-        //    kiraSozlesme.IadeTeminatTutari = toplamIade;
-        //    kiraSozlesme.KalanTeminatTutari = toplamOdeme - toplamIade;
-        //    kiraSozlesme.Update();
-        //}
-        private string CreateJsString(string jsonData)
-        {
-            string tablestr = @"
-                                var counter=1;   
-                                $('#tblfilter').puidatatable({
-                                caption: 'Teminat Ödeme-İade İşlemleri',
-                                editMode: 'cell',
-                                columns: [
-                                    { field: 'IslemTarihi', headerText: 'İşlem tarihi', headerStyle:'width: 15%'},
-                                    { field: 'IslemTipi', headerText: 'İşlem Tipi',headerStyle:'width: 20%' },        
-                                    { field: 'IslemTutari', headerText: 'İşlem Tutarı',bodyClass:'text-right',headerStyle:'width: 10%' },
-                                    { field: 'IslemAciklama', headerText: 'İşlem Açıklaması',headerStyle:'width: 30%' },
-                                    { field: 'TeminatIslemId',headerText: 'Düzenle',bodyClass:'text-center', headerStyle:'width: 10%', content: function (rowData)
-                                        { 
-                                            return $('<a href=# onclick=GuncelleModalDoldur(' + rowData.TeminatIslemId + '); class=\'btn btn-outline-primary \'>Düzenle</a>')
-                                        }
-                                    },
-                                    { field: 'Id',headerText: 'Sil',bodyClass:'text-center', headerStyle:'width: 10%', content: function (rowData)
-                                        { 
-                                            return $('<a href=# onclick=DeleteModalDoldur(' + rowData.TeminatIslemId + '); class=\'btn btn-outline-danger \'>Sil</a>')
-                                        }
-                                    }
-                                ],
-                                datasource:" + jsonData + @",
-                                resizableColumns: true
-                            });
-                            $('#messages').puigrowl();
-                            ";
-
-            return tablestr;
-        }
-        private string GetJson(int kiraciId)
-        {
-            string jSon = string.Empty;
-
-            List<TeminatIslemListItem> list = GetDataList(kiraciId);
-
-            var serializer = new JavaScriptSerializer();
-            jSon = serializer.Serialize(list);
-            return jSon;
         }
         private void IslemTipiDDLDoldur()
         {
@@ -251,6 +145,49 @@ namespace TBYS_WebParts.TeminatIslemleriWP
             IslemTipiDDL.Items.Add(ProjeConstants.TEMINAT_HASARAMAHSUP);
             IslemTipiDDL.Items.Add(ProjeConstants.TEMINAT_AIDATAMAHSUP);
             IslemTipiDDL.Items.Add(ProjeConstants.TEMINAT_VAKFABAGIS);
+        }
+        private void TeminatCinsiDDLDoldur()
+        {
+
+            if (TeminatCinsiDDL.SelectedItem == null)
+            {
+                TeminatCinsiDDL.Items.Clear();
+
+                TeminatCinsiDDL.Items.Add(new ListItem(ProjeConstants.TEMINATCINSI_NAKIT_TL, ProjeConstants.TEMINATCINSI_NAKIT_TL));
+                TeminatCinsiDDL.Items.Add(new ListItem(ProjeConstants.TEMINATCINSI_BANKATEMINATMEKTUBU, ProjeConstants.TEMINATCINSI_BANKATEMINATMEKTUBU));
+                TeminatCinsiDDL.Items.Add(new ListItem(ProjeConstants.TEMINATCINSI_IPOTEK, ProjeConstants.TEMINATCINSI_IPOTEK));
+                TeminatCinsiDDL.Items.Add(new ListItem(ProjeConstants.TEMINATCINSI_NAKIT_USD, ProjeConstants.TEMINATCINSI_NAKIT_USD));
+                TeminatCinsiDDL.Items.Add(new ListItem(ProjeConstants.TEMINATCINSI_NAKIT_EURO, ProjeConstants.TEMINATCINSI_NAKIT_EURO));
+                
+            }
+            if (TeminatCinsiDDL.Items.FindByValue(ProjeConstants.TEMINATCINSI_NAKIT_TL) != null)
+                TeminatCinsiDDL.SelectedValue = TeminatCinsiDDL.Items.FindByValue(ProjeConstants.TEMINATCINSI_NAKIT_TL).Value;
+        }
+
+        #region Tablo
+        private void TabloOlustur(int kiraciId)
+        {
+            var jsonData = TabloJson(kiraciId); //veri çekilip json a çeviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            UtilityHelper.ScriptCalistir(jsString);
+        }
+        private string TabloJson(int kiraciId)
+        {
+            string jSon = string.Empty;
+
+            try
+            {
+                List<TeminatIslemListItem> list = GetDataList(kiraciId);
+                var serializer = new JavaScriptSerializer();
+                jSon = serializer.Serialize(list);
+            }
+            catch (Exception exception)
+            {
+                ExceptionHelper exceptionHelper = new ExceptionHelper();
+                exceptionHelper.Exceptions.Add(exception);
+                exceptionHelper.PublishException();
+            }
+            return jSon;
         }
         private List<TeminatIslemListItem> GetDataList(int kiraciId)
         {
@@ -265,13 +202,111 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                 item2.DovizCinsi = item.DovizCinsi;
                 item2.IslemTarihi = item.IslemTarihi.ToString("dd.MM.yyyy HH:mm");
                 item2.IslemTipi = item.IslemTipi;
-                item2.IslemTutari = item.IslemTutari.ToString("N", culturInfo);
+                item2.IslemTutari = item.IslemTutari.ToString("N", culturInfo)+" TL";
+                item2.Duzenle = "<a href=# onclick=GuncelleModalDoldur('" + item.Id + "'); class=\'btn btn-outline-primary \'>Düzenle</a>";
+                item2.Sil = "<a href=# onclick=DeleteModalDoldur('" + item.Id + "'); class=\'btn btn-outline-danger \'>Sil</a>";
                 item2.KiraciId = item.KiraciId.ToString();
                 list2.Add(item2);
-
             }
             return list2;
         }
+        private string CreateDataTable(string jsonData)
+        {
+            string titleStr ="'" + AdiLbl.Text + " Teminat İşlemleri" +"'";
+            string kiraciAdiStr = AdiLbl.Text.ReplaceTrChars().Replace(" ", "").Replace(".", "");
+            kiraciAdiStr ="'" + kiraciAdiStr.Substring(0, kiraciAdiStr.Length > 20?20: kiraciAdiStr.Length-1) + 
+                "TeminatIslemleri" + DateTime.Now.ConvertToDDMMYYYHHmmFormat().Replace(" ", "").Replace(".", "").Replace(" ", "-")+"'";
+            string tableString = @"
+                if ( jQuery.fn.DataTable.isDataTable('#CustomDataTable') ) {
+                    jQuery('#CustomDataTable').DataTable().destroy();
+                }
+                jQuery('#CustomDataTable tbody').empty();
+
+                jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
+                jQuery(document).ready(function () {
+                    jQuery('#CustomDataTable').DataTable({
+                        'initComplete': function (settings, json) {//tablo yüklendiğinde
+                            var api = this.api();
+                            var row = api.row(function (idx, data, node) { //secilen toplantıya gider
+                                return data['Secildi'] == true;
+                            });
+                            if (row.length > 0) {
+                                row.select()
+                                    .show()
+                                    .draw(false);
+                            }
+                        },
+                        data: " + jsonData + @",
+                        columns: [
+                            { data: 'IslemTarihi'},
+                            { data: 'IslemTipi'},
+                            { data: 'IslemTutari'},
+                            { data: 'IslemAciklama'},
+                            { data: 'Duzenle'},
+                            { data: 'Sil'},
+                        ],
+                        columnDefs: [
+                            {
+                                targets: 2,
+                                className: 'dt-body-right'
+                            }
+                          ],
+                        'language': {
+                            'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
+                            'decimal': ',',
+                            'thousands': '.'
+                        },
+                        responsive: true,
+                        pageLength:10,
+                        dom: 'Brti',
+                        buttons: [
+                            {
+                                extend: 'print',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            {
+                                extend: 'excel',
+                                title: "+ titleStr+  @",
+                                filename: function(){
+                                    var d = new Date();
+                                    var n = d.getTime();
+                                    return " + kiraciAdiStr+ @";
+                                },
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            {
+                                extend: 'pdf',
+                                title: "+ titleStr+  @",
+                                filename: function(){
+                                    var d = new Date();
+                                    var n = d.getTime();
+                                    return " + kiraciAdiStr+ @";
+                                },
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            {
+                                extend: 'copy',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            , 'pageLength', 'colvis'
+                        ],
+                        });
+                    });
+
+            ";
+
+            return tableString;
+        }
+            
+        #endregion
         protected void TeminatGuncelleBtn_Click(object sender, EventArgs e)
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
@@ -286,7 +321,8 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                     kiraSozlesme.KalanTeminatTutari = KalanTeminatTxt.Value.ConvertToDecimal();
                     kiraSozlesme.Degistiren = UtilityHelper.GetCurrentUserLoginName();
                     kiraSozlesme.IadeTeminatTutari = IadeTeminatTxt.Value.ConvertToDecimal();
-                    kiraSozlesme.TeminatCinsi = string.IsNullOrEmpty(TeminatCinsiTxt.Value) ? ProjeConstants.DOVIZ_TL : TeminatCinsiTxt.Value;
+                    string teminatCinsi = string.IsNullOrEmpty(TeminatCinsiDDL.SelectedItem.Value) ? ProjeConstants.TEMINATCINSI_NAKIT_TL : TeminatCinsiDDL.SelectedItem.Value;
+                    kiraSozlesme.TeminatCinsi = teminatCinsi;
                     kiraSozlesme.TeminatOdemeTarihi = TeminatTarihiTxt.Value.ConvertToDatetime();
                     bool guncellendiMi = kiraSozlesme.Update();
                     if (guncellendiMi)
@@ -459,7 +495,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                         {
                             TBYSOrtak.TeminatIslemleriniHesaplaVeKaydet(kiraSozlesme);
                             TeminatBilgileriniDoldur(kiraSozlesme);
-                            TeminatIslemleriTablosunuDoldur(kiraSozlesme.KiraciId);
+                            TabloOlustur(kiraSozlesme.KiraciId);
                             MessageHelper.PublishMessage("Teminat İşlemi Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                             if (teminatIslem.IslemTipi.Equals(ProjeConstants.TEMINAT_KIRAYAMAHSUP))
                             {
@@ -505,7 +541,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                     }
                     TBYSOrtak.TeminatIslemleriniHesaplaVeKaydet(kiraSozlesme);
                     TeminatBilgileriniDoldur(kiraSozlesme);
-                    TeminatIslemleriTablosunuDoldur(kiraSozlesme.KiraciId);
+                    TabloOlustur(kiraSozlesme.KiraciId);
                     MessageHelper.PublishMessage("Teminat İşlemi Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
                 }
                 else
@@ -546,6 +582,8 @@ namespace TBYS_WebParts.TeminatIslemleriWP
             public string IslemAciklama { get; set; }
             public string DovizCinsi { get; set; }
             public string OdemeId { get; set; }
+            public string Duzenle { get; set; }
+            public string Sil { get; set; }
 
         }
         protected void KiraKartiBtn_Click(object sender, EventArgs e)

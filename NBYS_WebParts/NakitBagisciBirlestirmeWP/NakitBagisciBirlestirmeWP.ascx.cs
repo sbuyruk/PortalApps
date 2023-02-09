@@ -1,7 +1,6 @@
 ﻿using DAO.Ortak;
 using Model.NBYS;
 using Model.Ortak;
-using Model.TBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -135,11 +134,11 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
                 exHelper.PublishException();
             }
         }
-       
+
         #region AsilBagisci CustomDataTable
         private void AsilBagisciTabloOlustur(bool isSelectable)
         {
-            var jsonData = AsilBagisciTabloJson( isSelectable); //veri çekilip json a çeviriliyor
+            var jsonData = AsilBagisciTabloJson(isSelectable); //veri çekilip json a çeviriliyor
             var jsString = AsilBagisciCreateDataTable(jsonData); //javascript kodu hazırlanıyor.
             UtilityHelper.ScriptCalistir(jsString);
             BagisciSecTableDiv.Attributes["style"] = "display:block";
@@ -171,28 +170,28 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
             {
                 int nakitBagisciId = row["NakitBagisciId"].ReturnZeroIfNull().ConvertToInt();
                 string adi = "<a href=# onclick=OpenModal(" + nakitBagisciId + "); class='text-link'>" + row["Adi"].ToString() + "</a>";
-                string TcKimlik= row["TcKimlikNo"].ToString();
+                string TcKimlik = row["TcKimlikNo"].ToString();
                 string ili = row["Ili"].ToString();
                 string ilcesi = row["Ilcesi"].ToString();
                 string telefon = row["Telefon1"].ToString();
                 string adres = row["Adres"].ToString();
 
-                string duzenleUrl = ProjeConstants.PAGE_NAKITBAGISCI_EDIT+ "?SenderApp=BB&NakitBagisciId="+nakitBagisciId+ "&Param="+ AsilBagisciAraTxt.Text ;
+                string duzenleUrl = ProjeConstants.PAGE_NAKITBAGISCI_EDIT + "?SenderApp=BB&NakitBagisciId=" + nakitBagisciId + "&Param=" + AsilBagisciAraTxt.Text;
 
-                string secUrl = "<a class='btn btn-outline-info' onclick=FillAsilBagisciTable(" + nakitBagisciId + ");>Seç</>" ;
+                string secUrl = "<a class='btn btn-outline-info' onclick=FillAsilBagisciTable(" + nakitBagisciId + ");>Seç</>";
 
                 NakitBagisciListItem nakitBagisciListItem = new NakitBagisciListItem();
                 nakitBagisciListItem.NakitBagisciId = nakitBagisciId;
                 nakitBagisciListItem.Adi = adi.Trim();
                 nakitBagisciListItem.TCKimlikNo = TcKimlik;
                 nakitBagisciListItem.Ili = ili;
-                nakitBagisciListItem.Ilcesi= ilcesi;
+                nakitBagisciListItem.Ilcesi = ilcesi;
                 nakitBagisciListItem.Telefon = telefon;
                 nakitBagisciListItem.Adres = adres;
-                
+
                 nakitBagisciListItem.Duzenle = "<a href=" + duzenleUrl + @"?DestinationApp=TBD&BagisciId=" + nakitBagisciId + "  class='btn btn-outline-primary'>Düzenle</a>";
                 if (isSelectable)
-                    nakitBagisciListItem.Sec =  adi.IndexOf("BİLİNMEYEN") >= 0?string.Empty:secUrl;
+                    nakitBagisciListItem.Sec = adi.IndexOf("BİLİNMEYEN") >= 0 ? string.Empty : secUrl;
 
                 nakitBagisciListItem.Secildi = SecilenIdQS.Equals(nakitBagisciListItem.NakitBagisciId);
                 list.Add(nakitBagisciListItem);
@@ -286,7 +285,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
             return jSon;
         }
         private List<NakitBagisciListItem> BirlesecekBagisciGetDataList()
-        {            
+        {
             DataTable dataTable = BirlesecekBagisciGetData();
             List<NakitBagisciListItem> list = new List<NakitBagisciListItem>();
             foreach (DataRow row in dataTable.Rows)
@@ -377,7 +376,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
             return tableString;
         }
         #endregion
-        
+
         protected void AsilBagisciHiddenBtn_Click(object sender, EventArgs e)
         {
             NakitBagisci secilenNb = new NakitBagisci();
@@ -461,7 +460,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
                 il = il.Select<Il>(secilenBagisci.Ili.ConvertToInt());
                 if (il != null)
                 {
-                    IlIlceCell.Text = il.IlAdi+" ";
+                    IlIlceCell.Text = il.IlAdi + " ";
                 }
                 Ilce ilce = new Ilce();
                 ilce = ilce.Select<Ilce>(secilenBagisci.Ilcesi.ConvertToInt());
@@ -551,7 +550,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
         {
             BagisciyiBirlestirAtomic();
 
-        }      
+        }
         private void BagisciyiBirlestirAtomic()
         {
             string currentUser = UtilityHelper.GetCurrentUserLoginName();
@@ -715,7 +714,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
                                     List<DBObject> bagisciDBOList = db.ExecuteTransaction();
                                     #endregion
 
-                                    MessageHelper.PublishMessage("Birleştirme Tamamlandı", ProjeConstants.MESAJ_BASARILI,2000);
+                                    MessageHelper.PublishMessage("Birleştirme Tamamlandı", ProjeConstants.MESAJ_BASARILI, 2000);
                                     ParamQS = AsilBagisciAraTxt.Text;
                                     AsilBagisciTabloOlustur(false);
                                     BirlestirSubDiv.Visible = false;
@@ -810,7 +809,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
 
         }
         #region Modal popup işlemleri
-        
+
 
         private void TabloModalOlustur(string nakitBagisciId)
         {

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Drawing;
 using System.Globalization;
 using System.Web.Script.Serialization;
 using System.Web.UI.WebControls;
@@ -116,11 +117,11 @@ namespace MFYS_WebParts.BankaBazindaGunlukBagisListesiWP
                             },
                             {
                                 extend: 'excel',
-                                title: 'Tarih Bazında Günlük Bağışlar',
+                                title: 'Banka Bazında Günlük Bağışlar (TL)',
                                 filename: function(){
                                     var d = new Date();
                                     var n = d.getTime();
-                                    return 'BankaBazindaGunlukBagislar' + n;
+                                    return 'BankaBazindaGunluk-TL-Bagislar' + n;
                                 },
                                 exportOptions: {
                                     columns: ':visible'
@@ -128,11 +129,11 @@ namespace MFYS_WebParts.BankaBazindaGunlukBagisListesiWP
                             },
                             {
                                 extend: 'pdf',
-                                title: 'Tarih Bazında Günlük Bağışlar',
+                                title: 'Banka Bazında Günlük Bağışlar (TL)',
                                 filename: function(){
                                     var d = new Date();
                                     var n = d.getTime();
-                                    return 'BankaBazindaGunlukBagislar' + n;
+                                    return 'BankaBazindaGunluk-TL-Bagislar' + n;
                                 },
                                 exportOptions: {
                                     columns: ':visible'
@@ -155,30 +156,38 @@ namespace MFYS_WebParts.BankaBazindaGunlukBagisListesiWP
         }
         private List<BagisListItem> GetDataList()
         {
-            DateTime bastar = new DateTime(YilDDL.SelectedItem.Value.ConvertToInt(), AyDDL.SelectedItem.Value.ConvertToInt(),1);
-            DateTime bittar = bastar.AddMonths(1).AddDays(-1);
-            string bankaGrup = BankaDDL.SelectedItem.Value;
-            NakitBagisHareket nakitBagisHareket = new NakitBagisHareket();
-            DataTable dataTable = nakitBagisHareket.SelectByTarihBankaId(bastar,bittar, bankaGrup);
-
+            int yil = YilDDL.SelectedItem.Value.ConvertToInt();
+            int ay = AyDDL.SelectedItem.Value.ConvertToInt();
+            int gunSayisi = DateTime.DaysInMonth(yil,ay);
+            string banka = BankaDDL.SelectedItem.Text;
+            decimal genelToplam = 0;
             List<BagisListItem> list = new List<BagisListItem>();
-            IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
-            if (dataTable != null)
+            for (int i = 1; i <= gunSayisi;i++)
             {
-                decimal genelToplam = 0;
-                foreach (DataRow row in dataTable.Rows)
+                DateTime tarih = new DateTime(yil,ay,i);
+                NakitBagisHareket nakitBagisHareket = new NakitBagisHareket();
+                DataTable dataTable = nakitBagisHareket.SelectTlBagisByTarihBankaGrup2(tarih, banka);
+                IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
+                
+                string bagisTarihiStr = tarih.ConvertToDatetimeEmptyIfNull();
+                decimal toplamBagis = 0;
+                banka = BankaDDL.SelectedItem.Text;
+                if (dataTable != null)
                 {
-                    string bagisTarihiStr = row["BagisTarihi"].ReturnEmptyIfNull().ConvertToDatetime().ConvertToDatetimeEmptyIfNull();
-                    decimal toplamBagis = row["ToplamBagis"].ReturnZeroIfNull().ConvertToDecimal();
-                    string banka = row["Banka"].ToString();
-
-                    BagisListItem bagisListItem = new BagisListItem();
-                    bagisListItem.BagisTarihi = bagisTarihiStr;
-                    bagisListItem.ToplamBagis = toplamBagis.ToString("N", culturInfo) + " TL";
-                    bagisListItem.Banka = banka;
-                    genelToplam += toplamBagis;
-                    list.Add(bagisListItem);
+                    DataRow row = dataTable.Rows[0];
+                    bagisTarihiStr = row["BagisTarihi"].ReturnEmptyIfNull().ConvertToDatetime().ConvertToDatetimeEmptyIfNull();
+                    toplamBagis = row["ToplamBagis"].ReturnZeroIfNull().ConvertToDecimal();
+                    banka = row["Banka"].ToString();
                 }
+                else { 
+                }
+                BagisListItem bagisListItem = new BagisListItem();
+                bagisListItem.BagisTarihi = bagisTarihiStr;
+                bagisListItem.ToplamBagis = toplamBagis.ToString("N", culturInfo) + " TL";
+                bagisListItem.Banka = banka;
+                genelToplam += toplamBagis;
+                list.Add(bagisListItem);
+
                 ToplamLbl.Text = "Toplam   : " + genelToplam.ToString("N", culturInfo) + " TL";
             }
             return list;
@@ -190,7 +199,7 @@ namespace MFYS_WebParts.BankaBazindaGunlukBagisListesiWP
             {
                 BankaDDL.Items.Clear();
                 BankaTanim pBanka = new BankaTanim();
-                List<string> list = pBanka.SelectByBankaGrup();
+                List<string> list = pBanka.SelectByBankaGrup2();
                 foreach (string banka in list)
                 {
                     BankaDDL.Items.Add(new ListItem(banka, banka));

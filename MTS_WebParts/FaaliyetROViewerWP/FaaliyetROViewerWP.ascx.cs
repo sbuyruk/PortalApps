@@ -104,6 +104,30 @@ namespace MTS_WebParts.FaaliyetROViewerWP
                 ViewState["DogumGunu"] = value;
             }
         }
+        private string KisiDogumGunuQS
+        {
+            get
+            {
+
+                if (ViewState["KisiDogumGunu"] == null)
+                {
+                    if (Page.Request.QueryString["KisiDogumGunu"] != null)
+                    {
+                        ViewState["KisiDogumGunu"] = Page.Request.QueryString["KisiDogumGunu"];
+                    }
+                    else
+                    {
+                        ViewState["KisiDogumGunu"] = VakifIciKutlamaChk.Checked;
+                    }
+                }
+                return ViewState["KisiDogumGunu"].ToString();
+            }
+
+            set
+            {
+                ViewState["KisiDogumGunu"] = value;
+            }
+        }
         private string ResmiTatilQS
         {
             get
@@ -166,16 +190,19 @@ namespace MTS_WebParts.FaaliyetROViewerWP
             var resmiTatilJsonData = ResmiTatilQS.ConvertToBool() ? ResmiTatilListesiniGetir():string.Empty;
             var toplantiJsonData = ToplantiQS.ConvertToBool() ? ToplantiListesiniGetir():string.Empty;
             var personelDogumGunleriJsonData = DogumGunuQS.ConvertToBool() ? PersonelDogumGunuListesiniGetir() :string.Empty;
+            var kisiDogumGunleriJsonData = KisiDogumGunuQS.ConvertToBool() ? KisiDogumGunuListesiniGetir() : string.Empty;
 
             randevuJsonData = randevuJsonData.Equals("[]") ? string.Empty : randevuJsonData;
             resmiTatilJsonData = resmiTatilJsonData.Equals("[]") ? string.Empty : resmiTatilJsonData;
             toplantiJsonData = toplantiJsonData.Equals("[]") ? string.Empty : toplantiJsonData;
             personelDogumGunleriJsonData = personelDogumGunleriJsonData.Equals("[]") ? string.Empty : personelDogumGunleriJsonData;
+            kisiDogumGunleriJsonData = kisiDogumGunleriJsonData.Equals("[]") ? string.Empty : kisiDogumGunleriJsonData;
 
             randevuJsonData = string.IsNullOrEmpty(randevuJsonData) ? string.Empty : randevuJsonData.Replace("[{", "{").Replace("}]", "},");
             resmiTatilJsonData = string.IsNullOrEmpty(resmiTatilJsonData) ? string.Empty : resmiTatilJsonData.Replace("[{", "{").Replace("}]", "},");
             toplantiJsonData = string.IsNullOrEmpty(toplantiJsonData) ? string.Empty : toplantiJsonData.Replace("[{", "{").Replace("}]", "},");
             personelDogumGunleriJsonData = string.IsNullOrEmpty(personelDogumGunleriJsonData) ? string.Empty : personelDogumGunleriJsonData.Replace("[{", "{").Replace("}]", "},");
+            kisiDogumGunleriJsonData = string.IsNullOrEmpty(kisiDogumGunleriJsonData) ? string.Empty : kisiDogumGunleriJsonData.Replace("[{", "{").Replace("}]", "},");
 
             string jsonArrayString =
                 "[" +
@@ -183,6 +210,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP
                 resmiTatilJsonData +
                 toplantiJsonData +
                 personelDogumGunleriJsonData +
+                kisiDogumGunleriJsonData +
                 "]";
 
             var jsString = CreateJsString(jsonArrayString); //javascript kodu hazırlanıyor.
@@ -281,6 +309,43 @@ namespace MTS_WebParts.FaaliyetROViewerWP
             string json = randevu.ToJSON(eventItems);
             return json;
         }
+        private string KisiDogumGunuListesiniGetir()
+        {
+            Kisi kisi = new Kisi();
+            List<Kisi> kisiListesi = kisi.SelectByDogumGunuKutlamaReturnDT();
+            List<CalendarEvent> eventItems = new List<CalendarEvent>();
+            Randevu randevu = new Randevu();
+            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+            foreach (var item in kisiListesi)
+            {
+
+                for (int i = -1; i < 2; i++)//geçen yıl, bu yıl ve gelecek yıl için d.günü göster
+                {
+                    DateTime dogumGunu = item.DogumTarihi;
+                    DateTime dogumGunuBuYil = new DateTime(DateTime.Today.Year + i, dogumGunu.Month, dogumGunu.Day);
+
+                    CalendarEvent dogumGunuitem = new CalendarEvent();
+                    dogumGunuitem.state = ProjeConstants.RANDEVU_DURUMU_ONAYLANDI_INT.ToString();
+                    dogumGunuitem.id = 999;//999 önemli taşınamayan event
+                    dogumGunuitem.purpose = ProjeConstants.RANDEVU_AMACI_DOGUMGUNU_INT;
+                    dogumGunuitem.title = "D.Günü :" + item.Adi + " " + item.Soyadi;
+                    dogumGunuitem.start = string.Format("{0:s}", dogumGunuBuYil);
+                    dogumGunuitem.end = string.Format("{0:s}", dogumGunuBuYil);
+
+                    string linkUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_KISI_KARTI + "?KisiId=" + item.Id;
+
+                    dogumGunuitem.url = linkUrl;
+                    dogumGunuitem.allDay = true;
+                    dogumGunuitem.startEditable = false;
+
+                    randevu.RenkBelirle(dogumGunuitem);
+                    eventItems.Add(dogumGunuitem);
+                }
+            }
+
+            string json = randevu.ToJSON(eventItems);
+            return json;
+        }
         private string RandevuListesiniGetir()
         {
             Randevu randevu = new Randevu();
@@ -295,6 +360,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP
             string json = resmiTatil.SelectAllReturnJson(basTar, bitTar);
             return json;
         }
+
         private string CreateJsString(string jsonData)
         {
             string initialDate = string.IsNullOrEmpty(InitialDateQS) ?
@@ -601,7 +667,9 @@ namespace MTS_WebParts.FaaliyetROViewerWP
 
         protected void VakifDisiKutlamaChk_CheckedChanged(object sender, EventArgs e)
         {
-
+            KisiDogumGunuQS = VakifDisiKutlamaChk.Checked.ToString();
+            KayitGetir();
+            AcikTarihliRandevuListesiniGetir();
         }
 
         protected void ResmiTatilChk_CheckedChanged(object sender, EventArgs e)

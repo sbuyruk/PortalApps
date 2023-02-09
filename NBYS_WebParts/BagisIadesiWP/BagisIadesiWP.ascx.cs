@@ -67,7 +67,7 @@ namespace NBYS_WebParts.BagisIadesiWP
                         TabloOlustur();
                     }
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -125,9 +125,9 @@ namespace NBYS_WebParts.BagisIadesiWP
                         IadeMiktari = iadeMiktari.ToString("N", culturInfo)
                     };
                     string iadeLink;
-                    if (iadeEdildiMi )
+                    if (iadeEdildiMi)
                     {
-                        iadeLink = "<span class=bagis-iade-edildi>" + bagisHareketItem.IadeMiktari + " "+ dovizCinsi + " Parası İade edildi</span>";
+                        iadeLink = "<span class=bagis-iade-edildi>" + bagisHareketItem.IadeMiktari + " " + dovizCinsi + " Parası İade edildi</span>";
                         iadeLink += "<br><a href=# onclick=IadeBilgisiDegistirClick(" + bagisHareketId + "); class=\'btn btn-outline-primary \'>Değiştir</a>";
                     }
                     else
@@ -510,7 +510,7 @@ namespace NBYS_WebParts.BagisIadesiWP
 
                 NakitBagisci nb = new NakitBagisci();
                 nb = nb.Select<NakitBagisci>(nbh.BagisciId);
-                string bagisciAdi = nb == null ? "" : nb.Adi + " " + nb.Soyadi ;
+                string bagisciAdi = nb == null ? "" : nb.Adi + " " + nb.Soyadi;
 
                 IadeTarihiDegistirTxt.Text = nbh.IadeTarihi.ConvertToDatetimeEmptyIfNull();
                 IadeSebebiDegistirTxt.Value = nbh.IadeSebebi;
@@ -542,7 +542,7 @@ namespace NBYS_WebParts.BagisIadesiWP
                         nbh.IadeSebebi = IadeSebebiDegistirTxt.Value;
                         nbh.IadeTarihi = IadeTarihiDegistirTxt.Text.ConvertToDatetime();
                         nbh.Aciklama += " İade tarhi ve sebebi güncellenmiştir.";
-                        bool updated = nbh.Update();                      
+                        bool updated = nbh.Update();
                         if (updated)
                         {
                             RedirectToPage(ProjeConstants.PAGE_BAGISIADE + "?Param=" + BagisAraTxt.Text);

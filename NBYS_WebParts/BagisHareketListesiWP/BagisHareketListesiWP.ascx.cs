@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.IO;
-using System.Web.Script.Serialization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
@@ -271,7 +270,7 @@ namespace NBYS_WebParts.BagisHareketListesiWP
             {
                 NakitBagisHareket nbh = new NakitBagisHareket();
                 int ilId = IliDDL.SelectedItem.Value.ConvertToInt();
-                jSon = nbh.SelectByDurumTarihReturnJson (AyDDL.SelectedItem.Value, YilDDL.SelectedItem.Value, ilId);
+                jSon = nbh.SelectByDurumTarihReturnJson(AyDDL.SelectedItem.Value, YilDDL.SelectedItem.Value, ilId);
 
             }
             catch (Exception exception)

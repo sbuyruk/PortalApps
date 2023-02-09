@@ -371,7 +371,7 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
             DateTime bastar = GetBasTar();
             DateTime bittar = GetBitTar();
 
-            var json = armagan.SelectByDurumTarih(ProjeConstants.DURUM_KONTROLEDILDI, bastar, bittar, ProjeConstants.ARMAGAN_TESEKKURID.ToString(), ref rowCount, ProjeConstants.BOLGE_HEPSI);
+            var json = armagan.SelectByDurumTarih(ProjeConstants.DURUM_KONTROLEDILDI, bastar, bittar, ProjeConstants.ARMAGAN_TESEKKURID.ToString(), ref rowCount, ProjeConstants.BOLGE_HEPSI, ProjeConstants.HEPSI_INT);
             TableDataLbl.Text = rowCount + " adet Teşekkür Belgesi mevcut";
             if (rowCount > 0)
             {
@@ -776,7 +776,7 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
             DateTime bastar = GetBasTar();
             DateTime bittar = GetBitTar();
             Armagan armagan = new Armagan();
-            DataTable dataTable = armagan.SelectByDurumTarihReturnDT(ProjeConstants.DURUM_KONTROLEDILDI, bastar, bittar, ProjeConstants.ARMAGAN_TESEKKURID.ToString(), ProjeConstants.BOLGE_HEPSI);
+            DataTable dataTable = armagan.SelectByDurumTarihReturnDT(ProjeConstants.DURUM_KONTROLEDILDI, bastar, bittar, ProjeConstants.ARMAGAN_TESEKKURID.ToString(), ProjeConstants.BOLGE_HEPSI, ProjeConstants.HEPSI_INT);
 
             if (dataTable != null)
             {
@@ -853,7 +853,7 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
             DateTime bastar = GetBasTar();
             DateTime bittar = GetBitTar();
             Armagan armagan = new Armagan();
-            DataTable dataTable = armagan.SelectByDurumTarihReturnDT(ProjeConstants.DURUM_KONTROLEDILDI, bastar, bittar, ProjeConstants.ARMAGAN_TESEKKURID.ToString(), ProjeConstants.BOLGE_HEPSI);
+            DataTable dataTable = armagan.SelectByDurumTarihReturnDT(ProjeConstants.DURUM_KONTROLEDILDI, bastar, bittar, ProjeConstants.ARMAGAN_TESEKKURID.ToString(), ProjeConstants.BOLGE_HEPSI, ProjeConstants.HEPSI_INT);
             if (dataTable != null)
             {
                 int index = 1;
@@ -961,9 +961,9 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
                 eh.PublishException();
                 return null;
             }
-        //}
+            //}
 
-    }
+        }
         private IEnumerable<DocumentFormat.OpenXml.Wordprocessing.Table> GetTemplateTables(MemoryStream templateStream)
         {
             //using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(templateStream, true))

@@ -10,6 +10,7 @@ namespace Model.NBYS
     {
         public string Banka { get; set; }
         public string BankaGrup { get; set; }
+        public string BankaGrup2 { get; set; }
         public override bool Delete()
         {
             throw new NotImplementedException();
@@ -71,6 +72,19 @@ namespace Model.NBYS
             DataTable dataTable = dao.selectFromDb(sqlString, "");
             List<string> list = dataTable.AsEnumerable()
                            .Select(r => r.Field<string>("BankaGrup"))
+                           .ToList();
+            return list;
+        }
+        public List<string> SelectByBankaGrup2()
+        {
+            string sqlString = string.Format(@"
+                SELECT BankaGrup2
+                FROM BankaTanim_Table
+                GROUP BY BankaGrup2");
+
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            List<string> list = dataTable.AsEnumerable()
+                           .Select(r => r.Field<string>("BankaGrup2"))
                            .ToList();
             return list;
         }

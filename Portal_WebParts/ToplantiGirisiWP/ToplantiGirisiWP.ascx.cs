@@ -426,13 +426,16 @@ namespace Portal_WebParts.ToplantiGirisiWP
             }
             else
             {
+                TimeSpan aralikTS = ProjeConstants.TOPLANTI_MINUMUMSURESI;
+                TimeSpan bittarTS = ProjeConstants.TOPLANTI_BITISZAMANI;
+
                 TimeSpan bastarTS = ProjeConstants.TOPLANTI_BASLAMAZAMANI;
                 if (DateTime.Today.ConvertToDatetimeEmptyIfNull().Equals(BaslangicTarihiTxt.Text.Trim()))
                 {
-                    bastarTS = new TimeSpan(DateTime.Now.Hour, 0, 0);
+                    decimal minD = (decimal)DateTime.Now.Minute / 10;
+                    int min = (Math.Ceiling(minD)*10).ConvertToInt()+ aralikTS.Minutes;
+                    bastarTS = new TimeSpan(DateTime.Now.Hour, min, 0);
                 }
-                TimeSpan aralikTS = ProjeConstants.TOPLANTI_MINUMUMSURESI;
-                TimeSpan bittarTS = ProjeConstants.TOPLANTI_BITISZAMANI;
 
                 TimeSpan nextTS = bastarTS;
                 //bos satır ekle
@@ -694,8 +697,65 @@ namespace Portal_WebParts.ToplantiGirisiWP
             }
             return birim;
         }
+        private void KaydetOnayPopupAc()
+        {
+            DateTime toplantiBaslangici = UtilityHelper.TariheSaatEkle(BaslangicTarihiTxt.Text.ConvertToDatetime(), BasSaatDDL.SelectedItem.Value);
+            DateTime toplantiBitisi = UtilityHelper.TariheSaatEkle(BitisTarihiTxt.Text.ConvertToDatetime(), BitSaatDDL.SelectedItem.Value);
+            if (toplantiBaslangici < DateTime.Now)
+            {
+                KaydetMesajBasligiLbl.Text = "Toplantı başlangıç saati geçti.";
+                KaydetMesajiLbl.Text = "Toplantı başlangıç saati geçti. Kayıt işlemini iptal edip saati değiştirebilirsiniz. Değişiklik yapmadan kaydetmek istiyor musunuz?";
+            }
+            else
+            {
+                KaydetMesajBasligiLbl.Text = "Toplantı kaydedilecek";
+                KaydetMesajiLbl.Text =string.Empty;
+
+            }
+            BaslamaTarihiCell.Text = BaslangicTarihiTxt.Text;
+            BaslamaSaatiCell.Text = BasSaatDDL.SelectedItem.Text;
+            BitisTarihiCell.Text = BitisTarihiTxt.Text;
+            BitisSaatiCell.Text = BitSaatDDL.SelectedItem.Text;
+            KonuCell.Text = ToplantiKonusuTxt.Text;
+            YeriCell.Text = ToplantiYeriDDL.SelectedItem.Text;
+            KaydetNowBtn.Visible = true;
+            GuncelleNowBtn.Visible = false;
+            string openModal = "OpenOnayModal();";
+            UtilityHelper.ScriptCalistir(openModal);
+        }
+        private void GuncelleOnayPopupAc()
+        {
+            
+            DateTime toplantiBaslangici = UtilityHelper.TariheSaatEkle(BaslangicTarihiTxt.Text.ConvertToDatetime(), BasSaatDDL.SelectedItem.Value);
+            if (toplantiBaslangici < DateTime.Now)
+            {
+                KaydetMesajBasligiLbl.Text = "Toplantı başlangıç saati geçti.";
+                KaydetMesajiLbl.Text = "Toplantı başlangıç saati geçti. Güncelleme işlemini iptal edip saati değiştirebilirsiniz. Değişiklik yapmadan güncellemek istiyor musunuz?";
+            }
+            else
+            {
+                KaydetMesajBasligiLbl.Text = "Toplantı güncellenecek";
+                KaydetMesajiLbl.Text = string.Empty;
+
+            }
+            BaslamaTarihiCell.Text = BaslangicTarihiTxt.Text;
+            BaslamaSaatiCell.Text = BasSaatDDL.SelectedItem.Text;
+            BitisTarihiCell.Text = BitisTarihiTxt.Text;
+            BitisSaatiCell.Text = BitSaatDDL.SelectedItem.Text;
+            KonuCell.Text = ToplantiKonusuTxt.Text;
+            YeriCell.Text = ToplantiYeriDDL.SelectedItem.Text;
+            KaydetNowBtn.Visible = false;
+            GuncelleNowBtn.Visible = true;
+            string openModal = "OpenOnayModal();";
+            UtilityHelper.ScriptCalistir(openModal);
+        }
         protected void KaydetBtn_Click(object sender, EventArgs e)
         {
+            KaydetOnayPopupAc();
+        }
+        protected void KaydetNowBtn_Click(object sender, EventArgs e)
+        {
+            
             int toplantiId = 0;
             try
             {
@@ -739,10 +799,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
                         KatilimciBilgileriDiv.Attributes["style"] = "display:block";
                         InitialDateQS = toplanti.BaslangicTarihi.ToString("yyyy-MM-dd");
                         EPostaIslemleri(toplanti, ProjeConstants.KAYDET, oncekiKatilimciListesi);
-                        //RedirectToPage(ProjeConstants.PAGE_TOPLANTI_GIRIS + "?ToplantiId=" + ToplantiIdQS);
 
-                        DuzenleAc();
-                        MessageHelper.PublishMessage("Toplantı kaydedildi, e-posta gönderildi.", ProjeConstants.MESAJ_BASARILI, 2000);
 
                         RedirectToPage(ProjeConstants.PAGE_TOPLANTI_LIST + "?SecilenToplantiId=" + toplanti.Id);
                     }
@@ -759,9 +816,14 @@ namespace Portal_WebParts.ToplantiGirisiWP
                 eh.PublishException();
 
             }
-
+           
         }
+       
         protected void GuncelleBtn_Click(object sender, EventArgs e)
+        {
+            GuncelleOnayPopupAc();
+        }
+        protected void GuncelleNowBtn_Click(object sender, EventArgs e)
         {
             DateTime tar1 = DateTime.Now;
             DateTime tar2 = DateTime.Now;
@@ -774,7 +836,6 @@ namespace Portal_WebParts.ToplantiGirisiWP
             bool guncellendiMi = false;
             try
             {
-
                 Toplanti toplanti = new Toplanti();
                 toplanti = toplanti.Select(ToplantiIdQS.ConvertToInt());
                 toplanti.Degistiren = UtilityHelper.GetCurrentUserName();
@@ -829,6 +890,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
                                 ToplantiIlkHalineKopyala(toplanti);
                                 tar8 = DateTime.Now;
                                 CikanKatilimciIdListQS = new List<int>();
+                                RedirectToPage(ProjeConstants.PAGE_TOPLANTI_LIST + "?SecilenToplantiId=" + toplanti.Id);
                             }
                             else
                             {
@@ -838,6 +900,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
                         }
                         else
                         {
+                            RedirectToPage(ProjeConstants.PAGE_TOPLANTI_LIST + "?SecilenToplantiId=" + toplanti.Id);
                             MessageHelper.PublishMessage("Toplantıda henüz değişiklik yapmadınız.", ProjeConstants.MESAJ_BILGI, 2000);
                         }
                     }

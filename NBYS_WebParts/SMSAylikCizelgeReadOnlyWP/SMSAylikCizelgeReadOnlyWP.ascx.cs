@@ -93,6 +93,7 @@ namespace NBYS_WebParts.SMSAylikCizelgeReadOnlyWP
 
         private void SecilenYilVerileriniOlustur()
         {
+            int yil = SecilenYilQS.ConvertToInt();
             SMSAylikBagis sms = new SMSAylikBagis();
             List<SMSAylikBagis> list = sms.SelectByYilReturnList(SecilenYilQS.ConvertToInt());
             if (list.Count < 1)
@@ -104,7 +105,8 @@ namespace NBYS_WebParts.SMSAylikCizelgeReadOnlyWP
                     smsAylikBagis.DovizCinsi = "TL";
                     smsAylikBagis.IslemTarihi = DateTime.Now;
                     smsAylikBagis.Olusturan = CurrentUserName;
-                    smsAylikBagis.SMSTutari = 10;
+                    int ay = i;
+                    smsAylikBagis.SMSTutari = SMSTutariBul(ay, yil);
                     smsAylikBagis.TurkcellSMSAdedi = 0;
                     smsAylikBagis.VodafoneSMSAdedi = 0;
                     smsAylikBagis.TurkTelekomSMSAdedi = 0;
@@ -114,7 +116,21 @@ namespace NBYS_WebParts.SMSAylikCizelgeReadOnlyWP
                 }
             }
         }
-
+        private decimal SMSTutariBul(int ay, int yil)
+        {
+            decimal smsBedeli;
+            DateTime smsDegisimTarihi = ProjeConstants.SMS_TUTAR_DEGISIM_TARIHI;
+            DateTime smstarihi = new DateTime(yil, ay, 1);
+            if (smstarihi < smsDegisimTarihi)
+            {
+                smsBedeli = ProjeConstants.SMS_TUTAR_01022023ONCESI;
+            }
+            else
+            {
+                smsBedeli = ProjeConstants.SMS_TUTAR_01022023SONRASI;
+            }
+            return smsBedeli;
+        }
         private void CizelgeyiDoldur(int yil)
         {
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);

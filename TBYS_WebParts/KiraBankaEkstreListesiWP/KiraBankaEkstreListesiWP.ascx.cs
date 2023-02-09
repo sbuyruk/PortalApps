@@ -128,6 +128,30 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP
                 ViewState["Mesaj"] = value;
             }
         }
+        private string SecilenIdQS
+        {
+            get
+            {
+
+                if (ViewState["SecilenId"] == null)
+                {
+                    if (Page.Request.QueryString["SecilenId"] != null)
+                    {
+                        ViewState["SecilenId"] = Page.Request.QueryString["SecilenId"];
+                    }
+                    else
+                    {
+                        ViewState["SecilenId"] = string.Empty;
+                    }
+                }
+                return ViewState["SecilenId"].ToString();
+            }
+
+            set
+            {
+                ViewState["SecilenId"] = value;
+            }
+        }
         private readonly IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -376,6 +400,10 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP
 
                         ekstreAktarmaListItem.SecSil = SecCheckBoxLinki(ProjeConstants.SIL,
                                 aktarildiMi, ekstreAktarmaListItem.KiraciId.ConvertToInt(), ekstreAktarmaListItem.KiraEkstreAktarmaId.ConvertToInt());
+                        ekstreAktarmaListItem.OdemeSebebiId = dataRow["OdemeSebebiId"].ConvertToInt();
+                        ekstreAktarmaListItem.OdemeSebebi = dataRow["OdemeSebebi"].ToString();
+                        ekstreAktarmaListItem.OdemeSebebiUrl = dataRow["OdemeSebebi"].ToString();
+                        ekstreAktarmaListItem.Secildi = SecilenIdQS.Equals(ekstreAktarmaListItem.KiraEkstreAktarmaId);
                         if (aktarildiMi)
                         {
                             ekstreAktarmaListItem.CakismaVarMi = "False";
@@ -383,7 +411,6 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP
                             ekstreAktarmaListItem.SecKaydet = string.Empty;
                             ekstreAktarmaListItem.SecSil = string.Empty;
                             ekstreAktarmaListItem.Eslestir = string.Empty;
-
                         }
                         else
                         {
@@ -396,22 +423,38 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP
                             else
                             {
                                 // Uyari==1 mi, bu isimde birden çok kiracı var
-                                if (uyari)
-                                {
+                                //if (uyari)
+                                //{
 
-                                    ekstreAktarmaListItem.KiraciAdi = "<a herf=# class='btn btn-outline-danger text-left' style='white-space:normal'  onclick=OpenModalOdemeAyristir(" + ekstreAktarmaListItem.KiraEkstreAktarmaId + ");> Böl ve Öde</a>";
-                                }
-                                else
+                                //    ekstreAktarmaListItem.KiraciAdi = "<a herf=# class='btn btn-outline-danger text-left' style='white-space:normal'  onclick=OpenModalOdemeBolustur(" + ekstreAktarmaListItem.KiraEkstreAktarmaId + ");> Böl ve Öde</a>";
+                                //}
+                                //else
                                 {
-                                    ekstreAktarmaListItem.SecKaydet = SecCheckBoxLinki(ProjeConstants.KAYDET,
-                                                                           aktarildiMi, ekstreAktarmaListItem.KiraciId.ConvertToInt(), ekstreAktarmaListItem.KiraEkstreAktarmaId.ConvertToInt());
+                                    if (ekstreAktarmaListItem.OdemeSebebiId==ProjeConstants.ODEMESEBEBI_KIRA_INT ||
+                                        ekstreAktarmaListItem.OdemeSebebiId == ProjeConstants.ODEMESEBEBI_KESINTEMINAT_INT ||
+                                        ekstreAktarmaListItem.OdemeSebebiId == ProjeConstants.ODEMESEBEBI_GECICITEMINAT_INT 
+                                        )
+                                    {
+                                        if (uyari)
+                                        {
+                                            ekstreAktarmaListItem.SecKaydet = string.Empty;
+                                        }
+                                        else
+                                        {
+                                            ekstreAktarmaListItem.SecKaydet = SecCheckBoxLinki(ProjeConstants.KAYDET,
+                                                aktarildiMi, ekstreAktarmaListItem.KiraciId.ConvertToInt(), ekstreAktarmaListItem.KiraEkstreAktarmaId.ConvertToInt());
+                                        }
+                                            
 
-                                    ekstreAktarmaListItem.Eslestir = "<a href=" + ProjeConstants.PAGE_KIRACI_ESLESTIR +
-                                        "?KiraEkstreAktarmaId=" + ekstreAktarmaListItem.KiraEkstreAktarmaId + " class='btn btn-outline-primary'>Eşleştir</a>";
+                                        ekstreAktarmaListItem.Eslestir = "<a href=" + ProjeConstants.PAGE_KIRACI_ESLESTIR +
+                                            "?KiraEkstreAktarmaId=" + ekstreAktarmaListItem.KiraEkstreAktarmaId + " class='btn btn-warning'>Eşleştir</a>";
+
+                                        ekstreAktarmaListItem.OdemeSebebiUrl = OdemeSebebiDDLDoldur(ekstreAktarmaListItem, aktarildiMi); 
+                                    }
 
                                     if (ekstreAktarmaListItem.KiraciId.ConvertToInt() > 0)
                                     {
-                                        ekstreAktarmaListItem.KiraciAdi = "<a herf=# class='btn btn-link text-left' style='white-space:normal'  onclick=OdemePlaniModalAc(" + ekstreAktarmaListItem.KiraEkstreAktarmaId + "," + ekstreAktarmaListItem.KiraciId + ",\'" + odemeTarihi.ConvertToDatetimeEmptyIfNull() + "\');>" + ekstreAktarmaListItem.KiraciAdi + "</a>";
+                                        ekstreAktarmaListItem.KiraciAdi = "<a href=# class='btn btn-link text-left' style='white-space:normal'  onclick=OdemePlaniModalAc(" + ekstreAktarmaListItem.KiraEkstreAktarmaId + "," + ekstreAktarmaListItem.KiraciId + ",\'" + odemeTarihi.ConvertToDatetimeEmptyIfNull() + "\');>" + ekstreAktarmaListItem.KiraciAdi + "</a>";
 
                                     }
                                 }
@@ -425,16 +468,75 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP
                     {
                         MessageHelper.PublishMessage("İşlem Tamamlanamadı. EkstreAktarmaId=" + ekstreAktarmaListItem.KiraEkstreAktarmaId, ProjeConstants.MESAJ_HATA);
                     }
-
-                    //if (uyari)
-                    //{
-                    //    //birden fazla kişi ile eşleşmiş
-                    //    KayitSayisinaBol(returnlist, ekstreAktarmaListItem, tutar);
-                    //}
                     returnlist.Add(ekstreAktarmaListItem);
                 }
             }
             return returnlist;
+        }
+
+        private string OdemeSebebiDDLDoldur(KiraEkstreAktarmaListItem ekstreAktarmaListItem, bool aktarildiMi)
+        {
+
+            OdemeSebebiTanim ost = new OdemeSebebiTanim();
+            List<OdemeSebebiTanim> list = ost.SelectAll<OdemeSebebiTanim>();
+            string ddlId = "KiralamaSebebiDDL" + ekstreAktarmaListItem.KiraEkstreAktarmaId;
+            string odemeAyristirBtnId = "OdemeAyristirBtn" + ekstreAktarmaListItem.KiraEkstreAktarmaId;
+            
+            string select = "<select id="+ ddlId+" onchange=OdemeSebebiChange("+ddlId + "," + odemeAyristirBtnId + ");>";
+            bool kiraciBelli = ekstreAktarmaListItem.KiraciId.ConvertToInt() > 0;
+            int secilenOdemeSebebi = ProjeConstants.ODEMESEBEBI_DIGER_INT;
+            foreach (var item in list)
+            {
+                
+                if (!kiraciBelli && item.Id < 4) //kiracı belli değilse listese kira, teminat olmasın
+                {
+                    continue;
+                }
+                else
+                {
+                    if (ekstreAktarmaListItem.OdemeSebebiId==item.Id)
+                    {
+                        secilenOdemeSebebi = item.Id;
+                    }
+                    string option = "<option value=" + item.Id +
+                        (secilenOdemeSebebi==item.Id ?  " selected ": string.Empty) + ">" + 
+                        item.OdemeSebebi + "</option>";
+                    select += option;
+                }
+            }
+            select +=  "</select>";
+            string odemeAyristirBtn = OdemeAyristirBtnLinki(aktarildiMi, odemeAyristirBtnId, ekstreAktarmaListItem, secilenOdemeSebebi);
+            return select + "<br><br>" + odemeAyristirBtn;
+        }
+
+        private string OdemeAyristirBtnLinki(bool aktarildiMi, string odemeAyristirBtnId, KiraEkstreAktarmaListItem ekstreAktarmaListItem,int secilenOdemeSebebi)
+        {
+            string visibility =(secilenOdemeSebebi==ProjeConstants.ODEMESEBEBI_KIRA_INT ||
+                secilenOdemeSebebi == ProjeConstants.ODEMESEBEBI_GECICITEMINAT_INT ||
+                secilenOdemeSebebi == ProjeConstants.ODEMESEBEBI_KESINTEMINAT_INT) ? 
+                string.Empty : " style='display:none'";
+            string classofbutton = ekstreAktarmaListItem.Uyari.ConvertToBool()? " class='btn btn-danger'": " class='btn btn-warning'";
+
+            string link ="<a id=" + odemeAyristirBtnId + visibility +
+                " href=" + ProjeConstants.PAGE_ODEMEYI_KIRA_TEMINAT_AYRISTIR +
+                "?KiraEkstreAktarmaId=" + ekstreAktarmaListItem.KiraEkstreAktarmaId + classofbutton+ " >Ödemeyi Ayrıştır ve Kaydet</a>";
+            string retVal;
+            if (aktarildiMi)
+            {
+                retVal = ekstreAktarmaListItem.OdemeSebebi;
+            }
+            else if (ekstreAktarmaListItem.KiraciId.ConvertToInt() < 1)
+            {
+                //Kiracı belli değilse odeme Sebebi listesinde Kira+Teminat bulunmasın
+                retVal = ekstreAktarmaListItem.OdemeSebebi;
+            }
+            else
+            {
+                retVal = link;
+
+            }
+
+            return retVal;
         }
 
         private string SecCheckBoxLinki(string kaydetSil, bool aktarildiMi, int kiraciId, int kiraEkstreAktarmaId)
@@ -493,7 +595,7 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP
             if (!string.IsNullOrEmpty(adiSoyadi))
             {
                 List<Kiraci> kiraciList = kiraciDao.SelectByAdi(string.IsNullOrEmpty(kiraciAdi) ? adiSoyadi :kiraciAdi);
-                OdemeAyristirmaTableHeaders();
+                OdemeBolusturmeTableHeaders();
                 if (kiraciList.Count > 1)
                 {
                     foreach (var item in kiraciList)
@@ -537,20 +639,16 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP
                             row.Controls.Add(kiraBedeliCell);
                             row.Controls.Add(tutarCell);
 
-                            OdemeAyristirmaTable.Rows.Add(row);
+                            OdemeBolusturmeTable.Rows.Add(row);
                         }
                     }
                 }
             }
-
-
-
-
         }
 
-        private void OdemeAyristirmaTableHeaders()
+        private void OdemeBolusturmeTableHeaders()
         {
-            OdemeAyristirmaTable.Rows.Clear();
+            OdemeBolusturmeTable.Rows.Clear();
 
             TableHeaderRow rowHeader = new TableHeaderRow();
             TableHeaderCell kiraciNoCell = new TableHeaderCell();
@@ -568,7 +666,7 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP
             rowHeader.Controls.Add(sozlesmeCell);
             rowHeader.Controls.Add(kiraBedeliCell);
             rowHeader.Controls.Add(odemeTutariCell);
-            OdemeAyristirmaTable.Rows.Add(rowHeader);
+            OdemeBolusturmeTable.Rows.Add(rowHeader);
         }
 
         private bool CakismaKontrolu(KiraEkstreAktarmaListItem ekstreAktarmaListItem, decimal tutar, DateTime odemeTarihi)
@@ -684,6 +782,10 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP
             public string SecKaydet { get; set; }
             public string SecSil { get; set; }
             public string Eslestir { get; set; }
+            public string OdemeSebebiUrl { get; set; }
+            public int OdemeSebebiId { get; set; }
+            public string OdemeSebebi { get; set; }
+            public bool Secildi { get; set; }
         }
         protected void AktarilanlarHaricChk_CheckedChanged(object sender, EventArgs e)
         {
@@ -820,7 +922,7 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP
 
         }
 
-        protected void OdemeAyristirBtn_Click(object sender, EventArgs e)
+        protected void OdemeBolusturBtn_Click(object sender, EventArgs e)
         {
             //Bu listedekileri aktar
             //Ana Kaydı aktarıldı yap
@@ -851,7 +953,7 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP
                     string tutar = tutarList[index++];
                     yeniKiraEkstreAktarma.Tutar = tutar.ConvertToDecimal();
                     string aciklama = kiraEkstreAktarma.Aciklama.Substring(0, kiraEkstreAktarma.Aciklama.Length>500?500: kiraEkstreAktarma.Aciklama.Length);
-                    yeniKiraEkstreAktarma.Aciklama= kiraEkstreAktarma.Id + " Numaralı Ödeme Ayrıştırıldı. Yapılan " + 
+                    yeniKiraEkstreAktarma.Aciklama= kiraEkstreAktarma.Id + " Numaralı Ödeme Bölüştürüldü. Yapılan " + 
                         kiraEkstreAktarma.Tutar.ToString("N",culturInfo)+" ödemenin " + yeniKiraEkstreAktarma.Tutar.ToString("N", culturInfo) + " kadarı "+ yeniKiraEkstreAktarma.KiraciId + " numaralı kiracı ödemelerine eklendi. Açıklama: (" + aciklama + ")";
                     aktarilacaklar.Add(yeniKiraEkstreAktarma);
                 }
@@ -874,7 +976,7 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP
             }
         }
 
-        protected void OdemeAyristirModalAcBtn_Click(object sender, EventArgs e)
+        protected void OdemeBolusturModalAcBtn_Click(object sender, EventArgs e)
         {
             int ekstreAktarmaId =  paramEkstreAktarmaIdTxt.Text.ConvertToInt();
             KiraEkstreAktarma ea = new KiraEkstreAktarma();
@@ -909,7 +1011,7 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP
                             OdemeTarihiLbl.Text = odemeTarihi.ToString("dd.MM.yyyy HH:mm");
                             OdemeTutariModalTxt.Text = tutar.ToString("N", culturInfo); ;
                             DovizModalTxt.Text = dovizCinsi;
-                            ScriptCalistir("OdemeAyristirModalAc();");
+                            ScriptCalistir("OdemeBolusturModalAc();");
                         }
                     }
                 }

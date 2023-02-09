@@ -183,7 +183,7 @@ namespace NBYS_WebParts.FTKListesiWP
                 GrupDDLDoldur();
                 UtilityHelper.SetDDLValue(GrupDDL, GrupQS);
                 BolgeDDLDoldur();
-                
+
                 if (string.IsNullOrEmpty(BolgeQS))
                 {
                     if (IliIdQS.ConvertToInt() > 0)
@@ -244,14 +244,14 @@ namespace NBYS_WebParts.FTKListesiWP
                     continue;
                 IliDDL.Items.Add(new ListItem(il.IlAdi, il.Id.ToString()));
             }
-            
+
         }
         private void IlceDDLDoldur()
         {
             IlcesiDDL.Items.Clear();
             Ilce pilce = new Ilce();
 
-            
+
             ListItem li0 = new ListItem(ProjeConstants.HEPSI, ProjeConstants.HEPSI_INT.ToString());
             ListItem li1 = new ListItem(ProjeConstants.VALILIK, ProjeConstants.VALILIK_INT.ToString());
             ListItem li2 = new ListItem(ProjeConstants.SADECE_ILCELER, ProjeConstants.SADECE_ILCELER_INT.ToString());
@@ -295,26 +295,26 @@ namespace NBYS_WebParts.FTKListesiWP
         {
             List<FTKListItem> ftkList = new List<FTKListItem>();
             FTK ftkDao = new FTK();
-            DataTable dataTable = ftkDao.SelectSonFTKListesiByIliIlcesiReturnDataTable(BolgeQS,IliIdQS.ConvertToInt(),IlcesiIdQS.ConvertToInt(),
+            DataTable dataTable = ftkDao.SelectSonFTKListesiByIliIlcesiReturnDataTable(BolgeQS, IliIdQS.ConvertToInt(), IlcesiIdQS.ConvertToInt(),
                 //BolgeDDL.SelectedItem.Value, IliDDL.SelectedItem.Value.ConvertToInt(), 
                 //IlcesiDDL.SelectedItem.Value.ConvertToInt(),
-                KurulusTarihiTxt.Text,GuncellemeTarihiTxt.Text);
+                KurulusTarihiTxt.Text, GuncellemeTarihiTxt.Text);
             int tempIlceId = 999999;
             int tempIlId = 888888;
             if (dataTable != null)
             {
                 foreach (DataRow row in dataTable.Rows)
                 {
-                    
+
                     int ftkId = row["FTKId"].ConvertToInt();
                     int sayac = row["Sayac"].ConvertToInt();
                     int iliId = row["Ili"].ConvertToInt();
                     int ilcesiId = row["Ilcesi"].ConvertToInt();
                     string kartNo = row["KartNo"].ToString();
 
-                    if (GrupDDL.SelectedItem.Value.ConvertToInt()==ProjeConstants.FTK_GRUPLAMA_IL_ILCEYE_GORE_INT)
+                    if (GrupDDL.SelectedItem.Value.ConvertToInt() == ProjeConstants.FTK_GRUPLAMA_IL_ILCEYE_GORE_INT)
                     {
-                        if ((IlcesiIdQS.ConvertToInt()==ProjeConstants.VALILIK_INT) &&(iliId == tempIlId))// sadece il seçili ise
+                        if ((IlcesiIdQS.ConvertToInt() == ProjeConstants.VALILIK_INT) && (iliId == tempIlId))// sadece il seçili ise
                         {
                             tempIlceId = ilcesiId;
                             tempIlId = iliId;
@@ -526,7 +526,7 @@ namespace NBYS_WebParts.FTKListesiWP
             UtilityHelper.SetDDLValue(IlcesiDDL, IlcesiIdQS);
             TabloyuGoster();
         }
-        protected void IlcesiDDL_SelectedIndexChanged(object sender, EventArgs e) 
+        protected void IlcesiDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
             IlcesiIdQS = IlcesiDDL.SelectedItem != null ? IlcesiDDL.SelectedItem.Value : IlcesiIdQS;
             TabloyuGoster();
@@ -542,7 +542,7 @@ namespace NBYS_WebParts.FTKListesiWP
         protected void FTKGuncellemeTarihiTxt_TextChanged(object sender, EventArgs e)
         {
             TabloyuGoster();
-        }        
+        }
         protected void FTKIslemleriBtn_Click(object sender, EventArgs e)
         {
             FTKIslem fTKIslem = new FTKIslem();
@@ -554,7 +554,7 @@ namespace NBYS_WebParts.FTKListesiWP
         {
             RedirectToPage(ProjeConstants.PAGE_BOLGELEREGORE_FTK_DAGILIMI);
         }
-        
+
         protected void YonergeBtn_Click(object sender, EventArgs e)
         {
 
@@ -564,6 +564,6 @@ namespace NBYS_WebParts.FTKListesiWP
 
         }
 
-        
+
     }
 }

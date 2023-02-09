@@ -313,7 +313,7 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
         }
         private void SilmedenOnceOnayAl()
         {
-            
+
 
             NakitBagisHareket nbh = new NakitBagisHareket();
             nbh = nbh.Select<NakitBagisHareket>(paramBagisHareketIdLbl.Value.ConvertToInt());

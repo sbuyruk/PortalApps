@@ -19,7 +19,11 @@
     .diger {
         background-color: lightgray;
     }
-
+    .afet-ili {
+        background-color: yellow !important;
+        color: orangered;
+        font-weight:bold;
+    }
     .belge-gecersiz {
         background-color: black;
         color: lightgray;
@@ -82,6 +86,11 @@
                             <label class="col-form-label" for="DurumDDL">Durum </label>
                             <asp:DropDownList ID="DurumDDL" runat="server" CssClass="form-control" AutoPostBack="True" OnSelectedIndexChanged="DurumDDL_SelectedIndexChanged" Style="height: auto" />
                         </div>
+                        <div class="form-group col">
+                            <label class="col-form-label" for="IliDDL">İl </label>
+                            <asp:DropDownList ID="IliDDL" runat="server" CssClass="form-control" AutoPostBack="True" OnSelectedIndexChanged="IliDDL_SelectedIndexChanged" Style="height: auto" />
+                        </div>
+
                     </div>
                     <div class="form-group">
                         <table id="CustomDataTable" class="table table-bordered table-hover" width="100%">

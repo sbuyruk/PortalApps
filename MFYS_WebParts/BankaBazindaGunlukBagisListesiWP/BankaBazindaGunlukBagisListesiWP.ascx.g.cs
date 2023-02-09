@@ -116,7 +116,7 @@ namespace MFYS_WebParts.BankaBazindaGunlukBagisListesiWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "TitleLbl";
             @__ctrl.CssClass = "col-form-label text-primary font-weight-bold mb-1";
-            @__ctrl.Text = "Banka Bazında Günlük Bağışlar";
+            @__ctrl.Text = "Banka Bazında Günlük TL Bağışlar";
             return @__ctrl;
         }
         

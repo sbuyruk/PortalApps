@@ -124,7 +124,7 @@ namespace NBYS_WebParts.FTKKuruluOlmayanIlIlceListesiWP
                 UtilityHelper.SetDDLValue(IlcesiDDL, IlcesiIdQS);
                 TabloOlustur();
             }
-            
+
         }
         private void BolgeDDLDoldur()
         {
@@ -192,7 +192,7 @@ namespace NBYS_WebParts.FTKKuruluOlmayanIlIlceListesiWP
             string jSon = string.Empty;
             try
             {
-               
+
 
                 List<IlIlceItem> list = new List<IlIlceItem>();
                 if (IlcesiIdQS.ConvertToInt() != ProjeConstants.SADECE_ILCELER_INT)
@@ -200,15 +200,15 @@ namespace NBYS_WebParts.FTKKuruluOlmayanIlIlceListesiWP
                     List<IlIlceItem> illist = GetIlDataList();
                     list.AddRange(illist);
                 }
-               
+
                 IlcesiIdQS = IlcesiDDL.SelectedValue;
-                if (IlcesiIdQS.ConvertToInt()!= ProjeConstants.VALILIK_INT)
+                if (IlcesiIdQS.ConvertToInt() != ProjeConstants.VALILIK_INT)
                 {
                     List<IlIlceItem> ilcelist = new List<IlIlceItem>();
                     ilcelist = GetIlceDataList();
                     list.AddRange(ilcelist);
                 }
-               
+
                 var serializer = new JavaScriptSerializer();
                 serializer.MaxJsonLength = Int32.MaxValue;
                 jSon = serializer.Serialize(list);

@@ -97,6 +97,14 @@
     function OpenSilModal() {
         $("#ModalSilDiv").modal({ backdrop: true });
     }
+    function OpenOnayModal() {
+        $("#ModalOnayDiv").modal({ backdrop: true });
+    }
+    function CloseOnayModal() {
+        $("#ModalOnayDiv").modal('hide');
+        $('.modal-backdrop').remove()
+        $(document.body).removeClass("modal-open");
+    }
     function KatilimciSecimiModal() {
         $("#KatilimciSecimiModal").modal({ backdrop: false });
     }
@@ -168,6 +176,11 @@
                                     <asp:RequiredFieldValidator runat="server" ControlToValidate="BitSaatDDL" ForeColor="Red" ErrorMessage="Bitiş Saati Seçiniz"> </asp:RequiredFieldValidator>
                                 </div>
                             </div>
+
+                            <div class="form-group">
+                                <asp:Label CssClass="col-form-label" runat="server" Text="Açıklama / Toplantı Gündemi"></asp:Label>
+                                <asp:TextBox ID="AciklamaTxt" CssClass="form-control" runat="server" Text="" TextMode="MultiLine" Rows="11"></asp:TextBox>
+                            </div>
                         </ContentTemplate>
                         <Triggers>
                             <asp:AsyncPostBackTrigger ControlID="BaslangicTarihiTxt" EventName="TextChanged" />
@@ -175,11 +188,6 @@
                             <asp:AsyncPostBackTrigger ControlID="ToplantiYeriDDL" EventName="SelectedIndexChanged" />
                         </Triggers>
                     </asp:UpdatePanel>
-
-                    <div class="form-group">
-                        <asp:Label CssClass="col-form-label" runat="server" Text="Açıklama / Toplantı Gündemi"></asp:Label>
-                        <asp:TextBox ID="AciklamaTxt" CssClass="form-control" runat="server" Text="" TextMode="MultiLine" Rows="11"></asp:TextBox>
-                    </div>
                 </div>
                 <div class="col ml-2 mr-2 border border-dark p-2">
                     <asp:UpdatePanel ID="UpdatePanel4" runat="server" UpdateMode="Conditional" ViewStateMode="Enabled">
@@ -349,5 +357,72 @@
     </ContentTemplate>
     <Triggers>
         <asp:AsyncPostBackTrigger ControlID="KatilimciModalAcBtn" EventName="click" />
+    </Triggers>
+</asp:UpdatePanel>
+<asp:UpdatePanel ID="UpdatePanel5" runat="server" UpdateMode="Conditional" ViewStateMode="Enabled">
+    <ContentTemplate>
+        <div class="modal" id="ModalOnayDiv" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>
+                            <asp:Label ID="KaydetMesajBasligiLbl" CssClass="text-center" runat="server" Text="Toplantı Kaydedilecek"></asp:Label>
+                        </h3>
+                    </div>
+                    <div class="modal-body">
+                        <div style="display: none">
+                            <asp:Label ID="ParamToplantiId" runat="server" Text=""></asp:Label>
+                        </div>
+                        <div class="m-1 text-center" id="MesajOnayDiv">
+                            <div class="form-group">
+                                <asp:Label ID="KaydetMesajiLbl" CssClass="col-form-label" runat="server" Text=""></asp:Label>
+                                <asp:Table ID="Table1" runat="server" CssClass="table table-bordered table-striped">
+                                    <asp:TableHeaderRow>
+                                        <asp:TableHeaderCell ColumnSpan="2">
+                                            Toplantı Bilgileri
+                                        </asp:TableHeaderCell>
+                                    </asp:TableHeaderRow>
+                                    <asp:TableRow>
+                                        <asp:TableCell>Konu</asp:TableCell>
+                                        <asp:TableCell ID="KonuCell"></asp:TableCell>
+                                    </asp:TableRow>
+                                    <asp:TableRow>
+                                        <asp:TableCell>Yeri</asp:TableCell>
+                                        <asp:TableCell ID="YeriCell"></asp:TableCell>
+                                    </asp:TableRow>
+                                    <asp:TableRow>
+                                        <asp:TableCell>Başlama Tarihi</asp:TableCell>
+                                        <asp:TableCell ID="BaslamaTarihiCell"></asp:TableCell>
+                                    </asp:TableRow>
+                                    <asp:TableRow>
+                                        <asp:TableCell>Başlama Saati</asp:TableCell>
+                                        <asp:TableCell ID="BaslamaSaatiCell"></asp:TableCell>
+                                    </asp:TableRow>                                    
+                                    <asp:TableRow>
+                                        <asp:TableCell>Bitiş Tarihi</asp:TableCell>
+                                        <asp:TableCell ID="BitisTarihiCell"></asp:TableCell>
+                                    </asp:TableRow>
+                                    <asp:TableRow>
+                                        <asp:TableCell>Bitiş Saati</asp:TableCell>
+                                        <asp:TableCell ID="BitisSaatiCell"></asp:TableCell>
+                                    </asp:TableRow>
+                                </asp:Table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <asp:LinkButton ID="KaydetNowBtn" CssClass="btn btn-outline-success" runat="server" Text="Toplantıyı Kaydet" OnClick="KaydetNowBtn_Click" Visible="false"></asp:LinkButton>
+                        <asp:LinkButton ID="GuncelleNowBtn" CssClass="btn btn-outline-primary" runat="server"  Text="Toplantıyı Güncelle" OnClick="GuncelleNowBtn_Click" Visible="false"></asp:LinkButton>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </ContentTemplate>
+    <Triggers>
+        <asp:AsyncPostBackTrigger ControlID="KaydetBtn" EventName="click" />
+        <asp:AsyncPostBackTrigger ControlID="GuncelleBtn" EventName="click" />
+        <asp:AsyncPostBackTrigger ControlID="ToplantiSilBtn" EventName="click" />
     </Triggers>
 </asp:UpdatePanel>

@@ -7,33 +7,27 @@
 <%@ Register Tagprefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="KiraciEslestirWP.ascx.cs" Inherits="TBYS_WebParts.KiraciEslestirWP.KiraciEslestirWP" %>
 <script type="text/javascript">
-    function OpenModal(kiraciId) {
-        document.getElementById('<%= paramKiraciIdLbl.ClientID%>').value = kiraciId;
-
-        $("#ModalUrlDiv").modal({ backdrop: false });
-        document.getElementById('<%= ModalDoldurBtn.ClientID%>').click();
-    }
-    function KiraciSec(kiraciId) {
+    
+    function KiraciSec(kiraciId, sozlesmeId) {
         document.getElementById('<%= paramKiraciIdLbl.ClientID%>').value = kiraciId;
         document.getElementById('<%= KiraciSecBtn.ClientID%>').click();
     }
 </script>
 <style>
-    .ui-datatable tbody td {
-        white-space: normal;
-    }
-    .ui-datatable tbody td a {
-        white-space: normal;
+    .pasif-kiraci {
+        background-color: lightgrey !important;
+        color: black !important;
     }
 </style>
-<div class="container shadow">
-    <asp:UpdatePanel ID="upPanel" runat="server">
-        <ContentTemplate>
+<div class="container">
+<%--    <asp:UpdatePanel ID="upPanel" runat="server">
+        <ContentTemplate>--%>
             <div style="display: none">
                 <input id="paramKiraciIdLbl" runat="server" text="Label" style="border-style: none;" text-align="center" />
+                <input id="paramSozlesmeIdLbl" runat="server" text="Label" style="border-style: none;" text-align="center" />
                 <asp:LinkButton ID="KiraciSecBtn" runat="server" CausesValidation="false" Text="" OnClientClick="{return true;};" OnClick="KiraciSecBtn_Click" />
             </div>
-            <div class="card">
+            <div class="card shadow">
                 <div class="card-header ">
                     <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
                     <h3 class="mb-1">
@@ -45,15 +39,26 @@
                         <div class="input-group col-6">
                             <label class="col-form-label m-1" for="KiraciAraTxt">Kiracı Ara :</label>
                             <asp:TextBox ID="KiraciAraTxt" runat="server" CssClass="form-control m-1" AutoPostBack="true" OnTextChanged="KiraciAraTxt_TextChanged" ToolTip="Ad,TCKimlikNo,Telefon veya Adres yazarak arayabilirsiniz" />
-                            <asp:LinkButton CssClass="btn btn-info m-1" ID="AraBtn" runat="server" CausesValidation="false" Text="Ara" OnClientClick="{return true;};" OnClick="KiraciAraBtn_Click" />
+                            <%--<asp:LinkButton CssClass="btn btn-info m-1" ID="AraBtn" runat="server" CausesValidation="false" Text="Ara" OnClientClick="{return true;};" OnClick="KiraciAraBtn_Click" />--%>
                         </div>
                     </div>
-                    <div class="form-group border border-info" id="KiraciSecTableDiv" runat="server" style="display: none">
-                        <div class="form-group table loader">
-                            <input class="form-control col-6" id="globalFilter" placeholder="Aranacak Kelime" size="30" />
-                            <div id="tblfilter"></div>
-                            <div id="messages"></div>
-                        </div>
+                    <div class="form-group border border-info" id="KiraciSecTableDiv" runat="server">
+                        <asp:Label ID="GelenOdemeLbl" CssClass="col-form-label font-weight-bold" runat="server" Text="Gelen Ödeme"></asp:Label>
+                        <table id="CustomDataTable" class="table table-hover table-bordered" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Kiracı No</th>
+                                    <th>Adı/Ünvanı</th>
+                                    <th>Adresi</th>
+                                    <th>Bölge</th>
+                                    <th>İlçe/İl</th>
+                                    <th>Sözleşme Başlangıcı</th>
+                                    <th>Sözleşme Bitişi</th>
+                                    <th>Kira Bedeli</th>
+                                    <th>Seç</th>
+                                </tr>
+                            </thead>
+                        </table>
                     </div>
                 </div>
                 <div class="card-footer">
@@ -62,8 +67,8 @@
                 </div>
             </div>
 
-        </ContentTemplate>
-    </asp:UpdatePanel>
+<%--        </ContentTemplate>
+    </asp:UpdatePanel>--%>
     <asp:UpdateProgress ID="updateProgress" runat="server">
         <ProgressTemplate>
             <div class='loaderMainContainer'>
@@ -73,43 +78,4 @@
             </div>
         </ProgressTemplate>
     </asp:UpdateProgress>
-</div>
-
-<div class="modal aler-secondary" id="ModalUrlDiv" role="dialog">
-    <div class="modal-dialog modal-xl">
-        <!-- Modal content-->
-        <div class="modal-content" style="width: 1030px;">
-            <asp:UpdatePanel runat="server" ID="UpdatePanel1" UpdateMode="Conditional">
-                <ContentTemplate>
-                    <div class="modal-header">
-                        <asp:Label ID="AdiLbl" runat="server" Text="Label"></asp:Label>
-                    </div>
-                    <div class="modal-body">
-                        <div style="display: none">
-                            <asp:LinkButton ID="ModalDoldurBtn" runat="server" CausesValidation="false" Text="" OnClientClick="{return true;};" OnClick="ModalDoldurBtn_Click" />
-
-                        </div>
-                        <div class="m-1 text-center" id="KiraciDiv">
-                            <asp:Table CssClass="table text-center" ID="KiraciTable" runat="server">
-                                <asp:TableHeaderRow>
-                                    <asp:TableCell>Ad/Ünvan</asp:TableCell>
-                                    <asp:TableCell>TC Kimlik No</asp:TableCell>
-                                    <asp:TableCell>Telefon</asp:TableCell>
-                                    <asp:TableCell>İli/İlçesi</asp:TableCell>
-                                    <asp:TableCell>Adres</asp:TableCell>
-                                    <asp:TableCell>Tüzel Kişi</asp:TableCell>
-                                </asp:TableHeaderRow>
-                            </asp:Table>
-                        </div>
-                        <div class="table loader">
-                            <div id="modaltblfilter" class="table" style="width: 1000px; height: 400px;"></div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
-                    </div>
-                </ContentTemplate>
-            </asp:UpdatePanel>
-        </div>
-    </div>
 </div>

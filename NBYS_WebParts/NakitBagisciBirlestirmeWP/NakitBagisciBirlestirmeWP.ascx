@@ -7,19 +7,6 @@
 <%@ Register TagPrefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="NakitBagisciBirlestirmeWP.ascx.cs" Inherits="NBYS_WebParts.NakitBagisciBirlestirmeWP.NakitBagisciBirlestirmeWP" %>
 <style>
-    /*tblfilter hücre içine sığmazsa wordwrap yapsın*/
-    .ui-datatable tbody td {
-        white-space: normal;
-    }
-
-        .ui-datatable tbody td a {
-            white-space: normal;
-        }
-
-    .ui-datatable thead th {
-        white-space: normal;
-    }
-
     .bagis-border-color {
         border: thick;
         border-color: blueviolet;

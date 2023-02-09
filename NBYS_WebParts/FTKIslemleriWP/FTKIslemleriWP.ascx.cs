@@ -13,7 +13,7 @@ using ListItem = System.Web.UI.WebControls.ListItem;
 namespace NBYS_WebParts.FTKIslemleriWP
 {
     [ToolboxItemAttribute(false)]
-    public partial class FTKIslemleriWP : WebPart  
+    public partial class FTKIslemleriWP : WebPart
     {
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
@@ -152,7 +152,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
                 if (!Page.IsPostBack) // sayfa ilk kez açılıyorsa (bu sayfanın içindeki butona basılma anı hariç)
                 {
 
-                    YonergeLnk.HRef = NBYSOrtak.YonergeURLGetir(ProjeConstants.PARAM_FTKYONERGE,ProjeConstants.PAGE_FTKISLEMLERI); 
+                    YonergeLnk.HRef = NBYSOrtak.YonergeURLGetir(ProjeConstants.PARAM_FTKYONERGE, ProjeConstants.PAGE_FTKISLEMLERI);
                     IlilceBolgeDDLDoldur();
                     FTKListQS.Clear();
                     if (string.IsNullOrEmpty(FTKIslemIdQS))
@@ -180,7 +180,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
         private bool UyeKaydiVarMi(int ili, int ilcesi)
         {
             FTKKisi ftkKisi = new FTKKisi();
-            List<FTKKisi> list = ftkKisi.SelectFTKUyeleriByIliIlcesiReturnList(ili, ilcesi,0,true);
+            List<FTKKisi> list = ftkKisi.SelectFTKUyeleriByIliIlcesiReturnList(ili, ilcesi, 0, true);
             return list.Count > 0;
         }
         private void IlilceBolgeDDLDoldur()
@@ -299,7 +299,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
 
             try
             {
-                FTKListQS= GetDataByIlIlce(AktifOlmayanlariGostermeChk.Checked);
+                FTKListQS = GetDataByIlIlce(AktifOlmayanlariGostermeChk.Checked);
                 var serializer = new JavaScriptSerializer();
                 jSon = serializer.Serialize(FTKListQS);
             }
@@ -316,7 +316,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
             int ili = IliDDL.SelectedItem.Value.ConvertToInt();
             int ilcesi = IlcesiDDL.SelectedItem.Value.ConvertToInt();
             FTKKisi ftkKisiDao = new FTKKisi();
-            DataTable dataTable = ftkKisiDao.SelectFTKUyeleriByIliIlcesiReturnDataTable(ili, ilcesi, FTKIslemIdQS.ConvertToInt(),aktif);
+            DataTable dataTable = ftkKisiDao.SelectFTKUyeleriByIliIlcesiReturnDataTable(ili, ilcesi, FTKIslemIdQS.ConvertToInt(), aktif);
             List<FTKListItem> list = new List<FTKListItem>();
             if (dataTable != null)
             {
@@ -356,8 +356,8 @@ namespace NBYS_WebParts.FTKIslemleriWP
                     //    {
                     //        katilimciItem.Class = "katilimci-degisti";
                     //    }
-                        
-                        
+
+
                     //}
                     katilimciItem.Class = !uyelikDurumu.Equals(ProjeConstants.FTK_UYELIK_DURUMU_AKTIF) ? "aktif-degil" : string.Empty;
 
@@ -373,7 +373,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
             if (gorevi == ProjeConstants.FTK_GOREVI_FAHRIBASKAN_INT)
             {
                 return ProjeConstants.FTK_GOREVI_FAHRIBASKAN;
-            } 
+            }
             else if (gorevi == ProjeConstants.FTK_GOREVI_BASKAN_INT)
             {
                 return ProjeConstants.FTK_GOREVI_BASKAN;
@@ -382,7 +382,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
             {
                 return ProjeConstants.FTK_GOREVI_GENELSEKRETER;
             }
-            else 
+            else
             {
                 return ProjeConstants.FTK_GOREVI_UYE;
             }
@@ -418,14 +418,14 @@ namespace NBYS_WebParts.FTKIslemleriWP
                 FTKIslemIdQS = string.Empty;
 
                 IdLbl.Text = string.Empty;
-                
+
                 SorumluBolgeTxt.Enabled = false;
                 FTKKurulusTarihiTxt.Text = DateTime.Today.ConvertToDatetimeEmptyIfNull();
                 FTKGuncellemeTarihiTxt.Text = DateTime.Today.ConvertToDatetimeEmptyIfNull();
                 AciklamaTxt.Text = string.Empty;
-              
+
             }
-            else 
+            else
             {
                 FTKIslemIdQS = ftkislemleri.Id.ToString();
                 TitleLbl.Text = "FTK İşlemleri Düzenle";
@@ -437,7 +437,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
                 AciklamaTxt.Text = ftkislemleri.Aciklama;
 
                 FTK ftk = new FTK();
-                List<FTK> ftkList = ftk.SelectSonFTKListesiByIliIlcesiReturnList(ili,ilcesi);
+                List<FTK> ftkList = ftk.SelectSonFTKListesiByIliIlcesiReturnList(ili, ilcesi);
                 if (ftkList.Count > 0)
                 {
                     ftk = ftkList[0];
@@ -452,7 +452,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
         private string ValiDoldur(int ili)
         {
             string adiSoyadi = string.Empty;
-            if (ili>0)
+            if (ili > 0)
             {
                 FTKKisi kisi = new FTKKisi();
                 kisi = kisi.SelectVali(ili);
@@ -469,7 +469,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
             }
             else
             {
-                MessageHelper.PublishMessage("Önce İl seçiniz",ProjeConstants.MESAJ_BILGI,2000);
+                MessageHelper.PublishMessage("Önce İl seçiniz", ProjeConstants.MESAJ_BILGI, 2000);
             }
 
             return adiSoyadi;
@@ -478,7 +478,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
         {
             string adiSoyadi = string.Empty;
 
-            if (ili>0 && ilcesi>0)
+            if (ili > 0 && ilcesi > 0)
             {
                 FTKKisi kisi = new FTKKisi();
                 kisi = kisi.SelectKaymakam(ili, ilcesi);
@@ -578,11 +578,11 @@ namespace NBYS_WebParts.FTKIslemleriWP
             int ili = IliDDL.SelectedItem.Value.ConvertToInt();
             int ilcesi = IlcesiDDL.SelectedItem.Value.ConvertToInt();
             FTK ftkDao = new FTK();
-            ftkDao = ftkDao.SelectByIliIlcesi(ili,ilcesi, FTKGuncellemeTarihiTxt.Text.ConvertToDatetime());
+            ftkDao = ftkDao.SelectByIliIlcesi(ili, ilcesi, FTKGuncellemeTarihiTxt.Text.ConvertToDatetime());
             if ((ftkDao != null)
                 && (!KayitDuzeltmesiChk.Checked))
             {
-                    MessageHelper.PublishMessage("Bu FTK " + FTKGuncellemeTarihiTxt.Text + " tarihinde zaten güncellenmiştir. FTK listesinde kayıt düzeltmek istiyorsanız, 'Bu Bir Kayıt Düzeltmesidir' hanesini seçili hale getiriniz.", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Bu FTK " + FTKGuncellemeTarihiTxt.Text + " tarihinde zaten güncellenmiştir. FTK listesinde kayıt düzeltmek istiyorsanız, 'Bu Bir Kayıt Düzeltmesidir' hanesini seçili hale getiriniz.", ProjeConstants.MESAJ_HATA);
             }
             else
             {
@@ -599,8 +599,8 @@ namespace NBYS_WebParts.FTKIslemleriWP
                     FTKIstemleriniKaydet();
                 }
                 //4
-                BaslikGuncelle(); 
-            } 
+                BaslikGuncelle();
+            }
         }
         private void FTKIstemleriniGuncelle(FTKIslem ftkIslemleri)
         {
@@ -651,7 +651,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
             if (KayitDuzeltmesiChk.Checked)
             {
                 FTK ftkDao = new FTK();
-                List<FTK> list = ftkDao.SelectSonFTKListesiByIliIlcesiReturnList(IliDDL.SelectedItem.Value.ConvertToInt(),IlcesiDDL.SelectedItem.Value.ConvertToInt());
+                List<FTK> list = ftkDao.SelectSonFTKListesiByIliIlcesiReturnList(IliDDL.SelectedItem.Value.ConvertToInt(), IlcesiDDL.SelectedItem.Value.ConvertToInt());
 
                 if (list.Count < 1)
                 {
@@ -670,7 +670,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
             }
             else
             {
-                kaydedildiMi = FTKTablosunaKaydet(ftkIslem,0);
+                kaydedildiMi = FTKTablosunaKaydet(ftkIslem, 0);
             }
             return kaydedildiMi;
         }
@@ -682,10 +682,10 @@ namespace NBYS_WebParts.FTKIslemleriWP
             string aciklama = string.Empty;
             if (sayac > 0)
             {
-                aciklama = DateTime.Now.ConvertToTimeSpanReturnInHHmm() + " tarihinde " + UtilityHelper.GetCurrentUserLoginName()+ " tarafından kayıt düzeltmesi yapıldı.";
+                aciklama = DateTime.Now.ConvertToTimeSpanReturnInHHmm() + " tarihinde " + UtilityHelper.GetCurrentUserLoginName() + " tarafından kayıt düzeltmesi yapıldı.";
             }
-            sayac = sayac > 0 ? sayac:  SayacHesapla(ftkIslem.Ili, ftkIslem.Ilcesi) + 1;
-           
+            sayac = sayac > 0 ? sayac : SayacHesapla(ftkIslem.Ili, ftkIslem.Ilcesi) + 1;
+
             //FTK_Table a kaydet
             foreach (var item in UyeListesi)
             {
@@ -707,8 +707,8 @@ namespace NBYS_WebParts.FTKIslemleriWP
                 ftk.Sayac = sayac;
                 ftk.KisiId = item.Id;
                 ftk.Olusturan = UtilityHelper.GetCurrentUserLoginName();
-                ftk.Aciklama = ftk.Aciklama +"</br>" + aciklama;
-                kaydedildiMi=ftk.Save()>0;
+                ftk.Aciklama = ftk.Aciklama + "</br>" + aciklama;
+                kaydedildiMi = ftk.Save() > 0;
             }
             return kaydedildiMi;
         }
@@ -728,7 +728,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
 
                 ftkIslemleri.SorumluBolge = SorumluBolgeTxt.Text;
                 ftkIslemleri.KurulusTarihi = FTKKurulusTarihiTxt.Text.ConvertToDatetime();
-                ftkIslemleri.GuncellemeTarihi= FTKGuncellemeTarihiTxt.Text.ConvertToDatetime();
+                ftkIslemleri.GuncellemeTarihi = FTKGuncellemeTarihiTxt.Text.ConvertToDatetime();
                 ftkIslemleri.Aciklama = AciklamaTxt.Text;
                 ftkIslemleri.Olusturan = UtilityHelper.GetCurrentUserLoginName();
 
@@ -780,7 +780,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
             BolgeTxtDoldur();
             FTKIslemleriFormunuDoldur();
             FTKListesiniVeriTabanindanDoldur();
-            
+
         }
         protected void IlcesiDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -790,9 +790,9 @@ namespace NBYS_WebParts.FTKIslemleriWP
         }
         private void BaslikGuncelle()
         {
-            bool ftkVarmi= KuruluFTKVarMi(IliDDL.SelectedItem.Value.ConvertToInt(), IlcesiDDL.SelectedItem.Value.ConvertToInt());
+            bool ftkVarmi = KuruluFTKVarMi(IliDDL.SelectedItem.Value.ConvertToInt(), IlcesiDDL.SelectedItem.Value.ConvertToInt());
             bool uyeVarMi = UyeKaydiVarMi(IliDDL.SelectedItem.Value.ConvertToInt(), IlcesiDDL.SelectedItem.Value.ConvertToInt());
-            
+
             if (ftkVarmi)
             {
                 TitleLbl.Text = IliDDL.SelectedItem.Text + " " + IlcesiDDL.SelectedItem.Text + " FTK ";
@@ -811,7 +811,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
             }
             else if (uyeVarMi)
             {
-                TitleLbl.Text = IliDDL.SelectedItem.Text + " " +IlcesiDDL.SelectedItem.Text + " FTK ";
+                TitleLbl.Text = IliDDL.SelectedItem.Text + " " + IlcesiDDL.SelectedItem.Text + " FTK ";
                 TitleLbl.CssClass = "col-form-label text-success font-weight-bold mb-1";
                 KaydetBtn.Text = IliDDL.SelectedItem.Text + " " + IlcesiDDL.SelectedItem.Text + " FTK Oluştur";
                 KaydetBtn.CssClass = "btn btn-outline-success font-weight-bold ";
@@ -826,7 +826,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
 
                 KayitDuzeltmeDiv.Attributes["style"] = "display:none";
             }
-            else 
+            else
             {
                 TitleLbl.Text = IliDDL.SelectedItem.Text + " " + IlcesiDDL.SelectedItem.Text + " FTK ";
                 TitleLbl.CssClass = "col-form-label text-danger font-weight-bold mb-1";
@@ -861,7 +861,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
         protected void FTKKisiEkleBtn_Click(object sender, EventArgs e)
         {
 
-            RedirectToPage(ProjeConstants.PAGE_FTKKISI_GIRISI+"?IliId="+ IliDDL.SelectedItem.Value + "&IlcesiId="+IlcesiDDL.SelectedItem.Value);
+            RedirectToPage(ProjeConstants.PAGE_FTKKISI_GIRISI + "?IliId=" + IliDDL.SelectedItem.Value + "&IlcesiId=" + IlcesiDDL.SelectedItem.Value);
         }
         protected void FTKKisiDuzenleBtn_Click(object sender, EventArgs e)
         {
@@ -894,7 +894,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
         protected void FTKListesiBtn_Click(object sender, EventArgs e)
         {
 
-            RedirectToPage(ProjeConstants.PAGE_FTK_LIST + "?IliId=" + IliDDL.SelectedItem.Value+ "&IlcesiId=" + IlcesiDDL.SelectedItem.Value);
+            RedirectToPage(ProjeConstants.PAGE_FTK_LIST + "?IliId=" + IliDDL.SelectedItem.Value + "&IlcesiId=" + IlcesiDDL.SelectedItem.Value);
         }
         protected void BolgelereGoreFTKRaporuBtn_Click(object sender, EventArgs e)
         {
@@ -906,20 +906,20 @@ namespace NBYS_WebParts.FTKIslemleriWP
             RedirectToPage(ProjeConstants.PAGE_FTK_YAZILARI + "?IliId=" + IliDDL.SelectedItem.Value + "&IlcesiId=" + IlcesiDDL.SelectedItem.Value);
         }
 
-       
+
 
         protected void TumununGoreviniSonlandirNowBtn_Click(object sender, EventArgs e)
         {
             string idler = "";
             foreach (var item in FTKListQS)
-            {            
-                idler += item.FTKKisiId+",";
+            {
+                idler += item.FTKKisiId + ",";
             }
-            idler= idler.Length > 0 ?"("+ idler.Substring(0, idler.Length - 1)+")":string.Empty;
+            idler = idler.Length > 0 ? "(" + idler.Substring(0, idler.Length - 1) + ")" : string.Empty;
             if (!string.IsNullOrEmpty(idler))
             {
                 FTKKisi ftkKisi = new FTKKisi();
-                bool guncellendi= ftkKisi.UpdateAktifByIdList(idler);
+                bool guncellendi = ftkKisi.UpdateAktifByIdList(idler);
                 if (guncellendi)
                 {
                     FTKListesiniVeriTabanindanDoldur();

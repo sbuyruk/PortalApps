@@ -36,7 +36,7 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP
             {
                 KurulusTarihiTxt.Text = (new DateTime(2017, 01, 01)).ConvertToDatetimeEmptyIfNull();
                 GuncellemeTarihiTxt.Text = (new DateTime(2017, 01, 01)).ConvertToDatetimeEmptyIfNull();
-                
+
             }
             TabloyuDoldur();
         }
@@ -93,7 +93,7 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP
             KurulumOraniniDoldur();
             GuncellemeDurumuDoldur();
         }
-        
+
         private int IlSayisiGetir(string bolge)
         {
             Il il = new Il();
@@ -138,7 +138,7 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP
             IstSBIlCell.Text = (istIl = IlSayisiGetir(ProjeConstants.BOLGE_ISTANBUL)).ToString();
             IzmSBIlCell.Text = (izmIl = IlSayisiGetir(ProjeConstants.BOLGE_IZMIR)).ToString();
             MerSBIlCell.Text = (merIl = IlSayisiGetir(ProjeConstants.BOLGE_MERSIN)).ToString();
-            TopSBIlCell.Text = (toplamIl=gmIl + istIl + izmIl + merIl).ToString();
+            TopSBIlCell.Text = (toplamIl = gmIl + istIl + izmIl + merIl).ToString();
         }
         private void IlceSayilariniDoldur()
         {
@@ -146,7 +146,7 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP
             IstSBIlceCell.Text = (istIlce = IlceSayisiGetir(ProjeConstants.BOLGE_ISTANBUL)).ToString();
             IzmSBIlceCell.Text = (izmIlce = IlceSayisiGetir(ProjeConstants.BOLGE_IZMIR)).ToString();
             MerSBIlceCell.Text = (merIlce = IlceSayisiGetir(ProjeConstants.BOLGE_MERSIN)).ToString();
-            TopSBIlceCell.Text = (toplamIlce=gmIlce + istIlce + izmIlce + merIlce).ToString();
+            TopSBIlceCell.Text = (toplamIlce = gmIlce + istIlce + izmIlce + merIlce).ToString();
         }
         private int KOIlSayisiGetir(string bolge)
         {
@@ -244,14 +244,14 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP
             decimal topGuncellenenIlIlceOrani = (toplamIl + toplamIlce) == 0 ? 0 : ((decimal)(toplamGuncellenen) / (toplamIl + toplamIlce)) * 100;
             HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, TopGuncellemeDurumuCell, topGuncellenenIlIlceOrani, ProjeConstants.BOLGE_HEPSI, GUNCELLEME_DURUMU);
         }
-        private void HyperLinkEkle(string page, TableCell cell,decimal value, string bolge,string ozellik)
+        private void HyperLinkEkle(string page, TableCell cell, decimal value, string bolge, string ozellik)
         {
             HyperLink cellLnk = new HyperLink();
             cellLnk.Text = ((int)value).ToString();
             string queryString = string.Empty;
             if (ozellik.Equals(KURULU_ILLER))
             {
-                queryString = "&Grup="+ProjeConstants.FTK_GRUPLAMA_IL_ILCEYE_GORE_INT+"&IlcesiId=" + ProjeConstants.VALILIK_INT;
+                queryString = "&Grup=" + ProjeConstants.FTK_GRUPLAMA_IL_ILCEYE_GORE_INT + "&IlcesiId=" + ProjeConstants.VALILIK_INT;
             }
             else if (ozellik.Equals(KURULU_ILCELER))
             {
@@ -263,7 +263,7 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP
             }
             else if (ozellik.Equals(YENI_KURULAN))
             {
-                queryString = "&Grup=" + ProjeConstants.FTK_GRUPLAMA_IL_ILCEYE_GORE_INT + "&IlcesiId=" + ProjeConstants.HEPSI_INT +"&KurulusTarihi="+KurulusTarihiTxt.Text;
+                queryString = "&Grup=" + ProjeConstants.FTK_GRUPLAMA_IL_ILCEYE_GORE_INT + "&IlcesiId=" + ProjeConstants.HEPSI_INT + "&KurulusTarihi=" + KurulusTarihiTxt.Text;
             }
             else if (ozellik.Equals(GUNCELLENEN))
             {
@@ -280,7 +280,7 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP
             else if (ozellik.Equals(KURULUM_ORANI))
             {
                 cellLnk.Text = value.ToString("N", cultureInfo);
-                queryString = "&Grup=" + ProjeConstants.FTK_GRUPLAMA_IL_ILCEYE_GORE_INT + "&IlcesiId=" + ProjeConstants.HEPSI_INT ;
+                queryString = "&Grup=" + ProjeConstants.FTK_GRUPLAMA_IL_ILCEYE_GORE_INT + "&IlcesiId=" + ProjeConstants.HEPSI_INT;
             }
             else if (ozellik.Equals(GUNCELLEME_DURUMU))
             {
@@ -288,11 +288,11 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP
                 queryString = "&Grup=" + ProjeConstants.FTK_GRUPLAMA_IL_ILCEYE_GORE_INT + "&IlcesiId=" + ProjeConstants.HEPSI_INT + "&GuncellemeTarihi=" + GuncellemeTarihiTxt.Text;
             }
             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-            
-            
+
+
             if (value > 0)
             {
-                string linkUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + page + "?Bolge="+ bolge +queryString;
+                string linkUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + page + "?Bolge=" + bolge + queryString;
                 cellLnk.NavigateUrl = linkUrl;
             }
             cell.Controls.Clear();
@@ -314,7 +314,7 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP
         }
         protected void FTKListesiBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_FTK_LIST );
+            RedirectToPage(ProjeConstants.PAGE_FTK_LIST);
         }
         protected void FTKIslemleriBtn_Click(object sender, EventArgs e)
         {

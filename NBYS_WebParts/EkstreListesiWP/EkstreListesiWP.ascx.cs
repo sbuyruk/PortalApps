@@ -745,13 +745,13 @@ namespace NBYS_WebParts.EkstreListesiWP
                     decimal tutar = dataRow["Tutar"].ConvertToDecimal();
                     ekstreAktarmaListItem.Tutar = tutar > 0 ? tutar.ToString("N", culturInfo) : "";
                     string dovizCinsi = dataRow["DovizCinsi"].ToString();
-                    ekstreAktarmaListItem.DovizCinsi=dovizCinsi;
+                    ekstreAktarmaListItem.DovizCinsi = dovizCinsi;
                     if (!dovizCinsi.Equals(ProjeConstants.DOVIZ_TL))
                     {
                         decimal dovizTutari = dataRow["DovizTutari"].ConvertToDecimal();
                         ekstreAktarmaListItem.DovizTutari = dovizTutari > 0 ? dovizTutari.ToString("N", culturInfo) : "";
                         decimal dovizKuru = dataRow["DovizKuru"].ConvertToDecimal();
-                        ekstreAktarmaListItem.DovizKuru = dovizKuru> 0 ? dovizKuru.ToString("N", culturInfo) : "";
+                        ekstreAktarmaListItem.DovizKuru = dovizKuru > 0 ? dovizKuru.ToString("N", culturInfo) : "";
                         ekstreAktarmaListItem.KurTarihi = dataRow["KurTarihi"].ToString().ConvertToDatetimeEmptyIfNull();
                     }
                     bool aktarildiMi = dataRow["AktarildiMi"].ConvertToBool();

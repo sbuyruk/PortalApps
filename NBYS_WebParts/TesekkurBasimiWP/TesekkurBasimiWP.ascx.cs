@@ -363,7 +363,7 @@ namespace NBYS_WebParts.TesekkurBasimiWP
             FillDurumValues();
             var queryString = string.Format("?Bastar={0}&Bittar={1}", SecilenBastarQS, SecilenBittarQS);
             RedirectToPage(ProjeConstants.PAGE_TESEKKURBELGESI_VIEWER + queryString);
-        }        
+        }
         protected void GunDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
             SecilenGunQS = GunDDL.SelectedItem.Value.ToString();

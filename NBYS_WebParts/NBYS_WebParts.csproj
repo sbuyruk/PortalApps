@@ -167,6 +167,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CokDefaBagisYapanBagisciListesiWP.ascx</DependentUpon>
     </Compile>
+    <Compile Include="DovizleYapilanBagislarWP\DovizleYapilanBagislarWP.ascx.cs">
+      <DependentUpon>DovizleYapilanBagislarWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DovizleYapilanBagislarWP\DovizleYapilanBagislarWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DovizleYapilanBagislarWP.ascx</DependentUpon>
+    </Compile>
     <Compile Include="EkstreAktarmaEditWP\EkstreAktarmaEditWP.ascx.cs">
       <DependentUpon>EkstreAktarmaEditWP.ascx</DependentUpon>
     </Compile>
@@ -508,6 +516,10 @@
     <None Include="Content\bootstrap.min.css.map" />
     <None Include="Content\bootstrap.rtl.css.map" />
     <None Include="Content\bootstrap.rtl.min.css.map" />
+    <None Include="DovizleYapilanBagislarWP\DovizleYapilanBagislarWP.webpart" />
+    <None Include="DovizleYapilanBagislarWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{0a8adb18-05d6-421a-95b3-a2daade47870}</SharePointProjectItemId>
+    </None>
     <None Include="EkstreAktarmaEditWP\EkstreAktarmaEditWP.webpart" />
     <None Include="EkstreAktarmaEditWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{cc2a36f1-1dad-4476-a59a-038ffc68db90}</SharePointProjectItemId>
@@ -750,6 +762,11 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="DovizleYapilanBagislarWP\DovizleYapilanBagislarWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>DovizleYapilanBagislarWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="DovizleYapilanBagislarWP\Elements.xml" />
     <Content Include="EkstreAktarmaEditWP\EkstreAktarmaEditWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>EkstreAktarmaEditWP.ascx.g.cs</LastGenOutput>

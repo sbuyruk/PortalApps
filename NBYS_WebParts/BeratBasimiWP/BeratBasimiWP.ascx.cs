@@ -485,7 +485,7 @@ namespace NBYS_WebParts.BeratBasimiWP
         }
         protected void GMAltinBtn_Click(object sender, EventArgs e)
         {
-            BasimaGonder(ProjeConstants.BOLGE_GENELMUDURLUK,ProjeConstants.ARMAGAN_ALTINID, GmAltinDurumChk);
+            BasimaGonder(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.ARMAGAN_ALTINID, GmAltinDurumChk);
         }
         protected void GMGumusBtn_Click(object sender, EventArgs e)
         {
@@ -558,7 +558,7 @@ namespace NBYS_WebParts.BeratBasimiWP
         {
             FillDurumValues();
             var queryString = string.Format("?Bastar={0}&Bittar={1}&ArmaganTanimId={2}&PBolge={3}", SecilenBastarQS, SecilenBittarQS, armaganTipi, bolge);
-            RedirectToPage(ProjeConstants.PAGE_BERATETIKET_VIEWER + queryString );
+            RedirectToPage(ProjeConstants.PAGE_BERATETIKET_VIEWER + queryString);
         }
         protected void GMAltinEtiketBtn_Click(object sender, EventArgs e)
         {

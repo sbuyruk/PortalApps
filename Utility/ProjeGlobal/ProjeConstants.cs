@@ -129,6 +129,7 @@ namespace Utility.ProjeGlobal
         public const string PAGE_SMS_DOSYAYUKLEME = "SMSDosyaYukleme.aspx";
         public const string PAGE_SMSAYLIKCIZELGE = "SMSAylikBagisCizelgesi.aspx";
         public const string PAGE_KIRACI_ESLESTIR = "KiraciEslestir.aspx";
+        public const string PAGE_ODEMEYI_KIRA_TEMINAT_AYRISTIR = "OdemeAyristirma.aspx";
         public const string PAGE_COKDEFABAGISYAPAN_LIST = "CokDefaBagisYapanBagisciListesi.aspx";
         //IKYS
         public const string PAGE_PERSONEL_LIST = "PersonelListesi.aspx";
@@ -400,6 +401,35 @@ namespace Utility.ProjeGlobal
         public const string TEMINAT_HASARAMAHSUP = "Hasara Mahsup";
         public const string TEMINAT_AIDATAMAHSUP = "Aidata Mahsup";
         public const string TEMINAT_VAKFABAGIS = "Vakfa Bağış";
+        //Odeme Sebebi
+        public const string ODEMESEBEBI_KIRA = "Kira";
+        public const string ODEMESEBEBI_KESINTEMINAT = "Kesin Teminat";
+        public const string ODEMESEBEBI_GECICITEMINAT = "Geçici Teminat";
+        public const string ODEMESEBEBI_AIDAT = "Aidat";
+        public const string ODEMESEBEBI_SIGORTA = "Sigorta";
+        public const string ODEMESEBEBI_AVUKATLIKUCRETI = "Avukatlık Ücreti";
+        public const string ODEMESEBEBI_YARGILAMAUCRETI = "Yargılama Ücreti";
+        public const string ODEMESEBEBI_AVANSIADESI = "Avans İade";
+        public const string ODEMESEBEBI_DIGER = "Diğer";
+        public const string ODEME_SEBEBI_DEFAULT = ODEMESEBEBI_DIGER;        
+        
+        public const int ODEMESEBEBI_KIRA_INT = 1;
+        public const int ODEMESEBEBI_KESINTEMINAT_INT = 2;
+        public const int ODEMESEBEBI_GECICITEMINAT_INT = 3;
+        public const int ODEMESEBEBI_AIDAT_INT = 4;
+        public const int ODEMESEBEBI_SIGORTA_INT = 5;
+        public const int ODEMESEBEBI_AVUKATLIKUCRETI_INT = 6;
+        public const int ODEMESEBEBI_YARGILAMAUCRETI_INT = 7;
+        public const int ODEMESEBEBI_AVANSIADESI_INT = 8;
+        public const int ODEMESEBEBI_SATIS_INT = 9;
+        public const int ODEMESEBEBI_DIGER_INT = 99;
+        public const int ODEME_SEBEBI_DEFAULT_INT = ODEMESEBEBI_DIGER_INT;
+        //Teminat Cinsi
+        public const string TEMINATCINSI_NAKIT_TL = "TL";
+        public const string TEMINATCINSI_NAKIT_USD = "USD";
+        public const string TEMINATCINSI_NAKIT_EURO = "Euro";
+        public const string TEMINATCINSI_BANKATEMINATMEKTUBU = "Banka Teminat Mektubu";
+        public const string TEMINATCINSI_IPOTEK = "İpotek";
 
         #region Bankalar
         //Boş
@@ -501,6 +531,7 @@ namespace Utility.ProjeGlobal
         public const string DURUM_ERKENGONDERILDI = "Erken Gönderildi";
         public const string DURUM_DAHAONCEIADE = "Daha Önce Belgesi İade Edildi";
         public const string DURUM_PARAIADE = "Parası İade Edildi";
+        public const string DURUM_AFETNEDENIYLE_GONDERILMEDI = "Afet Nedeniyle Gönderilmedi";
 
         //Armaganlar
         public const int ARMAGAN_ALTINID = 4;
@@ -526,6 +557,7 @@ namespace Utility.ProjeGlobal
         public const string DOVIZ_ESKITL = "ETL";
         public const string DOVIZ_EURO = "Euro";
         public const string DOVIZ_USD = "USD";
+        public const string DOVIZ_GBP = "GBP";
         //NBYS Parametre
         public const string PARAM_NBYSYONERGE = "NBYS Yönergeleri";
         public const string PARAM_FTKYONERGE = "FTK Yönergeleri";
@@ -717,7 +749,9 @@ namespace Utility.ProjeGlobal
         public static bool DERGI_GONDERILSIN = false;
 
         public static DateTime TL_GECIS_TARIHI = new DateTime(2005, 1, 1);
-        public static string SMS_TUTAR = "10";
+        public static decimal SMS_TUTAR_01022023ONCESI = 10;
+        public static DateTime SMS_TUTAR_DEGISIM_TARIHI = new DateTime(2023, 1, 1);
+        public static decimal SMS_TUTAR_01022023SONRASI = 20;
         //yazılar
         public const string KIRABORCU_DOSYA = "Kira-Borcu";
         public const string KIRAARTIS_DOSYA = "Kira-Artis";
@@ -842,7 +876,7 @@ namespace Utility.ProjeGlobal
         #region Ortak Parametreler 
         public const string PARAM_SMTP_ADRESI_LBL= "SMTP Adresi";
         public const string PARAM_SMTP_IP_ADRESI= "10.150.8.15";
-        public const string PARAM_TOPLANTI_MAILGRUBU = "ToplantiMailGrubu";
+        public const string PARAM_TOPLANTI_MAILGRUBU = "ToplantiMailGrubu";// "ToplantiMailTestGrubu";//"ToplantiMailGrubu";
         public const string PARAM_BILGISISTEM_MAILGRUBU = "BilgiSistemMailGrubu";
         public const string PARAM_IKRAM_MAILGRUBU = "IkramMailGrubu";
 

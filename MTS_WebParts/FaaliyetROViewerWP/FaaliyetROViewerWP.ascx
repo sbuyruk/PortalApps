@@ -103,7 +103,7 @@
             </div>
             <div class="checkbox">
                 <label>
-                    <asp:CheckBox ID="VakifDisiKutlamaChk" runat="server" AutoPostBack="True" CausesValidation="False" OnCheckedChanged="VakifDisiKutlamaChk_CheckedChanged" ToolTip="Doğum tarihi dolu olan bağışçıları listeye eklemek için işaretleyiniz." Enabled="False" />
+                    <asp:CheckBox ID="VakifDisiKutlamaChk" runat="server" Checked="True" AutoPostBack="True" CausesValidation="False" OnCheckedChanged="VakifDisiKutlamaChk_CheckedChanged" ToolTip="Doğum tarihi dolu olan bağışçıları listeye eklemek için işaretleyiniz." />
                     Doğum Günü Kutlamalarını Göster (Vakıf Dışı)
                 </label>
             </div>

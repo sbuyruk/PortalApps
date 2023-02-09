@@ -6,7 +6,6 @@ using System.ComponentModel;
 using System.Data;
 using System.Globalization;
 using System.IO;
-using System.Text;
 using System.Web.Script.Serialization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -403,7 +402,7 @@ namespace NBYS_WebParts.NakitBagisciAdresListesiWP
 
             return ekstretablestr;
         }
-       
+
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
 

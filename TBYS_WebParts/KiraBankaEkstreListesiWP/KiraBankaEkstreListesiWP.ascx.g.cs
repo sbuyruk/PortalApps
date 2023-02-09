@@ -57,11 +57,11 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.CheckBox AktarilanlarHaricChk;
+        protected global::System.Web.UI.WebControls.Label RowCountLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.Label RowCountLbl;
+        protected global::System.Web.UI.WebControls.CheckBox AktarilanlarHaricChk;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -145,7 +145,7 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.Table OdemeAyristirmaTable;
+        protected global::System.Web.UI.WebControls.Table OdemeBolusturmeTable;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -201,11 +201,11 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.LinkButton OdemeAyristirModalAcBtn;
+        protected global::System.Web.UI.WebControls.LinkButton OdemeBolusturModalAcBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.LinkButton OdemeAyristirBtn;
+        protected global::System.Web.UI.WebControls.LinkButton OdemeBolusturBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebPartCodeGenerator", "17.0.0.0")]
         public static implicit operator global::System.Web.UI.TemplateControl(KiraBankaEkstreListesiWP target) 
@@ -277,26 +277,6 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.CheckBox @__BuildControlAktarilanlarHaricChk() {
-            global::System.Web.UI.WebControls.CheckBox @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.CheckBox();
-            this.AktarilanlarHaricChk = @__ctrl;
-            @__ctrl.TemplateControl = this;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-3 form-control";
-            @__ctrl.ID = "AktarilanlarHaricChk";
-            @__ctrl.AutoPostBack = true;
-            @__ctrl.Text = "Aktarılanları Gösterme ";
-            @__ctrl.Checked = true;
-            @__ctrl.TextAlign = global::System.Web.UI.WebControls.TextAlign.Left;
-            @__ctrl.CheckedChanged -= new System.EventHandler(this.AktarilanlarHaricChk_CheckedChanged);
-            @__ctrl.CheckedChanged += new System.EventHandler(this.AktarilanlarHaricChk_CheckedChanged);
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlRowCountLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -307,6 +287,24 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP {
             @__ctrl.ID = "RowCountLbl";
             @__ctrl.Text = "";
             @__ctrl.Font.Bold = true;
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.CheckBox @__BuildControlAktarilanlarHaricChk() {
+            global::System.Web.UI.WebControls.CheckBox @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.CheckBox();
+            this.AktarilanlarHaricChk = @__ctrl;
+            @__ctrl.TemplateControl = this;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "AktarilanlarHaricChk";
+            @__ctrl.Checked = true;
+            @__ctrl.AutoPostBack = true;
+            @__ctrl.ToolTip = "Aktarilanları görmek için işareti kaldırınız.";
+            @__ctrl.CheckedChanged -= new System.EventHandler(this.AktarilanlarHaricChk_CheckedChanged);
+            @__ctrl.CheckedChanged += new System.EventHandler(this.AktarilanlarHaricChk_CheckedChanged);
             return @__ctrl;
         }
         
@@ -549,41 +547,35 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP {
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </h3>\r\n                </div>\r\n                <div class=\"" +
                         "card-body\">\r\n                    <div class=\"form-group\">\r\n                     " +
                         "   "));
-            global::System.Web.UI.WebControls.CheckBox @__ctrl5;
-            @__ctrl5 = this.@__BuildControlAktarilanlarHaricChk();
+            global::System.Web.UI.WebControls.Label @__ctrl5;
+            @__ctrl5 = this.@__BuildControlRowCountLbl();
             @__parser.AddParsedSubObject(@__ctrl5);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        "));
-            global::System.Web.UI.WebControls.Label @__ctrl6;
-            @__ctrl6 = this.@__BuildControlRowCountLbl();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        <div class=\"checkbox pt-3\">\r\n                          " +
+                        "  <label>\r\n                                "));
+            global::System.Web.UI.WebControls.CheckBox @__ctrl6;
+            @__ctrl6 = this.@__BuildControlAktarilanlarHaricChk();
             @__parser.AddParsedSubObject(@__ctrl6);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-                    </div>
-                    <div class=""form-group"">
-                        <table id=""CustomDataTable"" class=""table table-striped table-bordered"" width=""100%"">
-                            <thead>
-                                <tr>
-                                    <th>Seç Kaydet</th>
-                                    <th>Yatıran</th>
-                                    <th>Ödeme Tarihi</th>
-                                    <th>Tutar</th>
-                                    <th>Kiracı</th>
-                                    <th>Açıklama</th>
-                                    <th>Eşleştir</th>
-                                    <th>Seç Sil</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                </div>
-                <div class=""card-footer"">
-                    <div id=""BtnDiv"" style=""display: none"">
-                        <input id=""SecilenleriKaydetTriggerBtn"" class=""btn btn-success"" type=""button"" value=""Seçilenleri Kaydet"" onclick=""SecilenleriKaydetTriggerBtnClicked();"" />
-                    </div>
-                    <div id=""SilinecekBtnDiv"" style=""display: none"">
-                        <input id=""SecilenleriSilTriggerBtn"" class=""btn btn-success"" type=""button"" value=""Seçilenleri Sil"" onclick=""SecilenleriSilTriggerBtnClicked();"" />
-                    </div>
-
-                    "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                Aktarılanları Gösterme\r\n                       " +
+                        "     </label>\r\n                        </div>\r\n                    </div>\r\n     " +
+                        "               <div class=\"form-group\">\r\n                        <table id=\"Cust" +
+                        "omDataTable\" class=\"table table-striped table-bordered\" width=\"100%\">\r\n         " +
+                        "                   <thead>\r\n                                <tr>\r\n              " +
+                        "                      <th>Seç Kaydet</th>\r\n                                    <" +
+                        "th>Yatıran</th>\r\n                                    <th>Ödeme Tarihi</th>\r\n    " +
+                        "                                <th>Tutar</th>\r\n                                " +
+                        "    <th>Kiracı</th>\r\n                                    <th>Ödeme Sebebi</th>\r\n" +
+                        "                                    <th>Açıklama</th>\r\n                         " +
+                        "           <th>Eşleştir</th>\r\n                                    <th>Seç Sil</t" +
+                        "h>\r\n                                </tr>\r\n                            </thead>\r" +
+                        "\n                        </table>\r\n                    </div>\r\n                <" +
+                        "/div>\r\n                <div class=\"card-footer\">\r\n                    <div id=\"B" +
+                        "tnDiv\" style=\"display: none\">\r\n                        <input id=\"SecilenleriKay" +
+                        "detTriggerBtn\" class=\"btn btn-success\" type=\"button\" value=\"Seçilenleri Kaydet\" " +
+                        "onclick=\"SecilenleriKaydetTriggerBtnClicked();\" />\r\n                    </div>\r\n" +
+                        "                    <div id=\"SilinecekBtnDiv\" style=\"display: none\">\r\n          " +
+                        "              <input id=\"SecilenleriSilTriggerBtn\" class=\"btn btn-success\" type=" +
+                        "\"button\" value=\"Seçilenleri Sil\" onclick=\"SecilenleriSilTriggerBtnClicked();\" />" +
+                        "\r\n                    </div>\r\n\r\n                    "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl7;
             @__ctrl7 = this.@__BuildControlExcelBtn();
             @__parser.AddParsedSubObject(@__ctrl7);
@@ -860,7 +852,7 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP {
             @__ctrl.ID = "BaslikLbl";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-form-label ");
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Ödeme Ayrıştırma"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Kira Ödemesini Bölüştür"));
             return @__ctrl;
         }
         
@@ -1045,13 +1037,13 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Table @__BuildControlOdemeAyristirmaTable() {
+        private global::System.Web.UI.WebControls.Table @__BuildControlOdemeBolusturmeTable() {
             global::System.Web.UI.WebControls.Table @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Table();
-            this.OdemeAyristirmaTable = @__ctrl;
+            this.OdemeBolusturmeTable = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "OdemeAyristirmaTable";
+            @__ctrl.ID = "OdemeBolusturmeTable";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "table table-sm table-striped table-bordered");
             this.@__BuildControl__control20(@__ctrl.Rows);
             return @__ctrl;
@@ -1117,7 +1109,7 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP {
             @__parser.AddParsedSubObject(@__ctrl5);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    </div>\r\n\r\n                                "));
             global::System.Web.UI.WebControls.Table @__ctrl6;
-            @__ctrl6 = this.@__BuildControlOdemeAyristirmaTable();
+            @__ctrl6 = this.@__BuildControlOdemeBolusturmeTable();
             @__parser.AddParsedSubObject(@__ctrl6);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                "));
             global::System.Web.UI.WebControls.Label @__ctrl7;
@@ -1136,7 +1128,7 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP {
         private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control29() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
-            @__ctrl.ControlID = "OdemeAyristirBtn";
+            @__ctrl.ControlID = "OdemeBolusturBtn";
             @__ctrl.EventName = "click";
             return @__ctrl;
         }
@@ -1147,7 +1139,7 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP {
         private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control30() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
-            @__ctrl.ControlID = "OdemeAyristirModalAcBtn";
+            @__ctrl.ControlID = "OdemeBolusturModalAcBtn";
             @__ctrl.EventName = "click";
             return @__ctrl;
         }
@@ -1314,32 +1306,32 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.LinkButton @__BuildControlOdemeAyristirModalAcBtn() {
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlOdemeBolusturModalAcBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
-            this.OdemeAyristirModalAcBtn = @__ctrl;
+            this.OdemeBolusturModalAcBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "OdemeAyristirModalAcBtn";
+            @__ctrl.ID = "OdemeBolusturModalAcBtn";
             @__ctrl.CssClass = "btn btn-secondary";
-            @__ctrl.Text = "Ödemeleri Ayrıştır ve Kaydet";
-            @__ctrl.Click -= new System.EventHandler(this.OdemeAyristirModalAcBtn_Click);
-            @__ctrl.Click += new System.EventHandler(this.OdemeAyristirModalAcBtn_Click);
+            @__ctrl.Text = "Kira Ödemelerini Bölüştür ve Kaydet";
+            @__ctrl.Click -= new System.EventHandler(this.OdemeBolusturModalAcBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.OdemeBolusturModalAcBtn_Click);
             return @__ctrl;
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.LinkButton @__BuildControlOdemeAyristirBtn() {
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlOdemeBolusturBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
-            this.OdemeAyristirBtn = @__ctrl;
+            this.OdemeBolusturBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "OdemeAyristirBtn";
+            @__ctrl.ID = "OdemeBolusturBtn";
             @__ctrl.CssClass = "btn btn-secondary";
-            @__ctrl.Text = "Ödemeleri Ayrıştır ve Kaydet";
-            @__ctrl.Click -= new System.EventHandler(this.OdemeAyristirBtn_Click);
-            @__ctrl.Click += new System.EventHandler(this.OdemeAyristirBtn_Click);
+            @__ctrl.Text = "Kira Ödemelerini Bölüştür ve Kaydet";
+            @__ctrl.Click -= new System.EventHandler(this.OdemeBolusturBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.OdemeBolusturBtn_Click);
             return @__ctrl;
         }
         
@@ -1394,10 +1386,10 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP {
             @__ctrl15 = this.@__BuildControlparamTutarArrayHiddenTxt();
             @__parser.AddParsedSubObject(@__ctrl15);
             global::System.Web.UI.WebControls.LinkButton @__ctrl16;
-            @__ctrl16 = this.@__BuildControlOdemeAyristirModalAcBtn();
+            @__ctrl16 = this.@__BuildControlOdemeBolusturModalAcBtn();
             @__parser.AddParsedSubObject(@__ctrl16);
             global::System.Web.UI.WebControls.LinkButton @__ctrl17;
-            @__ctrl17 = this.@__BuildControlOdemeAyristirBtn();
+            @__ctrl17 = this.@__BuildControlOdemeBolusturBtn();
             @__parser.AddParsedSubObject(@__ctrl17);
             @__ctrl.SetRenderMethodDelegate(new System.Web.UI.RenderMethod(this.@__Render__control1));
         }
@@ -1406,27 +1398,61 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP {
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
         private void @__Render__control1(System.Web.UI.HtmlTextWriter @__w, System.Web.UI.Control parameterContainer) {
-            @__w.Write("\r\n\r\n<style>\r\n    .uyari {\r\n        color:red;\r\n    }\r\n    .ekstre-aktarildi {\r\n  " +
-                    "      color: grey;\r\n    }\r\n\r\n    .ekstre-aktarilmadi {\r\n        color: black;\r\n " +
-                    "   }\r\n\r\n    .ekstre-aktarilabilir {\r\n        color: green;\r\n    }\r\n\r\n    .cakism" +
-                    "a-var {\r\n        color: red;\r\n        font-weight: bold;\r\n    }\r\n     /*tblfilte" +
-                    "r hücre içine sığmazsa wordwrap yapsın*/ \r\n    .ui-datatable tbody td {\r\n       " +
-                    " white-space: normal;\r\n    }\r\n    .ui-column-title {\r\n        white-space: norma" +
-                    "l;\r\n    }\r\n    .small-font{\r\n        font-size:small;\r\n    }\r\n    .sil-checkbox " +
-                    "{\r\n        background-color: red!important;\r\n    }\r\n</style>\r\n\r\n<script type=\"te" +
-                    "xt/javascript\">\r\n    \r\n    var silinecekData = [];\r\n    function addRemoveEkstre" +
-                    "IdToDeleteList(ekstreAktarmaId, chkbox) {\r\n        var isChecked = false;\r\n     " +
-                    "   if (chkbox.checked)\r\n            isChecked = true;\r\n        SilineceklerListe" +
-                    "sineEkleCikar(ekstreAktarmaId, isChecked);\r\n    }\r\n    function SilineceklerList" +
-                    "esineEkleCikar(ekstreAktarmaId, isChecked) {\r\n        var index = silinecekData." +
-                    "indexOf(ekstreAktarmaId.toString());\r\n        if (isChecked && (index < 0)) {\r\n " +
-                    "           silinecekData.push(ekstreAktarmaId.toString());\r\n        } else if (!" +
-                    "isChecked && (index > -1)) {\r\n            silinecekData.splice(index, 1);\r\n     " +
-                    "   }\r\n        if (silinecekData.length > 0) {\r\n            document.getElementBy" +
-                    "Id(\'SilinecekBtnDiv\').style.display = \"block\";\r\n        }\r\n        else {\r\n     " +
-                    "       document.getElementById(\'SilinecekBtnDiv\').style.display = \"none\";\r\n     " +
-                    "   }\r\n    }\r\n    function SecilenleriSilTriggerBtnClicked() {\r\n        document." +
-                    "getElementById(\'");
+            @__w.Write(@"
+
+<style>
+    .uyari {
+        color:red;
+    }
+    .ekstre-aktarildi {
+        color: grey;
+    }
+
+    .ekstre-aktarilmadi {
+        color: black;
+    }
+
+    .ekstre-aktarilabilir {
+        color: green;
+    }
+
+    .cakisma-var {
+        color: red;
+        font-weight: bold;
+    }
+    .small-font{
+        font-size:small;
+    }
+    .sil-checkbox {
+        background-color: red!important;
+    }
+</style>
+
+<script type=""text/javascript"">
+    
+    var silinecekData = [];
+    function addRemoveEkstreIdToDeleteList(ekstreAktarmaId, chkbox) {
+        var isChecked = false;
+        if (chkbox.checked)
+            isChecked = true;
+        SilineceklerListesineEkleCikar(ekstreAktarmaId, isChecked);
+    }
+    function SilineceklerListesineEkleCikar(ekstreAktarmaId, isChecked) {
+        var index = silinecekData.indexOf(ekstreAktarmaId.toString());
+        if (isChecked && (index < 0)) {
+            silinecekData.push(ekstreAktarmaId.toString());
+        } else if (!isChecked && (index > -1)) {
+            silinecekData.splice(index, 1);
+        }
+        if (silinecekData.length > 0) {
+            document.getElementById('SilinecekBtnDiv').style.display = ""block"";
+        }
+        else {
+            document.getElementById('SilinecekBtnDiv').style.display = ""none"";
+        }
+    }
+    function SecilenleriSilTriggerBtnClicked() {
+        document.getElementById('");
                          @__w.Write( paramSilinecekArray.ClientID);
 
             @__w.Write("\').value = silinecekData;\r\n        document.getElementById(\'");
@@ -1451,9 +1477,6 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP {
     }
     function OdemePlaniModalAc(kiraEkstreAktarmaId, kiraciId, odemeTarihi) {
         document.getElementById('");
-                         @__w.Write( ParamKiraciIdLbl.ClientID);
-
-            @__w.Write("\').value = kiraEkstreAktarmaId;\r\n        document.getElementById(\'");
                          @__w.Write( ParamKiraciIdLbl.ClientID);
 
             @__w.Write("\').value = kiraciId;\r\n        document.getElementById(\'");
@@ -1494,49 +1517,55 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP {
 
             @__w.Write("\').click();\r\n    }\r\n</script>\r\n\r\n<script>\r\n    function setDataSet(myset) {\r\n    " +
                     "    myjsons = myset;\r\n    }\r\n    var myjsons = [{\r\n        \"SecKaydet\": \"\", \"Adi" +
-                    "Soyadi\": \"\", \"OdemeTarihi\": \"\", \"Tutar\": \"\", \"KiraciAdi\": \"\", \"Aciklama\": \"\", \"E" +
-                    "slestir\": \"\", \"SecSil\": \"\"\r\n    }];\r\n    jQuery(document).ready(function () {\r\n " +
-                    "       jQuery.fn.dataTable.moment(\'DD.MM.YYYY HH:mm\');//sort date\r\n        jQuer" +
-                    "y(\'#CustomDataTable\').DataTable({\r\n            data: myjsons,\r\n            colum" +
-                    "ns: [\r\n                { data: \"SecKaydet\", \"width\": \"6%\" },\r\n                { " +
-                    "data: \"AdiSoyadi\", \"width\": \"15%\" },\r\n                { data: \"OdemeTarihi\", \"wi" +
-                    "dth\": \"10%\" },\r\n                { data: \"Tutar\", \"width\": \"10%\", \"className\": \"t" +
-                    "ext-right\" },\r\n                { data: \"KiraciAdi\", \"width\": \"20%\", \"font-size\":" +
-                    "\"small\" },\r\n                { data: \"Aciklama\", \"width\": \"22%\",\"font-size\":\"smal" +
-                    "l\" },\r\n                { data: \"Eslestir\", \"width\": \"10%\" },\r\n                { " +
-                    "data: \"SecSil\", \"width\": \"7%\" }\r\n\r\n            ],\r\n            \'order\': [[2, \'de" +
-                    "sc\']],//sort date desc\r\n            \"language\": {\r\n                \"url\": \"http:" +
-                    "//tskgv-portal/OrtakBelgeler/Turkish.txt\",\r\n                \"decimal\": \",\",\r\n   " +
-                    "             \"thousands\": \".\"\r\n            },\r\n            //column resizable\r\n " +
-                    "           //initComplete: function (settings) {\r\n            //    $(\'#CustomDa" +
-                    "taTable\').colResizable({ liveDrag: true });\r\n            //},\r\n            respo" +
-                    "nsive: true,\r\n            dom: \'Bfrtip\',\r\n            buttons: [\r\n              " +
-                    "  {\r\n                    extend: \'print\',\r\n                    exportOptions: {\r" +
-                    "\n                        columns: \':visible\'\r\n                    }\r\n           " +
-                    "     },\r\n                {\r\n                    extend: \'excel\',\r\n              " +
-                    "      exportOptions: {\r\n                        columns: \':visible\'\r\n           " +
-                    "         }\r\n                },\r\n                {\r\n                    extend: \'" +
-                    "pdf\',\r\n                    exportOptions: {\r\n                        columns: \':" +
-                    "visible\'\r\n                    }\r\n                },\r\n                {\r\n        " +
-                    "            extend: \'copy\',\r\n                    exportOptions: {\r\n             " +
-                    "           columns: \':visible\'\r\n                    }\r\n                },\r\n     " +
-                    "           , \'pageLength\', \"colvis\"\r\n            ],\r\n            \"createdRow\": f" +
-                    "unction (row, data, dataIndex) {\r\n                if (data.AktarildiMi == \"True\"" +
-                    ") {\r\n                    $(row).addClass(\'ekstre-aktarildi\');\r\n                }" +
-                    " else if (data.Uyari == \"True\") {\r\n                    $(row).addClass(\'uyari\');" +
-                    "\r\n                } else if (data.KiraciId > 0) {\r\n                    $(row).ad" +
-                    "dClass(\'ekstre-aktarilabilir\');\r\n                }\r\n                \r\n          " +
-                    "  },//set row color \r\n        });\r\n\r\n        \r\n        ArrayDoldur();\r\n    });\r\n" +
-                    "</script>\r\n\r\n<script type=\"text/javascript\"> \r\n\r\n    function OpenModalOdemeAyri" +
-                    "stir(ekstreAktarmaId) {\r\n        document.getElementById(\'");
+                    "Soyadi\": \"\", \"OdemeTarihi\": \"\", \"Tutar\": \"\", \"KiraciAdi\": \"\",\"OdemeSebebiUrl\": \"" +
+                    "\", \"Aciklama\": \"\", \"Eslestir\": \"\", \"SecSil\": \"\"\r\n    }];\r\n    jQuery(document).r" +
+                    "eady(function () {\r\n        jQuery.fn.dataTable.moment(\'DD.MM.YYYY HH:mm\');//sor" +
+                    "t date\r\n        jQuery(\'#CustomDataTable\').DataTable({\r\n            \'initComplet" +
+                    "e\': function (settings, json) {//tablo yüklendiğinde\r\n                var api = " +
+                    "this.api();\r\n                var row = api.row(function (idx, data, node) { //se" +
+                    "cilen kayda gider\r\n                    return data[\'Secildi\'] == true;\r\n        " +
+                    "        });\r\n                if (row.length > 0) {\r\n                    row.sele" +
+                    "ct()\r\n                        .show()\r\n                        .draw(false);\r\n  " +
+                    "              }\r\n            },\r\n            data: myjsons,\r\n            columns" +
+                    ": [\r\n                { data: \"SecKaydet\" },\r\n                { data: \"AdiSoyadi\"" +
+                    ", \"width\": \"15%\" },\r\n                { data: \"OdemeTarihi\", \"width\": \"10%\" },\r\n " +
+                    "               { data: \"Tutar\", \"width\": \"10%\", \"className\": \"text-right\" },\r\n  " +
+                    "              { data: \"KiraciAdi\", \"width\": \"20%\", \"font-size\":\"small\" },\r\n     " +
+                    "           { data: \"OdemeSebebiUrl\", \"font-size\":\"small\" },\r\n                { d" +
+                    "ata: \"Aciklama\", \"width\": \"20%\",\"font-size\":\"small\" },\r\n                { data: " +
+                    "\"Eslestir\" },\r\n                { data: \"SecSil\"}\r\n\r\n            ],\r\n            " +
+                    "\'order\': [[2, \'desc\']],//sort date desc\r\n            \"language\": {\r\n            " +
+                    "    \"url\": \"http://tskgv-portal/OrtakBelgeler/Turkish.txt\",\r\n                \"de" +
+                    "cimal\": \",\",\r\n                \"thousands\": \".\"\r\n            },\r\n            //co" +
+                    "lumn resizable\r\n            //initComplete: function (settings) {\r\n            /" +
+                    "/    $(\'#CustomDataTable\').colResizable({ liveDrag: true });\r\n            //},\r\n" +
+                    "            responsive: true,\r\n            dom: \'Bfrtip\',\r\n            buttons: " +
+                    "[\r\n                {\r\n                    extend: \'print\',\r\n                    " +
+                    "exportOptions: {\r\n                        columns: \':visible\'\r\n                 " +
+                    "   }\r\n                },\r\n                {\r\n                    extend: \'excel\'" +
+                    ",\r\n                    exportOptions: {\r\n                        columns: \':visi" +
+                    "ble\'\r\n                    }\r\n                },\r\n                {\r\n            " +
+                    "        extend: \'pdf\',\r\n                    exportOptions: {\r\n                  " +
+                    "      columns: \':visible\'\r\n                    }\r\n                },\r\n          " +
+                    "      {\r\n                    extend: \'copy\',\r\n                    exportOptions:" +
+                    " {\r\n                        columns: \':visible\'\r\n                    }\r\n        " +
+                    "        },\r\n                , \'pageLength\', \"colvis\"\r\n            ],\r\n          " +
+                    "  \"createdRow\": function (row, data, dataIndex) {\r\n                if (data.Akta" +
+                    "rildiMi == \"True\") {\r\n                    $(row).addClass(\'ekstre-aktarildi\');\r\n" +
+                    "                } else if (data.Uyari == \"True\") {\r\n                    $(row).a" +
+                    "ddClass(\'uyari\');\r\n                } else if (data.KiraciId > 0) {\r\n            " +
+                    "        $(row).addClass(\'ekstre-aktarilabilir\');\r\n                }\r\n           " +
+                    "     \r\n            },//set row color \r\n        });\r\n\r\n        \r\n        ArrayDol" +
+                    "dur();\r\n    });\r\n</script>\r\n\r\n<script type=\"text/javascript\"> \r\n\r\n    function O" +
+                    "penModalOdemeBolustur(ekstreAktarmaId) {\r\n        document.getElementById(\'");
                          @__w.Write( paramEkstreAktarmaIdTxt.ClientID);
 
             @__w.Write("\').value = ekstreAktarmaId;\r\n        document.getElementById(\'");
-                         @__w.Write( OdemeAyristirModalAcBtn.ClientID);
+                         @__w.Write( OdemeBolusturModalAcBtn.ClientID);
 
-            @__w.Write("\').click();\r\n    }\r\n    function OdemeAyristirModalAc() {\r\n            $(\"#OdemeA" +
-                    "yristirModal\").modal({ backdrop: \"static\" });\r\n        }\r\n    function ArrayDold" +
-                    "ur() {\r\n        document.getElementById(\'");
+            @__w.Write("\').click();\r\n    }\r\n    function OdemeBolusturModalAc() {\r\n            $(\"#OdemeB" +
+                    "olusturModalDiv\").modal({ backdrop: \"static\" });\r\n        }\r\n    function ArrayD" +
+                    "oldur() {\r\n        document.getElementById(\'");
                          @__w.Write( ToplamLbl.ClientID);
 
             @__w.Write("\').value = \"#\";\r\n        document.getElementById(\'");
@@ -1546,7 +1575,7 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP {
                          @__w.Write( paramTutarArrayHiddenTxt.ClientID);
 
             @__w.Write("\').value = \"\";\r\n        var table = ");
-            @__w.Write( OdemeAyristirmaTable.ClientID);
+            @__w.Write( OdemeBolusturmeTable.ClientID);
 
             @__w.Write(@";
         var toplam = 0;
@@ -1570,28 +1599,29 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP {
                     "nt.getElementById(\'");
                          @__w.Write( ToplamLbl.ClientID);
 
-            @__w.Write("\').value = kalan;\r\n\r\n        OdeBtnEnable(kalan);\r\n    }\r\n    function Ayristiril" +
+            @__w.Write("\').value = kalan;\r\n\r\n        OdeBtnEnable(kalan);\r\n    }\r\n    function Bolusturil" +
                     "anOdemeleriKaydet() {\r\n        ArrayDoldur();\r\n        document.getElementById(\'" +
                     "");
-                         @__w.Write( OdemeAyristirBtn.ClientID);
+                         @__w.Write( OdemeBolusturBtn.ClientID);
 
             @__w.Write(@"').click();
     }
     function OdeBtnEnable(tutar) {
 
         if (tutar ==0) {
-            $(""#OdemeAyristirModalBtn"").attr('class', 'btn btn-outline-success');
-            $(""#OdemeAyristirModalBtn"").attr('disabled', false);
-            $(""#OdemeAyristirModalBtn"").show();
+            $(""#OdemeBolusturModalBtn"").attr('class', 'btn btn-outline-success');
+            $(""#OdemeBolusturModalBtn"").attr('disabled', false);
+            $(""#OdemeBolusturModalBtn"").show();
         }
         else {
 
-            $(""#OdemeAyristirModalBtn"").attr('class', 'btn btn-outline-secondary');
-            $(""#OdemeAyristirModalBtn"").attr('disabled', true);
-            $(""#OdemeAyristirModalBtn"").hide();
+            $(""#OdemeBolusturModalBtn"").attr('class', 'btn btn-outline-secondary');
+            $(""#OdemeBolusturModalBtn"").attr('disabled', true);
+            $(""#OdemeBolusturModalBtn"").hide();
         }
     }
 </script>
+
 <script type=""text/javascript"">
     function pageLoad(sender, args) {
         new Cleave('.input-4', {
@@ -1601,7 +1631,20 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP {
         });
     }      
 </script>
-<div class=""container"">
+
+
+<script>
+    function OdemeSebebiChange(ddl,btn) {
+        var selected = document.getElementById(ddl.id).value;
+        if ((selected == 1) || (selected == 2) || (selected == 3)) {
+            document.getElementById(btn.id).style.display = ""block"";
+        } else {
+            document.getElementById(btn.id).style.display = ""none"";
+        }
+      
+    }
+</script>
+<div class=""container col-xl"">
     <div class=""card shadow"">
         ");
             parameterContainer.Controls[0].RenderControl(@__w);
@@ -1623,7 +1666,8 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP {
             </div>
         </div>
     </div>
-    <div class=""modal"" id=""OdemeAyristirModal"" role=""dialog"">
+    
+    <div class=""modal"" id=""OdemeBolusturModalDiv"" role=""dialog"">
         <div class=""modal-dialog"">
             <!-- Modal content-->
             <div class=""modal-content"" style=""width: 550px;"">
@@ -1640,7 +1684,7 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP {
 
                 </div>
                 <div class=""modal-footer"">
-                    <input id=""OdemeAyristirModalBtn"" type=""button"" value=""Ödemeleri Ayrıştır ve Kaydet"" class=""btn btn-success"" onclick=""AyristirilanOdemeleriKaydet();"" disabled=""disabled"" />
+                    <input id=""OdemeBolusturModalBtn"" type=""button"" value=""Kira Ödemelerini Bölüştür ve Kaydet"" class=""btn btn-success"" onclick=""BolusturulenOdemeleriKaydet();"" disabled=""disabled"" />
                     <button type=""button"" class=""btn btn-default"" data-dismiss=""modal"">Kapat</button>
                 </div>
             </div>

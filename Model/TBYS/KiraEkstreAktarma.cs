@@ -36,6 +36,7 @@ namespace Model.TBYS
         public int KiraciId { get; set; }
         public string IslemNo { get; set; }
         public bool Uyari { get; set; }
+        public int OdemeSebebiId { get; set; }
 
         public override bool Delete()
         {
@@ -190,11 +191,12 @@ namespace Model.TBYS
                     A.KiraciId, B.Adi, B.Adi + ' (' + B.Adres + '' + IIF(ISNULL(D.IlceAdi,'')='','',D.IlceAdi + '/') +C.IlAdi+')' KiraciAdi, 
                     A.*, ISNULL(A.Adi,'')  +' ' +ISNULL(A.Soyadi,'') AdiSoyadi, 
                     A.Telefon1 + IIF(ISNULL(A.Telefon1,'')!='' AND ISNULL(A.Telefon2,'')!='',' - ','') + A.Telefon2 Telefon,
-                    A.Aciklama
+                    A.Aciklama,A.OdemeSebebiId OdemeSebebiId,E.OdemeSebebi OdemeSebebi
                 FROM KiraEkstreAktarma_Table A
                     LEFT JOIN Kiraci_Table B ON B.Id=A.KiraciId
                     LEFT JOIN Il_Table C ON C.IlAdi=B.Ili
                     LEFT JOIN Ilce_Table D ON (D.IlceAdi=B.Ilcesi AND D.IlAdi=B.Ili)
+                    LEFT JOIN OdemeSebebiTanim_Table E ON E.Id=A.OdemeSebebiId
                 {0}
                 ORDER BY AktarildiMi,  OdemeTarihi desc, A.Id, A.Adi
                 ", aktarilanlarHaricStr);

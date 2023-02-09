@@ -1,0 +1,641 @@
+﻿using DocumentFormat.OpenXml.Presentation;
+using DocumentFormat.OpenXml.Spreadsheet;
+using Model.IKYS;
+using Model.Ortak;
+using Model.TBYS;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.Globalization;
+using System.Linq;
+using System.Web.Script.Serialization;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using TBYS_WebParts.OdemeListesiWP;
+using Utility.HelperClasses;
+using Utility.ProjeGlobal;
+
+namespace TBYS_WebParts.OdemeAyristirmaWP
+{
+    [ToolboxItemAttribute(false)]
+    public partial class OdemeAyristirmaWP : WebPart
+    {
+        // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
+        // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
+        // for production. Because the SecurityPermission attribute bypasses the security check for callers of
+        // your constructor, it's not recommended for production purposes.
+        // [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Assert, UnmanagedCode = true)]
+        public OdemeAyristirmaWP()
+        {
+        }
+
+        private string KiraSozlesmeIdQS
+        {
+            get
+            {
+
+                if (ViewState["KiraSozlesmeId"] == null)
+                {
+                    if (Page.Request.QueryString["KiraSozlesmeId"] != null)
+                    {
+                        ViewState["KiraSozlesmeId"] = Page.Request.QueryString["KiraSozlesmeId"];
+                    }
+                    else
+                    {
+                        ViewState["KiraSozlesmeId"] = string.Empty;
+                    }
+                }
+                return ViewState["KiraSozlesmeId"].ToString();
+            }
+
+            set
+            {
+                ViewState["KiraSozlesmeId"] = value;
+            }
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+            InitializeControl();
+            this.ChromeType = PartChromeType.None;
+        }
+        private string KiraEkstreAktarmaIdQS
+        {
+            get
+            {
+                if (ViewState["KiraEkstreAktarmaId"] == null)
+                {
+                    if (Page.Request.QueryString["KiraEkstreAktarmaId"] != null)
+                    {
+                        ViewState["KiraEkstreAktarmaId"] = Page.Request.QueryString["KiraEkstreAktarmaId"];
+                    }
+                    else
+                    {
+                        ViewState["KiraEkstreAktarmaId"] = string.Empty;
+                    }
+                }
+                return ViewState["KiraEkstreAktarmaId"].ToString();
+            }
+
+            set
+            {
+                ViewState["KiraEkstreAktarmaId"] = value;
+            }
+        }
+        private List<OdemeListItem> OdemeAyristirmaListQS
+        {
+            get
+            {
+                if (ViewState["OdemeAyristirmaList"] == null)
+                {
+                    if (Page.Request.QueryString["OdemeAyristirmaList"] != null)
+                    {
+                        ViewState["OdemeAyristirmaList"] = Page.Request.QueryString["OdemeAyristirmaList"];
+                    }
+                    else
+                    {
+                        ViewState["OdemeAyristirmaList"] = new List<OdemeListItem>();
+                    }
+                }
+                return (List<OdemeListItem>)ViewState["OdemeAyristirmaList"];
+            }
+
+            set
+            {
+                ViewState["OdemeAyristirmaList"] = value;
+            }
+        }
+        private readonly IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            try
+            {
+
+                if (!Page.IsPostBack)
+                {
+                    KiraEkstreAktarma kiraEkstreAktarma = new KiraEkstreAktarma();
+                    kiraEkstreAktarma = kiraEkstreAktarma.Select<KiraEkstreAktarma>(KiraEkstreAktarmaIdQS.ConvertToInt());
+                    if (kiraEkstreAktarma!=null)
+                    {
+                        Kiraci kiraci = new Kiraci();
+                        kiraci = kiraci.Select(kiraEkstreAktarma.KiraciId);
+                        if (kiraci != null)
+                        {
+                            AdiLbl.Text = kiraci == null ? "" : kiraci.Adi + " " + kiraci.Soyadi;
+                        }
+                        OdemeBilgileriniDoldur(kiraEkstreAktarma);
+                        TabloOlustur();
+                    }
+                    else
+                    {
+                        MessageHelper.PublishMessage("Ödeme Bulunamadı.", ProjeConstants.MESAJ_HATA);
+                    }
+                }
+            }
+            catch (Exception exception)
+            {
+
+                ExceptionHelper exhelper = new ExceptionHelper(exception);
+                exhelper.PublishException();
+            }
+        }
+        private void OdemeBilgileriniDoldur(KiraEkstreAktarma kiraEkstreAktarma)
+        {
+            if (kiraEkstreAktarma != null)
+            {
+
+                OdemeTarihiLbl.Text = kiraEkstreAktarma.OdemeTarihi.ConvertToDatetimeEmptyIfNull();
+                OdemeAciklamaTxt.Text = kiraEkstreAktarma.Aciklama;
+                OdenenTutarLbl.Text = kiraEkstreAktarma.Tutar.ToString("N", culturInfo);
+                KiraTutariLbl.Text = string.Empty.ReturnZeroIfNull().ConvertToDecimal().ToString("N", culturInfo);
+                KesinTeminatLbl.Text = string.Empty.ReturnZeroIfNull().ConvertToDecimal().ToString("N", culturInfo);
+                GeciciTeminatLbl.Text = string.Empty.ReturnZeroIfNull().ConvertToDecimal().ToString("N", culturInfo);
+                KalanTutarLbl.Text = OdenenTutarLbl.Text;
+                if (kiraEkstreAktarma.Uyari)
+                {
+                    OdemeyiSozlesmelereBolBtn.Visible = true;
+                    //ekstreAktarmaListItem.KiraciAdi = "<a herf=# class='btn btn-outline-danger text-left' style='white-space:normal'  onclick=OpenModalOdemeBolustur(" + ekstreAktarmaListItem.KiraEkstreAktarmaId + ");> Böl ve Öde</a>";
+                }
+                else
+                {
+                    OdemeyiSozlesmelereBolBtn.Visible = false;
+                }
+
+            }
+
+        }
+
+        #region CustomDataTable 
+        private void TabloOlustur()
+        {
+            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            UtilityHelper.ScriptCalistir(jsString);
+        }
+        private string TabloJson()
+        {
+            string jSon = string.Empty;
+
+            try
+            {
+                var serializer = new JavaScriptSerializer();
+                jSon = serializer.Serialize(OdemeAyristirmaListQS);
+            }
+            catch (Exception exception)
+            {
+                ExceptionHelper exceptionHelper = new ExceptionHelper();
+                exceptionHelper.Exceptions.Add(exception);
+                exceptionHelper.PublishException();
+            }
+            return jSon;
+        }
+        private string CreateDataTable(string jsonData)
+        {
+            string tableString = @"
+                if ( jQuery.fn.DataTable.isDataTable('#CustomDataTable') ) {
+                    jQuery('#CustomDataTable').DataTable().destroy();
+                }
+                jQuery('#CustomDataTable tbody').empty();
+
+                jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
+                jQuery(document).ready(function () {
+                    jQuery('#CustomDataTable').DataTable({
+                        'initComplete': function (settings, json) {//tablo yüklendiğinde
+                            var api = this.api();
+                            var row = api.row(function (idx, data, node) { //secilen toplantıya gider
+                                return data['Secildi'] == true;
+                            });
+                            if (row.length > 0) {
+                                row.select()
+                                    .show()
+                                    .draw(false);
+                            }
+                        },
+                        data: " + jsonData + @",
+                        columns: [
+                            { data: 'OdemeTarihi'},
+                            { data: 'OdemeSebebi'},
+                            { data: 'Tutar'},
+                            { data: 'Kiraci'},
+                            { data: 'Duzenle'},
+                            { data: 'Sil'},
+                        ],
+                        columnDefs: [
+                            {
+                                targets: 2,
+                                className: 'dt-body-right'
+                            }
+                          ],
+                        'language': {
+                            'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
+                            'decimal': ',',
+                            'thousands': '.'
+                        },
+                        responsive: true,
+                        destroy: true,
+                        pageLength:100,
+                        dom: 'rti',
+                        
+                        });
+                    });
+
+            ";
+
+            return tableString;
+        }
+        #endregion
+        protected void KaydetBtn_Click(object sender, EventArgs e)
+        {
+
+        }
+        protected void KiraOdemesiEkleBtn_Click(object sender, EventArgs e)
+        {
+            OdemeEkleModalAc(ProjeConstants.ODEMESEBEBI_KIRA, ProjeConstants.ODEMESEBEBI_KIRA_INT, "Kira Ödemesi Eklenecek");
+            //KiraEkstreAktarma kiraEkstreAktarma = new KiraEkstreAktarma();
+            //kiraEkstreAktarma = kiraEkstreAktarma.Select<KiraEkstreAktarma>(KiraEkstreAktarmaIdQS.ConvertToInt());
+            //if (kiraEkstreAktarma != null)
+            //{
+
+            //    KiraciIdLbl.Text = kiraEkstreAktarma.KiraciId.ToString();
+            //    OdemeTarihiLbl.Text = kiraEkstreAktarma.OdemeTarihi.ConvertToDDMMYYYHHmmFormat();
+            //    OdemeSaatiLbl.Text = kiraEkstreAktarma.OdemeTarihi.ToString("HH:mm");
+
+            //    DovizCinsiLbl.Text = kiraEkstreAktarma.DovizCinsi;
+            //    IslemTutariTxt.Value = 0.ToString();
+            //    IslemAciklamaTxt.Text = string.Empty;
+            //    OdemeSebebiLbl.Text = ProjeConstants.ODEMESEBEBI_KIRA;
+            //    OdemeSebebiIdLbl.Text = ProjeConstants.ODEMESEBEBI_KIRA_INT.ToString();
+            //    KiraEkstreAktarmaIdLbl.Text = kiraEkstreAktarma.Id.ToString();
+            //    OdemeIdLbl.Text = kiraEkstreAktarma.OdemeId.ToString();
+            //    KaydetVeyaGuncelleHdn.Value = ProjeConstants.KAYDET;
+            //    ModalTitleLbl.Text = "Kira Ödemesi Eklenecek";
+            //    UtilityHelper.ScriptCalistir("OpenOdemeEkleModal();");
+            //}
+        }
+        protected void OdemeyiSozlesmelereBolBtn_Click(object sender, EventArgs e)
+        {
+            OdemeEkleModalAc(ProjeConstants.ODEMESEBEBI_KIRA, ProjeConstants.ODEMESEBEBI_KIRA_INT, "Kira Ödemesi Eklenecek");
+        }
+
+        private void OdemeEkleModalAc(string odemeSebebi, int odemeSebebiId, string title)
+        {
+            KiraEkstreAktarma kiraEkstreAktarma = new KiraEkstreAktarma();
+            kiraEkstreAktarma = kiraEkstreAktarma.Select<KiraEkstreAktarma>(KiraEkstreAktarmaIdQS.ConvertToInt());
+            if (kiraEkstreAktarma != null)
+            {
+
+
+                Kiraci kiraci = new Kiraci();
+                string kiraciAdi = string.Empty;
+                if (kiraEkstreAktarma.KiraciId > 0)
+                {
+                    kiraci = kiraci.Select(kiraEkstreAktarma.KiraciId);
+                    if (kiraci != null)
+                    {
+                        kiraciAdi = (kiraci.Adi + " " + kiraci.Soyadi).Trim();
+                    }
+                }
+
+                Kiraci kiraciDao = new Kiraci();
+
+                KiraciDDL.Items.Clear();
+
+                string adiSoyadi = kiraEkstreAktarma.Adi + " " + kiraEkstreAktarma.Soyadi;
+                if (!string.IsNullOrEmpty(adiSoyadi) || !string.IsNullOrEmpty(kiraciAdi))
+                {
+                    List<Kiraci> kiraciList = kiraciDao.SelectByAdi(string.IsNullOrEmpty(kiraciAdi) ? adiSoyadi : kiraciAdi);
+                    if (kiraciList.Count > 0)
+                    {
+
+                        foreach (var item in kiraciList)
+                        {
+                            KiraSozlesme kiraSozlesme = new KiraSozlesme();
+                            kiraSozlesme = kiraSozlesme.SelectEnYakinTarihliSozlesmeByKiraciIdTarih(item.Id, OdemeTarihiLbl.Text.ConvertToDatetime());
+                            if (kiraSozlesme != null)
+                            {
+                                string sozlesme = kiraSozlesme.SozBasTar.ConvertToDatetimeEmptyIfNull() + "-" + kiraSozlesme.SozBitTar.ConvertToDatetimeEmptyIfNull();
+                                string kiraciBilgisi = (item.Adi + " " + item.Soyadi).Trim() + " (" + item.Adres + ")" + " (Sözlesme:" + sozlesme + ")";
+                                KiraciDDL.Items.Add(new ListItem(kiraciBilgisi, item.Id.ToString()));
+                            }
+
+                        }
+
+                    }
+                }
+                KiraciIdLbl.Text = kiraEkstreAktarma.KiraciId.ToString();
+                if (KiraciDDL.Items.Count > 0)
+                {
+                    KiraciIdLbl.Text = KiraciDDL.SelectedItem.Value;
+                }
+                OdemeTarihiLbl.Text = kiraEkstreAktarma.OdemeTarihi.ConvertToDDMMYYYHHmmFormat();
+                OdemeSaatiLbl.Text = kiraEkstreAktarma.OdemeTarihi.ToString("HH:mm");
+
+                DovizCinsiLbl.Text = kiraEkstreAktarma.DovizCinsi;
+                IslemTutariTxt.Value = 0.ToString();
+                IslemAciklamaTxt.Text = string.Empty;
+                OdemeSebebiLbl.Text = odemeSebebi;
+                OdemeSebebiIdLbl.Text = odemeSebebiId.ToString();
+                KiraEkstreAktarmaIdLbl.Text = kiraEkstreAktarma.Id.ToString();
+                OdemeIdLbl.Text = kiraEkstreAktarma.OdemeId.ToString();
+                KaydetVeyaGuncelleHdn.Value = ProjeConstants.KAYDET;
+                ModalTitleLbl.Text = title;
+                UtilityHelper.ScriptCalistir("OpenOdemeEkleModal();");
+            }
+        }
+
+        protected void KesinTeminatEkleBtn_Click(object sender, EventArgs e)
+        {
+            OdemeEkleModalAc(ProjeConstants.ODEMESEBEBI_KESINTEMINAT, ProjeConstants.ODEMESEBEBI_KESINTEMINAT_INT, "Kesin Teminat Ödemesi Eklenecek");
+            //KiraEkstreAktarma kiraEkstreAktarma = new KiraEkstreAktarma();
+            //kiraEkstreAktarma = kiraEkstreAktarma.Select<KiraEkstreAktarma>(KiraEkstreAktarmaIdQS.ConvertToInt());
+            //if (kiraEkstreAktarma!=null)
+            //{
+
+            //    KiraciIdLbl.Text = kiraEkstreAktarma.KiraciId.ToString();
+            //    OdemeTarihiLbl.Text = kiraEkstreAktarma.OdemeTarihi.ConvertToDDMMYYYHHmmFormat();
+            //    OdemeSaatiLbl.Text = kiraEkstreAktarma.OdemeTarihi.ToString("HH:mm");
+
+            //    DovizCinsiLbl.Text = kiraEkstreAktarma.DovizCinsi;
+            //    IslemTutariTxt.Value = 0.ToString() ;
+            //    IslemAciklamaTxt.Text= string.Empty ;
+            //    OdemeSebebiLbl.Text= ProjeConstants.ODEMESEBEBI_KESINTEMINAT;
+            //    OdemeSebebiIdLbl.Text= ProjeConstants.ODEMESEBEBI_KESINTEMINAT_INT.ToString();
+            //    KiraEkstreAktarmaIdLbl.Text = kiraEkstreAktarma.Id.ToString();
+            //    OdemeIdLbl.Text = kiraEkstreAktarma.OdemeId.ToString();
+            //    KaydetVeyaGuncelleHdn.Value = ProjeConstants.KAYDET;
+            //    ModalTitleLbl.Text = "Kesin Teminat Ödemesi Eklenecek";
+            //    UtilityHelper.ScriptCalistir("OpenOdemeEkleModal();");
+            //}
+
+        } 
+        protected void GeciciTeminatEkleBtn_Click(object sender, EventArgs e)
+        {
+            OdemeEkleModalAc(ProjeConstants.ODEMESEBEBI_GECICITEMINAT, ProjeConstants.ODEMESEBEBI_GECICITEMINAT_INT, "Geçici Teminat Ödemesi Eklenecek");
+            //KiraEkstreAktarma kiraEkstreAktarma = new KiraEkstreAktarma();
+            //kiraEkstreAktarma = kiraEkstreAktarma.Select<KiraEkstreAktarma>(KiraEkstreAktarmaIdQS.ConvertToInt());
+            //if (kiraEkstreAktarma!=null)
+            //{
+
+            //    KiraciIdLbl.Text = kiraEkstreAktarma.KiraciId.ToString();
+            //    OdemeTarihiLbl.Text = kiraEkstreAktarma.OdemeTarihi.ConvertToDDMMYYYHHmmFormat();
+            //    OdemeSaatiLbl.Text = kiraEkstreAktarma.OdemeTarihi.ToString("HH:mm");
+
+            //    DovizCinsiLbl.Text = kiraEkstreAktarma.DovizCinsi;
+            //    IslemTutariTxt.Value = 0.ToString() ;
+            //    IslemAciklamaTxt.Text= string.Empty ;
+            //    OdemeSebebiLbl.Text= ProjeConstants.ODEMESEBEBI_GECICITEMINAT;
+            //    OdemeSebebiIdLbl.Text= ProjeConstants.ODEMESEBEBI_GECICITEMINAT_INT.ToString();
+            //    KiraEkstreAktarmaIdLbl.Text = kiraEkstreAktarma.Id.ToString();
+            //    OdemeIdLbl.Text = kiraEkstreAktarma.OdemeId.ToString();
+            //    KaydetVeyaGuncelleHdn.Value = ProjeConstants.KAYDET;
+            //    ModalTitleLbl.Text = "Geçici Teminat Ödemesi Eklenecek";
+            //    UtilityHelper.ScriptCalistir("OpenOdemeEkleModal();");
+            //}
+
+        }
+        protected void TeminatEkleNowBtn_Click(object sender, EventArgs e)
+        {
+            decimal islemTutari = IslemTutariTxt.Value.ConvertToDecimal();
+            if (islemTutari>=0)
+            {
+                OdemeListItem odemeListItem = new OdemeListItem();
+                int kiraciId=KiraciDDL.Items.Count>0?KiraciDDL.SelectedItem.Value.ConvertToInt(): KiraciIdLbl.Text.ConvertToInt();
+                Kiraci kiraci= new Kiraci();
+                kiraci = kiraci.Select(kiraciId);
+                if (kiraci != null)
+                {
+                    odemeListItem.KiraciId = kiraci.Id;
+                    odemeListItem.Kiraci = (kiraci.Adi + " " + kiraci.Soyadi).Trim() + " (" + kiraci.Adres + ")" + " (Kiracı No:" + kiraci.Id+ ")";
+                }
+                
+                
+                odemeListItem.OdemeTarihi = OdemeTarihiLbl.Text;
+                odemeListItem.OdemeSaati = OdemeSaatiLbl.Text;
+                odemeListItem.DovizCinsi = DovizCinsiLbl.Text;
+                odemeListItem.Tutar = IslemTutariTxt.Value.ConvertToDecimal();
+                odemeListItem.Aciklama = IslemAciklamaTxt.Text;
+                odemeListItem.OdemeSebebiId = OdemeSebebiIdLbl.Text.ConvertToInt();
+                odemeListItem.OdemeSebebi = OdemeSebebiLbl.Text;
+                odemeListItem.KiraEkstreAktarmaId = KiraEkstreAktarmaIdLbl.Text.ConvertToInt();
+                odemeListItem.OdemeId = OdemeIdLbl.Text.ConvertToInt();
+                odemeListItem.Duzenle = "<a href='#' class='btn btn-outline-primary' onclick=GuncelleModalDoldur('" + odemeListItem.GuId + "');>Düzenle</a>";
+                odemeListItem.Sil = "<a href='#' class='btn btn-outline-danger' onclick=SatirSil('" + odemeListItem.GuId+ "')>Sil</a>";
+
+                OdemeAyristirmaListQS.Add(odemeListItem);
+                if (ToplamlariDuzenle()) //ödenen tutar aşıldı ise listeden çıkar
+                {
+                    OdemeAyristirmaListQS.Remove(odemeListItem);
+                }
+            }
+            else
+            {
+                MessageHelper.PublishMessage("Ödenen tutarı aştınız.",ProjeConstants.MESAJ_HATA,2000);
+            }
+            TabloOlustur();
+            UtilityHelper.ScriptCalistir("CloseModal()");
+        }
+        protected void ModalGuncelleBtn_Click(object sender, EventArgs e)
+        {
+            OdemeGuncelleModalAc();
+        }
+
+        private void OdemeGuncelleModalAc()
+        {
+            string guid = GuncelleGuidHdn.Value;
+            var odemeListItem = OdemeAyristirmaListQS.Find(x => x.GuId == guid);
+            if (odemeListItem != null)
+            {
+
+                //KiraciIdLbl.Text = odemeListItem.KiraciId.ToString();
+                //OdemeTarihiLbl.Text = odemeListItem.OdemeTarihi.ConvertToDDMMYYYHHmmFormat();
+                //OdemeSaatiLbl.Text = odemeListItem.OdemeTarihi.ToString();
+
+                //DovizCinsiLbl.Text = odemeListItem.DovizCinsi;
+                IslemTutariTxt.Value = odemeListItem.Tutar.ToString("N", culturInfo);
+                IslemAciklamaTxt.Text = odemeListItem.Aciklama;
+                OdemeSebebiIdLbl.Text = odemeListItem.OdemeSebebiId.ToString();
+                OdemeSebebiLbl.Text = odemeListItem.OdemeSebebi;
+                UtilityHelper.SetDDLValue(KiraciDDL, odemeListItem.KiraciId.ToString());
+                //KiraEkstreAktarmaIdLbl.Text = odemeListItem.KiraEkstreAktarmaId.ToString();
+                //OdemeIdLbl.Text = odemeListItem.OdemeId.ToString();
+                KaydetVeyaGuncelleHdn.Value = ProjeConstants.GUNCELLE;
+                ModalTitleLbl.Text = "Ödeme Güncellenecek";
+                UtilityHelper.ScriptCalistir("OpenOdemeEkleModal();");
+            }
+            else
+            {
+                MessageHelper.PublishMessage("Kayıt bulunamadı", ProjeConstants.MESAJ_HATA, 2000);
+            }
+
+        }
+
+        protected void TeminatGuncelleNowBtn_Click(object sender, EventArgs e)
+        {
+            decimal islemTutari = IslemTutariTxt.Value.ConvertToDecimal();
+            if (islemTutari >= 0)
+            {
+                
+                string guid = GuncelleGuidHdn.Value;
+                var odemeListItem = OdemeAyristirmaListQS.Find(x => x.GuId == guid);
+                decimal oncekiTutar = odemeListItem.Tutar;
+                //odemeListItem.KiraciId = KiraciIdLbl.Text.ConvertToInt();
+                //odemeListItem.Kiraci = AdiLbl.Text;
+                //odemeListItem.OdemeTarihi = OdemeTarihiLbl.Text;
+                //odemeListItem.OdemeSaati = OdemeSaatiLbl.Text;
+                //odemeListItem.DovizCinsi = DovizCinsiLbl.Text;
+                odemeListItem.Tutar = IslemTutariTxt.Value.ConvertToDecimal();
+                odemeListItem.Aciklama = IslemAciklamaTxt.Text;
+                //odemeListItem.OdemeSebebiId = TeminatTipiDDL.SelectedItem.Value.ConvertToInt();
+                //odemeListItem.OdemeSebebi = TeminatTipiDDL.SelectedItem.Text;
+                //odemeListItem.KiraEkstreAktarmaId = KiraEkstreAktarmaIdLbl.Text.ConvertToInt();
+                //odemeListItem.OdemeId = OdemeIdLbl.Text.ConvertToInt();
+                //odemeListItem.Duzenle = "<a href='#' class='btn btn-outline-primary' onclick=GuncelleModalDoldur('" + odemeListItem.GuId + "');>Düzenle</a>";
+                //odemeListItem.Sil = "<a href='#' class='btn btn-outline-danger' onclick=SatirSil('" + odemeListItem.GuId + "')>Sil</a>";
+
+                if (ToplamlariDuzenle())//ödenen tutar aşıldı ise eski tutara dön
+                {
+                    odemeListItem.Tutar = oncekiTutar;
+                }
+            }
+            else
+            {
+                MessageHelper.PublishMessage("Ödenen tutarı aştınız.", ProjeConstants.MESAJ_HATA, 2000);
+            }
+            TabloOlustur();
+            UtilityHelper.ScriptCalistir("CloseModal()");
+        }
+        private bool ToplamlariDuzenle()
+        {
+            bool toplamAsildiMi = false;
+            decimal odenenTutar = OdenenTutarLbl.Text.ConvertToDecimal();
+            decimal kesinTeminat = 0;
+            decimal geciciTeminat =0;
+            decimal kira =0;
+
+            foreach (var item in OdemeAyristirmaListQS)
+            {
+                decimal islemTutari = item.Tutar;
+                switch (item.OdemeSebebiId)
+                {
+                    case ProjeConstants.ODEMESEBEBI_KESINTEMINAT_INT:
+                        {
+                            kesinTeminat += islemTutari;
+                            break;
+                        }
+                    case ProjeConstants.ODEMESEBEBI_GECICITEMINAT_INT:
+                        {
+                            geciciTeminat += islemTutari;
+                            break;
+                        }
+                    case ProjeConstants.ODEMESEBEBI_KIRA_INT:
+                        {
+                            kira += islemTutari;
+                            break;
+                        }
+                }
+            }
+
+            decimal toplam = kira + kesinTeminat + geciciTeminat ;
+            decimal fark = odenenTutar - toplam;
+            if (fark < 0)
+            {
+                toplamAsildiMi = true;
+                MessageHelper.PublishMessage("Toplam ödenen tutarı aştınız, girdiğiniz tutar listeye eklenmedi.", ProjeConstants.MESAJ_HATA, 2000);
+            }
+            else
+            {
+                KesinTeminatLbl.Text = kesinTeminat.ToString("N", culturInfo);
+                GeciciTeminatLbl.Text = geciciTeminat.ToString("N", culturInfo);
+                KiraTutariLbl.Text = kira.ToString("N", culturInfo);
+                decimal kalanTutar = odenenTutar - kesinTeminat - geciciTeminat - kira;
+                KalanTutarLbl.Text = kalanTutar.ToString("N", culturInfo); 
+            }
+            if (fark == 0)
+            {
+                KaydetBtn.Visible = true;
+            }
+            else
+            {
+                KaydetBtn.Visible = false;
+            }
+            return toplamAsildiMi;
+        }
+
+        protected void SatirSilBtn_Click(object sender, EventArgs e)
+        {
+            string guid = SilGuidHdn.Value;
+            var odemeListItem = OdemeAyristirmaListQS.Find(x => x.GuId == guid);
+            if (odemeListItem != null)
+            {
+                OdemeAyristirmaListQS.Remove(odemeListItem);
+                TabloOlustur();
+                ToplamlariDuzenle();
+            }
+        }
+        private void RedirectToPage(string pageUrl)
+        {
+            try
+            {
+                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
+                Page.Response.Redirect(newUrl);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelper exHelper = new ExceptionHelper(ex);
+                exHelper.PublishException();
+            }
+        }
+        [Serializable]
+        private class OdemeListItem
+        {
+            private string _guid=Guid.NewGuid().ToString();
+            public string GuId {
+                get
+                {
+                    return _guid;
+                }
+
+                set
+                {
+                    _guid = value;
+                }
+            }
+            public int KiraEkstreAktarmaId { get; set; }
+            public int OdemeSebebiId { get; set; }
+            public string OdemeSebebi { get; set; }
+            public int KiraciId { get; set; }
+            public string Kiraci { get; set; }
+            public string OdemeTarihi { get; set; }
+            public string OdemeSaati { get; set; }
+            public decimal Tutar { get; set; }
+            public string DovizCinsi { get; set; }
+            public int OdemeId { get; set; }
+            public string Aciklama { get; set; }
+            public string Duzenle { get; set; }
+            public string Sil { get; set; }
+
+        }
+        protected void KiraEkstreAktarmaBtn_Click(object sender, EventArgs e)
+        {
+            RedirectToPage(ProjeConstants.PAGE_KIRAEKSTRE_LIST+ "?SecilenId=" + KiraEkstreAktarmaIdQS);
+        }        
+        protected void CloseBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
+                Page.Response.Redirect(newUrl);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelper exHelper = new ExceptionHelper(ex);
+                exHelper.PublishException();
+            }
+        }       
+    }
+}

@@ -34,22 +34,22 @@ namespace NBYS_WebParts.NBYSYetkilendirmeWP
 
         private void YetkileriGetir()
         {
-            ProgramYetki programYetki= new ProgramYetki();
+            ProgramYetki programYetki = new ProgramYetki();
             string bolgeler = "(7,8,9)";
-            List<ProgramYetki> list = programYetki.SelectByProgramModul(ProjeConstants.NBYS,ProjeConstants.NBYS_BOLGE_NAKITBAGISCILISTESİ,bolgeler);
+            List<ProgramYetki> list = programYetki.SelectByProgramModul(ProjeConstants.NBYS, ProjeConstants.NBYS_BOLGE_NAKITBAGISCILISTESİ, bolgeler);
             foreach (var item in list)
             {
                 if (item.Kosul.Equals("Belge İstemiyor"))
-                    BelgeIstemiyorChk.Checked= item.Deger;
+                    BelgeIstemiyorChk.Checked = item.Deger;
                 if (item.Kosul.Equals("Ulaşılamıyor"))
                     UlasilamiyorChk.Checked = item.Deger;
             }
         }
 
         protected void KaydetBtn_Click(object sender, EventArgs e)
-        { 
+        {
         }
-            protected void CloseBtn_Click(object sender, EventArgs e)
+        protected void CloseBtn_Click(object sender, EventArgs e)
         {
             try
             {

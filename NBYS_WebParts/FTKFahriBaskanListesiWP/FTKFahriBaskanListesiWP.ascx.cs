@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Globalization;
 using System.IO;
 using System.Web.Script.Serialization;
 using System.Web.UI;
@@ -126,7 +125,7 @@ namespace NBYS_WebParts.FTKFahriBaskanListesiWP
                         string unvanStr = vali ? "&Vali=" + vali : (kaymakam ? "&Kaymakam=" + kaymakam : string.Empty);
                         if (duzenleVarmi)
                         {
-                            uyeItem.Duzenle = "<a href=" + pageUrl + "?FTKKisiId=" + kisiId + unvanStr+ " class='btn btn-outline-primary'>Düzenle</a>";
+                            uyeItem.Duzenle = "<a href=" + pageUrl + "?FTKKisiId=" + kisiId + unvanStr + " class='btn btn-outline-primary'>Düzenle</a>";
                         }
 
 

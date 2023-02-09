@@ -110,52 +110,7 @@
         </ContentTemplate>
     </asp:UpdatePanel>
 </div>
-<%--<div class="modal" id="ModalUrlDiv" role="dialog">
-    <div class="modal-dialog ">
-        <!-- Modal content-->
-        <div class="modal-content" style="width: 1030px;">
-            <asp:UpdatePanel runat="server" ID="UpdatePanel1" UpdateMode="Conditional">
-                <ContentTemplate>
-                    <div class="modal-header">
-                        <h3>
-                            <asp:Label ID="BagisciAdiLbl" runat="server" Text="Bağışçı Bilgileri" Font-Bold="True"></asp:Label>
 
-                        </h3>
-                    </div>
-                    <div class="modal-body">
-                        <div style="display: none">
-                            <asp:LinkButton ID="ModalDoldurBtn" runat="server" CausesValidation="false" Text="" OnClick="ModalDoldurBtn_Click" />
-                        </div>
-                        <div class="m-1 text-center" id="NakitBagisciDiv">
-                            <asp:Table CssClass="table text-center table-bordered table-striped" ID="BagisciTable" runat="server">
-                                <asp:TableHeaderRow>
-                                    <asp:TableHeaderCell>Ad/Ünvan</asp:TableHeaderCell>
-                                    <asp:TableHeaderCell>TC Kimlik No</asp:TableHeaderCell>
-                                    <asp:TableHeaderCell>Adres</asp:TableHeaderCell>
-                                    <asp:TableHeaderCell>İli/İlçesi</asp:TableHeaderCell>
-                                    <asp:TableHeaderCell>Telefon</asp:TableHeaderCell>
-                                    <asp:TableHeaderCell>Tüzel Kişi</asp:TableHeaderCell>
-                                </asp:TableHeaderRow>
-                            </asp:Table>
-                        </div>
-                        <div>
-                            <h3>
-                                <br />
-                                <asp:Label ID="Label1" runat="server" Text="Bağışçının Yaptığı Nakit Bağışlar" Font-Bold="True"></asp:Label>
-                            </h3>
-                        </div>
-                        <div class="table loader">
-                            <div id="modaltblfilter" class="table" style="width: 1000px; height: 400px;"></div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
-                    </div>
-                </ContentTemplate>
-            </asp:UpdatePanel>
-        </div>
-    </div>
-</div>--%>
 <div class="modal" id="ModalOnayDiv" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->

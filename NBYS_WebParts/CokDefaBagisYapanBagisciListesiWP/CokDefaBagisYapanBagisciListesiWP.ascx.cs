@@ -7,7 +7,6 @@ using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Web.Script.Serialization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -86,7 +85,7 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
         private List<BagisciListItem> GetBagisciData()
         {
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
-            List<BagisciListItem> list = new List<BagisciListItem>();   
+            List<BagisciListItem> list = new List<BagisciListItem>();
             NakitBagisci nakitBagisci = new NakitBagisci();
 
             ArmaganTanim at = new ArmaganTanim();
@@ -118,7 +117,7 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
                     }
                 }
             }
-            
+
 
 
             //string json = nakitBagisci.ToJSON(dataTable);
@@ -132,32 +131,32 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
 
             //madalya hakediyor mu ? hayır: return
             ArmaganTanim hakedilenArmaganTanim = new ArmaganTanim();
-            hakedilenArmaganTanim = hakedilenArmaganTanim.SelectByTutar(toplamBagisTutari, tuzelKisiMi); 
+            hakedilenArmaganTanim = hakedilenArmaganTanim.SelectByTutar(toplamBagisTutari, tuzelKisiMi);
             if (hakedilenArmaganTanim != null)
             {
                 //Daha Önce aldigi armaganlar
                 Armagan aldigiArmagan = new Armagan();
                 List<Armagan> aldigiArmaganlar = aldigiArmagan.SelectByBagisciId(nakitBagisciId);
-                
+
                 //Teşekkürse dikkate alma, zaten gönderilmiştir.
                 if (hakedilenArmaganTanim.Id == ProjeConstants.ARMAGAN_TESEKKURID)
                 {
                     retval = "-";
                 }
-                else if(hakedilenArmaganTanim.Id == ProjeConstants.ARMAGAN_ALTINID)
+                else if (hakedilenArmaganTanim.Id == ProjeConstants.ARMAGAN_ALTINID)
                 {
                     //Altın Hakediyor
                     //Altın Madalya almıs mı
-                    Armagan aldigiAltin = aldigiArmaganlar.FirstOrDefault(arm => arm.ArmaganTanimId== ProjeConstants.ARMAGAN_ALTINID);
-                    
-                    if (aldigiAltin==null) 
+                    Armagan aldigiAltin = aldigiArmaganlar.FirstOrDefault(arm => arm.ArmaganTanimId == ProjeConstants.ARMAGAN_ALTINID);
+
+                    if (aldigiAltin == null)
                     {
                         //Altın madalya almamış ama genel toplamda hak etmş
                         retval = "<a href=# onclick=\"MadalyaOlustur(" + nakitBagisciId + "," + hakedilenArmaganTanim.Id + ",\'" + sonBagisTarihi + "\');\" class=\'btn btn-outline-warning \'>Altın Madalya Oluştur</a>";
                     }
                     else
                     {
-                        retval= aldigiAltin.Tarih.ConvertToDatetimeEmptyIfNull() + " Tarihinde " + " Altın Madalya Verilmiştir. ( Durumu :" + aldigiAltin.Durum+")";
+                        retval = aldigiAltin.Tarih.ConvertToDatetimeEmptyIfNull() + " Tarihinde " + " Altın Madalya Verilmiştir. ( Durumu :" + aldigiAltin.Durum + ")";
                     }
 
                 }
@@ -188,7 +187,7 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
                     if (aldigiMadalya == null)
                     {
                         //Bronz madalya almamış ama genel toplamda hak etmş
-                        retval = "<a href=# onclick=\"MadalyaOlustur(" + nakitBagisciId + ","+ hakedilenArmaganTanim.Id + ",\'" + sonBagisTarihi + "\');\" class=\'btn btn-outline-info \'>Bronz Madalya Oluştur</a>";
+                        retval = "<a href=# onclick=\"MadalyaOlustur(" + nakitBagisciId + "," + hakedilenArmaganTanim.Id + ",\'" + sonBagisTarihi + "\');\" class=\'btn btn-outline-info \'>Bronz Madalya Oluştur</a>";
                     }
                     else
                     {
@@ -210,7 +209,7 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
             NakitBagisci nakitBagisci = new NakitBagisci();
             nakitBagisci = nakitBagisci.Select<NakitBagisci>(nakitBagisciId);
 
-            if (nakitBagisci!=null)
+            if (nakitBagisci != null)
             {
                 NakitBagisHareket nbhDao = new NakitBagisHareket();
                 List<NakitBagisHareket> nakitBagisHareketListesi = nbhDao.SelectArmaganiOlmayanBagislarByBagisciId(nakitBagisciId);
@@ -230,13 +229,13 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Bağışçının armağan hakkı bulunmamaktadır.",ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Bağışçının armağan hakkı bulunmamaktadır.", ProjeConstants.MESAJ_HATA);
                     }
                 }
             }
             else
             {
-                MessageHelper.PublishMessage("Bağışçı Bulunamadı",ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Bağışçı Bulunamadı", ProjeConstants.MESAJ_HATA);
             }
             return armaganId > 0;
         }
@@ -459,7 +458,7 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
             try
             {
                 MadalyaOlustur(paramNakitBagisciIdLbl.Value.ConvertToInt(), paramhakedilenarmaganIdLbl.Value.ConvertToInt(), paramSonBagisTarihiLbl.Value.ConvertToDatetime());
-                RedirectToPage(ProjeConstants.PAGE_ARMAGAN_EDIT+ "?ArmaganId="+ paramhakedilenarmaganIdLbl.Value.ConvertToInt() + "&NakitBagisciId="+ paramNakitBagisciIdLbl.Value.ConvertToInt());
+                RedirectToPage(ProjeConstants.PAGE_ARMAGAN_EDIT + "?ArmaganId=" + paramhakedilenarmaganIdLbl.Value.ConvertToInt() + "&NakitBagisciId=" + paramNakitBagisciIdLbl.Value.ConvertToInt());
             }
             catch (Exception exception)
             {

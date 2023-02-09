@@ -1,7 +1,5 @@
 ﻿using Model.NBYS;
-using Model.Ortak;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Globalization;
@@ -40,7 +38,7 @@ namespace NBYS_WebParts.NakitBagisRaporuByYil_il
             int sonYil = 2021;
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             NakitBagisHareket nakitBagisHareket = new NakitBagisHareket();
-            RaporTableHeaders(ilkYil,sonYil);
+            RaporTableHeaders(ilkYil, sonYil);
             DataTable dataTable = nakitBagisHareket.SelectCountSumByYil_il(ilkYil, sonYil);
             int counter = 0;
             try
@@ -48,7 +46,7 @@ namespace NBYS_WebParts.NakitBagisRaporuByYil_il
                 bool artti = false;
                 while (counter < dataTable.Rows.Count)
                 {
-                    
+
                     DataRow row = dataTable.Rows[counter];
                     string bolge = row["Bolge"].ToString();
                     string il = row["IlAdi"].ToString();
@@ -85,7 +83,7 @@ namespace NBYS_WebParts.NakitBagisRaporuByYil_il
                         }
                         else
                         {
-                            
+
                             continue;
                         }
                         if (dataTable.Rows.Count > counter + 1)
@@ -98,7 +96,7 @@ namespace NBYS_WebParts.NakitBagisRaporuByYil_il
                     RaporTable.Rows.Add(tableRow);
                     if (artti)
                     {
-                        
+
                         artti = false;
                     }
                     else

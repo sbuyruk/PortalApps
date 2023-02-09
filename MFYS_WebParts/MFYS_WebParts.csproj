@@ -64,6 +64,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>BankaBazindaGunlukBagisListesiWP.ascx</DependentUpon>
     </Compile>
+    <Compile Include="BankaBazindaGunlukDovizBagisListesiWP\BankaBazindaGunlukDovizBagisListesiWP.ascx.cs">
+      <DependentUpon>BankaBazindaGunlukDovizBagisListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="BankaBazindaGunlukDovizBagisListesiWP\BankaBazindaGunlukDovizBagisListesiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BankaBazindaGunlukDovizBagisListesiWP.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TarihBazindaGunlukBagisListesiWP\TarihBazindaGunlukBagisListesiWP.ascx.cs">
       <DependentUpon>TarihBazindaGunlukBagisListesiWP.ascx</DependentUpon>
@@ -78,6 +86,10 @@
     <None Include="BankaBazindaGunlukBagisListesiWP\BankaBazindaGunlukBagisListesiWP.webpart" />
     <None Include="BankaBazindaGunlukBagisListesiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{ea2fec54-2655-43cc-918b-14f3f280bd84}</SharePointProjectItemId>
+    </None>
+    <None Include="BankaBazindaGunlukDovizBagisListesiWP\BankaBazindaGunlukDovizBagisListesiWP.webpart" />
+    <None Include="BankaBazindaGunlukDovizBagisListesiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{f5709d0d-b5fe-45e2-a5a2-034a138f8732}</SharePointProjectItemId>
     </None>
     <None Include="Features\Feature1\Feature1.feature">
       <FeatureId>{322f533c-f793-4920-a018-e58ca8a9a66d}</FeatureId>
@@ -110,6 +122,11 @@
       <LastGenOutput>BankaBazindaGunlukBagisListesiWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="BankaBazindaGunlukBagisListesiWP\Elements.xml" />
+    <Content Include="BankaBazindaGunlukDovizBagisListesiWP\BankaBazindaGunlukDovizBagisListesiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>BankaBazindaGunlukDovizBagisListesiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="BankaBazindaGunlukDovizBagisListesiWP\Elements.xml" />
     <Content Include="Features\Feature1\Feature1.Template.xml">
       <DependentUpon>Feature1.feature</DependentUpon>
     </Content>

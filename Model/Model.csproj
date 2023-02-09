@@ -141,6 +141,7 @@
     <Compile Include="Portal\Duyuru.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TBYS\BagimsizBolum.cs" />
+    <Compile Include="TBYS\OdemeSebebiTanim.cs" />
     <Compile Include="TBYS\TasinmazBagis.cs" />
     <Compile Include="TBYS\Bagis.cs" />
     <Compile Include="TBYS\BagisciTalepleri.cs" />

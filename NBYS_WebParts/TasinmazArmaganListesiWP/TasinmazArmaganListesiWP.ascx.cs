@@ -250,7 +250,7 @@ namespace NBYS_WebParts.TasinmazArmaganListesiWP
                 string telefon2 = row["Telefon2"].ToString();
 
                 //string adresIlIlce = adres + " " +ilcesi+"/"+ili;
-                string ilIlce = ilcesi + (!string.IsNullOrEmpty(ilcesi) && !string.IsNullOrEmpty(ili)?"/":string.Empty) + ili;
+                string ilIlce = ilcesi + (!string.IsNullOrEmpty(ilcesi) && !string.IsNullOrEmpty(ili) ? "/" : string.Empty) + ili;
                 string telefon = string.IsNullOrEmpty(telefon1) ? "" : telefon1 + " " + telefon2;
 
                 TasinmazBagisciListItem bagisciItem = new TasinmazBagisciListItem();
@@ -268,7 +268,7 @@ namespace NBYS_WebParts.TasinmazArmaganListesiWP
                 bagisciItem.IlIlce = ilIlce;
                 bagisciItem.Telefon = telefon;
                 bool yetkiliMi = !string.IsNullOrEmpty(AuthQS) && AuthQS.Equals(ProjeConstants.NBYS_YETKILI_BIRIM);
-                
+
                 if (yetkiliMi)
                 {
                     if (!string.IsNullOrEmpty(armaganId))
@@ -290,17 +290,17 @@ namespace NBYS_WebParts.TasinmazArmaganListesiWP
                     {
                         bagisciItem.Armagan = "Armağan Belgesi oluşturulmadı";
                     }
-                    
+
                 }
-                bagisciItem.BagisciKarti= "<a target='_blank' href=" + ProjeConstants.PAGE_TASINMAZBAGISCI_KARTI + "?SenderApp=TBL&BagisciId=" + tasinmazBagisciId + " class='btn btn-outline-info'>Taşınmaz Bağışçı Kartı</a>";
-                
+                bagisciItem.BagisciKarti = "<a target='_blank' href=" + ProjeConstants.PAGE_TASINMAZBAGISCI_KARTI + "?SenderApp=TBL&BagisciId=" + tasinmazBagisciId + " class='btn btn-outline-info'>Taşınmaz Bağışçı Kartı</a>";
+
                 bool gizli = row["Gizli"].ReturnEmptyIfNull().ConvertToBool();
                 if (gizli)
                 {
                     bagisciItem.AdiSoyadi = adiSoyadi;
-                     bagisciItem.BagisciKarti= bagisciItem.Telefon=
-                        bagisciItem.IlIlce = bagisciItem.Adres = bagisciItem.Ili = bagisciItem.Ilcesi = ProjeConstants.GIZLI_STRING;
-                    bagisciItem.ArmaganTarihi =  string.Empty;
+                    bagisciItem.BagisciKarti = bagisciItem.Telefon =
+                       bagisciItem.IlIlce = bagisciItem.Adres = bagisciItem.Ili = bagisciItem.Ilcesi = ProjeConstants.GIZLI_STRING;
+                    bagisciItem.ArmaganTarihi = string.Empty;
                 }
                 list.Add(bagisciItem);
             }

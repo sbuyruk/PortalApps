@@ -89,6 +89,10 @@ namespace NBYS_WebParts.ArmaganListesiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.DropDownList IliDDL;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton EtiketOlusturBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -334,6 +338,24 @@ namespace NBYS_WebParts.ArmaganListesiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.DropDownList @__BuildControlIliDDL() {
+            global::System.Web.UI.WebControls.DropDownList @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.DropDownList();
+            this.IliDDL = @__ctrl;
+            @__ctrl.TemplateControl = this;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "IliDDL";
+            @__ctrl.CssClass = "form-control";
+            @__ctrl.AutoPostBack = true;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: auto");
+            @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.IliDDL_SelectedIndexChanged);
+            @__ctrl.SelectedIndexChanged += new System.EventHandler(this.IliDDL_SelectedIndexChanged);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlEtiketOlusturBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -434,8 +456,15 @@ namespace NBYS_WebParts.ArmaganListesiWP {
             global::System.Web.UI.WebControls.DropDownList @__ctrl12;
             @__ctrl12 = this.@__BuildControlDurumDDL();
             @__parser.AddParsedSubObject(@__ctrl12);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"form-group " +
+                        "col\">\r\n                            <label class=\"col-form-label\" for=\"IliDDL\">İl" +
+                        " </label>\r\n                            "));
+            global::System.Web.UI.WebControls.DropDownList @__ctrl13;
+            @__ctrl13 = this.@__BuildControlIliDDL();
+            @__parser.AddParsedSubObject(@__ctrl13);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                         </div>
+
                     </div>
                     <div class=""form-group"">
                         <table id=""CustomDataTable"" class=""table table-bordered table-hover"" width=""100%"">
@@ -457,13 +486,13 @@ namespace NBYS_WebParts.ArmaganListesiWP {
                 </div>
                 <div class=""card-footer"">
                     "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl13;
-            @__ctrl13 = this.@__BuildControlEtiketOlusturBtn();
-            @__parser.AddParsedSubObject(@__ctrl13);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl14;
-            @__ctrl14 = this.@__BuildControlArmaganListesiBtn();
+            @__ctrl14 = this.@__BuildControlEtiketOlusturBtn();
             @__parser.AddParsedSubObject(@__ctrl14);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl15;
+            @__ctrl15 = this.@__BuildControlArmaganListesiBtn();
+            @__parser.AddParsedSubObject(@__ctrl15);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                </div>\r\n            </div>\r\n        "));
         }
         
@@ -783,7 +812,11 @@ namespace NBYS_WebParts.ArmaganListesiWP {
     .diger {
         background-color: lightgray;
     }
-
+    .afet-ili {
+        background-color: yellow !important;
+        color: orangered;
+        font-weight:bold;
+    }
     .belge-gecersiz {
         background-color: black;
         color: lightgray;

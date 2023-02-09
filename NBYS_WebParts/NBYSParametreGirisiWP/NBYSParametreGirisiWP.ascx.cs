@@ -1,5 +1,4 @@
-﻿using Model.MTS;
-using Model.NBYS;
+﻿using Model.NBYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -75,7 +74,7 @@ namespace NBYS_WebParts.NBYSParametreGirisiWP
 
             ListItem li0 = new ListItem(ProjeConstants.PARAM_NBYSYONERGE);
             ListItem li1 = new ListItem(ProjeConstants.PARAM_FTKYONERGE);
-            ListItem li2= new ListItem(ProjeConstants.PARAM_FTKYAZI);
+            ListItem li2 = new ListItem(ProjeConstants.PARAM_FTKYAZI);
 
             GrupDDL.Items.Clear();
             if (AuthQS.Equals(ProjeConstants.PARAM_YETKI_ADMIN))
@@ -273,7 +272,7 @@ namespace NBYS_WebParts.NBYSParametreGirisiWP
             {
                 NBYSParametre param = AyniIsimdeVarMi(nbysParametre.Grup, AnahtarTxt.Text, DegerTxt.Text);
 
-                if (param!=null)//aynı Deger'li parametre varsa güncellemesin 
+                if (param != null)//aynı Deger'li parametre varsa güncellemesin 
                 {
                     CloseModal();
                     TabloyuGuncelle();
@@ -339,8 +338,8 @@ namespace NBYS_WebParts.NBYSParametreGirisiWP
             {
                 try
                 {
-                    NBYSParametre parametre = AyniIsimdeVarMi(GrupLbl.Text, YeniAnahtarTxt.Text,YeniDegerTxt.Text);
-                    if (parametre!=null)
+                    NBYSParametre parametre = AyniIsimdeVarMi(GrupLbl.Text, YeniAnahtarTxt.Text, YeniDegerTxt.Text);
+                    if (parametre != null)
                     {
                         TabloyuGuncelle();
                         MessageHelper.PublishMessage("Kaydedilemedi, aynı isimde bir parametre zaten var.", ProjeConstants.MESAJ_HATA, 2000);

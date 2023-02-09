@@ -210,17 +210,18 @@ namespace Model.TBYS
             DataTable dataTable = dao.selectFromDb(sqlString, "");
             return dataTable;
         }
-        public DataTable SelectAllReturnDataTable()
+        public DataTable SelectByFilterReturnDataTable(string filter)
         {
             string sqlString = string.Format(@"
-                SELECT ROW_NUMBER() OVER (ORDER BY CASE WHEN DosyaNo=0 THEN 2 ELSE 1 END,ISNULL(DosyaNo,999999), S.Id, A.Id) AS Sirano, 
-                    S.DosyaNo, A.Id KiraciId, Adi,Soyadi,TCKimlikNo,VergiDairesi,VergiNo, A.Ilcesi +'-'+ A.Ili IlIlce, Semt,A.Adres,A.Telefon,A.Eposta,A.KiralamaAmaci,A.Aciklama,
-                    S.Id SozlesmeId
+                SELECT A.*, B.*,
+                    B.Id SozlesmeId
                 FROM Kiraci_Table A
-                    LEFT JOIN KiraSozlesme_Table S On S.KiraciId=A.Id AND S.Aktif=1
-                    LEFT JOIN SozlesmeTasinmaz_Table C On C.Id=(Select top 1 Id from SozlesmeTasinmaz_Table where SozlesmeId=S.ID) 
-                    LEFT JOIN Tasinmaz_Table D On D.Id=C.TasinmazId
-                ORDER BY CASE WHEN DosyaNo=0 THEN 2 ELSE 1 END,ISNULL(DosyaNo,999999), S.Id, A.Id");
+				    INNER JOIN KiraSozlesme_Table B ON B.KiraciId=A.Id AND B.Id in (SELECT Top 1 Id FROM KiraSozlesme_Table WHERE KiraciId=A.Id ORDER BY SozBitTar DESC)
+                WHERE Adi like '%{0}%'
+	                OR TCKimlikNo like '%{0}%'
+	                OR Telefon like '%{0}%'
+	                OR Adres like '%{0}%'
+                ORDER BY SozBasTar DESC,Aktif DESC, KiraciId ",  filter);
             DataTable dataTable = null;
             try
             {

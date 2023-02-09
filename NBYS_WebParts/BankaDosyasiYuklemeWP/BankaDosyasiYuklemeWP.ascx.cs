@@ -532,7 +532,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
             {
                 if (string.IsNullOrEmpty(BagisTarihiTxt.Value))
                 {
-                    MessageHelper.PublishMessage("Lütfen Kart ile Bağış Tarihini giriniz!", ProjeConstants.MESAJ_HATA,3000);
+                    MessageHelper.PublishMessage("Lütfen Kart ile Bağış Tarihini giriniz!", ProjeConstants.MESAJ_HATA, 3000);
                     return;
                 }
                 var exceptionHelper = EkstreAktarma.SaveKartIleFile(KartIleFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName, bagisTarihi);

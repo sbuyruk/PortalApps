@@ -1123,19 +1123,6 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP {
         private void @__Render__control1(System.Web.UI.HtmlTextWriter @__w, System.Web.UI.Control parameterContainer) {
             @__w.Write(@"
 <style>
-    /*tblfilter hücre içine sığmazsa wordwrap yapsın*/
-    .ui-datatable tbody td {
-        white-space: normal;
-    }
-
-        .ui-datatable tbody td a {
-            white-space: normal;
-        }
-
-    .ui-datatable thead th {
-        white-space: normal;
-    }
-
     .bagis-border-color {
         border: thick;
         border-color: blueviolet;

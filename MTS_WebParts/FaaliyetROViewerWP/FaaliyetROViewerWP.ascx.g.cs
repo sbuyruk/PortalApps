@@ -256,10 +256,10 @@ namespace MTS_WebParts.FaaliyetROViewerWP {
             this.VakifDisiKutlamaChk = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "VakifDisiKutlamaChk";
+            @__ctrl.Checked = true;
             @__ctrl.AutoPostBack = true;
             @__ctrl.CausesValidation = false;
             @__ctrl.ToolTip = "Doğum tarihi dolu olan bağışçıları listeye eklemek için işaretleyiniz.";
-            @__ctrl.Enabled = false;
             @__ctrl.CheckedChanged -= new System.EventHandler(this.VakifDisiKutlamaChk_CheckedChanged);
             @__ctrl.CheckedChanged += new System.EventHandler(this.VakifDisiKutlamaChk_CheckedChanged);
             return @__ctrl;
@@ -1961,6 +1961,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP {
         var opt = {
             margin: [0, 0],
             filename: fileName,
+            enableLinks: false,
             image: { type: 'jpeg', quality: 0.98 },
             html2canvas: { scale: 2 },
             jsPDF: { unit: 'in', format: 'A3', orientation: 'landscape' }

@@ -27,13 +27,6 @@
         color: red;
         font-weight: bold;
     }
-     /*tblfilter hücre içine sığmazsa wordwrap yapsın*/ 
-    .ui-datatable tbody td {
-        white-space: normal;
-    }
-    .ui-column-title {
-        white-space: normal;
-    }
     .small-font{
         font-size:small;
     }
@@ -85,7 +78,6 @@
         $("#ModalOnayDiv").modal('hide');
     }
     function OdemePlaniModalAc(kiraEkstreAktarmaId, kiraciId, odemeTarihi) {
-        document.getElementById('<%= ParamKiraciIdLbl.ClientID%>').value = kiraEkstreAktarmaId;
         document.getElementById('<%= ParamKiraciIdLbl.ClientID%>').value = kiraciId;
         document.getElementById('<%= ParamOdemeTarihiLbl.ClientID%>').value = odemeTarihi;
         document.getElementById('<%= OdemePlaniModalAcBtn.ClientID%>').click();
@@ -122,21 +114,33 @@
         myjsons = myset;
     }
     var myjsons = [{
-        "SecKaydet": "", "AdiSoyadi": "", "OdemeTarihi": "", "Tutar": "", "KiraciAdi": "", "Aciklama": "", "Eslestir": "", "SecSil": ""
+        "SecKaydet": "", "AdiSoyadi": "", "OdemeTarihi": "", "Tutar": "", "KiraciAdi": "","OdemeSebebiUrl": "", "Aciklama": "", "Eslestir": "", "SecSil": ""
     }];
     jQuery(document).ready(function () {
         jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
         jQuery('#CustomDataTable').DataTable({
+            'initComplete': function (settings, json) {//tablo yüklendiğinde
+                var api = this.api();
+                var row = api.row(function (idx, data, node) { //secilen kayda gider
+                    return data['Secildi'] == true;
+                });
+                if (row.length > 0) {
+                    row.select()
+                        .show()
+                        .draw(false);
+                }
+            },
             data: myjsons,
             columns: [
-                { data: "SecKaydet", "width": "6%" },
+                { data: "SecKaydet" },
                 { data: "AdiSoyadi", "width": "15%" },
                 { data: "OdemeTarihi", "width": "10%" },
                 { data: "Tutar", "width": "10%", "className": "text-right" },
                 { data: "KiraciAdi", "width": "20%", "font-size":"small" },
-                { data: "Aciklama", "width": "22%","font-size":"small" },
-                { data: "Eslestir", "width": "10%" },
-                { data: "SecSil", "width": "7%" }
+                { data: "OdemeSebebiUrl", "font-size":"small" },
+                { data: "Aciklama", "width": "20%","font-size":"small" },
+                { data: "Eslestir" },
+                { data: "SecSil"}
 
             ],
             'order': [[2, 'desc']],//sort date desc
@@ -194,21 +198,21 @@
         ArrayDoldur();
     });
 </script>
-<%-- Odeme Ayrıştırma --%>
+<%--Kira Odemelerini Sözleşmelere Bölüştürme --%>
 <script type="text/javascript"> 
 
-    function OpenModalOdemeAyristir(ekstreAktarmaId) {
+    function OpenModalOdemeBolustur(ekstreAktarmaId) {
         document.getElementById('<%= paramEkstreAktarmaIdTxt.ClientID%>').value = ekstreAktarmaId;
-        document.getElementById('<%= OdemeAyristirModalAcBtn.ClientID%>').click();
+        document.getElementById('<%= OdemeBolusturModalAcBtn.ClientID%>').click();
     }
-    function OdemeAyristirModalAc() {
-            $("#OdemeAyristirModal").modal({ backdrop: "static" });
+    function OdemeBolusturModalAc() {
+            $("#OdemeBolusturModalDiv").modal({ backdrop: "static" });
         }
     function ArrayDoldur() {
         document.getElementById('<%= ToplamLbl.ClientID%>').value = "#";
         document.getElementById('<%= paramKiraciIdArrayHiddenTxt.ClientID%>').value = "";
         document.getElementById('<%= paramTutarArrayHiddenTxt.ClientID%>').value = "";
-        var table = <%= OdemeAyristirmaTable.ClientID%>;
+        var table = <%= OdemeBolusturmeTable.ClientID%>;
         var toplam = 0;
         for (var r = 1, n = table.rows.length; r < n; r++) {
 
@@ -226,25 +230,26 @@
 
         OdeBtnEnable(kalan);
     }
-    function AyristirilanOdemeleriKaydet() {
+    function BolusturilanOdemeleriKaydet() {
         ArrayDoldur();
-        document.getElementById('<%= OdemeAyristirBtn.ClientID%>').click();
+        document.getElementById('<%= OdemeBolusturBtn.ClientID%>').click();
     }
     function OdeBtnEnable(tutar) {
 
         if (tutar ==0) {
-            $("#OdemeAyristirModalBtn").attr('class', 'btn btn-outline-success');
-            $("#OdemeAyristirModalBtn").attr('disabled', false);
-            $("#OdemeAyristirModalBtn").show();
+            $("#OdemeBolusturModalBtn").attr('class', 'btn btn-outline-success');
+            $("#OdemeBolusturModalBtn").attr('disabled', false);
+            $("#OdemeBolusturModalBtn").show();
         }
         else {
 
-            $("#OdemeAyristirModalBtn").attr('class', 'btn btn-outline-secondary');
-            $("#OdemeAyristirModalBtn").attr('disabled', true);
-            $("#OdemeAyristirModalBtn").hide();
+            $("#OdemeBolusturModalBtn").attr('class', 'btn btn-outline-secondary');
+            $("#OdemeBolusturModalBtn").attr('disabled', true);
+            $("#OdemeBolusturModalBtn").hide();
         }
     }
 </script>
+
 <script type="text/javascript">
     function pageLoad(sender, args) {
         new Cleave('.input-4', {
@@ -254,7 +259,20 @@
         });
     }      
 </script>
-<div class="container">
+
+<%--Kira/Teminat onchange event function--%>
+<script>
+    function OdemeSebebiChange(ddl,btn) {
+        var selected = document.getElementById(ddl.id).value;
+        if ((selected == 1) || (selected == 2) || (selected == 3)) {
+            document.getElementById(btn.id).style.display = "block";
+        } else {
+            document.getElementById(btn.id).style.display = "none";
+        }
+      
+    }
+</script>
+<div class="container col-xl">
     <div class="card shadow">
         <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional" ViewStateMode="Enabled">
             <ContentTemplate>
@@ -268,8 +286,13 @@
                 </div>
                 <div class="card-body">
                     <div class="form-group">
-                        <asp:CheckBox CssClass="col-3 form-control" ID="AktarilanlarHaricChk" AutoPostBack="true" runat="server" Text="Aktarılanları Gösterme " Checked="True" OnCheckedChanged="AktarilanlarHaricChk_CheckedChanged" TextAlign="Left" />
                         <asp:Label CssClass="col-2 col-form-label float-right" ID="RowCountLbl" runat="server" Text="" Font-Bold="True"></asp:Label>
+                        <div class="checkbox pt-3">
+                            <label>
+                                <asp:CheckBox ID="AktarilanlarHaricChk" runat="server" Checked="True" AutoPostBack="true" OnCheckedChanged="AktarilanlarHaricChk_CheckedChanged" ToolTip="Aktarilanları görmek için işareti kaldırınız." />
+                                Aktarılanları Gösterme
+                            </label>
+                        </div>
                     </div>
                     <div class="form-group">
                         <table id="CustomDataTable" class="table table-striped table-bordered" width="100%">
@@ -280,6 +303,7 @@
                                     <th>Ödeme Tarihi</th>
                                     <th>Tutar</th>
                                     <th>Kiracı</th>
+                                    <th>Ödeme Sebebi</th>
                                     <th>Açıklama</th>
                                     <th>Eşleştir</th>
                                     <th>Seç Sil</th>
@@ -350,7 +374,7 @@
         </asp:UpdateProgress>
 
     </div>
-     <%--Modal: Bir defada iki sözleşmenin kirası yatırılmışsa bu modal içinde ayrıştırılacak--%>
+     
     <div class="modal" id="OdemePlaniModal" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
@@ -391,13 +415,14 @@
             </div>
         </div>
     </div>
-    <div class="modal" id="OdemeAyristirModal" role="dialog">
+    <%--Modal: Bir defada iki sözleşmenin kirası yatırılmışsa bu modal içinde bölünecek--%>
+    <div class="modal" id="OdemeBolusturModalDiv" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
             <div class="modal-content" style="width: 550px;">
                 <div class="modal-header">
                     <h3>
-                        <asp:Label ID="BaslikLbl" class="col-form-label " runat="server">Ödeme Ayrıştırma</asp:Label>
+                        <asp:Label ID="BaslikLbl" class="col-form-label " runat="server">Kira Ödemesini Bölüştür</asp:Label>
                     </h3>
                 </div>
                 <div class="modal-body">
@@ -418,7 +443,7 @@
                                         <asp:Label ID="DovizModalTxt" CssClass="font-weight-bold text-right text-danger" runat="server"> </asp:Label>
                                     </div>
 
-                                <asp:Table ID="OdemeAyristirmaTable" runat="server" class="table table-sm table-striped table-bordered">
+                                <asp:Table ID="OdemeBolusturmeTable" runat="server" class="table table-sm table-striped table-bordered">
                                     <asp:TableHeaderRow>
                                         <asp:TableHeaderCell>Kiraci No </asp:TableHeaderCell>
                                         <asp:TableHeaderCell>Kiraci </asp:TableHeaderCell>
@@ -432,8 +457,8 @@
                                 <asp:TextBox ID="ToplamLbl" CssClass="input-4 text-danger font-weight-bold text-right"  runat="server" Enabled="False" ></asp:TextBox>
                             </ContentTemplate>
                             <Triggers>
-                                <asp:AsyncPostBackTrigger ControlID="OdemeAyristirBtn" EventName="click" />
-                                <asp:AsyncPostBackTrigger ControlID="OdemeAyristirModalAcBtn" EventName="click" />
+                                <asp:AsyncPostBackTrigger ControlID="OdemeBolusturBtn" EventName="click" />
+                                <asp:AsyncPostBackTrigger ControlID="OdemeBolusturModalAcBtn" EventName="click" />
                                 
                             </Triggers>
                         </asp:UpdatePanel>
@@ -441,7 +466,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <input id="OdemeAyristirModalBtn" type="button" value="Ödemeleri Ayrıştır ve Kaydet" class="btn btn-success" onclick="AyristirilanOdemeleriKaydet();" disabled="disabled" />
+                    <input id="OdemeBolusturModalBtn" type="button" value="Kira Ödemelerini Bölüştür ve Kaydet" class="btn btn-success" onclick="BolusturulenOdemeleriKaydet();" disabled="disabled" />
                     <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
                 </div>
             </div>
@@ -461,7 +486,7 @@
         <asp:TextBox ID="paramEkstreAktarmaIdTxt" runat="server"></asp:TextBox>
         <input id="paramKiraciIdArrayHiddenTxt" runat="server" type="text" />
         <input id="paramTutarArrayHiddenTxt" runat="server" type="text" />
-        <asp:LinkButton ID="OdemeAyristirModalAcBtn" runat="server" CssClass="btn btn-secondary" Text="Ödemeleri Ayrıştır ve Kaydet" OnClick="OdemeAyristirModalAcBtn_Click" />
-        <asp:LinkButton ID="OdemeAyristirBtn" runat="server" CssClass="btn btn-secondary" Text="Ödemeleri Ayrıştır ve Kaydet" OnClick="OdemeAyristirBtn_Click" />
+        <asp:LinkButton ID="OdemeBolusturModalAcBtn" runat="server" CssClass="btn btn-secondary" Text="Kira Ödemelerini Bölüştür ve Kaydet" OnClick="OdemeBolusturModalAcBtn_Click" />
+        <asp:LinkButton ID="OdemeBolusturBtn" runat="server" CssClass="btn btn-secondary" Text="Kira Ödemelerini Bölüştür ve Kaydet" OnClick="OdemeBolusturBtn_Click" />
     </div>
 </div>

@@ -1,5 +1,4 @@
-﻿using Microsoft.SharePoint;
-using Model.NBYS;
+﻿using Model.NBYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -123,7 +122,7 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
 
             if (!Page.IsPostBack)
             {
-                YonergeLnk.HRef = NBYSOrtak.YonergeURLGetir(ProjeConstants.PARAM_FTKYONERGE,ProjeConstants.PAGE_FTKKISI_GIRISI);
+                YonergeLnk.HRef = NBYSOrtak.YonergeURLGetir(ProjeConstants.PARAM_FTKYONERGE, ProjeConstants.PAGE_FTKKISI_GIRISI);
                 IlkACilis();
             }
         }
@@ -175,7 +174,7 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
                     }
                 }
             }
-            
+
         }
         private void FTKGoreviDDLDoldur()
         {
@@ -232,16 +231,16 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
             {
                 if (ftkkisi != null)
                 {
-                    IdLbl.Text =ftkkisi.Id.ToString();
+                    IdLbl.Text = ftkkisi.Id.ToString();
                     AdiTxt.Text = ftkkisi.Adi;
                     SoyadiTxt.Text = ftkkisi.Soyadi;
                     TCKimlikNoTxt.Text = ftkkisi.TCKimlikNo.ToString();
                     DogumTarihiTxt.Text = ftkkisi.DogumTarihi.ConvertToDatetimeEmptyIfNull();
                     Telefon1Txt.Text = ftkkisi.Telefon1;
                     Telefon2Txt.Text = ftkkisi.Telefon2;
-                    
+
                     UnvaniTxt.Text = ftkkisi.Unvani;
-                    ValiChk.Checked= ftkkisi.Vali;
+                    ValiChk.Checked = ftkkisi.Vali;
                     KaymakamChk.Checked = ftkkisi.Kaymakam;
                     AdresTxt.Text = ftkkisi.Adres;
                     AciklamaTxt.Text = ftkkisi.Aciklama;
@@ -253,14 +252,14 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
                         IliDDL.SelectedValue = ilItem.Value;
                         IlceDDLDoldur();
                         UtilityHelper.SetDDLValue(IliDDL, ftkkisi.Ili.ToString());
-                        UtilityHelper.SetDDLValue(IlcesiDDL, ftkkisi.Ilcesi.ToString());                        
+                        UtilityHelper.SetDDLValue(IlcesiDDL, ftkkisi.Ilcesi.ToString());
                         IliIdQS = ftkkisi.Ili.ToString();
                         IlcesiIdQS = ftkkisi.Ilcesi.ToString();
                     }
                     KartNoTxt.Text = ftkkisi.KartNo;
-                    UtilityHelper.SetDDLValue(FTKGoreviDDL,ftkkisi.FTKGorevi.ToString());
+                    UtilityHelper.SetDDLValue(FTKGoreviDDL, ftkkisi.FTKGorevi.ToString());
                     UtilityHelper.SetDDLValue(UyelikDurumuDDL, ftkkisi.UyelikDurumu);
-                    
+
                 }
                 else
                 {
@@ -355,7 +354,7 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
             ExceptionHelper exceptionHelper = new ExceptionHelper();
             try
             {
-                
+
                 bool guncellendiMi = GuncelleFTKKisiData2Db(exceptionHelper);
                 if (guncellendiMi)
                 {
@@ -364,7 +363,7 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
                 else
                 {
                     throw (new Exception("Kişi Güncellenemedi."));
-                   
+
                 }
             }
             catch (Exception ex)
@@ -378,13 +377,13 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
             bool guncellendiMi = false;
             FTKKisi ftkKisi = new FTKKisi();
             ftkKisi = ftkKisi.Select<FTKKisi>(FTKKisiIdQS.ConvertToInt());
-            if((ftkKisi.TCKimlikNo!=TCKimlikNoTxt.Text.ConvertToLong()) && KayitVarMi(TCKimlikNoTxt.Text.ConvertToLong()))
+            if ((ftkKisi.TCKimlikNo != TCKimlikNoTxt.Text.ConvertToLong()) && KayitVarMi(TCKimlikNoTxt.Text.ConvertToLong()))
             {
                 exceptionHelper.Exceptions.Add(new Exception("Bu TCKimlik numaralı bir kayıt zaten var."));
             }
             else
             {
-                
+
                 if (ftkKisi != null)
                 {
                     ftkKisi.Adi = AdiTxt.Text;
@@ -414,7 +413,7 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
                     FTKKisiIdQS = ftkKisi.Id.ToString();
                     IliIdQS = ftkKisi.Ili.ToString();
                     IlcesiIdQS = ftkKisi.Ilcesi.ToString();
-                } 
+                }
             }
             return guncellendiMi;
         }
@@ -445,7 +444,7 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
         }
         private bool KayitVarMi(long tckimlikno)
         {
-            if (tckimlikno<1)
+            if (tckimlikno < 1)
             {
                 return false;
             }
@@ -496,7 +495,7 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
             FTKIslem fTKIslem = new FTKIslem();
             fTKIslem = fTKIslem.SelectByIliIlcesi(IliIdQS.ConvertToInt(), IlcesiIdQS.ConvertToInt());
             string ftkIslemId = fTKIslem == null ? string.Empty : fTKIslem.Id.ToString();
-            RedirectToPage(ProjeConstants.PAGE_FTKISLEMLERI + "?FTKIslemId=" + ftkIslemId + "&IliId=" + IliIdQS + "&IlcesiId=" + IlcesiIdQS );
+            RedirectToPage(ProjeConstants.PAGE_FTKISLEMLERI + "?FTKIslemId=" + ftkIslemId + "&IliId=" + IliIdQS + "&IlcesiId=" + IlcesiIdQS);
         }
 
         protected void FTKGoreviDDL_SelectedIndexChanged(object sender, EventArgs e)
@@ -520,7 +519,7 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
                 {
                     ValiChk.Checked = false;
                 }
-                if (ilcesiId> 0)
+                if (ilcesiId > 0)
                 {
                     KaymakamChk.Checked = true;
                     ValiChk.Checked = false;
@@ -610,7 +609,7 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
 
         protected void YeniKayitBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_FTKKISI_GIRISI+"?IliId="+IliIdQS+"&IlcesiId="+IlcesiIdQS);
+            RedirectToPage(ProjeConstants.PAGE_FTKKISI_GIRISI + "?IliId=" + IliIdQS + "&IlcesiId=" + IlcesiIdQS);
         }
     }
 }

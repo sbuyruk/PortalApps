@@ -1,10 +1,8 @@
 ﻿using Model.NBYS;
 using Model.Ortak;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
-using System.Web;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
@@ -268,7 +266,7 @@ namespace NBYS_WebParts.NakitBagisciBulmaWP
         {
             NakitBagisci nb = new NakitBagisci();
             nb = nb.Select<NakitBagisci>(nakitBagisciId);
-            string bagisciAdi = nb != null ? (nb.Adi + nb.Soyadi).ReplaceTrChars():"Bagisci";
+            string bagisciAdi = nb != null ? (nb.Adi + nb.Soyadi).ReplaceTrChars() : "Bagisci";
             string filename = bagisciAdi + "-" + DateTime.Today.Day + "-" + DateTime.Today.Month + "-" + DateTime.Today.Year;
             string tableString = @"
         jQuery(document).ready(function () {
@@ -313,7 +311,7 @@ namespace NBYS_WebParts.NakitBagisciBulmaWP
                 },
                     {
                       extend: 'excel',
-                      title:'"+filename+@"',
+                      title:'" + filename + @"',
                       exportOptions: {
                           columns: ':visible',
                           format: {

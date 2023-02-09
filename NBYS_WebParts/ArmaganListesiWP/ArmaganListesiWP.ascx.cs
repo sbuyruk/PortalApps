@@ -210,7 +210,7 @@ namespace NBYS_WebParts.ArmaganListesiWP
                     }
                     else
                     {
-                        ViewState["SecilenDurum"] = string.Empty;
+                        ViewState["SecilenDurum"] = ProjeConstants.HEPSI;
                     }
                 }
                 return ViewState["SecilenDurum"].ToString();
@@ -219,6 +219,30 @@ namespace NBYS_WebParts.ArmaganListesiWP
             set
             {
                 ViewState["SecilenDurum"] = value;
+            }
+        }
+        private string SecilenIlQS
+        {
+            get
+            {
+
+                if (ViewState["SecilenIl"] == null)
+                {
+                    if (Page.Request.QueryString["SecilenIl"] != null)
+                    {
+                        ViewState["SecilenIl"] = Page.Request.QueryString["SecilenIl"];
+                    }
+                    else
+                    {
+                        ViewState["SecilenIl"] = ProjeConstants.HEPSI_INT.ToString();
+                    }
+                }
+                return ViewState["SecilenIl"].ToString();
+            }
+
+            set
+            {
+                ViewState["SecilenIl"] = value;
             }
         }
         protected void Page_Load(object sender, EventArgs e)
@@ -264,7 +288,7 @@ namespace NBYS_WebParts.ArmaganListesiWP
                 string armagan = baslikRow["Armagan"].ReturnEmptyIfNull().ToString();
                 string dovizCinsi = baslikRow["DovizCinsi"].ReturnEmptyIfNull().ToString();
                 decimal armaganTutari = baslikRow["ArmaganTutari"].ConvertToDecimal();
-                string armaganTutariStr= armaganTutari >0 ? armaganTutari.ToString("N", culturInfo) + " "+dovizCinsi:string.Empty;
+                string armaganTutariStr = armaganTutari > 0 ? armaganTutari.ToString("N", culturInfo) + " " + dovizCinsi : string.Empty;
                 ArmaganLbl.Text = armagan + " (" + armaganTutariStr + ")";
                 foreach (DataRow row in dataTable.Rows)
                 {
@@ -368,13 +392,14 @@ namespace NBYS_WebParts.ArmaganListesiWP
             }
 
         }
-       
+
         private void DDLleriDoldur()
         {
             GunDDLDoldur();
             AyDDLDoldur();
             YilDDLDoldur();
             DurumDDLDoldur();
+            IlDDLDoldur();
             ArmaganTanimDDLDOoldur();
         }
         private void GunDDLDoldur()
@@ -429,6 +454,7 @@ namespace NBYS_WebParts.ArmaganListesiWP
             DurumDDL.Items.Add(ProjeConstants.DURUM_IADE);
             DurumDDL.Items.Add(ProjeConstants.DURUM_DAHAONCEIADE);
             DurumDDL.Items.Add(ProjeConstants.DURUM_PARAIADE);
+            DurumDDL.Items.Add(ProjeConstants.DURUM_AFETNEDENIYLE_GONDERILMEDI);
 
             //acilista durumu querystring ile gelene eşitle
             ListItem DurumItem = new ListItem();
@@ -437,6 +463,22 @@ namespace NBYS_WebParts.ArmaganListesiWP
 
             if (DurumItem != null)
                 DurumDDL.SelectedValue = DurumItem.Value;
+        }
+        private void IlDDLDoldur()
+        {
+            if (IliDDL.SelectedItem == null)
+            {
+                IliDDL.Items.Clear();
+
+                Il pIl = new Il();
+                List<Il> list = pIl.SelectAll<Il>();
+                IliDDL.Items.Add(new ListItem(ProjeConstants.HEPSI, ProjeConstants.HEPSI_INT.ToString()));
+                foreach (Il il in list)
+                {
+                    IliDDL.Items.Add(new ListItem(il.IlAdi, il.Id.ToString()));
+                }
+            }
+
         }
         private void SetDDLValues()
         {
@@ -502,7 +544,17 @@ namespace NBYS_WebParts.ArmaganListesiWP
                     DurumDDL.SelectedValue = DurumItem.Value;
                     SecilenDurumQS = DurumItem.Value;
                 }
+                //Il
+                int ili = SecilenIlQS.ConvertToInt()>0 ? SecilenIlQS.ConvertToInt() : ProjeConstants.HEPSI_INT;
+                ListItem ilListItem = new ListItem();
+                if (ili>0)
+                    ilListItem = IliDDL.Items.FindByValue(ili.ToString());
 
+                if (ilListItem != null)
+                {
+                    IliDDL.SelectedValue = ilListItem.Value;
+                    SecilenIlQS = ilListItem.Value;
+                }
             }
             catch (Exception)
             {
@@ -630,6 +682,11 @@ namespace NBYS_WebParts.ArmaganListesiWP
         protected void DurumDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
             SecilenDurumQS = DurumDDL.SelectedItem.Value.ToString();
+            TabloOlustur();
+        }
+        protected void IliDDL_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SecilenIlQS = IliDDL.SelectedItem.Value.ToString();
             TabloOlustur();
         }
         protected void IadeEdildiYapBtn_Click(object sender, EventArgs e)
@@ -768,8 +825,8 @@ namespace NBYS_WebParts.ArmaganListesiWP
                 //    bittar = new DateTime(yil, ay, basGun.Day);
 
             }
-
-            var json = armagan.SelectByDurumTarih(DurumDDL.SelectedItem.Text, bastar, bittar, ArmaganDDL.SelectedItem.Value, ref rowCount, ProjeConstants.BOLGE_HEPSI);
+            int ili = SecilenIlQS.ConvertToInt();
+            var json = armagan.SelectByDurumTarih(DurumDDL.SelectedItem.Text, bastar, bittar, ArmaganDDL.SelectedItem.Value, ref rowCount, ProjeConstants.BOLGE_HEPSI, ili);
             return json;
 
         }
@@ -779,7 +836,7 @@ namespace NBYS_WebParts.ArmaganListesiWP
             string reportBeratUrl = "http://tskgv-portal/YonetimBirimleri/BasinTanitimHalklaIliskilerSubesi/Sayfalar" + "/" + ProjeConstants.PAGE_BERATBELGESITEK_VIEWER + "?ArmaganId=";
 
             string queryStr = "&SecilenGun=" + SecilenGunQS + "&SecilenAy=" + SecilenAyQS + "&SecilenYil="
-                + SecilenYilQS + "&SecilenArmaganTanimId=" + SecilenArmaganTanimIdQS + "&SecilenDurum=" + SecilenDurumQS;
+                + SecilenYilQS + "&SecilenArmaganTanimId=" + SecilenArmaganTanimIdQS + "&SecilenDurum=" + SecilenDurumQS + "&SecilenIl=" + SecilenIlQS;
 
             string tableString = @"
                 if ( jQuery.fn.DataTable.isDataTable('#CustomDataTable') ) {
@@ -793,7 +850,7 @@ namespace NBYS_WebParts.ArmaganListesiWP
                     'initComplete': function (settings, json) {//tablo yüklendiğinde
                         var api = this.api();
                         var row = api.row(function(idx, data, node) { //secilen satıra gider
-                            return data['ArmaganId'] =="+SecilenIdQS+@";
+                            return data['ArmaganId'] ==" + SecilenIdQS + @";
                         });
                         if (row.length > 0)
                         {
@@ -895,6 +952,11 @@ namespace NBYS_WebParts.ArmaganListesiWP
                         }
                         else {
                             $(row).addClass('diger');
+                        }
+                        var ili = data.IlId;
+                        if ((ili==1) ||(ili==2) ||(ili==21) ||(ili==27) ||(ili==31) ||(ili==44) ||(ili==46) ||(ili==63) ||(ili==79) ||(ili==80) )
+                        {
+                            $(row).addClass('afet-ili');
                         }
                     },//set row color
                 });

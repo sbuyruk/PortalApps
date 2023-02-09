@@ -687,19 +687,132 @@ namespace Model.NBYS
             }
             return dataTable;
         }
-        public DataTable SelectByTarihBankaId(DateTime bastar, DateTime bittar, string bankaGrup)
+        public DataTable SelectByTarihBankaGrup(DateTime bagisTarihi, string bankaGrup)
         {
             string bankaGrupStr = string.IsNullOrEmpty(bankaGrup) ? string.Empty : string.Format(" AND BankaGrup={0}", bankaGrup.ReturnQuotedValue());
-            string sqlString = string.Format(@"
-                
-                SELECT BagisTarihi, SUM(BagisMiktari) ToplamBagis, B.BankaGrup Banka 
+            string sqlString = string.Format(@"             
+                SELECT BagisTarihi,  SUM(BagisMiktari + ISNULL(IadeMiktari,0)) ToplamBagis, B.BankaGrup Banka 
                 FROM NakitBagisHareket_Table A
 	                LEFT JOIN BankaTanim_Table B ON B.Id=A.BankaId
-                WHERE BagisTarihi >= {0} AND BagisTarihi <= {1}
+                WHERE BagisTarihi = {0} 
+                {1}
+                GROUP BY BagisTarihi, B.BankaGrup  
+            ", bagisTarihi.ReturnTRDateFormat(), bankaGrupStr);
+            DataTable dataTable;
+            try
+            {
+                dataTable = dao.selectFromDb(sqlString, "");
+            }
+            catch (Exception e)
+            {
+                Exception ex = new Exception("sql=" + sqlString, e);
+                throw ex;
+            }
+            return dataTable;
+        }
+        public DataTable SelectTlBagisByTarihBankaGrup2(DateTime bagisTarihi, string bankaGrup2)
+        {
+            string bankaGrupStr = string.IsNullOrEmpty(bankaGrup2) ? string.Empty : string.Format(" AND BankaGrup2={0}", bankaGrup2.ReturnQuotedValue());
+            string sqlString = string.Format(@"             
+                SELECT BagisTarihi,  SUM(BagisMiktari + ISNULL(IadeMiktari,0)) ToplamBagis, B.BankaGrup2 Banka 
+                FROM NakitBagisHareket_Table A
+	                LEFT JOIN BankaTanim_Table B ON B.Id=A.BankaId
+                WHERE DovizCinsi={0} AND BagisTarihi = {1} 
                 {2}
-                GROUP BY BagisTarihi, B.BankaGrup
-                ORDER BY BagisTarihi 
-            ", bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat(), bankaGrupStr);
+                GROUP BY BagisTarihi, B.BankaGrup2  
+            ",ProjeConstants.DOVIZ_TL.ReturnQuotedValue(), bagisTarihi.ReturnTRDateFormat(), bankaGrupStr);
+            DataTable dataTable;
+            try
+            {
+                dataTable = dao.selectFromDb(sqlString, "");
+            }
+            catch (Exception e)
+            {
+                Exception ex = new Exception("sql=" + sqlString, e);
+                throw ex;
+            }
+            return dataTable;
+        }
+        public DataTable SelectDovizBagisByTarihBankaGrup2(DateTime bastar,DateTime bittar, string bankaGrup2,string dovizCinsi)
+        {
+            string bankaGrupStr = string.IsNullOrEmpty(bankaGrup2) ? string.Empty : string.Format(" AND BankaGrup2={0}", bankaGrup2.ReturnQuotedValue());
+            string sqlString = string.Format(@"  
+                SELECT BagisTarihi, A.DovizTutari,A.DovizKuru,A.DovizCinsi,A.BagisMiktari, B.BankaGrup2, B.Banka 
+                FROM NakitBagisHareket_Table A
+	                LEFT JOIN BankaTanim_Table B ON B.Id=A.BankaId
+                WHERE DovizCinsi={0} AND (BagisTarihi >= {1} AND BagisTarihi <= {2})  
+                {3}
+            ", dovizCinsi.ReturnQuotedValue(), bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat(), bankaGrupStr);
+            DataTable dataTable;
+            try
+            {
+                dataTable = dao.selectFromDb(sqlString, "");
+            }
+            catch (Exception e)
+            {
+                Exception ex = new Exception("sql=" + sqlString, e);
+                throw ex;
+            }
+            return dataTable;
+        }
+        public List<string> SelectBankaGrup2ByTarihDovizCinsi(DateTime bastar, DateTime bittar, string dovizCinsi)
+        {
+            string dovizCinsiStr = string.IsNullOrEmpty(dovizCinsi) ? string.Empty : string.Format(" AND DovizCinsi={0}", dovizCinsi.ReturnQuotedValue());
+            string sqlString = string.Format(@"
+                SELECT BankaGrup2
+                FROM NakitBagisHareket_Table A
+					INNER JOIN BankaTanim_Table B ON B.Id=A.BankaId 
+				WHERE BagisTarihi >={0} AND BagisTarihi<={1}
+                    {2}
+                GROUP BY BankaGrup2
+                ", bastar.ReturnTRDateFormat(),bittar.ReturnTRDateFormat(),dovizCinsiStr) ;
+
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            List<string> list = new List<string>();
+            if (dataTable!=null)
+            {
+                list = dataTable.AsEnumerable()
+                       .Select(r => r.Field<string>("BankaGrup2"))
+                       .ToList(); 
+            }
+            return list;
+        }
+        public DataTable SelectByTarihBankaId(DateTime bagisTarihi, int bankaId)
+        {
+            string bankaIdStr = bankaId==0 ? string.Empty : string.Format(" AND BankaId={0}", bankaId);
+            string sqlString = string.Format(@"             
+                SELECT BagisTarihi,  SUM(BagisMiktari + ISNULL(IadeMiktari,0)) ToplamBagis, B.BankaGrup Banka 
+                FROM NakitBagisHareket_Table A
+	                LEFT JOIN BankaTanim_Table B ON B.Id=A.BankaId
+                WHERE BagisTarihi = {0} 
+                {1}
+                GROUP BY BagisTarihi, B.BankaGrup  
+            ", bagisTarihi.ReturnTRDateFormat(), bankaIdStr);
+            DataTable dataTable;
+            try
+            {
+                dataTable = dao.selectFromDb(sqlString, "");
+            }
+            catch (Exception e)
+            {
+                Exception ex = new Exception("sql=" + sqlString, e);
+                throw ex;
+            }
+            return dataTable;
+        }
+        public DataTable SelectDovizleBagisByTarihBankaId(DateTime bastar, DateTime bittar, string bankaGrup)
+        {
+            string bankaGrupStr = string.IsNullOrEmpty(bankaGrup)||bankaGrup.Equals("0") ? string.Empty : string.Format(" AND BankaGrup={0}", bankaGrup.ReturnQuotedValue());
+            string sqlString = string.Format(@"
+                
+                SELECT DovizCinsi, SUM(BagisMiktari) TlKarsiligiToplamBagis, SUM(DovizTutari) ToplamDovizTutari, B.BankaGrup Banka 
+                FROM NakitBagisHareket_Table A
+	                LEFT JOIN BankaTanim_Table B ON B.Id=A.BankaId
+                WHERE DovizCinsi!={0} AND BagisTarihi >= {1} AND BagisTarihi <= {2}
+                {3}
+                GROUP BY DovizCinsi, B.BankaGrup
+                ORDER BY Banka 
+            ", ProjeConstants.DOVIZ_TL.ReturnQuotedValue(), bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat(), bankaGrupStr);
             DataTable dataTable;
             try
             {

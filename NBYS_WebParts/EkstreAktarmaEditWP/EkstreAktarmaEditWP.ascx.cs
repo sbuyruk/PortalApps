@@ -145,6 +145,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
                 ViewState["Param"] = value;
             }
         }
+        private IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -277,12 +278,12 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
             {
                 DovizDiv.Attributes["style"] = "display:block";
             }
-            DovizKuruTxt.Text = ekstreAktarma.DovizKuru.ReturnZeroIfNull().ConvertToDecimal().ToString("N",culturInfo);
-            DovizTutariTxt.Text = ekstreAktarma.DovizTutari.ReturnZeroIfNull().ConvertToDecimal().ToString("N",culturInfo);
+            DovizKuruTxt.Text = ekstreAktarma.DovizKuru.ReturnZeroIfNull().ConvertToDecimal().ToString("N", culturInfo);
+            DovizTutariTxt.Text = ekstreAktarma.DovizTutari.ReturnZeroIfNull().ConvertToDecimal().ToString("N", culturInfo);
             HesaplananTlLbl.Text = (ekstreAktarma.DovizTutari.ReturnZeroIfNull().ConvertToDecimal() * ekstreAktarma.DovizKuru.ReturnZeroIfNull().ConvertToDecimal()).ToString("N", culturInfo);
 
-            KurTarihiTxt.Text= ekstreAktarma.KurTarihi.ConvertToDatetimeEmptyIfNull();   
-            
+            KurTarihiTxt.Text = ekstreAktarma.KurTarihi.ConvertToDatetimeEmptyIfNull();
+
             EPostaTxt.Text = ekstreAktarma.Eposta.ReturnEmptyIfNull().ToString();
             PostaKoduTxt.Text = ekstreAktarma.PostaKodu.ReturnEmptyIfNull().ToString();
             TutarTlTxt.Text = ekstreAktarma.Tutar.ReturnEmptyIfNull().ToString();
@@ -386,6 +387,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
                 DovizCinsiDDL.Items.Add(new ListItem(ProjeConstants.DOVIZ_TL, ProjeConstants.DOVIZ_TL));
                 DovizCinsiDDL.Items.Add(new ListItem(ProjeConstants.DOVIZ_EURO, ProjeConstants.DOVIZ_EURO));
                 DovizCinsiDDL.Items.Add(new ListItem(ProjeConstants.DOVIZ_USD, ProjeConstants.DOVIZ_USD));
+                DovizCinsiDDL.Items.Add(new ListItem(ProjeConstants.DOVIZ_GBP, ProjeConstants.DOVIZ_GBP));
             }
         }
         protected void KaydetBtn_Click(object sender, EventArgs e)
@@ -454,7 +456,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
             ekstreAktarma.Ili = IliDDL.SelectedItem.Text.ReturnEmptyIfNull().ToString();
             ekstreAktarma.Ilcesi = IlcesiDDL.SelectedItem.Text.ReturnEmptyIfNull().ToString();
             ekstreAktarma.BankaAdi = BankaDDL.SelectedItem.Text.ReturnEmptyIfNull().ToString();
-            ekstreAktarma.DovizCinsi = DovizCinsiDDL.SelectedItem==null? ProjeConstants.DOVIZ_TL : DovizCinsiDDL.SelectedItem.Value;
+            ekstreAktarma.DovizCinsi = DovizCinsiDDL.SelectedItem == null ? ProjeConstants.DOVIZ_TL : DovizCinsiDDL.SelectedItem.Value;
             ekstreAktarma.Eposta = EPostaTxt.Text.ReturnEmptyIfNull().ToString();
             ekstreAktarma.PostaKodu = PostaKoduTxt.Text.ReturnEmptyIfNull().ToString();
             ekstreAktarma.Tutar = TutarTlTxt.Text.ConvertToDecimal();
@@ -556,9 +558,9 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
         {
             IlceDDLDoldur();
         }
-        protected void chkBilinmeyen_CheckedChanged(object sender, EventArgs e)
+        protected void ChkBilinmeyen_CheckedChanged(object sender, EventArgs e)
         {
-            if (chkBilinmeyen.Checked)
+            if (ChkBilinmeyen.Checked)
             {
                 AdiTxt.Text = ProjeConstants.NAKITBAGISCI_BILINMEYEN;
                 AdiTxt.Attributes["class"] += " makeDisabled ";
@@ -582,6 +584,15 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
         {
             RedirectToPage(ProjeConstants.PAGE_EKSTRE_LIST + "?SenderApp=EAE&IslemTarihi=" + IslemTarihiTxt.Text + "&EkstreAktarmaId=" + EkstreAktarmaIdQS + "&Banka=" + BankaQS);
         }
+        protected void HesaplaBtn_Click(object sender, EventArgs e)
+        {
+            decimal dtutar = DovizTutariTxt.Text.ConvertToDecimal();
+            decimal dkur = DovizKuruTxt.Text.ConvertToDecimal();
+
+            var tutarTl = dkur * dtutar;
+            HesaplananTlLbl.Text = tutarTl.ToString("N", culturInfo);
+            TutaraYazBtn.Visible = tutarTl > 0;
+        }
 
         protected void EslestirBtn_Click(object sender, EventArgs e)
         {
@@ -589,8 +600,8 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
         }
         protected void DovizCinsiDDLIli_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (DovizCinsiDDL.SelectedItem.Value.Equals(ProjeConstants.DOVIZ_TL)) 
-            { 
+            if (DovizCinsiDDL.SelectedItem.Value.Equals(ProjeConstants.DOVIZ_TL))
+            {
                 DovizDiv.Attributes["style"] = "display:none";
             }
             else

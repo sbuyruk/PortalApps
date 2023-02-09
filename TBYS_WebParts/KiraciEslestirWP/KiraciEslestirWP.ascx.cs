@@ -3,7 +3,10 @@ using Model.TBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
+using System.Globalization;
 using System.Web;
+using System.Web.Script.Serialization;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
@@ -51,29 +54,6 @@ namespace TBYS_WebParts.KiraciEslestirWP
                 ViewState["KiraEkstreAktarmaId"] = value;
             }
         }
-        private string BankaQS
-        {
-            get
-            {
-                if (ViewState["Banka"] == null)
-                {
-                    if (Page.Request.QueryString["Banka"] != null)
-                    {
-                        ViewState["Banka"] = Page.Request.QueryString["Banka"];
-                    }
-                    else
-                    {
-                        ViewState["Banka"] = string.Empty;
-                    }
-                }
-                return ViewState["Banka"].ToString();
-            }
-
-            set
-            {
-                ViewState["Banka"] = value;
-            }
-        }
         private string SenderAppQS
         {
             get
@@ -98,6 +78,31 @@ namespace TBYS_WebParts.KiraciEslestirWP
                 ViewState["SenderApp"] = value;
             }
         }
+        private string SecilenIdQS
+        {
+            get
+            {
+
+                if (ViewState["SecilenId"] == null)
+                {
+                    if (Page.Request.QueryString["SecilenId"] != null)
+                    {
+                        ViewState["SecilenId"] = Page.Request.QueryString["SecilenId"];
+                    }
+                    else
+                    {
+                        ViewState["SecilenId"] = string.Empty;
+                    }
+                }
+                return ViewState["SecilenId"].ToString();
+            }
+
+            set
+            {
+                ViewState["SecilenId"] = value;
+            }
+        }
+        private IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -109,84 +114,189 @@ namespace TBYS_WebParts.KiraciEslestirWP
                         KiraEkstreAktarma ekstreAktarma = new KiraEkstreAktarma();
                         ekstreAktarma = ekstreAktarma.Select<KiraEkstreAktarma>(KiraEkstreAktarmaIdQS.ConvertToInt());
                         KiraciAraTxt.Text = ekstreAktarma != null ? ekstreAktarma.Adi : "";
-
+                        TabloOlustur();
                     }
                 }
-                KayitGetir();
+                
             }
             catch (Exception ex)
             {
                 ExceptionHelper exHelper = new ExceptionHelper(ex);
                 exHelper.PublishException();
             }
-        }
-        private string GetKiraciData()
+        }        
+        #region customdatatable
+        private void TabloOlustur()
         {
-            string json = string.Empty;
-            if (!string.IsNullOrEmpty(KiraciAraTxt.Text) && KiraciAraTxt.Text.Length >= 3)
+            var jsonData = TabloJson(); 
+            var jsString = CreateDataTable(jsonData); 
+            UtilityHelper.ScriptCalistir(jsString);
+        }
+        private string TabloJson()
+        {
+            string jSon = string.Empty;
+
+            try
             {
-                Kiraci kiraci = new Kiraci();
-                json = kiraci.SelectByFilter(KiraciAraTxt.Text);
+                List<KiraciListItem> list = GetDataList();
+                var serializer = new JavaScriptSerializer();
+                jSon = serializer.Serialize(list);
             }
-            return json;
-        }
-        private void KayitGetir()
-        {
-            var jsonData = GetKiraciData(); //veri çekilip json a çeviriliyor
-            if (!string.IsNullOrEmpty(jsonData))
+            catch (Exception exception)
             {
-                string jsString = CreateJsString(jsonData); //javascript kodu hazırlanıyor.
-                System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), jsString, true);
-                KiraciSecTableDiv.Attributes["style"] = "display:block";
+                ExceptionHelper exceptionHelper = new ExceptionHelper();
+                exceptionHelper.Exceptions.Add(exception);
+                exceptionHelper.PublishException();
             }
+            return jSon;
         }
-        private string CreateJsString(string jsonData)
+        private string CreateDataTable(string jsonData)
         {
-            string spaceStr = HttpUtility.UrlEncode(KiraciAraTxt.Text.ToString());
-            string ekstretablestr = @"   
-                                        $('#tblfilter').puidatatable({
-                                        caption: '',
-                                        editMode: 'cell',
-                                        paginator: {
-                                                    rows: 8
-                                                    },
-                                        columns: [
-                                            { field: 'Adi', headerText: 'Adi', sortable:true,filter: true,headerClass:'genisSutun',
-                                                content: function (rowData)
-                                                    {
-                                                        return $('<a href=# onclick=OpenModal('+rowData.KiraciId+'); class=\'btn btn-link \'>'+rowData.Adi+'</a>')
-                                                    }
-                                            },
-                                            { field: 'TCKimlikNo', headerText: 'TCKimlikNo', sortable:true,filter: true },
-                                            { field: 'Ili', headerText: 'İl', sortable:true,filter: true },
-                                            { field: 'Ilcesi', headerText: 'İlçe', sortable:true,filter: true },
-                                            { field: 'Telefon', headerText: 'Telefon',filter: true},
-                                            { field: 'Adres', headerText: 'Adres',filter: true,headerClass:'genisSutun'},
-                                            { field: 'KiraciId', content: function (rowData)
-                                    	                { 
-                                                            return $('<a href=# onclick=KiraciSec('+rowData.KiraciId+'); class=\'btn btn-outline-primary \'>Seç</a>')
-                                    	                }
-                                                    }
-                                                ],
+            string tableString = @"
+                jQuery.fn.dataTable.moment('DD.MM.YYYY');//sort date
+                jQuery(document).ready(function () {
+                    jQuery('#CustomDataTable').DataTable({
+                        'initComplete': function (settings, json) {//tablo yüklendiğinde
+                            var api = this.api();
+                            var row = api.row(function (idx, data, node) { //secilen kayda gider
+                                return data['Secildi'] == true;
+                            });
+                            if (row.length > 0) {
+                                row.select()
+                                    .show()
+                                    .draw(false);
+                            }
+                        },
+                        data: " + jsonData + @",
+                        columns: [
+                            { data: 'KiraciId' },
+                            { data: 'AdiUnvani' },
+                            { data: 'Adres' },
+                            { data: 'Bolge' },
+                            { data: 'IlceIl' },
+                            { data: 'SozBasTar' },
+                            { data: 'SozBitTar' },
+                            { data: 'KiraBedeli' },
+                            { data: 'Sec' },               
+                        ],
+                        'order': [[5, 'desc']],//SozBasTar Sıralı
+                        'columnDefs': [
+                            { 'width': '20%', 'targets': 1 },
+                            { 'width': '25%', 'targets': 2 }
 
-                                       datasource:" + jsonData + @",
-                                       resizableColumns: true,
-                                       globalFilter:'#globalFilter'
-                                       });
-                                    ";
+                        ],
+                        'language': {
+                             'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
+                            'decimal': ',',
+                            'thousands': '.'
+                        },
+                        responsive: true,
+                        destroy: true,
+                        dom: 'frtip',
+                        
+                        'createdRow': function(row, data, dataIndex) {
+                            if ((!data.Aktif)&&(!data.Secildi))
+                            {
+                                $(row).addClass('pasif-kiraci');
 
+                            }
+                        },//set row color
+                        });
+                    });
 
-            return ekstretablestr;
+            ";
+
+            return tableString;
         }
+        private List<KiraciListItem> GetDataList()
+        {
+            KiraEkstreAktarma kea = new KiraEkstreAktarma();
+            kea = kea.Select<KiraEkstreAktarma>(KiraEkstreAktarmaIdQS.ConvertToInt());
+            if (kea != null)
+            {
+                GelenOdemeLbl.Text = "Ödenen Tutar :" + kea.Tutar.ToString("N", culturInfo) + " TL";
+            }
+            
+            Kiraci kiraci = new Kiraci();
+            DataTable dataTable = kiraci.SelectByFilterReturnDataTable(KiraciAraTxt.Text);
 
+            List<KiraciListItem> list = new List<KiraciListItem>();
+            
+            if (dataTable!=null)
+            {
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    string kiraciId = row["KiraciId"].ToString();
+                    string sozlesmeId = row["SozlesmeId"].ToString();
+                    string adi = row["Adi"].ToString();
+                    string soyadi = row["Soyadi"].ToString();
+
+                    string bolge = row["Bolge"].ToString();
+                    string ilIlce = row["Ili"].ToString() + " " + row["Ilcesi"].ToString();
+                    string adres = row["Adres"].ToString();
+                    string kiraBedeli = row["KiraBedeli"].ConvertToDecimal().ToString("N", culturInfo);
+                    string sozBasTar = row["SozBasTar"].ConvertToDatetime().ConvertToDatetimeEmptyIfNull();
+                    string sozBitTar = row["SozBitTar"].ConvertToDatetime().ConvertToDatetimeEmptyIfNull();
+                    string sozlesme = sozBasTar + " - " + sozBitTar;
+                    bool aktif = row["Aktif"].ReturnFalseIfNull().ConvertToBool();
+
+                    KiraciListItem kiraciItem = new KiraciListItem();
+                    kiraciItem.KiraciId = kiraciId;
+                    kiraciItem.AdiUnvani = (adi + " " + soyadi).Trim();
+
+                    kiraciItem.Bolge = bolge;
+                    kiraciItem.IlceIl = ilIlce;
+                    kiraciItem.Adres = adres;
+                    kiraciItem.KiraBedeli = kiraBedeli;
+                    kiraciItem.Sozlesme = sozlesme;
+                    kiraciItem.SozBasTar= sozBasTar;
+                    kiraciItem.SozBitTar = sozBitTar;
+                    KiraSozlesme ks = new KiraSozlesme();
+
+                    if (!aktif)
+                    {
+                        ks = ks.SelectBitenSozlesmeByKiraciId(kiraciId.ConvertToInt());
+                    }
+                    else
+                    {
+                        ks = ks.SelectAktifSozlesmeByKiraciId(kiraciId.ConvertToInt());
+                    }
+
+                    int sonSozlesmeId = ks != null ? ks.Id : sozlesmeId.ConvertToInt();
+                    kiraciItem.Sec = "<a href=# onclick=KiraciSec(" + kiraciId + ","+sozlesmeId+"); class='btn btn-outline-primary \'>Seç</a>";
+
+                    kiraciItem.Aktif = aktif;
+                    list.Add(kiraciItem);
+                } 
+            }
+            return list;
+        }
+        #endregion
+        #region class 
+        private class KiraciListItem
+        {
+            public string KiraciId { get; set; }
+            public string AdiUnvani { get; set; }
+            public string Adres { get; set; }
+            public string Bolge { get; set; }
+            public string IlceIl { get; set; }
+            public string Sozlesme { get; set; }
+            public string SozBasTar { get; set; }
+            public string SozBitTar { get; set; }
+            public string KiraBedeli { get; set; }
+            public string Teminat { get; set; }
+            public bool Aktif { get; set; }
+            public string Sec { get; set; }
+        }
+        #endregion
         protected void KiraciAraTxt_TextChanged(object sender, EventArgs e)
         {
-            KayitGetir();
+            TabloOlustur();
         }
 
         protected void KiraciAraBtn_Click(object sender, EventArgs e)
         {
-            KayitGetir();
+            TabloOlustur();
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
@@ -212,11 +322,7 @@ namespace TBYS_WebParts.KiraciEslestirWP
                 ekstreAktarma = ekstreAktarma.Select<KiraEkstreAktarma>(KiraEkstreAktarmaIdQS.ConvertToInt());
                 if ((ekstreAktarma != null) && (SenderAppQS.Equals("EkstreListesi")))//ekstrelistesinden'dan geldiyse
                 {
-                    newUrl += "/" + ProjeConstants.PAGE_KIRAEKSTRE_LIST + "?KiraEkstreAktarmaId=" + KiraEkstreAktarmaIdQS + "&Banka=" + BankaQS;
-                }
-                else if ((ekstreAktarma != null) && (SenderAppQS.Equals("EAE")))//ekstreaktarmaedit ten geldiyse
-                {
-                    newUrl += "/" + ProjeConstants.PAGE_EKSTRE_AKTARMAEDIT + "?KiraEkstreAktarmaId=" + KiraEkstreAktarmaIdQS +  "&Banka=" + BankaQS;
+                    newUrl += "/" + ProjeConstants.PAGE_KIRAEKSTRE_LIST + "?SecilenId=" + KiraEkstreAktarmaIdQS ;
                 }
                 else
                 {
@@ -232,7 +338,7 @@ namespace TBYS_WebParts.KiraciEslestirWP
         }
         protected void EkstreListesiBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_KIRAEKSTRE_LIST + "?KiraEkstreAktarmaId =" + KiraEkstreAktarmaIdQS + "&Banka=" + BankaQS);
+            RedirectToPage(ProjeConstants.PAGE_KIRAEKSTRE_LIST + "?SecilenId=" + KiraEkstreAktarmaIdQS);
         }
         private void RedirectToPage(string pageUrl)
         {
@@ -247,22 +353,7 @@ namespace TBYS_WebParts.KiraciEslestirWP
                 ExceptionHelper exHelper = new ExceptionHelper(ex);
                 exHelper.PublishException();
             }
-        }
-
-        protected void ModalDoldurBtn_Click(object sender, EventArgs e)
-        {
-            try
-            {
-
-                //tabloda modal açılırken seçili olan pagination degerini pageIndex degiskeninde saklar ve modal açıldıktan sonra pageload sırasında sayfayı pageIndex degerine getirir
-                System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "SetPageIndex();", true);
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper ex = new ExceptionHelper(exception);
-                ex.PublishException();
-            }
-        }
+        }        
         protected void KiraciSecBtn_Click(object sender, EventArgs e)
         {
             try
@@ -277,11 +368,11 @@ namespace TBYS_WebParts.KiraciEslestirWP
                     {
                         kiraEkstreAktarma.KiraciId = kiraci.Id;
                         kiraEkstreAktarma.Update();
-                        RedirectToPage(ProjeConstants.PAGE_KIRAEKSTRE_LIST );
+                        RedirectToPage(ProjeConstants.PAGE_KIRAEKSTRE_LIST+ "?SecilenId="+ KiraEkstreAktarmaIdQS);
                     }
                 }
                 //tabloda modal açılırken seçili olan pagination degerini pageIndex degiskeninde saklar ve modal açıldıktan sonra pageload sırasında sayfayı pageIndex degerine getirir
-                System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "SetPageIndex();", true);
+                UtilityHelper.ScriptCalistir( "SetPageIndex();");
             }
             catch (Exception exception)
             {

@@ -1,16 +1,12 @@
-﻿using DocumentFormat.OpenXml.Office2010.ExcelAc;
-using Model.NBYS;
+﻿using Model.NBYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Globalization;
-using System.IO;
-using System.Web;
 using System.Web.Script.Serialization;
 using System.Web.UI;
-using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
@@ -91,7 +87,7 @@ namespace NBYS_WebParts.NakitBagisciBagislariWP
                     if (!string.IsNullOrEmpty(ParamQS))
                     {
                         BagisciAraTxt.Text = ParamQS;
-                        
+
                     }
                 }
                 //TabloOlustur();
@@ -124,7 +120,7 @@ namespace NBYS_WebParts.NakitBagisciBagislariWP
                 exHelper.PublishException();
             }
         }
-      
+
         #region Bagisci listesi CustomDataTable
         private void TabloOlustur()
         {
@@ -135,9 +131,9 @@ namespace NBYS_WebParts.NakitBagisciBagislariWP
                 UtilityHelper.ScriptCalistir(jsString);
                 BagisciSecTableDiv.Attributes["style"] = "display:block";
 
-            }      
-            BagisBilgileriLbl.Text=string.Empty;
-            BagisciAdiLbl.Text=string.Empty;
+            }
+            BagisBilgileriLbl.Text = string.Empty;
+            BagisciAdiLbl.Text = string.Empty;
             BagisTableDiv.Attributes["style"] = "display:none";
         }
         private string BagisciTabloJson()
@@ -148,7 +144,7 @@ namespace NBYS_WebParts.NakitBagisciBagislariWP
             {
                 List<NakitBagisciListItem> list = BagisciGetDataList();
                 var serializer = new JavaScriptSerializer();
-                json = list.Count > 0 ?serializer.Serialize(list):string.Empty;
+                json = list.Count > 0 ? serializer.Serialize(list) : string.Empty;
             }
             catch (Exception exception)
             {
@@ -163,7 +159,7 @@ namespace NBYS_WebParts.NakitBagisciBagislariWP
 
             DataTable dataTable = BagisciGetData();
             List<NakitBagisciListItem> list = new List<NakitBagisciListItem>();
-            if (dataTable !=null)
+            if (dataTable != null)
             {
                 foreach (DataRow row in dataTable.Rows)
                 {
@@ -191,7 +187,7 @@ namespace NBYS_WebParts.NakitBagisciBagislariWP
 
                     nakitBagisciListItem.Secildi = SecilenIdQS.Equals(nakitBagisciListItem.NakitBagisciId);
                     list.Add(nakitBagisciListItem);
-                } 
+                }
             }
             return list;
         }
@@ -319,12 +315,12 @@ namespace NBYS_WebParts.NakitBagisciBagislariWP
             NakitBagisHareket nbh = new NakitBagisHareket();
             int rowCount = 0;
             var json = nbh.SelectByBagisciIdReturnJSon(nakitBagisciId, ref rowCount);
-            
+
             decimal toplamTutar = nbh.GetSumBagisMiktariByNakitBagisciIdBetweenBasTarBitTar(
                 ProjeConstants.BAGIS_SORGU_BASTAR.ConvertToDatetime(), DateTime.Today, nakitBagisciId.ConvertToInt());
 
 
-            
+
             BagisBilgileriLbl.Text = rowCount < 1 ? "Bağış bulunmamaktadır." :
                 "(Bağışçının " + rowCount + " defada yaptığı toplam " + toplamTutar.ToString("N", culturInfo) + "TL bağışı bulunmaktadır.)";
             return json;

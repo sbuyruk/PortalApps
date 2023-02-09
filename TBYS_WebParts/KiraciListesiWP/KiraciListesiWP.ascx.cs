@@ -179,13 +179,13 @@ namespace TBYS_WebParts.KiraciListesiWP
                             { data: 'Duzenle' },               
                         ],
                         'columnDefs': ["
-                            + duzenleGorunsun +@"
+                            + duzenleGorunsun + @"
                             { 'width': '20%', 'targets': 1 },
                             { 'width': '25%', 'targets': 2 }
 
                         ],
                         'language': {
-                            'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                             'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                             'decimal': ',',
                             'thousands': '.'
                         },

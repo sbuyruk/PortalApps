@@ -6,12 +6,7 @@
 <%@ Import Namespace="Microsoft.SharePoint" %>
 <%@ Register TagPrefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="TeminatIslemleriWP.ascx.cs" Inherits="TBYS_WebParts.TeminatIslemleriWP.TeminatIslemleriWP" %>
-<style>
-    /*tblfilter hücre içine sığmazsa wordwrap yapsın*/
-    .ui-datatable tbody td {
-        white-space: normal;
-    }
-</style>
+
 <script>
     function DeleteModalDoldur(teminatId) {
 
@@ -75,19 +70,23 @@
             <h3 class="mb-1">
                 <asp:Label ID="TitleLbl" runat="server" CssClass="col-form-label text-danger font-weight-bold mb-1" Text="Teminat İşlemleri"></asp:Label>
                 <asp:Label ID="IdLbl" runat="server" CssClass="col-form-label text-white" Visible="false"></asp:Label>
-                <asp:Label CssClass="col-form-label" ID="AdiLbl" runat="server"></asp:Label>
             </h3>
         </div>
         <div class="card-body">
             <div class="form-group">
-                <a href="#" class="btn btn-info float-right" id="downloadPDF" onclick="DoIt();">PDF'e Aktar</a>
+                <a href="#" class="btn btn-info" id="downloadPDF" onclick="DoIt();">PDF'e Aktar</a>
             </div>
             <asp:UpdatePanel runat="server" ID="UpdatePanel" UpdateMode="Conditional">
                 <ContentTemplate>
                     <div class="card">
                         <div id="CardDiv" class="card-body">
-
+                            <asp:Label CssClass="col-form-label font-weight-bold" ID="AdiLbl" runat="server"></asp:Label>
+                            <asp:Label CssClass="col-form-label" ID="SozlesmeLbl" runat="server"></asp:Label>
                             <div class="form-group row">
+                                <div class="form-group col-3">
+                                    <label class="col-form-label" for="TeminatCinsiDDL">Teminat Cinsi</label>
+                                    <asp:DropDownList ID="TeminatCinsiDDL" runat="server" CssClass="form-control small" style="height:auto"></asp:DropDownList>
+                                </div>
                                 <div class="form-group col">
                                     <label class="col-form-label" for="TeminatTarihiTxt">Teminat Tarihi</label>
                                     <input type="text" id="TeminatTarihiTxt" name="TeminatTarihiTxt" class="form-control DateTimePickerV1" runat="server" readonly="readonly" />
@@ -95,10 +94,6 @@
                                 <div class="form-group col">
                                     <label class="col-form-label" for="TeminatTutariTxt">Belirlenen Teminat</label>
                                     <input class="form-control input-money text-right " id="TeminatTutariTxt" runat="server" />
-                                </div>
-                                <div class="form-group col">
-                                    <label class="col-form-label" for="TCKimlikNoTxt">Teminat Cinsi</label>
-                                    <input type="text" id="TeminatCinsiTxt" class="form-control text-right " runat="server" />
                                 </div>
                                 <div class="form-group col">
                                     <label class="col-form-label" for="OdenenTeminatTxt">Alınan Teminat</label>
@@ -113,12 +108,26 @@
                                     <input type="text" id="KalanTeminatTxt" name="KalanTeminatTxt" class="form-control input-money text-right " runat="server" readonly="readonly" />
                                 </div>
                             </div>
+                            <div class="form-group row">
+
+                            </div>
                             <div class="form-group ">
                                 <label class="col-form-label" for="TeminatAciklamaTxt">Teminat Açıklaması</label>
                                 <asp:TextBox ID="TeminatAciklamaTxt" runat="server" class="form-control " TextMode="MultiLine" Rows="3" ToolTip="Teminata ait açıklama"></asp:TextBox>
                             </div>
                             <div class="table form-group">
-                                <div id="tblfilter"></div>
+                                <table id="CustomDataTable" class="table table-striped table-bordered" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Tarih</th>
+                                            <th>İşlem Tipi</th>
+                                            <th>Tutar</th>
+                                            <th>Açıklama</th>
+                                            <th>Düzenle</th>
+                                            <th>Sil</th>
+                                        </tr>
+                                    </thead>
+                                </table>
                             </div>
                         </div>
                     </div>

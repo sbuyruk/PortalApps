@@ -112,7 +112,7 @@ namespace NBYS_WebParts.ArmaganEditWP
                     }
                     else
                     {
-                        ViewState["SecilenDurum"] = string.Empty;
+                        ViewState["SecilenDurum"] = ProjeConstants.HEPSI.ToString();
                     }
                 }
                 return ViewState["SecilenDurum"].ToString();
@@ -121,6 +121,30 @@ namespace NBYS_WebParts.ArmaganEditWP
             set
             {
                 ViewState["SecilenDurum"] = value;
+            }
+        }
+        private string SecilenIlQS
+        {
+            get
+            {
+
+                if (ViewState["SecilenIl"] == null)
+                {
+                    if (Page.Request.QueryString["SecilenIl"] != null)
+                    {
+                        ViewState["SecilenIl"] = Page.Request.QueryString["SecilenIl"];
+                    }
+                    else
+                    {
+                        ViewState["SecilenIl"] = ProjeConstants.HEPSI_INT.ToString();
+                    }
+                }
+                return ViewState["SecilenIl"].ToString();
+            }
+
+            set
+            {
+                ViewState["SecilenIl"] = value;
             }
         }
         private string ArmaganIdQS
@@ -232,6 +256,7 @@ namespace NBYS_WebParts.ArmaganEditWP
             DurumDDL.Items.Add(ProjeConstants.DURUM_ERTELENDI);
             DurumDDL.Items.Add(ProjeConstants.DURUM_IADE);
             DurumDDL.Items.Add(ProjeConstants.DURUM_DAHAONCEIADE);
+            DurumDDL.Items.Add(ProjeConstants.DURUM_AFETNEDENIYLE_GONDERILMEDI);
         }
         private void FillArmaganTanim()
         {
@@ -353,7 +378,7 @@ namespace NBYS_WebParts.ArmaganEditWP
             try
             {
                 string queryStr = "?SecilenId=" + ArmaganIdQS + "&SecilenAy=" + SecilenAyQS + "&SecilenYil="
-                + SecilenYilQS + "&SecilenArmaganTanimId=" + SecilenArmaganTanimIdQS + "&SecilenDurum=" + SecilenDurumQS;
+                + SecilenYilQS + "&SecilenArmaganTanimId=" + SecilenArmaganTanimIdQS + "&SecilenDurum=" + SecilenDurumQS + "&SecilenIl=" + SecilenIlQS;
                 RedirectToPage(ProjeConstants.PAGE_ARMAGAN_LIST + queryStr);
             }
             catch (Exception ex)

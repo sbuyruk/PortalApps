@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Globalization;
 using System.IO;
 using System.Web.Script.Serialization;
 using System.Web.UI;
@@ -92,7 +91,7 @@ namespace NBYS_WebParts.FTKKisiListesiWP
             List<UyeListItem> list = new List<UyeListItem>();
             FTKKisi ftkKisi = new FTKKisi();
             DataTable dataTable = ftkKisi.SelectAllReturnDT();
-            if (dataTable!=null)
+            if (dataTable != null)
             {
                 foreach (DataRow row in dataTable.Rows)
                 {
@@ -100,7 +99,7 @@ namespace NBYS_WebParts.FTKKisiListesiWP
                     bool kaymakam = row["Kaymakam"].ReturnFalseIfNull().ConvertToBool();
                     if (vali || kaymakam)//Vali ve kaymakamları bu listede gösterme
                     {
-                        continue; 
+                        continue;
                     }
                     else
                     {
@@ -112,7 +111,7 @@ namespace NBYS_WebParts.FTKKisiListesiWP
                         string telefon1 = row["Telefon1"].ToString();
                         string ili = row["IlAdi"].ToString();
                         string ilcesi = row["IlceAdi"].ToString();
-                        
+
 
                         string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                         string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
@@ -136,9 +135,9 @@ namespace NBYS_WebParts.FTKKisiListesiWP
                         }
 
 
-                        list.Add(uyeItem); 
+                        list.Add(uyeItem);
                     }
-                } 
+                }
             }
             return list;
         }
@@ -165,7 +164,7 @@ namespace NBYS_WebParts.FTKKisiListesiWP
         private class UyeListItem
         {
             public string Sirano { get; set; }
-            public string AdiSoyadi { get; set; }            
+            public string AdiSoyadi { get; set; }
             public string FTKGorevi { get; set; }
             public string Unvani { get; set; }
             public string Telefon1 { get; set; }

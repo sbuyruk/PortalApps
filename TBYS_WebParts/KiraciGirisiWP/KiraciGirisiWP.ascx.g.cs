@@ -1560,15 +1560,11 @@ namespace TBYS_WebParts.KiraciGirisiWP {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
 <style>
-    /*tblfilter hücre içine sığmazsa wordwrap yapsın*/
-    .ui-datatable tbody td {
-        white-space: normal;
-    }
-    .eski-sozlesme {
+   .eski-sozlesme {
         background-color: lightgrey !important;
         color: black !important;
     }
-    .ileri-tarihli-sozlesme {
+  .ileri-tarihli-sozlesme {
         background-color: yellow;
     }
 </style>

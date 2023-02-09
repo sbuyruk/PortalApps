@@ -385,6 +385,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MulkiyetiOlmayanTasinmazListesiWP.ascx</DependentUpon>
     </Compile>
+    <Compile Include="OdemeAyristirmaWP\OdemeAyristirmaWP.ascx.cs">
+      <DependentUpon>OdemeAyristirmaWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="OdemeAyristirmaWP\OdemeAyristirmaWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OdemeAyristirmaWP.ascx</DependentUpon>
+    </Compile>
     <Compile Include="OdemeGirisWP\OdemeGirisWP.ascx.cs">
       <DependentUpon>OdemeGirisWP.ascx</DependentUpon>
     </Compile>
@@ -392,6 +400,14 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>OdemeGirisWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="OdemeListesiWP\OdemeListesiWP.ascx.cs">
+      <DependentUpon>OdemeListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="OdemeListesiWP\OdemeListesiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>OdemeListesiWP.ascx</DependentUpon>
     </Compile>
     <Compile Include="OdemePlaniListesiWP\OdemePlaniListesiWP.ascx.cs">
       <DependentUpon>OdemePlaniListesiWP.ascx</DependentUpon>
@@ -825,9 +841,17 @@
     <None Include="MulkiyetiOlmayanTasinmazListesiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{39e24a6c-2a05-4858-81e1-a46ffe1d5e2a}</SharePointProjectItemId>
     </None>
+    <None Include="OdemeAyristirmaWP\OdemeAyristirmaWP.webpart" />
+    <None Include="OdemeAyristirmaWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{88e551ec-abee-4bef-8edb-cc4ca98b40bb}</SharePointProjectItemId>
+    </None>
     <None Include="OdemeGirisWP\OdemeGirisWP.webpart" />
     <None Include="OdemeGirisWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{b205bec2-d0a7-4341-b3b0-74a3037945b7}</SharePointProjectItemId>
+    </None>
+    <None Include="OdemeListesiWP\OdemeListesiWP.webpart" />
+    <None Include="OdemeListesiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{bebf31aa-dca2-4d8f-9b81-9d7576579ca3}</SharePointProjectItemId>
     </None>
     <None Include="OdemePlaniListesiWP\OdemePlaniListesiWP.webpart" />
     <None Include="OdemePlaniListesiWP\SharePointProjectItem.spdata">
@@ -1193,10 +1217,20 @@
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>MulkiyetiOlmayanTasinmazListesiWP.ascx.g.cs</LastGenOutput>
     </Content>
+    <Content Include="OdemeAyristirmaWP\Elements.xml" />
+    <Content Include="OdemeAyristirmaWP\OdemeAyristirmaWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>OdemeAyristirmaWP.ascx.g.cs</LastGenOutput>
+    </Content>
     <Content Include="OdemeGirisWP\Elements.xml" />
     <Content Include="OdemeGirisWP\OdemeGirisWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>OdemeGirisWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="OdemeListesiWP\Elements.xml" />
+    <Content Include="OdemeListesiWP\OdemeListesiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>OdemeListesiWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="OdemePlaniListesiWP\Elements.xml" />
     <Content Include="OdemePlaniListesiWP\OdemePlaniListesiWP.ascx">

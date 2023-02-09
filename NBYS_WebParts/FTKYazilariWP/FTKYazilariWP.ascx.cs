@@ -1,5 +1,4 @@
-﻿using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Packaging;
+﻿using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.SharePoint;
 using Model.NBYS;
@@ -7,7 +6,6 @@ using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -93,19 +91,19 @@ namespace NBYS_WebParts.FTKYazilariWP
             _scriptMan.AsyncPostBackTimeout = 36000;
             if (!Page.IsPostBack)
             {
-                YonergeLnk.HRef = NBYSOrtak.YonergeURLGetir(ProjeConstants.PARAM_FTKYONERGE,ProjeConstants.PAGE_FTK_YAZILARI);
+                YonergeLnk.HRef = NBYSOrtak.YonergeURLGetir(ProjeConstants.PARAM_FTKYONERGE, ProjeConstants.PAGE_FTK_YAZILARI);
                 IlDDLDoldur();
                 UtilityHelper.SetDDLValue(IliDDL, IliIdQS);
                 IlceDDLDoldur();
                 UtilityHelper.SetDDLValue(IlcesiDDL, IlcesiIdQS);
                 FormuDoldur();
             }
-            
+
         }
         private void FormuDoldur()
         {
             DateTime bugun = DateTime.Today;
-            EvrakSayisiTxt.Text = "TSKGV.62-14-" + bugun.Year+"/";
+            EvrakSayisiTxt.Text = "TSKGV.62-14-" + bugun.Year + "/";
             EvrakTarihiTxt.Text = bugun.ToString("dd") + " " + bugun.ToString("MMMM").ToUpper() + " " + bugun.Year;
 
             ImzalayanTxt.Text = @"Sadık PİYADE";
@@ -122,8 +120,8 @@ namespace NBYS_WebParts.FTKYazilariWP
             string parafeTarihi = ".../" + DateTime.Today.ToString("MM") + "/" + DateTime.Today.ToString("yyyy");
 
             Parafe1Txt.Text = parafeTarihi + (string.IsNullOrEmpty(parafe1) ? " BTHİ.Ş.Md. K.KARABABA" : " " + parafe1);
-            Parafe2Txt.Text = parafeTarihi+(string.IsNullOrEmpty(parafe2) ?" Vakıf Hiz.Grp.Bşk. Z. YAĞCI" :" " + parafe2);
-            
+            Parafe2Txt.Text = parafeTarihi + (string.IsNullOrEmpty(parafe2) ? " Vakıf Hiz.Grp.Bşk. Z. YAĞCI" : " " + parafe2);
+
             IrtibatNoktasiTxt.Text = string.IsNullOrEmpty(irtibat) ? "Dorukhan GÜNDÜR (Dâhili Tel:261)" : irtibat;
             ImzalayanTxt.Text = string.IsNullOrEmpty(imza1) ? "Sadık PİYADE" : imza1;
             ImzalayanUnvanTxt.Text = string.IsNullOrEmpty(imza2) ? "(E) Tümgeneral" : imza2;
@@ -155,7 +153,7 @@ namespace NBYS_WebParts.FTKYazilariWP
                     if (ilce.IlceAdi.ToUpper().Equals(ProjeConstants.ILCE_MERKEZ.ToUpper()))
                         continue;
                     IlcesiDDL.Items.Add(new System.Web.UI.WebControls.ListItem(ilce.IlceAdi, ilce.Id.ToString()));
-                } 
+                }
             }
         }
         private void RedirectToPage(string pageUrl)
@@ -201,7 +199,7 @@ namespace NBYS_WebParts.FTKYazilariWP
                 return memStr;
             }
         }
-        private bool YaziOlustur(string dosyaAdi, string templateFileName )
+        private bool YaziOlustur(string dosyaAdi, string templateFileName)
         {
             bool isYaziOlusturuldu;
             try
@@ -236,7 +234,7 @@ namespace NBYS_WebParts.FTKYazilariWP
         private string ftkBaskaniAdi = "BAŞKAN ADI BOŞ";
         private MemoryStream AddData2DestinationStream(MemoryStream templateStream, IEnumerable<Paragraph> templateParagraphs)
         {
-           
+
             string ilAdi = IliDDL.SelectedItem.Text;
             string ilceAdi = IlcesiDDL.SelectedItem.Text;
             string bolge = BolgeGetir(ilAdi);
@@ -260,7 +258,7 @@ namespace NBYS_WebParts.FTKYazilariWP
 
             keyValues.Add("IlAdiVar", ilAdi);
             keyValues.Add("IlBuyukHarfVar", ilAdiBuyukHarf);
-            
+
             keyValues.Add("IlceAdiVar", ilceAdi);
             keyValues.Add("IlceBuyukHarfVar", ilceAdiBuyukHarf);
 
@@ -278,7 +276,7 @@ namespace NBYS_WebParts.FTKYazilariWP
             keyValues.Add("UnvanVar", ImzalayanUnvanTxt.Text);
             keyValues.Add("MakamVar", ImzalayanMakamTxt.Text);
 
-            MemoryStream destinationStream = CopyAndSearchAndReplace(templateStream, templateParagraphs, keyValues);            
+            MemoryStream destinationStream = CopyAndSearchAndReplace(templateStream, templateParagraphs, keyValues);
             return destinationStream;
         }
 
@@ -305,7 +303,7 @@ namespace NBYS_WebParts.FTKYazilariWP
                 int counter = 0;
                 foreach (var item in list)
                 {
-                    
+
                     switch (item.FTKGorevi)
                     {
                         case ProjeConstants.FTK_GOREVI_FAHRIBASKAN:
@@ -332,12 +330,12 @@ namespace NBYS_WebParts.FTKYazilariWP
                     string ftkGoreviVar = string.IsNullOrEmpty(ftkGorevi) ? "" : ftkGorevi;
                     string adiSoyadiVar = string.IsNullOrEmpty(adiSoyadi) ? "" : adiSoyadi;
                     string unvaniVar = string.IsNullOrEmpty(unvani) ? "" : unvani;
-                    string kartnoVar = string.IsNullOrEmpty(kartno) ? ""  : kartno ;
+                    string kartnoVar = string.IsNullOrEmpty(kartno) ? "" : kartno;
 
                     Table table1 = doc.Body.Descendants<Table>().ElementAt(0);
                     Table table2 = doc.Body.Descendants<Table>().ElementAt(1);
                     Table table3 = doc.Body.Descendants<Table>().ElementAt(2);
-                    
+
 
                     TabloyaUyeEkle(table1, ftkGoreviVar, adiSoyadiVar, unvaniVar, kartnoVar);
                     TabloyaUyeEkle(table2, ftkGoreviVar, adiSoyadiVar, unvaniVar, kartnoVar);
@@ -347,7 +345,7 @@ namespace NBYS_WebParts.FTKYazilariWP
                         Table table4 = doc.Body.Descendants<Table>().ElementAt(3);
                         TabloyaUyeEkle(table4, ftkGoreviVar, adiSoyadiVar, unvaniVar, kartnoVar);
                     }
-                        
+
 
                 }
             }
@@ -379,11 +377,11 @@ namespace NBYS_WebParts.FTKYazilariWP
             rowCopy.Descendants<TableCell>().ElementAt(0).RemoveAllChildren<Paragraph>();//removes that text of the copied cell
             rowCopy.Descendants<TableCell>().ElementAt(0).Append(new Paragraph(new ParagraphProperties(new Justification() { Val = JustificationValues.Left }), runFtkGorevi));
             rowCopy.Descendants<TableCell>().ElementAt(1).RemoveAllChildren<Paragraph>();
-            rowCopy.Descendants<TableCell>().ElementAt(1).Append(new Paragraph(new ParagraphProperties(new Justification() { Val = JustificationValues.Left }),runAdiSoyadi));
+            rowCopy.Descendants<TableCell>().ElementAt(1).Append(new Paragraph(new ParagraphProperties(new Justification() { Val = JustificationValues.Left }), runAdiSoyadi));
             rowCopy.Descendants<TableCell>().ElementAt(2).RemoveAllChildren<Paragraph>();
-            rowCopy.Descendants<TableCell>().ElementAt(2).Append(new Paragraph(new ParagraphProperties(new Justification() { Val = JustificationValues.Left }),runUnvani));
+            rowCopy.Descendants<TableCell>().ElementAt(2).Append(new Paragraph(new ParagraphProperties(new Justification() { Val = JustificationValues.Left }), runUnvani));
             rowCopy.Descendants<TableCell>().ElementAt(3).RemoveAllChildren<Paragraph>();
-            rowCopy.Descendants<TableCell>().ElementAt(3).Append(new Paragraph(new ParagraphProperties(new Justification() { Val = JustificationValues.Left }),runKartNo));
+            rowCopy.Descendants<TableCell>().ElementAt(3).Append(new Paragraph(new ParagraphProperties(new Justification() { Val = JustificationValues.Left }), runKartNo));
 
             myTable.AppendChild(rowCopy);
         }
@@ -422,7 +420,7 @@ namespace NBYS_WebParts.FTKYazilariWP
             //{
             //    //swallow
             //}
-            runProperties.AppendChild(new RunFonts() { Ascii = fontname, HighAnsi=fontname,ComplexScript=fontname });//türkçe karakterler düzgün çıksın diye
+            runProperties.AppendChild(new RunFonts() { Ascii = fontname, HighAnsi = fontname, ComplexScript = fontname });//türkçe karakterler düzgün çıksın diye
             runProperties.AppendChild(new FontSize() { Val = fontSize });
             runProperties.AppendChild(new Languages() { Val = "tr-TR" });
 
@@ -447,7 +445,7 @@ namespace NBYS_WebParts.FTKYazilariWP
                 {
                     sw.Write(docText);
                 }
-                
+
                 //boş sayfa ekle
                 //Paragraph PageBreakParagraph = new Paragraph(new DocumentFormat.OpenXml.Wordprocessing.Run(new DocumentFormat.OpenXml.Wordprocessing.Break() { Type = BreakValues.Page }));
                 //wordDoc.MainDocumentPart.Document.Body.Append(PageBreakParagraph);
@@ -511,7 +509,7 @@ namespace NBYS_WebParts.FTKYazilariWP
         {
             try
             {
-                
+
                 string ilAdi = IliDDL.SelectedItem.Text;
                 string ilcesiAdi = IlcesiDDL.SelectedItem.Text;
                 string bolge = BolgeGetir(ilAdi);
@@ -547,8 +545,8 @@ namespace NBYS_WebParts.FTKYazilariWP
                 // Dosya adları 
                 string zaman = DateTime.Now.ToString("dd-MM-yyyy-HH-mm");
                 string yaziDosyaAdi = ilAdi + "-" + ilcesiAdi + "-FTK-guncelleme-yazisi(" + zaman + ").docx";
-                string templateFileName = bolge.Equals(ProjeConstants.BOLGE_GENELMUDURLUK) ? 
-                    ProjeConstants.FTK_ILCE_GUNCELLEMEGMYAZI_TEMPLATE : 
+                string templateFileName = bolge.Equals(ProjeConstants.BOLGE_GENELMUDURLUK) ?
+                    ProjeConstants.FTK_ILCE_GUNCELLEMEGMYAZI_TEMPLATE :
                     ProjeConstants.FTK_ILCE_GUNCELLEMEANAYAZI_TEMPLATE;
 
                 bool isYaziOlusturuldu = YaziOlustur(yaziDosyaAdi, templateFileName);
@@ -570,7 +568,7 @@ namespace NBYS_WebParts.FTKYazilariWP
         protected void FTKIslemleriBtn_Click(object sender, EventArgs e)
         {
             IliIdQS = IliDDL.SelectedItem == null ? "1" : IliDDL.SelectedItem.Value;
-            IlcesiIdQS = IlcesiDDL.SelectedItem == null?ProjeConstants.VALILIK_INT.ToString(): IlcesiDDL.SelectedItem.Value;
+            IlcesiIdQS = IlcesiDDL.SelectedItem == null ? ProjeConstants.VALILIK_INT.ToString() : IlcesiDDL.SelectedItem.Value;
             RedirectToPage(ProjeConstants.PAGE_FTKISLEMLERI + "?IliId=" + IliDDL.SelectedItem.Value + "&IlcesiId=" + IlcesiIdQS);
         }
         protected void FTKListesiBtn_Click(object sender, EventArgs e)

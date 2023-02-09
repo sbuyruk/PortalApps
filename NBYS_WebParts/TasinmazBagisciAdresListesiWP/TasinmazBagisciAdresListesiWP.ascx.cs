@@ -73,7 +73,7 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP
                     TabloOlustur();
 
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -496,7 +496,7 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP
             DataView dataView = new DataView(dataTable);
             foreach (DataRowView row in dataView)
             {
-                
+
                 int tasinmazBagisciId = row["TasinmazBagisciId"].ConvertToInt();
                 int toplamBagisAdedi = row["ToplamBagisAdedi"].ConvertToInt();
                 decimal toplamTahminiRayic = row["ToplamTahminiRayic"].ConvertToDecimal();
@@ -507,7 +507,7 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP
                 string adres = row["Adres"].ToString();
                 string ili = row["Ili"].ToString();
                 string ilcesi = row["Ilcesi"].ToString();
-                
+
                 AdresListItem adresItem = new AdresListItem();
                 adresItem.Sirano = SiraNo++.ToString();
                 adresItem.TasinmazBagisciId = tasinmazBagisciId.ToString();
@@ -523,7 +523,7 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP
                 if (gizli)
                 {
                     adresItem.AdiSoyadi = adiSoyadi;
-                    adresItem.Telefon1 = adresItem.ToplamBagisAdedi = adresItem.ToplamTahminiRayic = 
+                    adresItem.Telefon1 = adresItem.ToplamBagisAdedi = adresItem.ToplamTahminiRayic =
                         adresItem.Telefon1 = adresItem.Telefon2 = adresItem.Adres = adresItem.Ili = adresItem.Ilcesi = ProjeConstants.GIZLI_STRING;
                 }
                 list.Add(adresItem);
@@ -602,12 +602,12 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP
         protected void VefatEdenlerHaricChk_CheckedChanged(object sender, EventArgs e)
         {
             TabloOlustur();
-        } 
+        }
         protected void GizliBagislarHaricChk_CheckedChanged(object sender, EventArgs e)
         {
             TabloOlustur();
         }
-        
+
         //modal
         private void TabloModalOlustur(int tasinmazBagisciId)
         {
@@ -665,7 +665,7 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP
 
             return tableString;
         }
-        
+
 
     }
 }

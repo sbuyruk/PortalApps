@@ -3,10 +3,8 @@ using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Globalization;
 using System.IO;
-using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
@@ -248,7 +246,7 @@ namespace NBYS_WebParts.NakitBagisciListesiWP
                 }},
                 {
                     targets: 7, render: function(data, type, row, meta) {
-                    var link= '<a href=' + '"+ProjeConstants.PAGE_NAKITBAGISCI_EDIT+"?NakitBagisciId=' + row.NakitBagisciId + '" + queryStr + @" class=\'btn-link text-primary\' >Düzenle</a>';
+                    var link= '<a href=' + '" + ProjeConstants.PAGE_NAKITBAGISCI_EDIT + "?NakitBagisciId=' + row.NakitBagisciId + '" + queryStr + @" class=\'btn-link text-primary\' >Düzenle</a>';
                     return link;
                 }},
                 ],
@@ -370,7 +368,7 @@ namespace NBYS_WebParts.NakitBagisciListesiWP
             decimal toplamTutar = nbh.GetSumBagisMiktariByNakitBagisciIdBetweenBasTarBitTar(
                 ProjeConstants.BAGIS_SORGU_BASTAR.ConvertToDatetime(), DateTime.Today, nakitBagisciId.ConvertToInt());
             BagisBilgileriLbl.Text = rowCount < 1 ? "Bağış bulunmamaktadır" :
-                "Bağışçının " +rowCount +" defada yaptığı toplam " + toplamTutar.ToString("N", culturInfo) + "TL bağışı bulunmaktadır" ;
+                "Bağışçının " + rowCount + " defada yaptığı toplam " + toplamTutar.ToString("N", culturInfo) + "TL bağışı bulunmaktadır";
             return json;
         }
         protected void ExcelBtn_Click(object sender, EventArgs e)

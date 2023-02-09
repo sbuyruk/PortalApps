@@ -228,6 +228,44 @@ namespace Model.TBYS
             return dataTable;
 
         }
+        public DataTable SelectByAyYilReturnDataTable( int ay, int yil)
+        {
+            string ayYilStr = string.Empty;
+            if ((ay != ProjeConstants.HEPSI_INT) && (yil != ProjeConstants.HEPSI_INT))
+            {
+                ayYilStr = string.Format(@"
+                    WHERE MONTH(A.OdemeTarihi)={0} AND YEAR(A.OdemeTarihi) ={1}", ay.ReturnQuotedValue(), yil.ReturnQuotedValue());
+            }
+            else if ((ay == ProjeConstants.HEPSI_INT) && (yil != ProjeConstants.HEPSI_INT))
+            {
+                ayYilStr = string.Format(@"
+                    WHERE YEAR(A.OdemeTarihi) ={0}", yil.ReturnQuotedValue());
+            }
+            else if ((ay != ProjeConstants.HEPSI_INT) && (yil == ProjeConstants.HEPSI_INT))
+            {
+                ayYilStr = string.Format(@"
+                    WHERE MONTH(A.OdemeTarihi)={0} ", ay.ReturnQuotedValue());
+            }
+
+
+            string sqlString = string.Format(@"
+                SELECT 
+	                A.OdemeTarihi, A.OdenenTutar, A.Aciklama, 
+	                B.Adi, B.Soyadi, 
+	                D.Id TeminatId, D.IslemTipi
+                FROM Odeme_Table A
+                    INNER JOIN Kiraci_Table B ON B.Id=A.KiraciId 
+	                INNER JOIN KiraSozlesme_Table C ON C.Id=A.SozlesmeId	                
+                    LEFT JOIN TeminatIslem_Table E ON E.OdemeId=A.Id
+                {0} 
+                ORDER BY A.OdemeTarihi DESC, B.Id, A.SozlesmeId
+            ", ayYilStr);
+
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+
+            return dataTable;
+
+        }
         public List<Odeme> SelectByKiraciVadeBasTarVadeBitTar(int sozlesmeId,int kiraciId, DateTime ilkTarih, DateTime ikinciTarih)
         {
             DateTime tarih1= new DateTime(ilkTarih.Year,ilkTarih.Month,ilkTarih.Day);

@@ -354,9 +354,9 @@ namespace Model.NBYS
         /// <param name="rowCount"></param>
         /// Parası iade edilen armaganları da göstersin diye BelgeGecersizMi kontrolu burada yok
         /// <returns></returns>
-        public string SelectByDurumTarih(string durum, DateTime bastar, DateTime bittar, string armaganTanimId, ref int rowCount, string bolge)
+        public string SelectByDurumTarih(string durum, DateTime bastar, DateTime bittar, string armaganTanimId, ref int rowCount, string bolge, int ili)
         {
-            DataTable dataTable = SelectByDurumTarihReturnDT(durum, bastar, bittar, armaganTanimId, bolge);
+            DataTable dataTable = SelectByDurumTarihReturnDT(durum, bastar, bittar, armaganTanimId, bolge,ili);
             if (dataTable != null)
             {
                 rowCount = dataTable.Rows.Count;
@@ -364,7 +364,7 @@ namespace Model.NBYS
             string json = ToJSON(dataTable);
             return json;
         }
-        public DataTable SelectByDurumTarihReturnDT(string durum, DateTime bastar, DateTime bittar, string armaganTanimId, string bolge)
+        public DataTable SelectByDurumTarihReturnDT(string durum, DateTime bastar, DateTime bittar, string armaganTanimId, string bolge, int ili)
         {
             var durumQuery = string.Empty;
             if (!durum.Equals(ProjeConstants.HEPSI)) //eğer boş ise query'e hiç eklenmesin
@@ -380,6 +380,11 @@ namespace Model.NBYS
             string bolgeQuery = string.Empty;
             if (!string.IsNullOrEmpty(bolge) && !bolge.Equals(ProjeConstants.BOLGE_HEPSI))
                 bolgeQuery = string.Format(@" AND B.Ili IN (SELECT Id FROM Il_Table WHERE Bolge = '{0}' ) ", bolge);
+
+            string ilQuery = string.Empty;
+            if (ili > 0 || ili != ProjeConstants.HEPSI_INT)
+                ilQuery = string.Format(@" AND B.Ili = '{0}' ", ili);
+
             string sqlString = string.Format(@"
                 SELECT distinct(A.Id) ArmaganId,ROW_NUMBER() OVER(ORDER BY A.Id) AS Sirano
                     ,B.Id as NakitBagisciId
@@ -387,7 +392,7 @@ namespace Model.NBYS
                     ,B.TCKimlikNo as NakitBagisciTC
 					,B.Adres
                     ,IIF(ISNULL(Telefon1,'')!='',Telefon1, IIF(ISNULL(Telefon2,'')!='',Telefon2,'')) Telefon
-                    ,E.IlAdi
+                    ,E.IlAdi,E.Id IlId
 					,F.IlceAdi                    
                     ,Convert(nvarchar,replace (A.BagisMiktari,'.',',')) as Tutar
                     --,C.DovizCinsi as DovizCinsi
@@ -403,9 +408,9 @@ namespace Model.NBYS
                     LEFT OUTER JOIN ArmaganTanim_Table D ON D.Id=A.ArmaganTanimId
 					LEFT OUTER JOIN Il_Table E ON E.Id= B.Ili 
                     LEFT OUTER JOIN Ilce_Table F ON F.Id= B.Ilcesi AND F.IlId=E.Id
-                WHERE {0} Tarih between {1} and {2} {3} {4}
+                WHERE {0} Tarih between {1} and {2} {3} {4} {5}
                 ORDER BY A.Id
-            ", durumQuery, bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat(), armaganTanimIdQuery, bolgeQuery);
+            ", durumQuery, bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat(), armaganTanimIdQuery, bolgeQuery, ilQuery);
 
             DataTable dataTable = dao.selectFromDb(sqlString, "");
             return dataTable;

@@ -599,7 +599,7 @@ namespace MTS_WebParts.AramaGirisiWP
                         }
                         else
                         {
-                            MessageHelper.PublishMessage("Sözleşme Bulunamadı", ProjeConstants.MESAJ_HATA);
+                            MessageHelper.PublishMessage("Arama/Görüşme kaydı Bulunamadı", ProjeConstants.MESAJ_HATA);
                         }
                     }
                 }
@@ -609,10 +609,10 @@ namespace MTS_WebParts.AramaGirisiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Sözleşme Bulunamadı", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Arama/Görüşme kaydı", ProjeConstants.MESAJ_HATA);
             }
 
-            ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "CloseModalOnay();", true);
+            UtilityHelper.ScriptCalistir("CloseModalOnay();");
         }
         protected void YeniKisiBtn_Click(object sender, EventArgs e)
         {
