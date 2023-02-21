@@ -643,6 +643,7 @@ namespace MTS_WebParts.AramaGirisiWP
             {
                 List<KatilimciListItem> list = GetModalDataList();
                 var serializer = new JavaScriptSerializer();
+                serializer.MaxJsonLength = Int32.MaxValue;
                 jSon = serializer.Serialize(list);
             }
             catch (Exception exception)

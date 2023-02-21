@@ -49,6 +49,10 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.Label AktarildiMiLbl;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.Label IdLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -85,10 +89,6 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.UpdatePanel UpdatePanel;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton KiraOdemesiEkleBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -102,6 +102,10 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton GeciciTeminatEkleBtn;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.UpdatePanel UpdatePanel;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -165,11 +169,11 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.LinkButton TeminatEkleNowBtn;
+        protected global::System.Web.UI.WebControls.LinkButton ListeyeEkleNowBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.LinkButton TeminatGuncelleNowBtn;
+        protected global::System.Web.UI.WebControls.LinkButton ListeyiGuncelleNowBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -233,6 +237,20 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
             @__ctrl.ID = "TitleLbl";
             @__ctrl.CssClass = "col-form-label text-danger font-weight-bold mb-1";
             @__ctrl.Text = "Ödeme Ayrıştırma";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlAktarildiMiLbl() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.AktarildiMiLbl = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "AktarildiMiLbl";
+            @__ctrl.CssClass = "col-form-label text-danger font-weight-bold mb-1";
+            @__ctrl.Text = "";
             return @__ctrl;
         }
         
@@ -375,6 +393,82 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlKiraOdemesiEkleBtn() {
+            global::System.Web.UI.WebControls.LinkButton @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
+            this.KiraOdemesiEkleBtn = @__ctrl;
+            @__ctrl.TemplateControl = this;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "KiraOdemesiEkleBtn";
+            @__ctrl.CssClass = "col-2 btn btn-primary mr-3";
+            @__ctrl.CausesValidation = false;
+            @__ctrl.Text = "Kira Ödemesi Ekle";
+            @__ctrl.OnClientClick = "{return true;};";
+            @__ctrl.Click -= new System.EventHandler(this.KiraOdemesiEkleBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.KiraOdemesiEkleBtn_Click);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlOdemeyiSozlesmelereBolBtn() {
+            global::System.Web.UI.WebControls.LinkButton @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
+            this.OdemeyiSozlesmelereBolBtn = @__ctrl;
+            @__ctrl.TemplateControl = this;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "OdemeyiSozlesmelereBolBtn";
+            @__ctrl.CssClass = "col-3 btn btn-danger mr-3";
+            @__ctrl.CausesValidation = false;
+            @__ctrl.Text = "Ödemeyi Sözleşmelere Böl";
+            @__ctrl.OnClientClick = "{return true;};";
+            @__ctrl.Click -= new System.EventHandler(this.OdemeyiSozlesmelereBolBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.OdemeyiSozlesmelereBolBtn_Click);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlKesinTeminatEkleBtn() {
+            global::System.Web.UI.WebControls.LinkButton @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
+            this.KesinTeminatEkleBtn = @__ctrl;
+            @__ctrl.TemplateControl = this;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "KesinTeminatEkleBtn";
+            @__ctrl.CssClass = "col-3 btn btn-success mr-3";
+            @__ctrl.CausesValidation = false;
+            @__ctrl.Text = "Kesin Teminat Ödemesi Ekle";
+            @__ctrl.OnClientClick = "{return true;};";
+            @__ctrl.Click -= new System.EventHandler(this.KesinTeminatEkleBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.KesinTeminatEkleBtn_Click);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlGeciciTeminatEkleBtn() {
+            global::System.Web.UI.WebControls.LinkButton @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
+            this.GeciciTeminatEkleBtn = @__ctrl;
+            @__ctrl.TemplateControl = this;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "GeciciTeminatEkleBtn";
+            @__ctrl.CssClass = "col-3 btn btn-info mr-3";
+            @__ctrl.CausesValidation = false;
+            @__ctrl.Text = "Geçici Teminat Ödemesi Ekle";
+            @__ctrl.OnClientClick = "{return true;};";
+            @__ctrl.Click -= new System.EventHandler(this.GeciciTeminatEkleBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.GeciciTeminatEkleBtn_Click);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControl__control2(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    <div class=\"card\">\r\n                        <div id=\"CardDi" +
@@ -447,7 +541,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
                                             <th>Ödeme Tarihi</th>
                                             <th>Ödeme Sebebi</th>
                                             <th>Tutar</th>
-                                            <th>KiraciId</th>
+                                            <th>Kiraci</th>
                                             <th>Düzenle</th>
                                             <th>Sil</th>
                                         </tr>
@@ -456,7 +550,24 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
                             </div>
                         </div>
                     </div>
-                "));
+                    <div class=""form-group pt-4 "">
+                        "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl9;
+            @__ctrl9 = this.@__BuildControlKiraOdemesiEkleBtn();
+            @__parser.AddParsedSubObject(@__ctrl9);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl10;
+            @__ctrl10 = this.@__BuildControlOdemeyiSozlesmelereBolBtn();
+            @__parser.AddParsedSubObject(@__ctrl10);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl11;
+            @__ctrl11 = this.@__BuildControlKesinTeminatEkleBtn();
+            @__parser.AddParsedSubObject(@__ctrl11);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl12;
+            @__ctrl12 = this.@__BuildControlGeciciTeminatEkleBtn();
+            @__parser.AddParsedSubObject(@__ctrl12);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -465,7 +576,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
         private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control4() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
-            @__ctrl.ControlID = "SatirSilBtn";
+            @__ctrl.ControlID = "KaydetBtn";
             @__ctrl.EventName = "click";
             return @__ctrl;
         }
@@ -476,7 +587,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
         private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control5() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
-            @__ctrl.ControlID = "TeminatEkleNowBtn";
+            @__ctrl.ControlID = "SatirSilBtn";
             @__ctrl.EventName = "click";
             return @__ctrl;
         }
@@ -487,7 +598,18 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
         private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control6() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
-            @__ctrl.ControlID = "TeminatGuncelleNowBtn";
+            @__ctrl.ControlID = "ListeyeEkleNowBtn";
+            @__ctrl.EventName = "click";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control7() {
+            global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
+            @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
+            @__ctrl.ControlID = "ListeyiGuncelleNowBtn";
             @__ctrl.EventName = "click";
             return @__ctrl;
         }
@@ -505,6 +627,9 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl3;
             @__ctrl3 = this.@__BuildControl__control6();
             @__ctrl.Add(@__ctrl3);
+            global::System.Web.UI.AsyncPostBackTrigger @__ctrl4;
+            @__ctrl4 = this.@__BuildControl__control7();
+            @__ctrl.Add(@__ctrl4);
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -518,78 +643,6 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
             @__ctrl.ID = "UpdatePanel";
             @__ctrl.UpdateMode = global::System.Web.UI.UpdatePanelUpdateMode.Conditional;
             this.@__BuildControl__control3(@__ctrl.Triggers);
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.LinkButton @__BuildControlKiraOdemesiEkleBtn() {
-            global::System.Web.UI.WebControls.LinkButton @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
-            this.KiraOdemesiEkleBtn = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "KiraOdemesiEkleBtn";
-            @__ctrl.CssClass = "col-2 btn btn-primary mr-3";
-            @__ctrl.CausesValidation = false;
-            @__ctrl.Text = "Kira Ödemesi Ekle";
-            @__ctrl.OnClientClick = "{return true;};";
-            @__ctrl.Click -= new System.EventHandler(this.KiraOdemesiEkleBtn_Click);
-            @__ctrl.Click += new System.EventHandler(this.KiraOdemesiEkleBtn_Click);
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.LinkButton @__BuildControlOdemeyiSozlesmelereBolBtn() {
-            global::System.Web.UI.WebControls.LinkButton @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
-            this.OdemeyiSozlesmelereBolBtn = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "OdemeyiSozlesmelereBolBtn";
-            @__ctrl.CssClass = "col-3 btn btn-danger mr-3";
-            @__ctrl.CausesValidation = false;
-            @__ctrl.Text = "Ödemeyi Sözleşmelere Böl";
-            @__ctrl.OnClientClick = "{return true;};";
-            @__ctrl.Click -= new System.EventHandler(this.OdemeyiSozlesmelereBolBtn_Click);
-            @__ctrl.Click += new System.EventHandler(this.OdemeyiSozlesmelereBolBtn_Click);
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.LinkButton @__BuildControlKesinTeminatEkleBtn() {
-            global::System.Web.UI.WebControls.LinkButton @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
-            this.KesinTeminatEkleBtn = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "KesinTeminatEkleBtn";
-            @__ctrl.CssClass = "col-3 btn btn-success mr-3";
-            @__ctrl.CausesValidation = false;
-            @__ctrl.Text = "Kesin Teminat Ödemesi Ekle";
-            @__ctrl.OnClientClick = "{return true;};";
-            @__ctrl.Click -= new System.EventHandler(this.KesinTeminatEkleBtn_Click);
-            @__ctrl.Click += new System.EventHandler(this.KesinTeminatEkleBtn_Click);
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.LinkButton @__BuildControlGeciciTeminatEkleBtn() {
-            global::System.Web.UI.WebControls.LinkButton @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
-            this.GeciciTeminatEkleBtn = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GeciciTeminatEkleBtn";
-            @__ctrl.CssClass = "col-3 btn btn-info mr-3";
-            @__ctrl.CausesValidation = false;
-            @__ctrl.Text = "Geçici Teminat Ödemesi Ekle";
-            @__ctrl.OnClientClick = "{return true;};";
-            @__ctrl.Click -= new System.EventHandler(this.GeciciTeminatEkleBtn_Click);
-            @__ctrl.Click += new System.EventHandler(this.GeciciTeminatEkleBtn_Click);
             return @__ctrl;
         }
         
@@ -614,7 +667,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control7(System.Web.UI.Control @__ctrl) {
+        private void @__BuildControl__control8(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl1;
@@ -626,21 +679,10 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control9() {
-            global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
-            @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
-            @__ctrl.ControlID = "TeminatEkleNowBtn";
-            @__ctrl.EventName = "click";
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control10() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
-            @__ctrl.ControlID = "TeminatGuncelleNowBtn";
+            @__ctrl.ControlID = "ListeyeEkleNowBtn";
             @__ctrl.EventName = "click";
             return @__ctrl;
         }
@@ -651,6 +693,17 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
         private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control11() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
+            @__ctrl.ControlID = "ListeyiGuncelleNowBtn";
+            @__ctrl.EventName = "click";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control12() {
+            global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
+            @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
             @__ctrl.ControlID = "SatirSilBtn";
             @__ctrl.EventName = "click";
             return @__ctrl;
@@ -659,15 +712,15 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control8(System.Web.UI.UpdatePanelTriggerCollection @__ctrl) {
+        private void @__BuildControl__control9(System.Web.UI.UpdatePanelTriggerCollection @__ctrl) {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl1;
-            @__ctrl1 = this.@__BuildControl__control9();
+            @__ctrl1 = this.@__BuildControl__control10();
             @__ctrl.Add(@__ctrl1);
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl2;
-            @__ctrl2 = this.@__BuildControl__control10();
+            @__ctrl2 = this.@__BuildControl__control11();
             @__ctrl.Add(@__ctrl2);
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl3;
-            @__ctrl3 = this.@__BuildControl__control11();
+            @__ctrl3 = this.@__BuildControl__control12();
             @__ctrl.Add(@__ctrl3);
         }
         
@@ -678,10 +731,10 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
             global::System.Web.UI.UpdatePanel @__ctrl;
             @__ctrl = new global::System.Web.UI.UpdatePanel();
             this.UpdatePanel2 = @__ctrl;
-            @__ctrl.ContentTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control7));
+            @__ctrl.ContentTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control8));
             @__ctrl.ID = "UpdatePanel2";
             @__ctrl.UpdateMode = global::System.Web.UI.UpdatePanelUpdateMode.Conditional;
-            this.@__BuildControl__control8(@__ctrl.Triggers);
+            this.@__BuildControl__control9(@__ctrl.Triggers);
             return @__ctrl;
         }
         
@@ -816,7 +869,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
             this.IslemTutariTxt = @__ctrl;
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-right ");
             @__ctrl.ID = "IslemTutariTxt";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onkeyup", "TeminatEkleNowBtnEnable(this.value)");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onkeyup", "ListeyeEkleNowBtnEnable(this.value)");
             return @__ctrl;
         }
         
@@ -871,32 +924,32 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.LinkButton @__BuildControlTeminatEkleNowBtn() {
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlListeyeEkleNowBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
-            this.TeminatEkleNowBtn = @__ctrl;
+            this.ListeyeEkleNowBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "TeminatEkleNowBtn";
+            @__ctrl.ID = "ListeyeEkleNowBtn";
             @__ctrl.Text = "Tamam";
             @__ctrl.CssClass = "btn btn-success";
-            @__ctrl.Click -= new System.EventHandler(this.TeminatEkleNowBtn_Click);
-            @__ctrl.Click += new System.EventHandler(this.TeminatEkleNowBtn_Click);
+            @__ctrl.Click -= new System.EventHandler(this.ListeyeEkleNowBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.ListeyeEkleNowBtn_Click);
             return @__ctrl;
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.LinkButton @__BuildControlTeminatGuncelleNowBtn() {
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlListeyiGuncelleNowBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
-            this.TeminatGuncelleNowBtn = @__ctrl;
+            this.ListeyiGuncelleNowBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "TeminatGuncelleNowBtn";
+            @__ctrl.ID = "ListeyiGuncelleNowBtn";
             @__ctrl.Text = "Güncelle";
             @__ctrl.CssClass = "btn btn-primary";
-            @__ctrl.Click -= new System.EventHandler(this.TeminatGuncelleNowBtn_Click);
-            @__ctrl.Click += new System.EventHandler(this.TeminatGuncelleNowBtn_Click);
+            @__ctrl.Click -= new System.EventHandler(this.ListeyiGuncelleNowBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.ListeyiGuncelleNowBtn_Click);
             return @__ctrl;
         }
         
@@ -975,16 +1028,16 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
                             </div>
                             <div class=""card-footer"">
                                 <div class=""row"">
-                                    <div id=""KesinTeminatEkleNowDiv"" class=""col form-group"" style=""display: none"">
+                                    <div id=""ListeyeEkleNowDiv"" class=""col form-group"" style=""display: none"">
                                         "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl12;
-            @__ctrl12 = this.@__BuildControlTeminatEkleNowBtn();
+            @__ctrl12 = this.@__BuildControlListeyeEkleNowBtn();
             @__parser.AddParsedSubObject(@__ctrl12);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    </div>\r\n                                   " +
-                        " <div id=\"KesinTeminatGuncelleNow\" class=\"col form-group\" style=\"display: none\">" +
-                        "\r\n                                        "));
+                        " <div id=\"ListeyiGuncelleNowDiv\" class=\"col form-group\" style=\"display: none\">\r\n" +
+                        "                                        "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl13;
-            @__ctrl13 = this.@__BuildControlTeminatGuncelleNowBtn();
+            @__ctrl13 = this.@__BuildControlListeyiGuncelleNowBtn();
             @__parser.AddParsedSubObject(@__ctrl13);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                     </div>
@@ -1075,7 +1128,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control12(System.Web.UI.Control @__ctrl) {
+        private void @__BuildControl__control13(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        "));
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl1;
@@ -1108,7 +1161,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control14() {
+        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control15() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
             @__ctrl.ControlID = "KiraOdemesiEkleBtn";
@@ -1119,7 +1172,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control15() {
+        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control16() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
             @__ctrl.ControlID = "KesinTeminatEkleBtn";
@@ -1130,7 +1183,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control16() {
+        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control17() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
             @__ctrl.ControlID = "GeciciTeminatEkleBtn";
@@ -1141,7 +1194,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control17() {
+        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control18() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
             @__ctrl.ControlID = "OdemeyiSozlesmelereBolBtn";
@@ -1152,18 +1205,18 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control13(System.Web.UI.UpdatePanelTriggerCollection @__ctrl) {
+        private void @__BuildControl__control14(System.Web.UI.UpdatePanelTriggerCollection @__ctrl) {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl1;
-            @__ctrl1 = this.@__BuildControl__control14();
+            @__ctrl1 = this.@__BuildControl__control15();
             @__ctrl.Add(@__ctrl1);
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl2;
-            @__ctrl2 = this.@__BuildControl__control15();
+            @__ctrl2 = this.@__BuildControl__control16();
             @__ctrl.Add(@__ctrl2);
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl3;
-            @__ctrl3 = this.@__BuildControl__control16();
+            @__ctrl3 = this.@__BuildControl__control17();
             @__ctrl.Add(@__ctrl3);
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl4;
-            @__ctrl4 = this.@__BuildControl__control17();
+            @__ctrl4 = this.@__BuildControl__control18();
             @__ctrl.Add(@__ctrl4);
         }
         
@@ -1174,10 +1227,10 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
             global::System.Web.UI.UpdatePanel @__ctrl;
             @__ctrl = new global::System.Web.UI.UpdatePanel();
             this.UpdatePanel1 = @__ctrl;
-            @__ctrl.ContentTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control12));
+            @__ctrl.ContentTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control13));
             @__ctrl.ID = "UpdatePanel1";
             @__ctrl.UpdateMode = global::System.Web.UI.UpdatePanelUpdateMode.Conditional;
-            this.@__BuildControl__control13(@__ctrl.Triggers);
+            this.@__BuildControl__control14(@__ctrl.Triggers);
             return @__ctrl;
         }
         
@@ -1193,32 +1246,23 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
             @__ctrl2 = this.@__BuildControlTitleLbl();
             @__parser.AddParsedSubObject(@__ctrl2);
             global::System.Web.UI.WebControls.Label @__ctrl3;
-            @__ctrl3 = this.@__BuildControlIdLbl();
+            @__ctrl3 = this.@__BuildControlAktarildiMiLbl();
             @__parser.AddParsedSubObject(@__ctrl3);
-            global::System.Web.UI.UpdatePanel @__ctrl4;
-            @__ctrl4 = this.@__BuildControlUpdatePanel();
+            global::System.Web.UI.WebControls.Label @__ctrl4;
+            @__ctrl4 = this.@__BuildControlIdLbl();
             @__parser.AddParsedSubObject(@__ctrl4);
-            global::System.Web.UI.WebControls.LinkButton @__ctrl5;
-            @__ctrl5 = this.@__BuildControlKiraOdemesiEkleBtn();
+            global::System.Web.UI.UpdatePanel @__ctrl5;
+            @__ctrl5 = this.@__BuildControlUpdatePanel();
             @__parser.AddParsedSubObject(@__ctrl5);
-            global::System.Web.UI.WebControls.LinkButton @__ctrl6;
-            @__ctrl6 = this.@__BuildControlOdemeyiSozlesmelereBolBtn();
+            global::System.Web.UI.UpdatePanel @__ctrl6;
+            @__ctrl6 = this.@__BuildControlUpdatePanel2();
             @__parser.AddParsedSubObject(@__ctrl6);
             global::System.Web.UI.WebControls.LinkButton @__ctrl7;
-            @__ctrl7 = this.@__BuildControlKesinTeminatEkleBtn();
+            @__ctrl7 = this.@__BuildControlKiraEkstreAktarmaBtn();
             @__parser.AddParsedSubObject(@__ctrl7);
-            global::System.Web.UI.WebControls.LinkButton @__ctrl8;
-            @__ctrl8 = this.@__BuildControlGeciciTeminatEkleBtn();
+            global::System.Web.UI.UpdatePanel @__ctrl8;
+            @__ctrl8 = this.@__BuildControlUpdatePanel1();
             @__parser.AddParsedSubObject(@__ctrl8);
-            global::System.Web.UI.UpdatePanel @__ctrl9;
-            @__ctrl9 = this.@__BuildControlUpdatePanel2();
-            @__parser.AddParsedSubObject(@__ctrl9);
-            global::System.Web.UI.WebControls.LinkButton @__ctrl10;
-            @__ctrl10 = this.@__BuildControlKiraEkstreAktarmaBtn();
-            @__parser.AddParsedSubObject(@__ctrl10);
-            global::System.Web.UI.UpdatePanel @__ctrl11;
-            @__ctrl11 = this.@__BuildControlUpdatePanel1();
-            @__parser.AddParsedSubObject(@__ctrl11);
             @__ctrl.SetRenderMethodDelegate(new System.Web.UI.RenderMethod(this.@__Render__control1));
         }
         
@@ -1243,10 +1287,10 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
             @__w.Write(@"').click();
     }
     function OpenOdemeEkleModal() {
-        $(""#TeminatEkleModalDiv"").modal({ backdrop: ""static"" });
+        $(""#ListeyeEkleModalDiv"").modal({ backdrop: ""static"" });
     }
     function CloseModal() {
-        $(""#TeminatEkleModalDiv"").modal('hide');
+        $(""#ListeyeEkleModalDiv"").modal('hide');
 
     }
 
@@ -1257,38 +1301,40 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
             delimiter: '.'
         });
     }));
-    function TeminatEkleNowBtnEnable(tutar) {
+    function ListeyeEkleNowBtnEnable(tutar) {
         var kaydetVeyaGuncelle = document.getElementById('");
                                                   @__w.Write( KaydetVeyaGuncelleHdn.ClientID);
 
             @__w.Write("\').value;\r\n        tutar = tutar.replace(\",\",\".\");\r\n        if (tutar > 0) {\r\n   " +
                     "         if (kaydetVeyaGuncelle == \"Kaydet\") {\r\n                document.getElem" +
-                    "entById(\'KesinTeminatEkleNowDiv\').style.display = \"block\";\r\n                docu" +
-                    "ment.getElementById(\'KesinTeminatGuncelleNow\').style.display = \"none\";\r\n        " +
-                    "    } else if (kaydetVeyaGuncelle == \"Guncelle\") {\r\n                document.get" +
-                    "ElementById(\'KesinTeminatEkleNowDiv\').style.display = \"none\";\r\n                d" +
-                    "ocument.getElementById(\'KesinTeminatGuncelleNow\').style.display = \"block\";\r\n    " +
-                    "        }\r\n                \r\n        }\r\n        else {\r\n\r\n            document.g" +
-                    "etElementById(\'KesinTeminatEkleNowDiv\').style.display = \"none\";\r\n            doc" +
-                    "ument.getElementById(\'KesinTeminatGuncelleNow\').style.display = \"none\";\r\n       " +
-                    " }\r\n        \r\n    }\r\n</script>\r\n<script type=\"text/javascript\">\r\n    function Do" +
-                    "It() {\r\n        var element = document.getElementById(\'CardDiv\');\r\n\r\n        var" +
-                    " opt = {\r\n            margin: [0, 0],\r\n            filename: \'odeme.pdf\',\r\n     " +
-                    "       enableLinks: false,\r\n            image: { type: \'jpeg\', quality: 0.98 },\r" +
-                    "\n            html2canvas: { scale: 2 },\r\n            jsPDF: { unit: \'in\', format" +
-                    ": \'A4\', orientation: \'portrait\' }\r\n        };\r\n\r\n        // New Promise-based us" +
-                    "age:\r\n        html2pdf().set(opt).from(element).save();\r\n\r\n        // Old monoli" +
-                    "thic-style usage:\r\n        //html2pdf(element, opt);\r\n    }\r\n\r\n\r\n</script>\r\n<scr" +
-                    "ipt src=\"/Style Library/tskgv/js/jspdf.js\"></script>\r\n<script src=\"/Style Librar" +
-                    "y/tskgv/js/jspdf.plugin.addimage.js\"></script>\r\n<script src=\"/Style Library/tskg" +
-                    "v/js/html2canvas.min.js\"></script>\r\n<script src=\"/Style Library/tskgv/js/html2pd" +
-                    "f.bundle.min.js\"></script>\r\n<div class=\"container\">\r\n\r\n    <div class=\"card shad" +
-                    "ow\">\r\n        <div class=\"card-header \">\r\n            ");
+                    "entById(\'ListeyeEkleNowDiv\').style.display = \"block\";\r\n                document." +
+                    "getElementById(\'ListeyiGuncelleNowDiv\').style.display = \"none\";\r\n            } e" +
+                    "lse if (kaydetVeyaGuncelle == \"Guncelle\") {\r\n                document.getElement" +
+                    "ById(\'ListeyeEkleNowDiv\').style.display = \"none\";\r\n                document.getE" +
+                    "lementById(\'ListeyiGuncelleNowDiv\').style.display = \"block\";\r\n            }\r\n   " +
+                    "             \r\n        }\r\n        else {\r\n\r\n            document.getElementById(" +
+                    "\'ListeyeEkleNowDiv\').style.display = \"none\";\r\n            document.getElementByI" +
+                    "d(\'ListeyiGuncelleNowDiv\').style.display = \"none\";\r\n        }\r\n        \r\n    }\r\n" +
+                    "</script>\r\n<script type=\"text/javascript\">\r\n    function DoIt() {\r\n        var e" +
+                    "lement = document.getElementById(\'CardDiv\');\r\n\r\n        var opt = {\r\n           " +
+                    " margin: [0, 0],\r\n            filename: \'odeme.pdf\',\r\n            enableLinks: f" +
+                    "alse,\r\n            image: { type: \'jpeg\', quality: 0.98 },\r\n            html2can" +
+                    "vas: { scale: 2 },\r\n            jsPDF: { unit: \'in\', format: \'A4\', orientation: " +
+                    "\'portrait\' }\r\n        };\r\n\r\n        // New Promise-based usage:\r\n        html2pd" +
+                    "f().set(opt).from(element).save();\r\n\r\n        // Old monolithic-style usage:\r\n  " +
+                    "      //html2pdf(element, opt);\r\n    }\r\n\r\n\r\n</script>\r\n<script src=\"/Style Libra" +
+                    "ry/tskgv/js/jspdf.js\"></script>\r\n<script src=\"/Style Library/tskgv/js/jspdf.plug" +
+                    "in.addimage.js\"></script>\r\n<script src=\"/Style Library/tskgv/js/html2canvas.min." +
+                    "js\"></script>\r\n<script src=\"/Style Library/tskgv/js/html2pdf.bundle.min.js\"></sc" +
+                    "ript>\r\n<div class=\"container\">\r\n\r\n    <div class=\"card shadow\">\r\n        <div cl" +
+                    "ass=\"card-header \">\r\n            ");
             parameterContainer.Controls[0].RenderControl(@__w);
             @__w.Write("\r\n            <h3 class=\"mb-1\">\r\n                ");
             parameterContainer.Controls[1].RenderControl(@__w);
             @__w.Write("\r\n                ");
             parameterContainer.Controls[2].RenderControl(@__w);
+            @__w.Write("\r\n                ");
+            parameterContainer.Controls[3].RenderControl(@__w);
             @__w.Write(@"
                 
             </h3>
@@ -1298,25 +1344,16 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
                 <a href=""#"" class=""btn btn-info"" id=""downloadPDF"" onclick=""DoIt();"">PDF'e Aktar</a>
             </div>
             ");
-            parameterContainer.Controls[3].RenderControl(@__w);
-            @__w.Write("\r\n            <div class=\"form-group pt-4 \">\r\n                ");
             parameterContainer.Controls[4].RenderControl(@__w);
-            @__w.Write("\r\n                ");
+            @__w.Write("\r\n           \r\n\r\n        </div>\r\n        <div class=\"card-footer\">\r\n            ");
             parameterContainer.Controls[5].RenderControl(@__w);
-            @__w.Write("\r\n                ");
-            parameterContainer.Controls[6].RenderControl(@__w);
-            @__w.Write("\r\n                ");
-            parameterContainer.Controls[7].RenderControl(@__w);
-            @__w.Write("\r\n            </div>\r\n        </div>\r\n        <div class=\"card-footer\">\r\n        " +
-                    "    ");
-            parameterContainer.Controls[8].RenderControl(@__w);
             @__w.Write("\r\n            ");
-            parameterContainer.Controls[9].RenderControl(@__w);
-            @__w.Write("\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"modal\" id=\"TeminatEkleModalDi" +
+            parameterContainer.Controls[6].RenderControl(@__w);
+            @__w.Write("\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"modal\" id=\"ListeyeEkleModalDi" +
                     "v\" role=\"dialog\">\r\n    <div class=\"modal-dialog\">\r\n        <!-- Modal content-->" +
                     "\r\n        <div class=\"modal-content\">\r\n            <div class=\"modal-body\">\r\n   " +
                     "             ");
-            parameterContainer.Controls[10].RenderControl(@__w);
+            parameterContainer.Controls[7].RenderControl(@__w);
             @__w.Write("               \r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n");
         }
         

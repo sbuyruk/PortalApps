@@ -80,6 +80,7 @@ namespace Utility.ProjeGlobal
         public const int SQL_DELETE = 2;
         public const int SQL_INSERT = 3;
         public const int SQL_SELECTWITHFILTER = 4;
+        public const int SQL_GENERIC_INT_VALUE = 987654321;
         public const string GIZLI_STRING = "GİZLİ";
 
         public const bool DELETE_LOG = true;

@@ -107,6 +107,54 @@ namespace Model.TBYS
             }
             return isSuccess;
         }
+        public string GetInsertSQL(string extId)
+        {
+            try
+            {
+                GenericEntity<KiraEkstreAktarma> genericEntity = new GenericEntity<KiraEkstreAktarma>(ProjeConstants.SQL_INSERT);
+                OlusturmaTarihi = DateTime.Now;
+                string sqlString = genericEntity.GetQuery(this, extId) + " ;SELECT SCOPE_IDENTITY() ";
+
+                return sqlString;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        public string GetUpdateSQL(string extId)
+        {
+            try
+            {
+                GenericEntity<KiraEkstreAktarma> genericEntity = new GenericEntity<KiraEkstreAktarma>(ProjeConstants.SQL_UPDATE);
+                OlusturmaTarihi = DateTime.Now;
+                string sqlString = genericEntity.GetQuery(this, extId);
+
+                return sqlString;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        public string GetDeleteSQL(string extId)
+        {
+            try
+            {
+                GenericEntity<KiraEkstreAktarma> genericEntity = new GenericEntity<KiraEkstreAktarma>(ProjeConstants.SQL_DELETE);
+                OlusturmaTarihi = DateTime.Now;
+                string sqlString = genericEntity.GetQuery(this, extId);
+
+                return sqlString;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
         public List<KiraEkstreAktarma> SelectKiraciIdByAdi(string adi)
         {
             string sqlString = string.Format(@"

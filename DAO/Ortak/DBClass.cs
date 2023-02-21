@@ -276,7 +276,7 @@ namespace DAO.Ortak
 
                         foreach (DBObject item in DBObjectList)
                         {
-                            string sqlString = item.SQLString;
+                            string sqlString = item.SQLString.Replace(ProjeConstants.SQL_GENERIC_INT_VALUE.ToString(),"{"+ item.SQLStringParamIndex + "}");
                             int sqlType = item.SQLType;
                             switch (sqlType)
                             {
@@ -332,8 +332,9 @@ namespace DAO.Ortak
                     }
                     DBTransaction.Commit();
                 }
-                catch (Exception )
+                catch (Exception ex )
                 {
+                    MessageHelper.PublishMessage(ex.Message, ProjeConstants.MESAJ_HATA);
                     DBTransaction.Rollback();
 
                     foreach (DBObject item in DBObjectList)

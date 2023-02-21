@@ -152,6 +152,7 @@
     <Compile Include="TBYS\KiraSozlesme.cs" />
     <Compile Include="TBYS\HukukiTakip.cs" />
     <Compile Include="TBYS\TasinmazTaahhut.cs" />
+    <Compile Include="TBYS\OdemeAyristirma.cs" />
     <Compile Include="TBYS\TeminatIslem.cs" />
     <Compile Include="TBYS\OdemeAyrinti.cs" />
     <Compile Include="TBYS\TestDb.cs" />

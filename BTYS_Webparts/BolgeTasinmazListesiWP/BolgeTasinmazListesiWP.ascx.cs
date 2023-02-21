@@ -105,6 +105,7 @@ namespace BTYS_Webparts.BolgeTasinmazListesiWP
             {
                 List<TasinmazListesiListItem> list = GetDataList();
                 var serializer = new JavaScriptSerializer();
+                serializer.MaxJsonLength = Int32.MaxValue;
                 jSon = serializer.Serialize(list);
             }
             catch (Exception exception)

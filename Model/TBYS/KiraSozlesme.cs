@@ -534,7 +534,7 @@ namespace Model.TBYS
             string sqlString = string.Format(@"
                 SELECT  *
                 FROM KiraSozlesme_Table
-                WHERE KiraciId={0} AND SozBasTar >= {1} 
+                WHERE KiraciId={0} AND SozBitTar >= {1} 
                 ORDER BY SozBasTar ", kiraciId.ReturnQuotedValue(), tarih.ReturnTRDateFormat());
             DataTable dataTable = dao.selectFromDb(sqlString, "");
             if (dataTable != null)

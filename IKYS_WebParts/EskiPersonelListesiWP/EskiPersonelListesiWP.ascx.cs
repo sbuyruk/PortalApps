@@ -94,6 +94,7 @@ namespace IKYS_WebParts.EskiPersonelListesiWP
                 t1 = DateTime.Now;
                 List<PersonelListItem> list = GetDataList();
                 var serializer = new JavaScriptSerializer();
+                serializer.MaxJsonLength = Int32.MaxValue;
                 jSon = serializer.Serialize(list);
                 t5 = DateTime.Now;
             }

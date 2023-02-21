@@ -264,7 +264,7 @@ namespace Model.Ortak
                     }
                     else
                     {
-                        idstr.AppendFormat("{0}={1} ", pi.Name, typestr.ToString());
+                        idstr.AppendFormat("{0}={1} ", pi.Name, extId.ToString());// typestr.ToString());
                     }
                     continue;
                 }

@@ -8,7 +8,7 @@
         public bool UseReturnIdAsParam { get; set; }
         public int DbObjectParamIndex { get; set; }
         //sql cünlesinde parametrenin yeri.. gelecekte kullanmak üzere planlandı
-        public int SQLStringParamIndex { get; set; }
+        public int SQLStringParamIndex { get; set; } = 0;
         //kaç kayıt etkilendi
         public int RowsAffected { get; set; }
         //çalıştıktan sonra başarılı oldu mu

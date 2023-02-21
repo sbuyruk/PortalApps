@@ -18,10 +18,10 @@
         document.getElementById('<%= SatirSilBtn.ClientID%>').click();
     }
     function OpenOdemeEkleModal() {
-        $("#TeminatEkleModalDiv").modal({ backdrop: "static" });
+        $("#ListeyeEkleModalDiv").modal({ backdrop: "static" });
     }
     function CloseModal() {
-        $("#TeminatEkleModalDiv").modal('hide');
+        $("#ListeyeEkleModalDiv").modal('hide');
 
     }
 
@@ -32,23 +32,23 @@
             delimiter: '.'
         });
     }));
-    function TeminatEkleNowBtnEnable(tutar) {
+    function ListeyeEkleNowBtnEnable(tutar) {
         var kaydetVeyaGuncelle = document.getElementById('<%= KaydetVeyaGuncelleHdn.ClientID%>').value;
         tutar = tutar.replace(",",".");
         if (tutar > 0) {
             if (kaydetVeyaGuncelle == "Kaydet") {
-                document.getElementById('KesinTeminatEkleNowDiv').style.display = "block";
-                document.getElementById('KesinTeminatGuncelleNow').style.display = "none";
+                document.getElementById('ListeyeEkleNowDiv').style.display = "block";
+                document.getElementById('ListeyiGuncelleNowDiv').style.display = "none";
             } else if (kaydetVeyaGuncelle == "Guncelle") {
-                document.getElementById('KesinTeminatEkleNowDiv').style.display = "none";
-                document.getElementById('KesinTeminatGuncelleNow').style.display = "block";
+                document.getElementById('ListeyeEkleNowDiv').style.display = "none";
+                document.getElementById('ListeyiGuncelleNowDiv').style.display = "block";
             }
                 
         }
         else {
 
-            document.getElementById('KesinTeminatEkleNowDiv').style.display = "none";
-            document.getElementById('KesinTeminatGuncelleNow').style.display = "none";
+            document.getElementById('ListeyeEkleNowDiv').style.display = "none";
+            document.getElementById('ListeyiGuncelleNowDiv').style.display = "none";
         }
         
     }
@@ -86,6 +86,7 @@
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-1">
                 <asp:Label ID="TitleLbl" runat="server" CssClass="col-form-label text-danger font-weight-bold mb-1" Text="Ödeme Ayrıştırma"></asp:Label>
+                <asp:Label ID="AktarildiMiLbl" runat="server" CssClass="col-form-label text-danger font-weight-bold mb-1" Text=""></asp:Label>
                 <asp:Label ID="IdLbl" runat="server" CssClass="col-form-label text-white" Visible="false"></asp:Label>
                 
             </h3>
@@ -139,7 +140,7 @@
                                             <th>Ödeme Tarihi</th>
                                             <th>Ödeme Sebebi</th>
                                             <th>Tutar</th>
-                                            <th>KiraciId</th>
+                                            <th>Kiraci</th>
                                             <th>Düzenle</th>
                                             <th>Sil</th>
                                         </tr>
@@ -148,19 +149,22 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-group pt-4 ">
+                        <asp:LinkButton ID="KiraOdemesiEkleBtn" runat="server" CssClass="col-2 btn btn-primary mr-3" CausesValidation="false" Text="Kira Ödemesi Ekle" OnClientClick="{return true;};" OnClick="KiraOdemesiEkleBtn_Click" />
+                        <asp:LinkButton ID="OdemeyiSozlesmelereBolBtn" runat="server" CssClass="col-3 btn btn-danger mr-3" CausesValidation="false" Text="Ödemeyi Sözleşmelere Böl" OnClientClick="{return true;};" OnClick="OdemeyiSozlesmelereBolBtn_Click" />
+                        <asp:LinkButton ID="KesinTeminatEkleBtn" runat="server" CssClass="col-3 btn btn-success mr-3" CausesValidation="false" Text="Kesin Teminat Ödemesi Ekle" OnClientClick="{return true;};" OnClick="KesinTeminatEkleBtn_Click" />
+                        <asp:LinkButton ID="GeciciTeminatEkleBtn" runat="server" CssClass="col-3 btn btn-info mr-3" CausesValidation="false" Text="Geçici Teminat Ödemesi Ekle" OnClientClick="{return true;};" OnClick="GeciciTeminatEkleBtn_Click" />
+                    </div>
                 </ContentTemplate>
                 <Triggers>
+                    <asp:AsyncPostBackTrigger ControlID="KaydetBtn" EventName="click" />
                     <asp:AsyncPostBackTrigger ControlID="SatirSilBtn" EventName="click" />
-                    <asp:AsyncPostBackTrigger ControlID="TeminatEkleNowBtn" EventName="click" />
-                    <asp:AsyncPostBackTrigger ControlID="TeminatGuncelleNowBtn" EventName="click" />
+                    <asp:AsyncPostBackTrigger ControlID="ListeyeEkleNowBtn" EventName="click" />
+                    <asp:AsyncPostBackTrigger ControlID="ListeyiGuncelleNowBtn" EventName="click" />
                 </Triggers>
             </asp:UpdatePanel>
-            <div class="form-group pt-4 ">
-                <asp:LinkButton ID="KiraOdemesiEkleBtn" runat="server" CssClass="col-2 btn btn-primary mr-3" CausesValidation="false" Text="Kira Ödemesi Ekle" OnClientClick="{return true;};" OnClick="KiraOdemesiEkleBtn_Click" />
-                <asp:LinkButton ID="OdemeyiSozlesmelereBolBtn" runat="server" CssClass="col-3 btn btn-danger mr-3" CausesValidation="false" Text="Ödemeyi Sözleşmelere Böl" OnClientClick="{return true;};" OnClick="OdemeyiSozlesmelereBolBtn_Click" />
-                <asp:LinkButton ID="KesinTeminatEkleBtn" runat="server" CssClass="col-3 btn btn-success mr-3" CausesValidation="false" Text="Kesin Teminat Ödemesi Ekle" OnClientClick="{return true;};" OnClick="KesinTeminatEkleBtn_Click" />
-                <asp:LinkButton ID="GeciciTeminatEkleBtn" runat="server" CssClass="col-3 btn btn-info mr-3" CausesValidation="false" Text="Geçici Teminat Ödemesi Ekle" OnClientClick="{return true;};" OnClick="GeciciTeminatEkleBtn_Click" />
-            </div>
+           
+
         </div>
         <div class="card-footer">
             <asp:UpdatePanel runat="server" ID="UpdatePanel2" UpdateMode="Conditional">
@@ -168,8 +172,8 @@
                     <asp:LinkButton ID="KaydetBtn" runat="server" CssClass="btn btn-success" Text="Ödeme Ayrıştır ve Kaydet" OnClick="KaydetBtn_Click" Visible="False"></asp:LinkButton>
                 </ContentTemplate>
                 <Triggers>
-                    <asp:AsyncPostBackTrigger ControlID="TeminatEkleNowBtn" EventName="click" />
-                    <asp:AsyncPostBackTrigger ControlID="TeminatGuncelleNowBtn" EventName="click" />
+                    <asp:AsyncPostBackTrigger ControlID="ListeyeEkleNowBtn" EventName="click" />
+                    <asp:AsyncPostBackTrigger ControlID="ListeyiGuncelleNowBtn" EventName="click" />
                     <asp:AsyncPostBackTrigger ControlID="SatirSilBtn" EventName="click" />
                 </Triggers>
             </asp:UpdatePanel>
@@ -178,7 +182,7 @@
     </div>
 </div>
 
-<div class="modal" id="TeminatEkleModalDiv" role="dialog">
+<div class="modal" id="ListeyeEkleModalDiv" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
@@ -205,7 +209,7 @@
                                     </div>
                                     <div class="form-group col">
                                         <label class="col-form-label font-weight-bold" for="IslemTutariTxt">Tutar</label>
-                                        <input class="form-control input-money text-right " id="IslemTutariTxt" runat="server" onkeyup="TeminatEkleNowBtnEnable(this.value)" />
+                                        <input class="form-control input-money text-right " id="IslemTutariTxt" runat="server" onkeyup="ListeyeEkleNowBtnEnable(this.value)" />
                                     </div>
                                 </div>
                                 <div class="form-group" id="KiraciDiv" runat="server" >
@@ -219,11 +223,11 @@
                             </div>
                             <div class="card-footer">
                                 <div class="row">
-                                    <div id="KesinTeminatEkleNowDiv" class="col form-group" style="display: none">
-                                        <asp:LinkButton ID="TeminatEkleNowBtn" Text="Tamam" runat="server" CssClass="btn btn-success" OnClick="TeminatEkleNowBtn_Click"></asp:LinkButton>
+                                    <div id="ListeyeEkleNowDiv" class="col form-group" style="display: none">
+                                        <asp:LinkButton ID="ListeyeEkleNowBtn" Text="Tamam" runat="server" CssClass="btn btn-success" OnClick="ListeyeEkleNowBtn_Click"></asp:LinkButton>
                                     </div>
-                                    <div id="KesinTeminatGuncelleNow" class="col form-group" style="display: none">
-                                        <asp:LinkButton ID="TeminatGuncelleNowBtn" Text="Güncelle" runat="server" CssClass="btn btn-primary" OnClick="TeminatGuncelleNowBtn_Click"></asp:LinkButton>
+                                    <div id="ListeyiGuncelleNowDiv" class="col form-group" style="display: none">
+                                        <asp:LinkButton ID="ListeyiGuncelleNowBtn" Text="Güncelle" runat="server" CssClass="btn btn-primary" OnClick="ListeyiGuncelleNowBtn_Click"></asp:LinkButton>
                                     </div>
                                     <div class="col form-group">
                                         <button type="button" class="btn btn-outline-secondary float-right" data-dismiss="modal">İptal</button>

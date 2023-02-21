@@ -114,7 +114,7 @@
         myjsons = myset;
     }
     var myjsons = [{
-        "SecKaydet": "", "AdiSoyadi": "", "OdemeTarihi": "", "Tutar": "", "KiraciAdi": "","OdemeSebebiUrl": "", "Aciklama": "", "Eslestir": "", "SecSil": ""
+        "SecKaydet": "", "AdiSoyadi": "", "OdemeTarihi": "", "Tutar": "", "KiraciAdi": "","OdemeSebebiUrl": "", "Aciklama": "", "Eslestir": ""//, "SecSil": ""
     }];
     jQuery(document).ready(function () {
         jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
@@ -140,7 +140,7 @@
                 { data: "OdemeSebebiUrl", "font-size":"small" },
                 { data: "Aciklama", "width": "20%","font-size":"small" },
                 { data: "Eslestir" },
-                { data: "SecSil"}
+                //{ data: "SecSil"}
 
             ],
             'order': [[2, 'desc']],//sort date desc
@@ -306,7 +306,7 @@
                                     <th>Ödeme Sebebi</th>
                                     <th>Açıklama</th>
                                     <th>Eşleştir</th>
-                                    <th>Seç Sil</th>
+                                    <%--<th>Seç Sil</th>--%>
                                 </tr>
                             </thead>
                         </table>

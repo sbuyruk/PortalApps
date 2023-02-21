@@ -930,6 +930,7 @@ namespace MTS_WebParts.RandevuGirisiWP
                 }
 
                 var serializer = new JavaScriptSerializer();
+                serializer.MaxJsonLength = Int32.MaxValue;
                 jSon = serializer.Serialize(list);
             }
             catch (Exception exception)
@@ -1010,6 +1011,7 @@ namespace MTS_WebParts.RandevuGirisiWP
             {
                 List<KatilimciListItem> list = GetModalDataList();
                 var serializer = new JavaScriptSerializer();
+                serializer.MaxJsonLength = Int32.MaxValue;
                 jSon = serializer.Serialize(list);
             }
             catch (Exception exception)

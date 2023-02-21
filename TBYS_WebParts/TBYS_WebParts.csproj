@@ -1485,6 +1485,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DAO\DAO.csproj">
+      <Project>{1FA61ADE-6FB6-4FEA-95F1-D99C7523D18A}</Project>
+      <Name>DAO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Model\Model.csproj">
       <Project>{84f644d0-0931-4536-9edc-cbe7a773f546}</Project>
       <Name>Model</Name>

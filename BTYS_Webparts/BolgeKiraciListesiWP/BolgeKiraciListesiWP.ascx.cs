@@ -133,6 +133,7 @@ namespace BTYS_Webparts.BolgeKiraciListesiWP
             {
                 List<KiraciListItem> list = GetDataList();
                 var serializer = new JavaScriptSerializer();
+                serializer.MaxJsonLength = Int32.MaxValue;
                 jSon = serializer.Serialize(list);
             }
             catch (Exception exception)

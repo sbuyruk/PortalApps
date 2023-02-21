@@ -78,6 +78,7 @@ namespace MTS_WebParts.MtsOlayListesiWP
                 List<Olay> olayList = GetDataList(SorguZamaniQS);
                 List<OlayListItem> oliList = OlayListItemDoldur(olayList);
                 var serializer = new JavaScriptSerializer();
+                serializer.MaxJsonLength = Int32.MaxValue;
                 jSon = serializer.Serialize(oliList);
             }
             catch (Exception exception)

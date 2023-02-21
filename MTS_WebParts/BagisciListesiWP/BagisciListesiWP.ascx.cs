@@ -76,6 +76,7 @@ namespace MTS_WebParts.BagisciListesiWP
             {
                 List<BagisciListItem> list = GetModalDataList();
                 var serializer = new JavaScriptSerializer();
+                serializer.MaxJsonLength = Int32.MaxValue;
                 jSon = serializer.Serialize(list);
             }
             catch (Exception exception)

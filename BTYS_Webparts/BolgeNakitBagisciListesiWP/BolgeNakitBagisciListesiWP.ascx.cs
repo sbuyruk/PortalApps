@@ -245,6 +245,7 @@ namespace BTYS_Webparts.BolgeNakitBagisciListesiWP
             {
                 List<NakitBagisciListItem> list = GetDataList();
                 var serializer = new JavaScriptSerializer();
+                serializer.MaxJsonLength = Int32.MaxValue;
                 jSon = serializer.Serialize(list);
             }
             catch (Exception exception)
@@ -453,6 +454,7 @@ namespace BTYS_Webparts.BolgeNakitBagisciListesiWP
             {
                 List<NakitBagisciListItem> list = GetModalDataList();
                 var serializer = new JavaScriptSerializer();
+                serializer.MaxJsonLength = Int32.MaxValue;
                 jSon = serializer.Serialize(list);
             }
             catch (Exception exception)

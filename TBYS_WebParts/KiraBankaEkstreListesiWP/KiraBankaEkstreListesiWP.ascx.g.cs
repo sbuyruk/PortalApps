@@ -565,17 +565,17 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP {
                         "                                <th>Tutar</th>\r\n                                " +
                         "    <th>Kiracı</th>\r\n                                    <th>Ödeme Sebebi</th>\r\n" +
                         "                                    <th>Açıklama</th>\r\n                         " +
-                        "           <th>Eşleştir</th>\r\n                                    <th>Seç Sil</t" +
-                        "h>\r\n                                </tr>\r\n                            </thead>\r" +
-                        "\n                        </table>\r\n                    </div>\r\n                <" +
-                        "/div>\r\n                <div class=\"card-footer\">\r\n                    <div id=\"B" +
-                        "tnDiv\" style=\"display: none\">\r\n                        <input id=\"SecilenleriKay" +
-                        "detTriggerBtn\" class=\"btn btn-success\" type=\"button\" value=\"Seçilenleri Kaydet\" " +
-                        "onclick=\"SecilenleriKaydetTriggerBtnClicked();\" />\r\n                    </div>\r\n" +
-                        "                    <div id=\"SilinecekBtnDiv\" style=\"display: none\">\r\n          " +
-                        "              <input id=\"SecilenleriSilTriggerBtn\" class=\"btn btn-success\" type=" +
-                        "\"button\" value=\"Seçilenleri Sil\" onclick=\"SecilenleriSilTriggerBtnClicked();\" />" +
-                        "\r\n                    </div>\r\n\r\n                    "));
+                        "           <th>Eşleştir</th>\r\n                                    \r\n            " +
+                        "                    </tr>\r\n                            </thead>\r\n               " +
+                        "         </table>\r\n                    </div>\r\n                </div>\r\n         " +
+                        "       <div class=\"card-footer\">\r\n                    <div id=\"BtnDiv\" style=\"di" +
+                        "splay: none\">\r\n                        <input id=\"SecilenleriKaydetTriggerBtn\" c" +
+                        "lass=\"btn btn-success\" type=\"button\" value=\"Seçilenleri Kaydet\" onclick=\"Secilen" +
+                        "leriKaydetTriggerBtnClicked();\" />\r\n                    </div>\r\n                " +
+                        "    <div id=\"SilinecekBtnDiv\" style=\"display: none\">\r\n                        <i" +
+                        "nput id=\"SecilenleriSilTriggerBtn\" class=\"btn btn-success\" type=\"button\" value=\"" +
+                        "Seçilenleri Sil\" onclick=\"SecilenleriSilTriggerBtnClicked();\" />\r\n              " +
+                        "      </div>\r\n\r\n                    "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl7;
             @__ctrl7 = this.@__BuildControlExcelBtn();
             @__parser.AddParsedSubObject(@__ctrl7);
@@ -1518,46 +1518,46 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP {
             @__w.Write("\').click();\r\n    }\r\n</script>\r\n\r\n<script>\r\n    function setDataSet(myset) {\r\n    " +
                     "    myjsons = myset;\r\n    }\r\n    var myjsons = [{\r\n        \"SecKaydet\": \"\", \"Adi" +
                     "Soyadi\": \"\", \"OdemeTarihi\": \"\", \"Tutar\": \"\", \"KiraciAdi\": \"\",\"OdemeSebebiUrl\": \"" +
-                    "\", \"Aciklama\": \"\", \"Eslestir\": \"\", \"SecSil\": \"\"\r\n    }];\r\n    jQuery(document).r" +
-                    "eady(function () {\r\n        jQuery.fn.dataTable.moment(\'DD.MM.YYYY HH:mm\');//sor" +
-                    "t date\r\n        jQuery(\'#CustomDataTable\').DataTable({\r\n            \'initComplet" +
-                    "e\': function (settings, json) {//tablo yüklendiğinde\r\n                var api = " +
-                    "this.api();\r\n                var row = api.row(function (idx, data, node) { //se" +
-                    "cilen kayda gider\r\n                    return data[\'Secildi\'] == true;\r\n        " +
-                    "        });\r\n                if (row.length > 0) {\r\n                    row.sele" +
-                    "ct()\r\n                        .show()\r\n                        .draw(false);\r\n  " +
-                    "              }\r\n            },\r\n            data: myjsons,\r\n            columns" +
-                    ": [\r\n                { data: \"SecKaydet\" },\r\n                { data: \"AdiSoyadi\"" +
-                    ", \"width\": \"15%\" },\r\n                { data: \"OdemeTarihi\", \"width\": \"10%\" },\r\n " +
-                    "               { data: \"Tutar\", \"width\": \"10%\", \"className\": \"text-right\" },\r\n  " +
-                    "              { data: \"KiraciAdi\", \"width\": \"20%\", \"font-size\":\"small\" },\r\n     " +
-                    "           { data: \"OdemeSebebiUrl\", \"font-size\":\"small\" },\r\n                { d" +
-                    "ata: \"Aciklama\", \"width\": \"20%\",\"font-size\":\"small\" },\r\n                { data: " +
-                    "\"Eslestir\" },\r\n                { data: \"SecSil\"}\r\n\r\n            ],\r\n            " +
-                    "\'order\': [[2, \'desc\']],//sort date desc\r\n            \"language\": {\r\n            " +
-                    "    \"url\": \"http://tskgv-portal/OrtakBelgeler/Turkish.txt\",\r\n                \"de" +
-                    "cimal\": \",\",\r\n                \"thousands\": \".\"\r\n            },\r\n            //co" +
-                    "lumn resizable\r\n            //initComplete: function (settings) {\r\n            /" +
-                    "/    $(\'#CustomDataTable\').colResizable({ liveDrag: true });\r\n            //},\r\n" +
-                    "            responsive: true,\r\n            dom: \'Bfrtip\',\r\n            buttons: " +
-                    "[\r\n                {\r\n                    extend: \'print\',\r\n                    " +
-                    "exportOptions: {\r\n                        columns: \':visible\'\r\n                 " +
-                    "   }\r\n                },\r\n                {\r\n                    extend: \'excel\'" +
-                    ",\r\n                    exportOptions: {\r\n                        columns: \':visi" +
-                    "ble\'\r\n                    }\r\n                },\r\n                {\r\n            " +
-                    "        extend: \'pdf\',\r\n                    exportOptions: {\r\n                  " +
-                    "      columns: \':visible\'\r\n                    }\r\n                },\r\n          " +
-                    "      {\r\n                    extend: \'copy\',\r\n                    exportOptions:" +
-                    " {\r\n                        columns: \':visible\'\r\n                    }\r\n        " +
-                    "        },\r\n                , \'pageLength\', \"colvis\"\r\n            ],\r\n          " +
-                    "  \"createdRow\": function (row, data, dataIndex) {\r\n                if (data.Akta" +
-                    "rildiMi == \"True\") {\r\n                    $(row).addClass(\'ekstre-aktarildi\');\r\n" +
-                    "                } else if (data.Uyari == \"True\") {\r\n                    $(row).a" +
-                    "ddClass(\'uyari\');\r\n                } else if (data.KiraciId > 0) {\r\n            " +
-                    "        $(row).addClass(\'ekstre-aktarilabilir\');\r\n                }\r\n           " +
-                    "     \r\n            },//set row color \r\n        });\r\n\r\n        \r\n        ArrayDol" +
-                    "dur();\r\n    });\r\n</script>\r\n\r\n<script type=\"text/javascript\"> \r\n\r\n    function O" +
-                    "penModalOdemeBolustur(ekstreAktarmaId) {\r\n        document.getElementById(\'");
+                    "\", \"Aciklama\": \"\", \"Eslestir\": \"\"//, \"SecSil\": \"\"\r\n    }];\r\n    jQuery(document)" +
+                    ".ready(function () {\r\n        jQuery.fn.dataTable.moment(\'DD.MM.YYYY HH:mm\');//s" +
+                    "ort date\r\n        jQuery(\'#CustomDataTable\').DataTable({\r\n            \'initCompl" +
+                    "ete\': function (settings, json) {//tablo yüklendiğinde\r\n                var api " +
+                    "= this.api();\r\n                var row = api.row(function (idx, data, node) { //" +
+                    "secilen kayda gider\r\n                    return data[\'Secildi\'] == true;\r\n      " +
+                    "          });\r\n                if (row.length > 0) {\r\n                    row.se" +
+                    "lect()\r\n                        .show()\r\n                        .draw(false);\r\n" +
+                    "                }\r\n            },\r\n            data: myjsons,\r\n            colum" +
+                    "ns: [\r\n                { data: \"SecKaydet\" },\r\n                { data: \"AdiSoyad" +
+                    "i\", \"width\": \"15%\" },\r\n                { data: \"OdemeTarihi\", \"width\": \"10%\" },\r" +
+                    "\n                { data: \"Tutar\", \"width\": \"10%\", \"className\": \"text-right\" },\r\n" +
+                    "                { data: \"KiraciAdi\", \"width\": \"20%\", \"font-size\":\"small\" },\r\n   " +
+                    "             { data: \"OdemeSebebiUrl\", \"font-size\":\"small\" },\r\n                {" +
+                    " data: \"Aciklama\", \"width\": \"20%\",\"font-size\":\"small\" },\r\n                { data" +
+                    ": \"Eslestir\" },\r\n                //{ data: \"SecSil\"}\r\n\r\n            ],\r\n        " +
+                    "    \'order\': [[2, \'desc\']],//sort date desc\r\n            \"language\": {\r\n        " +
+                    "        \"url\": \"http://tskgv-portal/OrtakBelgeler/Turkish.txt\",\r\n               " +
+                    " \"decimal\": \",\",\r\n                \"thousands\": \".\"\r\n            },\r\n            " +
+                    "//column resizable\r\n            //initComplete: function (settings) {\r\n         " +
+                    "   //    $(\'#CustomDataTable\').colResizable({ liveDrag: true });\r\n            //" +
+                    "},\r\n            responsive: true,\r\n            dom: \'Bfrtip\',\r\n            butto" +
+                    "ns: [\r\n                {\r\n                    extend: \'print\',\r\n                " +
+                    "    exportOptions: {\r\n                        columns: \':visible\'\r\n             " +
+                    "       }\r\n                },\r\n                {\r\n                    extend: \'ex" +
+                    "cel\',\r\n                    exportOptions: {\r\n                        columns: \':" +
+                    "visible\'\r\n                    }\r\n                },\r\n                {\r\n        " +
+                    "            extend: \'pdf\',\r\n                    exportOptions: {\r\n              " +
+                    "          columns: \':visible\'\r\n                    }\r\n                },\r\n      " +
+                    "          {\r\n                    extend: \'copy\',\r\n                    exportOpti" +
+                    "ons: {\r\n                        columns: \':visible\'\r\n                    }\r\n    " +
+                    "            },\r\n                , \'pageLength\', \"colvis\"\r\n            ],\r\n      " +
+                    "      \"createdRow\": function (row, data, dataIndex) {\r\n                if (data." +
+                    "AktarildiMi == \"True\") {\r\n                    $(row).addClass(\'ekstre-aktarildi\'" +
+                    ");\r\n                } else if (data.Uyari == \"True\") {\r\n                    $(ro" +
+                    "w).addClass(\'uyari\');\r\n                } else if (data.KiraciId > 0) {\r\n        " +
+                    "            $(row).addClass(\'ekstre-aktarilabilir\');\r\n                }\r\n       " +
+                    "         \r\n            },//set row color \r\n        });\r\n\r\n        \r\n        Arra" +
+                    "yDoldur();\r\n    });\r\n</script>\r\n\r\n<script type=\"text/javascript\"> \r\n\r\n    functi" +
+                    "on OpenModalOdemeBolustur(ekstreAktarmaId) {\r\n        document.getElementById(\'");
                          @__w.Write( paramEkstreAktarmaIdTxt.ClientID);
 
             @__w.Write("\').value = ekstreAktarmaId;\r\n        document.getElementById(\'");
