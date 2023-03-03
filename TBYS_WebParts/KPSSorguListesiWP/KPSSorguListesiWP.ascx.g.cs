@@ -85,6 +85,10 @@ namespace TBYS_WebParts.KPSSorguListesiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.CheckBox VasiyetciChk;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.HyperLink DosyaLnk;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -262,6 +266,24 @@ namespace TBYS_WebParts.KPSSorguListesiWP {
             this.TaahhutChk = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "TaahhutChk";
+            @__ctrl.Checked = true;
+            @__ctrl.AutoPostBack = true;
+            @__ctrl.CausesValidation = false;
+            @__ctrl.ToolTip = "Çıplak Mülkiyet bağışlayan bağışçıları listeye eklemek için işaretleyiniz.";
+            @__ctrl.CheckedChanged -= new System.EventHandler(this.TaahhutChk_CheckedChanged);
+            @__ctrl.CheckedChanged += new System.EventHandler(this.TaahhutChk_CheckedChanged);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.CheckBox @__BuildControlVasiyetciChk() {
+            global::System.Web.UI.WebControls.CheckBox @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.CheckBox();
+            this.VasiyetciChk = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "VasiyetciChk";
             @__ctrl.Checked = true;
             @__ctrl.AutoPostBack = true;
             @__ctrl.CausesValidation = false;
@@ -472,12 +494,15 @@ namespace TBYS_WebParts.KPSSorguListesiWP {
             global::System.Web.UI.WebControls.CheckBox @__ctrl11;
             @__ctrl11 = this.@__BuildControlTaahhutChk();
             @__parser.AddParsedSubObject(@__ctrl11);
-            global::System.Web.UI.UpdatePanel @__ctrl12;
-            @__ctrl12 = this.@__BuildControl__control2();
+            global::System.Web.UI.WebControls.CheckBox @__ctrl12;
+            @__ctrl12 = this.@__BuildControlVasiyetciChk();
             @__parser.AddParsedSubObject(@__ctrl12);
-            global::System.Web.UI.WebControls.LinkButton @__ctrl13;
-            @__ctrl13 = this.@__BuildControlDosyayaKaydetBtn();
+            global::System.Web.UI.UpdatePanel @__ctrl13;
+            @__ctrl13 = this.@__BuildControl__control2();
             @__parser.AddParsedSubObject(@__ctrl13);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl14;
+            @__ctrl14 = this.@__BuildControlDosyayaKaydetBtn();
+            @__parser.AddParsedSubObject(@__ctrl14);
             @__ctrl.SetRenderMethodDelegate(new System.Web.UI.RenderMethod(this.@__Render__control1));
         }
         
@@ -529,12 +554,13 @@ namespace TBYS_WebParts.KPSSorguListesiWP {
                         <label>
                             ");
             parameterContainer.Controls[8].RenderControl(@__w);
-            @__w.Write("\r\n                            Sadece Çıplak Mülkiyet Bağışçıları\r\n               " +
-                    "         </label>\r\n                    </div>\r\n                    <div class=\"c" +
-                    "heckbox\">\r\n                        <label>\r\n                            ");
+            @__w.Write("\r\n                            Sadece Çıplak Mülkiyet Bağışlayanları Getir\r\n      " +
+                    "                  </label>\r\n                    </div>\r\n                    <div" +
+                    " class=\"checkbox\">\r\n                        <label>\r\n                           " +
+                    " ");
             parameterContainer.Controls[9].RenderControl(@__w);
             @__w.Write(@"
-                            Sadece Sağ Olanlar
+                            Sadece Sağ Olanları Getir
                         </label>
                     </div>
                 </div>
@@ -543,12 +569,16 @@ namespace TBYS_WebParts.KPSSorguListesiWP {
                         <label>
                             ");
             parameterContainer.Controls[10].RenderControl(@__w);
-            @__w.Write("\r\n                            Taahhüt Verilen Kişiler Dahil\r\n                    " +
-                    "    </label>\r\n                    </div>\r\n                </div>\r\n            </" +
-                    "div>\r\n            ");
+            @__w.Write("\r\n                            Taahhüt Verilen Kişileri Dahil Et\r\n                " +
+                    "        </label>\r\n                    </div>\r\n                    <div class=\"ch" +
+                    "eckbox\">\r\n                        <label>\r\n                            ");
             parameterContainer.Controls[11].RenderControl(@__w);
-            @__w.Write("\r\n        </div>\r\n        <div class=\"card-footer\">\r\n            ");
+            @__w.Write("\r\n                            Vasiyetçileri Dahil Et\r\n                        </l" +
+                    "abel>\r\n                    </div>\r\n                </div>\r\n            </div>\r\n " +
+                    "           ");
             parameterContainer.Controls[12].RenderControl(@__w);
+            @__w.Write("\r\n        </div>\r\n        <div class=\"card-footer\">\r\n            ");
+            parameterContainer.Controls[13].RenderControl(@__w);
             @__w.Write("\r\n        </div>\r\n    </div>\r\n</div>\r\n");
         }
         

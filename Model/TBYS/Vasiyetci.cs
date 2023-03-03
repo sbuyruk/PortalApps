@@ -33,7 +33,6 @@ namespace Model.TBYS
         public string VasiyetcininTalebi { get; set; }
         public string Aciklama { get; set; }
 
-
         public override bool Delete()
         {
             try
@@ -201,6 +200,23 @@ namespace Model.TBYS
                 throw e;
             }
             return dataTable;
+        }
+        public List<Vasiyetci> SelectByFilters(bool SadeceSagOlanlar, bool isTCKimlikNoFull, bool isDogumTarihiFull)
+        {
+            string TCKimlikNoStr = isTCKimlikNoFull ? string.Format(" AND TCKimlikNo IS NOT NULL AND TCKimlikNo > 0 ") : string.Empty;
+            string dogumTarihiStr = isDogumTarihiFull ? string.Format(" AND DogumTarihi IS NOT NULL AND DogumTarihi!='' AND DogumTarihi>'01.01.1900' ") : string.Empty;
+            string sagVefatStr = SadeceSagOlanlar ? string.Format(" AND SagVefat!={0}", ProjeConstants.BAGISCI_VEFAT_INT) : string.Empty;
+            string whereStr = TCKimlikNoStr + dogumTarihiStr + sagVefatStr;
+            string sqlString = string.Format(@"
+                SELECT *
+                FROM Vasiyetci_Table A
+                WHERE 1>0
+                {0}", whereStr);
+
+            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            List<Vasiyetci> list = ToList<Vasiyetci>(dataTable);
+
+            return (list);
         }
     }
 }

@@ -47,13 +47,13 @@
                     <div class="checkbox">
                         <label>
                             <asp:CheckBox ID="CiplakMukiyetChk" runat="server" Checked="True" AutoPostBack="True" CausesValidation="False" OnCheckedChanged="CiplakMukiyetChk_CheckedChanged" ToolTip="Çıplak Mülkiyet bağışlayan bağışçıları listeye eklemek için işaretleyiniz." />
-                            Sadece Çıplak Mülkiyet Bağışçıları
+                            Sadece Çıplak Mülkiyet Bağışlayanları Getir
                         </label>
                     </div>
                     <div class="checkbox">
                         <label>
                             <asp:CheckBox ID="SagVefatChk" runat="server" Checked="True" AutoPostBack="True" CausesValidation="False" OnCheckedChanged="SagVefatChk_CheckedChanged" ToolTip="Sadece sağ olan bağışçıları listeye eklemek için işaretleyiniz." />
-                            Sadece Sağ Olanlar
+                            Sadece Sağ Olanları Getir
                         </label>
                     </div>
                 </div>
@@ -61,7 +61,13 @@
                     <div class="checkbox">
                         <label>
                             <asp:CheckBox ID="TaahhutChk" runat="server" Checked="True" AutoPostBack="True" CausesValidation="False" OnCheckedChanged="TaahhutChk_CheckedChanged" ToolTip="Çıplak Mülkiyet bağışlayan bağışçıları listeye eklemek için işaretleyiniz." />
-                            Taahhüt Verilen Kişiler Dahil
+                            Taahhüt Verilen Kişileri Dahil Et
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <asp:CheckBox ID="VasiyetciChk" runat="server" Checked="True" AutoPostBack="True" CausesValidation="False" OnCheckedChanged="TaahhutChk_CheckedChanged" ToolTip="Çıplak Mülkiyet bağışlayan bağışçıları listeye eklemek için işaretleyiniz." />
+                            Vasiyetçileri Dahil Et
                         </label>
                     </div>
                 </div>

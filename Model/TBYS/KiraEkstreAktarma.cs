@@ -203,7 +203,7 @@ namespace Model.TBYS
                     AND Soyadi={1}
                     AND Tutar={2}
                     AND OdemeTarihi={3}                    
-                ", adi.ReturnQuotedValue(), soyadi.ReturnQuotedValue(), tutar.ReturnQuotedValue(), OdemeTarihi.ReturnTRDateFormat());
+                ", adi.ReturnQuotedValue(), soyadi.ReturnQuotedValue(), tutar.ReturnQuotedValue(), odemeTarihi.ReturnTRDateFormat());
             DataTable dataTable = dao.selectFromDb(sqlString, "");
             List<KiraEkstreAktarma> list = ToList<KiraEkstreAktarma>(dataTable);
             return (list);
@@ -230,9 +230,17 @@ namespace Model.TBYS
         }
 
 
-        public DataTable SelectYuklenenKayit(ref int rowCount, bool aktarilanlarHaric)
+        public DataTable SelectYuklenenKayit(ref int rowCount, bool aktarilanlarHaric, bool kiraTeminatDiger)
         {
-            string aktarilanlarHaricStr = aktarilanlarHaric ? " WHERE AktarildiMi=0 " : "";
+            DateTime ucAyOncesi = DateTime.Today.AddMonths(-3);
+            string tarih =string.Format(" AND OdemeTarihi >={0}", new DateTime(ucAyOncesi.Year, ucAyOncesi.Month, 1).ReturnTRDateFormat());
+            string aktarilanlarHaricStr = aktarilanlarHaric ? " AND AktarildiMi=0 " : "";
+            string kiraTeminatDigerStr = kiraTeminatDiger ? string.Format(" AND (OdemeSebebiId IS NULL OR OdemeSebebiId IN ({0})) ",
+                ProjeConstants.ODEMESEBEBI_DIGER_INT+","+
+                ProjeConstants.ODEMESEBEBI_KIRA_INT + ","+
+                ProjeConstants.ODEMESEBEBI_KESINTEMINAT_INT + ","+
+                ProjeConstants.ODEMESEBEBI_GECICITEMINAT_INT + ","+
+                ProjeConstants.ODEMESEBEBI_KIRA_TEMINAT_INT ) : "";
             string sqlString = string.Format(@"
                 SELECT 
                     A.Id KiraEkstreAktarmaId, A.IslemTarihi,
@@ -245,9 +253,12 @@ namespace Model.TBYS
                     LEFT JOIN Il_Table C ON C.IlAdi=B.Ili
                     LEFT JOIN Ilce_Table D ON (D.IlceAdi=B.Ilcesi AND D.IlAdi=B.Ili)
                     LEFT JOIN OdemeSebebiTanim_Table E ON E.Id=A.OdemeSebebiId
+                WHERE 1>0
                 {0}
+                {1}
+                {2}
                 ORDER BY AktarildiMi,  OdemeTarihi desc, A.Id, A.Adi
-                ", aktarilanlarHaricStr);
+                ", aktarilanlarHaricStr,kiraTeminatDigerStr,tarih);
             DataTable dataTable = dao.selectFromDb(sqlString, "");
             //List<EkstreAktarma> list = ToList<EkstreAktarma>(dataTable);
             rowCount = dataTable != null ? dataTable.Rows.Count : 0;

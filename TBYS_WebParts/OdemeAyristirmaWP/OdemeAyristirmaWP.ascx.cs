@@ -219,7 +219,6 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
 
                     OdemeListItem odemeListItem = new OdemeListItem();
 
-                    odemeListItem.Kiraci = kiraci;
 
                     odemeListItem.OdemeTarihi = odemeTarihi;
                     odemeListItem.Tutar = tutar;
@@ -227,13 +226,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                     odemeListItem.KiraEkstreAktarmaId = kiraEkstreAktarma.Id;
                     odemeListItem.KiraSozlesmeId = SozlesmeGetir(kiraciId, OdemeTarihiLbl.Text.ConvertToDatetime());
                     odemeListItem.OdemeId = kiraEkstreAktarma.OdemeId;
-
-                    if (!kiraEkstreAktarma.AktarildiMi)
-                    {
-                        odemeListItem.Duzenle = "<a href='#' class='btn btn-outline-primary' onclick=GuncelleModalDoldur('" + odemeListItem.GuId + "');>Düzenle</a>";
-                        odemeListItem.Sil = "<a href='#' class='btn btn-outline-danger' onclick=SatirSil('" + odemeListItem.GuId + "')>Sil</a>";
-                    }
-
+                    odemeListItem.Kiraci = kiraci +"(KiraciNo:"+kiraciId+" SözleşmeNo:"+ odemeListItem.KiraSozlesmeId+")";
 
                     OdemeAyristirmaListQS.Add(odemeListItem);
                     if (ToplamlariDuzenle(kiraEkstreAktarma.AktarildiMi))
@@ -501,13 +494,17 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                             kiraSozlesme = kiraSozlesme.SelectEnYakinTarihliSozlesmeByKiraciIdTarih(item.Id, OdemeTarihiLbl.Text.ConvertToDatetime());
                             if (kiraSozlesme != null)
                             {
+                                KiraciDDL.Enabled = true;
                                 string sozlesme = kiraSozlesme.SozBasTar.ConvertToDatetimeEmptyIfNull() + "-" + kiraSozlesme.SozBitTar.ConvertToDatetimeEmptyIfNull();
-                                string kiraciBilgisi = (item.Adi + " " + item.Soyadi).Trim() + " (" + item.Adres + ")" + " (Sözlesme:" + sozlesme + ")";
-                                KiraciDDL.Items.Add(new ListItem(kiraciBilgisi, item.Id.ToString()));
+                                string kiraciBilgisi = "* " +(item.Adi + " " + item.Soyadi).Trim() + " (" + item.Adres + ")" + " (Sözlesme:" + sozlesme + ", Kira Bedeli:"+kiraSozlesme.KiraBedeli.ToString("N", culturInfo)+")";
+                                //KiraciDDL.Items.Add(new ListItem(kiraciBilgisi, item.Id.ToString()));
+                                ListItem li1= new ListItem (kiraciBilgisi, item.Id.ToString());
+                                li1.Attributes.Add("title", kiraciBilgisi);
+                                li1.Attributes.Add("style", "white-space:normal !important");
+                                KiraciDDL.Items.Add(li1);
                             }
 
                         }
-
                     }
                 }
                 KiraciIdLbl.Text = kiraEkstreAktarma.KiraciId.ToString();
@@ -622,6 +619,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                 OdemeSebebiIdLbl.Text = odemeListItem.OdemeSebebiId.ToString();
                 OdemeSebebiLbl.Text = odemeListItem.OdemeSebebi;
                 UtilityHelper.SetDDLValue(KiraciDDL, odemeListItem.KiraciId.ToString());
+                KiraciDDL.Enabled = false;
                 KaydetVeyaGuncelleHdn.Value = ProjeConstants.GUNCELLE;
                 ModalTitleLbl.Text = "Ödeme Güncellenecek";
                 UtilityHelper.ScriptCalistir("OpenOdemeEkleModal();");

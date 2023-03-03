@@ -166,35 +166,38 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
 
             DataTable dataTable = AsilBagisciGetData();
             List<NakitBagisciListItem> list = new List<NakitBagisciListItem>();
-            foreach (DataRow row in dataTable.Rows)
+            if (dataTable!=null)
             {
-                int nakitBagisciId = row["NakitBagisciId"].ReturnZeroIfNull().ConvertToInt();
-                string adi = "<a href=# onclick=OpenModal(" + nakitBagisciId + "); class='text-link'>" + row["Adi"].ToString() + "</a>";
-                string TcKimlik = row["TcKimlikNo"].ToString();
-                string ili = row["Ili"].ToString();
-                string ilcesi = row["Ilcesi"].ToString();
-                string telefon = row["Telefon1"].ToString();
-                string adres = row["Adres"].ToString();
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    int nakitBagisciId = row["NakitBagisciId"].ReturnZeroIfNull().ConvertToInt();
+                    string adi = "<a href=# onclick=OpenModal(" + nakitBagisciId + "); class='text-link'>" + row["Adi"].ToString() + "</a>";
+                    string TcKimlik = row["TcKimlikNo"].ToString();
+                    string ili = row["Ili"].ToString();
+                    string ilcesi = row["Ilcesi"].ToString();
+                    string telefon = row["Telefon1"].ToString();
+                    string adres = row["Adres"].ToString();
 
-                string duzenleUrl = ProjeConstants.PAGE_NAKITBAGISCI_EDIT + "?SenderApp=BB&NakitBagisciId=" + nakitBagisciId + "&Param=" + AsilBagisciAraTxt.Text;
+                    string duzenleUrl = ProjeConstants.PAGE_NAKITBAGISCI_EDIT + "?SenderApp=BB&NakitBagisciId=" + nakitBagisciId + "&Param=" + AsilBagisciAraTxt.Text;
 
-                string secUrl = "<a class='btn btn-outline-info' onclick=FillAsilBagisciTable(" + nakitBagisciId + ");>Seç</>";
+                    string secUrl = "<a class='btn btn-outline-info' onclick=FillAsilBagisciTable(" + nakitBagisciId + ");>Seç</>";
 
-                NakitBagisciListItem nakitBagisciListItem = new NakitBagisciListItem();
-                nakitBagisciListItem.NakitBagisciId = nakitBagisciId;
-                nakitBagisciListItem.Adi = adi.Trim();
-                nakitBagisciListItem.TCKimlikNo = TcKimlik;
-                nakitBagisciListItem.Ili = ili;
-                nakitBagisciListItem.Ilcesi = ilcesi;
-                nakitBagisciListItem.Telefon = telefon;
-                nakitBagisciListItem.Adres = adres;
+                    NakitBagisciListItem nakitBagisciListItem = new NakitBagisciListItem();
+                    nakitBagisciListItem.NakitBagisciId = nakitBagisciId;
+                    nakitBagisciListItem.Adi = adi.Trim();
+                    nakitBagisciListItem.TCKimlikNo = TcKimlik;
+                    nakitBagisciListItem.Ili = ili;
+                    nakitBagisciListItem.Ilcesi = ilcesi;
+                    nakitBagisciListItem.Telefon = telefon;
+                    nakitBagisciListItem.Adres = adres;
 
-                nakitBagisciListItem.Duzenle = "<a href=" + duzenleUrl + @"?DestinationApp=TBD&BagisciId=" + nakitBagisciId + "  class='btn btn-outline-primary'>Düzenle</a>";
-                if (isSelectable)
-                    nakitBagisciListItem.Sec = adi.IndexOf("BİLİNMEYEN") >= 0 ? string.Empty : secUrl;
+                    nakitBagisciListItem.Duzenle = "<a href=" + duzenleUrl + @"?DestinationApp=TBD&BagisciId=" + nakitBagisciId + "  class='btn btn-outline-primary'>Düzenle</a>";
+                    if (isSelectable)
+                        nakitBagisciListItem.Sec = adi.IndexOf("BİLİNMEYEN") >= 0 ? string.Empty : secUrl;
 
-                nakitBagisciListItem.Secildi = SecilenIdQS.Equals(nakitBagisciListItem.NakitBagisciId);
-                list.Add(nakitBagisciListItem);
+                    nakitBagisciListItem.Secildi = SecilenIdQS.Equals(nakitBagisciListItem.NakitBagisciId);
+                    list.Add(nakitBagisciListItem);
+                } 
             }
             return list;
         }

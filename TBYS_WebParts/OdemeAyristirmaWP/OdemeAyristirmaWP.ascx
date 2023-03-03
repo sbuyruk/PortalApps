@@ -75,6 +75,7 @@
 
 
 </script>
+
 <script src="/Style Library/tskgv/js/jspdf.js"></script>
 <script src="/Style Library/tskgv/js/jspdf.plugin.addimage.js"></script>
 <script src="/Style Library/tskgv/js/html2canvas.min.js"></script>
@@ -215,6 +216,8 @@
                                 <div class="form-group" id="KiraciDiv" runat="server" >
                                     <label class="col-form-label" for="KiraciDDL">Kiraci</label>
                                     <asp:DropDownList ID="KiraciDDL" runat="server" CssClass="form-control" Style="height: auto"></asp:DropDownList>
+                                    <%--<asp:ListBox ID="KiraciListBox" runat="server" CssClass="form-control" Width="100%" style="overflow-x:auto;" >
+                                    </asp:ListBox>--%>
                                 </div>
                                 <div class="form-group ">
                                     <label class="col-form-label" for="IslemAciklamaTxt">Açıklama</label>

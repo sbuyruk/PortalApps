@@ -332,10 +332,12 @@ namespace Model.TBYS
         public List<Kiraci> SelectByAdi(string adi)
         {
             string sqlString = string.Format(@"
-                SELECT *
-                FROM Kiraci_Table 
+                SELECT A.*
+                FROM Kiraci_Table A
+				INNER JOIN KiraSozlesme_Table B ON B.KiraciId=A.Id AND B.Id IN (SELECT MAX(Id) FROM KiraSozlesme_Table WHERE KiraciId=A.Id GROUP BY KiraciId) --Sözeşlmesi yeni olan önce gelsin
                 WHERE Adi Like '%{0}%' 
-                ",adi.Trim());
+                ORDER BY B.SozBasTar DESC
+                ", adi.Trim());
 
             DataTable dataTable = dao.selectFromDb(sqlString, "");
             List<Kiraci> list = ToList<Kiraci>(dataTable);

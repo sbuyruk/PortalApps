@@ -902,7 +902,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
             global::System.Web.UI.WebControls.DropDownList @__ctrl1;
             @__ctrl1 = this.@__BuildControlKiraciDDL();
             @__parser.AddParsedSubObject(@__ctrl1);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    \r\n                                "));
             return @__ctrl;
         }
         
@@ -1322,12 +1322,12 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
                     "vas: { scale: 2 },\r\n            jsPDF: { unit: \'in\', format: \'A4\', orientation: " +
                     "\'portrait\' }\r\n        };\r\n\r\n        // New Promise-based usage:\r\n        html2pd" +
                     "f().set(opt).from(element).save();\r\n\r\n        // Old monolithic-style usage:\r\n  " +
-                    "      //html2pdf(element, opt);\r\n    }\r\n\r\n\r\n</script>\r\n<script src=\"/Style Libra" +
-                    "ry/tskgv/js/jspdf.js\"></script>\r\n<script src=\"/Style Library/tskgv/js/jspdf.plug" +
-                    "in.addimage.js\"></script>\r\n<script src=\"/Style Library/tskgv/js/html2canvas.min." +
-                    "js\"></script>\r\n<script src=\"/Style Library/tskgv/js/html2pdf.bundle.min.js\"></sc" +
-                    "ript>\r\n<div class=\"container\">\r\n\r\n    <div class=\"card shadow\">\r\n        <div cl" +
-                    "ass=\"card-header \">\r\n            ");
+                    "      //html2pdf(element, opt);\r\n    }\r\n\r\n\r\n</script>\r\n\r\n<script src=\"/Style Lib" +
+                    "rary/tskgv/js/jspdf.js\"></script>\r\n<script src=\"/Style Library/tskgv/js/jspdf.pl" +
+                    "ugin.addimage.js\"></script>\r\n<script src=\"/Style Library/tskgv/js/html2canvas.mi" +
+                    "n.js\"></script>\r\n<script src=\"/Style Library/tskgv/js/html2pdf.bundle.min.js\"></" +
+                    "script>\r\n<div class=\"container\">\r\n\r\n    <div class=\"card shadow\">\r\n        <div " +
+                    "class=\"card-header \">\r\n            ");
             parameterContainer.Controls[0].RenderControl(@__w);
             @__w.Write("\r\n            <h3 class=\"mb-1\">\r\n                ");
             parameterContainer.Controls[1].RenderControl(@__w);

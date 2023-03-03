@@ -147,7 +147,7 @@ namespace Model.NBYS
             {
                 GenericEntity<NakitBagisHareket> genericEntity = new GenericEntity<NakitBagisHareket>(ProjeConstants.SQL_UPDATE);
                 OlusturmaTarihi = DateTime.Now;
-                string sqlString = genericEntity.GetQuery(this, extId);
+                string sqlString = string.IsNullOrEmpty(extId)?genericEntity.GetQuery(this): genericEntity.GetQuery(this, extId);
 
                 return sqlString;
             }

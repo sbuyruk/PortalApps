@@ -104,14 +104,14 @@ namespace TBYS_WebParts.KPSSorguListesiWP
                 Sorgulanan= "Bağışçı",
                 Cikar = "<a class='btn btn-outline-danger' onclick=CikarButtonClick(" + a.TCKimlikNo + ");>ÇIKAR</a>"
             }).ToList();
-            var sorgulanacakTtList = new List<SorgulanacakKisi>();
+            var sorgulanacakTaahhutList = new List<SorgulanacakKisi>();
             if (TaahhutChk.Checked)
             {
                 TasinmazTaahhut ttDao = new TasinmazTaahhut();
 
                 List<TasinmazTaahhut> ttlist = ttDao.SelectByFilters(SagVefatChk.Checked, 
                     TCKimlikChk.Checked, DogumTarihiChk.Checked, ProjeConstants.BOLGE_HEPSI);
-                sorgulanacakTtList = ttlist.Select(a => new SorgulanacakKisi()
+                sorgulanacakTaahhutList = ttlist.Select(a => new SorgulanacakKisi()
                 {
                     KimlikNo = a.TCKimlikNo,
                     Adi = a.Adi,
@@ -125,8 +125,29 @@ namespace TBYS_WebParts.KPSSorguListesiWP
 
 
             }
-            List<SorgulanacakKisi> sonucListe  = SorgulanacakBagisciListesi.Union(sorgulanacakTtList).ToList();
+            
+            var sorgulanacakVasiyetcitList = new List<SorgulanacakKisi>();
+            if (VasiyetciChk.Checked)
+            {
+                Vasiyetci vasiyetciDao = new Vasiyetci();
 
+                List<Vasiyetci> vasiyetcilist = vasiyetciDao.SelectByFilters(SagVefatChk.Checked,
+                    TCKimlikChk.Checked, DogumTarihiChk.Checked);
+                sorgulanacakVasiyetcitList = vasiyetcilist.Select(a => new SorgulanacakKisi()
+                {
+                    KimlikNo = a.TCKimlikNo,
+                    Adi = a.Adi,
+                    Soyadi = a.Soyadi,
+                    DogumTarihi = a.DogumTarihi,
+                    SagVefat = a.SagVefat,
+                    VefatTarihi = a.VefatTarihi,
+                    Sorgulanan = "Vasiyetçi",
+                    Cikar = "<a class='btn btn-outline-danger' onclick=CikarButtonClick(" + a.TCKimlikNo + ");>ÇIKAR</a>"
+                }).ToList();
+
+
+            }
+            List<SorgulanacakKisi> sonucListe = SorgulanacakBagisciListesi.Union(sorgulanacakTaahhutList).ToList().Union(sorgulanacakVasiyetcitList).ToList();
 
             return sonucListe;
         }
@@ -217,6 +238,10 @@ namespace TBYS_WebParts.KPSSorguListesiWP
             TabloOlustur();
         }
         protected void TaahhutChk_CheckedChanged(object sender, EventArgs e)
+        {
+            TabloOlustur();
+        }
+        protected void VasiyetciChk_CheckedChanged(object sender, EventArgs e)
         {
             TabloOlustur();
         }

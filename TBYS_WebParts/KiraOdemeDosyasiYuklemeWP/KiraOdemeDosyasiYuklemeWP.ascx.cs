@@ -47,6 +47,7 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
                 ViewState["CurrentUserName"] = value;
             }
         }
+        private CultureInfo cultureInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -112,7 +113,7 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
         public ExceptionHelper SaveVakifBank2File(Stream fileStream, DateTime processTime, string currentUser)
         {
             ExceptionHelper exceptionHelper = new ExceptionHelper();
-            CultureInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
+            string aciklamaStr = string.Empty;
             try
             {
 
@@ -125,24 +126,24 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
                         var hesapNo = row[0].ReturnEmptyIfNull().ToString();//borc satırı için işlem yapma
                         var islem = row[5].ReturnEmptyIfNull().ToString();
                         var tutar = row[6].ReturnEmptyIfNull().ToString().Replace(".", ",").ConvertToDecimal();//row[6].ReturnEmptyIfNull().ToString();
-                        var detay = row[16].ReturnEmptyIfNull().ToString();
+                        var detay = row[16].ReturnEmptyIfNull().ToString().Replace("'","");
+                        aciklamaStr = detay;
                         if (string.IsNullOrEmpty(hesapNo))// ilk kolon boş ise dosya bitti çık
                         {
                             break;
                         }
-                        else if (islem.Contains("Batch Yatan")//Kart ile bağıştan gelen toplam miktar, zaten ayrıca girişi yapılıyor, dikkate alma
-                           || islem.Contains("Batch Komisyonu")
-                           || islem.Contains("Otomatik Süpürme İşlemleri Virman")
-                           || islem.Contains("Valor İşlemi İçin Para Çek ve Yatır")
-                           || islem.Contains("Yatırım Fonu Satış")
-                           || detay.Contains("TÜRK SİLAHLI KUVVETLERİNİ GÜÇLENDİRME VAKFI tarafından TÜRK SİLAHLI KUVVETLERİNİ GÜÇLENDİRME VAKFI tarafına gelen")//ziraat bank
+                        else if (
+                           detay.Contains("TÜRK SİLAHLI KUVVETLERİNİ GÜÇLENDİRME VAKFI tarafından TÜRK SİLAHLI KUVVETLERİNİ GÜÇLENDİRME VAKFI tarafına gelen")//ziraat bank
                            || detay.Contains("TÜRK SİLAHLI KUVVETLERİNİ GÜÇLENDİRME V tarafından TÜRK SİLAHLI KUVVETLERİNİ GÜÇLENDİRME VAKFI tarafına gelen") //işbank
                            || detay.Contains("TÜRK SİLAHLI KUVVETLERİNİ GÜÇL tarafından TÜRK SILAHLI KUVVETLERINI GÜÇLENDIRME VAKFI tarafına gelen ")//garanti bank
                            || detay.Contains(" virman ")
                            || detay.Contains(" VİRMAN ")
                            || hesapNo.Equals("HESAP NO")
-                           || tutar < 0)
+                           || tutar < 0) //Bu borç demek değil mi?
+                        {
                             continue;
+                        }
+                        
                         try
                         {
                             var borc_alacak = row[15].ReturnEmptyIfNull().ToString();//borc satırı için işlem yapma
@@ -188,7 +189,7 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
                             else
                             {
 
-                                var splitTextM = new string[] { " nolu ", " hesabından " };
+                                var splitTextM = new string[] { "nolu ", " hesabından " };
                                 holder = detay.Split(splitTextM, StringSplitOptions.None);
 
                                 if (holder.Length > 2)
@@ -243,44 +244,73 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
                                 continue;
                             }
                             int kiraciId = 0;
-                            bool buIsimdeBirdenCokKiraciVarMi = BuIsimdeBirdenCokKiraciVarMi(adi, ref kiraciId);
-                            if (buIsimdeBirdenCokKiraciVarMi)
+                            if (true)// Borç Alacak Ayrımı için
                             {
-                                kiraEkstreAktarma.Uyari = true;
-                            }
-                            else
-                            {
-                                // SB DosyaNo ile konu çözülemiyor! o yüzden kapandı
-                                //bool birdenCokSozlesmesiVarMi = BirdenCokSozlesmesiVarMi(adi);
-                                //if (birdenCokSozlesmesiVarMi)
-                                //{
-                                //    kiraEkstreAktarma.Uyari = true;
-                                //}
-                                //else
+                                kiraEkstreAktarma.Aciklama = aciklama;
+                                kiraEkstreAktarma.OdemeSebebiId = OdemeSebebiBelirle(kiraEkstreAktarma,islem);
+                                if (kiraEkstreAktarma.OdemeSebebiId == ProjeConstants.ODEMESEBEBI_KIRA_INT //Diger, Kira veya Teminat ise
+                                    || kiraEkstreAktarma.OdemeSebebiId == ProjeConstants.ODEMESEBEBI_KESINTEMINAT_INT
+                                    || kiraEkstreAktarma.OdemeSebebiId == ProjeConstants.ODEMESEBEBI_GECICITEMINAT_INT 
+                                    || kiraEkstreAktarma.OdemeSebebiId == ProjeConstants.ODEMESEBEBI_KIRA_TEMINAT_INT
+                                    || kiraEkstreAktarma.OdemeSebebiId == ProjeConstants.ODEMESEBEBI_DIGER_INT
+
+                                   )
                                 {
-                                    kiraciId= KiraciOtomatikEslestir(adi);
+
+                                    bool buIsimdeBirdenCokKiraciVarMi = BuIsimdeBirdenCokKiraciVarMi(adi, ref kiraciId);
+                                    if (buIsimdeBirdenCokKiraciVarMi)
+                                    {
+                                        kiraEkstreAktarma.Uyari = true;
+                                    }
+                                    else
+                                    {
+                                        // SB DosyaNo ile konu çözülemiyor! o yüzden kapandı
+                                        //bool birdenCokSozlesmesiVarMi = BirdenCokSozlesmesiVarMi(adi);
+                                        //if (birdenCokSozlesmesiVarMi)
+                                        //{
+                                        //    kiraEkstreAktarma.Uyari = true;
+                                        //}
+                                        //else
+                                        {
+                                            kiraciId = KiraciOtomatikEslestir(adi);
+                                        }
+                                    }
+
+                                    kiraEkstreAktarma.KiraciId = kiraciId;
+
+                                    kiraEkstreAktarma.Adi = adi.ReturnEmptyIfNull().ToString().Trim().ToUpper(cultureInfo); ;
+                                    kiraEkstreAktarma.Telefon1 = UtilityHelper.TelefonFormatla(tel1.ReturnEmptyIfNull().ToString());
+                                    kiraEkstreAktarma.Tutar = tutar.ConvertToDecimal();
+                                    kiraEkstreAktarma.OdemeTarihi = hareketTar.ConvertToDatetime();
+                                   
+                                    kiraEkstreAktarma.Adres = adres.ReturnEmptyIfNull().ToString().Trim().ToUpper(cultureInfo); ;
+                                    kiraEkstreAktarma.BankaAdi = ProjeConstants.BANKA_VAKIF2;
+                                    kiraEkstreAktarma.IslemTarihi = processTime;
+                                    kiraEkstreAktarma.IslemNo = islemno;
+                                    kiraEkstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
+                                    kiraEkstreAktarma.Olusturan = currentUser;
+                                    
+                                    kiraEkstreAktarma.Save();  
+                                }else if (true)//Kira veya Teminat değilse 
+                                {
+
+                                    kiraEkstreAktarma.Adi = aciklama ;
+                                    kiraEkstreAktarma.Tutar = tutar.ConvertToDecimal();
+                                    kiraEkstreAktarma.OdemeTarihi = hareketTar.ConvertToDatetime();
+                                    
+                                    kiraEkstreAktarma.Adres = adres.ReturnEmptyIfNull().ToString().Trim().ToUpper(cultureInfo); ;
+                                    kiraEkstreAktarma.BankaAdi = ProjeConstants.BANKA_VAKIF2;
+                                    kiraEkstreAktarma.IslemTarihi = processTime;
+                                    kiraEkstreAktarma.IslemNo = islemno;
+                                    kiraEkstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
+                                    kiraEkstreAktarma.Olusturan = currentUser;
+                                    kiraEkstreAktarma.Save();
                                 }
                             }
-
-                            kiraEkstreAktarma.KiraciId = kiraciId;
-
-                            kiraEkstreAktarma.Adi = adi.ReturnEmptyIfNull().ToString().Trim().ToUpper(culturInfo); ;
-                            kiraEkstreAktarma.Telefon1 = UtilityHelper.TelefonFormatla(tel1.ReturnEmptyIfNull().ToString());
-                            kiraEkstreAktarma.Tutar = tutar.ConvertToDecimal();
-                            kiraEkstreAktarma.OdemeTarihi = hareketTar.ConvertToDatetime();
-                            kiraEkstreAktarma.Aciklama = aciklama;
-                            kiraEkstreAktarma.Adres = adres.ReturnEmptyIfNull().ToString().Trim().ToUpper(culturInfo); ;
-                            kiraEkstreAktarma.BankaAdi = ProjeConstants.BANKA_VAKIF2;
-                            kiraEkstreAktarma.IslemTarihi = processTime;
-                            kiraEkstreAktarma.IslemNo = islemno;
-                            kiraEkstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
-                            kiraEkstreAktarma.Olusturan = currentUser;
-                            kiraEkstreAktarma.OdemeSebebiId = OdemeSebebiBelirle(kiraEkstreAktarma);
-                            kiraEkstreAktarma.Save();
                         }
                         catch (Exception ex)
                         {
-                            Exception exception = new Exception(string.Format("HATA SATIRI {0}:{1} ->", ProjeConstants.BANKA_VAKIF, ""), ex);
+                            Exception exception = new Exception(string.Format("HATA SATIRI {0}:{1} ->", ProjeConstants.BANKA_VAKIF, aciklamaStr), ex);
                             exceptionHelper.Exceptions.Add(exception);
                         }
                     }
@@ -293,56 +323,107 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
             return exceptionHelper;
         }
 
-        private int OdemeSebebiBelirle(KiraEkstreAktarma kiraEkstreAktarma)
+        private int OdemeSebebiBelirle(KiraEkstreAktarma kiraEkstreAktarma, string islem)
         {
+            islem = string.IsNullOrEmpty(islem) ? string.Empty : islem;
+
+
             int odemeSebebiId = ProjeConstants.ODEMESEBEBI_DIGER_INT;
-            if (kiraEkstreAktarma.Aciklama.Contains(ProjeConstants.ODEMESEBEBI_KIRA))
+
+            if ((islem.Contains(ProjeConstants.ODEMESEBEBI_BATCH_YATAN)) ||
+                   islem.ToUpper(cultureInfo).Contains("BATCH YATAN") ||
+                   islem.ToLower(cultureInfo).Contains("Batch Yatan"))
             {
-                odemeSebebiId = ProjeConstants.ODEMESEBEBI_KIRA_INT;
+                odemeSebebiId = ProjeConstants.ODEMESEBEBI_BATCH_YATAN_INT;
             }
-            else if ((kiraEkstreAktarma.Aciklama.Contains("KİRA BEDELİ"))||
-                (kiraEkstreAktarma.Aciklama.Contains("kira bedeli"))||
-                (kiraEkstreAktarma.Aciklama.Contains("kira"))||
-                (kiraEkstreAktarma.Aciklama.Contains("KİRA")))
+            else if ((islem.Contains(ProjeConstants.ODEMESEBEBI_BATCH_KOMISYONU)) ||
+               islem.ToUpper(cultureInfo).Contains("BATCH KOMİSYONU") ||
+               islem.ToLower(cultureInfo).Contains("Batch Komisyonu"))
             {
-                odemeSebebiId = ProjeConstants.ODEMESEBEBI_KIRA_INT;
+                odemeSebebiId = ProjeConstants.ODEMESEBEBI_BATCH_KOMISYONU_INT;
             }
-             else if (kiraEkstreAktarma.Aciklama.Contains(ProjeConstants.ODEMESEBEBI_KESINTEMINAT))
+            else if ((islem.Contains(ProjeConstants.ODEMESEBEBI_OTOMATIK_SUPURME)) ||
+               islem.ToUpper(cultureInfo).Contains("OTOMATİK SÜPÜRME İŞLEMLERİ VİRMAN") ||
+               islem.ToLower(cultureInfo).Contains("Otomatik Süpürme İşlemleri Virman"))
             {
-                odemeSebebiId = ProjeConstants.ODEMESEBEBI_KESINTEMINAT_INT;
+                odemeSebebiId = ProjeConstants.ODEMESEBEBI_OTOMATIK_SUPURME_INT;
             }
-            else if (kiraEkstreAktarma.Aciklama.Contains(ProjeConstants.ODEMESEBEBI_GECICITEMINAT))
+            else if ((islem.Contains(ProjeConstants.ODEMESEBEBI_VALOR_CEK_YATIR)) ||
+               islem.ToUpper(cultureInfo).Contains("VALOR İŞLEMİ İÇİN PARA ÇEK VE YATIR") ||
+               islem.ToLower(cultureInfo).Contains("Valor İşlemi İçin Para Çek ve Yatır"))
             {
-                odemeSebebiId = ProjeConstants.ODEMESEBEBI_GECICITEMINAT_INT;
+                odemeSebebiId = ProjeConstants.ODEMESEBEBI_VALOR_CEK_YATIR_INT;
             }
-            else if (kiraEkstreAktarma.Aciklama.Contains(ProjeConstants.ODEMESEBEBI_AIDAT))
+            else if ((islem.Contains(ProjeConstants.ODEMESEBEBI_YATIRIM_FONU_SATIS)) ||
+               islem.ToUpper(cultureInfo).Contains("YATIRIM FONU SATIŞ") ||
+               islem.ToLower(cultureInfo).Contains("Yatırım Fonu Satış"))
             {
-                odemeSebebiId = ProjeConstants.ODEMESEBEBI_AIDAT_INT;
+                odemeSebebiId = ProjeConstants.ODEMESEBEBI_YATIRIM_FONU_SATIS_INT;
             }
-            else if ((kiraEkstreAktarma.Aciklama.Contains(ProjeConstants.ODEMESEBEBI_SIGORTA))||
-                    (kiraEkstreAktarma.Aciklama.Contains("SİGORTA")))
+            //yoksa açıklamaya bak
+            else if (kiraEkstreAktarma != null && kiraEkstreAktarma.Aciklama != null)
             {
-                odemeSebebiId = ProjeConstants.ODEMESEBEBI_SIGORTA_INT;
+                if ((kiraEkstreAktarma.Aciklama.Contains(ProjeConstants.ODEMESEBEBI_GECICITEMINAT)) ||
+                        kiraEkstreAktarma.Aciklama.ToUpper(cultureInfo).Contains("GEÇİCİ TEMİNAT") ||
+                        kiraEkstreAktarma.Aciklama.ToLower(cultureInfo).Contains("geçici teminat"))
+                {
+                    odemeSebebiId = ProjeConstants.ODEMESEBEBI_GECICITEMINAT_INT;
+                }
+                else if ((kiraEkstreAktarma.Aciklama.Contains(ProjeConstants.ODEMESEBEBI_KESINTEMINAT) ||
+                    (kiraEkstreAktarma.Aciklama.Contains(ProjeConstants.TEMINAT_ODEMESI)) ||
+                    kiraEkstreAktarma.Aciklama.ToUpper(cultureInfo).Contains("TEMİNAT")) ||
+                    kiraEkstreAktarma.Aciklama.ToLower(cultureInfo).Contains("teminat"))
+                {
+                    odemeSebebiId = ProjeConstants.ODEMESEBEBI_KESINTEMINAT_INT;
+                }
+                else if (kiraEkstreAktarma.Aciklama.Contains(ProjeConstants.ODEMESEBEBI_KIRA))
+                {
+                    odemeSebebiId = ProjeConstants.ODEMESEBEBI_KIRA_INT;
+                }
+                else if ((kiraEkstreAktarma.Aciklama.ToUpper(cultureInfo).Contains("KİRA BEDELİ")) ||
+                    (kiraEkstreAktarma.Aciklama.ToLower(cultureInfo).Contains("kira bedeli")) ||
+                    (kiraEkstreAktarma.Aciklama.ToLower(cultureInfo).Contains("kira")) ||
+                    (kiraEkstreAktarma.Aciklama.ToUpper(cultureInfo).Contains("KİRA")))
+                {
+                    odemeSebebiId = ProjeConstants.ODEMESEBEBI_KIRA_INT;
+                }
+                else if ((kiraEkstreAktarma.Aciklama.Contains(ProjeConstants.ODEMESEBEBI_AIDAT)) ||
+                    kiraEkstreAktarma.Aciklama.ToUpper(cultureInfo).Contains("AİDAT") ||
+                    (kiraEkstreAktarma.Aciklama.ToLower(cultureInfo).Contains("aidat")))
+                {
+                    odemeSebebiId = ProjeConstants.ODEMESEBEBI_AIDAT_INT;
+                }
+                else if ((kiraEkstreAktarma.Aciklama.Contains(ProjeConstants.ODEMESEBEBI_SIGORTA)) ||
+                        (kiraEkstreAktarma.Aciklama.ToUpper(cultureInfo).Contains("SİGORTA")) ||
+                    (kiraEkstreAktarma.Aciklama.ToLower(cultureInfo).Contains("sigorta")))
+                {
+                    odemeSebebiId = ProjeConstants.ODEMESEBEBI_SIGORTA_INT;
+                }
+                else if ((kiraEkstreAktarma.Aciklama.Contains(ProjeConstants.ODEMESEBEBI_AVUKATLIKUCRETI)) ||
+                    kiraEkstreAktarma.Aciklama.ToUpper(cultureInfo).Contains("AVUKATLIK") ||
+                    kiraEkstreAktarma.Aciklama.ToLower(cultureInfo).Contains("avukatlık"))
+                {
+                    odemeSebebiId = ProjeConstants.ODEMESEBEBI_AVUKATLIKUCRETI_INT;
+                }
+                else if ((kiraEkstreAktarma.Aciklama.Contains(ProjeConstants.ODEMESEBEBI_YARGILAMAUCRETI)) ||
+                    kiraEkstreAktarma.Aciklama.ToUpper(cultureInfo).Contains("YARGILAMA") ||
+                    kiraEkstreAktarma.Aciklama.ToLower(cultureInfo).Contains("yargılama"))
+                {
+                    odemeSebebiId = ProjeConstants.ODEMESEBEBI_YARGILAMAUCRETI_INT;
+                }
+                else if ((kiraEkstreAktarma.Aciklama.Contains(ProjeConstants.ODEMESEBEBI_AVANSIADESI)) ||
+                        (kiraEkstreAktarma.Aciklama.ToUpper(cultureInfo).Contains("AVANS")) ||
+                    kiraEkstreAktarma.Aciklama.ToLower(cultureInfo).Contains("avans"))
+                {
+                    odemeSebebiId = ProjeConstants.ODEMESEBEBI_AVANSIADESI_INT;
+                }
+                else if ((kiraEkstreAktarma.Aciklama.Contains(ProjeConstants.ODEMESEBEBI_SATIS)) ||
+                        (kiraEkstreAktarma.Aciklama.ToUpper(cultureInfo).Contains("SATIŞ")) ||
+                    kiraEkstreAktarma.Aciklama.ToLower(cultureInfo).Contains("satış"))
+                {
+                    odemeSebebiId = ProjeConstants.ODEMESEBEBI_SATIS_INT;
+                }
             }
-            else if (kiraEkstreAktarma.Aciklama.Contains(ProjeConstants.ODEMESEBEBI_AVUKATLIKUCRETI))
-            {
-                odemeSebebiId = ProjeConstants.ODEMESEBEBI_AVUKATLIKUCRETI_INT;
-            }
-            else if (kiraEkstreAktarma.Aciklama.Contains(ProjeConstants.ODEMESEBEBI_YARGILAMAUCRETI))
-            {
-                odemeSebebiId = ProjeConstants.ODEMESEBEBI_YARGILAMAUCRETI_INT;
-            }            
-            else if ((kiraEkstreAktarma.Aciklama.Contains(ProjeConstants.ODEMESEBEBI_AVANSIADESI))||
-                    (kiraEkstreAktarma.Aciklama.Contains("AVANS İADE")))
-            {
-                odemeSebebiId = ProjeConstants.ODEMESEBEBI_AVANSIADESI_INT;
-            }
-            else if ((kiraEkstreAktarma.Aciklama.Contains(ProjeConstants.TEMINAT_ODEMESI))||
-                (kiraEkstreAktarma.Aciklama.Contains("Teminat"))||
-                (kiraEkstreAktarma.Aciklama.Contains("TEMİNAT")))
-            {
-                odemeSebebiId = ProjeConstants.ODEMESEBEBI_KESINTEMINAT_INT;
-            }            
             else
             {
                 if (kiraEkstreAktarma.KiraciId.ConvertToInt() > 0)

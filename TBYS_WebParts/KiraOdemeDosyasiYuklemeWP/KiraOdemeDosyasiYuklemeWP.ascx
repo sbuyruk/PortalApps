@@ -14,13 +14,13 @@
                 <asp:Label CssClass="col-form-label text-danger" runat="server" Text="Banka Extresi (Kira Ödemeleri) Yükleme"></asp:Label>
             </h3>
         </div>
+
         <div id="BankalarCard" class="card-body text-center">
             <div class="card  m-4">
                 <div class="card-header">
                     <asp:Label ID="Vakifbank2Lbl" runat="server" Text="VakıfBank (Extre)" Font-Size="X-Large" Font-Bold="True" ForeColor="#FF5900"></asp:Label>
                 </div>
                 <div class="card-body">
-
                     <asp:FileUpload ID="Vakifbank2FU" runat="server" CssClass="form-control" ToolTip="Vakıfbank Ekstre dosyası (excel) seçiniz" />
                 </div>
             </div>

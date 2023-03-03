@@ -122,7 +122,7 @@ namespace Model.NBYS
             {
                 GenericEntity<Armagan> genericEntity = new GenericEntity<Armagan>(ProjeConstants.SQL_UPDATE);
                 OlusturmaTarihi = DateTime.Now;
-                string sqlString = genericEntity.GetQuery(this, extId);
+                string sqlString = string.IsNullOrEmpty(extId) ? genericEntity.GetQuery(this) : genericEntity.GetQuery(this, extId);
 
                 return sqlString;
             }

@@ -1,4 +1,6 @@
-﻿namespace DAO.Ortak
+﻿using System.Collections.Generic;
+
+namespace DAO.Ortak
 {
     public class DBObject
     {
@@ -16,5 +18,7 @@
         //dbobject doldurulduğunda true yapılması gerekir
         public bool IsFilled { get; set; }
         public string Message { get; set; }
+        public HashSet<DbParam> QueryParams { get; set; }
+        public HashSet<DbParam> WhereParams { get; set; }
     }
 }

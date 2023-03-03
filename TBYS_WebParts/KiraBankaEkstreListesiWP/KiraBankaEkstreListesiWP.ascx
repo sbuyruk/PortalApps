@@ -30,39 +30,8 @@
     .small-font{
         font-size:small;
     }
-    .sil-checkbox {
-        background-color: red!important;
-    }
 </style>
-<%-- Silinecek kayıtlar --%>
-<script type="text/javascript">
-    
-    var silinecekData = [];
-    function addRemoveEkstreIdToDeleteList(ekstreAktarmaId, chkbox) {
-        var isChecked = false;
-        if (chkbox.checked)
-            isChecked = true;
-        SilineceklerListesineEkleCikar(ekstreAktarmaId, isChecked);
-    }
-    function SilineceklerListesineEkleCikar(ekstreAktarmaId, isChecked) {
-        var index = silinecekData.indexOf(ekstreAktarmaId.toString());
-        if (isChecked && (index < 0)) {
-            silinecekData.push(ekstreAktarmaId.toString());
-        } else if (!isChecked && (index > -1)) {
-            silinecekData.splice(index, 1);
-        }
-        if (silinecekData.length > 0) {
-            document.getElementById('SilinecekBtnDiv').style.display = "block";
-        }
-        else {
-            document.getElementById('SilinecekBtnDiv').style.display = "none";
-        }
-    }
-    function SecilenleriSilTriggerBtnClicked() {
-        document.getElementById('<%= paramSilinecekArray.ClientID%>').value = silinecekData;
-        document.getElementById('<%= SecilenleriSilBtn.ClientID%>').click();
-    }
-</script>
+
 <%--Kaydet modal aç vs--%>
 <script type="text/javascript">
     //excele export ettikten donup sonra kalmasın diye
@@ -114,7 +83,7 @@
         myjsons = myset;
     }
     var myjsons = [{
-        "SecKaydet": "", "AdiSoyadi": "", "OdemeTarihi": "", "Tutar": "", "KiraciAdi": "","OdemeSebebiUrl": "", "Aciklama": "", "Eslestir": ""//, "SecSil": ""
+        "SecKaydet": "", "AdiSoyadi": "", "OdemeTarihi": "", "Tutar": "", "KiraciAdi": "","OdemeSebebi": "", "Aciklama": "", "Eslestir": "", "OdemeAyristir": ""
     }];
     jQuery(document).ready(function () {
         jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
@@ -137,10 +106,10 @@
                 { data: "OdemeTarihi", "width": "10%" },
                 { data: "Tutar", "width": "10%", "className": "text-right" },
                 { data: "KiraciAdi", "width": "20%", "font-size":"small" },
-                { data: "OdemeSebebiUrl", "font-size":"small" },
+                { data: "OdemeSebebi", "font-size":"small" },
                 { data: "Aciklama", "width": "20%","font-size":"small" },
                 { data: "Eslestir" },
-                //{ data: "SecSil"}
+                { data: "OdemeAyristir" },
 
             ],
             'order': [[2, 'desc']],//sort date desc
@@ -149,10 +118,6 @@
                 "decimal": ",",
                 "thousands": "."
             },
-            //column resizable
-            //initComplete: function (settings) {
-            //    $('#CustomDataTable').colResizable({ liveDrag: true });
-            //},
             responsive: true,
             dom: 'Bfrtip',
             buttons: [
@@ -194,84 +159,9 @@
             },//set row color 
         });
 
-        <%--jQuery('#' + '<%: VisibleChk.ClientID %>').addClass("custom-control-input");--%>
-        ArrayDoldur();
     });
 </script>
-<%--Kira Odemelerini Sözleşmelere Bölüştürme --%>
-<script type="text/javascript"> 
 
-    function OpenModalOdemeBolustur(ekstreAktarmaId) {
-        document.getElementById('<%= paramEkstreAktarmaIdTxt.ClientID%>').value = ekstreAktarmaId;
-        document.getElementById('<%= OdemeBolusturModalAcBtn.ClientID%>').click();
-    }
-    function OdemeBolusturModalAc() {
-            $("#OdemeBolusturModalDiv").modal({ backdrop: "static" });
-        }
-    function ArrayDoldur() {
-        document.getElementById('<%= ToplamLbl.ClientID%>').value = "#";
-        document.getElementById('<%= paramKiraciIdArrayHiddenTxt.ClientID%>').value = "";
-        document.getElementById('<%= paramTutarArrayHiddenTxt.ClientID%>').value = "";
-        var table = <%= OdemeBolusturmeTable.ClientID%>;
-        var toplam = 0;
-        for (var r = 1, n = table.rows.length; r < n; r++) {
-
-            var kiraciIdValue = table.rows[r].cells[0].innerHTML;
-            var tutarValue = table.rows[r].cells[4].childNodes[0].value;
-            toplam += parseFloat(tutarValue.replace(".","").replace(",","."));
-            document.getElementById('<%= paramKiraciIdArrayHiddenTxt.ClientID%>').value += kiraciIdValue + "#";
-            document.getElementById('<%= paramTutarArrayHiddenTxt.ClientID%>').value += tutarValue + "#";
-
-        }
-        var odenenStr = document.getElementById('<%= OdemeTutariModalTxt.ClientID%>').value;
-        var odenen = parseFloat(odenenStr.replace("TL", "").replace(".", "").replace(",", "."));
-        var kalan = odenen - toplam;
-        document.getElementById('<%= ToplamLbl.ClientID%>').value = kalan;
-
-        OdeBtnEnable(kalan);
-    }
-    function BolusturilanOdemeleriKaydet() {
-        ArrayDoldur();
-        document.getElementById('<%= OdemeBolusturBtn.ClientID%>').click();
-    }
-    function OdeBtnEnable(tutar) {
-
-        if (tutar ==0) {
-            $("#OdemeBolusturModalBtn").attr('class', 'btn btn-outline-success');
-            $("#OdemeBolusturModalBtn").attr('disabled', false);
-            $("#OdemeBolusturModalBtn").show();
-        }
-        else {
-
-            $("#OdemeBolusturModalBtn").attr('class', 'btn btn-outline-secondary');
-            $("#OdemeBolusturModalBtn").attr('disabled', true);
-            $("#OdemeBolusturModalBtn").hide();
-        }
-    }
-</script>
-
-<script type="text/javascript">
-    function pageLoad(sender, args) {
-        new Cleave('.input-4', {
-            numeral: true,
-            numeralDecimalMark: ',',
-            delimiter: '.'
-        });
-    }      
-</script>
-
-<%--Kira/Teminat onchange event function--%>
-<script>
-    function OdemeSebebiChange(ddl,btn) {
-        var selected = document.getElementById(ddl.id).value;
-        if ((selected == 1) || (selected == 2) || (selected == 3)) {
-            document.getElementById(btn.id).style.display = "block";
-        } else {
-            document.getElementById(btn.id).style.display = "none";
-        }
-      
-    }
-</script>
 <div class="container col-xl">
     <div class="card shadow">
         <asp:UpdatePanel ID="UpdatePanel2" runat="server" UpdateMode="Conditional" ViewStateMode="Enabled">
@@ -293,6 +183,12 @@
                                 Aktarılanları Gösterme
                             </label>
                         </div>
+                        <div class="checkbox pt-3">
+                            <label>
+                                <asp:CheckBox ID="KiraTeminatDigerChk" runat="server" Checked="True" AutoPostBack="true" OnCheckedChanged="KiraTeminatDigerChk_CheckedChanged" ToolTip="Tüm ödemeleri görmek için işareti kaldırınız." />
+                                Yalnızca Kira-Teminat-Diğer Olanları Göster
+                            </label>
+                        </div>
                     </div>
                     <div class="form-group">
                         <table id="CustomDataTable" class="table table-striped table-bordered" width="100%">
@@ -306,7 +202,7 @@
                                     <th>Ödeme Sebebi</th>
                                     <th>Açıklama</th>
                                     <th>Eşleştir</th>
-                                    <%--<th>Seç Sil</th>--%>
+                                    <th>Ödeme Ayrıştır</th>
                                 </tr>
                             </thead>
                         </table>
@@ -316,10 +212,6 @@
                     <div id="BtnDiv" style="display: none">
                         <input id="SecilenleriKaydetTriggerBtn" class="btn btn-success" type="button" value="Seçilenleri Kaydet" onclick="SecilenleriKaydetTriggerBtnClicked();" />
                     </div>
-                    <div id="SilinecekBtnDiv" style="display: none">
-                        <input id="SecilenleriSilTriggerBtn" class="btn btn-success" type="button" value="Seçilenleri Sil" onclick="SecilenleriSilTriggerBtnClicked();" />
-                    </div>
-
                     <asp:LinkButton CssClass="btn btn-outline-success float-right" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
                 </div>
                 <div class="modal" id="ModalOnayDiv" role="dialog">
@@ -346,14 +238,12 @@
                                             </div>
                                             <div class="card-footer">
                                                 <asp:LinkButton CssClass="btn btn-success" ID="KaydetNowBtn" runat="server" CausesValidation="false" Text="Seçilenleri Kaydet" OnClientClick="{return true;};" OnClick="KaydetNowBtn_Click" Visible="false" />
-                                                <asp:LinkButton CssClass="btn btn-danger" ID="SilNowBtn" runat="server" CausesValidation="false" Text="Seçilenleri Sil" OnClientClick="{return true;};" OnClick="SilNowBtn_Click" Visible="false" />
                                                 <button type="button" class="btn btn-default float-right" data-dismiss="modal">Kapat</button>
                                             </div>
                                         </div>
                                     </ContentTemplate>
                                     <Triggers>
                                         <asp:AsyncPostBackTrigger ControlID="SecilenleriKaydetBtn" EventName="click" />
-                                        <asp:AsyncPostBackTrigger ControlID="SecilenleriSilBtn" EventName="click" />
                                     </Triggers>
                                 </asp:UpdatePanel>
                             </div>
@@ -415,78 +305,16 @@
             </div>
         </div>
     </div>
-    <%--Modal: Bir defada iki sözleşmenin kirası yatırılmışsa bu modal içinde bölünecek--%>
-    <div class="modal" id="OdemeBolusturModalDiv" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content" style="width: 550px;">
-                <div class="modal-header">
-                    <h3>
-                        <asp:Label ID="BaslikLbl" class="col-form-label " runat="server">Kira Ödemesini Bölüştür</asp:Label>
-                    </h3>
-                </div>
-                <div class="modal-body">
-
-
-                    <div class="card-body">
-                        <asp:UpdatePanel ID="UpdatePanel7" runat="server" UpdateMode="Conditional" ViewStateMode="Enabled">
-                            <ContentTemplate>
-
-                                    <div class="form-group  col">
-                                        <asp:Label ID="Label1" CssClass="col-form-label font-weight-bold " runat="server">Ödeme Tarihi:</asp:Label>
-                                        <asp:Label ID="OdemeTarihiLbl" CssClass="col-form-label " runat="server"></asp:Label>
-                                    </div>
-
-                                    <div class="form-group col ">
-                                        <asp:Label ID="Label2" CssClass="font-weight-bold text-right" runat="server">Ödeme Tutarı: </asp:Label>
-                                        <asp:TextBox ID="OdemeTutariModalTxt" CssClass="input-4 font-weight-bold text-danger text-right" runat="server" Enabled="False"></asp:TextBox>
-                                        <asp:Label ID="DovizModalTxt" CssClass="font-weight-bold text-right text-danger" runat="server"> </asp:Label>
-                                    </div>
-
-                                <asp:Table ID="OdemeBolusturmeTable" runat="server" class="table table-sm table-striped table-bordered">
-                                    <asp:TableHeaderRow>
-                                        <asp:TableHeaderCell>Kiraci No </asp:TableHeaderCell>
-                                        <asp:TableHeaderCell>Kiraci </asp:TableHeaderCell>
-                                        <asp:TableHeaderCell>Sözleşme</asp:TableHeaderCell>
-                                        <asp:TableHeaderCell HorizontalAlign="Right">Kira Bedeli</asp:TableHeaderCell>
-                                        <asp:TableHeaderCell HorizontalAlign="Right">Ödenen Tutar</asp:TableHeaderCell>
-                                    </asp:TableHeaderRow>
-
-                                </asp:Table>
-                                <asp:Label ID="TextBox1" CssClass="font-weight-bold"  runat="server" >Kalan :</asp:Label>
-                                <asp:TextBox ID="ToplamLbl" CssClass="input-4 text-danger font-weight-bold text-right"  runat="server" Enabled="False" ></asp:TextBox>
-                            </ContentTemplate>
-                            <Triggers>
-                                <asp:AsyncPostBackTrigger ControlID="OdemeBolusturBtn" EventName="click" />
-                                <asp:AsyncPostBackTrigger ControlID="OdemeBolusturModalAcBtn" EventName="click" />
-                                
-                            </Triggers>
-                        </asp:UpdatePanel>
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <input id="OdemeBolusturModalBtn" type="button" value="Kira Ödemelerini Bölüştür ve Kaydet" class="btn btn-success" onclick="BolusturulenOdemeleriKaydet();" disabled="disabled" />
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
 
     <div id="InvisibleDiv" style="display: none">
         <input id="ParamKaydedilecekArray" runat="server" type="text" />
-        <input id="paramSilinecekArray" runat="server" type="text" />
         <input id="ParamKiraciIdLbl" runat="server" type="text" />
         <input id="ParamOdemeTarihiLbl" runat="server" type="text" />
         <asp:LinkButton ID="SecilenleriKaydetBtn" runat="server" CssClass="btn btn-success" Text=" Kaydet " OnClick="SecilenleriKaydetBtn_Click" />
-        <asp:LinkButton ID="SecilenleriSilBtn" runat="server" CssClass="btn btn-danger" Text=" Sil " OnClick="SecilenleriSilBtn_Click" />
         <asp:LinkButton ID="OdemePlaniModalAcBtn" runat="server" CssClass="btn btn-success" Text="Odeme Plani Görüntüle" OnClick="OdemePlaniModalAcBtn_Click" />
 
         <asp:TextBox ID="paramEkstreAktarmaIdTxt" runat="server"></asp:TextBox>
         <input id="paramKiraciIdArrayHiddenTxt" runat="server" type="text" />
         <input id="paramTutarArrayHiddenTxt" runat="server" type="text" />
-        <asp:LinkButton ID="OdemeBolusturModalAcBtn" runat="server" CssClass="btn btn-secondary" Text="Kira Ödemelerini Bölüştür ve Kaydet" OnClick="OdemeBolusturModalAcBtn_Click" />
-        <asp:LinkButton ID="OdemeBolusturBtn" runat="server" CssClass="btn btn-secondary" Text="Kira Ödemelerini Bölüştür ve Kaydet" OnClick="OdemeBolusturBtn_Click" />
     </div>
 </div>

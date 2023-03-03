@@ -242,7 +242,7 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
             TableHeaderRow headerRow = new TableHeaderRow();
             headerRow.CssClass = "table-dark";
             TableHeaderCell TabloBaslikCell = new TableHeaderCell();
-            TabloBaslikCell.ColumnSpan = 4;
+            TabloBaslikCell.ColumnSpan = 5;
             TabloBaslikCell.Text = "Bağışlanan Taşınmazlar";
             headerRow.Controls.Add(TabloBaslikCell);
             TableHeaderRow headerRow1 = new TableHeaderRow();
@@ -252,6 +252,9 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
 
             TableHeaderCell cinsiCell = new TableHeaderCell();
             cinsiCell.Text = "Cinsi";
+            
+            TableHeaderCell kullanimSekliCell = new TableHeaderCell();
+            kullanimSekliCell.Text = "Kullanım Şekli";
 
             TableHeaderCell iliCell = new TableHeaderCell();
             iliCell.Text = "İl-İlçe";
@@ -267,6 +270,7 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
 
             //headerRow1.Controls.Add(siranoCell);
             headerRow1.Controls.Add(cinsiCell);
+            headerRow1.Controls.Add(kullanimSekliCell);
             headerRow1.Controls.Add(iliCell);
             headerRow1.Controls.Add(adresCell);
             //headerRow1.Controls.Add(mulkiyetCell);
@@ -294,6 +298,7 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
                     string ilIlce = dataRow["IlIlce"].ToString();
                     string adres = dataRow["Adres"].ToString();
                     string mulkiyetSekli = dataRow["MulkiyetSekli"].ToString();
+                    string kullanimSekli = dataRow["KullanimSekli"].ToString();
                     string kullanimDurumu = dataRow["KullanimDurumu"].ToString();
 
                     TableRow row = new TableRow();
@@ -304,7 +309,11 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
 
                     TableCell CinsiCell = new TableCell();
                     CinsiCell.Text = cinsi;
-                    row.Controls.Add(CinsiCell);
+                    row.Controls.Add(CinsiCell); 
+                    
+                    TableCell KullanimSekliCell = new TableCell();
+                    KullanimSekliCell.Text = kullanimSekli;
+                    row.Controls.Add(KullanimSekliCell);
 
                     TableCell IlICell = new TableCell();
                     IlICell.Text = ilIlce;
@@ -328,7 +337,7 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
                 TableFooterRow footerRow = new TableFooterRow();
                 footerRow.CssClass = "table-dark";
                 TableCell tahminiRayicCell = new TableCell();
-                tahminiRayicCell.ColumnSpan = 4;
+                tahminiRayicCell.ColumnSpan = 5;
                 tahminiRayicCell.Text = "Tahmini Rayiç Bedelleri Toplamı : " + bagis.SelectSumTahminiRayicByBagisciId(bagisci.Id).ConvertToDecimal();
                 footerRow.Controls.Add(tahminiRayicCell);
                 TasinmazTable.Controls.Add(footerRow);

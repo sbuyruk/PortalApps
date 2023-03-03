@@ -190,14 +190,14 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP {
             global::System.Web.UI.WebControls.Label @__ctrl2;
             @__ctrl2 = this.@__BuildControl__control2();
             @__parser.AddParsedSubObject(@__ctrl2);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            </h3>\r\n        </div>\r\n        <div id=\"BankalarCard\" class=\"card-b" +
-                        "ody text-center\">\r\n            <div class=\"card  m-4\">\r\n                <div cla" +
-                        "ss=\"card-header\">\r\n                    "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            </h3>\r\n        </div>\r\n\r\n        <div id=\"BankalarCard\" class=\"card" +
+                        "-body text-center\">\r\n            <div class=\"card  m-4\">\r\n                <div c" +
+                        "lass=\"card-header\">\r\n                    "));
             global::System.Web.UI.WebControls.Label @__ctrl3;
             @__ctrl3 = this.@__BuildControlVakifbank2Lbl();
             @__parser.AddParsedSubObject(@__ctrl3);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                </div>\r\n                <div class=\"card-body\">\r\n\r\n            " +
-                        "        "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                </div>\r\n                <div class=\"card-body\">\r\n              " +
+                        "      "));
             global::System.Web.UI.WebControls.FileUpload @__ctrl4;
             @__ctrl4 = this.@__BuildControlVakifbank2FU();
             @__parser.AddParsedSubObject(@__ctrl4);

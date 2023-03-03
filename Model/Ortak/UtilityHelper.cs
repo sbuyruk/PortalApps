@@ -118,6 +118,28 @@ namespace Model.Ortak
 
 
         }
+        public static void SetListBoxValue(ListBox listBox, string value)
+        {
+            try
+            {
+                ListItem listItem = new ListItem();
+                if (!string.IsNullOrEmpty(value))
+                    listItem = listBox.Items.FindByValue(value);
+
+                if (listItem != null)
+                {
+                    listBox.SelectedValue = listItem.Value;
+                }
+            }
+            catch (Exception)
+            {
+
+                //TODO
+            }
+
+
+
+        }
         public static ImageCodecInfo GetImageCodeInfo(string mimeType)
         {
             ImageCodecInfo[] imageEncoders = ImageCodecInfo.GetImageEncoders();

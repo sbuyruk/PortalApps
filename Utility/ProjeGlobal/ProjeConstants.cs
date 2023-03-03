@@ -411,6 +411,15 @@ namespace Utility.ProjeGlobal
         public const string ODEMESEBEBI_AVUKATLIKUCRETI = "Avukatlık Ücreti";
         public const string ODEMESEBEBI_YARGILAMAUCRETI = "Yargılama Ücreti";
         public const string ODEMESEBEBI_AVANSIADESI = "Avans İade";
+        public const string ODEMESEBEBI_SATIS = "Satış";
+        public const string ODEMESEBEBI_KIRA_TEMINAT = "Kira/Teminat";
+        public const string ODEMESEBEBI_BATCH_YATAN = "Batch Yatan";
+        public const string ODEMESEBEBI_BATCH_KOMISYONU = "Batch Komisyonu";
+        public const string ODEMESEBEBI_OTOMATIK_SUPURME = "Otomatik Süpürme İşlemleri Virman";
+        public const string ODEMESEBEBI_VALOR_CEK_YATIR = "Valor İşlemi İçin Para Çek ve Yatır";
+        public const string ODEMESEBEBI_YATIRIM_FONU_SATIS = "Yatırım Fonu Satış";
+        
+        
         public const string ODEMESEBEBI_DIGER = "Diğer";
         public const string ODEME_SEBEBI_DEFAULT = ODEMESEBEBI_DIGER;        
         
@@ -423,6 +432,14 @@ namespace Utility.ProjeGlobal
         public const int ODEMESEBEBI_YARGILAMAUCRETI_INT = 7;
         public const int ODEMESEBEBI_AVANSIADESI_INT = 8;
         public const int ODEMESEBEBI_SATIS_INT = 9;
+        public const int ODEMESEBEBI_KIRA_TEMINAT_INT = 10;
+
+        public const int ODEMESEBEBI_BATCH_YATAN_INT = 11;
+        public const int ODEMESEBEBI_BATCH_KOMISYONU_INT = 12;
+        public const int ODEMESEBEBI_OTOMATIK_SUPURME_INT = 13;
+        public const int ODEMESEBEBI_VALOR_CEK_YATIR_INT = 14;
+        public const int ODEMESEBEBI_YATIRIM_FONU_SATIS_INT = 15;
+
         public const int ODEMESEBEBI_DIGER_INT = 99;
         public const int ODEME_SEBEBI_DEFAULT_INT = ODEMESEBEBI_DIGER_INT;
         //Teminat Cinsi
