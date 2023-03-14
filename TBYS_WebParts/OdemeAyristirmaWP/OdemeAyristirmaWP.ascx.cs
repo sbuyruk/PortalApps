@@ -468,12 +468,14 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
 
                 Kiraci kiraci = new Kiraci();
                 string kiraciAdi = string.Empty;
+                string kiraciSoyadi = string.Empty;
                 if (kiraEkstreAktarma.KiraciId > 0)
                 {
                     kiraci = kiraci.Select(kiraEkstreAktarma.KiraciId);
                     if (kiraci != null)
                     {
-                        kiraciAdi = (kiraci.Adi + " " + kiraci.Soyadi).Trim();
+                        kiraciAdi = kiraci.Adi.Trim();// (kiraci.Adi + " " + kiraci.Soyadi).Trim();
+                        kiraciSoyadi = kiraci.Soyadi.Trim();// (kiraci.Adi + " " + kiraci.Soyadi).Trim();
                     }
                 }
 
@@ -481,10 +483,11 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
 
                 KiraciDDL.Items.Clear();
 
-                string adiSoyadi = kiraEkstreAktarma.Adi + " " + kiraEkstreAktarma.Soyadi;
-                if (!string.IsNullOrEmpty(adiSoyadi) || !string.IsNullOrEmpty(kiraciAdi))
+                string ekstredekiKiraciAdi = kiraEkstreAktarma.Adi;// + " " + kiraEkstreAktarma.Soyadi;
+                string ekstredekiKiraciSoyadi = kiraEkstreAktarma.Soyadi;
+                if (!string.IsNullOrEmpty(ekstredekiKiraciAdi) || !string.IsNullOrEmpty(kiraciAdi))
                 {
-                    List<Kiraci> kiraciList = kiraciDao.SelectByAdi(string.IsNullOrEmpty(kiraciAdi) ? adiSoyadi : kiraciAdi);
+                    List<Kiraci> kiraciList = kiraciDao.SelectByAdi(string.IsNullOrEmpty(kiraciAdi) ? ekstredekiKiraciAdi : kiraciAdi, string.IsNullOrEmpty(kiraciSoyadi) ? ekstredekiKiraciSoyadi : kiraciSoyadi);
                     if (kiraciList.Count > 0)
                     {
 

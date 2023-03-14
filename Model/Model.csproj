@@ -165,6 +165,7 @@
     <Compile Include="TBYS\TasinmazBagisci.cs" />
     <Compile Include="TBYS\TBYSOrtak.cs" />
     <Compile Include="TBYS\Vasiyetci.cs" />
+    <Compile Include="TBYS\VasiyeteKonuVarlik.cs" />
     <Compile Include="TBYS\VasiyetNitelik.cs" />
     <Compile Include="TBYS\YasalFaiz.cs" />
     <Compile Include="TYS\Toplanti.cs" />

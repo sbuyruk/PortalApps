@@ -7,6 +7,21 @@
 <%@ Register TagPrefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="VasiyetciListesiWP.ascx.cs" Inherits="TBYS_WebParts.VasiyetciListesiWP.VasiyetciListesiWP" %>
 
+<style>
+    .ui-datatable tbody td {
+        white-space: normal;
+    }
+    table tr td th {
+        font-size: small;
+    }
+    thead {
+        display: table-header-group;
+    }
+    tfoot {
+        display: none;
+    }
+</style>
+
 <div class="container col-xl">
     <div class="card shadow">
         <div class="card-header">
@@ -19,9 +34,12 @@
         </div>
         <div class="card-body">
             <div class="form-group">
+               
                 <table id="CustomDataTable" class="table table-striped row-border" width="100%">
                     <thead>
-                        <tr>
+                    </thead>
+                    <tfoot> 
+                        <tr >
                             <th>V.No</th>
                             <th>Adı</th>
                             <th>Soyadı</th>
@@ -30,10 +48,15 @@
                             <th>İkamet İlçesi</th>                            
                             <th>İkamet Adres</th>
                             <th>Telefon</th>
+                            <th>"Vasiyet Yılı"</th>
+                            <th>Bölge</th>
                             <th>Vasiyet</th>
                             <th>Düzenle</th>
+                            <th>Sağ/Vefat</th>
                         </tr>
-                    </thead>
+                    </tfoot>
+                    <tbody></tbody>
+                    
                 </table>
             </div>
         </div>

@@ -279,6 +279,7 @@ namespace TBYS_WebParts.OdemeGirisWP
                 odeme = odeme.Select(OdemeIdQS.ConvertToInt());
                 if (odeme != null)
                 {
+                    KiraciIdQS = odeme.KiraciId.ToString();
                     Kiraci kiraci = new Kiraci();
                     kiraci = kiraci.Select(odeme.KiraciId);
                     if (kiraci != null)

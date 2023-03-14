@@ -14,11 +14,7 @@
         document.getElementById('<%= ModalDoldurBtn.ClientID%>').click();
     }
 </script>
-<style>
-    .ui-datatable tbody td {
-        white-space: normal;
-    }
-</style>
+
 <div class="container shadow">
     <asp:UpdatePanel ID="upPanel" runat="server">
         <ContentTemplate>
@@ -41,10 +37,20 @@
                         </div>
                     </div>
                     <div class="form-group border border-success" id="BagisciSecTableDiv" runat="server" style="display: none">
-                        <div class="form-group table loader">
-                            <input class="form-control col-6" id="globalFilter" placeholder="Aranacak Kelime" size="30" />
-                            <div id="tblfilter"></div>
-                            <div id="messages"></div>
+                        <div class="form-group">
+                            <table id="CustomDataTable" class="table table-striped row-border" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Adı</th>
+                                        <th>TC Kimlik No</th>
+                                        <th>İli</th>
+                                        <th>İlçesi</th>
+                                        <th>Telefon</th>
+                                        <th>Adres</th>
+                                        <th>Seç</th>
+                                    </tr>
+                                </thead>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -67,34 +73,53 @@
     </asp:UpdateProgress>
 </div>
 
-<div class="modal alert-secondary" id="ModalUrlDiv" role="dialog">
-    <div class="modal-dialog modal-xl">
+<div class="modal" id="ModalUrlDiv" role="dialog">
+    <div class="modal-dialog modal-lg">
         <!-- Modal content-->
-        <div class="modal-content" style="width: 1030px;">
+        <div class="modal-content">
             <asp:UpdatePanel runat="server" ID="UpdatePanel1" UpdateMode="Conditional">
                 <ContentTemplate>
                     <div class="modal-header">
-                        <asp:Label ID="AdiLbl" runat="server" Text="Label"></asp:Label>
+                        <h3>
+                            <asp:Label ID="BagisciAdiLbl" runat="server" Text="Bağışçı Bilgileri" Font-Bold="True"></asp:Label>
+                        </h3>
                     </div>
                     <div class="modal-body">
                         <div style="display: none">
-                            <asp:LinkButton ID="ModalDoldurBtn" runat="server" CausesValidation="false" Text="" OnClientClick="{return true;};" OnClick="ModalDoldurBtn_Click" />
-
+                            <asp:LinkButton ID="ModalDoldurBtn" runat="server" CausesValidation="false" Text="" OnClick="ModalDoldurBtn_Click" />
                         </div>
+
                         <div class="m-1 text-center" id="NakitBagisciDiv">
-                            <asp:Table CssClass="table text-center" ID="BagisciTable" runat="server">
+                            <asp:Table CssClass="table text-center table-bordered table-striped" ID="BagisciTable" runat="server">
                                 <asp:TableHeaderRow>
-                                    <asp:TableCell>Ad/Ünvan</asp:TableCell>
-                                    <asp:TableCell>TC Kimlik No</asp:TableCell>
-                                    <asp:TableCell>Telefon</asp:TableCell>
-                                    <asp:TableCell>İli/İlçesi</asp:TableCell>
-                                    <asp:TableCell>Adres</asp:TableCell>
-                                    <asp:TableCell>Tüzel Kişi</asp:TableCell>
+                                    <asp:TableHeaderCell>Ad/Ünvan</asp:TableHeaderCell>
+                                    <asp:TableHeaderCell>TC Kimlik No</asp:TableHeaderCell>
+                                    <asp:TableHeaderCell>Adres</asp:TableHeaderCell>
+                                    <asp:TableHeaderCell>İli/İlçesi</asp:TableHeaderCell>
+                                    <asp:TableHeaderCell>Telefon</asp:TableHeaderCell>
+                                    <asp:TableHeaderCell>Tüzel Kişi</asp:TableHeaderCell>
                                 </asp:TableHeaderRow>
                             </asp:Table>
                         </div>
-                        <div class="table loader">
-                            <div id="modaltblfilter" class="table" style="width: 1000px; height: 400px;"></div>
+                        <div>
+                            <h3>
+                                <br />
+                                <asp:Label ID="BagisBilgileriLbl" runat="server" Text="Bağışçının Yaptığı Nakit Bağışlar" Font-Bold="True"></asp:Label>
+                            </h3>
+                        </div>
+                        <div class="form-group">
+                            <table id="CustomModalDataTable" class="table table-bordered table-striped" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Bağış Tarihi</th>
+                                        <th>Bağış Miktarı</th>
+                                        <th>Banka</th>
+                                        <th>Armağan</th>
+                                        <th>Armağan Tutarı</th>
+                                        <th>Armağan Durumu</th>
+                                    </tr>
+                                </thead>
+                            </table>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -105,3 +130,4 @@
         </div>
     </div>
 </div>
+

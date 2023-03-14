@@ -1,10 +1,12 @@
 ﻿using Microsoft.SharePoint;
+using Model.IKYS;
 using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Web.Script.Serialization;
@@ -131,116 +133,157 @@ namespace TBYS_WebParts.VasiyetciListesiWP
         }
         private string CreateDataTable(string jsonData)
         {
-            string duzenleGorunsun = string.IsNullOrEmpty(BolgeQS) ? "{ targets:9, visible:true}," : "{ targets:9, visible:false},";
+            string duzenleGorunsun = string.IsNullOrEmpty(BolgeQS) ? "{ targets:11, visible:true}," : "{ targets:11, visible:false},";
             string dosyaAdi = "Vasiyet' + row.VasiyetciId + '.pdf";
             //string dosyaUrl = SPContext.Current.Web.Url + "/" + ProjeConstants.TASINMAZBELGELERI_LIB + "/" + dosyaAdi;
 
 
             string dosyaUrl = UtilityHelper.RootURLGetir() + "/" + ProjeConstants.PATH_TBYS_URL + "/" + ProjeConstants.TBYSBELGELERI_LIB + "/" + dosyaAdi;
 
-
-
-
-            string vasiyetPdffLink =   @"'<a class=\'btn btn-secondary\' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + dosyaUrl + @"> Vasiyet PDF </a>'";
+            string vasiyetPdffLink = @"'<a class=\'btn btn-secondary\' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + dosyaUrl + @"> Vasiyet PDF </a>'";
             string tableString = @"
             jQuery(document).ready(function () {
+                    $('#CustomDataTable tfoot tr')
+                        .clone(true)
+                        .addClass('filters')
+                        .appendTo('#CustomDataTable thead');
 
-            jQuery('#CustomDataTable').DataTable({
-                'initComplete': function (settings, json) {//tablo yüklendiğinde
-                    var api = this.api();
-                    var row = api.row(function(idx, data, node) { //secilen satıra gider
-                        return data['VasiyetciId'] ==" + SecilenIdQS + @";
-                    });
-                    if (row.length > 0)
-                    {
-                        row.select()
-                            .show()
-                            .draw(false);
-                    }
-                },
-                data: " + jsonData + @",
-                columns: [
-                    { data: 'VasiyetciId' },
-                    { data: 'Adi'},
-                    { data: 'Soyadi'},
-                    { data: 'TCKimlikNo' },
-                    { data: 'IkametIli' },
-                    { data: 'IkametIlcesi' },
-                    { data: 'IkametAdresi'},
-                    { data: 'Telefon1' },
-                    { data: 'VasiyetciId' },
-                    { data: 'VasiyetciId' },
+                jQuery('#CustomDataTable').DataTable({
+                    data: " + jsonData + @",
+                    columns: [
+                        { data: 'VasiyetciId' },
+                        { data: 'Adi'},
+                        { data: 'Soyadi'},
+                        { data: 'TCKimlikNo' },
+                        { data: 'IkametIli' },
+                        { data: 'IkametIlcesi' },
+                        { data: 'IkametAdresi'},
+                        { data: 'Telefon1' },
+                        { data: 'VasiyetYili' },
+                        { data: 'SorumluBolge' },
+                        { data: 'VasiyetciId' },
+                        { data: 'VasiyetciId' },
+                        { data: 'SagVefat' },
 
-                ],
-                'order': [[2, 'desc']],
-                columnDefs:
-                [
-                "+ duzenleGorunsun +@"
-                {
-                    targets: 8, render: function(data, type, row, meta) {
-                    
-                    var dosyaUrl='" + dosyaUrl + @"';
-                    var link='';
-                    
-                    if (Boolean(row.VasiyetiYuklendiMi))
-                        link= "+vasiyetPdffLink+@";
-                    return link;
-                }},
-                {
-                    targets: 9, render: function(data, type, row, meta) {
-                    var link= '<a href=" + ProjeConstants.PAGE_VASIYETCI_GIRISI + @"?DestinationApp=Duzenle&VasiyetciId='+row.VasiyetciId +' class=\'btn btn-outline-primary \'>Düzenle</a>';
-                    return link;
-                }},
-                ],
-                'language': {
-                    'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
-                    'decimal': ',',
-                    'thousands': '.'
-                },
-                responsive: true,
-                destroy: true,
-                autoWidth: false,
-                dom: 'Bfrtip',
-                buttons:
-                [
+                    ],
+                    'order': [[2, 'desc']],
+                    columnDefs:
+                    [
+                    " + duzenleGorunsun + @"
                     {
-                extend: 'print',
-                        exportOptions:
+                        targets: 10, render: function(data, type, row, meta) {
+
+                        var dosyaUrl='" + dosyaUrl + @"';
+                        var link='';
+
+                        if (Boolean(row.VasiyetiYuklendiMi))
+                            link= " + vasiyetPdffLink + @";
+                        return link;
+                    }},
                     {
-                    columns: ':visible'
-                        }
-                },
-                    {
-                      extend: 'excel',
-                      exportOptions: {
-                          columns: ':visible',
-                          format: {
-                              body: function(data, row, column, node) {
-                                  data = $('<p>' + data + '</p>').text();
-                                  return $.isNumeric(data.replace(',', '.')) ? data.replace(',', '.') : data;
+                        targets: 11, render: function(data, type, row, meta) {
+                        var link= '<a href=" + ProjeConstants.PAGE_VASIYETCI_GIRISI + @"?DestinationApp=Duzenle&VasiyetciId='+row.VasiyetciId +' class=\'btn btn-outline-primary \'>Düzenle</a>';
+                        return link;
+                    }},
+                    ],
+                    'language': {
+                        'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
+                        'decimal': ',',
+                        'thousands': '.'
+                    },
+                    responsive: true,
+                    destroy: true,
+                    autoWidth: false,
+                    dom: 'Bfrtip',
+                    buttons:
+                    [
+                        {
+                    extend: 'print',
+                            exportOptions:
+                        {
+                        columns: ':visible'
+                            }
+                    },
+                        {
+                          extend: 'excel',
+                          exportOptions: {
+                              columns: ':visible',
+                              format: {
+                                  body: function(data, row, column, node) {
+                                      data = $('<p>' + data + '</p>').text();
+                                      return $.isNumeric(data.replace(',', '.')) ? data.replace(',', '.') : data;
+                                  }
                               }
-                          }
-                      },
-                },
-                    {
-                extend: 'pdf',
-                        exportOptions:
-                    {
-                    columns: ':visible'
-                        }
-                },
-                    {
-                extend: 'copy',
-                        exportOptions:
-                    {
-                    columns: ':visible'
-                        }
-                },
-                    , 'pageLength', 'colvis'
-                ]
-            });
-        });
-        ";
+                          },
+                    },
+                        {
+                    extend: 'pdf',
+                            exportOptions:
+                        {
+                        columns: ':visible'
+                            }
+                    },
+                        {
+                    extend: 'copy',
+                            exportOptions:
+                        {
+                        columns: ':visible'
+                            }
+                    },
+                        , 'pageLength', 'colvis'
+                    ],
+                    initComplete: function () {
+            var api = this.api();
+
+            // For each column
+             api
+                                .columns([8])
+                                .eq(0)
+                                .each(function (colIdx) {
+                                    // Set the header cell to contain the input element
+                                    var cell = $('.filters th').eq(
+                                        $(api.column(colIdx).header()).index()
+                                    );
+                                    var title = $(cell).text();
+                                    $(cell).html('<input type=text  placeholder=' + title + ' />');
+
+                                    // On every keypress in this input
+                                    $(
+                                        'input',
+                                        $('.filters th').eq($(api.column(colIdx).header()).index())
+                                    )
+                                        .off('keyup change')
+                                        .on('change', function (e) {
+                                            // Get the search value
+                                            $(this).attr('title', $(this).val());
+                                            var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+                                            var cursorPosition = this.selectionStart;
+                                            // Search the column for that value
+                                            api
+                                                .column(colIdx)
+                                                .search(
+                                                    this.value != ''
+                                                        ? regexr.replace('{search}', '(((' + this.value + ')))')
+                                                        : '',
+                                                    this.value != '',
+                                                    this.value == ''
+                                                )
+                                                .draw();
+                                        })
+                                        .on('keyup', function (e) {
+                                            e.stopPropagation();
+
+                                            $(this).trigger('change');
+                                            $(this)
+                                                .focus()[0]
+                                                .setSelectionRange(cursorPosition, cursorPosition);
+                                        });
+                                });
+                            table.columns.adjust().draw();
+                        },
+                    });                   
+                });";
             return tableString;
         }
         private void RedirectToPage(string pageUrl)
@@ -282,6 +325,7 @@ namespace TBYS_WebParts.VasiyetciListesiWP
                 string ikametIli = row["IlAdi"].ToString();
                 string ikametIlcesi = row["IlceAdi"].ToString();
                 string sagVefat = row["SagVefat"].ToString();
+                //string sagVefat = SagVefatGetir(sagVefatVal);
                 string vefatTarihi = row["VefatTarihi"].ConvertToDatetimeEmptyIfNull();
                 string dogumTarihi = row["DogumTarihi"].ConvertToDatetimeEmptyIfNull();
                 string dogumYeri = row["DogumYeri"].ToString();
@@ -333,12 +377,33 @@ namespace TBYS_WebParts.VasiyetciListesiWP
                 string dosyaAdi = "Vasiyet"+vasiyetciItem.VasiyetciId + ".pdf";
                 bool dosyaVarMi = UtilityHelper.DosyaVarMi(UtilityHelper.TbysURLGetir(), ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi);
                 vasiyetciItem.VasiyetiYuklendiMi = dosyaVarMi;
+                vasiyetciItem.VasiyetYili = vasiyetTarihi.ConvertToDatetime().Year.ToString();
+                vasiyetciItem.Duzenle = vasiyetTarihi.ConvertToDatetime().Year.ToString();
 
 
                 list.Add(vasiyetciItem);
             }
             return list;
         }
+
+        private string SagVefatGetir(string sagVefatInt)
+        {
+            string retVal=string.Empty;
+            if (sagVefatInt.Equals(ProjeConstants.BAGISCI_SAG_INT))
+            {
+                retVal = ProjeConstants.BAGISCI_SAG;
+            }
+            else if (sagVefatInt.Equals(ProjeConstants.BAGISCI_VEFAT_INT))
+            {
+                retVal = ProjeConstants.BAGISCI_VEFAT;
+            }
+            else if (sagVefatInt.Equals(ProjeConstants.BAGISCI_BILINMIYOR_INT))
+            {
+                retVal = ProjeConstants.BAGISCI_BILINMIYOR;
+            }
+            return retVal;
+        }
+
         protected void ExcelBtn_Click(object sender, EventArgs e)
         {
             try
@@ -425,6 +490,8 @@ namespace TBYS_WebParts.VasiyetciListesiWP
             public string VasiyetcininTalebi { get; set; }
             public string Aciklama { get; set; }
             public bool VasiyetiYuklendiMi { get; set; }
+            public string VasiyetYili { get; set; }
+            public string Duzenle { get; set; }
 
 
         }

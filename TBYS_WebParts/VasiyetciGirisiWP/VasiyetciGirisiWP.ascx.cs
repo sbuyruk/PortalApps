@@ -84,7 +84,8 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
             {
                 SagVefatDDLDoldur();
                 IlDDLDoldur();
-                VasiyetinDurumuDDLDoldur();
+                VasiyetKonusuDDLDoldur();
+                VasiyetDurumuDDLDoldur();
                 Vasiyetci vasiyetci = new Vasiyetci();
 
                 if (DestinationAppQS.Equals("Duzenle"))
@@ -92,7 +93,7 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
 
                     vasiyetci = vasiyetci.Select(VasiyetciIdQS.ConvertToInt());
                     IdLbl.Text = vasiyetci.Id.ToString();
-                    VasiyetNitelikDiv.Attributes["style"] = "display:block";
+                    VarlikDiv.Attributes["style"] = "display:block";
                     BelgeYukleDiv.Attributes["style"] = "display:block";
                     KaydetBtn.Visible = false;
                     GuncelleBtn.Visible = true;
@@ -100,7 +101,7 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
                 }
                 else
                 {
-                    VasiyetNitelikDiv.Attributes["style"] = "display:none";
+                    VarlikDiv.Attributes["style"] = "display:none";
                     KaydetBtn.Visible = true;
                     GuncelleBtn.Visible = false;
 
@@ -116,25 +117,33 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
 
             if (DestinationAppQS.Equals("Duzenle"))
             {
-                VasiyetNitelikTableDoldur();
+                VasiyeteKonuVarliklarTablosunuDoldur();
             }
         }
-        private void VasiyetNitelikTableDoldur()
+        private void VasiyeteKonuVarliklarTablosunuDoldur()
         {
 
-            VasiyetNitelik vasiyetNitelik = new VasiyetNitelik();
-            List<VasiyetNitelik> vasiyetNitelikListesi = vasiyetNitelik.SelectByVasiyetciId(VasiyetciIdQS.ConvertToInt());
-            foreach (VasiyetNitelik item in vasiyetNitelikListesi)
+            VasiyeteKonuVarlik vasiyeteKonuVarlik = new VasiyeteKonuVarlik();
+            List<VasiyeteKonuVarlik> vasiyeteKonuVarlikListesi = vasiyeteKonuVarlik.SelectByVasiyetciId(VasiyetciIdQS.ConvertToInt());
+            foreach (VasiyeteKonuVarlik item in vasiyeteKonuVarlikListesi)
             {
                 TableRow yeniRow = new TableRow();
+
+                TableCell konuCell = new TableCell();
+                konuCell.Text = item.Konusu;
+                konuCell.Attributes.Add("style", "vertical-align:middle");
 
                 TableCell cinsiCell = new TableCell();
                 cinsiCell.Text = item.Cinsi;
                 cinsiCell.Attributes.Add("style", "vertical-align:middle");
+                
+                TableCell adetMiktarCell = new TableCell();
+                adetMiktarCell.Text = item.AdetMiktar;
+                adetMiktarCell.Attributes.Add("style", "vertical-align:middle");
 
-                TableCell niteligiCell = new TableCell();
-                niteligiCell.Text = item.Niteligi;
-                niteligiCell.Attributes.Add("style", "vertical-align:middle");
+                TableCell konuAciklamaCell = new TableCell();
+                konuAciklamaCell.Text = item.Aciklama;
+                konuAciklamaCell.Attributes.Add("style", "vertical-align:middle");
 
                 TableCell tahminiRayicCell = new TableCell();
                 tahminiRayicCell.Text = item.TahminiRayic.ToString("N", culturInfo);
@@ -142,15 +151,15 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
 
                 TableCell silCell = new TableCell();
 
-                LinkButton nitelikSilBtn = new LinkButton();
-                nitelikSilBtn.Text = "Niteliği Sil";
-                nitelikSilBtn.CssClass = "btn btn-outline-danger";
-                silCell.Controls.Add(nitelikSilBtn);
+                LinkButton varlikSilBtn = new LinkButton();
+                varlikSilBtn.Text = "Varlığı Sil";
+                varlikSilBtn.CssClass = "btn btn-outline-danger";
+                silCell.Controls.Add(varlikSilBtn);
 
-                nitelikSilBtn.Click += delegate
+                varlikSilBtn.Click += delegate
                 {
-                    SilMesajiLbl.Text = "Niteliği Silmek İstediğinizden Emin misiniz?";
-                    SilModalBaslikLbl.Text = "Nitelik Silinecek";
+                    SilMesajiLbl.Text = "Varlığı Silmek İstediğinizden Emin misiniz?";
+                    SilModalBaslikLbl.Text = "Vasiyete Konu Varlık Silinecek";
                     VasiyetciSilNowBtn.Visible = false;
                     NiteligiSilNowBtn.Visible = true;
                     ParamVnLbl.Text = item.Id.ToString();
@@ -158,12 +167,14 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
                     System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), openModal, true);
                 };
 
+                yeniRow.Controls.Add(konuCell);
                 yeniRow.Controls.Add(cinsiCell);
-                yeniRow.Controls.Add(niteligiCell);
+                yeniRow.Controls.Add(adetMiktarCell);
                 yeniRow.Controls.Add(tahminiRayicCell);
+                yeniRow.Controls.Add(konuAciklamaCell);
                 yeniRow.Controls.Add(silCell);
 
-                VasiyetNitelikTable.Controls.Add(yeniRow);
+                VasiyeteKonuVarlikTable.Controls.Add(yeniRow);
             }
         }
         private void SagVefatIslemleri(Vasiyetci vasiyetci)
@@ -233,10 +244,10 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
             bool dosyaVar = UtilityHelper.DosyaVarMi(UtilityHelper.TbysURLGetir(), spLibName, dosyaAdi);
             if (dosyaVar)
             {
-                string dosyaUrl = SPContext.Current.Web.Url + "/" + spLibName + "/" + dosyaAdi;
-                DosyaLnk.Target = "_blank";
-                DosyaLnk.NavigateUrl = dosyaUrl;
                 DosyaLnk.Visible = true;
+
+                string dosyaUrl = UtilityHelper.TbysURLGetir() + "/" + ProjeConstants.TBYSBELGELERI_LIB + "/" + dosyaAdi;
+                DosyaLnk.NavigateUrl = dosyaUrl;
             }
             else
             {
@@ -279,18 +290,51 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
             SagVefatDDL.Items.Add(li2);
             SagVefatDDL.Items.Add(li3);
         }
-        private void VasiyetinDurumuDDLDoldur()
+        private void VasiyetDurumuDDLDoldur()
         {
             ListItem li = new ListItem(ProjeConstants.VASIYETIN_DURUMU_GECERLI);
             ListItem li2 = new ListItem(ProjeConstants.VASIYETIN_DURUMU_GERCEKLESTI);
             ListItem li3 = new ListItem(ProjeConstants.VASIYETIN_DURUMU_HUKUKI);
             ListItem li4 = new ListItem(ProjeConstants.VASIYETIN_DURUMU_IPTAL);
+            ListItem li5 = new ListItem(ProjeConstants.VASIYETIN_DURUMU_RUCU);
+            ListItem li6 = new ListItem(ProjeConstants.VASIYETIN_DURUMU_BILGIEKSIK);
+            ListItem li7 = new ListItem(ProjeConstants.VASIYETIN_DURUMU_MAHKEMEKARARI);
+            ListItem li8 = new ListItem(ProjeConstants.VASIYETIN_DURUMU_MALVARLIGIYOK);
+            ListItem li9 = new ListItem(ProjeConstants.VASIYETIN_DURUMU_SAGLIGINDABAGIS);
+            ListItem li10 = new ListItem(ProjeConstants.VASIYETIN_DURUMU_MALVARLIGIVAKFAGECTI);
 
             VasiyetinDurumuDDL.Items.Clear();
             VasiyetinDurumuDDL.Items.Add(li);
             VasiyetinDurumuDDL.Items.Add(li2);
             VasiyetinDurumuDDL.Items.Add(li3);
             VasiyetinDurumuDDL.Items.Add(li4);
+            VasiyetinDurumuDDL.Items.Add(li5);
+            VasiyetinDurumuDDL.Items.Add(li6);
+            VasiyetinDurumuDDL.Items.Add(li7);
+            VasiyetinDurumuDDL.Items.Add(li8);
+            VasiyetinDurumuDDL.Items.Add(li9);
+            VasiyetinDurumuDDL.Items.Add(li10);
+        }
+        private void VasiyetKonusuDDLDoldur()
+        {
+            ListItem li = new ListItem(ProjeConstants.VASIYETIN_KONUSU_TUM_TASINMAZLAR);
+            ListItem li2 = new ListItem(ProjeConstants.VASIYETIN_KONUSU_TUM_MENKULVARLIKLAR);
+            ListItem li3 = new ListItem(ProjeConstants.VASIYETIN_KONUSU_TASINMAZ);
+            ListItem li4 = new ListItem(ProjeConstants.VASIYETIN_KONUSU_MENKULBAGISLAR);
+            ListItem li5 = new ListItem(ProjeConstants.VASIYETIN_KONUSU_EVESYASI);
+            ListItem li6 = new ListItem(ProjeConstants.VASIYETIN_KONUSU_KAPALIVASIYET);
+            ListItem li7 = new ListItem(ProjeConstants.VASIYETIN_KONUSU_BILGIEKSIK);
+            ListItem li8 = new ListItem(ProjeConstants.VASIYETIN_KONUSU_DIGER);
+
+            VasiyetKonusuDDL.Items.Clear();
+            VasiyetKonusuDDL.Items.Add(li);
+            VasiyetKonusuDDL.Items.Add(li2);
+            VasiyetKonusuDDL.Items.Add(li3);
+            VasiyetKonusuDDL.Items.Add(li4);
+            VasiyetKonusuDDL.Items.Add(li5);
+            VasiyetKonusuDDL.Items.Add(li6);
+            VasiyetKonusuDDL.Items.Add(li7);
+            VasiyetKonusuDDL.Items.Add(li8);
         }
         protected void KaydetBtn_Click(object sender, EventArgs e)
         {
@@ -494,47 +538,85 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
             }
         }
 
-        protected void NitelikKaydetBtn_Click(object sender, EventArgs e)
+        protected void VarlikKaydetBtn_Click(object sender, EventArgs e)
         {
-            VasiyetNitelik vn = new VasiyetNitelik();
+            VasiyeteKonuVarlik vn = new VasiyeteKonuVarlik();
             vn.VasiyetciId = VasiyetciIdQS.ConvertToInt();
+            vn.Konusu = VasiyetKonusuDDL.SelectedItem.Text;
             vn.Cinsi = VasiyetCinsiDDL.SelectedItem.Text;
+            vn.AdetMiktar = AdetMiktarTxt.Text;
             vn.TahminiRayic = TahminiRayicTxt.Text.ConvertToDecimal();
+            vn.Aciklama= KonuAciklama.Text;
             vn.Save();
             RedirectToPage(ProjeConstants.PAGE_VASIYETCI_GIRISI + "?DestinationApp=Duzenle&VasiyetciId=" + VasiyetciIdQS);
         }
         protected void ModalDoldurBtn_Click(object sender, EventArgs e)
         {
-            VasiyetCinsiDoldurDDL();
+            VasiyetCinsiDDLDoldur();
         }
-        private void VasiyetCinsiDoldurDDL()
+        private void VasiyetCinsiDDLDoldur()
         {
-            ListItem li = new ListItem("İşhanı");
-            ListItem li2 = new ListItem("Apt.");
-            ListItem li3 = new ListItem("Arsa");
-            ListItem li4 = new ListItem("İşyeri");
-            ListItem li5 = new ListItem("M.Ev");
-            ListItem li6 = new ListItem("Mesken");
-            ListItem li7 = new ListItem("Tarla");
-            ListItem li8 = new ListItem("Tesis");
-            ListItem li9 = new ListItem("Nakit Para");
-            ListItem li10 = new ListItem("Değerli Maden");
-            ListItem li11 = new ListItem("Eşya");
-            ListItem li12 = new ListItem("Diğer");
 
             VasiyetCinsiDDL.Items.Clear();
-            VasiyetCinsiDDL.Items.Add(li);
-            VasiyetCinsiDDL.Items.Add(li2);
-            VasiyetCinsiDDL.Items.Add(li3);
-            VasiyetCinsiDDL.Items.Add(li4);
-            VasiyetCinsiDDL.Items.Add(li5);
-            VasiyetCinsiDDL.Items.Add(li6);
-            VasiyetCinsiDDL.Items.Add(li7);
-            VasiyetCinsiDDL.Items.Add(li8);
-            VasiyetCinsiDDL.Items.Add(li9);
-            VasiyetCinsiDDL.Items.Add(li10);
-            VasiyetCinsiDDL.Items.Add(li11);
-            VasiyetCinsiDDL.Items.Add(li12);
+            string vasiyetKonusu = VasiyetKonusuDDL.SelectedItem.Value;
+            if (vasiyetKonusu.Equals(ProjeConstants.VASIYETIN_KONUSU_KAPALIVASIYET))
+            {
+                ListItem li = new ListItem(ProjeConstants.VASIYETIN_KONUSU_KAPALIVASIYET);
+                VasiyetCinsiDDL.Items.Add(li);
+            }else if (vasiyetKonusu.Equals(ProjeConstants.VASIYETIN_KONUSU_TUM_TASINMAZLAR))
+            {
+                ListItem li = new ListItem(ProjeConstants.VASIYETIN_KONUSU_TUM_TASINMAZLAR);
+                VasiyetCinsiDDL.Items.Add(li);
+            }
+            else if (vasiyetKonusu.Equals(ProjeConstants.VASIYETIN_KONUSU_TUM_MENKULVARLIKLAR))
+            {
+                ListItem li = new ListItem(ProjeConstants.VASIYETIN_KONUSU_TUM_MENKULVARLIKLAR);
+                VasiyetCinsiDDL.Items.Add(li);
+            }
+            else if (vasiyetKonusu.Equals(ProjeConstants.VASIYETIN_KONUSU_TASINMAZ))
+            {
+                ListItem li = new ListItem("İşhanı");
+                ListItem li2 = new ListItem("Apt.");
+                ListItem li3 = new ListItem("Arsa");
+                ListItem li4 = new ListItem("İşyeri");
+                ListItem li5 = new ListItem("M.Ev");
+                ListItem li6 = new ListItem("Mesken");
+                ListItem li7 = new ListItem("Tarla");
+                ListItem li8 = new ListItem("Tesis");
+                ListItem li9 = new ListItem("Diğer");
+
+                VasiyetCinsiDDL.Items.Add(li);
+                VasiyetCinsiDDL.Items.Add(li2);
+                VasiyetCinsiDDL.Items.Add(li3);
+                VasiyetCinsiDDL.Items.Add(li4);
+                VasiyetCinsiDDL.Items.Add(li5);
+                VasiyetCinsiDDL.Items.Add(li6);
+                VasiyetCinsiDDL.Items.Add(li7);
+                VasiyetCinsiDDL.Items.Add(li8);
+                VasiyetCinsiDDL.Items.Add(li9);
+            }
+            else if (vasiyetKonusu.Equals(ProjeConstants.VASIYETIN_KONUSU_MENKULBAGISLAR))
+            {
+
+                ListItem li = new ListItem("Nakit Para");
+                ListItem li1 = new ListItem("USD");
+                ListItem li2 = new ListItem("Euro");
+                ListItem li3 = new ListItem("GBP");
+                ListItem li4 = new ListItem("Altın");
+                ListItem li5 = new ListItem("Mücevher");
+                ListItem li6 = new ListItem("Değerli Maden");
+                ListItem li7 = new ListItem("Diğer");
+
+
+                VasiyetCinsiDDL.Items.Add(li);
+                VasiyetCinsiDDL.Items.Add(li1);
+                VasiyetCinsiDDL.Items.Add(li2);
+                VasiyetCinsiDDL.Items.Add(li3);
+                VasiyetCinsiDDL.Items.Add(li4);
+                VasiyetCinsiDDL.Items.Add(li5);
+                VasiyetCinsiDDL.Items.Add(li6);
+                VasiyetCinsiDDL.Items.Add(li7);
+            }
         }
         private void VasiyetciyiSilPopupAc(object sender)
         {
@@ -544,7 +626,7 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
             SilModalBaslikLbl.Text = "Vasiyetçi Silinecek";
             NiteligiSilNowBtn.Visible = false;
             VasiyetciSilNowBtn.Visible = true;
-            System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), openModal, true);
+            UtilityHelper.ScriptCalistir( openModal);
         }
         protected void VasiyetciSilBtn_Click(object sender, EventArgs e)
         {
@@ -554,7 +636,16 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
                 vasiyetci = vasiyetci.Select(VasiyetciIdQS.ConvertToInt());
                 if (vasiyetci != null)
                 {
-                    VasiyetciyiSilPopupAc(sender);
+                    VasiyeteKonuVarlik vkv = new VasiyeteKonuVarlik();
+                    List<VasiyeteKonuVarlik> list =vkv.SelectByVasiyetciId(vasiyetci.Id);
+                    if (list.Count < 1)
+                    {
+                        VasiyetciyiSilPopupAc(sender);
+                    }
+                    else
+                    {
+                        MessageHelper.PublishMessage("Vasiyete konu varlık listesi dolu olduğundan Vasietçi silinemiyor. Lütfen önce Vasiyete Konu Varlık Listesindeki varlıkları siliniz", ProjeConstants.MESAJ_HATA);
+                    }
                 }
             }
             catch (Exception e1)
@@ -595,7 +686,7 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
         protected void NiteligiSilNowBtn_Click(object sender, EventArgs e)
         {
             int silecekVnId = ParamVnLbl.Text.ConvertToInt();
-            VasiyetNitelik silinecekvn = new VasiyetNitelik();
+            VasiyeteKonuVarlik silinecekvn = new VasiyeteKonuVarlik();
             silinecekvn = silinecekvn.Select(silecekVnId);
             if (silinecekvn != null)
             {
@@ -634,6 +725,10 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
         protected void VasiyetciListesiBtn_Click(object sender, EventArgs e)
         {
             RedirectToPage(ProjeConstants.PAGE_VASIYETCI_LISTESI);
+        }
+        protected void VasiyetKonusuDDL_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            VasiyetCinsiDDLDoldur();
         }
     }
 }

@@ -257,6 +257,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                             'thousands': '.'
                         },
                         responsive: true,
+                        destroy: true,
                         pageLength:10,
                         dom: 'Brti',
                         buttons: [
@@ -268,7 +269,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                             },
                             {
                                 extend: 'excel',
-                                title: "+ titleStr+  @",
+                                title: " + titleStr+  @",
                                 filename: function(){
                                     var d = new Date();
                                     var n = d.getTime();
@@ -448,6 +449,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                         mahsupEdilecekKiraSozlesme = mahsupEdilecekKiraSozlesme.SelectByKiraciIdTarih (kiraSozlesme.KiraciId, IslemTarihiTxt.Value.ConvertToDatetime());
                         if (mahsupEdilecekKiraSozlesme == null)
                         {
+                            mahsupEdilecekKiraSozlesme = new KiraSozlesme();
                             mahsupEdilecekKiraSozlesme = mahsupEdilecekKiraSozlesme.SelectEnYakinTarihliSozlesmeByKiraciIdTarih(kiraSozlesme.KiraciId, IslemTarihiTxt.Value.ConvertToDatetime());
                         }
                         if (mahsupEdilecekKiraSozlesme != null)

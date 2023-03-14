@@ -166,8 +166,27 @@ namespace TBYS_WebParts.VasiyetciListesiWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControlTree(global::TBYS_WebParts.VasiyetciListesiWP.VasiyetciListesiWP @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n<div class=\"container col-xl\">\r\n    <div class=\"card shadow\">\r\n        <div c" +
-                        "lass=\"card-header\">\r\n            "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+
+<style>
+    .ui-datatable tbody td {
+        white-space: normal;
+    }
+    table tr td th {
+        font-size: small;
+    }
+    thead {
+        display: table-header-group;
+    }
+    tfoot {
+        display: none;
+    }
+</style>
+
+<div class=""container col-xl"">
+    <div class=""card shadow"">
+        <div class=""card-header"">
+            "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl1;
             @__ctrl1 = this.@__BuildControlCloseBtn();
             @__parser.AddParsedSubObject(@__ctrl1);
@@ -188,9 +207,12 @@ namespace TBYS_WebParts.VasiyetciListesiWP {
         </div>
         <div class=""card-body"">
             <div class=""form-group"">
+               
                 <table id=""CustomDataTable"" class=""table table-striped row-border"" width=""100%"">
                     <thead>
-                        <tr>
+                    </thead>
+                    <tfoot> 
+                        <tr >
                             <th>V.No</th>
                             <th>Adı</th>
                             <th>Soyadı</th>
@@ -199,10 +221,15 @@ namespace TBYS_WebParts.VasiyetciListesiWP {
                             <th>İkamet İlçesi</th>                            
                             <th>İkamet Adres</th>
                             <th>Telefon</th>
+                            <th>""Vasiyet Yılı""</th>
+                            <th>Bölge</th>
                             <th>Vasiyet</th>
                             <th>Düzenle</th>
+                            <th>Sağ/Vefat</th>
                         </tr>
-                    </thead>
+                    </tfoot>
+                    <tbody></tbody>
+                    
                 </table>
             </div>
         </div>

@@ -195,6 +195,8 @@ namespace MFYS_WebParts.BankaBazindaGunlukDovizBagisListesiWP
             DataTable dataTable = nakitBagisHareket.SelectDovizBagisByTarihBankaGrup2(bastar,bittar, secilenBanka, dovizCinsi);
             if (dataTable != null)
             {
+                decimal toplamTL = 0;
+                decimal toplamDoviz = 0;
                 foreach (DataRow row in dataTable.Rows)
                 {
                     BagisListItem bagisListItem = new BagisListItem();
@@ -206,11 +208,14 @@ namespace MFYS_WebParts.BankaBazindaGunlukDovizBagisListesiWP
                     string banka = row["Banka"].ToString();
                     bagisListItem.BagisTarihi= bagisTarihiStr;
                     bagisListItem.DovizTutari= dovizTutari.ToString("N",culturInfo) + " " + dovizCinsi;
-                    bagisListItem.DovizKuru= dovizKuru.ToString("N",culturInfo) + " " + ProjeConstants.DOVIZ_TL;
+                    bagisListItem.DovizKuru= dovizKuru.ToString("N4",culturInfo) + " " + ProjeConstants.DOVIZ_TL;
                     bagisListItem.TLKarsiligi= tlKarsiligi.ToString("N",culturInfo) + " " + ProjeConstants.DOVIZ_TL;
                     bagisListItem.Banka= banka;
+                    toplamTL += tlKarsiligi;
+                    toplamDoviz += dovizTutari;
                     list.Add(bagisListItem);
                 }
+                ToplamLbl.Text="Toplam = " +toplamDoviz.ToString("N",culturInfo) +" " + dovizCinsi + " (" +toplamTL.ToString("N",culturInfo) + " " +ProjeConstants.DOVIZ_TL+") ";
             }
             return list;
         }

@@ -389,11 +389,27 @@ namespace Utility.ProjeGlobal
         public const int BOLGE_HEPSI_INT = 5;
 
         
-
+        //Vasiyet Durumu
         public static string VASIYETIN_DURUMU_GECERLI = "Geçerli";
         public static string VASIYETIN_DURUMU_GERCEKLESTI = "Gerçekleşti";
         public static string VASIYETIN_DURUMU_IPTAL = "İptal";
+        public static string VASIYETIN_DURUMU_RUCU = "Rücu";
         public static string VASIYETIN_DURUMU_HUKUKI = "Hukuki İşlem";
+        public static string VASIYETIN_DURUMU_BILGIEKSIK = "Bilgi Eksikliği";
+        public static string VASIYETIN_DURUMU_SAGLIGINDABAGIS = "Vasiyetçi Sağlığında Taşınmazları Vakfa Bağışlamış";
+        public static string VASIYETIN_DURUMU_MAHKEMEKARARI = "Mahkeme Kararı ile İptal";
+        public static string VASIYETIN_DURUMU_MALVARLIGIYOK = "Mal Varlığı Kalmamış";
+        public static string VASIYETIN_DURUMU_MALVARLIGIVAKFAGECTI = "Mal Varlığı Vakfa Geçti";
+
+        //Vasiyet Konusu
+        public static string VASIYETIN_KONUSU_TUM_TASINMAZLAR = "Tüm Taşınmazlar";
+        public static string VASIYETIN_KONUSU_TUM_MENKULVARLIKLAR = "Tüm Menkul Varlıklar";
+        public static string VASIYETIN_KONUSU_TASINMAZ = "Taşınmaz";
+        public static string VASIYETIN_KONUSU_MENKULBAGISLAR = "Menkul Bağışlar";
+        public static string VASIYETIN_KONUSU_EVESYASI = "Ev Eşyası";
+        public static string VASIYETIN_KONUSU_KAPALIVASIYET = "Kapalı Vasiyet";
+        public static string VASIYETIN_KONUSU_BILGIEKSIK = "Bilgi Eksikliği";
+        public static string VASIYETIN_KONUSU_DIGER = "Diğer Bağışlar";
 
         public const string TEMINAT_ODEMESI = "Teminat Ödemesi";
         public const string TEMINAT_GECICITEMINATODEMESI = " Geçici Teminat Ödemesi";

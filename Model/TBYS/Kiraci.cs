@@ -329,15 +329,17 @@ namespace Model.TBYS
             return kiraci;
         }
 
-        public List<Kiraci> SelectByAdi(string adi)
+        public List<Kiraci> SelectByAdi(string adi, string soyadi = "")
         {
+            string soyadiStr = string.IsNullOrEmpty(soyadi) ? string.Empty : string.Format(" AND Soyadi LIKE '%{0}%'", soyadi);
             string sqlString = string.Format(@"
                 SELECT A.*
                 FROM Kiraci_Table A
 				INNER JOIN KiraSozlesme_Table B ON B.KiraciId=A.Id AND B.Id IN (SELECT MAX(Id) FROM KiraSozlesme_Table WHERE KiraciId=A.Id GROUP BY KiraciId) --Sözeşlmesi yeni olan önce gelsin
                 WHERE Adi Like '%{0}%' 
+                     {1}
                 ORDER BY B.SozBasTar DESC
-                ", adi.Trim());
+                ", adi.Trim(), soyadiStr);
 
             DataTable dataTable = dao.selectFromDb(sqlString, "");
             List<Kiraci> list = ToList<Kiraci>(dataTable);

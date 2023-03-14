@@ -378,7 +378,7 @@ namespace MTS_WebParts.AramaGirisiWP
 
                 kaydetGuncelleSilHdn.Value = ProjeConstants.YENI;
                 var openPopup = "OpenModalOnay();";
-                System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), openPopup, true);
+                UtilityHelper.ScriptCalistir(openPopup);
 
             }
         }
@@ -555,7 +555,7 @@ namespace MTS_WebParts.AramaGirisiWP
                         randevu.RandevuKonusu = aramaGorusme.Konu;
                         randevu.RandevuDurumu = ProjeConstants.RANDEVU_DURUMU_PLANLANDI_INT;
                         randevu.TumGun = false;
-                        randevu.AcikTarih = true;
+                        randevu.AcikTarih = false;
                         DateTime baslangictarihi = DateTime.Today.AddDays(1);
                         DateTime bitistarihi = baslangictarihi;
                         string bassaat = "10:00";

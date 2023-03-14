@@ -58,6 +58,9 @@
                                 </tr>
                             </thead>
                         </table>
+                        <div class="form-group ">
+                            <asp:Label ID="ToplamLbl" CssClass="col-form-label font-weight-bold float-right" runat="server" Text="Toplam"></asp:Label>
+                        </div>
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>

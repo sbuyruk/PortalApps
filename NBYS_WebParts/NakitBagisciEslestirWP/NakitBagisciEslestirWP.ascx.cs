@@ -3,7 +3,10 @@ using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
+using System.Globalization;
 using System.Web;
+using System.Web.Script.Serialization;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
@@ -137,7 +140,7 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP
 
                     }
                 }
-                KayitGetir();
+                TabloOlustur(true);
             }
             catch (Exception ex)
             {
@@ -145,77 +148,13 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP
                 exHelper.PublishException();
             }
         }
-        private string GetBagisciData()
-        {
-            string json = string.Empty;
-            if (!string.IsNullOrEmpty(BagisciAraTxt.Text) && BagisciAraTxt.Text.Length > 3)
-            {
-                NakitBagisci nakitBagisci = new NakitBagisci();
-                json = nakitBagisci.SelectByFilter(BagisciAraTxt.Text, 0);
-            }
-            return json;
-        }
-        private void KayitGetir()
-        {
-            List<NakitBagisci> list = new List<NakitBagisci>();
-            var jsonData = GetBagisciData(); //veri çekilip json a çeviriliyor
-            if (!string.IsNullOrEmpty(jsonData))
-            {
-                string jsString = CreateJsString(jsonData); //javascript kodu hazırlanıyor.
-                System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), jsString, true);
-                BagisciSecTableDiv.Attributes["style"] = "display:block";
-            }
-        }
-        private string CreateJsString(string jsonData)
-        {
-            string spaceStr = HttpUtility.UrlEncode(BagisciAraTxt.Text.ToString());
-            string linkStr = string.Format("return $('<a href=' + 'NakitBagisciEdit.aspx?NakitBagisciId=' + rowData.NakitBagisciId + '&SenderApp=BB class=btn-outline-primary >Düzenle</a>')");
-            // return $('<a href='+'BagisciAyrinti.aspx?NakitBagisciId='+rowData.NakitBagisciId+'" + queryStr + @" class=btn btn-link >'+rowData.Adi+'</a>')
-            string ekstretablestr = @"   
-                                        $('#tblfilter').puidatatable({
-                                        caption: '',
-                                        editMode: 'cell',
-                                        paginator: {
-                                                    rows: 8
-                                                    },
-                                        columns: [
-                                            { field: 'Adi', headerText: 'Adi', sortable:true,filter: true,headerClass:'genisSutun',
-                                                content: function (rowData)
-                                                    {
-                                                        return $('<a href=# onclick=OpenModal('+rowData.NakitBagisciId+'); class=\'btn btn-link \'>'+rowData.Adi+'</a>')
-                                                    }
-                                            },
-                                            { field: 'TCKimlikNo', headerText: 'TCKimlikNo', sortable:true,filter: true },
-                                            { field: 'Ili', headerText: 'İl', sortable:true,filter: true },
-                                            { field: 'Ilcesi', headerText: 'İlçe', sortable:true,filter: true },
-                                            { field: 'Telefon1', headerText: 'Telefon',filter: true},
-                                            { field: 'Adres', headerText: 'Adres',filter: true,headerClass:'genisSutun'},
-                                            { field: 'NakitBagisciId', content: function (rowData)
-                                    	                { 
-                                                            return $('<a href='+'EkstreAktarmaEdit.aspx?SenderApp=NBE&EkstreAktarmaId='+" + EkstreAktarmaIdQS + "+'&NakitBagisciId='+rowData.NakitBagisciId + '&Param=" + spaceStr +
-                                                            @" class=\'btn btn-outline-success \'>Seç</a>')
-                                    	                }
-                                                    }
-                                                ],
-
-                                       datasource:" + jsonData + @",
-                                       resizableColumns: true,
-                                       globalFilter:'#globalFilter'
-                                       });
-                                    ";
-
-
-            return ekstretablestr;
-        }
-
         protected void BagisciAraTxt_TextChanged(object sender, EventArgs e)
         {
-            KayitGetir();
+            TabloOlustur(true);
         }
-
         protected void BagisciAraBtn_Click(object sender, EventArgs e)
         {
-            KayitGetir();
+            TabloOlustur(true);
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
@@ -277,60 +216,244 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP
                 exHelper.PublishException();
             }
         }
-        private void NakitBagisListesiniDoldur(string nakitBagisciId)
+        #region Bagisci CustomDataTable
+        private void TabloOlustur(bool isSelectable)
         {
-            var jsonData = GetBagisHareketDataJson(nakitBagisciId); //veri çekilip json a çeviriliyor
-            var jsString = CreateModalJsString(jsonData); //javascript kodu hazırlanıyor.
-            System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), jsString, true);
+            var jsonData = TabloJson(isSelectable); //veri çekilip json a çeviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            UtilityHelper.ScriptCalistir(jsString);
+            BagisciSecTableDiv.Attributes["style"] = "display:block";
         }
-        private string GetBagisHareketDataJson(string nakitBagisciId)
+        private string TabloJson(bool isSelectable)
         {
+            string json = string.Empty;
+
+            try
+            {
+                List<NakitBagisciListItem> list = GetDataList(isSelectable);
+                var serializer = new JavaScriptSerializer();
+                json = serializer.Serialize(list);
+            }
+            catch (Exception exception)
+            {
+                ExceptionHelper exceptionHelper = new ExceptionHelper();
+                exceptionHelper.Exceptions.Add(exception);
+                exceptionHelper.PublishException();
+            }
+            return string.IsNullOrEmpty(json) ? "[{}]" : json;
+        }
+        private List<NakitBagisciListItem> GetDataList(bool isSelectable)
+        {
+            string spaceStr = HttpUtility.UrlEncode(BagisciAraTxt.Text.ToString());
+            DataTable dataTable = BagisciGetData();
+            List<NakitBagisciListItem> list = new List<NakitBagisciListItem>();
+            if (dataTable != null)
+            {
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    
+                    int nakitBagisciId = row["NakitBagisciId"].ReturnZeroIfNull().ConvertToInt();
+                    string adi = "<a href=# onclick=OpenModal(" + nakitBagisciId + "); class='text-link'>" + row["Adi"].ToString() + "</a>";
+                    string TcKimlik = row["TcKimlikNo"].ToString();
+                    string ili = row["Ili"].ToString();
+                    string ilcesi = row["Ilcesi"].ToString();
+                    string telefon = row["Telefon1"].ToString();
+                    string adres = row["Adres"].ToString();
+                    string secUrl = "<a href=EkstreAktarmaEdit.aspx?SenderApp=NBE&EkstreAktarmaId=" + EkstreAktarmaIdQS + "&NakitBagisciId=" + nakitBagisciId + "&Param=" + spaceStr + "class='btn btn-outline-success'>Seç</a>"; 
+
+
+                    NakitBagisciListItem nakitBagisciListItem = new NakitBagisciListItem();
+                    nakitBagisciListItem.NakitBagisciId = nakitBagisciId;
+                    nakitBagisciListItem.Adi = adi.Trim();
+                    nakitBagisciListItem.TCKimlikNo = TcKimlik;
+                    nakitBagisciListItem.Ili = ili;
+                    nakitBagisciListItem.Ilcesi = ilcesi;
+                    nakitBagisciListItem.Telefon = telefon;
+                    nakitBagisciListItem.Adres = adres;
+
+                    if (isSelectable)
+                        nakitBagisciListItem.Sec = adi.IndexOf("BİLİNMEYEN") >= 0 ? string.Empty : secUrl;
+
+                    list.Add(nakitBagisciListItem);
+                }
+            }
+            return list;
+        }
+        private DataTable BagisciGetData()
+        {
+            DataTable dataTable = null;
+            if (!string.IsNullOrEmpty(BagisciAraTxt.Text) && BagisciAraTxt.Text.Length > 3)
+            {
+                NakitBagisci nakitBagisci = new NakitBagisci();
+                dataTable = nakitBagisci.SelectByFilterReturnDataTable(BagisciAraTxt.Text, 0);
+            }
+            return dataTable;
+        }
+        private string CreateDataTable(string jsonData)
+        {
+            string tableString = @"
+            jQuery(document).ready(function() {
+
+                jQuery('#CustomDataTable').DataTable({
+                    'initComplete': function(settings, json) {//tablo yüklendiğinde
+                        var api = this.api();
+                        var row = api.row(function(idx, data, node) { //secilen Id'ye gider
+                            return data['Secildi'] == true;
+                        });
+                        if (row.length > 0)
+                        {
+                            row.select()
+                                .show()
+                                .draw(false);
+                        }
+                    },
+            data: " + jsonData + @",
+            columns:
+                    [
+                { data: 'Adi' },
+                { data: 'TCKimlikNo' },
+                { data: 'Ili' },
+                { data: 'Ilcesi' },
+                { data: 'Telefon', 'width': '14%' },
+                { data: 'Adres' },
+                { data: 'Sec' },
+
+            ],
+            'order': [[0, 'asc']],//AdiSoyadi Sıralı
+            columnDefs:
+                [
+                ],
+            'language': {
+                'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
+                'decimal': ',',
+                'thousands': '.'
+            },
+            responsive: true,
+            destroy: true,
+            autoWidth: false,
+            dom: 'frtip',
+            
+                });
+            });";
+            return tableString;
+        }
+        #endregion
+        #region modal
+        private void TabloModalOlustur(string nakitBagisciId)
+        {
+            var jsonData = GetModalDataJson(nakitBagisciId); //veri çekilip json a çeviriliyor
+            var jsString = CreateModalDataTable(jsonData, nakitBagisciId.ConvertToInt()); //javascript kodu hazırlanıyor.
+            UtilityHelper.ScriptCalistir(jsString);
+        }
+        private string CreateModalDataTable(string jsonData, int nakitBagisciId)
+        {
+            NakitBagisci nb = new NakitBagisci();
+            nb = nb.Select<NakitBagisci>(nakitBagisciId);
+            string bagisciAdi = nb != null ? (nb.Adi + nb.Soyadi).ReplaceTrChars() : "Bagisci";
+            string filename = bagisciAdi + "-" + DateTime.Today.Day + "-" + DateTime.Today.Month + "-" + DateTime.Today.Year;
+            string tableString = @"
+        jQuery(document).ready(function () {
+            if ( jQuery.fn.DataTable.isDataTable('#CustomModalDataTable') ) {
+                jQuery('#CustomModalDataTable').DataTable().destroy();
+            }
+            jQuery('#CustomModalDataTable tbody').empty();
+
+            jQuery.fn.dataTable.moment('DD.MM.YYYY');//sort date
+            jQuery('#CustomModalDataTable').DataTable({
+                data: " + jsonData + @",
+                columns: [
+                    { data: 'BagisTarihi' },
+                    { data: 'BagisMiktari', 'width': '10%', 'className': 'text-right' },
+                    { data: 'Banka' },
+                    { data: 'Armagan' },
+                    { data: 'ArmaganTutari' },
+                    { data: 'Durum' },
+                ],
+                'order': [[0, 'desc']],
+
+                'language': {
+                    'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
+                    'decimal': ',',
+                    'thousands': '.'
+                },
+                columnDefs:[
+                    {targets:0, render:function(data){
+                        return moment(data).format('DD.MM.YYYY');
+                    }},
+                ],
+                responsive: true,
+                dom: 'Bfrtip',
+                buttons:
+                [
+                    {
+                extend: 'print',
+                        exportOptions:
+                    {
+                    columns: ':visible'
+                        }
+                },
+                    {
+                      extend: 'excel',
+                      title:'" + filename + @"',
+                      exportOptions: {
+                          columns: ':visible',
+                          format: {
+                              body: function(data, row, column, node) {
+                                  data = $('<p>' + data + '</p>').text();
+                                    
+                                  return $.isNumeric(data.replace(',', '.')) ? data.replace(',', '.') : data;
+                              }
+                          }
+                      },
+                },
+                    {
+                extend: 'pdf',
+                        exportOptions:
+                    {
+                    columns: ':visible'
+                        }
+                },
+                    {
+                extend: 'copy',
+                        exportOptions:
+                    {
+                    columns: ':visible'
+                        }
+                },
+                    , 'pageLength', 'colvis'
+                ]
+
+            });
+        });
+        ";
+            return tableString;
+        }
+        private string GetModalDataJson(string nakitBagisciId)
+        {
+            IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             NakitBagisHareket nbh = new NakitBagisHareket();
             int rowCount = 0;
-            var json = nbh.SelectByBagisciId(nakitBagisciId, ref rowCount);
-            //RowCountLbl.Text = rowCount.ToString();
+            var json = nbh.SelectByBagisciIdReturnJSon(nakitBagisciId, ref rowCount);
+            decimal toplamTutar = nbh.GetSumBagisMiktariByNakitBagisciIdBetweenBasTarBitTar(
+                ProjeConstants.BAGIS_SORGU_BASTAR.ConvertToDatetime(), DateTime.Today, nakitBagisciId.ConvertToInt());
+            BagisBilgileriLbl.Text = rowCount < 1 ? "Bağış bulunmamaktadır" :
+                "Bağışçının " + rowCount + " defada yaptığı toplam " + toplamTutar.ToString("N", culturInfo) + "TL bağışı bulunmaktadır";
             return json;
         }
-        private string CreateModalJsString(string jsonData)
+        protected void ModalDoldurBtn_Click(object sender, EventArgs e)
         {
-            string ekstretablestr = @"$('#modaltblfilter').puidatatable({
-                                    caption: '',
-                                    editMode: 'cell',
-                                    paginator: {
-                                                rows: 8
-                                                },
-                                    columns: [
-                                        
-                                        { field: 'BagisTarihi', headerText: 'BagisTarihi',sortable:true, 
-                                            content: function (rowData){ 
-                                                    if(rowData.BagisTarihi!=null)
-                                                    {
-                                                        var date = new Date(parseInt(rowData.BagisTarihi.substr(6)));
-                                                        return date.getDate()+'/'+(date.getMonth()+1)+'/'+date.getFullYear(); 
-                                                    }
-                                                    else
-                                                    {
-                                                        return '';
-                                                    }
-                                                }
-                                            },
-                                        { field: 'TCKimlikNo', headerText: 'TCKimlikNo',filter: true,sortable:true,bodyClass:'text-center'  },
-                                        { field: 'BagisMiktari', headerText: 'Tutar',filter: true, sortable:true,bodyClass:'text-right'}, 
-                                        { field: 'DovizCinsi', headerText: 'Döviz', sortable:true,headerClass:'darSutun'},                                    
-                                        { field: 'Armagan', headerText: 'Armağan',sortable:true ,bodyClass:'text-center',headerClass:'genisSutun'  },
-                                        { field: 'Durum', headerText: 'Durum',filter: true,sortable:true ,bodyClass:'text-center' },
-                                        { field: 'Aciklama', headerText: 'Açıklama',bodyClass:'text-center' },
-                                                ],
-                                                datasource:" + jsonData + @",
-                                                resizableColumns: true,
-                                                globalFilter:'#globalFilter',
-                                            });
+            try
+            {
 
-                                            $('#messages').puigrowl();
-                                ";
+                TabloModalOlustur(paramNakitBagisciIdLbl.Value);
+                NakitBagisciFormunuDoldur(paramNakitBagisciIdLbl.Value);
+            }
+            catch (Exception exception)
+            {
+                ExceptionHelper ex = new ExceptionHelper(exception);
+                ex.PublishException();
 
-
-            return ekstretablestr;
+            }
         }
         private void NakitBagisciFormunuDoldur(string nakitBagisciIdStr)
         {
@@ -342,7 +465,6 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP
                 nakitBagisci = nakitBagisci.Select<NakitBagisci>(nakitBagisciId);
                 if (nakitBagisci != null)
                 {
-                    AdiLbl.Text = string.IsNullOrEmpty(nakitBagisci.Adi.ReturnEmptyIfNull().ToString()) ? "Boş" : nakitBagisci.Adi.ReturnEmptyIfNull().ToString();
                     //NakitBagisciIdLbl.Text = nakitBagisciId.ToString();
                     TableRow row = new TableRow();
                     TableCell AdiCell = new TableCell();
@@ -364,8 +486,6 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP
 
                         IlIlceCell.Text = il.IlAdi.ReturnEmptyIfNull().ToString();
                     }
-
-
                     int ilceId = nakitBagisci.Ilcesi.ConvertToInt();
                     Ilce ilce = new Ilce();
                     ilce = ilce.Select<Ilce>(ilceId);
@@ -374,8 +494,6 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP
 
                         IlIlceCell.Text += " " + ilce.IlceAdi.ReturnEmptyIfNull().ToString();
                     }
-
-
                     TelefonCell.Text = nakitBagisci.Telefon1.ReturnEmptyIfNull().ToString();
                     TuzelKisiCell.Text = nakitBagisci.TuzelKisi.ConvertToBool() ? "Evet" : "Hayır";
                     row.Controls.Add(AdiCell);
@@ -387,25 +505,19 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP
                     BagisciTable.Controls.Add(row);
 
                 }
-
             }
-
         }
-        protected void ModalDoldurBtn_Click(object sender, EventArgs e)
+        #endregion
+        private class NakitBagisciListItem
         {
-            try
-            {
-                NakitBagisListesiniDoldur(paramNakitBagisciIdLbl.Value);
-
-                NakitBagisciFormunuDoldur(paramNakitBagisciIdLbl.Value);
-                //tabloda modal açılırken seçili olan pagination degerini pageIndex degiskeninde saklar ve modal açıldıktan sonra pageload sırasında sayfayı pageIndex degerine getirir
-                System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "SetPageIndex();", true);
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper ex = new ExceptionHelper(exception);
-                ex.PublishException();
-            }
+            public int NakitBagisciId { get; set; }
+            public string Adi { get; set; }
+            public string TCKimlikNo { get; set; }
+            public string Ili { get; set; }
+            public string Ilcesi { get; set; }
+            public string Telefon { get; set; }
+            public string Adres { get; set; }
+            public string Sec { get; set; }
         }
     }
 }
