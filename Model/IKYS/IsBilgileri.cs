@@ -30,52 +30,102 @@ namespace Model.IKYS
 
         public override T Select<T>(int id)
         {
-            string sqlString = SelectSQL(id);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            GenericEntity<IsBilgileri> genericEntity = new GenericEntity<IsBilgileri>(ProjeConstants.SQL_SELECT);
+            Id = id;
+            string sqlString = genericEntity.GetQuery(this);
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<IsBilgileri> list = ToList<IsBilgileri>(dataTable);
             IsBilgileri isBilgileri = new IsBilgileri();
             isBilgileri = list.FirstOrDefault();
             return (T)Convert.ChangeType(isBilgileri, typeof(T));
         }
-        public IsBilgileri Select(int id)
-        {
-            GenericEntity<IsBilgileri> genericEntity = new GenericEntity<IsBilgileri>(ProjeConstants.SQL_SELECT);
-            OlusturmaTarihi = DateTime.Now;
-            Id = id;
-            string sqlString = genericEntity.GetQuery(this);
-
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
-            List<IsBilgileri> list = ToList<IsBilgileri>(dataTable);
-            IsBilgileri isBilgileri = new IsBilgileri();
-            isBilgileri = list.FirstOrDefault();
-            return isBilgileri;
-        }
         public override int Save()
         {
-            string sqlString = saveSQL();
-            int id = dao.Insert(sqlString);
-            this.Id = id;
-            return id;
+            try
+            {
+
+                GenericEntity<IsBilgileri> genericEntity = new GenericEntity<IsBilgileri>(ProjeConstants.SQL_INSERT);
+                OlusturmaTarihi = DateTime.Now;
+                Olusturan = UtilityHelper.GetCurrentUserName();
+                string sqlString = genericEntity.GetQuery(this);
+                int id = dao.Insert(sqlString);
+                if (id > 0 && ProjeConstants.IKYS_SAVE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.IKYS, ProjeConstants.IKYS_ISBILGILERI);
+                }
+                this.Id = id;
+                return id;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
         }
 
         public override bool Update()
         {
+
             bool isSuccess = false;
-            if (Id != 0)
+            try
             {
-                string sqlString = UpdateSQL();
-                isSuccess = dao.Update2Db(sqlString);
+                IsBilgileri item = Select<IsBilgileri>(Id);
+                if (Id != 0)
+                {
+                    GenericEntity<IsBilgileri> genericEntity = new GenericEntity<IsBilgileri>(ProjeConstants.SQL_UPDATE);
+                    DegistirmeTarihi = DateTime.Now;
+                    Degistiren = UtilityHelper.GetCurrentUserName();
+                    string sqlString = genericEntity.GetQuery(this);
+                    isSuccess = dao.Update2Db(sqlString);
+                }
+                if (isSuccess && ProjeConstants.IKYS_UPDATE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.IKYS, ProjeConstants.IKYS_ISBILGILERI);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
             }
             return isSuccess;
         }
-
         public override bool Delete()
         {
-            string sqlString = DeleteSQL();
+            try
+            {
+                bool isDeleted;
+                if (Id != 0)
+                {
+                    GenericEntity<IsBilgileri> genericEntity = new GenericEntity<IsBilgileri>(ProjeConstants.SQL_DELETE);
+                    string sqlString = genericEntity.GetQuery(this);
 
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
+                    IsBilgileri item = Select<IsBilgileri>(Id);
+                    if (item != null)
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+                    else isDeleted = false;
+                    if (isDeleted && ProjeConstants.IKYS_DELETE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.IKYS, ProjeConstants.IKYS_ISBILGILERI);
+                    }
+                    return isDeleted;
+                }
+                else
+                {
+                    return false;
+                }
 
-            return isSuccess;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
         public override List<T> SelectAll<T>()
@@ -83,51 +133,16 @@ namespace Model.IKYS
             string sqlString = string.Format(@"SELECT *
                                FROM IsBilgileri_Table");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<IsBilgileri> list = ToList<IsBilgileri>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
-        }
-        private string saveSQL()
-        {
-            //Insert  SQL
-            string InsertSQL = string.Format(@" 
-                                    INSERT INTO IsBilgileri_Table 
-                                        (PersonelId, UnvanId, GorevId, BirimId, BaslamaTar,IzinDonemiBasTar, CalismaDurumu, AyrilmaTar, AyrilmaSebebi, 
-                                         ProtokolSiraNo,SGKSicilNo,SGKBasTar,VakifOncesiPrimGunSayisi,SGKDestekPrimi,EmeklilikTarihi,
-                                         Olusturan,OlusturmaTarihi)
-                                    VALUES ({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16}) ",
-                                    PersonelId, UnvanId.ReturnQuotedValue(), GorevId.ReturnQuotedValue(), BirimId.ReturnQuotedValue(),
-                                    BaslamaTar.ReturnTRDateFormat(), IzinDonemiBasTar.ReturnTRDateFormat(), CalismaDurumu.ReturnQuotedValue(), AyrilmaTar.ReturnTRDateFormat(),
-                                    AyrilmaSebebi.ReturnQuotedValue(), ProtokolSiraNo.ReturnQuotedValue(), SGKSicilNo.ReturnQuotedValue(),
-                                    SGKBasTar.ReturnQuotedValue(), VakifOncesiPrimGunSayisi.ReturnQuotedValue(), SGKDestekPrimi.ReturnEmptyIfNull().ReturnQuotedValue(),
-                                    EmeklilikTarihi.ReturnTRDateFormat(),
-                                    Olusturan.ReturnQuotedValue(), DateTime.Now.ReturnTRDateFormat());
-            return InsertSQL;
-        }
-        private string UpdateSQL()
-        {
-            //Insert  SQL
-            string sqlSQL = string.Format(@"
-                                    UPDATE IsBilgileri_Table 
-                                    SET PersonelId = {0}, UnvanId= {1}, GorevId= {2}, BirimId= {3}, BaslamaTar= {4},IzinDonemiBasTar={5},
-                                        CalismaDurumu= {6}, AyrilmaTar= {7}, AyrilmaSebebi= {8}, ProtokolSiraNo= {9},SGKSicilNo= {10},
-                                        SGKBasTar= {11},VakifOncesiPrimGunSayisi= {12},SGKDestekPrimi={13},EmeklilikTarihi={14},
-                                        Degistiren= {15},Degistirmetarihi= {16}
-                                    WHERE Id= {17}",
-                                    PersonelId, UnvanId.ReturnQuotedValue(), GorevId.ReturnQuotedValue(), BirimId.ReturnQuotedValue(),
-                                    BaslamaTar.ReturnTRDateFormat(), IzinDonemiBasTar.ReturnTRDateFormat(), CalismaDurumu.ReturnQuotedValue(), AyrilmaTar.ReturnTRDateFormat(),
-                                    AyrilmaSebebi.ReturnQuotedValue(), ProtokolSiraNo.ReturnQuotedValue(), SGKSicilNo.ReturnQuotedValue(),
-                                    SGKBasTar.ReturnQuotedValue(), VakifOncesiPrimGunSayisi.ReturnQuotedValue(), SGKDestekPrimi.ReturnQuotedValue(),
-                                    EmeklilikTarihi.ReturnTRDateFormat(),
-                                    Degistiren.ReturnQuotedValue(), DateTime.Now.ReturnTRDateFormat(), Id);
-            return sqlSQL;
         }
         public IsBilgileri SelectByPersonelId(int personelId)
         {
             string sqlString = SelectByPersonelIdSQL(personelId);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<IsBilgileri> list = ToList<IsBilgileri>(dataTable);
             IsBilgileri ib = list.FirstOrDefault();
             return (ib);
@@ -147,19 +162,11 @@ namespace Model.IKYS
                                WHERE  Id={0}", id);
             return sqlstr;
         }
-        private string DeleteSQL()
-        {
-            string sqlString = string.Format(@"
-                            DELETE 
-                            FROM IsBilgileri_Table
-                            WHERE Id={0}", Id);
-            return sqlString;
-        }
         public DataTable SelectAllFromIS_YERI_BILGILERI()
         {
             string sqlString = string.Format(@"SELECT *
                                FROM IS_YERI_BILGILERI");
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return (dataTable);
         }
     }

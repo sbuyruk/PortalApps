@@ -55,61 +55,19 @@ namespace Model.MTS
 
             return true;
         }
-        public override bool Delete()
-        {
-            bool deleteLog = ProjeConstants.DELETE_LOG;
-            try
-            {
-                bool isDeleted;
-                if (Id != 0)
-                {
-                    GenericEntity<Randevu> genericEntity = new GenericEntity<Randevu>(ProjeConstants.SQL_DELETE);
-                    string sqlString = genericEntity.GetQuery(this);
-                    if (deleteLog)
-                    {
-                        Randevu item = Select<Randevu>(Id);
-                        if (item != null)
-                        {
-                            isDeleted = dao.DeleteFromDb(sqlString, "");
-                        }
-                        else isDeleted = false;
-                        if (isDeleted)
-                        {
-                            OlayKayit olayKayit = new OlayKayit();
-                            olayKayit.SilmeOlayKaydet(item, ProjeConstants.MTS, ProjeConstants.MTS_FAALIYET);
-                        }
-                    }
-                    else
-                    {
-                        isDeleted = dao.DeleteFromDb(sqlString, "");
-                    }
-                    return isDeleted;
-                }
-                else
-                {
-                    return false;
-                }
-
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-        }
         public override int Save()
         {
-            bool saveLog = ProjeConstants.SAVE_LOG;
             try
             {
                 GenericEntity<Randevu> genericEntity = new GenericEntity<Randevu>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
+                Olusturan = UtilityHelper.GetCurrentUserName();
                 string sqlString = genericEntity.GetQuery(this);
                 int id = dao.Insert(sqlString);
-                if (id > 0 && saveLog)
+                if (id > 0 && ProjeConstants.MTS_SAVE_LOG)
                 {
                     OlayKayit olayKayit = new OlayKayit();
-                    olayKayit.GirisOlayKaydet(this, ProjeConstants.MTS, ProjeConstants.MTS_ANIOBJESI_DAGITIM);
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.MTS, ProjeConstants.MTS_FAALIYET);
                 }
                 this.Id = id;
                 return id;
@@ -121,14 +79,70 @@ namespace Model.MTS
             }
 
         }
+        public override bool Update()
+        {
+            bool isSuccess = false;
+            try
+            {
+                if (this != null)
+                {
+                    Randevu item = Select<Randevu>(Id);
+                    if (Id != 0)
+                    {
+                        GenericEntity<Randevu> genericEntity = new GenericEntity<Randevu>(ProjeConstants.SQL_UPDATE);
+                        DegistirmeTarihi = DateTime.Now;
+                        Degistiren = UtilityHelper.GetCurrentUserName();
+                        string sqlString = genericEntity.GetQuery(this);
+                        isSuccess = dao.Update2Db(sqlString);
+                    }
+                    if (isSuccess && ProjeConstants.MTS_UPDATE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.MTS, ProjeConstants.MTS_FAALIYET);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return isSuccess;
+        }
+        public override bool Delete()
+        {
+            try
+            {
+                bool isDeleted = false;
+                if (Id != 0)
+                {
+                    GenericEntity<Randevu> genericEntity = new GenericEntity<Randevu>(ProjeConstants.SQL_DELETE);
+                    string sqlString = genericEntity.GetQuery(this);
+                    Randevu item = Select<Randevu>(Id);
+                    if (item != null)
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+                    else isDeleted = false;
+                    if (isDeleted && ProjeConstants.MTS_DELETE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.MTS, ProjeConstants.MTS_FAALIYET);
+                    }
+                }
+                return isDeleted;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         public Randevu Select(int id)
         {
             GenericEntity<Randevu> genericEntity = new GenericEntity<Randevu>(ProjeConstants.SQL_SELECT);
-            OlusturmaTarihi = DateTime.Now;
             Id = id;
             string sqlString = genericEntity.GetQuery(this);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Randevu> list = ToList<Randevu>(dataTable);
             Randevu item = new Randevu();
             item = list.FirstOrDefault();
@@ -137,10 +151,9 @@ namespace Model.MTS
         public override T Select<T>(int id)
         {
             GenericEntity<Randevu> genericEntity = new GenericEntity<Randevu>(ProjeConstants.SQL_SELECT);
-            OlusturmaTarihi = DateTime.Now;
             Id = id;
             string sqlString = genericEntity.GetQuery(this);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Randevu> list = ToList<Randevu>(dataTable);
             Randevu item = new Randevu();
             item = list.FirstOrDefault();
@@ -153,52 +166,10 @@ namespace Model.MTS
                 FROM Randevu_Table ORDER BY Adi
                 ");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Randevu> list = ToList<Randevu>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
-        }
-        public override bool Update()
-        {
-            bool updateLog = ProjeConstants.UPDATE_LOG;
-            bool isSuccess = false;
-            try
-            {
-                if (updateLog)
-                {
-
-                    if (this != null)
-                    {
-                        Randevu item = Select<Randevu>(Id);
-                        if (Id != 0)
-                        {
-                            GenericEntity<Randevu> genericEntity = new GenericEntity<Randevu>(ProjeConstants.SQL_UPDATE);
-                            DegistirmeTarihi = DateTime.Now;
-                            string sqlString = genericEntity.GetQuery(this);
-                            isSuccess = dao.Update2Db(sqlString);
-                        }
-                        if (isSuccess)
-                        {
-                            OlayKayit olayKayit = new OlayKayit();
-                            olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.MTS, ProjeConstants.MTS_FAALIYET);
-                        }
-                    }
-
-                }
-                if (Id != 0)
-                {
-                    GenericEntity<Randevu> genericEntity = new GenericEntity<Randevu>(ProjeConstants.SQL_UPDATE);
-                    DegistirmeTarihi = DateTime.Now;
-                    string sqlString = genericEntity.GetQuery(this);
-                    isSuccess = dao.Update2Db(sqlString);
-                }
-
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            return isSuccess;
         }
         public string SelectAllReturnJson(string acikTarih)
         {
@@ -208,7 +179,7 @@ namespace Model.MTS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -255,7 +226,7 @@ namespace Model.MTS
             string acikTarihStr = acikTarih.Equals(ProjeConstants.HEPSI) ? "" :
                 (acikTarih.Equals(ProjeConstants.RANDEVU_ACIKTARIHLI) ? " WHERE AcikTarih=1" : " WHERE AcikTarih=0");
             string sqlString = SelectAllSQL(acikTarihStr);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Randevu> list = ToList<Randevu>(dataTable);
 
             return list;
@@ -268,7 +239,7 @@ namespace Model.MTS
                 SELECT * FROM Randevu_Table
                 WHERE (BaslangicTarihi <={0} AND BitisTarihi >= {1}) ORDER BY BaslangicTarihi 
             ", bittar.ReturnTRDateFormat(),bastar.ReturnTRDateFormat());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Randevu> list = ToList<Randevu>(dataTable);
 
             return list;
@@ -315,7 +286,7 @@ namespace Model.MTS
                 {1}
                 ORDER BY B.BaslangicTarihi DESC, KatilimciTipi, Adi,Soyadi 
             ", randevuIdStr, monthBeforeStr);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
 
             return dataTable;
         }
@@ -360,7 +331,7 @@ namespace Model.MTS
                 {1}
                 ORDER BY B.BaslangicTarihi DESC, KatilimciTipi, Adi,Soyadi 
             ", katilimciIdStr, randevuIdStr);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
 
             return dataTable;
         }
@@ -372,7 +343,7 @@ namespace Model.MTS
                 WHERE RandevuYeri={0}
                 ",parametreId);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Randevu> list = ToList<Randevu>(dataTable);
 
             return list;

@@ -101,10 +101,6 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl TableDiv;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.Label TableDataLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -363,25 +359,6 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControlTableDiv() {
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
-            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
-            this.TableDiv = @__ctrl;
-            @__ctrl.TemplateControl = this;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "table loader");
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "display:none");
-            @__ctrl.ID = "TableDiv";
-            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            <input id=\"globalFilter\" placeholder=\"Aranacak Keli" +
-                        "me\" size=\"30\" />\r\n                            <div id=\"tblfilter\" class=\"table\">" +
-                        "</div>\r\n                            <div id=\"messages\"></div>\r\n                 " +
-                        "       "));
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlTableDataLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -495,7 +472,7 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP {
                             </div>
                         </div>
                         <div class=""form-group col-2"">
-                             <div class=""form-group"">
+                            <div class=""form-group"">
                                 <label for=""EvrakSayisiYiliTxt"" class=""col-form-label"">Evrak Sayısı Yılı</label>
                                 "));
             global::System.Web.UI.WebControls.TextBox @__ctrl8;
@@ -555,30 +532,39 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP {
             global::System.Web.UI.WebControls.TextBox @__ctrl15;
             @__ctrl15 = this.@__BuildControlImzalayanMakamTxt();
             @__parser.AddParsedSubObject(@__ctrl15);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                        </div>\r\n           " +
-                        "         </div>\r\n                    <div class=\"form-group border m-1\" >\r\n     " +
-                        "                   "));
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl16;
-            @__ctrl16 = this.@__BuildControlTableDiv();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                            </div>
+                        </div>
+                    </div>
+                    <div class=""form-group border m-1"">
+                        <table id=""CustomDataTable"" class=""table table-striped table-bordered"" width=""100%"">
+                            <thead>
+                                <tr>
+                                    <th>Kiracı</th>
+                                    <th>Bölge</th>
+                                    <th>Borç</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class=""form-group"">
+                            "));
+            global::System.Web.UI.WebControls.Label @__ctrl16;
+            @__ctrl16 = this.@__BuildControlTableDataLbl();
             @__parser.AddParsedSubObject(@__ctrl16);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        <div class=\"form-group\">\r\n                            "));
-            global::System.Web.UI.WebControls.Label @__ctrl17;
-            @__ctrl17 = this.@__BuildControlTableDataLbl();
-            @__parser.AddParsedSubObject(@__ctrl17);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n                   " +
                         " <div class=\"form-group\">\r\n                        "));
-            global::System.Web.UI.WebControls.HyperLink @__ctrl18;
-            @__ctrl18 = this.@__BuildControlDosyaLnk();
-            @__parser.AddParsedSubObject(@__ctrl18);
+            global::System.Web.UI.WebControls.HyperLink @__ctrl17;
+            @__ctrl17 = this.@__BuildControlDosyaLnk();
+            @__parser.AddParsedSubObject(@__ctrl17);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        "));
-            global::System.Web.UI.WebControls.HyperLink @__ctrl19;
-            @__ctrl19 = this.@__BuildControlAdresEtiketLnk();
-            @__parser.AddParsedSubObject(@__ctrl19);
+            global::System.Web.UI.WebControls.HyperLink @__ctrl18;
+            @__ctrl18 = this.@__BuildControlAdresEtiketLnk();
+            @__parser.AddParsedSubObject(@__ctrl18);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                </div>\r\n                <div class=" +
                         "\"card-footer\">\r\n                    "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl20;
-            @__ctrl20 = this.@__BuildControlYaziyiOlusturBtn();
-            @__parser.AddParsedSubObject(@__ctrl20);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl19;
+            @__ctrl19 = this.@__BuildControlYaziyiOlusturBtn();
+            @__parser.AddParsedSubObject(@__ctrl19);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                </div>\r\n            </div>\r\n        "));
         }
         

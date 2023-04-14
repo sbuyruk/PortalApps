@@ -20,7 +20,7 @@ namespace Model.IKYS
         public override T Select<T>(int id)
         {
             string sqlString = SelectSQL(id);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Yoklama> list = ToList<Yoklama>(dataTable);
             Yoklama yoklama = new Yoklama();
             yoklama = list.FirstOrDefault();
@@ -29,11 +29,10 @@ namespace Model.IKYS
         public Yoklama Select(int id)
         {
             GenericEntity<Yoklama> genericEntity = new GenericEntity<Yoklama>(ProjeConstants.SQL_SELECT);
-            OlusturmaTarihi = DateTime.Now;
             Id = id;
             string sqlString = genericEntity.GetQuery(this);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Yoklama> list = ToList<Yoklama>(dataTable);
             Yoklama yoklama = new Yoklama();
             yoklama = list.FirstOrDefault();
@@ -43,11 +42,17 @@ namespace Model.IKYS
         {
             try
             {
+
                 GenericEntity<Yoklama> genericEntity = new GenericEntity<Yoklama>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
+                Olusturan = UtilityHelper.GetCurrentUserName();
                 string sqlString = genericEntity.GetQuery(this);
                 int id = dao.Insert(sqlString);
-
+                if (id > 0 && ProjeConstants.IKYS_SAVE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.IKYS, ProjeConstants.IKYS_YOKLAMA);
+                }
                 this.Id = id;
                 return id;
             }
@@ -57,19 +62,26 @@ namespace Model.IKYS
                 throw ex;
             }
 
-
         }
         public override bool Update()
         {
+
             bool isSuccess = false;
             try
             {
+                Yoklama item = Select<Yoklama>(Id);
                 if (Id != 0)
                 {
                     GenericEntity<Yoklama> genericEntity = new GenericEntity<Yoklama>(ProjeConstants.SQL_UPDATE);
                     DegistirmeTarihi = DateTime.Now;
+                    Degistiren = UtilityHelper.GetCurrentUserName();
                     string sqlString = genericEntity.GetQuery(this);
                     isSuccess = dao.Update2Db(sqlString);
+                }
+                if (isSuccess && ProjeConstants.IKYS_UPDATE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.IKYS, ProjeConstants.IKYS_YOKLAMA);
                 }
             }
             catch (Exception)
@@ -78,66 +90,52 @@ namespace Model.IKYS
             }
             return isSuccess;
         }
-        //public override int Save()
-        //{
-        //    string sqlString = saveSQL();
-        //    int id = dao.Insert(sqlString);
-        //    this.Id = id;
-        //    return id;
-        //}
-        //public override bool Update()
-        //{
-        //    bool isSuccess = false;
-        //    if (Id != 0)
-        //    {
-        //        string sqlString = UpdateSQL();
-        //        isSuccess = dao.Update2Db(sqlString);
-        //    }
-        //    return isSuccess;
-        //}
         public override bool Delete()
         {
-            string sqlString = DeleteSQL();
+            try
+            {
+                bool isDeleted;
+                if (Id != 0)
+                {
+                    GenericEntity<Yoklama> genericEntity = new GenericEntity<Yoklama>(ProjeConstants.SQL_DELETE);
+                    string sqlString = genericEntity.GetQuery(this);
 
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
+                    Yoklama item = Select<Yoklama>(Id);
+                    if (item != null)
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+                    else isDeleted = false;
+                    if (isDeleted && ProjeConstants.IKYS_DELETE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.IKYS, ProjeConstants.IKYS_YOKLAMA);
+                    }
+                    return isDeleted;
+                }
+                else
+                {
+                    return false;
+                }
 
-            return isSuccess;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
         public override List<T> SelectAll<T>()
         {
             string sqlString = string.Format(@"SELECT *
                                FROM Yoklama_Table");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Yoklama> list = ToList<Yoklama>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
         }
-        private string saveSQL()
-        {
-            //Insert  SQL
-            string InsertSQL = string.Format(@" 
-                                    INSERT INTO Yoklama_Table 
-                                        (PersonelId,BulunmamaSebebi,BaslangicTarihi,BitisTarihi,Aciklama,Olusturan,OlusturmaTarihi)
-                                    VALUES ({0},{1},{2},{3},{4},{5},{6}) ",
-                                    PersonelId.ReturnQuotedValue(), BulunmamaSebebi.ReturnQuotedValue(),
-                                    BaslangicTarihi.ReturnTRDateFormat(), BitisTarihi.ReturnTRDateFormat(), Aciklama.ReturnQuotedValue(),
-                                    Olusturan.ReturnQuotedValue(), DateTime.Now.ReturnTRDateFormat());
-            return InsertSQL;
-        }
-        private string UpdateSQL()
-        {
-            //Update  SQL 
-            string sqlSQL = string.Format(@"
-                                    UPDATE Yoklama_Table 
-                                    SET PersonelId={0}, BulunmamaSebebi={1}, BaslangicTarihi={2},  BitisTarihi={3}, Aciklama={4},
-                                        Degistiren={5},DegistirmeTarihi={6}
-                                    WHERE Id= {7}",
-                                    PersonelId.ReturnQuotedValue(), BulunmamaSebebi.ReturnQuotedValue(),
-                                    BaslangicTarihi.ReturnTRDateFormat(), BitisTarihi.ReturnTRDateFormat(), Aciklama.ReturnQuotedValue(),
-                                    Degistiren.ReturnQuotedValue(), DateTime.Now.ReturnTRDateFormat(), Id);
-            return sqlSQL;
-        }
+
         private string SelectSQL(int id)
         {
             string sqlstr = string.Format(@"SELECT *
@@ -159,7 +157,7 @@ namespace Model.IKYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -174,7 +172,7 @@ namespace Model.IKYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -210,7 +208,7 @@ namespace Model.IKYS
                 WHERE BaslangicTarihi<={0} AND BitisTarihi>={1}
                 ORDER BY ProtokolSiraNo,BaslangicTarihi ", bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat());
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
 
             return dataTable;
         }
@@ -228,7 +226,7 @@ namespace Model.IKYS
                 WHERE A.BulunmamaSebebi in ({0}) AND BaslangicTarihi BETWEEN {1} AND {2}
                 ORDER BY D.ProtokolSiraNo, BaslangicTarihi ", bulunmamaSbebiIds, bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat());
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
 
             return dataTable;
         }
@@ -243,7 +241,7 @@ namespace Model.IKYS
                     AND BulunmamaSebebi=3 --Görevli
 					AND  (BitisTarihi >= {1} AND BaslangicTarihi <= {2}) ", personelId.ToString(), bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat());
 
-                DataTable dataTable = dao.selectFromDb(sqlString, "");
+                DataTable dataTable = dao.SelectFromDb(sqlString, "");
                 List<Yoklama> list = ToList<Yoklama>(dataTable);
 
                 return list;

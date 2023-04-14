@@ -21,7 +21,7 @@ namespace Model.IKYS
         public override T Select<T>(int id)
         {
             string sqlString = SelectSQL(id);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Mahsup> list = ToList<Mahsup>(dataTable);
             Mahsup mahsup = new Mahsup();
             mahsup = list.FirstOrDefault();
@@ -29,35 +29,97 @@ namespace Model.IKYS
         }
         public override int Save()
         {
-            string sqlString = saveSQL();
-            int id = dao.Insert(sqlString);
-            this.Id = id;
-            return id;
+            try
+            {
+
+                GenericEntity<Mahsup> genericEntity = new GenericEntity<Mahsup>(ProjeConstants.SQL_INSERT);
+                OlusturmaTarihi = DateTime.Now;
+                Olusturan = UtilityHelper.GetCurrentUserName();
+                string sqlString = genericEntity.GetQuery(this);
+                int id = dao.Insert(sqlString);
+                if (id > 0 && ProjeConstants.IKYS_SAVE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.IKYS, ProjeConstants.IKYS_MAHSUP);
+                }
+                this.Id = id;
+                return id;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
         }
         public override bool Update()
         {
+
             bool isSuccess = false;
-            if (Id != 0)
+            try
             {
-                string sqlString = UpdateSQL();
-                isSuccess = dao.Update2Db(sqlString);
+                Mahsup item = Select<Mahsup>(Id);
+                if (Id != 0)
+                {
+                    GenericEntity<Mahsup> genericEntity = new GenericEntity<Mahsup>(ProjeConstants.SQL_UPDATE);
+                    DegistirmeTarihi = DateTime.Now;
+                    Degistiren = UtilityHelper.GetCurrentUserName();
+                    string sqlString = genericEntity.GetQuery(this);
+                    isSuccess = dao.Update2Db(sqlString);
+                }
+                if (isSuccess && ProjeConstants.IKYS_UPDATE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.IKYS, ProjeConstants.IKYS_MAHSUP);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
             }
             return isSuccess;
         }
         public override bool Delete()
         {
-            string sqlString = DeleteSQL();
+            try
+            {
+                bool isDeleted;
+                if (Id != 0)
+                {
+                    GenericEntity<Mahsup> genericEntity = new GenericEntity<Mahsup>(ProjeConstants.SQL_DELETE);
+                    string sqlString = genericEntity.GetQuery(this);
 
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
+                    Mahsup item = Select<Mahsup>(Id);
+                    if (item != null)
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+                    else isDeleted = false;
+                    if (isDeleted && ProjeConstants.IKYS_DELETE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.IKYS, ProjeConstants.IKYS_MAHSUP);
+                    }
+                    return isDeleted;
+                }
+                else
+                {
+                    return false;
+                }
 
-            return isSuccess;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
         public override List<T> SelectAll<T>()
         {
             string sqlString = string.Format(@"SELECT *
                                FROM Mahsup_Table");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Mahsup> list = ToList<Mahsup>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
@@ -109,7 +171,7 @@ namespace Model.IKYS
         {
             string sqlString = SelectByDonemSQL(donemId);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Mahsup> list = ToList<Mahsup>(dataTable);
             return (list);
         }
@@ -117,7 +179,7 @@ namespace Model.IKYS
         {
             string sqlString = SelectByPersonelSQL(personelId, izinTipi);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Mahsup> list = ToList<Mahsup>(dataTable);
             return (list);
         }

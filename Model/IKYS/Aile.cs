@@ -1,5 +1,4 @@
-﻿
-using Model.Ortak;
+﻿using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -26,7 +25,7 @@ namespace Model.IKYS
         public override T Select<T>(int id)
         {
             string sqlString = SelectSQL(id);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Aile> list = ToList<Aile>(dataTable);
             Aile aile = new Aile();
             aile = list.FirstOrDefault();
@@ -35,38 +34,103 @@ namespace Model.IKYS
 
         public override int Save()
         {
-            string sqlString = saveSQL();
-            int id = dao.Insert(sqlString);
-            this.Id = id;
-            return id;
+            try
+            {
+
+                GenericEntity<Aile> genericEntity = new GenericEntity<Aile>(ProjeConstants.SQL_INSERT);
+                OlusturmaTarihi = DateTime.Now;
+                Olusturan = UtilityHelper.GetCurrentUserName();
+                string sqlString = genericEntity.GetQuery(this);
+                int id = dao.Insert(sqlString);
+                if (id > 0 && ProjeConstants.IKYS_SAVE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.IKYS, ProjeConstants.IKYS_AILE);
+                }
+                this.Id = id;
+                return id;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
 
         }
 
         public override bool Update()
         {
+
             bool isSuccess = false;
-            if (Id != 0)
+            try
             {
-                string sqlString = UpdateSQL();
-                isSuccess = dao.Update2Db(sqlString);
+                if (this != null)
+                {
+                    Aile item = Select<Aile>(Id);
+                    if (Id != 0)
+                    {
+                        GenericEntity<Aile> genericEntity = new GenericEntity<Aile>(ProjeConstants.SQL_UPDATE);
+                        DegistirmeTarihi = DateTime.Now;
+                        Degistiren = UtilityHelper.GetCurrentUserName();
+                        string sqlString = genericEntity.GetQuery(this);
+                        isSuccess = dao.Update2Db(sqlString);
+                    }
+                    if (isSuccess && ProjeConstants.IKYS_UPDATE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.IKYS, ProjeConstants.IKYS_AILE);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
             }
             return isSuccess;
         }
-
         public override bool Delete()
         {
-            string sqlString = DeleteSQL();
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
-            return isSuccess;
+            try
+            {
+                bool isDeleted;
+                if (Id != 0)
+                {
+                    GenericEntity<Aile> genericEntity = new GenericEntity<Aile>(ProjeConstants.SQL_DELETE);
+                    string sqlString = genericEntity.GetQuery(this);
+
+                        Aile item = Select<Aile>(Id);
+                        if (item != null)
+                        {
+                            isDeleted = dao.DeleteFromDb(sqlString, "");
+                        }
+                        else isDeleted = false;
+                        if (isDeleted && ProjeConstants.IKYS_DELETE_LOG)
+                        {
+                            OlayKayit olayKayit = new OlayKayit();
+                            olayKayit.SilmeOlayKaydet(item, ProjeConstants.IKYS, ProjeConstants.IKYS_AILE);
+                        }
+
+                    return isDeleted;
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
         public Aile Select(int id)
         {
             GenericEntity<Aile> genericEntity = new GenericEntity<Aile>(ProjeConstants.SQL_SELECT);
-            OlusturmaTarihi = DateTime.Now;
             Id = id;
             string sqlString = genericEntity.GetQuery(this);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Aile> list = ToList<Aile>(dataTable);
             Aile kimlik = new Aile();
             kimlik = list.FirstOrDefault();
@@ -77,56 +141,17 @@ namespace Model.IKYS
             string sqlString = string.Format(@"SELECT *
                                FROM Aile_Table");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Aile> list = ToList<Aile>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
         }
-        public DataTable SelectAllFromAILE_BILGILERI()
-        {
-            string sqlString = string.Format(@"SELECT *
-                               FROM AILE_BILGILERI");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
-
-            return (dataTable);
-        }
-        private string saveSQL()
-        {
-            //Insert  SQL
-            string InsertSQL = string.Format(@" 
-                                    INSERT INTO Aile_Table 
-                                        (PersonelId, Adi, Soyadi, TcKimlikNo,YakinlikDerecesi,DogumTar,Tahsil,
-                                         Okul,Telefon,Meslek,Olusturan,OlusturmaTarihi)
-                                    VALUES ({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11}) ",
-                                    PersonelId, Adi.ReturnQuotedValue(), Soyadi.ReturnQuotedValue(), TcKimlikNo.ReturnQuotedValue(),
-                                    YakinlikDerecesi.ReturnQuotedValue(), DogumTar.ReturnTRDateFormat(), Tahsil.ReturnQuotedValue(),
-                                    Okul.ReturnQuotedValue(), Telefon.ReturnQuotedValue(), Meslek.ReturnQuotedValue(),
-                                    Olusturan.ReturnQuotedValue(), DateTime.Now.ReturnTRDateFormat());
-
-            return InsertSQL;
-        }
-        private string UpdateSQL()
-        {
-            CultureInfo culture = new CultureInfo("tr-TR");
-            //Insert  SQL
-            string sqlSQL = string.Format(@"
-                                    UPDATE Aile_Table 
-                                    SET PersonelId = {0},Adi={1}, Soyadi={2}, TcKimlikNo={3}, YakinlikDerecesi={4},
-                                        DogumTar={5}, Tahsil={6}, Okul={7}, Telefon={8},Meslek={9},Degistiren={10},DegistirmeTarihi={11}
-                                        WHERE Id= {12}",
-                                        PersonelId.ReturnQuotedValue(), Adi.ReturnQuotedValue(), Soyadi.ReturnQuotedValue(),
-                                        TcKimlikNo.ReturnQuotedValue(), YakinlikDerecesi.ReturnQuotedValue(), DogumTar.ReturnTRDateFormat(),
-                                        Tahsil.ReturnQuotedValue(), Okul.ReturnQuotedValue(), Telefon.ReturnQuotedValue(),
-                                        Meslek.ReturnQuotedValue(), Degistiren.ReturnQuotedValue(), DateTime.Now.ConvertToDatetime(culture).ReturnTRDateFormat(), Id);
-
-            return sqlSQL;
-        }
         public List<Aile> SelectByPersonelId(int personelId)
         {
             string sqlString = SelectByPersonelIdSQL(personelId);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Aile> list = ToList<Aile>(dataTable);
 
             return (list);
@@ -138,7 +163,7 @@ namespace Model.IKYS
                     WHERE PersonelId={0} AND YakinlikDerecesi={1}
                     ORDER BY DogumTar Desc", personelId, ProjeConstants.PER_YAKINLIKDERECESI_COCUK_INT);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Aile> list = ToList<Aile>(dataTable);
             Aile aile = list.FirstOrDefault();
             return aile;
@@ -158,13 +183,6 @@ namespace Model.IKYS
                                WHERE  Id={0}", id);
             return sqlstr;
         }
-        private string DeleteSQL()
-        {
-            string sqlString = string.Format(@"
-                            DELETE 
-                            FROM Aile_Table
-                            WHERE Id={0}", Id);
-            return sqlString;
-        }
+
     }
 }

@@ -25,7 +25,7 @@ namespace Model.Portal
             Id = id;
             string sqlString = genericEntity.GetQuery(this);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<ProgramYetki> list = ToList<ProgramYetki>(dataTable);
             ProgramYetki programYetki = new ProgramYetki();
             programYetki = list.FirstOrDefault();
@@ -36,7 +36,7 @@ namespace Model.Portal
         {
             GenericEntity<ProgramYetki> genericEntity = new GenericEntity<ProgramYetki>(ProjeConstants.SQL_SELECT);
             string sqlString = genericEntity.GetQuery(this);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<ProgramYetki> list = ToList<ProgramYetki>(dataTable);
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
         }
@@ -92,7 +92,7 @@ namespace Model.Portal
             string wherestr = string.Format("WHERE Program={0}", program);
             GenericEntity<ProgramYetki> genericEntity = new GenericEntity<ProgramYetki>(ProjeConstants.SQL_SELECT);
             string sqlString = genericEntity.GetQuery(this,wherestr);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<ProgramYetki> list = ToList<ProgramYetki>(dataTable);
             return (List<ProgramYetki>)Convert.ChangeType(list, typeof(List<ProgramYetki>));
         }
@@ -101,7 +101,7 @@ namespace Model.Portal
             string wherestr = string.Format("WHERE Program={0} AND Modul={1} AND BirimId IN {2}", program.ReturnQuotedValue(), modul.ReturnQuotedValue(),birimId);
             GenericEntity<ProgramYetki> genericEntity = new GenericEntity<ProgramYetki>(ProjeConstants.SQL_SELECT);
             string sqlString = genericEntity.GetQuery(this,wherestr);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<ProgramYetki> list = ToList<ProgramYetki>(dataTable);
             return (List<ProgramYetki>)Convert.ChangeType(list, typeof(List<ProgramYetki>));
         }

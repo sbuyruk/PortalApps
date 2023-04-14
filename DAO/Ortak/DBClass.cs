@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Data.SqlTypes;
 using System.Text;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
@@ -30,7 +31,8 @@ namespace DAO.Ortak
                         SqlCommand cmd = new SqlCommand(sqlString + ";SELECT SCOPE_IDENTITY()", con);
                         id = cmd.ExecuteScalar().ConvertToInt();
                         con.Close();
-                        SorguyuLogla("INSERT", true, sqlString,"Id="+id);
+                        if (ProjeConstants.GENEL_SAVE_LOG)
+                            SorguyuLogla("INSERT", true, sqlString,"Id="+id);
                     }
                 }
                 catch (SqlException e)
@@ -47,41 +49,6 @@ namespace DAO.Ortak
 
             return id;
         }
-        //public bool Update2Db(string sqlString, string identifier)
-        //{
-        //    bool isSaved = false;
-
-        //    string connectString = DBProcess.getConnectString();
-        //    SqlConnection con = new SqlConnection(connectString);
-        //    using (con)
-        //    {
-        //        try
-        //        {
-        //            if (con.State == ConnectionState.Closed)
-        //            {
-        //                con.Open();
-        //                //ShowMessage(1,"Taşınmaz", "Veri Tabanına Bağlandı.");
-        //                SqlCommand cmd = new SqlCommand(sqlString, con);
-        //                cmd.ExecuteNonQuery();
-        //                //  Loga yaz      SonucLbl.Text = "Kaydedildi!";
-        //                isSaved = true;
-        //                con.Close();
-        //                SorguyuLogla("UPDATE", false, sqlString,string.Empty);
-        //            }
-        //        }
-        //        catch (SqlException e)
-        //        {
-        //            SorguyuLogla("UPDATE", false, sqlString, e.Message);
-        //            isSaved = false;
-        //            throw e;
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            throw e;
-        //        }
-        //        return isSaved;
-        //    }
-        //}
         public bool Update2Db(string sqlString)
         {
             bool isUpdated = false;
@@ -95,13 +62,12 @@ namespace DAO.Ortak
                     if (con.State == ConnectionState.Closed)
                     {
                         con.Open();
-                        //ShowMessage(1,"Taşınmaz", "Veri Tabanına Bağlandı.");
                         SqlCommand cmd = new SqlCommand(sqlString, con);
                         cmd.ExecuteNonQuery();
-                        //  Loga yaz      SonucLbl.Text = "Kaydedildi!";
                         isUpdated = true;
                         con.Close();
-                        SorguyuLogla("UPDATE", true, sqlString, string.Empty);
+                        if (ProjeConstants.GENEL_UPDATE_LOG) 
+                            SorguyuLogla("UPDATE", true, sqlString, string.Empty);
                     }
                 }
                 catch (Exception e)
@@ -129,12 +95,14 @@ namespace DAO.Ortak
                         cmd.ExecuteNonQuery();
                         isDeleted = true;
                         con.Close();
-                        SorguyuLogla("DELETE", true, sqlString, aciklama);
+                        if (ProjeConstants.GENEL_DELETE_LOG) 
+                            SorguyuLogla("DELETE", true, sqlString, aciklama);
                     }
                 }
 
                 catch (Exception e)
                 {
+                    SorguyuLogla("DELETE", false, sqlString, e.Message);
                     isDeleted = false;
                     throw e;
                 }
@@ -157,7 +125,8 @@ namespace DAO.Ortak
                         SqlCommand cmd = new SqlCommand(sqlString, con);
                         deleted = cmd.ExecuteNonQuery();
                         con.Close();
-                        SorguyuLogla("DELETE", true, sqlString, aciklama);
+                        if (ProjeConstants.GENEL_DELETE_LOG) 
+                            SorguyuLogla("DELETE", true, sqlString, aciklama);
                     }
                 }
                 catch (Exception e)
@@ -186,7 +155,8 @@ namespace DAO.Ortak
                         cmd.ExecuteNonQuery();
                         isDeleted = true;
                         con.Close();
-                        SorguyuLogla("DELETE", true, sqlString, eskiDeger);
+                        if (ProjeConstants.GENEL_DELETE_LOG) 
+                            SorguyuLogla("DELETE", true, sqlString, eskiDeger);
                     }
                 }
 
@@ -223,7 +193,7 @@ namespace DAO.Ortak
             return sbQry.ToString();
         }
 
-        public DataTable selectFromDb(string sqlString, string identifier)
+        public DataTable SelectFromDb(string sqlString, string identifier)
         {
             DataTable dataTable = new DataTable();
             string connectString = DBProcess.getConnectString();
@@ -266,6 +236,8 @@ namespace DAO.Ortak
             SqlConnection dBConnection = new SqlConnection(connectString);
             using (dBConnection)
             {
+                string sqlString = string.Empty;
+                int sqlType = ProjeConstants.SQL_BOS;
                 try
                 {
                     if (dBConnection.State == ConnectionState.Closed)
@@ -276,8 +248,8 @@ namespace DAO.Ortak
 
                         foreach (DBObject item in DBObjectList)
                         {
-                            string sqlString = item.SQLString.Replace(ProjeConstants.SQL_GENERIC_INT_VALUE.ToString(),"{"+ item.SQLStringParamIndex + "}");
-                            int sqlType = item.SQLType;
+                            sqlString = item.SQLString.Replace(ProjeConstants.SQL_GENERIC_INT_VALUE.ToString(),"{"+ item.SQLStringParamIndex + "}");
+                            sqlType = item.SQLType;
                             switch (sqlType)
                             {
                                 case ProjeConstants.SQL_INSERT:
@@ -293,7 +265,8 @@ namespace DAO.Ortak
                                         int id = cmd.ExecuteScalar().ConvertToInt();
                                         item.ReturnId = id;
                                         item.Success = true;
-                                        SorguyuLogla("INSERT", true, sqlString, "Id=" + id );
+                                        if (ProjeConstants.GENEL_SAVE_LOG)
+                                            SorguyuLogla("INSERT", true, sqlString, "Id=" + id );
                                         break;
                                     }
                                 case ProjeConstants.SQL_UPDATE:
@@ -307,7 +280,8 @@ namespace DAO.Ortak
                                         cmd.Transaction = DBTransaction;
                                         item.RowsAffected = cmd.ExecuteNonQuery();
                                         item.Success = true;
-                                        SorguyuLogla("UPDATE", true, sqlString, string.Empty);
+                                        if (ProjeConstants.GENEL_UPDATE_LOG)
+                                            SorguyuLogla("UPDATE", true, sqlString, string.Empty);
                                         break;
                                     }
                                 case ProjeConstants.SQL_DELETE:
@@ -316,7 +290,8 @@ namespace DAO.Ortak
                                         cmd.Transaction = DBTransaction;
                                         item.RowsAffected = cmd.ExecuteNonQuery();
                                         item.Success = true;
-                                        SorguyuLogla("DELETE", true, sqlString, "RowsAffected="+ item.RowsAffected);
+                                        if (ProjeConstants.GENEL_DELETE_LOG)
+                                            SorguyuLogla("DELETE", true, sqlString, "RowsAffected="+ item.RowsAffected);
                                         break;
                                     }
                                 case ProjeConstants.SQL_SELECT:
@@ -334,6 +309,7 @@ namespace DAO.Ortak
                 }
                 catch (Exception ex )
                 {
+                    SorguyuLogla( "SQL_TYPE="+sqlType, false, sqlString, ex.Message);
                     MessageHelper.PublishMessage(ex.Message, ProjeConstants.MESAJ_HATA);
                     DBTransaction.Rollback();
 

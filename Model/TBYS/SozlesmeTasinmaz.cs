@@ -1,4 +1,5 @@
-﻿using Model.Ortak;
+﻿using DocumentFormat.OpenXml.Wordprocessing;
+using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -20,7 +21,7 @@ namespace Model.TBYS
             string sqlString = string.Format(@"SELECT *
                                FROM SozlesmeTasinmaz_Table 
                                WHERE  Id={0}", id);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<SozlesmeTasinmaz> list = ToList<SozlesmeTasinmaz>(dataTable);
             SozlesmeTasinmaz sozlesmeTasinmaz = new SozlesmeTasinmaz();
             sozlesmeTasinmaz = list.FirstOrDefault();
@@ -33,42 +34,44 @@ namespace Model.TBYS
             {
                 GenericEntity<SozlesmeTasinmaz> genericEntity = new GenericEntity<SozlesmeTasinmaz>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
+                Olusturan = UtilityHelper.GetCurrentUserName();
                 string sqlString = genericEntity.GetQuery(this);
                 int id = dao.Insert(sqlString);
 
                 this.Id = id;
+                if (id > 0 && ProjeConstants.TBYS_SAVE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.TBYS, ProjeConstants.TBYS_SOZLESMETASINMAZ);
+                }
                 return id;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                throw ex;
             }
-
-            //string sqlString = string.Format(@"
-            //                                INSERT INTO SozlesmeTasinmaz_Table 
-            //                                    (SozlesmeId, TasinmazId, BolumId,Olusturan, OlusturmaTarihi)
-            //                                VALUES ({0},{1},{2},{3},{4})",
-            //                                SozlesmeId.ReturnQuotedValue(), TasinmazId.ReturnQuotedValue(), BolumId.ReturnQuotedValue(),
-            //                                Olusturan.ReturnQuotedValue(), DateTime.Now.ReturnTRDateFormat());
-
-
-            //int id = dao.Insert(sqlString);
-
-            //this.Id = id;
-            //return id;
         }
         public override bool Update()
         {
             bool isSuccess = false;
             try
             {
-                if (Id != 0)
+                if (this != null)
                 {
-                    GenericEntity<SozlesmeTasinmaz> genericEntity = new GenericEntity<SozlesmeTasinmaz>(ProjeConstants.SQL_UPDATE);
-                    DegistirmeTarihi = DateTime.Now;
-                    string sqlString = genericEntity.GetQuery(this);
-                    isSuccess = dao.Update2Db(sqlString);
+                    SozlesmeTasinmaz item = Select<SozlesmeTasinmaz>(Id);
+                    if (Id != 0)
+                    {
+                        GenericEntity<SozlesmeTasinmaz> genericEntity = new GenericEntity<SozlesmeTasinmaz>(ProjeConstants.SQL_UPDATE);
+                        DegistirmeTarihi = DateTime.Now;
+                        Degistiren = UtilityHelper.GetCurrentUserName();
+                        string sqlString = genericEntity.GetQuery(this);
+                        isSuccess = dao.Update2Db(sqlString);
+                    }
+                    if (isSuccess && ProjeConstants.TBYS_UPDATE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.TBYS, ProjeConstants.TBYS_SOZLESMETASINMAZ);
+                    }
                 }
             }
             catch (Exception)
@@ -76,29 +79,34 @@ namespace Model.TBYS
                 throw;
             }
             return isSuccess;
-            //bool isSuccess = false;
-            //if (Id != 0)
-            //{
-            //    string sqlString = string.Format(@"
-            //                            UPDATE SozlesmeTasinmaz_Table 
-            //                            SET SozlesmeId={0}, TasinmazId={1}, BolumId={2},Degistiren={3},DegistirmeTarihi={4}
-            //                            WHERE Id={5}",
-            //                                SozlesmeId.ReturnQuotedValue(), TasinmazId.ReturnQuotedValue(), BolumId.ReturnQuotedValue(),
-            //                                Degistiren.ReturnQuotedValue(), DateTime.Now.ReturnTRDateFormat(), Id);
-
-            //    isSuccess = dao.Update2Db(sqlString);
-            //}
-            //return isSuccess;
         }
         public override bool Delete()
         {
-            string sqlString = string.Format(@"DELETE 
-                               FROM SozlesmeTasinmaz_Table
-                               WHERE Id={0}", Id);
-
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
-
-            return isSuccess;
+            try
+            {
+                bool isDeleted = false;
+                if (Id != 0)
+                {
+                    GenericEntity<SozlesmeTasinmaz> genericEntity = new GenericEntity<SozlesmeTasinmaz>(ProjeConstants.SQL_DELETE);
+                    string sqlString = genericEntity.GetQuery(this);
+                    SozlesmeTasinmaz item = Select<SozlesmeTasinmaz>(Id);
+                    if (item != null)
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+                    else isDeleted = false;
+                    if (isDeleted && ProjeConstants.TBYS_DELETE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.TBYS, ProjeConstants.TBYS_SOZLESMETASINMAZ);
+                    }
+                }
+                return isDeleted;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         public bool DeleteBySozlesmeId(int sozlesmeId)
         {
@@ -106,16 +114,20 @@ namespace Model.TBYS
                                FROM SozlesmeTasinmaz_Table
                                WHERE SozlesmeId={0}", sozlesmeId);
 
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
-
-            return isSuccess;
+            bool isDeleted = dao.DeleteFromDb(sqlString, this);
+            if (isDeleted && ProjeConstants.TBYS_DELETE_LOG)
+            {
+                OlayKayit olayKayit = new OlayKayit();
+                olayKayit.SilmeOlayKaydet(this, ProjeConstants.TBYS, ProjeConstants.TBYS_SOZLESMETASINMAZ);
+            }
+            return isDeleted;
         }
         public override List<T> SelectAll<T>()
         {
             string sqlString = string.Format(@"SELECT *
                                FROM SozlesmeTasinmaz_Table");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<SozlesmeTasinmaz> list = ToList<SozlesmeTasinmaz>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
@@ -135,7 +147,7 @@ namespace Model.TBYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -158,7 +170,7 @@ namespace Model.TBYS
             DataTable dataTable;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -172,7 +184,7 @@ namespace Model.TBYS
         {
             string sqlString = string.Format(@"SELECT * FROM SozlesmeTasinmaz_Table
                               WHERE TasinmazId={0}", tasinmazId.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<SozlesmeTasinmaz> list = ToList<SozlesmeTasinmaz>(dataTable);
             return list;
         }
@@ -180,7 +192,7 @@ namespace Model.TBYS
         {
             string sqlString = string.Format(@"SELECT * FROM SozlesmeTasinmaz_Table
                               WHERE SozlesmeId={0}", sozlesmeId.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<SozlesmeTasinmaz> list = ToList<SozlesmeTasinmaz>(dataTable);
             return list;
         }
@@ -193,7 +205,7 @@ namespace Model.TBYS
                     LEFT JOIN BagimsizBolum_Table C ON C.Id=A.BolumId
                 WHERE SozlesmeId={0}
                 ORDER BY A.SozlesmeId,A.TasinmazId,A.BolumId", sozlesmeId.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return dataTable;
         }
         public List<SozlesmeTasinmaz> SelectBySozlesmeIdTasinmazId(int sozlesmeId, int tasinmazId, int bolumId)
@@ -201,7 +213,7 @@ namespace Model.TBYS
             string sqlString = string.Format(@"
                 SELECT * FROM SozlesmeTasinmaz_Table
                 WHERE SozlesmeId={0} AND TasinmazId={1} AND BolumId={2} ", sozlesmeId.ReturnQuotedValue(), tasinmazId.ReturnQuotedValue(), bolumId.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<SozlesmeTasinmaz> list = ToList<SozlesmeTasinmaz>(dataTable);
             return list;
         }
@@ -209,7 +221,7 @@ namespace Model.TBYS
         {
             string sqlString = string.Format(@"SELECT * FROM SozlesmeTasinmaz_Table
                               WHERE SozlesmeId={0}", bolumId.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<SozlesmeTasinmaz> list = ToList<SozlesmeTasinmaz>(dataTable);
             return list;
         }

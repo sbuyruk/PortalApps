@@ -57,14 +57,6 @@ namespace Portal_WebParts.OlayListesiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl OlayUl;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.Timer RefreshTimer;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.UpdatePanel UpdatePanel2;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebPartCodeGenerator", "17.0.0.0")]
@@ -100,7 +92,7 @@ namespace Portal_WebParts.OlayListesiWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.CssClass = "col-form-label text-primary font-weight-bold mb-1";
             @__ctrl.ID = "TitleLbl";
-            @__ctrl.Text = "MTS Gerçekleşen İşlemler";
+            @__ctrl.Text = "Gerçekleşen İşlemler";
             return @__ctrl;
         }
         
@@ -133,85 +125,26 @@ namespace Portal_WebParts.OlayListesiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControlOlayUl() {
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
-            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("ul");
-            this.OlayUl = @__ctrl;
-            @__ctrl.TemplateControl = this;
-            @__ctrl.ID = "OlayUl";
-            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.Timer @__BuildControlRefreshTimer() {
-            global::System.Web.UI.Timer @__ctrl;
-            @__ctrl = new global::System.Web.UI.Timer();
-            this.RefreshTimer = @__ctrl;
-            @__ctrl.TemplateControl = this;
-            @__ctrl.ID = "RefreshTimer";
-            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
-            @__ctrl.Tick -= new System.EventHandler<System.EventArgs>(this.RefreshTimer_Tick);
-            @__ctrl.Tick += new System.EventHandler<System.EventArgs>(this.RefreshTimer_Tick);
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControl__control2(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    <div class=\"box\">\r\n                        <marquee height=" +
-                        "\"200\" width=\"100%\" behavior=\"scroll\" direction=\"up\" scrollamount=\"2\" onmouseover" +
-                        "=\"this.stop();\" onmouseout=\"this.start();\">\r\n                            "));
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl1;
-            @__ctrl1 = this.@__BuildControlOlayUl();
-            @__parser.AddParsedSubObject(@__ctrl1);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-                        </marquee>
-                    </div>
                     <div class=""form-group"">
                         <table id=""CustomDataTable"" class=""table table-striped table-bordered"" width=""100%"">
                             <thead>
                                 <tr>
                                     <th>Tarih</th>
+                                    <th>Program</th>
                                     <th>İşlem Konusu</th>
                                     <th>İşlem Tipi</th>
-                                    <th>Açıklama</th>
                                     <th>İşlem Yapan</th>
+                                    <th>Açıklama</th>
+                                    <th>Açıklama Ham</th>
                                 </tr>
                             </thead>
                         </table>
                     </div>
-                    "));
-            global::System.Web.UI.Timer @__ctrl2;
-            @__ctrl2 = this.@__BuildControlRefreshTimer();
-            @__parser.AddParsedSubObject(@__ctrl2);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                "));
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control4() {
-            global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
-            @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
-            @__ctrl.ControlID = "RefreshTimer";
-            @__ctrl.EventName = "tick";
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control3(System.Web.UI.UpdatePanelTriggerCollection @__ctrl) {
-            global::System.Web.UI.AsyncPostBackTrigger @__ctrl1;
-            @__ctrl1 = this.@__BuildControl__control4();
-            @__ctrl.Add(@__ctrl1);
+                    
+                "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -224,7 +157,6 @@ namespace Portal_WebParts.OlayListesiWP {
             @__ctrl.ContentTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control2));
             @__ctrl.ID = "UpdatePanel2";
             @__ctrl.UpdateMode = global::System.Web.UI.UpdatePanelUpdateMode.Conditional;
-            this.@__BuildControl__control3(@__ctrl.Triggers);
             return @__ctrl;
         }
         
@@ -233,28 +165,8 @@ namespace Portal_WebParts.OlayListesiWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControlTree(global::Portal_WebParts.OlayListesiWP.OlayListesiWP @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-<style>
-    .box {
-        border: 1px solid #12232E;
-        background-color: #EEFBFB;
-        width: 40%;
-    }
-
-    ul li {
-        line-height: 30px;
-        list-style: none;
-        color: #007CC7;
-        font-size: 18px;
-    }
-</style>
-<script>
-
-</script>
-<div class=""container"">
-    <div class=""card shadow"">
-        <div class=""card-header"">
-            "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n<div class=\"container col-xl\">\r\n    <div class=\"card shadow\">\r\n        <div c" +
+                        "lass=\"card-header\">\r\n            "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl1;
             @__ctrl1 = this.@__BuildControlCloseBtn();
             @__parser.AddParsedSubObject(@__ctrl1);
@@ -275,8 +187,8 @@ namespace Portal_WebParts.OlayListesiWP {
             global::System.Web.UI.UpdatePanel @__ctrl5;
             @__ctrl5 = this.@__BuildControlUpdatePanel2();
             @__parser.AddParsedSubObject(@__ctrl5);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n        </div>\r\n        <div class=\"card-footer\">\r\n        </div>\r\n    </div>\r\n" +
-                        "</div>\r\n"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n           \r\n        </div>\r\n        <div class=\"card-footer\">\r\n           \r\n  " +
+                        "      </div>\r\n    </div>\r\n\r\n    \r\n</div>"));
         }
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +

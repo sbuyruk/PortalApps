@@ -43,7 +43,10 @@
                                     <label class="col-form-label" for="IliDDL">Bulunduğu İl</label>
                                     <asp:DropDownList ID="IliDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="IliDDL_SelectedIndexChanged" AutoPostBack="true" Style="height: auto" />
                                 </div>
-
+                                <div class="form-group m-0 ">
+                                    <label class="col-form-label" for="IlcesiDDL">Bulunduğu İlçe</label>
+                                    <asp:DropDownList ID="IlcesiDDL" runat="server" class="form-control" Style="height: auto"></asp:DropDownList>
+                                </div>
 
                             </div>
                             <div class="form-group col">
@@ -59,10 +62,7 @@
                                     <label class="col-form-label" for="BagisYiliTxt">Bağış Yılı</label>
                                     <asp:TextBox ID="BagisYiliTxt" runat="server" CssClass="form-control" ToolTip="Bağış Yılı"></asp:TextBox>
                                 </div>
-                                <div class="form-group m-0 ">
-                                    <label class="col-form-label" for="IlcesiDDL">Bulunduğu İlçe</label>
-                                    <asp:DropDownList ID="IlcesiDDL" runat="server" class="form-control" Style="height: auto"></asp:DropDownList>
-                                </div>
+
                             </div>
                         </div>
                         <div>
@@ -100,7 +100,10 @@
                                     <label class="col-form-label" for="EdinmeSekliDDL">Edinme Şekli</label>
                                     <asp:DropDownList ID="EdinmeSekliDDL" runat="server" class="form-control" Style="height: auto"></asp:DropDownList>
                                 </div>
-
+                                <div class="form-group m-0 ">
+                                    <label class="col-form-label" for="TapuTasinmazNoTxt">Tapu Taşınmaz No</label>
+                                    <input class="form-control text-right" id="TapuTasinmazNoTxt" runat="server" />
+                                </div>
                             </div>
                             <div class="form-group col">
                                 <div class="form-group m-0 ">
@@ -118,6 +121,10 @@
                                 <div class="form-group m-0 ">
                                     <label class="col-form-label" for="KatMulkiyetiDDL">Kat Mülk.</label>
                                     <asp:DropDownList ID="KatMulkiyetiDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="KatMulkiyetiDDL_SelectedIndexChanged" AutoPostBack="true" Style="height: auto" />
+                                </div>
+                                <div class="form-group m-0 ">
+                                    <label class="col-form-label" for="InsaYiliTxt">İnşa Yılı</label>
+                                    <input class="form-control text-right" id="InsaYiliTxt" runat="server" />
                                 </div>
                             </div>
 

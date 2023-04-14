@@ -15,8 +15,8 @@ namespace Model.NBYS
     public class EkstreAktarma : ParentClass
     {
         public long TCKimlikNo { get; set; }
-        public string Telefon1 { get;set; }
-        public string Telefon2{ get;set; }
+        public string Telefon1 { get; set; }
+        public string Telefon2 { get; set; }
         public string Adi { get; set; }
         public string Soyadi { get; set; }
         public string Ili { get; set; }
@@ -47,30 +47,44 @@ namespace Model.NBYS
             {
                 GenericEntity<EkstreAktarma> genericEntity = new GenericEntity<EkstreAktarma>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
+                Olusturan = UtilityHelper.GetCurrentUserName();
                 string sqlString = genericEntity.GetQuery(this);
                 int id = dao.Insert(sqlString);
 
                 this.Id = id;
+                if (id > 0 && ProjeConstants.NBYS_SAVE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.NBYS, ProjeConstants.NBYS_EKSTREAKTARMA);
+                }
                 return id;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                throw ex;
             }
-
         }
         public override bool Update()
         {
             bool isSuccess = false;
             try
             {
-                if (Id != 0)
+                if (this != null)
                 {
-                    GenericEntity<EkstreAktarma> genericEntity = new GenericEntity<EkstreAktarma>(ProjeConstants.SQL_UPDATE);
-                    DegistirmeTarihi = DateTime.Now;
-                    string sqlString = genericEntity.GetQuery(this);
-                    isSuccess = dao.Update2Db(sqlString);
+                    EkstreAktarma item = Select<EkstreAktarma>(Id);
+                    if (Id != 0)
+                    {
+                        GenericEntity<EkstreAktarma> genericEntity = new GenericEntity<EkstreAktarma>(ProjeConstants.SQL_UPDATE);
+                        DegistirmeTarihi = DateTime.Now;
+                        Degistiren = UtilityHelper.GetCurrentUserName();
+                        string sqlString = genericEntity.GetQuery(this);
+                        isSuccess = dao.Update2Db(sqlString);
+                    }
+                    if (isSuccess && ProjeConstants.NBYS_UPDATE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.NBYS, ProjeConstants.NBYS_EKSTREAKTARMA);
+                    }
                 }
             }
             catch (Exception)
@@ -81,20 +95,38 @@ namespace Model.NBYS
         }
         public override bool Delete()
         {
-            string sqlString = string.Format(@"DELETE 
-                               FROM EkstreAktarma_Table
-                               WHERE Id={0}", Id);
-
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
-
-            return isSuccess;
+            try
+            {
+                bool isDeleted = false;
+                if (Id != 0)
+                {
+                    GenericEntity<EkstreAktarma> genericEntity = new GenericEntity<EkstreAktarma>(ProjeConstants.SQL_DELETE);
+                    string sqlString = genericEntity.GetQuery(this);
+                    EkstreAktarma item = Select<EkstreAktarma>(Id);
+                    if (item != null)
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+                    else isDeleted = false;
+                    if (isDeleted && ProjeConstants.NBYS_DELETE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.NBYS, ProjeConstants.NBYS_EKSTREAKTARMA);
+                    }
+                }
+                return isDeleted;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         public override T Select<T>(int id)
         {
             string sqlString = string.Format(@"SELECT *
                                FROM EkstreAktarma_Table 
                                WHERE  Id={0}", id);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<EkstreAktarma> list = ToList<EkstreAktarma>(dataTable);
             EkstreAktarma ekstreAktarma = new EkstreAktarma();
             ekstreAktarma = list.FirstOrDefault();
@@ -105,7 +137,7 @@ namespace Model.NBYS
             string sqlString = string.Format(@"SELECT *
                                FROM EkstreAktarma_Table");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<EkstreAktarma> list = ToList<EkstreAktarma>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
@@ -119,7 +151,7 @@ namespace Model.NBYS
                 WHERE IslemTarihi={0}
                 ORDER BY AktarildiMi, BagisTarihi desc, Adi
                 ", processTime.ReturnTRDateFormat());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<EkstreAktarma> list = ToList<EkstreAktarma>(dataTable);
 
             return list;
@@ -140,7 +172,7 @@ namespace Model.NBYS
                 {2}
                 ORDER BY AktarildiMi,  BagisTarihi desc, Id, Adi
                 ", islemTarihi.ReturnTRDateFormat(), aktarilanlarHaricStr, bankaStr);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             //List<EkstreAktarma> list = ToList<EkstreAktarma>(dataTable);
             rowCount = dataTable != null ? dataTable.Rows.Count : 0;
             return dataTable;
@@ -165,7 +197,7 @@ namespace Model.NBYS
                     A.Telefon1,A.Telefon2  ,B.Telefon1,B.Telefon2,B.TCKimlikNo,B.Id
                 ORDER BY AktarildiMi, BagisTarihi desc, A.Id, A.Adi
                 ", islemTarihi.ReturnTRDateFormat(), aktarilanlarHaricStr, bankaStr);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             //List<EkstreAktarma> list = ToList<EkstreAktarma>(dataTable);
             return dataTable;
         }
@@ -189,7 +221,7 @@ namespace Model.NBYS
                 FROM EkstreAktarma_Table
                 WHERE BankaAdi LIKE '%{0}%' AND FisNo={1}                
                 ", bankaLike, fisNo.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<EkstreAktarma> list = ToList<EkstreAktarma>(dataTable);
             //EkstreAktarma ea = new EkstreAktarma();
             //ea = list.FirstOrDefault();
@@ -202,7 +234,7 @@ namespace Model.NBYS
                 FROM EkstreAktarma_Table
                 WHERE BankaAdi={0} AND FisNo={1}                
                 ", banka.ReturnQuotedValue(), fisNo.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<EkstreAktarma> list = ToList<EkstreAktarma>(dataTable);
             EkstreAktarma ea = new EkstreAktarma();
             ea = list.FirstOrDefault();
@@ -673,7 +705,7 @@ namespace Model.NBYS
                 WHERE Id in ({0})
                 ORDER BY AktarildiMi,Id DESC, BagisTarihi desc, Adi
                 ", idListStr);
-                DataTable dataTable = dao.selectFromDb(sqlString, "");
+                DataTable dataTable = dao.SelectFromDb(sqlString, "");
                 List<EkstreAktarma> list = ToList<EkstreAktarma>(dataTable);
 
                 return list;
@@ -705,7 +737,7 @@ namespace Model.NBYS
                 WHERE Id in ({0})
                 ORDER BY AktarildiMi, BagisTarihi desc, Adi
                 ", idListStr);
-                DataTable dataTable = dao.selectFromDb(sqlString, "");
+                DataTable dataTable = dao.SelectFromDb(sqlString, "");
                 List<EkstreAktarma> list = ToList<EkstreAktarma>(dataTable);
                 rowCount = dataTable != null ? dataTable.Rows.Count : 0;
                 return list;
@@ -729,7 +761,7 @@ namespace Model.NBYS
                 ORDER BY AktarildiMi, BagisTarihi desc, Adi
                 ", islemTarihi, bankaAdi);
 
-                DataTable dataTable = dao.selectFromDb(sqlString, "");
+                DataTable dataTable = dao.SelectFromDb(sqlString, "");
                 List<EkstreAktarma> list = ToList<EkstreAktarma>(dataTable);
 
                 return list;
@@ -1424,8 +1456,8 @@ namespace Model.NBYS
                                 {
                                     ekstreAktarma.Adi = adi + " " + soyAdi;
                                     ekstreAktarma.TCKimlikNo = tcKimlikNo.ConvertToLong();
-                                    ekstreAktarma.Telefon1 = UtilityHelper.TelefonFormatla(telefon1.ReturnEmptyIfNull().ToString()); 
-                                    ekstreAktarma.Telefon2 = UtilityHelper.TelefonFormatla(telefon2.ReturnEmptyIfNull().ToString()); 
+                                    ekstreAktarma.Telefon1 = UtilityHelper.TelefonFormatla(telefon1.ReturnEmptyIfNull().ToString());
+                                    ekstreAktarma.Telefon2 = UtilityHelper.TelefonFormatla(telefon2.ReturnEmptyIfNull().ToString());
                                     ekstreAktarma.Adres = adres;
                                     ekstreAktarma.Ili = il;
                                     string ulkestr = ulke.ToUpper();
@@ -1588,7 +1620,7 @@ namespace Model.NBYS
                     string randomSayi = new Random().NextDouble().ToString();
                     string tcKimlikNo = ekstreAktarma.TCKimlikNo.ToString().Equals("0") ? randomSayi : ekstreAktarma.TCKimlikNo.ToString();
                     string adi = string.IsNullOrEmpty(ekstreAktarma.Adi) ? randomSayi : ekstreAktarma.Adi;
-                    string telefon1 = string.IsNullOrEmpty(ekstreAktarma.Telefon1) ? randomSayi : UtilityHelper.TelefonFormatla(ekstreAktarma.Telefon1.ReturnEmptyIfNull().ToString()); 
+                    string telefon1 = string.IsNullOrEmpty(ekstreAktarma.Telefon1) ? randomSayi : UtilityHelper.TelefonFormatla(ekstreAktarma.Telefon1.ReturnEmptyIfNull().ToString());
                     string telefon2 = string.IsNullOrEmpty(ekstreAktarma.Telefon2) ? randomSayi : UtilityHelper.TelefonFormatla(ekstreAktarma.Telefon2.ReturnEmptyIfNull().ToString());
 
                     //eğer bu kayıtın fisnosu daha önce girilmişse bir de islemtarihi, tutar, isim,tc ve telefondan kontrol et 
@@ -1719,26 +1751,30 @@ namespace Model.NBYS
                     hata = aciklama;
                     if (!string.IsNullOrEmpty(aciklama) && !aciklama.Contains("3 57968 1"))//virman değilse
                     {
-                        var tarih = row[0].ReturnEmptyIfNull().ToString().ConvertToDatetime();
-
-
-                        var tutar = row[3].ReturnEmptyIfNull().ToString().Replace(".", ",");
-                        var adres = string.Empty;// adres bilgisi gelmiyor
-                        if (tutar.ReturnZeroIfNull().ConvertToDecimal() > 0)
+                        var kanal = row[1].ReturnEmptyIfNull().ToString();
+                        if (!kanal.Equals("BATCH"))//batch işlemleri alma
                         {
-                            EkstreAktarma ekstreAktarma = new EkstreAktarma();
+                            var tarih = row[0].ReturnEmptyIfNull().ToString().ConvertToDatetime();
 
-                            ekstreAktarma.BankaAdi = ProjeConstants.BANKA_ZIRAAT_KATILIM;
-                            ekstreAktarma.BagisTarihi = tarih;
-                            ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
-                            ekstreAktarma.Tutar = tutar.ConvertToDecimal();
-                            ekstreAktarma.Aciklama = aciklama;
-                            ekstreAktarma.Adres = adres.ReturnEmptyIfNull().ToString().Trim().ToUpper(culturInfo); ;
-                            ekstreAktarma.BelgeIstemiyor = ekstreAktarma.Aciklama.Contains(ProjeConstants.DURUM_BELGE_ISTEMIYOR) || ekstreAktarma.Adres.Contains(ProjeConstants.DURUM_BELGE_ISTEMIYOR) ? true : false;
-                            ekstreAktarma.IslemTarihi = processTime;
-                            ekstreAktarma.Olusturan = currentUser;
 
-                            var id = ekstreAktarma.Save();
+                            var tutar = row[3].ReturnEmptyIfNull().ToString().Replace(".", ",");
+                            var adres = string.Empty;// adres bilgisi gelmiyor
+                            if (tutar.ReturnZeroIfNull().ConvertToDecimal() > 0)
+                            {
+                                EkstreAktarma ekstreAktarma = new EkstreAktarma();
+
+                                ekstreAktarma.BankaAdi = ProjeConstants.BANKA_ZIRAAT_KATILIM;
+                                ekstreAktarma.BagisTarihi = tarih;
+                                ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
+                                ekstreAktarma.Tutar = tutar.ConvertToDecimal();
+                                ekstreAktarma.Aciklama = aciklama;
+                                ekstreAktarma.Adres = adres.ReturnEmptyIfNull().ToString().Trim().ToUpper(culturInfo); ;
+                                ekstreAktarma.BelgeIstemiyor = ekstreAktarma.Aciklama.Contains(ProjeConstants.DURUM_BELGE_ISTEMIYOR) || ekstreAktarma.Adres.Contains(ProjeConstants.DURUM_BELGE_ISTEMIYOR) ? true : false;
+                                ekstreAktarma.IslemTarihi = processTime;
+                                ekstreAktarma.Olusturan = currentUser;
+
+                                var id = ekstreAktarma.Save();
+                            }
                         }
                     }
                 }
@@ -1777,7 +1813,7 @@ namespace Model.NBYS
                                                 FROM EkstreAktarma_Table
                                                 WHERE BankaAdi='{0}' AND IslemTarihi={1} AND ElleKayit != 1", bankaAdi, islemTarihi.ReturnTRDateFormat());
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
 
             if (dataTable != null)
             {
@@ -1986,7 +2022,7 @@ namespace Model.NBYS
                     bittar = ilkGun.AddMonths(1).AddDays(-1);
                 }
                 decimal toplamBagis = nakitBagisHareket.GetSumBagisMiktariByNakitBagisciIdBetweenBasTarBitTar(bastar, bittar, nakitBagisciId);
-                
+
                 ArmaganTanim hakedilenArmaganTanim = new ArmaganTanim();
                 hakedilenArmaganTanim = hakedilenArmaganTanim.SelectByTutar(toplamBagis, tuzelKisiMi); //toplam tutar gidecek
 
@@ -2027,7 +2063,7 @@ namespace Model.NBYS
                     //isArmaganSaved = armagan.SaveOrUpdate(bastar, bittar, bagisTarihi, nakitBagisciId, nakikbagisHareketId);
                     NakitBagisHareket newNbh = new NakitBagisHareket();
                     List<NakitBagisHareket> newNbhList = newNbh.SelectByBagisciIdTarih(nakitBagisciId, bastar, bittar);
-                    int armaganId = ArmaganiKaydetVeyaGuncelle(bastar,bittar,nakitBagisciId,bagisTarihi,toplamBagis,hakedilenArmaganTanim.Id,currentUser,nakitBagisci, newNbhList);
+                    int armaganId = ArmaganiKaydetVeyaGuncelle(bastar, bittar, nakitBagisciId, bagisTarihi, toplamBagis, hakedilenArmaganTanim.Id, currentUser, nakitBagisci, newNbhList);
                     isArmaganSaved = armaganId > 0;
                 }
                 else
@@ -2040,8 +2076,8 @@ namespace Model.NBYS
             return isArmaganSaved;
         }
 
-        public static int ArmaganiKaydetVeyaGuncelle(DateTime bastar, DateTime bittar,int nakitBagisciId ,DateTime bagisTarihi, decimal toplamBagis, 
-            int hakedilenArmaganTanimId, string currentUser, NakitBagisci nakitBagisci,List<NakitBagisHareket> nakitBagisHareketListesi)
+        public static int ArmaganiKaydetVeyaGuncelle(DateTime bastar, DateTime bittar, int nakitBagisciId, DateTime bagisTarihi, decimal toplamBagis,
+            int hakedilenArmaganTanimId, string currentUser, NakitBagisci nakitBagisci, List<NakitBagisHareket> nakitBagisHareketListesi)
         {
             int armaganId = 0;
             Armagan armagan = new Armagan();
@@ -2185,7 +2221,7 @@ namespace Model.NBYS
 
             if (!string.IsNullOrEmpty(adi)) // adi boş ise yeni bağışçı olarak kabul edilecek
             {
-                var telefon1 = UtilityHelper.TelefonFormatla(ekstreAktarma.Telefon1.ReturnEmptyIfNull().ToString()); 
+                var telefon1 = UtilityHelper.TelefonFormatla(ekstreAktarma.Telefon1.ReturnEmptyIfNull().ToString());
                 if (!string.IsNullOrEmpty(telefon1)) //telefon1 boş değil ise ise kontrol ediliyor adı ve telefon1 bulunur ise aynı kişi olarak kabul ediliyor, yeni kayıt atılmıyor
                 {
                     nakitBagisciId = GetUserId(nakitBagisci, adi, telefon1);
@@ -2297,14 +2333,14 @@ namespace Model.NBYS
                 nakitBagisHareket.BankaId = bankaTanim.Id;
             }
             nakitBagisHareket.Adresi = ekstreAktarma.Adres.ReturnEmptyIfNull().ToString().Trim().ToUpper(culturInfo);
-            nakitBagisHareket.DovizCinsi = string.IsNullOrEmpty(ekstreAktarma.DovizCinsi)?ProjeConstants.DOVIZ_TL: ekstreAktarma.DovizCinsi;
+            nakitBagisHareket.DovizCinsi = string.IsNullOrEmpty(ekstreAktarma.DovizCinsi) ? ProjeConstants.DOVIZ_TL : ekstreAktarma.DovizCinsi;
             if (!ekstreAktarma.DovizCinsi.Equals(ProjeConstants.DOVIZ_TL))
             {
                 nakitBagisHareket.DovizTutari = ekstreAktarma.DovizTutari;
                 nakitBagisHareket.DovizKuru = ekstreAktarma.DovizKuru;
                 nakitBagisHareket.KurTarihi = ekstreAktarma.KurTarihi;
             }
-                
+
             nakitBagisHareket.Telefon = UtilityHelper.TelefonFormatla(ekstreAktarma.Telefon1.ReturnEmptyIfNull().ToString());
             nakitBagisHareket.Ili = GetIlId(ekstreAktarma.Ili);
             nakitBagisHareket.Ilcesi = ilce != null ? ilce.Id : 0;

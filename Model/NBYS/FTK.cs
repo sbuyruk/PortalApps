@@ -27,57 +27,93 @@ namespace Model.NBYS
         public int KisiId { get; set; }
         public string Aciklama { get; set; }
 
-        public override bool Delete()
-        {
-            try
-            {
-                if (Id != 0)
-                {
-                    GenericEntity<FTK> genericEntity = new GenericEntity<FTK>(ProjeConstants.SQL_DELETE);
-                    OlusturmaTarihi = DateTime.Now;
-                    string sqlString = genericEntity.GetQuery(this);
-                    bool isDeleted = dao.DeleteFromDb(sqlString, "");
-                    return isDeleted;
-                }
-                else
-                {
-                    return false;
-                }
-
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-        }
         public override int Save()
         {
             try
             {
                 GenericEntity<FTK> genericEntity = new GenericEntity<FTK>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
+                Olusturan = UtilityHelper.GetCurrentUserName();
                 string sqlString = genericEntity.GetQuery(this);
                 int id = dao.Insert(sqlString);
 
                 this.Id = id;
+                if (id > 0 && ProjeConstants.NBYS_SAVE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.NBYS, ProjeConstants.NBYS_FTK);
+                }
                 return id;
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
-
+        }
+        public override bool Update()
+        {
+            bool isSuccess = false;
+            try
+            {
+                if (this != null)
+                {
+                    FTK item = Select<FTK>(Id);
+                    if (Id != 0)
+                    {
+                        GenericEntity<FTK> genericEntity = new GenericEntity<FTK>(ProjeConstants.SQL_UPDATE);
+                        DegistirmeTarihi = DateTime.Now;
+                        Degistiren = UtilityHelper.GetCurrentUserName();
+                        string sqlString = genericEntity.GetQuery(this);
+                        isSuccess = dao.Update2Db(sqlString);
+                    }
+                    if (isSuccess && ProjeConstants.NBYS_UPDATE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.NBYS, ProjeConstants.NBYS_FTK);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return isSuccess;
+        }
+        public override bool Delete()
+        {
+            try
+            {
+                bool isDeleted = false;
+                if (Id != 0)
+                {
+                    GenericEntity<FTK> genericEntity = new GenericEntity<FTK>(ProjeConstants.SQL_DELETE);
+                    string sqlString = genericEntity.GetQuery(this);
+                    FTK item = Select<FTK>(Id);
+                    if (item != null)
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+                    else isDeleted = false;
+                    if (isDeleted && ProjeConstants.NBYS_DELETE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.NBYS, ProjeConstants.NBYS_FTK);
+                    }
+                }
+                return isDeleted;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         public FTK Select(int id)
         {
             GenericEntity<FTK> genericEntity = new GenericEntity<FTK>(ProjeConstants.SQL_SELECT);
-            OlusturmaTarihi = DateTime.Now;
             Id = id;
             string sqlString = genericEntity.GetQuery(this);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<FTK> list = ToList<FTK>(dataTable);
             FTK item = new FTK();
             item = list.FirstOrDefault();
@@ -105,7 +141,7 @@ namespace Model.NBYS
                 ORDER BY Ili,Ilcesi,FTKIslemId, KartNo
             ", kurulusTarihiStr, guncellemeTarihiStr, bolgeStr, iliStr, ilcesiStr);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return dataTable;
         }
         public FTK SelectByIliIlcesi(int ili,int ilcesi, DateTime guncellemeTarihi)
@@ -117,7 +153,7 @@ namespace Model.NBYS
             
             ",ili,ilcesi,guncellemeTarihi.ReturnTRDateFormat());
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<FTK> list = ToList<FTK>(dataTable);
             FTK item = new FTK();
             item = list.FirstOrDefault();
@@ -138,17 +174,16 @@ namespace Model.NBYS
             
             ", ili, ilcesi);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             int sayac = dataTable.Rows[0]["Sayac"].ConvertToInt();
             return sayac;
         }
         public override T Select<T>(int id)
         {
             GenericEntity<FTK> genericEntity = new GenericEntity<FTK>(ProjeConstants.SQL_SELECT);
-            OlusturmaTarihi = DateTime.Now;
             Id = id;
             string sqlString = genericEntity.GetQuery(this);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<FTK> list = ToList<FTK>(dataTable);
             FTK item = new FTK();
             item = list.FirstOrDefault();
@@ -162,7 +197,7 @@ namespace Model.NBYS
                 WHERE  Bolge={0} AND Ilcesi = {1}  
                 GROUP BY Bolge,Ili,Ilcesi", bolge.ReturnQuotedValue(),ProjeConstants.VALILIK_INT);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             int adet = dataTable!=null ? dataTable.Rows.Count : 0;
             return adet;
             
@@ -175,7 +210,7 @@ namespace Model.NBYS
                 WHERE  Ilcesi > 0 AND Bolge={0} 
                 GROUP BY Bolge,Ili,Ilcesi", bolge.ReturnQuotedValue());
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             int adet = dataTable != null ? dataTable.Rows.Count : 0;
             return adet;
 
@@ -189,7 +224,7 @@ namespace Model.NBYS
                     AND (Bolge={0} AND GuncellemeTarihi >= {1})
                 GROUP BY Bolge,Ili,Ilcesi", bolge.ReturnQuotedValue(), guncellemeTarihi.ReturnTRDateFormat());
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             int adet = dataTable != null ? dataTable.Rows.Count : 0;
             return adet;
         }
@@ -201,7 +236,7 @@ namespace Model.NBYS
                 WHERE Bolge={0} AND KurulusTarihi >= {1}
                 GROUP BY Bolge,Ili,Ilcesi", bolge.ReturnQuotedValue(), kurulusTarihi.ReturnTRDateFormat());
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             int adet = dataTable != null ? dataTable.Rows.Count : 0;            
             return adet;
 
@@ -213,29 +248,10 @@ namespace Model.NBYS
                 FROM FTK_Table 
                 ORDER BY Ili,Ilcesi
                 ");
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<FTK> list = ToList<FTK>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
-        }
-        public override bool Update()
-        {
-            bool isSuccess = false;
-            try
-            {
-                if (Id != 0)
-                {
-                    GenericEntity<FTK> genericEntity = new GenericEntity<FTK>(ProjeConstants.SQL_UPDATE);
-                    DegistirmeTarihi = DateTime.Now;
-                    string sqlString = genericEntity.GetQuery(this);
-                    isSuccess = dao.Update2Db(sqlString);
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            return isSuccess;
         }
         public bool DeleteByIslemIdSayac(int ftkIslemId,int sayac)
         {
@@ -259,7 +275,7 @@ namespace Model.NBYS
                     AND  A.Id NOT IN (SELECT Ili FROM FTK_Table WHERE Ilcesi={2}) 
                 ORDER BY A.Bolge, A.Id    
             ", bolgeStr, iliStr, ProjeConstants.VALILIK_INT);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return dataTable;
         }
         public DataTable SelectFTKKuruluOlmayanIlceler(string bolge, int ilId)
@@ -278,7 +294,7 @@ namespace Model.NBYS
                     
                 ORDER BY B.Bolge, B.Id, A.Id     
             ", ProjeConstants.ILCE_MERKEZ.ReturnQuotedValue(), bolgeStr, iliStr);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return dataTable;
         }
         public DataTable SelectFTKUyeleriByIliIlcesiReturnDataTable(int ili, int ilcesi)
@@ -290,7 +306,7 @@ namespace Model.NBYS
                 WHERE Ili={0} AND Ilcesi= {1}
                 ORDER BY FTKGorevi,Adi,Soyadi 
             ", ili, ilcesi);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
 
             return dataTable;
         }

@@ -443,7 +443,7 @@ namespace NBYS_WebParts.FTKListesiWP
                     'order': [[0, 'asc'],[1, 'asc'],[2, 'asc'],[2, 'asc']],//sort IlId,IlceId
                     'scrollY': '300px',
                     'language': {
-                    'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                    'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                         'decimal': ',',
                         'thousands': '.'
                     },

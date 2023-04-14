@@ -6,7 +6,12 @@
 <%@ Import Namespace="Microsoft.SharePoint" %>
 <%@ Register TagPrefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="BolgeKiraciListesiWP.ascx.cs" Inherits="BTYS_Webparts.BolgeKiraciListesiWP.BolgeKiraciListesiWP" %>
-
+<style>
+    .pasif-kiraci {
+        background-color: lightgrey !important;
+        color: black !important;
+    }
+</style>
 <script type="text/javascript">
     //excele export ettikten donup sonra kalmasın diye
     function setFormSubmitToFalse() {
@@ -25,7 +30,15 @@
             </h3>
         </div>
         <div class="card-body mt-1">
+            <div class="row form-group m-0 mb-3 p-2 border">
+                <label class="col-form-label col-2" for="KiraciDDL">Kiracı Seçimi</label>
+                <div class="col-3">
+                    <asp:DropDownList ID="KiraciSecimiDDL" runat="server" class="form-control" Style="height: auto" AutoPostBack="true" OnSelectedIndexChanged="KiraciSecimiDDL_SelectedIndexChanged"></asp:DropDownList>
+                </div>
+            </div>
             <div class="form-group">
+                            <asp:UpdatePanel ID="upPanel" runat="server">
+                <ContentTemplate>
                 <table id="CustomDataTable" class="table table-hover row-border" width="100%">
                     <thead>
                         <tr>
@@ -40,6 +53,21 @@
                     </thead>
                 </table>
             </div>
+                                    </ContentTemplate>
+                <Triggers>
+                    <asp:AsyncPostBackTrigger ControlID="KiraciSecimiDDL" EventName="SelectedIndexChanged" />
+                </Triggers>
+            </asp:UpdatePanel>
+            <asp:UpdateProgress ID="updateProgress" runat="server">
+                <ProgressTemplate>
+                    <div class='loaderMainContainer'>
+                        <div class='loaderContainer'>
+                            <div class='loaderCircle'></div>
+                        </div>
+                    </div>
+
+                </ProgressTemplate>
+            </asp:UpdateProgress>
         </div>
         <div class="card-footer">
             <asp:LinkButton CssClass="btn btn-outline-success float-right" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />

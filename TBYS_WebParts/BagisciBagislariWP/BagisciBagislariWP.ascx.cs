@@ -425,7 +425,7 @@ namespace TBYS_WebParts.BagisciBagislariWP
             ],
             'order': [[3, 'asc']],
             'language': {
-                'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
             },
             responsive: true,
             dom: 'fpirt',

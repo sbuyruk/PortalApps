@@ -1,6 +1,7 @@
 ﻿using Model.IKYS;
 using Model.MTS;
 using Model.Ortak;
+using Model.Portal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -1107,7 +1108,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
             ],
             'order': [[1, 'asc']],
             'language': {
-                'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
             },
             responsive: true,
             dom: 'fpirt',
@@ -1160,7 +1161,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
             'scrollCollapse': true,
             'paging': false,
             'language': {
-                'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                 'decimal': ',',
                 'thousands': '.'
             },

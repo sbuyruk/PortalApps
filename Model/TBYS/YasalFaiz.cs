@@ -23,7 +23,7 @@ namespace Model.TBYS
             string sqlString = string.Format(@"SELECT *
                                FROM YasalFaiz_Table 
                                WHERE  Id={0}", id);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<YasalFaiz> list = ToList<YasalFaiz>(dataTable);
             YasalFaiz yasalFaiz = new YasalFaiz();
             yasalFaiz = list.FirstOrDefault();
@@ -36,42 +36,44 @@ namespace Model.TBYS
             {
                 GenericEntity<YasalFaiz> genericEntity = new GenericEntity<YasalFaiz>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
+                Olusturan = UtilityHelper.GetCurrentUserName();
                 string sqlString = genericEntity.GetQuery(this);
                 int id = dao.Insert(sqlString);
 
                 this.Id = id;
+                if (id > 0 && ProjeConstants.TBYS_SAVE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.TBYS, ProjeConstants.TBYS_YASALFAIZ);
+                }
                 return id;
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
-            //string sqlString = string.Format(@"
-            //                                INSERT INTO YasalFaiz_Table 
-            //                                    (Yil,Ay,AyAdi,FaizOrani,Aciklama,Olusturan, OlusturmaTarihi)
-            //                                VALUES ({0},{1},{2},{3},{4},{5},{6})",
-            //                                Yil.ReturnQuotedValue(), Ay.ReturnQuotedValue(), AyAdi.ReturnQuotedValue(),
-            //                                FaizOrani.ConvertDecimalToString(), Aciklama.ReturnQuotedValue(),
-            //                                Olusturan.ReturnQuotedValue(), DateTime.Now.ReturnTRDateFormat());
-
-
-            //int id = dao.Insert(sqlString);
-
-            //this.Id = id;
-            //return id;
         }
         public override bool Update()
         {
             bool isSuccess = false;
             try
             {
-                if (Id != 0)
+                if (this != null)
                 {
-                    GenericEntity<YasalFaiz> genericEntity = new GenericEntity<YasalFaiz>(ProjeConstants.SQL_UPDATE);
-                    DegistirmeTarihi = DateTime.Now;
-                    string sqlString = genericEntity.GetQuery(this);
-                    isSuccess = dao.Update2Db(sqlString);
+                    YasalFaiz item = Select<YasalFaiz>(Id);
+                    if (Id != 0)
+                    {
+                        GenericEntity<YasalFaiz> genericEntity = new GenericEntity<YasalFaiz>(ProjeConstants.SQL_UPDATE);
+                        DegistirmeTarihi = DateTime.Now;
+                        Degistiren = UtilityHelper.GetCurrentUserName();
+                        string sqlString = genericEntity.GetQuery(this);
+                        isSuccess = dao.Update2Db(sqlString);
+                    }
+                    if (isSuccess && ProjeConstants.TBYS_UPDATE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.TBYS, ProjeConstants.TBYS_YASALFAIZ);
+                    }
                 }
             }
             catch (Exception)
@@ -79,37 +81,41 @@ namespace Model.TBYS
                 throw;
             }
             return isSuccess;
-            //bool isSuccess = false;
-            //if (Id != 0)
-            //{
-            //    string sqlString = string.Format(@"
-            //                            UPDATE YasalFaiz_Table 
-            //                            SET Yil={0},Ay={1},AyAdi={2},FaizOrani={3},Aciklama={4},Degistiren={5},DegistirmeTarihi={6}
-            //                            WHERE Id={7}",
-            //                                Yil.ReturnQuotedValue(), Ay.ReturnQuotedValue(), AyAdi.ReturnQuotedValue(),
-            //                                FaizOrani.ConvertDecimalToString(), Aciklama.ReturnQuotedValue(),
-            //                                Olusturan.ReturnQuotedValue(), DateTime.Now.ReturnTRDateFormat(), Id);
-
-            //    isSuccess = dao.Update2Db(sqlString);
-            //}
-            //return isSuccess;
         }
         public override bool Delete()
         {
-            string sqlString = string.Format(@"DELETE 
-                               FROM YasalFaiz_Table
-                               WHERE Id={0}", Id);
-
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
-
-            return isSuccess;
+            try
+            {
+                bool isDeleted = false;
+                if (Id != 0)
+                {
+                    GenericEntity<YasalFaiz> genericEntity = new GenericEntity<YasalFaiz>(ProjeConstants.SQL_DELETE);
+                    string sqlString = genericEntity.GetQuery(this);
+                    YasalFaiz item = Select<YasalFaiz>(Id);
+                    if (item != null)
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+                    else isDeleted = false;
+                    if (isDeleted && ProjeConstants.TBYS_DELETE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.TBYS, ProjeConstants.TBYS_YASALFAIZ);
+                    }
+                }
+                return isDeleted;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         public override List<T> SelectAll<T>()
         {
             string sqlString = string.Format(@"SELECT *
                                FROM YasalFaiz_Table");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<YasalFaiz> list = ToList<YasalFaiz>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
@@ -120,7 +126,7 @@ namespace Model.TBYS
                 SELECT *
                 FROM YasalFaiz_Table 
                 WHERE Yil={0}", yil.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<YasalFaiz> list = ToList<YasalFaiz>(dataTable);
             return list;
         }
@@ -130,7 +136,7 @@ namespace Model.TBYS
                 SELECT *
                 FROM YasalFaiz_Table 
                 WHERE Yil={0} AND Ay={1}", yil.ReturnQuotedValue(), ay.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<YasalFaiz> list = ToList<YasalFaiz>(dataTable);
             YasalFaiz yasalFaiz = new YasalFaiz();
             yasalFaiz = list.FirstOrDefault();
@@ -144,7 +150,7 @@ namespace Model.TBYS
                 FROM YasalFaiz_Table
                 WHERE  FaizOrani IS NOT Null AND FaizOrani > 0 
                 ORDER BY Yil DESC, Ay DESC");
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 List<YasalFaiz> list = ToList<YasalFaiz>(dataTable);
@@ -163,7 +169,7 @@ namespace Model.TBYS
                 FROM YasalFaiz_Table
                 WHERE  Tufe IS NOT Null AND Tufe > 0 
                 ORDER BY Yil DESC, Ay DESC");
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 List<YasalFaiz> list = ToList<YasalFaiz>(dataTable);
@@ -182,7 +188,7 @@ namespace Model.TBYS
                 FROM YasalFaiz_Table
                 WHERE  Ufe IS NOT Null AND Ufe > 0 
                 ORDER BY Yil DESC, Ay DESC");
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 List<YasalFaiz> list = ToList<YasalFaiz>(dataTable);

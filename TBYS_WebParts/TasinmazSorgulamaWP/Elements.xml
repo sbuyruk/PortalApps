@@ -2,7 +2,7 @@
 <Elements xmlns="http://schemas.microsoft.com/sharepoint/" >
   <Module Name="TasinmazSorgulamaWP" List="113" Url="_catalogs/wp">
     <File Path="TasinmazSorgulamaWP\TasinmazSorgulamaWP.webpart" Url="TBYS_WebParts_TasinmazSorgulamaWP.webpart" Type="GhostableInLibrary" >
-      <Property Name="Group" Value="TBYS_WebParts" />
+      <Property Name="Group" Value="Custom" />
     </File>
   </Module>
 </Elements>

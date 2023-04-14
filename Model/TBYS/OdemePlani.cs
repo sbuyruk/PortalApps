@@ -1,4 +1,5 @@
-﻿using Model.Ortak;
+﻿using DocumentFormat.OpenXml.Wordprocessing;
+using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -32,7 +33,7 @@ namespace Model.TBYS
             string sqlString = string.Format(@"SELECT *
                                FROM OdemePlani_Table 
                                WHERE  Id={0}", id);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<OdemePlani> list = ToList<OdemePlani>(dataTable);
             OdemePlani odemePlani = new OdemePlani();
             odemePlani = list.FirstOrDefault();
@@ -41,72 +42,120 @@ namespace Model.TBYS
         }
         public override int Save()
         {
+            try
+            {
+                GenericEntity<OdemePlani> genericEntity = new GenericEntity<OdemePlani>(ProjeConstants.SQL_INSERT);
+                OlusturmaTarihi = DateTime.Now;
+                Olusturan = UtilityHelper.GetCurrentUserName();
+                string sqlString = genericEntity.GetQuery(this);
+                int id = dao.Insert(sqlString);
 
-            GenericEntity<OdemePlani> genericEntity = new GenericEntity<OdemePlani>(ProjeConstants.SQL_INSERT);
-            OlusturmaTarihi = DateTime.Now;
-            string sqlString = genericEntity.GetQuery(this);
-            int id = dao.Insert(sqlString);
-
-            this.Id = id;
-            return id;
-
+                this.Id = id;
+                if (id > 0 && ProjeConstants.TBYS_SAVE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.TBYS, ProjeConstants.TBYS_ODEMEPLANI);
+                }
+                return id;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
-
         public override bool Update()
         {
             bool isSuccess = false;
-            if (Id != 0)
+            try
             {
-                GenericEntity<OdemePlani> genericEntity = new GenericEntity<OdemePlani>(ProjeConstants.SQL_UPDATE);
-                DegistirmeTarihi = DateTime.Now;
-                string sqlString = genericEntity.GetQuery(this);
-                isSuccess = dao.Update2Db(sqlString);
-
+                if (this != null)
+                {
+                    OdemePlani item = Select<OdemePlani>(Id);
+                    if (Id != 0)
+                    {
+                        GenericEntity<OdemePlani> genericEntity = new GenericEntity<OdemePlani>(ProjeConstants.SQL_UPDATE);
+                        DegistirmeTarihi = DateTime.Now;
+                        Degistiren = UtilityHelper.GetCurrentUserName();
+                        string sqlString = genericEntity.GetQuery(this);
+                        isSuccess = dao.Update2Db(sqlString);
+                    }
+                    if (isSuccess && ProjeConstants.TBYS_UPDATE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.TBYS, ProjeConstants.TBYS_ODEMEPLANI);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
             }
             return isSuccess;
         }
         public override bool Delete()
         {
-            string sqlString = string.Format(@"DELETE 
-                               FROM OdemePlani_Table
-                               WHERE Id={0}", Id);
-
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
-
-            return isSuccess;
+            try
+            {
+                bool isDeleted = false;
+                if (Id != 0)
+                {
+                    GenericEntity<OdemePlani> genericEntity = new GenericEntity<OdemePlani>(ProjeConstants.SQL_DELETE);
+                    string sqlString = genericEntity.GetQuery(this);
+                    OdemePlani item = Select<OdemePlani>(Id);
+                    if (item != null)
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+                    else isDeleted = false;
+                    if (isDeleted && ProjeConstants.TBYS_DELETE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.TBYS, ProjeConstants.TBYS_ODEMEPLANI);
+                    }
+                }
+                return isDeleted;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         public bool DeleteBySozlesmeId(int sozlesmeId)
         {
-            string sqlString = string.Format(@"
+            string sqlString = string.Format(@" 
                 DELETE OdemePlani_Table 
                 WHERE SozlesmeId={0}", sozlesmeId);
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
-            return isSuccess;
+            bool isDeleted = dao.DeleteFromDb(sqlString, this);
+            if (isDeleted && ProjeConstants.TBYS_DELETE_LOG)
+            {
+                OlayKayit olayKayit = new OlayKayit();
+                olayKayit.SilmeOlayKaydet(this, ProjeConstants.TBYS, ProjeConstants.TBYS_ODEMEPLANI);
+            }
+            return isDeleted;
         }
         public override List<T> SelectAll<T>()
         {
             string sqlString = string.Format(@"SELECT *
                                FROM OdemePlani_Table");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<OdemePlani> list = ToList<OdemePlani>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
         }
 
-
         public DataTable SelectBorcluOdemePlanlariByBolgeTarih(string bolge, DateTime ilkTarih, DateTime sonTarih, int aySayisiBas, int aySayisiBit)
         {
             string sqlString = GetBorcluOdemePlanlariByBolgeTarihSqlScript(bolge, ilkTarih, sonTarih, aySayisiBas, aySayisiBit);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return dataTable;
         }
         public string SelectBorcluOdemePlanlariByBolgeTarihJson(string bolge, DateTime ilkTarih, DateTime sonTarih, int aySayisi, int aySayisiBit, ref int kayitSayisi)
         {
             string sqlString = GetBorcluOdemePlanlariByBolgeTarihSqlScript(bolge, ilkTarih, sonTarih, aySayisi, aySayisiBit);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             kayitSayisi = dataTable == null ? 0 : dataTable.Rows.Count;
             string json = ToJSON(dataTable);
             return json;
@@ -189,7 +238,7 @@ namespace Model.TBYS
 	                
                 ", ilkTarih.ReturnTRDateFormat(), sonTarih.ReturnTRDateFormat(), bolgeStr);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return dataTable;
         }
         public List<OdemePlani> SelectBySozlesmeId(int sozlesmeId)
@@ -198,7 +247,7 @@ namespace Model.TBYS
                 SELECT * FROM OdemePlani_Table
                 WHERE SozlesmeId={0}
                 ORDER BY Sira ", sozlesmeId.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<OdemePlani> list = ToList<OdemePlani>(dataTable);
             return list;
 
@@ -209,7 +258,7 @@ namespace Model.TBYS
                 SELECT * FROM OdemePlani_Table
                 WHERE SozlesmeId={0} AND Sira={1}
             ", sozlesmeId.ReturnQuotedValue(), sira.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<OdemePlani> list = ToList<OdemePlani>(dataTable);
             OdemePlani odemePlani = list.FirstOrDefault<OdemePlani>();
             return odemePlani;
@@ -231,7 +280,7 @@ namespace Model.TBYS
                 ORDER BY C.SorumluBolge, B.KiralamaAmaci
                 
             ", bolge.ReturnQuotedValue(), yil, ay);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return dataTable;
             //SELECT E.Bolge, D.KullanimSekli, SUM(OdenenTutar) ToplamOdemeTutari, COUNT(DISTINCT(B.KiraciId)) ToplamKiraciSayisi
             //    FROM Odeme_Table A
@@ -252,7 +301,7 @@ namespace Model.TBYS
                 {1} 
                 ORDER BY VadeBasTar ", sozlesmeId.ReturnQuotedValue(), vadeBasTarStr);
             //Sira!=0 olmalı çünkü ilk ay devir ayı
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<OdemePlani> list = ToList<OdemePlani>(dataTable);
             OdemePlani odemePlani = list.FirstOrDefault<OdemePlani>();
             return odemePlani;
@@ -262,7 +311,7 @@ namespace Model.TBYS
         {
             string sqlString = string.Format(@"SELECT * FROM OdemePlani_Table
                                WHERE SozlesmeId={0}", sozlesmeId.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<OdemePlani> list = ToList<OdemePlani>(dataTable);
             return list.Count > 0;
 
@@ -275,7 +324,7 @@ namespace Model.TBYS
                 FROM OdemePlani_Table 
                 WHERE SozlesmeId = {0}
                 ORDER BY VadeBasTar ", sozlesmeId);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<OdemePlani> list = ToList<OdemePlani>(dataTable);
             OdemePlani odemePlani = list.LastOrDefault<OdemePlani>();
             return odemePlani;
@@ -288,7 +337,7 @@ namespace Model.TBYS
                 FROM OdemePlani_Table 
                 WHERE SozlesmeId = {0} AND Sira=1
                 ", sozlesmeId);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<OdemePlani> list = ToList<OdemePlani>(dataTable);
             OdemePlani odemePlani = list.FirstOrDefault<OdemePlani>();
             return odemePlani;
@@ -311,7 +360,7 @@ namespace Model.TBYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -358,7 +407,7 @@ namespace Model.TBYS
                 }
 
                 OdemePlani odemePlaniDevir = new OdemePlani();
-                odemePlaniDevir = KayitEkleDevir(kiraSozlesme, kiraSozlesme.DevirAnaPara, kiraSozlesme.DevirFaizTutari, "Önceki Sözleşmeden devir", 0);
+                odemePlaniDevir = SaveDevir(kiraSozlesme, kiraSozlesme.DevirAnaPara, kiraSozlesme.DevirFaizTutari, "Önceki Sözleşmeden devir", 0);
 
                 for (int i = 1; i <= taksitSayisi; i++)//taksitlere böl
                 {
@@ -372,7 +421,7 @@ namespace Model.TBYS
                     }
                     //odeme sozlesme bas ayda yapıldı o yüzden bit ayda ödeme olmasın
                     OdemePlani odemePlani = new OdemePlani();
-                    odemePlani = kayitEkle(kiraSozlesme, yil, ay, vadeBasTarX, vadeBitTarX, sozBastarDate, bittarDate, aylikKira, i);
+                    odemePlani = SaveNew(kiraSozlesme, yil, ay, vadeBasTarX, vadeBitTarX, sozBastarDate, bittarDate, aylikKira, i);
                     //odemeBasTar ilk ay başlasın zekayi bey 16/11/2017
                     vadeBasTarX = vadeBasTarX.AddMonths(1);
                     vadeBitTarX = vadeBasTarX.AddMonths(1).AddDays(-1); //vadeBitTarX.AddMonths(1) -- bu şubat ayı için yanlış çalışıyor, 29 şubat ayın son günü, 1 ay ekleyince 29 mart oluyor, ama ayın sonu olmuyordu. SB
@@ -384,7 +433,7 @@ namespace Model.TBYS
                     string ay = vadeBasTarX.ToString("MMMM", culturInfo);
 
                     OdemePlani odemePlani = new OdemePlani();
-                    odemePlani = kayitEkle(kiraSozlesme, yil, ay, vadeBasTarX, vadeBitTarX, sozBastarDate, bittarDate, 0, i);
+                    odemePlani = SaveNew(kiraSozlesme, yil, ay, vadeBasTarX, vadeBitTarX, sozBastarDate, bittarDate, 0, i);
                     vadeBasTarX = vadeBasTarX.AddMonths(1);
                     vadeBitTarX = vadeBasTarX.AddMonths(1).AddDays(-1);
                 }
@@ -399,7 +448,7 @@ namespace Model.TBYS
 
             return isSaved;
         }
-        private OdemePlani kayitEkle(KiraSozlesme kiraSozlesme, int pYil, string pAy, DateTime pVadeBasTar, DateTime pVadeBitTar,
+        private OdemePlani SaveNew(KiraSozlesme kiraSozlesme, int pYil, string pAy, DateTime pVadeBasTar, DateTime pVadeBitTar,
             DateTime pOdemeBasTar, DateTime pOdemeBitTar, decimal aylikKira, int sira)
         {
 
@@ -420,7 +469,7 @@ namespace Model.TBYS
             odemePlani.Save();
             return odemePlani;
         }
-        private OdemePlani KayitEkleDevir(KiraSozlesme kiraSozlesme, decimal devirAnaPara, decimal devirFaizTutari, string aciklama, int sira)
+        private OdemePlani SaveDevir(KiraSozlesme kiraSozlesme, decimal devirAnaPara, decimal devirFaizTutari, string aciklama, int sira)
         {
             DateTime pVadeBitTar = kiraSozlesme.SozBasTar.AddDays(-1);
             OdemePlani odemePlani = new OdemePlani();
@@ -439,92 +488,6 @@ namespace Model.TBYS
             odemePlani.Sira = sira;
             odemePlani.Save();
             return odemePlani;
-        }
-
-        public List<OdemePlani> SelectByKiraciIdReturnList(int kiraciId)
-        {
-            string sqlString = string.Format(@"
-                SELECT * from OdemePlani_Table A
-                    Inner Join KiraSozlesme_Table B On B.Id=A.SozlesmeId
-                WHERE B.KiraciId={0}
-                ORDER BY SozlesmeId, Sira
-                ", kiraciId);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
-            List<OdemePlani> list = ToList<OdemePlani>(dataTable);
-
-            return (list);
-        }
-        public OdemePlani SelectNext(int kiraciId)
-        {
-            OdemePlani odemePlani = new OdemePlani();
-            string sqlString = string.Format(@"SELECT * FROM OdemePlani_Table
-                                            WHERE Id > {0}
-                                            ORDER BY Id ", kiraciId.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
-            if (dataTable != null)
-            {
-                List<OdemePlani> list = ToList<OdemePlani>(dataTable);
-                odemePlani = list.FirstOrDefault();
-            }
-            else
-            {
-                odemePlani = SelectMin();
-
-            }
-            return odemePlani;
-        }
-        public OdemePlani SelectPrev(int kiraciId)
-        {
-            OdemePlani odemePlani = new OdemePlani();
-            string sqlString = string.Format(@"SELECT * FROM OdemePlani_Table
-                                            WHERE Id < {0}
-                                            ORDER BY Id ", kiraciId.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
-            if (dataTable != null)
-            {
-                List<OdemePlani> list = ToList<OdemePlani>(dataTable);
-                odemePlani = list.FirstOrDefault();
-            }
-            else
-            {
-                odemePlani = SelectMax();
-
-            }
-            return odemePlani;
-        }
-        public OdemePlani SelectMax()
-        {
-            string sqlString = string.Format(@"SELECT MAX(Id) Id  FROM OdemePlani_Table ");
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
-            if (dataTable != null)
-            {
-                DataRow row = dataTable.Rows[0];
-                int sozlesmeId = row["Id"].ConvertToInt();
-                OdemePlani odemePlani = new OdemePlani();
-                odemePlani = odemePlani.Select<OdemePlani>(sozlesmeId);
-                return odemePlani;
-            }
-            else
-            {
-                return null;
-            }
-        }
-        public OdemePlani SelectMin()
-        {
-            string sqlString = string.Format(@"SELECT MIN(Id) Id  FROM OdemePlani_Table ");
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
-            if (dataTable != null)
-            {
-                DataRow row = dataTable.Rows[0];
-                int sozlesmeId = row["Id"].ConvertToInt();
-                OdemePlani odemePlani = new OdemePlani();
-                odemePlani = odemePlani.Select<OdemePlani>(sozlesmeId);
-                return odemePlani;
-            }
-            else
-            {
-                return null;
-            }
         }
 
     }

@@ -36,7 +36,7 @@
                             </div>
                         </div>
                         <div class="form-group col-2">
-                             <div class="form-group">
+                            <div class="form-group">
                                 <label for="EvrakSayisiYiliTxt" class="col-form-label">Evrak Sayısı Yılı</label>
                                 <asp:TextBox ID="EvrakSayisiYiliTxt" runat="server" CssClass="form-control"></asp:TextBox>
                             </div>
@@ -76,12 +76,16 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group border m-1" >
-                        <div class="table loader"  style="display:none" id="TableDiv" runat="server">
-                            <input id="globalFilter" placeholder="Aranacak Kelime" size="30" />
-                            <div id="tblfilter" class="table"></div>
-                            <div id="messages"></div>
-                        </div>
+                    <div class="form-group border m-1">
+                        <table id="CustomDataTable" class="table table-striped table-bordered" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Kiracı</th>
+                                    <th>Bölge</th>
+                                    <th>Borç</th>
+                                </tr>
+                            </thead>
+                        </table>
                         <div class="form-group">
                             <asp:Label ID="TableDataLbl" runat="server" Text=""></asp:Label>
                         </div>

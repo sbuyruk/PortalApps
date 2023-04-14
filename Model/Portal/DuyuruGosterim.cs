@@ -26,7 +26,7 @@ namespace Model.Portal
             string sqlString = string.Format(@"SELECT *
                                FROM DuyuruGosterim_Table 
                                WHERE  Id={0}", id);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<DuyuruGosterim> list = ToList<DuyuruGosterim>(dataTable);
             DuyuruGosterim duyuruGosterim = new DuyuruGosterim();
             duyuruGosterim = list.FirstOrDefault();
@@ -40,7 +40,7 @@ namespace Model.Portal
             Id = id;
             string sqlString = genericEntity.GetQuery(this);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<DuyuruGosterim> list = ToList<DuyuruGosterim>(dataTable);
             DuyuruGosterim duyuruGosterim = new DuyuruGosterim();
             duyuruGosterim = list.FirstOrDefault();
@@ -104,7 +104,7 @@ namespace Model.Portal
                 FROM DuyuruGosterim_Table
                 ");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<DuyuruGosterim> list = ToList<DuyuruGosterim>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
@@ -118,7 +118,7 @@ namespace Model.Portal
                 ORDER BY Id DESC
                 ", duyuruId);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<DuyuruGosterim> list = ToList<DuyuruGosterim>(dataTable);
             DuyuruGosterim dg = list.FirstOrDefault();
             return dg;

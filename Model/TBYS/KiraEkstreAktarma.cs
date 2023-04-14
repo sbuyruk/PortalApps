@@ -1,4 +1,5 @@
 ﻿using DAO.Ortak;
+using Model.NBYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -38,41 +39,92 @@ namespace Model.TBYS
         public bool Uyari { get; set; }
         public int OdemeSebebiId { get; set; }
 
-        public override bool Delete()
-        {
-            string sqlString = string.Format(@"DELETE 
-                               FROM KiraEkstreAktarma_Table
-                               WHERE Id={0}", Id);
-
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
-
-            return isSuccess;
-        }
         public override int Save()
         {
             try
             {
                 GenericEntity<KiraEkstreAktarma> genericEntity = new GenericEntity<KiraEkstreAktarma>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
+                Olusturan = UtilityHelper.GetCurrentUserName();
                 string sqlString = genericEntity.GetQuery(this);
                 int id = dao.Insert(sqlString);
 
                 this.Id = id;
+                if (id > 0 && ProjeConstants.TBYS_SAVE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.TBYS, ProjeConstants.TBYS_KIRAEKSTREAKTARMA);
+                }
                 return id;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public override bool Update()
+        {
+            bool isSuccess = false;
+            try
+            {
+                if (this != null)
+                {
+                    KiraEkstreAktarma item = Select<KiraEkstreAktarma>(Id);
+                    if (Id != 0)
+                    {
+                        GenericEntity<KiraEkstreAktarma> genericEntity = new GenericEntity<KiraEkstreAktarma>(ProjeConstants.SQL_UPDATE);
+                        DegistirmeTarihi = DateTime.Now;
+                        Degistiren = UtilityHelper.GetCurrentUserName();
+                        string sqlString = genericEntity.GetQuery(this);
+                        isSuccess = dao.Update2Db(sqlString);
+                    }
+                    if (isSuccess && ProjeConstants.TBYS_UPDATE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.TBYS, ProjeConstants.TBYS_KIRAEKSTREAKTARMA);
+                    }
+                }
             }
             catch (Exception)
             {
-
                 throw;
             }
-
+            return isSuccess;
+        }
+        public override bool Delete()
+        {
+            try
+            {
+                bool isDeleted = false;
+                if (Id != 0)
+                {
+                    GenericEntity<KiraEkstreAktarma> genericEntity = new GenericEntity<KiraEkstreAktarma>(ProjeConstants.SQL_DELETE);
+                    string sqlString = genericEntity.GetQuery(this);
+                    KiraEkstreAktarma item = Select<KiraEkstreAktarma>(Id);
+                    if (item != null)
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+                    else isDeleted = false;
+                    if (isDeleted && ProjeConstants.TBYS_DELETE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.TBYS, ProjeConstants.TBYS_KIRAEKSTREAKTARMA);
+                    }
+                }
+                return isDeleted;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         public override T Select<T>(int id)
         {
             string sqlString = string.Format(@"SELECT *
                                FROM KiraEkstreAktarma_Table 
                                WHERE  Id={0}", id);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<KiraEkstreAktarma> list = ToList<KiraEkstreAktarma>(dataTable);
             KiraEkstreAktarma kiraEkstreAktarma = new KiraEkstreAktarma();
             kiraEkstreAktarma = list.FirstOrDefault();
@@ -83,29 +135,10 @@ namespace Model.TBYS
             string sqlString = string.Format(@"SELECT *
                                FROM KiraEkstreAktarma_Table");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<KiraEkstreAktarma> list = ToList<KiraEkstreAktarma>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
-        }
-        public override bool Update()
-        {
-            bool isSuccess = false;
-            try
-            {
-                if (Id != 0)
-                {
-                    GenericEntity<KiraEkstreAktarma> genericEntity = new GenericEntity<KiraEkstreAktarma>(ProjeConstants.SQL_UPDATE);
-                    DegistirmeTarihi = DateTime.Now;
-                    string sqlString = genericEntity.GetQuery(this);
-                    isSuccess = dao.Update2Db(sqlString);
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            return isSuccess;
         }
         public string GetInsertSQL(string extId)
         {
@@ -161,7 +194,7 @@ namespace Model.TBYS
                 SELECT *
                 FROM KiraEkstreAktarma_Table 
                 WHERE  KiraciId >0 AND Adi = {0}", adi.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<KiraEkstreAktarma> list = ToList<KiraEkstreAktarma>(dataTable);
             return (list);
         }    
@@ -175,7 +208,7 @@ namespace Model.TBYS
                 WHERE Id in ({0})
                 ORDER BY AktarildiMi,Id DESC, OdemeTarihi desc, Adi
                 ", idListStr);
-                DataTable dataTable = dao.selectFromDb(sqlString, "");
+                DataTable dataTable = dao.SelectFromDb(sqlString, "");
                 List<KiraEkstreAktarma> list = ToList<KiraEkstreAktarma>(dataTable);
 
                 return list;
@@ -190,7 +223,7 @@ namespace Model.TBYS
             string sqlString = string.Format(@"SELECT *
                                FROM KiraEkstreAktarma_Table 
                                WHERE  IslemNo={0}", islemNo.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<KiraEkstreAktarma> list = ToList<KiraEkstreAktarma>(dataTable);
             return (list);
         }
@@ -204,7 +237,7 @@ namespace Model.TBYS
                     AND Tutar={2}
                     AND OdemeTarihi={3}                    
                 ", adi.ReturnQuotedValue(), soyadi.ReturnQuotedValue(), tutar.ReturnQuotedValue(), odemeTarihi.ReturnTRDateFormat());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<KiraEkstreAktarma> list = ToList<KiraEkstreAktarma>(dataTable);
             return (list);
         }
@@ -218,7 +251,7 @@ namespace Model.TBYS
                 WHERE Id in ({0})
                 ORDER BY AktarildiMi, OdemeTarihi desc, Adi
                 ", idListStr);
-                DataTable dataTable = dao.selectFromDb(sqlString, "");
+                DataTable dataTable = dao.SelectFromDb(sqlString, "");
                 List<KiraEkstreAktarma> list = ToList<KiraEkstreAktarma>(dataTable);
                 rowCount = dataTable != null ? dataTable.Rows.Count : 0;
                 return list;
@@ -259,7 +292,7 @@ namespace Model.TBYS
                 {2}
                 ORDER BY AktarildiMi,  OdemeTarihi desc, A.Id, A.Adi
                 ", aktarilanlarHaricStr,kiraTeminatDigerStr,tarih);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             //List<EkstreAktarma> list = ToList<EkstreAktarma>(dataTable);
             rowCount = dataTable != null ? dataTable.Rows.Count : 0;
             return dataTable;
@@ -280,7 +313,46 @@ namespace Model.TBYS
                 WHERE A.Id={0}
                 ORDER BY AktarildiMi,  OdemeTarihi desc, A.Id, A.Adi
                 ", ekstreAktarmaId);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            return dataTable;
+        }
+
+        public DataTable SelectTarihOdemeSebebi(DateTime tarih, int odemeSebebiId)
+        {
+            DateTime bastar = new DateTime(tarih.Year, tarih.Month, tarih.Day);
+            DateTime bittar = UtilityHelper.TariheSaatEkle(bastar, "23:59");
+            string odemeSebebiIdStr = odemeSebebiId == ProjeConstants.HEPSI_INT ? string.Empty : string.Format(" AND (A.odemeSebebiId={0} OR C.odemeSebebiId={0}) ", odemeSebebiId);
+            string sqlString = string.Format(@"
+                SELECT 
+	                A.OdemeTarihi,A.OdemeSebebiId,B.OdemeSebebi OdemeSebebiA,D.OdemeSebebi OdemeSebebiB, A.Adi AdiA,E.Adi AdiB,E.Soyadi,A.Tutar TutarA, C.Tutar TutarB,A.Aciklama AciklamaA ,C.Aciklama AciklamaB
+	            FROM KiraEkstreAktarma_Table A
+                    LEFT JOIN OdemeSebebiTanim_Table B ON B.Id=A.OdemeSebebiId
+                    LEFT JOIN OdemeAyristirma_Table C ON C.KiraEkstreAktarmaId=A.Id
+                    LEFT JOIN OdemeSebebiTanim_Table D ON D.Id=C.OdemeSebebiId
+                    LEFT JOIN Kiraci_Table E ON E.Id=A.KiraciId
+                WHERE A.OdemeTarihi BETWEEN {0} AND {1}
+                    {2}
+                ", bastar.ReturnTRDateFormat(),bittar.ReturnTRDateFormat(), odemeSebebiIdStr);
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            return dataTable;
+        }
+        public DataTable SelectSumTutarByTarihOdemeSebebi(DateTime tarih, int odemeSebebiId)
+        {
+            DateTime bastar = new DateTime(tarih.Year, tarih.Month, tarih.Day);
+            DateTime bittar = UtilityHelper.TariheSaatEkle(bastar, "23:59");
+            string odemeSebebiIdStr = odemeSebebiId == ProjeConstants.HEPSI_INT ? string.Empty : string.Format(" AND (A.odemeSebebiId={0} OR C.odemeSebebiId={0}) ", odemeSebebiId);
+            string sqlString = string.Format(@"
+                SELECT 
+	                A.OdemeTarihi,A.OdemeSebebiId,B.OdemeSebebi OdemeSebebiA,D.OdemeSebebi OdemeSebebiB, A.Adi AdiA,E.Adi AdiB,E.Soyadi,A.Tutar TutarA, C.Tutar TutarB,A.Aciklama AciklamaA ,C.Aciklama AciklamaB
+	            FROM KiraEkstreAktarma_Table A
+                    LEFT JOIN OdemeSebebiTanim_Table B ON B.Id=A.OdemeSebebiId
+                    LEFT JOIN OdemeAyristirma_Table C ON C.KiraEkstreAktarmaId=A.Id
+                    LEFT JOIN OdemeSebebiTanim_Table D ON D.Id=C.OdemeSebebiId
+                    LEFT JOIN Kiraci_Table E ON E.Id=A.KiraciId
+                WHERE A.OdemeTarihi BETWEEN {0} AND {1}
+                    {2}
+                ", bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat(), odemeSebebiIdStr);
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return dataTable;
         }
     }

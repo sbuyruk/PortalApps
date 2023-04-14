@@ -19,31 +19,26 @@ namespace Model.NBYS
         public DateTime IslemTarihi { get; set; }
         public string Aciklama { get; set; }
         //Methods
-        public override bool Delete()
-        {
-            string sqlString = string.Format(@"DELETE 
-                               FROM SMSAylikBagis_Table
-                               WHERE Id={0}", Id);
-
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
-
-            return isSuccess;
-        }
         public override int Save()
         {
             try
             {
                 GenericEntity<SMSAylikBagis> genericEntity = new GenericEntity<SMSAylikBagis>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
+                Olusturan = UtilityHelper.GetCurrentUserName();
                 string sqlString = genericEntity.GetQuery(this);
                 int id = dao.Insert(sqlString);
 
                 this.Id = id;
+                if (id > 0 && ProjeConstants.NBYS_SAVE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.NBYS, ProjeConstants.NBYS_SMSAYLIKBAGIS);
+                }
                 return id;
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
         }
@@ -52,12 +47,22 @@ namespace Model.NBYS
             bool isSuccess = false;
             try
             {
-                if (Id != 0)
+                if (this != null)
                 {
-                    GenericEntity<SMSAylikBagis> genericEntity = new GenericEntity<SMSAylikBagis>(ProjeConstants.SQL_UPDATE);
-                    DegistirmeTarihi = DateTime.Now;
-                    string sqlString = genericEntity.GetQuery(this);
-                    isSuccess = dao.Update2Db(sqlString);
+                    SMSAylikBagis item = Select<SMSAylikBagis>(Id);
+                    if (Id != 0)
+                    {
+                        GenericEntity<SMSAylikBagis> genericEntity = new GenericEntity<SMSAylikBagis>(ProjeConstants.SQL_UPDATE);
+                        DegistirmeTarihi = DateTime.Now;
+                        Degistiren = UtilityHelper.GetCurrentUserName();
+                        string sqlString = genericEntity.GetQuery(this);
+                        isSuccess = dao.Update2Db(sqlString);
+                    }
+                    if (isSuccess && ProjeConstants.NBYS_UPDATE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.NBYS, ProjeConstants.NBYS_SMSAYLIKBAGIS);
+                    }
                 }
             }
             catch (Exception)
@@ -66,12 +71,40 @@ namespace Model.NBYS
             }
             return isSuccess;
         }
+        public override bool Delete()
+        {
+            try
+            {
+                bool isDeleted = false;
+                if (Id != 0)
+                {
+                    GenericEntity<SMSAylikBagis> genericEntity = new GenericEntity<SMSAylikBagis>(ProjeConstants.SQL_DELETE);
+                    string sqlString = genericEntity.GetQuery(this);
+                    SMSAylikBagis item = Select<SMSAylikBagis>(Id);
+                    if (item != null)
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+                    else isDeleted = false;
+                    if (isDeleted && ProjeConstants.NBYS_DELETE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.NBYS, ProjeConstants.NBYS_SMSAYLIKBAGIS);
+                    }
+                }
+                return isDeleted;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         public override T Select<T>(int id)
         {
             string sqlString = string.Format(@"SELECT *
                                FROM SMSAylikBagis_Table 
                                WHERE  Id={0}", id);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<SMSAylikBagis> list = ToList<SMSAylikBagis>(dataTable);
             SMSAylikBagis sMSBagis = new SMSAylikBagis();
             sMSBagis = list.FirstOrDefault();
@@ -82,7 +115,7 @@ namespace Model.NBYS
             string sqlString = string.Format(@"SELECT *
                                FROM SMSAylikBagis_Table");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<SMSAylikBagis> list = ToList<SMSAylikBagis>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
@@ -93,6 +126,7 @@ namespace Model.NBYS
             {
                 GenericEntity<SMSAylikBagis> genericEntity = new GenericEntity<SMSAylikBagis>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
+                Olusturan = UtilityHelper.GetCurrentUserName();
                 string sqlString = genericEntity.GetQuery(this, extId) + " ;SELECT SCOPE_IDENTITY() ";
 
                 return sqlString;
@@ -108,7 +142,8 @@ namespace Model.NBYS
             try
             {
                 GenericEntity<SMSAylikBagis> genericEntity = new GenericEntity<SMSAylikBagis>(ProjeConstants.SQL_UPDATE);
-                OlusturmaTarihi = DateTime.Now;
+                DegistirmeTarihi = DateTime.Now;
+                Degistiren = UtilityHelper.GetCurrentUserName();
                 string sqlString = genericEntity.GetQuery(this, extId);
 
                 return sqlString;
@@ -129,7 +164,7 @@ namespace Model.NBYS
                 WHERE 
                     Yil = {0}
                 ORDER BY Ay", yil);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<SMSAylikBagis> list = ToList<SMSAylikBagis>(dataTable);
             return list;
         }

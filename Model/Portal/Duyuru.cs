@@ -26,7 +26,7 @@ namespace Model.Portal
             string sqlString = string.Format(@"SELECT *
                                FROM Duyuru_Table 
                                WHERE  Id={0}", id);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Duyuru> list = ToList<Duyuru>(dataTable);
             Duyuru duyuru = new Duyuru();
             duyuru = list.FirstOrDefault();
@@ -40,7 +40,7 @@ namespace Model.Portal
             Id = id;
             string sqlString = genericEntity.GetQuery(this);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Duyuru> list = ToList<Duyuru>(dataTable);
             Duyuru duyuru = new Duyuru();
             duyuru = list.FirstOrDefault();
@@ -73,7 +73,7 @@ namespace Model.Portal
                 FROM Duyuru_Table 
                 WHERE  YayinBasTar <= {0} AND YayinBitTar >={0}
                 ORDER BY YayinBasTar,YayinBitTar DESC", now.ReturnTRDateFormat());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Duyuru> list = ToList<Duyuru>(dataTable);
 
             return list;
@@ -134,7 +134,7 @@ namespace Model.Portal
                 , tekrar.ReturnQuotedValue(), saatDakika.ReturnQuotedValue());
             }
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Duyuru> list = ToList<Duyuru>(dataTable);
 
             return list;
@@ -175,7 +175,7 @@ namespace Model.Portal
                 FROM Duyuru_Table
                 ");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Duyuru> list = ToList<Duyuru>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
@@ -194,7 +194,7 @@ namespace Model.Portal
                 ORDER BY Aktif Desc, YayinBasTar DESC, Popup 
                 ");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
 
             List<Duyuru> list = ToList<Duyuru>(dataTable);
 

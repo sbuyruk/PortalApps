@@ -295,7 +295,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
                 'scrollCollapse': true,
                 'paging': false,
                 'language': {
-                    'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                    'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                     'decimal': ',',
                     'thousands': '.'
                 },
@@ -657,7 +657,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
 
             yeniKayitbitenKiraSozlesme.Olusturan = UtilityHelper.GetCurrentUserLoginName();
             yeniKayitbitenKiraSozlesme.Aktif = false;
-            yeniKayitbitenKiraSozlesme.SaveSozlesme();
+            yeniKayitbitenKiraSozlesme.Save();
             if (yeniKayitbitenKiraSozlesme.Id > 0)
             {
 

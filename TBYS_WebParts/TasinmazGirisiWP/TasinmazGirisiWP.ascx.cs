@@ -408,6 +408,8 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 CiltNoTxt.Text = tasinmaz.CiltNo;
                 CinsiTxt.Text = tasinmaz.Cinsi;
                 EmlakBeyanDegeriTxt.Value = tasinmaz.EmlakBeyanDegeri.ToString();
+                TapuTasinmazNoTxt.Value = tasinmaz.TapuTasinmazNo;
+                InsaYiliTxt.Value = tasinmaz.InsaYili;
                 EmlakSicilNoTxt.Text = tasinmaz.EmlakSicilNo;
                 TapuTarihiTxt.Value = tasinmaz.TapuTarihi.ConvertToDatetimeEmptyIfNull();
                 ListItem ilItem = IliDDL.Items.FindByText(tasinmaz.Ili);
@@ -478,6 +480,8 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             tasinmaz.CiltNo = CiltNoTxt.Text;
             tasinmaz.Cinsi = CinsiTxt.Text;
             tasinmaz.EmlakBeyanDegeri = EmlakBeyanDegeriTxt.Value.ConvertToDecimal();
+            tasinmaz.TapuTasinmazNo = TapuTasinmazNoTxt.Value;
+            tasinmaz.InsaYili = InsaYiliTxt.Value;
             tasinmaz.TahminiRayicDegeri = TahminiRayicDegeriTxt.Value.ConvertToDecimal();
             tasinmaz.EmlakSicilNo = EmlakSicilNoTxt.Text;
             tasinmaz.Ilcesi = IlcesiDDL.SelectedItem.ToString();
@@ -567,6 +571,8 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 tasinmaz.Cinsi = CinsiTxt.Text;
                 tasinmaz.EmlakBeyanDegeri = EmlakBeyanDegeriTxt.Value.ConvertToDecimal();
                 tasinmaz.TahminiRayicDegeri = TahminiRayicDegeriTxt.Value.ConvertToDecimal();
+                tasinmaz.TapuTasinmazNo = TapuTasinmazNoTxt.Value;
+                tasinmaz.InsaYili = InsaYiliTxt.Value;
                 tasinmaz.EmlakSicilNo = EmlakSicilNoTxt.Text;
                 tasinmaz.Ilcesi = IlcesiDDL.SelectedItem.ToString();
                 ListItem ilItem = IliDDL.SelectedItem;

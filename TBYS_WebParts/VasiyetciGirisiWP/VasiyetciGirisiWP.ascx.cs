@@ -229,8 +229,10 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
                     YevmiyeNumarasiTxt.Text = vasiyetci.YevmiyeNumarasi;
                     VasiyetcininTalebiTxt.Text = vasiyetci.VasiyetcininTalebi;
                     AciklamaTxt.Text = vasiyetci.Aciklama;
+                    UtilityHelper.SetDDLValue(VasiyetinDurumuDDL,vasiyetci.VasiyetinDurumu);
                     string dosyaAdi = "Vasiyet" + vasiyetci.Id + ".pdf";
                     PdfDosyaLinkiEkle(ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi);
+                    
                 }
                 else
                 {
@@ -563,7 +565,23 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
             {
                 ListItem li = new ListItem(ProjeConstants.VASIYETIN_KONUSU_KAPALIVASIYET);
                 VasiyetCinsiDDL.Items.Add(li);
-            }else if (vasiyetKonusu.Equals(ProjeConstants.VASIYETIN_KONUSU_TUM_TASINMAZLAR))
+            }
+            else if (vasiyetKonusu.Equals(ProjeConstants.VASIYETIN_KONUSU_EVESYASI))
+            {
+                ListItem li = new ListItem(ProjeConstants.VASIYETIN_KONUSU_EVESYASI);
+                VasiyetCinsiDDL.Items.Add(li);
+            }
+            else if (vasiyetKonusu.Equals(ProjeConstants.VASIYETIN_KONUSU_BILGIEKSIK))
+            {
+                ListItem li = new ListItem(ProjeConstants.VASIYETIN_KONUSU_BILGIEKSIK);
+                VasiyetCinsiDDL.Items.Add(li);
+            }
+            else if (vasiyetKonusu.Equals(ProjeConstants.VASIYETIN_KONUSU_DIGER))
+            {
+                ListItem li = new ListItem(ProjeConstants.VASIYETIN_KONUSU_DIGER);
+                VasiyetCinsiDDL.Items.Add(li);
+            }
+            else if (vasiyetKonusu.Equals(ProjeConstants.VASIYETIN_KONUSU_TUM_TASINMAZLAR))
             {
                 ListItem li = new ListItem(ProjeConstants.VASIYETIN_KONUSU_TUM_TASINMAZLAR);
                 VasiyetCinsiDDL.Items.Add(li);

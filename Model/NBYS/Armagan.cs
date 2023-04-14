@@ -31,7 +31,7 @@ namespace Model.NBYS
             string sqlString = string.Format(@"SELECT *
                                FROM Armagan_Table 
                                WHERE BelgeGecersizMi!=1 AND Id={0}", id);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Armagan> list = ToList<Armagan>(dataTable);
             Armagan armagan = new Armagan();
             armagan = list.FirstOrDefault();
@@ -44,7 +44,7 @@ namespace Model.NBYS
             string sqlString = string.Format(@"SELECT * from Armagan_Table
                               WHERE BelgeGecersizMi!=1 AND BagisciId={0} and Tarih BETWEEN {1} AND {2}",
                            nakitBagisciId.ReturnQuotedValue(), basTar.ReturnTRDateFormat(), bitTar.ReturnTRDateFormat());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Armagan> list = ToList<Armagan>(dataTable);
             Armagan armagan = new Armagan();
             armagan = list.FirstOrDefault();
@@ -56,31 +56,44 @@ namespace Model.NBYS
             {
                 GenericEntity<Armagan> genericEntity = new GenericEntity<Armagan>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
+                Olusturan = UtilityHelper.GetCurrentUserName();
                 string sqlString = genericEntity.GetQuery(this);
                 int id = dao.Insert(sqlString);
 
                 this.Id = id;
+                if (id > 0 && ProjeConstants.NBYS_SAVE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.NBYS, ProjeConstants.NBYS_ARMAGAN);
+                }
                 return id;
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
-
         }
         public override bool Update()
         {
-
             bool isSuccess = false;
             try
             {
-                if (Id != 0)
+                if (this != null)
                 {
-                    GenericEntity<Armagan> genericEntity = new GenericEntity<Armagan>(ProjeConstants.SQL_UPDATE);
-                    DegistirmeTarihi = DateTime.Now;
-                    string sqlString = genericEntity.GetQuery(this);
-                    isSuccess = dao.Update2Db(sqlString);
+                    Armagan item = Select<Armagan>(Id);
+                    if (Id != 0)
+                    {
+                        GenericEntity<Armagan> genericEntity = new GenericEntity<Armagan>(ProjeConstants.SQL_UPDATE);
+                        DegistirmeTarihi = DateTime.Now;
+                        Degistiren=UtilityHelper.GetCurrentUserName();
+                        string sqlString = genericEntity.GetQuery(this);
+                        isSuccess = dao.Update2Db(sqlString);
+                    }
+                    if (isSuccess && ProjeConstants.NBYS_UPDATE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.NBYS, ProjeConstants.NBYS_ARMAGAN);
+                    }
                 }
             }
             catch (Exception)
@@ -88,34 +101,36 @@ namespace Model.NBYS
                 throw;
             }
             return isSuccess;
-
         }
         public override bool Delete()
         {
-            string sqlString = string.Format(@"DELETE 
-                               FROM Armagan_Table
-                               WHERE Id={0}", Id);
-
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
-
-            return isSuccess;
-        }
-        public string GetInsertSQL(string extId)
-        {
             try
             {
-                GenericEntity<Armagan> genericEntity = new GenericEntity<Armagan>(ProjeConstants.SQL_INSERT);
-                OlusturmaTarihi = DateTime.Now;
-                string sqlString = genericEntity.GetQuery(this, extId) + " ;SELECT SCOPE_IDENTITY() ";
-
-                return sqlString;
+                bool isDeleted = false;
+                if (Id != 0)
+                {
+                    GenericEntity<Armagan> genericEntity = new GenericEntity<Armagan>(ProjeConstants.SQL_DELETE);
+                    string sqlString = genericEntity.GetQuery(this);
+                    Armagan item = Select<Armagan>(Id);
+                    if (item != null)
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+                    else isDeleted = false;
+                    if (isDeleted && ProjeConstants.NBYS_DELETE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.NBYS, ProjeConstants.NBYS_ARMAGAN);
+                    }
+                }
+                return isDeleted;
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
         }
+        
         public string GetUpdateSQL(string extId)
         {
             try
@@ -137,7 +152,6 @@ namespace Model.NBYS
             try
             {
                 GenericEntity<Armagan> genericEntity = new GenericEntity<Armagan>(ProjeConstants.SQL_DELETE);
-                OlusturmaTarihi = DateTime.Now;
                 string sqlString = genericEntity.GetQuery(this, extId);
 
                 return sqlString;
@@ -159,7 +173,7 @@ namespace Model.NBYS
                     AND ArmaganTanimId={1} 
                     AND Tarih  BETWEEN {2} AND {3} ",
                            nakitBagisciId.ReturnQuotedValue(), armaganId, basTar.ReturnTRDateFormat(), bitTar.ReturnTRDateFormat());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Armagan> list = ToList<Armagan>(dataTable);
             Armagan armagan = new Armagan();
             armagan = list.FirstOrDefault();
@@ -170,7 +184,7 @@ namespace Model.NBYS
             string sqlString = string.Format(@"SELECT * from Armagan_Table
                               WHERE BelgeGecersizMi!=1 AND BagisciId={0} ",
                            nakitBagisciId.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Armagan> list = ToList<Armagan>(dataTable);
             Armagan armagan = new Armagan();
             armagan = list.FirstOrDefault();
@@ -328,7 +342,7 @@ namespace Model.NBYS
                                FROM Armagan_Table
                                 WHERE BelgeGecersizMi!=1 ");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Armagan> list = ToList<Armagan>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
@@ -338,7 +352,7 @@ namespace Model.NBYS
 
             string sqlString = string.Format(@"SELECT * from Armagan_Table
                               Where BagisciId={0} AND Durum='{1}'", nakitBagisciId, durum);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Armagan> list = ToList<Armagan>(dataTable);
 
             return list;
@@ -412,7 +426,7 @@ namespace Model.NBYS
                 ORDER BY A.Id
             ", durumQuery, bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat(), armaganTanimIdQuery, bolgeQuery, ilQuery);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return dataTable;
         }
         public DataTable SelectCountDurumByBolgeBasTarBitTar(DateTime basTar, DateTime bitTar, int armaganTanimId, string bolge)
@@ -427,7 +441,7 @@ namespace Model.NBYS
                                 INNER JOIN NakitBagisci_Table N on N.Id=A.BagisciId
                                 WHERE A.BelgeGecersizMi!=1 AND A.ArmaganTanimId={0} AND A.Tarih BETWEEN {1} AND {2} {3}
                                 GROUP BY Durum ", armaganTanimId, basTar.ReturnTRDateFormat(), bitTar.ReturnTRDateFormat(), bolgeStr);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return dataTable;
         }
         public DataTable SelectCountDurumByBolgeTarih(int armaganTanimId, string bolge, DateTime bastar, DateTime bittar)
@@ -442,7 +456,7 @@ namespace Model.NBYS
                                 INNER JOIN NakitBagisci_Table N on N.Id=A.BagisciId
                                 WHERE A.BelgeGecersizMi!=1 AND A.Tarih BETWEEN {0} AND {1} AND A.ArmaganTanimId={2} " + bolgeStr +
                                 @" GROUP BY Durum ", bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat(), armaganTanimId);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return dataTable;
         }
         /// <summary>
@@ -459,7 +473,7 @@ namespace Model.NBYS
 								INNER JOIN Il_Table I on I.Id=N.Ili
                                 WHERE Tarih BETWEEN {0} AND {1} 
                                 GROUP BY Bolge, ArmaganTanimId ", basTar.ReturnTRDateFormat(), bitTar.ReturnTRDateFormat());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return dataTable;
         }
 
@@ -495,7 +509,7 @@ namespace Model.NBYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {

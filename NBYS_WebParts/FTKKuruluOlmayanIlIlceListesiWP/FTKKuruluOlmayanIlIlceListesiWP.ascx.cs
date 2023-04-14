@@ -332,7 +332,7 @@ namespace NBYS_WebParts.FTKKuruluOlmayanIlIlceListesiWP
                     'order': [[2, 'asc'],[0, 'asc'],[1, 'asc']],//sort bolge, IlId,IlceId
                     'scrollY': '300px',
                     'language': {
-                    'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                    'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                         'decimal': ',',
                         'thousands': '.'
                     },

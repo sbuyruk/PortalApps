@@ -92,7 +92,7 @@ namespace TBYS_WebParts.TasinmazBagisWP
                     'order': [[0, 'asc']],
                     'scrollY': '300px',
                     'language': {
-                    'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                    'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                         'decimal': ',',
                         'thousands': '.'
                     },
@@ -158,7 +158,7 @@ namespace TBYS_WebParts.TasinmazBagisWP
                     'order': [[0, 'asc']],
                     'scrollY': '300px',
                     'language': {
-                    'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                    'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                         'decimal': ',',
                         'thousands': '.'
                     },

@@ -248,7 +248,7 @@ namespace IKYS_WebParts.PersonelListesiWP
                             ],
                             'order': [[0, 'asc']],// Sıralı
                             'language': {
-                                'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                                'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                                 'decimal': ',',
                                 'thousands': '.'
                             },
@@ -284,6 +284,12 @@ namespace IKYS_WebParts.PersonelListesiWP
                         });
                     });";
             return tableString;
+        }
+        private DataTable GetDataTable()
+        {
+            Personel personel = new Personel();
+            DataTable dataTable = personel.SelectCalisanPersonelListesiReturnDataTable();
+            return dataTable;
         }
         private class PersonelListItem
         {
@@ -338,12 +344,6 @@ namespace IKYS_WebParts.PersonelListesiWP
             public string Esi { get; set; }
             public string EsTcKimlikNo { get; set; }
             public string EsTelefon { get; set; }
-        }
-        private DataTable GetDataTable()
-        {
-            Personel personel = new Personel();
-            DataTable dataTable = personel.SelectCalisanPersonelListesiReturnDataTable();
-            return dataTable;
         }
         protected void ExcelBtn_Click(object sender, EventArgs e)
         {

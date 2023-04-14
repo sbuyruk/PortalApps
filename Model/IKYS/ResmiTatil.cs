@@ -1,4 +1,5 @@
 ﻿using Model.MTS;
+using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -7,7 +8,7 @@ using System.Linq;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
 
-namespace Model.Ortak
+namespace Model.IKYS
 {
     public class ResmiTatil : ParentClass
     {
@@ -24,7 +25,7 @@ namespace Model.Ortak
             string sqlString = string.Format(@"SELECT *
                                FROM ResmiTatil_Table 
                                WHERE Id={0}", id);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<ResmiTatil> list = ToList<ResmiTatil>(dataTable);
             ResmiTatil il = new ResmiTatil();
             il = list.FirstOrDefault();
@@ -36,7 +37,7 @@ namespace Model.Ortak
             string sqlString = string.Format(@"SELECT *
                                FROM ResmiTatil_Table");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<ResmiTatil> list = ToList<ResmiTatil>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
@@ -47,37 +48,88 @@ namespace Model.Ortak
                 SELECT Id ResimiTatilId, Gun,Ay,Yil,Tatil,BaslamaTarihi,BitisTarihi,IlanTarihi,IptalTarihi 
                 FROM ResmiTatil_Table
                 ORDER BY BaslamaTarihi DESC");
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return dataTable;
         }
         public override int Save()
         {
-            string sqlString = saveSQL();
-            int id = dao.Insert(sqlString);
-            this.Id = id;
-            return id;
+            try
+            {
+                GenericEntity<ResmiTatil> genericEntity = new GenericEntity<ResmiTatil>(ProjeConstants.SQL_INSERT);
+                OlusturmaTarihi = DateTime.Now;
+                Olusturan = UtilityHelper.GetCurrentUserName();
+                string sqlString = genericEntity.GetQuery(this);
+                int id = dao.Insert(sqlString);
+
+                this.Id = id;
+                if (id > 0 && ProjeConstants.IKYS_SAVE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.IKYS, ProjeConstants.IKYS_RESMITATIL);
+                }
+                return id;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         public override bool Update()
         {
             bool isSuccess = false;
-            if (Id != 0)
+            try
             {
-                string sqlString = UpdateSQL();
-                isSuccess = dao.Update2Db(sqlString);
+                if (this != null)
+                {
+                    ResmiTatil item = Select<ResmiTatil>(Id);
+                    if (Id != 0)
+                    {
+                        GenericEntity<ResmiTatil> genericEntity = new GenericEntity<ResmiTatil>(ProjeConstants.SQL_UPDATE);
+                        DegistirmeTarihi = DateTime.Now;
+                        Degistiren = UtilityHelper.GetCurrentUserName();
+                        string sqlString = genericEntity.GetQuery(this);
+                        isSuccess = dao.Update2Db(sqlString);
+                    }
+                    if (isSuccess && ProjeConstants.IKYS_UPDATE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.IKYS, ProjeConstants.IKYS_RESMITATIL);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
             }
             return isSuccess;
         }
-
         public override bool Delete()
         {
-            string sqlString = string.Format(@"
-                            DELETE 
-                            FROM ResmiTatil_Table
-                            WHERE Id={0}", Id);
-
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
-
-            return isSuccess;
+            try
+            {
+                bool isDeleted = false;
+                if (Id != 0)
+                {
+                    GenericEntity<ResmiTatil> genericEntity = new GenericEntity<ResmiTatil>(ProjeConstants.SQL_DELETE);
+                    string sqlString = genericEntity.GetQuery(this);
+                    ResmiTatil item = Select<ResmiTatil>(Id);
+                    if (item != null)
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+                    else isDeleted = false;
+                    if (isDeleted && ProjeConstants.IKYS_DELETE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.IKYS, ProjeConstants.IKYS_RESMITATIL);
+                    }
+                }
+                return isDeleted;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         private string saveSQL()
         {
@@ -118,7 +170,7 @@ namespace Model.Ortak
                 WHERE Yil=0 OR BaslamaTarihi BETWEEN {0} AND {1} 
                 ORDER BY BaslamaTarihi --, MONTH(BaslamaTarihi), DAY(BaslamaTarihi)
                 ", basTar.ReturnTRDateFormat(),bitTar.ReturnTRDateFormat());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<ResmiTatil> list = ToList<ResmiTatil>(dataTable);
             return list;
         }
@@ -132,7 +184,7 @@ namespace Model.Ortak
                 FROM ResmiTatil_Table
                 WHERE Yil=0 OR BaslamaTarihi BETWEEN {0} AND {1} 
                 ORDER BY MONTH(BaslamaTarihi), DAY(BaslamaTarihi)", basTar.ReturnTRDateFormat(), bitTar.ReturnTRDateFormat());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<ResmiTatil> list = ToList<ResmiTatil>(dataTable);
             return list;
         }
@@ -144,7 +196,7 @@ namespace Model.Ortak
                 FROM ResmiTatil_Table
                 WHERE Yil=0 OR Yil={0} 
                 ORDER BY MONTH(BaslamaTarihi), DAY(BaslamaTarihi)", yil);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<ResmiTatil> list = ToList<ResmiTatil>(dataTable);
             return list;
         }
@@ -163,7 +215,7 @@ namespace Model.Ortak
                                                         AND (IlanTarihi is null OR IlanTarihi<={2}) AND (IptalTarihi is null OR IptalTarihi>={2}))
                                                         OR ((BaslamaTarihi<={2} AND BitisTarihi>={2}))", gun, ay, tarih.ReturnTRDateFormat());
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
                 return true;
             return false;

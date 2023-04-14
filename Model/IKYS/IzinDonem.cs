@@ -25,7 +25,7 @@ namespace Model.IKYS
         public override T Select<T>(int id)
         {
             string sqlString = SelectSQL(id);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<IzinDonem> list = ToList<IzinDonem>(dataTable);
             IzinDonem izinDonem = new IzinDonem();
             izinDonem = list.FirstOrDefault();
@@ -33,28 +33,91 @@ namespace Model.IKYS
         }
         public override int Save()
         {
-            string sqlString = saveSQL();
-            int id = dao.Insert(sqlString);
-            this.Id = id;
-            return id;
+            try
+            {
+
+                GenericEntity<IzinDonem> genericEntity = new GenericEntity<IzinDonem>(ProjeConstants.SQL_INSERT);
+                OlusturmaTarihi = DateTime.Now;
+                Olusturan = UtilityHelper.GetCurrentUserName();
+                string sqlString = genericEntity.GetQuery(this);
+                int id = dao.Insert(sqlString);
+                if (id > 0 && ProjeConstants.IKYS_SAVE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.IKYS, ProjeConstants.IKYS_IZINDONEM);
+                }
+                this.Id = id;
+                return id;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
         }
+
         public override bool Update()
         {
+
             bool isSuccess = false;
-            if (Id != 0)
+            try
             {
-                string sqlString = UpdateSQL();
-                isSuccess = dao.Update2Db(sqlString);
+                IzinDonem item = Select<IzinDonem>(Id);
+                if (Id != 0)
+                {
+                    GenericEntity<IzinDonem> genericEntity = new GenericEntity<IzinDonem>(ProjeConstants.SQL_UPDATE);
+                    DegistirmeTarihi = DateTime.Now;
+                    Degistiren = UtilityHelper.GetCurrentUserName();
+                    string sqlString = genericEntity.GetQuery(this);
+                    isSuccess = dao.Update2Db(sqlString);
+                }
+                if (isSuccess && ProjeConstants.IKYS_UPDATE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.IKYS, ProjeConstants.IKYS_IZINDONEM);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
             }
             return isSuccess;
         }
         public override bool Delete()
         {
-            string sqlString = DeleteSQL();
+            try
+            {
+                bool isDeleted;
+                if (Id != 0)
+                {
+                    GenericEntity<IzinDonem> genericEntity = new GenericEntity<IzinDonem>(ProjeConstants.SQL_DELETE);
+                    string sqlString = genericEntity.GetQuery(this);
 
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
+                    IzinDonem item = Select<IzinDonem>(Id);
+                    if (item != null)
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+                    else isDeleted = false;
+                    if (isDeleted && ProjeConstants.IKYS_DELETE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.IKYS, ProjeConstants.IKYS_IZINDONEM);
+                    }
+                    return isDeleted;
+                }
+                else
+                {
+                    return false;
+                }
 
-            return isSuccess;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
         public override List<T> SelectAll<T>()
         {
@@ -62,7 +125,7 @@ namespace Model.IKYS
                                FROM IzinDonem_Table
                                ORDER BY BaslangicTarihi DESC");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<IzinDonem> list = ToList<IzinDonem>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
@@ -116,7 +179,7 @@ namespace Model.IKYS
         {
             string sqlString = SelectByIzinTarihiSQL(personelId, izinTipi, tarih);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<IzinDonem> list = ToList<IzinDonem>(dataTable);
             IzinDonem izinDonemi = list.FirstOrDefault();
             return (izinDonemi);
@@ -125,7 +188,7 @@ namespace Model.IKYS
         {
             string sqlString = SelectOncekiYillaraAitIzinDonemleriSQL(personelId);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<IzinDonem> list = ToList<IzinDonem>(dataTable);
             return (list);
         }
@@ -133,7 +196,7 @@ namespace Model.IKYS
         {
             string sqlString = SelectByPersonelSQL(personelId, izinTipi);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<IzinDonem> list = ToList<IzinDonem>(dataTable);
             return (list);
         }
@@ -141,7 +204,7 @@ namespace Model.IKYS
         {
             string sqlString = SelectByPersonelSQL(personelId, izinTipi);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<IzinDonem> list = ToList<IzinDonem>(dataTable);
             string json = ToJSON(dataTable);
             return json;
@@ -150,7 +213,7 @@ namespace Model.IKYS
         {
             string sqlString = SelectByPersonelSQL(personelId, izinTipi);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
 
             return dataTable;
         }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Utility.HelperClasses;
+using Utility.ProjeGlobal;
 
 namespace Model.IKYS
 {
@@ -12,86 +13,124 @@ namespace Model.IKYS
         public string Adi { get; set; }
         public override T Select<T>(int id)
         {
-            string sqlString = SelectSQL(id);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            GenericEntity<BulunmamaSebebi> genericEntity = new GenericEntity<BulunmamaSebebi>(ProjeConstants.SQL_SELECT);
+            Id = id;
+            string sqlString = genericEntity.GetQuery(this);
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<BulunmamaSebebi> list = ToList<BulunmamaSebebi>(dataTable);
-            BulunmamaSebebi bulunmamaSebebi = new BulunmamaSebebi();
-            bulunmamaSebebi = list.FirstOrDefault();
-            return (T)Convert.ChangeType(bulunmamaSebebi, typeof(T));
+            BulunmamaSebebi item = new BulunmamaSebebi();
+            item = list.FirstOrDefault();
+            return (T)Convert.ChangeType(item, typeof(T));
         }
+        public BulunmamaSebebi Select(int id)
+        {
+            GenericEntity<BulunmamaSebebi> genericEntity = new GenericEntity<BulunmamaSebebi>(ProjeConstants.SQL_SELECT);
+            Id = id;
+            string sqlString = genericEntity.GetQuery(this);
 
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            List<BulunmamaSebebi> list = ToList<BulunmamaSebebi>(dataTable);
+            BulunmamaSebebi item = new BulunmamaSebebi();
+            item = list.FirstOrDefault();
+            return item;
+        }
         public override int Save()
         {
-            string sqlString = saveSQL();
-            int id = dao.Insert(sqlString);
-            this.Id = id;
-            return id;
-        }
+            try
+            {
 
+                GenericEntity<BulunmamaSebebi> genericEntity = new GenericEntity<BulunmamaSebebi>(ProjeConstants.SQL_INSERT);
+                OlusturmaTarihi = DateTime.Now;
+                Olusturan = UtilityHelper.GetCurrentUserName();
+                string sqlString = genericEntity.GetQuery(this);
+                int id = dao.Insert(sqlString);
+                if (id > 0 && ProjeConstants.IKYS_SAVE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.IKYS, ProjeConstants.IKYS_BULUNMAMASEBEBI);
+                }
+                this.Id = id;
+                return id;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
         public override bool Update()
         {
+
             bool isSuccess = false;
-            if (Id != 0)
+            try
             {
-                string sqlString = UpdateSQL();
-                isSuccess = dao.Update2Db(sqlString);
+                BulunmamaSebebi item = Select<BulunmamaSebebi>(Id);
+                if (Id != 0)
+                {
+                    GenericEntity<BulunmamaSebebi> genericEntity = new GenericEntity<BulunmamaSebebi>(ProjeConstants.SQL_UPDATE);
+                    DegistirmeTarihi = DateTime.Now;
+                    Degistiren = UtilityHelper.GetCurrentUserName();
+                    string sqlString = genericEntity.GetQuery(this);
+                    isSuccess = dao.Update2Db(sqlString);
+                }
+                if (isSuccess && ProjeConstants.IKYS_UPDATE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.IKYS, ProjeConstants.IKYS_BULUNMAMASEBEBI);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
             }
             return isSuccess;
         }
-
         public override bool Delete()
         {
-            string sqlString = DeleteSQL();
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
-            return isSuccess;
-        }
+            try
+            {
+                bool isDeleted;
+                if (Id != 0)
+                {
+                    GenericEntity<BulunmamaSebebi> genericEntity = new GenericEntity<BulunmamaSebebi>(ProjeConstants.SQL_DELETE);
+                    string sqlString = genericEntity.GetQuery(this);
 
+                    BulunmamaSebebi item = Select<BulunmamaSebebi>(Id);
+                    if (item != null)
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+                    else isDeleted = false;
+                    if (isDeleted && ProjeConstants.IKYS_DELETE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.IKYS, ProjeConstants.IKYS_BULUNMAMASEBEBI);
+                    }
+                    return isDeleted;
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
         public override List<T> SelectAll<T>()
         {
-            string sqlString = string.Format(@"SELECT *
-                               FROM BulunmamaSebebi_Table ORDER BY Id");
+            string sqlString = string.Format(
+                @"SELECT *
+                FROM BulunmamaSebebi_Table ");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<BulunmamaSebebi> list = ToList<BulunmamaSebebi>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
-        }
-        private string saveSQL()
-        {
-            //Insert  SQL
-            string InsertSQL = string.Format(@" 
-                                    INSERT INTO BulunmamaSebebi_Table 
-                                        (Adi,Olusturan,OlusturmaTarihi)
-                                    VALUES ({0},{1},{2}) ",
-                                    Adi.ReturnQuotedValue(),
-                                    Olusturan.ReturnQuotedValue(), DateTime.Now.ReturnTRDateFormat());
-            return InsertSQL;
-        }
-        private string UpdateSQL()
-        {
-            //Insert  SQL
-            string sqlSQL = string.Format(@"
-                                    UPDATE BulunmamaSebebi_Table 
-                                    SET Adi = {0},Degistiren={1}, DegistirmeTarihi={2}
-                                    WHERE Id= {3}", Adi.ReturnQuotedValue(),
-                                    Degistiren.ReturnQuotedValue(), DateTime.Now.ReturnTRDateFormat(), Id);
-            return sqlSQL;
-        }
-
-        private string SelectSQL(int id)
-        {
-            string sqlstr = string.Format(@"SELECT *
-                               FROM BulunmamaSebebi_Table 
-                               WHERE  Id={0}", id);
-            return sqlstr;
-        }
-        private string DeleteSQL()
-        {
-            string sqlString = string.Format(@"
-                            DELETE 
-                            FROM BulunmamaSebebi_Table
-                            WHERE Id={0}", Id);
-            return sqlString;
         }
     }
 }

@@ -151,7 +151,7 @@ namespace TBYS_WebParts.TeminatListesiWP
                 " + duzenleGorunsun + @"
                 ],
                 'language': {
-                        'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                        'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                     'decimal': ',',
                     'thousands': '.'
                 },

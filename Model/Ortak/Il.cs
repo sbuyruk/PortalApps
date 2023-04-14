@@ -31,7 +31,7 @@ namespace Model.Ortak
             string sqlString = string.Format(@"SELECT *
                                FROM Il_Table 
                                WHERE Id={0}", id);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Il> list = ToList<Il>(dataTable);
             Il il = new Il();
             il = list.FirstOrDefault();
@@ -42,7 +42,7 @@ namespace Model.Ortak
             string sqlString = string.Format(@"SELECT *
                                FROM Il_Table");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Il> list = ToList<Il>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
@@ -54,7 +54,7 @@ namespace Model.Ortak
                 FROM Il_Table
                 ORDER BY Bolge, IlAdi");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Il> list = ToList<Il>(dataTable);
 
             return (list);
@@ -65,7 +65,7 @@ namespace Model.Ortak
                                                 FROM Il_Table
                                                 WHERE LOWER(IngIlAdi)=LOWER('{0}')", ingIlAdi);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Il> list = ToList<Il>(dataTable);
             Il il = new Il();
             il = list.FirstOrDefault();
@@ -79,7 +79,7 @@ namespace Model.Ortak
                 FROM Il_Table
                 WHERE Id BETWEEN 1 AND 81 AND Bolge={0}", bolge.ReturnQuotedValue());
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable!=null)
             {
                 DataRow row = dataTable.Rows[0];
@@ -98,7 +98,7 @@ namespace Model.Ortak
                 WHERE (Id BETWEEN 1 AND 81)
                 {0}", bolgeStr);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Il> list = ToList<Il>(dataTable);
             return list;
         }
@@ -109,7 +109,7 @@ namespace Model.Ortak
                                                 FROM Il_Table
                                                 WHERE LOWER(IlAdi)=LOWER('{0}')", ilAdi);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Il> list = ToList<Il>(dataTable);
             Il il = new Il();
             il = list.FirstOrDefault();
@@ -130,7 +130,7 @@ namespace Model.Ortak
                     AND  A.Id IN (SELECT Ili FROM FTK_Table) 
                 ORDER BY A.Bolge, A.Id    
             ");
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Il> list = ToList<Il>(dataTable);
             return list;
         }
@@ -144,7 +144,7 @@ namespace Model.Ortak
                 GROUP BY A.Bolge
 				ORDER BY A.Bolge   
             ");
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return dataTable;
         }
     }

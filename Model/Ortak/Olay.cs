@@ -26,7 +26,7 @@ namespace Model.Ortak
             //                   FROM Olay_Table 
             //                   WHERE  Id={0}", id);
             string sqlString = genericEntity.GetQuery(this);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Olay> list = ToList<Olay>(dataTable);
             _ = new Olay();
             Olay olay = list.FirstOrDefault();
@@ -40,7 +40,7 @@ namespace Model.Ortak
             Id = id;
             string sqlString = genericEntity.GetQuery(this);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Olay> list = ToList<Olay>(dataTable);
             Olay olay = new Olay();
             olay = list.FirstOrDefault();
@@ -70,7 +70,15 @@ namespace Model.Ortak
         public List<Olay> SelectByTarihReturnList(DateTime islemTarihi, string program)
         {
             string sqlString;
-            if (!string.IsNullOrEmpty(program))
+            if (program.Equals(ProjeConstants.HEPSI) || string.IsNullOrEmpty(program))
+            {
+                sqlString = string.Format(@"
+                    SELECT *
+                    FROM Olay_Table 
+                    WHERE IslemTarihi >={0} 
+                    ORDER BY IslemTarihi DESC", islemTarihi.ConvertToDDMMYYYHHmmFormat().ReturnQuotedValue());
+            }
+            else 
             {
                 sqlString = string.Format(@"
                     SELECT *
@@ -78,16 +86,9 @@ namespace Model.Ortak
                     WHERE program= {0} AND IslemTarihi>={1} 
                     ORDER BY IslemTarihi DESC", program.ReturnQuotedValue(), islemTarihi.ConvertToDDMMYYYHHmmFormat().ReturnQuotedValue());
             }
-            else 
-            {
-                sqlString = string.Format(@"
-                    SELECT *
-                    FROM Olay_Table 
-                    WHERE IslemTarihi IslemTarihi >={0} 
-                    ORDER BY IslemTarihi DESC", islemTarihi.ConvertToDDMMYYYHHmmFormat().ReturnQuotedValue());
-            }
+            
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Olay> list = ToList<Olay>(dataTable);
 
             return list;
@@ -128,7 +129,7 @@ namespace Model.Ortak
                 FROM Olay_Table
                 ");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Olay> list = ToList<Olay>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
@@ -147,7 +148,7 @@ namespace Model.Ortak
                 ORDER BY Aktif Desc, YayinBasTar DESC, Popup 
                 ");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
 
             List<Olay> list = ToList<Olay>(dataTable);
 

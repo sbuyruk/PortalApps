@@ -2,7 +2,7 @@
 <Elements xmlns="http://schemas.microsoft.com/sharepoint/" >
   <Module Name="KiraKartiWP" List="113" Url="_catalogs/wp">
     <File Path="KiraKartiWP\KiraKartiWP.webpart" Url="TBYS_WebParts_KiraKartiWP.webpart" Type="GhostableInLibrary" >
-      <Property Name="Group" Value="TBYS_WebParts" />
+      <Property Name="Group" Value="Custom" />
     </File>
   </Module>
 </Elements>

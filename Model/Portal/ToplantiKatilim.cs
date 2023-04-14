@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Utility.ProjeGlobal;
 
-namespace Model.MTS
+namespace Model.Portal
 {
     public class ToplantiKatilim : ParentClass
     {
@@ -16,50 +16,85 @@ namespace Model.MTS
         public bool Bilgi { get; set; }
         public string Aciklama { get; set; }
 
-
-        public override bool Delete()
-        {
-            try
-            {
-                if (Id != 0)
-                {
-                    GenericEntity<ToplantiKatilim> genericEntity = new GenericEntity<ToplantiKatilim>(ProjeConstants.SQL_DELETE);
-                    OlusturmaTarihi = DateTime.Now;
-                    string sqlString = genericEntity.GetQuery(this);
-                    bool isDeleted = dao.DeleteFromDb(sqlString, "");
-                    return isDeleted;
-                }
-                else
-                {
-                    return false;
-                }
-
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-        }
-
         public override int Save()
         {
             try
             {
                 GenericEntity<ToplantiKatilim> genericEntity = new GenericEntity<ToplantiKatilim>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
+                Olusturan = UtilityHelper.GetCurrentUserName();
                 string sqlString = genericEntity.GetQuery(this);
                 int id = dao.Insert(sqlString);
 
                 this.Id = id;
+                if (id > 0 && ProjeConstants.PORTAL_SAVE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.PORTAL, ProjeConstants.PORTAL_TOPLANTIKATILIM);
+                }
                 return id;
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
-
+        }
+        public override bool Update()
+        {
+            bool isSuccess = false;
+            try
+            {
+                if (this != null)
+                {
+                    ToplantiKatilim item = Select<ToplantiKatilim>(Id);
+                    if (Id != 0)
+                    {
+                        GenericEntity<ToplantiKatilim> genericEntity = new GenericEntity<ToplantiKatilim>(ProjeConstants.SQL_UPDATE);
+                        DegistirmeTarihi = DateTime.Now;
+                        Degistiren = UtilityHelper.GetCurrentUserName();
+                        string sqlString = genericEntity.GetQuery(this);
+                        isSuccess = dao.Update2Db(sqlString);
+                    }
+                    if (isSuccess && ProjeConstants.PORTAL_UPDATE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.PORTAL, ProjeConstants.PORTAL_TOPLANTIKATILIM);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return isSuccess;
+        }
+        public override bool Delete()
+        {
+            try
+            {
+                bool isDeleted = false;
+                if (Id != 0)
+                {
+                    GenericEntity<ToplantiKatilim> genericEntity = new GenericEntity<ToplantiKatilim>(ProjeConstants.SQL_DELETE);
+                    string sqlString = genericEntity.GetQuery(this);
+                    ToplantiKatilim item = Select<ToplantiKatilim>(Id);
+                    if (item != null)
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+                    else isDeleted = false;
+                    if (isDeleted && ProjeConstants.PORTAL_DELETE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.PORTAL, ProjeConstants.PORTAL_TOPLANTIKATILIM);
+                    }
+                }
+                return isDeleted;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         public ToplantiKatilim Select(int id)
         {
@@ -68,7 +103,7 @@ namespace Model.MTS
             Id = id;
             string sqlString = genericEntity.GetQuery(this);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<ToplantiKatilim> list = ToList<ToplantiKatilim>(dataTable);
             ToplantiKatilim item = new ToplantiKatilim();
             item = list.FirstOrDefault();
@@ -84,7 +119,7 @@ namespace Model.MTS
                 WHERE ToplantiId={0} AND KatilimciId={1}   
                 ", toplantiId, katilimciId);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<ToplantiKatilim> list = ToList<ToplantiKatilim>(dataTable);
             ToplantiKatilim item = new ToplantiKatilim();
             item = list.FirstOrDefault();
@@ -100,7 +135,7 @@ namespace Model.MTS
                 WHERE ToplantiId={0}    
                 ", toplantiId);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<ToplantiKatilim> list = ToList<ToplantiKatilim>(dataTable);
 
             return list;
@@ -111,7 +146,7 @@ namespace Model.MTS
             OlusturmaTarihi = DateTime.Now;
             Id = id;
             string sqlString = genericEntity.GetQuery(this);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<ToplantiKatilim> list = ToList<ToplantiKatilim>(dataTable);
             ToplantiKatilim item = new ToplantiKatilim();
             item = list.FirstOrDefault();
@@ -124,29 +159,10 @@ namespace Model.MTS
                 FROM Kisi_Table ORDER BY Adi
                 ");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<ToplantiKatilim> list = ToList<ToplantiKatilim>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
-        }
-        public override bool Update()
-        {
-            bool isSuccess = false;
-            try
-            {
-                if (Id != 0)
-                {
-                    GenericEntity<ToplantiKatilim> genericEntity = new GenericEntity<ToplantiKatilim>(ProjeConstants.SQL_UPDATE);
-                    DegistirmeTarihi = DateTime.Now;
-                    string sqlString = genericEntity.GetQuery(this);
-                    isSuccess = dao.Update2Db(sqlString);
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            return isSuccess;
         }
         public bool DeleteByToplantiId(int toplantiid)
         {

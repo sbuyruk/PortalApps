@@ -103,7 +103,6 @@
     <Compile Include="IKYS\IKYSOrtak.cs" />
     <Compile Include="IKYS\PersonelItem.cs" />
     <Compile Include="IKYS\PersonelItemListFactory.cs" />
-    <Compile Include="IKYS\Test.cs" />
     <Compile Include="IKYS\UnvanTanim.cs" />
     <Compile Include="IKYS\Yoklama.cs" />
     <Compile Include="MTS\AniObjesiDagitim.cs" />
@@ -124,7 +123,6 @@
     <Compile Include="NBYS\NakitBagisci.cs" />
     <Compile Include="NBYS\SMSAylikBagis.cs" />
     <Compile Include="NBYS\NakitBagisHareket.cs" />
-    <Compile Include="Ortak\BolgeTanim.cs" />
     <Compile Include="Ortak\GenericEntity.cs" />
     <Compile Include="Ortak\ICRUDInterface.cs" />
     <Compile Include="Ortak\Il.cs" />
@@ -133,7 +131,7 @@
     <Compile Include="Ortak\OpenXMLHelper.cs" />
     <Compile Include="Ortak\ParentClass.cs" />
     <Compile Include="Ortak\OrtakParametre.cs" />
-    <Compile Include="Ortak\ResmiTatil.cs" />
+    <Compile Include="IKYS\ResmiTatil.cs" />
     <Compile Include="Ortak\SilinenKayit.cs" />
     <Compile Include="Ortak\UtilityHelper.cs" />
     <Compile Include="Portal\DuyuruOkuma.cs" />
@@ -142,7 +140,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TBYS\BagimsizBolum.cs" />
     <Compile Include="TBYS\OdemeSebebiTanim.cs" />
-    <Compile Include="TBYS\TasinmazBagis.cs" />
     <Compile Include="TBYS\Bagis.cs" />
     <Compile Include="TBYS\BagisciTalepleri.cs" />
     <Compile Include="TBYS\BagisciYakinlari.cs" />
@@ -155,7 +152,6 @@
     <Compile Include="TBYS\OdemeAyristirma.cs" />
     <Compile Include="TBYS\TeminatIslem.cs" />
     <Compile Include="TBYS\OdemeAyrinti.cs" />
-    <Compile Include="TBYS\TestDb.cs" />
     <Compile Include="TBYS\Odeme.cs" />
     <Compile Include="TBYS\OdemePlani.cs" />
     <Compile Include="TBYS\Onarim.cs" />
@@ -166,12 +162,11 @@
     <Compile Include="TBYS\TBYSOrtak.cs" />
     <Compile Include="TBYS\Vasiyetci.cs" />
     <Compile Include="TBYS\VasiyeteKonuVarlik.cs" />
-    <Compile Include="TBYS\VasiyetNitelik.cs" />
     <Compile Include="TBYS\YasalFaiz.cs" />
-    <Compile Include="TYS\Toplanti.cs" />
-    <Compile Include="TYS\ToplantiKatilim.cs" />
+    <Compile Include="Portal\Toplanti.cs" />
+    <Compile Include="Portal\ToplantiKatilim.cs" />
     <Compile Include="NBYS\NBYSParametre.cs" />
-    <Compile Include="TYS\ToplantiParametre.cs" />
+    <Compile Include="Portal\ToplantiParametre.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DAO\DAO.csproj">
@@ -334,6 +329,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

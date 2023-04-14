@@ -33,51 +33,86 @@ namespace Model.TBYS
         public string VasiyetcininTalebi { get; set; }
         public string Aciklama { get; set; }
 
-        public override bool Delete()
-        {
-            try
-            {
-                if (Id != 0)
-                {
-                    GenericEntity<Vasiyetci> genericEntity = new GenericEntity<Vasiyetci>(ProjeConstants.SQL_DELETE);
-                    OlusturmaTarihi = DateTime.Now;
-                    string sqlString = genericEntity.GetQuery(this);
-                    bool isDeleted = dao.DeleteFromDb(sqlString, this);
-                    return isDeleted;
-                }
-                else
-                {
-                    return false;
-                }
-
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-        }
-
         public override int Save()
         {
             try
             {
                 GenericEntity<Vasiyetci> genericEntity = new GenericEntity<Vasiyetci>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
+                Olusturan = UtilityHelper.GetCurrentUserName();
                 string sqlString = genericEntity.GetQuery(this);
                 int id = dao.Insert(sqlString);
 
                 this.Id = id;
+                if (id > 0 && ProjeConstants.TBYS_SAVE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.TBYS, ProjeConstants.TBYS_VASIYETCI);
+                }
                 return id;
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
-
         }
-
+        public override bool Update()
+        {
+            bool isSuccess = false;
+            try
+            {
+                if (this != null)
+                {
+                    Vasiyetci item = Select<Vasiyetci>(Id);
+                    if (Id != 0)
+                    {
+                        GenericEntity<Vasiyetci> genericEntity = new GenericEntity<Vasiyetci>(ProjeConstants.SQL_UPDATE);
+                        DegistirmeTarihi = DateTime.Now;
+                        Degistiren = UtilityHelper.GetCurrentUserName();
+                        string sqlString = genericEntity.GetQuery(this);
+                        isSuccess = dao.Update2Db(sqlString);
+                    }
+                    if (isSuccess && ProjeConstants.TBYS_UPDATE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.TBYS, ProjeConstants.TBYS_VASIYETCI);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return isSuccess;
+        }
+        public override bool Delete()
+        {
+            try
+            {
+                bool isDeleted = false;
+                if (Id != 0)
+                {
+                    GenericEntity<Vasiyetci> genericEntity = new GenericEntity<Vasiyetci>(ProjeConstants.SQL_DELETE);
+                    string sqlString = genericEntity.GetQuery(this);
+                    Vasiyetci item = Select<Vasiyetci>(Id);
+                    if (item != null)
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+                    else isDeleted = false;
+                    if (isDeleted && ProjeConstants.TBYS_DELETE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.TBYS, ProjeConstants.TBYS_VASIYETCI);
+                    }
+                }
+                return isDeleted;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         public Vasiyetci Select(int id)
         {
             GenericEntity<Vasiyetci> genericEntity = new GenericEntity<Vasiyetci>(ProjeConstants.SQL_SELECT);
@@ -85,7 +120,7 @@ namespace Model.TBYS
             Id = id;
             string sqlString = genericEntity.GetQuery(this);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Vasiyetci> list = ToList<Vasiyetci>(dataTable);
             Vasiyetci item = new Vasiyetci();
             item = list.FirstOrDefault();
@@ -98,7 +133,7 @@ namespace Model.TBYS
             OlusturmaTarihi = DateTime.Now;
             Id = id;
             string sqlString = genericEntity.GetQuery(this);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Vasiyetci> list = ToList<Vasiyetci>(dataTable);
             Vasiyetci item = new Vasiyetci();
             item = list.FirstOrDefault();
@@ -112,7 +147,7 @@ namespace Model.TBYS
                 FROM Vasiyetci_Table ORDER BY Adi
                 ");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Vasiyetci> list = ToList<Vasiyetci>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
@@ -128,28 +163,9 @@ namespace Model.TBYS
                 ORDER BY Adi
                 ",bolgeStr);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
 
             return dataTable;
-        }
-        public override bool Update()
-        {
-            bool isSuccess = false;
-            try
-            {
-                if (Id != 0)
-                {
-                    GenericEntity<Vasiyetci> genericEntity = new GenericEntity<Vasiyetci>(ProjeConstants.SQL_UPDATE);
-                    DegistirmeTarihi = DateTime.Now;
-                    string sqlString = genericEntity.GetQuery(this);
-                    isSuccess = dao.Update2Db(sqlString);
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            return isSuccess;
         }
 
         public string SelectVasiyetciByIdReturnJson(int vasiyetciId, ref int rowCount)
@@ -164,7 +180,7 @@ namespace Model.TBYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
                 rowCount = dataTable.Rows.Count;
             }
             catch (Exception e)
@@ -192,7 +208,7 @@ namespace Model.TBYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
                 rowCount = dataTable.Rows.Count;
             }
             catch (Exception e)
@@ -213,7 +229,7 @@ namespace Model.TBYS
                 WHERE 1>0
                 {0}", whereStr);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Vasiyetci> list = ToList<Vasiyetci>(dataTable);
 
             return (list);

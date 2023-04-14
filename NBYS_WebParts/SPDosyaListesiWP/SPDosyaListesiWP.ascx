@@ -17,8 +17,8 @@
     }
 </script>
 
-<div class="container shadow">
-    <div class="card">
+<div class="container">
+    <div class="card shadow">
         <div class="card-header">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-2">
@@ -36,11 +36,17 @@
             <div id="SuzmeBolumuDiv" class="form-group row">
             </div>
             <div class="form-group" id="TabloBolumuDiv">
-                <div class="table loader" id="tbl" runat="server">
-                    <input id="globalFilter" placeholder="Aranacak Kelime" size="30" />
-                    <div id="tblfilter" class="table"></div>
-                    <div id="messages"></div>
-                </div>
+                <table id="CustomDataTable" class="table table-striped table-bordered" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Dosya Adı</th>
+                            <th>Etiket Dosyası</th>
+                            <th>Yazan</th>
+                            <th>Tarih</th>
+                            <th>Dosyayı Sil</th>
+                        </tr>
+                    </thead>
+                </table>
             </div>
         </div>
         <div class="card-footer">

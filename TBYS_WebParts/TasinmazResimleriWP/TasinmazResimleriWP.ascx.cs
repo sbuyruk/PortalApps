@@ -261,7 +261,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                     exhelper = saveImageFiles2SP(tasinmaz, tasinmaz.TapuFoto, FileUpload5, exhelper);
                 }
             }
-            isSaved = tasinmaz.UpdateFotoDb();
+            isSaved = tasinmaz.Update();
             if (!isSaved)
             {
                 Exception exception = new Exception("Resim Veri Tabanına Kayıt edilemedi");

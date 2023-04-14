@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Utility.HelperClasses;
+using Utility.ProjeGlobal;
 
 namespace Model.TBYS
 {
@@ -19,7 +20,7 @@ namespace Model.TBYS
             string sqlString = string.Format(@"SELECT *
                                FROM BagisciYakinlari_Table 
                                WHERE  Id={0}", id);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<BagisciYakinlari> list = ToList<BagisciYakinlari>(dataTable);
             BagisciYakinlari bagisciYakinlari = new BagisciYakinlari();
             bagisciYakinlari = list.FirstOrDefault();
@@ -28,52 +29,90 @@ namespace Model.TBYS
         }
         public override int Save()
         {
-            string sqlString = string.Format(@"
-                                            INSERT INTO BagisciYakinlari_Table 
-                                                (AdSoyad,Telefon, YakinlikDerecesi, BagisciId,Olusturan, OlusturmaTarihi)
-                                            VALUES ({0},{1},{2},{3},{4},{5})",
-                                AdSoyad.ReturnQuotedValue(), Telefon.ReturnQuotedValue(), YakinlikDerecesi.ReturnQuotedValue(),
-                                BagisciId.ReturnQuotedValue(),
-                                Olusturan.ReturnQuotedValue(), DateTime.Now.ReturnTRDateFormat());
+            try
+            {
+                GenericEntity<BagisciYakinlari> genericEntity = new GenericEntity<BagisciYakinlari>(ProjeConstants.SQL_INSERT);
+                OlusturmaTarihi = DateTime.Now;
+                Olusturan = UtilityHelper.GetCurrentUserName();
+                string sqlString = genericEntity.GetQuery(this);
+                int id = dao.Insert(sqlString);
 
-            int id = dao.Insert(sqlString);
-
-            this.Id = id;
-            return id;
+                this.Id = id;
+                if (id > 0 && ProjeConstants.TBYS_SAVE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.TBYS, ProjeConstants.TBYS_BAGISCIYAKINLARI);
+                }
+                return id;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         public override bool Update()
         {
             bool isSuccess = false;
-            if (Id != 0)
+            try
             {
-                string sqlString = string.Format(@"
-                                        UPDATE BagisciYakinlari_Table 
-                                        SET AdSoyad={0},Telefon={1},Tarih={2},BagisciId={3},
-                                            Degistiren={4},DegistirmeTarihi={5}
-                                        WHERE Id={6}",
-                              AdSoyad.ReturnQuotedValue(), Telefon.ReturnQuotedValue(),
-                              YakinlikDerecesi.ReturnQuotedValue(), BagisciId.ReturnQuotedValue(),
-                              Degistiren.ReturnQuotedValue(), DateTime.Now.ReturnTRDateFormat(), Id);
-                isSuccess = dao.Update2Db(sqlString);
+                if (this != null)
+                {
+                    BagisciYakinlari item = Select<BagisciYakinlari>(Id);
+                    if (Id != 0)
+                    {
+                        GenericEntity<BagisciYakinlari> genericEntity = new GenericEntity<BagisciYakinlari>(ProjeConstants.SQL_UPDATE);
+                        DegistirmeTarihi = DateTime.Now;
+                        Degistiren = UtilityHelper.GetCurrentUserName();
+                        string sqlString = genericEntity.GetQuery(this);
+                        isSuccess = dao.Update2Db(sqlString);
+                    }
+                    if (isSuccess && ProjeConstants.TBYS_UPDATE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.TBYS, ProjeConstants.TBYS_BAGISCIYAKINLARI);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
             }
             return isSuccess;
         }
         public override bool Delete()
         {
-            string sqlString = string.Format(@"DELETE 
-                               FROM BagisciYakinlari_Table
-                               WHERE Id={0}", Id);
-
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
-
-            return isSuccess;
+            try
+            {
+                bool isDeleted = false;
+                if (Id != 0)
+                {
+                    GenericEntity<BagisciYakinlari> genericEntity = new GenericEntity<BagisciYakinlari>(ProjeConstants.SQL_DELETE);
+                    string sqlString = genericEntity.GetQuery(this);
+                    BagisciYakinlari item = Select<BagisciYakinlari>(Id);
+                    if (item != null)
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+                    else isDeleted = false;
+                    if (isDeleted && ProjeConstants.TBYS_DELETE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.TBYS, ProjeConstants.TBYS_BAGISCIYAKINLARI);
+                    }
+                }
+                return isDeleted;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         public override List<T> SelectAll<T>()
         {
             string sqlString = string.Format(@"SELECT *
                                FROM BagisciYakinlari_Table");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<BagisciYakinlari> list = ToList<BagisciYakinlari>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
@@ -83,7 +122,7 @@ namespace Model.TBYS
 
             string sqlString = string.Format(@"SELECT * FROM BagisciYakinlari_Table
                               WHERE BagisciId={0}", bagisciId.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<BagisciYakinlari> list = ToList<BagisciYakinlari>(dataTable);
             return list;
         }

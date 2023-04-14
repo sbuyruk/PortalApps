@@ -754,7 +754,7 @@ namespace TBYS_WebParts.OdemePlaniWP
                 row.Controls.Add(SiraNoCell);
 
                 TableCell OdemeTarCell = new TableCell();
-                OdemeTarCell.Text = odeme.OdemeTarihi.ConvertToDatetimeEmptyIfNull();
+                OdemeTarCell.Text = odeme.OdemeTarihi.ConvertToDDMMYYYHHmmFormat();
                 row.Controls.Add(OdemeTarCell);
 
                 TableCell OdenenTutarCell = new TableCell();

@@ -2,7 +2,7 @@
 <Elements xmlns="http://schemas.microsoft.com/sharepoint/" >
   <Module Name="EkstreAktarmaEditWP" List="113" Url="_catalogs/wp">
     <File Path="EkstreAktarmaEditWP\EkstreAktarmaEditWP.webpart" Url="NBYS_WebParts_EkstreAktarmaEditWP.webpart" Type="GhostableInLibrary" >
-      <Property Name="Group" Value="NBYS_WebParts" />
+      <Property Name="Group" Value="Custom" />
     </File>
   </Module>
 </Elements>

@@ -1,4 +1,5 @@
-﻿using Model.TBYS;
+﻿using Model.Ortak;
+using Model.TBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -33,18 +34,11 @@ namespace TBYS_WebParts.KiraSozlesmeSiralamaWP
         {
             if (!Page.IsPostBack)
             {
-                KayitGetir();
+                TabloOlustur();
             }
         }
-        private void KayitGetir()
-        {
-            DateTime bas = DateTime.Now;
-
-            var jsonData = PersonelJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateJsString(jsonData); //javascript kodu hazırlanıyor.
-            System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), jsString, true);
-        }
-        private string PersonelJson()
+        
+        private string TabloJson()
         {
             string jSon = string.Empty;
 
@@ -54,7 +48,80 @@ namespace TBYS_WebParts.KiraSozlesmeSiralamaWP
             jSon = serializer.Serialize(list);
             return jSon;
         }
+        private void TabloOlustur()
+        {
+            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            UtilityHelper.ScriptCalistir(jsString);
+        }
 
+       
+        private string CreateDataTable(string jsonData)
+        {
+            string tableString = @"
+                 jQuery(document).ready(function () {
+$('#CustomDataTable').on( 'draw.dt', function () {
+    //alert( 'Table redrawn' );
+} );
+                        jQuery('#CustomDataTable').DataTable({                            
+                            data: " + jsonData + @",
+                            columns: [
+                                { data: 'DosyaNo' },
+                                { data: 'SozlesmeId' },
+                                { data: 'KiraciAdi' },
+                                { data: 'TarihAraligi' },
+                                { data: 'KiraBedeli' },
+                                { data: 'Adres' },
+
+                            ],
+                            columnDefs: [
+                                { type: 'turkish', targets:[2,3,4,5] },
+                                { type: 'num', targets: 0 },
+                                { targets: 4, className: 'dt-body-right'},
+                            ],
+                            'language': {
+                                'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
+                                'decimal': ',',
+                                'thousands': '.'
+                            },
+                            responsive: true,
+                            paging:false,
+                            dom: 'Bfrti',
+                            rowReorder: {
+                                selector: 'tr',
+                                update: false
+                            },
+                            buttons: [
+                                {
+                                    extend: 'print',
+                                    exportOptions: {
+                                        columns: ':visible'
+                                    }
+                                },
+                                {
+                                    extend: 'excel',
+                                    exportOptions: {
+                                        columns: ':visible'
+                                    }
+                                },
+                                {
+                                    extend: 'pdf',
+                                    exportOptions: {
+                                        columns: ':visible'
+                                    }
+                                },
+                                {
+                                    extend: 'copy',
+                                    exportOptions: {
+                                        columns: ':visible'
+                                    }
+                                },
+                                , 'pageLength', 'colvis'
+                            ]
+                        });
+                    });";
+            return tableString;
+        }
         private List<KiraSozlesmeListItem> GetDataList()
         {
 
@@ -123,35 +190,6 @@ namespace TBYS_WebParts.KiraSozlesmeSiralamaWP
             }
             return list;
         }
-        private string CreateJsString(string jsonData)
-        {
-
-            //return '<span class=bagis-iade-edildi>'+rowData.IadeMiktari+ ' '+rowData.DovizCinsi+ ' Parası İade edildi</span>';
-            string ekstretablestr = @" 
-                $('#tblfilter').puidatatable({
-                caption: '',
-                editMode: 'cell',
-                selectionMode: 'single',
-                //paginator: {
-                //            rows: 8
-                //            },
-                columns: [
-                    { field: 'DosyaNo', headerText: 'D.No', bodyClass:'text-right',headerStyle:'width: 5%' },
-                    { field: 'SozlesmeId', headerText: 'Söz.No', bodyClass:'text-right', headerStyle:'width: 8%' },
-                    { field: 'KiraciAdi', headerText: 'Kiracı', headerStyle:'width: 27%' },
-                    { field: 'TarihAraligi', headerText: 'Sözleşme Tarihi', bodyClass:'text-center',headerStyle:'width: 20%' },                    
-                    { field: 'KiraBedeli', headerText: 'Kira Bedeli', bodyClass:'text-right',bodyClass:'text-right',headerStyle:'width: 10%' },
-                    { field: 'Adres', headerText: 'Adres',headerStyle:'width: 30%' },
-                  ],
-                    datasource:" + jsonData + @",
-                    draggableRows:true,
-                    resizableColumns: true,
-                    globalFilter:'#globalFilter'
-                });
-                $('#messages').puigrowl();
-            ";
-            return ekstretablestr;
-        }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
             try
@@ -205,7 +243,7 @@ namespace TBYS_WebParts.KiraSozlesmeSiralamaWP
                         }
                     }
                 }
-                KayitGetir();
+                TabloOlustur();
                 MessageHelper.PublishMessage("Sıralama kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
             }
             catch (Exception)

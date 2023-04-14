@@ -257,6 +257,7 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
             List<KiraArtisListItem> list = GetDataList();
             TableDataLbl.Text = "Toplam " + list.Count + " kayıt bulundu";
             var serializer = new JavaScriptSerializer();
+            serializer.MaxJsonLength = Int32.MaxValue;
             jSon = serializer.Serialize(list);
             return jSon;
         }

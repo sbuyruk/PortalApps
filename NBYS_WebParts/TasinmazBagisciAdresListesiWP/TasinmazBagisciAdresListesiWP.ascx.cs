@@ -130,7 +130,7 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP
                 ],
                 'order': [[0, 'asc']],
                 'language': {
-                    'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                    'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                     'decimal': ',',
                     'thousands': '.'
                 },
@@ -654,7 +654,7 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP
                 ],
                 'order': [[0, 'asc']],
                 'language': {
-                    'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                    'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                     'decimal': ',',
                     'thousands': '.'
                 },

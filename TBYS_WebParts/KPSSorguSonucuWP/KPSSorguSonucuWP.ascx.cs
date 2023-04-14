@@ -76,7 +76,7 @@ namespace TBYS_WebParts.KPSSorguSonucuWP
                     ],
                     'order': [[1, 'asc']],//sort 
                     'language': {
-                    'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                    'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                         'decimal': ',',
                         'thousands': '.'
                     },

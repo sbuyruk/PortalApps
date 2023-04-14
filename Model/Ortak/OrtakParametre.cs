@@ -65,7 +65,7 @@ namespace Model.Ortak
             Id = id;
             string sqlString = genericEntity.GetQuery(this);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<OrtakParametre> list = ToList<OrtakParametre>(dataTable);
             _ = new OrtakParametre();
             OrtakParametre item = list.FirstOrDefault();
@@ -77,7 +77,7 @@ namespace Model.Ortak
             OlusturmaTarihi = DateTime.Now;
             Id = id;
             string sqlString = genericEntity.GetQuery(this);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<OrtakParametre> list = ToList<OrtakParametre>(dataTable);
             OrtakParametre item = new OrtakParametre();
             item = list.FirstOrDefault();
@@ -90,7 +90,7 @@ namespace Model.Ortak
                 FROM OrtakParametre_Table ORDER BY Sira,Deger
                 ");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<OrtakParametre> list = ToList<OrtakParametre>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
@@ -123,7 +123,7 @@ namespace Model.Ortak
                 ORDER BY Sira, Deger
                 ", anahtar.ReturnQuotedValue());
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<OrtakParametre> list = ToList<OrtakParametre>(dataTable);
             _ = new OrtakParametre();
             OrtakParametre item = list.FirstOrDefault();
@@ -138,7 +138,7 @@ namespace Model.Ortak
                 ORDER BY Sira, Deger
                 ",parametreGrubu.ReturnQuotedValue());
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<OrtakParametre> list = ToList<OrtakParametre>(dataTable);
 
             return (list);
@@ -150,7 +150,7 @@ namespace Model.Ortak
                 ORDER BY Sira,Deger
                 ");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
 
             return dataTable;
         }
@@ -163,7 +163,7 @@ namespace Model.Ortak
             DataTable dataTable;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -182,7 +182,7 @@ namespace Model.Ortak
                 ORDER BY Sira, Deger
                 ", grup.ReturnQuotedValue(),deger.ReturnQuotedValue());
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<OrtakParametre> list = ToList<OrtakParametre>(dataTable);
 
             return list;

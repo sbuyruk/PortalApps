@@ -28,57 +28,93 @@ namespace Model.NBYS
         public string KartNo { get; set; }
         public int FTKGorevi { get; set; }
         public string UyelikDurumu { get; set; }
-        public override bool Delete()
-        {
-            try
-            {
-                if (Id != 0)
-                {
-                    GenericEntity<FTKKisi> genericEntity = new GenericEntity<FTKKisi>(ProjeConstants.SQL_DELETE);
-                    OlusturmaTarihi = DateTime.Now;
-                    string sqlString = genericEntity.GetQuery(this);
-                    bool isDeleted = dao.DeleteFromDb(sqlString, "");
-                    return isDeleted;
-                }
-                else
-                {
-                    return false;
-                }
-
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-        }
         public override int Save()
         {
             try
             {
                 GenericEntity<FTKKisi> genericEntity = new GenericEntity<FTKKisi>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
+                Olusturan = UtilityHelper.GetCurrentUserName();
                 string sqlString = genericEntity.GetQuery(this);
                 int id = dao.Insert(sqlString);
 
                 this.Id = id;
+                if (id > 0 && ProjeConstants.NBYS_SAVE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.NBYS, ProjeConstants.NBYS_FTKKISI);
+                }
                 return id;
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
-
+        }
+        public override bool Update()
+        {
+            bool isSuccess = false;
+            try
+            {
+                if (this != null)
+                {
+                    FTKKisi item = Select<FTKKisi>(Id);
+                    if (Id != 0)
+                    {
+                        GenericEntity<FTKKisi> genericEntity = new GenericEntity<FTKKisi>(ProjeConstants.SQL_UPDATE);
+                        DegistirmeTarihi = DateTime.Now;
+                        Degistiren = UtilityHelper.GetCurrentUserName();
+                        string sqlString = genericEntity.GetQuery(this);
+                        isSuccess = dao.Update2Db(sqlString);
+                    }
+                    if (isSuccess && ProjeConstants.NBYS_UPDATE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.NBYS, ProjeConstants.NBYS_FTKKISI);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return isSuccess;
+        }
+        public override bool Delete()
+        {
+            try
+            {
+                bool isDeleted = false;
+                if (Id != 0)
+                {
+                    GenericEntity<FTKKisi> genericEntity = new GenericEntity<FTKKisi>(ProjeConstants.SQL_DELETE);
+                    string sqlString = genericEntity.GetQuery(this);
+                    FTKKisi item = Select<FTKKisi>(Id);
+                    if (item != null)
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+                    else isDeleted = false;
+                    if (isDeleted && ProjeConstants.NBYS_DELETE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.NBYS, ProjeConstants.NBYS_FTKKISI);
+                    }
+                }
+                return isDeleted;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         public FTKKisi Select(int id)
         {
             GenericEntity<FTKKisi> genericEntity = new GenericEntity<FTKKisi>(ProjeConstants.SQL_SELECT);
-            OlusturmaTarihi = DateTime.Now;
             Id = id;
             string sqlString = genericEntity.GetQuery(this);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<FTKKisi> list = ToList<FTKKisi>(dataTable);
             FTKKisi item = new FTKKisi();
             item = list.FirstOrDefault();
@@ -87,10 +123,9 @@ namespace Model.NBYS
         public override T Select<T>(int id)
         {
             GenericEntity<FTKKisi> genericEntity = new GenericEntity<FTKKisi>(ProjeConstants.SQL_SELECT);
-            OlusturmaTarihi = DateTime.Now;
             Id = id;
             string sqlString = genericEntity.GetQuery(this);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<FTKKisi> list = ToList<FTKKisi>(dataTable);
             FTKKisi item = new FTKKisi();
             item = list.FirstOrDefault();
@@ -103,29 +138,10 @@ namespace Model.NBYS
                 FROM FTKKisi_Table ORDER BY Adi
                 ");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<FTKKisi> list = ToList<FTKKisi>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
-        }
-        public override bool Update()
-        {
-            bool isSuccess = false;
-            try
-            {
-                if (Id != 0)
-                {
-                    GenericEntity<FTKKisi> genericEntity = new GenericEntity<FTKKisi>(ProjeConstants.SQL_UPDATE);
-                    DegistirmeTarihi = DateTime.Now;
-                    string sqlString = genericEntity.GetQuery(this);
-                    isSuccess = dao.Update2Db(sqlString);
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            return isSuccess;
         }
         public DataTable SelectAllReturnDT()
         {
@@ -136,7 +152,7 @@ namespace Model.NBYS
                 ORDER BY Adi
                 ");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
 
             return dataTable;
         }
@@ -148,7 +164,7 @@ namespace Model.NBYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -166,7 +182,7 @@ namespace Model.NBYS
                 FROM FTKKisi_Table
                 WHERE Adi ={0} AND Soyadi ={1}
                 ", adi.Trim().ReturnQuotedValue(), soyadi.Trim().ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<FTKKisi> list = ToList<FTKKisi>(dataTable);
             FTKKisi ftkKisi = new FTKKisi();
             ftkKisi = list.FirstOrDefault();
@@ -179,7 +195,7 @@ namespace Model.NBYS
                 FROM FTKKisi_Table
                 WHERE TCKimlikNo={0}
                 ", tckimlik);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<FTKKisi> list = ToList<FTKKisi>(dataTable);
             FTKKisi ftkKisi = new FTKKisi();
             ftkKisi = list.FirstOrDefault();
@@ -203,7 +219,7 @@ namespace Model.NBYS
                 {3}
                 ORDER BY C.FTKGorevi,C.Adi,C.Soyadi 
             ", ili, ilcesi, ftkislemIdStr,aktifStr);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
 
             return dataTable;
         }
@@ -221,7 +237,7 @@ namespace Model.NBYS
                 FROM FTKKisi_Table 
                 WHERE Vali=1 AND Ili={0} AND Ilcesi={1}
             ",ili,ProjeConstants.VALILIK_INT);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<FTKKisi> list = ToList<FTKKisi>(dataTable);
             FTKKisi ftkKisi = new FTKKisi();
             ftkKisi = list.FirstOrDefault();
@@ -234,7 +250,7 @@ namespace Model.NBYS
                 FROM FTKKisi_Table 
                 WHERE Kaymakam=1 AND Ili={0} AND Ilcesi={1}
             ", ili,ilcesi);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<FTKKisi> list = ToList<FTKKisi>(dataTable);
             FTKKisi ftkKisi = new FTKKisi();
             ftkKisi = list.FirstOrDefault();

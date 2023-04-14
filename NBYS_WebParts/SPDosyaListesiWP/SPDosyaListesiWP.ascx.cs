@@ -1,4 +1,5 @@
 ﻿using Microsoft.SharePoint;
+using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -79,18 +80,14 @@ namespace NBYS_WebParts.SPDosyaListesiWP
         {
             string fileName = ProjeConstants.TESEKKUR_DOSYA;
             if (string.IsNullOrEmpty(YaziQS))
-
             {
                 TitleLbl.Text = "Teşekkür Belgesi Dosyaları";
                 LibraryNameQS = ProjeConstants.NBYSBELGELERI_LIB;
                 fileName = ProjeConstants.TESEKKUR_DOSYA;
             }
-
-            List<SPFile> fileList = DosyaListesiniGetir(LibraryNameQS, fileName);
-            var jsonData = ToJSON(fileList, fileName); //veri çekilip json a çeviriliyor
-            //var jsonData = GetBagisciData();
-            var jsString = CreateJsString(jsonData); //javascript kodu hazırlanıyor.
-            System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), jsString, true);
+            
+            TabloOlustur(fileName);
+            
         }
         public string ToJSON(List<SPFile> fileList, string pDosyaAdi)
         {
@@ -100,6 +97,16 @@ namespace NBYS_WebParts.SPDosyaListesiWP
                 if (fileList != null)
                 {
 
+                    string dosyaUrl = SPContext.Current.Web.Url + @"/" + LibraryNameQS + @"/";
+
+                    string sourceString = System.Web.HttpContext.Current.Request.Url.AbsoluteUri;
+                    string removeString = System.Web.HttpContext.Current.Request.Url.AbsolutePath;
+
+                    int index = sourceString.IndexOf(removeString);
+                    string rootUrl = (index < 0)
+                        ? sourceString
+                        : sourceString.Substring(0, index);
+
                     JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
                     List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
                     Dictionary<string, object> childRow;
@@ -107,25 +114,33 @@ namespace NBYS_WebParts.SPDosyaListesiWP
                     {
                         if (file.Name.Equals("TesekkurBelgesiTemplate.docx"))
                             continue;//template dosyasını listeye koyma
+
                         childRow = new Dictionary<string, object>();
-                        childRow.Add("FileName", file.Name);
+                        string fileUrl = "<a href=" + rootUrl + "/_layouts/15/download.aspx?SourceUrl=" + dosyaUrl + file.Name + @" class='btn-link font-weight-bold'>" + file.Name + "</a>";
+                        childRow.Add("FileName", fileUrl);
                         childRow.Add("Author", file.Author.Name.ToString());
                         childRow.Add("ModifiedBy", file.ModifiedBy.Name.ToString());
-                        childRow.Add("TimeLastModified", file.TimeLastModified.ToString());
+                        DateTime lastModified = TimeZone.CurrentTimeZone.ToLocalTime(file.TimeLastModified);
+                        childRow.Add("TimeLastModified", lastModified.ConvertToDDMMYYYHHmmFormat());
 
-                        string sourceString = file.Name;
-                        string removeString = pDosyaAdi;
-                        int index = sourceString.IndexOf(removeString);
-                        string zaman = (index < 0)
-                            ? sourceString
-                            : sourceString.Remove(index, removeString.Length);
+                        string sourceFileString = file.Name;
+                        string removeFileString = pDosyaAdi;
+                        int indexOfRemove = sourceFileString.IndexOf(removeFileString);
+                        string zaman = (indexOfRemove < 0)
+                            ? sourceFileString
+                            : sourceFileString.Remove(indexOfRemove, removeFileString.Length);
                         string etiketEki = "TES";
                         string etiketDosyaAdi = ProjeConstants.ADRESETIKETI_DOSYA + etiketEki + zaman;
 
                         bool isDosyaVarMi = DosyaVarMi(LibraryNameQS, etiketDosyaAdi);
 
                         etiketDosyaAdi = isDosyaVarMi ? etiketDosyaAdi : string.Empty;
-                        childRow.Add("LabelFileName", etiketDosyaAdi);
+
+                        string labelUrl = "<a href=" + rootUrl + "/_layouts/15/download.aspx?SourceUrl=" + dosyaUrl + etiketDosyaAdi + @" class='btn-link font-weight-bold'>" + etiketDosyaAdi + "</a>";
+                        childRow.Add("LabelFileName", labelUrl);
+                        
+                        string deleteFile = "<a href=# onclick=CallButtonClick('"+file.Name + "','"+ etiketDosyaAdi+"'); class='btn btn-outline-danger'>Dosyayı Sil</a>";
+                        childRow.Add("DeleteFile", deleteFile);
 
                         parentRow.Add(childRow);
                     }
@@ -140,6 +155,74 @@ namespace NBYS_WebParts.SPDosyaListesiWP
                 throw;
             }
             return json;
+        }
+        private void TabloOlustur(string fileName)
+        {
+            List<SPFile> fileList = DosyaListesiniGetir(LibraryNameQS, fileName);
+            var jsonData = ToJSON(fileList, fileName); //veri çekilip json a çeviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            UtilityHelper.ScriptCalistir(jsString);
+        }
+        private string CreateDataTable(string jsonData)
+        {
+            string dosyaUrl = SPContext.Current.Web.Url + @"/" + LibraryNameQS + @"/";
+
+            string sourceString = System.Web.HttpContext.Current.Request.Url.AbsoluteUri;
+            string removeString = System.Web.HttpContext.Current.Request.Url.AbsolutePath;
+
+            int index = sourceString.IndexOf(removeString);
+            string rootUrl = (index < 0)
+                ? sourceString
+                : sourceString.Substring(0, index);
+
+            string tableString = @"
+                if ( jQuery.fn.DataTable.isDataTable('#CustomDataTable') ) {
+                    jQuery('#CustomDataTable').DataTable().destroy();
+                }
+                jQuery('#CustomDataTable tbody').empty();
+
+                jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
+                jQuery(document).ready(function () {
+                    jQuery('#CustomDataTable').DataTable({
+                        'initComplete': function (settings, json) {//tablo yüklendiğinde
+                            var api = this.api();
+                            var row = api.row(function (idx, data, node) { //secilen toplantıya gider
+                                return data['Secildi'] == true;
+                            });
+                            if (row.length > 0) {
+                                row.select()
+                                    .show()
+                                    .draw(false);
+                            }
+                        },
+                        data: " + jsonData + @",
+                        columns: [
+                            { data: 'FileName' },
+                            { data: 'LabelFileName'},
+                            { data: 'Author'},
+                            { data: 'TimeLastModified'},
+                            { data: 'DeleteFile'},
+                        ],
+                        columnDefs: [                           
+                            
+                        ],
+                        'order': [[3, 'desc']],//sort 
+                        'language': {
+                            'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
+                            'decimal': ',',
+                            'thousands': '.'
+                        },
+                        responsive: true,
+                        destroy: true,
+                        pageLength:10,
+                        dom: 'ftipr',
+                        
+                        });
+                    });
+
+            ";
+
+            return tableString;
         }
         private bool DosyaVarMi(string libName, string fileName)
         {
@@ -160,54 +243,6 @@ namespace NBYS_WebParts.SPDosyaListesiWP
                 isDosyaBulundu = true;
             }
             return isDosyaBulundu;
-        }
-        private string CreateJsString(string jsonData)
-        {
-            string dosyaUrl = SPContext.Current.Web.Url + @"/" + LibraryNameQS + @"/";
-
-            string sourceString = System.Web.HttpContext.Current.Request.Url.AbsoluteUri;
-            string removeString = System.Web.HttpContext.Current.Request.Url.AbsolutePath;
-
-            int index = sourceString.IndexOf(removeString);
-            string rootUrl = (index < 0)
-                ? sourceString
-                : sourceString.Substring(0, index);
-            string tablestr = @"   
-                $('#tblfilter').puidatatable({
-                caption: '',
-                editMode: 'cell',
-                paginator: {
-                            rows: 8
-                            },
-                columns: [
-                    { field: 'FileName', headerText: 'Dosya Adı', sortable:true,headerStyle:'width: 35%' , content: function (rowData)
-                        { 
-                            return $('<a href=" + rootUrl + "/_layouts/15/download.aspx?SourceUrl=" + dosyaUrl +
-                                @"'+rowData.FileName+' class=\'btn-link \'>'+rowData.FileName+'</a>');
-                        }
-                    },
-                    { field: 'LabelFileName', headerText: 'Etiket Dosyası', sortable:true,headerStyle:'width: 35%' , content: function (rowData)
-                        { 
-                            return $('<a href=" + rootUrl + "/_layouts/15/download.aspx?SourceUrl=" + dosyaUrl +
-                                @"'+rowData.LabelFileName+' class=\'btn-link \'>'+rowData.LabelFileName+'</a>');
-                        }
-                    },
-                    { field: 'Author', headerText: 'Yazan', sortable:true,headerStyle:'width: 15%' },
-                    { field: 'TimeLastModified', headerText: 'Tarih',headerStyle:'width: 15%'},
-                    { field: '', headerText: 'Dosyaları Sil',headerStyle:'width: 15%', content: function (rowData)
-                        { 
-                            return $('<a href=# onclick=CallButtonClick(\''+rowData.FileName + '\',\''+rowData.LabelFileName + '\'); class=\'btn btn-outline-danger \'>Dosyayı Sil</a>')  
-                        }
-                    }
-                ],
-                datasource:" + jsonData + @",
-                resizableColumns: true,
-                globalFilter:'#globalFilter'
-                });
-                  ";
-
-
-            return tablestr;
         }
         private bool DosyalariSPListesindenSil(string libName, string tesekkurDosyaAdi, string etiketDosyaAdi)
         {
@@ -297,6 +332,5 @@ namespace NBYS_WebParts.SPDosyaListesiWP
             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
             Page.Response.Redirect(currentUrl);
         }
-
     }
 }

@@ -69,10 +69,6 @@ namespace NBYS_WebParts.SPDosyaListesiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl tbl;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.Label Label1;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -204,22 +200,6 @@ namespace NBYS_WebParts.SPDosyaListesiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControltbl() {
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
-            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
-            this.tbl = @__ctrl;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "table loader");
-            @__ctrl.ID = "tbl";
-            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    <input id=\"globalFilter\" placeholder=\"Aranacak Kelime\" size" +
-                        "=\"30\" />\r\n                    <div id=\"tblfilter\" class=\"table\"></div>\r\n        " +
-                        "            <div id=\"messages\"></div>\r\n                "));
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlLabel1() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -333,27 +313,24 @@ namespace NBYS_WebParts.SPDosyaListesiWP {
             global::System.Web.UI.WebControls.LinkButton @__ctrl7;
             @__ctrl7 = this.@__BuildControlDosyayiSilBtn();
             @__parser.AddParsedSubObject(@__ctrl7);
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl8;
-            @__ctrl8 = this.@__BuildControltbl();
+            global::System.Web.UI.WebControls.Label @__ctrl8;
+            @__ctrl8 = this.@__BuildControlLabel1();
             @__parser.AddParsedSubObject(@__ctrl8);
             global::System.Web.UI.WebControls.Label @__ctrl9;
-            @__ctrl9 = this.@__BuildControlLabel1();
+            @__ctrl9 = this.@__BuildControlSilLbl();
             @__parser.AddParsedSubObject(@__ctrl9);
             global::System.Web.UI.WebControls.Label @__ctrl10;
-            @__ctrl10 = this.@__BuildControlSilLbl();
+            @__ctrl10 = this.@__BuildControlDosyaAdiLbl();
             @__parser.AddParsedSubObject(@__ctrl10);
             global::System.Web.UI.WebControls.Label @__ctrl11;
-            @__ctrl11 = this.@__BuildControlDosyaAdiLbl();
+            @__ctrl11 = this.@__BuildControlEtiketDosyaAdiLbl();
             @__parser.AddParsedSubObject(@__ctrl11);
             global::System.Web.UI.WebControls.Label @__ctrl12;
-            @__ctrl12 = this.@__BuildControlEtiketDosyaAdiLbl();
+            @__ctrl12 = this.@__BuildControlSilMesajiLbl();
             @__parser.AddParsedSubObject(@__ctrl12);
-            global::System.Web.UI.WebControls.Label @__ctrl13;
-            @__ctrl13 = this.@__BuildControlSilMesajiLbl();
+            global::System.Web.UI.WebControls.LinkButton @__ctrl13;
+            @__ctrl13 = this.@__BuildControlDosyayiSilNowBtn();
             @__parser.AddParsedSubObject(@__ctrl13);
-            global::System.Web.UI.WebControls.LinkButton @__ctrl14;
-            @__ctrl14 = this.@__BuildControlDosyayiSilNowBtn();
-            @__parser.AddParsedSubObject(@__ctrl14);
             @__ctrl.SetRenderMethodDelegate(new System.Web.UI.RenderMethod(this.@__Render__control1));
         }
         
@@ -372,8 +349,8 @@ namespace NBYS_WebParts.SPDosyaListesiWP {
                          @__w.Write( DosyayiSilBtn.ClientID);
 
             @__w.Write("\').click();\r\n    }\r\n    function OpenModalOnay() {\r\n        $(\"#ModalOnayDiv\").mo" +
-                    "dal({ backdrop: true });\r\n    }\r\n</script>\r\n\r\n<div class=\"container shadow\">\r\n  " +
-                    "  <div class=\"card\">\r\n        <div class=\"card-header\">\r\n            ");
+                    "dal({ backdrop: true });\r\n    }\r\n</script>\r\n\r\n<div class=\"container\">\r\n    <div " +
+                    "class=\"card shadow\">\r\n        <div class=\"card-header\">\r\n            ");
             parameterContainer.Controls[0].RenderControl(@__w);
             @__w.Write("\r\n            <h3 class=\"mb-2\">\r\n                ");
             parameterContainer.Controls[1].RenderControl(@__w);
@@ -388,13 +365,27 @@ namespace NBYS_WebParts.SPDosyaListesiWP {
             parameterContainer.Controls[5].RenderControl(@__w);
             @__w.Write("\r\n                ");
             parameterContainer.Controls[6].RenderControl(@__w);
-            @__w.Write("\r\n            </div>\r\n            <div id=\"SuzmeBolumuDiv\" class=\"form-group row\"" +
-                    ">\r\n            </div>\r\n            <div class=\"form-group\" id=\"TabloBolumuDiv\">\r" +
-                    "\n                ");
+            @__w.Write(@"
+            </div>
+            <div id=""SuzmeBolumuDiv"" class=""form-group row"">
+            </div>
+            <div class=""form-group"" id=""TabloBolumuDiv"">
+                <table id=""CustomDataTable"" class=""table table-striped table-bordered"" width=""100%"">
+                    <thead>
+                        <tr>
+                            <th>Dosya Adı</th>
+                            <th>Etiket Dosyası</th>
+                            <th>Yazan</th>
+                            <th>Tarih</th>
+                            <th>Dosyayı Sil</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+        <div class=""card-footer"">
+            ");
             parameterContainer.Controls[7].RenderControl(@__w);
-            @__w.Write("\r\n            </div>\r\n        </div>\r\n        <div class=\"card-footer\">\r\n        " +
-                    "    ");
-            parameterContainer.Controls[8].RenderControl(@__w);
             @__w.Write(@"
         </div>
     </div>
@@ -411,21 +402,21 @@ namespace NBYS_WebParts.SPDosyaListesiWP {
                     <div class=""text-center"">
                         <h3>
                             ");
-            parameterContainer.Controls[9].RenderControl(@__w);
+            parameterContainer.Controls[8].RenderControl(@__w);
             @__w.Write("</h3>\r\n                    </div>\r\n                    <div class=\"card-body text" +
                     "-center\">\r\n                        <div class=\"form-group\">\r\n                   " +
                     "         ");
+            parameterContainer.Controls[9].RenderControl(@__w);
+            @__w.Write("\r\n                        </div>\r\n                        <div class=\"form-group\"" +
+                    ">\r\n                            ");
             parameterContainer.Controls[10].RenderControl(@__w);
             @__w.Write("\r\n                        </div>\r\n                        <div class=\"form-group\"" +
                     ">\r\n                            ");
             parameterContainer.Controls[11].RenderControl(@__w);
-            @__w.Write("\r\n                        </div>\r\n                        <div class=\"form-group\"" +
-                    ">\r\n                            ");
-            parameterContainer.Controls[12].RenderControl(@__w);
             @__w.Write("\r\n                        </div>\r\n                    </div>\r\n                </d" +
                     "iv>\r\n            </div>\r\n            <div class=\"modal-footer\">\r\n               " +
                     " ");
-            parameterContainer.Controls[13].RenderControl(@__w);
+            parameterContainer.Controls[12].RenderControl(@__w);
             @__w.Write("\r\n                <button type=\"button\" class=\"btn btn-default float-right\" data-" +
                     "dismiss=\"modal\">Kapat</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n" +
                     "</div>\r\n");

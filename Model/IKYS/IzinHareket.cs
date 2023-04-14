@@ -35,7 +35,7 @@ namespace Model.IKYS
         public override T Select<T>(int id)
         {
             string sqlString = SelectSQL(id);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<IzinHareket> list = ToList<IzinHareket>(dataTable);
             IzinHareket izinHareket = new IzinHareket();
             izinHareket = list.FirstOrDefault();
@@ -45,11 +45,17 @@ namespace Model.IKYS
         {
             try
             {
+
                 GenericEntity<IzinHareket> genericEntity = new GenericEntity<IzinHareket>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
+                Olusturan = UtilityHelper.GetCurrentUserName();
                 string sqlString = genericEntity.GetQuery(this);
                 int id = dao.Insert(sqlString);
-
+                if (id > 0 && ProjeConstants.IKYS_SAVE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.IKYS, ProjeConstants.IKYS_IZINHAREKET);
+                }
                 this.Id = id;
                 return id;
             }
@@ -59,19 +65,27 @@ namespace Model.IKYS
                 throw ex;
             }
 
-
         }
+
         public override bool Update()
         {
+
             bool isSuccess = false;
             try
             {
+                IzinHareket item = Select<IzinHareket>(Id);
                 if (Id != 0)
                 {
                     GenericEntity<IzinHareket> genericEntity = new GenericEntity<IzinHareket>(ProjeConstants.SQL_UPDATE);
                     DegistirmeTarihi = DateTime.Now;
+                    Degistiren = UtilityHelper.GetCurrentUserName();
                     string sqlString = genericEntity.GetQuery(this);
                     isSuccess = dao.Update2Db(sqlString);
+                }
+                if (isSuccess && ProjeConstants.IKYS_UPDATE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.IKYS, ProjeConstants.IKYS_IZINHAREKET);
                 }
             }
             catch (Exception)
@@ -82,18 +96,45 @@ namespace Model.IKYS
         }
         public override bool Delete()
         {
-            string sqlString = DeleteSQL();
+            try
+            {
+                bool isDeleted;
+                if (Id != 0)
+                {
+                    GenericEntity<IzinHareket> genericEntity = new GenericEntity<IzinHareket>(ProjeConstants.SQL_DELETE);
+                    string sqlString = genericEntity.GetQuery(this);
 
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
+                    IzinHareket item = Select<IzinHareket>(Id);
+                    if (item != null)
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+                    else isDeleted = false;
+                    if (isDeleted && ProjeConstants.IKYS_DELETE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.IKYS, ProjeConstants.IKYS_IZINHAREKET);
+                    }
+                    return isDeleted;
+                }
+                else
+                {
+                    return false;
+                }
 
-            return isSuccess;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
         public override List<T> SelectAll<T>()
         {
             string sqlString = string.Format(@"SELECT *
                                FROM IzinHareket_Table");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<IzinHareket> list = ToList<IzinHareket>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
@@ -106,7 +147,7 @@ namespace Model.IKYS
                             WHERE IzinTipi!=2 AND BitisTarihi>={0}
                             ORDER BY BaslangicTarihi ", tarih.ReturnTRDateFormat());
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<IzinHareket> list = ToList<IzinHareket>(dataTable);
 
             return (list);
@@ -119,7 +160,7 @@ namespace Model.IKYS
                             WHERE  IzinTalepId={0}
                             ", izinTalepId);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<IzinHareket> list = ToList<IzinHareket>(dataTable);
             IzinHareket izinHareket = new IzinHareket();
             izinHareket = list.FirstOrDefault<IzinHareket>();
@@ -140,7 +181,7 @@ namespace Model.IKYS
                     BaslangicTarihi<={0} AND BitisTarihi>={1}
                 ORDER BY  ProtokolSiraNo, A.IzinTipi, BaslangicTarihi ", bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat()); //TODO 8 saat olan Mazeret de dahil olsun
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
 
 
             return dataTable;
@@ -157,7 +198,7 @@ namespace Model.IKYS
                 ORDER BY BitisTarihi DESC
             ",personelId, bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat()); 
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<IzinHareket> list = ToList<IzinHareket>(dataTable);
             IzinHareket izinHareket = new IzinHareket();
             izinHareket = list.FirstOrDefault<IzinHareket>();
@@ -179,7 +220,7 @@ namespace Model.IKYS
                 WHERE Mahsup=0 AND IzinTipi={0} AND BaslangicTarihi BETWEEN {1} AND {2}
                 ORDER BY D.ProtokolSiraNo,A.BaslangicTarihi ", izinTipi, ilkTarih.ReturnTRDateFormat(), bittar.ReturnTRDateFormat()); //TODO 8 saat olan Mazeret de dahil olsun
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
 
 
             return dataTable;
@@ -207,7 +248,7 @@ namespace Model.IKYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
 
             }
             catch (Exception e)
@@ -225,7 +266,7 @@ namespace Model.IKYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
 
             }
             catch (Exception e)
@@ -243,7 +284,7 @@ namespace Model.IKYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
                 json = ConvertDataTabletoString(dataTable);
                 return (json);
             }
@@ -262,7 +303,7 @@ namespace Model.IKYS
                 ORDER BY A.BaslangicTarihi DESC", personelId);
             try
             {
-                DataTable dataTable = dao.selectFromDb(sqlString, "");
+                DataTable dataTable = dao.SelectFromDb(sqlString, "");
                 List<IzinHareket> list = ToList<IzinHareket>(dataTable);
                 return (list);
             }

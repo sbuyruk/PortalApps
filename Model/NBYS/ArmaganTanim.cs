@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Utility.HelperClasses;
+using Utility.ProjeGlobal;
 
 namespace Model.NBYS
 {
@@ -17,36 +18,92 @@ namespace Model.NBYS
         public string ImzaGorevi { get; set; }
         public string ImzaAdi { get; set; }
 
-        public override bool Delete()
-        {
-            string sqlString = string.Format(@"DELETE 
-                               FROM ArmaganTanim_Table
-                               WHERE Id={0}", Id);
-
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
-
-            return isSuccess;
-        }
-
         public override int Save()
         {
-            string sqlString = string.Format(@"INSERT INTO ArmaganTanim_Table
-                              (Armagan,OzelKisiAltLimit,OzelKisiUstLimit,TuzelKisiAltLimit,TuzelKisiUstLimit,ImzaGorevi,ImzaAdi,Olusturan,OlusturmaTarihi)
-                               VALUES ({0},{1},{2},{3},{4},{5},{6},{7},{8})",
-                           Armagan.ReturnQuotedValue(), OzelKisiAltLimit.ReturnQuotedValue(), OzelKisiUstLimit.ReturnQuotedValue(), TuzelKisiAltLimit.ReturnQuotedValue(), TuzelKisiUstLimit.ReturnQuotedValue(), ImzaGorevi.ReturnQuotedValue(), ImzaAdi.ReturnQuotedValue(), Olusturan.ReturnQuotedValue(), DateTime.Now.ReturnTRDateFormat());
+            try
+            {
+                GenericEntity<ArmaganTanim> genericEntity = new GenericEntity<ArmaganTanim>(ProjeConstants.SQL_INSERT);
+                OlusturmaTarihi = DateTime.Now;
+                Olusturan = UtilityHelper.GetCurrentUserName();
+                string sqlString = genericEntity.GetQuery(this);
+                int id = dao.Insert(sqlString);
 
-
-            int id = dao.Insert(sqlString);
-
-            return id;
+                this.Id = id;
+                if (id > 0 && ProjeConstants.NBYS_SAVE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.NBYS, ProjeConstants.NBYS_ARMAGANTANIM);
+                }
+                return id;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
-
+        public override bool Update()
+        {
+            bool isSuccess = false;
+            try
+            {
+                if (this != null)
+                {
+                    ArmaganTanim item = Select<ArmaganTanim>(Id);
+                    if (Id != 0)
+                    {
+                        GenericEntity<ArmaganTanim> genericEntity = new GenericEntity<ArmaganTanim>(ProjeConstants.SQL_UPDATE);
+                        DegistirmeTarihi = DateTime.Now;
+                        Degistiren = UtilityHelper.GetCurrentUserName();
+                        string sqlString = genericEntity.GetQuery(this);
+                        isSuccess = dao.Update2Db(sqlString);
+                    }
+                    if (isSuccess && ProjeConstants.NBYS_UPDATE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.NBYS, ProjeConstants.NBYS_ARMAGANTANIM);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return isSuccess;
+        }
+        public override bool Delete()
+        {
+            try
+            {
+                bool isDeleted = false;
+                if (Id != 0)
+                {
+                    GenericEntity<ArmaganTanim> genericEntity = new GenericEntity<ArmaganTanim>(ProjeConstants.SQL_DELETE);
+                    string sqlString = genericEntity.GetQuery(this);
+                    ArmaganTanim item = Select<ArmaganTanim>(Id);
+                    if (item != null)
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+                    else isDeleted = false;
+                    if (isDeleted && ProjeConstants.NBYS_DELETE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.NBYS, ProjeConstants.NBYS_ARMAGANTANIM);
+                    }
+                }
+                return isDeleted;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         public override T Select<T>(int id)
         {
             string sqlString = string.Format(@"SELECT *
                                FROM ArmaganTanim_Table 
                                WHERE  Id={0}", id);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<ArmaganTanim> list = ToList<ArmaganTanim>(dataTable);
             ArmaganTanim armaganTanim = new ArmaganTanim();
             armaganTanim = list.FirstOrDefault();
@@ -58,7 +115,7 @@ namespace Model.NBYS
             string sqlString = string.Format(@"SELECT *
                                FROM ArmaganTanim_Table");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<ArmaganTanim> list = ToList<ArmaganTanim>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
@@ -70,27 +127,13 @@ namespace Model.NBYS
                                WHERE Aktif=1                 
                                ");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<ArmaganTanim> list = ToList<ArmaganTanim>(dataTable);
 
             return (list);
         }
 
 
-        public override bool Update()
-        {
-            bool isSuccess = false;
-            if (Id != 0)
-            {
-                string sqlString = string.Format(@"UPDATE ArmaganTanim_Table 
-                              SET Armagan={0},OzelKisiAltLimit={1},OzelKisiUstLimit={2},TuzelKisiAltLimit={3},TuzelKisiUstLimit={4},ImzaGorevi={5},ImzaAdi={6},Degistiren={7},DegistirmeTarihi={8}
-                               WHERE Id={9}",
-                              Armagan.ReturnQuotedValue(), OzelKisiAltLimit.ReturnQuotedValue(), OzelKisiUstLimit.ReturnQuotedValue(), TuzelKisiAltLimit.ReturnQuotedValue(), TuzelKisiUstLimit.ReturnQuotedValue(), ImzaGorevi.ReturnQuotedValue(), ImzaAdi.ReturnQuotedValue(), Degistiren.ReturnQuotedValue(), DateTime.Now.ReturnTRDateFormat(), Id);
-
-                isSuccess = dao.Update2Db(sqlString);
-            }
-            return isSuccess;
-        }
 
         public ArmaganTanim SelectByTutar(decimal tutar, bool tuzelKisiMi)
         {
@@ -110,7 +153,7 @@ namespace Model.NBYS
                                          WHERE Aktif=1 
                                             AND OzelKisiAltLimit <= {0} AND OzelKisiUstLimit>={0}", tutar.ConvertDecimalToString());
             }
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<ArmaganTanim> list = ToList<ArmaganTanim>(dataTable);
             ArmaganTanim armaganTanim = new ArmaganTanim();
             armaganTanim = list.FirstOrDefault();
@@ -123,7 +166,7 @@ namespace Model.NBYS
                 FROM ArmaganTanim_Table
                 WHERE Aktif=1 
                     AND Armagan LIKE  '%{0}' ", armagan);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<ArmaganTanim> list = ToList<ArmaganTanim>(dataTable);
             ArmaganTanim armaganTanim = new ArmaganTanim();
             armaganTanim = list.FirstOrDefault();

@@ -282,7 +282,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
             'scrollCollapse': true,
             'paging': false,
             'language': {
-                'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                 'decimal': ',',
                 'thousands': '.'
             },
@@ -533,7 +533,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
             'scrollCollapse': true,
             'paging': false,
             'language': {
-                'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                 'decimal': ',',
                 'thousands': '.'
             },

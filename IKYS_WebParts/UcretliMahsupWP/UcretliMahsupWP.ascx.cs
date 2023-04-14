@@ -512,7 +512,7 @@ namespace IKYS_WebParts.UcretliMahsupWP
                     ],
                     'order': [[2, 'desc']],//sort date desc
                     'language': {
-                    'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                    'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                         'decimal': ',',
                         'thousands': '.'
                     },

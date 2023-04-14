@@ -1,5 +1,5 @@
 ﻿using Model.IKYS;
-using Model.MTS;
+using Model.Portal;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -284,7 +284,7 @@ namespace Portal_WebParts.ToplantiListesiWP
                     ],
                     'order': [[1, 'asc']],//sort date desc
                     'language': {
-                    'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                    'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                         'decimal': ',',
                         'thousands': '.'
                     },

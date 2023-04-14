@@ -670,7 +670,7 @@ namespace MTS_WebParts.AramaGirisiWP
                 { data: 'KatilimciSec' }
             ],
             'language': {
-                'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
             },
             responsive: true,
             dom: 'fpirt',

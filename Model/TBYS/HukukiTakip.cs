@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Utility.HelperClasses;
+using Utility.ProjeGlobal;
 
 namespace Model.TBYS
 {
@@ -22,7 +23,7 @@ namespace Model.TBYS
             string sqlString = string.Format(@"SELECT *
                                FROM HukukiTakip_Table 
                                WHERE  Id={0}", id);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<HukukiTakip> list = ToList<HukukiTakip>(dataTable);
             HukukiTakip hukukiTakip = new HukukiTakip();
             hukukiTakip = list.FirstOrDefault();
@@ -31,47 +32,83 @@ namespace Model.TBYS
         }
         public override int Save()
         {
-            string sqlString = string.Format(@"
-                INSERT INTO HukukiTakip_Table 
-                    (SozlesmeId, KiraciId,  IslemTarihi, BorcAnaPara, BorcFaiz, Aciklama , Aktif,
-                    Olusturan, OlusturmaTarihi)
-                VALUES ({0},{1},{2},{3},{4},{5},{6},{7},{8})",
-                SozlesmeId.ReturnQuotedValue(), KiraciId.ReturnQuotedValue(), IslemTarihi.ReturnTRDateFormat(),
-                BorcAnaPara.ConvertDecimalToString(), BorcFaiz.ConvertDecimalToString(), Aciklama.ReturnQuotedValue(), Aktif.ReturnQuotedValue(),
-                Olusturan.ReturnQuotedValue(), DateTime.Now.ReturnTRDateFormat());
+            try
+            {
+                GenericEntity<HukukiTakip> genericEntity = new GenericEntity<HukukiTakip>(ProjeConstants.SQL_INSERT);
+                OlusturmaTarihi = DateTime.Now;
+                Olusturan = UtilityHelper.GetCurrentUserName();
+                string sqlString = genericEntity.GetQuery(this);
+                int id = dao.Insert(sqlString);
 
-            int id = dao.Insert(sqlString);
-
-            this.Id = id;
-            return id;
+                this.Id = id;
+                if (id > 0 && ProjeConstants.TBYS_SAVE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.TBYS, ProjeConstants.TBYS_HUKUKITAKIP);
+                }
+                return id;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         public override bool Update()
         {
             bool isSuccess = false;
-            if (Id != 0)
+            try
             {
-                string sqlString = string.Format(@"
-                    UPDATE HukukiTakip_Table 
-                    SET SozlesmeId={0}, KiraciId={1}, IslemTarihi={2}, BorcAnaPara={3}, BorcFaiz={4}, Aciklama={5}, Aktif={6},
-                        Degistiren={7},DegistirmeTarihi={8}
-                    WHERE Id={9}",
-                    SozlesmeId.ReturnQuotedValue(), KiraciId.ReturnQuotedValue(), IslemTarihi.ReturnTRDateFormat(),
-                    BorcAnaPara.ConvertDecimalToString(), BorcFaiz.ConvertDecimalToString(), Aciklama.ReturnQuotedValue(), Aktif.ReturnQuotedValue(),
-                    Degistiren.ReturnQuotedValue(), DateTime.Now.ReturnTRDateFormat(), Id);
-
-                isSuccess = dao.Update2Db(sqlString);
+                if (this != null)
+                {
+                    HukukiTakip item = Select<HukukiTakip>(Id);
+                    if (Id != 0)
+                    {
+                        GenericEntity<HukukiTakip> genericEntity = new GenericEntity<HukukiTakip>(ProjeConstants.SQL_UPDATE);
+                        DegistirmeTarihi = DateTime.Now;
+                        Degistiren = UtilityHelper.GetCurrentUserName();
+                        string sqlString = genericEntity.GetQuery(this);
+                        isSuccess = dao.Update2Db(sqlString);
+                    }
+                    if (isSuccess && ProjeConstants.TBYS_UPDATE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.TBYS, ProjeConstants.TBYS_HUKUKITAKIP);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
             }
             return isSuccess;
         }
         public override bool Delete()
         {
-            string sqlString = string.Format(@"DELETE 
-                               FROM HukukiTakip_Table
-                               WHERE Id={0}", Id);
-
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
-
-            return isSuccess;
+            try
+            {
+                bool isDeleted = false;
+                if (Id != 0)
+                {
+                    GenericEntity<HukukiTakip> genericEntity = new GenericEntity<HukukiTakip>(ProjeConstants.SQL_DELETE);
+                    string sqlString = genericEntity.GetQuery(this);
+                    HukukiTakip item = Select<HukukiTakip>(Id);
+                    if (item != null)
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+                    else isDeleted = false;
+                    if (isDeleted && ProjeConstants.TBYS_DELETE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.TBYS, ProjeConstants.TBYS_HUKUKITAKIP);
+                    }
+                }
+                return isDeleted;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         public bool DeleteBySozlesmeId(int sozlesmeId)
         {
@@ -100,7 +137,7 @@ namespace Model.TBYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -126,7 +163,7 @@ namespace Model.TBYS
 
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -141,7 +178,7 @@ namespace Model.TBYS
                                FROM HukukiTakip_Table
                                 WHERE Aktif=1");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<HukukiTakip> list = ToList<HukukiTakip>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
@@ -152,7 +189,7 @@ namespace Model.TBYS
                 SELECT * FROM HukukiTakip_Table
                 WHERE SozlesmeId={0}
                 ORDER BY IslemTarihi ", sozlesmeId.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<HukukiTakip> list = ToList<HukukiTakip>(dataTable);
             HukukiTakip hukukiTakip = new HukukiTakip();
             hukukiTakip = list.FirstOrDefault<HukukiTakip>();

@@ -12,7 +12,7 @@ namespace Model.Ortak
         public override T Select<T>(int id)
         {
             string sqlString = SelectSQL(id);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<OnayTanim> list = ToList<OnayTanim>(dataTable);
             OnayTanim onayTanim = new OnayTanim();
             onayTanim = list.FirstOrDefault();
@@ -52,7 +52,7 @@ namespace Model.Ortak
             string sqlString = string.Format(@"SELECT *
                                FROM OnayTanim_Table");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<OnayTanim> list = ToList<OnayTanim>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));

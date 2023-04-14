@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Utility.HelperClasses;
+using Utility.ProjeGlobal;
 
 namespace Model.IKYS
 {
@@ -15,7 +16,7 @@ namespace Model.IKYS
         public override T Select<T>(int id)
         {
             string sqlString = SelectSQL(id);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<EgitimSeviyesi> list = ToList<EgitimSeviyesi>(dataTable);
             EgitimSeviyesi egitimSeviyesi = new EgitimSeviyesi();
             egitimSeviyesi = list.FirstOrDefault();
@@ -24,30 +25,91 @@ namespace Model.IKYS
 
         public override int Save()
         {
-            string sqlString = saveSQL();
-            int id = dao.Insert(sqlString);
-            this.Id = id;
-            return id;
+            try
+            {
+
+                GenericEntity<EgitimSeviyesi> genericEntity = new GenericEntity<EgitimSeviyesi>(ProjeConstants.SQL_INSERT);
+                OlusturmaTarihi = DateTime.Now;
+                Olusturan = UtilityHelper.GetCurrentUserName();
+                string sqlString = genericEntity.GetQuery(this);
+                int id = dao.Insert(sqlString);
+                if (id > 0 && ProjeConstants.IKYS_SAVE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.IKYS, ProjeConstants.IKYS_EGITIMSEVIYESI);
+                }
+                this.Id = id;
+                return id;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
         }
 
         public override bool Update()
         {
+
             bool isSuccess = false;
-            if (Id != 0)
+            try
             {
-                string sqlString = UpdateSQL();
-                isSuccess = dao.Update2Db(sqlString);
+                EgitimSeviyesi item = Select<EgitimSeviyesi>(Id);
+                if (Id != 0)
+                {
+                    GenericEntity<EgitimSeviyesi> genericEntity = new GenericEntity<EgitimSeviyesi>(ProjeConstants.SQL_UPDATE);
+                    DegistirmeTarihi = DateTime.Now;
+                    Degistiren = UtilityHelper.GetCurrentUserName();
+                    string sqlString = genericEntity.GetQuery(this);
+                    isSuccess = dao.Update2Db(sqlString);
+                }
+                if (isSuccess && ProjeConstants.IKYS_UPDATE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.IKYS, ProjeConstants.IKYS_EGITIMSEVIYESI);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
             }
             return isSuccess;
         }
-
         public override bool Delete()
         {
-            string sqlString = DeleteSQL();
+            try
+            {
+                bool isDeleted;
+                if (Id != 0)
+                {
+                    GenericEntity<EgitimSeviyesi> genericEntity = new GenericEntity<EgitimSeviyesi>(ProjeConstants.SQL_DELETE);
+                    string sqlString = genericEntity.GetQuery(this);
 
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
+                    EgitimSeviyesi item = Select<EgitimSeviyesi>(Id);
+                    if (item != null)
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+                    else isDeleted = false;
+                    if (isDeleted && ProjeConstants.IKYS_DELETE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.IKYS, ProjeConstants.IKYS_EGITIMSEVIYESI);
+                    }
+                    return isDeleted;
+                }
+                else
+                {
+                    return false;
+                }
 
-            return isSuccess;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
         public override List<T> SelectAll<T>()
@@ -55,7 +117,7 @@ namespace Model.IKYS
             string sqlString = string.Format(@"SELECT *
                                FROM EgitimSeviyesi_Table");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<EgitimSeviyesi> list = ToList<EgitimSeviyesi>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
@@ -101,7 +163,7 @@ namespace Model.IKYS
         {
             string sqlString = SelectByPersonelIdSQL(personelId);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<EgitimSeviyesi> list = ToList<EgitimSeviyesi>(dataTable);
 
             return (list);

@@ -925,7 +925,7 @@ namespace NBYS_WebParts.ArmaganListesiWP
                     ],
                     'order': [[7, 'asc']],//sort date desc
                     'language': {
-                    'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                    'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                         'decimal': ',',
                         'thousands': '.'
                     },

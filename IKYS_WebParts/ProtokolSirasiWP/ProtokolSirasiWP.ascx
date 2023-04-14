@@ -7,6 +7,8 @@
 <%@ Register Tagprefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="ProtokolSirasiWP.ascx.cs" Inherits="IKYS_WebParts.ProtokolSirasiWP.ProtokolSirasiWP" %>
 
+<link rel="stylesheet" href="/Style Library/lib/DataTables/RowReorder-1.3.1/css/rowReorder.dataTables.min" />
+
 <style>
     .ui-datatable tbody td{
         white-space:normal;
@@ -21,7 +23,7 @@
 
     function storeTblValues() {
         var tableData = "";
-        $('#tblfilter tr').each(function (row, tr) {
+        $('#CustomDataTable tr').each(function (row, tr) {
             tableData += 
                 $(tr).find('td:eq(1)').text()+","; //personelId lerini "," ile ayırarak ekle
         });
@@ -35,9 +37,9 @@
 </script>
 
 
-<div class="container shadow">
+<div class="container ">
 
-    <div class="card">
+    <div class="card shadow">
         <div class="card-header">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-2">
@@ -46,9 +48,20 @@
             </h3>
         </div>
         <div class="card-body">
-            <div class="table loader table-hower table-bordered table-responsive">
-                <div id="tblfilter"></div>
-                <div id="messages"></div>
+            <div class="form-group">
+                <table id="CustomDataTable" class="table table-striped table-bordered" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Protokol SiraNo</th>
+                            <th>PersonelId</th>
+                            <th>Adı</th>
+                            <th>Soyadı</th>
+                            <th>Ünvan</th>
+                            <th>Görev</th>
+                            <th>Birim/Şube</th>
+                        </tr>
+                    </thead>
+                </table>
             </div>
         </div>
         <div class="card-footer">

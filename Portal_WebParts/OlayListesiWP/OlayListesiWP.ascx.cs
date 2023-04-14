@@ -1,8 +1,13 @@
-﻿using Model.MTS;
+﻿using Model.IKYS;
+using Model.MTS;
+using Model.NBYS;
 using Model.Ortak;
+using Model.TBYS;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using System.Web.UI;
@@ -30,30 +35,6 @@ namespace Portal_WebParts.OlayListesiWP
             InitializeControl();
             this.ChromeType = PartChromeType.None;
         }
-        private int OlaySayisiQS
-        {
-            get
-            {
-
-                if (ViewState["OlaySayisi"] == null)
-                {
-                    if (Page.Request.QueryString["OlaySayisi"] != null)
-                    {
-                        ViewState["OlaySayisi"] = Page.Request.QueryString["OlaySayisi"];
-                    }
-                    else
-                    {
-                        ViewState["OlaySayisi"] = 0;
-                    }
-                }
-                return ViewState["OlaySayisi"].ConvertToInt();
-            }
-
-            set
-            {
-                ViewState["OlaySayisi"] = value;
-            }
-        }
         private DateTime SorguZamaniQS
         {
             get
@@ -74,8 +55,8 @@ namespace Portal_WebParts.OlayListesiWP
         {
             if (!Page.IsPostBack)
             {
-                RefreshTimer.Interval = 10000;
-                RefreshTimer.Enabled = true;
+                //RefreshTimer.Interval = 10000;
+                //RefreshTimer.Enabled = true;
                 TabloOlustur();
             }
             var jsonData = TabloJson();
@@ -98,6 +79,7 @@ namespace Portal_WebParts.OlayListesiWP
                 List<Olay> olayList = GetDataList(SorguZamaniQS);
                 List<OlayListItem> oliList = OlayListItemDoldur(olayList);
                 var serializer = new JavaScriptSerializer();
+                serializer.MaxJsonLength = Int32.MaxValue;
                 jSon = serializer.Serialize(oliList);
             }
             catch (Exception exception)
@@ -111,7 +93,7 @@ namespace Portal_WebParts.OlayListesiWP
         private List<Olay> GetDataList(DateTime tarih)
         {
             Olay olayDao = new Olay();
-            List<Olay> list = olayDao.SelectByTarihReturnList(tarih, ProjeConstants.MTS);
+            List<Olay> list = olayDao.SelectByTarihReturnList(tarih, ProjeConstants.HEPSI);
             return list;
         }
         private List<OlayListItem> OlayListItemDoldur(List<Olay> list)
@@ -120,7 +102,10 @@ namespace Portal_WebParts.OlayListesiWP
             foreach (var item in list)
             {
                 OlayListItem oli = new OlayListItem();
-                oli.Aciklama = item.Aciklama;
+                string aciklama = ParseAciklama(item);
+                oli.Aciklama = aciklama;
+                oli.AciklamaHam = item.Aciklama;
+                oli.Program= item.Program;
                 oli.IslemKonusu = item.IslemKonusu;
                 oli.IslemTarihi = item.IslemTarihi.ConvertToDDMMYYYHHmmFormat();
                 oli.IslemTipi = item.IslemTipi;
@@ -130,50 +115,209 @@ namespace Portal_WebParts.OlayListesiWP
             }
             return olayList;
         }
-        private void KayanListeyEkle(List<Olay> list)
+
+        public string ParseAciklama(Olay olay)
         {
-            foreach (var item in list)
-            {
-                string aciklama = ParseAciklama(item);
-                OlayUl.Controls.Add(new LiteralControl("<li> * " + aciklama + "</li>"));
-                OlayUl.Controls.Add(new LiteralControl("<li>...</li>"));
-            }
-        }
-        public Randevu FindRandevu(string aciklama)
-        {
-            var words = aciklama.Split().Select(x => x.Trim(ProjeConstants.DELIMITER));
-            int id = 0;
+            var words = olay.Aciklama.Split(ProjeConstants.DELIMITER).ToList();
+            int randevuId = 0;
+            int katilimciId = 0;
+            int katilimciTipi = 0;
+            Randevu randevu = null;
+            string katilimci = string.Empty;
+            string katilimciTipiStr = string.Empty;
+            string aniObjesiStr = string.Empty;
+            string getirilenAniObjesiStr = string.Empty;
             foreach (string item in words)
             {
                 bool contains = item.Contains("RandevuId");
                 if (contains)
                 {
-                    id = item.Split('=')[1].ConvertToInt();
+                    randevuId = item.Split('=')[1].ConvertToInt();
                     break;
                 }
+                else
+                if (item.Contains("KatilimciId"))
+                {
+                    katilimciId = item.Split('=')[1].ConvertToInt();
+                }
+                else
+                if (item.Contains("KatilimciTipi"))
+                {
+                    katilimciTipi = item.Split('=')[1].ConvertToInt();
+                }
             }
-            if (id > 0)
+            if (randevuId > 0)
             {
-                Randevu randevu = new Randevu();
-                randevu = randevu.Select(id);
-                return randevu;
+                randevu = new Randevu();
+                randevu = randevu.Select(randevuId);
             }
-            else
-                return null;
-        }
-        private string ParseAciklama(Olay olay)
-        {
-            Randevu randevu = FindRandevu(olay.Aciklama);
+            if (katilimciId > 0)
+            {
+                switch (katilimciTipi)
+                {
+                    case ProjeConstants.RANDEVU_KATILIMCI_TASINMAZBAGISCI_INT:
+                        {
+                            TasinmazBagisci tasinmazBagisci = new TasinmazBagisci();
+                            tasinmazBagisci = tasinmazBagisci.Select<TasinmazBagisci>(katilimciId);
+                            if (tasinmazBagisci != null)
+                            {
+                                katilimci = tasinmazBagisci.Adi + " " + tasinmazBagisci.Soyadi;
+                                katilimciTipiStr = ProjeConstants.RANDEVU_KATILIMCI_TASINMAZBAGISCI;
+                                //Burada verilen ani objeleri alınıyor
+                                AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
+                                DataTable dataTable = aniObjesiDagitim.SelectReturnDT(randevuId, tasinmazBagisci.Id, ProjeConstants.RANDEVU_KATILIMCI_TASINMAZBAGISCI_INT);
+                                if (dataTable != null)
+                                {
+                                    string objeStr = string.Empty;
+                                    foreach (DataRow row in dataTable.Rows)
+                                    {
+                                        int adet = row["Adet"].ReturnZeroIfNull().ConvertToInt();
+                                        if (adet > 0)
+                                        {
+                                            string deger = row["Deger"].ToString();
+                                            objeStr += " - " + deger + "(" + adet + ")";
+                                        }
+                                    }
+
+                                    aniObjesiStr = objeStr;
+                                }
+                                //Getirilen Ani Objeleri ayrıca alınıyor
+                                AniObjesiDagitim getirilenAniObjesi = new AniObjesiDagitim();
+                                getirilenAniObjesi = getirilenAniObjesi.SelectGetirilenAniObjesi(randevuId, tasinmazBagisci.Id, ProjeConstants.RANDEVU_KATILIMCI_TASINMAZBAGISCI_INT);
+                                if (getirilenAniObjesi != null)
+                                {
+                                    getirilenAniObjesiStr = getirilenAniObjesi.GetirilenAniObjesi;
+                                }
+                            }
+                            else
+                            {
+                                MessageHelper.PublishMessage("Taşınmaz Bağışçı Bulunamadı", ProjeConstants.MESAJ_HATA);
+                            }
+                            break;
+                        }
+
+                    case ProjeConstants.RANDEVU_KATILIMCI_NAKITBAGISCI_INT:
+                        {
+                            NakitBagisci nakitBagisci = new NakitBagisci();
+                            nakitBagisci = nakitBagisci.Select<NakitBagisci>(katilimciId);
+                            if (nakitBagisci != null)
+                            {
+                                katilimci = nakitBagisci.Adi + " " + nakitBagisci.Soyadi;
+                                katilimciTipiStr = ProjeConstants.RANDEVU_KATILIMCI_NAKITBAGISCI;
+
+                                //Burada verilen ani objeleri alınıyor
+                                AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
+                                DataTable dataTable = aniObjesiDagitim.SelectReturnDT(randevuId, nakitBagisci.Id, ProjeConstants.RANDEVU_KATILIMCI_NAKITBAGISCI_INT);
+                                if (dataTable != null)
+                                {
+                                    string objeStr = string.Empty;
+                                    foreach (DataRow row in dataTable.Rows)
+                                    {
+                                        int adet = row["Adet"].ReturnZeroIfNull().ConvertToInt();
+                                        if (adet > 0)
+                                        {
+                                            string deger = row["Deger"].ToString();
+                                            objeStr += " - " + deger + "(" + adet + ")";
+                                        }
+                                    }
+
+                                    aniObjesiStr = objeStr;
+                                }
+
+                                //Getirilen Ani Objeleri ayrıca alınıyor
+                                AniObjesiDagitim getirilenAniObjesi = new AniObjesiDagitim();
+                                getirilenAniObjesi = getirilenAniObjesi.SelectGetirilenAniObjesi(randevuId, nakitBagisci.Id, ProjeConstants.RANDEVU_KATILIMCI_NAKITBAGISCI_INT);
+                                if (getirilenAniObjesi != null)
+                                {
+                                    getirilenAniObjesiStr = getirilenAniObjesi.GetirilenAniObjesi;
+                                }
+                            }
+                            else
+                            {
+                                MessageHelper.PublishMessage("Nakit bağışçı Bulunamadı", ProjeConstants.MESAJ_HATA);
+                            }
+                            break;
+                        }
+
+                    case ProjeConstants.RANDEVU_KATILIMCI_DIS_INT:
+                        {
+                            Kisi kisi = new Kisi();
+                            kisi = kisi.Select<Kisi>(katilimciId);
+                            if (kisi != null)
+                            {
+                                katilimci = kisi.Adi + " " + kisi.Soyadi;
+                                katilimciTipiStr = ProjeConstants.RANDEVU_KATILIMCI_DIS;
+
+                                //Burada verilen ani objeleri alınıyor
+                                AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
+                                DataTable dataTable = aniObjesiDagitim.SelectReturnDT(randevuId, kisi.Id, ProjeConstants.RANDEVU_KATILIMCI_DIS_INT);
+                                if (dataTable != null)
+                                {
+                                    string objeStr = string.Empty;
+                                    foreach (DataRow row in dataTable.Rows)
+                                    {
+                                        int adet = row["Adet"].ReturnZeroIfNull().ConvertToInt();
+                                        if (adet > 0)
+                                        {
+                                            string deger = row["Deger"].ToString();
+                                            objeStr += " - " + deger + "(" + adet + ")";
+                                        }
+
+                                    }
+                                    aniObjesiStr = objeStr;
+                                }
+
+                                //Getirilen Ani Objeleri ayrıca alınıyor
+                                AniObjesiDagitim getirilenAniObjesi = new AniObjesiDagitim();
+                                getirilenAniObjesi = getirilenAniObjesi.SelectGetirilenAniObjesi(randevuId, kisi.Id, ProjeConstants.RANDEVU_KATILIMCI_DIS_INT);
+                                if (getirilenAniObjesi != null)
+                                {
+                                    getirilenAniObjesiStr = getirilenAniObjesi.GetirilenAniObjesi;
+                                }
+                            }
+                            else
+                            {
+                                MessageHelper.PublishMessage("Kişi Bulunamadı", ProjeConstants.MESAJ_HATA);
+                            }
+                            break;
+                        }
+
+                    case ProjeConstants.RANDEVU_KATILIMCI_IC_INT:
+                        {
+                            Personel personel = new Personel();
+                            personel = personel.Select<Personel>(katilimciId);
+                            if (personel != null)
+                            {
+                                katilimci = personel.Adi + " " + personel.Soyadi;
+                                katilimciTipiStr = ProjeConstants.RANDEVU_KATILIMCI_IC;
+                                aniObjesiStr = string.Empty;
+                                getirilenAniObjesiStr = string.Empty;
+                            }
+                            else
+                            {
+                                MessageHelper.PublishMessage("Personel Bulunamadı", ProjeConstants.MESAJ_HATA);
+                            }
+                            break;
+                        }
+
+                        ///////////////////
+                }
+            }
             string randevuStr = randevu == null ?
-                string.Empty :
-                randevu.RandevuKonusu + " konulu ve " + randevu.BaslangicTarihi + " tarihli faaliyetin ";
-            string retval = "(" + olay.IslemTarihi.ConvertToDDMMYYYHHmmFormat() + ") " +
+                            string.Empty :
+                             "<strong>" + randevu.RandevuKonusu + "</strong> konulu ve  <strong>" + randevu.BaslangicTarihi + "</strong> tarihli faaliyetin ";
+            string ayrintiStr = (string.IsNullOrEmpty(katilimci) ? string.Empty : "- Katılımcı : " + katilimci) +
+                (string.IsNullOrEmpty(katilimciTipiStr) ? string.Empty : "-" + katilimciTipiStr) +
+                (string.IsNullOrEmpty(aniObjesiStr) ? string.Empty : "- Verilen Anı Objesi : " + aniObjesiStr) +
+                (string.IsNullOrEmpty(getirilenAniObjesiStr) ? string.Empty : "- Getirilen Anı Objesi : " + getirilenAniObjesiStr);
+            string retval = "(" + olay.IslemTarihi.ConvertToDDMMYYYHHmmFormat() + ") -" +
                randevuStr + "  <strong>" +
                olay.IslemKonusu + "</strong> bölümünde " +
                olay.IslemYapan + " tarafından  <strong> " +
-               olay.IslemTipi + "</strong> işlemi yapılmıştır.";
+               olay.IslemTipi + "</strong> işlemi yapılmıştır." + ayrintiStr;
             return retval;
         }
+
         private string CreateDataTable(string jsonData)
         {
             string tableString = @"
@@ -189,22 +333,51 @@ namespace Portal_WebParts.OlayListesiWP
                     data: " + jsonData + @",
                     columns: [
                         { data: 'IslemTarihi' },
+                        { data: 'Program'},
                         { data: 'IslemKonusu'},
                         { data: 'IslemTipi' },
-                        { data: 'Aciklama' },
                         { data: 'IslemYapan'},
+                        { data: 'Aciklama' , 'width': '30%'},
+                        { data: 'AciklamaHam' },
                     ],
                     'columnDefs': [
-                        { type: 'turkish', targets: [1,2,3,4] },
+                        { type: 'turkish', targets: [1,2,3,4,5] },
                     ],
                     'order': [[0, 'desc']],//sort date desc
                     'language': {
-                    'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                    'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                         'decimal': ',',
                         'thousands': '.'
                     },
                     responsive: true,
-                    dom: 'frtip',                    
+                    dom: 'Bfrtip',
+                    buttons: [
+                        {
+                            extend: 'print',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        {
+                            extend: 'excel',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        {
+                            extend: 'pdf',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        {
+                            extend: 'copy',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        , 'pageLength', 'colvis'
+                    ],                                                      
                     
                 });
 
@@ -226,28 +399,17 @@ namespace Portal_WebParts.OlayListesiWP
                 exHelper.PublishException();
             }
         }
-        protected void RefreshTimer_Tick(object sender, EventArgs e)
-        {
-
-            List<Olay> list = GetDataList(SorguZamaniQS);
-            List<OlayListItem> listItems = OlayListItemDoldur(list);
-
-            if (listItems.Count > 0)
-            {
-                var jsonData = TabloJson();
-                UtilityHelper.ScriptCalistir("ClearTableData();");
-                UtilityHelper.ScriptCalistir("SetTableData(" + jsonData + ");");
-                KayanListeyEkle(list);
-            }
-        }
+       
         private class OlayListItem
         {
             public string OlayId { get; set; }
             public string IslemTarihi { get; set; }
+            public string Program { get; set; }
             public string IslemKonusu { get; set; }
             public string IslemTipi { get; set; }
-            public string Aciklama { get; set; }
             public string IslemYapan { get; set; }
+            public string Aciklama { get; set; }
+            public string AciklamaHam { get; set; }
         }
     }
 }

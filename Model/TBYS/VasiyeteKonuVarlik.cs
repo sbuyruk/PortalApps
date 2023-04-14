@@ -16,51 +16,86 @@ namespace Model.TBYS
         public decimal TahminiRayic { get; set; }
         public string Aciklama { get; set; }
 
-
-
-        public override bool Delete()
-        {
-            try
-            {
-                if (Id != 0)
-                {
-                    GenericEntity<VasiyeteKonuVarlik> genericEntity = new GenericEntity<VasiyeteKonuVarlik>(ProjeConstants.SQL_DELETE);
-                    string sqlString = genericEntity.GetQuery(this);
-                    bool isDeleted = dao.DeleteFromDb(sqlString, this);
-                    return isDeleted;
-                }
-                else
-                {
-                    return false;
-                }
-
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-        }
-
         public override int Save()
         {
             try
             {
                 GenericEntity<VasiyeteKonuVarlik> genericEntity = new GenericEntity<VasiyeteKonuVarlik>(ProjeConstants.SQL_INSERT);
+                OlusturmaTarihi = DateTime.Now;
+                Olusturan = UtilityHelper.GetCurrentUserName();
                 string sqlString = genericEntity.GetQuery(this);
                 int id = dao.Insert(sqlString);
 
                 this.Id = id;
+                if (id > 0 && ProjeConstants.TBYS_SAVE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.TBYS, ProjeConstants.TBYS_VASIYETEKONUVARLIK);
+                }
                 return id;
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
-
         }
-
+        public override bool Update()
+        {
+            bool isSuccess = false;
+            try
+            {
+                if (this != null)
+                {
+                    VasiyeteKonuVarlik item = Select<VasiyeteKonuVarlik>(Id);
+                    if (Id != 0)
+                    {
+                        GenericEntity<VasiyeteKonuVarlik> genericEntity = new GenericEntity<VasiyeteKonuVarlik>(ProjeConstants.SQL_UPDATE);
+                        DegistirmeTarihi = DateTime.Now;
+                        Degistiren = UtilityHelper.GetCurrentUserName();
+                        string sqlString = genericEntity.GetQuery(this);
+                        isSuccess = dao.Update2Db(sqlString);
+                    }
+                    if (isSuccess && ProjeConstants.TBYS_UPDATE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.TBYS, ProjeConstants.TBYS_VASIYETEKONUVARLIK);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return isSuccess;
+        }
+        public override bool Delete()
+        {
+            try
+            {
+                bool isDeleted = false;
+                if (Id != 0)
+                {
+                    GenericEntity<VasiyeteKonuVarlik> genericEntity = new GenericEntity<VasiyeteKonuVarlik>(ProjeConstants.SQL_DELETE);
+                    string sqlString = genericEntity.GetQuery(this);
+                    VasiyeteKonuVarlik item = Select<VasiyeteKonuVarlik>(Id);
+                    if (item != null)
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+                    else isDeleted = false;
+                    if (isDeleted && ProjeConstants.TBYS_DELETE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.TBYS, ProjeConstants.TBYS_VASIYETEKONUVARLIK);
+                    }
+                }
+                return isDeleted;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         public VasiyeteKonuVarlik Select(int id)
         {
             GenericEntity<VasiyeteKonuVarlik> genericEntity = new GenericEntity<VasiyeteKonuVarlik>(ProjeConstants.SQL_SELECT);
@@ -68,7 +103,7 @@ namespace Model.TBYS
             Id = id;
             string sqlString = genericEntity.GetQuery(this);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<VasiyeteKonuVarlik> list = ToList<VasiyeteKonuVarlik>(dataTable);
             VasiyeteKonuVarlik item = new VasiyeteKonuVarlik();
             item = list.FirstOrDefault();
@@ -81,7 +116,7 @@ namespace Model.TBYS
             OlusturmaTarihi = DateTime.Now;
             Id = id;
             string sqlString = genericEntity.GetQuery(this);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<VasiyeteKonuVarlik> list = ToList<VasiyeteKonuVarlik>(dataTable);
             VasiyeteKonuVarlik item = new VasiyeteKonuVarlik();
             item = list.FirstOrDefault();
@@ -95,7 +130,7 @@ namespace Model.TBYS
                 FROM VasiyeteKonuVarlik_Table ORDER BY VasiyetciId
                 ");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<VasiyeteKonuVarlik> list = ToList<VasiyeteKonuVarlik>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
@@ -109,15 +144,11 @@ namespace Model.TBYS
                 ORDER BY VasiyetciId
                 ", vasiyetciId);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<VasiyeteKonuVarlik> list = ToList<VasiyeteKonuVarlik>(dataTable);
 
             return list;
         }
 
-        public override bool Update()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

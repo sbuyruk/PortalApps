@@ -309,7 +309,7 @@ namespace NBYS_WebParts.BagisHareketListesiWP
                 }
                 ],
                 'language': {
-                    'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                    'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                     'decimal': ',',
                     'thousands': '.'
                 },

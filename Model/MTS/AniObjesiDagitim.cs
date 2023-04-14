@@ -26,15 +26,15 @@ namespace Model.MTS
         {
             try
             {
-                bool saveLog = ProjeConstants.SAVE_LOG;
                 GenericEntity<AniObjesiDagitim> genericEntity = new GenericEntity<AniObjesiDagitim>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
+                Olusturan = UtilityHelper.GetCurrentUserName();
                 string sqlString = genericEntity.GetQuery(this);
                 int id = dao.Insert(sqlString);
-                if (id > 0 && saveLog)
+                if (id > 0 && ProjeConstants.MTS_SAVE_LOG)
                 {
                     OlayKayit olayKayit = new OlayKayit();
-                    olayKayit.GirisOlayKaydet(this, ProjeConstants.MTS, ProjeConstants.MTS_ANIOBJESI_DAGITIM);
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.MTS, ProjeConstants.MTS_ANIOBJESIDAGITIM);
                 }
                 this.Id = id;
                 return id;
@@ -48,39 +48,26 @@ namespace Model.MTS
         }
         public override bool Update()
         {
-            bool updateLog = ProjeConstants.UPDATE_LOG;
             bool isSuccess = false;
             try
             {
-                if (updateLog)
+                if (this != null)
                 {
-                    
-                    if (this != null)
+                    AniObjesiDagitim item = Select<AniObjesiDagitim>(Id);
+                    if (Id != 0)
                     {
-                        AniObjesiDagitim item = Select<AniObjesiDagitim>(Id);
-                        if (Id != 0)
-                        {
-                            GenericEntity<AniObjesiDagitim> genericEntity = new GenericEntity<AniObjesiDagitim>(ProjeConstants.SQL_UPDATE);
-                            DegistirmeTarihi = DateTime.Now;
-                            string sqlString = genericEntity.GetQuery(this);
-                            isSuccess = dao.Update2Db(sqlString);
-                        }
-                        if (isSuccess)
-                        {
-                            OlayKayit olayKayit = new OlayKayit();
-                            olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.MTS, ProjeConstants.MTS_ANIOBJESI_DAGITIM);
-                        }
+                        GenericEntity<AniObjesiDagitim> genericEntity = new GenericEntity<AniObjesiDagitim>(ProjeConstants.SQL_UPDATE);
+                        DegistirmeTarihi = DateTime.Now;
+                        Degistiren = UtilityHelper.GetCurrentUserName();
+                        string sqlString = genericEntity.GetQuery(this);
+                        isSuccess = dao.Update2Db(sqlString);
                     }
-                        
+                    if (isSuccess && ProjeConstants.MTS_UPDATE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.MTS, ProjeConstants.MTS_ANIOBJESIDAGITIM);
+                    }
                 }
-                if (Id != 0)
-                {
-                    GenericEntity<AniObjesiDagitim> genericEntity = new GenericEntity<AniObjesiDagitim>(ProjeConstants.SQL_UPDATE);
-                    DegistirmeTarihi = DateTime.Now;
-                    string sqlString = genericEntity.GetQuery(this);
-                    isSuccess = dao.Update2Db(sqlString);
-                }
-
             }
             catch (Exception)
             {
@@ -90,93 +77,70 @@ namespace Model.MTS
         }
         public override bool Delete()
         {
-            bool deleteLog = ProjeConstants.DELETE_LOG;
             try
             {
-                bool isDeleted;
+                bool isDeleted=false;
                 if (Id != 0)
                 {
                     GenericEntity<AniObjesiDagitim> genericEntity = new GenericEntity<AniObjesiDagitim>(ProjeConstants.SQL_DELETE);
                     string sqlString = genericEntity.GetQuery(this);
-                    if (deleteLog)
-                    {
-                        AniObjesiDagitim item = Select<AniObjesiDagitim>(Id);
-                        if (item!=null)
-                        {
-                            isDeleted = dao.DeleteFromDb(sqlString, "");
-                        }
-                        else isDeleted = false;
-                        if (isDeleted)
-                        {
-                            OlayKayit olayKayit = new OlayKayit();
-                            olayKayit.SilmeOlayKaydet(item, ProjeConstants.MTS, ProjeConstants.MTS_ANIOBJESI_DAGITIM);
-                        }
-                    }
-                    else
+                    AniObjesiDagitim item = Select<AniObjesiDagitim>(Id);
+                    if (item != null)
                     {
                         isDeleted = dao.DeleteFromDb(sqlString, "");
                     }
-
-
-
-                    return isDeleted;
+                    else isDeleted = false;
+                    if (isDeleted && ProjeConstants.MTS_DELETE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.MTS, ProjeConstants.MTS_ANIOBJESIDAGITIM);
+                    }
                 }
-                else
-                {
-                    return false;
-                }
-                
+                return isDeleted;
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
         }
         public int Delete(int randevuId, int katilimciId, int katilimciTipi, string aniObjesiIdList="")
         {
-            bool deleteLog = ProjeConstants.DELETE_LOG;
             int deleted;
-            string aniObjesiIdListStr=string.IsNullOrEmpty(aniObjesiIdList)?string.Empty:string.Format(" AND AniObjesiId IN ({0})",aniObjesiIdList);
+            string aniObjesiIdListStr = string.IsNullOrEmpty(aniObjesiIdList) ? string.Empty : string.Format(" AND AniObjesiId IN ({0})", aniObjesiIdList);
             string sqlString = string.Format(@"
                 DELETE FROM AniObjesiDagitim_Table
                 WHERE RandevuId={0} AND KatilimciId={1} AND KatilimciTipi={2}
                 {3}
-            ", randevuId, katilimciId, katilimciTipi,aniObjesiIdListStr);
+            ", randevuId, katilimciId, katilimciTipi, aniObjesiIdListStr);
 
-            if (deleteLog)
+
+            string wherestr = string.Format("WHERE RandevuId={0} AND KatilimciId={1} AND KatilimciTipi={2} {3}", randevuId, katilimciId, katilimciTipi, aniObjesiIdListStr);
+            GenericEntity<AniObjesiDagitim> genericEntitySelect = new GenericEntity<AniObjesiDagitim>(ProjeConstants.SQL_SELECT);
+            string sqlStringSelect = genericEntitySelect.GetQuery(this, wherestr);
+            DataTable dataTable = dao.SelectFromDb(sqlStringSelect, "");
+            List<AniObjesiDagitim> list = ToList<AniObjesiDagitim>(dataTable);
+            
+            if (list.Count > 0)
+                deleted = dao.DeleteFromDb(sqlString, "", true);
+            else deleted = 0;
+            if (deleted > 0 && ProjeConstants.MTS_DELETE_LOG)
             {
-                string wherestr = string.Format("WHERE RandevuId={0} AND KatilimciId={1} AND KatilimciTipi={2} {3}", randevuId, katilimciId, katilimciTipi, aniObjesiIdListStr);
-                GenericEntity<AniObjesiDagitim> genericEntitySelect = new GenericEntity<AniObjesiDagitim>(ProjeConstants.SQL_SELECT);
-                string sqlStringSelect = genericEntitySelect.GetQuery(this, wherestr);
-                DataTable dataTable = dao.selectFromDb(sqlStringSelect, "");
-                List<AniObjesiDagitim> list = ToList<AniObjesiDagitim>(dataTable);
-                if (list.Count > 0)
-                    deleted = dao.DeleteFromDb(sqlString, "", true);
-                else deleted = 0;
-                if (deleted > 0)
+                foreach (AniObjesiDagitim item in list)
                 {
-                    foreach (AniObjesiDagitim item in list)
-                    {
-                        OlayKayit olayKayit = new OlayKayit();
-                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.MTS, ProjeConstants.MTS_ANIOBJESI_DAGITIM);
-                    }
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.SilmeOlayKaydet(item, ProjeConstants.MTS, ProjeConstants.MTS_ANIOBJESIDAGITIM);
                 }
             }
-            else
-            {
-                deleted = dao.DeleteFromDb(sqlString, "", true);
-            }
+
             return deleted;
         }
         public AniObjesiDagitim Select(int id)
         {
             GenericEntity<AniObjesiDagitim> genericEntity = new GenericEntity<AniObjesiDagitim>(ProjeConstants.SQL_SELECT);
-            OlusturmaTarihi = DateTime.Now;
             Id = id;
             string sqlString = genericEntity.GetQuery(this);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<AniObjesiDagitim> list = ToList<AniObjesiDagitim>(dataTable);
             AniObjesiDagitim item = new AniObjesiDagitim();
             item = list.FirstOrDefault();
@@ -190,7 +154,7 @@ namespace Model.MTS
                 WHERE RandevuId={0} AND KatilimciId={1} AND KatilimciTipi={2} AND VerilenAlinan={3}
                 ORDER BY Id
                 ", randevuId, katilimciId, katilimciTipi, ProjeConstants.ANIOBJESI_GETIRILEN_INT);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<AniObjesiDagitim> list = ToList<AniObjesiDagitim>(dataTable);
             AniObjesiDagitim item = new AniObjesiDagitim();
             item = list.FirstOrDefault();
@@ -205,7 +169,7 @@ namespace Model.MTS
                 WHERE Grup= {3} 
                 ORDER BY A.Id
                 ", randevuId, katilimciId, katilimciTipi, ProjeConstants.PARAM_ANIOBJESI.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
 
             return dataTable;
         }
@@ -217,7 +181,7 @@ namespace Model.MTS
                     LEFT JOIN AniObjesiDagitim_Table B ON B.AniObjesiId=A.Id AND RandevuId={0} AND KatilimciId={1} AND KatilimciTipi={2}
                 WHERE Grup= {3} 
                 ", randevuId, katilimciId, katilimciTipi, ProjeConstants.PARAM_ANIOBJESI.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<AniObjesiDagitim> list = ToList<AniObjesiDagitim>(dataTable);
             return list;
         }
@@ -232,7 +196,7 @@ namespace Model.MTS
                 WHERE Grup= {2} 
                 {3}
                 ", katilimciId, katilimciTipi, ProjeConstants.PARAM_ANIOBJESI.ReturnQuotedValue(),verilenGetirilenStr);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<AniObjesiDagitim> list = ToList<AniObjesiDagitim>(dataTable);
             return list;
         }
@@ -244,7 +208,7 @@ namespace Model.MTS
                 INNER JOIN RandevuParametre_Table B ON B.Grup={0} AND B.Id=A.AniObjesiId
                 WHERE KatilimciId={1} AND KatilimciTipi={2} AND RandevuId={3}                
                 ", ProjeConstants.PARAM_ANIOBJESI.ReturnQuotedValue(), katilimciId, katilimciTipi, randevuId);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null )
             {
                 foreach (DataRow row in dataTable.Rows)
@@ -259,10 +223,9 @@ namespace Model.MTS
         public override T Select<T>(int id)
         {
             GenericEntity<AniObjesiDagitim> genericEntity = new GenericEntity<AniObjesiDagitim>(ProjeConstants.SQL_SELECT);
-            OlusturmaTarihi = DateTime.Now;
             Id = id;
             string sqlString = genericEntity.GetQuery(this);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<AniObjesiDagitim> list = ToList<AniObjesiDagitim>(dataTable);
             AniObjesiDagitim item = new AniObjesiDagitim();
             item = list.FirstOrDefault();
@@ -275,7 +238,7 @@ namespace Model.MTS
                 FROM AniObjesiDagitim_Table ORDER BY RandevuId 
                 ");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<AniObjesiDagitim> list = ToList<AniObjesiDagitim>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
@@ -288,7 +251,7 @@ namespace Model.MTS
                 WHERE AniObjesiId={0}
                 ", parametreId);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<AniObjesiDagitim> list = ToList<AniObjesiDagitim>(dataTable);
 
             return list;
@@ -301,7 +264,7 @@ namespace Model.MTS
                 WHERE RandevuId={0}
                 ", parametreId);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<AniObjesiDagitim> list = ToList<AniObjesiDagitim>(dataTable);
 
             return list;
@@ -313,7 +276,7 @@ namespace Model.MTS
             GenericEntity<AniObjesiDagitim> genericEntitySelect = new GenericEntity<AniObjesiDagitim>(ProjeConstants.SQL_SELECT);
             string sqlStringSelect = genericEntitySelect.GetQuery(this);
             Trace.TraceInformation("Adım "+adim+" Sorgu =" + sqlStringSelect);
-            DataTable dataTable = dao.selectFromDb(sqlStringSelect, "");
+            DataTable dataTable = dao.SelectFromDb(sqlStringSelect, "");
             List<AniObjesiDagitim> list = ToList<AniObjesiDagitim>(dataTable);
             string json = ToJSON(list);
             Trace.TraceInformation("Adım "+adim+"  json =" + json);

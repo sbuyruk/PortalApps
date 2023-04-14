@@ -56,6 +56,22 @@
     <Reference Include="Microsoft.SharePoint.Client.ServerRuntime" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AylikParaGirisiIslemToplamiWP\AylikParaGirisiIslemToplamiWP.ascx.cs">
+      <DependentUpon>AylikParaGirisiIslemToplamiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="AylikParaGirisiIslemToplamiWP\AylikParaGirisiIslemToplamiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AylikParaGirisiIslemToplamiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="AylikParaGirisleriWP\AylikParaGirisleriWP.ascx.cs">
+      <DependentUpon>AylikParaGirisleriWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="AylikParaGirisleriWP\AylikParaGirisleriWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AylikParaGirisleriWP.ascx</DependentUpon>
+    </Compile>
     <Compile Include="BankaBazindaGunlukBagisListesiWP\BankaBazindaGunlukBagisListesiWP.ascx.cs">
       <DependentUpon>BankaBazindaGunlukBagisListesiWP.ascx</DependentUpon>
     </Compile>
@@ -83,6 +99,14 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="AylikParaGirisiIslemToplamiWP\AylikParaGirisiIslemToplamiWP.webpart" />
+    <None Include="AylikParaGirisiIslemToplamiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{16ad206f-04e6-44f0-8f29-a9a16e08bce6}</SharePointProjectItemId>
+    </None>
+    <None Include="AylikParaGirisleriWP\AylikParaGirisleriWP.webpart" />
+    <None Include="AylikParaGirisleriWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{e999c652-033f-4caa-8ead-1752a72dd17e}</SharePointProjectItemId>
+    </None>
     <None Include="BankaBazindaGunlukBagisListesiWP\BankaBazindaGunlukBagisListesiWP.webpart" />
     <None Include="BankaBazindaGunlukBagisListesiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{ea2fec54-2655-43cc-918b-14f3f280bd84}</SharePointProjectItemId>
@@ -117,6 +141,16 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AylikParaGirisiIslemToplamiWP\AylikParaGirisiIslemToplamiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>AylikParaGirisiIslemToplamiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="AylikParaGirisiIslemToplamiWP\Elements.xml" />
+    <Content Include="AylikParaGirisleriWP\AylikParaGirisleriWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>AylikParaGirisleriWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="AylikParaGirisleriWP\Elements.xml" />
     <Content Include="BankaBazindaGunlukBagisListesiWP\BankaBazindaGunlukBagisListesiWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>BankaBazindaGunlukBagisListesiWP.ascx.g.cs</LastGenOutput>

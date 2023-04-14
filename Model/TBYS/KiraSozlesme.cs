@@ -44,7 +44,7 @@ namespace Model.TBYS
             string sqlString = string.Format(@"SELECT *
                                FROM KiraSozlesme_Table 
                                WHERE  Id={0}", id);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
             kiraSozlesme = list.FirstOrDefault();
@@ -56,7 +56,7 @@ namespace Model.TBYS
             string sqlString = string.Format(@"SELECT *
                                FROM KiraSozlesme_Table 
                                WHERE  Id={0}", kiraSozlesmeId);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
             kiraSozlesme = list.FirstOrDefault();
@@ -66,41 +66,44 @@ namespace Model.TBYS
         public string ArtisAyi { get; set; }
         public string Bolge { get; set; }
         public string GecikmeZammiTipi { get; set; }
+        //public int SaveSozlesme()
+        //{
+        //    try
+        //    {
+        //        GenericEntity<KiraSozlesme> genericEntity = new GenericEntity<KiraSozlesme>(ProjeConstants.SQL_INSERT);
+        //        OlusturmaTarihi = DateTime.Now;
+        //        string sqlString = genericEntity.GetQuery(this);
+        //        int id = dao.Insert(sqlString);
+        //        this.Id = id;
+        //        return id;
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        throw;
+        //    }
+        //}
         public override int Save()
         {
             try
             {
                 GenericEntity<KiraSozlesme> genericEntity = new GenericEntity<KiraSozlesme>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
-                SozlesmeDurumu = string.IsNullOrEmpty(SozlesmeDurumu) ? ProjeConstants.KIRASOZLESME_DURUMU_DEVAM : SozlesmeDurumu;
-                Aktif = true;
+                Olusturan = UtilityHelper.GetCurrentUserName();
                 string sqlString = genericEntity.GetQuery(this);
                 int id = dao.Insert(sqlString);
 
                 this.Id = id;
+                if (id > 0 && ProjeConstants.TBYS_SAVE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.TBYS, ProjeConstants.TBYS_KIRASOZLESME);
+                }
                 return id;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
-            }
-        }
-        public int SaveSozlesme()
-        {
-            try
-            {
-                GenericEntity<KiraSozlesme> genericEntity = new GenericEntity<KiraSozlesme>(ProjeConstants.SQL_INSERT);
-                OlusturmaTarihi = DateTime.Now;
-                string sqlString = genericEntity.GetQuery(this);
-                int id = dao.Insert(sqlString);
-                this.Id = id;
-                return id;
-            }
-            catch (Exception)
-            {
-
-                throw;
+                throw ex;
             }
         }
         public override bool Update()
@@ -108,13 +111,22 @@ namespace Model.TBYS
             bool isSuccess = false;
             try
             {
-                if (Id != 0)
+                if (this != null)
                 {
-                    GenericEntity<KiraSozlesme> genericEntity = new GenericEntity<KiraSozlesme>(ProjeConstants.SQL_UPDATE);
-                    DegistirmeTarihi = DateTime.Now;
-                    SozlesmeDurumu = string.IsNullOrEmpty(SozlesmeDurumu) ? ProjeConstants.KIRASOZLESME_DURUMU_DEVAM : SozlesmeDurumu;
-                    string sqlString = genericEntity.GetQuery(this);
-                    isSuccess = dao.Update2Db(sqlString);
+                    KiraSozlesme item = Select<KiraSozlesme>(Id);
+                    if (Id != 0)
+                    {
+                        GenericEntity<KiraSozlesme> genericEntity = new GenericEntity<KiraSozlesme>(ProjeConstants.SQL_UPDATE);
+                        DegistirmeTarihi = DateTime.Now;
+                        Degistiren = UtilityHelper.GetCurrentUserName();
+                        string sqlString = genericEntity.GetQuery(this);
+                        isSuccess = dao.Update2Db(sqlString);
+                    }
+                    if (isSuccess && ProjeConstants.TBYS_UPDATE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.TBYS, ProjeConstants.TBYS_KIRASOZLESME);
+                    }
                 }
             }
             catch (Exception)
@@ -125,13 +137,31 @@ namespace Model.TBYS
         }
         public override bool Delete()
         {
-            string sqlString = string.Format(@"DELETE 
-                               FROM KiraSozlesme_Table
-                               WHERE Id={0}", Id);
-
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
-
-            return isSuccess;
+            try
+            {
+                bool isDeleted = false;
+                if (Id != 0)
+                {
+                    GenericEntity<KiraSozlesme> genericEntity = new GenericEntity<KiraSozlesme>(ProjeConstants.SQL_DELETE);
+                    string sqlString = genericEntity.GetQuery(this);
+                    KiraSozlesme item = Select<KiraSozlesme>(Id);
+                    if (item != null)
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+                    else isDeleted = false;
+                    if (isDeleted && ProjeConstants.TBYS_DELETE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.TBYS, ProjeConstants.TBYS_KIRASOZLESME);
+                    }
+                }
+                return isDeleted;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         public override List<T> SelectAll<T>()
         {
@@ -141,7 +171,7 @@ namespace Model.TBYS
                 ORDER BY CASE WHEN DosyaNo=0 THEN 2 ELSE 1 END,ISNULL(DosyaNo,999999)
                 ");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
@@ -155,33 +185,11 @@ namespace Model.TBYS
                 ORDER BY CASE WHEN DosyaNo=0 THEN 2 ELSE 1 END,ISNULL(DosyaNo,999999)
                 ");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
 
             return (list);
         }
-        public int SelectAktifSozlesmeSayisiByBolge(string bolge)
-        {
-            int adet = 0;
-            string sqlString = string.Format(@"
-                SELECT COUNT(distinct(A.Id)) Adet 
-                FROM KiraSozlesme_Table A
-                    INNER JOIN SozlesmeTasinmaz_Table C On C.SozlesmeId=A.Id
-                    INNER JOIN Kiraci_Table B On B.Id=A.KiraciId
-                    INNER JOIN Tasinmaz_Table D On D.Id=C.TasinmazId
-                    INNER JOIN Il_Table E ON E.IlAdi=D.Ili
-                WHERE A.Aktif=1 AND E.Bolge={0}
-                GROUP BY E.Bolge", bolge.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
-            if (dataTable != null)
-            {
-                DataRow row = dataTable.Rows[0];
-                adet = row["Adet"].ConvertToInt();
-            }
-            return adet;
-
-        }
-
         public DataTable SelectKiraciSayisiByBolgeTarih(string bolge, int ay, int yil)
         {
             DateTime ayinIlkGunu = new DateTime(yil, ay, 1);
@@ -238,7 +246,7 @@ namespace Model.TBYS
                     )
                 ORDER BY A.Bolge,A.DosyaNo,B.Adi
                 ", bolgeStr, ayinIlkGunu.ConvertToDatetimeEmptyIfNull().ReturnQuotedValue(), ayinSonGunu.ConvertToDatetimeEmptyIfNull().ReturnQuotedValue(),odemePlaniStr);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return dataTable;
 
         }
@@ -270,7 +278,7 @@ namespace Model.TBYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -299,7 +307,7 @@ namespace Model.TBYS
             DataTable dataTable;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -332,7 +340,7 @@ namespace Model.TBYS
             DataTable dataTable;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -376,7 +384,7 @@ namespace Model.TBYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -403,13 +411,13 @@ namespace Model.TBYS
 					LEFT OUTER JOIN Tasinmaz_Table D ON D.Id=C.TasinmazId
 	                LEFT OUTER JOIN BagimsizBolum_Table F ON F.TasinmazId=D.Id AND F.Id=C.BolumId
 					LEFT JOIN Il_Table E ON E.IlAdi=D.Ili
-                WHERE YEAR(S.DurumDegismeTar)={0} AND S.SozlesmeDurumu in ('" + ProjeConstants.KIRASOZLESME_DURUMU_BITTI + "," + ProjeConstants.KIRASOZLESME_DURUMU_FESIH + @"')
+                WHERE YEAR(S.DurumDegismeTar)={0} AND S.SozlesmeDurumu in (" + ProjeConstants.KIRASOZLESME_DURUMU_BITTI.ReturnQuotedValue() + "," + ProjeConstants.KIRASOZLESME_DURUMU_FESIH.ReturnQuotedValue() + @")
 				ORDER BY DosyaNo", yil);
 
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -429,31 +437,11 @@ namespace Model.TBYS
                 HAVING COUNT(Adi + Soyadi)>1
                 ", adi.ReturnQuotedValue());
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
             return list;
         }
 
-        public List<KiraSozlesme> SelectBitenSozlesmeListByKiraciIdOrderBySozBitTarDesc(int kiraciId)
-        {
-            //string aktifStr = string.Format(" AND Aktif={0}", aktif);
-            string sqlString = string.Format(@"				
-                SELECT *
-                FROM KiraSozlesme_Table 
-                WHERE Aktif=0 AND KiraciId={0}
-				ORDER BY SozBitTar DESC", kiraciId);
-
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
-            if (dataTable != null)
-            {
-                List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
-                return list;
-            }
-            else
-            {
-                return null;
-            }
-        }
         public KiraSozlesme SelectAktifSozlesmeByKiraciId(int kiraciId)
         {
             string sqlString = string.Format(@"
@@ -461,7 +449,7 @@ namespace Model.TBYS
                 FROM KiraSozlesme_Table
                 WHERE Aktif=1 AND KiraciId={0}
                 ORDER BY SozBastar DESC", kiraciId.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
@@ -480,7 +468,7 @@ namespace Model.TBYS
                                 SELECT  *
                                 FROM KiraSozlesme_Table
                                 WHERE KiraciId={0}", kiraciId.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
@@ -502,7 +490,7 @@ namespace Model.TBYS
                 ORDER BY SozBasTar DESC, DosyaNo
                 ", kiraciId);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
 
             return (list);
@@ -514,7 +502,7 @@ namespace Model.TBYS
                 FROM KiraSozlesme_Table
                 WHERE KiraciId={0} AND ({1} >= SozBasTar AND {1} < SozBitTar)", kiraciId.ReturnQuotedValue(), tarih.ReturnTRDateFormat());
             //WHERE KiraciId={0} AND ({1} BETWEEN SozBasTar AND SozBitTar)", kiraciId.ReturnQuotedValue(),tarih.ReturnTRDateFormat());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
@@ -536,7 +524,7 @@ namespace Model.TBYS
                 FROM KiraSozlesme_Table
                 WHERE KiraciId={0} AND SozBitTar >= {1} 
                 ORDER BY SozBasTar ", kiraciId.ReturnQuotedValue(), tarih.ReturnTRDateFormat());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
@@ -550,7 +538,7 @@ namespace Model.TBYS
                 FROM KiraSozlesme_Table
                 WHERE KiraciId={0} AND SozBasTar < {1} 
                 ORDER BY SozBasTar DESC ", kiraciId.ReturnQuotedValue(), tarih.ReturnTRDateFormat());
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
                 if (dataTable != null)
                 {
                     List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
@@ -568,7 +556,7 @@ namespace Model.TBYS
                 FROM KiraSozlesme_Table
                 WHERE Aktif=0 AND KiraciId={0}
                 ORDER BY SozBastar DESC", kiraciId.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
@@ -580,27 +568,6 @@ namespace Model.TBYS
                 return null;
             }
 
-        }
-        public string SelectBitenSozlesmelerByKiraciIdReturnJson(int kiraciId)
-        {
-            string sqlString = string.Format(@"
-                SELECT Id SozlesmeId, FORMAT(SozBasTar,'dd/MM/yyyy') SozBasTar,
-	                FORMAT(SozBitTar,'dd/MM/yyyy') SozBitTar,
-                    DosyaNo,KiraBedeli
-                FROM KiraSozlesme_Table
-                WHERE Aktif=0 AND KiraciId={0}
-                ORDER BY SozBitTar DESC", kiraciId.ReturnQuotedValue());
-            DataTable dataTable = null;
-            try
-            {
-                dataTable = dao.selectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-            string json = ToJSON(dataTable);
-            return json;
         }
         public bool UpdateAktifDurum(string durum, string degistirmeTar, bool aktif)
         {
@@ -622,7 +589,7 @@ namespace Model.TBYS
                     LEFT OUTER JOIN Bagis_Table C ON C.TasinmazId=B.TasinmazId
                 WHERE A.Aktif=1 AND B.TasinmazId={0}
                 ORDER BY B.TasinmazId", tasinmazId.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
@@ -643,30 +610,9 @@ namespace Model.TBYS
 	                LEFT JOIN Tasinmaz_Table C On C.Id=B.TasinmazId
                 WHERE A.Id= {0}
                 ", sozlesmeId.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return dataTable;
 
-        }
-        public DataTable SelectSUMAdetByBolge(string bolge)
-        {
-            string bolgeStr = string.IsNullOrEmpty(bolge) || bolge.Equals(ProjeConstants.BOLGE_HEPSI) ? "" : " AND Bolge=" + bolge;
-            string sqlString = string.Format(@"				
-                Select Bolge,  Count(A.Id) Adet, SUM(TeminatTutari) TeminatTutari
-                From KiraSozlesme_Table A
-                Where A.Aktif=1
-                Group By Bolge
-                Order By Bolge", bolgeStr);
-
-            DataTable dataTable = null;
-            try
-            {
-                dataTable = dao.selectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-            return dataTable;
         }
         public DataTable SelectSUMTeminatByBolgeKiralamaAmaciReturnDT(string bolge, string kiralamaAmaci)
         {
@@ -685,7 +631,7 @@ namespace Model.TBYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -712,7 +658,7 @@ namespace Model.TBYS
                     ORDER BY DosyaNo,Id ", Id.ReturnQuotedValue());
             }
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
@@ -734,7 +680,7 @@ namespace Model.TBYS
                     SELECT * FROM KiraSozlesme_Table
                     WHERE KiraciId={0} AND SozBastar < {1}
                     ORDER BY SozBasTar DESC", KiraciId.ReturnQuotedValue(), SozBasTar.ReturnTRDateFormat());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
@@ -766,7 +712,7 @@ namespace Model.TBYS
                     ORDER BY DosyaNo DESC,Id DESC ", Id.ReturnQuotedValue());
             }
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
@@ -789,7 +735,7 @@ namespace Model.TBYS
                     FROM KiraSozlesme_Table
                     WHERE Aktif=1  
                     ) ");
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
@@ -807,7 +753,7 @@ namespace Model.TBYS
                     FROM KiraSozlesme_Table
                     WHERE Aktif=1 AND DosyaNo>0
                     ) ");
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
@@ -835,7 +781,7 @@ namespace Model.TBYS
                     ORDER BY DosyaNo,Id ", Id.ReturnQuotedValue());
             }
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
@@ -867,7 +813,7 @@ namespace Model.TBYS
                     ORDER BY DosyaNo DESC,Id DESC ", Id.ReturnQuotedValue());
             }
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
@@ -890,7 +836,7 @@ namespace Model.TBYS
                     FROM KiraSozlesme_Table
                     WHERE Aktif=0  
                     ) ");
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
@@ -908,7 +854,7 @@ namespace Model.TBYS
                     FROM KiraSozlesme_Table
                     WHERE Aktif=0 AND DosyaNo>0
                     ) ");
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
@@ -917,23 +863,5 @@ namespace Model.TBYS
             return kiraSozlesme;
         }
 
-        internal KiraSozlesme SelectOncekiSozlesme(KiraSozlesme kiraSozlesme)
-        {
-            DateTime bastar = kiraSozlesme.SozBasTar;
-            KiraSozlesme oncekiKiraSozlesme = null;
-            string sqlString = string.Format(@"
-                SELECT * FROM KiraSozlesme_Table
-                FROM KiraSozlesme_Table
-                WHERE KiraciId={0} AND SozBasTar<{1}
-                order by SozBasTar Desc, Id DESC
-                    ) ", kiraSozlesme.KiraciId, SozBasTar.ReturnTRDateFormat());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
-            if (dataTable != null)
-            {
-                List<KiraSozlesme> list = ToList<KiraSozlesme>(dataTable);
-                oncekiKiraSozlesme = list.FirstOrDefault();
-            }
-            return oncekiKiraSozlesme;
-        }
     }
 }

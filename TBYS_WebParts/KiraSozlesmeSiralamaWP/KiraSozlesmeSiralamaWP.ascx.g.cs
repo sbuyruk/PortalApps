@@ -151,40 +151,51 @@ namespace TBYS_WebParts.KiraSozlesmeSiralamaWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControl__control3(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n\r\n    <div class=\"card\">\r\n        <div class=\"card-header\">\r\n            "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n\r\n            <div class=\"card shadow\">\r\n                <div class=\"card-hea" +
+                        "der\">\r\n                    "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl1;
             @__ctrl1 = this.@__BuildControlCloseBtn();
             @__parser.AddParsedSubObject(@__ctrl1);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            <h3 class=\"mb-2\">\r\n                "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    <h3 class=\"mb-2\">\r\n                        "));
             global::System.Web.UI.WebControls.Label @__ctrl2;
             @__ctrl2 = this.@__BuildControlTitleLbl();
             @__parser.AddParsedSubObject(@__ctrl2);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        "));
             global::System.Web.UI.WebControls.Label @__ctrl3;
             @__ctrl3 = this.@__BuildControlIdLbl();
             @__parser.AddParsedSubObject(@__ctrl3);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-            </h3>
-        </div>
-        <div class=""card-body"">
-            <div class=""table loader table-hower table-bordered table-responsive"">
-                <div id=""tblfilter""></div>
-                <div id=""messages""></div>
-            </div>
-        </div>
-        <div class=""card-footer"">
-            <button id=""kaydetBtn"" class=""btn btn-outline-primary"" type=""button"" onclick=""SiralamayiKaydet();"">Sıralamayı Kaydet</button>
-        </div>
-        <div style=""display:none"">
-            "));
+                    </h3>
+                </div>
+                <div class=""card-body"">
+                    <div class=""form-group"">
+                        <table id=""CustomDataTable"" class=""table table-striped table-bordered"" width=""100%"">
+                            <thead>
+                                <tr>
+                                    <th>Dosya No</th>
+                                    <th>Sözleşme No</th>
+                                    <th>Kiraci </th>
+                                    <th>Sözleşme Tarihi</th>
+                                    <th>Kira Bedeli</th>
+                                    <th>Adres</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+                <div class=""card-footer"">
+                    <button id=""kaydetBtn"" class=""btn btn-outline-primary"" type=""button"" onclick=""SiralamayiKaydet();"">Sıralamayı Kaydet</button>
+                </div>
+                <div style=""display: none"">
+                    "));
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl4;
             @__ctrl4 = this.@__BuildControlparamDosyaNoArray();
             @__parser.AddParsedSubObject(@__ctrl4);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl5;
             @__ctrl5 = this.@__BuildControlKaydetNowBtn();
             @__parser.AddParsedSubObject(@__ctrl5);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n        </div>\r\n    </div>\r\n                    "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                </div>\r\n            </div>\r\n        "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -202,10 +213,9 @@ namespace TBYS_WebParts.KiraSozlesmeSiralamaWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControl__control4(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    <div class=\'loaderMainContainer\'>\r\n                        " +
-                        "<div class=\'loaderContainer\'>\r\n                            <div class=\'loaderCir" +
-                        "cle\'></div>\r\n                        </div>\r\n                    </div>\r\n       " +
-                        "         "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            <div class=\'loaderMainContainer\'>\r\n                <div class=\'load" +
+                        "erContainer\'>\r\n                    <div class=\'loaderCircle\'></div>\r\n           " +
+                        "     </div>\r\n            </div>\r\n        "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -241,22 +251,23 @@ namespace TBYS_WebParts.KiraSozlesmeSiralamaWP {
             @__w.Write(@"
 
 <style>
-    .ui-datatable tbody td{
-        white-space:normal;
+    .ui-datatable tbody td {
+        white-space: normal;
     }
+
     .ui-datatable .ui-state-highlight {
         background-image: none;
         background-color: steelblue;
-        color:white;
+        color: white;
     }
 </style>
 <script>
 
     function storeTblValues() {
         var tableData = """";
-        $('#tblfilter tr').each(function (row, tr) {
-            tableData += 
-                $(tr).find('td:eq(1)').text()+"",""; //kiraSozlesmeId lerini "","" ile ayırarak ekle
+        $('#CustomDataTable tr').each(function (row, tr) {
+            tableData +=
+                $(tr).find('td:eq(1)').text() + "",""; //kiraSozlesmeId lerini "","" ile ayırarak ekle
         });
         return tableData;
     }
@@ -268,9 +279,9 @@ namespace TBYS_WebParts.KiraSozlesmeSiralamaWP {
             @__w.Write("\').value = tableData;\r\n        document.getElementById(\'");
                          @__w.Write( KaydetNowBtn.ClientID);
 
-            @__w.Write("\').click();\r\n    }\r\n</script>\r\n\r\n\r\n<div class=\"container shadow\">\r\n    ");
+            @__w.Write("\').click();\r\n    }\r\n</script>\r\n\r\n\r\n<div class=\"container\">\r\n    ");
             parameterContainer.Controls[0].RenderControl(@__w);
-            @__w.Write("\r\n            ");
+            @__w.Write("\r\n    ");
             parameterContainer.Controls[1].RenderControl(@__w);
             @__w.Write("\r\n</div>\r\n");
         }

@@ -27,7 +27,7 @@ namespace Model.IKYS
         public override T Select<T>(int id)
         {
             string sqlString = SelectSQL(id);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Kimlik> list = ToList<Kimlik>(dataTable);
             Kimlik kimlik = new Kimlik();
             kimlik = list.FirstOrDefault();
@@ -37,11 +37,17 @@ namespace Model.IKYS
         {
             try
             {
+
                 GenericEntity<Kimlik> genericEntity = new GenericEntity<Kimlik>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
+                Olusturan = UtilityHelper.GetCurrentUserName();
                 string sqlString = genericEntity.GetQuery(this);
                 int id = dao.Insert(sqlString);
-
+                if (id > 0 && ProjeConstants.IKYS_SAVE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.IKYS, ProjeConstants.IKYS_KIMLIK);
+                }
                 this.Id = id;
                 return id;
             }
@@ -51,22 +57,27 @@ namespace Model.IKYS
                 throw ex;
             }
 
-            //string sqlString = saveSQL();
-            //int id = dao.Insert(sqlString);
-            //this.Id = id;
-            //return id;
         }
+
         public override bool Update()
         {
+
             bool isSuccess = false;
             try
             {
+                Kimlik item = Select<Kimlik>(Id);
                 if (Id != 0)
                 {
                     GenericEntity<Kimlik> genericEntity = new GenericEntity<Kimlik>(ProjeConstants.SQL_UPDATE);
                     DegistirmeTarihi = DateTime.Now;
+                    Degistiren = UtilityHelper.GetCurrentUserName();
                     string sqlString = genericEntity.GetQuery(this);
                     isSuccess = dao.Update2Db(sqlString);
+                }
+                if (isSuccess && ProjeConstants.IKYS_UPDATE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.IKYS, ProjeConstants.IKYS_KIMLIK);
                 }
             }
             catch (Exception)
@@ -74,30 +85,49 @@ namespace Model.IKYS
                 throw;
             }
             return isSuccess;
-            //bool isSuccess = false;
-            //if (Id != 0)
-            //{
-            //    string sqlString = UpdateSQL();
-            //    isSuccess = dao.Update2Db(sqlString);
-            //}
-            //return isSuccess;
         }
         public override bool Delete()
         {
-            string sqlString = DeleteSQL();
+            try
+            {
+                bool isDeleted;
+                if (Id != 0)
+                {
+                    GenericEntity<Kimlik> genericEntity = new GenericEntity<Kimlik>(ProjeConstants.SQL_DELETE);
+                    string sqlString = genericEntity.GetQuery(this);
 
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
+                    Kimlik item = Select<Kimlik>(Id);
+                    if (item != null)
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+                    else isDeleted = false;
+                    if (isDeleted && ProjeConstants.IKYS_DELETE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.IKYS, ProjeConstants.IKYS_KIMLIK);
+                    }
+                    return isDeleted;
+                }
+                else
+                {
+                    return false;
+                }
 
-            return isSuccess;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
         public Kimlik Select(int id)
         {
             GenericEntity<Kimlik> genericEntity = new GenericEntity<Kimlik>(ProjeConstants.SQL_SELECT);
-            OlusturmaTarihi = DateTime.Now;
             Id = id;
             string sqlString = genericEntity.GetQuery(this);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Kimlik> list = ToList<Kimlik>(dataTable);
             Kimlik kimlik = new Kimlik();
             kimlik = list.FirstOrDefault();
@@ -108,7 +138,7 @@ namespace Model.IKYS
             string sqlString = string.Format(@"SELECT *
                                FROM Kimlik_Table");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Kimlik> list = ToList<Kimlik>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
@@ -148,7 +178,7 @@ namespace Model.IKYS
         {
             string sqlString = SelectByPersonelIdSQL(personelId);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Kimlik> list = ToList<Kimlik>(dataTable);
             Kimlik kimlik = list.FirstOrDefault();
             return (kimlik);
@@ -167,7 +197,7 @@ namespace Model.IKYS
                     SELECT * FROM Kimlik_Table  
                     WHERE TCKimlikNo={0}
                     ORDER BY Id", kimlikNo.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlstr, "");
+            DataTable dataTable = dao.SelectFromDb(sqlstr, "");
             List<Kimlik> list = ToList<Kimlik>(dataTable);
             Kimlik kimlik = list.FirstOrDefault();
             return (kimlik);
@@ -191,7 +221,7 @@ namespace Model.IKYS
         {
             string sqlString = string.Format(@"SELECT *
                                FROM KIMLIK_BILGILERI");
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return (dataTable);
         }
     }

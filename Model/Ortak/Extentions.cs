@@ -1,9 +1,6 @@
-﻿using Model.Ortak;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Runtime.ConstrainedExecution;
 using Utility.HelperClasses;
 
 namespace Model.Ortak

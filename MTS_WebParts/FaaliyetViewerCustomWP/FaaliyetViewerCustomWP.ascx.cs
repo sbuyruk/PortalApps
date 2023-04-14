@@ -15,7 +15,7 @@ using Utility.HelperClasses;
 using Utility.ProjeGlobal;
 using System.Data;
 using System.Linq;
-
+using Model.Portal;
 
 namespace MTS_WebParts.FaaliyetViewerCustomWP
 {

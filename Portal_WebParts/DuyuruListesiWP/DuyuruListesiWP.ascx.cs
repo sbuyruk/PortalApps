@@ -198,7 +198,7 @@ namespace Portal_WebParts.DuyuruListesiWP
                             }}],
                         'order': [[2, 'desc']],//sort
                         'language': {
-                            'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                            'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                             'decimal': ',',
                             'thousands': '.'
                         },
@@ -269,7 +269,7 @@ namespace Portal_WebParts.DuyuruListesiWP
                         ],
                         'order': [[1, 'desc'],[2, 'desc']],//sort
                         'language': {
-                            'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                            'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                             'decimal': ',',
                             'thousands': '.'
                         },

@@ -584,7 +584,7 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
                     ],
                     'order': [[8, 'desc'],[0, 'desc']],//sort date desc
                     'language': {
-                    'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                    'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                         'decimal': ',',
                         'thousands': '.'
                     },

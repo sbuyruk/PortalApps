@@ -26,8 +26,10 @@ namespace Model.IKYS
         public int Asker_sivil { get; set; }
         public override T Select<T>(int id)
         {
-            string sqlString = SelectSQL(id);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            GenericEntity<Personel> genericEntity = new GenericEntity<Personel>(ProjeConstants.SQL_SELECT);
+            Id = id;
+            string sqlString = genericEntity.GetQuery(this);
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Personel> list = ToList<Personel>(dataTable);
             Personel personel = new Personel();
             personel = list.FirstOrDefault();
@@ -36,11 +38,10 @@ namespace Model.IKYS
         public Personel Select(int id)
         {
             GenericEntity<Personel> genericEntity = new GenericEntity<Personel>(ProjeConstants.SQL_SELECT);
-            OlusturmaTarihi = DateTime.Now;
             Id = id;
             string sqlString = genericEntity.GetQuery(this);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Personel> list = ToList<Personel>(dataTable);
             Personel personel = new Personel();
             personel = list.FirstOrDefault();
@@ -48,28 +49,90 @@ namespace Model.IKYS
         }
         public override int Save()
         {
-            string sqlString = saveSQL();
-            int id = dao.Insert(sqlString);
-            this.Id = id;
-            return id;
+            try
+            {
+               
+                GenericEntity<Personel> genericEntity = new GenericEntity<Personel>(ProjeConstants.SQL_INSERT);
+                OlusturmaTarihi = DateTime.Now;
+                Olusturan = UtilityHelper.GetCurrentUserName();
+                string sqlString = genericEntity.GetQuery(this);
+                int id = dao.Insert(sqlString);
+                if (id > 0 && ProjeConstants.IKYS_SAVE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.IKYS, ProjeConstants.IKYS_PERSONEL);
+                }
+                this.Id = id;
+                return id;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
         }
         public override bool Update()
         {
+            
             bool isSuccess = false;
-            if (Id != 0)
+            try
             {
-                string sqlString = UpdateSQL();
-                isSuccess = dao.Update2Db(sqlString);
+                Personel item = Select<Personel>(Id);
+                if (Id != 0)
+                {
+                    GenericEntity<Personel> genericEntity = new GenericEntity<Personel>(ProjeConstants.SQL_UPDATE);
+                    DegistirmeTarihi = DateTime.Now;
+                    Degistiren = UtilityHelper.GetCurrentUserName();
+                    string sqlString = genericEntity.GetQuery(this);
+                    isSuccess = dao.Update2Db(sqlString);
+                }
+                if (isSuccess && ProjeConstants.IKYS_UPDATE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.IKYS, ProjeConstants.IKYS_PERSONEL);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
             }
             return isSuccess;
         }
         public override bool Delete()
         {
-            string sqlString = DeleteSQL();
+            try
+            {
+                bool isDeleted;
+                if (Id != 0)
+                {
+                    GenericEntity<Personel> genericEntity = new GenericEntity<Personel>(ProjeConstants.SQL_DELETE);
+                    string sqlString = genericEntity.GetQuery(this);
 
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
+                    Personel item = Select<Personel>(Id);
+                    if (item != null)
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+                    else isDeleted = false;
+                    if (isDeleted && ProjeConstants.IKYS_DELETE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.IKYS, ProjeConstants.IKYS_PERSONEL);
+                    }
+                    return isDeleted;
+                }
+                else
+                {
+                    return false;
+                }
 
-            return isSuccess;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
         public override List<T> SelectAll<T>()
         {
@@ -77,41 +140,16 @@ namespace Model.IKYS
                 @"SELECT *
                 FROM Personel_Table ");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Personel> list = ToList<Personel>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
-        }
-        private string saveSQL()
-        {
-            //Insert  SQL
-            string InsertSQL = string.Format(@" 
-                                    INSERT INTO Personel_Table 
-                                        (Adi,Soyadi,PerId, SicilNo, Tahsili, KullaniciAdi, Asker_sivil,Olusturan,OlusturmaTarihi)
-                                    VALUES ({0},{1},{2},{3},{4},{5},{6},{7},{8}) ",
-                                    Adi.ReturnQuotedValue(), Soyadi.ReturnQuotedValue(), PerId.ReturnQuotedValue(), SicilNo.ReturnQuotedValue(),
-                                    Tahsili.ReturnQuotedValue(), KullaniciAdi.ReturnQuotedValue(), Asker_sivil.ReturnQuotedValue(),
-                                    Olusturan.ReturnQuotedValue(), DateTime.Now.ReturnTRDateFormat());
-            return InsertSQL;
-        }
-        private string UpdateSQL()
-        {
-            //Insert  SQL
-            string sqlSQL = string.Format(@"
-                                    UPDATE Personel_Table 
-                                    SET Adi= {0},Soyadi= {1},PerId= {2}, SicilNo= {3}, Tahsili= {4}, KullaniciAdi= {5}, Asker_sivil= {6},
-                                        Degistiren={7},DegistirmeTarihi={8}
-                                    WHERE Id= {9}",
-                                    Adi.ReturnQuotedValue(), Soyadi.ReturnQuotedValue(), PerId.ReturnQuotedValue(), SicilNo.ReturnQuotedValue(),
-                                    Tahsili.ReturnQuotedValue(), KullaniciAdi.ReturnQuotedValue(), Asker_sivil.ReturnQuotedValue(),
-                                    Degistiren.ReturnQuotedValue(), DateTime.Now.ReturnTRDateFormat(), Id);
-            return sqlSQL;
         }
         public Personel SelectByUserName(string userName)
         {
             string sqlString = SelectByUserNameSQL(userName);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Personel> list = ToList<Personel>(dataTable);
             Personel personel = list.FirstOrDefault();
             return (personel);
@@ -154,7 +192,7 @@ namespace Model.IKYS
                     WHERE CalismaDurumu=1 And P.Id={0}
 					ORDER BY I.ProtokolSiraNo
                                     ",personelId);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Personel> list = ToList<Personel>(dataTable);
             _ = new Personel();
             Personel personel = list.FirstOrDefault();
@@ -173,7 +211,7 @@ namespace Model.IKYS
                     WHERE CalismaDurumu=1 And I.BirimId={0}
 					ORDER BY I.ProtokolSiraNo
                                     ", birimId);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Personel> list = ToList<Personel>(dataTable);
 
             return list;
@@ -195,7 +233,7 @@ namespace Model.IKYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -222,7 +260,7 @@ namespace Model.IKYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -264,7 +302,7 @@ namespace Model.IKYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -295,7 +333,7 @@ namespace Model.IKYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -317,7 +355,7 @@ namespace Model.IKYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -342,7 +380,7 @@ namespace Model.IKYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -369,7 +407,7 @@ namespace Model.IKYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -396,7 +434,7 @@ namespace Model.IKYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -421,7 +459,7 @@ namespace Model.IKYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -447,7 +485,7 @@ namespace Model.IKYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -474,7 +512,7 @@ namespace Model.IKYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -498,7 +536,7 @@ namespace Model.IKYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -518,7 +556,7 @@ namespace Model.IKYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -539,7 +577,7 @@ namespace Model.IKYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -560,7 +598,7 @@ namespace Model.IKYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {

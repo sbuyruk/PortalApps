@@ -2,7 +2,7 @@
 <Elements xmlns="http://schemas.microsoft.com/sharepoint/" >
   <Module Name="NakitBagisciBulmaWP" List="113" Url="_catalogs/wp">
     <File Path="NakitBagisciBulmaWP\NakitBagisciBulmaWP.webpart" Url="NBYS_WebParts_NakitBagisciBulmaWP.webpart" Type="GhostableInLibrary" >
-      <Property Name="Group" Value="NBYS_WebParts" />
+      <Property Name="Group" Value="Custom" />
     </File>
   </Module>
 </Elements>

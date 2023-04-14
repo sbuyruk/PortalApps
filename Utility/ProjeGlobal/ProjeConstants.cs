@@ -16,11 +16,82 @@ namespace Utility.ProjeGlobal
         public const string MTS_FAALIYET = "Faaliyet";
         public const string MTS_KISI = "Kisi";
         public const string MTS_ARAMAGORUSME = "Arama/Görüşme";
-        public const string MTS_ANIOBJESI_DAGITIM = "Anı Objesi Dağıtım";
+        public const string MTS_ANIOBJESIDAGITIM = "Anı Objesi Dağıtım";
         public const string MTS_ANIOBJESI = "Anı Objesi";
         public const string MTS_RANDEVUKATILIM = "Randevu Katılım";
+        public const string MTS_RANDEVUPARAMETRE = "Randevu Parametre";
+        //moduller IKYS
+        public const string IKYS_AILE = "Aile";        
+        public const string IKYS_BIRIMTANIM = "Birim Tanım";
+        public const string IKYS_BULUNMAMASEBEBI = "Bulunmama Sebebi";
+        public const string IKYS_EGITIM = "Eğitim";
+        public const string IKYS_EGITIMSEVIYESI = "Eğitim Seviyesi";
+        public const string IKYS_GOREVONAY = "Görev Onayı";
+        public const string IKYS_GOREVTANIM = "Görev Tanım";
+        public const string IKYS_ILETISIMBILGILERI = "İletişim Bilgileri";
+        public const string IKYS_ISBILGILERI = "İş Bilgileri";
+        public const string IKYS_ISTECRUBE = "İş Tecrübesi";
+        public const string IKYS_IZINDONEM = "İzin Dönemleri";
+        public const string IKYS_IZINHAREKET = "İzin Hareket";
+        public const string IKYS_IZINTALEP = "İzin Talep";
+        public const string IKYS_IZINTANIM = "İzin Tanım";
+        public const string IKYS_KIMLIK = "Kimlik";
+        public const string IKYS_KURS = "Kurs";
+        public const string IKYS_MAHSUP = "Mahsup";
+        public const string IKYS_MESLEK = "Meslek";
+        public const string IKYS_PERSONEL = "Personel";
+        public const string IKYS_RESMITATIL = "Resmi Tatil";
+        public const string IKYS_TAHSILTANIM = "Tahsil";
+        public const string IKYS_UNVANTANIM = "Ünvan Tanım";
+        public const string IKYS_YABANCIDIL = "Yabancı Dil";
+        public const string IKYS_YOKLAMA = "Yoklama";
         //moduller  NBYS
+        public const string NBYS_ARMAGAN = "Armağan";
+        public const string NBYS_ARMAGANTANIM = "Armağan Tanım";
+        public const string NBYS_BANKATANIM = "Banka Tanım";
+        public const string NBYS_EKSTREAKTARMA = "Ekstre Aktarma";
+        public const string NBYS_FTK = "FTK";
+        public const string NBYS_FTKISLEM = "FTK İşlem";
+        public const string NBYS_FTKKISI = "FTK Kişi";
+        public const string NBYS_NAKITBAGISCI = "Nakit Bağışçı";
+        public const string NBYS_NAKITBAGISHAREKET = "Nakit Bağış Hareket";
+        public const string NBYS_NBYSPARAMETRE = "NBYS Parametre";
+        public const string NBYS_SMSAYLIKBAGIS = "SMS Aylık Bağış";
+
         public const string NBYS_BOLGE_NAKITBAGISCILISTESİ = "BolgeNakitBagisciListesi";
+        //moduller  TBYS
+        public const string TBYS_BAGIMSIZBOLUM = "Bağımsız Bölüm";
+        public const string TBYS_BAGIS = "Bağış";
+        public const string TBYS_BAGISCIBAGIS = "Bağışçı Bağış";
+        public const string TBYS_BAGISCITALEPLERI = "Bağışçı Talepleri";
+        public const string TBYS_BAGISCIYAKINLARI = "Bağışçı Yakınları";
+        public const string TBYS_GECIKMEZAMMI = "Gecikme Zammı";
+        public const string TBYS_HUKUKITAKIP = "Hukuki Takip";
+        public const string TBYS_KIRACI = "Kiracı";
+        public const string TBYS_KIRAEKSTREAKTARMA = "Kira Ekstre Aktarma";
+        public const string TBYS_KIRASOZLESME = "Kira Sözlesme";
+        public const string TBYS_ODEME = "Ödeme";
+        public const string TBYS_ODEMEAYRINTI = "Ödeme Ayrıntı";
+        public const string TBYS_ODEMEAYRISTIRMA = "Ödeme Ayrıştırma";
+        public const string TBYS_ODEMEPLANI = "Ödeme Planı";
+        public const string TBYS_ODEMESEBEBITANIM = "Ödeme Sebebi Tanım";
+        public const string TBYS_ONARIM = "Onarım";
+        public const string TBYS_SIGORTA = "Sigorta";
+        public const string TBYS_SOZLESMETASINMAZ = "Sözleşme Taşınmaz";
+        public const string TBYS_TASINMAZ = "Taşınmaz";
+        public const string TBYS_TASINMAZBAGISCI = "Taşınmaz Bagisci";
+        public const string TBYS_TASINMAZTAAHHUT = "Taşınmaz Taahhut";
+        public const string TBYS_TEMINATISLEM = "Teminat İşlem";
+        public const string TBYS_VASIYETCI = "Vasiyetçi";
+        public const string TBYS_VASIYETEKONUVARLIK = "Vasiyete Konu Varlık";
+        public const string TBYS_YASALFAIZ = "Yasal Faiz";
+        //moduller  TYS
+
+        //moduller  Portal
+        public const string PORTAL_TOPLANTI = "Toplantı";
+        public const string PORTAL_TOPLANTIKATILIM = "Toplantı Katılım";
+        public const string PORTAL_TOPLANTIPARAMETRE = "Toplantı Parametre";
+
         #region Resimler
         public const string IMAGE_PATH = "Resimler/";
         public const string RESIMLER_PERSONEL = "PersonelResimleri";
@@ -79,14 +150,38 @@ namespace Utility.ProjeGlobal
         public const int SQL_UPDATE = 1;
         public const int SQL_DELETE = 2;
         public const int SQL_INSERT = 3;
+        public const int SQL_BOS = 99;
         public const int SQL_SELECTWITHFILTER = 4;
         public const int SQL_GENERIC_INT_VALUE = 987654321;
         public const string GIZLI_STRING = "GİZLİ";
-
-        public const bool DELETE_LOG = true;
-        public const bool UPDATE_LOG = true;
-        public const bool SAVE_LOG = true;
+        //Bağımsız genel log
+        public static bool GENEL_DELETE_LOG = false;
+        public static bool GENEL_UPDATE_LOG = false;
+        public static bool GENEL_SAVE_LOG = false;
+        //MTS
+        public const bool MTS_DELETE_LOG = true;
+        public const bool MTS_UPDATE_LOG = true;
+        public const bool MTS_SAVE_LOG = true;
+        //IKYS
+        public const bool IKYS_DELETE_LOG = true;
+        public const bool IKYS_UPDATE_LOG = true;
+        public const bool IKYS_SAVE_LOG = true;
+        //NBYS
+        public const bool NBYS_DELETE_LOG = true;
+        public const bool NBYS_UPDATE_LOG = true;
+        public const bool NBYS_SAVE_LOG = true;
+        //TBYS
+        public const bool TBYS_DELETE_LOG = true;
+        public const bool TBYS_UPDATE_LOG = true;
+        public const bool TBYS_SAVE_LOG = true;
+        //TYS
         
+        //PORTAL
+        public const bool PORTAL_DELETE_LOG = true;
+        public const bool PORTAL_UPDATE_LOG = true;
+        public const bool PORTAL_SAVE_LOG = true;
+
+
         public const char DELIMITER = ';';
 
 

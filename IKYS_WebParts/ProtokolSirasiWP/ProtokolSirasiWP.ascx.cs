@@ -1,4 +1,5 @@
 ﻿using Model.IKYS;
+using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -33,24 +34,99 @@ namespace IKYS_WebParts.ProtokolSirasiWP
         {
             if (!Page.IsPostBack)
             {
-                KayitGetir();
+                TabloOlustur();
             }
         }
-        private void KayitGetir()
+        private void TabloOlustur()
         {
-            var jsonData = PersonelJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateJsString(jsonData); //javascript kodu hazırlanıyor.
-            System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), jsString, true);
+            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            UtilityHelper.ScriptCalistir(jsString);
         }
-        private string PersonelJson()
+
+        private string TabloJson()
         {
             string jSon = string.Empty;
 
-            List<PersonelListItem> list = GetDataList();
-            var serializer = new JavaScriptSerializer();
-            serializer.MaxJsonLength = Int32.MaxValue;
-            jSon = serializer.Serialize(list);
+            try
+            {
+                List<PersonelListItem> list = GetDataList();
+                var serializer = new JavaScriptSerializer();
+                jSon = serializer.Serialize(list);
+            }
+            catch (Exception exception)
+            {
+                ExceptionHelper exceptionHelper = new ExceptionHelper();
+                exceptionHelper.Exceptions.Add(exception);
+                exceptionHelper.PublishException();
+            }
             return jSon;
+        }
+        private string CreateDataTable(string jsonData)
+        {
+            string tableString = @"
+                 jQuery(document).ready(function () {
+$('#CustomDataTable').on( 'draw.dt', function () {
+    //alert( 'Table redrawn' );
+} );
+                        jQuery('#CustomDataTable').DataTable({                            
+                            data: " + jsonData + @",
+                            columns: [
+                                { data: 'ProtokolSiraNo' },
+                                { data: 'PersonelId' },
+                                { data: 'Adi' },
+                                { data: 'Soyadi' },
+                                { data: 'Unvan' },
+                                { data: 'Gorev' },
+                                { data: 'BirimSube' },
+
+                            ],
+                            columnDefs: [
+                                { type: 'turkish', targets:[2,3,4,5,6] },
+                                { type: 'num', targets: 0 },
+                            ],
+                            'language': {
+                                'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
+                                'decimal': ',',
+                                'thousands': '.'
+                            },
+                            responsive: true,
+                            paging:false,
+                            dom: 'Bfrti',
+                            rowReorder: {
+                                selector: 'tr',
+                                update: false
+                            },
+                            buttons: [
+                                {
+                                    extend: 'print',
+                                    exportOptions: {
+                                        columns: ':visible'
+                                    }
+                                },
+                                {
+                                    extend: 'excel',
+                                    exportOptions: {
+                                        columns: ':visible'
+                                    }
+                                },
+                                {
+                                    extend: 'pdf',
+                                    exportOptions: {
+                                        columns: ':visible'
+                                    }
+                                },
+                                {
+                                    extend: 'copy',
+                                    exportOptions: {
+                                        columns: ':visible'
+                                    }
+                                },
+                                , 'pageLength', 'colvis'
+                            ]
+                        });
+                    });";
+            return tableString;
         }
         private List<PersonelListItem> GetDataList()
         {
@@ -79,33 +155,6 @@ namespace IKYS_WebParts.ProtokolSirasiWP
                 }
             }
             return returnlist;
-        }
-        private string CreateJsString(string jsonData)
-        {
-
-            //return '<span class=bagis-iade-edildi>'+rowData.IadeMiktari+ ' '+rowData.DovizCinsi+ ' Parası İade edildi</span>';
-            string ekstretablestr = @" 
-                $('#tblfilter').puidatatable({
-                caption: '',
-                editMode: 'cell',
-                selectionMode: 'single',
-                columns: [
-                    { field: 'ProtokolSiraNo', headerText: 'S.No', headerStyle: 'width: 5%', bodyClass:'text-right'},
-                    { field: 'PersonelId', headerText: 'P.Id', headerStyle: 'width: 7%', bodyClass:'text-right'},
-                    { field: 'Adi', headerText: 'Adı', headerStyle: 'width: 12%' },
-                    { field: 'Soyadi', headerText: 'Soyadı', headerStyle: 'width: 13%' },
-                    { field: 'Unvan', headerText: 'Ünvan', headerStyle: 'width: 15%' },
-                    { field: 'Gorev', headerText: 'Görev', headerStyle: 'width: 25%' },
-                    { field: 'BirimSube', headerText: 'Birim', headerStyle: 'width: 28%' },
-                    ],
-                    datasource:" + jsonData + @",
-                    draggableRows:true,
-                    resizableColumns: true,
-                    globalFilter:'#globalFilter'
-                });
-                $('#messages').puigrowl();
-            ";
-            return ekstretablestr;
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
@@ -152,7 +201,7 @@ namespace IKYS_WebParts.ProtokolSirasiWP
                     }
 
                 }
-                KayitGetir();
+                TabloOlustur();
                 MessageHelper.PublishMessage("Sıralama kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
             }
             catch (Exception)

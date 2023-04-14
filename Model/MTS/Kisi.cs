@@ -34,14 +34,14 @@ namespace Model.MTS
 
         public override int Save()
         {
-            bool saveLog = ProjeConstants.SAVE_LOG;
             try
             {
                 GenericEntity<Kisi> genericEntity = new GenericEntity<Kisi>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
+                Olusturan = UtilityHelper.GetCurrentUserName();
                 string sqlString = genericEntity.GetQuery(this);
                 int id = dao.Insert(sqlString);
-                if (id > 0 && saveLog)
+                if (id > 0 && ProjeConstants.MTS_SAVE_LOG)
                 {
                     OlayKayit olayKayit = new OlayKayit();
                     olayKayit.GirisOlayKaydet(this, ProjeConstants.MTS, ProjeConstants.MTS_KISI);
@@ -58,39 +58,27 @@ namespace Model.MTS
         }
         public override bool Update()
         {
-            bool updateLog = ProjeConstants.UPDATE_LOG;
+            bool updateLog = ProjeConstants.MTS_UPDATE_LOG;
             bool isSuccess = false;
             try
             {
-                if (updateLog)
+                if (this != null)
                 {
-
-                    if (this != null)
+                    Kisi item = Select<Kisi>(Id);
+                    if (Id != 0)
                     {
-                        Kisi item = Select<Kisi>(Id);
-                        if (Id != 0)
-                        {
-                            GenericEntity<Kisi> genericEntity = new GenericEntity<Kisi>(ProjeConstants.SQL_UPDATE);
-                            DegistirmeTarihi = DateTime.Now;
-                            string sqlString = genericEntity.GetQuery(this);
-                            isSuccess = dao.Update2Db(sqlString);
-                        }
-                        if (isSuccess)
-                        {
-                            OlayKayit olayKayit = new OlayKayit();
-                            olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.MTS, ProjeConstants.MTS_KISI);
-                        }
+                        GenericEntity<Kisi> genericEntity = new GenericEntity<Kisi>(ProjeConstants.SQL_UPDATE);
+                        DegistirmeTarihi = DateTime.Now;
+                        Degistiren = UtilityHelper.GetCurrentUserName();
+                        string sqlString = genericEntity.GetQuery(this);
+                        isSuccess = dao.Update2Db(sqlString);
                     }
-
+                    if (isSuccess && ProjeConstants.MTS_UPDATE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.MTS, ProjeConstants.MTS_KISI);
+                    }
                 }
-                if (Id != 0)
-                {
-                    GenericEntity<Kisi> genericEntity = new GenericEntity<Kisi>(ProjeConstants.SQL_UPDATE);
-                    DegistirmeTarihi = DateTime.Now;
-                    string sqlString = genericEntity.GetQuery(this);
-                    isSuccess = dao.Update2Db(sqlString);
-                }
-
             }
             catch (Exception)
             {
@@ -100,7 +88,6 @@ namespace Model.MTS
         }
         public override bool Delete()
         {
-            bool deleteLog = ProjeConstants.DELETE_LOG;
             try
             {
                 bool isDeleted = false;
@@ -108,23 +95,16 @@ namespace Model.MTS
                 {
                     GenericEntity<Kisi> genericEntity = new GenericEntity<Kisi>(ProjeConstants.SQL_DELETE);
                     string sqlString = genericEntity.GetQuery(this);
-                    if (deleteLog)
-                    {
-                        Kisi item = Select<Kisi>(Id);
-                        if (item != null)
-                        {
-                            isDeleted = dao.DeleteFromDb(sqlString, "");
-                        }
-                        else isDeleted = false;
-                        if (isDeleted)
-                        {
-                            OlayKayit olayKayit = new OlayKayit();
-                            olayKayit.SilmeOlayKaydet(item, ProjeConstants.MTS, ProjeConstants.MTS_KISI);
-                        }
-                    }
-                    else
+                    Kisi item = Select<Kisi>(Id);
+                    if (item != null)
                     {
                         isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+                    else isDeleted = false;
+                    if (isDeleted && ProjeConstants.MTS_DELETE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.MTS, ProjeConstants.MTS_KISI);
                     }
                 }
                 return isDeleted;
@@ -137,11 +117,10 @@ namespace Model.MTS
         public Kisi Select(int id)
         {
             GenericEntity<Kisi> genericEntity = new GenericEntity<Kisi>(ProjeConstants.SQL_SELECT);
-            OlusturmaTarihi = DateTime.Now;
             Id = id;
             string sqlString = genericEntity.GetQuery(this);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Kisi> list = ToList<Kisi>(dataTable);
             Kisi item = new Kisi();
             item = list.FirstOrDefault();
@@ -150,10 +129,9 @@ namespace Model.MTS
         public override T Select<T>(int id)
         {
             GenericEntity<Kisi> genericEntity = new GenericEntity<Kisi>(ProjeConstants.SQL_SELECT);
-            OlusturmaTarihi = DateTime.Now;
             Id = id;
             string sqlString = genericEntity.GetQuery(this);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Kisi> list = ToList<Kisi>(dataTable);
             Kisi item = new Kisi();
             item = list.FirstOrDefault();
@@ -166,7 +144,7 @@ namespace Model.MTS
                 FROM Kisi_Table ORDER BY Adi
                 ");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Kisi> list = ToList<Kisi>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
@@ -180,7 +158,7 @@ namespace Model.MTS
                 ORDER BY Adi
                 ");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
 
             return dataTable;
         }
@@ -191,7 +169,7 @@ namespace Model.MTS
                 WHERE Kutlama=1 AND DogumTarihi IS NOT NULL AND DogumTarihi > '01.01.1900'
                 ");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Kisi> list = ToList<Kisi>(dataTable);
             return list;
         }
@@ -203,7 +181,7 @@ namespace Model.MTS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -225,7 +203,7 @@ namespace Model.MTS
             DataTable dataTable;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -243,7 +221,7 @@ namespace Model.MTS
                 FROM Kisi_Table
                 WHERE Adi ={0} AND Soyadi ={1}
                 ", adi.Trim().ReturnQuotedValue(), soyadi.Trim().ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Kisi> list = ToList<Kisi>(dataTable);
             Kisi kisi = new Kisi();
             kisi = list.FirstOrDefault();
@@ -256,7 +234,7 @@ namespace Model.MTS
                 FROM Kisi_Table
                 WHERE TCKimlikNo={0}
                 ", tckimlik);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Kisi> list = ToList<Kisi>(dataTable);
             Kisi kisi = new Kisi();
             kisi = list.FirstOrDefault();

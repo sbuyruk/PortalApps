@@ -37,7 +37,7 @@ namespace Model.TBYS
             string sqlString = string.Format(@"SELECT *
                                FROM Sigorta_Table 
                                WHERE  Id={0}", id);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Sigorta> list = ToList<Sigorta>(dataTable);
             Sigorta sigorta = new Sigorta();
             sigorta = list.FirstOrDefault();
@@ -50,15 +50,20 @@ namespace Model.TBYS
             {
                 GenericEntity<Sigorta> genericEntity = new GenericEntity<Sigorta>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
+                Olusturan = UtilityHelper.GetCurrentUserName();
                 string sqlString = genericEntity.GetQuery(this);
                 int id = dao.Insert(sqlString);
 
                 this.Id = id;
+                if (id > 0 && ProjeConstants.TBYS_SAVE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.TBYS, ProjeConstants.TBYS_SIGORTA);
+                }
                 return id;
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
         }
@@ -67,12 +72,22 @@ namespace Model.TBYS
             bool isSuccess = false;
             try
             {
-                if (Id != 0)
+                if (this != null)
                 {
-                    GenericEntity<Sigorta> genericEntity = new GenericEntity<Sigorta>(ProjeConstants.SQL_UPDATE);
-                    DegistirmeTarihi = DateTime.Now;
-                    string sqlString = genericEntity.GetQuery(this);
-                    isSuccess = dao.Update2Db(sqlString);
+                    Sigorta item = Select<Sigorta>(Id);
+                    if (Id != 0)
+                    {
+                        GenericEntity<Sigorta> genericEntity = new GenericEntity<Sigorta>(ProjeConstants.SQL_UPDATE);
+                        DegistirmeTarihi = DateTime.Now;
+                        Degistiren = UtilityHelper.GetCurrentUserName();
+                        string sqlString = genericEntity.GetQuery(this);
+                        isSuccess = dao.Update2Db(sqlString);
+                    }
+                    if (isSuccess && ProjeConstants.TBYS_UPDATE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.TBYS, ProjeConstants.TBYS_SIGORTA);
+                    }
                 }
             }
             catch (Exception)
@@ -83,20 +98,38 @@ namespace Model.TBYS
         }
         public override bool Delete()
         {
-            string sqlString = string.Format(@"DELETE 
-                               FROM Sigorta_Table
-                               WHERE Id={0}", Id);
-
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
-
-            return isSuccess;
+            try
+            {
+                bool isDeleted = false;
+                if (Id != 0)
+                {
+                    GenericEntity<Sigorta> genericEntity = new GenericEntity<Sigorta>(ProjeConstants.SQL_DELETE);
+                    string sqlString = genericEntity.GetQuery(this);
+                    Sigorta item = Select<Sigorta>(Id);
+                    if (item != null)
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+                    else isDeleted = false;
+                    if (isDeleted && ProjeConstants.TBYS_DELETE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.TBYS, ProjeConstants.TBYS_SIGORTA);
+                    }
+                }
+                return isDeleted;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         public override List<T> SelectAll<T>()
         {
             string sqlString = string.Format(@"SELECT *
                                FROM Sigorta_Table");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Sigorta> list = ToList<Sigorta>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
@@ -108,7 +141,7 @@ namespace Model.TBYS
                     FROM Sigorta_Table A
                 WHERE TasinmazId={0}
                 ORDER BY TasinmazId", tasinmazId.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 List<Sigorta> list = ToList<Sigorta>(dataTable);
@@ -127,7 +160,7 @@ namespace Model.TBYS
                     FROM Sigorta_Table A
                 WHERE TasinmazId={0}
                 ORDER BY SigortaBitTar DESC ", tasinmazId.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 List<Sigorta> list = ToList<Sigorta>(dataTable);
@@ -142,7 +175,7 @@ namespace Model.TBYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -158,7 +191,7 @@ namespace Model.TBYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -191,7 +224,7 @@ namespace Model.TBYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -257,7 +290,7 @@ namespace Model.TBYS
         {
             string sqlString = string.Format(@"SELECT * FROM Sigorta_Table
                               WHERE Id={0}", sigortaId.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Sigorta> list = ToList<Sigorta>(dataTable);
             return list;
         }
@@ -269,7 +302,7 @@ namespace Model.TBYS
                 INNER JOIN Tasinmaz_Table B ON B.Id=A.TasinmazId AND B.EnvanterdeMi=1
                 --WHERE A.Id > {0}
                 ORDER BY B.SorumluBolge, B.Ili,B.Ilcesi, A.Id, SigortaBasTar DESC ", sigortaId.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 List<Sigorta> list = ToList<Sigorta>(dataTable);
@@ -295,7 +328,7 @@ namespace Model.TBYS
                 INNER JOIN Tasinmaz_Table B ON B.Id=A.TasinmazId AND B.EnvanterdeMi=1
                 --WHERE A.Id < {0}
                 ORDER BY B.SorumluBolge, B.Ili,B.Ilcesi, A.Id, SigortaBasTar DESC ", sigortaId.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 List<Sigorta> list = ToList<Sigorta>(dataTable);
@@ -315,7 +348,7 @@ namespace Model.TBYS
         public Sigorta SelectMax()
         {
             string sqlString = string.Format(@"SELECT MAX(Id) Id  FROM Sigorta_Table ");
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 DataRow row = dataTable.Rows[0];
@@ -339,7 +372,7 @@ namespace Model.TBYS
                 FROM Sigorta_Table A
                 INNER JOIN Tasinmaz_Table B ON B.Id=A.TasinmazId
                 WHERE A.TasinmazId={0}", tasinmazId.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Sigorta> list = ToList<Sigorta>(dataTable);
             return list;
         }
@@ -351,7 +384,7 @@ namespace Model.TBYS
                 FROM Sigorta_Table S
 					INNER JOIN Tasinmaz_Table T on T.Id=S.TasinmazId 
                 WHERE T.EnvanterdeMi=1 AND SigortaCinsi= {0}", sigorta.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 DataRow row = dataTable.Rows[0];
@@ -368,7 +401,7 @@ namespace Model.TBYS
                 FROM Sigorta_Table S
 					INNER JOIN Tasinmaz_Table T on T.Id=S.TasinmazId 
                 WHERE T.EnvanterdeMi=1 AND SigortaCinsi= {0}", sigorta.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 DataRow row = dataTable.Rows[0];
@@ -380,7 +413,7 @@ namespace Model.TBYS
         public Sigorta SelectMin()
         {
             string sqlString = string.Format(@"SELECT MIN(Id) Id  FROM Sigorta_Table ");
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 DataRow row = dataTable.Rows[0];

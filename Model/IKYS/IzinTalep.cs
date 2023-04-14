@@ -33,7 +33,7 @@ namespace Model.IKYS
         public override T Select<T>(int id)
         {
             string sqlString = SelectSQL(id);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<IzinTalep> list = ToList<IzinTalep>(dataTable);
             IzinTalep izinTalep = new IzinTalep();
             izinTalep = list.FirstOrDefault();
@@ -43,11 +43,17 @@ namespace Model.IKYS
         {
             try
             {
+
                 GenericEntity<IzinTalep> genericEntity = new GenericEntity<IzinTalep>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
+                Olusturan = UtilityHelper.GetCurrentUserName();
                 string sqlString = genericEntity.GetQuery(this);
                 int id = dao.Insert(sqlString);
-
+                if (id > 0 && ProjeConstants.IKYS_SAVE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.IKYS, ProjeConstants.IKYS_IZINTALEP);
+                }
                 this.Id = id;
                 return id;
             }
@@ -56,22 +62,28 @@ namespace Model.IKYS
 
                 throw ex;
             }
-            //string sqlString = saveSQL();
-            //int id = dao.Insert(sqlString);
-            //this.Id = id;
-            //return id;
+
         }
+
         public override bool Update()
         {
+
             bool isSuccess = false;
             try
             {
+                IzinTalep item = Select<IzinTalep>(Id);
                 if (Id != 0)
                 {
                     GenericEntity<IzinTalep> genericEntity = new GenericEntity<IzinTalep>(ProjeConstants.SQL_UPDATE);
                     DegistirmeTarihi = DateTime.Now;
+                    Degistiren = UtilityHelper.GetCurrentUserName();
                     string sqlString = genericEntity.GetQuery(this);
                     isSuccess = dao.Update2Db(sqlString);
+                }
+                if (isSuccess && ProjeConstants.IKYS_UPDATE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.IKYS, ProjeConstants.IKYS_IZINTALEP);
                 }
             }
             catch (Exception)
@@ -79,61 +91,51 @@ namespace Model.IKYS
                 throw;
             }
             return isSuccess;
-            //bool isSuccess = false;
-            //if (Id != 0)
-            //{
-            //    string sqlString = UpdateSQL();
-            //    isSuccess = dao.Update2Db(sqlString);
-            //}
-            //return isSuccess;
         }
         public override bool Delete()
         {
-            string sqlString = DeleteSQL();
+            try
+            {
+                bool isDeleted;
+                if (Id != 0)
+                {
+                    GenericEntity<IzinTalep> genericEntity = new GenericEntity<IzinTalep>(ProjeConstants.SQL_DELETE);
+                    string sqlString = genericEntity.GetQuery(this);
 
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
+                    IzinTalep item = Select<IzinTalep>(Id);
+                    if (item != null)
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+                    else isDeleted = false;
+                    if (isDeleted && ProjeConstants.IKYS_DELETE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.IKYS, ProjeConstants.IKYS_IZINTALEP);
+                    }
+                    return isDeleted;
+                }
+                else
+                {
+                    return false;
+                }
 
-            return isSuccess;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
         public override List<T> SelectAll<T>()
         {
             string sqlString = string.Format(@"SELECT *
                                FROM IzinTalep_Table");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<IzinTalep> list = ToList<IzinTalep>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
-        }
-        private string saveSQL()
-        {
-            //Insert  SQL
-            string InsertSQL = string.Format(@" 
-                                    INSERT INTO IzinTalep_Table 
-                                        (PersonelId,IzinTipi,IzinDonemId,BaslangicTarihi,BitisTarihi,Sure, Birim,VekilImza,AmirImza,OnayImza,Adres,Aciklama,OnayDurumu,Aktif, Olusturan,OlusturmaTarihi)
-                                    VALUES ({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15}) ",
-                                    PersonelId.ReturnQuotedValue(), IzinTipi.ReturnQuotedValue(), IzinDonemId.ReturnQuotedValue(),
-                                    BaslangicTarihi.ReturnTRDateFormat(), BitisTarihi.ReturnTRDateFormat(), Sure.ReturnQuotedValue(), Birim.ReturnQuotedValue(),
-                                    VekilImza.ReturnQuotedValue(), AmirImza.ReturnQuotedValue(), OnayImza.ReturnQuotedValue(),
-                                    Adres.ReturnQuotedValue(), Aciklama.ReturnQuotedValue(), OnayDurumu.ReturnQuotedValue(), Aktif.ReturnQuotedValue(),
-                                    Olusturan.ReturnQuotedValue(), DateTime.Now.ReturnTRDateFormat());
-            return InsertSQL;
-        }
-        private string UpdateSQL()
-        {
-            //Update  SQL 
-            string sqlSQL = string.Format(@"
-                                    UPDATE IzinTalep_Table 
-                                    SET PersonelId={0}, IzinTipi={1}, IzinDonemId={2},  BaslangicTarihi={3},BitisTarihi={4},Sure={5},Birim={6},  
-                                        VekilImza={7}, AmirImza={8}, OnayImza={9}, Adres={10},Aciklama={11}, OnayDurumu={12},Aktif={13},
-                                        Degistiren={14},DegistirmeTarihi={15}
-                                    WHERE Id= {16}",
-                                    PersonelId.ReturnQuotedValue(), IzinTipi.ReturnQuotedValue(), IzinDonemId.ReturnQuotedValue(),
-                                    BaslangicTarihi.ReturnTRDateFormat(), BitisTarihi.ReturnTRDateFormat(), Sure.ReturnQuotedValue(), Birim.ReturnQuotedValue(),
-                                    VekilImza.ReturnQuotedValue(), AmirImza.ReturnQuotedValue(), OnayImza.ReturnQuotedValue(), Adres.ReturnQuotedValue(),
-                                    Aciklama.ReturnQuotedValue(), OnayDurumu.ReturnQuotedValue(), Aktif.ReturnQuotedValue(),
-                                    Degistiren.ReturnQuotedValue(), DateTime.Now.ReturnTRDateFormat(), Id);
-            return sqlSQL;
         }
         private string SelectSQL(int id)
         {
@@ -157,7 +159,7 @@ namespace Model.IKYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -173,7 +175,7 @@ namespace Model.IKYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
 
             }
             catch (Exception e)
@@ -261,7 +263,7 @@ namespace Model.IKYS
             //                        OR (BaslangicTarihi>={1} AND BitisTarihi<={2}))
             //                ", personelId, basTar.ReturnTRDateFormat(), bitTar.ReturnTRDateFormat());
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<IzinTalep> list = ToList<IzinTalep>(dataTable);
             IzinTalep izinTalebi = new IzinTalep();
             izinTalebi = list.FirstOrDefault<IzinTalep>();
@@ -275,7 +277,7 @@ namespace Model.IKYS
                             WHERE OnayDurumu not in(2,3,4) AND PersonelId={0} 
                                 AND IzinTipi={1}
                             ", personelId, izinTipi);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<IzinTalep> list = ToList<IzinTalep>(dataTable);
             IzinTalep izinTalebi = new IzinTalep();
             izinTalebi = list.FirstOrDefault<IzinTalep>();
@@ -290,7 +292,7 @@ namespace Model.IKYS
                 ORDER BY BaslangicTarihi DESC
                 ", izinTipi,personelId);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<IzinTalep> list = ToList<IzinTalep>(dataTable);
             IzinTalep izinTalebi = new IzinTalep();
             izinTalebi = list.FirstOrDefault<IzinTalep>();

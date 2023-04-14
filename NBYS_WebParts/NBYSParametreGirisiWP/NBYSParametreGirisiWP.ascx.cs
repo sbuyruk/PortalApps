@@ -131,7 +131,7 @@ namespace NBYS_WebParts.NBYSParametreGirisiWP
                 { data: 'Sil' },
             ],
             'language': {
-                'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
             },
             responsive: true,
             dom: 'frtip',

@@ -69,14 +69,6 @@ namespace TBYS_WebParts.YilBazindaSozlesmeWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.Label RowCountLbl;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl tbl;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl MainCardDiv;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -220,47 +212,17 @@ namespace TBYS_WebParts.YilBazindaSozlesmeWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControlRowCountLbl() {
-            global::System.Web.UI.WebControls.Label @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.Label();
-            this.RowCountLbl = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "RowCountLbl";
-            @__ctrl.Text = "";
-            @__ctrl.CssClass = "float-right text-right";
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControltbl() {
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
-            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
-            this.tbl = @__ctrl;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "table loader");
-            @__ctrl.ID = "tbl";
-            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        <input id=\"globalFilter\" placeholder=\"Aranacak Kelime\" " +
-                        "size=\"30\" />\r\n                        <div id=\"tblfilter\" class=\"table\"></div>\r\n" +
-                        "                        <div id=\"messages\"></div>\r\n                    "));
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControlMainCardDiv() {
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
             this.MainCardDiv = @__ctrl;
             @__ctrl.TemplateControl = this;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "card-body p-0");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "card-body ");
             @__ctrl.ID = "MainCardDiv";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    <div class=\"form-group row m-2 \">\r\n\r\n                      " +
-                        "  <div class=\"form-group col-3\">\r\n                            <label class=\"col-" +
-                        "form-label\" for=\"YilDDL\">Yıl </label>\r\n                            "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    <div class=\"form-group row \">\r\n\r\n                        <d" +
+                        "iv class=\"form-group col-3\">\r\n                            <label class=\"col-form" +
+                        "-label\" for=\"YilDDL\">Yıl </label>\r\n                            "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl1;
             @__ctrl1 = this.@__BuildControlYilDDL();
             @__parser.AddParsedSubObject(@__ctrl1);
@@ -270,16 +232,27 @@ namespace TBYS_WebParts.YilBazindaSozlesmeWP {
             global::System.Web.UI.WebControls.DropDownList @__ctrl2;
             @__ctrl2 = this.@__BuildControlSozlesmeTahliyeDDL();
             @__parser.AddParsedSubObject(@__ctrl2);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n                   " +
-                        " "));
-            global::System.Web.UI.WebControls.Label @__ctrl3;
-            @__ctrl3 = this.@__BuildControlRowCountLbl();
-            @__parser.AddParsedSubObject(@__ctrl3);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl4;
-            @__ctrl4 = this.@__BuildControltbl();
-            @__parser.AddParsedSubObject(@__ctrl4);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n                "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                        </div>
+                    </div>
+                    <div class=""form-group"">
+                        <table id=""CustomDataTable"" class=""table table-striped table-bordered"" width=""100%"">
+                            <thead>
+                                <tr>
+                                    <th>D.No</th>
+                                    <th>Kiracı</th>
+                                    <th>İlk Söz. Tar.</th>
+                                    <th>Aktif</th>
+                                    <th>Sözleşme Durumu</th>
+                                    <th>Kira Bedeli</th>
+                                    <th>Adres</th>
+                                    <th>Sözleşme</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+
+                "));
             return @__ctrl;
         }
         
@@ -307,8 +280,8 @@ namespace TBYS_WebParts.YilBazindaSozlesmeWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControl__control2(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n        <div class=\"container shadow\">\r\n\r\n            <div class=\"card\">\r\n     " +
-                        "           "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n        <div class=\"container \">\r\n\r\n            <div class=\"card shadow\">\r\n    " +
+                        "            "));
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl1;
             @__ctrl1 = this.@__BuildControlCardHeader();
             @__parser.AddParsedSubObject(@__ctrl1);
@@ -362,21 +335,10 @@ namespace TBYS_WebParts.YilBazindaSozlesmeWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControlTree(global::TBYS_WebParts.YilBazindaSozlesmeWP.YilBazindaSozlesmeWP @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-<style>
-     /*tblfilter hücre içine sığmazsa wordwrap yapsın*/ 
-    .ui-datatable tbody td {
-        white-space: normal;
-    }
-</style>
-<script type=""text/javascript"">
-    //excele export ettikten donup sonra kalmasın diye
-    function setFormSubmitToFalse() {
-        setTimeout(function () { _spFormOnSubmitCalled = false; }, 3000);
-        return true;
-    }
-</script>
-"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n<script type=\"text/javascript\">\r\n    //excele export ettikten donup sonra kal" +
+                        "masın diye\r\n    function setFormSubmitToFalse() {\r\n        setTimeout(function (" +
+                        ") { _spFormOnSubmitCalled = false; }, 3000);\r\n        return true;\r\n    }\r\n</scr" +
+                        "ipt>\r\n"));
             global::System.Web.UI.UpdatePanel @__ctrl1;
             @__ctrl1 = this.@__BuildControlupPanel();
             @__parser.AddParsedSubObject(@__ctrl1);

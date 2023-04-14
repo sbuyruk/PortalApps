@@ -23,7 +23,7 @@ namespace Model.TBYS
             string sqlString = string.Format(@"SELECT *
                                FROM Odeme_Table 
                                WHERE  Id={0}", id);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Odeme> list = ToList<Odeme>(dataTable);
             Odeme odeme = new Odeme();
             odeme = list.FirstOrDefault();
@@ -37,7 +37,7 @@ namespace Model.TBYS
             Id = id;
             string sqlString = genericEntity.GetQuery(this);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Odeme> list = ToList<Odeme>(dataTable);
             Odeme odeme = new Odeme();
             odeme = list.FirstOrDefault();
@@ -49,31 +49,44 @@ namespace Model.TBYS
             {
                 GenericEntity<Odeme> genericEntity = new GenericEntity<Odeme>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
+                Olusturan = UtilityHelper.GetCurrentUserName();
                 string sqlString = genericEntity.GetQuery(this);
                 int id = dao.Insert(sqlString);
 
                 this.Id = id;
+                if (id > 0 && ProjeConstants.TBYS_SAVE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.TBYS, ProjeConstants.TBYS_ODEME);
+                }
                 return id;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                throw ex;
             }
-
-
         }
         public override bool Update()
         {
             bool isSuccess = false;
             try
             {
-                if (Id != 0)
+                if (this != null)
                 {
-                    GenericEntity<Odeme> genericEntity = new GenericEntity<Odeme>(ProjeConstants.SQL_UPDATE);
-                    DegistirmeTarihi = DateTime.Now;
-                    string sqlString = genericEntity.GetQuery(this);
-                    isSuccess = dao.Update2Db(sqlString);
+                    Odeme item = Select<Odeme>(Id);
+                    if (Id != 0)
+                    {
+                        GenericEntity<Odeme> genericEntity = new GenericEntity<Odeme>(ProjeConstants.SQL_UPDATE);
+                        DegistirmeTarihi = DateTime.Now;
+                        Degistiren = UtilityHelper.GetCurrentUserName();
+                        string sqlString = genericEntity.GetQuery(this);
+                        isSuccess = dao.Update2Db(sqlString);
+                    }
+                    if (isSuccess && ProjeConstants.TBYS_UPDATE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.TBYS, ProjeConstants.TBYS_ODEME);
+                    }
                 }
             }
             catch (Exception)
@@ -84,13 +97,31 @@ namespace Model.TBYS
         }
         public override bool Delete()
         {
-            string sqlString = string.Format(@"DELETE 
-                               FROM Odeme_Table
-                               WHERE Id={0}", Id);
-
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
-
-            return isSuccess;
+            try
+            {
+                bool isDeleted = false;
+                if (Id != 0)
+                {
+                    GenericEntity<Odeme> genericEntity = new GenericEntity<Odeme>(ProjeConstants.SQL_DELETE);
+                    string sqlString = genericEntity.GetQuery(this);
+                    Odeme item = Select<Odeme>(Id);
+                    if (item != null)
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+                    else isDeleted = false;
+                    if (isDeleted && ProjeConstants.TBYS_DELETE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.TBYS, ProjeConstants.TBYS_ODEME);
+                    }
+                }
+                return isDeleted;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         public string GetInsertSQL(string extId)
         {
@@ -153,7 +184,7 @@ namespace Model.TBYS
             string sqlString = string.Format(@"SELECT *
                                FROM Odeme_Table");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Odeme> list = ToList<Odeme>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
@@ -164,7 +195,7 @@ namespace Model.TBYS
                 SELECT * FROM Odeme_Table
                 WHERE KiraciId={0}
                 ORDER BY OdemeTarihi Desc", kiraciId.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Odeme> list = ToList<Odeme>(dataTable);
             return list;
 
@@ -175,7 +206,7 @@ namespace Model.TBYS
                 SELECT * FROM Odeme_Table
                 WHERE SozlesmeId={0} AND OdemePlaniId={1}
                 ORDER BY OdemeTarihi ", sozlesmeId.ReturnQuotedValue(), odemePlaniId);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Odeme> list = ToList<Odeme>(dataTable);
             return list;
 
@@ -222,7 +253,7 @@ namespace Model.TBYS
             //    {0} {1}
             //    ORDER BY A.OdemeTarihi DESC, B.Id, A.SozlesmeId
             //", ayYilStr,kiraciIdStr);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
 
             return dataTable;
 
@@ -271,7 +302,7 @@ namespace Model.TBYS
             //    {0} {1}
             //    ORDER BY A.OdemeTarihi DESC, B.Id, A.SozlesmeId
             //", ayYilStr,kiraciIdStr);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
 
             return dataTable;
 
@@ -309,7 +340,7 @@ namespace Model.TBYS
                 ORDER BY A.OdemeTarihi DESC, B.Id, A.SozlesmeId
             ", ayYilStr);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
 
             return dataTable;
 
@@ -328,7 +359,7 @@ namespace Model.TBYS
                 ORDER BY A.OdemeTarihi 
             ", kiraciId,sozlesmeId, tarihbas.ConvertToDDMMYYYHHmmFormat().ReturnQuotedValue(), tarihbit.ConvertToDDMMYYYHHmmFormat().ReturnQuotedValue());
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Odeme> list = ToList<Odeme>(dataTable);
             return list;
         }
@@ -340,7 +371,7 @@ namespace Model.TBYS
                 WHERE SozlesmeId={0} 
                     AND OdemePlaniId={1} 
                 ", sozlesmeId.ReturnQuotedValue(), odemePlaniId.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 if (dataTable.Rows.Count > 0)

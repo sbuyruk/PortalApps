@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Utility.HelperClasses;
+using Utility.ProjeGlobal;
 
 namespace Model.TBYS
 {
@@ -19,7 +20,7 @@ namespace Model.TBYS
             string sqlString = string.Format(@"SELECT *
                                FROM BagimsizBolum_Table 
                                WHERE  Id={0}", id);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<BagimsizBolum> list = ToList<BagimsizBolum>(dataTable);
             BagimsizBolum bagimsizBolum = new BagimsizBolum();
             bagimsizBolum = list.FirstOrDefault();
@@ -28,51 +29,90 @@ namespace Model.TBYS
         }
         public override int Save()
         {
-            string sqlString = string.Format(@"
-                                            INSERT INTO BagimsizBolum_Table 
-                                                (TasinmazId, BolumNo, Aciklama,Olusturan, OlusturmaTarihi)
-                                            VALUES ({0},{1},{2},{3},{4})",
-                                            TasinmazId.ReturnQuotedValue(), BolumNo.ReturnQuotedValue(), Aciklama.ReturnQuotedValue(),
-                                            Olusturan.ReturnQuotedValue(), DateTime.Now.ReturnTRDateFormat());
+            try
+            {
+                GenericEntity<BagimsizBolum> genericEntity = new GenericEntity<BagimsizBolum>(ProjeConstants.SQL_INSERT);
+                OlusturmaTarihi = DateTime.Now;
+                Olusturan = UtilityHelper.GetCurrentUserName();
+                string sqlString = genericEntity.GetQuery(this);
+                int id = dao.Insert(sqlString);
 
-
-            int id = dao.Insert(sqlString);
-
-            this.Id = id;
-            return id;
+                this.Id = id;
+                if (id > 0 && ProjeConstants.TBYS_SAVE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.TBYS, ProjeConstants.TBYS_BAGIMSIZBOLUM);
+                }
+                return id;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         public override bool Update()
         {
             bool isSuccess = false;
-            if (Id != 0)
+            try
             {
-                string sqlString = string.Format(@"
-                                        UPDATE BagimsizBolum_Table 
-                                        SET TasinmazId={0}, BolumNo={1}, Aciklama={2},Degistiren={3},DegistirmeTarihi={4}
-                                        WHERE Id={5}",
-                                            TasinmazId.ReturnQuotedValue(), BolumNo.ReturnQuotedValue(), Aciklama.ReturnQuotedValue(),
-                                            Degistiren.ReturnQuotedValue(), DateTime.Now.ReturnTRDateFormat(), Id);
-
-                isSuccess = dao.Update2Db(sqlString);
+                if (this != null)
+                {
+                    BagimsizBolum item = Select<BagimsizBolum>(Id);
+                    if (Id != 0)
+                    {
+                        GenericEntity<BagimsizBolum> genericEntity = new GenericEntity<BagimsizBolum>(ProjeConstants.SQL_UPDATE);
+                        DegistirmeTarihi = DateTime.Now;
+                        Degistiren = UtilityHelper.GetCurrentUserName();
+                        string sqlString = genericEntity.GetQuery(this);
+                        isSuccess = dao.Update2Db(sqlString);
+                    }
+                    if (isSuccess && ProjeConstants.TBYS_UPDATE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.TBYS, ProjeConstants.TBYS_BAGIMSIZBOLUM);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
             }
             return isSuccess;
         }
         public override bool Delete()
         {
-            string sqlString = string.Format(@"DELETE 
-                               FROM BagimsizBolum_Table
-                               WHERE Id={0}", Id);
-
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
-
-            return isSuccess;
+            try
+            {
+                bool isDeleted = false;
+                if (Id != 0)
+                {
+                    GenericEntity<BagimsizBolum> genericEntity = new GenericEntity<BagimsizBolum>(ProjeConstants.SQL_DELETE);
+                    string sqlString = genericEntity.GetQuery(this);
+                    BagimsizBolum item = Select<BagimsizBolum>(Id);
+                    if (item != null)
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+                    else isDeleted = false;
+                    if (isDeleted && ProjeConstants.TBYS_DELETE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.TBYS, ProjeConstants.TBYS_BAGIMSIZBOLUM);
+                    }
+                }
+                return isDeleted;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         public override List<T> SelectAll<T>()
         {
             string sqlString = string.Format(@"SELECT *
                                FROM BagimsizBolum_Table");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<BagimsizBolum> list = ToList<BagimsizBolum>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
@@ -81,7 +121,7 @@ namespace Model.TBYS
         {
             string sqlString = string.Format(@"SELECT * FROM BagimsizBolum_Table
                               WHERE TasinmazId={0}", tasinmazId.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<BagimsizBolum> list = ToList<BagimsizBolum>(dataTable);
             return list;
         }
@@ -89,7 +129,7 @@ namespace Model.TBYS
         {
             string sqlString = string.Format(@"SELECT * FROM BagimsizBolum_Table
                               WHERE bolumNo={0}", bolumNo.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<BagimsizBolum> list = ToList<BagimsizBolum>(dataTable);
             return list;
         }
@@ -97,7 +137,7 @@ namespace Model.TBYS
         {
             string sqlString = string.Format(@"SELECT * FROM BagimsizBolum_Table
                               WHERE bolumId={0}", bolumId);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<BagimsizBolum> list = ToList<BagimsizBolum>(dataTable);
             BagimsizBolum bolum = new BagimsizBolum();
             bolum = list.FirstOrDefault();

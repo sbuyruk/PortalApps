@@ -293,7 +293,7 @@ namespace NBYS_WebParts.NakitBagisciBagislariWP
                 'order': [[0, 'desc']],
 
                 'language': {
-                    'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                    'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                     'decimal': ',',
                     'thousands': '.'
                 },

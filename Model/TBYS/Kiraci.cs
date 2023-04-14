@@ -29,7 +29,7 @@ namespace Model.TBYS
             string sqlString = string.Format(@"SELECT *
                                FROM Kiraci_Table 
                                WHERE  Id={0}", id);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Kiraci> list = ToList<Kiraci>(dataTable);
             Kiraci kiraci = new Kiraci();
             kiraci = list.FirstOrDefault();
@@ -43,7 +43,7 @@ namespace Model.TBYS
             Id = id;
             string sqlString = genericEntity.GetQuery(this);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Kiraci> list = ToList<Kiraci>(dataTable);
             Kiraci kiraci = new Kiraci();
             kiraci = list.FirstOrDefault();
@@ -55,15 +55,21 @@ namespace Model.TBYS
             {
                 GenericEntity<Kiraci> genericEntity = new GenericEntity<Kiraci>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
+                Olusturan = UtilityHelper.GetCurrentUserName();
                 string sqlString = genericEntity.GetQuery(this);
                 int id = dao.Insert(sqlString);
 
                 this.Id = id;
+                if (id > 0 && ProjeConstants.TBYS_SAVE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.TBYS, ProjeConstants.TBYS_KIRACI);
+                }
                 return id;
             }
             catch (Exception ex)
             {
-                throw (ex);
+                throw ex;
             }
         }
         public override bool Update()
@@ -71,36 +77,64 @@ namespace Model.TBYS
             bool isSuccess = false;
             try
             {
-                if (Id != 0)
+                if (this != null)
                 {
-                    GenericEntity<Kiraci> genericEntity = new GenericEntity<Kiraci>(ProjeConstants.SQL_UPDATE);
-                    DegistirmeTarihi = DateTime.Now;
-                    string sqlString = genericEntity.GetQuery(this);
-                    isSuccess = dao.Update2Db(sqlString);
+                    Kiraci item = Select<Kiraci>(Id);
+                    if (Id != 0)
+                    {
+                        GenericEntity<Kiraci> genericEntity = new GenericEntity<Kiraci>(ProjeConstants.SQL_UPDATE);
+                        DegistirmeTarihi = DateTime.Now;
+                        Degistiren = UtilityHelper.GetCurrentUserName();
+                        string sqlString = genericEntity.GetQuery(this);
+                        isSuccess = dao.Update2Db(sqlString);
+                    }
+                    if (isSuccess && ProjeConstants.TBYS_UPDATE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.TBYS, ProjeConstants.TBYS_KIRACI);
+                    }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw (ex);
+                throw;
             }
             return isSuccess;
         }
         public override bool Delete()
         {
-            string sqlString = string.Format(@"DELETE 
-                               FROM Kiraci_Table
-                               WHERE Id={0}", Id);
-
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
-
-            return isSuccess;
+            try
+            {
+                bool isDeleted = false;
+                if (Id != 0)
+                {
+                    GenericEntity<Kiraci> genericEntity = new GenericEntity<Kiraci>(ProjeConstants.SQL_DELETE);
+                    string sqlString = genericEntity.GetQuery(this);
+                    Kiraci item = Select<Kiraci>(Id);
+                    if (item != null)
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+                    else isDeleted = false;
+                    if (isDeleted && ProjeConstants.TBYS_DELETE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.TBYS, ProjeConstants.TBYS_KIRACI);
+                    }
+                }
+                return isDeleted;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         public override List<T> SelectAll<T>()
         {
             string sqlString = string.Format(@"SELECT *
                                FROM Kiraci_Table");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Kiraci> list = ToList<Kiraci>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
@@ -115,7 +149,7 @@ namespace Model.TBYS
                 ORDER BY CASE WHEN DosyaNo=0 THEN 2 ELSE 1 END,ISNULL(DosyaNo,999999), S.Id, A.Id
                 ");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Kiraci> list = ToList<Kiraci>(dataTable);
 
             return (list);
@@ -134,7 +168,7 @@ namespace Model.TBYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -145,20 +179,25 @@ namespace Model.TBYS
         }
 
 
-        public DataTable SelectAllReturnDT(string secim )
+        public DataTable SelectAllReturnDT(string secim, string bolge)
         {
-            string aktifStr = secim.Equals(ProjeConstants.KIRASOZLESME_AKTIF_HEPSI_INT.ToString()) ? "" : " WHERE S.Aktif=" + secim;
+            string aktifStr = secim.Equals(ProjeConstants.KIRASOZLESME_AKTIF_HEPSI_INT.ToString()) ? "" : " AND S.Aktif=" + secim;
+            string bolgeStr = bolge.Equals(ProjeConstants.BOLGE_HEPSI) ? string.Empty : string.Format(" AND S.Bolge={0}", bolge.ReturnQuotedValue());
             string sqlString = string.Format(@"
                 SELECT 
 	                ROW_NUMBER() OVER (ORDER BY MAX(DosyaNo)) AS Sirano, 
-	                A.Id KiraciId, S.Bolge, A.Adi, Soyadi, MAX(SozBasTar) , COUNT(KiraciId), MAX(S.Id) SozlesmeId,S.Aktif,
-	                TCKimlikNo,VergiDairesi,VergiNo, A.Ilcesi +'-'+ A.Ili IlIlce, Semt,A.Adres,A.Telefon,A.Eposta, A.KiralamaAmaci,A.Aciklama
+	                A.Id KiraciId, S.Bolge, A.Adi, Soyadi, MAX(SozBasTar) , COUNT(KiraciId), MAX(S.Id) SozlesmeId,S.Aktif, S.KiraBedeli,S.OdemeSekli,
+	                TCKimlikNo,VergiDairesi,VergiNo, A.Ilcesi, A.Ili, A.Ilcesi +'-'+ A.Ili IlIlce, Semt,
+                    A.Adres,A.Telefon,A.Eposta, A.KiralamaAmaci,A.Aciklama
                 FROM KiraSozlesme_Table S
 	                RIGHT JOIN Kiraci_Table A ON A.Id=S.KiraciId
+                WHERE 1>0
                 {0}
-                GROUP BY A.Id, A.Adi,Soyadi,TCKimlikNo,VergiDairesi,VergiNo, A.Ilcesi +'-'+ A.Ili , S.Bolge, Semt,A.Adres,A.Telefon,A.Eposta, A.KiralamaAmaci,A.Aciklama,S.Aktif
-                Order BY A.Adi --MAX(DosyaNo),KiraciId", aktifStr);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+                {1}
+                GROUP BY A.Id, A.Adi,Soyadi,TCKimlikNo,VergiDairesi,VergiNo, A.Ilcesi, A.Ili,A.Ilcesi +'-'+ A.Ili , 
+				S.Bolge, Semt,A.Adres,A.Telefon,A.Eposta, A.KiralamaAmaci,A.Aciklama,S.Aktif, S.KiraBedeli,S.OdemeSekli
+                Order BY A.Adi --MAX(DosyaNo),KiraciId", aktifStr,bolgeStr);
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return dataTable;
         }
         public DataTable SelectByByBolgeReturnDT(string aktif, string bolge)
@@ -181,14 +220,15 @@ namespace Model.TBYS
                 --LEFT JOIN Ilce_Table F ON F.IlceAdi=B.Ilcesi AND F.IlAdi=E.IlAdi
                 --LEFT JOIN BagimsizBolum_Table G ON G.Id=C.BolumId
                 {0}", whereStr);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return dataTable;
         }
-        public DataTable SelectAktifSozlesmesiOlmayanKiracilarReturnDT()
+        public DataTable SelectAktifSozlesmesiOlmayanKiracilarReturnDT(string bolge)
         {
+            string bolgeStr = bolge.Equals(ProjeConstants.BOLGE_HEPSI) ? string.Empty : string.Format(" AND A.Bolge={0}", bolge.ReturnQuotedValue());
             string sqlString = string.Format(@"
                 SELECT 
-	                A.KiraciId, A.Bolge, B.Adi,A.Aktif, B.Soyadi, MAX(A.Id) SozlesmeId,
+	                A.KiraciId, A.Bolge, B.Adi,A.Aktif, B.Soyadi, MAX(A.Id) SozlesmeId,B.Ili,B.Ilcesi,
 	                TCKimlikNo,VergiDairesi,VergiNo,B.Ilcesi +'-'+ B.Ili IlIlce, 
 	                B.Semt,B.Adres,B.Telefon,B.Eposta, B.KiralamaAmaci
                 FROM Kiraci_Table B 
@@ -201,13 +241,14 @@ namespace Model.TBYS
                       AND C.Aktif=1
                   )
                   AND Aktif=0
-                  GROUP BY --A.KiraciId,A.Aktif,B.Adi
+                  {0}
+                GROUP BY --A.KiraciId,A.Aktif,B.Adi
                   A.KiraciId,A.Aktif, A.Bolge, B.Adi, B.Soyadi, 
 	                TCKimlikNo,VergiDairesi,VergiNo, B.Ilcesi ,B.Ili , 
 	                B.Semt,B.Adres,B.Telefon,B.Eposta, B.KiralamaAmaci
                   ORDER BY B.Adi --A.DosyaNo,A.KiraciId,A.Aktif	
-                ");
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+                ",bolgeStr);
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return dataTable;
         }
         public DataTable SelectByFilterReturnDataTable(string filter)
@@ -225,7 +266,7 @@ namespace Model.TBYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -248,7 +289,7 @@ namespace Model.TBYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -265,7 +306,7 @@ namespace Model.TBYS
                     WHERE Id > {0}
                     ORDER BY Id ", Id);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 List<Kiraci> list = ToList<Kiraci>(dataTable);
@@ -287,7 +328,7 @@ namespace Model.TBYS
                     ORDER BY Id DESC", Id);
 
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 List<Kiraci> list = ToList<Kiraci>(dataTable);
@@ -306,7 +347,7 @@ namespace Model.TBYS
             string sqlString = string.Format(@"
                 SELECT * FROM Kiraci_Table
                 ORDER BY Id DESC ");
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 List<Kiraci> list = ToList<Kiraci>(dataTable);
@@ -320,7 +361,7 @@ namespace Model.TBYS
             string sqlString = string.Format(@"
                 SELECT * FROM Kiraci_Table
                 ORDER BY Id ");
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 List<Kiraci> list = ToList<Kiraci>(dataTable);
@@ -341,7 +382,7 @@ namespace Model.TBYS
                 ORDER BY B.SozBasTar DESC
                 ", adi.Trim(), soyadiStr);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Kiraci> list = ToList<Kiraci>(dataTable);
 
             return (list);

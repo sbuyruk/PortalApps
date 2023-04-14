@@ -251,7 +251,7 @@ namespace NBYS_WebParts.NakitBagisciListesiWP
                 }},
                 ],
                 'language': {
-                    'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                    'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                     'decimal': ',',
                     'thousands': '.'
                 },
@@ -342,7 +342,7 @@ namespace NBYS_WebParts.NakitBagisciListesiWP
                 'order': [[0, 'desc']],
 
                 'language': {
-                    'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                    'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                     'decimal': ',',
                     'thousands': '.'
                 },

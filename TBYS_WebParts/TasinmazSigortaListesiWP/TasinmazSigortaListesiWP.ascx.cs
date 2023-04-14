@@ -535,7 +535,7 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
                             { 'width': '25%', 'targets': 5 }
                         ],
                         'language': {
-                            'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                            'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                             'decimal': ',',
                             'thousands': '.'
                         },

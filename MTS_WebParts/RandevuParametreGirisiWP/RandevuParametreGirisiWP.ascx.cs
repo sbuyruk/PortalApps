@@ -92,7 +92,7 @@ namespace MTS_WebParts.RandevuParametreGirisiWP
                 { data: 'Sil' },
             ],
             'language': {
-                'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
             },
             responsive: true,
             dom: 'frtip',

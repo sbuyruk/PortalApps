@@ -1,6 +1,7 @@
 ﻿using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.SharePoint;
+using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -113,7 +114,7 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
                 ParametreleriDoldur();
 
             }
-            KayitGetir();
+            TabloOlustur();
         }
         private void FillDropDownList()
         {
@@ -224,29 +225,70 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
             EvrakSayisiYiliTxt.Text = bugun.ToString("yy");
 
         }
-        private void KayitGetir()
+        private void TabloOlustur()
         {
             var jsonData = GetData(); //veri çekilip json a çeviriliyor
 
             bool jasonDataBosMu = string.IsNullOrWhiteSpace(jsonData.Replace("[", "").Replace("]", "").Replace("{", "").Replace("}", ""));
             if (!jasonDataBosMu)
             {
-                TableDiv.Attributes["style"] = "display:block";
                 YaziyiOlusturBtn.Visible = true;
-                var jsString = CreateJsString(jsonData); //javascript kodu hazırlanıyor.
-                System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), jsString, true);
+                var jsString = CreateDataTable(jsonData);
+                UtilityHelper.ScriptCalistir(jsString);
             }
             else
             {
-                TableDiv.Attributes["style"] = "display:none";
                 TableDataLbl.Text = "Kira borcu olan kiracı bulunmamaktadır.";
                 YaziyiOlusturBtn.Visible = false;
             }
+        }
+
+        private string CreateDataTable(string jsonData)
+        {
+
+            string tableString = @"
+                if ( jQuery.fn.DataTable.isDataTable('#CustomDataTable') ) {
+                    jQuery('#CustomDataTable').DataTable().destroy();
+                }
+                jQuery('#CustomDataTable tbody').empty();
+
+                jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
+                jQuery(document).ready(function () {
+                    jQuery('#CustomDataTable').DataTable({                       
+                        data: " + jsonData + @",
+                        columns: [
+                            { data: 'Kiraci' },
+                            { data: 'Bolge'},
+                            { data: 'FaizliBakiyeFormat'},
+                        ],
+                        columnDefs: [
+                            {
+                                targets: 2,
+                                className: 'dt-body-right'
+                            }  
+                        ],
+                        'language': {
+                            'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
+                            'decimal': ',',
+                            'thousands': '.'
+                        },
+                        responsive: true,
+                        destroy: true,
+                        pageLength:10,
+                        dom: 'ftipr',
+                        
+                        });
+                    });
+
+            ";
+
+            return tableString;
         }
         private string GetData()
         {
             int ay = SecilenAyQS.ConvertToInt();
             int yil = SecilenYilQS.ConvertToInt();
+            SecilenBolgeQS = BolgeDDL.SelectedItem.Text;
             DateTime secilenTarih = new DateTime(yil, ay, 1);
             DateTime vadeBastar = secilenTarih;
             DateTime vadeBittar = secilenTarih.AddMonths(1).AddDays(-1);
@@ -260,30 +302,6 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
             TableDataLbl.Text = "Toplam " + kayitSayisi + " kayıt bulundu";
             return json;
         }
-        private string CreateJsString(string jsonData)
-        {
-            string ekstretablestr = @"   
-                                        $('#tblfilter').puidatatable({
-                                        caption: '',
-                                        editMode: 'cell',
-                                        paginator: {
-                                                    rows: 8
-                                                    },
-                                        columns: [
-                                            { field: 'Kiraci', headerText: 'Kiracı', sortable:true,filter: true,headerStyle:'width: 60%' },
-                                            { field: 'Bolge', headerText: 'Bolge', sortable:true,headerStyle:'width: 20%' },
-                                            { field: 'FaizliBakiyeFormat', headerText: 'Borç',bodyClass:'text-right',headerStyle:'width: 20%'}
-
-                                                ],
-                                       datasource:" + jsonData + @",
-                                       resizableColumns: true,
-                                       globalFilter:'#globalFilter'
-                                       });
-                                    ";
-
-
-            return ekstretablestr;
-        }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
@@ -293,17 +311,17 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
         protected void AyDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
             SecilenAyQS = AyDDL.SelectedItem.Value.ToString();
-            KayitGetir();
+            TabloOlustur();
         }
         protected void YilDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
             SecilenYilQS = YilDDL.SelectedItem.Value.ToString();
-            KayitGetir();
+            TabloOlustur();
         }
         protected void BolgeDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
             SecilenBolgeQS = BolgeDDL.SelectedItem.Text;
-            KayitGetir();
+            TabloOlustur();
         }
         protected void YaziyiOlusturBtn_Click(object sender, EventArgs e)
         {

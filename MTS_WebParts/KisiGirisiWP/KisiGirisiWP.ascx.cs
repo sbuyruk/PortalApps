@@ -216,6 +216,7 @@ namespace MTS_WebParts.KisiGirisiWP
                         yeniKisi.Ili = ilItem.Value.ConvertToInt();
 
                         yeniKisi.Aciklama = AciklamaTxt.Text;
+                        yeniKisi.Olusturan = UtilityHelper.GetCurrentUserName();
                         int yeniId = yeniKisi.Save();
                         if (yeniId > 0)
                         {
@@ -317,6 +318,7 @@ namespace MTS_WebParts.KisiGirisiWP
                     kisi.Aciklama = AciklamaTxt.Text;
                     kisi.DogumTarihi = DogumTarihiTxt.Text.ConvertToDatetime();
                     kisi.Kutlama = KutlamaChk.Checked;
+                    kisi.Degistiren=UtilityHelper.GetCurrentUserName();
                 }
 
 

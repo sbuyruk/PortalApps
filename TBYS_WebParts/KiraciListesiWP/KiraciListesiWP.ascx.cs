@@ -100,7 +100,7 @@ namespace TBYS_WebParts.KiraciListesiWP
             KiraciSecimiDDL.Items.Clear();
             KiraciSecimiDDL.Items.Add(new ListItem(ProjeConstants.KIRASOZLESME_AKTIF,ProjeConstants.KIRASOZLESME_AKTIF_INT.ToString()));
             KiraciSecimiDDL.Items.Add(new ListItem(ProjeConstants.KIRASOZLESME_AKTIF_DEGIL, ProjeConstants.KIRASOZLESME_AKTIF_DEGIL_INT.ToString()));
-            KiraciSecimiDDL.Items.Add(new ListItem(ProjeConstants.KIRASOZLESME_AKTIF_HEPSI, ProjeConstants.KIRASOZLESME_AKTIF_HEPSI_INT.ToString()));
+            //KiraciSecimiDDL.Items.Add(new ListItem(ProjeConstants.KIRASOZLESME_AKTIF_HEPSI, ProjeConstants.KIRASOZLESME_AKTIF_HEPSI_INT.ToString()));
 
             if (!string.IsNullOrEmpty(SecilenIdQS))
             {
@@ -130,6 +130,7 @@ namespace TBYS_WebParts.KiraciListesiWP
             {
                 List<KiraciListItem> list = GetDataList();
                 var serializer = new JavaScriptSerializer();
+                serializer.MaxJsonLength = Int32.MaxValue;
                 jSon = serializer.Serialize(list);
             }
             catch (Exception exception)
@@ -246,11 +247,11 @@ namespace TBYS_WebParts.KiraciListesiWP
             DataTable dataTable;
             if (KiraciSecimiDDL.SelectedItem.Value.ConvertToInt()==ProjeConstants.KIRASOZLESME_AKTIF_DEGIL_INT)
             {
-                dataTable = kiraci.SelectAktifSozlesmesiOlmayanKiracilarReturnDT();
+                dataTable = kiraci.SelectAktifSozlesmesiOlmayanKiracilarReturnDT(ProjeConstants.BOLGE_HEPSI);
             }
             else
             {
-                dataTable = kiraci.SelectAllReturnDT(kiraciSecimi); 
+                dataTable = kiraci.SelectAllReturnDT(kiraciSecimi, ProjeConstants.BOLGE_HEPSI); 
             }
             int SiraNo = 1;
 
@@ -325,7 +326,7 @@ namespace TBYS_WebParts.KiraciListesiWP
             GridView GridView1 = new GridView();
             GridView1.AllowPaging = false;
             Kiraci kiraci = new Kiraci();
-            GridView1.DataSource = kiraci.SelectAllReturnDT(KiraciSecimiDDL.SelectedItem.Value);
+            GridView1.DataSource = kiraci.SelectAllReturnDT(KiraciSecimiDDL.SelectedItem.Value,ProjeConstants.BOLGE_HEPSI);
             GridView1.DataBind();
 
             Page.Response.Clear();

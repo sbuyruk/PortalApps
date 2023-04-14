@@ -20,7 +20,7 @@ namespace Model.TBYS
             string sqlString = string.Format(@"SELECT *
                                FROM GecikmeZammi_Table 
                                WHERE  Id={0}", id);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<GecikmeZammi> list = ToList<GecikmeZammi>(dataTable);
             GecikmeZammi gecikmeZammi = new GecikmeZammi();
             gecikmeZammi = list.FirstOrDefault();
@@ -33,15 +33,20 @@ namespace Model.TBYS
             {
                 GenericEntity<GecikmeZammi> genericEntity = new GenericEntity<GecikmeZammi>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
+                Olusturan = UtilityHelper.GetCurrentUserName();
                 string sqlString = genericEntity.GetQuery(this);
                 int id = dao.Insert(sqlString);
 
                 this.Id = id;
+                if (id > 0 && ProjeConstants.TBYS_SAVE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.TBYS, ProjeConstants.TBYS_GECIKMEZAMMI);
+                }
                 return id;
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
         }
@@ -50,12 +55,22 @@ namespace Model.TBYS
             bool isSuccess = false;
             try
             {
-                if (Id != 0)
+                if (this != null)
                 {
-                    GenericEntity<GecikmeZammi> genericEntity = new GenericEntity<GecikmeZammi>(ProjeConstants.SQL_UPDATE);
-                    DegistirmeTarihi = DateTime.Now;
-                    string sqlString = genericEntity.GetQuery(this);
-                    isSuccess = dao.Update2Db(sqlString);
+                    GecikmeZammi item = Select<GecikmeZammi>(Id);
+                    if (Id != 0)
+                    {
+                        GenericEntity<GecikmeZammi> genericEntity = new GenericEntity<GecikmeZammi>(ProjeConstants.SQL_UPDATE);
+                        DegistirmeTarihi = DateTime.Now;
+                        Degistiren = UtilityHelper.GetCurrentUserName();
+                        string sqlString = genericEntity.GetQuery(this);
+                        isSuccess = dao.Update2Db(sqlString);
+                    }
+                    if (isSuccess && ProjeConstants.TBYS_UPDATE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.TBYS, ProjeConstants.TBYS_GECIKMEZAMMI);
+                    }
                 }
             }
             catch (Exception)
@@ -66,13 +81,31 @@ namespace Model.TBYS
         }
         public override bool Delete()
         {
-            string sqlString = string.Format(@"DELETE 
-                               FROM GecikmeZammi_Table
-                               WHERE Id={0}", Id);
-
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
-
-            return isSuccess;
+            try
+            {
+                bool isDeleted = false;
+                if (Id != 0)
+                {
+                    GenericEntity<GecikmeZammi> genericEntity = new GenericEntity<GecikmeZammi>(ProjeConstants.SQL_DELETE);
+                    string sqlString = genericEntity.GetQuery(this);
+                    GecikmeZammi item = Select<GecikmeZammi>(Id);
+                    if (item != null)
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+                    else isDeleted = false;
+                    if (isDeleted && ProjeConstants.TBYS_DELETE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.TBYS, ProjeConstants.TBYS_GECIKMEZAMMI);
+                    }
+                }
+                return isDeleted;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         public override List<T> SelectAll<T>()
         {
@@ -81,7 +114,7 @@ namespace Model.TBYS
                 FROM GecikmeZammi_Table
                 ORDER BY BaslangicTarihi DESC");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<GecikmeZammi> list = ToList<GecikmeZammi>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
@@ -94,7 +127,7 @@ namespace Model.TBYS
 				WHERE BaslangicTarihi <= {0} AND ISNULL(BitisTarihi,{0}) >= {1}
                 ORDER BY BaslangicTarihi ", sonOdemeTarihi.ReturnTRDateFormat(), ilkOdemeTarihi.ReturnTRDateFormat());
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<GecikmeZammi> list = ToList<GecikmeZammi>(dataTable);
 
             return list;
@@ -107,7 +140,7 @@ namespace Model.TBYS
 				WHERE BaslangicTarihi <= {0}
                 ORDER BY BaslangicTarihi DESC ", baslangicTarihi.ReturnTRDateFormat());
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<GecikmeZammi> list = ToList<GecikmeZammi>(dataTable);
 
             return list;
@@ -120,7 +153,7 @@ namespace Model.TBYS
 				WHERE BaslangicTarihi <= {1} AND (BitisTarihi is null OR  BitisTarihi>={0}) AND (BitisTarihi is null OR BitisTarihi>={0})
                 ORDER BY BaslangicTarihi DESC ", vadeBaslangicTarihi.ReturnTRDateFormat(), vadeBitisTarihi.ReturnTRDateFormat());
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<GecikmeZammi> list = ToList<GecikmeZammi>(dataTable);
 
             return list;
@@ -135,7 +168,7 @@ namespace Model.TBYS
                 ORDER BY BaslangicTarihi DESC
                 ", sonOdemeTar.ReturnTRDateFormat());
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 List<GecikmeZammi> list = ToList<GecikmeZammi>(dataTable);
@@ -155,7 +188,7 @@ namespace Model.TBYS
                 FROM GecikmeZammi_Table
                 WHERE  BaslangicTarihi < {0} 
                 ORDER BY BaslangicTarihi DESC ", tarih.ReturnTRDateFormat());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
 
             if (dataTable != null)
             {
@@ -176,7 +209,7 @@ namespace Model.TBYS
                 FROM GecikmeZammi_Table
                 WHERE  BaslangicTarihi > {0} 
                 ORDER BY BaslangicTarihi ", tarih.ReturnTRDateFormat());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
 
             if (dataTable != null)
             {
@@ -226,7 +259,7 @@ namespace Model.TBYS
                 ORDER BY BaslangicTarihi DESC
                 ");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 List<GecikmeZammi> list = ToList<GecikmeZammi>(dataTable);

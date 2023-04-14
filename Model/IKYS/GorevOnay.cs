@@ -35,10 +35,9 @@ namespace Model.IKYS
         public override T Select<T>(int id)
         {
             GenericEntity<GorevOnay> genericEntity = new GenericEntity<GorevOnay>(ProjeConstants.SQL_SELECT);
-            OlusturmaTarihi = DateTime.Now;
             Id = id;
             string sqlString = SelectSQL(id);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<GorevOnay> list = ToList<GorevOnay>(dataTable);
             GorevOnay yoklama = new GorevOnay();
             yoklama = list.FirstOrDefault();
@@ -48,11 +47,10 @@ namespace Model.IKYS
         public GorevOnay Select(int id)
         {
             GenericEntity<GorevOnay> genericEntity = new GenericEntity<GorevOnay>(ProjeConstants.SQL_SELECT);
-            OlusturmaTarihi = DateTime.Now;
             Id = id;
             string sqlString = genericEntity.GetQuery(this);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<GorevOnay> list = ToList<GorevOnay>(dataTable);
             GorevOnay gorevOnay = new GorevOnay();
             gorevOnay = list.FirstOrDefault();
@@ -62,11 +60,17 @@ namespace Model.IKYS
         {
             try
             {
+
                 GenericEntity<GorevOnay> genericEntity = new GenericEntity<GorevOnay>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
+                Olusturan = UtilityHelper.GetCurrentUserName();
                 string sqlString = genericEntity.GetQuery(this);
                 int id = dao.Insert(sqlString);
-
+                if (id > 0 && ProjeConstants.IKYS_SAVE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.IKYS, ProjeConstants.IKYS_GOREVONAY);
+                }
                 this.Id = id;
                 return id;
             }
@@ -76,19 +80,27 @@ namespace Model.IKYS
                 throw ex;
             }
 
-
         }
+
         public override bool Update()
         {
+
             bool isSuccess = false;
             try
             {
+                GorevOnay item = Select<GorevOnay>(Id);
                 if (Id != 0)
                 {
                     GenericEntity<GorevOnay> genericEntity = new GenericEntity<GorevOnay>(ProjeConstants.SQL_UPDATE);
                     DegistirmeTarihi = DateTime.Now;
+                    Degistiren = UtilityHelper.GetCurrentUserName();
                     string sqlString = genericEntity.GetQuery(this);
                     isSuccess = dao.Update2Db(sqlString);
+                }
+                if (isSuccess && ProjeConstants.IKYS_UPDATE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.IKYS, ProjeConstants.IKYS_GOREVONAY);
                 }
             }
             catch (Exception)
@@ -99,18 +111,45 @@ namespace Model.IKYS
         }
         public override bool Delete()
         {
-            string sqlString = DeleteSQL();
+            try
+            {
+                bool isDeleted;
+                if (Id != 0)
+                {
+                    GenericEntity<GorevOnay> genericEntity = new GenericEntity<GorevOnay>(ProjeConstants.SQL_DELETE);
+                    string sqlString = genericEntity.GetQuery(this);
 
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
+                    GorevOnay item = Select<GorevOnay>(Id);
+                    if (item != null)
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+                    else isDeleted = false;
+                    if (isDeleted && ProjeConstants.IKYS_DELETE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.IKYS, ProjeConstants.IKYS_GOREVONAY);
+                    }
+                    return isDeleted;
+                }
+                else
+                {
+                    return false;
+                }
 
-            return isSuccess;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
         public override List<T> SelectAll<T>()
         {
             string sqlString = string.Format(@"SELECT *
                                FROM GorevOnay_Table");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<GorevOnay> list = ToList<GorevOnay>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
@@ -174,7 +213,7 @@ namespace Model.IKYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -189,7 +228,7 @@ namespace Model.IKYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
 
             }
             catch (Exception e)
@@ -213,7 +252,7 @@ namespace Model.IKYS
                     BaslangicTarihi<={0} AND BitisTarihi>={1}
                 ORDER BY ProtokolSiraNo,BitisTarihi, BaslangicTarihi ", bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat());
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
 
 
             return dataTable;
@@ -229,7 +268,7 @@ namespace Model.IKYS
                 ORDER BY BitisTarihi DESC
             ", personelId, bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat());
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<GorevOnay> list = ToList<GorevOnay>(dataTable);
             GorevOnay gorevOnay = new GorevOnay();
             gorevOnay = list.FirstOrDefault<GorevOnay>();
@@ -257,7 +296,7 @@ namespace Model.IKYS
                 FROM GorevOnay_Table
                 WHERE Secildi={0}",secildi.ReturnQuotedValue());
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<GorevOnay> list = ToList<GorevOnay>(dataTable);
 
             return list;

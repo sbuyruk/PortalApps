@@ -130,7 +130,7 @@ namespace IKYS_WebParts.GorevTanimListesiWP
                         ],
                         'order': [[0, 'asc']],//sort
                         'language': {
-                            'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                            'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                             'decimal': ',',
                             'thousands': '.'
                         },

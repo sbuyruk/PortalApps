@@ -166,6 +166,8 @@ namespace IKYS_WebParts.ProtokolSirasiWP {
         private void @__Render__control1(System.Web.UI.HtmlTextWriter @__w, System.Web.UI.Control parameterContainer) {
             @__w.Write(@"
 
+<link rel=""stylesheet"" href=""/Style Library/lib/DataTables/RowReorder-1.3.1/css/rowReorder.dataTables.min"" />
+
 <style>
     .ui-datatable tbody td{
         white-space:normal;
@@ -180,7 +182,7 @@ namespace IKYS_WebParts.ProtokolSirasiWP {
 
     function storeTblValues() {
         var tableData = """";
-        $('#tblfilter tr').each(function (row, tr) {
+        $('#CustomDataTable tr').each(function (row, tr) {
             tableData += 
                 $(tr).find('td:eq(1)').text()+"",""; //personelId lerini "","" ile ayırarak ekle
         });
@@ -194,8 +196,8 @@ namespace IKYS_WebParts.ProtokolSirasiWP {
             @__w.Write("\').value = tableData;\r\n        document.getElementById(\'");
                          @__w.Write( KaydetNowBtn.ClientID);
 
-            @__w.Write("\').click();\r\n    }\r\n</script>\r\n\r\n\r\n<div class=\"container shadow\">\r\n\r\n    <div cla" +
-                    "ss=\"card\">\r\n        <div class=\"card-header\">\r\n            ");
+            @__w.Write("\').click();\r\n    }\r\n</script>\r\n\r\n\r\n<div class=\"container \">\r\n\r\n    <div class=\"ca" +
+                    "rd shadow\">\r\n        <div class=\"card-header\">\r\n            ");
             parameterContainer.Controls[0].RenderControl(@__w);
             @__w.Write("\r\n            <h3 class=\"mb-2\">\r\n                ");
             parameterContainer.Controls[1].RenderControl(@__w);
@@ -205,9 +207,20 @@ namespace IKYS_WebParts.ProtokolSirasiWP {
             </h3>
         </div>
         <div class=""card-body"">
-            <div class=""table loader table-hower table-bordered table-responsive"">
-                <div id=""tblfilter""></div>
-                <div id=""messages""></div>
+            <div class=""form-group"">
+                <table id=""CustomDataTable"" class=""table table-striped table-bordered"" width=""100%"">
+                    <thead>
+                        <tr>
+                            <th>Protokol SiraNo</th>
+                            <th>PersonelId</th>
+                            <th>Adı</th>
+                            <th>Soyadı</th>
+                            <th>Ünvan</th>
+                            <th>Görev</th>
+                            <th>Birim/Şube</th>
+                        </tr>
+                    </thead>
+                </table>
             </div>
         </div>
         <div class=""card-footer"">

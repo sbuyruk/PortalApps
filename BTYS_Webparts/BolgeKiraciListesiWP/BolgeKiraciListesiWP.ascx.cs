@@ -107,6 +107,7 @@ namespace BTYS_Webparts.BolgeKiraciListesiWP
                 {
                     if (!Page.IsPostBack)
                     {
+                        KiraciSecimiDDLDoldur();
                         TabloOlustur();
                     } 
                 }
@@ -117,6 +118,26 @@ namespace BTYS_Webparts.BolgeKiraciListesiWP
             {
                 ExceptionHelper exHelper = new ExceptionHelper(ex);
                 exHelper.PublishException();
+            }
+        }
+        private void KiraciSecimiDDLDoldur()
+        {
+            KiraciSecimiDDL.Items.Clear();
+            KiraciSecimiDDL.Items.Add(new ListItem(ProjeConstants.KIRASOZLESME_AKTIF, ProjeConstants.KIRASOZLESME_AKTIF_INT.ToString()));
+            KiraciSecimiDDL.Items.Add(new ListItem(ProjeConstants.KIRASOZLESME_AKTIF_DEGIL, ProjeConstants.KIRASOZLESME_AKTIF_DEGIL_INT.ToString()));
+
+            if (!string.IsNullOrEmpty(SecilenIdQS))
+            {
+                KiraSozlesme kiraSozlesme = new KiraSozlesme();
+                kiraSozlesme = kiraSozlesme.SelectAktifSozlesmeByKiraciId(SecilenIdQS.ConvertToInt());
+                if (kiraSozlesme != null)
+                {
+                    UtilityHelper.SetDDLValue(KiraciSecimiDDL, ProjeConstants.KIRASOZLESME_AKTIF_INT.ToString());
+                }
+                else
+                {
+                    UtilityHelper.SetDDLValue(KiraciSecimiDDL, ProjeConstants.KIRASOZLESME_AKTIF_DEGIL_INT.ToString());
+                }
             }
         }
         private void TabloOlustur()
@@ -181,7 +202,7 @@ namespace BTYS_Webparts.BolgeKiraciListesiWP
                             { 'width': '25%', 'targets': 2 }
                         ],
                         'language': {
-                            'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                            'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                             'decimal': ',',
                             'thousands': '.'
                         },
@@ -214,6 +235,13 @@ namespace BTYS_Webparts.BolgeKiraciListesiWP
                             },
                             , 'pageLength', 'colvis'
                         ],
+                        'createdRow': function(row, data, dataIndex) {
+                            if ((!data.Aktif)&&(!data.Secildi))
+                            {
+                                $(row).addClass('pasif-kiraci');
+
+                            }
+                        },//set row color
                         });
                     });
 
@@ -226,10 +254,16 @@ namespace BTYS_Webparts.BolgeKiraciListesiWP
         {
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             Kiraci kiraci = new Kiraci();
-            string kiraciSecimi = ProjeConstants.KIRASOZLESME_AKTIF_INT.ToString();
+            string kiraciSecimi = KiraciSecimiDDL.SelectedItem.Value;
             DataTable dataTable;
-            dataTable = kiraci.SelectByByBolgeReturnDT(kiraciSecimi,BolgeQS);
-            
+            if (KiraciSecimiDDL.SelectedItem.Value.ConvertToInt() == ProjeConstants.KIRASOZLESME_AKTIF_DEGIL_INT)
+            {
+                dataTable = kiraci.SelectAktifSozlesmesiOlmayanKiracilarReturnDT(BolgeQS);
+            }
+            else
+            {
+                dataTable = kiraci.SelectAllReturnDT(kiraciSecimi, BolgeQS);
+            }
             int SiraNo = 1;
 
             List<KiraciListItem> list = new List<KiraciListItem>();
@@ -240,11 +274,10 @@ namespace BTYS_Webparts.BolgeKiraciListesiWP
                 string adi = row["Adi"].ToString();
                 string soyadi = row["Soyadi"].ToString();
 
-                string ili = row["KiraciIli"].ToString();
-                string ilcesi = row["KiraciIlcesi"].ToString();
-                string kiraciAdresi = row["KiraciAdresi"].ToString();
-                decimal kiraBedeli = row["KiraBedeli"].ReturnZeroIfNull().ConvertToDecimal();
-                string odemeSekli = row["OdemeSekli"].ToString();
+                string ili = row["Ili"].ToString();
+                string ilcesi = row["Ilcesi"].ToString();
+                string kiraciAdresi = row["Adres"].ToString();
+                bool aktif = row["Aktif"].ReturnFalseIfNull().ConvertToBool();
 
                 KiraciListItem kiraciItem = new KiraciListItem();
                 kiraciItem.Sirano = SiraNo++.ToString();
@@ -253,13 +286,18 @@ namespace BTYS_Webparts.BolgeKiraciListesiWP
 
                 kiraciItem.IlceIl = ili+"/"+ilcesi;
                 kiraciItem.Adres = kiraciAdresi;
-                kiraciItem.KiraBedeli= kiraBedeli.ToString("N", culturInfo);
-                kiraciItem.OdemeSekli = odemeSekli;
+                
                 KiraSozlesme ks = new KiraSozlesme();
-                ks = ks.SelectAktifSozlesmeByKiraciId(kiraciId.ConvertToInt());
-                int sonSozlesmeId = ks != null ? ks.Id : sozlesmeId.ConvertToInt();
+                ks = ks.Select(sozlesmeId);
+                if (ks != null)
+                {
+                    kiraciItem.KiraBedeli = ks.KiraBedeli.ToString("N", culturInfo);
+                    kiraciItem.OdemeSekli = ks.OdemeSekli;
+                }
+                //int sonSozlesmeId = ks != null ? ks.Id : sozlesmeId.ConvertToInt();
                 kiraciItem.KiraKarti = "<a  target='_blank' href=" + ProjeConstants.PAGE_BOLGEKIRA_KARTI + "?KiraciId=" + kiraciId + " class='btn btn-outline-secondary'>Kira Kartı</a>";
                 kiraciItem.Secildi = SecilenIdQS.Equals(kiraciItem.KiraciId);
+                kiraciItem.Aktif = aktif;
                 list.Add(kiraciItem);
             }
             return list;
@@ -281,7 +319,7 @@ namespace BTYS_Webparts.BolgeKiraciListesiWP
             GridView GridView1 = new GridView();
             GridView1.AllowPaging = false;
             Kiraci kiraci = new Kiraci();
-            GridView1.DataSource = kiraci.SelectByByBolgeReturnDT(ProjeConstants.KIRASOZLESME_AKTIF_INT.ToString(), BolgeQS);
+            GridView1.DataSource = kiraci.SelectAllReturnDT(ProjeConstants.KIRASOZLESME_AKTIF_INT.ToString(), BolgeQS);
             GridView1.DataBind();
 
             Page.Response.Clear();
@@ -332,6 +370,7 @@ namespace BTYS_Webparts.BolgeKiraciListesiWP
             public string OdemeSekli { get; set; }
             public string IlceIl { get; set; }
             public string KiraKarti { get; set; }
+            public bool Aktif { get; set; }
             public bool Secildi { get; set; }
         }
 
@@ -339,5 +378,6 @@ namespace BTYS_Webparts.BolgeKiraciListesiWP
         {
             TabloOlustur();
         }
+
     }
 }

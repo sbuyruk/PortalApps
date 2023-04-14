@@ -1,5 +1,6 @@
 ﻿using Model.MTS;
 using Model.Ortak;
+using Model.Portal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -92,7 +93,7 @@ namespace Portal_WebParts.ToplantiParametreGirisiWP
                 { data: 'Sil' },
             ],
             'language': {
-                'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
             },
             responsive: true,
             dom: 'frtip',

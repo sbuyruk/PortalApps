@@ -1,6 +1,7 @@
 ﻿using Model.IKYS;
 using Model.MTS;
 using Model.Ortak;
+using Model.Portal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

@@ -426,8 +426,9 @@ namespace MTS_WebParts.RandevuGirisiWP
                     if (randevuId > 0)
                     {
                         RandevuIdQS = randevuId.ToString();
-                        OlayKayit olayKayit = new OlayKayit();
-                        olayKayit.GirisOlayKaydet(randevu, ProjeConstants.MTS, ProjeConstants.MTS_FAALIYET);
+                        //Save icinde olay kaydı var zaten, o yüzden kommentlendi
+                        //OlayKayit olayKayit = new OlayKayit();
+                        //olayKayit.GirisOlayKaydet(randevu, ProjeConstants.MTS, ProjeConstants.MTS_FAALIYET);
                         RedirectToPage(ProjeConstants.PAGE_RANDEVU_GIRIS + "?RandevuId=" + RandevuIdQS + "&Mesaj=true");
                         MessageHelper.PublishMessage("Faaliyet Kaydedildi.", ProjeConstants.MESAJ_BASARILI, 2000);
                         KatilimciBilgileriDiv.Attributes["style"] = "display:block";
@@ -890,7 +891,7 @@ namespace MTS_WebParts.RandevuGirisiWP
             ],
             'order': [[3, 'desc']],
             'language': {
-                'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                 'decimal': ',',
                 'thousands': '.'
             },
@@ -1039,7 +1040,7 @@ namespace MTS_WebParts.RandevuGirisiWP
                 { data: 'IrtibatSec' }
             ],
             'language': {
-                'url': 'http://tskgv-portal/OrtakBelgeler/Turkish.txt',
+                'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
             },
             responsive: true,
             dom: 'fpirt',

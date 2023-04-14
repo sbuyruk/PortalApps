@@ -33,7 +33,7 @@ namespace Model.NBYS
             string sqlString = string.Format(@"SELECT *
                                FROM NakitBagisci_Table 
                                WHERE  Id={0}", id);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<NakitBagisci> list = ToList<NakitBagisci>(dataTable);
             NakitBagisci nakitBagisci = new NakitBagisci();
             nakitBagisci = list.FirstOrDefault();
@@ -46,43 +46,44 @@ namespace Model.NBYS
             {
                 GenericEntity<NakitBagisci> genericEntity = new GenericEntity<NakitBagisci>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
+                Olusturan = UtilityHelper.GetCurrentUserName();
                 string sqlString = genericEntity.GetQuery(this);
                 int id = dao.Insert(sqlString);
 
                 this.Id = id;
+                if (id > 0 && ProjeConstants.NBYS_SAVE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.NBYS, ProjeConstants.NBYS_NAKITBAGISCI);
+                }
                 return id;
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
-            //string sqlString = string.Format(@"INSERT INTO NakitBagisci_Table 
-            //                  (Adi,Soyadi,TCKimlikNo,Ili,Ilcesi,Adres,Telefon1,Telefon2,TuzelKisi,Olusturan,OlusturmaTarihi,Sag,Eposta,PostaKodu,Aciklama,Ulasilamiyor,BelgeIstemiyor )
-            //                   VALUES ({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16})",
-            //                    Adi.ReturnQuotedValue(), Soyadi.ReturnQuotedValue(), TCKimlikNo.ReturnQuotedValue(), Ili.ReturnQuotedValue(), 
-            //                    Ilcesi.ReturnQuotedValue(), Adres.ReturnQuotedValue(), Telefon1.ReturnQuotedValue(), Telefon2.ReturnQuotedValue(), 
-            //                    TuzelKisi.ReturnQuotedValue(), Olusturan.ReturnQuotedValue(), DateTime.Now.ReturnTRDateFormat(),Sag.ReturnQuotedValue(), 
-            //                    Eposta.ReturnQuotedValue(), PostaKodu.ReturnQuotedValue(),Aciklama.ReturnQuotedValue(), Ulasilamiyor.ReturnQuotedValue(), BelgeIstemiyor.ReturnQuotedValue());
-
-
-            //int id = dao.Insert(sqlString);
-
-            //this.Id = id;
-            //return id;
         }
         public override bool Update()
         {
-
             bool isSuccess = false;
             try
             {
-                if (Id != 0)
+                if (this != null)
                 {
-                    GenericEntity<NakitBagisci> genericEntity = new GenericEntity<NakitBagisci>(ProjeConstants.SQL_UPDATE);
-                    DegistirmeTarihi = DateTime.Now;
-                    string sqlString = genericEntity.GetQuery(this);
-                    isSuccess = dao.Update2Db(sqlString);
+                    NakitBagisci item = Select<NakitBagisci>(Id);
+                    if (Id != 0)
+                    {
+                        GenericEntity<NakitBagisci> genericEntity = new GenericEntity<NakitBagisci>(ProjeConstants.SQL_UPDATE);
+                        DegistirmeTarihi = DateTime.Now;
+                        Degistiren = UtilityHelper.GetCurrentUserName();
+                        string sqlString = genericEntity.GetQuery(this);
+                        isSuccess = dao.Update2Db(sqlString);
+                    }
+                    if (isSuccess && ProjeConstants.NBYS_UPDATE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.NBYS, ProjeConstants.NBYS_NAKITBAGISCI);
+                    }
                 }
             }
             catch (Exception)
@@ -90,37 +91,41 @@ namespace Model.NBYS
                 throw;
             }
             return isSuccess;
-            //bool isSuccess = false;
-            //if (Id != 0)
-            //{
-            //    string sqlString = string.Format(@"UPDATE NakitBagisci_Table 
-            //                  SET Adi={0},Soyadi={1},TCKimlikNo={2},Ili={3},Ilcesi={4},Adres={5},Telefon1={6},Telefon2={7},TuzelKisi={8},Degistiren={9},DegistirmeTarihi={10},Sag={11},Eposta={12},PostaKodu={13},Aciklama={14},Ulasilamiyor={15},BelgeIstemiyor={16}
-            //                   WHERE Id={17}",
-            //                  Adi.ReturnQuotedValue(), Soyadi.ReturnQuotedValue(), TCKimlikNo.ReturnQuotedValue(), Ili.ReturnQuotedValue(), Ilcesi.ReturnQuotedValue(),
-            //                  Adres.ReturnQuotedValue(), Telefon1.ReturnQuotedValue(), Telefon2.ReturnQuotedValue(), TuzelKisi.ReturnQuotedValue(),
-            //                  Degistiren.ReturnQuotedValue(), DateTime.Now.ReturnTRDateFormat(), Sag.ReturnQuotedValue(),
-            //                  Eposta.ReturnQuotedValue(), PostaKodu.ReturnQuotedValue(), Aciklama.ReturnQuotedValue(), Ulasilamiyor.ReturnQuotedValue(), BelgeIstemiyor.ReturnQuotedValue(), Id);
-
-            //    isSuccess = dao.Update2Db(sqlString);
-            //}
-            //return isSuccess;
         }
         public override bool Delete()
         {
-            string sqlString = string.Format(@"DELETE 
-                               FROM NakitBagisci_Table
-                               WHERE Id={0}", Id);
-
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
-
-            return isSuccess;
+            try
+            {
+                bool isDeleted = false;
+                if (Id != 0)
+                {
+                    GenericEntity<NakitBagisci> genericEntity = new GenericEntity<NakitBagisci>(ProjeConstants.SQL_DELETE);
+                    string sqlString = genericEntity.GetQuery(this);
+                    NakitBagisci item = Select<NakitBagisci>(Id);
+                    if (item != null)
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+                    else isDeleted = false;
+                    if (isDeleted && ProjeConstants.NBYS_DELETE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.NBYS, ProjeConstants.NBYS_NAKITBAGISCI);
+                    }
+                }
+                return isDeleted;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         public override List<T> SelectAll<T>()
         {
             string sqlString = string.Format(@"SELECT *
                                FROM NakitBagisci_Table");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<NakitBagisci> list = ToList<NakitBagisci>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
@@ -131,7 +136,6 @@ namespace Model.NBYS
             try
             {
                 GenericEntity<NakitBagisci> genericEntity = new GenericEntity<NakitBagisci>(ProjeConstants.SQL_INSERT);
-                OlusturmaTarihi = DateTime.Now;
                 string sqlString = genericEntity.GetQuery(this, extId);
 
                 return sqlString;
@@ -147,7 +151,9 @@ namespace Model.NBYS
             try
             {
                 GenericEntity<NakitBagisci> genericEntity = new GenericEntity<NakitBagisci>(ProjeConstants.SQL_INSERT);
-                OlusturmaTarihi = DateTime.Now;
+                OlusturmaTarihi=DateTime.Now;
+                Olusturan = UtilityHelper.GetCurrentUserName();
+
                 string sqlString = genericEntity.GetQuery(this, extId) + " ;SELECT SCOPE_IDENTITY() ";
 
                 return sqlString;
@@ -163,7 +169,8 @@ namespace Model.NBYS
             try
             {
                 GenericEntity<NakitBagisci> genericEntity = new GenericEntity<NakitBagisci>(ProjeConstants.SQL_UPDATE);
-                OlusturmaTarihi = DateTime.Now;
+                DegistirmeTarihi = DateTime.Now;
+                Degistiren = UtilityHelper.GetCurrentUserName();
                 string sqlString = genericEntity.GetQuery(this, extId);
 
                 return sqlString;
@@ -179,7 +186,6 @@ namespace Model.NBYS
             try
             {
                 GenericEntity<NakitBagisci> genericEntity = new GenericEntity<NakitBagisci>(ProjeConstants.SQL_DELETE);
-                OlusturmaTarihi = DateTime.Now;
                 string sqlString = genericEntity.GetQuery(this, extId);
 
                 return sqlString;
@@ -209,7 +215,7 @@ namespace Model.NBYS
             DataTable dataTable;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -223,7 +229,7 @@ namespace Model.NBYS
             string sqlString = string.Format(@"SELECT *
                                FROM NakitBagisci_Table 
                                WHERE  TCKimlikNo!=0 AND TCKimlikNo={0}", tcKimlikno);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<NakitBagisci> list = ToList<NakitBagisci>(dataTable);
             NakitBagisci nakitBagisci = new NakitBagisci();
             nakitBagisci = list.FirstOrDefault();
@@ -244,7 +250,7 @@ namespace Model.NBYS
                 WHERE A.Id={0}
                     AND  B.BagisciId IS NULL 
                 ORDER BY BagisTarihi DESC ", bagisciId);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<NakitBagisci> list = ToList<NakitBagisci>(dataTable);
             NakitBagisci nakitBagisci = new NakitBagisci();
             nakitBagisci = list.FirstOrDefault();
@@ -256,7 +262,7 @@ namespace Model.NBYS
             string sqlString = string.Format(@"SELECT *
                                FROM NakitBagisci_Table 
                                WHERE  Adi={0} AND (Telefon1={1} OR Telefon2={1})", adi.ReturnQuotedValue(), telefon.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<NakitBagisci> list = ToList<NakitBagisci>(dataTable);
             NakitBagisci nakitBagisci = new NakitBagisci();
             nakitBagisci = list.FirstOrDefault();
@@ -268,7 +274,7 @@ namespace Model.NBYS
             string sqlString = string.Format(@"SELECT *
                                FROM NakitBagisci_Table 
                                WHERE  Adi LIKE '%{0}%' ", adi);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
 
             return dataTable;
 
@@ -284,7 +290,7 @@ namespace Model.NBYS
                     {1}
                     {2} "
                 , ekstreAktarmaId.ReturnQuotedValue(), telefon1Str, telefon2Str);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<NakitBagisci> list = ToList<NakitBagisci>(dataTable);
 
             return list;
@@ -327,7 +333,7 @@ namespace Model.NBYS
 	                LEFT OUTER JOIN Ilce_Table C ON C.Id= A.Ilcesi AND C.IlId=B.Id
                 {0}", ilStr);
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             list = ToList<NakitBagisci>(dataTable);
             if (dataTable != null)
             {
@@ -359,7 +365,7 @@ namespace Model.NBYS
             DataTable dataTable;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -422,7 +428,7 @@ namespace Model.NBYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -554,7 +560,7 @@ namespace Model.NBYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -585,7 +591,7 @@ namespace Model.NBYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -618,7 +624,7 @@ namespace Model.NBYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -654,7 +660,7 @@ namespace Model.NBYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {

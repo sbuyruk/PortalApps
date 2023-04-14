@@ -63,25 +63,107 @@ namespace Model.TBYS
         public string HisseMiktariPayda { get; set; }
         public string ToplamKatSayisi { get; set; }
         public string Metrekare { get; set; }
+        public string TapuTasinmazNo { get; set; }
+        public string InsaYili { get; set; }
 
         public override T Select<T>(int id)
         {
             string sqlString = string.Format(@"SELECT *
                                FROM Tasinmaz_Table 
                                WHERE EnvanterdeMi=1 AND Id={0}", id);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Tasinmaz> list = ToList<Tasinmaz>(dataTable);
             Tasinmaz tasinmaz = new Tasinmaz();
             tasinmaz = list.FirstOrDefault();
             return (T)Convert.ChangeType(tasinmaz, typeof(T));
 
         }
+        public override int Save()
+        {
+            try
+            {
+                GenericEntity<Tasinmaz> genericEntity = new GenericEntity<Tasinmaz>(ProjeConstants.SQL_INSERT);
+                OlusturmaTarihi = DateTime.Now;
+                Olusturan = UtilityHelper.GetCurrentUserName();
+                string sqlString = genericEntity.GetQuery(this);
+                int id = dao.Insert(sqlString);
+
+                this.Id = id;
+                if (id > 0 && ProjeConstants.TBYS_SAVE_LOG)
+                {
+                    OlayKayit olayKayit = new OlayKayit();
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.TBYS, ProjeConstants.TBYS_TASINMAZ);
+                }
+                return id;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public override bool Update()
+        {
+            bool isSuccess = false;
+            try
+            {
+                if (this != null)
+                {
+                    Tasinmaz item = Select<Tasinmaz>(Id);
+                    if (Id != 0)
+                    {
+                        GenericEntity<Tasinmaz> genericEntity = new GenericEntity<Tasinmaz>(ProjeConstants.SQL_UPDATE);
+                        DegistirmeTarihi = DateTime.Now;
+                        Degistiren = UtilityHelper.GetCurrentUserName();
+                        string sqlString = genericEntity.GetQuery(this);
+                        isSuccess = dao.Update2Db(sqlString);
+                    }
+                    if (isSuccess && ProjeConstants.TBYS_UPDATE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.TBYS, ProjeConstants.TBYS_TASINMAZ);
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return isSuccess;
+        }
+        public override bool Delete()
+        {
+            try
+            {
+                bool isDeleted = false;
+                if (Id != 0)
+                {
+                    GenericEntity<Tasinmaz> genericEntity = new GenericEntity<Tasinmaz>(ProjeConstants.SQL_DELETE);
+                    string sqlString = genericEntity.GetQuery(this);
+                    Tasinmaz item = Select<Tasinmaz>(Id);
+                    if (item != null)
+                    {
+                        isDeleted = dao.DeleteFromDb(sqlString, "");
+                    }
+                    else isDeleted = false;
+                    if (isDeleted && ProjeConstants.TBYS_DELETE_LOG)
+                    {
+                        OlayKayit olayKayit = new OlayKayit();
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.TBYS, ProjeConstants.TBYS_TASINMAZ);
+                    }
+                }
+                return isDeleted;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         public Tasinmaz Select(int id)
         {
             string sqlString = string.Format(@"SELECT *
                                FROM Tasinmaz_Table 
                                WHERE Id={0}", id);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Tasinmaz> list = ToList<Tasinmaz>(dataTable);
             Tasinmaz tasinmaz = new Tasinmaz();
             tasinmaz = list.FirstOrDefault();
@@ -96,7 +178,7 @@ namespace Model.TBYS
                 FROM Tasinmaz_Table A
                 LEFT JOIN BagimsizBolum_Table B ON B.TasinmazId=A.Id AND B.Id={0}
                 WHERE A.Id={1}", bolumId, tasinmazId);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 DataRow row = dataTable.Rows[0];
@@ -114,7 +196,7 @@ namespace Model.TBYS
             string sqlString = string.Format(@"SELECT *
                                FROM Tasinmaz_Table 
                                WHERE Id={0}", id);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Tasinmaz> list = ToList<Tasinmaz>(dataTable);
             Tasinmaz tasinmaz = new Tasinmaz();
             tasinmaz = list.FirstOrDefault();
@@ -127,7 +209,7 @@ namespace Model.TBYS
                 SELECT *,Convert(nvarchar,replace (EnvanterdenCikmaBedeli,'.',',')) as EnvanterdenCikmaBedeli
                 FROM Tasinmaz_Table 
                 WHERE EnvanterdeMi=0 AND Id={0} ", id);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
 
             List<Tasinmaz> list = ToList<Tasinmaz>(dataTable);
             Tasinmaz tasinmaz = new Tasinmaz();
@@ -135,25 +217,6 @@ namespace Model.TBYS
             return tasinmaz;
 
         }
-        public override int Save()
-        {
-            try
-            {
-                GenericEntity<Tasinmaz> genericEntity = new GenericEntity<Tasinmaz>(ProjeConstants.SQL_INSERT);
-                OlusturmaTarihi = DateTime.Now;
-                string sqlString = genericEntity.GetQuery(this);
-                int id = dao.Insert(sqlString);
-
-                this.Id = id;
-                return id;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
-
         public DataTable SelectByBolgeReturnJson(string bolgeQS)
         {
             string bolgeStr = string.Empty;
@@ -176,7 +239,7 @@ namespace Model.TBYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -184,98 +247,17 @@ namespace Model.TBYS
             }
             return dataTable;
         }
-
-        public override bool Update()
-        {
-            bool isSuccess = false;
-            try
-            {
-                if (Id != 0)
-                {
-                    GenericEntity<Tasinmaz> genericEntity = new GenericEntity<Tasinmaz>(ProjeConstants.SQL_UPDATE);
-                    DegistirmeTarihi = DateTime.Now;
-                    string sqlString = genericEntity.GetQuery(this);
-                    isSuccess = dao.Update2Db(sqlString);
-                    if (isSuccess)
-                    {
-                        Bagis bagis = new Bagis();
-                        bagis = bagis.SelectByTasinmazId(this.Id);
-                        if (bagis != null)//bagis bilgilerini guncelle
-                        {
-                            bagis.BagisTarihi = this.EnvantereGirisTarihi;
-                            bagis.BagisYili = this.EnvantereGirisTarihi.Year;
-                            bagis.Update();
-                        }
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            return isSuccess;
-        }
-        public override bool Delete()
-        {
-            string sqlString = string.Format(@"DELETE 
-                               FROM Tasinmaz_Table
-                               WHERE Id={0}", Id);
-
-            bool isSuccess = dao.DeleteFromDb(sqlString, this);
-
-            return isSuccess;
-        }
-        public bool UpdateFotoDb()
-        {
-            bool isSuccess = false;
-            if (Id != 0)
-            {
-                string sqlString = string.Format(@"
-                                        UPDATE Tasinmaz_Table
-                                        SET TasinmazFoto={0},
-	                                        TasinmazFoto1={1},
-	                                        TasinmazFoto2={2},
-	                                        TahkikatFoto={3},
-	                                        KrokiFoto={4},
-	                                        TapuFoto={5},
-                                            Degistiren={6},
-                                            DegistirmeTarihi={7}
-                                        WHERE Id={8} ",
-                                            TasinmazFoto.ReturnQuotedValue(), TasinmazFoto1.ReturnQuotedValue(), TasinmazFoto2.ReturnQuotedValue(), TahkikatFoto.ReturnQuotedValue(),
-                                            KrokiFoto.ReturnQuotedValue(), TapuFoto.ReturnQuotedValue(),
-                                            Degistiren.ReturnQuotedValue(), DateTime.Now.ReturnTRDateFormat(), Id);
-
-                isSuccess = dao.Update2Db(sqlString);
-            }
-            return isSuccess;
-        }
         public override List<T> SelectAll<T>()
         {
             string sqlString = string.Format(@"SELECT *
                                 FROM Tasinmaz_Table
                                 WHERE EnvanterdeMi=1 ");
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Tasinmaz> list = ToList<Tasinmaz>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
         }
-        public string SelectAllReturnJson()
-        {
-            string sqlString = SelectAllSQL();
-            DataTable dataTable = null;
-            try
-            {
-                dataTable = dao.selectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-            string json = ToJSON(dataTable);
-            return json;
-        }
-
         /// <summary>
         /// Bağışçısı olmayan envanterdeki taşınmazları getir Ortak bağışlar dahil
         /// </summary>
@@ -292,7 +274,7 @@ namespace Model.TBYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -334,7 +316,7 @@ namespace Model.TBYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -360,7 +342,7 @@ namespace Model.TBYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -386,7 +368,7 @@ namespace Model.TBYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -401,7 +383,7 @@ namespace Model.TBYS
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -422,28 +404,13 @@ namespace Model.TBYS
                 ");
             return sqlString;
         }
-        public string SelectAllEnvanterdenCikanReturnJson()
-        {
-            string sqlString = SelectAllEnvanterdenCikanSQL();
-            DataTable dataTable = null;
-            try
-            {
-                dataTable = dao.selectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-            string json = ToJSON(dataTable);
-            return json;
-        }
         public DataTable SelectAllEnvanterdenCikanReturnDataTable()
         {
             string sqlString = SelectAllEnvanterdenCikanSQL();
             DataTable dataTable = null;
             try
             {
-                dataTable = dao.selectFromDb(sqlString, "");
+                dataTable = dao.SelectFromDb(sqlString, "");
             }
             catch (Exception e)
             {
@@ -475,7 +442,7 @@ namespace Model.TBYS
             string sqlString = string.Format(@"
                 SELECT * FROM Tasinmaz_Table
                 WHERE EnvanterdeMi=1 AND Ili={0}", ilAdi.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Tasinmaz> list = ToList<Tasinmaz>(dataTable);
             return list;
         }
@@ -486,7 +453,7 @@ namespace Model.TBYS
                 SELECT * FROM Tasinmaz_Table
                 WHERE EnvanterdeMi=1 AND Id > {0}
                 ORDER BY Id ", tasinmazId.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 List<Tasinmaz> list = ToList<Tasinmaz>(dataTable);
@@ -506,7 +473,7 @@ namespace Model.TBYS
                 SELECT * FROM Tasinmaz_Table
                 WHERE EnvanterdeMi=1 AND Id < {0}
                 ORDER BY Id DESC ", tasinmazId.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 List<Tasinmaz> list = ToList<Tasinmaz>(dataTable);
@@ -525,7 +492,7 @@ namespace Model.TBYS
                 SELECT MAX(Id) Id  
                 FROM Tasinmaz_Table 
                 WHERE EnvanterdeMi=1 ");
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 DataRow row = dataTable.Rows[0];
@@ -545,7 +512,7 @@ namespace Model.TBYS
                 SELECT MIN(Id) Id  
                 FROM Tasinmaz_Table 
                 WHERE EnvanterdeMi=1 ");
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 DataRow row = dataTable.Rows[0];
@@ -567,7 +534,7 @@ namespace Model.TBYS
                 SELECT SUM(TahminiRayicDegeri) Toplam 
                 FROM Tasinmaz_Table 
                 WHERE EnvanterdeMi=1 {0}",bolgeStr);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 DataRow row = dataTable.Rows[0];
@@ -584,7 +551,7 @@ namespace Model.TBYS
                 SELECT SUM(EmlakBeyanDegeri) Toplam 
                 FROM Tasinmaz_Table 
                 WHERE EnvanterdeMi=1 {0}", bolgeStr);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 DataRow row = dataTable.Rows[0];
@@ -601,7 +568,7 @@ namespace Model.TBYS
                 FROM Tasinmaz_Table 
                 WHERE EnvanterdeMi=1
                     AND SigortaDurumu={0}", sigorta.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 DataRow row = dataTable.Rows[0];
@@ -618,7 +585,7 @@ namespace Model.TBYS
                 FROM Tasinmaz_Table 
                 WHERE EnvanterdeMi=1
                     AND SigortaDurumu={0}", sigorta.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 DataRow row = dataTable.Rows[0];
@@ -643,7 +610,7 @@ namespace Model.TBYS
                 WHERE EnvanterdeMi=1 {0} ", whereStr);
 
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 DataRow row = dataTable.Rows[0];
@@ -668,7 +635,7 @@ namespace Model.TBYS
                 WHERE EnvanterdeMi=1 {0}", whereStr);
 
 
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 DataRow row = dataTable.Rows[0];
@@ -686,7 +653,7 @@ namespace Model.TBYS
                 WHERE EnvanterdeMi=1 
                     AND SorumluBolge ={0}
                     AND MulkiyetSekli ={1}", bolge.ReturnQuotedValue(), mulkiyetSekli.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 DataRow row = dataTable.Rows[0];
@@ -712,7 +679,7 @@ namespace Model.TBYS
                     AND SorumluBolge ={0}
                     AND KullanimSekli ={1}
                     {2}", bolge.ReturnQuotedValue(), kullanimSekli.ReturnQuotedValue(), whereStr);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 DataRow row = dataTable.Rows[0];
@@ -739,7 +706,7 @@ namespace Model.TBYS
                     AND SorumluBolge ={0}
                     {1}
                     {2}", bolge.ReturnQuotedValue(), whereStr,mulkiyetStr);
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 DataRow row = dataTable.Rows[0];
@@ -758,7 +725,7 @@ namespace Model.TBYS
                     AND Ili ={0}
                     AND MulkiyetSekli ={1}
                     AND KullanimSekli ={2}", ilAdi.ReturnQuotedValue(), mulkiyetSekli.ReturnQuotedValue(), kullanimSekli.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 DataRow row = dataTable.Rows[0];
@@ -785,7 +752,7 @@ namespace Model.TBYS
             //        AND SorumluBolge ={0}
             //        AND MulkiyetSekli ={1}
             //        AND SigortaDurumu ={2}", bolge.ReturnQuotedValue(), mulkiyetSekli.ReturnQuotedValue(), sigorta.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 DataRow row = dataTable.Rows[0];
@@ -811,7 +778,7 @@ namespace Model.TBYS
             //        AND SorumluBolge ={0}
             //        AND KullanimSekli ={1}
             //        AND SigortaDurumu ={2}", bolge.ReturnQuotedValue(), kullanimSekli.ReturnQuotedValue(), sigorta.ReturnQuotedValue());
-            DataTable dataTable = dao.selectFromDb(sqlString, "");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
                 DataRow row = dataTable.Rows[0];
