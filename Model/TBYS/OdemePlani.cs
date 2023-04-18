@@ -184,7 +184,7 @@ namespace Model.TBYS
 
             string sqlString = string.Format(@"
                 SELECT 
-                    A.Id KiraSozlesmeId, A.Bolge, A.DosyaNo, B.Adi+' '+B.Soyadi Kiraci, 
+                    A.Id KiraSozlesmeId, A.Bolge, A.DosyaNo, B.Adi+' '+B.Soyadi Kiraci, A.KiraciId,
                     A.IlkSozlesmeTar, A.SozBasTar, A.SozBitTar, A.ArtisAyi, A.OdemeSekli, 
                     A.KiraBedeli, C.AnaPara AnaPara,C.FaizTutari, C.FaizliBakiye, C.VadeBasTar, C.VadeBitTar, 
                     FORMAT(C.FaizliBakiye,'###.00') FaizliBakiyeFormat,

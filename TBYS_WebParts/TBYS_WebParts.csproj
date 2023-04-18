@@ -137,6 +137,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>BagisciYakinlariWP.ascx</DependentUpon>
     </Compile>
+    <Compile Include="BorcluKiraciIslemleriWP\BorcluKiraciIslemleriWP.ascx.cs">
+      <DependentUpon>BorcluKiraciIslemleriWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="BorcluKiraciIslemleriWP\BorcluKiraciIslemleriWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BorcluKiraciIslemleriWP.ascx</DependentUpon>
+    </Compile>
     <Compile Include="BorcluKiracilarByBolgeWP\BorcluKiracilarByBolgeWP.ascx.cs">
       <DependentUpon>BorcluKiracilarByBolgeWP.ascx</DependentUpon>
     </Compile>
@@ -697,6 +705,10 @@
     <None Include="BagisciYakinlariWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{086931a2-71cd-459b-b313-6d5f3655d334}</SharePointProjectItemId>
     </None>
+    <None Include="BorcluKiraciIslemleriWP\BorcluKiraciIslemleriWP.webpart" />
+    <None Include="BorcluKiraciIslemleriWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{15de2192-91a5-477e-a3a5-16380d991355}</SharePointProjectItemId>
+    </None>
     <None Include="BorcluKiracilarByBolgeWP\BorcluKiracilarByBolgeWP.webpart" />
     <None Include="BorcluKiracilarByBolgeWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{414ceffd-1bed-4ac4-8899-1b8bbf5592a7}</SharePointProjectItemId>
@@ -1043,6 +1055,11 @@
       <LastGenOutput>BagisciYakinlariWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="BagisciYakinlariWP\Elements.xml" />
+    <Content Include="BorcluKiraciIslemleriWP\BorcluKiraciIslemleriWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>BorcluKiraciIslemleriWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="BorcluKiraciIslemleriWP\Elements.xml" />
     <Content Include="BorcluKiracilarByBolgeWP\BorcluKiracilarByBolgeWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>BorcluKiracilarByBolgeWP.ascx.g.cs</LastGenOutput>

@@ -886,6 +886,10 @@ namespace Utility.ProjeGlobal
         public const string KIRAARTIS_DOSYA = "Kira-Artis";
         public const string ADRESETIKETI_DOSYA = "Adres-Etiketi";
         public const string TESEKKUR_DOSYA = "TesekkurBelgesi";
+        //kira borcu takip
+        public const string KIRABORCU_UYARI = "Uyarı";
+        public const string KIRABORCU_YAZILIIHTAR = "Yazılı İhtar";
+        public const string KIRABORCU_ICRATAKIBI = "İcra Takibi";
 
 
         //MTS
