@@ -34,7 +34,7 @@
             <asp:UpdatePanel runat="server" ID="UpdatePanel" UpdateMode="Conditional">
                 <ContentTemplate>
                     <div class="row">
-                        <div class="col-9">
+                        <div class="col-10">
                             <div class="row">
                                 <div class="form-group col">
                                     <div class="form-group">
@@ -50,14 +50,7 @@
                                         <asp:TextBox ID="TCKimlikNoTxt" runat="server" class="form-control" type="text"></asp:TextBox>
                                     </div>
 
-                                    <div class="form-group ">
-                                        <label class="col-form-label" for="Sag_vefatDDL">Sağ-Vefat</label>
-                                        <asp:DropDownList ID="Sag_vefatDDL" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="Sag_vefatDDL_SelectedIndexChanged" style="height:auto"></asp:DropDownList>
-                                    </div>
-                                    <div class="form-group" id="VefatTarihiDiv" runat="server">
-                                        <label class="col-form-label" for="VefatTarihiTxt">Vefat Tarihi</label>
-                                        <input runat="server" type="text" id="VefatTarihiTxt" name="DogumTarihiTxt" class="form-control DateTimePickerV1" readonly="readonly" />
-                                    </div>
+
                                 </div>
                                 <div class="form-group col">
                                     <div class="form-group">
@@ -106,6 +99,31 @@
                                         </label>
                                     </div>
                                 </div>
+                                <div class="form-group col" >
+                                    <div class="form-group ">
+                                        <label class="col-form-label" for="Sag_vefatDDL">Sağ-Vefat</label>
+                                        <asp:DropDownList ID="Sag_vefatDDL" runat="server" CssClass="form-control" AutoPostBack="true" OnSelectedIndexChanged="Sag_vefatDDL_SelectedIndexChanged" style="height:auto"></asp:DropDownList>
+                                    </div>
+                                    <div class="form-group" id="VefatDiv" runat="server">
+                                        <div class="form-group" id="VefatTarihiDiv" runat="server">
+                                            <label class="col-form-label" for="VefatTarihiTxt">Vefat Tarihi</label>
+                                            <input runat="server" type="text" id="VefatTarihiTxt" name="DogumTarihiTxt" class="form-control DateTimePickerV1" readonly="readonly" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-form-label" for="DefinYeriTxt">Defin Yeri (Mezarlık)</label>
+                                             <asp:TextBox ID="DefinYeriTxt" runat="server" class="form-control" type="text"></asp:TextBox>
+                                        </div>
+                                        <div class="form-group ">
+                                            <label class="col-form-label" for="DefinIliDDL">Defin İli</label>
+                                            <asp:DropDownList ID="DefinIliDDL" runat="server" CssClass="form-control " OnSelectedIndexChanged="DefinIliDDL_SelectedIndexChanged" AutoPostBack="true"  Style="height: auto" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-form-label" for="DefinIlcesiDDL">Defin İlçesi</label>
+                                            <asp:DropDownList ID="DefinIlcesiDDL" runat="server" CssClass="form-control" Style="height: auto"></asp:DropDownList>
+                                        </div>
+
+                                    </div>
+                                </div>
                             </div>
                             <div class="row">
                                 <div class="form-group col">
@@ -116,10 +134,14 @@
                                     <label class="col-form-label" for="AciklamaTxt">Açıklama</label>
                                     <asp:TextBox ID="AciklamaTxt" runat="server" CssClass="form-control " TextMode="MultiLine" Rows="6" ToolTip="Açıklama"></asp:TextBox>
                                 </div>
+                                <div class="form-group col-3" runat="server" id="DefinAciklamaDiv">
+                                    <label class="col-form-label" for="DefinAciklamaTxt">Defin Açıklaması</label>
+                                    <asp:TextBox ID="DefinAciklamaTxt" runat="server" CssClass="form-control " TextMode="MultiLine" Rows="6" ToolTip="Defin Açıklaması"></asp:TextBox>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-3">
-                            <div class="form-group col">
+                        <div class="col-2">
+                            <div class="form-group ">
                                 <div class="form-group border border-dark p-2" style="background-color:antiquewhite" >
                                     <div class="form-group text-center">
                                         <asp:Image ID="DisplayImage" ClientIDMode="Static" runat="server" ImageUrl="../BagisciResimleri/_t/bagisci_jpg.jpg" CssClass="img-thumbnail" onerror="this.src='../BagisciResimleri/_t/bagisci_jpg.jpg';" Style="height: 150px" />

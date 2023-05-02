@@ -554,6 +554,11 @@ namespace Model.Ortak
             string url = RootURLGetir()+ProjeConstants.PATH_TBYS_URL;
             return url;
         }
+        public static string HukukURLGetir()
+        {
+            string url = RootURLGetir()+ProjeConstants.PATH_HUKUK_URL;
+            return url;
+        }
         public static string TurkishTxtURLGetir()
         {
             string url = RootURLGetir() + ProjeConstants.PATH_TURKISHTXT_URL;

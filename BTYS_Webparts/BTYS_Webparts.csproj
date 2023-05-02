@@ -146,6 +146,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>BolgeTasinmazRaporuWP.ascx</DependentUpon>
     </Compile>
+    <Compile Include="DavaDurusmaListesiWP\DavaDurusmaListesiWP.ascx.cs">
+      <DependentUpon>DavaDurusmaListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DavaDurusmaListesiWP\DavaDurusmaListesiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DavaDurusmaListesiWP.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -189,6 +197,10 @@
     <None Include="BolgeTasinmazRaporuWP\BolgeTasinmazRaporuWP.webpart" />
     <None Include="BolgeTasinmazRaporuWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{4b6d64e2-1756-4885-90e6-5fa3805233f0}</SharePointProjectItemId>
+    </None>
+    <None Include="DavaDurusmaListesiWP\DavaDurusmaListesiWP.webpart" />
+    <None Include="DavaDurusmaListesiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{3515c795-de23-4ce0-aa1e-652f383cce31}</SharePointProjectItemId>
     </None>
     <None Include="Features\Feature1\Feature1.feature">
       <FeatureId>{56163a17-095e-41a5-9ed8-296b467ed1ad}</FeatureId>
@@ -252,6 +264,11 @@
       <LastGenOutput>BolgeTasinmazRaporuWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="BolgeTasinmazRaporuWP\Elements.xml" />
+    <Content Include="DavaDurusmaListesiWP\DavaDurusmaListesiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>DavaDurusmaListesiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="DavaDurusmaListesiWP\Elements.xml" />
     <Content Include="Features\Feature1\Feature1.Template.xml">
       <DependentUpon>Feature1.feature</DependentUpon>
     </Content>

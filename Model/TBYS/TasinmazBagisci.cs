@@ -28,6 +28,10 @@ namespace Model.TBYS
         public string Foto { get; set; }
         public string Sag_vefat { get; set; }
         public DateTime VefatTarihi { get; set; }
+        public string DefinYeri { get; set; }
+        public string DefinIli { get; set; }
+        public string DefinIlcesi { get; set; }
+        public string DefinAciklama { get; set; }
         //public bool TuzelKisi{ get; set; }                      
         //public bool Sag { get; set; }                           
         //public string Eposta { get; set; }                      
@@ -256,7 +260,7 @@ namespace Model.TBYS
                  SELECT ROW_NUMBER() OVER (ORDER BY A.Id) AS Sirano, Count(C.Id) ToplamBagisAdedi, 
                     A.Id TasinmazBagisciId, E.Bolge,
 	                A.Adi+' '+ A.Soyadi AdiSoyadi, A.TCKimlikNo, A.DogumYeri, A.DogumTarihi, A.Meslegi, A.SosyalGuvence, 
-	                A.Ilcesi +'-'+ A.Ili IlIlce, A.Adres, A.Telefon1, A.Telefon2, A.Foto, A.Sag_vefat, FORMAT(A.vefatTarihi,'dd.MM.yyyy') VefatTarihi
+	                A.Ilcesi +'-'+ A.Ili IlIlce, A.Adres, A.Telefon1, A.Telefon2, A.Foto, A.Sag_vefat, FORMAT(A.vefatTarihi,'dd.MM.yyyy') VefatTarihi, DefinYeri,DefinIli,DefinIlcesi,DefinAciklama
                 FROM TasinmazBagisci_Table A 
                     LEFT JOIN Bagis_Table C on C.BagisciId=A.Id AND C.Envanterde=1
                     LEFT JOIN Tasinmaz_Table D on D.Id=C.TasinmazId AND D.EnvanterdeMi=1
@@ -264,7 +268,7 @@ namespace Model.TBYS
                 {0}
                 GROUP BY  C.BagisciId,
 				    A.Id, A.Adi, A.Soyadi, A.TCKimlikNo, A.DogumYeri, A.DogumTarihi, A.Meslegi, A.SosyalGuvence, 
-	                A.Ili, A.Ilcesi, A.Adres, A.Telefon1, A.Telefon2, A.Foto, A.Sag_vefat,E.Bolge  , A.VefatTarihi                            
+	                A.Ili, A.Ilcesi, A.Adres, A.Telefon1, A.Telefon2, A.Foto, A.Sag_vefat,E.Bolge  , A.VefatTarihi, DefinYeri,DefinIli,DefinIlcesi,DefinAciklama                         
                 ", bolgeStr);
 
             DataTable dataTable = null;

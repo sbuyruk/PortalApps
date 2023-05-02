@@ -184,17 +184,14 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
                 AciklamaTxt.Text = bagisci.Aciklama;
                 GizliChk.Checked = bagisci.Gizli;
 
+
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
                 string imgUrl = newUrl + "/../" + ProjeConstants.RESIMLER_BAGISCI + "/_t/" + bagisci.Adi.ReplaceTrChars() + bagisci.Soyadi.ReplaceTrChars() + "_jpg.jpg";
                 DisplayImage.ImageUrl = imgUrl;
 
                 string sv = "Bilinmiyor";
-                if (!string.IsNullOrEmpty(bagisci.Sag_vefat))
-                    sv = bagisci.Sag_vefat;
-                Sag_vefatDDL.SelectedValue = sv;
-
-                VefatTarihiTxt.Value = Sag_vefatDDL.SelectedItem.Value.Equals(ProjeConstants.BAGISCI_SAG) ? "" : bagisci.VefatTarihi.ConvertToDatetimeEmptyIfNull();
+                
                 Telefon2Txt.Text = bagisci.Telefon2;
 
                 ListItem ilItem = IliDDL.Items.FindByValue(IliDDL.Items.FindByText(bagisci.Ili).Value);
@@ -204,7 +201,20 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
                 BolgeTxtDoldur();
                 if (IlcesiDDL.Items.FindByText(bagisci.Ilcesi) != null)
                     IlcesiDDL.SelectedValue = IlcesiDDL.Items.FindByText(bagisci.Ilcesi).Value;
-
+                
+                if (!string.IsNullOrEmpty(bagisci.Sag_vefat))
+                    sv = bagisci.Sag_vefat;
+                Sag_vefatDDL.SelectedValue = sv;
+                //Vefat
+                VefatTarihiTxt.Value = Sag_vefatDDL.SelectedItem.Value.Equals(ProjeConstants.BAGISCI_SAG) ? "" : bagisci.VefatTarihi.ConvertToDatetimeEmptyIfNull();
+                DefinYeriTxt.Text = bagisci.DefinYeri;
+                DefinAciklamaTxt.Text = bagisci.DefinAciklama;
+                ListItem definIlItem = DefinIliDDL.Items.FindByValue(DefinIliDDL.Items.FindByText(bagisci.DefinIli==null?"": bagisci.DefinIli).Value);
+                if (definIlItem != null)
+                    DefinIliDDL.SelectedValue = definIlItem.Value;
+                DefinIlceDDLDoldur();
+                if (DefinIlcesiDDL.Items.FindByText(bagisci.DefinIlcesi) != null)
+                    DefinIlcesiDDL.SelectedValue = DefinIlcesiDDL.Items.FindByText(bagisci.DefinIlcesi).Value;
             }
             catch (Exception exception)
             {
@@ -243,8 +253,34 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
         private void DDLleriDoldur()
         {
             IlDDDLDoldur();
+            DefinIlDDDLDoldur();
             SosyalGuvenceDDLDoldur();
             Sag_vefatDDLDoldur();
+        }
+        private void DefinIlDDDLDoldur()
+        {
+            if (DefinIliDDL.SelectedItem == null)
+            {
+                DefinIliDDL.Items.Clear();
+                Il pIl = new Il();
+                List<Il> list = pIl.SelectAll<Il>();
+                foreach (Il il in list)
+                {
+                    DefinIliDDL.Items.Add(new ListItem(il.IlAdi, il.Id.ToString()));
+                }
+                DefinIlceDDLDoldur();
+            }
+
+        }
+        private void DefinIlceDDLDoldur()
+        {
+            DefinIlcesiDDL.Items.Clear();
+            Ilce pIlce = new Ilce();
+            List<Ilce> list = pIlce.SelectByIlId(DefinIliDDL.SelectedValue.ConvertToInt());
+            foreach (Ilce ilce in list)
+            {
+                DefinIlcesiDDL.Items.Add(new ListItem(ilce.IlceAdi, ilce.Id.ToString()));
+            }
         }
         private void SosyalGuvenceDDLDoldur()
         {
@@ -297,8 +333,15 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
 
             bagisci.Sag_vefat = Sag_vefatDDL.SelectedValue;
             bagisci.VefatTarihi = VefatTarihiTxt.Value.ConvertToDatetime();
+            bagisci.DefinYeri=DefinYeriTxt.Text;
+            bagisci.DefinAciklama=DefinAciklamaTxt.Text;
+            bagisci.DefinIlcesi = DefinIlcesiDDL.SelectedItem.ToString();
+            ListItem definIlItem = DefinIliDDL.SelectedItem;
+            Il definil = new Il();
+            definil.Id = Convert.ToInt16(definIlItem.Value);
+            definil.IlAdi = definIlItem.Text;
+            bagisci.DefinIli = definil.IlAdi;
 
-            bagisci.Olusturan = CurrentUserName;
             int tasinmazBagisciId = bagisci.Save();
             bagisci.Id = tasinmazBagisciId;
             if (tasinmazBagisciId > 0)
@@ -332,7 +375,14 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
 
             bagisci.Sag_vefat = Sag_vefatDDL.SelectedValue;
             bagisci.VefatTarihi = VefatTarihiTxt.Value.ConvertToDatetime(); ;
-            bagisci.Degistiren = CurrentUserName;
+            bagisci.DefinYeri = DefinYeriTxt.Text;
+            bagisci.DefinAciklama = DefinAciklamaTxt.Text;
+            bagisci.DefinIlcesi = DefinIlcesiDDL.SelectedItem.ToString();
+            ListItem definIlItem = DefinIliDDL.SelectedItem;
+            Il definil = new Il();
+            definil.Id = Convert.ToInt16(definIlItem.Value);
+            definil.IlAdi = definIlItem.Text;
+            bagisci.DefinIli = definil.IlAdi;
             bagisci.Update();
             return bagisci;
         }
@@ -376,6 +426,10 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
         {
             IlceDDLDoldur();
             BolgeTxtDoldur();
+        }
+        protected void DefinIliDDL_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DefinIlceDDLDoldur();
         }
         protected void DeleteBtn_Click(object sender, EventArgs e)
         {
@@ -476,14 +530,13 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
         {
             if (Sag_vefatDDL.SelectedItem.Text.Equals(ProjeConstants.BAGISCI_SAG))
             {
-                VefatTarihiTxt.Value = string.Empty;
-                VefatTarihiDiv.Visible = false;
-                VefatTarihiTxt.Visible = false;
+                VefatDiv.Visible = false;
+                DefinAciklamaDiv.Visible = false;
             }
             else
             {
-                VefatTarihiDiv.Visible = true;
-                VefatTarihiTxt.Visible = true;
+                VefatDiv.Visible = true;
+                DefinAciklamaDiv.Visible = true;
             }
         }
 

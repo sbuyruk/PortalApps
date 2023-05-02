@@ -86,7 +86,10 @@ namespace Utility.ProjeGlobal
         public const string TBYS_VASIYETEKONUVARLIK = "Vasiyete Konu Varlık";
         public const string TBYS_YASALFAIZ = "Yasal Faiz";
         //moduller  TYS
-
+        // Hukuk
+        public const string HUKUK_DAVA_DURUMU_DEVAM = "Devam Ediyor";
+        public const string HUKUK_DAVA_DURUMU_KARARACIKTI = "Karara Çıktı";
+        public const string HUKUK_DAVA_DURUMU_ARSIV = "Arşiv";
         //moduller  Portal
         public const string PORTAL_TOPLANTI = "Toplantı";
         public const string PORTAL_TOPLANTIKATILIM = "Toplantı Katılım";
@@ -106,6 +109,7 @@ namespace Utility.ProjeGlobal
         public const string NBYSBELGELERI_LIB = "NBYSBelgeleri";
 
         public const string PATH_TBYS_URL = "/YonetimBirimleri/InsaatVeEmlakYonetimiSubesi";
+        public const string PATH_HUKUK_URL = "/YonetimBirimleri/HukukMusavirligi";
         public const string PATH_TURKISHTXT_URL = "/OrtakBelgeler/Turkish.txt";
 
         public const int RESIM_VESIKALIK_EN = 142;
