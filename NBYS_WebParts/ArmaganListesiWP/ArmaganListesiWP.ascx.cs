@@ -953,11 +953,12 @@ namespace NBYS_WebParts.ArmaganListesiWP
                         else {
                             $(row).addClass('diger');
                         }
-                        var ili = data.IlId;
-                        if ((ili==1) ||(ili==2) ||(ili==21) ||(ili==27) ||(ili==31) ||(ili==44) ||(ili==46) ||(ili==63) ||(ili==79) ||(ili==80) )
-                        {
-                            $(row).addClass('afet-ili');
-                        }
+                        // bu iller AFET nedeniyle ekranda renki olsun
+                        //var ili = data.IlId;
+                        //if ((ili==1) ||(ili==2) ||(ili==21) ||(ili==27) ||(ili==31) ||(ili==44) ||(ili==46) ||(ili==63) ||(ili==79) ||(ili==80) )
+                        //{
+                        //    $(row).addClass('afet-ili');
+                        //}
                     },//set row color
                 });
 

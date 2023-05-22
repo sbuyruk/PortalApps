@@ -82,7 +82,8 @@ namespace Portal_WebParts.GunlukYemekListesiMoveWP
                                 {
                                     DataRow dataRow = dataTable.NewRow();
                                     dataRow["YemekAdi"] = Convert.ToString(menu["Yemek" + i]);
-                                    dataRow["Kalori"] = Convert.ToInt32(menu["Yemek" + i + "Kalori"]) + " Kalori";
+                                    int kalori = Convert.ToInt32(menu["Yemek" + i + "Kalori"]);
+                                    dataRow["Kalori"] = kalori==0?"-" : kalori + " Kalori";
                                     toplamKalori += Convert.ToDouble(menu["Yemek" + i + "Kalori"]);
                                     dataTable.Rows.Add(dataRow);
                                 }
@@ -130,7 +131,7 @@ namespace Portal_WebParts.GunlukYemekListesiMoveWP
                     row.Controls.Add(yemekAdiCell);
 
                     TableCell kaloriCell = new TableCell();
-                    kaloriCell.Text = kalori;
+                    kaloriCell.Text = kalori.Equals("0") ? "-":kalori;
                     row.Controls.Add(kaloriCell);
                     YemekTable.Controls.Add(row);
 

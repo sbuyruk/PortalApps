@@ -278,7 +278,7 @@ namespace Model.IKYS
 					IIF(FORMAT(C.BaslamaTar,'dd.MM.yyyy')='01.01.1900','',FORMAT(C.BaslamaTar,'dd.MM.yyyy')) BaslamaTar,
 					C.CalismaDurumu,
 					IIF(FORMAT(C.AyrilmaTar,'dd.MM.yyyy')='01.01.1900','',FORMAT(C.AyrilmaTar,'dd.MM.yyyy')) AyrilmaTar,
-					C.AyrilmaSebebi,C.ProtokolSiraNo,C.SGKSicilNo,C.SGKBasTar,C.SGKDestekPrimi,C.VakifOncesiPrimGunSayisi,
+					C.AyrilmaSebebi,C.ProtokolSiraNo,C.SGKSicilNo,C.SGKBasTar,C.VakifOncesiPrimGunSayisi,
 					IIF(FORMAT(C.EmeklilikTarihi,'dd.MM.yyyy')='01.01.1900','',FORMAT(C.EmeklilikTarihi,'dd.MM.yyyy')) EmeklilikTarihi,
 					IIF(FORMAT(C.IzinDonemiBasTar,'dd.MM.yyyy')='01.01.1900','',FORMAT(C.IzinDonemiBasTar,'dd.MM.yyyy')) IzinDonemiBasTar,                    
 					D.Adi Unvan, F.Adi Gorev, E.Adi BirimSube, 

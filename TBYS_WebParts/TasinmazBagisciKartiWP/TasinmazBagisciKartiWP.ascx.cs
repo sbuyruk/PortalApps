@@ -222,7 +222,7 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
             r2c2.Text = "Telefon2: " + bagisci.Telefon2;
             r3c2.Text = "TC Kimlik No : " + bagisci.TCKimlikNo;
 
-            r1c3.Text = "Sağ mı : " + bagisci.Sag_vefat;
+            r1c3.Text = SagVefatGetir(bagisci);// "Sağ mı : " + bagisci.Sag_vefat;
             r2c3.Text = "Doğum Tarihi : " + bagisci.DogumTarihi.ConvertToDatetimeEmptyIfNull();
             r3c3.Text = "Doğum Yeri : " + bagisci.DogumYeri;
 
@@ -233,7 +233,24 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
 
         }
 
-        
+        private string SagVefatGetir(TasinmazBagisci bagisci)
+        {
+            string retval=string.Empty;
+            string sag_vefat = bagisci.Sag_vefat;
+            if (sag_vefat.Equals(ProjeConstants.BAGISCI_SAG))
+            {
+                retval = "Sağ mı : " + bagisci.Sag_vefat;
+            }
+            else
+            {
+                string vefatTar = string.IsNullOrEmpty(bagisci.VefatTarihi.ConvertToDatetimeEmptyIfNull()) ? string.Empty : " (Tarih: " + bagisci.VefatTarihi.ConvertToDatetimeEmptyIfNull() +")";
+                string definBilgisi = string.IsNullOrEmpty(bagisci.DefinIli.Trim()+bagisci.DefinIlcesi.Trim()+bagisci.DefinYeri.Trim() + bagisci.DefinAciklama.Trim()) ? 
+                    string.Empty :
+                    "<br>" + "Defin Bilgisi: " + bagisci.Ili + " - " + bagisci.Ilcesi + " " + bagisci.DefinYeri + " " + bagisci.Aciklama;
+                retval = "Sağ mı : Vefat " + vefatTar + definBilgisi;
+            }
+            return retval;
+        }
 
         private void TasinmazlarListesiHeaders()
         {

@@ -331,7 +331,6 @@ namespace IKYS_WebParts.PersonelListesiWP
             public string SGKSicilNo { get; set; }
             public string SGKBasTar { get; set; }
             public string VakifOncesiPrimGunSayisi { get; set; }
-            public bool SGKDestekPrimi { get; set; }
             public string EmeklilikTarihi { get; set; }
             public string Unvan { get; set; }
             public string BirimSube { get; set; }
