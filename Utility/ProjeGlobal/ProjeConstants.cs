@@ -188,6 +188,10 @@ namespace Utility.ProjeGlobal
 
         public const char DELIMITER = ';';
 
+        //Birimler
+        public const string BIRIM_INSAATEMLAK = "İnşaat ve Emlak Yönetim Şube Müdürlüğü";
+        public const string BIRIM_HUKUK = "Hukuk Müşavirliği";
+        public const string BIRIM_BOLGETEMSILCILIGI = "Bölge Temsilciliği";
 
         #endregion
 
@@ -317,6 +321,8 @@ namespace Utility.ProjeGlobal
         public const string PAGE_KIRA_BAKIYEDEVRI = "KiraBakiyeDevri.aspx";
         public const string PAGE_KIRAEKSTRE_LIST = "KiraBankaEkstreListesi.aspx";
         public const string PAGE_KIRAODEME_DOSYAYUKLEME = "KiraOdemeDosyasiYukleme.aspx";
+        public const string PAGE_BORCLUKIRACITAKIPISLEMLERI = "BorcluKiraciIslemleri.aspx";
+        public const string PAGE_BORCLUKIRACITAKIBI = "BorcluKiraciTakibiByBolge.aspx";
         //Vasiyetci
         public const string PAGE_VASIYETCI_GIRISI = "VasiyetciGirisi.aspx";
         public const string PAGE_VASIYETCI_LISTESI = "VasiyetciListesi.aspx";

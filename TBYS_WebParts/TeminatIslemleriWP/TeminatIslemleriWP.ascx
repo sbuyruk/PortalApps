@@ -81,6 +81,10 @@
                     <div class="card">
                         <div id="CardDiv" class="card-body">
                             <asp:Label CssClass="col-form-label font-weight-bold" ID="AdiLbl" runat="server"></asp:Label>
+                            <div class="form-group">
+                                    <asp:Table ID="TasinmazAdresTable" runat="server" CssClass="table table-bordered table-striped"></asp:Table>
+                                </div>
+                            <hr />
                             <asp:Label CssClass="col-form-label" ID="SozlesmeLbl" runat="server"></asp:Label>
                             <div class="form-group row">
                                 <div class="form-group col-3">

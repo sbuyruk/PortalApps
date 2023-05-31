@@ -99,6 +99,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                         {
                             KiraciIdQS = kiraci.Id.ToString();
                             AdiLbl.Text = kiraci == null ? "" : kiraci.Adi + " " + kiraci.Soyadi ;
+                            SozlesmeTasinmazTablosunuDoldur(kiraSozlesme);
                             SozlesmeLbl.Text = " ( " +kiraSozlesme.SozBasTar.ConvertToDatetimeEmptyIfNull() + " - " + kiraSozlesme.SozBitTar.ConvertToDatetimeEmptyIfNull() + " Tarihli Sözleşme )";
                         }
                         TBYSOrtak.TeminatIslemleriniHesaplaVeKaydet(kiraSozlesme);
@@ -120,6 +121,43 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                 exhelper.PublishException();
             }
         }
+
+        private void SozlesmeTasinmazTablosunuDoldur(KiraSozlesme kiraSozlesme)
+        {
+            TasinmazAdresTable.Rows.Clear();
+            string[] headers = { "Sıra", "Taşınmaz Adresi" };
+            UtilityHelper.SetTableHeaders(TasinmazAdresTable, headers);
+            SozlesmeTasinmaz st = new SozlesmeTasinmaz();
+            DataTable dataTable = st.SelectBySozlesmeIdReturnDataTable(kiraSozlesme.Id);
+            if (dataTable != null)
+            {
+                int sira = 0;
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    TableRow tableRow = new TableRow();
+                    TableCell siraCell = new TableCell();
+                    siraCell.Text = (++sira).ToString();
+                    TableCell adresCell = new TableCell();
+                    adresCell.Text = row["AdresBolumNoIliIlcesi"].ReturnEmptyIfNull().ToString();
+                    tableRow.Controls.Add(siraCell);
+                    tableRow.Controls.Add(adresCell);
+                    TasinmazAdresTable.Rows.Add(tableRow);
+                    if (sira > 2 && dataTable.Rows.Count>3)
+                    {
+                        TableRow tableRow1 = new TableRow();
+                        TableCell siraCell1 = new TableCell();
+                        siraCell1.Text = "...";
+                        TableCell adresCell1 = new TableCell();
+                        adresCell1.Text = " +"+(dataTable.Rows.Count-3)+" Taşınmaz daha... (Toplam "+ dataTable.Rows.Count+" Taşınmaz.)";
+                        tableRow1.Controls.Add(siraCell1);
+                        tableRow1.Controls.Add(adresCell1);
+                        TasinmazAdresTable.Rows.Add(tableRow1);
+                        break;
+                    }
+                }
+            }
+        }
+
         private void TeminatBilgileriniDoldur(KiraSozlesme kiraSozlesme)
         {
             if (kiraSozlesme != null)

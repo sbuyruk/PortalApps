@@ -20,8 +20,9 @@ namespace Model.TBYS
         public string TakipIslemi { get; set; }
         public int IslemAyi { get; set; }
         public int IslemYili { get; set; }
-        public string IslemYapan{ get; set; }
+        public string IslemYapan { get; set; }
         public DateTime IslemTarihi { get; set; }
+        public string Bolge { get; set; }
         public string Aciklama { get; set; }
 
         public override T Select<T>(int id)
@@ -48,7 +49,7 @@ namespace Model.TBYS
             return kiraBorcuTakip;
 
         }
-        
+
         public override int Save()
         {
             try
@@ -142,7 +143,7 @@ namespace Model.TBYS
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
         }
-        
+
         public KiraBorcuTakip SelectByKiraciIdAyYil(int kiraciId)
         {
             string sqlString = string.Format(@"
@@ -163,6 +164,53 @@ namespace Model.TBYS
             {
                 return null;
             }
+        }
+        public int SelectCountAdetByTakipIslemiBolge(string takipIslemi, string bolge, int ay, int yil)
+        {
+            string takipIslemiStr = string.IsNullOrEmpty(takipIslemi) ? string.Empty : " AND TakipIslemi=" + takipIslemi.ReturnQuotedValue();
+            string bolgeStr = string.IsNullOrEmpty(bolge) ? string.Empty : " AND Bolge=" + bolge.ReturnQuotedValue();
+            string ayStr = ay < 1 ? string.Empty : " AND IslemAyi=" + ay;
+            string yilStr = ay < 2005 ? string.Empty : " AND IslemYili=" + yil;
+            int adet = 0;
+            string sqlString = string.Format(@"
+                Select COUNT(Id) Adet FROM KiraBorcuTakip_Table                
+                WHERE 1>0 
+                {0} 
+                {1}
+                {2}
+                {3} ", takipIslemiStr, bolgeStr, ayStr,yilStr);
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            if (dataTable != null)
+            {
+                if (dataTable.Rows.Count > 0)
+                {
+                    DataRow row = dataTable.Rows[0];
+                    adet = row["Adet"].ToString().ConvertToInt();
+                }
+            }
+            return adet;
+
+        }
+        public int SelectCountBySozlesmeId(int kiraSozlesmeId, string takipIslemi)
+        {
+            string takipIslemiStr = string.IsNullOrEmpty(takipIslemi) ? string.Empty : " AND TakipIslemi=" + takipIslemi.ReturnQuotedValue();
+            int adet = 0;
+            string sqlString = string.Format(@"
+                Select COUNT(Id) Adet FROM KiraBorcuTakip_Table                
+                WHERE KiraSozlesmeId={0} 
+                {1}
+                ", kiraSozlesmeId, takipIslemiStr);
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            if (dataTable != null)
+            {
+                if (dataTable.Rows.Count > 0)
+                {
+                    DataRow row = dataTable.Rows[0];
+                    adet = row["Adet"].ToString().ConvertToInt();
+                }
+            }
+            return adet;
+
         }
     }
 }

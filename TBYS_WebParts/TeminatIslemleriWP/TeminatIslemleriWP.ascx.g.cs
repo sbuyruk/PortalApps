@@ -57,6 +57,10 @@ namespace TBYS_WebParts.TeminatIslemleriWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.Table TasinmazAdresTable;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.Label SozlesmeLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -275,6 +279,20 @@ namespace TBYS_WebParts.TeminatIslemleriWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.Table @__BuildControlTasinmazAdresTable() {
+            global::System.Web.UI.WebControls.Table @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Table();
+            this.TasinmazAdresTable = @__ctrl;
+            @__ctrl.TemplateControl = this;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "TasinmazAdresTable";
+            @__ctrl.CssClass = "table table-bordered table-striped";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlSozlesmeLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -404,54 +422,60 @@ namespace TBYS_WebParts.TeminatIslemleriWP {
             global::System.Web.UI.WebControls.Label @__ctrl1;
             @__ctrl1 = this.@__BuildControlAdiLbl();
             @__parser.AddParsedSubObject(@__ctrl1);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
-            global::System.Web.UI.WebControls.Label @__ctrl2;
-            @__ctrl2 = this.@__BuildControlSozlesmeLbl();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            <div class=\"form-group\">\r\n                         " +
+                        "           "));
+            global::System.Web.UI.WebControls.Table @__ctrl2;
+            @__ctrl2 = this.@__BuildControlTasinmazAdresTable();
             @__parser.AddParsedSubObject(@__ctrl2);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                            <hr />\r\n   " +
+                        "                         "));
+            global::System.Web.UI.WebControls.Label @__ctrl3;
+            @__ctrl3 = this.@__BuildControlSozlesmeLbl();
+            @__parser.AddParsedSubObject(@__ctrl3);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                             <div class=""form-group row"">
                                 <div class=""form-group col-3"">
                                     <label class=""col-form-label"" for=""TeminatCinsiDDL"">Teminat Cinsi</label>
                                     "));
-            global::System.Web.UI.WebControls.DropDownList @__ctrl3;
-            @__ctrl3 = this.@__BuildControlTeminatCinsiDDL();
-            @__parser.AddParsedSubObject(@__ctrl3);
+            global::System.Web.UI.WebControls.DropDownList @__ctrl4;
+            @__ctrl4 = this.@__BuildControlTeminatCinsiDDL();
+            @__parser.AddParsedSubObject(@__ctrl4);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                                <div cl" +
                         "ass=\"form-group col\">\r\n                                    <label class=\"col-for" +
                         "m-label\" for=\"TeminatTarihiTxt\">Teminat Tarihi</label>\r\n                        " +
                         "            "));
-            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl4;
-            @__ctrl4 = this.@__BuildControlTeminatTarihiTxt();
-            @__parser.AddParsedSubObject(@__ctrl4);
+            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl5;
+            @__ctrl5 = this.@__BuildControlTeminatTarihiTxt();
+            @__parser.AddParsedSubObject(@__ctrl5);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                 </div>
                                 <div class=""form-group col"">
                                     <label class=""col-form-label"" for=""TeminatTutariTxt"">Belirlenen Teminat</label>
                                     "));
-            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl5;
-            @__ctrl5 = this.@__BuildControlTeminatTutariTxt();
-            @__parser.AddParsedSubObject(@__ctrl5);
+            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl6;
+            @__ctrl6 = this.@__BuildControlTeminatTutariTxt();
+            @__parser.AddParsedSubObject(@__ctrl6);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                                <div cl" +
                         "ass=\"form-group col\">\r\n                                    <label class=\"col-for" +
                         "m-label\" for=\"OdenenTeminatTxt\">Alınan Teminat</label>\r\n                        " +
                         "            "));
-            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl6;
-            @__ctrl6 = this.@__BuildControlOdenenTeminatTxt();
-            @__parser.AddParsedSubObject(@__ctrl6);
+            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl7;
+            @__ctrl7 = this.@__BuildControlOdenenTeminatTxt();
+            @__parser.AddParsedSubObject(@__ctrl7);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                                <div cl" +
                         "ass=\"form-group col\">\r\n                                    <label class=\"col-for" +
                         "m-label\" for=\"IadeTeminatTxt\">İade/Mahsup Ed.</label>\r\n                         " +
                         "           "));
-            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl7;
-            @__ctrl7 = this.@__BuildControlIadeTeminatTxt();
-            @__parser.AddParsedSubObject(@__ctrl7);
+            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl8;
+            @__ctrl8 = this.@__BuildControlIadeTeminatTxt();
+            @__parser.AddParsedSubObject(@__ctrl8);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                                <div cl" +
                         "ass=\"form-group col\">\r\n                                    <label class=\"col-for" +
                         "m-label\" for=\"KalanTeminatTxt\">Kalan Teminat</label>\r\n                          " +
                         "          "));
-            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl8;
-            @__ctrl8 = this.@__BuildControlKalanTeminatTxt();
-            @__parser.AddParsedSubObject(@__ctrl8);
+            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl9;
+            @__ctrl9 = this.@__BuildControlKalanTeminatTxt();
+            @__parser.AddParsedSubObject(@__ctrl9);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                 </div>
                             </div>
@@ -461,9 +485,9 @@ namespace TBYS_WebParts.TeminatIslemleriWP {
                             <div class=""form-group "">
                                 <label class=""col-form-label"" for=""TeminatAciklamaTxt"">Teminat Açıklaması</label>
                                 "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl9;
-            @__ctrl9 = this.@__BuildControlTeminatAciklamaTxt();
-            @__parser.AddParsedSubObject(@__ctrl9);
+            global::System.Web.UI.WebControls.TextBox @__ctrl10;
+            @__ctrl10 = this.@__BuildControlTeminatAciklamaTxt();
+            @__parser.AddParsedSubObject(@__ctrl10);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                             </div>
                             <div class=""table form-group"">

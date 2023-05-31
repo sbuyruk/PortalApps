@@ -186,7 +186,7 @@ namespace Model.TBYS
                 SELECT 
                     A.Id KiraSozlesmeId, A.Bolge, A.DosyaNo, B.Adi+' '+B.Soyadi Kiraci, A.KiraciId,
                     A.IlkSozlesmeTar, A.SozBasTar, A.SozBitTar, A.ArtisAyi, A.OdemeSekli, 
-                    A.KiraBedeli, C.AnaPara AnaPara,C.FaizTutari, C.FaizliBakiye, C.VadeBasTar, C.VadeBitTar, 
+                    A.KiraBedeli, C.AnaPara AnaPara,C.FaizTutari, C.FaizliBakiye, C.VadeBasTar, C.VadeBitTar, C.Id OdemePlaniId,
                     FORMAT(C.FaizliBakiye,'###.00') FaizliBakiyeFormat,
                     B.Adres, B.Ili,B.Ilcesi,B.Semt,
 	                A.TeminatOdemeTarihi,A.TeminatTutari,

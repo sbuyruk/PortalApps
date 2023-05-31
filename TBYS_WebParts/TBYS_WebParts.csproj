@@ -161,6 +161,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>BorcluKiracilarWP.ascx</DependentUpon>
     </Compile>
+    <Compile Include="BorcluKiraciTakibiByBolgeWP\BorcluKiraciTakibiByBolgeWP.ascx.cs">
+      <DependentUpon>BorcluKiraciTakibiByBolgeWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="BorcluKiraciTakibiByBolgeWP\BorcluKiraciTakibiByBolgeWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BorcluKiraciTakibiByBolgeWP.ascx</DependentUpon>
+    </Compile>
     <Compile Include="EmptyWP\EmptyWP.ascx.cs">
       <DependentUpon>EmptyWP.ascx</DependentUpon>
     </Compile>
@@ -717,6 +725,10 @@
     <None Include="BorcluKiracilarWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{1615c320-484a-4801-a475-5ae5ef1c3593}</SharePointProjectItemId>
     </None>
+    <None Include="BorcluKiraciTakibiByBolgeWP\BorcluKiraciTakibiByBolgeWP.webpart" />
+    <None Include="BorcluKiraciTakibiByBolgeWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{25d9a615-ef88-4fa2-8576-dc5300081be5}</SharePointProjectItemId>
+    </None>
     <None Include="Content\bootstrap-grid.css.map" />
     <None Include="Content\bootstrap-grid.min.css.map" />
     <None Include="Content\bootstrap-grid.rtl.css.map" />
@@ -1070,6 +1082,11 @@
       <LastGenOutput>BorcluKiracilarWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="BorcluKiracilarWP\Elements.xml" />
+    <Content Include="BorcluKiraciTakibiByBolgeWP\BorcluKiraciTakibiByBolgeWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>BorcluKiraciTakibiByBolgeWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="BorcluKiraciTakibiByBolgeWP\Elements.xml" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-grid.rtl.css" />
