@@ -70,6 +70,7 @@ namespace Utility.ProjeGlobal
         public const string TBYS_KIRACI = "Kiracı";
         public const string TBYS_KIRAEKSTREAKTARMA = "Kira Ekstre Aktarma";
         public const string TBYS_KIRASOZLESME = "Kira Sözlesme";
+        public const string TBYS_KIRABORCUTAKIP = "Kira Borcu Takip";
         public const string TBYS_ODEME = "Ödeme";
         public const string TBYS_ODEMEAYRINTI = "Ödeme Ayrıntı";
         public const string TBYS_ODEMEAYRISTIRMA = "Ödeme Ayrıştırma";

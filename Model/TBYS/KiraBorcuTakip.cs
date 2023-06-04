@@ -64,7 +64,7 @@ namespace Model.TBYS
                 if (id > 0 && ProjeConstants.TBYS_SAVE_LOG)
                 {
                     OlayKayit olayKayit = new OlayKayit();
-                    olayKayit.GirisOlayKaydet(this, ProjeConstants.TBYS, ProjeConstants.TBYS_KIRASOZLESME);
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.TBYS, ProjeConstants.TBYS_KIRABORCUTAKIP);
                 }
                 return id;
             }
