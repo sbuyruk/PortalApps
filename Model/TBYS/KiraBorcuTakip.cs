@@ -22,6 +22,8 @@ namespace Model.TBYS
         public int IslemYili { get; set; }
         public string IslemYapan { get; set; }
         public DateTime IslemTarihi { get; set; }
+        public string TebligEdilenKisi { get; set; }
+        public DateTime TebligTarihi { get; set; }
         public string Bolge { get; set; }
         public string Aciklama { get; set; }
 

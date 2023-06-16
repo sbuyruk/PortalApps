@@ -282,6 +282,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             IlDDLDoldur();
             MulkiyetDDLDoldur();
             EdinmeSekliDDLDoldur();
+            KiraDurumuDDLDoldur();
             KullanimDurumuDDLDoldur();
             KullanimSekliDDLDoldur();
             KatMulkiyetiDDLDoldur();
@@ -362,6 +363,12 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             KullanimDurumuDDL.Items.Add(ProjeConstants.KULLANIMDURUMU_DIGER);
 
         }
+        private void KiraDurumuDDLDoldur()
+        {
+            KiraDurumuDDL.Items.Clear();
+            KiraDurumuDDL.Items.Add(ProjeConstants.KIRADURUMU_KIRAYAUYGUN);
+            KiraDurumuDDL.Items.Add(ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL);
+        }
         private void MulkiyetDDLDoldur()
         {
             MukliyetSekliDDL.Items.Clear();
@@ -418,16 +425,22 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 IlceDDLDoldur();
                 BolgeTxtDoldur();
                 SigortaDurumuDDLDoldur();
-                if (IlcesiDDL.Items.FindByText(tasinmaz.Ilcesi) != null)
-                    IlcesiDDL.SelectedValue = IlcesiDDL.Items.FindByText(tasinmaz.Ilcesi).Value;
-                if (KullanimDurumuDDL.Items.FindByText(tasinmaz.KullanimDurumu) != null)
-                    KullanimDurumuDDL.SelectedValue = KullanimDurumuDDL.Items.FindByText(tasinmaz.KullanimDurumu).Value;
-                if (KatMulkiyetiDDL.Items.FindByText(tasinmaz.KatMulkiyeti) != null)
-                    KatMulkiyetiDDL.SelectedValue = KatMulkiyetiDDL.Items.FindByText(tasinmaz.KatMulkiyeti).Value;
-                if (KullanimSekliDDL.Items.FindByText(tasinmaz.KullanimSekli) != null)
-                    KullanimSekliDDL.SelectedValue = KullanimSekliDDL.Items.FindByText(tasinmaz.KullanimSekli).Value;
-                if (SigortaDDL.Items.FindByText(tasinmaz.SigortaDurumu) != null)
-                    SigortaDDL.SelectedValue = SigortaDDL.Items.FindByText(tasinmaz.SigortaDurumu).Value;
+                //if (IlcesiDDL.Items.FindByText(tasinmaz.Ilcesi) != null)
+                //    IlcesiDDL.SelectedValue = IlcesiDDL.Items.FindByText(tasinmaz.Ilcesi).Value;
+                //if (KullanimDurumuDDL.Items.FindByText(tasinmaz.KullanimDurumu) != null)
+                //    KullanimDurumuDDL.SelectedValue = KullanimDurumuDDL.Items.FindByText(tasinmaz.KullanimDurumu).Value;
+                //if (KatMulkiyetiDDL.Items.FindByText(tasinmaz.KatMulkiyeti) != null)
+                //    KatMulkiyetiDDL.SelectedValue = KatMulkiyetiDDL.Items.FindByText(tasinmaz.KatMulkiyeti).Value;
+                //if (KullanimSekliDDL.Items.FindByText(tasinmaz.KullanimSekli) != null)
+                //    KullanimSekliDDL.SelectedValue = KullanimSekliDDL.Items.FindByText(tasinmaz.KullanimSekli).Value;
+                //if (SigortaDDL.Items.FindByText(tasinmaz.SigortaDurumu) != null)
+                //    SigortaDDL.SelectedValue = SigortaDDL.Items.FindByText(tasinmaz.SigortaDurumu).Value;
+                UtilityHelper.SetDDLValue(IlcesiDDL, tasinmaz.Ilcesi);
+                UtilityHelper.SetDDLValue(KullanimDurumuDDL, tasinmaz.KullanimDurumu);
+                UtilityHelper.SetDDLValue(KatMulkiyetiDDL, tasinmaz.KatMulkiyeti);
+                UtilityHelper.SetDDLValue(KullanimSekliDDL, tasinmaz.KullanimSekli);
+                UtilityHelper.SetDDLValue(SigortaDDL, tasinmaz.SigortaDurumu);
+                UtilityHelper.SetDDLValue(KiraDurumuDDL, tasinmaz.KiraDurumu);
                 AdresTxt.Text = tasinmaz.Adres;
                 if (MukliyetSekliDDL.Items.FindByText(tasinmaz.MulkiyetSekli) != null)
                     MukliyetSekliDDL.SelectedValue = MukliyetSekliDDL.Items.FindByText(tasinmaz.MulkiyetSekli).Value;
@@ -489,6 +502,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             tasinmaz.Ili = ilItem.Text;
             tasinmaz.SorumluBolge = SorumluBolgeTxt.Text;
             tasinmaz.KullanimDurumu = KullanimDurumuDDL.SelectedValue;
+            tasinmaz.KiraDurumu = KiraDurumuDDL.SelectedValue;
             tasinmaz.KatMulkiyeti = KatMulkiyetiDDL.SelectedValue;
             tasinmaz.Nitelik = NitelikTxt.Text;
             tasinmaz.BulunduguKat = BulunduguKatTxt.Text;
@@ -580,6 +594,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 tasinmaz.Ili = ilItem.Text;
                 tasinmaz.SorumluBolge = SorumluBolgeTxt.Text;
                 tasinmaz.KullanimDurumu = KullanimDurumuDDL.SelectedValue;
+                tasinmaz.KiraDurumu = KiraDurumuDDL.SelectedValue;
                 tasinmaz.KatMulkiyeti = KatMulkiyetiDDL.SelectedValue;
                 tasinmaz.Nitelik = NitelikTxt.Text;
                 tasinmaz.BulunduguKat = BulunduguKatTxt.Text;

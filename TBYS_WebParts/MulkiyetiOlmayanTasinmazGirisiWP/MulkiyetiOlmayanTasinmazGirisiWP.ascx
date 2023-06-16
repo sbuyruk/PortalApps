@@ -64,7 +64,12 @@
                     </div>
                     <div class="col-4">
                         <div class="row">
+
                             <div class="form-group col">
+                                <div class="form-group m-0 ">
+                                    <label class="col-form-label" for="KiraDurumuDDL">Kira Durumu</label>
+                                    <asp:DropDownList ID="KiraDurumuDDL" runat="server" class="form-control" Style="height: auto"></asp:DropDownList>
+                                </div>
                                 <div class="form-group m-0 ">
                                     <label class="col-form-label" for="KullanimDurumuDDL">Kull.Durumu</label>
                                     <asp:DropDownList ID="KullanimDurumuDDL" runat="server" class="form-control" Style="height: auto"></asp:DropDownList>

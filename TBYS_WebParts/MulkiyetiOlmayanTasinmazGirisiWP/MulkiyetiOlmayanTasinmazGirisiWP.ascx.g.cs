@@ -93,6 +93,10 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.DropDownList KiraDurumuDDL;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.DropDownList KullanimDurumuDDL;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -371,6 +375,20 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.DropDownList @__BuildControlKiraDurumuDDL() {
+            global::System.Web.UI.WebControls.DropDownList @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.DropDownList();
+            this.KiraDurumuDDL = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "KiraDurumuDDL";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: auto");
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.WebControls.DropDownList @__BuildControlKullanimDurumuDDL() {
             global::System.Web.UI.WebControls.DropDownList @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.DropDownList();
@@ -540,13 +558,21 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP {
                     </div>
                     <div class=""col-4"">
                         <div class=""row"">
+
                             <div class=""form-group col"">
                                 <div class=""form-group m-0 "">
-                                    <label class=""col-form-label"" for=""KullanimDurumuDDL"">Kull.Durumu</label>
+                                    <label class=""col-form-label"" for=""KiraDurumuDDL"">Kira Durumu</label>
                                     "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl9;
-            @__ctrl9 = this.@__BuildControlKullanimDurumuDDL();
+            @__ctrl9 = this.@__BuildControlKiraDurumuDDL();
             @__parser.AddParsedSubObject(@__ctrl9);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                                <div cl" +
+                        "ass=\"form-group m-0 \">\r\n                                    <label class=\"col-fo" +
+                        "rm-label\" for=\"KullanimDurumuDDL\">Kull.Durumu</label>\r\n                         " +
+                        "           "));
+            global::System.Web.UI.WebControls.DropDownList @__ctrl10;
+            @__ctrl10 = this.@__BuildControlKullanimDurumuDDL();
+            @__parser.AddParsedSubObject(@__ctrl10);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                 </div>
                             </div>
@@ -554,16 +580,16 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP {
                                 <div class=""form-group m-0 "">
                                     <label class=""col-form-label"" for=""SigortaDDL"">Sigorta Dur.</label>
                                     "));
-            global::System.Web.UI.WebControls.DropDownList @__ctrl10;
-            @__ctrl10 = this.@__BuildControlSigortaDDL();
-            @__parser.AddParsedSubObject(@__ctrl10);
+            global::System.Web.UI.WebControls.DropDownList @__ctrl11;
+            @__ctrl11 = this.@__BuildControlSigortaDDL();
+            @__parser.AddParsedSubObject(@__ctrl11);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                                <div cl" +
                         "ass=\"form-group m-0 \">\r\n                                    <label class=\"col-fo" +
                         "rm-label\" for=\"KatMulkiyetiDDL\">Kat Mülk.</label>\r\n                             " +
                         "       "));
-            global::System.Web.UI.WebControls.DropDownList @__ctrl11;
-            @__ctrl11 = this.@__BuildControlKatMulkiyetiDDL();
-            @__parser.AddParsedSubObject(@__ctrl11);
+            global::System.Web.UI.WebControls.DropDownList @__ctrl12;
+            @__ctrl12 = this.@__BuildControlKatMulkiyetiDDL();
+            @__parser.AddParsedSubObject(@__ctrl12);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                 </div>
                             </div>
@@ -572,21 +598,21 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP {
                         <div class=""form-group m-0 "">
                             <label class=""col-form-label"" for=""KoyTxt"">Köy</label>
                             "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl12;
-            @__ctrl12 = this.@__BuildControlKoyTxt();
-            @__parser.AddParsedSubObject(@__ctrl12);
+            global::System.Web.UI.WebControls.TextBox @__ctrl13;
+            @__ctrl13 = this.@__BuildControlKoyTxt();
+            @__parser.AddParsedSubObject(@__ctrl13);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"form-group " +
                         "m-0 \">\r\n                            <label class=\"col-form-label\" for=\"SokakTxt\"" +
                         ">Sokak</label>\r\n                            "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl13;
-            @__ctrl13 = this.@__BuildControlSokakTxt();
-            @__parser.AddParsedSubObject(@__ctrl13);
+            global::System.Web.UI.WebControls.TextBox @__ctrl14;
+            @__ctrl14 = this.@__BuildControlSokakTxt();
+            @__parser.AddParsedSubObject(@__ctrl14);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"form-group " +
                         "m-0 \">\r\n                            <label class=\"col-form-label\" for=\"AciklamaT" +
                         "xt\">Açıklama</label>\r\n                            "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl14;
-            @__ctrl14 = this.@__BuildControlAciklamaTxt();
-            @__parser.AddParsedSubObject(@__ctrl14);
+            global::System.Web.UI.WebControls.TextBox @__ctrl15;
+            @__ctrl15 = this.@__BuildControlAciklamaTxt();
+            @__parser.AddParsedSubObject(@__ctrl15);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                         </div>
                     </div>

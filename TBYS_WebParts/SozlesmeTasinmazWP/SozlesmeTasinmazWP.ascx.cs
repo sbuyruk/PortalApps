@@ -379,7 +379,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
         private void TasinmazSecimiModalShow()
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            var jsonData = tasinmaz.SelectTasinmazBolumNoReturnJson(ProjeConstants.TASINMAZ_ENVANTERDE, ProjeConstants.KULLANIMDURUMU_KIRADA);
+            var jsonData = tasinmaz.SelectTasinmazBolumNoReturnJson(ProjeConstants.TASINMAZ_ENVANTERDE, ProjeConstants.KIRADURUMU_KIRAYAUYGUN);
             var jsString = CreateTasinmazModalDataTable(jsonData); //javascript kodu hazırlanıyor.
             UtilityHelper.ScriptCalistir(jsString);
             UtilityHelper.ScriptCalistir("TasinmazSecimiModal();");

@@ -744,6 +744,8 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                 BaslikLbl.CssClass = "col-form-label text-success font-weight-bold";
                 MesajLbl.CssClass = "col-form-label text-success ";
                 IslemTarihiTxt.Text = DateTime.Today.ConvertToDatetimeEmptyIfNull();
+                TebligTarihiTxt.Text = string.Empty;
+                TebligEdilenKisiTxt.Text = string.Empty;
                 var date = DateTime.Now;
                 var roundedDown = RoundDown(date, TimeSpan.FromMinutes(15));
                 UtilityHelper.SetDDLValue(IslemSaatiDDL, roundedDown.Hour + ":" + roundedDown.Minute); 
@@ -763,7 +765,11 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                     IslemTarihiLbl.Text = "Görüşme Tarihi";
                     IslemSaatiLbl.Text = "Görüşme Saati";
                     IslemSaatiLbl.Visible = true;
-                    IslemSaatiDDL.Visible = true;
+                    IslemSaatiDDL.Visible = true;                    
+                    TebligEdilenKisiLbl.Visible = false;
+                    TebligEdilenKisiTxt.Visible = false;
+                    TebligTarihiLbl.Visible = false;
+                    TebligTarihiTxt.Visible = false;
                     //IslemSaatiTxt.Visible = true;
                 }
                 else if(takipIslemi.Equals(ProjeConstants.KIRABORCU_YAZILIIHTAR))
@@ -774,7 +780,11 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                     IslemSaatiLbl.Text = "Gönderme Saati";
                     IslemSaatiLbl.Visible=false;
                     IslemSaatiDDL.Visible=false;
-                    //IslemSaatiTxt.Visible=false;
+                    TebligEdilenKisiLbl.Visible = true;
+                    TebligEdilenKisiTxt.Visible = true;
+                    TebligTarihiLbl.Visible = true;
+                    TebligTarihiTxt.Visible = true;
+
                 }
                 else if (takipIslemi.Equals(ProjeConstants.KIRABORCU_ICRATAKIBI))
                 {
@@ -784,7 +794,10 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                     IslemSaatiLbl.Text = "İcra Takibi Saati";
                     IslemSaatiLbl.Visible = false;
                     IslemSaatiDDL.Visible = false;
-                    //IslemSaatiTxt.Visible = false;
+                    TebligEdilenKisiLbl.Visible = false;
+                    TebligEdilenKisiTxt.Visible = false;
+                    TebligTarihiLbl.Visible = false;
+                    TebligTarihiTxt.Visible = false;
                 }
 
                 MesajLbl.Text = "<strong> "+(kiraci.Adi+" " +kiraci.Soyadi).Trim() + "</strong> adlı kiracının <strong>" + takipIslemi + "</strong> işlemi kaydedilecek, onaylıyor munuz?";
@@ -812,6 +825,8 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                 if (kiraci != null)
                 {
                     IslemTarihiTxt.Text = kiraBorcuTakip.IslemTarihi.ConvertToDatetimeEmptyIfNull();
+                    TebligTarihiTxt.Text = kiraBorcuTakip.TebligTarihi.ConvertToDatetimeEmptyIfNull();
+                    TebligEdilenKisiTxt.Text = kiraBorcuTakip.TebligEdilenKisi;
                     UtilityHelper.SetDDLValue (IslemSaatiDDL,kiraBorcuTakip.IslemTarihi.ToString("HH:mm"));
                     //IslemSaatiTxt.Text = kiraBorcuTakip.IslemTarihi.ToString("HH:mm");
 
@@ -831,6 +846,10 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                         IslemSaatiLbl.Text = "Görüşme Saati";
                         IslemSaatiLbl.Visible = true;
                         IslemSaatiDDL.Visible = true;
+                        TebligEdilenKisiLbl.Visible = false;
+                        TebligEdilenKisiTxt.Visible = false;
+                        TebligTarihiLbl.Visible = false;
+                        TebligTarihiTxt.Visible = false;
                     }
                     else if (takipIslemi.Equals(ProjeConstants.KIRABORCU_YAZILIIHTAR))
                     {
@@ -840,6 +859,10 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                         IslemSaatiLbl.Text = "Gönderme Saati";
                         IslemSaatiDDL.Visible = false;
                         IslemSaatiLbl.Visible = false;
+                        TebligEdilenKisiLbl.Visible = true;
+                        TebligEdilenKisiTxt.Visible = true;
+                        TebligTarihiLbl.Visible = true;
+                        TebligTarihiTxt.Visible = true;
                     }
                     else if (takipIslemi.Equals(ProjeConstants.KIRABORCU_ICRATAKIBI))
                     {
@@ -849,6 +872,11 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                         IslemSaatiLbl.Text = "İcra Takibi Saati";
                         IslemSaatiDDL.Visible = false;
                         IslemSaatiLbl.Visible = false;
+
+                        TebligEdilenKisiLbl.Visible = false;
+                        TebligEdilenKisiTxt.Visible = false;
+                        TebligTarihiLbl.Visible = false;
+                        TebligTarihiTxt.Visible = false;
                     }
 
                     MesajLbl.Text = "<strong> " + (kiraci.Adi + " " + kiraci.Soyadi).Trim() + "</strong> adlı kiracının <strong>" + takipIslemi + "</strong> işlemi güncellenecek, onaylıyor munuz?";
@@ -883,8 +911,12 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                 kiraBorcuTakip.KiraBorcuAySayisi = paramKiraBorcuAySayisiLbl.Value.ConvertToInt();
                 kiraBorcuTakip.IslemAyi = DateTime.Today.Month;
                 kiraBorcuTakip.IslemYili = DateTime.Today.Year;
+
                 kiraBorcuTakip.IslemYapan=UtilityHelper.GetCurrentUserName();
                 kiraBorcuTakip.IslemTarihi= string.IsNullOrEmpty(IslemTarihiTxt.Text)?DateTime.Today : IslemTarihiTxt.Text.ConvertToDatetime();
+                if (!string.IsNullOrEmpty(TebligTarihiTxt.Text))
+                    kiraBorcuTakip.TebligTarihi= TebligTarihiTxt.Text.ConvertToDatetime();
+                kiraBorcuTakip.TebligEdilenKisi = TebligEdilenKisiTxt.Text;
                 kiraBorcuTakip.Aciklama=AciklamaTxt.Text;
                 if (!string.IsNullOrEmpty(IslemTarihiTxt.Text)) 
                 { 
@@ -917,6 +949,8 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                     kiraBorcuTakip.IslemYili = DateTime.Today.Year;
                     kiraBorcuTakip.IslemYapan = UtilityHelper.GetCurrentUserName();
                     kiraBorcuTakip.IslemTarihi = string.IsNullOrEmpty(IslemTarihiTxt.Text) ? DateTime.Today : IslemTarihiTxt.Text.ConvertToDatetime();
+                    kiraBorcuTakip.TebligTarihi = string.IsNullOrEmpty(TebligTarihiTxt.Text) ? DateTime.Today : TebligTarihiTxt.Text.ConvertToDatetime();
+                    kiraBorcuTakip.TebligEdilenKisi = TebligEdilenKisiTxt.Text;
                     kiraBorcuTakip.Aciklama = AciklamaTxt.Text;
                     if (!string.IsNullOrEmpty(IslemTarihiTxt.Text))
                     {

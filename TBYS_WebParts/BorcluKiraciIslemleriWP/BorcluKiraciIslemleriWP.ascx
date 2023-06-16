@@ -186,16 +186,24 @@
                                         <asp:Label ID="IslemSaatiLbl" CssClass="col-from-label" runat="server" Text="İşlem Saati"></asp:Label>
                                         <asp:DropDownList ID="IslemSaatiDDL" runat="server" CssClass="form-control" Style="height: auto" />
                                     </div>
+                                     <div class="form-group col-3">
+                                        <asp:Label ID="TebligTarihiLbl" CssClass="col-from-label" runat="server" Text="Tebliğ Tarihi"></asp:Label>
+                                        <asp:TextBox ID="TebligTarihiTxt" CssClass="form-control DateTimePickerV1 input-date" placeholder="dd.mm.yyyy" runat="server" Text="" ClientIDMode="Static"></asp:TextBox>
+                                    </div>
+                                    <div class="form-group col-3">
+                                        <asp:Label ID="TebligEdilenKisiLbl" CssClass="col-from-label" runat="server" Text="Tebliğ Edilen Kişi"></asp:Label>
+                                        <asp:TextBox ID="TebligEdilenKisiTxt" CssClass="form-control " placeholder="Tebliğ edilen kişi" runat="server" Text="" ClientIDMode="Static"></asp:TextBox>
+                                    </div>
                                 </div>
 
                                 <div class="form-group">
 
-                                    <asp:TextBox ID="TakipIslemTxt" CssClass="form-control" placeholder="Telefon ile arandı" runat="server"></asp:TextBox>
+                                    <asp:TextBox ID="TakipIslemTxt" CssClass="form-control" placeholder="Telefon ile arandı"  runat="server" ></asp:TextBox>
                                 </div>
 
                                 <div class="form-group">
                                     <label class="col-form-label" for="AciklamaTxt">Açıklama</label>
-                                    <asp:TextBox ID="AciklamaTxt" runat="server" TextMode="MultiLine" Rows="3" class="form-control" type="text" placeholder="Görüşme ayrıntılarını giriniz" />
+                                    <asp:TextBox ID="AciklamaTxt" runat="server" TextMode="MultiLine" Rows="8" class="form-control" type="text" placeholder="Görüşme ayrıntılarını giriniz" />
                                 </div>
                                 <div>
                                     <asp:Label ID="MesajLbl" CssClass="col-form-label text-danger" runat="server" Text="Takip İşlemi Kaydedilecek"></asp:Label>

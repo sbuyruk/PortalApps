@@ -59,6 +59,10 @@
                                     <asp:TextBox ID="CinsiTxt" runat="server" CssClass="form-control" ToolTip="Cinsi"></asp:TextBox>
                                 </div>
                                 <div class="form-group m-0 ">
+                                    <label class="col-form-label" for="EdinmeSekliDDL">Edinme Şekli</label>
+                                    <asp:DropDownList ID="EdinmeSekliDDL" runat="server" class="form-control" Style="height: auto"></asp:DropDownList>
+                                </div>
+                                <div class="form-group m-0 ">
                                     <label class="col-form-label" for="BagisYiliTxt">Bağış Yılı</label>
                                     <asp:TextBox ID="BagisYiliTxt" runat="server" CssClass="form-control" ToolTip="Bağış Yılı"></asp:TextBox>
                                 </div>
@@ -85,6 +89,10 @@
                         <div class="row">
                             <div class="form-group col">
                                 <div class="form-group m-0 ">
+                                    <label class="col-form-label" for="KiraDurumuDDL">Kira Durumu</label>
+                                    <asp:DropDownList ID="KiraDurumuDDL" runat="server" class="form-control" Style="height: auto"></asp:DropDownList>
+                                </div>
+                                <div class="form-group m-0 ">
                                     <label class="col-form-label" for="KullanimDurumuDDL">Kull.Durumu</label>
                                     <asp:DropDownList ID="KullanimDurumuDDL" runat="server" class="form-control" Style="height: auto"></asp:DropDownList>
                                 </div>
@@ -95,10 +103,6 @@
                                 <div class="form-group m-0 ">
                                     <label class="col-form-label" for="EmlakBeyanDegeriTxt">Eml.Bey.Değ.</label>
                                     <input class="form-control input-money text-right" id="EmlakBeyanDegeriTxt" runat="server" />
-                                </div>
-                                <div class="form-group m-0 ">
-                                    <label class="col-form-label" for="EdinmeSekliDDL">Edinme Şekli</label>
-                                    <asp:DropDownList ID="EdinmeSekliDDL" runat="server" class="form-control" Style="height: auto"></asp:DropDownList>
                                 </div>
                                 <div class="form-group m-0 ">
                                     <label class="col-form-label" for="TapuTasinmazNoTxt">Tapu Taşınmaz No</label>

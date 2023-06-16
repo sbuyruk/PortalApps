@@ -65,6 +65,7 @@ namespace Model.TBYS
         public string Metrekare { get; set; }
         public string TapuTasinmazNo { get; set; }
         public string InsaYili { get; set; }
+        public string KiraDurumu { get; set; }
 
         public override T Select<T>(int id)
         {
@@ -282,7 +283,7 @@ namespace Model.TBYS
             }
             return dataTable;
         }
-        public string SelectTasinmazBolumNoReturnJson(int envanterde, string kullanimDurumu)
+        public string SelectTasinmazBolumNoReturnJson(int envanterde, string kiraDurumu)
         {
             string sqlString = string.Format(@"
                 SELECT 
@@ -297,10 +298,10 @@ namespace Model.TBYS
                     FROM Tasinmaz_Table A
 	                    LEFT JOIN BagimsizBolum_Table B On B.TasinmazId = A.Id
 	                    LEFT JOIN KiraSozlesme_Table D ON D.Aktif=1 AND D.Id IN (SELECT SozlesmeId FROM SozlesmeTasinmaz_Table where TasinmazId= A.Id AND (BolumId IS NULL OR BolumId=0 OR BolumId=B.Id))
-                    WHERE A.EnvanterdeMi={0} AND A.KullanimDurumu={1}
+                    WHERE A.EnvanterdeMi={0} AND A.KiraDurumu={1}
 	                    AND D.Id IS NULL
                     ORDER BY A.Id 
-                ", envanterde,kullanimDurumu.ReturnQuotedValue());
+                ", envanterde,kiraDurumu.ReturnQuotedValue());
             //string sqlString = string.Format(@"
             //    SELECT ROW_NUMBER() OVER(ORDER BY A.Id) AS Sirano, A.Id, A.Id TasinmazId,A.Cinsi, A.Ili, A.Ilcesi, A.Ili+'/'+A.Ilcesi IliIlcesi, 
             //        A.SigortaDurumu, A.Adres,A.Adres+' '+A.Ili+'/'+A.Ilcesi AdresIliIlcesi,
@@ -594,15 +595,10 @@ namespace Model.TBYS
             }
             return toplam;
         }
-        public decimal SelectTahminiRayicToplamiByKullanimDurumu(string kullanimDurumu, bool esitOlanlarMi)
+        
+        public decimal SelectTahminiRayicToplamiByKiraDurumu(string kiraDurumu)
         {
-            string whereStr = string.Empty;
-            if (esitOlanlarMi)
-                whereStr = " AND KullanimDurumu = " + kullanimDurumu.ReturnQuotedValue();
-            else
-                whereStr = " AND KullanimDurumu != " + kullanimDurumu.ReturnQuotedValue();
-
-
+            string whereStr = " AND KiraDurumu = " + kiraDurumu.ReturnQuotedValue();
             decimal toplam = 0;
             string sqlString = string.Format(@"
                 SELECT SUM(TahminiRayicDegeri) Toplam 
@@ -619,13 +615,9 @@ namespace Model.TBYS
             }
             return toplam;
         }
-        public decimal SelectEmlakBeyanToplamiByKullanimDurumu(string kullanimDurumu, bool esitOlanlarMi)
+        public decimal SelectEmlakBeyanToplamiByKiraDurumu(string kiraDurumu)
         {
-            string whereStr = string.Empty;
-            if (esitOlanlarMi)
-                whereStr = " AND KullanimDurumu = " + kullanimDurumu.ReturnQuotedValue();
-            else
-                whereStr = " AND KullanimDurumu != " + kullanimDurumu.ReturnQuotedValue();
+            string whereStr = " AND KiraDurumu=" + kiraDurumu.ReturnQuotedValue();
 
 
             decimal toplam = 0;
@@ -662,11 +654,38 @@ namespace Model.TBYS
             }
             return Adet;
         }
-        public int SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(string bolge, string kullanimSekli, string kullanimDurumu, string mülkiyetSekli)
+        public int SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(string bolge, string kullanimSekli, string kullanimDurumu, string mülkiyetSekli, string kiraDurumu = null)
         {
             string whereStr = string.Empty;
             if (!string.IsNullOrEmpty(kullanimDurumu))
                 whereStr = " AND KullanimDurumu = " + kullanimDurumu.ReturnQuotedValue();
+            if (!string.IsNullOrEmpty(mülkiyetSekli))
+                whereStr += " AND MulkiyetSekli = " + mülkiyetSekli.ReturnQuotedValue();
+            if (!string.IsNullOrEmpty(kiraDurumu))
+                whereStr += " AND KiraDurumu = " + kiraDurumu.ReturnQuotedValue();
+
+            int Adet = 0;
+            string sqlString = string.Format(@"
+                SELECT COUNT(KullanimSekli) Adet 
+                FROM Tasinmaz_Table 
+                WHERE EnvanterdeMi=1 
+                    AND SorumluBolge ={0}
+                    AND KullanimSekli ={1}
+                    {2}", bolge.ReturnQuotedValue(), kullanimSekli.ReturnQuotedValue(), whereStr);
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            if (dataTable != null)
+            {
+                DataRow row = dataTable.Rows[0];
+                Adet = row["Adet"].ConvertToInt();
+
+            }
+            return Adet;
+        }
+        public int SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(string bolge, string kullanimSekli, string kiraDurumu, string mülkiyetSekli)
+        {
+            string whereStr = string.Empty;
+            if (!string.IsNullOrEmpty(kiraDurumu))
+                whereStr = " AND KiraDurumu = " + kiraDurumu.ReturnQuotedValue();
             if (!string.IsNullOrEmpty(mülkiyetSekli))
                 whereStr += " AND MulkiyetSekli = " + mülkiyetSekli.ReturnQuotedValue();
 
@@ -688,13 +707,9 @@ namespace Model.TBYS
             }
             return Adet;
         }
-        public int SelectTasinmazAdetByBolgeKullanimDurumu(string bolge, string kullanimDurumu, string mulkiyetSekli, bool esitOlanlarMi)
+        public int SelectTasinmazAdetByBolgeKiraDurumu(string bolge, string kiraDurumu, string mulkiyetSekli)
         {
-            string whereStr;
-            if (esitOlanlarMi)
-                whereStr = " AND KullanimDurumu = " + kullanimDurumu.ReturnQuotedValue();
-            else
-                whereStr = " AND KullanimDurumu != " + kullanimDurumu.ReturnQuotedValue();
+            string whereStr = " AND KiraDurumu=" + kiraDurumu.ReturnQuotedValue();
 
             string mulkiyetStr = string.IsNullOrEmpty(mulkiyetSekli) ? string.Empty : " AND MulkiyetSekli=" + mulkiyetSekli.ReturnQuotedValue();
 
@@ -705,7 +720,7 @@ namespace Model.TBYS
                 WHERE EnvanterdeMi=1 
                     AND SorumluBolge ={0}
                     {1}
-                    {2}", bolge.ReturnQuotedValue(), whereStr,mulkiyetStr);
+                    {2}", bolge.ReturnQuotedValue(), whereStr, mulkiyetStr);
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {

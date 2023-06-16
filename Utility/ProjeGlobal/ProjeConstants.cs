@@ -417,6 +417,9 @@ namespace Utility.ProjeGlobal
         public static string KULLANIMDURUMU_RISKLIYAPI_KENTSELDONUSUM = "Kirada Değil - Riskli Yapı-Kentsel Dönüşüm";
         public static string KULLANIMDURUMU_KATKARSILIGI_YENIYAPI = "Kirada Değil - Kat Karşılığı-Yeni Yapı İnşası";
         public static string KULLANIMDURUMU_DIGER = "Kirada Değil - Metruk-Tahditli vb.";
+        //KiraDurumu
+        public static string KIRADURUMU_KIRAYAUYGUN = "Kiraya Uygun";
+        public static string KIRADURUMU_KIRAYAUYGUNDEGIL = "Kiraya Uygun Değil";
         //MulkiyetSekli
         public static string MULKIYETSEKLI_TM = "TM";
         public static string MULKIYETSEKLI_CM = "ÇM";
