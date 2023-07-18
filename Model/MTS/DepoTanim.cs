@@ -1,24 +1,26 @@
 ﻿using Model.Ortak;
-using System;
 using System.Collections.Generic;
-using System.Data;
+using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using Utility.ProjeGlobal;
 using System.Linq;
 using Utility.HelperClasses;
-using Utility.ProjeGlobal;
+using System.Data;
 
 namespace Model.MTS
 {
-    [Serializable]
-    public class RandevuParametre : ParentClass
+    public class DepoTanim : ParentClass
     {
-        public string Grup { get; set; }
-        public string Deger { get; set; }
-        public int Sira { get; set; }
+        [Required]
+        [DisplayName("Depo Adı")]
+        public string Adi { get; set; }
+        public string Aciklama { get; set; }
         public override int Save()
         {
             try
             {
-                GenericEntity<RandevuParametre> genericEntity = new GenericEntity<RandevuParametre>(ProjeConstants.SQL_INSERT);
+                GenericEntity<DepoTanim> genericEntity = new GenericEntity<DepoTanim>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
                 Olusturan = UtilityHelper.GetCurrentUserName();
                 string sqlString = genericEntity.GetQuery(this);
@@ -26,7 +28,7 @@ namespace Model.MTS
                 if (id > 0 && ProjeConstants.MTS_SAVE_LOG)
                 {
                     OlayKayit olayKayit = new OlayKayit();
-                    olayKayit.GirisOlayKaydet(this, ProjeConstants.MTS, ProjeConstants.MTS_RANDEVUPARAMETRE);
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.MTS, ProjeConstants.MTS_DEPOTANIM);
                 }
                 this.Id = id;
                 return id;
@@ -45,10 +47,10 @@ namespace Model.MTS
             {
                 if (this != null)
                 {
-                    RandevuParametre item = Select<RandevuParametre>(Id);
+                    DepoTanim item = Select<DepoTanim>(Id);
                     if (Id != 0)
                     {
-                        GenericEntity<RandevuParametre> genericEntity = new GenericEntity<RandevuParametre>(ProjeConstants.SQL_UPDATE);
+                        GenericEntity<DepoTanim> genericEntity = new GenericEntity<DepoTanim>(ProjeConstants.SQL_UPDATE);
                         DegistirmeTarihi = DateTime.Now;
                         Degistiren = UtilityHelper.GetCurrentUserName();
                         string sqlString = genericEntity.GetQuery(this);
@@ -57,7 +59,7 @@ namespace Model.MTS
                     if (isSuccess && ProjeConstants.MTS_UPDATE_LOG)
                     {
                         OlayKayit olayKayit = new OlayKayit();
-                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.MTS, ProjeConstants.MTS_RANDEVUPARAMETRE);
+                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.MTS, ProjeConstants.MTS_DEPOTANIM);
                     }
                 }
             }
@@ -74,9 +76,9 @@ namespace Model.MTS
                 bool isDeleted = false;
                 if (Id != 0)
                 {
-                    GenericEntity<RandevuParametre> genericEntity = new GenericEntity<RandevuParametre>(ProjeConstants.SQL_DELETE);
+                    GenericEntity<DepoTanim> genericEntity = new GenericEntity<DepoTanim>(ProjeConstants.SQL_DELETE);
                     string sqlString = genericEntity.GetQuery(this);
-                    RandevuParametre item = Select<RandevuParametre>(Id);
+                    DepoTanim item = Select<DepoTanim>(Id);
                     if (item != null)
                     {
                         isDeleted = dao.DeleteFromDb(sqlString, "");
@@ -85,7 +87,7 @@ namespace Model.MTS
                     if (isDeleted && ProjeConstants.MTS_DELETE_LOG)
                     {
                         OlayKayit olayKayit = new OlayKayit();
-                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.MTS, ProjeConstants.MTS_RANDEVUPARAMETRE);
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.MTS, ProjeConstants.MTS_DEPOTANIM);
                     }
                 }
                 return isDeleted;
@@ -95,26 +97,26 @@ namespace Model.MTS
                 throw ex;
             }
         }
-        public RandevuParametre Select(int id)
+        public DepoTanim Select(int id)
         {
-            GenericEntity<RandevuParametre> genericEntity = new GenericEntity<RandevuParametre>(ProjeConstants.SQL_SELECT);
+            GenericEntity<DepoTanim> genericEntity = new GenericEntity<DepoTanim>(ProjeConstants.SQL_SELECT);
             Id = id;
             string sqlString = genericEntity.GetQuery(this);
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<RandevuParametre> list = ToList<RandevuParametre>(dataTable);
-            _ = new RandevuParametre();
-            RandevuParametre item = list.FirstOrDefault();
+            List<DepoTanim> list = ToList<DepoTanim>(dataTable);
+            DepoTanim item = new DepoTanim();
+            item = list.FirstOrDefault();
             return item;
         }
         public override T Select<T>(int id)
         {
-            GenericEntity<RandevuParametre> genericEntity = new GenericEntity<RandevuParametre>(ProjeConstants.SQL_SELECT);
+            GenericEntity<DepoTanim> genericEntity = new GenericEntity<DepoTanim>(ProjeConstants.SQL_SELECT);
             Id = id;
             string sqlString = genericEntity.GetQuery(this);
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<RandevuParametre> list = ToList<RandevuParametre>(dataTable);
-            RandevuParametre item = new RandevuParametre();
+            List<DepoTanim> list = ToList<DepoTanim>(dataTable);
+            DepoTanim item = new DepoTanim();
             item = list.FirstOrDefault();
             return ((T)Convert.ChangeType(item, typeof(T)));
         }
@@ -122,42 +124,30 @@ namespace Model.MTS
         {
             string sqlString = string.Format(@"
                 SELECT *
-                FROM RandevuParametre_Table ORDER BY Sira,Deger
+                FROM DepoTanim_Table ORDER BY Adi
                 ");
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<RandevuParametre> list = ToList<RandevuParametre>(dataTable);
+            List<DepoTanim> list = ToList<DepoTanim>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
         }
-        public List<RandevuParametre> SelectByGrupReturnList(string parametreGrubu)
+        public DataTable SelectStokluAniObjesiList(int secilenAniObjesiId)
         {
+            string secilenAniObjesiIdStr =secilenAniObjesiId>0?" AND C.Id=" + secilenAniObjesiId:string.Empty;
             string sqlString = string.Format(@"
-                SELECT *
-                FROM RandevuParametre_Table 
-                WHERE Grup={0}
-                ORDER BY Sira, Deger
-                ",parametreGrubu.ReturnQuotedValue());
+                SELECT C.Id AniObjesiId,C.Adi AniObjesiAdi,A.Id DepoId,A.Adi DepoAdi,SUM(B.SonAdet) Adet FROM DepoTanim_Table A
+	                INNER JOIN DepoStok_Table B ON B.DepoId=A.Id AND B.SonAdet > 0
+	                INNER JOIN AniObjesiTanim_Table C ON C.Id=B.AniObjesiId 
+                WHERE C.StokluMu={0} 
+                    {1}
+                GROUP BY A.Id,A.Adi,C.Id,C.Adi
+                ORDER BY A.Id
+                ", ProjeConstants.MTS_ANIOBJESISTOKLU.ReturnQuotedValue(),secilenAniObjesiIdStr);
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<RandevuParametre> list = ToList<RandevuParametre>(dataTable);
 
-            return (list);
-        }
-     
-        public List<RandevuParametre> SelectByGrupDeger(string grup, string deger)
-        {
-            string sqlString = string.Format(@"
-                SELECT * 
-                FROM RandevuParametre_Table 
-                WHERE Grup={0} AND Deger={1}
-                ORDER BY Sira, Deger
-                ", grup.ReturnQuotedValue(),deger.ReturnQuotedValue());
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<RandevuParametre> list = ToList<RandevuParametre>(dataTable);
-
-            return list;
+            return (dataTable);
         }
     }
 }

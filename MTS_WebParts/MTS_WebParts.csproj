@@ -105,6 +105,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>BagisciListesiWP.ascx</DependentUpon>
     </Compile>
+    <Compile Include="FaaliyetGirisiWP\FaaliyetGirisiWP.ascx.cs">
+      <DependentUpon>FaaliyetGirisiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="FaaliyetGirisiWP\FaaliyetGirisiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FaaliyetGirisiWP.ascx</DependentUpon>
+    </Compile>
     <Compile Include="FaaliyetListesiROWP\FaaliyetListesiROWP.ascx.cs">
       <DependentUpon>FaaliyetListesiROWP.ascx</DependentUpon>
     </Compile>
@@ -233,6 +241,10 @@
     <None Include="BagisciListesiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{11597022-a42e-469a-a33c-5d70fa0edca1}</SharePointProjectItemId>
     </None>
+    <None Include="FaaliyetGirisiWP\FaaliyetGirisiWP.webpart" />
+    <None Include="FaaliyetGirisiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{2e3cf88b-4542-4db5-8c48-b6d66a4dec57}</SharePointProjectItemId>
+    </None>
     <None Include="FaaliyetListesiROWP\FaaliyetListesiROWP.webpart" />
     <None Include="FaaliyetListesiROWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{ab075cfa-9f8f-4a92-a4f2-ab937e6c6fed}</SharePointProjectItemId>
@@ -326,6 +338,11 @@
     <Content Include="Content\fullcalendar.min.css" />
     <Content Include="Content\fullcalendar.print.css" />
     <Content Include="Content\fullcalendar.print.min.css" />
+    <Content Include="FaaliyetGirisiWP\Elements.xml" />
+    <Content Include="FaaliyetGirisiWP\FaaliyetGirisiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>FaaliyetGirisiWP.ascx.g.cs</LastGenOutput>
+    </Content>
     <Content Include="FaaliyetListesiROWP\Elements.xml" />
     <Content Include="FaaliyetListesiROWP\FaaliyetListesiROWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>

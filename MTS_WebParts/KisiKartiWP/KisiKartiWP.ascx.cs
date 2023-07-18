@@ -526,7 +526,7 @@ namespace MTS_WebParts.KisiKartiWP
                     int adet = row["Adet"].ReturnZeroIfNull().ConvertToInt();
                     if (adet > 0)
                     {
-                        string deger = row["Deger"].ToString();
+                        string deger = row["Adi"].ToString();
                         objeStr += deger + "(" + adet + ");";
                     }
                 }

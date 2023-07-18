@@ -286,7 +286,7 @@ namespace Model.TBYS
             }
             return dataTable;
         }
-        public DataTable SelectKiraArtisiGelenSozlesmelerReturnDT(string bolge)
+        public DataTable SelectKiraArtisiGelenSozlesmelerReturnDataTable(string bolge)
         {
             string bolgeStr = string.Format(bolge.Equals(ProjeConstants.BOLGE_HEPSI) ? " " : " AND S.Bolge ={0} ", bolge.ReturnQuotedValue());
             string sqlString = string.Format(@"
@@ -304,6 +304,37 @@ namespace Model.TBYS
                         AND (CONVERT(int,ArtisAyi) = DATEPART(MM,DATEADD(mm,1, GETDATE())) AND YEAR(SozBitTar)=DATEPART(YYYY,DATEADD(mm,1, GETDATE())))--AND (YEAR(SozBitTar)=YEAR(GETDATE())) )
 	                ORDER BY S.Bolge, SozBitTar
             ", bolgeStr);
+            DataTable dataTable;
+            try
+            {
+                dataTable = dao.SelectFromDb(sqlString, "");
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            return dataTable;
+        }
+        public DataTable SelectKiraArtisiGelenSozlesmelerReturnDT(string bolge, DateTime tarih)
+        {
+            string tarihStr = tarih.ReturnTRDateFormat();
+            string bolgeStr = string.Format(bolge.Equals(ProjeConstants.BOLGE_HEPSI) ? " " : " AND S.Bolge ={0} ", bolge.ReturnQuotedValue());
+            string sqlString = string.Format(@"
+                SELECT S.Id KiraSozlesmeId, K.Adres, K.Ili,K.Ilcesi,K.Semt,S.Bolge,
+                    IlkSozlesmeTar,SozBasTar,SozBitTar,S.ArtisAyi,
+	                S.KiraBedeli KiraBedeli, S.Aktif, S.OdemeSekli,               
+	                S.KiraciId, K.Adi KiraciAdi, K.Soyadi KiraciSoyadi,K.KiralamaAmaci
+                FROM KiraSozlesme_Table S
+	                LEFT JOIN Kiraci_Table K on K.Id= S.KiraciId
+	                WHERE 1>0 AND S.Aktif = 1 
+                        {0}
+                        --AND ArtisAyi = MONTH(GETDATE())+1 AND YEAR(SozBitTar)=YEAR(GETDATE())  --12nci ayda yanlış çalıştı
+                        --AND (ArtisAyi = DATEPART(MM,DATEADD(mm,1, GETDATE())) AND YEAR(SozBitTar)=YEAR(DATEADD(mm,1, GETDATE())) )
+                        --AND CONVERT(int,ArtisAyi) = DATEPART(MM,DATEADD(mm,1, GETDATE())) --sözlesmesi yenilenenlerde esi v yeni kirabedeli yanlış çıkıyor                        
+                        --AND (CONVERT(int,ArtisAyi) = DATEPART(MM,DATEADD(mm,1, GETDATE())) AND YEAR(SozBitTar)=DATEPART(YYYY,DATEADD(mm,1, GETDATE())))--AND (YEAR(SozBitTar)=YEAR(GETDATE())) )
+                        AND (CONVERT(int,ArtisAyi) = DATEPART(MM,DATEADD(mm,1, {1})) AND YEAR(SozBitTar)=DATEPART(YYYY,DATEADD(mm,1, {1})))--AND (YEAR(SozBitTar)=YEAR(GETDATE())) )
+	                ORDER BY S.Bolge, SozBitTar
+            ", bolgeStr,tarihStr);
             DataTable dataTable;
             try
             {

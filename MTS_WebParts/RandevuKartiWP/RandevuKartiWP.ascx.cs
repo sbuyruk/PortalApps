@@ -99,7 +99,7 @@ namespace MTS_WebParts.RandevuKartiWP
                                         int adet = row["Adet"].ReturnZeroIfNull().ConvertToInt();
                                         if (adet > 0)
                                         {
-                                            string deger = row["Deger"].ToString();
+                                            string deger = row["Adi"].ToString();
                                             objeStr += " - " + deger + "(" + adet + ")";
                                         }
                                     }
@@ -141,7 +141,7 @@ namespace MTS_WebParts.RandevuKartiWP
                                         int adet = row["Adet"].ReturnZeroIfNull().ConvertToInt();
                                         if (adet > 0)
                                         {
-                                            string deger = row["Deger"].ToString();
+                                            string deger = row["Adi"].ToString();
                                             objeStr += " - " + deger + "(" + adet + ")";
                                         }
                                     }
@@ -184,7 +184,7 @@ namespace MTS_WebParts.RandevuKartiWP
                                         int adet = row["Adet"].ReturnZeroIfNull().ConvertToInt();
                                         if (adet > 0)
                                         {
-                                            string deger = row["Deger"].ToString();
+                                            string deger = row["Adi"].ToString();
                                             objeStr += " - " + deger + "(" + adet + ")";
                                         }
 
@@ -279,10 +279,10 @@ namespace MTS_WebParts.RandevuKartiWP
                 r1c2.Text = "Faaliyet Tarihi : " + randevu.BaslangicTarihi.ToString("dd-MM-yyyy") + "-" + randevu.BitisTarihi.ToString("dd-MM-yyyy");
                 r1c3.Text = "Faaliyet Saati : " + randevu.BaslangicSaati + "-" + randevu.BitisSaati;
 
-                RandevuParametre randevuParametre = new RandevuParametre();
-                randevuParametre = randevuParametre.Select(randevu.RandevuYeri.ConvertToInt());
+                FaaliyetYeri faaliyetYeri = new FaaliyetYeri();
+                faaliyetYeri = faaliyetYeri.Select(randevu.RandevuYeri.ConvertToInt());
 
-                r2c1.Text = "Faaliyet Yeri : " + (randevuParametre == null ? "" : randevuParametre.Deger);
+                r2c1.Text = "Faaliyet Yeri : " + (faaliyetYeri == null ? "" : faaliyetYeri.Adi);
                 r2c2.Text = "Faaliyet Amacı : " + ParseRandevuAmaci(randevu.RandevuAmaci.ToString());
                 r2c3.Text = "Faaliyet Durumu : " + ParseRandevuDurumu(randevu.RandevuDurumu.ConvertToInt());
 

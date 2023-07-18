@@ -138,22 +138,34 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
             BolgeDDL.Items.Add(li3);
             SecilenBolgeQS = string.IsNullOrEmpty(SecilenBolgeQS) ? BolgeDDL.SelectedItem.Text : SecilenBolgeQS;
         }
+        //private void AyDDLDoldur()
+        //{
+
+        //    AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Ocak", "1"));
+        //    AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Şubat", "2"));
+        //    AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Mart", "3"));
+        //    AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Nisan", "4"));
+        //    AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Mayıs", "5"));
+        //    AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Haziran", "6"));
+        //    AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Temmuz", "7"));
+        //    AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Ağustos", "8"));
+        //    AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Eylül", "9"));
+        //    AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Ekim", "10"));
+        //    AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Kasım", "11"));
+        //    AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Aralık", "12"));
+
+        //}
+        protected void AyYilDDL_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            TabloOlustur();
+        }
         private void AyDDLDoldur()
         {
-
-            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Ocak", "1"));
-            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Şubat", "2"));
-            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Mart", "3"));
-            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Nisan", "4"));
-            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Mayıs", "5"));
-            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Haziran", "6"));
-            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Temmuz", "7"));
-            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Ağustos", "8"));
-            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Eylül", "9"));
-            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Ekim", "10"));
-            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Kasım", "11"));
-            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Aralık", "12"));
-
+            AyDDL.Items.Clear();
+            System.Web.UI.WebControls.ListItem li = new System.Web.UI.WebControls.ListItem(DateTime.Today.ToString("MMMM"), DateTime.Today.AddMonths(-1).ToString("MM"));//DİKKAT Bir önceki ay
+            System.Web.UI.WebControls.ListItem li1 = new System.Web.UI.WebControls.ListItem(DateTime.Today.AddMonths(1).ToString("MMMM"), DateTime.Today.ToString("MM"));
+            AyDDL.Items.Add(li);
+            AyDDL.Items.Add(li1);
         }
         private void YilDDLDoldur()
         {
@@ -222,13 +234,16 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
             ImzalayanTxt.Text = @"Zeki YAĞCI";
             ImzalayanMakamTxt.Text = @"Vakıf Hiz.Grp. Bşk.";
             EvrakTarihiTxt.Text = bugun.ToString("dd") + " " + bugun.ToString("MMMM") + " " + bugun.Year;
-            decimal tufe = GelecekAyIcinTufeBul();
-            TufeTxt.Text = tufe.ToString("N", culturInfo);
+
             EvrakSayisiYiliTxt.Text = bugun.ToString("yy");
 
         }
         private void TabloOlustur()
         {
+            int ay = AyDDL.SelectedItem.Value.ConvertToInt();
+            DateTime tarih = new DateTime(DateTime.Today.Year, ay, 1);
+            decimal tufe = SecilenAyIcinTufeBul(tarih);
+            TufeTxt.Text = tufe.ToString("N", culturInfo);
             var jsonData = TabloJson(); 
             UtilityHelper.ScriptCalistir("setDataSet(" + jsonData + ");");
         }
@@ -264,10 +279,11 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
         private List<KiraArtisListItem> GetDataList()
         {
 
-
+            int ay = AyDDL.SelectedItem.Value.ConvertToInt();
+            DateTime tarih = new DateTime(DateTime.Today.Year, ay, 1);
             KiraSozlesme kiraSozlesmeDao = new KiraSozlesme();
 
-            DataTable dataTable = kiraSozlesmeDao.SelectKiraArtisiGelenSozlesmelerReturnDT(SecilenBolgeQS);
+            DataTable dataTable = kiraSozlesmeDao.SelectKiraArtisiGelenSozlesmelerReturnDT(SecilenBolgeQS,tarih);
             int SiraNo = 1;
 
             List<KiraArtisListItem> list = new List<KiraArtisListItem>();
@@ -362,12 +378,13 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
             }
             return list;
         }
-        private decimal GelecekAyIcinTufeBul()
+        private decimal SecilenAyIcinTufeBul(DateTime tarih)
         {
             decimal tufe = 1M;
             YasalFaiz yasalFaiz = new YasalFaiz();
-            DateTime gelecekAy = DateTime.Today.AddMonths(1);
-            yasalFaiz = yasalFaiz.SelectByYilAy(gelecekAy.Year, gelecekAy.Month);//gelecek ay artacak
+            tarih = tarih.AddMonths(1);//bir önceki ay geliyor
+            //DateTime gelecekAy = DateTime.Today.AddMonths(1);
+            yasalFaiz = yasalFaiz.SelectByYilAy(tarih.Year, tarih.Month);
             if (yasalFaiz != null)
             {
                 tufe = yasalFaiz.Tufe;
@@ -540,12 +557,14 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
         }
         private MemoryStream AddData2DestinationStream(MemoryStream templateStream, IEnumerable<Paragraph> templateParagraphs)
         {
+            int ay = AyDDL.SelectedItem.Value.ConvertToInt();
+            DateTime tarih = new DateTime(DateTime.Today.Year, ay, 1);
             MemoryStream destinationStream = null;
             DateTime bugun = DateTime.Today;
             DateTime gecenAySonGun = new DateTime(bugun.Year, bugun.Month, 1).AddDays(-1);
             DateTime gecenAyIlkGun = new DateTime(bugun.Year, bugun.AddMonths(-1).Month, 1);
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            DataTable dataTable = kiraSozlesme.SelectKiraArtisiGelenSozlesmelerReturnDT(SecilenBolgeQS);
+            DataTable dataTable = kiraSozlesme.SelectKiraArtisiGelenSozlesmelerReturnDT(SecilenBolgeQS, tarih);
             if (dataTable != null)
             {
                 foreach (DataRow row in dataTable.Rows)
@@ -662,11 +681,14 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
         }
         private MemoryStream AddAdresEtiketData2DestinationStream(MemoryStream templateStream, IEnumerable<Paragraph> templateParagraphs)
         {
+            int ay = AyDDL.SelectedItem.Value.ConvertToInt();
+            DateTime tarih = new DateTime(DateTime.Today.Year, ay, 1);
+
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             MemoryStream destinationStream = null;
 
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            DataTable dataTable = kiraSozlesme.SelectKiraArtisiGelenSozlesmelerReturnDT(SecilenBolgeQS);
+            DataTable dataTable = kiraSozlesme.SelectKiraArtisiGelenSozlesmelerReturnDT(SecilenBolgeQS, tarih);
             if (dataTable != null)
             {
                 int index = 1;
@@ -768,6 +790,7 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
                 file.Update();
             }
         }
+
         private class KiraArtisListItem
         {
             public string Sirano { get; set; }

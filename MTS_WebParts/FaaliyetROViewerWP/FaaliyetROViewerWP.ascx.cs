@@ -560,9 +560,9 @@ namespace MTS_WebParts.FaaliyetROViewerWP
 
         private string RandevuYeriGetir(int randevuYeri)
         {
-            RandevuParametre ry = new RandevuParametre();
-            ry = ry.Select<RandevuParametre>(randevuYeri);
-            return ry==null?string.Empty:ry.Deger;
+            FaaliyetYeri ry = new FaaliyetYeri();
+            ry = ry.Select<FaaliyetYeri>(randevuYeri);
+            return ry==null?string.Empty:ry.Adi;
         }
 
         private string GetDataList(int randevuId)

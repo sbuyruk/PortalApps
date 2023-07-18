@@ -61,11 +61,11 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl TabloDiv;
+        protected global::System.Web.UI.WebControls.DropDownList AyDDL;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.UpdatePanel UpdatePanel;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl TabloDiv;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -171,11 +171,40 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControl__control2() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.CssClass = "col-form-label";
+            @__ctrl.Text = "Ay";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.DropDownList @__BuildControlAyDDL() {
+            global::System.Web.UI.WebControls.DropDownList @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.DropDownList();
+            this.AyDDL = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "AyDDL";
+            @__ctrl.CssClass = "form-control";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: auto");
+            @__ctrl.Enabled = true;
+            @__ctrl.AutoPostBack = true;
+            @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.AyDDL_SelectedIndexChanged);
+            @__ctrl.SelectedIndexChanged += new System.EventHandler(this.AyDDL_SelectedIndexChanged);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControlTabloDiv() {
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
             this.TabloDiv = @__ctrl;
-            @__ctrl.TemplateControl = this;
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-group");
             @__ctrl.ID = "TabloDiv";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
@@ -198,30 +227,6 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP {
                             </thead>
                         </table>
                     "));
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control2(System.Web.UI.Control @__ctrl) {
-            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl1;
-            @__ctrl1 = this.@__BuildControlTabloDiv();
-            @__parser.AddParsedSubObject(@__ctrl1);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                "));
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.UpdatePanel @__BuildControlUpdatePanel() {
-            global::System.Web.UI.UpdatePanel @__ctrl;
-            @__ctrl = new global::System.Web.UI.UpdatePanel();
-            this.UpdatePanel = @__ctrl;
-            @__ctrl.ContentTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control2));
-            @__ctrl.ID = "UpdatePanel";
             return @__ctrl;
         }
         
@@ -258,14 +263,22 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP {
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "card-body");
             @__ctrl.ID = "MainCardDiv";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n            "));
-            global::System.Web.UI.UpdatePanel @__ctrl1;
-            @__ctrl1 = this.@__BuildControlUpdatePanel();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            <div class=\"form-group col-2\">\r\n                "));
+            global::System.Web.UI.WebControls.Label @__ctrl1;
+            @__ctrl1 = this.@__BuildControl__control2();
             @__parser.AddParsedSubObject(@__ctrl1);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n            "));
-            global::System.Web.UI.UpdateProgress @__ctrl2;
-            @__ctrl2 = this.@__BuildControlupdateProgress1();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                "));
+            global::System.Web.UI.WebControls.DropDownList @__ctrl2;
+            @__ctrl2 = this.@__BuildControlAyDDL();
             @__parser.AddParsedSubObject(@__ctrl2);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            </div>\r\n\r\n\r\n                    "));
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl3;
+            @__ctrl3 = this.@__BuildControlTabloDiv();
+            @__parser.AddParsedSubObject(@__ctrl3);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n\r\n            "));
+            global::System.Web.UI.UpdateProgress @__ctrl4;
+            @__ctrl4 = this.@__BuildControlupdateProgress1();
+            @__parser.AddParsedSubObject(@__ctrl4);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n        "));
             return @__ctrl;
         }

@@ -140,7 +140,7 @@ namespace Model.TBYS
                 {
                     GenericEntity<Tasinmaz> genericEntity = new GenericEntity<Tasinmaz>(ProjeConstants.SQL_DELETE);
                     string sqlString = genericEntity.GetQuery(this);
-                    Tasinmaz item = Select<Tasinmaz>(Id);
+                    Tasinmaz item = Select(Id);
                     if (item != null)
                     {
                         isDeleted = dao.DeleteFromDb(sqlString, "");

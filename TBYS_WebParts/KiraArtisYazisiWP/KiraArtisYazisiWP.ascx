@@ -111,7 +111,7 @@
                 <div class="card-body">
                     <div class="form-group row border m-1">
                         <div class="form-group col-2 ">
-                            <div class="form-group" style="display:none">
+                            <div class="form-group col" >
                                 <label class="col-form-label" for="AyDDL">Ay </label>
                                 <asp:DropDownList ID="AyDDL" runat="server" CssClass="form-control" AutoPostBack="True" OnSelectedIndexChanged="AyDDL_SelectedIndexChanged" Style="height: auto" />
                             </div>
@@ -167,8 +167,8 @@
                         </div>
                     </div>
                     <div class="form-group border m-1" >
-                        <asp:UpdatePanel runat="server" ID="UpdatePanel">
-                            <ContentTemplate>
+<%--                        <asp:UpdatePanel runat="server" ID="UpdatePanel">
+                            <ContentTemplate>--%>
                                 <div class="form-group">
                                     <table id="CustomDataTable" class="table table-striped row-border" width="100%">
                                         <thead>
@@ -187,8 +187,8 @@
                                         </thead>
                                     </table>
                                 </div>
-                            </ContentTemplate>
-                        </asp:UpdatePanel>
+<%--                            </ContentTemplate>
+                        </asp:UpdatePanel>--%>
 
                         <asp:UpdateProgress ID="updateProgress" runat="server">
                             <ProgressTemplate>

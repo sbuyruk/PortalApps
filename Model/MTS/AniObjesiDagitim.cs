@@ -19,6 +19,8 @@ namespace Model.MTS
         public int KatilimciTipi { get; set; }
         public int RandevuId { get; set; }
         public int VerilenAlinan { get; set; } //verilen 0; alinan 1
+        public int DagitimYeriTanimId { get; set; } = 0;
+        public int CikisDepoId { get; set; } = 0;
         public string GetirilenAniObjesi { get; set; }
         public string Aciklama { get; set; }
         
@@ -103,6 +105,18 @@ namespace Model.MTS
                 throw ex;
             }
         }
+        public AniObjesiDagitim Select(int id)
+        {
+            GenericEntity<AniObjesiDagitim> genericEntity = new GenericEntity<AniObjesiDagitim>(ProjeConstants.SQL_SELECT);
+            Id = id;
+            string sqlString = genericEntity.GetQuery(this);
+
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            List<AniObjesiDagitim> list = ToList<AniObjesiDagitim>(dataTable);
+            AniObjesiDagitim item = new AniObjesiDagitim();
+            item = list.FirstOrDefault();
+            return item;
+        }
         public int Delete(int randevuId, int katilimciId, int katilimciTipi, string aniObjesiIdList="")
         {
             int deleted;
@@ -134,92 +148,6 @@ namespace Model.MTS
 
             return deleted;
         }
-        public AniObjesiDagitim Select(int id)
-        {
-            GenericEntity<AniObjesiDagitim> genericEntity = new GenericEntity<AniObjesiDagitim>(ProjeConstants.SQL_SELECT);
-            Id = id;
-            string sqlString = genericEntity.GetQuery(this);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<AniObjesiDagitim> list = ToList<AniObjesiDagitim>(dataTable);
-            AniObjesiDagitim item = new AniObjesiDagitim();
-            item = list.FirstOrDefault();
-            return item;
-        }
-        public AniObjesiDagitim SelectGetirilenAniObjesi(int randevuId, int katilimciId, int katilimciTipi)
-        {
-            string sqlString = string.Format(@"
-                SELECT *
-                FROM AniObjesiDagitim_Table 
-                WHERE RandevuId={0} AND KatilimciId={1} AND KatilimciTipi={2} AND VerilenAlinan={3}
-                ORDER BY Id
-                ", randevuId, katilimciId, katilimciTipi, ProjeConstants.ANIOBJESI_GETIRILEN_INT);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<AniObjesiDagitim> list = ToList<AniObjesiDagitim>(dataTable);
-            AniObjesiDagitim item = new AniObjesiDagitim();
-            item = list.FirstOrDefault();
-            return item;
-        }
-        public DataTable SelectReturnDT(int randevuId, int katilimciId, int katilimciTipi)
-        {
-            string sqlString = string.Format(@"
-                SELECT A.Id AniObjesiId, A.Sira, A.Deger, B.Id AniObjesiDagitimId, B.Adet, B.RandevuId,B.KatilimciId,B.KatilimciTipi
-                FROM RandevuParametre_Table A
-                    LEFT JOIN AniObjesiDagitim_Table B ON B.AniObjesiId=A.Id AND RandevuId={0} AND KatilimciId={1} AND KatilimciTipi={2}
-                WHERE Grup= {3} 
-                ORDER BY A.Id
-                ", randevuId, katilimciId, katilimciTipi, ProjeConstants.PARAM_ANIOBJESI.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-
-            return dataTable;
-        }
-        public List<AniObjesiDagitim> SelectReturnList(int randevuId, int katilimciId, int katilimciTipi)
-        {
-            string sqlString = string.Format(@"
-                SELECT B.Id, A.Id AniObjesiId, IsNull(B.Adet,0) Adet ,b.RandevuId, B.KatilimciId,B.KatilimciTipi,B.VerilenAlinan
-                FROM RandevuParametre_Table A
-                    LEFT JOIN AniObjesiDagitim_Table B ON B.AniObjesiId=A.Id AND RandevuId={0} AND KatilimciId={1} AND KatilimciTipi={2}
-                WHERE Grup= {3} 
-                ", randevuId, katilimciId, katilimciTipi, ProjeConstants.PARAM_ANIOBJESI.ReturnQuotedValue());
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<AniObjesiDagitim> list = ToList<AniObjesiDagitim>(dataTable);
-            return list;
-        }
-        public List<AniObjesiDagitim> SelectByKisiIdReturnList(int katilimciId, int katilimciTipi, string verilenGetirilen )
-        {
-            string verilenGetirilenStr = verilenGetirilen.Equals(ProjeConstants.ANIOBJESI_VERILENGETIRILEN) ? string.Empty :
-                verilenGetirilenStr = " AND B.VerilenAlinan=" + verilenGetirilen;
-            string sqlString = string.Format(@"
-                SELECT B.Id, A.Id AniObjesiId, IsNull(B.Adet,0) Adet ,b.RandevuId, B.KatilimciId,B.KatilimciTipi,B.VerilenAlinan
-                FROM RandevuParametre_Table A
-                    LEFT JOIN AniObjesiDagitim_Table B ON B.AniObjesiId=A.Id AND KatilimciId={0} AND KatilimciTipi={1}
-                WHERE Grup= {2} 
-                {3}
-                ", katilimciId, katilimciTipi, ProjeConstants.PARAM_ANIOBJESI.ReturnQuotedValue(),verilenGetirilenStr);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<AniObjesiDagitim> list = ToList<AniObjesiDagitim>(dataTable);
-            return list;
-        }
-        public string SelectByKatilimcidKatilimciTipiRandevuId(int katilimciId, int katilimciTipi, int randevuId)
-        {
-            string retval = string.Empty;
-            string sqlString = string.Format(@"
-                SELECT  B.Deger, A.Adet  FROM AniObjesiDagitim_Table A
-                INNER JOIN RandevuParametre_Table B ON B.Grup={0} AND B.Id=A.AniObjesiId
-                WHERE KatilimciId={1} AND KatilimciTipi={2} AND RandevuId={3}                
-                ", ProjeConstants.PARAM_ANIOBJESI.ReturnQuotedValue(), katilimciId, katilimciTipi, randevuId);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            if (dataTable != null )
-            {
-                foreach (DataRow row in dataTable.Rows)
-                {
-                    string aniObjesi = row["Deger"].ReturnEmptyIfNull().ToString();
-                    string adet = row["Adet"].ReturnZeroIfNull().ToString();
-                    retval += !string.IsNullOrEmpty(aniObjesi) ? aniObjesi + "(" + adet + "), " : string.Empty;
-                }
-            }
-            return retval;
-        }
         public override T Select<T>(int id)
         {
             GenericEntity<AniObjesiDagitim> genericEntity = new GenericEntity<AniObjesiDagitim>(ProjeConstants.SQL_SELECT);
@@ -242,6 +170,145 @@ namespace Model.MTS
             List<AniObjesiDagitim> list = ToList<AniObjesiDagitim>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
+        }
+        public AniObjesiDagitim SelectGetirilenAniObjesi(int randevuId, int katilimciId, int katilimciTipi)
+        {
+            string sqlString = string.Format(@"
+                SELECT *
+                FROM AniObjesiDagitim_Table 
+                WHERE RandevuId={0} AND KatilimciId={1} AND KatilimciTipi={2} AND VerilenAlinan={3}
+                ORDER BY Id
+                ", randevuId, katilimciId, katilimciTipi, ProjeConstants.ANIOBJESI_GETIRILEN_INT);
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            List<AniObjesiDagitim> list = ToList<AniObjesiDagitim>(dataTable);
+            AniObjesiDagitim item = new AniObjesiDagitim();
+            item = list.FirstOrDefault();
+            return item;
+        }
+        public DataTable SelectReturnDT(int randevuId, int katilimciId, int katilimciTipi)
+        {
+            string sqlString = string.Format(@"
+                SELECT A.Id AniObjesiId, A.Sira, A.Adi, B.Id AniObjesiDagitimId, B.Adet, B.RandevuId,B.KatilimciId,B.KatilimciTipi
+                FROM AniObjesiTanim_Table A
+                    LEFT JOIN AniObjesiDagitim_Table B ON B.AniObjesiId=A.Id AND RandevuId={0} AND KatilimciId={1} AND KatilimciTipi={2}
+                
+                ORDER BY A.Id
+                ", randevuId, katilimciId, katilimciTipi);
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+
+            return dataTable;
+        }
+        public DataTable SelectReturnDT(int randevuId, int katilimciId, int katilimciTipi,string stokluMu)
+        {
+            string stokStr=string.IsNullOrEmpty(stokluMu)?string.Empty:" WHERE A.StokluMu="+stokluMu.ReturnQuotedValue();
+            string sqlString = string.Format(@"
+                SELECT A.Id AniObjesiId, A.Sira, A.Adi, B.Id AniObjesiDagitimId, B.Adet, B.RandevuId,B.KatilimciId,B.KatilimciTipi
+                FROM AniObjesiTanim_Table A
+                    LEFT JOIN AniObjesiDagitim_Table B ON B.AniObjesiId=A.Id AND RandevuId={0} AND KatilimciId={1} AND KatilimciTipi={2}
+                {3}
+                ORDER BY A.Id
+                ", randevuId, katilimciId, katilimciTipi,stokStr);
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+
+            return dataTable;
+        }
+        public List<AniObjesiDagitim> SelectStoksuzAniObjeleriReturnList(int randevuId, int katilimciId, int katilimciTipi)
+        {
+            string sqlString = string.Format(@"
+                SELECT B.Id, A.Id AniObjesiId, IsNull(B.Adet,0) Adet ,b.RandevuId, B.KatilimciId,B.KatilimciTipi,B.VerilenAlinan
+                FROM AniObjesiTanim_Table A
+                    LEFT JOIN AniObjesiDagitim_Table B ON B.AniObjesiId=A.Id AND RandevuId={0} AND KatilimciId={1} AND KatilimciTipi={2}
+                WHERE A.StokluMu={3}
+                ", randevuId, katilimciId, katilimciTipi,ProjeConstants.MTS_ANIOBJESISTOKSUZ.ReturnQuotedValue());
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            List<AniObjesiDagitim> list = ToList<AniObjesiDagitim>(dataTable);
+            return list;
+        }
+        public AniObjesiDagitim Select(int randevuId, int katilimciId, int katilimciTipi, int aniObjesiId)
+        {
+            string sqlString = string.Format(@"
+                SELECT *
+                FROM AniObjesiDagitim_Table  
+                WHERE AniObjesiId={0} AND RandevuId={1} AND KatilimciId={2} AND KatilimciTipi={3}
+                ", aniObjesiId,randevuId, katilimciId, katilimciTipi);
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            List<AniObjesiDagitim> list = ToList<AniObjesiDagitim>(dataTable);
+            return list.FirstOrDefault();
+        }
+        public List<AniObjesiDagitim> SelectByKisiIdReturnList(int katilimciId, int katilimciTipi, string verilenGetirilen )
+        {
+            string verilenGetirilenStr = verilenGetirilen.Equals(ProjeConstants.ANIOBJESI_VERILENGETIRILEN) ? string.Empty :
+                verilenGetirilenStr = " AND B.VerilenAlinan=" + verilenGetirilen;
+            string sqlString = string.Format(@"
+                SELECT B.Id, A.Id AniObjesiId, IsNull(B.Adet,0) Adet ,b.RandevuId, B.KatilimciId,B.KatilimciTipi,B.VerilenAlinan
+                FROM AniObjesiTanim_Table A
+                    LEFT JOIN AniObjesiDagitim_Table B ON B.AniObjesiId=A.Id AND KatilimciId={0} AND KatilimciTipi={1}
+                WHERE 1>0 
+                {2}
+                ", katilimciId, katilimciTipi, verilenGetirilenStr);
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            List<AniObjesiDagitim> list = ToList<AniObjesiDagitim>(dataTable);
+            return list;
+        }
+        public string SelectByKatilimcidKatilimciTipiRandevuId(int katilimciId, int katilimciTipi, int randevuId)
+        {
+            string retval = string.Empty;
+            string sqlString = string.Format(@"
+                SELECT  B.Adi, A.Adet  FROM AniObjesiDagitim_Table A
+                INNER JOIN AniObjesiTanim_Table B ON B.Id=A.AniObjesiId
+                WHERE KatilimciId={0} AND KatilimciTipi={1} AND RandevuId={2}                
+                ", katilimciId, katilimciTipi, randevuId);
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            if (dataTable != null )
+            {
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    string aniObjesi = row["Adi"].ReturnEmptyIfNull().ToString();
+                    string adet = row["Adet"].ReturnZeroIfNull().ToString();
+                    retval += !string.IsNullOrEmpty(aniObjesi) ? aniObjesi + "(" + adet + "), " : string.Empty;
+                }
+            }
+            return retval;
+        }
+        public string SelectGetirilenByKatilimcidKatilimciTipiRandevuId(int katilimciId, int katilimciTipi, int randevuId)
+        {
+            string retval = string.Empty;
+            string sqlString = string.Format(@"
+                SELECT  GetirilenAniObjesi  FROM AniObjesiDagitim_Table A
+                WHERE KatilimciId={0} AND KatilimciTipi={1} AND RandevuId={2} AND AniObjesiId={3}
+                ", katilimciId, katilimciTipi, randevuId, ProjeConstants.GETIRILEN_ANIOBJESIID_INT);
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            if (dataTable != null)
+            {
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    string aniObjesi = row["GetirilenAniObjesi"].ReturnEmptyIfNull().ToString();
+                    retval += !string.IsNullOrEmpty(aniObjesi) ? "<br> * " + aniObjesi  : string.Empty;
+                }
+            }
+            return retval;
+        }
+        public DataTable SelectByKatilimcidKatilimciTipiRandevuId(int katilimciId, int katilimciTipi, int randevuId,string stokluMu)
+        {
+            string retval = string.Empty;
+            string stokStr = string.IsNullOrEmpty(stokluMu) ? string.Empty :" AND StokluMu="+stokluMu.ReturnQuotedValue();
+            string sqlString = string.Format(@"
+                SELECT A.Id AniObjesiDagitimId, B.Id AniObjesiId, B.Adi, A.Adet, A.CikisDepoId  FROM AniObjesiDagitim_Table A
+                INNER JOIN AniObjesiTanim_Table B ON B.Id=A.AniObjesiId
+                WHERE KatilimciId={0} AND KatilimciTipi={1} AND RandevuId={2}
+                    {3}
+                ", katilimciId, katilimciTipi, randevuId,stokStr);
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            //if (dataTable != null)
+            //{
+            //    foreach (DataRow row in dataTable.Rows)
+            //    {
+            //        string aniObjesi = row["Adi"].ReturnEmptyIfNull().ToString();
+            //        string adet = row["Adet"].ReturnZeroIfNull().ToString();
+            //        retval += !string.IsNullOrEmpty(aniObjesi) ? "<br> * " + aniObjesi + "(" + adet + "), " : string.Empty;
+            //    }
+            //}
+            return dataTable;
         }
         public List<AniObjesiDagitim> SelectByAniObjesiId(int parametreId)
         {

@@ -17,9 +17,14 @@ namespace Utility.ProjeGlobal
         public const string MTS_KISI = "Kisi";
         public const string MTS_ARAMAGORUSME = "Arama/Görüşme";
         public const string MTS_ANIOBJESIDAGITIM = "Anı Objesi Dağıtım";
+        public const string MTS_ANIOBJESITANIM = "Anı Objesi Tanım";
+        public const string MTS_DEPOTANIM = "Depo Tanım";
+        public const string MTS_KAYNAKTANIM = "Kaynak Tanım";
         public const string MTS_ANIOBJESI = "Anı Objesi";
         public const string MTS_RANDEVUKATILIM = "Randevu Katılım";
         public const string MTS_RANDEVUPARAMETRE = "Randevu Parametre";
+        public const string MTS_ANIOBJESISTOKLU = "Stoklu";
+        public const string MTS_ANIOBJESISTOKSUZ = "Stoksuz";
         //moduller IKYS
         public const string IKYS_AILE = "Aile";        
         public const string IKYS_BIRIMTANIM = "Birim Tanım";
@@ -136,7 +141,7 @@ namespace Utility.ProjeGlobal
         public static DateTime REFERANS_TARIHI = new DateTime(1987, 01, 01);
         public static DateTime NULL_TARIH = new DateTime(1900, 01, 01);
         public static DateTime SINIRLIKIRAARTISI_BASLAMATARIHI = new DateTime(2022, 07, 01);
-        public static DateTime SINIRLIKIRAARTISI_BITISTARIHI = new DateTime(2023, 07, 01);
+        public static DateTime SINIRLIKIRAARTISI_BITISTARIHI = new DateTime(2024, 07, 01);
         public static decimal SINIRLIKIRAARTISI_ORANI = 25.0M;
         public static string SINIRLIKIRAARTISI_UYGULANACAKTASINMAZCINSI = "Mesken";
 
@@ -334,7 +339,8 @@ namespace Utility.ProjeGlobal
         public const string PAGE_KISI_GIRIS = "KisiGirisi.aspx";
         public const string PAGE_KISI_KARTI = "KisiKarti.aspx";
         public const string PAGE_KISI_LIST = "KisiListesi.aspx";
-        public const string PAGE_RANDEVU_GIRIS = "RandevuGirisi.aspx";
+        public const string PAGE_RANDEVU_GIRIS = "FaaliyetGirisi.aspx";
+        public const string PAGE_FAALIYET_GIRIS = "FaaliyetGirisi.aspx";
         public const string PAGE_RANDEVU_LIST = "RandevuListesi.aspx";
         public const string PAGE_FAALIYET_TAKVIM = "FaaliyetViewer.aspx";
         public const string PAGE_FAALIYET_TAKVIM_RO = "FaaliyetROViewer.aspx";

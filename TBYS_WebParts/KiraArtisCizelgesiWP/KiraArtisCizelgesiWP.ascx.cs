@@ -38,6 +38,7 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP
             {
                 if (!Page.IsPostBack)
                 {
+                    AyDDLDoldur();
                     TabloOlustur();
                 }
             }
@@ -153,10 +154,12 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP
         private List<KiraArtisListItem> GetDataList()
         {
 
+            int ay = AyDDL.SelectedItem.Value.ConvertToInt();
+            DateTime tarih = new DateTime(DateTime.Today.Year, ay, 1);
 
             KiraSozlesme kiraSozlesmeDao = new KiraSozlesme();
 
-            DataTable dataTable = kiraSozlesmeDao.SelectKiraArtisiGelenSozlesmelerReturnDT(ProjeConstants.BOLGE_HEPSI);
+            DataTable dataTable = kiraSozlesmeDao.SelectKiraArtisiGelenSozlesmelerReturnDT(ProjeConstants.BOLGE_HEPSI, tarih);
             int SiraNo = 1;
 
             List<KiraArtisListItem> list = new List<KiraArtisListItem>();
@@ -177,7 +180,7 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP
                 string artisAyi = row["ArtisAyi"].ToString();
                 bool aktif = row["Aktif"].ReturnFalseIfNull().ConvertToBool();
 
-                decimal tufe = GelecekAyIcinTufeBul();
+                decimal tufe = SecilenAyIcinTufeBul(tarih);
                 DateTime bugun = DateTime.Today;
                 decimal yeniKiraBedeli =  kiraBedeli + Math.Round(kiraBedeli * tufe / 100);
                 //bool sozlesmeYenilendiMi = sozBitTar.ConvertToDatetime() > new DateTime( bugun.Year, bugun.AddMonths(2).Month,1); //--new DateTime(bugun.AddYears(1).Year, bugun.AddMonths(1).Month,1);
@@ -241,12 +244,25 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP
             }
             return list;
         }
-        private decimal GelecekAyIcinTufeBul()
+        protected void AyDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
+            TabloOlustur();
+        }
+        private void AyDDLDoldur()
+        {
+            AyDDL.Items.Clear();
+            ListItem li= new ListItem(DateTime.Today.ToString("MMMM"),DateTime.Today.AddMonths(-1).ToString("MM") );
+            ListItem li1= new ListItem(DateTime.Today.AddMonths(1).ToString("MMMM"), DateTime.Today.ToString("MM"));
+            AyDDL.Items.Add(li);
+            AyDDL.Items.Add(li1);
+        }
+        private decimal SecilenAyIcinTufeBul(DateTime tarih)
+        {
+            tarih = tarih.AddMonths(1);//bir önceki ay geliyor
             decimal tufe = 1M;
             YasalFaiz yasalFaiz = new YasalFaiz();
-            DateTime gelecekAy = DateTime.Today.AddMonths(1);
-            yasalFaiz = yasalFaiz.SelectByYilAy(gelecekAy.Year, gelecekAy.Month);//gelecek ay artacak
+            //DateTime gelecekAy = DateTime.Today.AddMonths(1);
+            yasalFaiz = yasalFaiz.SelectByYilAy(tarih.Year, tarih.Month);//gelecek ay artacak
             if (yasalFaiz != null)
             {
                 tufe = yasalFaiz.Tufe;

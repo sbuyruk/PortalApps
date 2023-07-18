@@ -101,10 +101,6 @@ namespace TBYS_WebParts.KiraArtisYazisiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.UpdatePanel UpdatePanel;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.UpdateProgress updateProgress;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -347,45 +343,6 @@ namespace TBYS_WebParts.KiraArtisYazisiWP {
         private void @__BuildControl__control2(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-                                <div class=""form-group"">
-                                    <table id=""CustomDataTable"" class=""table table-striped row-border"" width=""100%"">
-                                        <thead>
-                                            <tr>
-                                                <th>Kiracı</th>
-                                                <th>Cinsi</th>
-                                                <th>Bölge</th>
-                                                <th>İlk Söz. Tar.</th>
-                                                <th>Artış Ayı</th>
-                                                <th>Adres</th>
-                                                <th>Artıştan Önceki Kira</th>
-                                                <th>Artış Oranı (%)</th>
-                                                <th>Artıştan Sonraki Kira</th>
-                                                <th>Durumu</th>
-                                            </tr>
-                                        </thead>
-                                    </table>
-                                </div>
-                            "));
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.UpdatePanel @__BuildControlUpdatePanel() {
-            global::System.Web.UI.UpdatePanel @__ctrl;
-            @__ctrl = new global::System.Web.UI.UpdatePanel();
-            this.UpdatePanel = @__ctrl;
-            @__ctrl.ContentTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control2));
-            @__ctrl.ID = "UpdatePanel";
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control3(System.Web.UI.Control @__ctrl) {
-            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                 <div class='loaderMainContainer'>
                                     <div class='loaderContainer'>
                                         <div class='loaderCircle'></div>
@@ -401,7 +358,7 @@ namespace TBYS_WebParts.KiraArtisYazisiWP {
             global::System.Web.UI.UpdateProgress @__ctrl;
             @__ctrl = new global::System.Web.UI.UpdateProgress();
             this.updateProgress = @__ctrl;
-            @__ctrl.ProgressTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control3));
+            @__ctrl.ProgressTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control2));
             @__ctrl.ID = "updateProgress";
             return @__ctrl;
         }
@@ -533,7 +490,7 @@ namespace TBYS_WebParts.KiraArtisYazisiWP {
                 <div class=""card-body"">
                     <div class=""form-group row border m-1"">
                         <div class=""form-group col-2 "">
-                            <div class=""form-group"" style=""display:none"">
+                            <div class=""form-group col"" >
                                 <label class=""col-form-label"" for=""AyDDL"">Ay </label>
                                 "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl5;
@@ -616,34 +573,54 @@ namespace TBYS_WebParts.KiraArtisYazisiWP {
             global::System.Web.UI.WebControls.TextBox @__ctrl15;
             @__ctrl15 = this.@__BuildControlImzalayanMakamTxt();
             @__parser.AddParsedSubObject(@__ctrl15);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                        </div>\r\n           " +
-                        "         </div>\r\n                    <div class=\"form-group border m-1\" >\r\n     " +
-                        "                   "));
-            global::System.Web.UI.UpdatePanel @__ctrl16;
-            @__ctrl16 = this.@__BuildControlUpdatePanel();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                            </div>
+                        </div>
+                    </div>
+                    <div class=""form-group border m-1"" >
+
+                                <div class=""form-group"">
+                                    <table id=""CustomDataTable"" class=""table table-striped row-border"" width=""100%"">
+                                        <thead>
+                                            <tr>
+                                                <th>Kiracı</th>
+                                                <th>Cinsi</th>
+                                                <th>Bölge</th>
+                                                <th>İlk Söz. Tar.</th>
+                                                <th>Artış Ayı</th>
+                                                <th>Adres</th>
+                                                <th>Artıştan Önceki Kira</th>
+                                                <th>Artış Oranı (%)</th>
+                                                <th>Artıştan Sonraki Kira</th>
+                                                <th>Durumu</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+
+
+                        "));
+            global::System.Web.UI.UpdateProgress @__ctrl16;
+            @__ctrl16 = this.@__BuildControlupdateProgress();
             @__parser.AddParsedSubObject(@__ctrl16);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n                        "));
-            global::System.Web.UI.UpdateProgress @__ctrl17;
-            @__ctrl17 = this.@__BuildControlupdateProgress();
-            @__parser.AddParsedSubObject(@__ctrl17);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        <div class=\"form-group\">\r\n                            "));
-            global::System.Web.UI.WebControls.Label @__ctrl18;
-            @__ctrl18 = this.@__BuildControlTableDataLbl();
-            @__parser.AddParsedSubObject(@__ctrl18);
+            global::System.Web.UI.WebControls.Label @__ctrl17;
+            @__ctrl17 = this.@__BuildControlTableDataLbl();
+            @__parser.AddParsedSubObject(@__ctrl17);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n                   " +
                         " <div class=\"form-group\">\r\n                        "));
-            global::System.Web.UI.WebControls.HyperLink @__ctrl19;
-            @__ctrl19 = this.@__BuildControlDosyaLnk();
-            @__parser.AddParsedSubObject(@__ctrl19);
+            global::System.Web.UI.WebControls.HyperLink @__ctrl18;
+            @__ctrl18 = this.@__BuildControlDosyaLnk();
+            @__parser.AddParsedSubObject(@__ctrl18);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        "));
-            global::System.Web.UI.WebControls.HyperLink @__ctrl20;
-            @__ctrl20 = this.@__BuildControlAdresEtiketLnk();
-            @__parser.AddParsedSubObject(@__ctrl20);
+            global::System.Web.UI.WebControls.HyperLink @__ctrl19;
+            @__ctrl19 = this.@__BuildControlAdresEtiketLnk();
+            @__parser.AddParsedSubObject(@__ctrl19);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                </div>\r\n                <div class=" +
                         "\"card-footer\">\r\n                    "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl21;
-            @__ctrl21 = this.@__BuildControlYaziyiOlusturBtn();
-            @__parser.AddParsedSubObject(@__ctrl21);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl20;
+            @__ctrl20 = this.@__BuildControlYaziyiOlusturBtn();
+            @__parser.AddParsedSubObject(@__ctrl20);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                </div>\r\n            </div>\r\n        \r\n</div>\r\n"));
         }
         

@@ -366,22 +366,22 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
                 IlceDDLDoldur();
                 BolgeTxtDoldur();
                 SigortaDurumuDDLDoldur();
-                //if (IlcesiDDL.Items.FindByText(tasinmaz.Ilcesi) != null)
-                //    IlcesiDDL.SelectedValue = IlcesiDDL.Items.FindByText(tasinmaz.Ilcesi).Value;
-                //if (KullanimDurumuDDL.Items.FindByText(tasinmaz.KullanimDurumu) != null)
-                //    KullanimDurumuDDL.SelectedValue = KullanimDurumuDDL.Items.FindByText(tasinmaz.KullanimDurumu).Value;
-                //if (KatMulkiyetiDDL.Items.FindByText(tasinmaz.KatMulkiyeti) != null)
-                //    KatMulkiyetiDDL.SelectedValue = KatMulkiyetiDDL.Items.FindByText(tasinmaz.KatMulkiyeti).Value;
-                //if (KullanimSekliDDL.Items.FindByText(tasinmaz.KullanimSekli) != null)
-                //    KullanimSekliDDL.SelectedValue = KullanimSekliDDL.Items.FindByText(tasinmaz.KullanimSekli).Value;
-                //if (SigortaDDL.Items.FindByText(tasinmaz.SigortaDurumu) != null)
-                //    SigortaDDL.SelectedValue = SigortaDDL.Items.FindByText(tasinmaz.SigortaDurumu).Value;
+                if (IlcesiDDL.Items.FindByText(tasinmaz.Ilcesi) != null)
+                    IlcesiDDL.SelectedValue = IlcesiDDL.Items.FindByText(tasinmaz.Ilcesi).Value;
+                if (KullanimDurumuDDL.Items.FindByText(tasinmaz.KullanimDurumu) != null)
+                    KullanimDurumuDDL.SelectedValue = KullanimDurumuDDL.Items.FindByText(tasinmaz.KullanimDurumu).Value;
+                if (KatMulkiyetiDDL.Items.FindByText(tasinmaz.KatMulkiyeti) != null)
+                    KatMulkiyetiDDL.SelectedValue = KatMulkiyetiDDL.Items.FindByText(tasinmaz.KatMulkiyeti).Value;
+                if (KullanimSekliDDL.Items.FindByText(tasinmaz.KullanimSekli) != null)
+                    KullanimSekliDDL.SelectedValue = KullanimSekliDDL.Items.FindByText(tasinmaz.KullanimSekli).Value;
+                if (SigortaDDL.Items.FindByText(tasinmaz.SigortaDurumu) != null)
+                    SigortaDDL.SelectedValue = SigortaDDL.Items.FindByText(tasinmaz.SigortaDurumu).Value;
 
-                UtilityHelper.SetDDLValue(IlcesiDDL, tasinmaz.Ilcesi);
-                UtilityHelper.SetDDLValue(KullanimDurumuDDL, tasinmaz.KullanimDurumu);
-                UtilityHelper.SetDDLValue(KatMulkiyetiDDL, tasinmaz.KatMulkiyeti);
-                UtilityHelper.SetDDLValue(KullanimSekliDDL, tasinmaz.KullanimSekli);
-                UtilityHelper.SetDDLValue(SigortaDDL, tasinmaz.SigortaDurumu);
+                //UtilityHelper.SetDDLValue(IlcesiDDL, tasinmaz.Ilcesi);
+                //UtilityHelper.SetDDLValue(KullanimDurumuDDL, tasinmaz.KullanimDurumu);
+                //UtilityHelper.SetDDLValue(KatMulkiyetiDDL, tasinmaz.KatMulkiyeti);
+                //UtilityHelper.SetDDLValue(KullanimSekliDDL, tasinmaz.KullanimSekli);
+                //UtilityHelper.SetDDLValue(SigortaDDL, tasinmaz.SigortaDurumu);
                 UtilityHelper.SetDDLValue(KiraDurumuDDL, tasinmaz.KiraDurumu);
                 AdresTxt.Text = tasinmaz.Adres;
 

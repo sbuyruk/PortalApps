@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Globalization;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
@@ -259,7 +260,7 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
             TableHeaderRow headerRow = new TableHeaderRow();
             headerRow.CssClass = "table-dark";
             TableHeaderCell TabloBaslikCell = new TableHeaderCell();
-            TabloBaslikCell.ColumnSpan = 5;
+            TabloBaslikCell.ColumnSpan = 4;
             TabloBaslikCell.Text = "Bağışlanan Taşınmazlar";
             headerRow.Controls.Add(TabloBaslikCell);
             TableHeaderRow headerRow1 = new TableHeaderRow();
@@ -268,11 +269,8 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
             //siranoCell.Text = "Sırano";
 
             TableHeaderCell cinsiCell = new TableHeaderCell();
-            cinsiCell.Text = "Cinsi";
+            cinsiCell.Text = "Cinsi / Kullanım Şekli";
             
-            TableHeaderCell kullanimSekliCell = new TableHeaderCell();
-            kullanimSekliCell.Text = "Kullanım Şekli";
-
             TableHeaderCell iliCell = new TableHeaderCell();
             iliCell.Text = "İl-İlçe";
 
@@ -287,7 +285,6 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
 
             //headerRow1.Controls.Add(siranoCell);
             headerRow1.Controls.Add(cinsiCell);
-            headerRow1.Controls.Add(kullanimSekliCell);
             headerRow1.Controls.Add(iliCell);
             headerRow1.Controls.Add(adresCell);
             //headerRow1.Controls.Add(mulkiyetCell);
@@ -297,6 +294,7 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
             TasinmazTable.Controls.Add(headerRow1);
 
         }
+        private IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
         private void TasinmazListesiniDoldur(TasinmazBagisci bagisci)
         {
             TitleLbl.Text = bagisci.Adi + " " + bagisci.Soyadi + " Bağışçı Bilgileri";
@@ -325,12 +323,9 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
                     //row.Controls.Add(SiraNoCell);
 
                     TableCell CinsiCell = new TableCell();
-                    CinsiCell.Text = cinsi;
+                    CinsiCell.Text = cinsi + " / " +kullanimSekli;
                     row.Controls.Add(CinsiCell); 
                     
-                    TableCell KullanimSekliCell = new TableCell();
-                    KullanimSekliCell.Text = kullanimSekli;
-                    row.Controls.Add(KullanimSekliCell);
 
                     TableCell IlICell = new TableCell();
                     IlICell.Text = ilIlce;
@@ -354,8 +349,8 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
                 TableFooterRow footerRow = new TableFooterRow();
                 footerRow.CssClass = "table-dark";
                 TableCell tahminiRayicCell = new TableCell();
-                tahminiRayicCell.ColumnSpan = 5;
-                tahminiRayicCell.Text = "Tahmini Rayiç Bedelleri Toplamı : " + bagis.SelectSumTahminiRayicByBagisciId(bagisci.Id).ConvertToDecimal();
+                tahminiRayicCell.ColumnSpan = 4;
+                tahminiRayicCell.Text = "Tahmini Rayiç Bedelleri Toplamı : " + bagis.SelectSumTahminiRayicByBagisciId(bagisci.Id).ReturnZeroIfNull().ConvertToDecimal().ToString("N", culturInfo);
                 footerRow.Controls.Add(tahminiRayicCell);
                 TasinmazTable.Controls.Add(footerRow);
             }

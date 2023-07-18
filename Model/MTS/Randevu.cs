@@ -249,7 +249,7 @@ namespace Model.MTS
             string randevuIdStr = randevuId == ProjeConstants.HEPSI_INT ? "" : " AND A.RandevuId=" + randevuId;
             string monthBeforeStr = monthBefore == 0 ? string.Empty : string.Format("AND BaslangicTarihi > DateAdd(month, {0}, Convert(date, GetDate()))", monthBefore);
             string sqlString = string.Format(@"
-                SELECT A.KatilimciTipi,A.KatilimciId, A.Id KatilimId,G.Deger RandevuYeri,
+                SELECT A.KatilimciTipi,A.KatilimciId, A.Id KatilimId,G.Adi RandevuYeri,
                     CASE
 	                    WHEN A.KatilimciTipi=1 THEN D.Adi
                         WHEN A.KatilimciTipi=2 THEN C.Adi
@@ -280,7 +280,7 @@ namespace Model.MTS
 	                LEFT JOIN Personel_Table D ON D.Id = A.KatilimciId
                     LEFT JOIN NakitBagisci_Table E ON E.Id = A.KatilimciId
                     LEFT JOIN TasinmazBagisci_Table F ON F.Id = A.KatilimciId
-                    LEFT JOIN RandevuParametre_Table G ON G.Id=B.RandevuYeri 
+                    LEFT JOIN FaaliyetYeri_Table G ON G.Id=B.RandevuYeri 
                 WHERE B.Id IS NOT NULL
                 {0}
                 {1}
@@ -295,7 +295,7 @@ namespace Model.MTS
             string katilimciIdStr = katilimciId > 0 ? " AND A.RandevuId in (SELECT RandevuId FROM RandevuKatilim_Table WHERE KatilimciTipi=" + katilimciTipi + " AND KatilimciId=" + katilimciId + ")" : "";
             string randevuIdStr = randevuId > 0 ? " AND A.RandevuId=" + randevuId : "";
             string sqlString = string.Format(@"
-                SELECT A.KatilimciTipi,A.KatilimciId, A.Id KatilimId,G.Deger RandevuYeri,
+                SELECT A.KatilimciTipi,A.KatilimciId, A.Id KatilimId,G.Adi RandevuYeri,
                     CASE
 	                    WHEN A.KatilimciTipi=1 THEN D.Adi
                         WHEN A.KatilimciTipi=2 THEN C.Adi
@@ -326,7 +326,7 @@ namespace Model.MTS
 	                LEFT JOIN Personel_Table D ON D.Id = A.KatilimciId
                     LEFT JOIN NakitBagisci_Table E ON E.Id = A.KatilimciId
                     LEFT JOIN TasinmazBagisci_Table F ON F.Id = A.KatilimciId
-                    LEFT JOIN RandevuParametre_Table G ON G.Id=B.RandevuYeri 
+                    LEFT JOIN FaaliyetYeri_Table G ON G.Id=B.RandevuYeri 
                 WHERE A.RandevuId IS NOT NULL
                 {1}
                 ORDER BY B.BaslangicTarihi DESC, KatilimciTipi, Adi,Soyadi 

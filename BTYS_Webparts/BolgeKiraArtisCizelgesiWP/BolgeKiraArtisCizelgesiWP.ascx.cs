@@ -203,7 +203,7 @@ namespace BTYS_Webparts.BolgeKiraArtisCizelgesiWP
 
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
 
-            DataTable dataTable = kiraSozlesme.SelectKiraArtisiGelenSozlesmelerReturnDT(BolgeQS);
+            DataTable dataTable = kiraSozlesme.SelectKiraArtisiGelenSozlesmelerReturnDataTable(BolgeQS);
             int SiraNo = 1;
 
             List<KiraArtisListItem> list = new List<KiraArtisListItem>();

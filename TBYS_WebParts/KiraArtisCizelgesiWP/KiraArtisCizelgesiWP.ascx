@@ -150,9 +150,13 @@
             </h3>
         </div>
         <div class="card-body" id="MainCardDiv" runat="server">
+            <div class="form-group col-2">
+                <asp:Label CssClass="col-form-label" runat="server" Text="Ay"></asp:Label>
+                <asp:DropDownList ID="AyDDL" CssClass="form-control" runat="server" Style="height: auto" Enabled="True" AutoPostBack="true" OnSelectedIndexChanged="AyDDL_SelectedIndexChanged"></asp:DropDownList>
+            </div>
+<%--            <asp:UpdatePanel runat="server" ID="UpdatePanel">
+                <ContentTemplate>--%>
 
-            <asp:UpdatePanel runat="server" ID="UpdatePanel">
-                <ContentTemplate>
                     <div class="form-group" id="TabloDiv" runat="server">
                         <table id="CustomDataTable" class="table table-striped table-bordered" width="100%">
                             <thead>
@@ -172,8 +176,11 @@
                             </thead>
                         </table>
                     </div>
-                </ContentTemplate>
-            </asp:UpdatePanel>
+<%--                </ContentTemplate>
+                <Triggers>
+                    <asp:AsyncPostBackTrigger ControlID="AyDDL" EventName="SelectedIndexChanged" />
+                </Triggers>
+            </asp:UpdatePanel>--%>
 
             <asp:UpdateProgress ID="updateProgress1" runat="server">
                 <ProgressTemplate>
