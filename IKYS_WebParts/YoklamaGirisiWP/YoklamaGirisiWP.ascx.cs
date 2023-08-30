@@ -77,30 +77,6 @@ namespace IKYS_WebParts.YoklamaGirisiWP
                 ViewState["PersonelId"] = value;
             }
         }
-        private string SenderAppQS
-        {
-            get
-            {
-
-                if (ViewState["SenderApp"] == null)
-                {
-                    if (Page.Request.QueryString["SenderApp"] != null)
-                    {
-                        ViewState["SenderApp"] = Page.Request.QueryString["SenderApp"];
-                    }
-                    else
-                    {
-                        ViewState["SenderApp"] = string.Empty;
-                    }
-                }
-                return ViewState["SenderApp"].ToString();
-            }
-
-            set
-            {
-                ViewState["SenderApp"] = value;
-            }
-        }
         private string DestinationAppQS
         {
             get

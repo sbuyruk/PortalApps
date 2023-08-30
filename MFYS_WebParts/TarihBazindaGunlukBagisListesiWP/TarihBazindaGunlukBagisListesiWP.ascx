@@ -35,6 +35,10 @@
                         <label for="BankaDDL" class="col-form-label font-weight-bold">Banka: </label>
                         <asp:DropDownList ID="BankaDDL" runat="server" CssClass="form-control small" Style="height: auto" AutoPostBack="True" OnSelectedIndexChanged="BankaDDL_SelectedIndexChanged"></asp:DropDownList>
                     </div>
+                    <div class="col-2 form-group ">
+                        <label class="col-form-label">Para Birimi</label>
+                        <asp:DropDownList ID="DovizCinsiDDL" runat="server" CssClass="form-control small" Style="height: auto" AutoPostBack="True" OnSelectedIndexChanged="DovizCinsiDDLIli_SelectedIndexChanged"></asp:DropDownList>
+                    </div>
                 </div>
             </div>
             <div class="form-group">
@@ -49,6 +53,10 @@
                                 </tr>
                             </thead>
                         </table>
+                        <div class="form-group">
+                            <asp:Label ID="ToplamLbl" CssClass="font-weight-bold float-right" runat="server" Text="Label"></asp:Label>
+                        </div>
+
                     </ContentTemplate>
                     <Triggers>
                         <asp:AsyncPostBackTrigger ControlID="BagisTarihiTxt" EventName="TextChanged" />

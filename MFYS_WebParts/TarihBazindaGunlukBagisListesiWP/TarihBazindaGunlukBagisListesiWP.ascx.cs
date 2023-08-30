@@ -31,13 +31,14 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP
             InitializeControl();
             this.ChromeType = PartChromeType.None;
         }
-
+        private IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!Page.IsPostBack)
             {
                 BagisTarihiTxt.Text = DateTime.Today.AddDays(-1).ConvertToDatetimeEmptyIfNull();
                 BankaDDLDoldur();
+                DovizCinsiDDLDoldur();
                 TabloOlustur(); 
             }
         }
@@ -46,6 +47,12 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP
             var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
             UtilityHelper.ScriptCalistir(jsString);
+            NakitBagisHareket nbh= new NakitBagisHareket();
+            DateTime bagisTarihi = BagisTarihiTxt.Text.ConvertToDatetime();
+            string dovizCinsi = DovizCinsiDDL.SelectedItem.Value;
+            decimal tltoplam = nbh.SelectSumByBagisTarihi(bagisTarihi,dovizCinsi);
+            decimal doviztoplam = nbh.SelectSumByBagisTarihi(bagisTarihi, dovizCinsi);
+            ToplamLbl.Text ="Toplam TL : " + tltoplam.ToString("N", culturInfo) + dovizCinsi;
         }
         private string TabloJson()
         {
@@ -87,6 +94,7 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP
                                     .draw(false);
                             }
                         },
+                        'pageLength': 50,
                         data: " + jsonData + @",
                         columns: [
                             { data: 'Banka' },
@@ -156,11 +164,12 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP
         {
             DateTime bagisTarihi = BagisTarihiTxt.Text.ConvertToDatetime();
             int bankaId = BankaDDL.SelectedItem.Value.ConvertToInt();
+            string dovizCinsi = DovizCinsiDDL.SelectedItem.Value;
             NakitBagisHareket nakitBagisHareket = new NakitBagisHareket();
-            DataTable dataTable = nakitBagisHareket.SelectByBagisTarihiBankaId(bagisTarihi, bankaId);
+            DataTable dataTable = nakitBagisHareket.SelectByBagisTarihiBankaId(bagisTarihi, bankaId,dovizCinsi);
 
             List<BagisListItem> list = new List<BagisListItem>();
-            IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
+            
             if (dataTable != null)
             {
                 decimal vakifToplam = 0;
@@ -198,12 +207,29 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP
                 }
             }
         }
+        private void DovizCinsiDDLDoldur()
+        {
+            if (DovizCinsiDDL.SelectedItem == null)
+            {
+                DovizCinsiDDL.Items.Clear();
+                DovizCinsiDDL.Items.Add(new ListItem(ProjeConstants.DOVIZ_TL, ProjeConstants.DOVIZ_TL));
+                DovizCinsiDDL.Items.Add(new ListItem(ProjeConstants.DOVIZ_EURO, ProjeConstants.DOVIZ_EURO));
+                DovizCinsiDDL.Items.Add(new ListItem(ProjeConstants.DOVIZ_USD, ProjeConstants.DOVIZ_USD));
+                DovizCinsiDDL.Items.Add(new ListItem(ProjeConstants.DOVIZ_GBP, ProjeConstants.DOVIZ_GBP));
+            }
+
+        }
         protected void BagisTarihiTxt_TextChanged(object sender, EventArgs e)
         {
             TabloOlustur();
         }
         protected void BankaDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
+            TabloOlustur();
+        }
+        protected void DovizCinsiDDLIli_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            BankaDDLDoldur();
             TabloOlustur();
         }
         protected void YenileBtn_Click(object sender, EventArgs e)

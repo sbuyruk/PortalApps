@@ -251,6 +251,10 @@ namespace Portal_WebParts.ToplantiGirisiWP {
             "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.UpdatePanel UpdatePanel5;
         
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.UpdateProgress updateProgress;
+        
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebPartCodeGenerator", "17.0.0.0")]
         public static implicit operator global::System.Web.UI.TemplateControl(ToplantiGirisiWP target) 
         {
@@ -1980,6 +1984,28 @@ namespace Portal_WebParts.ToplantiGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private void @__BuildControl__control62(System.Web.UI.Control @__ctrl) {
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n        <div class=\'loaderMainContainer\'>\r\n            <div class=\'loaderContai" +
+                        "ner\'>\r\n                <div class=\'loaderCircle\'></div>\r\n            </div>\r\n   " +
+                        "     </div>\r\n    "));
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.UpdateProgress @__BuildControlupdateProgress() {
+            global::System.Web.UI.UpdateProgress @__ctrl;
+            @__ctrl = new global::System.Web.UI.UpdateProgress();
+            this.updateProgress = @__ctrl;
+            @__ctrl.ProgressTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control62));
+            @__ctrl.ID = "updateProgress";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControlTree(global::Portal_WebParts.ToplantiGirisiWP.ToplantiGirisiWP @__ctrl) {
             global::System.Web.UI.WebControls.LinkButton @__ctrl1;
             @__ctrl1 = this.@__BuildControlCloseBtn();
@@ -2078,6 +2104,9 @@ namespace Portal_WebParts.ToplantiGirisiWP {
             global::System.Web.UI.UpdatePanel @__ctrl32;
             @__ctrl32 = this.@__BuildControlUpdatePanel5();
             @__parser.AddParsedSubObject(@__ctrl32);
+            global::System.Web.UI.UpdateProgress @__ctrl33;
+            @__ctrl33 = this.@__BuildControlupdateProgress();
+            @__parser.AddParsedSubObject(@__ctrl33);
             @__ctrl.SetRenderMethodDelegate(new System.Web.UI.RenderMethod(this.@__Render__control1));
         }
         
@@ -2244,6 +2273,8 @@ namespace Portal_WebParts.ToplantiGirisiWP {
             parameterContainer.Controls[30].RenderControl(@__w);
             @__w.Write("\r\n");
             parameterContainer.Controls[31].RenderControl(@__w);
+            @__w.Write("\r\n");
+            parameterContainer.Controls[32].RenderControl(@__w);
         }
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +

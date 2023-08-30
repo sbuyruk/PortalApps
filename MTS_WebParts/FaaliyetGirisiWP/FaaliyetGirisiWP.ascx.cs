@@ -1010,13 +1010,13 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                     katilimciItem.Kurumu = kurumu;
                     katilimciItem.KatilimciTipi = katilimciTipi.ToString();
                     katilimciItem.KatilimciTipiStr = KatilimciTipiGetir(katilimciTipi);
-                    if (katilimciItem.KatilimciTipi.ConvertToInt() == ProjeConstants.RANDEVU_KATILIMCI_IC_INT)
-                    {
-                        katilimciItem.AniObjesiStoklu = string.Empty;
-                        katilimciItem.AniObjesiStoksuz = string.Empty;
-                        katilimciItem.GetirilenAniObjesi = string.Empty;
-                    }
-                    else
+                    //if (katilimciItem.KatilimciTipi.ConvertToInt() == ProjeConstants.RANDEVU_KATILIMCI_IC_INT)
+                    //{
+                    //    katilimciItem.AniObjesiStoklu = string.Empty;
+                    //    katilimciItem.AniObjesiStoksuz = string.Empty;
+                    //    katilimciItem.GetirilenAniObjesi = string.Empty;
+                    //}
+                    //else
                     {
                         string stoksuzAniObjeleri = AniObjeleriniGetir(katilimciItem.KatilimciId.ConvertToInt(),
                             katilimciItem.KatilimciTipi.ConvertToInt(), RandevuIdQS.ConvertToInt(), ProjeConstants.MTS_ANIOBJESISTOKSUZ);
@@ -1345,6 +1345,20 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                         MessageHelper.PublishMessage("Taşınmaz Bağışçı bulunamadı", ProjeConstants.MESAJ_HATA);
                     }
                 }
+                else if (katilimciTipi == ProjeConstants.RANDEVU_KATILIMCI_IC_INT)
+                {
+                    Personel personel = new Personel();
+                    personel = personel.Select(katilimciId);
+                    if (personel != null)
+                    {
+                        AniObjesiHeaderLbl.InnerText = "Anı Objesi Seçimi (" + personel.Adi + " " + personel.Soyadi + ")";
+                        AniObjeleriTablosunuDoldur(randevuId, katilimciId, katilimciTipi);
+                    }
+                    else
+                    {
+                        MessageHelper.PublishMessage("Personel bulunamadı", ProjeConstants.MESAJ_HATA);
+                    }
+                }
             }
             else
             {
@@ -1400,6 +1414,8 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             }
             else // ekle
             {
+                DagitimDiv.Attributes["style"] = "display:block";
+                IadeDiv.Attributes["style"] = "display:none";
                 int katilimciId = paramRandevuKatilimciIdLbl.Value.ConvertToInt();
                 int katilimciTipi = paramRandevuKatilimciTipiLbl.Value.ConvertToInt();
                 if (katilimciId > 0)
@@ -1410,8 +1426,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                         kisi = kisi.Select(katilimciId);
                         if (kisi != null)
                         {
-                            DagitimDiv.Attributes["style"] = "display:block";
-                            IadeDiv.Attributes["style"] = "display:none";
+
                             StokluAniObjesiModalTitle.InnerText = "Stoklu Anı Objesi Seçimi (" + kisi.Adi + " " + kisi.Soyadi + ")";
                             StokluAniObjesiDDLDoldur();
                             DepoDDLDoldur();
@@ -1457,6 +1472,24 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                             MessageHelper.PublishMessage("Taşınmaz Bağışçı bulunamadı", ProjeConstants.MESAJ_HATA);
                         }
                     }
+                    else if (katilimciTipi == ProjeConstants.RANDEVU_KATILIMCI_IC_INT)
+                    {
+                        Personel personel = new Personel();
+                        personel = personel.Select(katilimciId);
+                        if (personel != null)
+                        {
+                            StokluAniObjesiModalTitle.InnerText = "Stoklu Anı Objesi Seçimi (" + personel.Adi + " " + personel.Soyadi + ")";
+                            StokluAniObjesiDDLDoldur();
+                            DepoDDLDoldur();
+                            //AniObjeleriTablosunuDoldur(randevuId, katilimciId, katilimciTipi);
+                            UtilityHelper.ScriptCalistir("StokluAniObjesiModal();");
+                        }
+                        else
+                        {
+                            MessageHelper.PublishMessage("Personel bulunamadı", ProjeConstants.MESAJ_HATA);
+                        }
+                    }
+
                 }
                 else
                 {
@@ -1510,7 +1543,21 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Taşınmaz Bağışçı bulunamadı", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Personel bulunamadı", ProjeConstants.MESAJ_HATA);
+                    }
+                }
+                else if (katilimciTipi == ProjeConstants.RANDEVU_KATILIMCI_IC_INT)
+                {
+                    Personel personel = new Personel();
+                    personel = personel.Select(katilimciId);
+                    if (personel != null)
+                    {
+                        GetirilenAniObjesiModalTitle.InnerText = "Getirilen Anı Objesi (" + personel.Adi + " " + personel.Soyadi + ")";
+                        GetirilenAniObjesiniDoldur(randevuId, katilimciId, katilimciTipi);
+                    }
+                    else
+                    {
+                        MessageHelper.PublishMessage("Personel bulunamadı", ProjeConstants.MESAJ_HATA);
                     }
                 }
             }
@@ -1714,6 +1761,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                             item.RandevuId = randevuId;
                             item.KatilimciId = katilimciId;
                             item.KatilimciTipi = katilimciTipi;
+                            item.VerilisTarihi = BaslangicTarihiTxt.Text.ConvertToDatetime();
                             item.Olusturan = UtilityHelper.GetCurrentUserName();
                             item.Save();
                         }
@@ -1723,6 +1771,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                             item.RandevuId = randevuId;
                             item.KatilimciId = katilimciId;
                             item.KatilimciTipi = katilimciTipi;
+                            item.VerilisTarihi = BaslangicTarihiTxt.Text.ConvertToDatetime();
                             item.Degistiren = UtilityHelper.GetCurrentUserName();
                             item.Update();
                         }
@@ -1795,6 +1844,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                             aniObjesiDagitim.KatilimciId = paramRandevuKatilimciIdLbl.Value.ConvertToInt();
                             aniObjesiDagitim.KatilimciTipi = paramRandevuKatilimciTipiLbl.Value.ConvertToInt();
                             aniObjesiDagitim.RandevuId = paramRandevuIdLbl.Value.ConvertToInt();
+                            aniObjesiDagitim.VerilisTarihi = BaslangicTarihiTxt.Text.ConvertToDatetime();
                             aniObjesiDagitim.VerilenAlinan = ProjeConstants.ANIOBJESI_VERILEN_INT;
                             aniObjesiDagitim.Save();
                             //DepoStoktan düş
@@ -1813,6 +1863,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                             aniObjesiDagitim.KatilimciId = paramRandevuKatilimciIdLbl.Value.ConvertToInt();
                             aniObjesiDagitim.KatilimciTipi = paramRandevuKatilimciTipiLbl.Value.ConvertToInt();
                             aniObjesiDagitim.RandevuId = paramRandevuIdLbl.Value.ConvertToInt();
+                            aniObjesiDagitim.VerilisTarihi = BaslangicTarihiTxt.Text.ConvertToDatetime();
                             aniObjesiDagitim.VerilenAlinan = ProjeConstants.ANIOBJESI_VERILEN_INT;
                             aniObjesiDagitim.Update();
                             //DepoStoktan düş
@@ -1963,6 +2014,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
 
                 aniObjesiDagitim.GetirilenAniObjesi = GetirilenAniObjesiTxt.Text;
                 aniObjesiDagitim.VerilenAlinan = ProjeConstants.ANIOBJESI_GETIRILEN_INT;
+                aniObjesiDagitim.VerilisTarihi = BaslangicTarihiTxt.Text.ConvertToDatetime();
                 aniObjesiDagitim.Olusturan = UtilityHelper.GetCurrentUserName();
                 aniObjesiDagitim.Save();
 

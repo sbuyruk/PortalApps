@@ -669,19 +669,20 @@ namespace Model.NBYS
             }
             return dataTable;
         }
-        public DataTable SelectByBagisTarihiBankaId(DateTime bagisTarihi, int bankaId=0)
+        public DataTable SelectByBagisTarihiBankaId(DateTime bagisTarihi, int bankaId = 0, string dovizCinsi = "")
         {
             string bankaStr = bankaId == 0 ? string.Empty : string.Format(" AND BankaId={0}", bankaId);
+            string dovizCinsiStr = string.IsNullOrEmpty(dovizCinsi)? string.Empty : string.Format(" AND DovizCinsi={0}", dovizCinsi.ReturnQuotedValue());
             string sqlString = string.Format(@"
                 
                 SELECT BagisTarihi, SUM(BagisMiktari) ToplamBagis, B.BankaGrup Banka 
                 FROM NakitBagisHareket_Table A
 	                LEFT JOIN BankaTanim_Table B ON B.Id=A.BankaId
                 WHERE BagisTarihi={0} 
-                {1}
+                {1} {2}
                 GROUP BY BagisTarihi, B.BankaGrup
                 ORDER BY BagisTarihi 
-            ", bagisTarihi.ReturnTRDateFormat(), bankaStr);
+            ", bagisTarihi.ReturnTRDateFormat(), bankaStr,dovizCinsiStr);
             DataTable dataTable;
             try
             {
@@ -693,6 +694,39 @@ namespace Model.NBYS
                 throw ex;
             }
             return dataTable;
+        }
+        public decimal SelectSumByBagisTarihi(DateTime bagisTarihi, string dovizCinsi)
+        {
+            string dovizCinsiStr = string.IsNullOrEmpty(dovizCinsi) ?string.Empty: string.Format(" AND DovizCinsi={0} " , dovizCinsi.ReturnQuotedValue());
+            decimal toplam = 0;
+            string sqlString = string.Format(@"
+                
+                SELECT BagisTarihi, SUM(BagisMiktari)  Toplam
+                FROM NakitBagisHareket_Table A
+	                LEFT JOIN BankaTanim_Table B ON B.Id=A.BankaId
+                WHERE BagisTarihi={0} 
+                    {1} 
+                GROUP BY BagisTarihi
+            ", bagisTarihi.ReturnTRDateFormat(), dovizCinsiStr);
+            DataTable dataTable;
+            try
+            {
+                dataTable = dao.SelectFromDb(sqlString, "");
+                if (dataTable != null)
+                {
+                    if (dataTable.Rows.Count > 0)
+                    {
+                        DataRow row = dataTable.Rows[0];
+                        toplam = row["Toplam"].ToString().ConvertToDecimal();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Exception ex = new Exception("sql=" + sqlString, e);
+                throw ex;
+            }
+            return toplam;
         }
         public DataTable SelectByTarihBankaGrup(DateTime bagisTarihi, string bankaGrup)
         {

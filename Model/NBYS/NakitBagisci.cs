@@ -15,8 +15,8 @@ namespace Model.NBYS
         public string Adi { get; set; }
         public string Soyadi { get; set; }
         public long TCKimlikNo { get; set; }
-        public string Ili { get; set; }
-        public string Ilcesi { get; set; }
+        public int Ili { get; set; }
+        public int Ilcesi { get; set; }
         public string Adres { get; set; }
         public string Telefon1 { get; set; }
         public string Telefon2 { get; set; }

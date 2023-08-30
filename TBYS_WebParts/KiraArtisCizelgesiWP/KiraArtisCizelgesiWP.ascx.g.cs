@@ -65,6 +65,10 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.DropDownList KiraSuresiDDL;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl TabloDiv;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -201,6 +205,36 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControl__control3() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.CssClass = "col-form-label";
+            @__ctrl.Text = "Kira Süresi";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.DropDownList @__BuildControlKiraSuresiDDL() {
+            global::System.Web.UI.WebControls.DropDownList @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.DropDownList();
+            this.KiraSuresiDDL = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "KiraSuresiDDL";
+            @__ctrl.CssClass = "form-control";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: auto");
+            @__ctrl.Enabled = true;
+            @__ctrl.AutoPostBack = true;
+            @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.KiraSuresiDDL_SelectedIndexChanged);
+            @__ctrl.SelectedIndexChanged += new System.EventHandler(this.KiraSuresiDDL_SelectedIndexChanged);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControlTabloDiv() {
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
@@ -209,31 +243,31 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP {
             @__ctrl.ID = "TabloDiv";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-                        <table id=""CustomDataTable"" class=""table table-striped table-bordered"" width=""100%"">
-                            <thead>
-                                <tr>
-                                    <th>Kiracı</th>
-                                    <th>Cinsi</th>
-                                    <th>Bölge</th>
-                                    <th>İlk Söz. Tar.</th>
-                                    <th>Kira Süresi</th>
-                                    <th>Artış Ayı</th>
-                                    <th>Adres</th>
-                                    <th>Artıştan Önceki Kira (TL)</th>
-                                    <th>Artış Oranı (%)</th>
-                                    <th>Artıştan Sonraki Kira (TL)</th>
-                                    <th>Durumu</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    "));
+                <table id=""CustomDataTable"" class=""table table-striped table-bordered"" width=""100%"">
+                    <thead>
+                        <tr>
+                            <th>Bölge</th>
+                            <th>Kiracı</th>
+                            <th>Adres</th>
+                            <th>Cinsi</th>
+                            <th>İlk Söz. Tar.</th>
+                            <th>Kira Süresi</th>
+                            <th>Artış Ayı</th>
+                            <th>Artıştan Önceki Kira (TL)</th>
+                            <th>Artış Oranı (%)</th>
+                            <th>Artıştan Sonraki Kira (TL)</th>
+                            <th>Durumu</th>
+                        </tr>
+                    </thead>
+                </table>
+            "));
             return @__ctrl;
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control3(System.Web.UI.Control @__ctrl) {
+        private void @__BuildControl__control4(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    <div class=\'loaderMainContainer\'>\r\n                        " +
                         "<div class=\'loaderContainer\'>\r\n                            <div class=\'loaderCir" +
@@ -248,7 +282,7 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP {
             global::System.Web.UI.UpdateProgress @__ctrl;
             @__ctrl = new global::System.Web.UI.UpdateProgress();
             this.updateProgress1 = @__ctrl;
-            @__ctrl.ProgressTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control3));
+            @__ctrl.ProgressTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control4));
             @__ctrl.ID = "updateProgress1";
             return @__ctrl;
         }
@@ -263,22 +297,32 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP {
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "card-body");
             @__ctrl.ID = "MainCardDiv";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            <div class=\"form-group col-2\">\r\n                "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            <div class=\"row\">\r\n                <div class=\"form-group col-2\">\r\n" +
+                        "                    "));
             global::System.Web.UI.WebControls.Label @__ctrl1;
             @__ctrl1 = this.@__BuildControl__control2();
             @__parser.AddParsedSubObject(@__ctrl1);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl2;
             @__ctrl2 = this.@__BuildControlAyDDL();
             @__parser.AddParsedSubObject(@__ctrl2);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            </div>\r\n\r\n\r\n                    "));
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl3;
-            @__ctrl3 = this.@__BuildControlTabloDiv();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                </div>\r\n                <div class=\"form-group col-2\">\r\n       " +
+                        "             "));
+            global::System.Web.UI.WebControls.Label @__ctrl3;
+            @__ctrl3 = this.@__BuildControl__control3();
             @__parser.AddParsedSubObject(@__ctrl3);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n\r\n            "));
-            global::System.Web.UI.UpdateProgress @__ctrl4;
-            @__ctrl4 = this.@__BuildControlupdateProgress1();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
+            global::System.Web.UI.WebControls.DropDownList @__ctrl4;
+            @__ctrl4 = this.@__BuildControlKiraSuresiDDL();
             @__parser.AddParsedSubObject(@__ctrl4);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                </div>\r\n            </div> \r\n            \r\n\r\n            "));
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl5;
+            @__ctrl5 = this.@__BuildControlTabloDiv();
+            @__parser.AddParsedSubObject(@__ctrl5);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            \r\n\r\n            "));
+            global::System.Web.UI.UpdateProgress @__ctrl6;
+            @__ctrl6 = this.@__BuildControlupdateProgress1();
+            @__parser.AddParsedSubObject(@__ctrl6);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n        "));
             return @__ctrl;
         }
@@ -288,70 +332,55 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControlTree(global::TBYS_WebParts.KiraArtisCizelgesiWP.KiraArtisCizelgesiWP @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n<style>\r\n    .bes-yil{ \r\n        color: orange;\r\n        font-weight:bold;\r\n   " +
-                        " }\r\n    .on-yil{ \r\n        color: red;\r\n        font-weight:bold;\r\n    }\r\n</styl" +
-                        "e>\r\n\r\n<script type=\"text/javascript\">\r\n    //excele export ettikten donup sonra " +
-                        "kalmasın diye\r\n    function setFormSubmitToFalse() {\r\n        setTimeout(functio" +
-                        "n () { _spFormOnSubmitCalled = false; }, 3000);\r\n        return true;\r\n    }\r\n  " +
-                        "  function setDataSet(myset) {\r\n        myjsons = myset;\r\n    }\r\n    var myjsons" +
-                        " = [{\r\n        \"KiraciAdi\": \"\", \"KiralamaAmaci\": \"\", \"Bolge\": \"\", \"SozlesmeTarih" +
-                        "i\": \"\", \"KiraSuresi\": \"\", \"ArtisAyi\": \"\", \"TamAdres\": \"\", \"KiraBedeli\": \"\", \"Tuf" +
-                        "e\": \"\", \"YeniKiraBedeli\": \"\", \"YenilendiMi\": \"\"\r\n    }];\r\n    jQuery(document).r" +
-                        "eady(function () {\r\n\r\n        var table = jQuery(\'#CustomDataTable\').DataTable({" +
-                        "\r\n            data: myjsons,\r\n            columns: [\r\n                { data: \"K" +
-                        "iraciAdi\", \"width\": \"20%\" },\r\n                { data: \"KiralamaAmaci\" },\r\n      " +
-                        "          { data: \"Bolge\" },\r\n                { data: \"SozlesmeTarihi\" },\r\n     " +
-                        "           { data: \"KiraSuresi\" },\r\n                { data: \"ArtisAyi\" },\r\n     " +
-                        "           { data: \"TamAdres\", \"width\": \"20%\" },\r\n                { data: \"KiraB" +
-                        "edeli\", type: \"decimal\",class:\"text-right\" },\r\n                { data: \"Tufe\", t" +
-                        "ype: \"decimal\" },\r\n                { data: \"YeniKiraBedeli\", type: \"decimal\", cl" +
-                        "ass: \"text-right\"},\r\n                { data: \"YenilendiMi\" },\r\n\r\n            ],\r" +
-                        "\n            //\"rowCallback\": function (row, data, index) {\r\n            //    v" +
-                        "ar yil = data.KiraSuresi;\r\n            //    yil = yil.replace(\" Yil\", \"\");\r\n   " +
-                        "         //    var yilInt = parseInt(yil);\r\n            //    if (yilInt >= 10) " +
-                        "{\r\n            //        $(\'td:eq(0)\', row).css(\'background-color\', \'Red\');\r\n   " +
-                        "         //        $(\'td:eq(4)\', row).css(\'background-color\', \'Red\');\r\n         " +
-                        "   //    } else if (yilInt == 5) {\r\n            //        $(\'td:eq(0)\', row).css" +
-                        "(\'background-color\', \'Blue\');\r\n            //        $(\'td:eq(4)\', row).css(\'bac" +
-                        "kground-color\', \'Blue\');\r\n            //    }\r\n            //},\r\n            \'or" +
-                        "der\': [[2, \'asc\']],//AdiSoyadi Sıralı\r\n            \"language\": {\r\n              " +
-                        "  \"url\": \"http://tskgv-portal/OrtakBelgeler/Turkish.txt\",\r\n                \"deci" +
-                        "mal\": \",\",\r\n                \"thousands\": \".\"\r\n            },\r\n            respon" +
-                        "sive: true,\r\n            dom: \'Bfrtip\',\r\n            //colon resizable\r\n        " +
-                        "    //initComplete: function (settings) {\r\n            //    $(\'#CustomDataTable" +
-                        "\').colResizable({ liveDrag: true });\r\n            //},\r\n            buttons: [\r\n" +
-                        "                {\r\n                    extend: \'print\',\r\n                    exp" +
-                        "ortOptions: {\r\n                        columns: \':visible\'\r\n                    " +
-                        "}\r\n                },\r\n                {\r\n                    extend: \'excelHtml" +
-                        "5\',\r\n                    customize: function (xlsx) {\r\n                        v" +
-                        "ar sheet = xlsx.xl.worksheets[\'sheet1.xml\'];\r\n\r\n                        var coun" +
-                        "t = 0;\r\n                        var skippedHeader = 0;\r\n\r\n                      " +
-                        "  //$(\'row\', sheet).each(function () {\r\n                        //    if (skippe" +
-                        "dHeader++>1) {\r\n                        //        var text = $(\'tbody tr:eq(\' + " +
-                        "parseInt(count) + \') td:eq(4)\').text();\r\n                        //        if (t" +
-                        "ext == \'5 Yıl\') {\r\n                        //            $(this).attr(\'s\', \'11\')" +
-                        ";\r\n                        //        }\r\n                        //        else {" +
-                        "\r\n                        //            $(this).attr(\'s\', \'21\');\r\n              " +
-                        "          //        }\r\n                                \r\n                       " +
-                        " //    }\r\n                        //    count++;\r\n                        //});\r" +
-                        "\n                        //count = 0;\r\n                        //skippedHeader =" +
-                        " 0;\r\n                        $(\'row c[r^=\"E\"]\', sheet).each(function () {\r\n     " +
-                        "                       if (count++>0) {\r\n                                var tex" +
-                        "t = $(this).text();\r\n                                var yilInt = text.replace(\'" +
-                        " Yıl\', \'\');\r\n                                if (yilInt >=5) {\r\n                " +
-                        "                    $(this).attr(\'s\', \'11\');\r\n                                }\r" +
-                        "\n                            }\r\n\r\n                        });\r\n                 " +
-                        "   }\r\n                },\r\n                {\r\n                    extend: \'pdf\',\r" +
-                        "\n                    exportOptions: {\r\n                        columns: \':visibl" +
-                        "e\'\r\n                    }\r\n                },\r\n                {\r\n              " +
-                        "      extend: \'copy\',\r\n                    exportOptions: {\r\n                   " +
-                        "     columns: \':visible\'\r\n                    }\r\n                },\r\n           " +
-                        "     , \'pageLength\', \"colvis\"\r\n            ],\r\n            \"createdRow\": functio" +
-                        "n (row, data, dataIndex) {\r\n                if (data.OnYil == \"True\") {\r\n       " +
-                        "             $(row).addClass(\'on-yil\');\r\n                } else if (data.BesYil " +
-                        "== \"True\") {\r\n                    $(row).addClass(\'bes-yil\');\r\n                }" +
-                        " \r\n\r\n            },//set row color\r\n        });\r\n    });\r\n</script>\r\n\r\n<div clas" +
-                        "s=\"col-xl\">\r\n    <div class=\"card shadow\">\r\n        "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n<style>\r\n    .bes-yil {\r\n        color: orange;\r\n        font-weight: bold;\r\n  " +
+                        "  }\r\n\r\n    .on-yil {\r\n        color: red;\r\n        font-weight: bold;\r\n    }\r\n</" +
+                        "style>\r\n\r\n<script type=\"text/javascript\">\r\n    //excele export ettikten donup so" +
+                        "nra kalmasın diye\r\n    function setFormSubmitToFalse() {\r\n        setTimeout(fun" +
+                        "ction () { _spFormOnSubmitCalled = false; }, 3000);\r\n        return true;\r\n    }" +
+                        "\r\n    function setDataSet(myset) {\r\n        myjsons = myset;\r\n    }\r\n    var myj" +
+                        "sons = [{\r\n        \"KiraciAdi\": \"\", \"KiralamaAmaci\": \"\", \"Bolge\": \"\", \"SozlesmeT" +
+                        "arihi\": \"\", \"KiraSuresi\": \"\", \"ArtisAyi\": \"\", \"TamAdres\": \"\", \"KiraBedeli\": \"\", " +
+                        "\"Tufe\": \"\", \"YeniKiraBedeli\": \"\", \"YenilendiMi\": \"\"\r\n    }];\r\n    if (jQuery.fn." +
+                        "DataTable.isDataTable(\'#CustomDataTable\')) {\r\n        jQuery(\'#CustomDataTable\')" +
+                        ".DataTable().destroy();\r\n    }\r\n    jQuery(\'#CustomDataTable tbody\').empty();\r\n\r" +
+                        "\n    jQuery.fn.dataTable.moment(\'DD.MM.YYYY HH:mm\');//sort date\r\n\r\n    jQuery(do" +
+                        "cument).ready(function () {\r\n\r\n        var table = jQuery(\'#CustomDataTable\').Da" +
+                        "taTable({\r\n            data: myjsons,\r\n            columns: [\r\n                {" +
+                        " data: \'Bolge\' },\r\n                { data: \'KiraciAdi\', \'width\': \'20%\' },\r\n     " +
+                        "           { data: \'TamAdres\', \'width\': \'20%\' },\r\n                { data: \'Kiral" +
+                        "amaAmaci\' },\r\n                { data: \'SozlesmeTarihi\' },\r\n                { dat" +
+                        "a: \'KiraSuresi\' },\r\n                { data: \'ArtisAyi\' },\r\n                { dat" +
+                        "a: \'KiraBedeli\', type: \'string\', class: \'text-right\' },\r\n                { data:" +
+                        " \'Tufe\', type: \'decimal\' },\r\n                { data: \'YeniKiraBedeli\', type: \'de" +
+                        "cimal\', class: \'text-right\' },\r\n                { data: \'YenilendiMi\' },\r\n\r\n    " +
+                        "        ],\r\n            \'order\': [[0, \'asc\']],//bolge Sıralı\r\n            \'langu" +
+                        "age\': {\r\n                \"url\": \"http://tskgv-portal/OrtakBelgeler/Turkish.txt\"," +
+                        "\r\n                \'decimal\': \',\',\r\n                \'thousands\': \'.\'\r\n           " +
+                        " },\r\n            responsive: true,\r\n            destroy: true,\r\n            dom:" +
+                        " \'Bfrtip\',\r\n            buttons: [\r\n                {\r\n                    exten" +
+                        "d: \'print\',\r\n                    exportOptions: {\r\n                        colum" +
+                        "ns: \':visible\'\r\n                    }\r\n                },\r\n                {\r\n  " +
+                        "                  extend: \'excelHtml5\',\r\n                    exportOptions: { or" +
+                        "thogonal: \'export\' },\r\n                    customize: function (xlsx) {\r\n       " +
+                        "                 var sheet = xlsx.xl.worksheets[\'sheet1.xml\'];\r\n\r\n              " +
+                        "          var count = 0;\r\n                        var skippedHeader = 0;\r\n      " +
+                        "                  $(\"row c[r^=\'F\']\", sheet).each(function () { //F excel kolonu " +
+                        "\r\n                            if (count++ > 0) {\r\n                              " +
+                        "  var text = $(this).text();\r\n                                var yilInt = text." +
+                        "replace(\' Yıl\', \'\');\r\n                                if (yilInt >= 5) {\r\n      " +
+                        "                              $(this).attr(\'s\', \'11\');\r\n                        " +
+                        "        }\r\n                            }\r\n\r\n                        });\r\n\r\n     " +
+                        "               }\r\n                },\r\n                {\r\n                    ext" +
+                        "end: \'pdf\',\r\n                    exportOptions: {\r\n                        colum" +
+                        "ns: \':visible\'\r\n                    }\r\n                },\r\n                {\r\n  " +
+                        "                  extend: \'copy\',\r\n                    exportOptions: {\r\n       " +
+                        "                 columns: \':visible\'\r\n                    }\r\n                },\r" +
+                        "\n                \'pageLength\', \'colvis\'\r\n            ],\r\n            \'createdRow" +
+                        "\': function (row, data, dataIndex) {\r\n                if (data.OnYil == \'True\') " +
+                        "{\r\n                    $(row).addClass(\'on-yil\');\r\n                } else if (da" +
+                        "ta.BesYil == \'True\') {\r\n                    $(row).addClass(\'bes-yil\');\r\n       " +
+                        "         }\r\n\r\n            },//set row color\r\n        });\r\n    });            \r\n<" +
+                        "/script>\r\n\r\n<div class=\"col-xl\">\r\n    <div class=\"card shadow\">\r\n        "));
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl1;
             @__ctrl1 = this.@__BuildControlCardHeader();
             @__parser.AddParsedSubObject(@__ctrl1);

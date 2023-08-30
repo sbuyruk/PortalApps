@@ -32,13 +32,56 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP
             InitializeControl();
             this.ChromeType = PartChromeType.None;
         }
+        private string BolgeQS
+        {
+            get
+            {
+
+                if (ViewState["Bolge"] == null)
+                {
+                    if (Page.Request.QueryString["Bolge"] != null)
+                    {
+                        ViewState["Bolge"] = Page.Request.QueryString["Bolge"];
+                    }
+                    else
+                    {
+                        ViewState["Bolge"] = string.Empty;
+                    }
+                }
+                return ViewState["Bolge"].ToString();
+            }
+
+            set
+            {
+                ViewState["Bolge"] = value;
+            }
+        }
+        private string CurrentUserName
+        {
+            get
+            {
+
+                if (ViewState["CurrentUserName"] == null)
+                {
+                    ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUserLoginName();
+                }
+                return ViewState["CurrentUserName"].ToString();
+            }
+
+            set
+            {
+                ViewState["CurrentUserName"] = value;
+            }
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
+                BolgeQS = IKYSOrtak.PersonelinBolgesiniGetir(CurrentUserName);
                 if (!Page.IsPostBack)
                 {
                     AyDDLDoldur();
+                    KiraSuresiDDLDoldur();
                     TabloOlustur();
                 }
             }
@@ -51,8 +94,9 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP
         private void TabloOlustur()
         {
             var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            //var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
-            UtilityHelper.ScriptCalistir( "setDataSet(" + jsonData + ");");
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            //UtilityHelper.ScriptCalistir(jsString);
+            UtilityHelper.ScriptCalistir("setDataSet(" + jsonData + ");");
         }
         private string TabloJson()
         {
@@ -72,6 +116,98 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP
             }
             return jSon;
         }
+        private string CreateDataTable(string jsonData)
+        {
+            string a= "$(\"row c[r^='E']\", sheet)";
+            string tableString = @"
+                if ( jQuery.fn.DataTable.isDataTable('#CustomDataTable') ) {
+                    jQuery('#CustomDataTable').DataTable().destroy();
+                }
+                jQuery('#CustomDataTable tbody').empty();
+
+                jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
+            
+            jQuery(document).ready(function () {
+
+                var table = jQuery('#CustomDataTable').DataTable({
+                    data: " + jsonData + @",
+                    columns: [
+                        { data: 'Bolge' },
+                        { data: 'KiraciAdi', 'width': '20%' },
+                        { data: 'TamAdres', 'width': '20%' },
+                        { data: 'KiralamaAmaci' },
+                        { data: 'SozlesmeTarihi' },
+                        { data: 'KiraSuresi' },
+                        { data: 'ArtisAyi' },
+                        { data: 'KiraBedeli', type: 'decimal', class: 'text-right' },
+                        { data: 'Tufe', type: 'decimal' },
+                        { data: 'YeniKiraBedeli', type: 'decimal', class: 'text-right' },
+                        { data: 'YenilendiMi' },
+
+                    ],
+                    'order': [[0, 'asc']],//bolge Sıralı
+                    'language': {
+                        'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
+                        'decimal': ',',
+                        'thousands': '.'
+                    },
+                    responsive: true,
+                    destroy: true,
+                    dom: 'Bfrtip',
+                    buttons: [
+                        {
+                            extend: 'print',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        {
+                            extend: 'excelHtml5',
+                            customize: function (xlsx) {
+                                var sheet = xlsx.xl.worksheets['sheet1.xml'];
+
+                                var count = 0;
+                                var skippedHeader = 0;
+                                $('row c[r^='E']', sheet).each(function () {
+                                    if (count++ > 0) {
+                                        var text = $(this).text();
+                                        var yilInt = text.replace(' Yıl', '');
+                                        if (yilInt >= 5) {
+                                            $(this).attr('s', '11');
+                                        }
+                                    }
+
+                                });
+                            }
+                        },
+                        {
+                            extend: 'pdf',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        {
+                            extend: 'copy',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        'pageLength', 'colvis'
+                    ],
+                    'createdRow': function (row, data, dataIndex) {
+                        if (data.OnYil == 'True') {
+                            $(row).addClass('on-yil');
+                        } else if (data.BesYil == 'True') {
+                            $(row).addClass('bes-yil');
+                        }
+
+                    },//set row color
+                });
+        });            
+        ";
+
+            return tableString;
+        }
         protected void ExcelBtn_Click(object sender, EventArgs e)
         {
             try
@@ -87,7 +223,7 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP
         protected void ExportToExcel()
         {
             TabloOlustur();
-            string filename = "KiraArtisCizelgesi.xls";// + DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + ".xls";
+            string filename = "KiraArtisCizelgesi."+ DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + ".xls";
             //Türkçe sorunu yok
             Page.Response.Clear();
             Page.Response.AddHeader("content-disposition", "attachment;filename=" + filename + "");
@@ -103,39 +239,6 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP
             Page.Response.Write(sw.ToString());
             Page.Response.End();
         }
-        //protected void ExportToExcel()
-        //{
-        //    GridView GridView1 = new GridView();
-        //    GridView1.AllowPaging = false;
-
-        //    GridView1.DataSource = GetDataList();//SozlesmeListesiGetirDT();
-        //    GridView1.DataBind();
-
-        //    Page.Response.Clear();
-        //    Page.Response.Buffer = true;
-        //    Page.Response.AddHeader("content-disposition",
-        //     "attachment;filename=KiraArtisCizelgesi" + DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + ".xls");
-        //    Page.Response.ContentEncoding = System.Text.Encoding.GetEncoding("windows-1254");
-        //    Page.Response.Charset = "windows-1254";//ISO-8859-9
-        //    Page.Response.ContentType = "application/vnd.ms-excel";
-        //    StringWriter sw = new StringWriter();
-        //    HtmlTextWriter hw = new HtmlTextWriter(sw);
-
-        //    for (int i = 0; i < GridView1.Rows.Count; i++)
-        //    {
-        //        //Apply text style to each Row
-        //        GridView1.Rows[i].Attributes.Add("class", "textmode");
-        //    }
-        //    GridView1.RenderControl(hw);
-
-        //    //style to format numbers to string
-        //    string style = @"<style> .textmode { mso-number-format:\@; } </style>";
-        //    Page.Response.Write(style);
-        //    Page.Response.Output.Write(sw.ToString());
-        //    Page.Response.Flush();
-        //    Page.Response.End();
-
-        //}
 
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
@@ -155,15 +258,16 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP
         {
 
             int ay = AyDDL.SelectedItem.Value.ConvertToInt();
-            DateTime tarih = new DateTime(DateTime.Today.Year, ay, 1);
+            DateTime tarih = new DateTime(DateTime.Today.AddMonths(ay).Year, DateTime.Today.AddMonths(ay).Month, 1);
 
             KiraSozlesme kiraSozlesmeDao = new KiraSozlesme();
 
-            DataTable dataTable = kiraSozlesmeDao.SelectKiraArtisiGelenSozlesmelerReturnDT(ProjeConstants.BOLGE_HEPSI, tarih);
+            DataTable dataTable = kiraSozlesmeDao.SelectKiraArtisiGelenSozlesmelerReturnDT(BolgeQS, tarih);
             int SiraNo = 1;
 
             List<KiraArtisListItem> list = new List<KiraArtisListItem>();
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
+            decimal tufe = SecilenAyIcinTufeBul(tarih);
             DataView dataView = new DataView(dataTable);
             foreach (DataRowView row in dataView)
             {
@@ -180,8 +284,7 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP
                 string artisAyi = row["ArtisAyi"].ToString();
                 bool aktif = row["Aktif"].ReturnFalseIfNull().ConvertToBool();
 
-                decimal tufe = SecilenAyIcinTufeBul(tarih);
-                DateTime bugun = DateTime.Today;
+                //DateTime bugun = DateTime.Today;
                 decimal yeniKiraBedeli =  kiraBedeli + Math.Round(kiraBedeli * tufe / 100);
                 //bool sozlesmeYenilendiMi = sozBitTar.ConvertToDatetime() > new DateTime( bugun.Year, bugun.AddMonths(2).Month,1); //--new DateTime(bugun.AddYears(1).Year, bugun.AddMonths(1).Month,1);
                 //if (sozlesmeYenilendiMi)
@@ -222,25 +325,32 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP
                 kiraArtisListItem.KiraciAdi = kiraciAdi + " " + kiraciSoyadi;
                 kiraArtisListItem.SozlesmeTarihi = ilkSozlesmeTarStr;
 
-                int kiraSuresi = Math.Round(DateTime.Today.AddMonths(1).Subtract(ilkSozlesmeTar).TotalDays/365).ConvertToInt();
-                kiraArtisListItem.KiraSuresi = kiraSuresi + " Yıl";
-                kiraArtisListItem.BesYil = kiraSuresi >= 5?"True":"False";
-                kiraArtisListItem.OnYil = kiraSuresi >= 10 ? "True" : "False";
-                kiraArtisListItem.SozlesmeBasTar = sozBasTar.ConvertToDatetimeEmptyIfNull();
-                kiraArtisListItem.SozlesmeBitTar = sozBitTar.ConvertToDatetimeEmptyIfNull();
-                kiraArtisListItem.TarihAraligi = sozBasTar.ConvertToDatetimeEmptyIfNull() + "-" + sozBitTar.ConvertToDatetimeEmptyIfNull();
-                kiraArtisListItem.KiralamaAmaci = kiralamaAmaci;
-                kiraArtisListItem.KiraBedeli = kiraBedeli.ToString("N", culturInfo);
-                kiraArtisListItem.Tufe = artisOrani;
-                kiraArtisListItem.YeniKiraBedeli = yeniKiraBedeli.ToString("N", culturInfo);
-                kiraArtisListItem.Adres = "- " + adres;
-                kiraArtisListItem.TamAdres = "- " + adres + " " + ilcesi + "-" + ili;
-                kiraArtisListItem.Ilcesi = ilcesi;
-                kiraArtisListItem.Ili = ili;
-                kiraArtisListItem.Bolge = bolge;
-                kiraArtisListItem.ArtisAyi = new DateTime(DateTime.Today.Year,artisAyi.ConvertToInt(),1).ToString("MMMM");
-                kiraArtisListItem.YenilendiMi = aktif ? "Yenilenecek" : "Yenilendi";
-                list.Add(kiraArtisListItem);
+                int kiraSuresi = Math.Round(tarih.Subtract(ilkSozlesmeTar).TotalDays/365).ConvertToInt();
+                int kiraSuresi1 = kiraSuresi < 5 ? kiraSuresi: 
+                    (kiraSuresi >= 5 && kiraSuresi < 10) ? 5 :
+                    (kiraSuresi >= 10 ? 10 : kiraSuresi);
+                int secilenKiraSuresi= KiraSuresiDDL.SelectedItem.Value.ConvertToInt();
+                if ((secilenKiraSuresi == 0)||(secilenKiraSuresi==kiraSuresi1))
+                {
+                    kiraArtisListItem.KiraSuresi = kiraSuresi + " Yıl";
+                    kiraArtisListItem.BesYil = kiraSuresi >= 5 ? "True" : "False";
+                    kiraArtisListItem.OnYil = kiraSuresi >= 10 ? "True" : "False";
+                    kiraArtisListItem.SozlesmeBasTar = sozBasTar.ConvertToDatetimeEmptyIfNull();
+                    kiraArtisListItem.SozlesmeBitTar = sozBitTar.ConvertToDatetimeEmptyIfNull();
+                    kiraArtisListItem.TarihAraligi = sozBasTar.ConvertToDatetimeEmptyIfNull() + "-" + sozBitTar.ConvertToDatetimeEmptyIfNull();
+                    kiraArtisListItem.KiralamaAmaci = kiralamaAmaci;
+                    kiraArtisListItem.KiraBedeli = kiraBedeli.ToString("N", culturInfo) + " TL";
+                    kiraArtisListItem.Tufe = artisOrani;
+                    kiraArtisListItem.YeniKiraBedeli = yeniKiraBedeli.ToString("N", culturInfo) + " TL";
+                    kiraArtisListItem.Adres = "- " + adres;
+                    kiraArtisListItem.TamAdres = "- " + adres + " " + ilcesi + "-" + ili;
+                    kiraArtisListItem.Ilcesi = ilcesi;
+                    kiraArtisListItem.Ili = ili;
+                    kiraArtisListItem.Bolge = bolge;
+                    kiraArtisListItem.ArtisAyi = new DateTime(tarih.Year, artisAyi.ConvertToInt(), 1).ToString("MMMM");
+                    kiraArtisListItem.YenilendiMi = aktif ? "Yenilenecek" : "Yenilendi";
+                    list.Add(kiraArtisListItem); 
+                }
             }
             return list;
         }
@@ -248,13 +358,39 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP
         {
             TabloOlustur();
         }
+        protected void KiraSuresiDDL_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            TabloOlustur();
+        }
         private void AyDDLDoldur()
         {
             AyDDL.Items.Clear();
-            ListItem li= new ListItem(DateTime.Today.ToString("MMMM"),DateTime.Today.AddMonths(-1).ToString("MM") );
-            ListItem li1= new ListItem(DateTime.Today.AddMonths(1).ToString("MMMM"), DateTime.Today.ToString("MM"));
+            ListItem li= new ListItem(DateTime.Today.ToString("MMMM"),"-1" );
+            ListItem li1= new ListItem(DateTime.Today.AddMonths(1).ToString("MMMM"), "0");
+            ListItem li2= new ListItem(DateTime.Today.AddMonths(2).ToString("MMMM"), "1");
+            ListItem li3= new ListItem(DateTime.Today.AddMonths(3).ToString("MMMM"), "2");
+            ListItem li4= new ListItem(DateTime.Today.AddMonths(4).ToString("MMMM"), "3");
+            ListItem li5= new ListItem(DateTime.Today.AddMonths(5).ToString("MMMM"), "4");
+            ListItem li6= new ListItem(DateTime.Today.AddMonths(6).ToString("MMMM"), "5");
             AyDDL.Items.Add(li);
             AyDDL.Items.Add(li1);
+            AyDDL.Items.Add(li2);
+            AyDDL.Items.Add(li3);
+            AyDDL.Items.Add(li4);
+            AyDDL.Items.Add(li5);
+            AyDDL.Items.Add(li6);
+        }
+        private void KiraSuresiDDLDoldur()
+        {
+            KiraSuresiDDL.Items.Clear();
+            ListItem li = new ListItem("Hepsi", "0");
+            ListItem li1 = new ListItem("5 Yılı Dolan Kiracılar","5");
+            ListItem li2 = new ListItem("10 Yılı Dolan Kiracılar","10");
+            //ListItem li3 = new ListItem("5 ve 10 Yılı Dolan Kiracılar","3");
+            KiraSuresiDDL.Items.Add(li);
+            KiraSuresiDDL.Items.Add(li1);
+            KiraSuresiDDL.Items.Add(li2);
+            //KiraSuresiDDL.Items.Add(li3);
         }
         private decimal SecilenAyIcinTufeBul(DateTime tarih)
         {

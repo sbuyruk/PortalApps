@@ -591,8 +591,8 @@ namespace Portal_WebParts.ToplantiGirisiWP
         }
         private void EPostaIslemleri(Toplanti toplanti, string islemTipi, List<ToplantiKatilim> oncekiKatilimciListesi)
         {
-
-            if (true)
+            bool postaGonder = true;
+            if (postaGonder)
             {
                 MTSOrtak.ToplantiKatilimcilarinaEPostaGonder(toplanti, islemTipi, oncekiKatilimciListesi);
                 if (islemTipi.Equals(ProjeConstants.KAYDET))

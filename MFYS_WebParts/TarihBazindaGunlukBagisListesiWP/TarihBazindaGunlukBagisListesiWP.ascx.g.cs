@@ -65,6 +65,14 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.DropDownList DovizCinsiDDL;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.Label ToplamLbl;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.UpdatePanel UpdatePanel7;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -177,6 +185,38 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.DropDownList @__BuildControlDovizCinsiDDL() {
+            global::System.Web.UI.WebControls.DropDownList @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.DropDownList();
+            this.DovizCinsiDDL = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "DovizCinsiDDL";
+            @__ctrl.CssClass = "form-control small";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: auto");
+            @__ctrl.AutoPostBack = true;
+            @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.DovizCinsiDDLIli_SelectedIndexChanged);
+            @__ctrl.SelectedIndexChanged += new System.EventHandler(this.DovizCinsiDDLIli_SelectedIndexChanged);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlToplamLbl() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.ToplamLbl = @__ctrl;
+            @__ctrl.TemplateControl = this;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "ToplamLbl";
+            @__ctrl.CssClass = "font-weight-bold float-right";
+            @__ctrl.Text = "Label";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControl__control2(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
@@ -189,7 +229,12 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP {
                                 </tr>
                             </thead>
                         </table>
-                    "));
+                        <div class=""form-group"">
+                            "));
+            global::System.Web.UI.WebControls.Label @__ctrl1;
+            @__ctrl1 = this.@__BuildControlToplamLbl();
+            @__parser.AddParsedSubObject(@__ctrl1);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n\r\n                    "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -331,20 +376,26 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP {
             global::System.Web.UI.WebControls.DropDownList @__ctrl6;
             @__ctrl6 = this.@__BuildControlBankaDDL();
             @__parser.AddParsedSubObject(@__ctrl6);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                    <div class=\"col-2 form-group \">" +
+                        "\r\n                        <label class=\"col-form-label\">Para Birimi</label>\r\n   " +
+                        "                     "));
+            global::System.Web.UI.WebControls.DropDownList @__ctrl7;
+            @__ctrl7 = this.@__BuildControlDovizCinsiDDL();
+            @__parser.AddParsedSubObject(@__ctrl7);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                </div>\r\n            </div>\r\n       " +
                         "     <div class=\"form-group\">\r\n                "));
-            global::System.Web.UI.UpdatePanel @__ctrl7;
-            @__ctrl7 = this.@__BuildControlUpdatePanel7();
-            @__parser.AddParsedSubObject(@__ctrl7);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
-            global::System.Web.UI.UpdateProgress @__ctrl8;
-            @__ctrl8 = this.@__BuildControlupdateProgress();
+            global::System.Web.UI.UpdatePanel @__ctrl8;
+            @__ctrl8 = this.@__BuildControlUpdatePanel7();
             @__parser.AddParsedSubObject(@__ctrl8);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
+            global::System.Web.UI.UpdateProgress @__ctrl9;
+            @__ctrl9 = this.@__BuildControlupdateProgress();
+            @__parser.AddParsedSubObject(@__ctrl9);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            </div>\r\n        </div>\r\n        <div class=\"card-footer\">\r\n        " +
                         "    "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl9;
-            @__ctrl9 = this.@__BuildControlYenileBtn();
-            @__parser.AddParsedSubObject(@__ctrl9);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl10;
+            @__ctrl10 = this.@__BuildControlYenileBtn();
+            @__parser.AddParsedSubObject(@__ctrl10);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n        </div>\r\n\r\n    </div>\r\n</div>"));
         }
         

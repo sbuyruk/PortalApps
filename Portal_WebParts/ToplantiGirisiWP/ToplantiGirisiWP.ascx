@@ -426,3 +426,12 @@
         <asp:AsyncPostBackTrigger ControlID="ToplantiSilBtn" EventName="click" />
     </Triggers>
 </asp:UpdatePanel>
+<asp:UpdateProgress ID="updateProgress" runat="server">
+    <ProgressTemplate>
+        <div class='loaderMainContainer'>
+            <div class='loaderContainer'>
+                <div class='loaderCircle'></div>
+            </div>
+        </div>
+    </ProgressTemplate>
+</asp:UpdateProgress>

@@ -149,39 +149,6 @@ namespace BTYS_Webparts.BolgeKiraArtisCizelgesiWP
             Page.Response.Write(sw.ToString());
             Page.Response.End();
         }
-        //protected void ExportToExcel()
-        //{
-        //    GridView GridView1 = new GridView();
-        //    GridView1.AllowPaging = false;
-
-        //    GridView1.DataSource = GetDataList();//SozlesmeListesiGetirDT();
-        //    GridView1.DataBind();
-
-        //    Page.Response.Clear();
-        //    Page.Response.Buffer = true;
-        //    Page.Response.AddHeader("content-disposition",
-        //     "attachment;filename=KiraArtisCizelgesi" + DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + ".xls");
-        //    Page.Response.ContentEncoding = System.Text.Encoding.GetEncoding("windows-1254");
-        //    Page.Response.Charset = "windows-1254";//ISO-8859-9
-        //    Page.Response.ContentType = "application/vnd.ms-excel";
-        //    StringWriter sw = new StringWriter();
-        //    HtmlTextWriter hw = new HtmlTextWriter(sw);
-
-        //    for (int i = 0; i < GridView1.Rows.Count; i++)
-        //    {
-        //        //Apply text style to each Row
-        //        GridView1.Rows[i].Attributes.Add("class", "textmode");
-        //    }
-        //    GridView1.RenderControl(hw);
-
-        //    //style to format numbers to string
-        //    string style = @"<style> .textmode { mso-number-format:\@; } </style>";
-        //    Page.Response.Write(style);
-        //    Page.Response.Output.Write(sw.ToString());
-        //    Page.Response.Flush();
-        //    Page.Response.End();
-
-        //}
 
         protected void CloseBtn_Click(object sender, EventArgs e)
         {

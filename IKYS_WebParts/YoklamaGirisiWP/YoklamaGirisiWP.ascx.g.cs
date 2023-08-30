@@ -658,8 +658,8 @@ namespace IKYS_WebParts.YoklamaGirisiWP {
             @__parser.AddParsedSubObject(@__ctrl5);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <div class=\"for" +
                         "m-group col-2\" id=\"BasSaatDiv\">\r\n                                <label class=\"c" +
-                        "ol-form-label\" for=\"BasSaatDDL\">Baş. Saati</label>\r\n                            " +
-                        "    "));
+                        "ol-form-label\" for=\"BasSaatDDL\">Başlama Saati</label>\r\n                         " +
+                        "       "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl6;
             @__ctrl6 = this.@__BuildControlBasSaatDDL();
             @__parser.AddParsedSubObject(@__ctrl6);

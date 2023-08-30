@@ -86,7 +86,7 @@
                                 <asp:RequiredFieldValidator runat="server" ControlToValidate="BasTarTxt" ForeColor="Red" ErrorMessage="Zorunlu Alan"> </asp:RequiredFieldValidator>
                             </div>
                             <div class="form-group col-2" id="BasSaatDiv">
-                                <label class="col-form-label" for="BasSaatDDL">Baş. Saati</label>
+                                <label class="col-form-label" for="BasSaatDDL">Başlama Saati</label>
                                 <asp:DropDownList ID="BasSaatDDL" runat="server" class="form-control " OnSelectedIndexChanged="BasSaatDDL_SelectedIndexChanged" AutoPostBack="true" Height="34px" />
                             </div>
                             <div class="form-group col-2" id="BitTarDiv" runat="server">

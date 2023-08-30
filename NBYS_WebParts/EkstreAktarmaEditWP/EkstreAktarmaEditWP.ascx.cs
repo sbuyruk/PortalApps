@@ -220,13 +220,13 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
                     Telefon1Txt.Text = nb.Telefon1;
                     Telefon2Txt.Text = nb.Telefon2;
                     TuzelKisiChk.Checked = nb.TuzelKisi;
-                    string ilstr = nb.Ili;
+                    string ilstr = nb.Ili.ToString();
                     if (IliDDL.Items.FindByValue(ilstr) != null)
                     {
                         IliDDL.SelectedValue = IliDDL.Items.FindByValue(ilstr).Value;
                     }
                     IlceDDLDoldur();
-                    string ilcestr = nb.Ilcesi;
+                    string ilcestr = nb.Ilcesi.ToString();
                     if (IlcesiDDL.Items.FindByValue(ilcestr) != null)
                     {
                         IlcesiDDL.SelectedValue = IlcesiDDL.Items.FindByValue(ilcestr).Value;

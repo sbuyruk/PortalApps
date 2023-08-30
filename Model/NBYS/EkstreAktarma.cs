@@ -2374,8 +2374,8 @@ namespace Model.NBYS
 
                 nakitBagisci.Adi = ekstreAktarma.Adi.ReturnEmptyIfNull().ToString().Trim().ToUpper(culturInfo);
                 nakitBagisci.Adres = ekstreAktarma.Adres.ReturnEmptyIfNull().ToString().Trim().ToUpper(culturInfo);
-                nakitBagisci.Ilcesi = ilce != null ? ilce.Id.ToString() : GetIlceId(ekstreAktarma).ToString();//ekstreAktarma.Ilcesi;
-                nakitBagisci.Ili = GetIlId(ekstreAktarma.Ili).ToString();//ekstreAktarma.Ili;
+                nakitBagisci.Ilcesi = ilce != null ? ilce.Id : GetIlceId(ekstreAktarma);//ekstreAktarma.Ilcesi;
+                nakitBagisci.Ili = GetIlId(ekstreAktarma.Ili);//ekstreAktarma.Ili;
                 nakitBagisci.TCKimlikNo = (nakitBagisci.TCKimlikNo < 1) && (ekstreAktarma.TCKimlikNo > 0) ? ekstreAktarma.TCKimlikNo : nakitBagisci.TCKimlikNo;
                 nakitBagisci.Telefon1 = UtilityHelper.TelefonFormatla(ekstreAktarma.Telefon1.ReturnEmptyIfNull().ToString());
                 nakitBagisci.Telefon2 = UtilityHelper.TelefonFormatla(ekstreAktarma.Telefon2.ReturnEmptyIfNull().ToString());
@@ -2402,8 +2402,8 @@ namespace Model.NBYS
 
                 nakitBagisci.Adi = string.IsNullOrEmpty(nakitBagisci.Adi) ? ekstreAktarma.Adi.ReturnEmptyIfNull().ToString().Trim().ToUpper(culturInfo) : nakitBagisci.Adi;
                 nakitBagisci.Adres = string.IsNullOrEmpty(nakitBagisci.Adres) ? ekstreAktarma.Adres.ReturnEmptyIfNull().ToString().Trim().ToUpper(culturInfo) : nakitBagisci.Adres;
-                nakitBagisci.Ilcesi = string.IsNullOrEmpty(nakitBagisci.Ilcesi) ? ilce != null ? ilce.Id.ToString() : GetIlceId(ekstreAktarma).ToString() : nakitBagisci.Ilcesi;//ekstreAktarma.Ilcesi;
-                nakitBagisci.Ili = string.IsNullOrEmpty(nakitBagisci.Ili) ? GetIlId(ekstreAktarma.Ili).ToString() : nakitBagisci.Ili;//ekstreAktarma.Ili;
+                nakitBagisci.Ilcesi = nakitBagisci.Ilcesi==0 ? ilce != null ? ilce.Id : GetIlceId(ekstreAktarma) : nakitBagisci.Ilcesi;//ekstreAktarma.Ilcesi;
+                nakitBagisci.Ili = nakitBagisci.Ili==0 ? GetIlId(ekstreAktarma.Ili) : nakitBagisci.Ili;//ekstreAktarma.Ili;
                 nakitBagisci.TCKimlikNo = nakitBagisci.TCKimlikNo < 1 ? ekstreAktarma.TCKimlikNo : nakitBagisci.TCKimlikNo;
                 nakitBagisci.Telefon1 = string.IsNullOrEmpty(nakitBagisci.Telefon1) ? UtilityHelper.TelefonFormatla(ekstreAktarma.Telefon1.ReturnEmptyIfNull().ToString()) : nakitBagisci.Telefon1;
                 nakitBagisci.Telefon2 = string.IsNullOrEmpty(nakitBagisci.Telefon2) ? UtilityHelper.TelefonFormatla(ekstreAktarma.Telefon2.ReturnEmptyIfNull().ToString()) : nakitBagisci.Telefon2;

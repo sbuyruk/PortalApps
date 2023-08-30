@@ -23,6 +23,7 @@ namespace Model.MTS
         public int CikisDepoId { get; set; } = 0;
         public string GetirilenAniObjesi { get; set; }
         public string Aciklama { get; set; }
+        public DateTime VerilisTarihi { get; set; }
         
         public override int Save()
         {
@@ -367,6 +368,7 @@ namespace Model.MTS
                         childRow.Add("id", item.Id);
                         childRow.Add("Aciklama", item.Aciklama);
                         childRow.Add("Adet", item.Adet);
+                        childRow.Add("VerilisTarihi", item.VerilisTarihi);
                         childRow.Add("KatilimciId", item.KatilimciId);
                         childRow.Add("KatilimciTipi", item.KatilimciTipi);
                         childRow.Add("Olusturan", item.Olusturan);

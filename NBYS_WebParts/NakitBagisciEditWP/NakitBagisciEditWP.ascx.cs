@@ -282,8 +282,8 @@ namespace NBYS_WebParts.NakitBagisciEditWP
             nakitBagisci.Adi = AdiTxt.Text.ReturnEmptyIfNull().ToString();
             nakitBagisci.TCKimlikNo = TCKimlikNoTxt.Text.ConvertToLong();
             nakitBagisci.Adres = AdresTxt.Text.ReturnEmptyIfNull().ToString();
-            nakitBagisci.Ili = IliDDL.SelectedItem.Value.ConvertToInt().ToString();
-            nakitBagisci.Ilcesi = IlcesiDDL.SelectedItem.Value.ConvertToInt().ToString();
+            nakitBagisci.Ili = IliDDL.SelectedItem.Value.ConvertToInt();
+            nakitBagisci.Ilcesi = IlcesiDDL.SelectedItem.Value.ConvertToInt();
             nakitBagisci.Telefon1 = Telefon1Txt.Text.ReturnEmptyIfNull().ToString();
             nakitBagisci.Telefon2 = Telefon2Txt.Text.ReturnEmptyIfNull().ToString();
             nakitBagisci.Eposta = EPostaTxt.Text.ReturnEmptyIfNull().ToString();
@@ -313,8 +313,8 @@ namespace NBYS_WebParts.NakitBagisciEditWP
             nakitBagisci.Adi = AdiTxt.Text.ReturnEmptyIfNull().ToString();
             nakitBagisci.TCKimlikNo = TCKimlikNoTxt.Text.ConvertToLong();
             nakitBagisci.Adres = AdresTxt.Text.ReturnEmptyIfNull().ToString();
-            nakitBagisci.Ili = IliDDL.SelectedItem.Value.ConvertToInt().ToString();
-            nakitBagisci.Ilcesi = IlcesiDDL.SelectedItem.Value.ConvertToInt().ToString();
+            nakitBagisci.Ili = IliDDL.SelectedItem.Value.ConvertToInt();
+            nakitBagisci.Ilcesi = IlcesiDDL.SelectedItem.Value.ConvertToInt();
             nakitBagisci.Telefon1 = Telefon1Txt.Text.ReturnEmptyIfNull().ToString();
             nakitBagisci.Telefon2 = Telefon2Txt.Text.ReturnEmptyIfNull().ToString();
             nakitBagisci.Eposta = EPostaTxt.Text.ReturnEmptyIfNull().ToString();

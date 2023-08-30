@@ -317,6 +317,7 @@ namespace Model.TBYS
         }
         public DataTable SelectKiraArtisiGelenSozlesmelerReturnDT(string bolge, DateTime tarih)
         {
+            bolge = string.IsNullOrEmpty(bolge) ? ProjeConstants.BOLGE_HEPSI : bolge;
             string tarihStr = tarih.ReturnTRDateFormat();
             string bolgeStr = string.Format(bolge.Equals(ProjeConstants.BOLGE_HEPSI) ? " " : " AND S.Bolge ={0} ", bolge.ReturnQuotedValue());
             string sqlString = string.Format(@"
