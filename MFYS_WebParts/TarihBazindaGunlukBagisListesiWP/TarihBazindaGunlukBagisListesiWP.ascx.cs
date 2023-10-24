@@ -50,9 +50,9 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP
             NakitBagisHareket nbh= new NakitBagisHareket();
             DateTime bagisTarihi = BagisTarihiTxt.Text.ConvertToDatetime();
             string dovizCinsi = DovizCinsiDDL.SelectedItem.Value;
-            decimal tltoplam = nbh.SelectSumByBagisTarihi(bagisTarihi,dovizCinsi);
-            decimal doviztoplam = nbh.SelectSumByBagisTarihi(bagisTarihi, dovizCinsi);
-            ToplamLbl.Text ="Toplam TL : " + tltoplam.ToString("N", culturInfo) + dovizCinsi;
+            string bankaGrup = BankaDDL.SelectedItem.Value;
+            decimal tltoplam = nbh.SelectSumByBagisTarihi(bagisTarihi,bankaGrup,dovizCinsi);
+            ToplamLbl.Text ="Toplam TL : " + tltoplam.ToString("N", culturInfo) + "TL (" + dovizCinsi+")";
         }
         private string TabloJson()
         {
@@ -163,10 +163,10 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP
         private List<BagisListItem> GetDataList()
         {
             DateTime bagisTarihi = BagisTarihiTxt.Text.ConvertToDatetime();
-            int bankaId = BankaDDL.SelectedItem.Value.ConvertToInt();
+            string bankaGrup = BankaDDL.SelectedItem.Value;
             string dovizCinsi = DovizCinsiDDL.SelectedItem.Value;
             NakitBagisHareket nakitBagisHareket = new NakitBagisHareket();
-            DataTable dataTable = nakitBagisHareket.SelectByBagisTarihiBankaId(bagisTarihi, bankaId,dovizCinsi);
+            DataTable dataTable = nakitBagisHareket.SelectByBagisTarihiBankaId(bagisTarihi, bankaGrup,dovizCinsi);
 
             List<BagisListItem> list = new List<BagisListItem>();
             
@@ -198,12 +198,12 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP
             if (BankaDDL.SelectedItem == null)
             {
                 BankaDDL.Items.Clear();
-                BankaDDL.Items.Add(new ListItem("Tüm Bankalar", "0"));
+                BankaDDL.Items.Add(new ListItem("Tüm Bankalar", string.Empty));
                 BankaTanim pBanka = new BankaTanim();
-                List<BankaTanim> list = pBanka.SelectAll<BankaTanim>();
-                foreach (BankaTanim banka in list)
+                List<string> list = pBanka.SelectByBankaGrup();
+                foreach (string bankaGrup in list)
                 {
-                    BankaDDL.Items.Add(new ListItem(banka.Banka, banka.Id.ToString()));
+                    BankaDDL.Items.Add(new ListItem(bankaGrup, bankaGrup));
                 }
             }
         }

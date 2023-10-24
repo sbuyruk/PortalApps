@@ -13,7 +13,18 @@
             <h3> BAŞŞŞŞ LIII KKK</h3>
         </div>
         <div class="card-body">
+            <div class="form-group">
+                
+            <asp:LinkButton ID="TakvimeEkleBtn" runat="server" class="btn btn-success" OnClick="TakvimeEkleBtn_Click">Takvime Ekle</asp:LinkButton>
+            </div>
+            <div class="form-group">
 
+                <asp:LinkButton ID="TakvimDegistirBtn" runat="server" class="btn btn-primary" OnClick="TakvimDegistirBtn_Click">Takvim Değiştir</asp:LinkButton>
+            </div>            
+            <div class="form-group">
+
+                <asp:LinkButton ID="TakvimSilBtn" runat="server" class="btn btn-danger" OnClick="TakvimSilBtn_Click">Takvim Sil</asp:LinkButton>
+            </div>
         </div>
         <div class="card-footer">
             <asp:UpdatePanel ID="TextBoxUpdatePanel" runat="server" UpdateMode="Conditional">

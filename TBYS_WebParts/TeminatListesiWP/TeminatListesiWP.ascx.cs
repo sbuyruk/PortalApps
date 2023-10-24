@@ -231,6 +231,9 @@ namespace TBYS_WebParts.TeminatListesiWP
                     decimal iadeTeminatTutari = row["IadeTeminatTutari"].ConvertToDecimal();
                     decimal kalanTeminatTutari = row["KalanTeminatTutari"].ConvertToDecimal();
 
+                    string kiralamaAmaci = row["KiralamaAmaci"].ToString();
+                    string teminatCinsi = row["TeminatCinsi"].ToString();
+                    string teminatAciklama = row["TeminatAciklama"].ToString();
 
                     int kiraSozlesmeId = row["KiraSozlesmeId"].ConvertToInt();
                     string BolumNo = row["BolumNo"].ToString();
@@ -268,6 +271,9 @@ namespace TBYS_WebParts.TeminatListesiWP
                         teminatItem.Adres = "- " + adres;
                         teminatItem.Ilcesi = ilcesi;
                         teminatItem.Ili = ili;
+                        teminatItem.KiralamaAmaci = kiralamaAmaci;
+                        teminatItem.TeminatCinsi = teminatCinsi;
+                        teminatItem.TeminatAciklama = teminatAciklama;
                         list.Add(teminatItem);
                         tempSozlesmeItem = teminatItem;
                         tasinmazAdedi = 1;
@@ -312,6 +318,9 @@ namespace TBYS_WebParts.TeminatListesiWP
             public string SozlesmeTarihi { get; internal set; }
             public string Ilcesi { get; internal set; }
             public string Ili { get; internal set; }
+            public string KiralamaAmaci { get; internal set; }
+            public string TeminatCinsi { get; internal set; }
+            public string TeminatAciklama { get; internal set; }
         }
 
         protected void ExcelBtn_Click(object sender, EventArgs e)
@@ -338,7 +347,7 @@ namespace TBYS_WebParts.TeminatListesiWP
             Page.Response.Buffer = true;
             Page.Response.AddHeader("content-disposition",
              "attachment;filename=TeminatListesi" + DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + ".xls");
-            Page.Response.ContentEncoding = System.Text.Encoding.GetEncoding("windows-1254");
+            //Page.Response.ContentEncoding = System.Text.Encoding.GetEncoding("windows-1254");
             Page.Response.Charset = "windows-1254";//ISO-8859-9
             Page.Response.ContentType = "application/vnd.ms-excel";
             StringWriter sw = new StringWriter();

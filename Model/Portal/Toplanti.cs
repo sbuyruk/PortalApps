@@ -307,20 +307,20 @@ namespace Model.Portal
                     if (toplantiYeri==1) {
                         item.color = Color.Red.Name;
                         item.textColor = Color.White.Name;
-                        item.purpose = ProjeConstants.RANDEVU_AMACI_TOPLANTI;
+                        item.purpose = ProjeConstants.FAALIYET_AMACI_TOPLANTI;
                     }
                     else if(toplantiYeri == 2) {
                         
                         item.color = Color.Orange.Name;
                         item.textColor = Color.White.Name;
-                        item.purpose = ProjeConstants.RANDEVU_AMACI_TOPLANTI;
+                        item.purpose = ProjeConstants.FAALIYET_AMACI_TOPLANTI;
                     }
                     else if (toplantiYeri == 3)
                     {
 
                         item.color = Color.Green.Name;
                         item.textColor = Color.White.Name;
-                        item.purpose = ProjeConstants.RANDEVU_AMACI_TOPLANTI;
+                        item.purpose = ProjeConstants.FAALIYET_AMACI_TOPLANTI;
                     }
                     eventItems.Add(item);
                 }

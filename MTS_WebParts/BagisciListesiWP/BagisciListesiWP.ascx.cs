@@ -90,9 +90,9 @@ namespace MTS_WebParts.BagisciListesiWP
         private List<BagisciListItem> GetModalDataList()
         {
             NakitBagisci nakitBagisci = new NakitBagisci();
-            DataTable dataTableNakit = nakitBagisci.SelectSecilmemisKatilimcilarByRandevuIdReturnDT(ProjeConstants.HEPSI_INT);
+            DataTable dataTableNakit = nakitBagisci.SelectSecilmemisKatilimcilarByFaaliyetIdReturnDT(ProjeConstants.HEPSI_INT);
             TasinmazBagisci tasinmazBagisci = new TasinmazBagisci();
-            DataTable dataTableTasinmaz = tasinmazBagisci.SelectSecilmemisKatilimcilarByRandevuIdReturnDT(ProjeConstants.HEPSI_INT);
+            DataTable dataTableTasinmaz = tasinmazBagisci.SelectSecilmemisKatilimcilarByFaaliyetIdReturnDT(ProjeConstants.HEPSI_INT);
 
             dataTableTasinmaz.Merge(dataTableNakit);
             int SiraNo = 1;
@@ -122,7 +122,7 @@ namespace MTS_WebParts.BagisciListesiWP
                     katilimciItem.Il = il;
                     katilimciItem.Ilce = ilce;
                     katilimciItem.KatilimciTipiStr = KatilimciTipiGetir(katilimciTipi);
-                    if (katilimciTipi == ProjeConstants.RANDEVU_KATILIMCI_TASINMAZBAGISCI_INT)
+                    if (katilimciTipi == ProjeConstants.FAALIYET_KATILIMCI_TASINMAZBAGISCI_INT)
                     {
                         katilimciItem.BagisciKarti= "<a  target='_blank' href=" + ProjeConstants.PAGE_TASINMAZBAGISCI_KARTI + "?BagisciId=" + katilimciId + " class='btn btn-outline-secondary'>Bağışçı Kartı</a>";
                     }
@@ -137,27 +137,27 @@ namespace MTS_WebParts.BagisciListesiWP
         }
         private string KatilimciTipiGetir(int katilimciTipi)
         {
-            string katilimciTipStr = ProjeConstants.RANDEVU_KATILIMCI_DIS;
+            string katilimciTipStr = ProjeConstants.FAALIYET_KATILIMCI_DIS;
             switch (katilimciTipi)
             {
-                case ProjeConstants.RANDEVU_KATILIMCI_IC_INT:
+                case ProjeConstants.FAALIYET_KATILIMCI_IC_INT:
                     {
-                        katilimciTipStr = ProjeConstants.RANDEVU_KATILIMCI_IC;
+                        katilimciTipStr = ProjeConstants.FAALIYET_KATILIMCI_IC;
                         break;
                     }
-                case ProjeConstants.RANDEVU_KATILIMCI_DIS_INT:
+                case ProjeConstants.FAALIYET_KATILIMCI_DIS_INT:
                     {
-                        katilimciTipStr = ProjeConstants.RANDEVU_KATILIMCI_DIS;
+                        katilimciTipStr = ProjeConstants.FAALIYET_KATILIMCI_DIS;
                         break;
                     }
-                case ProjeConstants.RANDEVU_KATILIMCI_NAKITBAGISCI_INT:
+                case ProjeConstants.FAALIYET_KATILIMCI_NAKITBAGISCI_INT:
                     {
-                        katilimciTipStr = ProjeConstants.RANDEVU_KATILIMCI_NAKITBAGISCI;
+                        katilimciTipStr = ProjeConstants.FAALIYET_KATILIMCI_NAKITBAGISCI;
                         break;
                     }
-                case ProjeConstants.RANDEVU_KATILIMCI_TASINMAZBAGISCI_INT:
+                case ProjeConstants.FAALIYET_KATILIMCI_TASINMAZBAGISCI_INT:
                     {
-                        katilimciTipStr = ProjeConstants.RANDEVU_KATILIMCI_TASINMAZBAGISCI;
+                        katilimciTipStr = ProjeConstants.FAALIYET_KATILIMCI_TASINMAZBAGISCI;
                         break;
                     }
                 default:

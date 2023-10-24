@@ -84,7 +84,7 @@ namespace Model.Ortak
                             tabloSB = ToplantiTablosunuOlustur(toplanti, baslik);
                             string body = "</br>" + tabloSB.ToString();
                             string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL);
-                            MailHelper.EPostaGonder(from, userto, subject, body, smtpAdresi ?? ProjeConstants.PARAM_SMTP_IP_ADRESI);
+                            MailHelper.EPostaGonder(from, userto, subject, body, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
                             if (islemTipi.Equals(ProjeConstants.KAYDET))
                             {
                                 if (!item.Bilgi)//bilgi değilse katılımcıdır
@@ -205,7 +205,7 @@ namespace Model.Ortak
                                 {
                                     StringBuilder tabloSB = ToplantiTablosunuOlustur(toplanti, baslik);
                                     string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL);
-                                    MailHelper.EPostaGonder(from, eposta, subject, "</br>" + tabloSB.ToString(), smtpAdresi ?? ProjeConstants.PARAM_SMTP_IP_ADRESI);
+                                    MailHelper.EPostaGonder(from, eposta, subject, "</br>" + tabloSB.ToString(), smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
                                     //MailHelper.TakvimeEkle(toplanti.UniqueId, from, eposta, toplantiAdi, toplanti.BaslangicTarihi, toplanti.BitisTarihi, ParseToplantiYeri(toplanti.ToplantiYeri, toplanti.ToplantiYeriDiger), toplanti.Aciklama, smtpAdresi);
                                     EpostaGonderilenlereEkle(eposta);
                                 }
@@ -281,7 +281,7 @@ namespace Model.Ortak
                                 {
                                     StringBuilder tabloSB = ToplantiTablosunuOlustur(toplanti, baslik);
                                     string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL);
-                                    MailHelper.EPostaGonder(from, eposta, subject, "</br>" + tabloSB.ToString(), smtpAdresi ?? ProjeConstants.PARAM_SMTP_IP_ADRESI);
+                                    MailHelper.EPostaGonder(from, eposta, subject, "</br>" + tabloSB.ToString(), smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
                                     //MailHelper.TakvimeEkle(toplanti.UniqueId, from, eposta, toplantiAdi, toplanti.BaslangicTarihi, toplanti.BitisTarihi, ParseToplantiYeri(toplanti.ToplantiYeri, toplanti.ToplantiYeriDiger), toplanti.Aciklama, smtpAdresi);
                                     EpostaGonderilenlereEkle(eposta);
                                 }
@@ -356,7 +356,7 @@ namespace Model.Ortak
                                 {
                                     StringBuilder tabloSB = ToplantiTablosunuOlustur(toplanti, baslik);
                                     string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL);
-                                    MailHelper.EPostaGonder(from, eposta, subject, "</br>" + tabloSB.ToString(), smtpAdresi ?? ProjeConstants.PARAM_SMTP_IP_ADRESI);
+                                    MailHelper.EPostaGonder(from, eposta, subject, "</br>" + tabloSB.ToString(), smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
                                     //MailHelper.TakvimeEkle(toplanti.UniqueId, from, eposta, toplantiAdi, toplanti.BaslangicTarihi, toplanti.BitisTarihi, ParseToplantiYeri(toplanti.ToplantiYeri, toplanti.ToplantiYeriDiger), toplanti.Aciklama, smtpAdresi);
                                     EpostaGonderilenlereEkle(eposta);
                                 }
@@ -402,7 +402,7 @@ namespace Model.Ortak
                         tabloSB = ToplantiTablosunuOlustur(toplanti, baslik);
 
                         string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL);
-                        MailHelper.EPostaGonder(from, userto, subject, "</br>" + tabloSB.ToString(), smtpAdresi ?? ProjeConstants.PARAM_SMTP_IP_ADRESI);
+                        MailHelper.EPostaGonder(from, userto, subject, "</br>" + tabloSB.ToString(), smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
                         
                         ToplantiKatilim onceki = oncekiKatilimciListesi.Single(s => s.KatilimciId == personelId);
                         //önceki bilgi değil kayılımcı ise
@@ -478,7 +478,7 @@ namespace Model.Ortak
                         string body = "</br>" + tabloSB.ToString();
                         string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL);
 
-                        MailHelper.EPostaGonder(from, userto, subject, body, smtpAdresi ?? ProjeConstants.PARAM_SMTP_IP_ADRESI);
+                        MailHelper.EPostaGonder(from, userto, subject, body, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
                         //MailHelper.TakvimeEkle(toplanti.UniqueId, from, userto, toplantiAdi, toplanti.BaslangicTarihi, toplanti.BitisTarihi, ParseToplantiYeri(toplanti.ToplantiYeri, toplanti.ToplantiYeriDiger), toplanti.Aciklama, smtpAdresi);
                         EpostaGonderilenlereEkle(userto);
                     }

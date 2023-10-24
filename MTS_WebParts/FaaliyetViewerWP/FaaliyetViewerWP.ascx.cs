@@ -81,21 +81,121 @@ namespace MTS_WebParts.FaaliyetViewerWP
                 ViewState["InitialDate"] = value;
             }
         }
+        private string DogumGunuQS
+        {
+            get
+            {
+
+                if (ViewState["DogumGunu"] == null)
+                {
+                    if (Page.Request.QueryString["DogumGunu"] != null)
+                    {
+                        ViewState["DogumGunu"] = Page.Request.QueryString["DogumGunu"];
+                    }
+                    else
+                    {
+                        ViewState["DogumGunu"] = VakifIciKutlamaChk.Checked;
+                    }
+                }
+                return ViewState["DogumGunu"].ToString();
+            }
+
+            set
+            {
+                ViewState["DogumGunu"] = value;
+            }
+        }
+        private string KisiDogumGunuQS
+        {
+            get
+            {
+
+                if (ViewState["KisiDogumGunu"] == null)
+                {
+                    if (Page.Request.QueryString["KisiDogumGunu"] != null)
+                    {
+                        ViewState["KisiDogumGunu"] = Page.Request.QueryString["KisiDogumGunu"];
+                    }
+                    else
+                    {
+                        ViewState["KisiDogumGunu"] = VakifDisiKutlamaChk.Checked;
+                    }
+                }
+                return ViewState["KisiDogumGunu"].ToString();
+            }
+
+            set
+            {
+                ViewState["KisiDogumGunu"] = value;
+            }
+        }
+        private string ResmiTatilQS
+        {
+            get
+            {
+
+                if (ViewState["ResmiTatil"] == null)
+                {
+                    if (Page.Request.QueryString["ResmiTatil"] != null)
+                    {
+                        ViewState["ResmiTatil"] = Page.Request.QueryString["ResmiTatil"];
+                    }
+                    else
+                    {
+                        ViewState["ResmiTatil"] = ResmiTatilChk.Checked;
+                    }
+                }
+                return ViewState["ResmiTatil"].ToString();
+            }
+
+            set
+            {
+                ViewState["ResmiTatil"] = value;
+            }
+        }
+        private string ToplantiQS
+        {
+            get
+            {
+
+                if (ViewState["Toplanti"] == null)
+                {
+                    if (Page.Request.QueryString["Toplanti"] != null)
+                    {
+                        ViewState["Toplanti"] = Page.Request.QueryString["Toplanti"];
+                    }
+                    else
+                    {
+                        ViewState["Toplanti"] = ToplantiChk.Checked;
+                    }
+                }
+                return ViewState["Toplanti"].ToString();
+            }
+
+            set
+            {
+                ViewState["Toplanti"] = value;
+            }
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!Page.IsPostBack)
             {
                 KayitGetir();
-                AcikTarihliRandevuListesiniGetir();
+                AcikTarihliFaaliyetListesiniGetir();
             }
         }
         private void KayitGetir()
         {
-            var randevuJsonData = RandevuListesiniGetir();
-            var resmiTatilJsonData = ResmiTatilListesiniGetir();
-            var kisiDogumGunleriJsonData = KisiDogumGunuListesiniGetir();
-            var toplantiJsonData = ToplantiListesiniGetir();
-            var personelDogumGunleriJsonData = PersonelDogumGunuListesiniGetir();
+            var randevuJsonData = FaaliyetListesiniGetir();
+            //var resmiTatilJsonData = ResmiTatilListesiniGetir();
+            //var kisiDogumGunleriJsonData = KisiDogumGunuListesiniGetir();
+            //var toplantiJsonData = ToplantiListesiniGetir();
+            //var personelDogumGunleriJsonData = PersonelDogumGunuListesiniGetir();
+            var resmiTatilJsonData = ResmiTatilQS.ConvertToBool() ? ResmiTatilListesiniGetir() : string.Empty;
+            var toplantiJsonData = ToplantiQS.ConvertToBool() ? ToplantiListesiniGetir() : string.Empty;
+            var personelDogumGunleriJsonData = DogumGunuQS.ConvertToBool() ? PersonelDogumGunuListesiniGetir() : string.Empty;
+            var kisiDogumGunleriJsonData = KisiDogumGunuQS.ConvertToBool() ? KisiDogumGunuListesiniGetir() : string.Empty;
 
             randevuJsonData = randevuJsonData.Equals("[]") ? string.Empty : randevuJsonData;
             resmiTatilJsonData = resmiTatilJsonData.Equals("[]") ? string.Empty : resmiTatilJsonData;
@@ -135,7 +235,7 @@ namespace MTS_WebParts.FaaliyetViewerWP
                     CalendarEvent item = new CalendarEvent();
 
                     item.id = int.Parse(dataRow["Id"].ToString());
-                    item.state = ProjeConstants.RANDEVU_DURUMU_ONAYLANDI_INT.ToString();
+                    item.state = ProjeConstants.FAALIYET_DURUMU_ONAYLANDI_INT.ToString();
                     item.title = dataRow["ToplantiKonusu"].ToString();
                     item.start = string.Format("{0:s}", dataRow["BaslangicTarihi"]);
                     item.end = string.Format("{0:s}", dataRow["BitisTarihi"]);
@@ -143,7 +243,7 @@ namespace MTS_WebParts.FaaliyetViewerWP
                     item.startEditable = false;
                     item.color = Color.Red.Name;
                     item.textColor = Color.White.Name;
-                    item.purpose = ProjeConstants.RANDEVU_AMACI_TOPLANTI_INT.ToString();
+                    item.purpose = ProjeConstants.FAALIYET_AMACI_TOPLANTI_INT.ToString();
                     eventItems.Add(item);
                 }
             }
@@ -156,7 +256,7 @@ namespace MTS_WebParts.FaaliyetViewerWP
             Kisi kisi = new Kisi();
             List<Kisi> kisiListesi = kisi.SelectByDogumGunuKutlamaReturnDT();
             List<CalendarEvent> eventItems = new List<CalendarEvent>();
-            Randevu randevu = new Randevu();
+            Faaliyet randevu = new Faaliyet();
             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
             foreach (var item in kisiListesi)
             {
@@ -167,9 +267,9 @@ namespace MTS_WebParts.FaaliyetViewerWP
                     DateTime dogumGunuBuYil = new DateTime(DateTime.Today.Year + i, dogumGunu.Month, dogumGunu.Day);
 
                     CalendarEvent dogumGunuitem = new CalendarEvent();
-                    dogumGunuitem.state = ProjeConstants.RANDEVU_DURUMU_ONAYLANDI_INT.ToString();
+                    dogumGunuitem.state = ProjeConstants.FAALIYET_DURUMU_ONAYLANDI_INT.ToString();
                     dogumGunuitem.id = 999;//999 önemli taşınamayan event
-                    dogumGunuitem.purpose = ProjeConstants.RANDEVU_AMACI_DOGUMGUNU_INT;
+                    dogumGunuitem.purpose = ProjeConstants.FAALIYET_AMACI_DOGUMGUNU_INT;
                     dogumGunuitem.title = "D.Günü :" + item.Adi + " " + item.Soyadi;
                     dogumGunuitem.start = string.Format("{0:s}", dogumGunuBuYil);
                     dogumGunuitem.end = string.Format("{0:s}", dogumGunuBuYil);
@@ -193,7 +293,7 @@ namespace MTS_WebParts.FaaliyetViewerWP
             Personel personel = new Personel();
             DataTable dataTable = personel.SelectCalisanPersonelListesiReturnDataTable();
             List<CalendarEvent> eventItems = new List<CalendarEvent>();
-            Randevu randevu = new Randevu();
+            Faaliyet randevu = new Faaliyet();
 
             if (dataTable != null)
             {
@@ -215,9 +315,9 @@ namespace MTS_WebParts.FaaliyetViewerWP
                         if (dogumTar > ProjeConstants.NULL_TARIH && dogumGunuKutlama)
                         {
                             CalendarEvent dogumGunuitem = new CalendarEvent();
-                            dogumGunuitem.state = ProjeConstants.RANDEVU_DURUMU_ONAYLANDI_INT.ToString();
+                            dogumGunuitem.state = ProjeConstants.FAALIYET_DURUMU_ONAYLANDI_INT.ToString();
                             dogumGunuitem.id = 999;//999 önemli taşınamayan event
-                            dogumGunuitem.purpose = ProjeConstants.RANDEVU_AMACI_DOGUMGUNU_INT;
+                            dogumGunuitem.purpose = ProjeConstants.FAALIYET_AMACI_DOGUMGUNU_INT;
                             dogumGunuitem.title = "D.Günü :" + adi + " " + soyadi;
                             dogumGunuitem.start = string.Format("{0:s}", dogumGunuBuYil);
                             dogumGunuitem.end = string.Format("{0:s}", dogumGunuBuYil);
@@ -232,9 +332,9 @@ namespace MTS_WebParts.FaaliyetViewerWP
                         if (evlilikTar > ProjeConstants.NULL_TARIH && medeniHali && evlilikKutlama)
                         {
                             CalendarEvent evlilikYildonumuItem = new CalendarEvent();
-                            evlilikYildonumuItem.state = ProjeConstants.RANDEVU_DURUMU_ONAYLANDI_INT.ToString();
+                            evlilikYildonumuItem.state = ProjeConstants.FAALIYET_DURUMU_ONAYLANDI_INT.ToString();
                             evlilikYildonumuItem.id = 999;//999 önemli taşınamayan event
-                            evlilikYildonumuItem.purpose = ProjeConstants.RANDEVU_AMACI_YILDONUMU_INT;
+                            evlilikYildonumuItem.purpose = ProjeConstants.FAALIYET_AMACI_YILDONUMU_INT;
                             evlilikYildonumuItem.title = "Evl.Yıld. :" + adi + " " + soyadi;
                             evlilikYildonumuItem.start = string.Format("{0:s}", evlilikTarBuYil);
                             evlilikYildonumuItem.end = string.Format("{0:s}", evlilikTarBuYil);
@@ -251,10 +351,10 @@ namespace MTS_WebParts.FaaliyetViewerWP
             string json = randevu.ToJSON(eventItems);
             return json;
         }
-        private string RandevuListesiniGetir()
+        private string FaaliyetListesiniGetir()
         {
-            Randevu randevu = new Randevu();
-            string json = randevu.SelectAllReturnJson(ProjeConstants.RANDEVU_ACIKTARIHLI_DEGIL);
+            Faaliyet randevu = new Faaliyet();
+            string json = randevu.SelectAllReturnJson(ProjeConstants.FAALIYET_ACIKTARIHLI_DEGIL);
             return json;
         }
         private string ResmiTatilListesiniGetir()
@@ -273,7 +373,7 @@ namespace MTS_WebParts.FaaliyetViewerWP
             string calendarView = string.IsNullOrEmpty(CalendarViewQS) ? "'dayGridMonth'" : CalendarViewQS.ReturnQuotedValue().ToString();
             string calendarStr = @" 
             document.addEventListener('DOMContentLoaded', function() {
-                 var containerEl = document.getElementById('AcikTarihliRandevuListDiv');
+                 var containerEl = document.getElementById('AcikTarihliFaaliyetListDiv');
                  var eventEls = Array.prototype.slice.call(
                    containerEl.querySelectorAll('.fc-event')
                  );
@@ -322,7 +422,7 @@ namespace MTS_WebParts.FaaliyetViewerWP
                                 var start=info.event.start.toISOString();
                                 var end=info.event.end.toISOString();
                                 var view = calendar.view.type;
-                                RandevuKaydet(id, start, end, view)
+                                FaaliyetKaydet(id, start, end, view)
                             }
                         }
                     },
@@ -339,7 +439,7 @@ namespace MTS_WebParts.FaaliyetViewerWP
                                 var start=info.event.start.toISOString();
                                 var end=info.event.end.toISOString();
                                 var view = calendar.view.type;
-                                RandevuKaydet(id, start, end, view)
+                                FaaliyetKaydet(id, start, end, view)
                             }
                         }
                     },
@@ -356,7 +456,7 @@ namespace MTS_WebParts.FaaliyetViewerWP
                             var start=info.date.toISOString();
                             var end=info.date.toISOString();
                             var view = calendar.view.type;
-                            RandevuKaydet(id, start, end,view)
+                            FaaliyetKaydet(id, start, end,view)
                         }
                     },
                     eventClick: function(info) {
@@ -383,13 +483,13 @@ namespace MTS_WebParts.FaaliyetViewerWP
 
             return calendarStr;
         }
-        private void AcikTarihliRandevuListesiniGetir()
+        private void AcikTarihliFaaliyetListesiniGetir()
         {
-            Randevu randevu = new Randevu();
-            List<Randevu> list = randevu.SelectAllReturnList(ProjeConstants.RANDEVU_ACIKTARIHLI);
+            Faaliyet randevu = new Faaliyet();
+            List<Faaliyet> list = randevu.SelectAllReturnList(ProjeConstants.FAALIYET_ACIKTARIHLI);
             foreach (var item in list)
             {
-                CreateDiv(item.Id.ToString(), item.RandevuKonusu);
+                CreateDiv(item.Id.ToString(), item.FaaliyetKonusu);
             }
         }
         private void CreateDiv(string divId, string value)
@@ -405,7 +505,7 @@ namespace MTS_WebParts.FaaliyetViewerWP
             innerDiv.Controls.Add(randevuLink);
             //innerDiv.InnerHtml = string.IsNullOrEmpty(value)?"Konu Yok":value;
             outerDiv.Controls.Add(innerDiv);
-            AcikTarihliRandevuListDiv.Controls.Add(outerDiv);
+            AcikTarihliFaaliyetListDiv.Controls.Add(outerDiv);
         }
         private HyperLink HyperLinkGetir(int randevuId, string randevuKonusu)
         {
@@ -417,7 +517,7 @@ namespace MTS_WebParts.FaaliyetViewerWP
 
             if (randevuId > 0)
             {
-                string linkUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_RANDEVU_GIRIS + "?RandevuId=" + randevuId;
+                string linkUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_FAALIYET_GIRIS + "?FaaliyetId=" + randevuId;
 
                 hyperLink.NavigateUrl = linkUrl;
             }
@@ -439,16 +539,16 @@ namespace MTS_WebParts.FaaliyetViewerWP
             item.title = "Calendar Item " + item.id;
             eventItems.Add(item);
         }
-        protected void RandevuKaydetNowBtn_Click(object sender, EventArgs e)
+        protected void FaaliyetKaydetNowBtn_Click(object sender, EventArgs e)
         {
-            int randevuId = paramRandevuId.Value.ConvertToInt();
+            int randevuId = paramFaaliyetId.Value.ConvertToInt();
             DateTime basTar = paramBasTar.Value.ConvertToDatetime();
             DateTime bitTar = paramBitTar.Value.ConvertToDatetime();
             CalendarViewQS = paramView.Value;
             InitialDateQS = basTar.ToString("yyyy-MM-dd");
             if (randevuId > 0)
             {
-                Randevu randevu = new Randevu();
+                Faaliyet randevu = new Faaliyet();
                 randevu = randevu.Select(randevuId);
                 if (randevu != null)
                 {
@@ -456,7 +556,7 @@ namespace MTS_WebParts.FaaliyetViewerWP
                     randevu.BaslangicSaati = basTar.ToString("HH:mm");
                     randevu.BitisTarihi = bitTar;
                     randevu.BitisSaati = bitTar.ToString("HH:mm");
-                    randevu.AcikTarih = ProjeConstants.RANDEVU_ACIKTARIHLI_DEGIL.ConvertToBool();
+                    randevu.AcikTarih = ProjeConstants.FAALIYET_ACIKTARIHLI_DEGIL.ConvertToBool();
                     if (randevu.Update())
                     {
                         RedirectToPage(ProjeConstants.PAGE_FAALIYET_TAKVIM + "?CalendarView=" + CalendarViewQS + "&InitialDate=" + InitialDateQS);
@@ -563,6 +663,34 @@ namespace MTS_WebParts.FaaliyetViewerWP
             return yetkiliStr;
         }
         #endregion
+        #region Toggle CheckButtons
+        protected void VakifIciKutlamaChk_CheckedChanged(object sender, EventArgs e)
+        {
+            DogumGunuQS = VakifIciKutlamaChk.Checked.ToString();
+            KayitGetir();
+            AcikTarihliFaaliyetListesiniGetir();
+        }
 
+        protected void VakifDisiKutlamaChk_CheckedChanged(object sender, EventArgs e)
+        {
+            KisiDogumGunuQS = VakifDisiKutlamaChk.Checked.ToString();
+            KayitGetir();
+            AcikTarihliFaaliyetListesiniGetir();
+        }
+
+        protected void ResmiTatilChk_CheckedChanged(object sender, EventArgs e)
+        {
+            ResmiTatilQS = ResmiTatilChk.Checked.ToString();
+            KayitGetir();
+            AcikTarihliFaaliyetListesiniGetir();
+        }
+
+        protected void ToplantiChk_CheckedChanged(object sender, EventArgs e)
+        {
+            ToplantiQS = ToplantiChk.Checked.ToString();
+            KayitGetir();
+            AcikTarihliFaaliyetListesiniGetir();
+        }
+        #endregion
     }
 }

@@ -227,7 +227,7 @@ namespace Model.IKYS
             ResmiTatil resmiTatilDao = new ResmiTatil();
             List<ResmiTatil> list = resmiTatilDao.SelectByTarih(basTar, bitTar);
             List<CalendarEvent> eventItems = new List<CalendarEvent>();
-            Randevu randevu = new Randevu();
+            Faaliyet faaliyet = new Faaliyet();
 
             foreach (ResmiTatil resmiTatil in list)
             {
@@ -248,9 +248,9 @@ namespace Model.IKYS
                         resmiTatil.BitisTarihi = UtilityHelper.TariheSaatEkle(resmiTatil.BitisTarihi, bitsaat);
 
                         CalendarEvent item = new CalendarEvent();
-                        item.state = ProjeConstants.RANDEVU_DURUMU_ONAYLANDI_INT.ToString();
+                        item.state = ProjeConstants.FAALIYET_DURUMU_ONAYLANDI_INT.ToString();
                         item.id = 999;//999 önemli taşınamayan event
-                        item.purpose = ProjeConstants.RANDEVU_AMACI_RESMITATIL_INT;
+                        item.purpose = ProjeConstants.FAALIYET_AMACI_RESMITATIL_INT;
                         item.title = resmiTatil.Tatil;
                         //item.description = resmiTatil.Tatil;
                         item.start = string.Format("{0:s}", resmiTatil.BaslamaTarihi);
@@ -265,16 +265,16 @@ namespace Model.IKYS
                             
                         item.startEditable = false;
 
-                        randevu.RenkBelirle(item);
+                        faaliyet.RenkBelirle(item);
                         eventItems.Add(item);
                     }
                 }
                 else
                 {
                     CalendarEvent item = new CalendarEvent();
-                    item.state = ProjeConstants.RANDEVU_DURUMU_ONAYLANDI_INT.ToString();
+                    item.state = ProjeConstants.FAALIYET_DURUMU_ONAYLANDI_INT.ToString();
                     item.id = 999;//999 önemli taşınamayan event
-                    item.purpose = ProjeConstants.RANDEVU_AMACI_RESMITATIL_INT;
+                    item.purpose = ProjeConstants.FAALIYET_AMACI_RESMITATIL_INT;
                     item.title = resmiTatil.Tatil;
                     //item.description = resmiTatil.Tatil;
                     item.start = string.Format("{0:s}", resmiTatil.BaslamaTarihi);
@@ -284,13 +284,13 @@ namespace Model.IKYS
                         item.allDay = true;
                     item.startEditable = false;
 
-                    randevu.RenkBelirle(item);
+                    faaliyet.RenkBelirle(item);
                     eventItems.Add(item);
                 }
 
                 
             }
-            string json = randevu.ToJSON(eventItems);
+            string json = faaliyet.ToJSON(eventItems);
             return json;
         }
     }

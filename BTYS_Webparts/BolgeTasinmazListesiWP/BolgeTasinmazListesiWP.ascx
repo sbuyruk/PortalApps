@@ -26,7 +26,7 @@
     }
     var myjsons = [{
         "Id": "", "KullanimSekli": "", "MulkiyetSekli": "", "IliIlcesi": "", "Adres": "", "Bagisci": "", "BagisYili": "",
-        "SorumluBolge": "", "EmlakSicilNo": "", "AdaNo": "", "ParselNo": "", "PaftaNo": "", "YevmiyeNo": "", "CiltNo": "", "SahifeNo": "", "Cinsi": "", "KullanimDurumu": "",
+        "SorumluBolge": "", "EmlakSicilNo": "", "AdaNo": "", "ParselNo": "", "PaftaNo": "", "YevmiyeNo": "", "CiltNo": "", "SahifeNo": "", "Cinsi": "", "KiraDurumu": "",
         "TasinmazKarti": "", "Duzenle": ""
     }];
     jQuery(document).ready(function () {
@@ -50,7 +50,7 @@
                 { data: "CiltNo" },
                 { data: "SahifeNo" },
                 { data: "Cinsi" },
-                { data: "KullanimDurumu" },
+                { data: "KiraDurumu" },
                 { data: "TasinmazKarti" },
             ],
             'order': [[0, 'asc']],//Id Sıralı
@@ -132,7 +132,7 @@
                             <th>CiltNo</th>
                             <th>SahifeNo</th>
                             <th>Cinsi</th>
-                            <th>KullanimDurumu</th>
+                            <th>KiraDurumu</th>
                             <th>Taşınmaz Kartı</th>
                         </tr>
                     </thead>

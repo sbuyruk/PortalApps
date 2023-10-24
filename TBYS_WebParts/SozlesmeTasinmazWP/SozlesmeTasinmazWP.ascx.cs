@@ -399,7 +399,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
                 columns: [
                     { data: 'KullanimSekli' },
                     { data: 'MulkiyetSekli' },
-                    { data: 'KullanimDurumu' },
+                    { data: 'KiraDurumu' },
                     { data: 'AdresIliIlcesi' },
                     { data: 'BolumNo' },
                     { data: 'TasinmazId' },

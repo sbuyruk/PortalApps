@@ -333,7 +333,7 @@ namespace Model.Ortak
                         userto = ib.IntranetEPosta;
                     }
                     string smtpAdresi =UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL);
-                    MailHelper.EPostaGonder(from, userto, subject, userbody, smtpAdresi ?? ProjeConstants.PARAM_SMTP_IP_ADRESI);
+                    MailHelper.EPostaGonder(from, userto, subject, userbody, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
 
                     //string to = "izinonaymailgrubu@tskgv.local";
                     //subject = personel.Adi + " " + personel.Soyadi + " Yeni " + izintipiStr + " izin talebi ";
@@ -375,7 +375,7 @@ namespace Model.Ortak
                 }
                 //İzin sahibine eposta gönder
                 string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL);
-                MailHelper.EPostaGonder(from, to, subject, body, smtpAdresi ?? ProjeConstants.PARAM_SMTP_IP_ADRESI);
+                MailHelper.EPostaGonder(from, to, subject, body, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
 
                 //IKYS Onay grubuna eposta gönder
                 to = "izinonaymailgrubu@tskgv.local";
@@ -386,7 +386,7 @@ namespace Model.Ortak
                     url = "<a href = 'http://tskgv-portal/YonetimBirimleri/PersonelVeIdariIslerSubesi/Sayfalar/MazeretIzinTalepListesi.aspx'>İzin Talepleri </a>";
                 }
                 body = personel.Adi + " " + personel.Soyadi + " " + bastarBittar + " tarihleri arasında " + izintipiStr + " izin talebinde bulunmuştur. <br>Lütfen kontrol-red işlemleri için " + url + " sayfasına gidiniz";
-                MailHelper.EPostaGonder(from, to, subject, body, smtpAdresi ?? ProjeConstants.PARAM_SMTP_IP_ADRESI);
+                MailHelper.EPostaGonder(from, to, subject, body, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
             }
 
         }
@@ -410,7 +410,7 @@ namespace Model.Ortak
                     body = personel.Adi + " " + personel.Soyadi + " tarafından " + bastarBittar + " tarihleri arasında Şehir İçi Görev Onayı girilmiştir. <br>Yoklama işlemlerini " + url + " sayfasından yapabilirsiniz.";
 
                     string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL);
-                    MailHelper.EPostaGonder(from, to, subject, body, smtpAdresi ?? ProjeConstants.PARAM_SMTP_IP_ADRESI);
+                    MailHelper.EPostaGonder(from, to, subject, body, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
 
                 }
             }
@@ -427,7 +427,7 @@ namespace Model.Ortak
                     StringBuilder tabloSB = EpostaTablosunuOlustur(gorevOnay);
                     body += "</br>" + tabloSB.ToString();
                     string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL);
-                    MailHelper.EPostaGonder(from, to, subject, body, smtpAdresi ?? ProjeConstants.PARAM_SMTP_IP_ADRESI);
+                    MailHelper.EPostaGonder(from, to, subject, body, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
                 }
             }
         }

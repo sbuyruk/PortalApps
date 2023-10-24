@@ -458,8 +458,8 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
                     string sure = dataRow["Sure"].ReturnEmptyIfNull().ToString();
                     string izinTipi = dataRow["IzinTanim"].ReturnEmptyIfNull().ToString();
                     string adiSoyadi = dataRow["AdiSoyadi"].ReturnEmptyIfNull().ToString();
-                    if (adiSoyadi.Equals("Sadık PİYADE"))
-                        continue;
+                    //if (adiSoyadi.Equals("Sadık PİYADE")) //neden? Kaldırıldı SB
+                    //    continue; 
                     DateTime bastarDate = dataRow["BaslangicTarihi"].ConvertToDatetime();
                     DateTime bitTarDate = dataRow["BitisTarihi"].ConvertToDatetime();
 

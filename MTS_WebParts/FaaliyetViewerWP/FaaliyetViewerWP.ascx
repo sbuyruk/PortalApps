@@ -11,7 +11,7 @@
 <script type="text/javascript" src="/Style%20Library/tskgv/js/fullcalendar/locales/tr.js"></script>
 <style>
     <%-- scroll için --%>
-    #AcikTarihliRandevuListDiv {
+    #AcikTarihliFaaliyetListDiv {
       background-color: lightblue;
       height: 550px;
       width: auto;
@@ -86,12 +86,12 @@
         document.getElementById('<%= paramToplantiIdLbl.ClientID%>').value = toplantiId;
         document.getElementById('<%= ToplantiDetaylariBtn.ClientID%>').click();
     }
-    function RandevuKaydet(randevuId, basTar, endTar, newView) {
-        document.getElementById('<%= paramRandevuId.ClientID%>').value = randevuId;
+    function FaaliyetKaydet(faaliyetId, basTar, endTar, newView) {
+        document.getElementById('<%= paramFaaliyetId.ClientID%>').value = faaliyetId;
         document.getElementById('<%= paramBasTar.ClientID%>').value = basTar;
         document.getElementById('<%= paramBitTar.ClientID%>').value = endTar;
         document.getElementById('<%= paramView.ClientID%>').value = newView;
-        document.getElementById('<%= RandevuKaydetNowBtn.ClientID%>').click();
+        document.getElementById('<%= FaaliyetKaydetNowBtn.ClientID%>').click();
     }
 </script>
 <script type="text/javascript">
@@ -158,17 +158,47 @@
 <script src="/Style Library/tskgv/js/html2pdf.bundle.min.js"></script>
 
 <div class="col-xl">
-
+    <div class="form-group row">
+                <div class="form-group col">
+            <div class="checkbox">
+                <label>
+                    <asp:CheckBox ID="VakifIciKutlamaChk" runat="server" Checked="False" AutoPostBack="True" CausesValidation="False" OnCheckedChanged="VakifIciKutlamaChk_CheckedChanged" ToolTip="TC Kimlik numarası dolu olan bağışçıları listeye eklemek için işaretleyiniz." />
+                    Doğum Günü / Evlenme Yıldönümü Kutlamalarını Göster (Vakıf İçi)
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <asp:CheckBox ID="VakifDisiKutlamaChk" runat="server" Checked="False" AutoPostBack="True" CausesValidation="False" OnCheckedChanged="VakifDisiKutlamaChk_CheckedChanged" ToolTip="Doğum tarihi dolu olan bağışçıları listeye eklemek için işaretleyiniz." />
+                    Doğum Günü Kutlamalarını Göster (Vakıf Dışı)
+                </label>
+            </div>
+        </div>
+        <div class="form-group col">
+            <div class="checkbox">
+                <label>
+                    <asp:CheckBox ID="ResmiTatilChk" runat="server" Checked="True" AutoPostBack="True" CausesValidation="False" OnCheckedChanged="ResmiTatilChk_CheckedChanged" ToolTip="Çıplak Mülkiyet bağışlayan bağışçıları listeye eklemek için işaretleyiniz." />
+                    Resmi Talilleri Göster
+                </label>
+            </div>
+            <div class="checkbox">
+                <label>
+                    <asp:CheckBox ID="ToplantiChk" runat="server" Checked="True" AutoPostBack="True" CausesValidation="False" OnCheckedChanged="ToplantiChk_CheckedChanged" ToolTip="TYS Toplantilarını Göster" />
+                    TYS Toplantılarını Göster
+                </label>
+            </div>
+        </div>
+        <div class="form-group col ">
+            <a href="#" class="btn btn-outline-info m-2" id="downloadPDF" onclick="DoIt();">Takvimi PDF'e Aktar</a>
+        </div>
+    </div>
     <div id='wrap'>
      
         <div id='external-events'>
             <div class="form-group" >
-                <a href="#" class="btn btn-info" id="downloadPDF" onclick="DoIt();">Takvimi PDF'e Aktar</a>
-                <a href="#" id="btnExport" onclick="fnExcelReport();"> EXPORT </a>
                 <iframe id="txtArea1" style="display:none"></iframe>
             </div>
             <h4>Açık Tarihli Faaliyetler</h4>
-            <div id="AcikTarihliRandevuListDiv" runat="server" ClientIDMode="Static">
+            <div id="AcikTarihliFaaliyetListDiv" runat="server" ClientIDMode="Static">
 
             </div>
         </div>
@@ -177,12 +207,12 @@
             <div id="calendar"></div>
         </div>
     </div>
-    <div id="RandevuHiddenDiv" style="display: none">
-        <input id="paramRandevuId" runat="server" type="text" />
+    <div id="FaaliyetHiddenDiv" style="display: none">
+        <input id="paramFaaliyetId" runat="server" type="text" />
         <input id="paramBasTar" runat="server" type="text" />
         <input id="paramBitTar" runat="server" type="text" />
         <input id="paramView" runat="server" type="text" />
-        <asp:LinkButton ID="RandevuKaydetNowBtn" runat="server" CausesValidation="false" Text="Faaliyete Ekle" OnClientClick="{return true;};" OnClick="RandevuKaydetNowBtn_Click" />
+        <asp:LinkButton ID="FaaliyetKaydetNowBtn" runat="server" CausesValidation="false" Text="Faaliyete Ekle" OnClientClick="{return true;};" OnClick="FaaliyetKaydetNowBtn_Click" />
     </div>
 </div>
 <asp:UpdatePanel ID="UpdatePanel1" runat="server" UpdateMode="Conditional" ViewStateMode="Enabled">

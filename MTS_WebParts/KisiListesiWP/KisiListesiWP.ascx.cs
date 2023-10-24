@@ -126,6 +126,9 @@ namespace MTS_WebParts.KisiListesiWP
                 string adi = row["Adi"].ToString();
                 string soyadi = row["Soyadi"].ToString();
                 string tCKimlikNo = row["TCKimlikNo"].ToString();
+                string mtsKurumTanim = row["MTSKurumTanim"].ReturnEmptyIfNull().ToString();
+                string mtsGorevTanim = row["MTSGorevTanim"].ReturnEmptyIfNull().ToString();
+                string mtsUnvanTanim = row["MTSUnvanTanim"].ReturnEmptyIfNull().ToString();
                 string kurumu = row["Kurumu"].ToString();
                 string unvani = row["Unvani"].ToString();
                 string gorevi = row["Gorevi"].ToString();
@@ -152,9 +155,9 @@ namespace MTS_WebParts.KisiListesiWP
                 kisiItem.KisiId = kisiId;
                 kisiItem.AdiSoyadi = (adi + " " + soyadi).Trim();
                 kisiItem.TCKimlikNo = tCKimlikNo;
-                kisiItem.Kurumu = kurumu;
-                kisiItem.Unvani = unvani;
-                kisiItem.Gorevi = gorevi;
+                kisiItem.Kurumu = string.IsNullOrEmpty(mtsKurumTanim) ?kurumu: mtsKurumTanim;
+                kisiItem.Unvani = string.IsNullOrEmpty(mtsUnvanTanim) ? unvani : mtsUnvanTanim; 
+                kisiItem.Gorevi = string.IsNullOrEmpty(mtsGorevTanim) ? gorevi : mtsGorevTanim; ;
                 kisiItem.Telefon1 = telefon1 < 1 ?"": String.Format("{0:(###) ### ####}", telefon1)
                     + (string.IsNullOrEmpty(dahili1) ? "" : " /" + dahili1.Trim());
                 kisiItem.Telefon2 = telefon2 < 1 ? "" : String.Format("{0:(###) ### ####}", telefon2)
@@ -168,14 +171,16 @@ namespace MTS_WebParts.KisiListesiWP
                 kisiItem.Ilcesi = ilcesi;
                 kisiItem.Adres = adres;
                 kisiItem.Aciklama = aciklama;
-                kisiItem.Arama = "<a href=" + ProjeConstants.PAGE_ARAMAGORUSME_GIRIS + "?ArayanId=" + kisiId + "&KatilimciTipi="+ProjeConstants.RANDEVU_KATILIMCI_DIS_INT+ " class='btn btn-outline-success'>Yeni Ara./Gör. Ekle</a>";
-                kisiItem.KisiKarti = "<a  target='_blank' href=" + ProjeConstants.PAGE_KISI_KARTI + "?KatilimciId=" + kisiId + "&KatilimciTipi=" + ProjeConstants.RANDEVU_KATILIMCI_DIS_INT + " class='btn btn-outline-info'>Kişi Kartı</a>"; 
+                kisiItem.Arama = "<a href=" + ProjeConstants.PAGE_ARAMAGORUSME_GIRIS + "?ArayanId=" + kisiId + "&KatilimciTipi="+ProjeConstants.FAALIYET_KATILIMCI_DIS_INT+ " class='btn btn-outline-success'>Yeni Ara./Gör. Ekle</a>";
+                kisiItem.KisiKarti = "<a  target='_blank' href=" + ProjeConstants.PAGE_KISI_KARTI + "?KatilimciId=" + kisiId + "&KatilimciTipi=" + ProjeConstants.FAALIYET_KATILIMCI_DIS_INT + " class='btn btn-outline-info'>Kişi Kartı</a>"; 
                 kisiItem.Duzenle = "<a href=" + ProjeConstants.PAGE_KISI_GIRIS + "?KisiId=" + kisiId + " class='btn btn-outline-primary'>Düzenle</a>";
                 kisiItem.Secildi = SecilenIdQS.Equals(kisiItem.KisiId);
                 list.Add(kisiItem);
             }
             return list;
         }
+
+
         protected void YeniKayitBtn_Click(object sender, EventArgs e)
         {
             RedirectToPage(ProjeConstants.PAGE_KISI_GIRIS);
@@ -203,7 +208,7 @@ namespace MTS_WebParts.KisiListesiWP
             Page.Response.Clear();
             Page.Response.Buffer = true;
             Page.Response.AddHeader("content-disposition",
-             "attachment;filename=VasiyetciListesi" + DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + ".xls");
+             "attachment;filename=KisiListesi" + DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + ".xls");
             Page.Response.ContentEncoding = System.Text.Encoding.GetEncoding("windows-1254");
             Page.Response.Charset = "windows-1254";//ISO-8859-9
             Page.Response.ContentType = "application/vnd.ms-excel";
@@ -249,6 +254,9 @@ namespace MTS_WebParts.KisiListesiWP
             public string KisiId { get; set; }
             public string AdiSoyadi { get; set; }
             public string TCKimlikNo { get; set; }
+            public int MTSKurumTanimId { get; set; }
+            public int MTSGorevTanimId { get; set; }
+            public int MTSUnvanTanimId { get; set; }
             public string Kurumu { get; set; }
             public string Unvani { get; set; }
             public string Gorevi { get; set; }

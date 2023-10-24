@@ -13,6 +13,8 @@ namespace Model.MTS
         public string Adi { get; set; }
         public string Soyadi { get; set; }
         public long TCKimlikNo { get; set; }
+
+        public int MTSUnvanTanimId { get; set; }
         public string Kurumu { get; set; }
         public string Unvani { get; set; }
         public string Gorevi { get; set; }
@@ -152,11 +154,21 @@ namespace Model.MTS
         public DataTable SelectAllReturnDT()
         {
             string sqlString = string.Format(@"
-                SELECT A.*, B.IlAdi, C.IlceAdi FROM Kisi_Table A
-                LEFT JOIN Il_Table B on A.Ili = B.Id
-                LEFT JOIN Ilce_Table C on A.Ilcesi = C.Id
-                ORDER BY Adi
-                ");
+                SELECT E.Adi MTSKurumTanim,  F.Adi MTSGorevTanim,  F.Adi MTSUnvanTanim, A.*, B.IlAdi, C.IlceAdi FROM Kisi_Table A
+                     LEFT JOIN Il_Table B on A.Ili = B.Id
+                     LEFT JOIN Ilce_Table C on A.Ilcesi = C.Id
+	                 LEFT JOIN MTSKurumGorev_Table D on D.KisiId = A.Id
+                     LEFT JOIN MTSKurumTanim_Table E on E.Id = D.MTSKurumTanimId
+                     LEFT JOIN MTSGorevTanim_Table F on F.Id = D.MTSGorevTanimId
+                     LEFT JOIN MTSUnvanTanim_Table G on F.Id = A.MTSUnvanTanimId
+                 ORDER BY A.Adi
+                ");            
+            //string sqlString = string.Format(@"
+            //    SELECT A.*, B.IlAdi, C.IlceAdi FROM Kisi_Table A
+            //    LEFT JOIN Il_Table B on A.Ili = B.Id
+            //    LEFT JOIN Ilce_Table C on A.Ilcesi = C.Id
+            //    ORDER BY Adi
+            //    ");
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
 
@@ -190,16 +202,16 @@ namespace Model.MTS
             string json = ToJSON(dataTable);
             return json;
         }
-        public DataTable SelectSecilmemisDisKatilimcilarByRandevuIdReturnDT(int randevuId)
+        public DataTable SelectSecilmemisDisKatilimcilarByFaaliyetIdReturnDT(int faaliyetId)
         {
-            string randevuIdStr = randevuId > 0 ? 
-                string.Format(" WHERE A.Id NOT IN (select KatilimciId FROM RandevuKatilim_Table WHERE KatilimciTipi={0} AND RandevuId={1})", ProjeConstants.RANDEVU_KATILIMCI_DIS_INT, randevuId) : 
+            string faaliyetIdStr = faaliyetId > 0 ?
+                string.Format(" WHERE A.Id NOT IN (select KatilimciId FROM FaaliyetKatilim_Table WHERE KatilimciTipi={0} AND FaaliyetId={1})", ProjeConstants.FAALIYET_KATILIMCI_DIS_INT, faaliyetId) :
                 string.Empty;
             string sqlString = string.Format(@"
                 SELECT A.Id KatilimciId, A.Adi, A.Soyadi, {0} KatilimciTipi
                 FROM Kisi_Table A
 	               {1}
-                ORDER BY A.Adi", ProjeConstants.RANDEVU_KATILIMCI_DIS_INT, randevuIdStr);
+                ORDER BY A.Adi", ProjeConstants.FAALIYET_KATILIMCI_DIS_INT, faaliyetIdStr);
             DataTable dataTable;
             try
             {

@@ -83,7 +83,7 @@ namespace NBYS_WebParts.NakitBagisciBulmaWP
                 {
                     if (!string.IsNullOrEmpty(ParamQS))
                     {
-                        BagisciAraTxt.Text = ParamQS;
+                        BagisciAraTxt.Text = ParamQS.Trim();
                         TabloOlustur();
                     }
                 }
@@ -98,10 +98,10 @@ namespace NBYS_WebParts.NakitBagisciBulmaWP
         private string GetBagisciData()
         {
             string json = string.Empty;
-            if (!string.IsNullOrEmpty(BagisciAraTxt.Text) && BagisciAraTxt.Text.Length > 3)
+            if (!string.IsNullOrEmpty(BagisciAraTxt.Text) && BagisciAraTxt.Text.Trim().Length > 3)
             {
                 NakitBagisci nakitBagisci = new NakitBagisci();
-                json = nakitBagisci.SelectByFilter(BagisciAraTxt.Text, 0);
+                json = nakitBagisci.SelectByFilter(BagisciAraTxt.Text.Trim(), 0);
             }
             return string.IsNullOrEmpty(json) ? "[{}]" : json;
         }

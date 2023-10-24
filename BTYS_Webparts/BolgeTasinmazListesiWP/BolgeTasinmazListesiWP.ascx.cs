@@ -134,7 +134,7 @@ namespace BTYS_Webparts.BolgeTasinmazListesiWP
                 string bagisci = row["Bagisci"].ToString();
                 string bagisYili = row["BagisYili"].ToString();
 
-                string kullanimDurumu = row["KullanimDurumu"].ToString();
+                string kiraDurumu = row["KiraDurumu"].ToString();
                 string sorumluBolge = row["SorumluBolge"].ToString();
                 string emlakSicilNo = row["EmlakSicilNo"].ToString();
 
@@ -158,7 +158,7 @@ namespace BTYS_Webparts.BolgeTasinmazListesiWP
 
                 tasinmazListesiListItem.TasinmazKarti = "<a target='_blank' href=" + ProjeConstants.PAGE_BOLGETASINMAZ_KARTI + "?TasinmazId=" + tasinmazId + " class='btn btn-outline-info'>Taşınmaz Kartı</a>";
 
-                tasinmazListesiListItem.KullanimDurumu = kullanimDurumu;
+                tasinmazListesiListItem.KiraDurumu = kiraDurumu;
                 tasinmazListesiListItem.SorumluBolge = sorumluBolge;
                 tasinmazListesiListItem.EmlakSicilNo = emlakSicilNo;
                 tasinmazListesiListItem.AdaNo = adaNo;
@@ -259,7 +259,7 @@ namespace BTYS_Webparts.BolgeTasinmazListesiWP
             public string CiltNo { get; set; }
             public string SahifeNo { get; set; }
             public string Cinsi { get; set; }
-            public string KullanimDurumu { get; set; }
+            public string KiraDurumu { get; set; }
         }
     }
 }

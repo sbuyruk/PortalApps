@@ -87,20 +87,20 @@ namespace MTS_WebParts.FaaliyetViewerCustomWP
             if (dayInt == day)
             {
                 text = "<h2 align='right'>" + date.Day.ToString() + "</h2> ";
-                Randevu randevu = new Randevu();
-                List<Randevu> randevuListesi = randevu.SelectByTarihReturnList(date);
-                foreach (var item in randevuListesi)
+                Faaliyet faaliyet = new Faaliyet();
+                List<Faaliyet> faaliyetListesi = faaliyet.SelectByTarihReturnList(date);
+                foreach (var item in faaliyetListesi)
                 {
                     FaaliyetListItem gunlukFaaliyet = new FaaliyetListItem
                     {
-                        Amaci = item.RandevuAmaci,
+                        Amaci = item.FaaliyetAmaci,
                         BaslangicTarihi = item.BaslangicTarihi,
                         BitisTarihi = item.BitisTarihi,
-                        Durumu = item.RandevuDurumu,
+                        Durumu = item.FaaliyetDurumu,
                         Id = item.Id,
-                        Konusu = item.RandevuKonusu,
-                        Yeri = item.RandevuYeri,
-                        Tipi = item.RandevuTipi,
+                        Konusu = item.FaaliyetKonusu,
+                        Yeri = item.FaaliyetYeri,
+                        Tipi = item.FaaliyetTipi,
                     };
                     gunlukFaaliyetListesi.Add(gunlukFaaliyet);
                 }
@@ -110,7 +110,7 @@ namespace MTS_WebParts.FaaliyetViewerCustomWP
                 {
                     FaaliyetListItem gunlukFaaliyet = new FaaliyetListItem
                     {
-                        Amaci = ProjeConstants.RANDEVU_AMACI_TOPLANTI_INT.ConvertToInt(),
+                        Amaci = ProjeConstants.FAALIYET_AMACI_TOPLANTI_INT.ConvertToInt(),
                         BaslangicTarihi = item.BaslangicTarihi,
                         BitisTarihi = item.BitisTarihi,
                         Id = item.Id,
@@ -129,7 +129,7 @@ namespace MTS_WebParts.FaaliyetViewerCustomWP
                     string iptalStrAc = string.Empty;
                     string iptalStrKapa = string.Empty;
                     string renkStr = string.Empty;
-                    if (item.Durumu == ProjeConstants.RANDEVU_DURUMU_IPTALEDILDI_INT)
+                    if (item.Durumu == ProjeConstants.FAALIYET_DURUMU_IPTALEDILDI_INT)
                     {
                         iptalStrAc = " <s>";
                         iptalStrKapa = " </s>";
@@ -153,49 +153,49 @@ namespace MTS_WebParts.FaaliyetViewerCustomWP
             FaaliyetRengi faaliyetRengi = new FaaliyetRengi();
             switch (item.Amaci.ToString())
             {
-                case ProjeConstants.RANDEVU_AMACI_TOPLANTI_INT:
+                case ProjeConstants.FAALIYET_AMACI_TOPLANTI_INT:
                     {
                         faaliyetRengi.BackgroundColor = Color.Orange.Name;
                         faaliyetRengi.TextColor = Color.White.Name;
                         break;
                     }
-                case ProjeConstants.RANDEVU_AMACI_ZIYARET_INT:
+                case ProjeConstants.FAALIYET_AMACI_ZIYARET_INT:
                     {
                         faaliyetRengi.BackgroundColor = Color.Blue.Name;
                         faaliyetRengi.TextColor = Color.White.Name;
                         break;
                     }
-                case ProjeConstants.RANDEVU_AMACI_DAVET_INT:
+                case ProjeConstants.FAALIYET_AMACI_DAVET_INT:
                     {
                         faaliyetRengi.BackgroundColor = Color.Green.Name;
                         faaliyetRengi.TextColor = Color.White.Name;
                         break;
                     }
-                case ProjeConstants.RANDEVU_AMACI_YILDONUMU_INT:
+                case ProjeConstants.FAALIYET_AMACI_YILDONUMU_INT:
                     {
                         faaliyetRengi.BackgroundColor = Color.Aqua.Name;
                         faaliyetRengi.TextColor = Color.Black.Name;
                         break;
                     }
-                case ProjeConstants.RANDEVU_AMACI_DOGUMGUNU_INT:
+                case ProjeConstants.FAALIYET_AMACI_DOGUMGUNU_INT:
                     {
                         faaliyetRengi.BackgroundColor = Color.Aquamarine.Name;
                         faaliyetRengi.TextColor = Color.Black.Name;
                         break;
                     }
-                case ProjeConstants.RANDEVU_AMACI_OZELCALISMA_INT:
+                case ProjeConstants.FAALIYET_AMACI_OZELCALISMA_INT:
                     {
                         faaliyetRengi.BackgroundColor = Color.LightBlue.Name;
                         faaliyetRengi.TextColor = Color.White.Name;
                         break;
                     }
-                case ProjeConstants.RANDEVU_AMACI_IZIN_INT:
+                case ProjeConstants.FAALIYET_AMACI_IZIN_INT:
                     {
                         faaliyetRengi.BackgroundColor = Color.Aqua.Name;
                         faaliyetRengi.TextColor = Color.White.Name;
                         break;
                     }
-                case ProjeConstants.RANDEVU_AMACI_RESMITATIL_INT:
+                case ProjeConstants.FAALIYET_AMACI_RESMITATIL_INT:
                     {
                         faaliyetRengi.BackgroundColor = Color.MediumVioletRed.Name;
                         faaliyetRengi.TextColor = Color.White.Name;
@@ -204,7 +204,7 @@ namespace MTS_WebParts.FaaliyetViewerCustomWP
                 default:
                     break;
             }
-            if (item.Durumu.Equals(ProjeConstants.RANDEVU_DURUMU_PLANLANDI_INT.ToString()))
+            if (item.Durumu.Equals(ProjeConstants.FAALIYET_DURUMU_PLANLANDI_INT.ToString()))
             {
                 faaliyetRengi.BackgroundColor = Color.LightGray.Name;
                 faaliyetRengi.TextColor = Color.Black.Name;

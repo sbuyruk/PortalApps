@@ -1,0 +1,341 @@
+﻿using Model.MTS;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.IO;
+using System.Web.Script.Serialization;
+using System.Web.UI.WebControls;
+using System.Web.UI;
+using System.Web.UI.WebControls.WebParts;
+using Utility.HelperClasses;
+using Utility.ProjeGlobal;
+
+namespace MTS_WebParts.FaaliyetListesiWP
+{
+    [ToolboxItemAttribute(false)]
+    public partial class FaaliyetListesiWP : WebPart
+    {
+        // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
+        // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
+        // for production. Because the SecurityPermission attribute bypasses the security check for callers of
+        // your constructor, it's not recommended for production purposes.
+        // [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Assert, UnmanagedCode = true)]
+        public FaaliyetListesiWP()
+        {
+        }
+
+        protected override void OnInit(EventArgs e)
+        {
+            base.OnInit(e);
+            InitializeControl();
+            this.ChromeType = PartChromeType.None;
+        }
+        private string SecilenIdQS
+        {
+            get
+            {
+
+                if (ViewState["SecilenId"] == null)
+                {
+                    if (Page.Request.QueryString["SecilenId"] != null)
+                    {
+                        ViewState["SecilenId"] = Page.Request.QueryString["SecilenId"];
+                    }
+                    else
+                    {
+                        ViewState["SecilenId"] = string.Empty;
+                    }
+                }
+                return ViewState["SecilenId"].ToString();
+            }
+
+            set
+            {
+                ViewState["SecilenId"] = value;
+            }
+        }
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                TabloOlustur();
+            }
+            catch (Exception ex)
+            {
+                MessageHelper.PublishMessage(ex.Message, ProjeConstants.MESAJ_HATA);
+            }
+        }
+        private void TabloOlustur()
+        {
+            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler,
+                typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "setDataSet(" + jsonData + ");", true);
+        }
+        private string TabloJson()
+        {
+            string jSon = string.Empty;
+
+            try
+            {
+                List<FaaliyetListItem> list = GetDataList();
+                var serializer = new JavaScriptSerializer();
+                serializer.MaxJsonLength = Int32.MaxValue;
+                jSon = serializer.Serialize(list);
+            }
+            catch (Exception exception)
+            {
+                ExceptionHelper exceptionHelper = new ExceptionHelper();
+                exceptionHelper.Exceptions.Add(exception);
+                exceptionHelper.PublishException();
+            }
+            return jSon;
+        }
+        private List<FaaliyetListItem> GetDataList()
+        {
+            List<FaaliyetListItem> faaliyetList = new List<FaaliyetListItem>();
+            Faaliyet faaliyetDao = new Faaliyet();
+            DataTable dataTable = faaliyetDao.SelectAllByKatilimciFaaliyetReturnDataTable(ProjeConstants.HEPSI_INT, ProjeConstants.HEPSI_INT);
+
+            if (dataTable != null)
+            {
+                int tempFaaliyetId = 0;
+                int katilimciAdedi = 0;
+
+                FaaliyetListItem tempFaaliyetListItem = new FaaliyetListItem();
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    int faaliyetId = row["FaaliyetId"].ConvertToInt();
+                    string faaliyetTipi = row["FaaliyetTipi"].ToString();
+                    string faaliyetYeri = row["FaaliyetYeri"].ToString(); ;
+                    string faaliyetKonusu = row["FaaliyetKonusu"].ToString();
+                    string faaliyetAmaci = row["FaaliyetAmaci"].ToString();
+                    string faaliyetDurumu = row["FaaliyetDurumu"].ToString();
+
+                    DateTime basTar = row["BaslangicTarihi"].ConvertToDatetime();
+                    DateTime bitTar = row["BitisTarihi"].ConvertToDatetime();
+
+                    //string faaliyetTarihiStr = 
+                    //    basTar.Year == bitTar.Year && basTar.Month == bitTar.Month && basTar.Day == bitTar.Day ?
+                    //    basTar.ToString("dd.MM.yyyy") + " " + basTar.ToString("HH:mm") + "-" + bitTar.ToString("HH:mm") :
+                    //    basTar.ToString("dd.MM.yyyy HH:mm") + " - " + bitTar.ToString("dd.MM.yyyy HH:mm");
+                    string baslangicTarihi = basTar.ToString("dd.MM.yyyy HH:mm");
+                    string bitisTarihi = bitTar.ToString("dd.MM.yyyy HH:mm");
+
+                    string faaliyetAmaciStr = ParseFaaliyetAmaci(faaliyetAmaci);
+                    string faaliyetDurumuStr = ParseFaaliyetDurumu(faaliyetDurumu.ConvertToInt());
+                    string katilimci = row["Adi"].ToString() + " " + row["Soyadi"].ToString();
+
+                    if (tempFaaliyetId == faaliyetId)
+                    {
+                        tempFaaliyetId = faaliyetId;
+                        faaliyetList.Remove(tempFaaliyetListItem);
+
+                        //tempFaaliyetListItem.Katilimci += "@" + adiSoyadi;
+                        katilimciAdedi++;
+                        tempFaaliyetListItem.Katilimci += katilimci + "; ";
+                        faaliyetList.Add(tempFaaliyetListItem);
+                    }
+                    if (tempFaaliyetId != faaliyetId)
+                    {
+                        FaaliyetListItem faaliyetListItem = new FaaliyetListItem();
+                        faaliyetListItem.FaaliyetId = faaliyetId;
+                        faaliyetListItem.FaaliyetTipi = faaliyetTipi;
+                        faaliyetListItem.FaaliyetYeri = faaliyetYeri;
+                        faaliyetListItem.FaaliyetKonusu = faaliyetKonusu;
+                        faaliyetListItem.BaslangicTarihi = baslangicTarihi;
+                        faaliyetListItem.BitisTarihi = bitisTarihi;
+                        faaliyetListItem.FaaliyetAmaci = faaliyetAmaciStr;
+                        faaliyetListItem.FaaliyetDurumu = faaliyetDurumuStr;
+
+                        faaliyetListItem.Katilimci += katilimci + "; ";
+                        faaliyetListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_FAALIYET_GIRIS + "?FaaliyetId=" + faaliyetId + " class='btn btn-outline-primary'>Düzenle</a>";
+                        faaliyetListItem.Secildi = SecilenIdQS.Equals(faaliyetListItem.FaaliyetId.ToString());
+                        tempFaaliyetListItem = faaliyetListItem;
+                        faaliyetList.Add(tempFaaliyetListItem);
+                    }
+                    tempFaaliyetId = faaliyetId;
+
+                }
+            }
+            //faaliyetList = faaliyetList.OrderBy(r => r.FaaliyetTarihi).ToList();
+            return faaliyetList;
+        }
+        private void RedirectToPage(string pageUrl)
+        {
+            try
+            {
+                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
+                Page.Response.Redirect(newUrl);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelper exHelper = new ExceptionHelper(ex);
+                exHelper.PublishException();
+            }
+        }
+        private string ParseFaaliyetAmaci(string amac)
+        {
+            string amacStr = string.Empty;
+            switch (amac)
+            {
+                case ProjeConstants.FAALIYET_AMACI_DAVET_INT:
+                    {
+                        amacStr = ProjeConstants.FAALIYET_AMACI_DAVET;
+                        break;
+                    }
+                case ProjeConstants.FAALIYET_AMACI_IZIN_INT:
+                    {
+                        amacStr = ProjeConstants.FAALIYET_AMACI_IZIN;
+                        break;
+                    }
+                case ProjeConstants.FAALIYET_AMACI_OZELCALISMA_INT:
+                    {
+                        amacStr = ProjeConstants.FAALIYET_AMACI_OZELCALISMA;
+                        break;
+                    }
+                case ProjeConstants.FAALIYET_AMACI_RESMITATIL_INT:
+                    {
+                        amacStr = ProjeConstants.FAALIYET_AMACI_RESMITATIL;
+                        break;
+                    }
+                case ProjeConstants.FAALIYET_AMACI_TOPLANTI_INT:
+                    {
+                        amacStr = ProjeConstants.FAALIYET_AMACI_TOPLANTI;
+                        break;
+                    }
+                case ProjeConstants.FAALIYET_AMACI_YILDONUMU_INT:
+                    {
+                        amacStr = ProjeConstants.FAALIYET_AMACI_YILDONUMU;
+                        break;
+                    }
+                case ProjeConstants.FAALIYET_AMACI_ZIYARET_INT:
+                    {
+                        amacStr = ProjeConstants.FAALIYET_AMACI_ZIYARET;
+                        break;
+                    }
+                default:
+                    break;
+            }
+            return amacStr;
+        }
+        private string ParseFaaliyetDurumu(int durum)
+        {
+            string durumStr = string.Empty;
+            switch (durum)
+            {
+                case ProjeConstants.FAALIYET_DURUMU_PLANLANDI_INT:
+                    {
+                        durumStr = ProjeConstants.FAALIYET_DURUMU_PLANLANDI;
+                        break;
+                    }
+                case ProjeConstants.FAALIYET_DURUMU_ONAYLANDI_INT:
+                    {
+                        durumStr = ProjeConstants.FAALIYET_DURUMU_ONAYLANDI;
+                        break;
+                    }
+                case ProjeConstants.FAALIYET_DURUMU_IPTALEDILDI_INT:
+                    {
+                        durumStr = ProjeConstants.FAALIYET_DURUMU_IPTALEDILDI;
+                        break;
+                    }
+                default:
+                    break;
+            }
+            return durumStr;
+        }
+        protected void YeniKayitBtn_Click(object sender, EventArgs e)
+        {
+            RedirectToPage(ProjeConstants.PAGE_FAALIYET_GIRIS);
+        }
+        protected void ExcelBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                ExportToExcel();
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelper exHelper = new ExceptionHelper(ex);
+                exHelper.PublishException();
+            }
+        }
+        protected void ExportToExcel()
+        {
+            GridView GridView1 = new GridView();
+            GridView1.AllowPaging = false;
+
+            GridView1.DataSource = GetDataList();
+            GridView1.DataBind();
+
+            Page.Response.Clear();
+            Page.Response.Buffer = true;
+            Page.Response.AddHeader("content-disposition",
+             "attachment;filename=FaaliyetListesi" + DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + ".xls");
+            Page.Response.ContentEncoding = System.Text.Encoding.GetEncoding("windows-1254");
+            Page.Response.Charset = "windows-1254";//ISO-8859-9
+            Page.Response.ContentType = "application/vnd.ms-excel";
+            StringWriter sw = new StringWriter();
+            HtmlTextWriter hw = new HtmlTextWriter(sw);
+
+            for (int i = 0; i < GridView1.Rows.Count; i++)
+            {
+                //Apply text style to each Row
+                GridView1.Rows[i].Attributes.Add("class", "textmode");
+            }
+            GridView1.RenderControl(hw);
+
+            //style to format numbers to string
+            string style = @"<style> .textmode { mso-number-format:\@; } </style>";
+            Page.Response.Write(style);
+            Page.Response.Output.Write(sw.ToString());
+            Page.Response.Flush();
+            Page.Response.End();
+
+        }
+        protected void CloseBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
+                Page.Response.Redirect(newUrl);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelper exHelper = new ExceptionHelper(ex);
+                exHelper.PublishException();
+            }
+        }
+        protected void KisiListesiBtn_Click(object sender, EventArgs e)
+        {
+            RedirectToPage(ProjeConstants.PAGE_KISI_LIST);
+        }
+        protected void FaaliyetListesiBtn_Click(object sender, EventArgs e)
+        {
+            RedirectToPage(ProjeConstants.PAGE_FAALIYET_LIST);
+        }
+        protected void FaaliyetTakvimiBtn_Click(object sender, EventArgs e)
+        {
+            RedirectToPage(ProjeConstants.PAGE_FAALIYET_TAKVIM);
+        }
+        private class FaaliyetListItem
+        {
+            public int FaaliyetId { get; set; }
+            public string FaaliyetTipi { get; set; }
+            public string FaaliyetYeri { get; set; }
+            public string FaaliyetKonusu { get; set; }
+            public string FaaliyetAmaci { get; set; }
+            public string FaaliyetDurumu { get; set; }
+            public string BaslangicTarihi { get; set; }
+            public string BitisTarihi { get; set; }
+            public string Katilimci { get; set; }
+            //public string Arama { get; set; }
+            public string Duzenle { get; set; }
+            public bool Secildi { get; set; }
+        }
+
+
+    }
+}

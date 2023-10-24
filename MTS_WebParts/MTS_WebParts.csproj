@@ -113,6 +113,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>FaaliyetGirisiWP.ascx</DependentUpon>
     </Compile>
+    <Compile Include="FaaliyetKartiWP\FaaliyetKartiWP.ascx.cs">
+      <DependentUpon>FaaliyetKartiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="FaaliyetKartiWP\FaaliyetKartiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FaaliyetKartiWP.ascx</DependentUpon>
+    </Compile>
     <Compile Include="FaaliyetListesiROWP\FaaliyetListesiROWP.ascx.cs">
       <DependentUpon>FaaliyetListesiROWP.ascx</DependentUpon>
     </Compile>
@@ -120,6 +128,22 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>FaaliyetListesiROWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="FaaliyetListesiWP\FaaliyetListesiWP.ascx.cs">
+      <DependentUpon>FaaliyetListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="FaaliyetListesiWP\FaaliyetListesiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FaaliyetListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="FaaliyetParametreWP\FaaliyetParametreWP.ascx.cs">
+      <DependentUpon>FaaliyetParametreWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="FaaliyetParametreWP\FaaliyetParametreWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FaaliyetParametreWP.ascx</DependentUpon>
     </Compile>
     <Compile Include="FaaliyetROViewerWP\FaaliyetROViewerWP.ascx.cs">
       <DependentUpon>FaaliyetROViewerWP.ascx</DependentUpon>
@@ -186,38 +210,6 @@
       <DependentUpon>MtsOlayListesiWP.ascx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RandevuGirisiWP\RandevuGirisiWP.ascx.cs">
-      <DependentUpon>RandevuGirisiWP.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="RandevuGirisiWP\RandevuGirisiWP.ascx.g.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RandevuGirisiWP.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="RandevuKartiWP\RandevuKartiWP.ascx.cs">
-      <DependentUpon>RandevuKartiWP.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="RandevuKartiWP\RandevuKartiWP.ascx.g.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RandevuKartiWP.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="RandevuListesiWP\RandevuListesiWP.ascx.cs">
-      <DependentUpon>RandevuListesiWP.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="RandevuListesiWP\RandevuListesiWP.ascx.g.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RandevuListesiWP.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="RandevuParametreGirisiWP\RandevuParametreGirisiWP.ascx.cs">
-      <DependentUpon>RandevuParametreGirisiWP.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="RandevuParametreGirisiWP\RandevuParametreGirisiWP.ascx.g.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RandevuParametreGirisiWP.ascx</DependentUpon>
-    </Compile>
     <Compile Include="TestWP\TestWP.ascx.cs">
       <DependentUpon>TestWP.ascx</DependentUpon>
     </Compile>
@@ -245,9 +237,21 @@
     <None Include="FaaliyetGirisiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{2e3cf88b-4542-4db5-8c48-b6d66a4dec57}</SharePointProjectItemId>
     </None>
+    <None Include="FaaliyetKartiWP\FaaliyetKartiWP.webpart" />
+    <None Include="FaaliyetKartiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{890206f2-1699-4551-961d-a489a9810455}</SharePointProjectItemId>
+    </None>
     <None Include="FaaliyetListesiROWP\FaaliyetListesiROWP.webpart" />
     <None Include="FaaliyetListesiROWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{ab075cfa-9f8f-4a92-a4f2-ab937e6c6fed}</SharePointProjectItemId>
+    </None>
+    <None Include="FaaliyetListesiWP\FaaliyetListesiWP.webpart" />
+    <None Include="FaaliyetListesiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{0b681124-d248-4f35-be7c-b0c0cf6e8fec}</SharePointProjectItemId>
+    </None>
+    <None Include="FaaliyetParametreWP\FaaliyetParametreWP.webpart" />
+    <None Include="FaaliyetParametreWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{4f8af98d-f678-457a-9af5-8cc1ac42b310}</SharePointProjectItemId>
     </None>
     <None Include="FaaliyetROViewerWP\FaaliyetROViewerWP.webpart" />
     <None Include="FaaliyetROViewerWP\SharePointProjectItem.spdata">
@@ -295,22 +299,6 @@
     <None Include="Package\Package.Template.xml">
       <DependentUpon>Package.package</DependentUpon>
     </None>
-    <None Include="RandevuGirisiWP\RandevuGirisiWP.webpart" />
-    <None Include="RandevuGirisiWP\SharePointProjectItem.spdata">
-      <SharePointProjectItemId>{8038ca8f-f398-4fa9-9f5a-daca4d761227}</SharePointProjectItemId>
-    </None>
-    <None Include="RandevuKartiWP\RandevuKartiWP.webpart" />
-    <None Include="RandevuKartiWP\SharePointProjectItem.spdata">
-      <SharePointProjectItemId>{e345ea3c-93e7-40f1-bb18-7181410ab53a}</SharePointProjectItemId>
-    </None>
-    <None Include="RandevuListesiWP\RandevuListesiWP.webpart" />
-    <None Include="RandevuListesiWP\SharePointProjectItem.spdata">
-      <SharePointProjectItemId>{46113233-ba9c-4dcc-b2cd-be58a9f1be37}</SharePointProjectItemId>
-    </None>
-    <None Include="RandevuParametreGirisiWP\RandevuParametreGirisiWP.webpart" />
-    <None Include="RandevuParametreGirisiWP\SharePointProjectItem.spdata">
-      <SharePointProjectItemId>{6a0901dd-a410-4064-8518-8254c95d03d6}</SharePointProjectItemId>
-    </None>
     <None Include="Scripts\jquery-3.5.1.min.map" />
     <None Include="Scripts\jquery-3.5.1.slim.min.map" />
     <None Include="TestWP\SharePointProjectItem.spdata">
@@ -343,10 +331,25 @@
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>FaaliyetGirisiWP.ascx.g.cs</LastGenOutput>
     </Content>
+    <Content Include="FaaliyetKartiWP\Elements.xml" />
+    <Content Include="FaaliyetKartiWP\FaaliyetKartiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>FaaliyetKartiWP.ascx.g.cs</LastGenOutput>
+    </Content>
     <Content Include="FaaliyetListesiROWP\Elements.xml" />
     <Content Include="FaaliyetListesiROWP\FaaliyetListesiROWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>FaaliyetListesiROWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="FaaliyetListesiWP\Elements.xml" />
+    <Content Include="FaaliyetListesiWP\FaaliyetListesiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>FaaliyetListesiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="FaaliyetParametreWP\Elements.xml" />
+    <Content Include="FaaliyetParametreWP\FaaliyetParametreWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>FaaliyetParametreWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="FaaliyetROViewerWP\Elements.xml" />
     <Content Include="FaaliyetROViewerWP\FaaliyetROViewerWP.ascx">
@@ -393,26 +396,6 @@
     <Content Include="MtsOlayListesiWP\MtsOlayListesiWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>MtsOlayListesiWP.ascx.g.cs</LastGenOutput>
-    </Content>
-    <Content Include="RandevuGirisiWP\Elements.xml" />
-    <Content Include="RandevuGirisiWP\RandevuGirisiWP.ascx">
-      <Generator>SharePointWebPartCodeGenerator</Generator>
-      <LastGenOutput>RandevuGirisiWP.ascx.g.cs</LastGenOutput>
-    </Content>
-    <Content Include="RandevuKartiWP\Elements.xml" />
-    <Content Include="RandevuKartiWP\RandevuKartiWP.ascx">
-      <Generator>SharePointWebPartCodeGenerator</Generator>
-      <LastGenOutput>RandevuKartiWP.ascx.g.cs</LastGenOutput>
-    </Content>
-    <Content Include="RandevuListesiWP\Elements.xml" />
-    <Content Include="RandevuListesiWP\RandevuListesiWP.ascx">
-      <Generator>SharePointWebPartCodeGenerator</Generator>
-      <LastGenOutput>RandevuListesiWP.ascx.g.cs</LastGenOutput>
-    </Content>
-    <Content Include="RandevuParametreGirisiWP\Elements.xml" />
-    <Content Include="RandevuParametreGirisiWP\RandevuParametreGirisiWP.ascx">
-      <Generator>SharePointWebPartCodeGenerator</Generator>
-      <LastGenOutput>RandevuParametreGirisiWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\fullcalendar\fullcalendar.js" />
     <Content Include="Scripts\fullcalendar\fullcalendar.min.js" />

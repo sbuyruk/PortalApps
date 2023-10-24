@@ -281,7 +281,7 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
             mulkiyetCell.Text = "Mülkiyet Şekli";
 
             TableHeaderCell kullanimCell = new TableHeaderCell();
-            kullanimCell.Text = "Mülk.Şekli/Kullanım Durumu";
+            kullanimCell.Text = "Mülk.Şekli/Kira Durumu";
 
             //headerRow1.Controls.Add(siranoCell);
             headerRow1.Controls.Add(cinsiCell);
@@ -314,7 +314,7 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
                     string adres = dataRow["Adres"].ToString();
                     string mulkiyetSekli = dataRow["MulkiyetSekli"].ToString();
                     string kullanimSekli = dataRow["KullanimSekli"].ToString();
-                    string kullanimDurumu = dataRow["KullanimDurumu"].ToString();
+                    string kiraDurumu = dataRow["KiraDurumu"].ToString();
 
                     TableRow row = new TableRow();
 
@@ -340,7 +340,7 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
                     //row.Controls.Add(MulkiyetCell);
 
                     TableCell KullanimCell = new TableCell();
-                    KullanimCell.Text = mulkiyetSekli + " * " + kullanimDurumu;
+                    KullanimCell.Text = mulkiyetSekli + " * " + kiraDurumu;
                     row.Controls.Add(KullanimCell);
 
                     TasinmazTable.Controls.Add(row);

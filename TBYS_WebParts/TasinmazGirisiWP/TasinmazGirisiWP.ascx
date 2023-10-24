@@ -11,10 +11,10 @@
         $("#ModalOnayDiv").modal({ backdrop: false });
     }
 </script>
-<div class="container shadow">
+<div class="container col-xl">
     <asp:UpdatePanel ID="TableUpdatePanel" runat="server">
         <ContentTemplate>
-            <div class="card">
+            <div class="card shadow">
                 <div class="card-header" id="CardHeader" runat="server">
                     <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
                     <h3 class="mb-2">
@@ -89,12 +89,12 @@
                         <div class="row">
                             <div class="form-group col">
                                 <div class="form-group m-0 ">
-                                    <label class="col-form-label" for="KiraDurumuDDL">Kira Durumu</label>
-                                    <asp:DropDownList ID="KiraDurumuDDL" runat="server" class="form-control" Style="height: auto"></asp:DropDownList>
+                                    <label class="col-form-label" for="KirayaUygunlukDDL">Kiraya Uygunluk</label>
+                                    <asp:DropDownList ID="KirayaUygunlukDDL" runat="server" class="form-control" Style="height: auto"></asp:DropDownList>
                                 </div>
                                 <div class="form-group m-0 ">
-                                    <label class="col-form-label" for="KullanimDurumuDDL">Kull.Durumu</label>
-                                    <asp:DropDownList ID="KullanimDurumuDDL" runat="server" class="form-control" Style="height: auto"></asp:DropDownList>
+                                    <label class="col-form-label" for="KiraDurumuDDL">Kull.Durumu</label>
+                                    <asp:DropDownList ID="KiraDurumuDDL" runat="server" class="form-control" Style="height: auto"></asp:DropDownList>
                                 </div>
                                 <div class="form-group m-0 ">
                                     <label class="col-form-label" for="EnvantereGirisTarihiTxt">Env.Gir.Tarihi</label>

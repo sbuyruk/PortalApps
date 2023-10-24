@@ -155,7 +155,7 @@ namespace BTYS_Webparts.BolgeTasinmazListesiWP {
                         "\"\", \"KullanimSekli\": \"\", \"MulkiyetSekli\": \"\", \"IliIlcesi\": \"\", \"Adres\": \"\", \"Bag" +
                         "isci\": \"\", \"BagisYili\": \"\",\r\n        \"SorumluBolge\": \"\", \"EmlakSicilNo\": \"\", \"Ad" +
                         "aNo\": \"\", \"ParselNo\": \"\", \"PaftaNo\": \"\", \"YevmiyeNo\": \"\", \"CiltNo\": \"\", \"SahifeN" +
-                        "o\": \"\", \"Cinsi\": \"\", \"KullanimDurumu\": \"\",\r\n        \"TasinmazKarti\": \"\", \"Duzenl" +
+                        "o\": \"\", \"Cinsi\": \"\", \"KiraDurumu\": \"\",\r\n        \"TasinmazKarti\": \"\", \"Duzenl" +
                         "e\": \"\"\r\n    }];\r\n    jQuery(document).ready(function () {\r\n\r\n        jQuery(\'#Cu" +
                         "stomDataTable\').DataTable({\r\n            data: myjsons,\r\n            columns: [\r" +
                         "\n                { data: \"Id\" },\r\n                { data: \"KullanimSekli\" },\r\n  " +
@@ -166,7 +166,7 @@ namespace BTYS_Webparts.BolgeTasinmazListesiWP {
                         "              { data: \"ParselNo\" },\r\n                { data: \"PaftaNo\" },\r\n     " +
                         "           { data: \"YevmiyeNo\" },\r\n                { data: \"CiltNo\" },\r\n        " +
                         "        { data: \"SahifeNo\" },\r\n                { data: \"Cinsi\" },\r\n             " +
-                        "   { data: \"KullanimDurumu\" },\r\n                { data: \"TasinmazKarti\" },\r\n    " +
+                        "   { data: \"KiraDurumu\" },\r\n                { data: \"TasinmazKarti\" },\r\n    " +
                         "        ],\r\n            \'order\': [[0, \'asc\']],//Id Sıralı\r\n            \"language" +
                         "\": {\r\n                \"url\": \"http://tskgv-portal/OrtakBelgeler/Turkish.txt\",\r\n " +
                         "               \"decimal\": \",\",\r\n                \"thousands\": \".\"\r\n            }," +
@@ -226,7 +226,7 @@ namespace BTYS_Webparts.BolgeTasinmazListesiWP {
                             <th>CiltNo</th>
                             <th>SahifeNo</th>
                             <th>Cinsi</th>
-                            <th>KullanimDurumu</th>
+                            <th>KiraDurumu</th>
                             <th>Taşınmaz Kartı</th>
                         </tr>
                     </thead>

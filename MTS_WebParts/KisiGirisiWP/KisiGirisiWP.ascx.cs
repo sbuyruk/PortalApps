@@ -59,7 +59,8 @@ namespace MTS_WebParts.KisiGirisiWP
         {
             if (!Page.IsPostBack)// sayfa ilk kez açılıyorsa (bu sayfanın içindeki butona basılma anı hariç)
             {
-
+                
+                MTSUnvanDDLDoldur();
                 IlDDDoldurL();
                 
 
@@ -67,11 +68,11 @@ namespace MTS_WebParts.KisiGirisiWP
                 {
                     Kisi kisi = new Kisi();
                     kisi = kisi.Select(KisiIdQS.ConvertToInt());
-                    IdLbl.Text = kisi == null ? string.Empty : "( " + kisi.Id + ProjeConstants.RANDEVU_KATILIMCI_DIS + " )";
+                    IdLbl.Text = kisi == null ? string.Empty : "( " + kisi.Id + ProjeConstants.FAALIYET_KATILIMCI_DIS + " )";
                     KaydetBtn.Visible = false;
                     GuncelleBtn.Visible = true;
                     //KisiyiSilBtn.Visible = true;
-                    RandevuGirBtn.Visible = true;
+                    FaaliyetGirBtn.Visible = true;
                     TitleLbl.Text = "Kişi Düzenle";
                     TitleLbl.CssClass = "col-form-label text-primary font-weight-bold mb-1";
                     FormuDoldur();
@@ -84,11 +85,30 @@ namespace MTS_WebParts.KisiGirisiWP
                     KaydetBtn.Visible = true;
                     GuncelleBtn.Visible = false;
                     KisiyiSilBtn.Visible = false;
-                    RandevuGirBtn.Visible = false;
+                    FaaliyetGirBtn.Visible = false;
                     MessageHelper.PublishMessage("Yeni kişi bilgilerini girerek kayıt yapabilirsiniz.", ProjeConstants.MESAJ_BILGI,2000);
                 }
             }
         }
+        
+        private void MTSUnvanDDLDoldur()
+        {
+
+            if (MTSUnvanTanimDDL.SelectedItem == null)
+            {
+                MTSUnvanTanimDDL.Items.Clear();
+                MTSUnvanTanim mTSGorevTanim = new MTSUnvanTanim();
+                List<MTSUnvanTanim> list = mTSGorevTanim.SelectAll<MTSUnvanTanim>();
+                MTSUnvanTanimDDL.Items.Add(new ListItem("", ""));
+                foreach (MTSUnvanTanim item in list)
+                {
+                    MTSUnvanTanimDDL.Items.Add(new ListItem(item.KisaAdi, item.Id.ToString()));
+                }
+            }
+
+
+        }
+        
         private void IlDDDoldurL()
         {
             if (IliDDL.SelectedItem == null)
@@ -152,7 +172,9 @@ namespace MTS_WebParts.KisiGirisiWP
                     TelAciklama3Txt.Text = kisi.TelAciklama3;
 
                     AdresTxt.Text = kisi.Adres;
-
+                    //UtilityHelper.SetDDLValue(MTSKurumTanimDDL, kisi.MTSKurumTanimId.ToString()) ;
+                    //UtilityHelper.SetDDLValue(MTSGorevTanimDDL, kisi.MTSGorevTanimId.ToString()) ;
+                    UtilityHelper.SetDDLValue(MTSUnvanTanimDDL, kisi.MTSUnvanTanimId.ToString()) ;
                     ListItem ilItem = IliDDL.Items.FindByValue(IliDDL.Items.FindByValue(kisi.Ili.ToString()).Value);
                     if (ilItem != null)
                     {
@@ -164,6 +186,20 @@ namespace MTS_WebParts.KisiGirisiWP
 
                     AdresTxt.Text = kisi.Adres;
                     AciklamaTxt.Text = kisi.Aciklama;
+                    MTSKurumGorev kurumGorev = new MTSKurumGorev();
+                    string kurum = string.Empty;
+                    string gorev = string.Empty;
+                    string kurumGorevStr = kurumGorev.SelectByKisiIdReturnKurumGorev(kisi.Id,ref kurum,ref gorev);
+                    if (string.IsNullOrEmpty(kurumGorevStr))
+                    {
+                        MTSKurumTanimTxt.Text = kisi.Kurumu;
+                        MTSGorevTanimTxt.Text = kisi.Gorevi;
+                    }
+                    else
+                    {
+                        MTSKurumTanimTxt.Text = kurum;
+                        MTSGorevTanimTxt.Text = gorev;
+                    }
                 }
                 else
                 {
@@ -195,6 +231,9 @@ namespace MTS_WebParts.KisiGirisiWP
                         yeniKisi.Adi = AdiTxt.Text;
                         yeniKisi.Soyadi = SoyadiTxt.Text;
                         yeniKisi.TCKimlikNo = TCKimlikNoTxt.Text.ConvertToLong();
+                        //yeniKisi.MTSKurumTanimId = MTSKurumTanimDDL.SelectedItem.Value.ConvertToInt();
+                        //yeniKisi.MTSGorevTanimId = MTSGorevTanimDDL.SelectedItem.Value.ConvertToInt();
+                        yeniKisi.MTSUnvanTanimId = MTSUnvanTanimDDL.SelectedItem.Value.ConvertToInt();
                         yeniKisi.Kurumu = KurumuTxt.Text;
                         yeniKisi.Unvani = UnvaniTxt.Text;
                         yeniKisi.Gorevi = GoreviTxt.Text;
@@ -297,6 +336,9 @@ namespace MTS_WebParts.KisiGirisiWP
                     kisi.Adi = AdiTxt.Text;
                     kisi.Soyadi = SoyadiTxt.Text;
                     kisi.TCKimlikNo = TCKimlikNoTxt.Text.ConvertToLong();
+                    //kisi.MTSKurumTanimId = MTSKurumTanimDDL.SelectedItem.Value.ConvertToInt();
+                    //kisi.MTSGorevTanimId = MTSGorevTanimDDL.SelectedItem.Value.ConvertToInt();
+                    kisi.MTSUnvanTanimId = MTSUnvanTanimDDL.SelectedItem.Value.ConvertToInt();
                     kisi.Kurumu = KurumuTxt.Text;
                     kisi.Unvani = UnvaniTxt.Text;
                     kisi.Gorevi = GoreviTxt.Text;
@@ -395,19 +437,19 @@ namespace MTS_WebParts.KisiGirisiWP
             OnaylaBtn.Visible = false;
             KisiSilNowBtn.CssClass = "btn btn-outline-danger";
             ModalBaslikLbl.CssClass = "col-form-label text-danger font-weight-bold";
-            RandevuKatilimciChk.Visible = false;
+            FaaliyetKatilimciChk.Visible = false;
             IrtibatPersoneliChk.Visible = false;
             bool silinebilirMi = true;
             OnayMesajiLbl.Text = string.Empty;
 
 
-            bool averilenAniObjesiVarmi = VerilenAniObjesiVarMi(KisiIdQS.ConvertToInt(), ProjeConstants.RANDEVU_KATILIMCI_DIS_INT);
+            bool averilenAniObjesiVarmi = VerilenAniObjesiVarMi(KisiIdQS.ConvertToInt(), ProjeConstants.FAALIYET_KATILIMCI_DIS_INT);
             if (averilenAniObjesiVarmi)
             {
                 silinebilirMi = false;
                 OnayMesajiLbl.Text += " Seçtiğiniz kişiye verilen anı objesi kaydı bulunmaktadır." + "</br>";
             }
-            bool getirilenAniObjesiVarmi = GetirilenAniObjesiVarMi(KisiIdQS.ConvertToInt(), ProjeConstants.RANDEVU_KATILIMCI_DIS_INT);
+            bool getirilenAniObjesiVarmi = GetirilenAniObjesiVarMi(KisiIdQS.ConvertToInt(), ProjeConstants.FAALIYET_KATILIMCI_DIS_INT);
             if (getirilenAniObjesiVarmi)
             {
                 silinebilirMi = false;
@@ -415,8 +457,8 @@ namespace MTS_WebParts.KisiGirisiWP
             }
             
 
-            RandevuKatilim randevuKatilimDao = new RandevuKatilim();
-            List<RandevuKatilim> list = randevuKatilimDao.SelectByKatilimciIdKatilimciTipi(KisiIdQS.ConvertToInt(), ProjeConstants.RANDEVU_KATILIMCI_DIS_INT);
+            FaaliyetKatilim faaliyetKatilimDao = new FaaliyetKatilim();
+            List<FaaliyetKatilim> list = faaliyetKatilimDao.SelectByKatilimciIdKatilimciTipi(KisiIdQS.ConvertToInt(), ProjeConstants.FAALIYET_KATILIMCI_DIS_INT);
 
             if (list.Count > 0)
             {
@@ -427,7 +469,7 @@ namespace MTS_WebParts.KisiGirisiWP
 
             }
             AramaGorusme aramaGorusmeDao = new AramaGorusme();
-            List<AramaGorusme> aramalistlist = aramaGorusmeDao.SelectAllByArayanIdReturnList(KisiIdQS.ConvertToInt(), ProjeConstants.RANDEVU_KATILIMCI_DIS_INT);
+            List<AramaGorusme> aramalistlist = aramaGorusmeDao.SelectAllByArayanIdReturnList(KisiIdQS.ConvertToInt(), ProjeConstants.FAALIYET_KATILIMCI_DIS_INT);
 
             if (aramalistlist.Count > 0)
             {
@@ -492,7 +534,7 @@ namespace MTS_WebParts.KisiGirisiWP
                 eh.PublishException();
             }
         }
-        protected void RandevuGirBtn_Click(object sender, EventArgs e)
+        protected void FaaliyetGirBtn_Click(object sender, EventArgs e)
         {
             try
             {
@@ -500,7 +542,7 @@ namespace MTS_WebParts.KisiGirisiWP
                 kisi = kisi.Select(KisiIdQS.ConvertToInt());
                 if (kisi != null)
                 {
-                    RandevuGirisiPopupAc(sender);
+                    FaaliyetGirisiPopupAc(sender);
                 }
             }
             catch (Exception e1)
@@ -513,7 +555,7 @@ namespace MTS_WebParts.KisiGirisiWP
             }
         }
 
-        private void RandevuGirisiPopupAc(object sender)
+        private void FaaliyetGirisiPopupAc(object sender)
         {
             ParamVnLbl.Text = KisiIdQS;
             string openModal = "OpenModalOnay();";
@@ -524,7 +566,7 @@ namespace MTS_WebParts.KisiGirisiWP
             KisiSilNowBtn.Visible = false;
             OnaylaBtn.Visible = true;
             OnaylaBtn.CssClass = "btn btn-outline-success";
-            RandevuKatilimciChk.Visible = true;
+            FaaliyetKatilimciChk.Visible = true;
             IrtibatPersoneliChk.Visible = true;
             ModalBaslikLbl.CssClass = "col-form-label text-success font-weight-bold";
 
@@ -538,39 +580,62 @@ namespace MTS_WebParts.KisiGirisiWP
             {
                 if (KisiIdQS.ConvertToInt() > 0)
                 {
-                    Randevu randevu = new Randevu();
-                    randevu.RandevuAmaci = ProjeConstants.RANDEVU_AMACI_ZIYARET_INT.ConvertToInt();
-                    randevu.RandevuKonusu = string.Empty;
-                    randevu.RandevuDurumu = ProjeConstants.RANDEVU_DURUMU_PLANLANDI_INT;
-                    randevu.TumGun = false;
-                    randevu.AcikTarih = true;
+                    Faaliyet faaliyet = new Faaliyet();
+                    faaliyet.FaaliyetAmaci = ProjeConstants.FAALIYET_AMACI_ZIYARET_INT.ConvertToInt();
+                    faaliyet.FaaliyetKonusu = string.Empty;
+                    faaliyet.FaaliyetDurumu = ProjeConstants.FAALIYET_DURUMU_PLANLANDI_INT;
+                    faaliyet.TumGun = false;
+                    faaliyet.AcikTarih = true;
                     DateTime baslangictarihi = DateTime.Today.AddDays(1);
                     DateTime bitistarihi = baslangictarihi;
                     string bassaat = "10:00";
                     string bitsaat = "10:30";
-                    randevu.BaslangicTarihi = UtilityHelper.TariheSaatEkle(baslangictarihi, bassaat);
-                    randevu.BitisTarihi = UtilityHelper.TariheSaatEkle(bitistarihi, bitsaat);
-                    randevu.BaslangicSaati = bassaat;
-                    randevu.BitisSaati = bitsaat;
-                    randevu.Aciklama = AciklamaTxt.Text;
+                    faaliyet.BaslangicTarihi = UtilityHelper.TariheSaatEkle(baslangictarihi, bassaat);
+                    faaliyet.BitisTarihi = UtilityHelper.TariheSaatEkle(bitistarihi, bitsaat);
+                    faaliyet.BaslangicSaati = bassaat;
+                    faaliyet.BitisSaati = bitsaat;
+                    faaliyet.Aciklama = AciklamaTxt.Text;
 
                     if (IrtibatPersoneliChk.Checked)
-                        randevu.DisIrtibatId = KisiIdQS.ConvertToInt();
-                    randevu.Olusturan = UtilityHelper.GetCurrentUserName();
-                    randevu.Id = randevu.Save();
-                    if (randevu.Id > 0)
+                        faaliyet.DisIrtibatId = KisiIdQS.ConvertToInt();
+                    faaliyet.Olusturan = UtilityHelper.GetCurrentUserName();
+                    faaliyet.Id = faaliyet.Save();
+                    if (faaliyet.Id > 0)
                     {
-                        if (RandevuKatilimciChk.Checked)
+                        if (FaaliyetKatilimciChk.Checked)
                         {
-                            RandevuKatilim randevuKatilim = new RandevuKatilim();
-                            randevuKatilim.RandevuId = randevu.Id;
-                            randevuKatilim.KatilimciId = KisiIdQS.ConvertToInt();
-                            randevuKatilim.KatilimciTipi = ProjeConstants.RANDEVU_KATILIMCI_DIS_INT;
-                            randevuKatilim.Olusturan = UtilityHelper.GetCurrentUserName();
-                            int randevuKatilimId = randevuKatilim.Save();
-                            if (randevuKatilimId > 0)
+                            string kurumGorevStr = string.Empty;
+                            Kisi kisi = new Kisi();
+                            kisi = kisi.Select(KisiIdQS.ConvertToInt());
+                            if (kisi != null)
                             {
-                                RedirectToPage(ProjeConstants.PAGE_RANDEVU_GIRIS + "?RandevuId=" + randevu.Id);
+                                MTSKurumGorev kurumGorev = new MTSKurumGorev();
+                                string kurum = string.Empty;
+                                string gorev = string.Empty;
+                                kurumGorevStr = kurumGorev.SelectByKisiIdReturnKurumGorev(kisi.Id, ref kurum, ref gorev);
+                                if (string.IsNullOrEmpty(kurumGorevStr))
+                                {
+                                    MTSKurumTanimTxt.Text = kisi.Kurumu;
+                                    MTSGorevTanimTxt.Text = kisi.Gorevi;
+                                    kurumGorevStr = kisi.Kurumu + " / " + kisi.Gorevi;
+                                }
+                                else
+                                {
+                                    MTSKurumTanimTxt.Text = kurum;
+                                    MTSGorevTanimTxt.Text = gorev;
+                                }
+                            }
+                            
+                            FaaliyetKatilim faaliyetKatilim = new FaaliyetKatilim();
+                            faaliyetKatilim.FaaliyetId = faaliyet.Id;
+                            faaliyetKatilim.KatilimciId = KisiIdQS.ConvertToInt();
+                            faaliyetKatilim.KatilimciTipi = ProjeConstants.FAALIYET_KATILIMCI_DIS_INT;
+                            faaliyetKatilim.KurumGorev = kurumGorevStr;
+                            faaliyetKatilim.Olusturan = UtilityHelper.GetCurrentUserName();
+                            int faaliyetKatilimId = faaliyetKatilim.Save();
+                            if (faaliyetKatilimId > 0)
+                            {
+                                RedirectToPage(ProjeConstants.PAGE_FAALIYET_GIRIS + "?FaaliyetId=" + faaliyet.Id);
                             }
                             else
                             {
@@ -600,11 +665,11 @@ namespace MTS_WebParts.KisiGirisiWP
         {
             RedirectToPage(ProjeConstants.PAGE_KISI_LIST + "?SecilenId=" + KisiIdQS);
         }
-        protected void RandevuListesiBtn_Click(object sender, EventArgs e)
+        protected void FaaliyetListesiBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_RANDEVU_LIST);
+            RedirectToPage(ProjeConstants.PAGE_FAALIYET_LIST);
         }
-        protected void RandevuTakvimiBtn_Click(object sender, EventArgs e)
+        protected void FaaliyetTakvimiBtn_Click(object sender, EventArgs e)
         {
             RedirectToPage(ProjeConstants.PAGE_FAALIYET_TAKVIM);
         }

@@ -60,7 +60,7 @@ namespace TBYS_WebParts.TasinmazBagisHaritasiWP
             TasinmazTableHeader.Controls.Add(mulkiyetCell);
 
             TableCell kullanimCell = new TableCell();
-            kullanimCell.Text = "Kullanım Durumu";
+            kullanimCell.Text = "Kira Durumu";
             TasinmazTableHeader.Controls.Add(kullanimCell);
 
         }
@@ -91,7 +91,7 @@ namespace TBYS_WebParts.TasinmazBagisHaritasiWP
                 row.Controls.Add(MulkiyetCell);
 
                 TableCell KullanimCell = new TableCell();
-                KullanimCell.Text = tasinmaz.KullanimDurumu.ToString();
+                KullanimCell.Text = tasinmaz.KiraDurumu.ToString();
                 row.Controls.Add(KullanimCell);
 
                 TasinmazTable.Controls.Add(row);

@@ -93,11 +93,11 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.DropDownList KiraDurumuDDL;
+        protected global::System.Web.UI.WebControls.DropDownList KirayaUygunlukDDL;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.DropDownList KullanimDurumuDDL;
+        protected global::System.Web.UI.WebControls.DropDownList KiraDurumuDDL;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -375,12 +375,12 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.DropDownList @__BuildControlKiraDurumuDDL() {
+        private global::System.Web.UI.WebControls.DropDownList @__BuildControlKirayaUygunlukDDL() {
             global::System.Web.UI.WebControls.DropDownList @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.DropDownList();
-            this.KiraDurumuDDL = @__ctrl;
+            this.KirayaUygunlukDDL = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "KiraDurumuDDL";
+            @__ctrl.ID = "KirayaUygunlukDDL";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: auto");
             return @__ctrl;
@@ -389,12 +389,12 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.DropDownList @__BuildControlKullanimDurumuDDL() {
+        private global::System.Web.UI.WebControls.DropDownList @__BuildControlKiraDurumuDDL() {
             global::System.Web.UI.WebControls.DropDownList @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.DropDownList();
-            this.KullanimDurumuDDL = @__ctrl;
+            this.KiraDurumuDDL = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "KullanimDurumuDDL";
+            @__ctrl.ID = "KiraDurumuDDL";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: auto");
             return @__ctrl;
@@ -561,17 +561,17 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP {
 
                             <div class=""form-group col"">
                                 <div class=""form-group m-0 "">
-                                    <label class=""col-form-label"" for=""KiraDurumuDDL"">Kira Durumu</label>
+                                    <label class=""col-form-label"" for=""KirayaUygunlukDDL"">Kiraya Uygunluk</label>
                                     "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl9;
-            @__ctrl9 = this.@__BuildControlKiraDurumuDDL();
+            @__ctrl9 = this.@__BuildControlKirayaUygunlukDDL();
             @__parser.AddParsedSubObject(@__ctrl9);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                                <div cl" +
                         "ass=\"form-group m-0 \">\r\n                                    <label class=\"col-fo" +
-                        "rm-label\" for=\"KullanimDurumuDDL\">Kull.Durumu</label>\r\n                         " +
+                        "rm-label\" for=\"KiraDurumuDDL\">Kull.Durumu</label>\r\n                         " +
                         "           "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl10;
-            @__ctrl10 = this.@__BuildControlKullanimDurumuDDL();
+            @__ctrl10 = this.@__BuildControlKiraDurumuDDL();
             @__parser.AddParsedSubObject(@__ctrl10);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                 </div>

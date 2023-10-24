@@ -20,7 +20,7 @@
         <div class="card-header" id="CardHeader" runat="server">
             <asp:LinkButton ID="LinkButton1" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-2">
-                <asp:Label CssClass="col-form-label text-danger font-weight-bold text-center" ID="TitleLbl" runat="server" Text="Sigorta Durumu (DASK+İhtiyari)"></asp:Label>
+                <asp:Label CssClass="col-form-label text-danger font-weight-bold text-center" ID="TitleLbl" runat="server" Text="Sigorta Durumu (DASK)"></asp:Label>
                 <asp:Label CssClass="col-form-label text-white" ID="IdLbl" runat="server"></asp:Label>
                 <asp:Label CssClass="col-form-label " ID="AdiLbl" runat="server"></asp:Label>
             </h3>
@@ -31,17 +31,16 @@
                     <asp:TableCell CssClass="btn-primary" RowSpan="2">Bölge</asp:TableCell>
                     <asp:TableCell CssClass="btn-primary" ColumnSpan="2">Mülkiyet</asp:TableCell>
                     <asp:TableCell CssClass="btn-primary" RowSpan="2">Toplam</asp:TableCell>
-                    <asp:TableCell CssClass="btn-primary" ColumnSpan="6">Taşınmazın Cinsi</asp:TableCell>
+                    <asp:TableCell CssClass="btn-primary" ColumnSpan="5">Taşınmazın Cinsi</asp:TableCell>
                 </asp:TableHeaderRow>
                 <asp:TableHeaderRow HorizontalAlign="Center">
                     <asp:TableCell CssClass="btn-primary">Tam Mülkiyet</asp:TableCell>
                     <asp:TableCell CssClass="btn-primary">Çıplak Mülkiyet</asp:TableCell>
-                    <asp:TableCell CssClass="btn-primary">Apt./İşhanı</asp:TableCell>
+                    <asp:TableCell CssClass="btn-primary">Bina</asp:TableCell>
                     <asp:TableCell CssClass="btn-primary">Mesken</asp:TableCell>
                     <asp:TableCell CssClass="btn-primary">İşyeri</asp:TableCell>
                     <asp:TableCell CssClass="btn-primary">Arsa</asp:TableCell>
                     <asp:TableCell CssClass="btn-primary">Tarla</asp:TableCell>
-                    <asp:TableCell CssClass="btn-primary">Müstakil Ev</asp:TableCell>
                 </asp:TableHeaderRow>
                 <asp:TableRow HorizontalAlign="Center">
                     <asp:TableCell ID="GMBaslikCell" CssClass="btn-primary">Gn.Md.lük</asp:TableCell>
@@ -53,7 +52,6 @@
                     <asp:TableCell ID="GMIsyCell" runat="server"></asp:TableCell>
                     <asp:TableCell ID="GMArsCell" runat="server"></asp:TableCell>
                     <asp:TableCell ID="GMTarCell" runat="server"></asp:TableCell>
-                    <asp:TableCell ID="GMMevCell" runat="server"></asp:TableCell>
                 </asp:TableRow>
                 <asp:TableRow HorizontalAlign="Center">
                     <asp:TableCell ID="IstBaslikCell" CssClass="btn-primary">İstanbul</asp:TableCell>
@@ -65,7 +63,6 @@
                     <asp:TableCell ID="IstIsyCell"></asp:TableCell>
                     <asp:TableCell ID="IstArsCell"></asp:TableCell>
                     <asp:TableCell ID="IstTarCell"></asp:TableCell>
-                    <asp:TableCell ID="IstMevCell"></asp:TableCell>
                 </asp:TableRow>
                 <asp:TableRow HorizontalAlign="Center">
                     <asp:TableCell ID="IzmBaslikCell" CssClass="btn-primary">İzmir</asp:TableCell>
@@ -77,7 +74,6 @@
                     <asp:TableCell ID="IzmIsyCell"></asp:TableCell>
                     <asp:TableCell ID="IzmArsCell"></asp:TableCell>
                     <asp:TableCell ID="IzmTarCell"></asp:TableCell>
-                    <asp:TableCell ID="IzmMevCell"></asp:TableCell>
                 </asp:TableRow>
                 <asp:TableRow HorizontalAlign="Center">
                     <asp:TableCell ID="MerBaslikCell" CssClass="btn-primary">Mersin</asp:TableCell>
@@ -89,7 +85,6 @@
                     <asp:TableCell ID="MerIsyCell"></asp:TableCell>
                     <asp:TableCell ID="MerArsCell"></asp:TableCell>
                     <asp:TableCell ID="MerTarCell"></asp:TableCell>
-                    <asp:TableCell ID="MerMevCell"></asp:TableCell>
                 </asp:TableRow>
                 <asp:TableRow HorizontalAlign="Center" BorderStyle="Solid" BorderWidth="2">
                     <asp:TableCell ID="TopBaslikCell" CssClass="btn-primary">Toplam</asp:TableCell>
@@ -101,7 +96,6 @@
                     <asp:TableCell ID="TopIsyCell"></asp:TableCell>
                     <asp:TableCell ID="TopArsCell"></asp:TableCell>
                     <asp:TableCell ID="TopTarCell"></asp:TableCell>
-                    <asp:TableCell ID="TopMevCell"></asp:TableCell>
                 </asp:TableRow>
             </asp:Table>
             <div>

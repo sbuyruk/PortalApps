@@ -28,17 +28,18 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            string kiraDurumu = ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL;
-            TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_KDCM,  "Çıplak Mülkiyet Taşınmazlar", 1, kiraDurumu);
-            TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_KDTAAH,  "Taahhüt Verilen Taşınmazlar", 2, kiraDurumu);
-            TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_KDHUKSOR, "Hukuki Sorunlu Taşınmazlar", 3, kiraDurumu);
-            TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_KDKIRAC, "Kıraç Taşınmazlar", 4, kiraDurumu);
-            TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_KDKIRAKABYOK, "Kiralanma Talebi Olmayan Taşınmazlar", 5, kiraDurumu);
-            TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_KDCOKHIS, "Hisseli Taşınmazlar", 6, kiraDurumu);
-            TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_KDVAKKUL, "Vakıf Kullanımında", 7, kiraDurumu);
-            TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_RISKLIYAPI_KENTSELDONUSUM, "Riskli Yapı-Kentsel Dönüşüm", 8, kiraDurumu);
-            TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_KATKARSILIGI_YENIYAPI, "Kat Karşılığı-Yeni Yapı İnşası", 9, kiraDurumu);
-            TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_DIGER, " Metruk-Tahditli vb.", 10, kiraDurumu);
+            string kirayaUygunluk = ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL;
+            TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_KDCM,  "Çıplak Mülkiyet Taşınmazlar", 1, kirayaUygunluk);
+            TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_KDTAAH,  "Taahhüt Verilen Taşınmazlar", 2, kirayaUygunluk);
+            TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_KDHUKSOR, "Hukuki Sorunlu Taşınmazlar", 3, kirayaUygunluk);
+            //TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_KDKIRAC, "Kıraç Taşınmazlar", 4, kirayaUygunluk);
+            TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_KDKIRAKABYOK, "Kiralanma Talebi Olmayan Taşınmazlar", 4, kirayaUygunluk);
+            TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_KDCOKHIS, "Hisseli Taşınmazlar", 5, kirayaUygunluk);
+            TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_KDVAKKUL, "Vakıf Kullanımında", 6, kirayaUygunluk);
+            TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_YENIDENINSA, "Yeniden İnşa", 7, kirayaUygunluk);
+            //TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_RISKLIYAPI_KENTSELDONUSUM, "Riskli Yapı-Kentsel Dönüşüm", 8, kirayaUygunluk);
+            //TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_KATKARSILIGI_YENIYAPI, "Kat Karşılığı-Yeni Yapı İnşası", 9, kirayaUygunluk);
+            //TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_DIGER, " Metruk-Tahditli vb.", 10, kirayaUygunluk);
             GenelToplamiBul();
             TahminiRayicTopTxt.Value = TahminiRayicToplaminiBul().ToString();
             EmlakBeyanTopTxt.Value = EmlakBeyanToplaminiBul().ToString();
@@ -46,14 +47,14 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
         private void GenelToplamiBul()
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            int GMTopTM = tasinmaz.SelectTasinmazAdetByBolgeKiraDurumu(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL, ProjeConstants.MULKIYETSEKLI_TM);
-            int GMTopCM = tasinmaz.SelectTasinmazAdetByBolgeKiraDurumu(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL, ProjeConstants.MULKIYETSEKLI_CM);
-            int IstTopTM = tasinmaz.SelectTasinmazAdetByBolgeKiraDurumu(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL, ProjeConstants.MULKIYETSEKLI_TM);
-            int IstTopCM = tasinmaz.SelectTasinmazAdetByBolgeKiraDurumu(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL, ProjeConstants.MULKIYETSEKLI_CM);
-            int IzmTopTM = tasinmaz.SelectTasinmazAdetByBolgeKiraDurumu(ProjeConstants.BOLGE_IZMIR, ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL, ProjeConstants.MULKIYETSEKLI_TM);
-            int IzmTopCM = tasinmaz.SelectTasinmazAdetByBolgeKiraDurumu(ProjeConstants.BOLGE_IZMIR, ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL, ProjeConstants.MULKIYETSEKLI_CM);
-            int MerTopTM = tasinmaz.SelectTasinmazAdetByBolgeKiraDurumu(ProjeConstants.BOLGE_MERSIN, ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL, ProjeConstants.MULKIYETSEKLI_TM);
-            int MerTopCM = tasinmaz.SelectTasinmazAdetByBolgeKiraDurumu(ProjeConstants.BOLGE_MERSIN, ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL, ProjeConstants.MULKIYETSEKLI_CM);
+            int GMTopTM = tasinmaz.SelectTasinmazAdetByBolgeKirayaUygunluk(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL, ProjeConstants.MULKIYETSEKLI_TM);
+            int GMTopCM = tasinmaz.SelectTasinmazAdetByBolgeKirayaUygunluk(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL, ProjeConstants.MULKIYETSEKLI_CM);
+            int IstTopTM = tasinmaz.SelectTasinmazAdetByBolgeKirayaUygunluk(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL, ProjeConstants.MULKIYETSEKLI_TM);
+            int IstTopCM = tasinmaz.SelectTasinmazAdetByBolgeKirayaUygunluk(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL, ProjeConstants.MULKIYETSEKLI_CM);
+            int IzmTopTM = tasinmaz.SelectTasinmazAdetByBolgeKirayaUygunluk(ProjeConstants.BOLGE_IZMIR, ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL, ProjeConstants.MULKIYETSEKLI_TM);
+            int IzmTopCM = tasinmaz.SelectTasinmazAdetByBolgeKirayaUygunluk(ProjeConstants.BOLGE_IZMIR, ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL, ProjeConstants.MULKIYETSEKLI_CM);
+            int MerTopTM = tasinmaz.SelectTasinmazAdetByBolgeKirayaUygunluk(ProjeConstants.BOLGE_MERSIN, ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL, ProjeConstants.MULKIYETSEKLI_TM);
+            int MerTopCM = tasinmaz.SelectTasinmazAdetByBolgeKirayaUygunluk(ProjeConstants.BOLGE_MERSIN, ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL, ProjeConstants.MULKIYETSEKLI_CM);
 
             TableRow rowGenelToplam = new TableRow
             {
@@ -159,59 +160,59 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
         {
             decimal toplam = 0;
             Tasinmaz tasinmaz = new Tasinmaz();
-            toplam = tasinmaz.SelectTahminiRayicToplamiByKiraDurumu(ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL);
+            toplam = tasinmaz.SelectTahminiRayicToplamiByKirayaUygunluk(ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL);
             return toplam;
         }
         private decimal EmlakBeyanToplaminiBul()
         {
             decimal toplam = 0;
             Tasinmaz tasinmaz = new Tasinmaz();
-            toplam = tasinmaz.SelectEmlakBeyanToplamiByKiraDurumu(ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL);
+            toplam = tasinmaz.SelectEmlakBeyanToplamiByKirayaUygunluk(ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL);
             return toplam;
         }
-        private void TabloyuDoldur(string kullanimDurumu, string rowTitle, int sira, string kiraDurumu)
+        private void TabloyuDoldur(string kiraDurumu, string rowTitle, int sira, string kirayaUygunluk)
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            int GMIshaniTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.KULLANIMSEKLI_ISHANI, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_TM, kiraDurumu);
-            int IstIshaniTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.KULLANIMSEKLI_ISHANI, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_TM, kiraDurumu);
-            int IzmIshaniTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_IZMIR, ProjeConstants.KULLANIMSEKLI_ISHANI, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_TM, kiraDurumu);
-            int MerIshaniTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_MERSIN, ProjeConstants.KULLANIMSEKLI_ISHANI, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_TM, kiraDurumu);
+            int GMIshaniTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.KULLANIMSEKLI_ISHANI, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
+            int IstIshaniTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.KULLANIMSEKLI_ISHANI, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
+            int IzmIshaniTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_IZMIR, ProjeConstants.KULLANIMSEKLI_ISHANI, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
+            int MerIshaniTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_MERSIN, ProjeConstants.KULLANIMSEKLI_ISHANI, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
             int TopIshaniTM = GMIshaniTM + IstIshaniTM + IzmIshaniTM + MerIshaniTM;
 
-            int GMAptTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.KULLANIMSEKLI_APT, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_TM, kiraDurumu);
-            int IstAptTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.KULLANIMSEKLI_APT, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_TM, kiraDurumu);
-            int IzmAptTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_IZMIR, ProjeConstants.KULLANIMSEKLI_APT, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_TM, kiraDurumu);
-            int MerAptTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_MERSIN, ProjeConstants.KULLANIMSEKLI_APT, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_TM, kiraDurumu);
+            int GMAptTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.KULLANIMSEKLI_APT, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
+            int IstAptTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.KULLANIMSEKLI_APT, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
+            int IzmAptTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_IZMIR, ProjeConstants.KULLANIMSEKLI_APT, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
+            int MerAptTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_MERSIN, ProjeConstants.KULLANIMSEKLI_APT, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
             int TopAptTM = GMAptTM + IstAptTM + IzmAptTM + MerAptTM;
 
-            int GMMesTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.KULLANIMSEKLI_MESKEN, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_TM, kiraDurumu);
-            int IstMesTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.KULLANIMSEKLI_MESKEN, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_TM, kiraDurumu);
-            int IzmMesTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_IZMIR, ProjeConstants.KULLANIMSEKLI_MESKEN, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_TM, kiraDurumu);
-            int MerMesTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_MERSIN, ProjeConstants.KULLANIMSEKLI_MESKEN, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_TM, kiraDurumu);
+            int GMMesTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.KULLANIMSEKLI_MESKEN, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
+            int IstMesTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.KULLANIMSEKLI_MESKEN, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
+            int IzmMesTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_IZMIR, ProjeConstants.KULLANIMSEKLI_MESKEN, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
+            int MerMesTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_MERSIN, ProjeConstants.KULLANIMSEKLI_MESKEN, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
             int TopMesTM = GMMesTM + IstMesTM + IzmMesTM + MerMesTM;
 
-            int GMIsyTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.KULLANIMSEKLI_ISYERI, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_TM, kiraDurumu);
-            int IstIsyTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.KULLANIMSEKLI_ISYERI, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_TM, kiraDurumu);
-            int IzmIsyTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_IZMIR, ProjeConstants.KULLANIMSEKLI_ISYERI, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_TM, kiraDurumu);
-            int MerIsyTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_MERSIN, ProjeConstants.KULLANIMSEKLI_ISYERI, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_TM, kiraDurumu);
+            int GMIsyTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.KULLANIMSEKLI_ISYERI, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
+            int IstIsyTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.KULLANIMSEKLI_ISYERI, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
+            int IzmIsyTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_IZMIR, ProjeConstants.KULLANIMSEKLI_ISYERI, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
+            int MerIsyTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_MERSIN, ProjeConstants.KULLANIMSEKLI_ISYERI, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
             int TopIsyTM = GMIsyTM + IstIsyTM + IzmIsyTM + MerIsyTM;
 
-            int GMArsTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.KULLANIMSEKLI_ARSA, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_TM, kiraDurumu);
-            int IstArsTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.KULLANIMSEKLI_ARSA, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_TM, kiraDurumu);
-            int IzmArsTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_IZMIR, ProjeConstants.KULLANIMSEKLI_ARSA, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_TM, kiraDurumu);
-            int MerArsTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_MERSIN, ProjeConstants.KULLANIMSEKLI_ARSA, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_TM, kiraDurumu);
+            int GMArsTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.KULLANIMSEKLI_ARSA, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
+            int IstArsTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.KULLANIMSEKLI_ARSA, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
+            int IzmArsTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_IZMIR, ProjeConstants.KULLANIMSEKLI_ARSA, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
+            int MerArsTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_MERSIN, ProjeConstants.KULLANIMSEKLI_ARSA, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
             int TopArsTM = GMArsTM + IstArsTM + IzmArsTM + MerArsTM;
 
-            int GMTarTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.KULLANIMSEKLI_TARLA, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_TM, kiraDurumu);
-            int IstTarTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.KULLANIMSEKLI_TARLA, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_TM, kiraDurumu);
-            int IzmTarTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_IZMIR, ProjeConstants.KULLANIMSEKLI_TARLA, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_TM, kiraDurumu);
-            int MerTarTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_MERSIN, ProjeConstants.KULLANIMSEKLI_TARLA, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_TM, kiraDurumu);
+            int GMTarTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.KULLANIMSEKLI_TARLA, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
+            int IstTarTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.KULLANIMSEKLI_TARLA, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
+            int IzmTarTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_IZMIR, ProjeConstants.KULLANIMSEKLI_TARLA, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
+            int MerTarTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_MERSIN, ProjeConstants.KULLANIMSEKLI_TARLA, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
             int TopTarTM = GMTarTM + IstTarTM + IzmTarTM + MerTarTM;
 
-            int GMMevTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.KULLANIMSEKLI_MEV, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_TM, kiraDurumu);
-            int IstMevTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.KULLANIMSEKLI_MEV, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_TM, kiraDurumu);
-            int IzmMevTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_IZMIR, ProjeConstants.KULLANIMSEKLI_MEV, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_TM, kiraDurumu);
-            int MerMevTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_MERSIN, ProjeConstants.KULLANIMSEKLI_MEV, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_TM, kiraDurumu);
+            int GMMevTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.KULLANIMSEKLI_MEV, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
+            int IstMevTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.KULLANIMSEKLI_MEV, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
+            int IzmMevTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_IZMIR, ProjeConstants.KULLANIMSEKLI_MEV, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
+            int MerMevTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_MERSIN, ProjeConstants.KULLANIMSEKLI_MEV, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
             int TopMevTM = GMMevTM + IstMevTM + IzmMevTM + MerMevTM;
 
             int GMTopTM = GMIshaniTM + GMAptTM + GMMesTM + GMIsyTM + GMArsTM + GMTarTM + GMMevTM;
@@ -219,46 +220,46 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
             int IzmTopTM = IzmIshaniTM + IzmAptTM + IzmMesTM + IzmIsyTM + IzmArsTM + IzmTarTM + IzmMevTM;
             int MerTopTM = MerIshaniTM + MerAptTM + MerMesTM + MerIsyTM + MerArsTM + MerTarTM + MerMevTM;
 
-            int GMIshaniCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.KULLANIMSEKLI_ISHANI, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_CM, kiraDurumu);
-            int IstIshaniCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.KULLANIMSEKLI_ISHANI, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_CM, kiraDurumu);
-            int IzmIshaniCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_IZMIR, ProjeConstants.KULLANIMSEKLI_ISHANI, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_CM, kiraDurumu);
-            int MerIshaniCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_MERSIN, ProjeConstants.KULLANIMSEKLI_ISHANI, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_CM, kiraDurumu);
+            int GMIshaniCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.KULLANIMSEKLI_ISHANI, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
+            int IstIshaniCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.KULLANIMSEKLI_ISHANI, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
+            int IzmIshaniCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_IZMIR, ProjeConstants.KULLANIMSEKLI_ISHANI, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
+            int MerIshaniCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_MERSIN, ProjeConstants.KULLANIMSEKLI_ISHANI, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
             int TopIshaniCM = GMIshaniCM + IstIshaniCM + IzmIshaniCM + MerIshaniCM;
 
-            int GMAptCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.KULLANIMSEKLI_APT, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_CM, kiraDurumu);
-            int IstAptCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.KULLANIMSEKLI_APT, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_CM, kiraDurumu);
-            int IzmAptCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_IZMIR, ProjeConstants.KULLANIMSEKLI_APT, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_CM, kiraDurumu);
-            int MerAptCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_MERSIN, ProjeConstants.KULLANIMSEKLI_APT, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_CM, kiraDurumu);
+            int GMAptCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.KULLANIMSEKLI_APT, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
+            int IstAptCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.KULLANIMSEKLI_APT, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
+            int IzmAptCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_IZMIR, ProjeConstants.KULLANIMSEKLI_APT, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
+            int MerAptCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_MERSIN, ProjeConstants.KULLANIMSEKLI_APT, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
             int TopAptCM = GMAptCM + IstAptCM + IzmAptCM + MerAptCM;
 
-            int GMMesCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.KULLANIMSEKLI_MESKEN, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_CM, kiraDurumu);
-            int IstMesCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.KULLANIMSEKLI_MESKEN, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_CM, kiraDurumu);
-            int IzmMesCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_IZMIR, ProjeConstants.KULLANIMSEKLI_MESKEN, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_CM, kiraDurumu);
-            int MerMesCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_MERSIN, ProjeConstants.KULLANIMSEKLI_MESKEN, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_CM, kiraDurumu);
+            int GMMesCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.KULLANIMSEKLI_MESKEN, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
+            int IstMesCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.KULLANIMSEKLI_MESKEN, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
+            int IzmMesCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_IZMIR, ProjeConstants.KULLANIMSEKLI_MESKEN, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
+            int MerMesCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_MERSIN, ProjeConstants.KULLANIMSEKLI_MESKEN, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
             int TopMesCM = GMMesCM + IstMesCM + IzmMesCM + MerMesCM;
 
-            int GMIsyCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.KULLANIMSEKLI_ISYERI, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_CM, kiraDurumu);
-            int IstIsyCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.KULLANIMSEKLI_ISYERI, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_CM, kiraDurumu);
-            int IzmIsyCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_IZMIR, ProjeConstants.KULLANIMSEKLI_ISYERI, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_CM, kiraDurumu);
-            int MerIsyCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_MERSIN, ProjeConstants.KULLANIMSEKLI_ISYERI, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_CM, kiraDurumu);
+            int GMIsyCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.KULLANIMSEKLI_ISYERI, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
+            int IstIsyCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.KULLANIMSEKLI_ISYERI, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
+            int IzmIsyCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_IZMIR, ProjeConstants.KULLANIMSEKLI_ISYERI, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
+            int MerIsyCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_MERSIN, ProjeConstants.KULLANIMSEKLI_ISYERI, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
             int TopIsyCM = GMIsyCM + IstIsyCM + IzmIsyCM + MerIsyCM;
 
-            int GMArsCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.KULLANIMSEKLI_ARSA, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_CM, kiraDurumu);
-            int IstArsCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.KULLANIMSEKLI_ARSA, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_CM, kiraDurumu);
-            int IzmArsCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_IZMIR, ProjeConstants.KULLANIMSEKLI_ARSA, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_CM, kiraDurumu);
-            int MerArsCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_MERSIN, ProjeConstants.KULLANIMSEKLI_ARSA, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_CM, kiraDurumu);
+            int GMArsCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.KULLANIMSEKLI_ARSA, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
+            int IstArsCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.KULLANIMSEKLI_ARSA, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
+            int IzmArsCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_IZMIR, ProjeConstants.KULLANIMSEKLI_ARSA, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
+            int MerArsCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_MERSIN, ProjeConstants.KULLANIMSEKLI_ARSA, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
             int TopArsCM = GMArsCM + IstArsCM + IzmArsCM + MerArsCM;
 
-            int GMTarCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.KULLANIMSEKLI_TARLA, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_CM, kiraDurumu);
-            int IstTarCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.KULLANIMSEKLI_TARLA, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_CM, kiraDurumu);
-            int IzmTarCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_IZMIR, ProjeConstants.KULLANIMSEKLI_TARLA, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_CM, kiraDurumu);
-            int MerTarCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_MERSIN, ProjeConstants.KULLANIMSEKLI_TARLA, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_CM, kiraDurumu);
+            int GMTarCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.KULLANIMSEKLI_TARLA, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
+            int IstTarCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.KULLANIMSEKLI_TARLA, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
+            int IzmTarCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_IZMIR, ProjeConstants.KULLANIMSEKLI_TARLA, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
+            int MerTarCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_MERSIN, ProjeConstants.KULLANIMSEKLI_TARLA, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
             int TopTarCM = GMTarCM + IstTarCM + IzmTarCM + MerTarCM;
 
-            int GMMevCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.KULLANIMSEKLI_MEV, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_CM, kiraDurumu);
-            int IstMevCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.KULLANIMSEKLI_MEV, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_CM, kiraDurumu);
-            int IzmMevCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_IZMIR, ProjeConstants.KULLANIMSEKLI_MEV, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_CM, kiraDurumu);
-            int MerMevCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(ProjeConstants.BOLGE_MERSIN, ProjeConstants.KULLANIMSEKLI_MEV, kullanimDurumu, ProjeConstants.MULKIYETSEKLI_CM, kiraDurumu);
+            int GMMevCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.KULLANIMSEKLI_MEV, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
+            int IstMevCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.KULLANIMSEKLI_MEV, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
+            int IzmMevCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_IZMIR, ProjeConstants.KULLANIMSEKLI_MEV, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
+            int MerMevCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_MERSIN, ProjeConstants.KULLANIMSEKLI_MEV, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
             int TopMevCM = GMMevCM + IstMevCM + IzmMevCM + MerMevCM;
 
             int GMTopCM = GMIshaniCM + GMAptCM + GMMesCM + GMIsyCM + GMArsCM + GMTarCM + GMMevCM;
@@ -294,7 +295,7 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
             TableCell KvAptCell = new TableCell
             {
                 BorderStyle = BorderStyle.Solid,
-                Text = "Apt./İşhanı"
+                Text = "Bina"
             };
             row1.Controls.Add(KvAptCell);
             //TM

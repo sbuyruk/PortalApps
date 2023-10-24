@@ -226,9 +226,9 @@ namespace NBYS_WebParts.BeratBelgesiYazisiWP
         {
             DateTime bugun = DateTime.Today;
 
-            ImzalayanTxt.Text = @"Sadık PİYADE";
-            ImzalayanUnvanTxt.Text = @"(E)Tümgeneral";
-            ImzalayanMakamTxt.Text = @"TSKGV Genel Müdür V.";
+            ImzalayanTxt.Text = @"Bilal TOPÇU";
+            ImzalayanUnvanTxt.Text = string.Empty;// @"(E)Tümgeneral";
+            ImzalayanMakamTxt.Text = @"TSKGV Genel Müdürü";
             EvrakTarihiTxt.Text = bugun.ToString("dd") + " " + bugun.ToString("MMMM") + " " + bugun.Year;
         }
         private void FillDropDownList()

@@ -35,7 +35,7 @@
                         <asp:TableHeaderRow HorizontalAlign="Center">
                             <asp:TableCell ID="GMSiraNoCell" CssClass="btn-primary" RowSpan="2">Sıra</asp:TableCell>
                             <asp:TableCell ID="GMIllerCell" CssClass="btn-primary" RowSpan="2">İller</asp:TableCell>
-                            <asp:TableCell ID="GMAptCell" CssClass="btn-primary" ColumnSpan="2">Apt./İşhanı</asp:TableCell>
+                            <asp:TableCell ID="GMAptCell" CssClass="btn-primary" ColumnSpan="2">Bina</asp:TableCell>
                             <asp:TableCell ID="GMMEvCell" CssClass="btn-primary" ColumnSpan="2">M.Ev</asp:TableCell>
                             <asp:TableCell ID="GMMeskenCell" CssClass="btn-primary" ColumnSpan="2">Mesken</asp:TableCell>
                             <asp:TableCell ID="GMIsyeriCell" CssClass="btn-primary" ColumnSpan="2">İşyeri</asp:TableCell>
@@ -69,7 +69,7 @@
                         <asp:TableHeaderRow HorizontalAlign="Center">
                             <asp:TableCell ID="IstSiraNoCell" CssClass="btn-primary" RowSpan="2">Sıra</asp:TableCell>
                             <asp:TableCell ID="IstIllerCell" CssClass="btn-primary" RowSpan="2">İller</asp:TableCell>
-                            <asp:TableCell ID="IstAptCell" CssClass="btn-primary" ColumnSpan="2">Apt./İşyeri</asp:TableCell>
+                            <asp:TableCell ID="IstAptCell" CssClass="btn-primary" ColumnSpan="2">Bina</asp:TableCell>
                             <asp:TableCell ID="IstMEvCell" CssClass="btn-primary" ColumnSpan="2">M.Ev</asp:TableCell>
                             <asp:TableCell ID="IstMeskenCell" CssClass="btn-primary" ColumnSpan="2">Mesken</asp:TableCell>
                             <asp:TableCell ID="IstIsyeriCell" CssClass="btn-primary" ColumnSpan="2">İşyeri</asp:TableCell>
@@ -104,7 +104,7 @@
                         <asp:TableHeaderRow HorizontalAlign="Center">
                             <asp:TableCell ID="IzmSiraNoCell" CssClass="btn-primary" RowSpan="2">Sıra</asp:TableCell>
                             <asp:TableCell ID="IzmIllerCell" CssClass="btn-primary" RowSpan="2">İller</asp:TableCell>
-                            <asp:TableCell ID="IzmAptCell" CssClass="btn-primary" ColumnSpan="2">Apt./İşyeri</asp:TableCell>
+                            <asp:TableCell ID="IzmAptCell" CssClass="btn-primary" ColumnSpan="2">Bina</asp:TableCell>
                             <asp:TableCell ID="IzmMEvCell" CssClass="btn-primary" ColumnSpan="2">M.Ev</asp:TableCell>
                             <asp:TableCell ID="IzmMeskenCell" CssClass="btn-primary" ColumnSpan="2">Mesken</asp:TableCell>
                             <asp:TableCell ID="IzmIsyeriCell" CssClass="btn-primary" ColumnSpan="2">İşyeri</asp:TableCell>
@@ -140,7 +140,7 @@
                         <asp:TableHeaderRow HorizontalAlign="Center">
                             <asp:TableCell ID="MerSiraNoCell" CssClass="btn-primary" RowSpan="2">Sıra</asp:TableCell>
                             <asp:TableCell ID="MerIllerCell" CssClass="btn-primary" RowSpan="2">İller</asp:TableCell>
-                            <asp:TableCell ID="MerAptCell" CssClass="btn-primary" ColumnSpan="2">Apt./İşyeri</asp:TableCell>
+                            <asp:TableCell ID="MerAptCell" CssClass="btn-primary" ColumnSpan="2">Bina</asp:TableCell>
                             <asp:TableCell ID="MerMEvCell" CssClass="btn-primary" ColumnSpan="2">M.Ev</asp:TableCell>
                             <asp:TableCell ID="MerMeskenCell" CssClass="btn-primary" ColumnSpan="2">Mesken</asp:TableCell>
                             <asp:TableCell ID="MerIsyeriCell" CssClass="btn-primary" ColumnSpan="2">İşyeri</asp:TableCell>

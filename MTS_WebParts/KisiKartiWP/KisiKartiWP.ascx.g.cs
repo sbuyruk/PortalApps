@@ -73,11 +73,11 @@ namespace MTS_WebParts.KisiKartiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.Table VerilenRandevuBilgileriTable;
+        protected global::System.Web.UI.WebControls.Table VerilenFaaliyetBilgileriTable;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.Table AlınanRandevuBilgileriTable;
+        protected global::System.Web.UI.WebControls.Table AlınanFaaliyetBilgileriTable;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -93,11 +93,11 @@ namespace MTS_WebParts.KisiKartiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.LinkButton RandevuTakvimiBtn;
+        protected global::System.Web.UI.WebControls.LinkButton FaaliyetTakvimiBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.LinkButton RandevuListesiBtn;
+        protected global::System.Web.UI.WebControls.LinkButton FaaliyetListesiBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -468,12 +468,12 @@ namespace MTS_WebParts.KisiKartiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Table @__BuildControlVerilenRandevuBilgileriTable() {
+        private global::System.Web.UI.WebControls.Table @__BuildControlVerilenFaaliyetBilgileriTable() {
             global::System.Web.UI.WebControls.Table @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Table();
-            this.VerilenRandevuBilgileriTable = @__ctrl;
+            this.VerilenFaaliyetBilgileriTable = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "VerilenRandevuBilgileriTable";
+            @__ctrl.ID = "VerilenFaaliyetBilgileriTable";
             @__ctrl.CssClass = "table table-sm table-hover table-striped table-bordered";
             @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
             this.@__BuildControl__control6(@__ctrl.Rows);
@@ -666,12 +666,12 @@ namespace MTS_WebParts.KisiKartiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Table @__BuildControlAlınanRandevuBilgileriTable() {
+        private global::System.Web.UI.WebControls.Table @__BuildControlAlınanFaaliyetBilgileriTable() {
             global::System.Web.UI.WebControls.Table @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Table();
-            this.AlınanRandevuBilgileriTable = @__ctrl;
+            this.AlınanFaaliyetBilgileriTable = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "AlınanRandevuBilgileriTable";
+            @__ctrl.ID = "AlınanFaaliyetBilgileriTable";
             @__ctrl.CssClass = "table table-sm table-hover table-striped table-bordered";
             @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
             this.@__BuildControl__control20(@__ctrl.Rows);
@@ -768,7 +768,7 @@ namespace MTS_WebParts.KisiKartiWP {
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Randevu"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Faaliyet"));
             return @__ctrl;
         }
         
@@ -861,15 +861,15 @@ namespace MTS_WebParts.KisiKartiWP {
             global::System.Web.UI.WebControls.Table @__ctrl1;
             @__ctrl1 = this.@__BuildControlKisiBilgileriTable();
             @__parser.AddParsedSubObject(@__ctrl1);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                    <div id=\"VerilenRandevuDiv\" cla" +
-                        "ss=\"table\">\r\n                        "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                    <div id=\"VerilenFaaliyetDiv\" cl" +
+                        "ass=\"table\">\r\n                        "));
             global::System.Web.UI.WebControls.Table @__ctrl2;
-            @__ctrl2 = this.@__BuildControlVerilenRandevuBilgileriTable();
+            @__ctrl2 = this.@__BuildControlVerilenFaaliyetBilgileriTable();
             @__parser.AddParsedSubObject(@__ctrl2);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                    <div id=\"AlinanRandevuDiv\" clas" +
-                        "s=\"table\">\r\n                        "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                    <div id=\"AlinanFaaliyetDiv\" cla" +
+                        "ss=\"table\">\r\n                        "));
             global::System.Web.UI.WebControls.Table @__ctrl3;
-            @__ctrl3 = this.@__BuildControlAlınanRandevuBilgileriTable();
+            @__ctrl3 = this.@__BuildControlAlınanFaaliyetBilgileriTable();
             @__parser.AddParsedSubObject(@__ctrl3);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                    <div id=\"AramaGorusmeDiv\" class" +
                         "=\"table\">\r\n                        "));
@@ -902,34 +902,34 @@ namespace MTS_WebParts.KisiKartiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.LinkButton @__BuildControlRandevuTakvimiBtn() {
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlFaaliyetTakvimiBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
-            this.RandevuTakvimiBtn = @__ctrl;
+            this.FaaliyetTakvimiBtn = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "RandevuTakvimiBtn";
+            @__ctrl.ID = "FaaliyetTakvimiBtn";
             @__ctrl.CssClass = "btn btn-outline-info float-right";
             @__ctrl.Text = "Faaliyet Takvimi";
-            @__ctrl.Click -= new System.EventHandler(this.RandevuTakvimiBtn_Click);
-            @__ctrl.Click += new System.EventHandler(this.RandevuTakvimiBtn_Click);
+            @__ctrl.Click -= new System.EventHandler(this.FaaliyetTakvimiBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.FaaliyetTakvimiBtn_Click);
             return @__ctrl;
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.LinkButton @__BuildControlRandevuListesiBtn() {
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlFaaliyetListesiBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
-            this.RandevuListesiBtn = @__ctrl;
+            this.FaaliyetListesiBtn = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "RandevuListesiBtn";
+            @__ctrl.ID = "FaaliyetListesiBtn";
             @__ctrl.CssClass = "btn btn-outline-secondary float-right";
             @__ctrl.Text = "Faaliyet Listesi";
-            @__ctrl.Click -= new System.EventHandler(this.RandevuListesiBtn_Click);
-            @__ctrl.Click += new System.EventHandler(this.RandevuListesiBtn_Click);
+            @__ctrl.Click -= new System.EventHandler(this.FaaliyetListesiBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.FaaliyetListesiBtn_Click);
             return @__ctrl;
         }
         
@@ -986,11 +986,11 @@ namespace MTS_WebParts.KisiKartiWP {
             @__parser.AddParsedSubObject(@__ctrl3);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl4;
-            @__ctrl4 = this.@__BuildControlRandevuTakvimiBtn();
+            @__ctrl4 = this.@__BuildControlFaaliyetTakvimiBtn();
             @__parser.AddParsedSubObject(@__ctrl4);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl5;
-            @__ctrl5 = this.@__BuildControlRandevuListesiBtn();
+            @__ctrl5 = this.@__BuildControlFaaliyetListesiBtn();
             @__parser.AddParsedSubObject(@__ctrl5);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl6;

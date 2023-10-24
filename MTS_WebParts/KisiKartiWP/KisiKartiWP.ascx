@@ -35,8 +35,8 @@
                             </asp:TableHeaderRow>
                         </asp:Table>
                     </div>
-                    <div id="VerilenRandevuDiv" class="table">
-                        <asp:Table ID="VerilenRandevuBilgileriTable" runat="server" CssClass="table table-sm table-hover table-striped table-bordered" BorderStyle="Solid">
+                    <div id="VerilenFaaliyetDiv" class="table">
+                        <asp:Table ID="VerilenFaaliyetBilgileriTable" runat="server" CssClass="table table-sm table-hover table-striped table-bordered" BorderStyle="Solid">
                             <asp:TableHeaderRow>
                                 <asp:TableHeaderCell ColumnSpan="8" BackColor="Silver">Faaliyet Bilgileri (Gelenler)</asp:TableHeaderCell>
                             </asp:TableHeaderRow>
@@ -52,8 +52,8 @@
                             </asp:TableHeaderRow>
                         </asp:Table>
                     </div>
-                    <div id="AlinanRandevuDiv" class="table">
-                        <asp:Table ID="AlınanRandevuBilgileriTable" runat="server" CssClass="table table-sm table-hover table-striped table-bordered" BorderStyle="Solid">
+                    <div id="AlinanFaaliyetDiv" class="table">
+                        <asp:Table ID="AlınanFaaliyetBilgileriTable" runat="server" CssClass="table table-sm table-hover table-striped table-bordered" BorderStyle="Solid">
                             <asp:TableHeaderRow>
                                 <asp:TableHeaderCell ColumnSpan="8" BackColor="Silver">Faaliyet Bilgileri (Gidilenler)</asp:TableHeaderCell>
                             </asp:TableHeaderRow>
@@ -79,7 +79,7 @@
                                 <asp:TableHeaderCell>Arama/Görüşme</asp:TableHeaderCell>
                                 <asp:TableHeaderCell>Arama Tarihi</asp:TableHeaderCell>
                                 <asp:TableHeaderCell>Konusu</asp:TableHeaderCell>
-                                <asp:TableHeaderCell>Randevu</asp:TableHeaderCell>
+                                <asp:TableHeaderCell>Faaliyet</asp:TableHeaderCell>
                                 <asp:TableHeaderCell>Görüşme Sağlandı</asp:TableHeaderCell>
                             </asp:TableHeaderRow>
                         </asp:Table>
@@ -87,8 +87,8 @@
                 </div>
                 <div class="card-footer">
                     <asp:LinkButton CssClass="btn btn-outline-success float-right" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
-                    <asp:LinkButton ID="RandevuTakvimiBtn" CssClass="btn btn-outline-info float-right" runat="server" Text="Faaliyet Takvimi" OnClick="RandevuTakvimiBtn_Click"></asp:LinkButton>
-                    <asp:LinkButton ID="RandevuListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Faaliyet Listesi" OnClick="RandevuListesiBtn_Click"></asp:LinkButton>
+                    <asp:LinkButton ID="FaaliyetTakvimiBtn" CssClass="btn btn-outline-info float-right" runat="server" Text="Faaliyet Takvimi" OnClick="FaaliyetTakvimiBtn_Click"></asp:LinkButton>
+                    <asp:LinkButton ID="FaaliyetListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Faaliyet Listesi" OnClick="FaaliyetListesiBtn_Click"></asp:LinkButton>
                     <asp:LinkButton ID="KisiListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Kişi Listesi" OnClick="KisiListesiBtn_Click"></asp:LinkButton>
                     <asp:LinkButton ID="AramaListesi" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Arama/Görüşme Listesi" OnClick="AramaListesiBtn_Click"></asp:LinkButton>
                 </div>

@@ -116,20 +116,20 @@ namespace MTS_WebParts.MtsOlayListesiWP
         public string ParseAciklama(Olay olay)
         {
             var words = olay.Aciklama.Split(ProjeConstants.DELIMITER).ToList();
-            int randevuId = 0;
+            int faaliyetId = 0;
             int katilimciId = 0;
             int katilimciTipi = 0;
-            Randevu randevu = null;
+            Faaliyet faaliyet = null;
             string katilimci = string.Empty;
             string katilimciTipiStr =string.Empty;
             string aniObjesiStr=string.Empty;
             string getirilenAniObjesiStr = string.Empty;
             foreach (string item in words)
             {
-                bool contains = item.Contains("RandevuId");
+                bool contains = item.Contains("FaaliyetId");
                 if (contains)
                 {
-                    randevuId = item.Split('=')[1].ConvertToInt();
+                    faaliyetId = item.Split('=')[1].ConvertToInt();
                     break;
                 }else
                 if (item.Contains("KatilimciId")){
@@ -141,26 +141,26 @@ namespace MTS_WebParts.MtsOlayListesiWP
                     katilimciTipi = item.Split('=')[1].ConvertToInt();
                 }
             }
-            if (randevuId > 0)
+            if (faaliyetId > 0)
             {
-                randevu = new Randevu();
-                randevu = randevu.Select(randevuId);
+                faaliyet = new Faaliyet();
+                faaliyet = faaliyet.Select(faaliyetId);
             }
             if (katilimciId > 0)
             {
                 switch (katilimciTipi)
                 {
-                    case ProjeConstants.RANDEVU_KATILIMCI_TASINMAZBAGISCI_INT:
+                    case ProjeConstants.FAALIYET_KATILIMCI_TASINMAZBAGISCI_INT:
                         {
                             TasinmazBagisci tasinmazBagisci = new TasinmazBagisci();
                             tasinmazBagisci = tasinmazBagisci.Select<TasinmazBagisci>(katilimciId);
                             if (tasinmazBagisci != null)
                             {
                                 katilimci = tasinmazBagisci.Adi + " " + tasinmazBagisci.Soyadi;
-                                katilimciTipiStr = ProjeConstants.RANDEVU_KATILIMCI_TASINMAZBAGISCI;
+                                katilimciTipiStr = ProjeConstants.FAALIYET_KATILIMCI_TASINMAZBAGISCI;
                                 //Burada verilen ani objeleri alınıyor
                                 AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
-                                DataTable dataTable = aniObjesiDagitim.SelectReturnDT(randevuId, tasinmazBagisci.Id, ProjeConstants.RANDEVU_KATILIMCI_TASINMAZBAGISCI_INT);
+                                DataTable dataTable = aniObjesiDagitim.SelectReturnDT(faaliyetId, tasinmazBagisci.Id, ProjeConstants.FAALIYET_KATILIMCI_TASINMAZBAGISCI_INT);
                                 if (dataTable != null)
                                 {
                                     string objeStr = string.Empty;
@@ -178,7 +178,7 @@ namespace MTS_WebParts.MtsOlayListesiWP
                                 }
                                 //Getirilen Ani Objeleri ayrıca alınıyor
                                 AniObjesiDagitim getirilenAniObjesi = new AniObjesiDagitim();
-                                getirilenAniObjesi = getirilenAniObjesi.SelectGetirilenAniObjesi(randevuId, tasinmazBagisci.Id, ProjeConstants.RANDEVU_KATILIMCI_TASINMAZBAGISCI_INT);
+                                getirilenAniObjesi = getirilenAniObjesi.SelectGetirilenAniObjesi(faaliyetId, tasinmazBagisci.Id, ProjeConstants.FAALIYET_KATILIMCI_TASINMAZBAGISCI_INT);
                                 if (getirilenAniObjesi != null)
                                 {
                                     getirilenAniObjesiStr = getirilenAniObjesi.GetirilenAniObjesi;
@@ -191,18 +191,18 @@ namespace MTS_WebParts.MtsOlayListesiWP
                             break;
                         }
 
-                    case ProjeConstants.RANDEVU_KATILIMCI_NAKITBAGISCI_INT:
+                    case ProjeConstants.FAALIYET_KATILIMCI_NAKITBAGISCI_INT:
                         {
                             NakitBagisci nakitBagisci = new NakitBagisci();
                             nakitBagisci = nakitBagisci.Select<NakitBagisci>(katilimciId);
                             if (nakitBagisci != null)
                             {
                                 katilimci= nakitBagisci.Adi + " " + nakitBagisci.Soyadi;
-                                katilimciTipiStr= ProjeConstants.RANDEVU_KATILIMCI_NAKITBAGISCI;
+                                katilimciTipiStr= ProjeConstants.FAALIYET_KATILIMCI_NAKITBAGISCI;
 
                                 //Burada verilen ani objeleri alınıyor
                                 AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
-                                DataTable dataTable = aniObjesiDagitim.SelectReturnDT(randevuId, nakitBagisci.Id, ProjeConstants.RANDEVU_KATILIMCI_NAKITBAGISCI_INT);
+                                DataTable dataTable = aniObjesiDagitim.SelectReturnDT(faaliyetId, nakitBagisci.Id, ProjeConstants.FAALIYET_KATILIMCI_NAKITBAGISCI_INT);
                                 if (dataTable != null)
                                 {
                                     string objeStr = string.Empty;
@@ -221,7 +221,7 @@ namespace MTS_WebParts.MtsOlayListesiWP
 
                                 //Getirilen Ani Objeleri ayrıca alınıyor
                                 AniObjesiDagitim getirilenAniObjesi = new AniObjesiDagitim();
-                                getirilenAniObjesi = getirilenAniObjesi.SelectGetirilenAniObjesi(randevuId, nakitBagisci.Id, ProjeConstants.RANDEVU_KATILIMCI_NAKITBAGISCI_INT);
+                                getirilenAniObjesi = getirilenAniObjesi.SelectGetirilenAniObjesi(faaliyetId, nakitBagisci.Id, ProjeConstants.FAALIYET_KATILIMCI_NAKITBAGISCI_INT);
                                 if (getirilenAniObjesi != null)
                                 {
                                     getirilenAniObjesiStr = getirilenAniObjesi.GetirilenAniObjesi;
@@ -234,18 +234,18 @@ namespace MTS_WebParts.MtsOlayListesiWP
                             break;
                         }
 
-                    case ProjeConstants.RANDEVU_KATILIMCI_DIS_INT:
+                    case ProjeConstants.FAALIYET_KATILIMCI_DIS_INT:
                         {
                             Kisi kisi = new Kisi();
                             kisi = kisi.Select<Kisi>(katilimciId);
                             if (kisi != null)
                             {
                                 katilimci= kisi.Adi + " " + kisi.Soyadi;
-                                katilimciTipiStr= ProjeConstants.RANDEVU_KATILIMCI_DIS;
+                                katilimciTipiStr= ProjeConstants.FAALIYET_KATILIMCI_DIS;
 
                                 //Burada verilen ani objeleri alınıyor
                                 AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
-                                DataTable dataTable = aniObjesiDagitim.SelectReturnDT(randevuId, kisi.Id, ProjeConstants.RANDEVU_KATILIMCI_DIS_INT);
+                                DataTable dataTable = aniObjesiDagitim.SelectReturnDT(faaliyetId, kisi.Id, ProjeConstants.FAALIYET_KATILIMCI_DIS_INT);
                                 if (dataTable != null)
                                 {
                                     string objeStr = string.Empty;
@@ -264,7 +264,7 @@ namespace MTS_WebParts.MtsOlayListesiWP
 
                                 //Getirilen Ani Objeleri ayrıca alınıyor
                                 AniObjesiDagitim getirilenAniObjesi = new AniObjesiDagitim();
-                                getirilenAniObjesi = getirilenAniObjesi.SelectGetirilenAniObjesi(randevuId, kisi.Id, ProjeConstants.RANDEVU_KATILIMCI_DIS_INT);
+                                getirilenAniObjesi = getirilenAniObjesi.SelectGetirilenAniObjesi(faaliyetId, kisi.Id, ProjeConstants.FAALIYET_KATILIMCI_DIS_INT);
                                 if (getirilenAniObjesi != null)
                                 {
                                     getirilenAniObjesiStr= getirilenAniObjesi.GetirilenAniObjesi;
@@ -277,14 +277,14 @@ namespace MTS_WebParts.MtsOlayListesiWP
                             break;
                         }
 
-                    case ProjeConstants.RANDEVU_KATILIMCI_IC_INT:
+                    case ProjeConstants.FAALIYET_KATILIMCI_IC_INT:
                         {
                             Personel personel = new Personel();
                             personel = personel.Select<Personel>(katilimciId);
                             if (personel != null)
                             {
                                 katilimci = personel.Adi + " " + personel.Soyadi;
-                                katilimciTipiStr= ProjeConstants.RANDEVU_KATILIMCI_IC;
+                                katilimciTipiStr= ProjeConstants.FAALIYET_KATILIMCI_IC;
                                 aniObjesiStr= string.Empty;
                                 getirilenAniObjesiStr= string.Empty;
                             }
@@ -298,15 +298,15 @@ namespace MTS_WebParts.MtsOlayListesiWP
                         ///////////////////
                 }
             }
-            string randevuStr = randevu == null ?
+            string faaliyetStr = faaliyet == null ?
                             string.Empty :
-                             "<strong>"+ randevu.RandevuKonusu + "</strong> konulu ve  <strong>" + randevu.BaslangicTarihi + "</strong> tarihli faaliyetin ";
+                             "<strong>"+ faaliyet.FaaliyetKonusu + "</strong> konulu ve  <strong>" + faaliyet.BaslangicTarihi + "</strong> tarihli faaliyetin ";
             string ayrintiStr = (string.IsNullOrEmpty(katilimci) ? string.Empty : "- Katılımcı : " + katilimci) +
                 (string.IsNullOrEmpty(katilimciTipiStr) ? string.Empty : "-" + katilimciTipiStr) +
                 (string.IsNullOrEmpty(aniObjesiStr) ? string.Empty : "- Verilen Anı Objesi : " + aniObjesiStr)+
                 (string.IsNullOrEmpty(getirilenAniObjesiStr) ? string.Empty : "- Getirilen Anı Objesi : " + getirilenAniObjesiStr);
             string retval = "(" + olay.IslemTarihi.ConvertToDDMMYYYHHmmFormat() + ") -" +
-               randevuStr + "  <strong>" +
+               faaliyetStr + "  <strong>" +
                olay.IslemKonusu + "</strong> bölümünde " +
                olay.IslemYapan + " tarafından  <strong> " +
                olay.IslemTipi + "</strong> işlemi yapılmıştır." + ayrintiStr;

@@ -123,7 +123,7 @@
             </div>
         </div>
         <div class="form-group col ">
-            <a href="#" class="btn btn-info  m-2 float-right" id="downloadPDF" onclick="DoIt();">Takvimi PDF'e Aktar</a>
+            <a href="#" class="btn btn-outline-info m-2" id="downloadPDF" onclick="DoIt();">Takvimi PDF'e Aktar</a>
         </div>
     </div>
     <div id='wrap'>
@@ -133,11 +133,11 @@
     </div>
     <div class='acik-tarihli'>
         <h4>Açık Tarihli Faaliyetler</h4>
-        <div id="AcikTarihliRandevuListDiv" runat="server" clientidmode="Static">
+        <div id="AcikTarihliFaaliyetListDiv" runat="server" clientidmode="Static">
         </div>
     </div>
-    <div id="RandevuHiddenDiv" style="display: none">
-        <input id="paramRandevuId" runat="server" type="text" />
+    <div id="FaaliyetHiddenDiv" style="display: none">
+        <input id="paramFaaliyetId" runat="server" type="text" />
         <input id="paramBasTar" runat="server" type="text" />
         <input id="paramBitTar" runat="server" type="text" />
         <input id="paramView" runat="server" type="text" />

@@ -152,32 +152,32 @@ namespace TBYS_WebParts.TasinmazSorgulamaWP {
                         "n () { _spFormOnSubmitCalled = false; }, 3000);\r\n        return true;\r\n    }\r\n</" +
                         "script>\r\n\r\n<script type=\"text/javascript\">\r\n    function setDataSet(myset) {\r\n  " +
                         "      myjsons = myset;\r\n    }\r\n    var myjsons = [{\r\n        \"KullanimSekli\": \"\"" +
-                        ", \"MulkiyetSekli\": \"\", \"KullanimDurumu\": \"\", \"Ili\": \"\", \"Ilcesi\": \"\", \"Adres\": \"" +
-                        "\", \"Bagisci\": \"\", \"BagisYili\": \"\"\r\n    }];\r\n    jQuery(document).ready(function " +
-                        "() {\r\n\r\n        jQuery(\'#CustomDataTable\').DataTable({\r\n            data: myjson" +
-                        "s,\r\n            columns: [\r\n                { data: \"KullanimSekli\" },\r\n        " +
-                        "        { data: \"MulkiyetSekli\" },\r\n                { data: \"KullanimDurumu\" },\r" +
-                        "\n                { data: \"Ili\" },\r\n                { data: \"Ilcesi\" },\r\n        " +
-                        "        { data: \"Adres\" },\r\n                { data: \"Bagisci\" },\r\n              " +
-                        "  { data: \"BagisYili\" },\r\n\r\n            ],\r\n            \'order\': [[1, \'asc\']],//" +
-                        "AdiSoyadi Sıralı\r\n            \"language\": {\r\n                \"url\": \"http://tskg" +
-                        "v-portal/OrtakBelgeler/Turkish.txt\",\r\n                \"decimal\": \",\",\r\n         " +
-                        "       \"thousands\": \".\"\r\n            },\r\n            responsive: true,\r\n        " +
-                        "    dom: \'Bfrtip\',\r\n            //colon resizable\r\n            //initComplete: f" +
-                        "unction (settings) {\r\n            //    $(\'#CustomDataTable\').colResizable({ liv" +
-                        "eDrag: true });\r\n            //},\r\n            buttons: [\r\n                {\r\n  " +
-                        "                  extend: \'print\',\r\n                    exportOptions: {\r\n      " +
-                        "                  columns: \':visible\'\r\n                    }\r\n                }," +
-                        "\r\n                {\r\n                    extend: \'excel\',\r\n                    e" +
-                        "xportOptions: {\r\n                        columns: \':visible\'\r\n                  " +
-                        "  }\r\n                },\r\n                {\r\n                    extend: \'pdf\',\r\n" +
-                        "                    exportOptions: {\r\n                        columns: \':visible" +
-                        "\'\r\n                    }\r\n                },\r\n                {\r\n               " +
-                        "     extend: \'copy\',\r\n                    exportOptions: {\r\n                    " +
-                        "    columns: \':visible\'\r\n                    }\r\n                },\r\n            " +
-                        "    , \'pageLength\', \"colvis\"\r\n            ]\r\n\r\n\r\n\r\n        });\r\n    });\r\n</scrip" +
-                        "t>\r\n<div class=\"container \">\r\n    <div class=\"card shadow\">\r\n        <div class=" +
-                        "\"card-header\">\r\n            "));
+                        ", \"MulkiyetSekli\": \"\", \"KiraDurumu\": \"\", \"Ili\": \"\", \"Ilcesi\": \"\", \"Adres\": \"\", \"" +
+                        "Bagisci\": \"\", \"BagisYili\": \"\"\r\n    }];\r\n    jQuery(document).ready(function () {" +
+                        "\r\n\r\n        jQuery(\'#CustomDataTable\').DataTable({\r\n            data: myjsons,\r\n" +
+                        "            columns: [\r\n                { data: \"KullanimSekli\" },\r\n            " +
+                        "    { data: \"MulkiyetSekli\" },\r\n                { data: \"KiraDurumu\" },\r\n       " +
+                        "         { data: \"Ili\" },\r\n                { data: \"Ilcesi\" },\r\n                " +
+                        "{ data: \"Adres\" },\r\n                { data: \"Bagisci\" },\r\n                { data" +
+                        ": \"BagisYili\" },\r\n\r\n            ],\r\n            \'order\': [[1, \'asc\']],//AdiSoyad" +
+                        "i Sıralı\r\n            \"language\": {\r\n                \"url\": \"http://tskgv-portal" +
+                        "/OrtakBelgeler/Turkish.txt\",\r\n                \"decimal\": \",\",\r\n                \"" +
+                        "thousands\": \".\"\r\n            },\r\n            responsive: true,\r\n            dom:" +
+                        " \'Bfrtip\',\r\n            //colon resizable\r\n            //initComplete: function " +
+                        "(settings) {\r\n            //    $(\'#CustomDataTable\').colResizable({ liveDrag: t" +
+                        "rue });\r\n            //},\r\n            buttons: [\r\n                {\r\n          " +
+                        "          extend: \'print\',\r\n                    exportOptions: {\r\n              " +
+                        "          columns: \':visible\'\r\n                    }\r\n                },\r\n      " +
+                        "          {\r\n                    extend: \'excel\',\r\n                    exportOpt" +
+                        "ions: {\r\n                        columns: \':visible\'\r\n                    }\r\n   " +
+                        "             },\r\n                {\r\n                    extend: \'pdf\',\r\n        " +
+                        "            exportOptions: {\r\n                        columns: \':visible\'\r\n     " +
+                        "               }\r\n                },\r\n                {\r\n                    ext" +
+                        "end: \'copy\',\r\n                    exportOptions: {\r\n                        colu" +
+                        "mns: \':visible\'\r\n                    }\r\n                },\r\n                , \'p" +
+                        "ageLength\', \"colvis\"\r\n            ]\r\n\r\n\r\n\r\n        });\r\n    });\r\n</script>\r\n<div" +
+                        " class=\"container \">\r\n    <div class=\"card shadow\">\r\n        <div class=\"card-he" +
+                        "ader\">\r\n            "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl1;
             @__ctrl1 = this.@__BuildControlCloseBtn();
             @__parser.AddParsedSubObject(@__ctrl1);
@@ -203,7 +203,7 @@ namespace TBYS_WebParts.TasinmazSorgulamaWP {
                         <tr>
                             <th>Kullanım Şekli</th>
                             <th>Mülkiyet Şekli</th>
-                            <th>Kullanım Durumu</th>
+                            <th>Kira Durumu</th>
                             <th>İli</th>
                             <th>İlçesi</th>
                             <th>Adres</th>

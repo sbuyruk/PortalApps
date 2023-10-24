@@ -17,7 +17,7 @@ namespace Model.TBYS
         public string SigortaDurumu { get; set; }
         public string Adres { get; set; }
         public string MulkiyetSekli { get; set; }
-        public string KullanimDurumu { get; set; }
+        public string KiraDurumu { get; set; }
         public string SorumluBolge { get; set; }
         public string EdinmeSekli { get; set; }
         public string BagisYili { get; set; }
@@ -65,7 +65,7 @@ namespace Model.TBYS
         public string Metrekare { get; set; }
         public string TapuTasinmazNo { get; set; }
         public string InsaYili { get; set; }
-        public string KiraDurumu { get; set; }
+        public string KirayaUygunluk { get; set; }
 
         public override T Select<T>(int id)
         {
@@ -283,13 +283,13 @@ namespace Model.TBYS
             }
             return dataTable;
         }
-        public string SelectTasinmazBolumNoReturnJson(int envanterde, string kiraDurumu)
+        public string SelectTasinmazBolumNoReturnJson(int envanterde, string kirayaUygunluk)
         {
             string sqlString = string.Format(@"
                 SELECT 
                     A.Id, A.Id TasinmazId,A.Cinsi, A.Ili, A.Ilcesi, A.Ili+'/'+A.Ilcesi IliIlcesi, 
                                         A.SigortaDurumu, A.Adres,A.Adres+' '+A.Ili+'/'+A.Ilcesi AdresIliIlcesi,
-                                        A.MulkiyetSekli, A.KullanimDurumu, A.KatMulkiyeti, A.SorumluBolge, A.EdinmeSekli,A.BagisYili, A.EmlakSicilNo,
+                                        A.MulkiyetSekli, A.KiraDurumu, A.KatMulkiyeti, A.SorumluBolge, A.EdinmeSekli,A.BagisYili, A.EmlakSicilNo,
                                         A.EmlakBeyanDegeri, A.TahminiRayicDegeri, A.TapuTarihi, A.AdaNo, A.ParselNo, A.PaftaNo, A.Yuzolcumu, A.ArsaPayi, A.VakifHissesi,
                                         A.YevmiyeNo,A.CiltNo, A.SahifeNo, A.KullanimSekli, A.TasinmazFoto, A.TasinmazFoto1, A.TasinmazFoto2, A.TapuFoto, A.KrokiFoto, A.TahkikatFoto,
                                         A.Nitelik,A.BulunduguKat, A.Aciklama,A.EnvantereGirisTarihi, 
@@ -298,14 +298,14 @@ namespace Model.TBYS
                     FROM Tasinmaz_Table A
 	                    LEFT JOIN BagimsizBolum_Table B On B.TasinmazId = A.Id
 	                    LEFT JOIN KiraSozlesme_Table D ON D.Aktif=1 AND D.Id IN (SELECT SozlesmeId FROM SozlesmeTasinmaz_Table where TasinmazId= A.Id AND (BolumId IS NULL OR BolumId=0 OR BolumId=B.Id))
-                    WHERE A.EnvanterdeMi={0} AND A.KiraDurumu={1}
+                    WHERE A.EnvanterdeMi={0} AND A.KirayaUygunluk={1}
 	                    AND D.Id IS NULL
                     ORDER BY A.Id 
-                ", envanterde,kiraDurumu.ReturnQuotedValue());
+                ", envanterde,kirayaUygunluk.ReturnQuotedValue());
             //string sqlString = string.Format(@"
             //    SELECT ROW_NUMBER() OVER(ORDER BY A.Id) AS Sirano, A.Id, A.Id TasinmazId,A.Cinsi, A.Ili, A.Ilcesi, A.Ili+'/'+A.Ilcesi IliIlcesi, 
             //        A.SigortaDurumu, A.Adres,A.Adres+' '+A.Ili+'/'+A.Ilcesi AdresIliIlcesi,
-            //        A.MulkiyetSekli, A.KullanimDurumu, A.KatMulkiyeti, A.SorumluBolge, A.EdinmeSekli,A.BagisYili, A.EmlakSicilNo,
+            //        A.MulkiyetSekli, A.KiraDurumu, A.KatMulkiyeti, A.SorumluBolge, A.EdinmeSekli,A.BagisYili, A.EmlakSicilNo,
             //        A.EmlakBeyanDegeri, A.TahminiRayicDegeri, A.TapuTarihi, A.AdaNo, A.ParselNo, A.PaftaNo, A.Yuzolcumu, A.ArsaPayi, A.VakifHissesi,
             //        A.YevmiyeNo,A.CiltNo, A.SahifeNo, A.KullanimSekli, A.TasinmazFoto, A.TasinmazFoto1, A.TasinmazFoto2, A.TapuFoto, A.KrokiFoto, A.TahkikatFoto,
             //        A.Nitelik,A.BulunduguKat, A.Aciklama,A.EnvantereGirisTarihi, 
@@ -331,7 +331,7 @@ namespace Model.TBYS
             string sqlString = string.Format(@"
                 SELECT ROW_NUMBER() OVER(ORDER BY A.Id) AS Sirano, A.Id, A.Id TasinmazId,A.Cinsi, A.Ili, A.Ilcesi, A.Ili+'/'+A.Ilcesi IliIlcesi, 
                     A.SigortaDurumu, A.Adres,A.Adres+' '+A.Ili+'/'+A.Ilcesi AdresIliIlcesi,
-                    A.MulkiyetSekli, A.KullanimDurumu, A.KatMulkiyeti, A.SorumluBolge, A.EdinmeSekli,A.BagisYili, A.EmlakSicilNo,
+                    A.MulkiyetSekli, A.KiraDurumu, A.KatMulkiyeti, A.SorumluBolge, A.EdinmeSekli,A.BagisYili, A.EmlakSicilNo,
                     A.EmlakBeyanDegeri, A.TahminiRayicDegeri, A.TapuTarihi, A.AdaNo, A.ParselNo, A.PaftaNo, A.Yuzolcumu, A.ArsaPayi, A.VakifHissesi,
                     A.YevmiyeNo,A.CiltNo, A.SahifeNo, A.KullanimSekli, A.TasinmazFoto, A.TasinmazFoto1, A.TasinmazFoto2, A.TapuFoto, A.KrokiFoto, A.TahkikatFoto,
                     A.Nitelik,A.BulunduguKat,A.Aciklama,A.EnvantereGirisTarihi, 
@@ -357,7 +357,7 @@ namespace Model.TBYS
             string sqlString = string.Format(@"
                 SELECT ROW_NUMBER() OVER(ORDER BY A.Id) AS Sirano, A.Id, A.Id TasinmazId,A.Cinsi, A.Ili, A.Ilcesi, A.Ili+'/'+A.Ilcesi IliIlcesi, 
                     A.SigortaDurumu, A.Adres,A.Adres+' '+A.Ili+'/'+A.Ilcesi AdresIliIlcesi,
-                    A.MulkiyetSekli, A.KullanimDurumu, A.KatMulkiyeti, A.SorumluBolge, A.EdinmeSekli,A.BagisYili, A.EmlakSicilNo,
+                    A.MulkiyetSekli, A.KiraDurumu, A.KatMulkiyeti, A.SorumluBolge, A.EdinmeSekli,A.BagisYili, A.EmlakSicilNo,
                     A.EmlakBeyanDegeri, A.TahminiRayicDegeri, A.TapuTarihi, A.AdaNo, A.ParselNo, A.PaftaNo, A.Yuzolcumu, A.ArsaPayi, A.VakifHissesi,
                     A.YevmiyeNo,A.CiltNo, A.SahifeNo, A.KullanimSekli, A.TasinmazFoto, A.TasinmazFoto1, A.TasinmazFoto2, A.TapuFoto, A.KrokiFoto, A.TahkikatFoto,
                     A.Nitelik,A.BulunduguKat,A.Aciklama,A.EnvantereGirisTarihi, 
@@ -424,7 +424,7 @@ namespace Model.TBYS
             string sqlString = string.Format(@"
                 SELECT ROW_NUMBER() OVER(ORDER BY T.Id) AS Sirano, T.Id, T.Id TasinmazId,T.Cinsi, T.Ili, T.Ilcesi, T.Ili+'/'+T.Ilcesi IliIlcesi, T.SigortaDurumu, 
                     T.Adres,T.Adres+' '+T.Ili+'/'+T.Ilcesi AdresIlIlce,
-	                T.MulkiyetSekli, T.KullanimDurumu, T.KatMulkiyeti, T.SorumluBolge, T.EdinmeSekli,T.BagisYili, T.EmlakSicilNo,
+	                T.MulkiyetSekli, T.KiraDurumu, T.KatMulkiyeti, T.SorumluBolge, T.EdinmeSekli,T.BagisYili, T.EmlakSicilNo,
                     T.EmlakBeyanDegeri, T.TahminiRayicDegeri, T.TapuTarihi, T.AdaNo, T.ParselNo, T.PaftaNo, T.Yuzolcumu, T.ArsaPayi, T.VakifHissesi,
 	                T.YevmiyeNo,T.CiltNo, T.SahifeNo, T.KullanimSekli, T.TasinmazFoto, T.TasinmazFoto1, T.TasinmazFoto2, T.TapuFoto, T.KrokiFoto, T.TahkikatFoto,
 	                T.Nitelik,T.BulunduguKat,T.Aciklama,T.EnvantereGirisTarihi,  YEAR(T.EnvanterdenCikmaTarihi) EnvanterdenCikmaYili,
@@ -596,9 +596,9 @@ namespace Model.TBYS
             return toplam;
         }
         
-        public decimal SelectTahminiRayicToplamiByKiraDurumu(string kiraDurumu)
+        public decimal SelectTahminiRayicToplamiByKirayaUygunluk(string kirayaUygunluk)
         {
-            string whereStr = " AND KiraDurumu = " + kiraDurumu.ReturnQuotedValue();
+            string whereStr = " AND KirayaUygunluk = " + kirayaUygunluk.ReturnQuotedValue();
             decimal toplam = 0;
             string sqlString = string.Format(@"
                 SELECT SUM(TahminiRayicDegeri) Toplam 
@@ -615,9 +615,9 @@ namespace Model.TBYS
             }
             return toplam;
         }
-        public decimal SelectEmlakBeyanToplamiByKiraDurumu(string kiraDurumu)
+        public decimal SelectEmlakBeyanToplamiByKirayaUygunluk(string kirayaUygunluk)
         {
-            string whereStr = " AND KiraDurumu=" + kiraDurumu.ReturnQuotedValue();
+            string whereStr = " AND KirayaUygunluk=" + kirayaUygunluk.ReturnQuotedValue();
 
 
             decimal toplam = 0;
@@ -654,40 +654,40 @@ namespace Model.TBYS
             }
             return Adet;
         }
-        public int SelectTasinmazAdetByBolgeKullanimSekliKullanimDurumu(string bolge, string kullanimSekli, string kullanimDurumu, string mülkiyetSekli, string kiraDurumu = null)
-        {
-            string whereStr = string.Empty;
-            if (!string.IsNullOrEmpty(kullanimDurumu))
-                whereStr = " AND KullanimDurumu = " + kullanimDurumu.ReturnQuotedValue();
-            if (!string.IsNullOrEmpty(mülkiyetSekli))
-                whereStr += " AND MulkiyetSekli = " + mülkiyetSekli.ReturnQuotedValue();
-            if (!string.IsNullOrEmpty(kiraDurumu))
-                whereStr += " AND KiraDurumu = " + kiraDurumu.ReturnQuotedValue();
-
-            int Adet = 0;
-            string sqlString = string.Format(@"
-                SELECT COUNT(KullanimSekli) Adet 
-                FROM Tasinmaz_Table 
-                WHERE EnvanterdeMi=1 
-                    AND SorumluBolge ={0}
-                    AND KullanimSekli ={1}
-                    {2}", bolge.ReturnQuotedValue(), kullanimSekli.ReturnQuotedValue(), whereStr);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            if (dataTable != null)
-            {
-                DataRow row = dataTable.Rows[0];
-                Adet = row["Adet"].ConvertToInt();
-
-            }
-            return Adet;
-        }
-        public int SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(string bolge, string kullanimSekli, string kiraDurumu, string mülkiyetSekli)
+        public int SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(string bolge, string kullanimSekli, string kiraDurumu, string mülkiyetSekli, string kirayaUygunluk = null)
         {
             string whereStr = string.Empty;
             if (!string.IsNullOrEmpty(kiraDurumu))
                 whereStr = " AND KiraDurumu = " + kiraDurumu.ReturnQuotedValue();
             if (!string.IsNullOrEmpty(mülkiyetSekli))
                 whereStr += " AND MulkiyetSekli = " + mülkiyetSekli.ReturnQuotedValue();
+            if (!string.IsNullOrEmpty(kirayaUygunluk))
+                whereStr += " AND KirayaUygunluk = " + kirayaUygunluk.ReturnQuotedValue();
+
+            int Adet = 0;
+            string sqlString = string.Format(@"
+                SELECT COUNT(KullanimSekli) Adet 
+                FROM Tasinmaz_Table 
+                WHERE EnvanterdeMi=1 
+                    AND SorumluBolge ={0}
+                    AND KullanimSekli ={1}
+                    {2}", bolge.ReturnQuotedValue(), kullanimSekli.ReturnQuotedValue(), whereStr);
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            if (dataTable != null)
+            {
+                DataRow row = dataTable.Rows[0];
+                Adet = row["Adet"].ConvertToInt();
+
+            }
+            return Adet;
+        }
+        public int SelectTasinmazAdetByBolgeKullanimSekliKirayaUygunluk(string bolge, string kullanimSekli, string kirayaUygunluk, string mülkiyetSekli)
+        {
+            string whereStr = string.Empty;
+            if (!string.IsNullOrEmpty(kirayaUygunluk))
+                whereStr = " AND KirayaUygunluk = " + kirayaUygunluk.ReturnQuotedValue();
+            if (!string.IsNullOrEmpty(mülkiyetSekli))
+                whereStr += " AND MulkiyetSekli = " + mülkiyetSekli.ReturnQuotedValue();
 
 
             int Adet = 0;
@@ -707,9 +707,9 @@ namespace Model.TBYS
             }
             return Adet;
         }
-        public int SelectTasinmazAdetByBolgeKiraDurumu(string bolge, string kiraDurumu, string mulkiyetSekli)
+        public int SelectTasinmazAdetByBolgeKirayaUygunluk(string bolge, string kirayaUygunluk, string mulkiyetSekli)
         {
-            string whereStr = " AND KiraDurumu=" + kiraDurumu.ReturnQuotedValue();
+            string whereStr = " AND KirayaUygunluk=" + kirayaUygunluk.ReturnQuotedValue();
 
             string mulkiyetStr = string.IsNullOrEmpty(mulkiyetSekli) ? string.Empty : " AND MulkiyetSekli=" + mulkiyetSekli.ReturnQuotedValue();
 

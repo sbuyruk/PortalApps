@@ -57,11 +57,11 @@ namespace MTS_WebParts.FaaliyetROViewerWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl AcikTarihliRandevuListDiv;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl AcikTarihliFaaliyetListDiv;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.HtmlControls.HtmlInputText paramRandevuId;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText paramFaaliyetId;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -304,11 +304,11 @@ namespace MTS_WebParts.FaaliyetROViewerWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControlAcikTarihliRandevuListDiv() {
+        private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControlAcikTarihliFaaliyetListDiv() {
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
-            this.AcikTarihliRandevuListDiv = @__ctrl;
-            @__ctrl.ID = "AcikTarihliRandevuListDiv";
+            this.AcikTarihliFaaliyetListDiv = @__ctrl;
+            @__ctrl.ID = "AcikTarihliFaaliyetListDiv";
             @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n        "));
@@ -318,11 +318,11 @@ namespace MTS_WebParts.FaaliyetROViewerWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.HtmlControls.HtmlInputText @__BuildControlparamRandevuId() {
+        private global::System.Web.UI.HtmlControls.HtmlInputText @__BuildControlparamFaaliyetId() {
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
-            this.paramRandevuId = @__ctrl;
-            @__ctrl.ID = "paramRandevuId";
+            this.paramFaaliyetId = @__ctrl;
+            @__ctrl.ID = "paramFaaliyetId";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
             return @__ctrl;
         }
@@ -1890,10 +1890,10 @@ namespace MTS_WebParts.FaaliyetROViewerWP {
             @__ctrl4 = this.@__BuildControlToplantiChk();
             @__parser.AddParsedSubObject(@__ctrl4);
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl5;
-            @__ctrl5 = this.@__BuildControlAcikTarihliRandevuListDiv();
+            @__ctrl5 = this.@__BuildControlAcikTarihliFaaliyetListDiv();
             @__parser.AddParsedSubObject(@__ctrl5);
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl6;
-            @__ctrl6 = this.@__BuildControlparamRandevuId();
+            @__ctrl6 = this.@__BuildControlparamFaaliyetId();
             @__parser.AddParsedSubObject(@__ctrl6);
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl7;
             @__ctrl7 = this.@__BuildControlparamBasTar();
@@ -2006,7 +2006,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP {
             </div>
         </div>
         <div class=""form-group col "">
-            <a href=""#"" class=""btn btn-info  m-2 float-right"" id=""downloadPDF"" onclick=""DoIt();"">Takvimi PDF'e Aktar</a>
+            <a href=""#"" class=""btn btn-outline-info m-2"" id=""downloadPDF"" onclick=""DoIt();"">Takvimi PDF'e Aktar</a>
         </div>
     </div>
     <div id='wrap'>
@@ -2018,7 +2018,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP {
         <h4>Açık Tarihli Faaliyetler</h4>
         ");
             parameterContainer.Controls[4].RenderControl(@__w);
-            @__w.Write("\r\n    </div>\r\n    <div id=\"RandevuHiddenDiv\" style=\"display: none\">\r\n        ");
+            @__w.Write("\r\n    </div>\r\n    <div id=\"FaaliyetHiddenDiv\" style=\"display: none\">\r\n        ");
             parameterContainer.Controls[5].RenderControl(@__w);
             @__w.Write("\r\n        ");
             parameterContainer.Controls[6].RenderControl(@__w);

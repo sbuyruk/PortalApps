@@ -54,7 +54,7 @@ namespace MTS_WebParts.FaaliyetListesiROWP
 
             try
             {
-                List<RandevuListItem> list = GetDataList();
+                List<FaaliyetListItem> list = GetDataList();
                 var serializer = new JavaScriptSerializer();
                 serializer.MaxJsonLength = Int32.MaxValue;
                 jSon = serializer.Serialize(list);
@@ -67,26 +67,26 @@ namespace MTS_WebParts.FaaliyetListesiROWP
             }
             return jSon;
         }
-        private List<RandevuListItem> GetDataList()
+        private List<FaaliyetListItem> GetDataList()
         {
-            List<RandevuListItem> randevuList = new List<RandevuListItem>();
-            Randevu randevuDao = new Randevu();
-            DataTable dataTable = randevuDao.SelectAllByKatilimciRandevuReturnDataTable(ProjeConstants.HEPSI_INT, -3);
+            List<FaaliyetListItem> faaliyetList = new List<FaaliyetListItem>();
+            Faaliyet faaliyetDao = new Faaliyet();
+            DataTable dataTable = faaliyetDao.SelectAllByKatilimciFaaliyetReturnDataTable(ProjeConstants.HEPSI_INT, -3);
 
             if (dataTable != null)
             {
-                int tempRandevuId = 0;
+                int tempFaaliyetId = 0;
                 int katilimciAdedi = 0;
 
-                RandevuListItem tempRandevuListItem = new RandevuListItem();
+                FaaliyetListItem tempFaaliyetListItem = new FaaliyetListItem();
                 foreach (DataRow row in dataTable.Rows)
                 {
-                    int randevuId = row["RandevuId"].ConvertToInt();
-                    string randevuTipi = row["RandevuTipi"].ToString();
-                    string randevuYeri = row["RandevuYeri"].ToString(); ;
-                    string randevuKonusu = row["RandevuKonusu"].ToString();
-                    string randevuAmaci = row["RandevuAmaci"].ToString();
-                    string randevuDurumu = row["RandevuDurumu"].ToString();
+                    int faaliyetId = row["FaaliyetId"].ConvertToInt();
+                    string faaliyetTipi = row["FaaliyetTipi"].ToString();
+                    string faaliyetYeri = row["FaaliyetYeri"].ToString(); ;
+                    string faaliyetKonusu = row["FaaliyetKonusu"].ToString();
+                    string faaliyetAmaci = row["FaaliyetAmaci"].ToString();
+                    string faaliyetDurumu = row["FaaliyetDurumu"].ToString();
 
                     DateTime basTar = row["BaslangicTarihi"].ConvertToDatetime();
                     DateTime bitTar = row["BitisTarihi"].ConvertToDatetime();
@@ -94,40 +94,40 @@ namespace MTS_WebParts.FaaliyetListesiROWP
                     string baslangicTarihi = basTar.ToString("dd.MM.yyyy HH:mm");
                     string bitisTarihi = bitTar.ToString("dd.MM.yyyy HH:mm");
 
-                    string randevuAmaciStr = ParseRandevuAmaci(randevuAmaci);
-                    string randevuDurumuStr = ParseRandevuDurumu(randevuDurumu.ConvertToInt());
+                    string faaliyetAmaciStr = ParseFaaliyetAmaci(faaliyetAmaci);
+                    string faaliyetDurumuStr = ParseFaaliyetDurumu(faaliyetDurumu.ConvertToInt());
                     string katilimci = row["Adi"].ToString() + " " + row["Soyadi"].ToString();
 
-                    if (tempRandevuId == randevuId)
+                    if (tempFaaliyetId == faaliyetId)
                     {
-                        tempRandevuId = randevuId;
-                        randevuList.Remove(tempRandevuListItem);
+                        tempFaaliyetId = faaliyetId;
+                        faaliyetList.Remove(tempFaaliyetListItem);
                         katilimciAdedi++;
-                        tempRandevuListItem.Katilimci += katilimci + "</br> ";
-                        randevuList.Add(tempRandevuListItem);
+                        tempFaaliyetListItem.Katilimci += katilimci + "</br> ";
+                        faaliyetList.Add(tempFaaliyetListItem);
                     }
-                    if (tempRandevuId != randevuId)
+                    if (tempFaaliyetId != faaliyetId)
                     {
-                        RandevuListItem randevuListItem = new RandevuListItem();
-                        randevuListItem.RandevuId = randevuId;
-                        randevuListItem.RandevuTipi = randevuTipi;
-                        randevuListItem.RandevuYeri = randevuYeri;
-                        randevuListItem.RandevuKonusu = randevuKonusu;
-                        randevuListItem.BaslangicTarihi = baslangicTarihi;
-                        randevuListItem.BitisTarihi = bitisTarihi;
-                        randevuListItem.RandevuAmaci = randevuAmaciStr;
-                        randevuListItem.RandevuDurumu = randevuDurumuStr;
+                        FaaliyetListItem faaliyetListItem = new FaaliyetListItem();
+                        faaliyetListItem.FaaliyetId = faaliyetId;
+                        faaliyetListItem.FaaliyetTipi = faaliyetTipi;
+                        faaliyetListItem.FaaliyetYeri = faaliyetYeri;
+                        faaliyetListItem.FaaliyetKonusu = faaliyetKonusu;
+                        faaliyetListItem.BaslangicTarihi = baslangicTarihi;
+                        faaliyetListItem.BitisTarihi = bitisTarihi;
+                        faaliyetListItem.FaaliyetAmaci = faaliyetAmaciStr;
+                        faaliyetListItem.FaaliyetDurumu = faaliyetDurumuStr;
 
-                        randevuListItem.Katilimci += katilimci + "</br ";
-                        tempRandevuListItem = randevuListItem;
-                        randevuList.Add(tempRandevuListItem);
+                        faaliyetListItem.Katilimci += katilimci + "</br ";
+                        tempFaaliyetListItem = faaliyetListItem;
+                        faaliyetList.Add(tempFaaliyetListItem);
                     }
-                    tempRandevuId = randevuId;
+                    tempFaaliyetId = faaliyetId;
 
                 }
             }
-            //randevuList = randevuList.OrderBy(r => r.RandevuTarihi).ToList();
-            return randevuList;
+            //faaliyetList = faaliyetList.OrderBy(r => r.FaaliyetTarihi).ToList();
+            return faaliyetList;
         }
         private void RedirectToPage(string pageUrl)
         {
@@ -143,44 +143,44 @@ namespace MTS_WebParts.FaaliyetListesiROWP
                 exHelper.PublishException();
             }
         }
-        private string ParseRandevuAmaci(string amac)
+        private string ParseFaaliyetAmaci(string amac)
         {
             string amacStr = string.Empty;
             switch (amac)
             {
-                case ProjeConstants.RANDEVU_AMACI_DAVET_INT:
+                case ProjeConstants.FAALIYET_AMACI_DAVET_INT:
                     {
-                        amacStr = ProjeConstants.RANDEVU_AMACI_DAVET;
+                        amacStr = ProjeConstants.FAALIYET_AMACI_DAVET;
                         break;
                     }
-                case ProjeConstants.RANDEVU_AMACI_IZIN_INT:
+                case ProjeConstants.FAALIYET_AMACI_IZIN_INT:
                     {
-                        amacStr = ProjeConstants.RANDEVU_AMACI_IZIN;
+                        amacStr = ProjeConstants.FAALIYET_AMACI_IZIN;
                         break;
                     }
-                case ProjeConstants.RANDEVU_AMACI_OZELCALISMA_INT:
+                case ProjeConstants.FAALIYET_AMACI_OZELCALISMA_INT:
                     {
-                        amacStr = ProjeConstants.RANDEVU_AMACI_OZELCALISMA;
+                        amacStr = ProjeConstants.FAALIYET_AMACI_OZELCALISMA;
                         break;
                     }
-                case ProjeConstants.RANDEVU_AMACI_RESMITATIL_INT:
+                case ProjeConstants.FAALIYET_AMACI_RESMITATIL_INT:
                     {
-                        amacStr = ProjeConstants.RANDEVU_AMACI_RESMITATIL;
+                        amacStr = ProjeConstants.FAALIYET_AMACI_RESMITATIL;
                         break;
                     }
-                case ProjeConstants.RANDEVU_AMACI_TOPLANTI_INT:
+                case ProjeConstants.FAALIYET_AMACI_TOPLANTI_INT:
                     {
-                        amacStr = ProjeConstants.RANDEVU_AMACI_TOPLANTI;
+                        amacStr = ProjeConstants.FAALIYET_AMACI_TOPLANTI;
                         break;
                     }
-                case ProjeConstants.RANDEVU_AMACI_YILDONUMU_INT:
+                case ProjeConstants.FAALIYET_AMACI_YILDONUMU_INT:
                     {
-                        amacStr = ProjeConstants.RANDEVU_AMACI_YILDONUMU;
+                        amacStr = ProjeConstants.FAALIYET_AMACI_YILDONUMU;
                         break;
                     }
-                case ProjeConstants.RANDEVU_AMACI_ZIYARET_INT:
+                case ProjeConstants.FAALIYET_AMACI_ZIYARET_INT:
                     {
-                        amacStr = ProjeConstants.RANDEVU_AMACI_ZIYARET;
+                        amacStr = ProjeConstants.FAALIYET_AMACI_ZIYARET;
                         break;
                     }
                 default:
@@ -188,24 +188,24 @@ namespace MTS_WebParts.FaaliyetListesiROWP
             }
             return amacStr;
         }
-        private string ParseRandevuDurumu(int durum)
+        private string ParseFaaliyetDurumu(int durum)
         {
             string durumStr = string.Empty;
             switch (durum)
             {
-                case ProjeConstants.RANDEVU_DURUMU_PLANLANDI_INT:
+                case ProjeConstants.FAALIYET_DURUMU_PLANLANDI_INT:
                     {
-                        durumStr = ProjeConstants.RANDEVU_DURUMU_PLANLANDI;
+                        durumStr = ProjeConstants.FAALIYET_DURUMU_PLANLANDI;
                         break;
                     }
-                case ProjeConstants.RANDEVU_DURUMU_ONAYLANDI_INT:
+                case ProjeConstants.FAALIYET_DURUMU_ONAYLANDI_INT:
                     {
-                        durumStr = ProjeConstants.RANDEVU_DURUMU_ONAYLANDI;
+                        durumStr = ProjeConstants.FAALIYET_DURUMU_ONAYLANDI;
                         break;
                     }
-                case ProjeConstants.RANDEVU_DURUMU_IPTALEDILDI_INT:
+                case ProjeConstants.FAALIYET_DURUMU_IPTALEDILDI_INT:
                     {
-                        durumStr = ProjeConstants.RANDEVU_DURUMU_IPTALEDILDI;
+                        durumStr = ProjeConstants.FAALIYET_DURUMU_IPTALEDILDI;
                         break;
                     }
                 default:
@@ -233,14 +233,14 @@ namespace MTS_WebParts.FaaliyetListesiROWP
         {
             RedirectToPage(ProjeConstants.PAGE_FAALIYET_TAKVIM_RO);
         }
-        private class RandevuListItem
+        private class FaaliyetListItem
         {
-            public int RandevuId { get; set; }
-            public string RandevuTipi { get; set; }
-            public string RandevuYeri { get; set; }
-            public string RandevuKonusu { get; set; }
-            public string RandevuAmaci { get; set; }
-            public string RandevuDurumu { get; set; }
+            public int FaaliyetId { get; set; }
+            public string FaaliyetTipi { get; set; }
+            public string FaaliyetYeri { get; set; }
+            public string FaaliyetKonusu { get; set; }
+            public string FaaliyetAmaci { get; set; }
+            public string FaaliyetDurumu { get; set; }
             public string BaslangicTarihi { get; set; }
             public string BitisTarihi { get; set; }
             public string Katilimci { get; set; }

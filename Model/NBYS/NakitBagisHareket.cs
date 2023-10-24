@@ -669,9 +669,9 @@ namespace Model.NBYS
             }
             return dataTable;
         }
-        public DataTable SelectByBagisTarihiBankaId(DateTime bagisTarihi, int bankaId = 0, string dovizCinsi = "")
+        public DataTable SelectByBagisTarihiBankaId(DateTime bagisTarihi, string bankaGrup, string dovizCinsi = "")
         {
-            string bankaStr = bankaId == 0 ? string.Empty : string.Format(" AND BankaId={0}", bankaId);
+            string bankaStr = string.IsNullOrEmpty(bankaGrup) ? string.Empty : string.Format(" AND BankaGrup={0}", bankaGrup.ReturnQuotedValue());
             string dovizCinsiStr = string.IsNullOrEmpty(dovizCinsi)? string.Empty : string.Format(" AND DovizCinsi={0}", dovizCinsi.ReturnQuotedValue());
             string sqlString = string.Format(@"
                 
@@ -695,8 +695,9 @@ namespace Model.NBYS
             }
             return dataTable;
         }
-        public decimal SelectSumByBagisTarihi(DateTime bagisTarihi, string dovizCinsi)
+        public decimal SelectSumByBagisTarihi(DateTime bagisTarihi,string bankaGrup, string dovizCinsi)
         {
+            string bankaStr = string.IsNullOrEmpty(bankaGrup) ? string.Empty : string.Format(" AND BankaGrup={0}", bankaGrup.ReturnQuotedValue());
             string dovizCinsiStr = string.IsNullOrEmpty(dovizCinsi) ?string.Empty: string.Format(" AND DovizCinsi={0} " , dovizCinsi.ReturnQuotedValue());
             decimal toplam = 0;
             string sqlString = string.Format(@"
@@ -705,9 +706,9 @@ namespace Model.NBYS
                 FROM NakitBagisHareket_Table A
 	                LEFT JOIN BankaTanim_Table B ON B.Id=A.BankaId
                 WHERE BagisTarihi={0} 
-                    {1} 
+                    {1} {2}
                 GROUP BY BagisTarihi
-            ", bagisTarihi.ReturnTRDateFormat(), dovizCinsiStr);
+            ", bagisTarihi.ReturnTRDateFormat(), bankaStr, dovizCinsiStr);
             DataTable dataTable;
             try
             {

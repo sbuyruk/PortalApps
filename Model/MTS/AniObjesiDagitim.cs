@@ -300,15 +300,6 @@ namespace Model.MTS
                     {3}
                 ", katilimciId, katilimciTipi, randevuId,stokStr);
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            //if (dataTable != null)
-            //{
-            //    foreach (DataRow row in dataTable.Rows)
-            //    {
-            //        string aniObjesi = row["Adi"].ReturnEmptyIfNull().ToString();
-            //        string adet = row["Adet"].ReturnZeroIfNull().ToString();
-            //        retval += !string.IsNullOrEmpty(aniObjesi) ? "<br> * " + aniObjesi + "(" + adet + "), " : string.Empty;
-            //    }
-            //}
             return dataTable;
         }
         public List<AniObjesiDagitim> SelectByAniObjesiId(int parametreId)

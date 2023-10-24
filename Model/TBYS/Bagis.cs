@@ -236,7 +236,7 @@ namespace Model.TBYS
             string sqlString = string.Format(@"
                 SELECT ROW_NUMBER() OVER (ORDER BY A.Id,B.BagisTarihi) AS Sirano,
                     A.Id TasinmazId,A.TahminiRayicDegeri, A.Cinsi, A.KullanimSekli, A.Adres,
-                    A.MulkiyetSekli,A.KullanimDurumu, A.EmlakBeyanDegeri,A.TahminiRayicDegeri,
+                    A.MulkiyetSekli,A.KiraDurumu, A.EmlakBeyanDegeri,A.TahminiRayicDegeri,
                     B.Id BagisId,B.BagisYili, 
                     D.IlceAdi +'-'+C.IlAdi IlIlce                    
                 FROM Bagis_Table B

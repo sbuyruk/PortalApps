@@ -179,7 +179,7 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
                 if (tasinmaz != null)
                 {
                     AdiLbl.Text = tasinmaz.KullanimSekli + " - " + tasinmaz.Ilcesi + "/" + tasinmaz.Ili;
-                    KullanimSekliLbl.Text = tasinmaz.KullanimSekli + " - " + tasinmaz.MulkiyetSekli + " - " + tasinmaz.KullanimDurumu;
+                    KullanimSekliLbl.Text = tasinmaz.KullanimSekli + " - " + tasinmaz.MulkiyetSekli + " - " + tasinmaz.KiraDurumu;
                     AdresLbl.Text = tasinmaz.Adres;
                     Il_IlceLbl.Text = tasinmaz.Ilcesi + " / " + tasinmaz.Ili;
                     EnvanterdenCikarmaSebebiDDLDoldur();

@@ -68,14 +68,12 @@ namespace TBYS_WebParts.SigortaDurumuDaskWP
             int GMIsy = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigorta(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.KULLANIMSEKLI_ISYERI, ProjeConstants.SIGORTA_DASK_IHTIYARI);
             int GMArs = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigorta(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.KULLANIMSEKLI_ARSA, ProjeConstants.SIGORTA_DASK_IHTIYARI);
             int GMTar = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigorta(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.KULLANIMSEKLI_TARLA, ProjeConstants.SIGORTA_DASK_IHTIYARI);
-            int GMMev = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigorta(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.KULLANIMSEKLI_MEV, ProjeConstants.SIGORTA_DASK_IHTIYARI);
 
             GMAptCell.Text = (GMApt + GMIshani).ToString();
             GMMesCell.Text = (GMMes).ToString();
             GMIsyCell.Text = (GMIsy).ToString();
             GMArsCell.Text = (GMArs).ToString();
             GMTarCell.Text = (GMTar).ToString();
-            GMMevCell.Text = (GMMev).ToString();
 
             int IstIshani = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigorta(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.KULLANIMSEKLI_ISHANI, ProjeConstants.SIGORTA_DASK_IHTIYARI);
             int IstApt = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigorta(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.KULLANIMSEKLI_APT, ProjeConstants.SIGORTA_DASK_IHTIYARI);
@@ -83,14 +81,12 @@ namespace TBYS_WebParts.SigortaDurumuDaskWP
             int IstIsy = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigorta(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.KULLANIMSEKLI_ISYERI, ProjeConstants.SIGORTA_DASK_IHTIYARI);
             int IstArs = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigorta(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.KULLANIMSEKLI_ARSA, ProjeConstants.SIGORTA_DASK_IHTIYARI);
             int IstTar = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigorta(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.KULLANIMSEKLI_TARLA, ProjeConstants.SIGORTA_DASK_IHTIYARI);
-            int IstMev = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigorta(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.KULLANIMSEKLI_MEV, ProjeConstants.SIGORTA_DASK_IHTIYARI);
 
             IstAptCell.Text = (IstApt + IstIshani).ToString();
             IstMesCell.Text = (IstMes).ToString();
             IstIsyCell.Text = (IstIsy).ToString();
             IstArsCell.Text = (IstArs).ToString();
             IstTarCell.Text = (IstTar).ToString();
-            IstMevCell.Text = (IstMev).ToString();
 
             int IzmIshani = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigorta(ProjeConstants.BOLGE_IZMIR, ProjeConstants.KULLANIMSEKLI_ISHANI, ProjeConstants.SIGORTA_DASK_IHTIYARI);
             int IzmApt = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigorta(ProjeConstants.BOLGE_IZMIR, ProjeConstants.KULLANIMSEKLI_APT, ProjeConstants.SIGORTA_DASK_IHTIYARI);
@@ -98,14 +94,12 @@ namespace TBYS_WebParts.SigortaDurumuDaskWP
             int IzmIsy = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigorta(ProjeConstants.BOLGE_IZMIR, ProjeConstants.KULLANIMSEKLI_ISYERI, ProjeConstants.SIGORTA_DASK_IHTIYARI);
             int IzmArs = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigorta(ProjeConstants.BOLGE_IZMIR, ProjeConstants.KULLANIMSEKLI_ARSA, ProjeConstants.SIGORTA_DASK_IHTIYARI);
             int IzmTar = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigorta(ProjeConstants.BOLGE_IZMIR, ProjeConstants.KULLANIMSEKLI_TARLA, ProjeConstants.SIGORTA_DASK_IHTIYARI);
-            int IzmMev = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigorta(ProjeConstants.BOLGE_IZMIR, ProjeConstants.KULLANIMSEKLI_MEV, ProjeConstants.SIGORTA_DASK_IHTIYARI);
 
             IzmAptCell.Text = (IzmApt + IzmIshani).ToString();
             IzmMesCell.Text = (IzmMes).ToString();
             IzmIsyCell.Text = (IzmIsy).ToString();
             IzmArsCell.Text = (IzmArs).ToString();
             IzmTarCell.Text = (IzmTar).ToString();
-            IzmMevCell.Text = (IzmMev).ToString();
 
             int MerIshani = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigorta(ProjeConstants.BOLGE_MERSIN, ProjeConstants.KULLANIMSEKLI_ISHANI, ProjeConstants.SIGORTA_DASK_IHTIYARI);
             int MerApt = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigorta(ProjeConstants.BOLGE_MERSIN, ProjeConstants.KULLANIMSEKLI_APT, ProjeConstants.SIGORTA_DASK_IHTIYARI);
@@ -113,21 +107,18 @@ namespace TBYS_WebParts.SigortaDurumuDaskWP
             int MerIsy = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigorta(ProjeConstants.BOLGE_MERSIN, ProjeConstants.KULLANIMSEKLI_ISYERI, ProjeConstants.SIGORTA_DASK_IHTIYARI);
             int MerArs = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigorta(ProjeConstants.BOLGE_MERSIN, ProjeConstants.KULLANIMSEKLI_ARSA, ProjeConstants.SIGORTA_DASK_IHTIYARI);
             int MerTar = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigorta(ProjeConstants.BOLGE_MERSIN, ProjeConstants.KULLANIMSEKLI_TARLA, ProjeConstants.SIGORTA_DASK_IHTIYARI);
-            int MerMev = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigorta(ProjeConstants.BOLGE_MERSIN, ProjeConstants.KULLANIMSEKLI_MEV, ProjeConstants.SIGORTA_DASK_IHTIYARI);
 
             MerAptCell.Text = (MerApt + MerIshani).ToString();
             MerMesCell.Text = (MerMes).ToString();
             MerIsyCell.Text = (MerIsy).ToString();
             MerArsCell.Text = (MerArs).ToString();
             MerTarCell.Text = (MerTar).ToString();
-            MerMevCell.Text = (MerMev).ToString();
 
             TopAptCell.Text = (GMApt + IstApt + IzmApt + MerApt + GMIshani + IstIshani + IzmIshani + MerIshani).ToString();
             TopMesCell.Text = (GMMes + IstMes + IzmMes + MerMes).ToString();
             TopIsyCell.Text = (GMIsy + IstIsy + IzmIsy + MerIsy).ToString();
             TopArsCell.Text = (GMArs + IstArs + IzmArs + MerArs).ToString();
             TopTarCell.Text = (GMTar + IstTar + IzmTar + MerTar).ToString();
-            TopMevCell.Text = (GMMev + IstMev + IzmMev + MerMev).ToString();
         }
         private decimal TahminiRayicToplaminiBul()
         {

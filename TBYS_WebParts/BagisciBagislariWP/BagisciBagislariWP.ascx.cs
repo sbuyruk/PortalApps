@@ -173,7 +173,7 @@ namespace TBYS_WebParts.BagisciBagislariWP
             mulkiyetCell.Text = "Mülkiyet Şekli";
 
             TableCell kullanimCell = new TableCell();
-            kullanimCell.Text = "Kullanım Durumu";
+            kullanimCell.Text = "Kira Durumu";
 
             TableCell emlakBeyanDegeriCell = new TableCell();
             emlakBeyanDegeriCell.Text = "Emlak Beyan Değeri";
@@ -216,7 +216,7 @@ namespace TBYS_WebParts.BagisciBagislariWP
                     string ilIlce = dataRow["IlIlce"].ToString();
                     string adres = dataRow["Adres"].ToString();
                     string mulkiyetSekli = dataRow["MulkiyetSekli"].ToString();
-                    string kullanimDurumu = dataRow["KullanimDurumu"].ToString();
+                    string kiraDurumu = dataRow["KiraDurumu"].ToString();
                     string kullanimSekli = dataRow["KullanimSekli"].ToString();
                     string emlakBeyanDegeri = dataRow["EmlakBeyanDegeri"].ReturnZeroIfNull().ConvertToDecimal().ToString("N", culturInfo);
                     string tahminiRayicDegeri = dataRow["TahminiRayicDegeri"].ReturnZeroIfNull().ConvertToDecimal().ToString("N", culturInfo);
@@ -248,7 +248,7 @@ namespace TBYS_WebParts.BagisciBagislariWP
                     row.Controls.Add(MulkiyetCell);
 
                     TableCell KullanimCell = new TableCell();
-                    KullanimCell.Text = kullanimDurumu;
+                    KullanimCell.Text = kiraDurumu;
                     row.Controls.Add(KullanimCell);
 
                     TableCell EmlakBeyanDegeriCell = new TableCell();

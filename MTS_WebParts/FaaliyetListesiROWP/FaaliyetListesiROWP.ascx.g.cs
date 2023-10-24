@@ -150,26 +150,26 @@ namespace MTS_WebParts.FaaliyetListesiROWP {
                         " diye\r\n    function setFormSubmitToFalse() {\r\n        setTimeout(function () { _" +
                         "spFormOnSubmitCalled = false; }, 3000);\r\n        return true;\r\n    }\r\n    functi" +
                         "on setDataSet(myset) {\r\n        myjsons = myset;\r\n    }\r\n    var myjsons = [{\r\n " +
-                        "       \"RandevuId\": \"\", \"BaslangicTarihi\": \"\", \"BitisTarihi\": \"\", \"RandevuYeri\":" +
-                        " \"\", \"RandevuKonusu\": \"\", \"RandevuAmaci\": \"\", \"RandevuDurumu\": \"\", \"RandevuTipi\"" +
-                        ": \"\", \"Katilimci\": \"\", \"Duzenle\": \"\"\r\n    }];\r\n    jQuery(document).ready(functi" +
-                        "on () {\r\n        jQuery.fn.dataTable.moment(\'DD.MM.YYYY HH:mm\');//sort date\r\n   " +
-                        "     jQuery(\'#CustomDataTable\').DataTable({\r\n            data: myjsons,\r\n       " +
-                        "     columns: [\r\n                { data: \"RandevuId\" },\r\n                { data:" +
-                        " \"BaslangicTarihi\" },\r\n                { data: \"BitisTarihi\" },\r\n               " +
-                        " { data: \"RandevuYeri\" },\r\n                { data: \"RandevuKonusu\" },\r\n         " +
-                        "       { data: \"RandevuAmaci\" },\r\n                { data: \"RandevuDurumu\" },\r\n  " +
-                        "              { data: \"RandevuTipi\" },\r\n                { data: \"Katilimci\" },\r\n" +
-                        "\r\n            ],\r\n            columnDefs: [\r\n                { type: \'turkish\', " +
-                        "targets: [3,4,5,6,7] }\r\n            ],\r\n            \'order\': [[1, \'desc\']],//sor" +
-                        "t date desc\r\n            \"language\": {\r\n                \"url\": \"http://tskgv-por" +
-                        "tal/OrtakBelgeler/Turkish.txt\",\r\n                \"decimal\": \",\",\r\n              " +
-                        "  \"thousands\": \".\"\r\n            },\r\n            responsive: true,\r\n            d" +
-                        "om: \'frtp\',\r\n            \"createdRow\": function (row, data, dataIndex) {\r\n      " +
-                        "          if (data.RandevuTipi == \"Alınan Randevu\") {\r\n                    $(row" +
-                        ").addClass(\'alinan\');\r\n\r\n                }\r\n            },//set row color \r\n    " +
-                        "    });\r\n\r\n        \r\n    });\r\n</script>\r\n<div class=\"container \">\r\n    <div clas" +
-                        "s=\"card shadow\">\r\n        <div class=\"card-header\">\r\n            "));
+                        "       \"FaaliyetId\": \"\", \"BaslangicTarihi\": \"\", \"BitisTarihi\": \"\", \"FaaliyetYeri" +
+                        "\": \"\", \"FaaliyetKonusu\": \"\", \"FaaliyetAmaci\": \"\", \"FaaliyetDurumu\": \"\", \"Faaliye" +
+                        "tTipi\": \"\", \"Katilimci\": \"\", \"Duzenle\": \"\"\r\n    }];\r\n    jQuery(document).ready(" +
+                        "function () {\r\n        jQuery.fn.dataTable.moment(\'DD.MM.YYYY HH:mm\');//sort dat" +
+                        "e\r\n        jQuery(\'#CustomDataTable\').DataTable({\r\n            data: myjsons,\r\n " +
+                        "           columns: [\r\n                { data: \"FaaliyetId\" },\r\n                " +
+                        "{ data: \"BaslangicTarihi\" },\r\n                { data: \"BitisTarihi\" },\r\n        " +
+                        "        { data: \"FaaliyetYeri\" },\r\n                { data: \"FaaliyetKonusu\" },\r\n" +
+                        "                { data: \"FaaliyetAmaci\" },\r\n                { data: \"FaaliyetDur" +
+                        "umu\" },\r\n                { data: \"FaaliyetTipi\" },\r\n                { data: \"Kat" +
+                        "ilimci\" },\r\n\r\n            ],\r\n            columnDefs: [\r\n                { type:" +
+                        " \'turkish\', targets: [3,4,5,6,7] }\r\n            ],\r\n            \'order\': [[1, \'d" +
+                        "esc\']],//sort date desc\r\n            \"language\": {\r\n                \"url\": \"http" +
+                        "://tskgv-portal/OrtakBelgeler/Turkish.txt\",\r\n                \"decimal\": \",\",\r\n  " +
+                        "              \"thousands\": \".\"\r\n            },\r\n            responsive: true,\r\n " +
+                        "           dom: \'frtp\',\r\n            \"createdRow\": function (row, data, dataInde" +
+                        "x) {\r\n                if (data.FaaliyetTipi == \"Alınan Randevu\") {\r\n            " +
+                        "        $(row).addClass(\'alinan\');\r\n\r\n                }\r\n            },//set row" +
+                        " color \r\n        });\r\n\r\n        \r\n    });\r\n</script>\r\n<div class=\"container \">\r\n" +
+                        "    <div class=\"card shadow\">\r\n        <div class=\"card-header\">\r\n            "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl1;
             @__ctrl1 = this.@__BuildControlCloseBtn();
             @__parser.AddParsedSubObject(@__ctrl1);

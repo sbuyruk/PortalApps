@@ -25,7 +25,7 @@
         myjsons = myset;
     }
     var myjsons = [{
-        "KullanimSekli": "", "MulkiyetSekli": "", "KullanimDurumu": "", "Ili": "", "Ilcesi": "", "Adres": "", "Bagisci": "", "BagisYili": ""
+        "KullanimSekli": "", "MulkiyetSekli": "", "KiraDurumu": "", "Ili": "", "Ilcesi": "", "Adres": "", "Bagisci": "", "BagisYili": ""
     }];
     jQuery(document).ready(function () {
 
@@ -34,7 +34,7 @@
             columns: [
                 { data: "KullanimSekli" },
                 { data: "MulkiyetSekli" },
-                { data: "KullanimDurumu" },
+                { data: "KiraDurumu" },
                 { data: "Ili" },
                 { data: "Ilcesi" },
                 { data: "Adres" },
@@ -104,7 +104,7 @@
                         <tr>
                             <th>Kullanım Şekli</th>
                             <th>Mülkiyet Şekli</th>
-                            <th>Kullanım Durumu</th>
+                            <th>Kira Durumu</th>
                             <th>İli</th>
                             <th>İlçesi</th>
                             <th>Adres</th>

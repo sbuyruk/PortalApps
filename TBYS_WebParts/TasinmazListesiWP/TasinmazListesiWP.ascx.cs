@@ -125,7 +125,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
                 string bagisci = row["Bagisci"].ToString();
                 string bagisYili = row["BagisYili"].ToString();
 
-                string kullanimDurumu = row["KullanimDurumu"].ToString();
+                string kiraDurumu = row["KiraDurumu"].ToString();
                 string sorumluBolge = row["SorumluBolge"].ToString();
                 string emlakSicilNo = row["EmlakSicilNo"].ToString();
 
@@ -159,7 +159,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
                     tasinmazListesiListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_TASINMAZ_GIRIS + "?DestinationApp=TD&TasinmazId=" + tasinmazId + " class='btn btn-outline-primary'>Düzenle</a>"; 
                 }
 
-                tasinmazListesiListItem.KullanimDurumu = kullanimDurumu;
+                tasinmazListesiListItem.KiraDurumu = kiraDurumu;
                 tasinmazListesiListItem.SorumluBolge = sorumluBolge;
                 tasinmazListesiListItem.EmlakSicilNo = emlakSicilNo;
                 tasinmazListesiListItem.AdaNo = adaNo;
@@ -403,7 +403,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
             public string CiltNo { get; set; }
             public string SahifeNo { get; set; }
             public string Cinsi { get; set; }
-            public string KullanimDurumu { get; set; }
+            public string KiraDurumu { get; set; }
             public string EmlakBeyanDegeri { get; set; }
             public string TahminiRayicDegeri { get; set; }
             public string AdaNo { get; set; }

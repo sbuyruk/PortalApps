@@ -41,11 +41,27 @@ namespace MTS_WebParts.FaaliyetViewerWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl AcikTarihliRandevuListDiv;
+        protected global::System.Web.UI.WebControls.CheckBox VakifIciKutlamaChk;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.HtmlControls.HtmlInputText paramRandevuId;
+        protected global::System.Web.UI.WebControls.CheckBox VakifDisiKutlamaChk;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.CheckBox ResmiTatilChk;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.CheckBox ToplantiChk;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl AcikTarihliFaaliyetListDiv;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.HtmlControls.HtmlInputText paramFaaliyetId;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -61,7 +77,7 @@ namespace MTS_WebParts.FaaliyetViewerWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.LinkButton RandevuKaydetNowBtn;
+        protected global::System.Web.UI.WebControls.LinkButton FaaliyetKaydetNowBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -152,11 +168,83 @@ namespace MTS_WebParts.FaaliyetViewerWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControlAcikTarihliRandevuListDiv() {
+        private global::System.Web.UI.WebControls.CheckBox @__BuildControlVakifIciKutlamaChk() {
+            global::System.Web.UI.WebControls.CheckBox @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.CheckBox();
+            this.VakifIciKutlamaChk = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "VakifIciKutlamaChk";
+            @__ctrl.Checked = false;
+            @__ctrl.AutoPostBack = true;
+            @__ctrl.CausesValidation = false;
+            @__ctrl.ToolTip = "TC Kimlik numarası dolu olan bağışçıları listeye eklemek için işaretleyiniz.";
+            @__ctrl.CheckedChanged -= new System.EventHandler(this.VakifIciKutlamaChk_CheckedChanged);
+            @__ctrl.CheckedChanged += new System.EventHandler(this.VakifIciKutlamaChk_CheckedChanged);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.CheckBox @__BuildControlVakifDisiKutlamaChk() {
+            global::System.Web.UI.WebControls.CheckBox @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.CheckBox();
+            this.VakifDisiKutlamaChk = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "VakifDisiKutlamaChk";
+            @__ctrl.Checked = false;
+            @__ctrl.AutoPostBack = true;
+            @__ctrl.CausesValidation = false;
+            @__ctrl.ToolTip = "Doğum tarihi dolu olan bağışçıları listeye eklemek için işaretleyiniz.";
+            @__ctrl.CheckedChanged -= new System.EventHandler(this.VakifDisiKutlamaChk_CheckedChanged);
+            @__ctrl.CheckedChanged += new System.EventHandler(this.VakifDisiKutlamaChk_CheckedChanged);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.CheckBox @__BuildControlResmiTatilChk() {
+            global::System.Web.UI.WebControls.CheckBox @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.CheckBox();
+            this.ResmiTatilChk = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "ResmiTatilChk";
+            @__ctrl.Checked = true;
+            @__ctrl.AutoPostBack = true;
+            @__ctrl.CausesValidation = false;
+            @__ctrl.ToolTip = "Çıplak Mülkiyet bağışlayan bağışçıları listeye eklemek için işaretleyiniz.";
+            @__ctrl.CheckedChanged -= new System.EventHandler(this.ResmiTatilChk_CheckedChanged);
+            @__ctrl.CheckedChanged += new System.EventHandler(this.ResmiTatilChk_CheckedChanged);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.CheckBox @__BuildControlToplantiChk() {
+            global::System.Web.UI.WebControls.CheckBox @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.CheckBox();
+            this.ToplantiChk = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "ToplantiChk";
+            @__ctrl.Checked = true;
+            @__ctrl.AutoPostBack = true;
+            @__ctrl.CausesValidation = false;
+            @__ctrl.ToolTip = "TYS Toplantilarını Göster";
+            @__ctrl.CheckedChanged -= new System.EventHandler(this.ToplantiChk_CheckedChanged);
+            @__ctrl.CheckedChanged += new System.EventHandler(this.ToplantiChk_CheckedChanged);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControlAcikTarihliFaaliyetListDiv() {
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
-            this.AcikTarihliRandevuListDiv = @__ctrl;
-            @__ctrl.ID = "AcikTarihliRandevuListDiv";
+            this.AcikTarihliFaaliyetListDiv = @__ctrl;
+            @__ctrl.ID = "AcikTarihliFaaliyetListDiv";
             @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n            "));
@@ -166,11 +254,11 @@ namespace MTS_WebParts.FaaliyetViewerWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.HtmlControls.HtmlInputText @__BuildControlparamRandevuId() {
+        private global::System.Web.UI.HtmlControls.HtmlInputText @__BuildControlparamFaaliyetId() {
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
-            this.paramRandevuId = @__ctrl;
-            @__ctrl.ID = "paramRandevuId";
+            this.paramFaaliyetId = @__ctrl;
+            @__ctrl.ID = "paramFaaliyetId";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
             return @__ctrl;
         }
@@ -214,17 +302,17 @@ namespace MTS_WebParts.FaaliyetViewerWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.LinkButton @__BuildControlRandevuKaydetNowBtn() {
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlFaaliyetKaydetNowBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
-            this.RandevuKaydetNowBtn = @__ctrl;
+            this.FaaliyetKaydetNowBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "RandevuKaydetNowBtn";
+            @__ctrl.ID = "FaaliyetKaydetNowBtn";
             @__ctrl.CausesValidation = false;
             @__ctrl.Text = "Faaliyete Ekle";
             @__ctrl.OnClientClick = "{return true;};";
-            @__ctrl.Click -= new System.EventHandler(this.RandevuKaydetNowBtn_Click);
-            @__ctrl.Click += new System.EventHandler(this.RandevuKaydetNowBtn_Click);
+            @__ctrl.Click -= new System.EventHandler(this.FaaliyetKaydetNowBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.FaaliyetKaydetNowBtn_Click);
             return @__ctrl;
         }
         
@@ -1073,28 +1161,40 @@ namespace MTS_WebParts.FaaliyetViewerWP {
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControlTree(global::MTS_WebParts.FaaliyetViewerWP.FaaliyetViewerWP @__ctrl) {
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl1;
-            @__ctrl1 = this.@__BuildControlAcikTarihliRandevuListDiv();
+            global::System.Web.UI.WebControls.CheckBox @__ctrl1;
+            @__ctrl1 = this.@__BuildControlVakifIciKutlamaChk();
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(@__ctrl1);
-            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl2;
-            @__ctrl2 = this.@__BuildControlparamRandevuId();
+            global::System.Web.UI.WebControls.CheckBox @__ctrl2;
+            @__ctrl2 = this.@__BuildControlVakifDisiKutlamaChk();
             @__parser.AddParsedSubObject(@__ctrl2);
-            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl3;
-            @__ctrl3 = this.@__BuildControlparamBasTar();
+            global::System.Web.UI.WebControls.CheckBox @__ctrl3;
+            @__ctrl3 = this.@__BuildControlResmiTatilChk();
             @__parser.AddParsedSubObject(@__ctrl3);
-            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl4;
-            @__ctrl4 = this.@__BuildControlparamBitTar();
+            global::System.Web.UI.WebControls.CheckBox @__ctrl4;
+            @__ctrl4 = this.@__BuildControlToplantiChk();
             @__parser.AddParsedSubObject(@__ctrl4);
-            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl5;
-            @__ctrl5 = this.@__BuildControlparamView();
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl5;
+            @__ctrl5 = this.@__BuildControlAcikTarihliFaaliyetListDiv();
             @__parser.AddParsedSubObject(@__ctrl5);
-            global::System.Web.UI.WebControls.LinkButton @__ctrl6;
-            @__ctrl6 = this.@__BuildControlRandevuKaydetNowBtn();
+            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl6;
+            @__ctrl6 = this.@__BuildControlparamFaaliyetId();
             @__parser.AddParsedSubObject(@__ctrl6);
-            global::System.Web.UI.UpdatePanel @__ctrl7;
-            @__ctrl7 = this.@__BuildControlUpdatePanel1();
+            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl7;
+            @__ctrl7 = this.@__BuildControlparamBasTar();
             @__parser.AddParsedSubObject(@__ctrl7);
+            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl8;
+            @__ctrl8 = this.@__BuildControlparamBitTar();
+            @__parser.AddParsedSubObject(@__ctrl8);
+            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl9;
+            @__ctrl9 = this.@__BuildControlparamView();
+            @__parser.AddParsedSubObject(@__ctrl9);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl10;
+            @__ctrl10 = this.@__BuildControlFaaliyetKaydetNowBtn();
+            @__parser.AddParsedSubObject(@__ctrl10);
+            global::System.Web.UI.UpdatePanel @__ctrl11;
+            @__ctrl11 = this.@__BuildControlUpdatePanel1();
+            @__parser.AddParsedSubObject(@__ctrl11);
             @__ctrl.SetRenderMethodDelegate(new System.Web.UI.RenderMethod(this.@__Render__control1));
         }
         
@@ -1104,42 +1204,42 @@ namespace MTS_WebParts.FaaliyetViewerWP {
         private void @__Render__control1(System.Web.UI.HtmlTextWriter @__w, System.Web.UI.Control parameterContainer) {
             @__w.Write("\r\n\r\n<script type=\"text/javascript\" src=\"/Style%20Library/lib/fullcalendar/index.g" +
                     "lobal.js\"></script>\r\n<script type=\"text/javascript\" src=\"/Style%20Library/tskgv/" +
-                    "js/fullcalendar/locales/tr.js\"></script>\r\n<style>\r\n    \r\n    #AcikTarihliRandevu" +
-                    "ListDiv {\r\n      background-color: lightblue;\r\n      height: 550px;\r\n      width" +
-                    ": auto;\r\n      overflow-y: scroll;\r\n    }\r\n  body {\r\n    /*margin-top: 40px;*/\r\n" +
-                    "    font-size: 14px;\r\n    font-family: Arial, Helvetica Neue, Helvetica, sans-se" +
-                    "rif;\r\n  }\r\n\r\n  #external-events {\r\n    position: fixed;\r\n/*    left: 20px;\r\n    " +
-                    "top: 20px;*/\r\n    width: 200px;\r\n    padding: 0;\r\n    border: 1px solid #ccc;\r\n " +
-                    "   background: #eee;\r\n    text-align: left;\r\n  }\r\n\r\n  #external-events h4 {\r\n   " +
-                    " font-size: 16px;\r\n    margin-top: 0;\r\n    padding-top: 1em;\r\n  }\r\n\r\n  #external" +
-                    "-events .fc-event {\r\n    margin: 3px 0;\r\n    cursor: move;\r\n  }\r\n\r\n  #external-e" +
-                    "vents p {\r\n    margin: 1.5em 0;\r\n    font-size: 11px;\r\n    color: #666;\r\n  }\r\n\r\n" +
-                    "  #external-events p input {\r\n    margin: 0;\r\n    vertical-align: middle;\r\n  }\r\n" +
-                    "  #calendar {\r\n/*    max-width: 1100px;\r\n    margin: 0 auto;*/\r\n    margin-left:" +
-                    "220px;\r\n  }\r\n  .title-wrap {\r\n    white-space: normal !important;\r\n  }\r\n    .ipt" +
-                    "al-edildi {\r\n        /*text-decoration: line-through !important;*/\r\n          ba" +
-                    "ckground-image: url(\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53M" +
-                    "y5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZ" +
-                    "WlnaHQ9JzEwJyBmaWxsPSd3aGl0ZScvPgogIDxwYXRoIGQ9J00tMSwxIGwyLC0yCiAgICAgICAgICAgT" +
-                    "TAsMTAgbDEwLC0xMAogICAgICAgICAgIE05LDExIGwyLC0yJyBzdHJva2U9J2JsYWNrJyBzdHJva2Utd" +
-                    "2lkdGg9JzEnLz4KPC9zdmc+Cg==\"); \r\n          background-repeat: repeat;    }\r\n\r\n  " +
-                    "#globalWrapper * {\r\n    z-index: auto;\r\n  }\r\n\r\n</style>\r\n<script type=\"text/java" +
-                    "script\">\r\n    //excele export ettikten donup sonra kalmasın diye\r\n    function s" +
-                    "etFormSubmitToFalse() {\r\n        setTimeout(function () { _spFormOnSubmitCalled " +
-                    "= false; }, 3000);\r\n        return true;\r\n    }\r\n    function OpenToplantiModal(" +
-                    ") {\r\n        $(\"#ToplantiDetaylariModal\").modal({ backdrop: true });\r\n    }\r\n   " +
-                    " function ToplantiDetaylariModal(toplantiId) {\r\n        document.getElementById(" +
-                    "\'");
+                    "js/fullcalendar/locales/tr.js\"></script>\r\n<style>\r\n    \r\n    #AcikTarihliFaaliye" +
+                    "tListDiv {\r\n      background-color: lightblue;\r\n      height: 550px;\r\n      widt" +
+                    "h: auto;\r\n      overflow-y: scroll;\r\n    }\r\n  body {\r\n    /*margin-top: 40px;*/\r" +
+                    "\n    font-size: 14px;\r\n    font-family: Arial, Helvetica Neue, Helvetica, sans-s" +
+                    "erif;\r\n  }\r\n\r\n  #external-events {\r\n    position: fixed;\r\n/*    left: 20px;\r\n   " +
+                    " top: 20px;*/\r\n    width: 200px;\r\n    padding: 0;\r\n    border: 1px solid #ccc;\r\n" +
+                    "    background: #eee;\r\n    text-align: left;\r\n  }\r\n\r\n  #external-events h4 {\r\n  " +
+                    "  font-size: 16px;\r\n    margin-top: 0;\r\n    padding-top: 1em;\r\n  }\r\n\r\n  #externa" +
+                    "l-events .fc-event {\r\n    margin: 3px 0;\r\n    cursor: move;\r\n  }\r\n\r\n  #external-" +
+                    "events p {\r\n    margin: 1.5em 0;\r\n    font-size: 11px;\r\n    color: #666;\r\n  }\r\n\r" +
+                    "\n  #external-events p input {\r\n    margin: 0;\r\n    vertical-align: middle;\r\n  }\r" +
+                    "\n  #calendar {\r\n/*    max-width: 1100px;\r\n    margin: 0 auto;*/\r\n    margin-left" +
+                    ":220px;\r\n  }\r\n  .title-wrap {\r\n    white-space: normal !important;\r\n  }\r\n    .ip" +
+                    "tal-edildi {\r\n        /*text-decoration: line-through !important;*/\r\n          b" +
+                    "ackground-image: url(\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53" +
+                    "My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBo" +
+                    "ZWlnaHQ9JzEwJyBmaWxsPSd3aGl0ZScvPgogIDxwYXRoIGQ9J00tMSwxIGwyLC0yCiAgICAgICAgICAg" +
+                    "TTAsMTAgbDEwLC0xMAogICAgICAgICAgIE05LDExIGwyLC0yJyBzdHJva2U9J2JsYWNrJyBzdHJva2Ut" +
+                    "d2lkdGg9JzEnLz4KPC9zdmc+Cg==\"); \r\n          background-repeat: repeat;    }\r\n\r\n " +
+                    " #globalWrapper * {\r\n    z-index: auto;\r\n  }\r\n\r\n</style>\r\n<script type=\"text/jav" +
+                    "ascript\">\r\n    //excele export ettikten donup sonra kalmasın diye\r\n    function " +
+                    "setFormSubmitToFalse() {\r\n        setTimeout(function () { _spFormOnSubmitCalled" +
+                    " = false; }, 3000);\r\n        return true;\r\n    }\r\n    function OpenToplantiModal" +
+                    "() {\r\n        $(\"#ToplantiDetaylariModal\").modal({ backdrop: true });\r\n    }\r\n  " +
+                    "  function ToplantiDetaylariModal(toplantiId) {\r\n        document.getElementById" +
+                    "(\'");
                          @__w.Write( paramToplantiIdLbl.ClientID);
 
             @__w.Write("\').value = toplantiId;\r\n        document.getElementById(\'");
                          @__w.Write( ToplantiDetaylariBtn.ClientID);
 
-            @__w.Write("\').click();\r\n    }\r\n    function RandevuKaydet(randevuId, basTar, endTar, newView" +
-                    ") {\r\n        document.getElementById(\'");
-                         @__w.Write( paramRandevuId.ClientID);
+            @__w.Write("\').click();\r\n    }\r\n    function FaaliyetKaydet(faaliyetId, basTar, endTar, newVi" +
+                    "ew) {\r\n        document.getElementById(\'");
+                         @__w.Write( paramFaaliyetId.ClientID);
 
-            @__w.Write("\').value = randevuId;\r\n        document.getElementById(\'");
+            @__w.Write("\').value = faaliyetId;\r\n        document.getElementById(\'");
                          @__w.Write( paramBasTar.ClientID);
 
             @__w.Write("\').value = basTar;\r\n        document.getElementById(\'");
@@ -1149,7 +1249,7 @@ namespace MTS_WebParts.FaaliyetViewerWP {
                          @__w.Write( paramView.ClientID);
 
             @__w.Write("\').value = newView;\r\n        document.getElementById(\'");
-                         @__w.Write( RandevuKaydetNowBtn.ClientID);
+                         @__w.Write( FaaliyetKaydetNowBtn.ClientID);
 
             @__w.Write("\').click();\r\n    }\r\n</script>\r\n<script type=\"text/javascript\">\r\n\r\n    function Ex" +
                     "portToExcel() {\r\n        window.open(\'data:application/vnd.ms-excel,\' + encodeUR" +
@@ -1182,28 +1282,55 @@ namespace MTS_WebParts.FaaliyetViewerWP {
                     "le Library/tskgv/js/jspdf.js\"></script>\r\n<script src=\"/Style Library/tskgv/js/js" +
                     "pdf.plugin.addimage.js\"></script>\r\n<script src=\"/Style Library/tskgv/js/html2can" +
                     "vas.min.js\"></script>\r\n<script src=\"/Style Library/tskgv/js/html2pdf.bundle.min." +
-                    "js\"></script>\r\n\r\n<div class=\"col-xl\">\r\n\r\n    <div id=\'wrap\'>\r\n     \r\n        <di" +
-                    "v id=\'external-events\'>\r\n            <div class=\"form-group\" >\r\n                " +
-                    "<a href=\"#\" class=\"btn btn-info\" id=\"downloadPDF\" onclick=\"DoIt();\">Takvimi PDF\'" +
-                    "e Aktar</a>\r\n                <a href=\"#\" id=\"btnExport\" onclick=\"fnExcelReport()" +
-                    ";\"> EXPORT </a>\r\n                <iframe id=\"txtArea1\" style=\"display:none\"></if" +
-                    "rame>\r\n            </div>\r\n            <h4>Açık Tarihli Faaliyetler</h4>\r\n      " +
-                    "      ");
+                    "js\"></script>\r\n\r\n<div class=\"col-xl\">\r\n    <div class=\"form-group row\">\r\n       " +
+                    "         <div class=\"form-group col\">\r\n            <div class=\"checkbox\">\r\n     " +
+                    "           <label>\r\n                    ");
             parameterContainer.Controls[0].RenderControl(@__w);
-            @__w.Write("\r\n        </div>\r\n        <div id=\"calendar-wrap\">\r\n            \r\n            <di" +
-                    "v id=\"calendar\"></div>\r\n        </div>\r\n    </div>\r\n    <div id=\"RandevuHiddenDi" +
-                    "v\" style=\"display: none\">\r\n        ");
+            @__w.Write("\r\n                    Doğum Günü / Evlenme Yıldönümü Kutlamalarını Göster (Vakıf " +
+                    "İçi)\r\n                </label>\r\n            </div>\r\n            <div class=\"chec" +
+                    "kbox\">\r\n                <label>\r\n                    ");
             parameterContainer.Controls[1].RenderControl(@__w);
-            @__w.Write("\r\n        ");
+            @__w.Write("\r\n                    Doğum Günü Kutlamalarını Göster (Vakıf Dışı)\r\n             " +
+                    "   </label>\r\n            </div>\r\n        </div>\r\n        <div class=\"form-group " +
+                    "col\">\r\n            <div class=\"checkbox\">\r\n                <label>\r\n            " +
+                    "        ");
             parameterContainer.Controls[2].RenderControl(@__w);
-            @__w.Write("\r\n        ");
+            @__w.Write("\r\n                    Resmi Talilleri Göster\r\n                </label>\r\n         " +
+                    "   </div>\r\n            <div class=\"checkbox\">\r\n                <label>\r\n        " +
+                    "            ");
             parameterContainer.Controls[3].RenderControl(@__w);
-            @__w.Write("\r\n        ");
+            @__w.Write(@"
+                    TYS Toplantılarını Göster
+                </label>
+            </div>
+        </div>
+        <div class=""form-group col "">
+            <a href=""#"" class=""btn btn-outline-info m-2"" id=""downloadPDF"" onclick=""DoIt();"">Takvimi PDF'e Aktar</a>
+        </div>
+    </div>
+    <div id='wrap'>
+     
+        <div id='external-events'>
+            <div class=""form-group"" >
+                <iframe id=""txtArea1"" style=""display:none""></iframe>
+            </div>
+            <h4>Açık Tarihli Faaliyetler</h4>
+            ");
             parameterContainer.Controls[4].RenderControl(@__w);
-            @__w.Write("\r\n        ");
+            @__w.Write("\r\n        </div>\r\n        <div id=\"calendar-wrap\">\r\n            \r\n            <di" +
+                    "v id=\"calendar\"></div>\r\n        </div>\r\n    </div>\r\n    <div id=\"FaaliyetHiddenD" +
+                    "iv\" style=\"display: none\">\r\n        ");
             parameterContainer.Controls[5].RenderControl(@__w);
-            @__w.Write("\r\n    </div>\r\n</div>\r\n");
+            @__w.Write("\r\n        ");
             parameterContainer.Controls[6].RenderControl(@__w);
+            @__w.Write("\r\n        ");
+            parameterContainer.Controls[7].RenderControl(@__w);
+            @__w.Write("\r\n        ");
+            parameterContainer.Controls[8].RenderControl(@__w);
+            @__w.Write("\r\n        ");
+            parameterContainer.Controls[9].RenderControl(@__w);
+            @__w.Write("\r\n    </div>\r\n</div>\r\n");
+            parameterContainer.Controls[10].RenderControl(@__w);
         }
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +

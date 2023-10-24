@@ -25,21 +25,21 @@
         myjsons = myset;
     }
     var myjsons = [{
-        "RandevuId": "", "BaslangicTarihi": "", "BitisTarihi": "", "RandevuYeri": "", "RandevuKonusu": "", "RandevuAmaci": "", "RandevuDurumu": "", "RandevuTipi": "", "Katilimci": "", "Duzenle": ""
+        "FaaliyetId": "", "BaslangicTarihi": "", "BitisTarihi": "", "FaaliyetYeri": "", "FaaliyetKonusu": "", "FaaliyetAmaci": "", "FaaliyetDurumu": "", "FaaliyetTipi": "", "Katilimci": "", "Duzenle": ""
     }];
     jQuery(document).ready(function () {
         jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
         jQuery('#CustomDataTable').DataTable({
             data: myjsons,
             columns: [
-                { data: "RandevuId" },
+                { data: "FaaliyetId" },
                 { data: "BaslangicTarihi" },
                 { data: "BitisTarihi" },
-                { data: "RandevuYeri" },
-                { data: "RandevuKonusu" },
-                { data: "RandevuAmaci" },
-                { data: "RandevuDurumu" },
-                { data: "RandevuTipi" },
+                { data: "FaaliyetYeri" },
+                { data: "FaaliyetKonusu" },
+                { data: "FaaliyetAmaci" },
+                { data: "FaaliyetDurumu" },
+                { data: "FaaliyetTipi" },
                 { data: "Katilimci" },
 
             ],
@@ -55,7 +55,7 @@
             responsive: true,
             dom: 'frtp',
             "createdRow": function (row, data, dataIndex) {
-                if (data.RandevuTipi == "Alınan Randevu") {
+                if (data.FaaliyetTipi == "Alınan Randevu") {
                     $(row).addClass('alinan');
 
                 }

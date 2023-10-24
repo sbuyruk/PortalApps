@@ -523,16 +523,16 @@ namespace Model.IKYS
             return list;
         }
 
-        public DataTable SelectSecilmemisIcKatilimcilarByRandevuIdReturnDT(int randevuId)
+        public DataTable SelectSecilmemisIcKatilimcilarByFaaliyetIdReturnDT(int faaliyetId)
         {
-            string randevuIdStr = randevuId > 0 ? string.Format(" AND A.Id Not in (SELECT KatilimciId FROM RandevuKatilim_Table WHERE KatilimciTipi={0} AND RandevuId={1} )", ProjeConstants.RANDEVU_KATILIMCI_IC_INT, randevuId) : string.Empty;
+            string faaliyetIdStr = faaliyetId > 0 ? string.Format(" AND A.Id Not in (SELECT KatilimciId FROM FaaliyetKatilim_Table WHERE KatilimciTipi={0} AND FaaliyetId={1} )", ProjeConstants.FAALIYET_KATILIMCI_IC_INT, faaliyetId) : string.Empty;
             string sqlString = string.Format(@"
                 SELECT A.Id KatilimciId, A.Adi,A.Soyadi, {0} KatilimciTipi
                 FROM Personel_Table A
 	                INNER JOIN IsBilgileri_Table B ON B.PersonelId=A.Id
                 WHERE B.CalismaDurumu=1 
                     {1}
-                ORDER BY A.Adi", ProjeConstants.RANDEVU_KATILIMCI_IC_INT, randevuIdStr);
+                ORDER BY A.Adi", ProjeConstants.FAALIYET_KATILIMCI_IC_INT, faaliyetIdStr);
             DataTable dataTable = null;
             try
             {

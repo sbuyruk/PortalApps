@@ -41,7 +41,7 @@ namespace MTS_WebParts.HaftalikGorunumWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.HtmlControls.HtmlInputText paramRandevuId;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText paramFaaliyetId;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -57,7 +57,7 @@ namespace MTS_WebParts.HaftalikGorunumWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.LinkButton RandevuKaydetNowBtn;
+        protected global::System.Web.UI.WebControls.LinkButton FaaliyetKaydetNowBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -148,11 +148,11 @@ namespace MTS_WebParts.HaftalikGorunumWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.HtmlControls.HtmlInputText @__BuildControlparamRandevuId() {
+        private global::System.Web.UI.HtmlControls.HtmlInputText @__BuildControlparamFaaliyetId() {
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
-            this.paramRandevuId = @__ctrl;
-            @__ctrl.ID = "paramRandevuId";
+            this.paramFaaliyetId = @__ctrl;
+            @__ctrl.ID = "paramFaaliyetId";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
             return @__ctrl;
         }
@@ -196,17 +196,17 @@ namespace MTS_WebParts.HaftalikGorunumWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.LinkButton @__BuildControlRandevuKaydetNowBtn() {
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlFaaliyetKaydetNowBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
-            this.RandevuKaydetNowBtn = @__ctrl;
+            this.FaaliyetKaydetNowBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "RandevuKaydetNowBtn";
+            @__ctrl.ID = "FaaliyetKaydetNowBtn";
             @__ctrl.CausesValidation = false;
             @__ctrl.Text = "Faaliyete Ekle";
             @__ctrl.OnClientClick = "{return true;};";
-            @__ctrl.Click -= new System.EventHandler(this.RandevuKaydetNowBtn_Click);
-            @__ctrl.Click += new System.EventHandler(this.RandevuKaydetNowBtn_Click);
+            @__ctrl.Click -= new System.EventHandler(this.FaaliyetKaydetNowBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.FaaliyetKaydetNowBtn_Click);
             return @__ctrl;
         }
         
@@ -1056,7 +1056,7 @@ namespace MTS_WebParts.HaftalikGorunumWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControlTree(global::MTS_WebParts.HaftalikGorunumWP.HaftalikGorunumWP @__ctrl) {
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl1;
-            @__ctrl1 = this.@__BuildControlparamRandevuId();
+            @__ctrl1 = this.@__BuildControlparamFaaliyetId();
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(@__ctrl1);
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl2;
@@ -1069,7 +1069,7 @@ namespace MTS_WebParts.HaftalikGorunumWP {
             @__ctrl4 = this.@__BuildControlparamView();
             @__parser.AddParsedSubObject(@__ctrl4);
             global::System.Web.UI.WebControls.LinkButton @__ctrl5;
-            @__ctrl5 = this.@__BuildControlRandevuKaydetNowBtn();
+            @__ctrl5 = this.@__BuildControlFaaliyetKaydetNowBtn();
             @__parser.AddParsedSubObject(@__ctrl5);
             global::System.Web.UI.UpdatePanel @__ctrl6;
             @__ctrl6 = this.@__BuildControlUpdatePanel1();
@@ -1111,9 +1111,9 @@ namespace MTS_WebParts.HaftalikGorunumWP {
             @__w.Write("\').value = toplantiId;\r\n        document.getElementById(\'");
                          @__w.Write( ToplantiDetaylariBtn.ClientID);
 
-            @__w.Write("\').click();\r\n    }\r\n    function RandevuKaydet(randevuId, basTar, endTar, newView" +
-                    ") {\r\n        document.getElementById(\'");
-                         @__w.Write( paramRandevuId.ClientID);
+            @__w.Write("\').click();\r\n    }\r\n    function FaaliyetKaydet(randevuId, basTar, endTar, newVie" +
+                    "w) {\r\n        document.getElementById(\'");
+                         @__w.Write( paramFaaliyetId.ClientID);
 
             @__w.Write("\').value = randevuId;\r\n        document.getElementById(\'");
                          @__w.Write( paramBasTar.ClientID);
@@ -1125,7 +1125,7 @@ namespace MTS_WebParts.HaftalikGorunumWP {
                          @__w.Write( paramView.ClientID);
 
             @__w.Write("\').value = newView;\r\n        document.getElementById(\'");
-                         @__w.Write( RandevuKaydetNowBtn.ClientID);
+                         @__w.Write( FaaliyetKaydetNowBtn.ClientID);
 
             @__w.Write(@"').click();
     }
@@ -1142,7 +1142,7 @@ namespace MTS_WebParts.HaftalikGorunumWP {
         </div>
 
     </div>
-    <div id=""RandevuHiddenDiv"" style=""display: none"">
+    <div id=""FaaliyetHiddenDiv"" style=""display: none"">
         ");
             parameterContainer.Controls[0].RenderControl(@__w);
             @__w.Write("\r\n        ");

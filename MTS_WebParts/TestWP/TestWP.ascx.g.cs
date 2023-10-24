@@ -41,6 +41,18 @@ namespace MTS_WebParts.TestWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.LinkButton TakvimeEkleBtn;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.LinkButton TakvimDegistirBtn;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.LinkButton TakvimSilBtn;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.TextBox PanelTextBox;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -63,6 +75,57 @@ namespace MTS_WebParts.TestWP {
         public static implicit operator global::System.Web.UI.TemplateControl(TestWP target) 
         {
             return target == null ? null : target.TemplateControl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlTakvimeEkleBtn() {
+            global::System.Web.UI.WebControls.LinkButton @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
+            this.TakvimeEkleBtn = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "TakvimeEkleBtn";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "btn btn-success");
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Takvime Ekle"));
+            @__ctrl.Click -= new System.EventHandler(this.TakvimeEkleBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.TakvimeEkleBtn_Click);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlTakvimDegistirBtn() {
+            global::System.Web.UI.WebControls.LinkButton @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
+            this.TakvimDegistirBtn = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "TakvimDegistirBtn";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "btn btn-primary");
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Takvim Değiştir"));
+            @__ctrl.Click -= new System.EventHandler(this.TakvimDegistirBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.TakvimDegistirBtn_Click);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlTakvimSilBtn() {
+            global::System.Web.UI.WebControls.LinkButton @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
+            this.TakvimSilBtn = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "TakvimSilBtn";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "btn btn-danger");
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Takvim Sil"));
+            @__ctrl.Click -= new System.EventHandler(this.TakvimSilBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.TakvimSilBtn_Click);
+            return @__ctrl;
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -167,15 +230,29 @@ namespace MTS_WebParts.TestWP {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n<div class=\"container\">\r\n    <div class=\"card\">\r\n        <div class=\"card-hea" +
                         "der\">\r\n            <h3> BAŞŞŞŞ LIII KKK</h3>\r\n        </div>\r\n        <div class" +
-                        "=\"card-body\">\r\n\r\n        </div>\r\n        <div class=\"card-footer\">\r\n            " +
-                        ""));
-            global::System.Web.UI.UpdatePanel @__ctrl1;
-            @__ctrl1 = this.@__BuildControlTextBoxUpdatePanel();
+                        "=\"card-body\">\r\n            <div class=\"form-group\">\r\n                \r\n         " +
+                        "   "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl1;
+            @__ctrl1 = this.@__BuildControlTakvimeEkleBtn();
             @__parser.AddParsedSubObject(@__ctrl1);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
-            global::System.Web.UI.UpdatePanel @__ctrl2;
-            @__ctrl2 = this.@__BuildControlUpdatePanel1();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            </div>\r\n            <div class=\"form-group\">\r\n\r\n                "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl2;
+            @__ctrl2 = this.@__BuildControlTakvimDegistirBtn();
             @__parser.AddParsedSubObject(@__ctrl2);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            </div>            \r\n            <div class=\"form-group\">\r\n\r\n       " +
+                        "         "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl3;
+            @__ctrl3 = this.@__BuildControlTakvimSilBtn();
+            @__parser.AddParsedSubObject(@__ctrl3);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            </div>\r\n        </div>\r\n        <div class=\"card-footer\">\r\n        " +
+                        "    "));
+            global::System.Web.UI.UpdatePanel @__ctrl4;
+            @__ctrl4 = this.@__BuildControlTextBoxUpdatePanel();
+            @__parser.AddParsedSubObject(@__ctrl4);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
+            global::System.Web.UI.UpdatePanel @__ctrl5;
+            @__ctrl5 = this.@__BuildControlUpdatePanel1();
+            @__parser.AddParsedSubObject(@__ctrl5);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n        </div>\r\n\r\n    </div>\r\n</div>"));
         }
         

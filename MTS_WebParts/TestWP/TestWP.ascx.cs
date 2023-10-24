@@ -1,6 +1,10 @@
-﻿using System;
+﻿using Microsoft.Office.Audit.Schema.SharePoint;
+using Model.Portal;
+using System;
 using System.ComponentModel;
 using System.Web.UI.WebControls.WebParts;
+using Utility.HelperClasses;
+using Utility.ProjeGlobal;
 
 namespace MTS_WebParts.TestWP
 {
@@ -36,6 +40,44 @@ namespace MTS_WebParts.TestWP
         {
             System.Threading.Thread.Sleep(2000);
             TimeLiteral.Text = DateTime.UtcNow.Ticks.ToString();
+        }
+
+        protected void TakvimeEkleBtn_Click(object sender, EventArgs e)
+        {
+            Toplanti toplanti= new Toplanti();
+            toplanti = toplanti.Select(1773);
+
+            string from = "Makam Takip Sistemi <mts@tskgv.local>";
+            string userto = "asbuyruk@tskgv.org.tr";
+            string baslik = "Deneme Randevu";
+            string yer = "Makam Odası";
+            MailHelper.TakvimeEkle(toplanti.UniqueId, from, userto, baslik, DateTime.Now.AddDays(-10), DateTime.Now.AddHours(1), yer, toplanti.Aciklama, ProjeConstants.PARAM_INTERNET_SMTP_IP_ADRESI);
+        }
+        protected void TakvimDegistirBtn_Click(object sender, EventArgs e)
+        {
+            Toplanti toplanti = new Toplanti();
+            toplanti = toplanti.Select(1773);
+
+            string from = "Makam Takip Sistemi <mts@tskgv.local>";
+            string userto = "asbuyruk@tskgv.org.tr";
+            string baslik = "Deneme Randevu";
+            string yer = "Makam Odası";
+            DateTime bastar = toplanti.BaslangicTarihi.AddDays(1);
+            DateTime bittar = toplanti.BitisTarihi.AddDays(1);
+            MailHelper.TakvimeEkle(toplanti.UniqueId, from, userto, baslik, bastar, bittar, yer, toplanti.Aciklama, ProjeConstants.PARAM_INTERNET_SMTP_IP_ADRESI);
+        }
+        protected void TakvimSilBtn_Click(object sender, EventArgs e)
+        {
+            Toplanti toplanti = new Toplanti();
+            toplanti = toplanti.Select(1773);
+
+            string from = "Makam Takip Sistemi <mts@tskgv.local>";
+            string userto = "asbuyruk@tskgv.org.tr";
+            string baslik = "Deneme Randevu Değişti";
+            string yer = "Öbür Oda";
+            DateTime bastar = toplanti.BaslangicTarihi.AddDays(1);
+            DateTime bittar = toplanti.BitisTarihi.AddDays(1);
+            MailHelper.TakvimdenSil(toplanti.UniqueId, from, userto, baslik, bastar, bittar, yer, toplanti.Aciklama, ProjeConstants.PARAM_INTERNET_SMTP_IP_ADRESI);
         }
     }
 }

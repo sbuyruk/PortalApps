@@ -114,20 +114,23 @@
     function KatilimciSecimiModal() {
         $("#KatilimciSecimiModal").modal({ backdrop: false });
     }
-    function KatilimciSecildiBtnClick(katilimciId, randevuId, katilimciTipi) {
-        document.getElementById('<%= paramRandevuKatilimciIdLbl.ClientID%>').value = katilimciId;
-        document.getElementById('<%= paramRandevuIdLbl.ClientID%>').value = randevuId;
-        document.getElementById('<%= paramRandevuKatilimciTipiLbl.ClientID%>').value = katilimciTipi;
+    $("#KatilimciSecimiModal").draggable({
+        handle: ".modal-dialog"
+    });
+    function KatilimciSecildiBtnClick(katilimciId, faaliyetId, katilimciTipi) {
+        document.getElementById('<%= paramFaaliyetKatilimciIdLbl.ClientID%>').value = katilimciId;
+        document.getElementById('<%= paramFaaliyetIdLbl.ClientID%>').value = faaliyetId;
+        document.getElementById('<%= paramFaaliyetKatilimciTipiLbl.ClientID%>').value = katilimciTipi;
         document.getElementById('<%= SecilenKatilimciyiKaydetNowBtn.ClientID%>').click();
     }
-    function IrtibatSecBtnClick(kisiId, randevuId, katilimciTipi) {
-        document.getElementById('<%= paramRandevuKatilimciIdLbl.ClientID%>').value = kisiId;
-        document.getElementById('<%= paramRandevuIdLbl.ClientID%>').value = randevuId;
-        document.getElementById('<%= paramRandevuKatilimciTipiLbl.ClientID%>').value = katilimciTipi;
+    function IrtibatSecBtnClick(kisiId, faaliyetId, katilimciTipi) {
+        document.getElementById('<%= paramFaaliyetKatilimciIdLbl.ClientID%>').value = kisiId;
+        document.getElementById('<%= paramFaaliyetIdLbl.ClientID%>').value = faaliyetId;
+        document.getElementById('<%= paramFaaliyetKatilimciTipiLbl.ClientID%>').value = katilimciTipi;
         document.getElementById('<%=IrtibatSecBtn.ClientID%>').click();
     }
     function KatilimciCikarBtnClick(katilimId) {
-        document.getElementById('<%= paramRandevuKatilimIdLbl.ClientID%>').value = katilimId;
+        document.getElementById('<%= paramFaaliyetKatilimIdLbl.ClientID%>').value = katilimId;
         document.getElementById('<%= KatilimciCikarBtn.ClientID%>').click();
     }
 </script>
@@ -162,27 +165,27 @@
         $("#StokluAniObjesiModal").modal('hide');
         $(".modal-backdrop").remove();//ekran modaldan sonra normale dönsün
     }
-    function StoksuzAniObjesiBtnClick(katilimciId, randevuId, katilimciTipi) {
+    function StoksuzAniObjesiBtnClick(katilimciId, faaliyetId, katilimciTipi) {
 
         document.getElementById('<%= GetirilenAniObjesiTxt.ClientID%>').value = "";
         document.getElementById('<%= paramAniObjesiIdArray.ClientID%>').value = "";
         document.getElementById('<%= paramAniObjesiAdetArray.ClientID%>').value = "";
 
 
-        document.getElementById('<%= paramRandevuKatilimciIdLbl.ClientID%>').value = katilimciId;
-        document.getElementById('<%= paramRandevuIdLbl.ClientID%>').value = randevuId;
-        document.getElementById('<%= paramRandevuKatilimciTipiLbl.ClientID%>').value = katilimciTipi;
+        document.getElementById('<%= paramFaaliyetKatilimciIdLbl.ClientID%>').value = katilimciId;
+        document.getElementById('<%= paramFaaliyetIdLbl.ClientID%>').value = faaliyetId;
+        document.getElementById('<%= paramFaaliyetKatilimciTipiLbl.ClientID%>').value = katilimciTipi;
         document.getElementById('<%= AniObjesiSecBtn.ClientID%>').click();
         ArrayDoldur();
     }
-    function StokluAniObjesiBtnClick(katilimciId, randevuId, katilimciTipi) {
+    function StokluAniObjesiBtnClick(katilimciId, faaliyetId, katilimciTipi) {
 
         document.getElementById("StokluAniObjesiIadeEtTriggerBtn").style.display = "none";
         document.getElementById("StokluAniObjesiKaydetTriggerBtn").style.display = "block";
         document.getElementById('<%= paramStokluAniObjesiDagitimIdLbl.ClientID%>').value = 0;
-        document.getElementById('<%= paramRandevuKatilimciIdLbl.ClientID%>').value = katilimciId;
-        document.getElementById('<%= paramRandevuIdLbl.ClientID%>').value = randevuId;
-        document.getElementById('<%= paramRandevuKatilimciTipiLbl.ClientID%>').value = katilimciTipi;
+        document.getElementById('<%= paramFaaliyetKatilimciIdLbl.ClientID%>').value = katilimciId;
+        document.getElementById('<%= paramFaaliyetIdLbl.ClientID%>').value = faaliyetId;
+        document.getElementById('<%= paramFaaliyetKatilimciTipiLbl.ClientID%>').value = katilimciTipi;
 
         document.getElementById('<%= StokluAniObjesiSecBtn.ClientID%>').click();
 
@@ -194,10 +197,10 @@
         document.getElementById('<%= StokluAniObjesiSecBtn.ClientID%>').click();
 
     }
-    function  GetirilenAniObjesiBtnClick(katilimciId, randevuId, katilimciTipi) {
-        document.getElementById('<%= paramRandevuKatilimciIdLbl.ClientID%>').value = katilimciId;
-        document.getElementById('<%= paramRandevuIdLbl.ClientID%>').value = randevuId;
-        document.getElementById('<%= paramRandevuKatilimciTipiLbl.ClientID%>').value = katilimciTipi;
+    function  GetirilenAniObjesiBtnClick(katilimciId, faaliyetId, katilimciTipi) {
+        document.getElementById('<%= paramFaaliyetKatilimciIdLbl.ClientID%>').value = katilimciId;
+        document.getElementById('<%= paramFaaliyetIdLbl.ClientID%>').value = faaliyetId;
+        document.getElementById('<%= paramFaaliyetKatilimciTipiLbl.ClientID%>').value = katilimciTipi;
         document.getElementById('<%= GetirilenAniObjesiSecBtn.ClientID%>').click();        
     }
     function ArrayDoldur() {
@@ -327,25 +330,26 @@
                                         <div class="col">
                                             <div class="form-group">
                                                 <asp:Label CssClass="col-form-label" runat="server" Text="Faaliyet Tipi"></asp:Label>
-                                                <asp:DropDownList ID="RandevuTipiDDL" CssClass="form-control" runat="server" Style="height: auto" Enabled="True"></asp:DropDownList>
-                                                <asp:RequiredFieldValidator runat="server" ControlToValidate="RandevuTipiDDL" ForeColor="Red" ErrorMessage="Faaliyet Tipi Seçiniz"> </asp:RequiredFieldValidator>
+                                                <asp:DropDownList ID="FaaliyetTipiDDL" CssClass="form-control" runat="server" Style="height: auto" Enabled="True"></asp:DropDownList>
+                                                <asp:RequiredFieldValidator runat="server" ControlToValidate="FaaliyetTipiDDL" ForeColor="Red" ErrorMessage="Faaliyet Tipi Seçiniz"> </asp:RequiredFieldValidator>
                                             </div>
                                             <div class="form-group">
                                                 <asp:Label CssClass="col-form-label" runat="server" Text="Faaliyet Yeri"></asp:Label>
-                                                <asp:DropDownList ID="RandevuYeriDDL" CssClass="form-control" runat="server" Style="height: auto"></asp:DropDownList>
+                                                <asp:DropDownList ID="FaaliyetYeriDDL" CssClass="form-control" runat="server" Style="height: auto"></asp:DropDownList>
                                             </div>
                                         </div>
                                         <div class="col">
                                             <div class="form-group">
                                                 <asp:Label CssClass="col-form-label" runat="server" Text="Faaliyet Amacı"></asp:Label>
-                                                <asp:DropDownList ID="RandevuAmaciDDL" CssClass="form-control" runat="server" Style="height: auto"></asp:DropDownList>
-                                                <asp:RequiredFieldValidator runat="server" ControlToValidate="RandevuAmaciDDL" ForeColor="Red" ErrorMessage="Randevu Amacı Seçiniz"> </asp:RequiredFieldValidator>
+                                                <asp:DropDownList ID="FaaliyetAmaciDDL" CssClass="form-control" runat="server" Style="height: auto"></asp:DropDownList>
+                                                <asp:RequiredFieldValidator runat="server" ControlToValidate="FaaliyetAmaciDDL" ForeColor="Red" ErrorMessage="Faaliyet Amacı Seçiniz"> </asp:RequiredFieldValidator>
                                             </div>
                                             <div class="form-group">
                                                 <asp:Label CssClass="col-form-label" runat="server" Text="Faaliyet Durumu"></asp:Label>
-                                                <asp:DropDownList ID="RandevuDurumuDDL" CssClass="form-control" runat="server" Style="height: auto" OnSelectedIndexChanged="RandevuDurumuDDL_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
+                                                <asp:DropDownList ID="FaaliyetDurumuDDL" CssClass="form-control" runat="server" Style="height: auto" OnSelectedIndexChanged="FaaliyetDurumuDDL_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
                                             </div>
                                         </div>
+                                       
                                     </div>
                                 </div>
                                 <div class="col">
@@ -363,7 +367,7 @@
                                         <div class="form-group col">
                                             <div class="checkbox pt-3">
                                                 <label>
-                                                    <asp:CheckBox ID="TumGunChk" runat="server" Checked="false" ToolTip="Tüm gün geçerli randevular için işaretleyiniz." />
+                                                    <asp:CheckBox ID="TumGunChk" runat="server" Checked="false" ToolTip="Tüm gün geçerli faaliyetlar için işaretleyiniz." />
                                                     Tüm Gün
                                                 </label>
                                             </div>
@@ -383,7 +387,7 @@
                                         <div class="form-group col">
                                             <div class="checkbox pt-3">
                                                 <label>
-                                                    <asp:CheckBox ID="AcikTarihChk" runat="server" Checked="false" ToolTip="Tarihi sonradan belli olacak randevular için işaretleyiniz." />
+                                                    <asp:CheckBox ID="AcikTarihChk" runat="server" Checked="false" ToolTip="Tarihi sonradan belli olacak faaliyetlar için işaretleyiniz." />
                                                     Açık Tarihli
                                                 </label>
                                             </div>
@@ -391,14 +395,31 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <asp:Label CssClass="col-form-label" runat="server" Text="Faaliyet Konusu"></asp:Label>
-                                <asp:TextBox ID="RandevuKonusuTxt" CssClass="form-control" runat="server" Text=""></asp:TextBox>
-                                <asp:RequiredFieldValidator runat="server" ControlToValidate="RandevuKonusuTxt" ForeColor="Red" ErrorMessage="Faaliyet Konusu Giriniz"> </asp:RequiredFieldValidator>
+                            <div class="row">
+
+                                <div class="form-group col">
+                                    <asp:Label CssClass="col-form-label" runat="server" Text="Faaliyet Konusu"></asp:Label>
+                                    <asp:TextBox ID="FaaliyetKonusuTxt" CssClass="form-control" runat="server" Text=""></asp:TextBox>
+                                    <asp:RequiredFieldValidator runat="server" ControlToValidate="FaaliyetKonusuTxt" ForeColor="Red" ErrorMessage="Faaliyet Konusu Giriniz"> </asp:RequiredFieldValidator>
+                                </div>
+                                <div class="col-4">
+                                    <div class="checkbox pt-3">
+                                        <label class="float-right">
+                                            <asp:CheckBox ID="OzelKalemTakvimiChk" runat="server" Checked="true" ToolTip="Özel Kalemin İnternet Takvimine girecek faaliyetlar için işaretleyiniz." />
+                                            Özel Kalem Takvimine İşlensin
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <asp:Label CssClass="col-form-label" runat="server" Text="Açıklama"></asp:Label>
-                                <asp:TextBox ID="AciklamaTxt" CssClass="form-control" runat="server" Text="" TextMode="MultiLine" Rows="5"></asp:TextBox>
+                            <div class="row">
+                                <div class="form-group col">
+                                    <asp:Label CssClass="col-form-label" runat="server" Text="Açıklama"></asp:Label>
+                                    <asp:TextBox ID="AciklamaTxt" CssClass="form-control" runat="server" Text="" TextMode="MultiLine" Rows="5"></asp:TextBox>
+                                </div>
+                                <div class="form-group col">
+                                    <asp:Label CssClass="col-form-label font-weight-bold text-danger" runat="server" Text="Yönetici Notu"></asp:Label>
+                                    <asp:TextBox ID="YoneticiNotuTxt" CssClass="form-control font-weight-bold text-danger" runat="server" Text="" TextMode="MultiLine" Rows="5"></asp:TextBox>
+                                </div>
                             </div>
                         </ContentTemplate>
 <%--                        <Triggers>
@@ -470,10 +491,10 @@
                 <ContentTemplate>
                     <asp:LinkButton ID="KaydetBtn" CssClass="btn btn-outline-success" runat="server" Text="Faaliyeti Kaydet" OnClick="KaydetBtn_Click"></asp:LinkButton>
                     <asp:LinkButton ID="GuncelleBtn" CssClass="btn btn-outline-primary" runat="server" Text="Güncelle" OnClick="GuncelleBtn_Click"></asp:LinkButton>
-                    <asp:LinkButton ID="RandevuSilBtn" CssClass="btn btn-outline-danger" runat="server" Text="Faaliyeti Sil" OnClick="RandevuSilBtn_Click" Visible="False"></asp:LinkButton>
-                    <asp:LinkButton ID="RandevuKartiBtn" CssClass="btn btn-outline-secondary" runat="server" Text="Faaliyet Kartı" OnClick="RandevuKartiBtn_Click" Visible="False"></asp:LinkButton>
-                    <asp:LinkButton ID="RandevuTakvimiBtn" CssClass="btn btn-outline-info float-right" runat="server" Text="Faaliyet Takvimi" OnClick="RandevuTakvimiBtn_Click" CausesValidation="false"></asp:LinkButton>
-                    <asp:LinkButton ID="RandevuListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Faaliyet Listesi" OnClick="RandevuListesiBtn_Click" CausesValidation="false"></asp:LinkButton>
+                    <asp:LinkButton ID="FaaliyetSilBtn" CssClass="btn btn-outline-danger" runat="server" Text="Faaliyeti Sil" OnClick="FaaliyetSilBtn_Click" Visible="False"></asp:LinkButton>
+                    <asp:LinkButton ID="FaaliyetKartiBtn" CssClass="btn btn-outline-secondary" runat="server" Text="Faaliyet Kartı" OnClick="FaaliyetKartiBtn_Click" Visible="False"></asp:LinkButton>
+                    <asp:LinkButton ID="FaaliyetTakvimiBtn" CssClass="btn btn-outline-info float-right" runat="server" Text="Faaliyet Takvimi" OnClick="FaaliyetTakvimiBtn_Click" CausesValidation="false"></asp:LinkButton>
+                    <asp:LinkButton ID="FaaliyetListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Faaliyet Listesi" OnClick="FaaliyetListesiBtn_Click" CausesValidation="false"></asp:LinkButton>
                     <asp:LinkButton ID="KisiListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Kişi Listesi" OnClick="KisiListesiBtn_Click" CausesValidation="false"></asp:LinkButton>
                 </ContentTemplate>
                 <Triggers>
@@ -483,10 +504,10 @@
         </div>
     </div>
     <div id="KatilimciHiddenDiv" style="display: none">
-        <input id="paramRandevuIdLbl" runat="server" type="text" />
-        <input id="paramRandevuKatilimIdLbl" runat="server" type="text" />
-        <input id="paramRandevuKatilimciIdLbl" runat="server" type="text" />
-        <input id="paramRandevuKatilimciTipiLbl" runat="server" type="text" />
+        <input id="paramFaaliyetIdLbl" runat="server" type="text" />
+        <input id="paramFaaliyetKatilimIdLbl" runat="server" type="text" />
+        <input id="paramFaaliyetKatilimciIdLbl" runat="server" type="text" />
+        <input id="paramFaaliyetKatilimciTipiLbl" runat="server" type="text" />
         <asp:LinkButton ID="SecilenKatilimciyiKaydetNowBtn" runat="server" CausesValidation="false" Text="Faaliyete Ekle" OnClientClick="{return true;};" OnClick="SecilenKatilimciyiKaydetNowBtn_Click" />
         <asp:LinkButton ID="KatilimciCikarBtn" runat="server" CssClass="btn btn-outline-success" Text="Faaliyetden Çıkar" OnClick="KatilimciCikarBtn_Click" />
         <asp:LinkButton ID="IrtibatSecBtn" runat="server" CausesValidation="false" Text="" OnClientClick="{return true;};" OnClick="IrtibatSecBtn_Click" ClientIDMode="Static" />
@@ -518,7 +539,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <asp:LinkButton ID="RandevuSilNowBtn" CssClass="btn btn-outline-danger" runat="server" Text="Faaliyeti Sil" OnClick="RandevuSilNowBtn_Click"></asp:LinkButton>
+                        <asp:LinkButton ID="FaaliyetSilNowBtn" CssClass="btn btn-outline-danger" runat="server" Text="Faaliyeti Sil" OnClick="FaaliyetSilNowBtn_Click"></asp:LinkButton>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
                     </div>
                 </div>
@@ -526,7 +547,7 @@
         </div>
     </ContentTemplate>
     <Triggers>
-        <asp:AsyncPostBackTrigger ControlID="RandevuSilBtn" EventName="click" />
+        <asp:AsyncPostBackTrigger ControlID="FaaliyetSilBtn" EventName="click" />
         <asp:AsyncPostBackTrigger ControlID="GuncelleBtn" EventName="click" />
     </Triggers>
 </asp:UpdatePanel>
@@ -536,17 +557,20 @@
         <div class="modal " id="KatilimciSecimiModal" role="dialog">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="col-form-label font-weight-bold" id="KatiliciSecimiHeaderLbl" runat="server">Katılımcı Seçimi
+                        </h3>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
                     <div class="modal-body ">
 
                         <div class="card">
-                            <div class="card-header text-danger">
-                                <h3 class="col-form-label font-weight-bold" id="KatiliciSecimiHeaderLbl" runat="server">Katılımcı Seçimi
-                                </h3>
-                            </div>
                             <div class="card-body">
                                 <div class="card-body p-0" id="Div1" runat="server">
                                     <div class="form-group">
-                                        <table id="CustomModalDataTable" class="table table-striped table-bordered" width="100%">
+                                        <table id="CustomModalDataTable" class="table table-striped table-bordered table-sm small" width="100%">
                                             <thead>
                                                 <tr>
                                                     <th>Adı Soyadi</th>

@@ -347,7 +347,7 @@ namespace BTYS_Webparts.BolgeTasinmazRaporuWP {
             @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
             @__ctrl.ColumnSpan = 2;
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Apt./İşhanı"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Bina"));
             return @__ctrl;
         }
         

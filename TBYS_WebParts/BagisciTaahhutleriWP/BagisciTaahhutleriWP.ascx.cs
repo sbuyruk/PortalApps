@@ -135,7 +135,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP
                     string ilIlce = dataRow["IlIlce"].ToString();
                     string adres = dataRow["Adres"].ToString();
                     string mulkiyetSekli = dataRow["MulkiyetSekli"].ToString();
-                    string kullanimDurumu = dataRow["KullanimDurumu"].ToString();
+                    string kiraDurumu = dataRow["KiraDurumu"].ToString();
                     string tasinmazStr = adres + " " + ilIlce + " (" + cinsi + ", " + mulkiyetSekli + ")";
                     ListItem li = new ListItem(tasinmazStr, tasinmazIdStr);
                     TasinmazDDL.Items.Add(li);

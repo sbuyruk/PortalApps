@@ -85,7 +85,7 @@ namespace TBYS_WebParts.TasinmazSorgulamaWP
             {
                 string kullanimSekli = row["KullanimSekli"].ToString();
                 string mulkiyetSekli = row["MulkiyetSekli"].ToString();
-                string kullanimDurumu = row["KullanimDurumu"].ToString();
+                string kiraDurumu = row["KiraDurumu"].ToString();
                 string ili = row["Ili"].ToString();
                 string ilcesi = row["Ilcesi"].ToString();
                 string adres = row["Adres"].ToString();
@@ -96,7 +96,7 @@ namespace TBYS_WebParts.TasinmazSorgulamaWP
                 TasinmazSorgulamaListItem tasinmazSorgulamaListItem = new TasinmazSorgulamaListItem();
                 tasinmazSorgulamaListItem.KullanimSekli = kullanimSekli;
                 tasinmazSorgulamaListItem.MulkiyetSekli = mulkiyetSekli;
-                tasinmazSorgulamaListItem.KullanimDurumu = kullanimDurumu;
+                tasinmazSorgulamaListItem.KiraDurumu = kiraDurumu;
                 tasinmazSorgulamaListItem.Ili = ili;
                 tasinmazSorgulamaListItem.Ilcesi = ilcesi;
                 tasinmazSorgulamaListItem.Adres = adres;
@@ -112,7 +112,7 @@ namespace TBYS_WebParts.TasinmazSorgulamaWP
         {
             public string KullanimSekli { get; set; }
             public string MulkiyetSekli { get; set; }
-            public string KullanimDurumu { get; set; }
+            public string KiraDurumu { get; set; }
             public string Ili { get; set; }
             public string Ilcesi { get; set; }
             public string Adres { get; set; }

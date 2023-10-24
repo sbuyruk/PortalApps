@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Reflection;
+using System.Web;
 using System.Web.Script.Serialization;
 using Utility.HelperClasses;
 
@@ -103,9 +104,19 @@ namespace Model.Ortak
                                 }
                                 else if (propertyInfos.PropertyType == typeof(Guid))
                                 {
-                                    Guid guid = Guid.Parse(dataRow[dtField.Name].ToString());
-                                    propertyInfos.SetValue
-                                    (classObj, guid, null);
+                                    string data = dataRow[dtField.Name].ToString();
+                                    if (string.IsNullOrEmpty(data))
+                                    {
+                                        Guid guid = Guid.NewGuid();
+                                        propertyInfos.SetValue
+                                        (classObj, guid, null);
+                                    }
+                                    else 
+                                    {
+                                        Guid guid = Guid.Parse(dataRow[dtField.Name].ToString());
+                                        propertyInfos.SetValue
+                                        (classObj, guid, null);
+                                    }
                                 }
                             }
                         }

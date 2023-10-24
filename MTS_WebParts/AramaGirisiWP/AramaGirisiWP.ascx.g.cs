@@ -113,11 +113,11 @@ namespace MTS_WebParts.AramaGirisiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.LinkButton RandevuTakvimiBtn;
+        protected global::System.Web.UI.WebControls.LinkButton FaaliyetTakvimiBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.LinkButton RandevuListesiBtn;
+        protected global::System.Web.UI.WebControls.LinkButton FaaliyetListesiBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -133,11 +133,11 @@ namespace MTS_WebParts.AramaGirisiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.HtmlControls.HtmlInputText paramRandevuKatilimciIdLbl;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText paramFaaliyetKatilimciIdLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.HtmlControls.HtmlInputText paramRandevuKatilimciTipiLbl;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText paramFaaliyetKatilimciTipiLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -577,36 +577,36 @@ namespace MTS_WebParts.AramaGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.LinkButton @__BuildControlRandevuTakvimiBtn() {
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlFaaliyetTakvimiBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
-            this.RandevuTakvimiBtn = @__ctrl;
+            this.FaaliyetTakvimiBtn = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "RandevuTakvimiBtn";
+            @__ctrl.ID = "FaaliyetTakvimiBtn";
             @__ctrl.CssClass = "btn btn-outline-info float-right";
             @__ctrl.CausesValidation = false;
             @__ctrl.Text = "Faaliyet Takvimi";
-            @__ctrl.Click -= new System.EventHandler(this.RandevuTakvimiBtn_Click);
-            @__ctrl.Click += new System.EventHandler(this.RandevuTakvimiBtn_Click);
+            @__ctrl.Click -= new System.EventHandler(this.FaaliyetTakvimiBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.FaaliyetTakvimiBtn_Click);
             return @__ctrl;
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.LinkButton @__BuildControlRandevuListesiBtn() {
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlFaaliyetListesiBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
-            this.RandevuListesiBtn = @__ctrl;
+            this.FaaliyetListesiBtn = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "RandevuListesiBtn";
+            @__ctrl.ID = "FaaliyetListesiBtn";
             @__ctrl.CssClass = "btn btn-outline-secondary float-right";
             @__ctrl.CausesValidation = false;
             @__ctrl.Text = "Faaliyet Listesi";
-            @__ctrl.Click -= new System.EventHandler(this.RandevuListesiBtn_Click);
-            @__ctrl.Click += new System.EventHandler(this.RandevuListesiBtn_Click);
+            @__ctrl.Click -= new System.EventHandler(this.FaaliyetListesiBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.FaaliyetListesiBtn_Click);
             return @__ctrl;
         }
         
@@ -673,11 +673,11 @@ namespace MTS_WebParts.AramaGirisiWP {
             @__parser.AddParsedSubObject(@__ctrl5);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl6;
-            @__ctrl6 = this.@__BuildControlRandevuTakvimiBtn();
+            @__ctrl6 = this.@__BuildControlFaaliyetTakvimiBtn();
             @__parser.AddParsedSubObject(@__ctrl6);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl7;
-            @__ctrl7 = this.@__BuildControlRandevuListesiBtn();
+            @__ctrl7 = this.@__BuildControlFaaliyetListesiBtn();
             @__parser.AddParsedSubObject(@__ctrl7);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl8;
@@ -707,11 +707,11 @@ namespace MTS_WebParts.AramaGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.HtmlControls.HtmlInputText @__BuildControlparamRandevuKatilimciIdLbl() {
+        private global::System.Web.UI.HtmlControls.HtmlInputText @__BuildControlparamFaaliyetKatilimciIdLbl() {
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
-            this.paramRandevuKatilimciIdLbl = @__ctrl;
-            @__ctrl.ID = "paramRandevuKatilimciIdLbl";
+            this.paramFaaliyetKatilimciIdLbl = @__ctrl;
+            @__ctrl.ID = "paramFaaliyetKatilimciIdLbl";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
             return @__ctrl;
         }
@@ -719,11 +719,11 @@ namespace MTS_WebParts.AramaGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.HtmlControls.HtmlInputText @__BuildControlparamRandevuKatilimciTipiLbl() {
+        private global::System.Web.UI.HtmlControls.HtmlInputText @__BuildControlparamFaaliyetKatilimciTipiLbl() {
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
-            this.paramRandevuKatilimciTipiLbl = @__ctrl;
-            @__ctrl.ID = "paramRandevuKatilimciTipiLbl";
+            this.paramFaaliyetKatilimciTipiLbl = @__ctrl;
+            @__ctrl.ID = "paramFaaliyetKatilimciTipiLbl";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
             return @__ctrl;
         }
@@ -1084,10 +1084,10 @@ namespace MTS_WebParts.AramaGirisiWP {
             @__ctrl23 = this.@__BuildControlUpdatePanel1();
             @__parser.AddParsedSubObject(@__ctrl23);
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl24;
-            @__ctrl24 = this.@__BuildControlparamRandevuKatilimciIdLbl();
+            @__ctrl24 = this.@__BuildControlparamFaaliyetKatilimciIdLbl();
             @__parser.AddParsedSubObject(@__ctrl24);
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl25;
-            @__ctrl25 = this.@__BuildControlparamRandevuKatilimciTipiLbl();
+            @__ctrl25 = this.@__BuildControlparamFaaliyetKatilimciTipiLbl();
             @__parser.AddParsedSubObject(@__ctrl25);
             global::System.Web.UI.WebControls.LinkButton @__ctrl26;
             @__ctrl26 = this.@__BuildControlSecilenKatilimciyiGetirBtn();
@@ -1138,10 +1138,10 @@ namespace MTS_WebParts.AramaGirisiWP {
     }
     function KatilimciSecildiBtnClick(katilimciId, katilimciTipi) {
         document.getElementById('");
-                         @__w.Write( paramRandevuKatilimciIdLbl.ClientID);
+                         @__w.Write( paramFaaliyetKatilimciIdLbl.ClientID);
 
             @__w.Write("\').value = katilimciId;\r\n        document.getElementById(\'");
-                         @__w.Write( paramRandevuKatilimciTipiLbl.ClientID);
+                         @__w.Write( paramFaaliyetKatilimciTipiLbl.ClientID);
 
             @__w.Write("\').value = katilimciTipi;\r\n        document.getElementById(\'");
                          @__w.Write( SecilenKatilimciyiGetirBtn.ClientID);

@@ -123,13 +123,13 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
         {
             switch (KatilimciTipiQS.ConvertToInt())
             {
-                case ProjeConstants.RANDEVU_KATILIMCI_TASINMAZBAGISCI_INT:
+                case ProjeConstants.FAALIYET_KATILIMCI_TASINMAZBAGISCI_INT:
                     {
                         TasinmazBagisci tasinmazBagisci = new TasinmazBagisci();
                         tasinmazBagisci = tasinmazBagisci.Select<TasinmazBagisci>(ArayanIdQS.ConvertToInt());
                         if (tasinmazBagisci != null)
                         {
-                            AdiSoyadiLnk.Text = (tasinmazBagisci.Adi + " " + tasinmazBagisci.Soyadi).Trim() + " (" + ProjeConstants.RANDEVU_KATILIMCI_TASINMAZBAGISCI + ")";
+                            AdiSoyadiLnk.Text = (tasinmazBagisci.Adi + " " + tasinmazBagisci.Soyadi).Trim() + " (" + ProjeConstants.FAALIYET_KATILIMCI_TASINMAZBAGISCI + ")";
                             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                             string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/";
                             AdiSoyadiLnk.NavigateUrl = newUrl + ProjeConstants.PAGE_KISI_KARTI + "?KatilimciId=" + ArayanIdQS + "&KatilimciTipi=" + KatilimciTipiQS;
@@ -142,13 +142,13 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
                         break;
                     }
 
-                case ProjeConstants.RANDEVU_KATILIMCI_NAKITBAGISCI_INT:
+                case ProjeConstants.FAALIYET_KATILIMCI_NAKITBAGISCI_INT:
                     {
                         NakitBagisci nakitBagisci = new NakitBagisci();
                         nakitBagisci = nakitBagisci.Select<NakitBagisci>(ArayanIdQS.ConvertToInt());
                         if (nakitBagisci != null)
                         {
-                            AdiSoyadiLnk.Text = (nakitBagisci.Adi + " " + nakitBagisci.Soyadi).Trim() + " (" + ProjeConstants.RANDEVU_KATILIMCI_NAKITBAGISCI + ")";
+                            AdiSoyadiLnk.Text = (nakitBagisci.Adi + " " + nakitBagisci.Soyadi).Trim() + " (" + ProjeConstants.FAALIYET_KATILIMCI_NAKITBAGISCI + ")";
                             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                             string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/";
                             AdiSoyadiLnk.NavigateUrl = newUrl + ProjeConstants.PAGE_KISI_KARTI + "?KatilimciId=" + ArayanIdQS + "&KatilimciTipi=" + KatilimciTipiQS;
@@ -160,7 +160,7 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
                         }
                         break;
                     }
-                case ProjeConstants.RANDEVU_KATILIMCI_DIS_INT:
+                case ProjeConstants.FAALIYET_KATILIMCI_DIS_INT:
                     {
                         Kisi kisi = new Kisi();
                         kisi = kisi.Select(ArayanIdQS.ConvertToInt());
@@ -178,7 +178,7 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
                         }
                         break;
                     }
-                case ProjeConstants.RANDEVU_KATILIMCI_IC_INT:
+                case ProjeConstants.FAALIYET_KATILIMCI_IC_INT:
                     {
                         string gorevi = string.Empty;
                         Personel personel = new Personel();
@@ -313,10 +313,10 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
                     if (randevuId > 0)
                     {
                         aramaItem.RandevuId = randevuId.ToString();
-                        Randevu randevu = new Randevu();
-                        randevu = randevu.Select(randevuId);
-                        if (randevu != null)
-                            aramaItem.Randevu = "<a target=_blank href=" + ProjeConstants.PAGE_RANDEVU_GIRIS + "?RandevuId=" + randevuId + " class='btn btn-outline-secondary'>Randevu</a>";
+                        Faaliyet faaliyet = new Faaliyet();
+                        faaliyet = faaliyet.Select(randevuId);
+                        if (faaliyet != null)
+                            aramaItem.Randevu = "<a target=_blank href=" + ProjeConstants.PAGE_FAALIYET_GIRIS + "?RandevuId=" + randevuId + " class='btn btn-outline-secondary'>Randevu</a>";
                         else
                             aramaItem.Randevu = string.Empty;
                     }
@@ -378,7 +378,7 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
         }
         protected void RandevuListesiBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_RANDEVU_LIST);
+            RedirectToPage(ProjeConstants.PAGE_FAALIYET_LIST);
         }
         protected void RandevuTakvimiBtn_Click(object sender, EventArgs e)
         {
@@ -392,7 +392,7 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
         #region Katılımcı Seçimi
         protected void KatilimciSecBtn_Click(object sender, EventArgs e)
         {
-            KatilimciModalAc(ProjeConstants.RANDEVU_KATILIMCI_IC_INT);
+            KatilimciModalAc(ProjeConstants.FAALIYET_KATILIMCI_IC_INT);
         }
         private void KatilimciModalAc(int katilimciTipi)
         {
@@ -467,13 +467,13 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
         private List<KatilimciListItem> GetModalDataList()
         {
             Personel personel = new Personel();
-            DataTable dataTableIc = personel.SelectSecilmemisIcKatilimcilarByRandevuIdReturnDT(ProjeConstants.HEPSI_INT);
+            DataTable dataTableIc = personel.SelectSecilmemisIcKatilimcilarByFaaliyetIdReturnDT(ProjeConstants.HEPSI_INT);
             Kisi kisi = new Kisi();
-            DataTable dataTableDis = kisi.SelectSecilmemisDisKatilimcilarByRandevuIdReturnDT(ProjeConstants.HEPSI_INT);
+            DataTable dataTableDis = kisi.SelectSecilmemisDisKatilimcilarByFaaliyetIdReturnDT(ProjeConstants.HEPSI_INT);
             NakitBagisci nakitBagisci = new NakitBagisci();
-            DataTable dataTableNakit = nakitBagisci.SelectSecilmemisKatilimcilarByRandevuIdReturnDT(ProjeConstants.HEPSI_INT);
+            DataTable dataTableNakit = nakitBagisci.SelectSecilmemisKatilimcilarByFaaliyetIdReturnDT(ProjeConstants.HEPSI_INT);
             TasinmazBagisci tasinmazBagisci = new TasinmazBagisci();
-            DataTable dataTableTasinmaz = tasinmazBagisci.SelectSecilmemisKatilimcilarByRandevuIdReturnDT(ProjeConstants.HEPSI_INT);
+            DataTable dataTableTasinmaz = tasinmazBagisci.SelectSecilmemisKatilimcilarByFaaliyetIdReturnDT(ProjeConstants.HEPSI_INT);
 
             dataTableIc.Merge(dataTableDis);
             dataTableIc.Merge(dataTableNakit);
@@ -509,27 +509,27 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
         }
         private string KatilimciTipiGetir(int katilimciTipi)
         {
-            string katilimciTipStr = ProjeConstants.RANDEVU_KATILIMCI_DIS;
+            string katilimciTipStr = ProjeConstants.FAALIYET_KATILIMCI_DIS;
             switch (katilimciTipi)
             {
-                case ProjeConstants.RANDEVU_KATILIMCI_IC_INT:
+                case ProjeConstants.FAALIYET_KATILIMCI_IC_INT:
                     {
-                        katilimciTipStr = ProjeConstants.RANDEVU_KATILIMCI_IC;
+                        katilimciTipStr = ProjeConstants.FAALIYET_KATILIMCI_IC;
                         break;
                     }
-                case ProjeConstants.RANDEVU_KATILIMCI_DIS_INT:
+                case ProjeConstants.FAALIYET_KATILIMCI_DIS_INT:
                     {
-                        katilimciTipStr = ProjeConstants.RANDEVU_KATILIMCI_DIS;
+                        katilimciTipStr = ProjeConstants.FAALIYET_KATILIMCI_DIS;
                         break;
                     }
-                case ProjeConstants.RANDEVU_KATILIMCI_NAKITBAGISCI_INT:
+                case ProjeConstants.FAALIYET_KATILIMCI_NAKITBAGISCI_INT:
                     {
-                        katilimciTipStr = ProjeConstants.RANDEVU_KATILIMCI_NAKITBAGISCI;
+                        katilimciTipStr = ProjeConstants.FAALIYET_KATILIMCI_NAKITBAGISCI;
                         break;
                     }
-                case ProjeConstants.RANDEVU_KATILIMCI_TASINMAZBAGISCI_INT:
+                case ProjeConstants.FAALIYET_KATILIMCI_TASINMAZBAGISCI_INT:
                     {
-                        katilimciTipStr = ProjeConstants.RANDEVU_KATILIMCI_TASINMAZBAGISCI;
+                        katilimciTipStr = ProjeConstants.FAALIYET_KATILIMCI_TASINMAZBAGISCI;
                         break;
                     }
                 default:

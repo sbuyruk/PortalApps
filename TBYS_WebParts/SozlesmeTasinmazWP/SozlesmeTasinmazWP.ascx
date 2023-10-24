@@ -80,7 +80,7 @@
                                             <tr>
                                                 <th>Kullanım Şekli</th>
                                                 <th>Mülkiyet Şekli</th>
-                                                <th>Kullanım Durumu</th>
+                                                <th>Kira Durumu</th>
                                                 <th>Adres</th>
                                                 <th>Bölüm</th>
                                                 <th>Sözleşmeye Ekle</th>

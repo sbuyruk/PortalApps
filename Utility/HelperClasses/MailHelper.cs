@@ -16,7 +16,7 @@ namespace Utility.HelperClasses
             try
             {
 
-                SmtpClient smtp = new SmtpClient(smptpAdres ?? ProjeConstants.PARAM_SMTP_IP_ADRESI);
+                SmtpClient smtp = new SmtpClient(smptpAdres ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
                 MailMessage mail = new MailMessage();
 
                 mail.From = new MailAddress(from);
@@ -39,7 +39,7 @@ namespace Utility.HelperClasses
         }
         public static void TakvimeEkle(Guid uniqueId, string from, string to, string title, DateTime startTime, DateTime endTime, string location, string desc, string smptpAdres)
         {
-            SmtpClient smtp = new SmtpClient(smptpAdres ?? ProjeConstants.PARAM_SMTP_IP_ADRESI);
+            SmtpClient smtp = new SmtpClient(smptpAdres ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
             MailMessage mail = new MailMessage();
             mail.From = new MailAddress(from);
             mail.Subject = title;
@@ -60,7 +60,7 @@ namespace Utility.HelperClasses
                 title = "İptal Edildi : " + title;
                 string desc2 = desc + "\n\n Toplantı iptal edilmiştir. Lütfen takviminizden kaldırmak için 'Takvimden Kaldır' butonuna tıklayınız.";// UtilityHelper.parametreDegeriSorgula("Toplantı Takvimden Kaldırma Mesajı");
 
-                SmtpClient smtp = new SmtpClient(string.IsNullOrEmpty(smtpAdres) ? ProjeConstants.PARAM_SMTP_IP_ADRESI : smtpAdres);
+                SmtpClient smtp = new SmtpClient(string.IsNullOrEmpty(smtpAdres) ? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI : smtpAdres);
                 MailMessage mail = new MailMessage();
                 mail.From = new MailAddress(from);//new MailAddress(parametreDegeriSorgula("Sistem Hesabı") + parametreDegeriSorgula("EPosta Domain Uzantısı"));
                 mail.Subject = title;

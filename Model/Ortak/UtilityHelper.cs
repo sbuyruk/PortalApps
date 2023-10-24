@@ -208,7 +208,7 @@ namespace Model.Ortak
                         {
                             //Check the file is less than 4MB
                             int fileSize = fileBrowser.PostedFile.ContentLength;
-                            if (fileSize > 4000000)
+                            if (fileSize > 6000000)
                             {
                                 Exception exceptionInfo = new Exception(String.Format(fileBrowser.FileName + " : Dosya boyutu 4Mb'tan büyük olduğu için kaydedilmedi."));
                                 exceptionHelper.Exceptions.Add(exceptionInfo);

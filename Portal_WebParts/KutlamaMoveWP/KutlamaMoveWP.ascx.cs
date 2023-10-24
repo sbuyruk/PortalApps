@@ -56,14 +56,12 @@ namespace Portal_WebParts.KutlamaMoveWP
             gt = gt.SelectByGorevId(ProjeConstants.GOREV_GENELMUDUR_INT);
             if (gt != null)
             {
-
-                GenelMudurUnvani = gt.Adi;
-
                 genelMudur = genelMudur.Select<Personel>(gt.PersonelId);
                 if (genelMudur != null)
                 {
                     GenelMudur = genelMudur.Adi + " " + genelMudur.Soyadi;
-                    GenelMudurUnvani = gt.Vekil ? gt.Adi + " Vekili " : gt.Adi;
+                    GenelMudurUnvani = gt.Adi;
+                    //GenelMudurUnvani = gt.Vekil ? gt.Adi + " Vekili " : gt.Adi;
                 }
             }
 

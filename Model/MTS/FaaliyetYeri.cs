@@ -26,7 +26,7 @@ namespace Model.MTS
                 if (id > 0 && ProjeConstants.MTS_SAVE_LOG)
                 {
                     OlayKayit olayKayit = new OlayKayit();
-                    olayKayit.GirisOlayKaydet(this, ProjeConstants.MTS, ProjeConstants.MTS_RANDEVUPARAMETRE);
+                    olayKayit.GirisOlayKaydet(this, ProjeConstants.MTS, ProjeConstants.MTS_FAALIYETPARAMETRE);
                 }
                 this.Id = id;
                 return id;
@@ -57,7 +57,7 @@ namespace Model.MTS
                     if (isSuccess && ProjeConstants.MTS_UPDATE_LOG)
                     {
                         OlayKayit olayKayit = new OlayKayit();
-                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.MTS, ProjeConstants.MTS_RANDEVUPARAMETRE);
+                        olayKayit.GuncellemeOlayKaydet(this, item, ProjeConstants.MTS, ProjeConstants.MTS_FAALIYETPARAMETRE);
                     }
                 }
             }
@@ -85,7 +85,7 @@ namespace Model.MTS
                     if (isDeleted && ProjeConstants.MTS_DELETE_LOG)
                     {
                         OlayKayit olayKayit = new OlayKayit();
-                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.MTS, ProjeConstants.MTS_RANDEVUPARAMETRE);
+                        olayKayit.SilmeOlayKaydet(item, ProjeConstants.MTS, ProjeConstants.MTS_FAALIYETPARAMETRE);
                     }
                 }
                 return isDeleted;

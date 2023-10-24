@@ -109,11 +109,11 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.DropDownList KiraDurumuDDL;
+        protected global::System.Web.UI.WebControls.DropDownList KirayaUygunlukDDL;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.DropDownList KullanimDurumuDDL;
+        protected global::System.Web.UI.WebControls.DropDownList KiraDurumuDDL;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -579,12 +579,12 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.DropDownList @__BuildControlKiraDurumuDDL() {
+        private global::System.Web.UI.WebControls.DropDownList @__BuildControlKirayaUygunlukDDL() {
             global::System.Web.UI.WebControls.DropDownList @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.DropDownList();
-            this.KiraDurumuDDL = @__ctrl;
+            this.KirayaUygunlukDDL = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "KiraDurumuDDL";
+            @__ctrl.ID = "KirayaUygunlukDDL";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: auto");
             return @__ctrl;
@@ -593,12 +593,12 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.DropDownList @__BuildControlKullanimDurumuDDL() {
+        private global::System.Web.UI.WebControls.DropDownList @__BuildControlKiraDurumuDDL() {
             global::System.Web.UI.WebControls.DropDownList @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.DropDownList();
-            this.KullanimDurumuDDL = @__ctrl;
+            this.KiraDurumuDDL = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "KullanimDurumuDDL";
+            @__ctrl.ID = "KiraDurumuDDL";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: auto");
             return @__ctrl;
@@ -1123,17 +1123,17 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
                         <div class=""row"">
                             <div class=""form-group col"">
                                 <div class=""form-group m-0 "">
-                                    <label class=""col-form-label"" for=""KiraDurumuDDL"">Kira Durumu</label>
+                                    <label class=""col-form-label"" for=""KirayaUygunlukDDL"">Kiraya Uygunluk</label>
                                     "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl13;
-            @__ctrl13 = this.@__BuildControlKiraDurumuDDL();
+            @__ctrl13 = this.@__BuildControlKirayaUygunlukDDL();
             @__parser.AddParsedSubObject(@__ctrl13);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                                <div cl" +
                         "ass=\"form-group m-0 \">\r\n                                    <label class=\"col-fo" +
-                        "rm-label\" for=\"KullanimDurumuDDL\">Kull.Durumu</label>\r\n                         " +
+                        "rm-label\" for=\"KiraDurumuDDL\">Kull.Durumu</label>\r\n                         " +
                         "           "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl14;
-            @__ctrl14 = this.@__BuildControlKullanimDurumuDDL();
+            @__ctrl14 = this.@__BuildControlKiraDurumuDDL();
             @__parser.AddParsedSubObject(@__ctrl14);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                 </div>
@@ -1667,7 +1667,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControl__control2(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            <div class=\"card\">\r\n                "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            <div class=\"card shadow\">\r\n                "));
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl1;
             @__ctrl1 = this.@__BuildControlCardHeader();
             @__parser.AddParsedSubObject(@__ctrl1);
@@ -1786,8 +1786,8 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
         private void @__BuildControlTree(global::TBYS_WebParts.TasinmazGirisiWP.TasinmazGirisiWP @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n<script type=\"text/javascript\">\r\n    function OpenModal() {\r\n        $(\"#ModalO" +
-                        "nayDiv\").modal({ backdrop: false });\r\n    }\r\n</script>\r\n<div class=\"container sh" +
-                        "adow\">\r\n    "));
+                        "nayDiv\").modal({ backdrop: false });\r\n    }\r\n</script>\r\n<div class=\"container co" +
+                        "l-xl\">\r\n    "));
             global::System.Web.UI.UpdatePanel @__ctrl1;
             @__ctrl1 = this.@__BuildControlTableUpdatePanel();
             @__parser.AddParsedSubObject(@__ctrl1);

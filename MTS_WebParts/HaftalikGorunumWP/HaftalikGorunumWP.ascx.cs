@@ -87,7 +87,7 @@ namespace MTS_WebParts.HaftalikGorunumWP
         }
         private void KayitGetir()
         {
-            var randevuJsonData = RandevuListesiniGetir();
+            var randevuJsonData = FaaliyetListesiniGetir();
             var resmiTatilJsonData = ResmiTatilListesiniGetir();
             var kisiDogumGunleriJsonData = KisiDogumGunuListesiniGetir();
             var toplantiJsonData = ToplantiListesiniGetir();
@@ -131,7 +131,7 @@ namespace MTS_WebParts.HaftalikGorunumWP
                     CalendarEvent item = new CalendarEvent();
 
                     item.id = int.Parse(dataRow["Id"].ToString());
-                    item.state = ProjeConstants.RANDEVU_DURUMU_ONAYLANDI_INT.ToString();
+                    item.state = ProjeConstants.FAALIYET_DURUMU_ONAYLANDI_INT.ToString();
                     item.title = dataRow["ToplantiKonusu"].ToString();
                     item.start = string.Format("{0:s}", dataRow["BaslangicTarihi"]);
                     item.end = string.Format("{0:s}", dataRow["BitisTarihi"]);
@@ -139,7 +139,7 @@ namespace MTS_WebParts.HaftalikGorunumWP
                     item.startEditable = false;
                     item.color = Color.Red.Name;
                     item.textColor = Color.White.Name;
-                    item.purpose = ProjeConstants.RANDEVU_AMACI_TOPLANTI_INT.ToString();
+                    item.purpose = ProjeConstants.FAALIYET_AMACI_TOPLANTI_INT.ToString();
                     eventItems.Add(item);
                 }
             }
@@ -152,7 +152,7 @@ namespace MTS_WebParts.HaftalikGorunumWP
             Kisi kisi = new Kisi();
             List<Kisi> kisiListesi = kisi.SelectByDogumGunuKutlamaReturnDT();
             List<CalendarEvent> eventItems = new List<CalendarEvent>();
-            Randevu randevu = new Randevu();
+            Faaliyet faaliyet = new Faaliyet();
             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
             foreach (var item in kisiListesi)
             {
@@ -163,9 +163,9 @@ namespace MTS_WebParts.HaftalikGorunumWP
                     DateTime dogumGunuBuYil = new DateTime(DateTime.Today.Year + i, dogumGunu.Month, dogumGunu.Day);
 
                     CalendarEvent dogumGunuitem = new CalendarEvent();
-                    dogumGunuitem.state = ProjeConstants.RANDEVU_DURUMU_ONAYLANDI_INT.ToString();
+                    dogumGunuitem.state = ProjeConstants.FAALIYET_DURUMU_ONAYLANDI_INT.ToString();
                     dogumGunuitem.id = 999;//999 önemli taşınamayan event
-                    dogumGunuitem.purpose = ProjeConstants.RANDEVU_AMACI_DOGUMGUNU_INT;
+                    dogumGunuitem.purpose = ProjeConstants.FAALIYET_AMACI_DOGUMGUNU_INT;
                     dogumGunuitem.title = "D.Günü :" + item.Adi + " " + item.Soyadi;
                     dogumGunuitem.start = string.Format("{0:s}", dogumGunuBuYil);
                     dogumGunuitem.end = string.Format("{0:s}", dogumGunuBuYil);
@@ -176,12 +176,12 @@ namespace MTS_WebParts.HaftalikGorunumWP
                     dogumGunuitem.allDay = true;
                     dogumGunuitem.startEditable = false;
 
-                    randevu.RenkBelirle(dogumGunuitem);
+                    faaliyet.RenkBelirle(dogumGunuitem);
                     eventItems.Add(dogumGunuitem);
                 }
             }
 
-            string json = randevu.ToJSON(eventItems);
+            string json = faaliyet.ToJSON(eventItems);
             return json;
         }
         private string PersonelDogumGunuListesiniGetir()
@@ -189,7 +189,7 @@ namespace MTS_WebParts.HaftalikGorunumWP
             Personel personel = new Personel();
             DataTable dataTable = personel.SelectCalisanPersonelListesiReturnDataTable();
             List<CalendarEvent> eventItems = new List<CalendarEvent>();
-            Randevu randevu = new Randevu();
+            Faaliyet randevu = new Faaliyet();
 
             if (dataTable != null)
             {
@@ -208,9 +208,9 @@ namespace MTS_WebParts.HaftalikGorunumWP
 
 
                         CalendarEvent dogumGunuitem = new CalendarEvent();
-                        dogumGunuitem.state = ProjeConstants.RANDEVU_DURUMU_ONAYLANDI_INT.ToString();
+                        dogumGunuitem.state = ProjeConstants.FAALIYET_DURUMU_ONAYLANDI_INT.ToString();
                         dogumGunuitem.id = 999;//999 önemli taşınamayan event
-                        dogumGunuitem.purpose = ProjeConstants.RANDEVU_AMACI_DOGUMGUNU_INT;
+                        dogumGunuitem.purpose = ProjeConstants.FAALIYET_AMACI_DOGUMGUNU_INT;
                         dogumGunuitem.title = "D.Günü :" + adi + " " + soyadi;
                         dogumGunuitem.start = string.Format("{0:s}", dogumGunuBuYil);
                         dogumGunuitem.end = string.Format("{0:s}", dogumGunuBuYil);
@@ -224,9 +224,9 @@ namespace MTS_WebParts.HaftalikGorunumWP
                         if (medeniHali && evlilikKutlama)
                         {
                             CalendarEvent evlilikYildonumuItem = new CalendarEvent();
-                            evlilikYildonumuItem.state = ProjeConstants.RANDEVU_DURUMU_ONAYLANDI_INT.ToString();
+                            evlilikYildonumuItem.state = ProjeConstants.FAALIYET_DURUMU_ONAYLANDI_INT.ToString();
                             evlilikYildonumuItem.id = 999;//999 önemli taşınamayan event
-                            evlilikYildonumuItem.purpose = ProjeConstants.RANDEVU_AMACI_YILDONUMU_INT;
+                            evlilikYildonumuItem.purpose = ProjeConstants.FAALIYET_AMACI_YILDONUMU_INT;
                             evlilikYildonumuItem.title = "Evl.Yıld. :" + adi + " " + soyadi;
                             evlilikYildonumuItem.start = string.Format("{0:s}", evlilikTarBuYil);
                             evlilikYildonumuItem.end = string.Format("{0:s}", evlilikTarBuYil);
@@ -243,10 +243,10 @@ namespace MTS_WebParts.HaftalikGorunumWP
             string json = randevu.ToJSON(eventItems);
             return json;
         }
-        private string RandevuListesiniGetir()
+        private string FaaliyetListesiniGetir()
         {
-            Randevu randevu = new Randevu();
-            string json = randevu.SelectAllReturnJson(ProjeConstants.RANDEVU_ACIKTARIHLI_DEGIL);
+            Faaliyet randevu = new Faaliyet();
+            string json = randevu.SelectAllReturnJson(ProjeConstants.FAALIYET_ACIKTARIHLI_DEGIL);
             return json;
         }
         private string ResmiTatilListesiniGetir()
@@ -314,7 +314,7 @@ headerToolbar: {
                                 var start=info.event.start.toISOString();
                                 var end=info.event.end.toISOString();
                                 var view = calendar.view.type;
-                                RandevuKaydet(id, start, end, view)
+                                FaaliyetKaydet(id, start, end, view)
                             }
                         }
                     },
@@ -331,7 +331,7 @@ headerToolbar: {
                                 var start=info.event.start.toISOString();
                                 var end=info.event.end.toISOString();
                                 var view = calendar.view.type;
-                                RandevuKaydet(id, start, end, view)
+                                FaaliyetKaydet(id, start, end, view)
                             }
                         }
                     },
@@ -348,7 +348,7 @@ headerToolbar: {
                             var start=info.date.toISOString();
                             var end=info.date.toISOString();
                             var view = calendar.view.type;
-                            RandevuKaydet(id, start, end,view)
+                            FaaliyetKaydet(id, start, end,view)
                         }
                     },
                     eventClick: function(info) {
@@ -377,16 +377,16 @@ headerToolbar: {
         }
 
         Random random = new Random();
-        protected void RandevuKaydetNowBtn_Click(object sender, EventArgs e)
+        protected void FaaliyetKaydetNowBtn_Click(object sender, EventArgs e)
         {
-            int randevuId = paramRandevuId.Value.ConvertToInt();
+            int randevuId = paramFaaliyetId.Value.ConvertToInt();
             DateTime basTar = paramBasTar.Value.ConvertToDatetime();
             DateTime bitTar = paramBitTar.Value.ConvertToDatetime();
             CalendarViewQS = paramView.Value;
             InitialDateQS = basTar.ToString("yyyy-MM-dd");
             if (randevuId > 0)
             {
-                Randevu randevu = new Randevu();
+                Faaliyet randevu = new Faaliyet();
                 randevu = randevu.Select(randevuId);
                 if (randevu != null)
                 {
@@ -394,7 +394,7 @@ headerToolbar: {
                     randevu.BaslangicSaati = basTar.ToString("HH:mm");
                     randevu.BitisTarihi = bitTar;
                     randevu.BitisSaati = bitTar.ToString("HH:mm");
-                    randevu.AcikTarih = ProjeConstants.RANDEVU_ACIKTARIHLI_DEGIL.ConvertToBool();
+                    randevu.AcikTarih = ProjeConstants.FAALIYET_ACIKTARIHLI_DEGIL.ConvertToBool();
                     if (randevu.Update())
                     {
                         RedirectToPage(ProjeConstants.PAGE_FAALIYET_TAKVIM + "?CalendarView=" + CalendarViewQS + "&InitialDate=" + InitialDateQS);

@@ -174,9 +174,9 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
         {
             DateTime bugun = DateTime.Today;
 
-            ImzalayanTxt.Text = @"Sadık PİYADE";
-            ImzalayanUnvanTxt.Text = @"(E)Tümgeneral";
-            ImzalayanMakamTxt.Text = @"TSKGV Genel Müdür V.";
+            ImzalayanTxt.Text = @"Bilal TOPÇU";
+            ImzalayanUnvanTxt.Text = string.Empty;
+            ImzalayanMakamTxt.Text = @"TSKGV Genel Müdürü";
             EvrakTarihiTxt.Text = bugun.ToString("dd") + " " + bugun.ToString("MMMM") + " " + bugun.Year;
         }
         private void FillDropDownList()

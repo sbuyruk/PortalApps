@@ -638,10 +638,10 @@ namespace Model.NBYS
             string json = ToJSON(dataTable);
             return json;
         }
-        public DataTable SelectSecilmemisKatilimcilarByRandevuIdReturnDT(int randevuId)
+        public DataTable SelectSecilmemisKatilimcilarByFaaliyetIdReturnDT(int faaliyetId)
         {
-            string randevuIdStr = randevuId > 0 ? string.Format(@" 
-                AND A.Id Not in (SELECT KatilimciId FROM RandevuKatilim_Table WHERE KatilimciTipi={0} AND RandevuId={1})", ProjeConstants.RANDEVU_KATILIMCI_NAKITBAGISCI_INT, randevuId) : string.Empty;
+            string faaliyetIdStr = faaliyetId > 0 ? string.Format(@" 
+                AND A.Id Not in (SELECT KatilimciId FROM FaaliyetKatilim_Table WHERE KatilimciTipi={0} AND FaaliyetId={1})", ProjeConstants.FAALIYET_KATILIMCI_NAKITBAGISCI_INT, faaliyetId) : string.Empty;
             string tarihStr = DateTime.Today.AddYears(-2).ReturnTRDateFormat();
             string sqlString = string.Format(@"              
                 SELECT DISTINCT(A.Id) KatilimciId, A.Adi, A.Soyadi, {0} KatilimciTipi,
@@ -656,7 +656,7 @@ namespace Model.NBYS
 				GROUP BY  A.Id , A.Adi, A.Soyadi,
 					A.Adres,A.Telefon1,A.Sag,D.IlceAdi,C.IlAdi
                 ORDER BY A.Id
-            ", ProjeConstants.RANDEVU_KATILIMCI_NAKITBAGISCI_INT, tarihStr, ProjeConstants.NAKITBAGISCI_SORGUBAGISTUTARI, randevuIdStr);
+            ", ProjeConstants.FAALIYET_KATILIMCI_NAKITBAGISCI_INT, tarihStr, ProjeConstants.NAKITBAGISCI_SORGUBAGISTUTARI, faaliyetIdStr);
             DataTable dataTable = null;
             try
             {

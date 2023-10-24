@@ -270,7 +270,7 @@ namespace BTYS_Webparts.BolgeTasinmazKartiWP
 
             r1c1.Text = "Bölge : " + tasinmaz.SorumluBolge;
             r2c1.Text = "Mülkiyet Şekli : " + tasinmaz.MulkiyetSekli;
-            r3c1.Text = "" + tasinmaz.KullanimDurumu;
+            r3c1.Text = "" + tasinmaz.KiraDurumu;
             r4c1.Text = "Sigorta : " + tasinmaz.SigortaDurumu;
             r5c1.Text = "Kat Mülkiyeti : " + tasinmaz.KatMulkiyeti;
 

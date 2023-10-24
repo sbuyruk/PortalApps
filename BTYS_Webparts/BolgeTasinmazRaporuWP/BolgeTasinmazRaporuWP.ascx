@@ -35,7 +35,7 @@
                         <asp:TableHeaderRow HorizontalAlign="Center">
                             <asp:TableHeaderCell ID="BolgeSiraNoCell" BorderStyle="Solid" RowSpan="2">Sıra</asp:TableHeaderCell>
                             <asp:TableHeaderCell ID="BolgeIllerCell" BorderStyle="Solid" RowSpan="2">İller</asp:TableHeaderCell>
-                            <asp:TableHeaderCell ID="BolgeAptCell" BorderStyle="Solid" ColumnSpan="2">Apt./İşhanı</asp:TableHeaderCell>
+                            <asp:TableHeaderCell ID="BolgeAptCell" BorderStyle="Solid" ColumnSpan="2">Bina</asp:TableHeaderCell>
                             <asp:TableHeaderCell ID="BolgeMEvCell" BorderStyle="Solid" ColumnSpan="2">M.Ev</asp:TableHeaderCell>
                             <asp:TableHeaderCell ID="BolgeMeskenCell" BorderStyle="Solid" ColumnSpan="2">Mesken</asp:TableHeaderCell>
                             <asp:TableHeaderCell ID="BolgeIsyeriCell" BorderStyle="Solid" ColumnSpan="2">İşyeri</asp:TableHeaderCell>

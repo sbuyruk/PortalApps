@@ -19,7 +19,7 @@
                     <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
                     <h3 class="mb-1">
                         <asp:Label ID="TitleLbl" runat="server" CssClass="col-form-label text-danger font-weight-bold mb-1" Text="Kişi Girişi"></asp:Label>
-                        <asp:Label ID="IdLbl" runat="server" CssClass="col-form-label" ></asp:Label>
+                        <asp:Label ID="IdLbl" runat="server" CssClass="col-form-label"></asp:Label>
                         <asp:Label CssClass="col-form-label" ID="AdiLbl" runat="server"></asp:Label>
                     </h3>
                 </div>
@@ -28,11 +28,11 @@
                         <div class="col-2 ">
                             <div class="form-group">
                                 <asp:Label CssClass="col-from-label" runat="server" Text="Adı"></asp:Label>
-                                <asp:TextBox ID="AdiTxt" CssClass="form-control" runat="server" OnTextChanged="AdiTxt_TextChanged" AutoPostBack="True" ></asp:TextBox>
+                                <asp:TextBox ID="AdiTxt" CssClass="form-control" runat="server" OnTextChanged="AdiTxt_TextChanged" AutoPostBack="True"></asp:TextBox>
                             </div>
                             <div class="form-group">
                                 <asp:Label CssClass="col-from-label" runat="server" Text="Soyadı"></asp:Label>
-                                <asp:TextBox ID="SoyadiTxt" CssClass="form-control" runat="server" OnTextChanged="AdiTxt_TextChanged" AutoPostBack="True" ></asp:TextBox>
+                                <asp:TextBox ID="SoyadiTxt" CssClass="form-control" runat="server" OnTextChanged="AdiTxt_TextChanged" AutoPostBack="True"></asp:TextBox>
                             </div>
                             <div class="form-group">
                                 <asp:Label CssClass="col-from-label" runat="server" Text="TC Kimlik No"></asp:Label>
@@ -43,28 +43,47 @@
                                 <asp:TextBox ID="DogumTarihiTxt" CssClass="form-control DateTimePickerV1  input-date" placeholder="dd.mm.yyyy" runat="server" Text=""></asp:TextBox>
                             </div>
                         </div>
-                        <div class="col-4 ">
-                            <div class="form-group">
-                                <asp:Label CssClass="col-from-label" runat="server" Text="Kurumu"></asp:Label>
-                                <asp:TextBox ID="KurumuTxt" CssClass="form-control" runat="server" Text=""></asp:TextBox>
+                        <div class="col-5 row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <asp:Label CssClass="col-from-label" runat="server" Text="Kurumu"></asp:Label>
+                                    <asp:TextBox ID="KurumuTxt" CssClass="form-control" runat="server" Text="" Enabled="false"></asp:TextBox>
+                                </div>
+                                <div class="form-group">
+                                    <asp:Label CssClass="col-from-label" runat="server" Text="Ünvanı"></asp:Label>
+                                    <asp:TextBox ID="UnvaniTxt" CssClass="form-control" runat="server" Text="" Enabled="false"></asp:TextBox>
+                                </div>
+                                <div class="form-group">
+                                    <asp:Label CssClass="col-from-label" runat="server" Text="Görevi"></asp:Label>
+                                    <asp:TextBox ID="GoreviTxt" CssClass="form-control" runat="server" Text="" Enabled="false"></asp:TextBox>
+                                </div>
+                                <div class="form-group">
+                                    <asp:Label CssClass="col-from-label" runat="server" Text="Doğum Günü"></asp:Label>
+                                    <asp:CheckBox ID="KutlamaChk" CssClass="form-control" runat="server" Text="Kutlansın" Checked="false"></asp:CheckBox>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <asp:Label CssClass="col-from-label" runat="server" Text="Ünvanı"></asp:Label>
-                                <asp:TextBox ID="UnvaniTxt" CssClass="form-control" runat="server" Text=""></asp:TextBox>
-                            </div>
-                            <div class="form-group">
-                                <asp:Label CssClass="col-from-label" runat="server" Text="Görevi"></asp:Label>
-                                <asp:TextBox ID="GoreviTxt" CssClass="form-control" runat="server" Text=""></asp:TextBox>
-                            </div>
-                            <div class="form-group">
-                                <asp:Label CssClass="col-from-label" runat="server" Text="Doğum Günü"></asp:Label>
-                                <asp:CheckBox ID="KutlamaChk" CssClass="form-control" runat="server" Text="Kutlansın" Checked="false"></asp:CheckBox>
+                            <div class="col-5">
+                                <div class="form-group ">
+                                    <asp:Label CssClass="col-form-label" runat="server" for="MTSKurumTanimDDL">Kurum</asp:Label>
+                                    <%--<asp:DropDownList ID="MTSKurumTanimDDL" runat="server" CssClass="form-control " Style="height: auto"></asp:DropDownList>--%>
+                                    <asp:TextBox ID="MTSKurumTanimTxt" CssClass="form-control" runat="server" Text="" ReadOnly></asp:TextBox>
+                                </div>
+                                <div class="form-group">
+                                    <asp:Label CssClass="col-form-label" runat="server" for="MTSUnvanTanimDDL">Ünvan</asp:Label>
+                                    <asp:DropDownList ID="MTSUnvanTanimDDL" runat="server" CssClass="form-control " Style="height: auto"></asp:DropDownList>
+                                </div>
+                                <div class="form-group">
+                                    <asp:Label CssClass="col-form-label" runat="server" for="MTSGorevTanimDDL">Görev</asp:Label>
+                                    <%--<asp:DropDownList ID="MTSGorevTanimDDL" runat="server" CssClass="form-control " Style="height: auto"></asp:DropDownList>--%>
+                                    <asp:TextBox ID="MTSGorevTanimTxt" CssClass="form-control" runat="server" Text="" ReadOnly></asp:TextBox>
+                                </div>
+
                             </div>
                         </div>
-                        <div class="col-6 row ">
+                        <div class="col-5 row ">
                             <div class="col-4 ">
                                 <div class="form-group">
-                                    <asp:Label CssClass="col-from-label input-phone" runat="server" Text="Telefon1" ></asp:Label>
+                                    <asp:Label CssClass="col-from-label input-phone" runat="server" Text="Telefon1"></asp:Label>
                                     <asp:TextBox ID="Telefon1Txt" CssClass="form-control input-phone" runat="server" placeholder="( _ _ _ ) _ _  _ _" Text=""></asp:TextBox>
                                 </div>
                                 <div class="form-group">
@@ -78,7 +97,7 @@
                             </div>
                             <div class="col-3 ">
                                 <div class="form-group">
-                                    <asp:Label CssClass="col-from-label input-phone" runat="server" Text="Dahili1" ></asp:Label>
+                                    <asp:Label CssClass="col-from-label input-phone" runat="server" Text="Dahili1"></asp:Label>
                                     <asp:TextBox ID="Dahili1Txt" CssClass="form-control" runat="server" Text=""></asp:TextBox>
                                 </div>
                                 <div class="form-group">
@@ -106,7 +125,7 @@
                             </div>
 
                         </div>
-                        
+
                     </div>
                     <div class="row">
                         <div class="col-9 form-group">
@@ -127,16 +146,16 @@
 
                     <div class="form-group">
                         <asp:Label CssClass="col-from-label" runat="server" Text="Açıklama"></asp:Label>
-                        <asp:TextBox ID="AciklamaTxt" CssClass="form-control" runat="server" TextMode="MultiLine" Rows="3" Text=""></asp:TextBox>
+                        <asp:TextBox ID="AciklamaTxt" CssClass="form-control" runat="server" TextMode="MultiLine" Rows="4" Text=""></asp:TextBox>
                     </div>
                 </div>
                 <div class="card-footer">
                     <asp:LinkButton ID="KaydetBtn" CssClass="btn btn-outline-success" runat="server" Text="Kaydet" OnClick="KaydetBtn_Click"></asp:LinkButton>
                     <asp:LinkButton ID="GuncelleBtn" CssClass="btn btn-outline-primary" runat="server" Text="Güncelle" OnClick="GuncelleBtn_Click"></asp:LinkButton>
-                    <asp:LinkButton ID="RandevuGirBtn" CssClass="btn btn-outline-success" runat="server" Text="Faaliyet Oluştur" OnClick="RandevuGirBtn_Click" ></asp:LinkButton>
-                    <asp:LinkButton ID="KisiyiSilBtn" CssClass="btn btn-danger" runat="server" Text="Kişiyi Sil" OnClick="KisiyiSilBtn_Click" ></asp:LinkButton>
-                    <asp:LinkButton ID="RandevuTakvimiBtn" CssClass="btn btn-outline-info float-right" runat="server" Text="Faaliyet Takvimi" OnClick="RandevuTakvimiBtn_Click"></asp:LinkButton>
-                    <asp:LinkButton ID="RandevuListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Faaliyet Listesi" OnClick="RandevuListesiBtn_Click"></asp:LinkButton>
+                    <asp:LinkButton ID="FaaliyetGirBtn" CssClass="btn btn-outline-success" runat="server" Text="Faaliyet Oluştur" OnClick="FaaliyetGirBtn_Click"></asp:LinkButton>
+                    <asp:LinkButton ID="KisiyiSilBtn" CssClass="btn btn-danger" runat="server" Text="Kişiyi Sil" OnClick="KisiyiSilBtn_Click"></asp:LinkButton>
+                    <asp:LinkButton ID="FaaliyetTakvimiBtn" CssClass="btn btn-outline-info float-right" runat="server" Text="Faaliyet Takvimi" OnClick="FaaliyetTakvimiBtn_Click"></asp:LinkButton>
+                    <asp:LinkButton ID="FaaliyetListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Faaliyet Listesi" OnClick="FaaliyetListesiBtn_Click"></asp:LinkButton>
                     <asp:LinkButton ID="KisiListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Kişi Listesi" OnClick="KisiListesiBtn_Click"></asp:LinkButton>
                     <asp:LinkButton ID="AramaListesi" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Arama/Görüşme Listesi" OnClick="AramaListesiBtn_Click"></asp:LinkButton>
                 </div>
@@ -157,8 +176,8 @@
                             </div>
                             <div class="form-group">
                                 <asp:Label ID="OnayMesajiLbl" CssClass="col-from-label" runat="server" Text=""></asp:Label>
-                                <asp:CheckBox ID="IrtibatPersoneliChk" CssClass="form-control" runat="server" Text=". İtribat personeli olarak ekle" Checked="false" TextAlign="Right" />
-                                <asp:CheckBox ID="RandevuKatilimciChk" CssClass="form-control" runat="server" Text=". Katılımcı olarak ekle" Checked="true" TextAlign="Right" />
+                                <asp:CheckBox ID="IrtibatPersoneliChk" CssClass="form-control" runat="server" Text=". İrtibat personeli olarak ekle" Checked="false" TextAlign="Right" />
+                                <asp:CheckBox ID="FaaliyetKatilimciChk" CssClass="form-control" runat="server" Text=". Katılımcı olarak ekle" Checked="true" TextAlign="Right" />
                             </div>
                         </div>
                         <div class="modal-footer">

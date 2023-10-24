@@ -21,10 +21,17 @@ namespace Utility.ProjeGlobal
         public const string MTS_DEPOTANIM = "Depo Tanım";
         public const string MTS_KAYNAKTANIM = "Kaynak Tanım";
         public const string MTS_ANIOBJESI = "Anı Objesi";
-        public const string MTS_RANDEVUKATILIM = "Randevu Katılım";
-        public const string MTS_RANDEVUPARAMETRE = "Randevu Parametre";
+        public const string MTS_FAALIYETKATILIM = "Faaliyet Katılım";
+        public const string MTS_FAALIYETPARAMETRE = "Faaliyet Parametre";
         public const string MTS_ANIOBJESISTOKLU = "Stoklu";
         public const string MTS_ANIOBJESISTOKSUZ = "Stoksuz";
+        public const string MTS_KURUMGOREV = "MTS Kurum Görev";
+        public const string MTS_KURUMTANIM = "MTS Kurum Tanım";
+        public const string MTS_GOREVTANIM = "MTS Görev Tanım";
+        public const string MTS_UNVANTANIM = "MTS Ünvan Tanım";
+        public const string MTSGOREVDURUMU_GOREVDE = "Görevde";
+        public const string MTSGOREVDURUMU_AYRILDI = "Ayrıldı";
+        public const string MTSAYRILMASEBEBI_BOS = "";
         //moduller IKYS
         public const string IKYS_AILE = "Aile";        
         public const string IKYS_BIRIMTANIM = "Birim Tanım";
@@ -154,7 +161,7 @@ namespace Utility.ProjeGlobal
         public const string GOREV_GENELMUDUR = "Genel Müdür";
         public const int GOREV_GENELMUDUR_INT = 2;
         
-        public const int GENELMUDUR_PERSONELID = 128;
+        public const int GENELMUDUR_PERSONELID = 1184;
 
         public const int SQL_SELECT = 0;
         public const int SQL_UPDATE = 1;
@@ -339,13 +346,12 @@ namespace Utility.ProjeGlobal
         public const string PAGE_KISI_GIRIS = "KisiGirisi.aspx";
         public const string PAGE_KISI_KARTI = "KisiKarti.aspx";
         public const string PAGE_KISI_LIST = "KisiListesi.aspx";
-        public const string PAGE_RANDEVU_GIRIS = "FaaliyetGirisi.aspx";
         public const string PAGE_FAALIYET_GIRIS = "FaaliyetGirisi.aspx";
-        public const string PAGE_RANDEVU_LIST = "RandevuListesi.aspx";
+        public const string PAGE_FAALIYET_LIST = "FaaliyetListesi.aspx";
         public const string PAGE_FAALIYET_TAKVIM = "FaaliyetViewer.aspx";
         public const string PAGE_FAALIYET_TAKVIM_RO = "FaaliyetROViewer.aspx";
         public const string PAGE_FAALIYET_TAKVIM_CUSTOM = "FaaliyetViewerCustom.aspx";
-        public const string PAGE_RANDEVU_KARTI = "RandevuKarti.aspx";
+        public const string PAGE_FAALIYET_KARTI = "FaaliyetKarti.aspx";
 
         //FTK
         public const string PAGE_FTKISLEMLERI = "FtkIslemleri.aspx";
@@ -409,7 +415,7 @@ namespace Utility.ProjeGlobal
         // gecikme zammi
         public const string KIRASOZLESME_GECIKMEZAMMI_AYLIK = "Aylık";
         public const string KIRASOZLESME_GECIKMEZAMMI_GUNLUK = "Günlük";
-        //KullanimDurumu
+        //KiraDurumu
         public static string KULLANIMDURUMU_KIRADA = "Kiralandı";
         public static string KULLANIMDURUMU_KDBOS = "Kirada Değil - Boş";
         //public static string KULLANIMDURUMU_KDBAGKUL = "Kirada Değil - Bağışçı Kullanıyor";
@@ -417,13 +423,14 @@ namespace Utility.ProjeGlobal
         public static string KULLANIMDURUMU_KDTAAH = "Kirada Değil - Taahhütname Verilen";
         public static string KULLANIMDURUMU_KDCOKHIS = "Kirada Değil - Hisseli";
         public static string KULLANIMDURUMU_KDHUKSOR = "Kirada Değil - Hukuki Sorun";
-        public static string KULLANIMDURUMU_KDKIRAC = "Kirada Değil - Kıraç";
+        //public static string KULLANIMDURUMU_KDKIRAC = "Kirada Değil - Kıraç";
         public static string KULLANIMDURUMU_KDVAKKUL = "Kirada Değil - Vakıf Kullanımında";
         public static string KULLANIMDURUMU_KDKIRAKABYOK = "Kirada Değil - Kiralanma Talebi Olmayan";
-        public static string KULLANIMDURUMU_RISKLIYAPI_KENTSELDONUSUM = "Kirada Değil - Riskli Yapı-Kentsel Dönüşüm";
-        public static string KULLANIMDURUMU_KATKARSILIGI_YENIYAPI = "Kirada Değil - Kat Karşılığı-Yeni Yapı İnşası";
-        public static string KULLANIMDURUMU_DIGER = "Kirada Değil - Metruk-Tahditli vb.";
-        //KiraDurumu
+        public static string KULLANIMDURUMU_YENIDENINSA = "Kirada Değil - Yeniden İnşa";
+        //public static string KULLANIMDURUMU_RISKLIYAPI_KENTSELDONUSUM = "Kirada Değil - Riskli Yapı-Kentsel Dönüşüm";
+        //public static string KULLANIMDURUMU_KATKARSILIGI_YENIYAPI = "Kirada Değil - Kat Karşılığı-Yeni Yapı İnşası";
+        //public static string KULLANIMDURUMU_DIGER = "Kirada Değil - Metruk-Tahditli vb.";
+        //KirayaUygunluk
         public static string KIRADURUMU_KIRAYAUYGUN = "Kiraya Uygun";
         public static string KIRADURUMU_KIRAYAUYGUNDEGIL = "Kiraya Uygun Değil";
         //MulkiyetSekli
@@ -913,65 +920,65 @@ namespace Utility.ProjeGlobal
 
 
         //MTS
-        public const string RANDEVU_ACIKTARIHLI_DEGIL = "false";
-        public const string RANDEVU_ACIKTARIHLI = "true";
+        public const string FAALIYET_ACIKTARIHLI_DEGIL = "false";
+        public const string FAALIYET_ACIKTARIHLI = "true";
 
         public static string RANDEVU_VERILEN = "Verilen Randevu";
         public static string RANDEVU_ALINAN = "Alınan Randevu";
 
-        public const string RANDEVU_AMACI_TOPLANTI = "Toplantı";
-        public const string RANDEVU_AMACI_ZIYARET = "Ziyaret";
-        public const string RANDEVU_AMACI_DAVET = "Davet";
-        public const string RANDEVU_AMACI_YILDONUMU = "Yildönümü";
-        public const string RANDEVU_AMACI_DOGUMGUNU = "Doğum Günü";
-        public const string RANDEVU_AMACI_OZELCALISMA = "Özel Çalışma";
-        public const string RANDEVU_AMACI_IZIN = "İzin";
-        public const string RANDEVU_AMACI_RESMITATIL = "Resmi Tatil";
+        public const string FAALIYET_AMACI_TOPLANTI = "Toplantı";
+        public const string FAALIYET_AMACI_ZIYARET = "Ziyaret";
+        public const string FAALIYET_AMACI_DAVET = "Davet";
+        public const string FAALIYET_AMACI_YILDONUMU = "Yildönümü";
+        public const string FAALIYET_AMACI_DOGUMGUNU = "Doğum Günü";
+        public const string FAALIYET_AMACI_OZELCALISMA = "Özel Çalışma";
+        public const string FAALIYET_AMACI_IZIN = "İzin";
+        public const string FAALIYET_AMACI_RESMITATIL = "Resmi Tatil";
 
-        public const string RANDEVU_AMACI_TOPLANTI_INT = "1";
-        public const string RANDEVU_AMACI_ZIYARET_INT = "2";
-        public const string RANDEVU_AMACI_DAVET_INT = "3";
-        public const string RANDEVU_AMACI_YILDONUMU_INT = "4";
-        public const string RANDEVU_AMACI_DOGUMGUNU_INT = "5";
-        public const string RANDEVU_AMACI_OZELCALISMA_INT = "6";        
-        public const string RANDEVU_AMACI_IZIN_INT = "7";
-        public const string RANDEVU_AMACI_RESMITATIL_INT = "8";
+        public const string FAALIYET_AMACI_TOPLANTI_INT = "1";
+        public const string FAALIYET_AMACI_ZIYARET_INT = "2";
+        public const string FAALIYET_AMACI_DAVET_INT = "3";
+        public const string FAALIYET_AMACI_YILDONUMU_INT = "4";
+        public const string FAALIYET_AMACI_DOGUMGUNU_INT = "5";
+        public const string FAALIYET_AMACI_OZELCALISMA_INT = "6";        
+        public const string FAALIYET_AMACI_IZIN_INT = "7";
+        public const string FAALIYET_AMACI_RESMITATIL_INT = "8";
         //public enum RandevuAmaciEnum { Diğer, Toplantı, Ziyaret, Davet, Yıldönümü, ÖzelÇalışma, İzin }
 
-        public static string RANDEVU_DURUMU_PLANLANDI = "Planlandı";
-        public static string RANDEVU_DURUMU_ONAYLANDI = "Onaylandı";
-        public static string RANDEVU_DURUMU_IPTALEDILDI = "İptal Edildi";
+        public static string FAALIYET_DURUMU_PLANLANDI = "Planlandı";
+        public static string FAALIYET_DURUMU_ONAYLANDI = "Onaylandı";
+        public static string FAALIYET_DURUMU_IPTALEDILDI = "İptal Edildi";
 
-        public const int RANDEVU_DURUMU_PLANLANDI_INT = 1;
-        public const int RANDEVU_DURUMU_ONAYLANDI_INT = 2;        
-        public const int RANDEVU_DURUMU_IPTALEDILDI_INT = 3;
+        public const int FAALIYET_DURUMU_PLANLANDI_INT = 1;
+        public const int FAALIYET_DURUMU_ONAYLANDI_INT = 2;        
+        public const int FAALIYET_DURUMU_IPTALEDILDI_INT = 3;
 
-        public const string RANDEVU_YERI_MAKAM = "Makam";
-        public const string RANDEVU_YERI_ZEHRAURGA = "Zehra Urga";
-        public const string RANDEVU_YERI_ILHANBASAR = "İlhan Başar";
-        public const string RANDEVU_YERI_MAKAMTOPLANTIODASI = "Makam Toplantı Odası";
-        public const string RANDEVU_YERI_ASELSAN = "ASELSAN";
-        public const string RANDEVU_YERI_TUSAS = "TUSAŞ";
-        public const string RANDEVU_YERI_HAVELSAN = "HAVELSAN";
-        public const string RANDEVU_YERI_ROKETSAN = "ROKETSAN";
-        public const string RANDEVU_YERI_ASPILSAN = "ASPILSAN";
-        public const string RANDEVU_YERI_ISBIR = "ISBIR";
-        public const string RANDEVU_YERI_DIGER = "Diğer";
+        public const string FAALIYET_YERI_MAKAM = "Makam";
+        public const string FAALIYET_YERI_ZEHRAURGA = "Zehra Urga";
+        public const string FAALIYET_YERI_ILHANBASAR = "İlhan Başar";
+        public const string FAALIYET_YERI_MAKAMTOPLANTIODASI = "Makam Toplantı Odası";
+        public const string FAALIYET_YERI_ASELSAN = "ASELSAN";
+        public const string FAALIYET_YERI_TUSAS = "TUSAŞ";
+        public const string FAALIYET_YERI_HAVELSAN = "HAVELSAN";
+        public const string FAALIYET_YERI_ROKETSAN = "ROKETSAN";
+        public const string FAALIYET_YERI_ASPILSAN = "ASPILSAN";
+        public const string FAALIYET_YERI_ISBIR = "ISBIR";
+        public const string FAALIYET_YERI_DIGER = "Diğer";
 
-        public const string RANDEVU_YERI_MAKAM_INT = "1";
-        public const string RANDEVU_YERI_ZEHRAURGA_INT = "2";
-        public const string RANDEVU_YERI_ILHANBASAR_INT = "3";
+        public const string FAALIYET_YERI_MAKAM_INT = "1";
+        public const string FAALIYET_YERI_ZEHRAURGA_INT = "2";
+        public const string FAALIYET_YERI_ILHANBASAR_INT = "3";
 
-        public const int RANDEVU_KATILIMCI_IC_INT = 1;
-        public const int RANDEVU_KATILIMCI_DIS_INT = 2;
-        public const int RANDEVU_KATILIMCI_NAKITBAGISCI_INT = 3;
-        public const int RANDEVU_KATILIMCI_TASINMAZBAGISCI_INT = 4;
+        public const int FAALIYET_KATILIMCI_IC_INT = 1;
+        public const int FAALIYET_KATILIMCI_DIS_INT = 2;
+        public const int FAALIYET_KATILIMCI_NAKITBAGISCI_INT = 3;
+        public const int FAALIYET_KATILIMCI_TASINMAZBAGISCI_INT = 4;
         public const int NAKITBAGISCI_SORGUBAGISTUTARI = 2000;
 
-        public const string RANDEVU_KATILIMCI_IC = "Vakıf Personeli";
-        public const string RANDEVU_KATILIMCI_DIS = "Vakıf Dışı";
-        public const string RANDEVU_KATILIMCI_NAKITBAGISCI = "Nakit Bağışçı";
-        public const string RANDEVU_KATILIMCI_TASINMAZBAGISCI = "Taşınmaz Bağışçı";
+        public const string FAALIYET_KATILIMCI_IC = "Vakıf Personeli";
+        public const string FAALIYET_KATILIMCI_DIS = "Vakıf Dışı";
+        public const string FAALIYET_KATILIMCI_NAKITBAGISCI = "Nakit Bağışçı";
+        public const string FAALIYET_KATILIMCI_TASINMAZBAGISCI = "Taşınmaz Bağışçı";
 
         public const string PARAM_RANDEVUYERI = "Randevu Yeri";
         public const string PARAM_ANIOBJESI = "Anı Objesi";
@@ -1028,10 +1035,13 @@ namespace Utility.ProjeGlobal
 
         #region Ortak Parametreler 
         public const string PARAM_SMTP_ADRESI_LBL= "SMTP Adresi";
-        public const string PARAM_SMTP_IP_ADRESI= "10.150.8.12";
-        public const string PARAM_TOPLANTI_MAILGRUBU = "ToplantiMailGrubu";// "ToplantiMailTestGrubu";//"ToplantiMailGrubu";
+        public const string PARAM_ALTERNATIVE_SMTP_IP_ADRESI= "10.150.8.12";
+        public const string PARAM_INTERNET_SMTP_IP_ADRESI= "10.150.9.12";
+        public const string PARAM_TOPLANTI_MAILGRUBU = "ToplantiMailTestGrubu";//"ToplantiMailGrubu";
         public const string PARAM_BILGISISTEM_MAILGRUBU = "BilgiSistemMailGrubu";
         public const string PARAM_IKRAM_MAILGRUBU = "IkramMailGrubu";
+        public const string PARAM_OZELKALEMMAILADRESI = "ozelkalem@tskgv.org.tr";
+        public const string PARAM_MTSMAILADRESI = "Makam Takip Sistemi <mts@tskgv.local>";
 
         #endregion
         //TOPLANTI

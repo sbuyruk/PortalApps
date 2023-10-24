@@ -209,12 +209,14 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
                 VefatTarihiTxt.Value = Sag_vefatDDL.SelectedItem.Value.Equals(ProjeConstants.BAGISCI_SAG) ? "" : bagisci.VefatTarihi.ConvertToDatetimeEmptyIfNull();
                 DefinYeriTxt.Text = bagisci.DefinYeri;
                 DefinAciklamaTxt.Text = bagisci.DefinAciklama;
-                ListItem definIlItem = DefinIliDDL.Items.FindByValue(DefinIliDDL.Items.FindByText(bagisci.DefinIli==null?"": bagisci.DefinIli).Value);
-                if (definIlItem != null)
-                    DefinIliDDL.SelectedValue = definIlItem.Value;
+                //ListItem definIlItem = DefinIliDDL.Items.FindByValue(DefinIliDDL.Items.FindByText(string.IsNullOrEmpty( bagisci.DefinIli)  ?"": bagisci.DefinIli).Value);
+                UtilityHelper.SetDDLValue(DefinIliDDL, bagisci.DefinIli);
+                //if (definIlItem != null)
+                //    DefinIliDDL.SelectedValue = definIlItem.Value;
                 DefinIlceDDLDoldur();
-                if (DefinIlcesiDDL.Items.FindByText(bagisci.DefinIlcesi) != null)
-                    DefinIlcesiDDL.SelectedValue = DefinIlcesiDDL.Items.FindByText(bagisci.DefinIlcesi).Value;
+                UtilityHelper.SetDDLValue(DefinIlcesiDDL, bagisci.DefinIlcesi);
+                //if (DefinIlcesiDDL.Items.FindByText(bagisci.DefinIlcesi) != null)
+                //    DefinIlcesiDDL.SelectedValue = DefinIlcesiDDL.Items.FindByText(bagisci.DefinIlcesi).Value;
             }
             catch (Exception exception)
             {

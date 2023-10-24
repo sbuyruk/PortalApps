@@ -84,7 +84,14 @@
     <Compile Include="MTS\DepoStok.cs" />
     <Compile Include="MTS\DepoTanim.cs" />
     <Compile Include="MTS\FaaliyetYeri.cs" />
+    <Compile Include="MTS\MTSKurumGorev.cs" />
+    <Compile Include="MTS\MTSUnvanTanim.cs" />
+    <Compile Include="MTS\MTSGorevTanim.cs" />
+    <Compile Include="MTS\MTSKurumTanim.cs" />
     <Compile Include="MTS\KaynakTanim.cs" />
+    <Compile Include="MTS\Faaliyet.cs" />
+    <Compile Include="MTS\FaaliyetKatilim.cs" />
+    <Compile Include="MTS\FaaliyetParametre.cs" />
     <Compile Include="Ortak\Extentions.cs" />
     <Compile Include="Ortak\Olay.cs" />
     <Compile Include="Ortak\OlayKayit.cs" />
@@ -114,10 +121,7 @@
     <Compile Include="MTS\CalendarEvent.cs" />
     <Compile Include="MTS\AramaGorusme.cs" />
     <Compile Include="MTS\MTSOrtak.cs" />
-    <Compile Include="MTS\RandevuParametre.cs" />
     <Compile Include="MTS\Kisi.cs" />
-    <Compile Include="MTS\Randevu.cs" />
-    <Compile Include="MTS\RandevuKatilim.cs" />
     <Compile Include="NBYS\Armagan.cs" />
     <Compile Include="NBYS\ArmaganTanim.cs" />
     <Compile Include="NBYS\BankaTanim.cs" />
