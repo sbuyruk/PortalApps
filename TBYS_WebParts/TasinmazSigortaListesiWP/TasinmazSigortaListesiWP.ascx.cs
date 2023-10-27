@@ -611,6 +611,8 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
                 string tamAdres = row["TamAdres"].ToString();
                 string teminatListesi = row["TeminatListesi"].ToString();
                 string tasinmazId = row["TasinmazId"].ToString();
+                string katMulkiyeti = row["KatMulkiyeti"].ToString();
+                string kullanimAmaci = row["KullanimAmaci"].ToString();
 
                 SigortaListItem sigortaItem = new SigortaListItem();
                 sigortaItem.Sirano = SiraNo++.ToString();
@@ -623,7 +625,7 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
                 sigortaItem.SigortaBitTar = sigortaBitTar<=DateTime.MinValue?string.Empty:sigortaBitTar.ToString("dd.MM.yyyy");
                 sigortaItem.AdresKodu = adresKodu;
                 sigortaItem.PoliceNo= policeNo;
-                sigortaItem.KullanimSekli = kullanimSekli;
+                sigortaItem.KullanimSekli = katMulkiyeti.Equals(ProjeConstants.KAT_MULKIYETI_VAR)?kullanimSekli:kullanimAmaci;
                 sigortaItem.TeminatListesi = teminatListesi;
                 sigortaItem.Adres = tamAdres;
                 sigortaItem.Police = FormLinkiGetir(policeDosyalari, ProjeConstants.DOSYA_SIGORTAPOLICESI_DASK, sigortaId,"Poliçe", "btn btn-outline-secondary");

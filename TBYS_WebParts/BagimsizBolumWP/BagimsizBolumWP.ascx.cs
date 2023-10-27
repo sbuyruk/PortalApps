@@ -121,6 +121,8 @@ namespace TBYS_WebParts.BagimsizBolumWP
             AdresCell.Text = "Adres";
             TableHeaderCell BolumCell = new TableHeaderCell();
             BolumCell.Text = "Bölüm No";
+            TableHeaderCell NitelikCell = new TableHeaderCell();
+            NitelikCell.Text = "Nitelik";
             TableHeaderCell AciklamaCell = new TableHeaderCell();
             AciklamaCell.Text = "Açıklama";
             TableHeaderCell DuzenleCell = new TableHeaderCell();
@@ -132,6 +134,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
             th.Controls.Add(siraCell);
             th.Controls.Add(AdresCell);
             th.Controls.Add(BolumCell);
+            th.Controls.Add(NitelikCell);
             th.Controls.Add(AciklamaCell);
             th.Controls.Add(DuzenleCell);
             th.Controls.Add(SilCell);
@@ -162,6 +165,10 @@ namespace TBYS_WebParts.BagimsizBolumWP
                 TableCell BolumNoCell = new TableCell();
                 BolumNoCell.Text = bagimsizBolum.BolumNo;
                 row.Controls.Add(BolumNoCell);
+                 
+                TableCell NitelikCell = new TableCell();
+                NitelikCell.Text = bagimsizBolum.Nitelik;
+                row.Controls.Add(NitelikCell);
 
                 TableCell AciklamaCell = new TableCell();
                 AciklamaCell.Text = bagimsizBolum.Aciklama;
@@ -258,6 +265,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
             ParamBagimsizBolumIdLbl.Text = bagimsizBolum.Id.ToString();
             AdresTxt.Text = tasinmaz.Adres;
             BolumNoTxt.Text = bagimsizBolum.BolumNo;
+            NitelikTxt.Text = bagimsizBolum.Nitelik;
             AciklamaTxt.Text = bagimsizBolum.Aciklama;
 
             AciklamaTxt.Enabled = true;
@@ -275,6 +283,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
             ParamBagimsizBolumIdLbl.Text = bagimsizBolum.Id.ToString();
             AdresTxt.Text = tasinmaz.Adres;
             BolumNoTxt.Text = bagimsizBolum.BolumNo;
+            NitelikTxt.Text = bagimsizBolum.Nitelik;
             AciklamaTxt.Text = bagimsizBolum.Aciklama;
 
             AciklamaTxt.Enabled = false;
@@ -317,6 +326,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
         {
             BagimsizBolum bagimsizBolum = new BagimsizBolum();
             bagimsizBolum.BolumNo = BolumNoTxt.Text;
+            bagimsizBolum.Nitelik = NitelikTxt.Text;
             bagimsizBolum.Aciklama = AciklamaTxt.Text;
             bagimsizBolum.TasinmazId = TasinmazIdQS.ConvertToInt();
             int bagimsizBolumId = bagimsizBolum.Save();
@@ -336,6 +346,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
             if (bagimsizBolum != null)
             {
                 bagimsizBolum.BolumNo = BolumNoTxt.Text;
+                bagimsizBolum.Nitelik = NitelikTxt.Text;
                 bagimsizBolum.Aciklama = AciklamaTxt.Text;
                 bagimsizBolum.TasinmazId = TasinmazIdQS.ConvertToInt();
                 if (bagimsizBolum.Update())

@@ -1,6 +1,7 @@
 ﻿using Model.TBYS;
 using System;
 using System.ComponentModel;
+using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
@@ -983,20 +984,39 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
         protected void ExcelBtn_Click(object sender, EventArgs e)
         {
             string filename = "KirayaVerilmeyenTasinmazlar" + DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + ".xls";
-            Page.Response.ContentEncoding = System.Text.Encoding.GetEncoding("windows-1254");
-            Page.Response.Charset = "windows-1254";//ISO-8859-9
-            System.IO.StringWriter tw = new System.IO.StringWriter();
-            System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
 
-            //Get the HTML for the control.             
+            Page.Response.Clear();
+            Page.Response.AddHeader("content-disposition", "attachment;filename=" + filename + "");
+            Page.Response.ContentType = "application/ms-excel";
+            Page.Response.ContentEncoding = System.Text.Encoding.Unicode;
+            Page.Response.BinaryWrite(System.Text.Encoding.Unicode.GetPreamble());
+
+            System.IO.StringWriter sw = new System.IO.StringWriter();
+            System.Web.UI.HtmlTextWriter hw = new HtmlTextWriter(sw);
+
+
             TableContainer.RenderControl(hw);
-            //Write the HTML back to the browser.
-            //Response.ContentType = application/vnd.ms-excel;
-            Page.Response.ContentType = "application/vnd.ms-excel";
-            Page.Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
-            this.EnableViewState = false;
-            Page.Response.Write(tw.ToString());
+
+            Page.Response.Write(sw.ToString());
             Page.Response.End();
+
+
+
+
+            //Page.Response.ContentEncoding = System.Text.Encoding.GetEncoding("windows-1254");
+            //Page.Response.Charset = "windows-1254";//ISO-8859-9
+            //System.IO.StringWriter tw = new System.IO.StringWriter();
+            //System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
+
+            ////Get the HTML for the control.             
+            //TableContainer.RenderControl(hw);
+            ////Write the HTML back to the browser.
+            ////Response.ContentType = application/vnd.ms-excel;
+            //Page.Response.ContentType = "application/vnd.ms-excel";
+            //Page.Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
+            //this.EnableViewState = false;
+            //Page.Response.Write(tw.ToString());
+            //Page.Response.End();
         }
     }
 }

@@ -61,13 +61,19 @@
                                         <asp:TextBox ID="AdresTxt" runat="server" class="form-control" TextMode="MultiLine" Rows="3" ReadOnly="true"></asp:TextBox>
                                     </div>
                                 </div>
-                                <div class="col-3">
+                                <div class="col-2">
                                     <div class="form-group">
                                         <asp:Label CssClass="col-form-label font-weight-bold" runat="server" Text="Bölüm No"></asp:Label>
                                         <asp:TextBox ID="BolumNoTxt" runat="server" class="form-control"></asp:TextBox>
                                     </div>
+                                </div> 
+                                <div class="col-2">
+                                    <div class="form-group">
+                                        <asp:Label CssClass="col-form-label font-weight-bold" runat="server" Text="Nitelik"></asp:Label>
+                                        <asp:TextBox ID="NitelikTxt" runat="server" class="form-control"></asp:TextBox>
+                                    </div>
                                 </div>
-                                <div class="col-5">
+                                <div class="col-4">
                                     <div class="form-group">
                                         <asp:Label CssClass="col-form-label font-weight-bold" runat="server" Text="Açıklama"></asp:Label>
                                         <asp:TextBox ID="AciklamaTxt" CssClass="form-control" runat="server" Text="" TextMode="MultiLine" Rows="3"></asp:TextBox>

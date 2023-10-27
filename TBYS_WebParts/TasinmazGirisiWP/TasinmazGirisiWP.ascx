@@ -93,7 +93,7 @@
                                     <asp:DropDownList ID="KirayaUygunlukDDL" runat="server" class="form-control" Style="height: auto"></asp:DropDownList>
                                 </div>
                                 <div class="form-group m-0 ">
-                                    <label class="col-form-label" for="KiraDurumuDDL">Kull.Durumu</label>
+                                    <label class="col-form-label" for="KiraDurumuDDL">Kira Durumu</label>
                                     <asp:DropDownList ID="KiraDurumuDDL" runat="server" class="form-control" Style="height: auto"></asp:DropDownList>
                                 </div>
                                 <div class="form-group m-0 ">

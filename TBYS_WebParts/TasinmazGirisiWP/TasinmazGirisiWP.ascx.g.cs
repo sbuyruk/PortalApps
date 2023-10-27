@@ -1130,8 +1130,8 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
             @__parser.AddParsedSubObject(@__ctrl13);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                                <div cl" +
                         "ass=\"form-group m-0 \">\r\n                                    <label class=\"col-fo" +
-                        "rm-label\" for=\"KiraDurumuDDL\">Kull.Durumu</label>\r\n                         " +
-                        "           "));
+                        "rm-label\" for=\"KiraDurumuDDL\">Kira Durumu</label>\r\n                             " +
+                        "       "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl14;
             @__ctrl14 = this.@__BuildControlKiraDurumuDDL();
             @__parser.AddParsedSubObject(@__ctrl14);

@@ -27,6 +27,11 @@
         setTimeout(function () { _spFormOnSubmitCalled = false; }, 3000);
         return true;
     }
+    function OpenModal(tasinmazId) {
+        document.getElementById('<%= paramTasinmazIdLbl.ClientID%>').value = tasinmazId;
+        document.getElementById('<%= ModalDoldurBtn.ClientID%>').click();
+        $("#ModalUrlDiv").modal({ backdrop: true });
+    }
 </script>
 <div class="col-xl">
     <div class="card shadow">
@@ -39,6 +44,10 @@
             </h3>
         </div>
         <div class="card-body">
+            <div style="display: none">
+                <input id="paramTasinmazIdLbl" runat="server" text="Label" />
+                <asp:LinkButton ID="xx" runat="server" CausesValidation="false" Text="" OnClientClick="{return true;};" OnClick="ModalDoldurBtn_Click" />
+            </div>
             <div class="form-group">
                 <table id="CustomDataTable" class="table table-striped row-border" width="100%">
                     <thead>
@@ -73,6 +82,58 @@
         <div class="card-footer">
             <asp:LinkButton ID="YeniKayitBtn" CssClass="btn btn-outline-success" runat="server" Text="Yeni Taşınmaz Girişi" OnClick="YeniKayitBtn_Click"></asp:LinkButton>
             <asp:LinkButton CssClass="btn btn-outline-success float-right" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="ModalUrlDiv" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <asp:UpdatePanel runat="server" ID="UpdatePanel2" UpdateMode="Conditional">
+                <ContentTemplate>
+                    <div class="modal-body">
+                        <div>
+                            <h3>
+                                <asp:Label ID="BagisciLbl" runat="server" Text="Label"></asp:Label>
+                                <asp:Label ID="TasinmazLbl" runat="server" Text="Label"></asp:Label>
+                            </h3>
+                        </div>
+
+                        <div class="card-body">
+                            <div style="display: none">
+                                <asp:LinkButton ID="ModalDoldurBtn" runat="server" CausesValidation="false" Text="" OnClientClick="{return true;};" OnClick="ModalDoldurBtn_Click" />
+                            </div>
+                            <div class="m-1 text-center" id="BagimsizBolumDiv">
+                                <table id="CustomModalDataTable" class="table table-hover row-border" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Bölüm Id</th>
+                                            <th>Adres</th>
+                                            <th>Bölüm</th>
+                                            <th>İl</th>
+                                            <th>İlçe</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                    </div>
+                </ContentTemplate>
+            </asp:UpdatePanel>
+             <asp:UpdateProgress ID="updateProgress1" runat="server">
+                <ProgressTemplate>
+                    <div class='loaderMainContainer'>
+                        <div class='loaderContainer'>
+                            <div class='loaderCircle'></div>
+                        </div>
+                    </div>
+
+                </ProgressTemplate>
+            </asp:UpdateProgress>
         </div>
     </div>
 </div>

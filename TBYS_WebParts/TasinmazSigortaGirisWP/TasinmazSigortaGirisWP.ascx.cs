@@ -272,6 +272,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                 YapiTarziTxt.Text = sigorta.YapiTarzi;
                 TeminatListCheckBoxDoldur(sigorta.TeminatListesi);
                 AciklamaTxt.Text = sigorta.Aciklama;
+               
                 BagimsizBolumNoTxt.Text = string.IsNullOrEmpty(sigorta.BagimsizBolumNo)?BagimsizBolumDDL.SelectedItem.Text: sigorta.BagimsizBolumNo;
                 Tasinmaz tasinmaz = new Tasinmaz();
                 tasinmaz = tasinmaz.Select<Tasinmaz>(sigorta.TasinmazId);
@@ -281,6 +282,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                     BrutYuzolcumuTxt.Text = string.IsNullOrEmpty(sigorta.BrutYuzolcumu) ? tasinmaz.Nitelik : sigorta.BrutYuzolcumu; //nitelik Bolumunde yuzolcumu bilgisi kayıtlı olduğından onun yüzolcumune yazması için
                     BulunduguKatTxt.Text = string.IsNullOrEmpty(tasinmaz.BulunduguKat) ? sigorta.BulunduguKat : tasinmaz.BulunduguKat;
                     MetrekareTxt.Text = string.IsNullOrEmpty(tasinmaz.Metrekare) ? sigorta.Metrekare : tasinmaz.Metrekare;
+                    TapuTasinmazNoTxt.Text = tasinmaz.TapuTasinmazNo;
                 }
 
             }
@@ -316,9 +318,11 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                     ListItem li = new ListItem(tasinmaz.BagimsizBolumNo, tasinmaz.BagimsizBolumNo);
                     BagimsizBolumDDL.Items.Add(li);
                     BagimsizBolumNoTxt.Text = tasinmaz.BagimsizBolumNo;
+                    KullanimAmaciTxt.Text = tasinmaz.KullanimSekli;
                 }
                 else
                 {
+                    KullanimAmaciTxt.Text = sigorta.KullanimAmaci;
                     BagimsizBolum bb = new BagimsizBolum();
                     List<BagimsizBolum> list = bb.SelectByTasinmazId(sigorta.TasinmazId);
                     foreach (BagimsizBolum item in list)
@@ -352,6 +356,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             SigortaCinsiDDL.Items.Add(ProjeConstants.SIGORTA_YOK);
             SigortaCinsiDDL.Items.Add(ProjeConstants.SIGORTA_DASK_IHTIYARI);
             SigortaCinsiDDL.Items.Add(ProjeConstants.SIGORTA_DEPREM_IHTIYARI);
+            SigortaCinsiDDL.Items.FindByValue(ProjeConstants.SIGORTA_DEPREM_IHTIYARI).Attributes.Add("Disabled", "Disabled");
         }
         private bool UpdateSigorta(Sigorta sigorta)
         {
@@ -380,6 +385,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                 sigorta.TeminatAciklama = SecilenTeminatAciklamalariniGetir();
                 sigorta.BagimsizBolumNo = BagimsizBolumNoTxt.Text;
                 sigorta.Aciklama = AciklamaTxt.Text;
+                sigorta.KullanimAmaci = KullanimAmaciTxt.Text;
                 guncellendiMi = sigorta.Update();
                 if (guncellendiMi)
                 {
@@ -418,6 +424,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             sigorta.TeminatAciklama = SecilenTeminatAciklamalariniGetir();
             sigorta.BagimsizBolumNo = BagimsizBolumNoTxt.Text;
             sigorta.Aciklama = AciklamaTxt.Text;
+            sigorta.KullanimAmaci = KullanimAmaciTxt.Text;
             int sigortaId = sigorta.Save();
             sigorta.Id = sigortaId;
             if (sigortaId > 0)

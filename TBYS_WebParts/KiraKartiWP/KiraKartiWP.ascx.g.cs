@@ -105,7 +105,7 @@ namespace TBYS_WebParts.KiraKartiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell CinsiCell;
+        protected global::System.Web.UI.WebControls.TableCell KiralamaAmaciCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -117,11 +117,11 @@ namespace TBYS_WebParts.KiraKartiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell KiraTeminatiCell;
+        protected global::System.Web.UI.WebControls.TableCell TeminatTarihiCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell TeminatTarihiCell;
+        protected global::System.Web.UI.WebControls.TableCell KiraTeminatiCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -130,6 +130,10 @@ namespace TBYS_WebParts.KiraKartiWP {
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.TableCell OdenenTeminatTutariCell;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.TableCell KalanTeminatTutariCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -810,22 +814,22 @@ namespace TBYS_WebParts.KiraKartiWP {
             @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
             @__ctrl.CssClass = "bg-light font-weight-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("CİNSİ"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Kiralama Amacı"));
             return @__ctrl;
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlCinsiCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlKiralamaAmaciCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.CinsiCell = @__ctrl;
+            this.KiralamaAmaciCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
             @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
             @__ctrl.CssClass = "bg-white";
-            @__ctrl.ID = "CinsiCell";
+            @__ctrl.ID = "KiralamaAmaciCell";
             return @__ctrl;
         }
         
@@ -898,7 +902,7 @@ namespace TBYS_WebParts.KiraKartiWP {
             @__ctrl1 = this.@__BuildControl__control32();
             @__ctrl.Add(@__ctrl1);
             global::System.Web.UI.WebControls.TableCell @__ctrl2;
-            @__ctrl2 = this.@__BuildControlCinsiCell();
+            @__ctrl2 = this.@__BuildControlKiralamaAmaciCell();
             @__ctrl.Add(@__ctrl2);
             global::System.Web.UI.WebControls.TableCell @__ctrl3;
             @__ctrl3 = this.@__BuildControl__control33();
@@ -929,23 +933,6 @@ namespace TBYS_WebParts.KiraKartiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlKiraTeminatiCell() {
-            global::System.Web.UI.WebControls.TableCell @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.KiraTeminatiCell = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
-            @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
-            @__ctrl.CssClass = "bg-light  font-weight-bold";
-            @__ctrl.ID = "KiraTeminatiCell";
-            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("KİRA TEMİNATI"));
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.WebControls.TableCell @__BuildControl__control37() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
@@ -954,7 +941,7 @@ namespace TBYS_WebParts.KiraKartiWP {
             @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
             @__ctrl.CssClass = "bg-light  font-weight-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("TEM. TAR."));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("KİRA TEMINAT TARİHİ"));
             return @__ctrl;
         }
         
@@ -976,15 +963,17 @@ namespace TBYS_WebParts.KiraKartiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControl__control38() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlKiraTeminatiCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
+            this.KiraTeminatiCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
             @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
             @__ctrl.CssClass = "bg-light  font-weight-bold";
+            @__ctrl.ID = "KiraTeminatiCell";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("TEM. TUTARI"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("TEMİNAT"));
             return @__ctrl;
         }
         
@@ -1006,7 +995,7 @@ namespace TBYS_WebParts.KiraKartiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControl__control39() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControl__control38() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -1014,7 +1003,7 @@ namespace TBYS_WebParts.KiraKartiWP {
             @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
             @__ctrl.CssClass = "bg-light  font-weight-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("ÖDENEN TEM.TUT.:"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("ÖDENEN TEMİNAT:"));
             return @__ctrl;
         }
         
@@ -1029,8 +1018,37 @@ namespace TBYS_WebParts.KiraKartiWP {
             @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
             @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
             @__ctrl.CssClass = "bg-white";
-            @__ctrl.ColumnSpan = 2;
             @__ctrl.ID = "OdenenTeminatTutariCell";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.TableCell @__BuildControl__control39() {
+            global::System.Web.UI.WebControls.TableCell @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.TableCell();
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
+            @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
+            @__ctrl.CssClass = "bg-light  font-weight-bold";
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("KALAN TEMİNAT:"));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlKalanTeminatTutariCell() {
+            global::System.Web.UI.WebControls.TableCell @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.TableCell();
+            this.KalanTeminatTutariCell = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
+            @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
+            @__ctrl.CssClass = "bg-white";
+            @__ctrl.ID = "KalanTeminatTutariCell";
             return @__ctrl;
         }
         
@@ -1039,26 +1057,29 @@ namespace TBYS_WebParts.KiraKartiWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControl__control36(System.Web.UI.WebControls.TableCellCollection @__ctrl) {
             global::System.Web.UI.WebControls.TableCell @__ctrl1;
-            @__ctrl1 = this.@__BuildControlKiraTeminatiCell();
+            @__ctrl1 = this.@__BuildControl__control37();
             @__ctrl.Add(@__ctrl1);
             global::System.Web.UI.WebControls.TableCell @__ctrl2;
-            @__ctrl2 = this.@__BuildControl__control37();
+            @__ctrl2 = this.@__BuildControlTeminatTarihiCell();
             @__ctrl.Add(@__ctrl2);
             global::System.Web.UI.WebControls.TableCell @__ctrl3;
-            @__ctrl3 = this.@__BuildControlTeminatTarihiCell();
+            @__ctrl3 = this.@__BuildControlKiraTeminatiCell();
             @__ctrl.Add(@__ctrl3);
             global::System.Web.UI.WebControls.TableCell @__ctrl4;
-            @__ctrl4 = this.@__BuildControl__control38();
+            @__ctrl4 = this.@__BuildControlTeminatTutariCell();
             @__ctrl.Add(@__ctrl4);
             global::System.Web.UI.WebControls.TableCell @__ctrl5;
-            @__ctrl5 = this.@__BuildControlTeminatTutariCell();
+            @__ctrl5 = this.@__BuildControl__control38();
             @__ctrl.Add(@__ctrl5);
             global::System.Web.UI.WebControls.TableCell @__ctrl6;
-            @__ctrl6 = this.@__BuildControl__control39();
+            @__ctrl6 = this.@__BuildControlOdenenTeminatTutariCell();
             @__ctrl.Add(@__ctrl6);
             global::System.Web.UI.WebControls.TableCell @__ctrl7;
-            @__ctrl7 = this.@__BuildControlOdenenTeminatTutariCell();
+            @__ctrl7 = this.@__BuildControl__control39();
             @__ctrl.Add(@__ctrl7);
+            global::System.Web.UI.WebControls.TableCell @__ctrl8;
+            @__ctrl8 = this.@__BuildControlKalanTeminatTutariCell();
+            @__ctrl.Add(@__ctrl8);
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]

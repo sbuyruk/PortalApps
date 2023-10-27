@@ -109,6 +109,10 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.TextBox KullanimAmaciTxt;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.TextBox BulunduguKatTxt;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -126,6 +130,10 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP {
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.TextBox PrimTxt;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.Label TapuTasinmazNoTxt;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -565,6 +573,20 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.TextBox @__BuildControlKullanimAmaciTxt() {
+            global::System.Web.UI.WebControls.TextBox @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.TextBox();
+            this.KullanimAmaciTxt = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "KullanimAmaciTxt";
+            @__ctrl.CssClass = "form-control";
+            @__ctrl.ToolTip = "Dairenin metrekaresi";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.WebControls.TextBox @__BuildControlBulunduguKatTxt() {
             global::System.Web.UI.WebControls.TextBox @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
@@ -625,6 +647,19 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP {
             @__ctrl.ID = "PrimTxt";
             @__ctrl.CssClass = "form-control input-money text-right";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlTapuTasinmazNoTxt() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.TapuTasinmazNoTxt = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "TapuTasinmazNoTxt";
+            @__ctrl.CssClass = "form-control";
             return @__ctrl;
         }
         
@@ -1038,6 +1073,12 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP {
             global::System.Web.UI.WebControls.TextBox @__ctrl7;
             @__ctrl7 = this.@__BuildControlMetrekareTxt();
             @__parser.AddParsedSubObject(@__ctrl7);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>                    \r\n                    <div class=" +
+                        "\"form-group\">\r\n                        <label class=\"col-form-label \" for=\"Metre" +
+                        "kareTxt\">Kullanım Amacı</label>\r\n                        "));
+            global::System.Web.UI.WebControls.TextBox @__ctrl8;
+            @__ctrl8 = this.@__BuildControlKullanimAmaciTxt();
+            @__parser.AddParsedSubObject(@__ctrl8);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                     </div>
                 </div>
@@ -1045,33 +1086,39 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP {
                     <div class=""form-group"">
                         <label class=""col-form-label "" for=""BulunduguKatTxt"">Bulunduğu Kat</label>
                         "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl8;
-            @__ctrl8 = this.@__BuildControlBulunduguKatTxt();
-            @__parser.AddParsedSubObject(@__ctrl8);
+            global::System.Web.UI.WebControls.TextBox @__ctrl9;
+            @__ctrl9 = this.@__BuildControlBulunduguKatTxt();
+            @__parser.AddParsedSubObject(@__ctrl9);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                    <div class=\"form-group\">\r\n     " +
                         "                   <label class=\"col-form-label \" for=\"ToplamKatSayisiTxt\">Topla" +
                         "m Kat Sayısı</label>\r\n                        "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl9;
-            @__ctrl9 = this.@__BuildControlToplamKatSayisiTxt();
-            @__parser.AddParsedSubObject(@__ctrl9);
+            global::System.Web.UI.WebControls.TextBox @__ctrl10;
+            @__ctrl10 = this.@__BuildControlToplamKatSayisiTxt();
+            @__parser.AddParsedSubObject(@__ctrl10);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                    <div class=\"form-group\">\r\n     " +
                         "                   <label class=\"col-form-label \" for=\"BrutYuzolcumuTxt\">Brüt Yü" +
                         "zölçümü</label>\r\n                        "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl10;
-            @__ctrl10 = this.@__BuildControlBrutYuzolcumuTxt();
-            @__parser.AddParsedSubObject(@__ctrl10);
+            global::System.Web.UI.WebControls.TextBox @__ctrl11;
+            @__ctrl11 = this.@__BuildControlBrutYuzolcumuTxt();
+            @__parser.AddParsedSubObject(@__ctrl11);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                    <div class=\"form-group\">\r\n     " +
                         "                   <label class=\"col-form-label \" for=\"SigortaBedeliTxt\">Sigorta" +
                         " Bedeli</label>\r\n                        "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl11;
-            @__ctrl11 = this.@__BuildControlSigortaBedeliTxt();
-            @__parser.AddParsedSubObject(@__ctrl11);
+            global::System.Web.UI.WebControls.TextBox @__ctrl12;
+            @__ctrl12 = this.@__BuildControlSigortaBedeliTxt();
+            @__parser.AddParsedSubObject(@__ctrl12);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                    <div class=\"form-group\">\r\n     " +
                         "                   <label class=\"col-form-label \" for=\"PrimTxt\">Prim</label>\r\n  " +
                         "                      "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl12;
-            @__ctrl12 = this.@__BuildControlPrimTxt();
-            @__parser.AddParsedSubObject(@__ctrl12);
+            global::System.Web.UI.WebControls.TextBox @__ctrl13;
+            @__ctrl13 = this.@__BuildControlPrimTxt();
+            @__parser.AddParsedSubObject(@__ctrl13);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>                    \r\n                    <div class=" +
+                        "\"form-group\">\r\n                        <label class=\"col-form-label \" for=\"PrimT" +
+                        "xt\">Tapu Taşınmaz No</label>\r\n                        "));
+            global::System.Web.UI.WebControls.Label @__ctrl14;
+            @__ctrl14 = this.@__BuildControlTapuTasinmazNoTxt();
+            @__parser.AddParsedSubObject(@__ctrl14);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                     </div>
                 </div>
@@ -1081,103 +1128,103 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP {
                     </div>
                     <div class=""form-group"">
                         "));
-            global::System.Web.UI.WebControls.CheckBox @__ctrl13;
-            @__ctrl13 = this.@__BuildControlDepremChk();
-            @__parser.AddParsedSubObject(@__ctrl13);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                    <div class=\"form-group\">\r\n     " +
-                        "                   "));
-            global::System.Web.UI.WebControls.CheckBox @__ctrl14;
-            @__ctrl14 = this.@__BuildControlYanginChk();
-            @__parser.AddParsedSubObject(@__ctrl14);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                    <div class=\"form-group\">\r\n     " +
-                        "                   "));
             global::System.Web.UI.WebControls.CheckBox @__ctrl15;
-            @__ctrl15 = this.@__BuildControlMakine100000Chk();
+            @__ctrl15 = this.@__BuildControlDepremChk();
             @__parser.AddParsedSubObject(@__ctrl15);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                    <div class=\"form-group\">\r\n     " +
                         "                   "));
             global::System.Web.UI.WebControls.CheckBox @__ctrl16;
-            @__ctrl16 = this.@__BuildControlMakine5000Chk();
+            @__ctrl16 = this.@__BuildControlYanginChk();
             @__parser.AddParsedSubObject(@__ctrl16);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                    <div class=\"form-group\">\r\n     " +
                         "                   "));
             global::System.Web.UI.WebControls.CheckBox @__ctrl17;
-            @__ctrl17 = this.@__BuildControlJeneratorChk();
+            @__ctrl17 = this.@__BuildControlMakine100000Chk();
             @__parser.AddParsedSubObject(@__ctrl17);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                    <div class=\"form-group\">\r\n     " +
                         "                   "));
             global::System.Web.UI.WebControls.CheckBox @__ctrl18;
-            @__ctrl18 = this.@__BuildControlAsansorChk();
+            @__ctrl18 = this.@__BuildControlMakine5000Chk();
             @__parser.AddParsedSubObject(@__ctrl18);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                    <div class=\"form-group\">\r\n     " +
                         "                   "));
             global::System.Web.UI.WebControls.CheckBox @__ctrl19;
-            @__ctrl19 = this.@__BuildControlKazanChk();
+            @__ctrl19 = this.@__BuildControlJeneratorChk();
             @__parser.AddParsedSubObject(@__ctrl19);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                    <div class=\"form-group\">\r\n     " +
+                        "                   "));
+            global::System.Web.UI.WebControls.CheckBox @__ctrl20;
+            @__ctrl20 = this.@__BuildControlAsansorChk();
+            @__parser.AddParsedSubObject(@__ctrl20);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                    <div class=\"form-group\">\r\n     " +
+                        "                   "));
+            global::System.Web.UI.WebControls.CheckBox @__ctrl21;
+            @__ctrl21 = this.@__BuildControlKazanChk();
+            @__parser.AddParsedSubObject(@__ctrl21);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                </div>\r\n            </div>\r\n       " +
                         "     <div class=\"form-group border border-dark p-2 text-center\" style=\"backgroun" +
                         "d-color: aliceblue\">\r\n                <div class=\"form-group\">\r\n                " +
                         "    "));
-            global::System.Web.UI.WebControls.Label @__ctrl20;
-            @__ctrl20 = this.@__BuildControlLabel1();
-            @__parser.AddParsedSubObject(@__ctrl20);
+            global::System.Web.UI.WebControls.Label @__ctrl22;
+            @__ctrl22 = this.@__BuildControlLabel1();
+            @__parser.AddParsedSubObject(@__ctrl22);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                </div>\r\n                <div class=\"form-group text-center\">\r\n " +
                         "                   "));
-            global::System.Web.UI.HtmlControls.HtmlAnchor @__ctrl21;
-            @__ctrl21 = this.@__BuildControlDosyaLnk();
-            @__parser.AddParsedSubObject(@__ctrl21);
+            global::System.Web.UI.HtmlControls.HtmlAnchor @__ctrl23;
+            @__ctrl23 = this.@__BuildControlDosyaLnk();
+            @__parser.AddParsedSubObject(@__ctrl23);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl22;
-            @__ctrl22 = this.@__BuildControlBelgeSilBtn();
-            @__parser.AddParsedSubObject(@__ctrl22);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl24;
+            @__ctrl24 = this.@__BuildControlBelgeSilBtn();
+            @__parser.AddParsedSubObject(@__ctrl24);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                </div>\r\n                <div class=\"form-group\">\r\n             " +
                         "       "));
-            global::System.Web.UI.WebControls.FileUpload @__ctrl23;
-            @__ctrl23 = this.@__BuildControlBelgeYukleFU();
-            @__parser.AddParsedSubObject(@__ctrl23);
+            global::System.Web.UI.WebControls.FileUpload @__ctrl25;
+            @__ctrl25 = this.@__BuildControlBelgeYukleFU();
+            @__parser.AddParsedSubObject(@__ctrl25);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                </div>\r\n            </div>\r\n            <div class=\"form-group\"" +
                         ">\r\n                <label class=\"col-form-label \" for=\"AciklamaTxt\">Açıklama</la" +
                         "bel>\r\n                "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl24;
-            @__ctrl24 = this.@__BuildControlAciklamaTxt();
-            @__parser.AddParsedSubObject(@__ctrl24);
+            global::System.Web.UI.WebControls.TextBox @__ctrl26;
+            @__ctrl26 = this.@__BuildControlAciklamaTxt();
+            @__parser.AddParsedSubObject(@__ctrl26);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            </div>\r\n        </div>\r\n        <div class=\"card-footer\">\r\n        " +
                         "    "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl25;
-            @__ctrl25 = this.@__BuildControlNextBtn();
-            @__parser.AddParsedSubObject(@__ctrl25);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl26;
-            @__ctrl26 = this.@__BuildControlPrevBtn();
-            @__parser.AddParsedSubObject(@__ctrl26);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl27;
-            @__ctrl27 = this.@__BuildControlBackBtn();
+            @__ctrl27 = this.@__BuildControlNextBtn();
             @__parser.AddParsedSubObject(@__ctrl27);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl28;
-            @__ctrl28 = this.@__BuildControlSaveBtn();
+            @__ctrl28 = this.@__BuildControlPrevBtn();
             @__parser.AddParsedSubObject(@__ctrl28);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl29;
-            @__ctrl29 = this.@__BuildControlUpdateBtn();
+            @__ctrl29 = this.@__BuildControlBackBtn();
             @__parser.AddParsedSubObject(@__ctrl29);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl30;
-            @__ctrl30 = this.@__BuildControlTasinmazBtn();
+            @__ctrl30 = this.@__BuildControlSaveBtn();
             @__parser.AddParsedSubObject(@__ctrl30);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl31;
-            @__ctrl31 = this.@__BuildControlTasinmazListesiBtn();
+            @__ctrl31 = this.@__BuildControlUpdateBtn();
             @__parser.AddParsedSubObject(@__ctrl31);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl32;
-            @__ctrl32 = this.@__BuildControlSigortaListesiBtn();
+            @__ctrl32 = this.@__BuildControlTasinmazBtn();
             @__parser.AddParsedSubObject(@__ctrl32);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl33;
-            @__ctrl33 = this.@__BuildControlSilBtn();
+            @__ctrl33 = this.@__BuildControlTasinmazListesiBtn();
             @__parser.AddParsedSubObject(@__ctrl33);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl34;
+            @__ctrl34 = this.@__BuildControlSigortaListesiBtn();
+            @__parser.AddParsedSubObject(@__ctrl34);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl35;
+            @__ctrl35 = this.@__BuildControlSilBtn();
+            @__parser.AddParsedSubObject(@__ctrl35);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n        </div>\r\n    "));
             return @__ctrl;
         }

@@ -81,6 +81,10 @@
                     <div class="form-group">
                         <label class="col-form-label " for="MetrekareTxt">Metrekare</label>
                         <asp:TextBox ID="MetrekareTxt" runat="server" CssClass="form-control" ToolTip="Dairenin metrekaresi"></asp:TextBox>
+                    </div>                    
+                    <div class="form-group">
+                        <label class="col-form-label " for="MetrekareTxt">Kullanım Amacı</label>
+                        <asp:TextBox ID="KullanimAmaciTxt" runat="server" CssClass="form-control" ToolTip="Dairenin metrekaresi"></asp:TextBox>
                     </div>
                 </div>
                 <div class="col border m-2">
@@ -103,6 +107,10 @@
                     <div class="form-group">
                         <label class="col-form-label " for="PrimTxt">Prim</label>
                         <asp:TextBox ID="PrimTxt" runat="server" CssClass="form-control input-money text-right" type="text"></asp:TextBox>
+                    </div>                    
+                    <div class="form-group">
+                        <label class="col-form-label " for="PrimTxt">Tapu Taşınmaz No</label>
+                        <asp:Label ID="TapuTasinmazNoTxt" runat="server" CssClass="form-control" ></asp:Label>
                     </div>
                 </div>
                 <div class="col border m-2">

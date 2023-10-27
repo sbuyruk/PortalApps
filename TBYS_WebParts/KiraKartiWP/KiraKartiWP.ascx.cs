@@ -179,10 +179,12 @@ namespace TBYS_WebParts.KiraKartiWP
                     IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
                     TeminatTutariCell.Text = aktifSozlesme.TeminatTutari.ConvertToDecimal().ToString("N", culturInfo);
                     OdenenTeminatTutariCell.Text = aktifSozlesme.OdenenTeminatTutari.ConvertToDecimal().ToString("N", culturInfo);
+                    string iade = aktifSozlesme.IadeTeminatTutari>0?" (İade/Mahsup Tutarı : " + aktifSozlesme.IadeTeminatTutari.ConvertToDecimal().ToString("N", culturInfo)+")":string.Empty;
+                    KalanTeminatTutariCell.Text = aktifSozlesme.KalanTeminatTutari.ConvertToDecimal().ToString("N", culturInfo) + iade;
                     //KalanTeminatTutariCell.Text = aktifSozlesme.KalanTeminatTutari.ConvertToDecimal().ToString("N", culturInfo);
                     //TeminatIadeTarihiCell.Text = aktifSozlesme.TeminatIadeTarihi.ConvertToDatetimeEmptyIfNull();
-                    TeminatTarihiCell.Text = aktifSozlesme.TeminatOdemeTarihi.ConvertToDatetimeEmptyIfNull(); ;
-                    KiraTeminatiCell.Text = "KİRA TEMİNATI (" + aktifSozlesme.TeminatCinsi + ")";
+                    TeminatTarihiCell.Text = aktifSozlesme.TeminatOdemeTarihi.ConvertToDatetimeEmptyIfNull();
+                    KiraTeminatiCell.Text = "TEMİNAT (" + aktifSozlesme.TeminatCinsi + ")";
 
                 }
             }
@@ -225,8 +227,19 @@ namespace TBYS_WebParts.KiraKartiWP
                         adres += tasinmaz.Adres + System.Environment.NewLine;
                     }
                     YuzolcumuCell.Text = tasinmaz.Yuzolcumu;
-                    CinsiCell.Text = tasinmaz.KullanimSekli;
-                    NiteligiCell.Text = tasinmaz.Nitelik;
+                    //KiralamaAmaciCell.Text = tasinmaz.KullanimSekli;
+                    if (tasinmaz.KatMulkiyeti.Equals(ProjeConstants.KAT_MULKIYETI_VAR))
+                    {
+                        NiteligiCell.Text = tasinmaz.Nitelik;
+                    }
+                    else
+                    {
+                        BagimsizBolum bagimsizBolum = new BagimsizBolum();
+                        bagimsizBolum = bagimsizBolum.Select<BagimsizBolum>(item.BolumId);
+                        if (bagimsizBolum != null) {
+                            NiteligiCell.Text = bagimsizBolum.Nitelik;
+                        }
+                    }
 
                 }
                 IliCell.Text = ili;
@@ -243,6 +256,7 @@ namespace TBYS_WebParts.KiraKartiWP
             SemtCell.Text = kiraci.Semt;
             VergiDairesiCell.Text = kiraci.VergiDairesi;
             VergiNoCell.Text = kiraci.VergiNo;
+            KiralamaAmaciCell.Text = kiraci.KiralamaAmaci;
         }
 
         private void OdemePlaniDoldur()

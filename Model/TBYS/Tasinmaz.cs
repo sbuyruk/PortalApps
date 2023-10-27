@@ -801,5 +801,18 @@ namespace Model.TBYS
             }
             return Adet;
         }
+        public DataTable SelectByTasinmazId(int tasinmazId)
+        {
+            string sqlString = string.Format(@"
+                SELECT  A.KatMulkiyeti, A.KullanimSekli,A.Cinsi,A.MulkiyetSekli,D.Adi,D.Soyadi, A.Adres,A.Ilcesi,A.Ili, 
+                    B.Id BolumId,B.BolumNo, A.AdaNo,A.ParselNo,A.Yuzolcumu,A.ArsaPayi ,A.EnvanterdeMi
+                FROM Tasinmaz_Table A
+	                Left Join BagimsizBolum_Table B ON B.TasinmazId=A.Id
+	                Left Join Bagis_Table C ON C.TasinmazId=A.Id
+	                Left Join TasinmazBagisci_Table D ON D.Id=C.BagisciId
+                WHERE A.Id={0} AND EnvanterdeMi=1 AND A.KatMulkiyeti={1}", tasinmazId,ProjeConstants.KAT_MULKIYETI_YOK.ReturnQuotedValue());
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            return dataTable;
+        }
     }
 }

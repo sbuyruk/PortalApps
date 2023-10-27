@@ -489,8 +489,8 @@ namespace TBYS_WebParts.OdemeListesiWP
                 {
                     foreach (DataRow row in dataTable.Rows)
                     {
-                        string teminatId = row["TeminatId"].ToString();
-                        string islemTipi = row["IslemTipi"].ToString();
+                        //string teminatId = row["TeminatId"].ToString();
+                        //string islemTipi = row["IslemTipi"].ToString();
 
                         string adi = row["Adi"].ToString();
                         string soyadi = row["Soyadi"].ToString();

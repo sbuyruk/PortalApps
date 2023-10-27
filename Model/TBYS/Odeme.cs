@@ -330,8 +330,8 @@ namespace Model.TBYS
             string sqlString = string.Format(@"
                 SELECT 
 	                A.OdemeTarihi, A.OdenenTutar, A.Aciklama, 
-	                B.Adi, B.Soyadi, 
-	                D.Id TeminatId, D.IslemTipi
+	                B.Adi, B.Soyadi 
+	                --D.Id TeminatId, D.IslemTipi
                 FROM Odeme_Table A
                     INNER JOIN Kiraci_Table B ON B.Id=A.KiraciId 
 	                INNER JOIN KiraSozlesme_Table C ON C.Id=A.SozlesmeId	                
