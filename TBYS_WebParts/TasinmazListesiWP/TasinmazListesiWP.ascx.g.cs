@@ -65,6 +65,10 @@ namespace TBYS_WebParts.TasinmazListesiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.LinkButton ModalDoldurBtn;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton YeniKayitBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -77,11 +81,7 @@ namespace TBYS_WebParts.TasinmazListesiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.Label TasinmazLbl;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.LinkButton ModalDoldurBtn;
+        protected global::System.Web.UI.WebControls.Label AdresLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -187,6 +187,23 @@ namespace TBYS_WebParts.TasinmazListesiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlModalDoldurBtn() {
+            global::System.Web.UI.WebControls.LinkButton @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
+            this.ModalDoldurBtn = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "ModalDoldurBtn";
+            @__ctrl.CausesValidation = false;
+            @__ctrl.Text = "";
+            @__ctrl.OnClientClick = "{return true;};";
+            @__ctrl.Click -= new System.EventHandler(this.ModalDoldurBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.ModalDoldurBtn_Click);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlYeniKayitBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -228,39 +245,23 @@ namespace TBYS_WebParts.TasinmazListesiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "BagisciLbl";
-            @__ctrl.Text = "Label";
+            @__ctrl.CssClass = "form-control font-weight-bold";
+            @__ctrl.Text = "";
             return @__ctrl;
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControlTasinmazLbl() {
+        private global::System.Web.UI.WebControls.Label @__BuildControlAdresLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
-            this.TasinmazLbl = @__ctrl;
+            this.AdresLbl = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "TasinmazLbl";
-            @__ctrl.Text = "Label";
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.LinkButton @__BuildControlModalDoldurBtn() {
-            global::System.Web.UI.WebControls.LinkButton @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
-            this.ModalDoldurBtn = @__ctrl;
-            @__ctrl.TemplateControl = this;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "ModalDoldurBtn";
-            @__ctrl.CausesValidation = false;
+            @__ctrl.ID = "AdresLbl";
+            @__ctrl.CssClass = "form-control font-weight-bold";
             @__ctrl.Text = "";
-            @__ctrl.OnClientClick = "{return true;};";
-            @__ctrl.Click -= new System.EventHandler(this.ModalDoldurBtn_Click);
-            @__ctrl.Click += new System.EventHandler(this.ModalDoldurBtn_Click);
             return @__ctrl;
         }
         
@@ -276,16 +277,14 @@ namespace TBYS_WebParts.TasinmazListesiWP {
             @__parser.AddParsedSubObject(@__ctrl1);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                "));
             global::System.Web.UI.WebControls.Label @__ctrl2;
-            @__ctrl2 = this.@__BuildControlTasinmazLbl();
+            @__ctrl2 = this.@__BuildControlAdresLbl();
             @__parser.AddParsedSubObject(@__ctrl2);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </h3>\r\n                        </div>\r\n\r\n          " +
-                        "              <div class=\"card-body\">\r\n                            <div style=\"d" +
-                        "isplay: none\">\r\n                                "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl3;
-            @__ctrl3 = this.@__BuildControlModalDoldurBtn();
-            @__parser.AddParsedSubObject(@__ctrl3);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-                            </div>
+                            </h3>
+                        </div>
+
+                        <div class=""card-body"">
+
                             <div class=""m-1 text-center"" id=""BagimsizBolumDiv"">
                                 <table id=""CustomModalDataTable"" class=""table table-hover row-border"" width=""100%"">
                                     <thead>
@@ -293,8 +292,8 @@ namespace TBYS_WebParts.TasinmazListesiWP {
                                             <th>Bölüm Id</th>
                                             <th>Adres</th>
                                             <th>Bölüm</th>
-                                            <th>İl</th>
-                                            <th>İlçe</th>
+                                            <th>Nitelik</th>
+                                            <th>Açıklama</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -310,6 +309,26 @@ namespace TBYS_WebParts.TasinmazListesiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control4() {
+            global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
+            @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
+            @__ctrl.ControlID = "ModalDoldurBtn";
+            @__ctrl.EventName = "click";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private void @__BuildControl__control3(System.Web.UI.UpdatePanelTriggerCollection @__ctrl) {
+            global::System.Web.UI.AsyncPostBackTrigger @__ctrl1;
+            @__ctrl1 = this.@__BuildControl__control4();
+            @__ctrl.Add(@__ctrl1);
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.UpdatePanel @__BuildControlUpdatePanel2() {
             global::System.Web.UI.UpdatePanel @__ctrl;
             @__ctrl = new global::System.Web.UI.UpdatePanel();
@@ -317,13 +336,14 @@ namespace TBYS_WebParts.TasinmazListesiWP {
             @__ctrl.ContentTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control2));
             @__ctrl.ID = "UpdatePanel2";
             @__ctrl.UpdateMode = global::System.Web.UI.UpdatePanelUpdateMode.Conditional;
+            this.@__BuildControl__control3(@__ctrl.Triggers);
             return @__ctrl;
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control3(System.Web.UI.Control @__ctrl) {
+        private void @__BuildControl__control5(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    <div class=\'loaderMainContainer\'>\r\n                        " +
                         "<div class=\'loaderContainer\'>\r\n                            <div class=\'loaderCir" +
@@ -338,7 +358,7 @@ namespace TBYS_WebParts.TasinmazListesiWP {
             global::System.Web.UI.UpdateProgress @__ctrl;
             @__ctrl = new global::System.Web.UI.UpdateProgress();
             this.updateProgress1 = @__ctrl;
-            @__ctrl.ProgressTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control3));
+            @__ctrl.ProgressTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control5));
             @__ctrl.ID = "updateProgress1";
             return @__ctrl;
         }
@@ -367,17 +387,20 @@ namespace TBYS_WebParts.TasinmazListesiWP {
             @__ctrl6 = this.@__BuildControlxx();
             @__parser.AddParsedSubObject(@__ctrl6);
             global::System.Web.UI.WebControls.LinkButton @__ctrl7;
-            @__ctrl7 = this.@__BuildControlYeniKayitBtn();
+            @__ctrl7 = this.@__BuildControlModalDoldurBtn();
             @__parser.AddParsedSubObject(@__ctrl7);
             global::System.Web.UI.WebControls.LinkButton @__ctrl8;
-            @__ctrl8 = this.@__BuildControlExcelBtn();
+            @__ctrl8 = this.@__BuildControlYeniKayitBtn();
             @__parser.AddParsedSubObject(@__ctrl8);
-            global::System.Web.UI.UpdatePanel @__ctrl9;
-            @__ctrl9 = this.@__BuildControlUpdatePanel2();
+            global::System.Web.UI.WebControls.LinkButton @__ctrl9;
+            @__ctrl9 = this.@__BuildControlExcelBtn();
             @__parser.AddParsedSubObject(@__ctrl9);
-            global::System.Web.UI.UpdateProgress @__ctrl10;
-            @__ctrl10 = this.@__BuildControlupdateProgress1();
+            global::System.Web.UI.UpdatePanel @__ctrl10;
+            @__ctrl10 = this.@__BuildControlUpdatePanel2();
             @__parser.AddParsedSubObject(@__ctrl10);
+            global::System.Web.UI.UpdateProgress @__ctrl11;
+            @__ctrl11 = this.@__BuildControlupdateProgress1();
+            @__parser.AddParsedSubObject(@__ctrl11);
             @__ctrl.SetRenderMethodDelegate(new System.Web.UI.RenderMethod(this.@__Render__control1));
         }
         
@@ -429,8 +452,11 @@ namespace TBYS_WebParts.TasinmazListesiWP {
             parameterContainer.Controls[4].RenderControl(@__w);
             @__w.Write("\r\n                ");
             parameterContainer.Controls[5].RenderControl(@__w);
+            @__w.Write("\r\n            </div>\r\n                                        <div style=\"display" +
+                    ": none\">\r\n                                ");
+            parameterContainer.Controls[6].RenderControl(@__w);
             @__w.Write(@"
-            </div>
+                            </div>
             <div class=""form-group"">
                 <table id=""CustomDataTable"" class=""table table-striped row-border"" width=""100%"">
                     <thead>
@@ -464,15 +490,15 @@ namespace TBYS_WebParts.TasinmazListesiWP {
         </div>
         <div class=""card-footer"">
             ");
-            parameterContainer.Controls[6].RenderControl(@__w);
-            @__w.Write("\r\n            ");
             parameterContainer.Controls[7].RenderControl(@__w);
+            @__w.Write("\r\n            ");
+            parameterContainer.Controls[8].RenderControl(@__w);
             @__w.Write("\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"modal\" id=\"ModalUrlDiv\" role=" +
                     "\"dialog\">\r\n    <div class=\"modal-dialog modal-lg\">\r\n        <!-- Modal content--" +
                     ">\r\n        <div class=\"modal-content\">\r\n            ");
-            parameterContainer.Controls[8].RenderControl(@__w);
-            @__w.Write("\r\n             ");
             parameterContainer.Controls[9].RenderControl(@__w);
+            @__w.Write("\r\n             ");
+            parameterContainer.Controls[10].RenderControl(@__w);
             @__w.Write("\r\n        </div>\r\n    </div>\r\n</div>");
         }
         

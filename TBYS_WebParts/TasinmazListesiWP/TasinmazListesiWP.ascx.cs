@@ -87,7 +87,10 @@ namespace TBYS_WebParts.TasinmazListesiWP
         {
             try
             {
-                TabloOlustur();
+                if (!Page.IsPostBack)
+                {
+                    TabloOlustur();
+                }
             }
             catch (Exception ex)
             {
@@ -145,12 +148,9 @@ namespace TBYS_WebParts.TasinmazListesiWP
                 ? "{ targets:9, visible:false},"
                 : "{ targets:9, visible:true},";
             string tableString = @"
-                if ( jQuery.fn.DataTable.isDataTable('#CustomDataTable') ) {
-                    jQuery('#CustomDataTable').DataTable().destroy();
-                }
-                jQuery('#CustomDataTable tbody').empty();
+
                 $(document).ready(function () {
-                    // Setup - add a text input to each footer cell
+                    //// Setup - add a text input to each footer cell
                     $('#CustomDataTable tfoot tr')
                         .clone(true)
                         .addClass('filters')
@@ -192,36 +192,11 @@ namespace TBYS_WebParts.TasinmazListesiWP
                         },
                         responsive: true,
                         dom: 'Bfrtip',
-                        buttons: [
-                            {
-                                extend: 'print',
-                                exportOptions: {
-                                    columns: ':visible'
-                                }
-                            },
-                            {
-                                extend: 'excel',
-                                exportOptions: {
-                                    columns: ':visible'
-                                }
-                            },
-                            {
-                                extend: 'pdf',
-                                exportOptions: {
-                                    columns: ':visible'
-                                }
-                            },
-                            {
-                                extend: 'copy',
-                                exportOptions: {
-                                    columns: ':visible'
-                                }
-                            },
-                            , 'pageLength', 'colvis'
-                        ],
+                        destroy:true,
+
                         initComplete: function () {
                             var api = this.api();
- 
+
                             // For each column
                             api
                                 .columns([6])
@@ -233,7 +208,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
                                     );
                                     var title = $(cell).text();
                                     $(cell).html('<input type=text  placeholder=' + title + ' />');
- 
+
                                     // On every keypress in this input
                                     $(
                                         'input',
@@ -244,7 +219,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
                                             // Get the search value
                                             $(this).attr('title', $(this).val());
                                             var regexr = '({search})'; //$(this).parents('th').find('select').val();
- 
+
                                             var cursorPosition = this.selectionStart;
                                             // Search the column for that value
                                             api
@@ -260,7 +235,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
                                         })
                                         .on('keyup', function (e) {
                                             e.stopPropagation();
- 
+
                                             $(this).trigger('change');
                                             $(this)
                                                 .focus()[0]
@@ -270,7 +245,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
                             table.columns.adjust().draw();
                         },
                     });
-                   
+
 
                 });";
             return tableString;
@@ -429,8 +404,8 @@ namespace TBYS_WebParts.TasinmazListesiWP
                             { data: 'BagisizBolumId' },
                             { data: 'Adres' },
                             { data: 'BolumNo' },
-                            { data: 'Ili' },
-                            { data: 'Ilcesi' },
+                            { data: 'Nitelik' },
+                            { data: 'Aciklama' },
                         ],
                         'order': [[0, 'desc']],//sort
 
@@ -464,8 +439,10 @@ namespace TBYS_WebParts.TasinmazListesiWP
                 string ilce = row0["Ilcesi"].ReturnEmptyIfNull().ToString();
                 string adi0 = row0["Adi"].ToString();
                 string soyadi0 = row0["Soyadi"].ToString();
+                string nitelik = row0["Nitelik"].ToString();
+                string aciklama = row0["Aciklama"].ToString();
                 BagisciLbl.Text = "Bağışçı : "+ (adi0 + " " + soyadi0).Trim() ;
-                TasinmazLbl.Text = "Adres : "+ adres ;
+                AdresLbl.Text = "Adres : "+ adres +" " +ilce+"/"+il ;
                 foreach (DataRow row in dataTable.Rows)
                 {
                     int bolumId = row["BolumId"].ConvertToInt();
@@ -480,6 +457,8 @@ namespace TBYS_WebParts.TasinmazListesiWP
 
                     bagimsizBolum.BolumNo = bolumNo;
                     bagimsizBolum.BagisizBolumId = bolumId;
+                    bagimsizBolum.Nitelik = nitelik;
+                    bagimsizBolum.Aciklama = aciklama;
 
                     bagimsizBolum.Secildi = SecilenIdQS.Equals(bolumId);
                     list.Add(bagimsizBolum);
@@ -592,6 +571,8 @@ namespace TBYS_WebParts.TasinmazListesiWP
             public string Parsel { get; set; }
             public string Yuzolcumu { get; set; }
             public string ArsaPayi { get; set; }
+            public string Nitelik { get; set; }
+            public string Aciklama { get; set; }
             public bool Secildi { get; set; }
         }
     }

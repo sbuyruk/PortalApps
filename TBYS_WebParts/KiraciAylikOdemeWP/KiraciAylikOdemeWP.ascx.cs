@@ -517,6 +517,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
                         string vadeBitTar = row["VadeBitTar"].ConvertToDatetimeEmptyIfNull();
 
                         string aciklama = row["Aciklama"].ToString();
+                        string odemeSekli = row["OdemeSekli"].ToString();
 
                         OdemeListItem item = new OdemeListItem();
                         item.OdemeId = odemeId;
@@ -536,6 +537,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
                         item.KiralamaAmaci = kiralamaAmaci;
                         item.Bolge = bolge;
                         item.KiralamaAmaci = kiralamaAmaci;
+                        item.OdemeSekli = odemeSekli;
                         item.Aciklama = aciklama;
                         item.Duzenle = "<a href=" + ProjeConstants.PAGE_ODEME_GIRIS + "?OdemeId=" + odemeId + " class='btn btn-outline-primary'>Düzenle</a>";
                         if (teminatId.ConvertToInt() > 0)
@@ -589,6 +591,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
             public string VadeBitTar { get; set; }
             public string KiralamaAmaci { get; set; }
             public string Bolge { get; set; }
+            public string OdemeSekli { get; set; }
             public string Aciklama { get; set; }
             public string Duzenle { get; set; }
             public string Sil { get; set; }

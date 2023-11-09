@@ -385,7 +385,7 @@ namespace Utility.ProjeGlobal
         public const decimal YASAL_FAIZ_ORANI = 1.4M;
         
         public const string SIGORTA_YOK = "Yok";
-        public const string SIGORTA_DASK_IHTIYARI = "DASK+İhtiyari";
+        public const string SIGORTA_DASK = "DASK";
         public const string SIGORTA_DEPREM_IHTIYARI = "Deprem+İhtiyari";
         public const string KAT_MULKIYETI_VAR = "Var";
         public const string KAT_MULKIYETI_YOK = "Yok";
@@ -732,6 +732,8 @@ namespace Utility.ProjeGlobal
         public const string PARAM_TASINMAZ_TASINMAZFOTO = "TasinmazFoto";
         public const string PARAM_TASINMAZ_TASINMAZFOTO1 = "TasinmazFoto1";
         public const string PARAM_TASINMAZ_TASINMAZFOTO2 = "TasinmazFoto2";
+        public const string PARAM_TASINMAZ_TASINMAZFOTO3 = "TasinmazFoto3";
+        public const string PARAM_TASINMAZ_TASINMAZFOTO4 = "TasinmazFoto4";
         public const string PARAM_TASINMAZ_TAHKIKATFOTO = "TahkikatFoto";
         public const string PARAM_TASINMAZ_KROKIFOTO = "KrokiFoto";
         public const string PARAM_TASINMAZ_TAPUFOTO = "TapuFoto";
@@ -1037,7 +1039,7 @@ namespace Utility.ProjeGlobal
         public const string PARAM_SMTP_ADRESI_LBL= "SMTP Adresi";
         public const string PARAM_ALTERNATIVE_SMTP_IP_ADRESI= "10.150.8.12";
         public const string PARAM_INTERNET_SMTP_IP_ADRESI= "10.150.9.12";
-        public const string PARAM_TOPLANTI_MAILGRUBU = "ToplantiMailTestGrubu";//"ToplantiMailGrubu";
+        public const string PARAM_TOPLANTI_MAILGRUBU = "ToplantiMailGrubu";//"ToplantiMailTestGrubu";//
         public const string PARAM_BILGISISTEM_MAILGRUBU = "BilgiSistemMailGrubu";
         public const string PARAM_IKRAM_MAILGRUBU = "IkramMailGrubu";
         public const string PARAM_OZELKALEMMAILADRESI = "ozelkalem@tskgv.org.tr";
@@ -1070,6 +1072,8 @@ namespace Utility.ProjeGlobal
         public static string DOSYA_VASIYET = "Vasiyet";
         public static string DOSYA_KIRASOZLESMESI = "KiraSozlesmesi";
         public static string DOSYA_SIGORTAPOLICESI_DASK = "SigortaPolicesiDask";
+        public static string DOSYA_EMLAKBEYAN_FORMU = "EmlakBeyanFormu";
+        public static string DOSYA_YAPIKAYIT_BELGESI = "YapiKayitBelgesi";
 
         public static string COKBAGISYAPAN_BASLAMATARIHI = "01.01.2018";
 

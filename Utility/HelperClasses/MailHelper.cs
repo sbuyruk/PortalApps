@@ -13,28 +13,35 @@ namespace Utility.HelperClasses
         /// </summary>
         public static void EPostaGonder(string from, string to, string subject, string body,string smptpAdres)
         {
-            try
+            if (string.IsNullOrEmpty(to))
             {
-
-                SmtpClient smtp = new SmtpClient(smptpAdres ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
-                MailMessage mail = new MailMessage();
-
-                mail.From = new MailAddress(from);
-                mail.Subject = subject;
-                mail.IsBodyHtml = true;
-                mail.To.Add(new MailAddress(to));
-
-                mail.Body = body;
-                smtp.Send(mail);
-
-                //MessageHelper.PublishMessage(" E-Posta gönderildi ;) : to= " + to + " konu=" + subject, ProjeConstants.MESAJ_BILGI);
-                //Console.WriteLine(" E-Posta gönderildi ;) : to= " + to + " konu=" + subject);
+                MessageHelper.PublishMessage("Gideceği adres yok", ProjeConstants.MESAJ_HATA);
             }
-            catch (System.Exception exception)
+            else
             {
+                try
+                {
 
-                ExceptionHelper eh = new ExceptionHelper(exception);
-                eh.PublishException();
+                    SmtpClient smtp = new SmtpClient(smptpAdres ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
+                    MailMessage mail = new MailMessage();
+
+                    mail.From = new MailAddress(from);
+                    mail.Subject = subject;
+                    mail.IsBodyHtml = true;
+                    mail.To.Add(new MailAddress(to));
+
+                    mail.Body = body;
+                    smtp.Send(mail);
+
+                    //MessageHelper.PublishMessage(" E-Posta gönderildi ;) : to= " + to + " konu=" + subject, ProjeConstants.MESAJ_BILGI);
+                    //Console.WriteLine(" E-Posta gönderildi ;) : to= " + to + " konu=" + subject);
+                }
+                catch (System.Exception exception)
+                {
+
+                    ExceptionHelper eh = new ExceptionHelper(exception);
+                    eh.PublishException();
+                } 
             }
         }
         public static void TakvimeEkle(Guid uniqueId, string from, string to, string title, DateTime startTime, DateTime endTime, string location, string desc, string smptpAdres)

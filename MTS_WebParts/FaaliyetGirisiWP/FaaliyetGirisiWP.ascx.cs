@@ -342,8 +342,8 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         {
             BasSaatDDL.Items.Clear();
             TimeSpan bastarTS = new TimeSpan(6, 0, 0);
-            TimeSpan aralikTS = new TimeSpan(0, 30, 0);
-            TimeSpan bittarTS = new TimeSpan(20, 0, 0);
+            TimeSpan aralikTS = new TimeSpan(0, 15, 0);
+            TimeSpan bittarTS = new TimeSpan(21, 0, 0);
 
             TimeSpan nextTS = bastarTS;
 
@@ -370,8 +370,8 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                 basSaatStr = "08:00";
             }
             TimeSpan bastarTS = basSaatStr.ConvertToTimeSpan();
-            TimeSpan aralikTS = new TimeSpan(0, 30, 0);
-            TimeSpan bittarTS = new TimeSpan(20, 0, 0);
+            TimeSpan aralikTS = new TimeSpan(0, 15, 0);
+            TimeSpan bittarTS = new TimeSpan(21, 0, 0);
 
             TimeSpan nextTS = bastarTS;
 
@@ -476,6 +476,10 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                         faaliyet.Aciklama, ProjeConstants.PARAM_INTERNET_SMTP_IP_ADRESI);
                 }
 
+            }
+            else
+            {
+                MessageHelper.PublishMessage("Özel kalem takvimine işlenmedi",ProjeConstants.MESAJ_BILGI,2000);
             }
         }
 

@@ -194,7 +194,7 @@ namespace Model.MTS
                     END AS Soyadi,
 	                CASE
 		                WHEN A.KatilimciTipi=1 THEN 'TSKGV'
-                        WHEN A.KatilimciTipi=2 THEN C.Kurumu
+                        WHEN A.KatilimciTipi=2 THEN H.Adi
 		                WHEN A.KatilimciTipi=3 THEN 'Nakit Bağışçı'
 		                WHEN A.KatilimciTipi=4 THEN 'Taşınmaz Bağışçı'
                     ELSE C.Kurumu
@@ -204,11 +204,13 @@ namespace Model.MTS
 	                LEFT JOIN Personel_Table D ON D.Id = A.ArayanId
                     LEFT JOIN NakitBagisci_Table E ON E.Id = A.ArayanId
                     LEFT JOIN TasinmazBagisci_Table F ON F.Id = A.ArayanId
+					LEFT JOIN MTSKurumGorev_Table G ON G.KisiId = C.Id AND G.Durum={3}
+					LEFT JOIN MTSKurumTanim_Table H ON H.Id = G.MTSKurumTanimId
                 {0}
                 {1}
                 {2}
                 ORDER BY Tarih DESC
-                ", arayanIdstr, gorusmeSekliStr, basTarStr);
+                ", arayanIdstr, gorusmeSekliStr, basTarStr,ProjeConstants.MTSGOREVDURUMU_GOREVDE.ReturnQuotedValue());
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
 

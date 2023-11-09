@@ -507,10 +507,10 @@ namespace TBYS_WebParts.OdemeListesiWP
                         item.OdemeTarihi = odemeTarihi;
                         item.OdenenTutar = odenenTutar;
                         item.Aciklama = aciklama;
-                        if (teminatId.ConvertToInt() > 0)
-                        {
-                            item.IslemTipi = islemTipi;
-                        }
+                        //if (teminatId.ConvertToInt() > 0)
+                        //{
+                        //    item.IslemTipi = islemTipi;
+                        //}
                         list.Add(item);
                     }
                 }

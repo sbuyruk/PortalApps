@@ -49,7 +49,8 @@ namespace Model.Ortak
                 int sure = 0;
                 do
                 {
-                    if (!date.DayOfWeek.Equals(DayOfWeek.Sunday))
+                    //Cumartesi ve Pazar Günlerini izinden sayma
+                    if (!date.DayOfWeek.Equals(DayOfWeek.Sunday) && !date.DayOfWeek.Equals(DayOfWeek.Saturday))
                     {
                         bool tatil = resmiTatil.ResmiTatilMi(date);
                         if (!tatil)

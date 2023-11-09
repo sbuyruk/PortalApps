@@ -48,6 +48,9 @@
                 <input id="paramTasinmazIdLbl" runat="server" text="Label" />
                 <asp:LinkButton ID="xx" runat="server" CausesValidation="false" Text="" OnClientClick="{return true;};" OnClick="ModalDoldurBtn_Click" />
             </div>
+                                        <div style="display: none">
+                                <asp:LinkButton ID="ModalDoldurBtn" runat="server" CausesValidation="false" Text="" OnClientClick="{return true;};" OnClick="ModalDoldurBtn_Click" />
+                            </div>
             <div class="form-group">
                 <table id="CustomDataTable" class="table table-striped row-border" width="100%">
                     <thead>
@@ -95,15 +98,13 @@
                     <div class="modal-body">
                         <div>
                             <h3>
-                                <asp:Label ID="BagisciLbl" runat="server" Text="Label"></asp:Label>
-                                <asp:Label ID="TasinmazLbl" runat="server" Text="Label"></asp:Label>
+                                <asp:Label ID="BagisciLbl" CssClass="form-control font-weight-bold" runat="server" Text=""></asp:Label>
+                                <asp:Label ID="AdresLbl" CssClass="form-control font-weight-bold"  runat="server" Text=""></asp:Label>
                             </h3>
                         </div>
 
                         <div class="card-body">
-                            <div style="display: none">
-                                <asp:LinkButton ID="ModalDoldurBtn" runat="server" CausesValidation="false" Text="" OnClientClick="{return true;};" OnClick="ModalDoldurBtn_Click" />
-                            </div>
+
                             <div class="m-1 text-center" id="BagimsizBolumDiv">
                                 <table id="CustomModalDataTable" class="table table-hover row-border" width="100%">
                                     <thead>
@@ -111,8 +112,8 @@
                                             <th>Bölüm Id</th>
                                             <th>Adres</th>
                                             <th>Bölüm</th>
-                                            <th>İl</th>
-                                            <th>İlçe</th>
+                                            <th>Nitelik</th>
+                                            <th>Açıklama</th>
                                         </tr>
                                     </thead>
                                 </table>
@@ -123,6 +124,9 @@
                         <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
                     </div>
                 </ContentTemplate>
+                <Triggers>
+                    <asp:AsyncPostBackTrigger ControlID="ModalDoldurBtn" EventName="click" />
+                </Triggers>
             </asp:UpdatePanel>
              <asp:UpdateProgress ID="updateProgress1" runat="server">
                 <ProgressTemplate>

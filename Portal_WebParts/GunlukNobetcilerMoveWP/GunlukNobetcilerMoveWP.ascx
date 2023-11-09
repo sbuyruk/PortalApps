@@ -66,7 +66,8 @@
                                     <ItemTemplate>
                                         <li class="row form-group border border-dark alert-primary pt-2">
                                             <div class="col-3">
-                                                <img height="100" class="rounded-circle border" src="/PersonelResimleri/<%#Eval("KullaniciAdi") %>.jpg?RenditionID=5" alt="" onerror="this.src='/PersonelResimleri/personel.jpg';">
+                                                <%--<img height="100" class="rounded-circle border" src="/PersonelResimleri/<%#Eval("KullaniciAdi") %>.jpg?RenditionID=5" alt="" onerror="this.src='/PersonelResimleri/personel.jpg';">--%>
+                                                <img height="100" class="rounded-circle border" src="<%#Eval("PersonelResimleri") %><%#Eval("KullaniciAdi") %>.jpg?RenditionID=5" alt="" onerror="this.src='/PersonelResimleri/personel.jpg';">
                                             </div>
                                             <div class="col">
                                                 <div class="font-weight-bold">

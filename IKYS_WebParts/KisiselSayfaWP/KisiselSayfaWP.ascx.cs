@@ -467,11 +467,11 @@ namespace IKYS_WebParts.KisiselSayfaWP
                 bool printed = false;
                 foreach (IzinDonem izinDonemi in izinDonemiList)
                 {
-                    if (printOnce && printed)//standart kullanıcı ise sadece ilk dönemi bas
-                    {
-                        continue;
-                    }
-                    else
+                    //if (printOnce && printed)//standart kullanıcı ise sadece ilk dönemi bas
+                    //{
+                    //    continue;
+                    //}
+                    //else
                     {
                         DateTime today = DateTime.Today;
                         IzinDonem buIzinDonemi = new IzinDonem();

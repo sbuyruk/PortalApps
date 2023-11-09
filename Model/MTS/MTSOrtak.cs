@@ -74,58 +74,74 @@ namespace Model.Ortak
                     IletisimBilgileri iletisimBilgisi = new IletisimBilgileri();
                     iletisimBilgisi = iletisimBilgisi.SelectByPersonelId(personelId);
                     string userto = iletisimBilgisi.IntranetEPosta;
-                    if (!EpostaGonderilenlerList.Contains(userto))
+                    if (string.IsNullOrEmpty(userto))
                     {
                         Personel personel = new Personel();
                         personel = personel.Select(personelId);
                         if (personel != null)
                         {
-                            tabloSB.Append("Sayın " + personel.Adi + " " + personel.Soyadi + ",<br/><br/>");
-                            tabloSB = ToplantiTablosunuOlustur(toplanti, baslik);
-                            string body = "</br>" + tabloSB.ToString();
-                            string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL);
-                            MailHelper.EPostaGonder(from, userto, subject, body, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
-                            if (islemTipi.Equals(ProjeConstants.KAYDET))
+
+                            MessageHelper.PublishMessage(personel.Adi+" "+personel.Soyadi + " adlı kişiye ait İletişim billgilerinde e-posta adresi bulunamadı.", ProjeConstants.MESAJ_HATA);
+                        }
+                        else
+                        {
+                            MessageHelper.PublishMessage("İletişim billgilerinde e-posta adresi bulunamadı. personelId="+personelId, ProjeConstants.MESAJ_HATA);
+                        }
+                    }
+                    else{
+                        if (!EpostaGonderilenlerList.Contains(userto))
+                        {
+                            Personel personel = new Personel();
+                            personel = personel.Select(personelId);
+                            if (personel != null)
                             {
-                                if (!item.Bilgi)//bilgi değilse katılımcıdır
-                                    MailHelper.TakvimeEkle(toplanti.UniqueId, from, userto, toplantiAdi, toplanti.BaslangicTarihi, toplanti.BitisTarihi, ParseToplantiYeri(toplanti.ToplantiYeri, toplanti.ToplantiYeriDiger), toplanti.Aciklama, smtpAdresi);
-                            }
-                            else if (islemTipi.Equals(ProjeConstants.GUNCELLE))
-                            {
-                                ToplantiKatilim onceki = null;
-                                try
+                                tabloSB.Append("Sayın " + personel.Adi + " " + personel.Soyadi + ",<br/><br/>");
+                                tabloSB = ToplantiTablosunuOlustur(toplanti, baslik);
+                                string body = "</br>" + tabloSB.ToString();
+                                string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL);
+                                MailHelper.EPostaGonder(from, userto, subject, body, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
+                                if (islemTipi.Equals(ProjeConstants.KAYDET))
                                 {
-                                    onceki=oncekiKatilimciListesi.Single(s => s.KatilimciId == personelId); //eğer listede yoksa null exception döner
-                                    //bilgiden katılımcıya döndüyse
-                                    if (onceki.Bilgi && !item.Bilgi)
+                                    if (!item.Bilgi)//bilgi değilse katılımcıdır
                                         MailHelper.TakvimeEkle(toplanti.UniqueId, from, userto, toplantiAdi, toplanti.BaslangicTarihi, toplanti.BitisTarihi, ParseToplantiYeri(toplanti.ToplantiYeri, toplanti.ToplantiYeriDiger), toplanti.Aciklama, smtpAdresi);
-                                    //katılımcıdan bilgiye döndüyse
-                                    if (!onceki.Bilgi && item.Bilgi)
+                                }
+                                else if (islemTipi.Equals(ProjeConstants.GUNCELLE))
+                                {
+                                    ToplantiKatilim onceki = null;
+                                    try
+                                    {
+                                        onceki = oncekiKatilimciListesi.Single(s => s.KatilimciId == personelId); //eğer listede yoksa null exception döner
+                                                                                                                  //bilgiden katılımcıya döndüyse
+                                        if (onceki.Bilgi && !item.Bilgi)
+                                            MailHelper.TakvimeEkle(toplanti.UniqueId, from, userto, toplantiAdi, toplanti.BaslangicTarihi, toplanti.BitisTarihi, ParseToplantiYeri(toplanti.ToplantiYeri, toplanti.ToplantiYeriDiger), toplanti.Aciklama, smtpAdresi);
+                                        //katılımcıdan bilgiye döndüyse
+                                        if (!onceki.Bilgi && item.Bilgi)
+                                            MailHelper.TakvimdenSil(toplanti.UniqueId, from, userto, toplantiAdi, toplanti.BaslangicTarihi, toplanti.BitisTarihi, ParseToplantiYeri(toplanti.ToplantiYeri, toplanti.ToplantiYeriDiger), toplanti.Aciklama, smtpAdresi);
+                                        // Katılımcı olarak kaldıysa
+                                        if (!onceki.Bilgi && !item.Bilgi)
+                                            MailHelper.TakvimeEkle(toplanti.UniqueId, from, userto, toplantiAdi, toplanti.BaslangicTarihi, toplanti.BitisTarihi, ParseToplantiYeri(toplanti.ToplantiYeri, toplanti.ToplantiYeriDiger), toplanti.Aciklama, smtpAdresi);
+
+                                    }
+                                    catch (Exception)
+                                    {
+                                        onceki = null;
+                                        //Onceden olmayıp yeni eklendiyse
+                                        if (onceki == null && !item.Bilgi)
+                                            MailHelper.TakvimeEkle(toplanti.UniqueId, from, userto, toplantiAdi, toplanti.BaslangicTarihi, toplanti.BitisTarihi, ParseToplantiYeri(toplanti.ToplantiYeri, toplanti.ToplantiYeriDiger), toplanti.Aciklama, smtpAdresi);
+
+                                    }
+
+                                }
+                                else if (islemTipi.Equals(ProjeConstants.SIL))
+                                {
+                                    ToplantiKatilim onceki = oncekiKatilimciListesi.Single(s => s.KatilimciId == personelId);
+                                    //önceki bilgi değil kayılımcı ise
+                                    if (!onceki.Bilgi)
                                         MailHelper.TakvimdenSil(toplanti.UniqueId, from, userto, toplantiAdi, toplanti.BaslangicTarihi, toplanti.BitisTarihi, ParseToplantiYeri(toplanti.ToplantiYeri, toplanti.ToplantiYeriDiger), toplanti.Aciklama, smtpAdresi);
-                                    // Katılımcı olarak kaldıysa
-                                    if (!onceki.Bilgi && !item.Bilgi)
-                                        MailHelper.TakvimeEkle(toplanti.UniqueId, from, userto, toplantiAdi, toplanti.BaslangicTarihi, toplanti.BitisTarihi, ParseToplantiYeri(toplanti.ToplantiYeri, toplanti.ToplantiYeriDiger), toplanti.Aciklama, smtpAdresi);
-
-                                }
-                                catch (Exception)
-                                {
-                                    onceki = null;
-                                    //Onceden olmayıp yeni eklendiyse
-                                    if (onceki == null && !item.Bilgi)
-                                        MailHelper.TakvimeEkle(toplanti.UniqueId, from, userto, toplantiAdi, toplanti.BaslangicTarihi, toplanti.BitisTarihi, ParseToplantiYeri(toplanti.ToplantiYeri, toplanti.ToplantiYeriDiger), toplanti.Aciklama, smtpAdresi);
-
                                 }
 
+                                EpostaGonderilenlereEkle(userto);
                             }
-                            else if (islemTipi.Equals(ProjeConstants.SIL))
-                            {
-                                ToplantiKatilim onceki = oncekiKatilimciListesi.Single(s => s.KatilimciId == personelId);
-                                //önceki bilgi değil kayılımcı ise
-                                if (!onceki.Bilgi)
-                                    MailHelper.TakvimdenSil(toplanti.UniqueId, from, userto, toplantiAdi, toplanti.BaslangicTarihi, toplanti.BitisTarihi, ParseToplantiYeri(toplanti.ToplantiYeri, toplanti.ToplantiYeriDiger), toplanti.Aciklama, smtpAdresi);
-                            }
-
-                            EpostaGonderilenlereEkle(userto);
                         } 
                     }
                 }

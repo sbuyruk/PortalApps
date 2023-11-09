@@ -43,18 +43,19 @@
             data: myjsons,
             columns: [
                 { data: "DosyaNo" },
+                { data: "Bolge" },
                 { data: "KiraciAdiSoyadi" },
                 { data: "TasinmazAdresi" },
-                { data: "KiraBedeli", type: "decimal" },
-                { data: "OdenenTutar", type: "decimal" },
-                { data: "OdemeTarihi" },
+                { data: "KiralamaAmaci" },
                 { data: "IlkSozlesmeTar" },
-                { data: "ArtisAyi" },
                 { data: "Sozlesme" },
                 { data: "VadeBitTar" },
+                { data: "ArtisAyi" },
+                { data: "OdemeSekli" },
+                { data: "KiraBedeli", type: "decimal" },
+                { data: "OdemeTarihi" },
+                { data: "OdenenTutar", type: "decimal" },
                 { data: "Aciklama" },
-                { data: "Bolge" },
-                { data: "KiralamaAmaci" },
                 { data: "Duzenle" },
             ],
             "columnDefs": [
@@ -163,18 +164,19 @@
                     <thead>
                         <tr>
                             <th>DNo</th>
+                            <th>Bölge</th>
                             <th>Kiracı</th>
                             <th>Taşınmaz Adresi</th>
-                            <th>Kira Bedeli</th>
-                            <th>Ödenen Tutar</th>
-                            <th>Ödeme Tarihi</th>
+                            <th>Kir. Amaci</th>
                             <th>İlk Söz. Tarihi</th>
-                            <th>Artış Ayı</th>
                             <th>Sözleşme</th>
                             <th>Vade Tarihi</th>
+                            <th>Artış Ayı</th>
+                            <th>Ödeme Şekli</th>
+                            <th>Kira Bedeli</th>
+                            <th>Ödeme Tarihi</th>
+                            <th>Ödenen Tutar</th>
                             <th>Açıklama</th>
-                            <th>Bölge</th>
-                            <th>Kir. Amaci</th>
                             <th>Düzenle</th>
                         </tr>
                     </thead>

@@ -165,6 +165,8 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                 string imgUrl4 = newUrl + "/../" + ProjeConstants.RESIMLER_TASINMAZ + "/" + (!string.IsNullOrEmpty(tasinmaz.TahkikatFoto) ? tasinmaz.TahkikatFoto : ProjeConstants.PARAM_TASINMAZ_TAHKIKATFOTO) + ".jpg";
                 string imgUrl5 = newUrl + "/../" + ProjeConstants.RESIMLER_TASINMAZ + "/" + (!string.IsNullOrEmpty(tasinmaz.KrokiFoto) ? tasinmaz.KrokiFoto : ProjeConstants.PARAM_TASINMAZ_KROKIFOTO) + ".jpg";
                 string imgUrl6 = newUrl + "/../" + ProjeConstants.RESIMLER_TASINMAZ + "/" + (!string.IsNullOrEmpty(tasinmaz.TapuFoto) ? tasinmaz.TapuFoto : ProjeConstants.PARAM_TASINMAZ_TAPUFOTO) + ".jpg";
+                string imgUrl7 = newUrl + "/../" + ProjeConstants.RESIMLER_TASINMAZ + "/" + (!string.IsNullOrEmpty(tasinmaz.TasinmazFoto3) ? tasinmaz.TasinmazFoto3: ProjeConstants.PARAM_TASINMAZ_TASINMAZFOTO3) + ".jpg";
+                string imgUrl8 = newUrl + "/../" + ProjeConstants.RESIMLER_TASINMAZ + "/" + (!string.IsNullOrEmpty(tasinmaz.TasinmazFoto4) ? tasinmaz.TasinmazFoto4: ProjeConstants.PARAM_TASINMAZ_TASINMAZFOTO4) + ".jpg";
 
                 Image1.ImageUrl = imgUrl1;
                 Image2.ImageUrl = imgUrl2;
@@ -172,6 +174,9 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                 Image4.ImageUrl = imgUrl4;
                 Image5.ImageUrl = imgUrl5;
                 Image6.ImageUrl = imgUrl6;
+                Image7.ImageUrl = imgUrl7;
+                Image8.ImageUrl = imgUrl8;
+                PDFGoster(tasinmaz.Id);
             }
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
@@ -197,6 +202,8 @@ namespace TBYS_WebParts.TasinmazResimleriWP
             if (tasinmaz != null)
             {
                 ExceptionHelper exhelper = updateTasinmazFoto2Db(tasinmaz);
+                PDFKaydet(tasinmaz.Id);
+                PDFGoster(tasinmaz.Id);
                 if (exhelper.HasException())
                 {
                     Exception ex = new Exception("Resim Kaydedilemedi.");
@@ -259,6 +266,22 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                 if (!string.IsNullOrEmpty(tasinmaz.TapuFoto))
                 {
                     exhelper = saveImageFiles2SP(tasinmaz, tasinmaz.TapuFoto, FileUpload5, exhelper);
+                }
+            }
+            if (FileUpload6.HasFile)
+            {
+                tasinmaz.TasinmazFoto3 = tasinmaz.Id + ProjeConstants.PARAM_TASINMAZ_TASINMAZFOTO3;
+                if (!string.IsNullOrEmpty(tasinmaz.TasinmazFoto3))
+                {
+                    exhelper = saveImageFiles2SP(tasinmaz, tasinmaz.TasinmazFoto3, FileUpload6, exhelper);
+                }
+            }
+            if (FileUpload7.HasFile)
+            {
+                tasinmaz.TasinmazFoto4 = tasinmaz.Id + ProjeConstants.PARAM_TASINMAZ_TASINMAZFOTO4;
+                if (!string.IsNullOrEmpty(tasinmaz.TasinmazFoto4))
+                {
+                    exhelper = saveImageFiles2SP(tasinmaz, tasinmaz.TasinmazFoto4, FileUpload7, exhelper);
                 }
             }
             isSaved = tasinmaz.Update();
@@ -329,6 +352,14 @@ namespace TBYS_WebParts.TasinmazResimleriWP
         protected void ResimSil6Btn_Click(object sender, EventArgs e)
         {
             ResmiSil(ProjeConstants.PARAM_TASINMAZ_TAPUFOTO);
+        } 
+        protected void ResimSil7Btn_Click(object sender, EventArgs e)
+        {
+            ResmiSil(ProjeConstants.PARAM_TASINMAZ_TASINMAZFOTO3);
+        }
+        protected void ResimSil8Btn_Click(object sender, EventArgs e)
+        {
+            ResmiSil(ProjeConstants.PARAM_TASINMAZ_TASINMAZFOTO4);
         }
         private void ResmiSil(string foto)
         {
@@ -378,6 +409,18 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                             Image6.ImageUrl = imgUrl;
                             break;
                         }
+                    case ProjeConstants.PARAM_TASINMAZ_TASINMAZFOTO3:
+                        {
+                            tasinmaz.TasinmazFoto3 = foto;
+                            Image7.ImageUrl = imgUrl;
+                            break;
+                        }
+                    case ProjeConstants.PARAM_TASINMAZ_TASINMAZFOTO4:
+                        {
+                            tasinmaz.TasinmazFoto4 = foto;
+                            Image8.ImageUrl = imgUrl;
+                            break;
+                        }
                     default:
                         break;
                 }
@@ -394,5 +437,164 @@ namespace TBYS_WebParts.TasinmazResimleriWP
             }
 
         }
+        #region pdf yukle goster
+        private void PDFKaydet(int tasinmazId)
+        {
+            try
+            {
+                if (EmlakBeyaniYukleFU.HasFile)
+                {
+                    string hedefDosyaAdi = ProjeConstants.DOSYA_EMLAKBEYAN_FORMU + tasinmazId + ".pdf";
+                    bool isOk = UtilityHelper.UploadFileToSharePoint(EmlakBeyaniYukleFU, ProjeConstants.TBYSBELGELERI_LIB, hedefDosyaAdi);
+                    if (isOk)
+                    {
+                        EmlakBeyaniDosyaLnk.Visible = true;
+                        MessageHelper.PublishMessage("Emlak Beyan Formu Yüklendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    }
+                }
+                else
+                {
+                    EmlakBeyaniDosyaLnk.Visible = false;
+                    EmlakBeyaniSilBtn.Visible = false;
+                    MessageHelper.PublishMessage("Lütfen Emlak Beyan Formu yükleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                }
+                if (YapiKayitYukleFU.HasFile)
+                {
+                    string hedefDosyaAdi = ProjeConstants.DOSYA_YAPIKAYIT_BELGESI + tasinmazId + ".pdf";
+                    bool isOk = UtilityHelper.UploadFileToSharePoint(YapiKayitYukleFU, ProjeConstants.TBYSBELGELERI_LIB, hedefDosyaAdi);
+                    if (isOk)
+                    {
+                        YapiKayitDosyaLnk.Visible = true;
+                        MessageHelper.PublishMessage("Yapı Kayıt Belgesi Yüklendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    }
+                }
+                else
+                {
+                    YapiKayitDosyaLnk.Visible = false;
+                    YapiKayitSilBtn.Visible = false;
+                    MessageHelper.PublishMessage("Lütfen Yapı Kayıt Belgesi yükleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                }
+            }
+            catch (Exception exception)
+            {
+                Exception ex = new Exception("Dosya Yüklenemedi");
+                ExceptionHelper exhelper = new ExceptionHelper(exception);
+                exhelper.Exceptions.Add(ex);
+                exhelper.PublishException();
+            }
+        }
+        private void PDFGoster(int tasinmazId)
+        {
+            try
+            {
+                if (tasinmazId >0)
+                {
+                    string emlakBeyaniDosyaAdi = ProjeConstants.DOSYA_EMLAKBEYAN_FORMU + tasinmazId + ".pdf";
+                    string emlakBeyaniDosyaUrl = UtilityHelper.TbysBelgelerURLGetir() + "/" + emlakBeyaniDosyaAdi;
+                    bool emlakBeyaniDosyaVarMi = UtilityHelper.DosyaVarMi(UtilityHelper.TbysBelgelerURLGetir(), ProjeConstants.TBYSBELGELERI_LIB, emlakBeyaniDosyaAdi);
+                    if (emlakBeyaniDosyaVarMi)
+                    {
+                        string belgePdfLink = @"'<a class=\'btn btn-secondary\' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + emlakBeyaniDosyaUrl + @"> Belge Görüntüle </a>'";
+
+                        EmlakBeyaniDosyaLnk.Target = "_blank";
+                        EmlakBeyaniDosyaLnk.HRef = emlakBeyaniDosyaUrl;
+
+                        EmlakBeyaniDosyaLnk.Visible = true;
+                        EmlakBeyaniSilBtn.Visible = true;
+                        EmlakBeyaniYukleFU.Visible = false;
+                    }
+                    else
+                    {
+                        EmlakBeyaniDosyaLnk.Visible = false;
+                        EmlakBeyaniSilBtn.Visible = false;
+                        EmlakBeyaniYukleFU.Visible = true;
+                        MessageHelper.PublishMessage("Lütfen Emlak Beyan Formunu pdf olarak yükleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                    }
+                    string yapiKayitDosyaAdi = ProjeConstants.DOSYA_YAPIKAYIT_BELGESI + tasinmazId + ".pdf";
+                    string yapiKayitDosyaUrl = UtilityHelper.TbysBelgelerURLGetir() + "/" + yapiKayitDosyaAdi;
+                    bool yapiKayitdosyaVarMi = UtilityHelper.DosyaVarMi(UtilityHelper.TbysBelgelerURLGetir(), ProjeConstants.TBYSBELGELERI_LIB, yapiKayitDosyaAdi);
+                    if (yapiKayitdosyaVarMi)
+                    {
+                        string belgePdfLink = @"'<a class=\'btn btn-secondary\' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + yapiKayitDosyaUrl + @"> Belge Görüntüle </a>'";
+
+                        YapiKayitDosyaLnk.Target = "_blank";
+                        YapiKayitDosyaLnk.HRef = yapiKayitDosyaUrl;
+
+                        YapiKayitDosyaLnk.Visible = true;
+                        YapiKayitSilBtn.Visible = true;
+                        YapiKayitYukleFU.Visible = false;
+                    }
+                    else
+                    {
+                        YapiKayitDosyaLnk.Visible = false;
+                        YapiKayitSilBtn.Visible = false;
+                        YapiKayitYukleFU.Visible = true;
+                        MessageHelper.PublishMessage("Lütfen Yapı Kayıt Belgesini pdf olarak yükleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                    }
+                }
+                else
+                {
+                    MessageHelper.PublishMessage("Bağışçı bulunamadı.", ProjeConstants.MESAJ_HATA);
+                }
+
+            }
+            catch (Exception exception)
+            {
+                Exception ex = new Exception("PDF Yüklenemedi");
+                ExceptionHelper exhelper = new ExceptionHelper(exception);
+                exhelper.Exceptions.Add(ex);
+                exhelper.PublishException();
+            }
+        }
+
+        protected void EmlakBeyaniSilBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string dosyaAdi = ProjeConstants.DOSYA_EMLAKBEYAN_FORMU + TasinmazIdQS + ".pdf";
+                if (UtilityHelper.DeleteFileFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi))
+                {
+                    MessageHelper.PublishMessage(dosyaAdi + " Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    EmlakBeyaniSilBtn.Visible = false;
+                    EmlakBeyaniDosyaLnk.Visible = false;
+                    EmlakBeyaniYukleFU.Visible = true;
+                }
+                else
+                {
+                    MessageHelper.PublishMessage(dosyaAdi + " Silinemedi", ProjeConstants.MESAJ_HATA);
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelper eh = new ExceptionHelper(ex);
+                eh.PublishException();
+            }
+        }
+        protected void YapiKayitSilBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string dosyaAdi = ProjeConstants.DOSYA_YAPIKAYIT_BELGESI + TasinmazIdQS + ".pdf";
+                if (UtilityHelper.DeleteFileFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi))
+                {
+                    MessageHelper.PublishMessage(dosyaAdi + " Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    YapiKayitSilBtn.Visible = false;
+                    YapiKayitDosyaLnk.Visible = false;
+                    YapiKayitYukleFU.Visible = true;
+                }
+                else
+                {
+                    MessageHelper.PublishMessage(dosyaAdi + " Silinemedi", ProjeConstants.MESAJ_HATA);
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelper eh = new ExceptionHelper(ex);
+                eh.PublishException();
+            }
+        }
+
+
+        #endregion
     }
 }

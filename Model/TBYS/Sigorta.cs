@@ -208,6 +208,7 @@ namespace Model.TBYS
                     A.BulunduguKat,A.ToplamKatSayisi, A.Metrekare, A.BrutYuzolcumu, A.SigortaBedeli, A.Prim,A.DaskPoliceNo,
                     B.Adres+ISNULL(C.BolumNo,'') +' '+ B.Ilcesi +'-'+ B.Ili Adres, B.Ili,B.Ilcesi, B.Ilcesi +' '+ B.Ili IliIlcesi, 
                     B.KullanimSekli, B.Cinsi, B.PaftaNo,B.AdaNo,B.ParselNo,B.SahifeNo,C.BolumNo,
+                    B.TapuTasinmazNo,
                     A.TeminatListesi,A.TeminatAciklama,A.Aciklama
                 FROM Sigorta_Table A
                 INNER JOIN Tasinmaz_Table B ON B.Id=A.TasinmazId AND B.EnvanterdeMi=1
@@ -274,7 +275,7 @@ namespace Model.TBYS
                     B.Adres+ISNULL(C.BolumNo,'') Adres, B.Ili,B.Ilcesi, B.Ilcesi +' '+ B.Ili IliIlcesi, B.KullanimSekli, B.Cinsi, B.PaftaNo,B.AdaNo,B.ParselNo,B.SahifeNo,C.BolumNo,
                     A.TeminatListesi,A.TeminatAciklama,A.Aciklama,B.EnvanterdeMi,
                     B.Adres+ISNULL(C.BolumNo,'') +' '+ B.Ilcesi+'-'+ B.Ili TamAdres,
-                    B.KatMulkiyeti,A.KullanimAmaci 
+                    B.KatMulkiyeti,A.KullanimAmaci,B.TapuTasinmazNo
                 FROM Sigorta_Table A
                     INNER JOIN Tasinmaz_Table B ON B.Id=A.TasinmazId AND (B.EnvanterdeMi=1 OR B.EnvanterdeMi=2) 
                     LEFT JOIN BagimsizBolum_Table C ON C.Id=A.BolumId AND C.TasinmazId=B.Id

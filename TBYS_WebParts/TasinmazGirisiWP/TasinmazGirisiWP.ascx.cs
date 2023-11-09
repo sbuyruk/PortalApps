@@ -400,8 +400,8 @@ namespace TBYS_WebParts.TasinmazGirisiWP
         {
             SigortaDDL.Items.Clear();
             SigortaDDL.Items.Add(ProjeConstants.SIGORTA_YOK);
-            SigortaDDL.Items.Add(ProjeConstants.SIGORTA_DASK_IHTIYARI);
-            SigortaDDL.Items.Add(ProjeConstants.SIGORTA_DEPREM_IHTIYARI);
+            SigortaDDL.Items.Add(ProjeConstants.SIGORTA_DASK);
+            //SigortaDDL.Items.Add(ProjeConstants.SIGORTA_DEPREM_IHTIYARI);
 
         }
         private bool TasinmazFormunuDoldur(Tasinmaz tasinmaz)

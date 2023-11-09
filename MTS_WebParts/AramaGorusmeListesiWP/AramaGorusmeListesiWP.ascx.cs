@@ -166,7 +166,15 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
                         kisi = kisi.Select(ArayanIdQS.ConvertToInt());
                         if (kisi != null)
                         {
-                            AdiSoyadiLnk.Text = (kisi.Adi + " " + kisi.Soyadi).Trim() + " (" + kisi.Kurumu + " " + kisi.Unvani + ")";
+                            MTSKurumGorev kurumGorev = new MTSKurumGorev();
+                            string kurum = string.Empty;
+                            string gorev = string.Empty;
+                            string kurumGorevStr = kurumGorev.SelectByKisiIdReturnKurumGorev(kisi.Id, ref kurum, ref gorev);
+                            if (string.IsNullOrEmpty(kurumGorevStr))
+                            {
+                                kurumGorevStr = kisi.Kurumu + " / " + kisi.Gorevi;
+                            }
+                            AdiSoyadiLnk.Text = (kisi.Adi + " " + kisi.Soyadi).Trim() + " (" + kurumGorevStr + " " + kisi.Unvani + ")";
                             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                             string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/";
                             AdiSoyadiLnk.NavigateUrl = newUrl + ProjeConstants.PAGE_KISI_KARTI + "?KatilimciId=" + ArayanIdQS + "&KatilimciTipi=" + KatilimciTipiQS;

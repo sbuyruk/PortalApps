@@ -133,6 +133,62 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.Image Image7;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.LinkButton ResimSil7Btn;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.FileUpload FileUpload6;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.Image Image8;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.LinkButton ResimSil8Btn;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.FileUpload FileUpload7;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.Label Label2;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor EmlakBeyaniDosyaLnk;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.LinkButton EmlakBeyaniSilBtn;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.FileUpload EmlakBeyaniYukleFU;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.Label Label1;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor YapiKayitDosyaLnk;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.LinkButton YapiKayitSilBtn;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.FileUpload YapiKayitYukleFU;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl MainCardDiv;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -146,6 +202,10 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.UpdatePanel UpdatePanel;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.UpdateProgress updateProgress;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebPartCodeGenerator", "17.0.0.0")]
         public static implicit operator global::System.Web.UI.TemplateControl(TasinmazResimleriWP target) 
@@ -550,6 +610,246 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.Image @__BuildControlImage7() {
+            global::System.Web.UI.WebControls.Image @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Image();
+            this.Image7 = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "Image7";
+            @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
+            @__ctrl.ImageUrl = "../TasinmazResimleri/_t/TasinmazFoto_jpg.jpg";
+            @__ctrl.CssClass = "img-thumbnail";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onclick", "OpenModal(this)");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onerror", "this.src=\'../TasinmazResimleri/_t/TasinmazFoto_jpg.jpg\';");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: 150px");
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlResimSil7Btn() {
+            global::System.Web.UI.WebControls.LinkButton @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
+            this.ResimSil7Btn = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.CssClass = "btn btn-outline-danger float-right mr-2";
+            @__ctrl.ID = "ResimSil7Btn";
+            @__ctrl.Text = "Resmi Sil";
+            @__ctrl.CausesValidation = false;
+            @__ctrl.Click -= new System.EventHandler(this.ResimSil7Btn_Click);
+            @__ctrl.Click += new System.EventHandler(this.ResimSil7Btn_Click);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.FileUpload @__BuildControlFileUpload6() {
+            global::System.Web.UI.WebControls.FileUpload @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.FileUpload();
+            this.FileUpload6 = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "FileUpload6";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "btn btn-danger form-control");
+            @__ctrl.ToolTip = "Yüklenecek Resmi Seçiniz";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onchange", "readURL(this,\'Image7\')");
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.Image @__BuildControlImage8() {
+            global::System.Web.UI.WebControls.Image @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Image();
+            this.Image8 = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "Image8";
+            @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
+            @__ctrl.ImageUrl = "../TasinmazResimleri/_t/TasinmazFoto1_jpg.jpg";
+            @__ctrl.CssClass = "img-thumbnail";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onclick", "OpenModal(this)");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onerror", "this.src=\'../TasinmazResimleri/_t/TasinmazFoto1_jpg.jpg\';");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: 150px");
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlResimSil8Btn() {
+            global::System.Web.UI.WebControls.LinkButton @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
+            this.ResimSil8Btn = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.CssClass = "btn btn-outline-danger float-right mr-2";
+            @__ctrl.ID = "ResimSil8Btn";
+            @__ctrl.Text = "Resmi Sil";
+            @__ctrl.CausesValidation = false;
+            @__ctrl.Click -= new System.EventHandler(this.ResimSil8Btn_Click);
+            @__ctrl.Click += new System.EventHandler(this.ResimSil8Btn_Click);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.FileUpload @__BuildControlFileUpload7() {
+            global::System.Web.UI.WebControls.FileUpload @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.FileUpload();
+            this.FileUpload7 = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "FileUpload7";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "btn btn-danger form-control");
+            @__ctrl.ToolTip = "Yüklenecek Resmi Seçiniz";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onchange", "readURL(this,\'Image8\')");
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlLabel2() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.Label2 = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.CssClass = "col-form-label font-weight-bold";
+            @__ctrl.ID = "Label2";
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Emlak Beyanı (pdf)"));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.HtmlControls.HtmlAnchor @__BuildControlEmlakBeyaniDosyaLnk() {
+            global::System.Web.UI.HtmlControls.HtmlAnchor @__ctrl;
+            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlAnchor();
+            this.EmlakBeyaniDosyaLnk = @__ctrl;
+            @__ctrl.ID = "EmlakBeyaniDosyaLnk";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "btn btn-outline-primary");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-fancybox", "");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-type", "pdf");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-width", "960");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-height", "720");
+            @__ctrl.HRef = "#";
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Emlak Beyanı \r\n                                "));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlEmlakBeyaniSilBtn() {
+            global::System.Web.UI.WebControls.LinkButton @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
+            this.EmlakBeyaniSilBtn = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "EmlakBeyaniSilBtn";
+            @__ctrl.CssClass = "btn btn-outline-danger";
+            @__ctrl.CausesValidation = false;
+            @__ctrl.Text = "Sil";
+            @__ctrl.OnClientClick = "if(confirm(\' Silme İşlemini Onaylıyor musunuz?\')){return true;} else{return false" +
+                ";};";
+            @__ctrl.Visible = false;
+            @__ctrl.Click -= new System.EventHandler(this.EmlakBeyaniSilBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.EmlakBeyaniSilBtn_Click);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.FileUpload @__BuildControlEmlakBeyaniYukleFU() {
+            global::System.Web.UI.WebControls.FileUpload @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.FileUpload();
+            this.EmlakBeyaniYukleFU = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "EmlakBeyaniYukleFU";
+            @__ctrl.CssClass = "btn btn-danger form-control";
+            @__ctrl.ToolTip = "Yüklemek İçin PDF Dosya Seçiniz";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlLabel1() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.Label1 = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.CssClass = "col-form-label font-weight-bold";
+            @__ctrl.ID = "Label1";
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Yapı Kayıt Belgesi (pdf)"));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.HtmlControls.HtmlAnchor @__BuildControlYapiKayitDosyaLnk() {
+            global::System.Web.UI.HtmlControls.HtmlAnchor @__ctrl;
+            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlAnchor();
+            this.YapiKayitDosyaLnk = @__ctrl;
+            @__ctrl.ID = "YapiKayitDosyaLnk";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "btn btn-outline-primary");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-fancybox", "");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-type", "pdf");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-width", "960");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-height", "720");
+            @__ctrl.HRef = "#";
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Yapı Kayıt Belgesi \r\n                                "));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlYapiKayitSilBtn() {
+            global::System.Web.UI.WebControls.LinkButton @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
+            this.YapiKayitSilBtn = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "YapiKayitSilBtn";
+            @__ctrl.CssClass = "btn btn-outline-danger";
+            @__ctrl.CausesValidation = false;
+            @__ctrl.Text = "Sil";
+            @__ctrl.OnClientClick = "if(confirm(\' Silme İşlemini Onaylıyor musunuz?\')){return true;} else{return false" +
+                ";};";
+            @__ctrl.Visible = false;
+            @__ctrl.Click -= new System.EventHandler(this.YapiKayitSilBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.YapiKayitSilBtn_Click);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.FileUpload @__BuildControlYapiKayitYukleFU() {
+            global::System.Web.UI.WebControls.FileUpload @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.FileUpload();
+            this.YapiKayitYukleFU = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "YapiKayitYukleFU";
+            @__ctrl.CssClass = "btn btn-danger form-control";
+            @__ctrl.ToolTip = "Yüklemek İçin PDF Dosya Seçiniz";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControlMainCardDiv() {
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
@@ -558,9 +858,10 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "card-body alert-secondary");
             @__ctrl.ID = "MainCardDiv";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    <div class=\"row\">\r\n                        <div class=\"col-" +
-                        "4\">\r\n                            <div class=\"row\">\r\n                            " +
-                        "    <div class=\"col-10\">\r\n                                    "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    <div class=\"row m-1\">\r\n                        <div class=\"" +
+                        "col border border-dark p-2\">\r\n                            <div class=\"row\">\r\n   " +
+                        "                             <div class=\"col-10\">\r\n                             " +
+                        "       "));
             global::System.Web.UI.WebControls.Image @__ctrl1;
             @__ctrl1 = this.@__BuildControlImage1();
             @__parser.AddParsedSubObject(@__ctrl1);
@@ -574,9 +875,9 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             global::System.Web.UI.WebControls.FileUpload @__ctrl3;
             @__ctrl3 = this.@__BuildControlFileUpload0();
             @__parser.AddParsedSubObject(@__ctrl3);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"col-4\">\r\n  " +
-                        "                          <div class=\"row\">\r\n                                <di" +
-                        "v class=\"col-10\">\r\n                                    "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                       <div class=\"col border b" +
+                        "order-dark p-2\">\r\n                            <div class=\"row\">\r\n               " +
+                        "                 <div class=\"col-10\">\r\n                                    "));
             global::System.Web.UI.WebControls.Image @__ctrl4;
             @__ctrl4 = this.@__BuildControlImage2();
             @__parser.AddParsedSubObject(@__ctrl4);
@@ -590,9 +891,9 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             global::System.Web.UI.WebControls.FileUpload @__ctrl6;
             @__ctrl6 = this.@__BuildControlFileUpload1();
             @__parser.AddParsedSubObject(@__ctrl6);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"col-4\">\r\n  " +
-                        "                          <div class=\"row\">\r\n                                <di" +
-                        "v class=\"col-10\">\r\n                                    "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"col border " +
+                        "border-dark p-2\">\r\n                            <div class=\"row\">\r\n              " +
+                        "                  <div class=\"col-10\">\r\n                                    "));
             global::System.Web.UI.WebControls.Image @__ctrl7;
             @__ctrl7 = this.@__BuildControlImage3();
             @__parser.AddParsedSubObject(@__ctrl7);
@@ -606,14 +907,9 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             global::System.Web.UI.WebControls.FileUpload @__ctrl9;
             @__ctrl9 = this.@__BuildControlFileUpload2();
             @__parser.AddParsedSubObject(@__ctrl9);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-                        </div>
-                    </div>
-                    <div class=""row"">
-                        <div class=""col-4"">
-                            <div class=""row"">
-                                <div class=""col-10"">
-                                    "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"col border " +
+                        "border-dark p-2\">\r\n                            <div class=\"row\">\r\n              " +
+                        "                  <div class=\"col-10\">\r\n                                    "));
             global::System.Web.UI.WebControls.Image @__ctrl10;
             @__ctrl10 = this.@__BuildControlImage4();
             @__parser.AddParsedSubObject(@__ctrl10);
@@ -627,9 +923,16 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             global::System.Web.UI.WebControls.FileUpload @__ctrl12;
             @__ctrl12 = this.@__BuildControlFileUpload3();
             @__parser.AddParsedSubObject(@__ctrl12);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"col-4\">\r\n  " +
-                        "                          <div class=\"row\">\r\n                                <di" +
-                        "v class=\"col-10\">\r\n                                    "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                        </div>
+                    </div>
+                    <hr />
+                    <div class=""row"">
+
+                        <div class=""col border border-dark p-2"">
+                            <div class=""row"">
+                                <div class=""col-10"">
+                                    "));
             global::System.Web.UI.WebControls.Image @__ctrl13;
             @__ctrl13 = this.@__BuildControlImage5();
             @__parser.AddParsedSubObject(@__ctrl13);
@@ -643,9 +946,9 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             global::System.Web.UI.WebControls.FileUpload @__ctrl15;
             @__ctrl15 = this.@__BuildControlFileUpload4();
             @__parser.AddParsedSubObject(@__ctrl15);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"col-4\">\r\n  " +
-                        "                          <div class=\"row\">\r\n                                <di" +
-                        "v class=\"col-10\">\r\n                                    "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"col border " +
+                        "border-dark p-2\">\r\n                            <div class=\"row\">\r\n              " +
+                        "                  <div class=\"col-10\">\r\n                                    "));
             global::System.Web.UI.WebControls.Image @__ctrl16;
             @__ctrl16 = this.@__BuildControlImage6();
             @__parser.AddParsedSubObject(@__ctrl16);
@@ -659,7 +962,86 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             global::System.Web.UI.WebControls.FileUpload @__ctrl18;
             @__ctrl18 = this.@__BuildControlFileUpload5();
             @__parser.AddParsedSubObject(@__ctrl18);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n\r\n                "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"col border " +
+                        "border-dark p-2\">\r\n                            <div class=\"row\">\r\n              " +
+                        "                  <div class=\"col-10\">\r\n                                    "));
+            global::System.Web.UI.WebControls.Image @__ctrl19;
+            @__ctrl19 = this.@__BuildControlImage7();
+            @__parser.AddParsedSubObject(@__ctrl19);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                                <div cl" +
+                        "ass=\"col-2\">\r\n                                    "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl20;
+            @__ctrl20 = this.@__BuildControlResimSil7Btn();
+            @__parser.AddParsedSubObject(@__ctrl20);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                            </div>\r\n   " +
+                        "                         "));
+            global::System.Web.UI.WebControls.FileUpload @__ctrl21;
+            @__ctrl21 = this.@__BuildControlFileUpload6();
+            @__parser.AddParsedSubObject(@__ctrl21);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"col border " +
+                        "border-dark p-2\">\r\n                            <div class=\"row\">\r\n              " +
+                        "                  <div class=\"col-10\">\r\n                                    "));
+            global::System.Web.UI.WebControls.Image @__ctrl22;
+            @__ctrl22 = this.@__BuildControlImage8();
+            @__parser.AddParsedSubObject(@__ctrl22);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                                <div cl" +
+                        "ass=\"col-2\">\r\n                                    "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl23;
+            @__ctrl23 = this.@__BuildControlResimSil8Btn();
+            @__parser.AddParsedSubObject(@__ctrl23);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                            </div>\r\n   " +
+                        "                         "));
+            global::System.Web.UI.WebControls.FileUpload @__ctrl24;
+            @__ctrl24 = this.@__BuildControlFileUpload7();
+            @__parser.AddParsedSubObject(@__ctrl24);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                        </div>
+                    </div>
+                    <hr />
+                    <hr />
+                    <div class=""row"">
+                        <div class=""col-3 border border-dark p-2"">
+                            <div class=""form-group"">
+                                "));
+            global::System.Web.UI.WebControls.Label @__ctrl25;
+            @__ctrl25 = this.@__BuildControlLabel2();
+            @__parser.AddParsedSubObject(@__ctrl25);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <div class=\"for" +
+                        "m-group text-center\">\r\n                                "));
+            global::System.Web.UI.HtmlControls.HtmlAnchor @__ctrl26;
+            @__ctrl26 = this.@__BuildControlEmlakBeyaniDosyaLnk();
+            @__parser.AddParsedSubObject(@__ctrl26);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl27;
+            @__ctrl27 = this.@__BuildControlEmlakBeyaniSilBtn();
+            @__parser.AddParsedSubObject(@__ctrl27);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <div class=\"for" +
+                        "m-group\">\r\n                                "));
+            global::System.Web.UI.WebControls.FileUpload @__ctrl28;
+            @__ctrl28 = this.@__BuildControlEmlakBeyaniYukleFU();
+            @__parser.AddParsedSubObject(@__ctrl28);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                        </div>\r\n           " +
+                        "             <div class=\"col-3 border border-dark p-2\">\r\n                       " +
+                        "     <div class=\"form-group\">\r\n                                "));
+            global::System.Web.UI.WebControls.Label @__ctrl29;
+            @__ctrl29 = this.@__BuildControlLabel1();
+            @__parser.AddParsedSubObject(@__ctrl29);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <div class=\"for" +
+                        "m-group text-center\">\r\n                                "));
+            global::System.Web.UI.HtmlControls.HtmlAnchor @__ctrl30;
+            @__ctrl30 = this.@__BuildControlYapiKayitDosyaLnk();
+            @__parser.AddParsedSubObject(@__ctrl30);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl31;
+            @__ctrl31 = this.@__BuildControlYapiKayitSilBtn();
+            @__parser.AddParsedSubObject(@__ctrl31);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <div class=\"for" +
+                        "m-group\">\r\n                                "));
+            global::System.Web.UI.WebControls.FileUpload @__ctrl32;
+            @__ctrl32 = this.@__BuildControlYapiKayitYukleFU();
+            @__parser.AddParsedSubObject(@__ctrl32);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                        </div>\r\n           " +
+                        "         </div>\r\n                "));
             return @__ctrl;
         }
         
@@ -703,7 +1085,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControl__control2(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            <div class=\"card\">\r\n                "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            <div class=\"card shadow\">\r\n                "));
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl1;
             @__ctrl1 = this.@__BuildControlCardHeader();
             @__parser.AddParsedSubObject(@__ctrl1);
@@ -758,6 +1140,28 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private void @__BuildControl__control5(System.Web.UI.Control @__ctrl) {
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            <div class=\'loaderMainContainer\'>\r\n                <div class=\'load" +
+                        "erContainer\'>\r\n                    <div class=\'loaderCircle\'></div>\r\n           " +
+                        "     </div>\r\n            </div>\r\n\r\n        "));
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.UpdateProgress @__BuildControlupdateProgress() {
+            global::System.Web.UI.UpdateProgress @__ctrl;
+            @__ctrl = new global::System.Web.UI.UpdateProgress();
+            this.updateProgress = @__ctrl;
+            @__ctrl.ProgressTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control5));
+            @__ctrl.ID = "updateProgress";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControlTree(global::TBYS_WebParts.TasinmazResimleriWP.TasinmazResimleriWP @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
@@ -777,11 +1181,15 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
 
     }
 </script>
-<div class=""container shadow"">
+<div class=""container col-xl"">
     "));
             global::System.Web.UI.UpdatePanel @__ctrl1;
             @__ctrl1 = this.@__BuildControlUpdatePanel();
             @__parser.AddParsedSubObject(@__ctrl1);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n    "));
+            global::System.Web.UI.UpdateProgress @__ctrl2;
+            @__ctrl2 = this.@__BuildControlupdateProgress();
+            @__parser.AddParsedSubObject(@__ctrl2);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
 </div>
 <div class=""modal"" id=""ResimAcModal"" role=""dialog"">

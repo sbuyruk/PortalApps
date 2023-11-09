@@ -184,7 +184,7 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
                             if (holder.Length > 2)
                             {
                                 adi = holder[1].ReturnEmptyIfNull().ToString().Trim();
-
+                               
                             }
                             else
                             {
@@ -233,6 +233,16 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
                                     }
                                 }
                             }
+                            adi = adi.ToUpper().Replace("KUVEYT TÜRK KATILIM BANKASI A.Ş.", "")
+                                   .Replace("QNB FİNANSBANK A.Ş.", "")
+                                   .Replace("YAPI VE KREDİ BANKASI A.Ş.", "")
+                                   .Replace("TÜRKİYE GARANTİ BANKASI A.Ş.", "")
+                                   .Replace("AKBANK T.A.Ş.", "")
+                                   .Replace("TÜRKİYE GARANTİ BANKASI A.Ş.", "")
+                                   .Replace("TÜRKİYE İŞ BANKASI A.Ş.", "")
+                                   .Replace("TÜRKİYE CUMHURİYETİ ZİRAAT BANKASI A.Ş.", "")
+                                   .Replace("TÜRKİYE HALK BANKASI A.Ş.", "")
+                                   .Replace("TÜRK EKONOMİ BANKASI A.Ş.", "").Trim();
 
                             //işlem numarası varsa kaydı atla
                             KiraEkstreAktarma keaDao = new KiraEkstreAktarma();

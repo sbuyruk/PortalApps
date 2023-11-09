@@ -661,6 +661,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
                 (toplanti?.Koordinator != ToplantiIlkHaliQS.Koordinator) ||
                 (toplanti?.ToplantiKonusu != ToplantiIlkHaliQS.ToplantiKonusu) ||
                 (toplanti?.ToplantiYeri != ToplantiIlkHaliQS.ToplantiYeri) ||
+                (toplanti?.Aciklama != ToplantiIlkHaliQS.Aciklama) ||
                 (toplanti?.ToplantiYeriDiger != ToplantiIlkHaliQS.ToplantiYeriDiger);
         }
         private Personel PersonelGetir()

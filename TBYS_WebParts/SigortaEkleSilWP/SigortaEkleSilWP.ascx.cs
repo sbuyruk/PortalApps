@@ -162,7 +162,7 @@ namespace TBYS_WebParts.SigortaEkleSilWP
         {
             SigortaCinsiDDL.Items.Clear();
             SigortaCinsiDDL.Items.Add(ProjeConstants.SIGORTA_YOK);
-            SigortaCinsiDDL.Items.Add(ProjeConstants.SIGORTA_DASK_IHTIYARI);
+            SigortaCinsiDDL.Items.Add(ProjeConstants.SIGORTA_DASK);
             SigortaCinsiDDL.Items.Add(ProjeConstants.SIGORTA_DEPREM_IHTIYARI);
         }
         private void BagimsizBolumDDLDoldur(Tasinmaz tasinmaz)

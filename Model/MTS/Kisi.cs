@@ -161,8 +161,9 @@ namespace Model.MTS
                      LEFT JOIN MTSKurumTanim_Table E on E.Id = D.MTSKurumTanimId
                      LEFT JOIN MTSGorevTanim_Table F on F.Id = D.MTSGorevTanimId
                      LEFT JOIN MTSUnvanTanim_Table G on F.Id = A.MTSUnvanTanimId
-                 ORDER BY A.Adi
-                ");            
+                WHERE D.Durum={0}
+                ORDER BY A.Adi
+                ", ProjeConstants.MTSGOREVDURUMU_GOREVDE.ReturnQuotedValue());            
             //string sqlString = string.Format(@"
             //    SELECT A.*, B.IlAdi, C.IlceAdi FROM Kisi_Table A
             //    LEFT JOIN Il_Table B on A.Ili = B.Id

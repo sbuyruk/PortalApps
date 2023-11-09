@@ -494,18 +494,19 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
                     <thead>
                         <tr>
                             <th>DNo</th>
+                            <th>Bölge</th>
                             <th>Kiracı</th>
                             <th>Taşınmaz Adresi</th>
-                            <th>Kira Bedeli</th>
-                            <th>Ödenen Tutar</th>
-                            <th>Ödeme Tarihi</th>
+                            <th>Kir. Amaci</th>
                             <th>İlk Söz. Tarihi</th>
-                            <th>Artış Ayı</th>
                             <th>Sözleşme</th>
                             <th>Vade Tarihi</th>
+                            <th>Artış Ayı</th>
+                            <th>Ödeme Şekli</th>
+                            <th>Kira Bedeli</th>
+                            <th>Ödeme Tarihi</th>
+                            <th>Ödenen Tutar</th>
                             <th>Açıklama</th>
-                            <th>Bölge</th>
-                            <th>Kir. Amaci</th>
                             <th>Düzenle</th>
                         </tr>
                     </thead>
@@ -1000,46 +1001,46 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
                     "om\", \"Bolge\": \"istanbul\", \"KiralamaAmaci\": \"Mesken\", \"Duzenle\": \"Duzenle\" }];\r\n " +
                     "   jQuery(document).ready(function () {\r\n        jQuery(\'#CustomDataTable\').Data" +
                     "Table({\r\n            data: myjsons,\r\n            columns: [\r\n                { d" +
-                    "ata: \"DosyaNo\" },\r\n                { data: \"KiraciAdiSoyadi\" },\r\n               " +
-                    " { data: \"TasinmazAdresi\" },\r\n                { data: \"KiraBedeli\", type: \"decim" +
-                    "al\" },\r\n                { data: \"OdenenTutar\", type: \"decimal\" },\r\n             " +
-                    "   { data: \"OdemeTarihi\" },\r\n                { data: \"IlkSozlesmeTar\" },\r\n      " +
-                    "          { data: \"ArtisAyi\" },\r\n                { data: \"Sozlesme\" },\r\n        " +
-                    "        { data: \"VadeBitTar\" },\r\n                { data: \"Aciklama\" },\r\n        " +
-                    "        { data: \"Bolge\" },\r\n                { data: \"KiralamaAmaci\" },\r\n        " +
-                    "        { data: \"Duzenle\" },\r\n            ],\r\n            \"columnDefs\": [\r\n     " +
-                    "           { className: \"text-right\", \"targets\": [3] },\r\n                { class" +
-                    "Name: \"text-right\", \"targets\": [4] }\r\n            ],\r\n            \"language\": {\r" +
-                    "\n                \"url\": \"http://tskgv-portal/OrtakBelgeler/Turkish.txt\",\r\n      " +
-                    "          \"decimal\": \",\",\r\n                \"thousands\": \".\"\r\n            },\r\n   " +
-                    "         \"order\": [[11, \"asc\"], [0, \"asc\"], [5, \"desc\"]],\r\n            responsiv" +
-                    "e: true,\r\n            dom: \'Bfrtip\',\r\n            buttons: [\r\n                {\r" +
-                    "\n                    extend: \'print\',\r\n                    exportOptions: {\r\n   " +
-                    "                     columns: \':visible\'\r\n                    }\r\n               " +
-                    " },\r\n                {\r\n                    extend: \'excel\',\r\n                  " +
-                    "  exportOptions: {\r\n                        columns: \':visible\',\r\n              " +
-                    "          format: {\r\n                            body: function (data, row, colu" +
-                    "mn, node) {\r\n                               \r\n                                if" +
-                    " (column === 3) {\r\n                                    var kirabedeli = data.rep" +
-                    "lace(\'.\', \'#\');\r\n                                    kirabedeli = kirabedeli.rep" +
-                    "lace(\',\', \'.\');\r\n                                    kirabedeli = kirabedeli.rep" +
-                    "lace(\'#\', \',\');\r\n                                    return kirabedeli;\r\n       " +
-                    "                         } else if (column === 4) {\r\n                           " +
-                    "         var odenenTutar = data.replace(\'.\', \'#\');\r\n                            " +
-                    "        odenenTutar = odenenTutar.replace(\',\', \'.\');\r\n                          " +
-                    "          odenenTutar = odenenTutar.replace(\'#\', \',\');\r\n                        " +
-                    "            return odenenTutar;\r\n                                }\r\n            " +
-                    "                    else {\r\n                                    return data.repl" +
-                    "ace(/(&nbsp;|<([^>]+)>)/ig, \"\");//html\'i soy //regex to strip the HTML\r\n        " +
-                    "                        }\r\n\r\n                            }\r\n                    " +
-                    "    }\r\n                    }\r\n                },\r\n                {\r\n           " +
-                    "         extend: \'pdf\',\r\n                    exportOptions: {\r\n                 " +
-                    "       columns: \':visible\'\r\n                    }\r\n                },\r\n         " +
-                    "       {\r\n                    extend: \'copy\',\r\n                    exportOptions" +
-                    ": {\r\n                        columns: \':visible\'\r\n                    }\r\n       " +
-                    "         },\r\n                , \'pageLength\', \"colvis\"\r\n            ]\r\n\r\n        " +
-                    "});\r\n    });\r\n\r\n</script>\r\n<div class=\"container col-xl \">\r\n    <div class=\"card" +
-                    " shadow\">\r\n        ");
+                    "ata: \"DosyaNo\" },\r\n                { data: \"Bolge\" },\r\n                { data: \"" +
+                    "KiraciAdiSoyadi\" },\r\n                { data: \"TasinmazAdresi\" },\r\n              " +
+                    "  { data: \"KiralamaAmaci\" },\r\n                { data: \"IlkSozlesmeTar\" },\r\n     " +
+                    "           { data: \"Sozlesme\" },\r\n                { data: \"VadeBitTar\" },\r\n     " +
+                    "           { data: \"ArtisAyi\" },\r\n                { data: \"OdemeSekli\" },\r\n     " +
+                    "           { data: \"KiraBedeli\", type: \"decimal\" },\r\n                { data: \"Od" +
+                    "emeTarihi\" },\r\n                { data: \"OdenenTutar\", type: \"decimal\" },\r\n      " +
+                    "          { data: \"Aciklama\" },\r\n                { data: \"Duzenle\" },\r\n         " +
+                    "   ],\r\n            \"columnDefs\": [\r\n                { className: \"text-right\", \"" +
+                    "targets\": [3] },\r\n                { className: \"text-right\", \"targets\": [4] }\r\n " +
+                    "           ],\r\n            \"language\": {\r\n                \"url\": \"http://tskgv-p" +
+                    "ortal/OrtakBelgeler/Turkish.txt\",\r\n                \"decimal\": \",\",\r\n            " +
+                    "    \"thousands\": \".\"\r\n            },\r\n            \"order\": [[11, \"asc\"], [0, \"as" +
+                    "c\"], [5, \"desc\"]],\r\n            responsive: true,\r\n            dom: \'Bfrtip\',\r\n " +
+                    "           buttons: [\r\n                {\r\n                    extend: \'print\',\r\n" +
+                    "                    exportOptions: {\r\n                        columns: \':visible" +
+                    "\'\r\n                    }\r\n                },\r\n                {\r\n               " +
+                    "     extend: \'excel\',\r\n                    exportOptions: {\r\n                   " +
+                    "     columns: \':visible\',\r\n                        format: {\r\n                  " +
+                    "          body: function (data, row, column, node) {\r\n                          " +
+                    "     \r\n                                if (column === 3) {\r\n                    " +
+                    "                var kirabedeli = data.replace(\'.\', \'#\');\r\n                      " +
+                    "              kirabedeli = kirabedeli.replace(\',\', \'.\');\r\n                      " +
+                    "              kirabedeli = kirabedeli.replace(\'#\', \',\');\r\n                      " +
+                    "              return kirabedeli;\r\n                                } else if (col" +
+                    "umn === 4) {\r\n                                    var odenenTutar = data.replace" +
+                    "(\'.\', \'#\');\r\n                                    odenenTutar = odenenTutar.repla" +
+                    "ce(\',\', \'.\');\r\n                                    odenenTutar = odenenTutar.rep" +
+                    "lace(\'#\', \',\');\r\n                                    return odenenTutar;\r\n      " +
+                    "                          }\r\n                                else {\r\n           " +
+                    "                         return data.replace(/(&nbsp;|<([^>]+)>)/ig, \"\");//html\'" +
+                    "i soy //regex to strip the HTML\r\n                                }\r\n\r\n          " +
+                    "                  }\r\n                        }\r\n                    }\r\n         " +
+                    "       },\r\n                {\r\n                    extend: \'pdf\',\r\n              " +
+                    "      exportOptions: {\r\n                        columns: \':visible\'\r\n           " +
+                    "         }\r\n                },\r\n                {\r\n                    extend: \'" +
+                    "copy\',\r\n                    exportOptions: {\r\n                        columns: \'" +
+                    ":visible\'\r\n                    }\r\n                },\r\n                , \'pageLen" +
+                    "gth\', \"colvis\"\r\n            ]\r\n\r\n        });\r\n    });\r\n\r\n</script>\r\n<div class=\"" +
+                    "container col-xl \">\r\n    <div class=\"card shadow\">\r\n        ");
             parameterContainer.Controls[0].RenderControl(@__w);
             @__w.Write("\r\n        ");
             parameterContainer.Controls[1].RenderControl(@__w);

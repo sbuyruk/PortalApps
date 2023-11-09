@@ -283,7 +283,7 @@ namespace Model.TBYS
                 SELECT A.Id, A.Id OdemeId,A.OdemePlaniId,A.SozlesmeId,A.KiraciId,
 	                A.OdemeTarihi, A.OdenenTutar, A.Aciklama, 
 	                B.Adi, B.Soyadi, B.KiralamaAmaci, 
-	                C.Bolge, C.SozBasTar, C.SozBitTar, C.IlkSozlesmeTar,C.DosyaNo, C.ArtisAyi,C.KiraBedeli,
+	                C.Bolge, C.SozBasTar, C.SozBitTar, C.IlkSozlesmeTar,C.DosyaNo, C.ArtisAyi,C.KiraBedeli,C.OdemeSekli, 
 	                D.VadeBitTar, E.Id TeminatId
                 FROM Odeme_Table A
                     INNER JOIN Kiraci_Table B ON B.Id=A.KiraciId 

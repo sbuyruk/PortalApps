@@ -201,21 +201,22 @@ namespace Portal_WebParts.GunlukNobetcilerMoveWP {
             "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.DataBoundLiteralControl @__BuildControl__control5() {
             global::System.Web.UI.DataBoundLiteralControl @__ctrl;
-            @__ctrl = new global::System.Web.UI.DataBoundLiteralControl(4, 3);
+            @__ctrl = new global::System.Web.UI.DataBoundLiteralControl(5, 4);
             @__ctrl.TemplateControl = this;
             @__ctrl.SetStaticString(0, @"
                                         <li class=""row form-group border border-dark alert-primary pt-2"">
                                             <div class=""col-3"">
-                                                <img height=""100"" class=""rounded-circle border"" src=""/PersonelResimleri/");
-            @__ctrl.SetStaticString(1, @".jpg?RenditionID=5"" alt="""" onerror=""this.src='/PersonelResimleri/personel.jpg';"">
+                                                
+                                                <img height=""100"" class=""rounded-circle border"" src=""");
+            @__ctrl.SetStaticString(2, @".jpg?RenditionID=5"" alt="""" onerror=""this.src='/PersonelResimleri/personel.jpg';"">
                                             </div>
                                             <div class=""col"">
                                                 <div class=""font-weight-bold"">
                                                     <p>");
-            @__ctrl.SetStaticString(2, "</p>\r\n                                                </div>\r\n                   " +
+            @__ctrl.SetStaticString(3, "</p>\r\n                                                </div>\r\n                   " +
                     "                             <div class=\"font-weight-bold\">\r\n                   " +
                     "                                 <p>");
-            @__ctrl.SetStaticString(3, "</p>\r\n                                                </div>\r\n                   " +
+            @__ctrl.SetStaticString(4, "</p>\r\n                                                </div>\r\n                   " +
                     "                         </div>\r\n                                        </li>\r\n" +
                     "\r\n                                    ");
             @__ctrl.DataBinding += new System.EventHandler(this.@__DataBind__control5);
@@ -230,9 +231,10 @@ namespace Portal_WebParts.GunlukNobetcilerMoveWP {
             System.Web.UI.DataBoundLiteralControl target;
             target = ((System.Web.UI.DataBoundLiteralControl)(sender));
             Container = ((System.Web.UI.WebControls.RepeaterItem)(target.BindingContainer));
-            target.SetDataBoundString(0, global::System.Convert.ToString(Eval("KullaniciAdi"), global::System.Globalization.CultureInfo.CurrentCulture));
-            target.SetDataBoundString(1, global::System.Convert.ToString(Eval("Isim"), global::System.Globalization.CultureInfo.CurrentCulture));
-            target.SetDataBoundString(2, global::System.Convert.ToString(Eval("Bolum"), global::System.Globalization.CultureInfo.CurrentCulture));
+            target.SetDataBoundString(0, global::System.Convert.ToString(Eval("PersonelResimleri"), global::System.Globalization.CultureInfo.CurrentCulture));
+            target.SetDataBoundString(1, global::System.Convert.ToString(Eval("KullaniciAdi"), global::System.Globalization.CultureInfo.CurrentCulture));
+            target.SetDataBoundString(2, global::System.Convert.ToString(Eval("Isim"), global::System.Globalization.CultureInfo.CurrentCulture));
+            target.SetDataBoundString(3, global::System.Convert.ToString(Eval("Bolum"), global::System.Globalization.CultureInfo.CurrentCulture));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]

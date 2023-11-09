@@ -38,6 +38,8 @@ namespace Model.TBYS
         public string TasinmazFoto { get; set; }
         public string TasinmazFoto1 { get; set; }
         public string TasinmazFoto2 { get; set; }
+        public string TasinmazFoto3 { get; set; }
+        public string TasinmazFoto4 { get; set; }
         public string TapuFoto { get; set; }
         public string KrokiFoto { get; set; }
         public string TahkikatFoto { get; set; }
@@ -805,7 +807,8 @@ namespace Model.TBYS
         {
             string sqlString = string.Format(@"
                 SELECT  A.KatMulkiyeti, A.KullanimSekli,A.Cinsi,A.MulkiyetSekli,D.Adi,D.Soyadi, A.Adres,A.Ilcesi,A.Ili, 
-                    B.Id BolumId,B.BolumNo, A.AdaNo,A.ParselNo,A.Yuzolcumu,A.ArsaPayi ,A.EnvanterdeMi
+                    A.AdaNo,A.ParselNo,A.Yuzolcumu,A.ArsaPayi ,A.EnvanterdeMi,
+					B.Id BolumId,B.BolumNo, B.Aciklama,B.Nitelik
                 FROM Tasinmaz_Table A
 	                Left Join BagimsizBolum_Table B ON B.TasinmazId=A.Id
 	                Left Join Bagis_Table C ON C.TasinmazId=A.Id

@@ -354,7 +354,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
         {
             SigortaCinsiDDL.Items.Clear();
             SigortaCinsiDDL.Items.Add(ProjeConstants.SIGORTA_YOK);
-            SigortaCinsiDDL.Items.Add(ProjeConstants.SIGORTA_DASK_IHTIYARI);
+            SigortaCinsiDDL.Items.Add(ProjeConstants.SIGORTA_DASK);
             SigortaCinsiDDL.Items.Add(ProjeConstants.SIGORTA_DEPREM_IHTIYARI);
             SigortaCinsiDDL.Items.FindByValue(ProjeConstants.SIGORTA_DEPREM_IHTIYARI).Attributes.Add("Disabled", "Disabled");
         }

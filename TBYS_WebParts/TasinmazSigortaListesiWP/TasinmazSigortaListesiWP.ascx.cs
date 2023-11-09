@@ -306,13 +306,7 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
                 }
                 if (!Page.IsPostBack)
                 {
-                    if (SigortaCinsiQS.Equals("Deprem İhtiyari"))
-                        SigortaCinsiQS = ProjeConstants.SIGORTA_DEPREM_IHTIYARI;
-                    else if (SigortaCinsiQS.Equals("DASK İhtiyari"))
-                        SigortaCinsiQS = ProjeConstants.SIGORTA_DASK_IHTIYARI;
-                    else if (SigortaCinsiQS.Equals(ProjeConstants.SIGORTA_YOK))
-                        SigortaCinsiQS = ProjeConstants.SIGORTA_YOK;
-                    else
+                    if (string.IsNullOrEmpty(SigortaCinsiQS))
                         SigortaCinsiQS = ProjeConstants.HEPSI;
                     SigortaCinsiDDLDoldur();
                     SigortaCinsiDDL.SelectedValue = string.IsNullOrEmpty(SigortaCinsiQS) ? ProjeConstants.HEPSI : SigortaCinsiQS;
@@ -349,8 +343,7 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
         {
             SigortaCinsiDDL.Items.Clear();
             SigortaCinsiDDL.Items.Add(ProjeConstants.HEPSI);
-            SigortaCinsiDDL.Items.Add(ProjeConstants.SIGORTA_DASK_IHTIYARI);
-            SigortaCinsiDDL.Items.Add(ProjeConstants.SIGORTA_DEPREM_IHTIYARI);
+            SigortaCinsiDDL.Items.Add(ProjeConstants.SIGORTA_DASK);
             SigortaCinsiDDL.Items.Add(ProjeConstants.SIGORTA_YOK);
         }
         private DataTable SigortaListesiGetirDT()
@@ -384,7 +377,7 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
             Page.Response.Clear();
             Page.Response.Buffer = true;
             Page.Response.AddHeader("content-disposition",
-             "attachment;filename=TasinmazListesi" + DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + ".xls");
+             "attachment;filename=TasinmazSigortaListesi" + DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + ".xls");
             Page.Response.ContentEncoding = System.Text.Encoding.GetEncoding("windows-1254");
             Page.Response.Charset = "windows-1254";//ISO-8859-9
             Page.Response.ContentType = "application/vnd.ms-excel";
