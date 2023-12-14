@@ -30,14 +30,58 @@ namespace TBYS_WebParts.GerceklesenKiraArtislariWP
             InitializeControl();
             this.ChromeType = PartChromeType.None;
         }
+        private string BolgeQS
+        {
+            get
+            {
+
+                if (ViewState["Bolge"] == null)
+                {
+                    if (Page.Request.QueryString["Bolge"] != null)
+                    {
+                        ViewState["Bolge"] = Page.Request.QueryString["Bolge"];
+                    }
+                    else
+                    {
+                        ViewState["Bolge"] = string.Empty;
+                    }
+                }
+                return ViewState["Bolge"].ToString();
+            }
+
+            set
+            {
+                ViewState["Bolge"] = value;
+            }
+        }
+        private string CurrentUserName
+        {
+            get
+            {
+
+                if (ViewState["CurrentUserName"] == null)
+                {
+                    ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUserLoginName();
+                }
+                return ViewState["CurrentUserName"].ToString();
+            }
+
+            set
+            {
+                ViewState["CurrentUserName"] = value;
+            }
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
+
+                BolgeQS = IKYSOrtak.PersonelinBolgesiniGetir(CurrentUserName);
                 if (!Page.IsPostBack)
                 {
                     TabloOlustur();
                 }
+               
             }
             catch (Exception ex)
             {
@@ -122,7 +166,7 @@ namespace TBYS_WebParts.GerceklesenKiraArtislariWP
 
             KiraSozlesme kiraSozlesmeDao = new KiraSozlesme();
 
-            DataTable dataTable = kiraSozlesmeDao.SelectGerceklesenKiraArtislariReturnDT(ProjeConstants.SINIRLIKIRAARTISI_BASLAMATARIHI);
+            DataTable dataTable = kiraSozlesmeDao.SelectGerceklesenKiraArtislariReturnDT(BolgeQS);
             int SiraNo = 1;
 
             List<KiraArtisListItem> list = new List<KiraArtisListItem>();
@@ -144,11 +188,12 @@ namespace TBYS_WebParts.GerceklesenKiraArtislariWP
                 decimal oncekiKiraBedeli = row["OncekiKiraBedeli"].ConvertToDecimal();
                 int kiraSozlesmeId = row["KiraSozlesmeId"].ConvertToInt();
                 string artisAyi = row["ArtisAyi"].ToString();
+                string odemeSekli = row["OdemeSekli"].ToString();
                 bool aktif = row["Aktif"].ReturnFalseIfNull().ConvertToBool();
 
                 decimal tufe = TufeBul(sozBasTar.ConvertToDatetime());
                 DateTime bugun = DateTime.Today;
-                decimal yasalOranaGoreKiraBedeli = oncekiKiraBedeli + Math.Round(oncekiKiraBedeli * tufe / 100);
+                decimal yasalOranaGoreKiraBedeli = oncekiKiraBedeli>0? oncekiKiraBedeli + Math.Round(oncekiKiraBedeli * tufe / 100):0;
                 
                 string yasalArtisOrani = "%" + tufe.ToString("N", culturInfo) + " (TÜFE)";
                 DateTime bastar = string.IsNullOrEmpty(sozBasTar.ConvertToDatetimeEmptyIfNull()) ? DateTime.Today : sozBasTar.ConvertToDatetime();
@@ -156,12 +201,12 @@ namespace TBYS_WebParts.GerceklesenKiraArtislariWP
                    (bastar <= ProjeConstants.SINIRLIKIRAARTISI_BITISTARIHI) &&
                    kiralamaAmaci.Equals(ProjeConstants.SINIRLIKIRAARTISI_UYGULANACAKTASINMAZCINSI))
                 {
-                    yasalOranaGoreKiraBedeli = Math.Round(oncekiKiraBedeli + oncekiKiraBedeli * ProjeConstants.SINIRLIKIRAARTISI_ORANI / 100);
+                    yasalOranaGoreKiraBedeli = oncekiKiraBedeli > 0 ? Math.Round(oncekiKiraBedeli + oncekiKiraBedeli * ProjeConstants.SINIRLIKIRAARTISI_ORANI / 100):0;
                     yasalArtisOrani = "%" + ProjeConstants.SINIRLIKIRAARTISI_ORANI.ToString("N", culturInfo) + " (6098 Say.Kanun)";
                 }
                 else
                 {
-                    yasalOranaGoreKiraBedeli = Math.Round(oncekiKiraBedeli + oncekiKiraBedeli * tufe / 100);
+                    yasalOranaGoreKiraBedeli = oncekiKiraBedeli > 0 ? Math.Round(oncekiKiraBedeli + oncekiKiraBedeli * tufe / 100):0;
                 }
 
                 string adres = row["Adres"].ToString();
@@ -186,16 +231,17 @@ namespace TBYS_WebParts.GerceklesenKiraArtislariWP
                 kiraArtisListItem.TarihAraligi = sozBasTar.ConvertToDatetimeEmptyIfNull() + "-" + sozBitTar.ConvertToDatetimeEmptyIfNull();
                 kiraArtisListItem.KiralamaAmaci = kiralamaAmaci;
                 kiraArtisListItem.YasalArtisOrani = yasalArtisOrani;
-                kiraArtisListItem.YasalOranaGoreKiraBedeli = yasalOranaGoreKiraBedeli.ToString("N", culturInfo);
-                kiraArtisListItem.KiraBedeli = kiraBedeli.ToString("N", culturInfo);
-                kiraArtisListItem.OncekiKiraBedeli = oncekiKiraBedeli.ToString("N", culturInfo);
+                kiraArtisListItem.YasalOranaGoreKiraBedeli = yasalOranaGoreKiraBedeli.ToString("N", culturInfo)+ " TL";
+                kiraArtisListItem.KiraBedeli = kiraBedeli.ToString("N", culturInfo) +" TL";
+                kiraArtisListItem.OncekiKiraBedeli = oncekiKiraBedeli.ToString("N", culturInfo) + " TL";
                 decimal fark = (kiraBedeli - oncekiKiraBedeli);
-                kiraArtisListItem.UygulananArtisOrani = "%" + (fark * 100 / oncekiKiraBedeli).ToString("N", culturInfo);
+                kiraArtisListItem.UygulananArtisOrani = oncekiKiraBedeli > 0 ? "%" + (fark * 100 / oncekiKiraBedeli).ToString("N", culturInfo):"0";
                 kiraArtisListItem.Adres = "- " + adres;
                 kiraArtisListItem.TamAdres = "- " + adres + " " + ilcesi + "-" + ili;
                 kiraArtisListItem.Ilcesi = ilcesi;
                 kiraArtisListItem.Ili = ili;
                 kiraArtisListItem.Bolge = bolge;
+                kiraArtisListItem.OdemeSekli = odemeSekli;
                 kiraArtisListItem.ArtisAyi = new DateTime(DateTime.Today.Year, artisAyi.ConvertToInt(), 1).ToString("MMMM");
                 kiraArtisListItem.YenilendiMi = aktif ? "Yenilenecek" : "Yenilendi";
                 list.Add(kiraArtisListItem);
@@ -242,6 +288,7 @@ namespace TBYS_WebParts.GerceklesenKiraArtislariWP
             public string YenilendiMi { get; set; }
             public string BesYil { get; set; }
             public string OnYil { get; set; }
+            public string OdemeSekli { get; set; }
         }
     }
 }

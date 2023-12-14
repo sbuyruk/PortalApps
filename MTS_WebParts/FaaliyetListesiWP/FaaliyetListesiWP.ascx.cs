@@ -115,10 +115,6 @@ namespace MTS_WebParts.FaaliyetListesiWP
                     DateTime basTar = row["BaslangicTarihi"].ConvertToDatetime();
                     DateTime bitTar = row["BitisTarihi"].ConvertToDatetime();
 
-                    //string faaliyetTarihiStr = 
-                    //    basTar.Year == bitTar.Year && basTar.Month == bitTar.Month && basTar.Day == bitTar.Day ?
-                    //    basTar.ToString("dd.MM.yyyy") + " " + basTar.ToString("HH:mm") + "-" + bitTar.ToString("HH:mm") :
-                    //    basTar.ToString("dd.MM.yyyy HH:mm") + " - " + bitTar.ToString("dd.MM.yyyy HH:mm");
                     string baslangicTarihi = basTar.ToString("dd.MM.yyyy HH:mm");
                     string bitisTarihi = bitTar.ToString("dd.MM.yyyy HH:mm");
 

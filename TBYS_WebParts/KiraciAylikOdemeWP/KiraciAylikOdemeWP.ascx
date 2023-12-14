@@ -59,15 +59,15 @@
                 { data: "Duzenle" },
             ],
             "columnDefs": [
-                { className: "text-right", "targets": [3] },
-                { className: "text-right", "targets": [4] }
+                { className: "text-right", "targets": [10] },
+                { className: "text-right", "targets": [12] }
             ],
             "language": {
                 "url": "http://tskgv-portal/OrtakBelgeler/Turkish.txt",
                 "decimal": ",",
                 "thousands": "."
             },
-            "order": [[11, "asc"], [0, "asc"], [5, "desc"]],
+            "order": [[11, "desc"], [0, "asc"], [2, "asc"]],
             responsive: true,
             dom: 'Bfrtip',
             buttons: [

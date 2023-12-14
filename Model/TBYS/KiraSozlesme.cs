@@ -347,9 +347,13 @@ namespace Model.TBYS
             }
             return dataTable;
         }
-        public DataTable SelectGerceklesenKiraArtislariReturnDT(DateTime bastar)
+        public DataTable SelectGerceklesenKiraArtislariReturnDT(string bolge)
         {
+            string bolgeStr = string.Format(string.IsNullOrEmpty(bolge) || bolge.Equals(ProjeConstants.BOLGE_HEPSI) ? string.Empty : " AND A.Bolge ={0} ", bolge.ReturnQuotedValue());
+            DateTime bastar = new DateTime(DateTime.Today.Year,1,1);
+            DateTime bittar = new DateTime(DateTime.Today.AddYears(1).Year,12,31);
             DateTime buAyBasi = new DateTime(DateTime.Today.Year,DateTime.Today.Month,1);
+
             string sqlString = string.Format(@"
                 SELECT A.Id KiraSozlesmeId, C.Adres, C.Ili,C.Ilcesi,C.Semt,A.Bolge,
                     A.IlkSozlesmeTar,
@@ -361,14 +365,16 @@ namespace Model.TBYS
 	                A.KiraBedeli,
 	                B.KiraBedeli OncekiKiraBedeli,
 	                A.Aktif, A.OdemeSekli,               
-	                A.KiraciId, C.Adi KiraciAdi, C.Soyadi KiraciSoyadi,C.KiralamaAmaci
+	                A.KiraciId, C.Adi KiraciAdi, C.Soyadi KiraciSoyadi,C.KiralamaAmaci,
+                    A.OdemeSekli
                 FROM KiraSozlesme_Table A
-                INNER JOIN KiraSozlesme_Table B ON A.KiraciId=B.KiraciId AND B.SozBitTar=A.SozBasTar AND B.Aktif=0
+                LEFT JOIN KiraSozlesme_Table B ON A.KiraciId=B.KiraciId AND B.SozBitTar=A.SozBasTar AND B.Aktif=0
 	                LEFT JOIN Kiraci_Table C on C.Id= A.KiraciId
-	                WHERE A.Aktif=1 AND A.SozBasTar >={0} AND A.SozBasTar<{1}
+	                WHERE A.Aktif=1 AND A.SozBasTar >={0} AND A.SozBasTar<{1} 
+                        {2}
                     ORDER BY A.Bolge, SozBitTar DESC
 
-            ", bastar.ReturnTRDateFormat(),buAyBasi.ReturnTRDateFormat());
+            ", bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat(), bolgeStr);//sinirliKiraArtisiBastar.ReturnTRDateFormat(),buAyBasi.ReturnTRDateFormat());
             DataTable dataTable;
             try
             {
@@ -636,7 +642,7 @@ namespace Model.TBYS
         public DataTable SelectBySozlesmeId(int sozlesmeId)
         {
             string sqlString = string.Format(@"
-                SELECT A.Id,C.Adres
+                SELECT A.Id,C.Adres,C.Ili,C.Ilcesi
                 FROM KiraSozlesme_Table A
 	                LEFT JOIN SozlesmeTasinmaz_Table B On B.SozlesmeId=A.Id
 	                LEFT JOIN Tasinmaz_Table C On C.Id=B.TasinmazId

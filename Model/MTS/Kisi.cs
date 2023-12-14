@@ -24,6 +24,7 @@ namespace Model.MTS
         public string TelAciklama1 { get; set; }
         public string TelAciklama2 { get; set; }
         public string TelAciklama3 { get; set; }
+        public string EPosta { get; set; }
         public string Adres { get; set; }
         public int Ili { get; set; }
         public int Ilcesi { get; set; }
@@ -161,15 +162,10 @@ namespace Model.MTS
                      LEFT JOIN MTSKurumTanim_Table E on E.Id = D.MTSKurumTanimId
                      LEFT JOIN MTSGorevTanim_Table F on F.Id = D.MTSGorevTanimId
                      LEFT JOIN MTSUnvanTanim_Table G on F.Id = A.MTSUnvanTanimId
-                WHERE D.Durum={0}
+                --WHERE D.Durum={0}
                 ORDER BY A.Adi
                 ", ProjeConstants.MTSGOREVDURUMU_GOREVDE.ReturnQuotedValue());            
-            //string sqlString = string.Format(@"
-            //    SELECT A.*, B.IlAdi, C.IlceAdi FROM Kisi_Table A
-            //    LEFT JOIN Il_Table B on A.Ili = B.Id
-            //    LEFT JOIN Ilce_Table C on A.Ilcesi = C.Id
-            //    ORDER BY Adi
-            //    ");
+
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
 

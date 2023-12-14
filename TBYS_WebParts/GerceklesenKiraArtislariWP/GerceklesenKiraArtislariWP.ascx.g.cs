@@ -183,13 +183,16 @@ namespace TBYS_WebParts.GerceklesenKiraArtislariWP {
                         <table id=""CustomDataTable"" class=""table table-striped table-bordered"" width=""100%"">
                             <thead>
                                 <tr>
-                                    <th>Kiracı</th>
-                                    <th>Cinsi</th>
                                     <th>Bölge</th>
+                                    <th>Kiracı</th>
+                                    <th>Adres</th>
+                                    <th>İlçe</th>
+                                    <th>İl</th>
+                                    <th>Cinsi</th>
                                     <th>İlk Söz. Tar.</th>
                                     <th>Kira Süresi</th>
                                     <th>Artış Ayı</th>
-                                    <th>Adres</th>
+                                    <th>Ödeme Şekli</th>
                                     <th>Artıştan Önceki Kira Bedeli (TL)</th>
                                     <th>Yasal Artış Oranı (%)</th>
                                     <th>Yasal Artış Oranına Göre Kira Bedeli (TL)</th>
@@ -282,59 +285,61 @@ namespace TBYS_WebParts.GerceklesenKiraArtislariWP {
                         "a kalmasın diye\r\n    function setFormSubmitToFalse() {\r\n        setTimeout(funct" +
                         "ion () { _spFormOnSubmitCalled = false; }, 3000);\r\n        return true;\r\n    }\r\n" +
                         "    function setDataSet(myset) {\r\n        myjsons = myset;\r\n    }\r\n    var myjso" +
-                        "ns = [{\r\n        \"KiraciAdi\": \"\", \"KiralamaAmaci\": \"\", \"Bolge\": \"\", \"SozlesmeTar" +
-                        "ihi\": \"\", \"KiraSuresi\": \"\", \"ArtisAyi\": \"\", \"TamAdres\": \"\",\"OncekiKiraBedeli\": \"" +
-                        "\", \"YasalArtisOrani\": \"\", \"YasalOranaGoreKiraBedeli\": \"\", \"KiraBedeli\": \"\", \"Uyg" +
-                        "ulananArtisOrani\": \"\", \"KiraBedeli\": \"\"\r\n    }];\r\n    jQuery(document).ready(fun" +
-                        "ction () {\r\n\r\n        var table = jQuery(\'#CustomDataTable\').DataTable({\r\n      " +
-                        "      data: myjsons,\r\n            columns: [\r\n                { data: \"KiraciAdi" +
-                        "\", \"width\": \"20%\" },\r\n                { data: \"KiralamaAmaci\" },\r\n              " +
-                        "  { data: \"Bolge\" },\r\n                { data: \"SozlesmeTarihi\" },\r\n             " +
-                        "   { data: \"KiraSuresi\" },\r\n                { data: \"ArtisAyi\" },\r\n             " +
-                        "   { data: \"TamAdres\", \"width\": \"20%\" },\r\n                { data: \"OncekiKiraBed" +
-                        "eli\", type: \"decimal\",class:\"text-right\" },\r\n                { data: \"YasalArtis" +
-                        "Orani\", type: \"decimal\" },\r\n                { data: \"YasalOranaGoreKiraBedeli\", " +
-                        "type: \"decimal\", class: \"text-right\" },\r\n                { data: \"UygulananArtis" +
-                        "Orani\", type: \"decimal\" },\r\n                { data: \"KiraBedeli\", type: \"decimal" +
-                        "\",class:\"text-right\" },\r\n\r\n            ],            \r\n            \'order\': [[2," +
-                        " \'asc\']],//AdiSoyadi Sıralı\r\n            \"language\": {\r\n                \"url\": \"" +
-                        "http://tskgv-portal/OrtakBelgeler/Turkish.txt\",\r\n                \"decimal\": \",\"," +
-                        "\r\n                \"thousands\": \".\"\r\n            },\r\n            responsive: true" +
-                        ",\r\n            dom: \'Bfrtip\',\r\n            //colon resizable\r\n            //init" +
-                        "Complete: function (settings) {\r\n            //    $(\'#CustomDataTable\').colResi" +
-                        "zable({ liveDrag: true });\r\n            //},\r\n            buttons: [\r\n          " +
-                        "      {\r\n                    extend: \'print\',\r\n                    exportOptions" +
-                        ": {\r\n                        columns: \':visible\'\r\n                    }\r\n       " +
-                        "         },\r\n                {\r\n                    extend: \'excelHtml5\',\r\n     " +
-                        "               customize: function (xlsx) {\r\n                        var sheet =" +
-                        " xlsx.xl.worksheets[\'sheet1.xml\'];\r\n\r\n                        var count = 0;\r\n  " +
-                        "                      var skippedHeader = 0;\r\n\r\n                        //$(\'row" +
-                        "\', sheet).each(function () {\r\n                        //    if (skippedHeader++>" +
-                        "1) {\r\n                        //        var text = $(\'tbody tr:eq(\' + parseInt(c" +
-                        "ount) + \') td:eq(4)\').text();\r\n                        //        if (text == \'5 " +
-                        "Yıl\') {\r\n                        //            $(this).attr(\'s\', \'11\');\r\n       " +
-                        "                 //        }\r\n                        //        else {\r\n        " +
-                        "                //            $(this).attr(\'s\', \'21\');\r\n                        " +
-                        "//        }\r\n                                \r\n                        //    }\r\n" +
-                        "                        //    count++;\r\n                        //});\r\n         " +
-                        "               //count = 0;\r\n                        //skippedHeader = 0;\r\n     " +
-                        "                   $(\'row c[r^=\"E\"]\', sheet).each(function () {\r\n               " +
-                        "             if (count++>0) {\r\n                                var text = $(this" +
-                        ").text();\r\n                                var yilInt = text.replace(\' Yıl\', \'\')" +
-                        ";\r\n                                if (yilInt >=5) {\r\n                          " +
-                        "          $(this).attr(\'s\', \'11\');\r\n                                }\r\n         " +
-                        "                   }\r\n\r\n                        });\r\n                    }\r\n    " +
-                        "            },\r\n                {\r\n                    extend: \'pdf\',\r\n         " +
-                        "           exportOptions: {\r\n                        columns: \':visible\'\r\n      " +
-                        "              }\r\n                },\r\n                {\r\n                    exte" +
-                        "nd: \'copy\',\r\n                    exportOptions: {\r\n                        colum" +
-                        "ns: \':visible\'\r\n                    }\r\n                },\r\n                , \'pa" +
-                        "geLength\', \"colvis\"\r\n            ],\r\n            \"createdRow\": function (row, da" +
-                        "ta, dataIndex) {\r\n                if (data.OnYil == \"True\") {\r\n                 " +
-                        "   $(row).addClass(\'on-yil\');\r\n                } else if (data.BesYil == \"True\")" +
-                        " {\r\n                    $(row).addClass(\'bes-yil\');\r\n                } \r\n\r\n     " +
-                        "       },//set row color\r\n        });\r\n    });\r\n</script>\r\n\r\n<div class=\"col-xl\"" +
-                        ">\r\n    <div class=\"card shadow\">\r\n        "));
+                        "ns = [{\r\n        \"Bolge\": \"\", \"Adres\": \"\", \"Ilcesi\": \"\", \"Ili\": \"\", \"KiraciAdi\":" +
+                        " \"\", \"KiralamaAmaci\": \"\", \"SozlesmeTarihi\": \"\", \"KiraSuresi\": \"\", \"ArtisAyi\": \"\"" +
+                        ", \"OdemeSekli\": \"\", \"OncekiKiraBedeli\": \"\", \"YasalArtisOrani\": \"\", \"YasalOranaGo" +
+                        "reKiraBedeli\": \"\", \"KiraBedeli\": \"\", \"UygulananArtisOrani\": \"\", \"KiraBedeli\": \"\"" +
+                        "\r\n    }];\r\n    jQuery(document).ready(function () {\r\n\r\n        var table = jQuer" +
+                        "y(\'#CustomDataTable\').DataTable({\r\n            data: myjsons,\r\n            colum" +
+                        "ns: [\r\n                { data: \"Bolge\" },\r\n                { data: \"KiraciAdi\", " +
+                        "\"width\": \"20%\" },\r\n                { data: \"Adres\", \"width\": \"20%\" },\r\n         " +
+                        "       { data: \"Ilcesi\", \"width\": \"20%\" },\r\n                { data: \"Ili\", \"widt" +
+                        "h\": \"20%\" },\r\n                { data: \"KiralamaAmaci\" },\r\n                { data" +
+                        ": \"SozlesmeTarihi\" },\r\n                { data: \"KiraSuresi\" },\r\n                " +
+                        "{ data: \"ArtisAyi\" },\r\n                { data: \"OdemeSekli\" },\r\n                " +
+                        "{ data: \"OncekiKiraBedeli\", type: \"decimal\",class:\"text-right\" },\r\n             " +
+                        "   { data: \"YasalArtisOrani\", type: \"decimal\" },\r\n                { data: \"Yasal" +
+                        "OranaGoreKiraBedeli\", type: \"decimal\", class: \"text-right\" },\r\n                {" +
+                        " data: \"UygulananArtisOrani\", type: \"decimal\" },\r\n                { data: \"KiraB" +
+                        "edeli\", type: \"decimal\",class:\"text-right\" },\r\n\r\n            ],            \r\n   " +
+                        "         \'order\': [[0, \'asc\']],//AdiSoyadi Sıralı\r\n            \"language\": {\r\n  " +
+                        "              \"url\": \"http://tskgv-portal/OrtakBelgeler/Turkish.txt\",\r\n         " +
+                        "       \"decimal\": \",\",\r\n                \"thousands\": \".\"\r\n            },\r\n      " +
+                        "      responsive: true,\r\n            dom: \'Bfrtip\',\r\n            //colon resizab" +
+                        "le\r\n            //initComplete: function (settings) {\r\n            //    $(\'#Cus" +
+                        "tomDataTable\').colResizable({ liveDrag: true });\r\n            //},\r\n            " +
+                        "buttons: [\r\n                {\r\n                    extend: \'print\',\r\n           " +
+                        "         exportOptions: {\r\n                        columns: \':visible\'\r\n        " +
+                        "            }\r\n                },\r\n                {\r\n                    extend" +
+                        ": \'excelHtml5\',\r\n                    customize: function (xlsx) {\r\n             " +
+                        "           var sheet = xlsx.xl.worksheets[\'sheet1.xml\'];\r\n\r\n                    " +
+                        "    var count = 0;\r\n                        var skippedHeader = 0;\r\n\r\n          " +
+                        "              //$(\'row\', sheet).each(function () {\r\n                        //  " +
+                        "  if (skippedHeader++>1) {\r\n                        //        var text = $(\'tbod" +
+                        "y tr:eq(\' + parseInt(count) + \') td:eq(4)\').text();\r\n                        // " +
+                        "       if (text == \'5 Yıl\') {\r\n                        //            $(this).att" +
+                        "r(\'s\', \'11\');\r\n                        //        }\r\n                        //  " +
+                        "      else {\r\n                        //            $(this).attr(\'s\', \'21\');\r\n  " +
+                        "                      //        }\r\n                                \r\n           " +
+                        "             //    }\r\n                        //    count++;\r\n                  " +
+                        "      //});\r\n                        //count = 0;\r\n                        //ski" +
+                        "ppedHeader = 0;\r\n                        $(\'row c[r^=\"H\"]\', sheet).each(function" +
+                        " () {\r\n                            if (count++>0) {\r\n                           " +
+                        "     var text = $(this).text();\r\n                                var yilInt = te" +
+                        "xt.replace(\' Yıl\', \'\');\r\n                                if (yilInt >=5) {\r\n    " +
+                        "                                $(this).attr(\'s\', \'11\');\r\n                      " +
+                        "          }\r\n                            }\r\n\r\n                        });\r\n     " +
+                        "               }\r\n                },\r\n                {\r\n                    ext" +
+                        "end: \'pdf\',\r\n                    exportOptions: {\r\n                        colum" +
+                        "ns: \':visible\'\r\n                    }\r\n                },\r\n                {\r\n  " +
+                        "                  extend: \'copy\',\r\n                    exportOptions: {\r\n       " +
+                        "                 columns: \':visible\'\r\n                    }\r\n                },\r" +
+                        "\n                , \'pageLength\', \"colvis\"\r\n            ],\r\n            \"createdR" +
+                        "ow\": function (row, data, dataIndex) {\r\n                if (data.OnYil == \"True\"" +
+                        ") {\r\n                    $(row).addClass(\'on-yil\');\r\n                } else if (" +
+                        "data.BesYil == \"True\") {\r\n                    $(row).addClass(\'bes-yil\');\r\n     " +
+                        "           } \r\n\r\n            },//set row color\r\n        });\r\n    });\r\n</script>\r" +
+                        "\n\r\n<div class=\"col-xl\">\r\n    <div class=\"card shadow\">\r\n        "));
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl1;
             @__ctrl1 = this.@__BuildControlCardHeader();
             @__parser.AddParsedSubObject(@__ctrl1);

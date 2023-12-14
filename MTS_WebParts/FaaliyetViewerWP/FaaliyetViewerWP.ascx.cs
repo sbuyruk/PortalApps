@@ -548,21 +548,43 @@ namespace MTS_WebParts.FaaliyetViewerWP
             InitialDateQS = basTar.ToString("yyyy-MM-dd");
             if (randevuId > 0)
             {
-                Faaliyet randevu = new Faaliyet();
-                randevu = randevu.Select(randevuId);
-                if (randevu != null)
+                Faaliyet faaliyet = new Faaliyet();
+                faaliyet = faaliyet.Select(randevuId);
+                if (faaliyet != null)
                 {
-                    randevu.BaslangicTarihi = basTar;
-                    randevu.BaslangicSaati = basTar.ToString("HH:mm");
-                    randevu.BitisTarihi = bitTar;
-                    randevu.BitisSaati = bitTar.ToString("HH:mm");
-                    randevu.AcikTarih = ProjeConstants.FAALIYET_ACIKTARIHLI_DEGIL.ConvertToBool();
-                    if (randevu.Update())
+                    faaliyet.BaslangicTarihi = basTar;
+                    faaliyet.BaslangicSaati = basTar.ToString("HH:mm");
+                    faaliyet.BitisTarihi = bitTar;
+                    faaliyet.BitisSaati = bitTar.ToString("HH:mm");
+                    faaliyet.AcikTarih = ProjeConstants.FAALIYET_ACIKTARIHLI_DEGIL.ConvertToBool();
+                    if (faaliyet.Update())
                     {
+                        OzelKalemTakvimineIsle(faaliyet, ProjeConstants.KAYDET);
                         RedirectToPage(ProjeConstants.PAGE_FAALIYET_TAKVIM + "?CalendarView=" + CalendarViewQS + "&InitialDate=" + InitialDateQS);
                     }
 
                 }
+            }
+        }
+        private void OzelKalemTakvimineIsle(Faaliyet faaliyet, string islemTipi)
+        {
+            if (faaliyet != null)
+            {
+                string from = ProjeConstants.PARAM_MTSMAILADRESI;
+                string userto = ProjeConstants.PARAM_OZELKALEMMAILADRESI;
+                string baslik = faaliyet.FaaliyetKonusu;
+                string faaliyetYeriStr = faaliyet.FaaliyetYeriStr;
+
+                if (islemTipi.Equals(ProjeConstants.KAYDET))
+                {
+                    MailHelper.TakvimeEkle(faaliyet.UniqueId, from, userto, baslik, faaliyet.BaslangicTarihi, faaliyet.BitisTarihi, faaliyetYeriStr,
+                        faaliyet.Aciklama, ProjeConstants.PARAM_INTERNET_SMTP_IP_ADRESI);
+
+                }                
+            }
+            else
+            {
+                MessageHelper.PublishMessage("Özel kalem takvimine işlenmedi", ProjeConstants.MESAJ_BILGI, 2000);
             }
         }
         private void RedirectToPage(string pageUrl)

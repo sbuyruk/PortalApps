@@ -544,7 +544,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP
                 FaaliyetBaslangicZamaniCell.Text = faaliyet.BaslangicTarihi.ToString("dd.MM.yyyy HH:mm");
                 FaaliyetBitisZamaniCell.Text = faaliyet.BitisTarihi.ToString("dd.MM.yyyy HH:mm");
                 KatilimcilarCell.Text= GetDataList(faaliyetId);
-                string faaliyetYeriStr = FaaliyetYeriGetir(faaliyet.FaaliyetYeri);
+                string faaliyetYeriStr = faaliyet.FaaliyetYeriStr;
                 FaaliyetYeriCell.Text =faaliyetYeriStr;
                 FaaliyetAciklamaCell.Text = faaliyet.Aciklama;
                 FaaliyetTipiCell.Text = faaliyet.FaaliyetTipi;
@@ -556,13 +556,6 @@ namespace MTS_WebParts.FaaliyetROViewerWP
 
             }
             UtilityHelper.ScriptCalistir("OpenFaaliyetModal();");
-        }
-
-        private string FaaliyetYeriGetir(int faaliyetYeri)
-        {
-            FaaliyetYeri ry = new FaaliyetYeri();
-            ry = ry.Select<FaaliyetYeri>(faaliyetYeri);
-            return ry==null?string.Empty:ry.Adi;
         }
 
         private string GetDataList(int faaliyetId)

@@ -196,6 +196,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ToplantiViewerWP.ascx</DependentUpon>
     </Compile>
+    <Compile Include="YoneticiOzetiWP\YoneticiOzetiWP.ascx.cs">
+      <DependentUpon>YoneticiOzetiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="YoneticiOzetiWP\YoneticiOzetiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>YoneticiOzetiWP.ascx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -266,6 +274,10 @@
       <SharePointProjectItemId>{b027d8f1-e00b-49b9-89fe-d9ffd3ffac33}</SharePointProjectItemId>
     </None>
     <None Include="ToplantiViewerWP\ToplantiViewerWP.webpart" />
+    <None Include="YoneticiOzetiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{358828e8-118b-4de0-af1c-563197f6803f}</SharePointProjectItemId>
+    </None>
+    <None Include="YoneticiOzetiWP\YoneticiOzetiWP.webpart" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="DuyuruGirisiWP\DuyuruGirisiWP.ascx">
@@ -340,6 +352,11 @@
     <Content Include="ToplantiViewerWP\ToplantiViewerWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>ToplantiViewerWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="YoneticiOzetiWP\Elements.xml" />
+    <Content Include="YoneticiOzetiWP\YoneticiOzetiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>YoneticiOzetiWP.ascx.g.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup>

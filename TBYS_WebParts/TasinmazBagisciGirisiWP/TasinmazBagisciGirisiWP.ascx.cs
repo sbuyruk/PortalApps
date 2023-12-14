@@ -181,6 +181,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
                 TCKimlikNoTxt.Text = bagisci.TCKimlikNo.ToString();
                 Telefon1Txt.Text = bagisci.Telefon1;
                 Telefon2Txt.Text = bagisci.Telefon2;
+                EPostaTxt.Text = bagisci.EPosta;
                 AciklamaTxt.Text = bagisci.Aciklama;
                 GizliChk.Checked = bagisci.Gizli;
 
@@ -192,8 +193,6 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
 
                 string sv = "Bilinmiyor";
                 
-                Telefon2Txt.Text = bagisci.Telefon2;
-
                 ListItem ilItem = IliDDL.Items.FindByValue(IliDDL.Items.FindByText(bagisci.Ili).Value);
                 if (ilItem != null)
                     IliDDL.SelectedValue = ilItem.Value;
@@ -325,6 +324,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
             bagisci.TCKimlikNo = TCKimlikNoTxt.Text.ConvertToLong();
             bagisci.Telefon1 = Telefon1Txt.Text;
             bagisci.Telefon2 = Telefon2Txt.Text;
+            bagisci.EPosta = EPostaTxt.Text;
             bagisci.Ilcesi = IlcesiDDL.SelectedItem.ToString();
             ListItem ilItem = IliDDL.SelectedItem;
             Il il = new Il();
@@ -367,6 +367,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
             bagisci.TCKimlikNo = TCKimlikNoTxt.Text.ConvertToLong();
             bagisci.Telefon1 = Telefon1Txt.Text;
             bagisci.Telefon2 = Telefon2Txt.Text;
+            bagisci.EPosta = EPostaTxt.Text;
             bagisci.Ilcesi = IlcesiDDL.SelectedItem.ToString();
             ListItem ilItem = IliDDL.SelectedItem;
             Il il = new Il();

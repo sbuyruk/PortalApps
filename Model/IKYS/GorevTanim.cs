@@ -210,6 +210,7 @@ namespace Model.IKYS
                 LEFT JOIN Personel_Table B on B.Id=A.PersonelId
                 LEFT JOIN BirimTanim_Table C on C.Id=A.BirimId
                 WHERE A.Id>0
+                Order BY C.Sira,A.Id
              ");
             DataTable dataTable = null;
             try

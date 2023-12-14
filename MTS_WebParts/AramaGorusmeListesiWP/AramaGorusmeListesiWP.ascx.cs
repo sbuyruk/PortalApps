@@ -324,7 +324,10 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
                         Faaliyet faaliyet = new Faaliyet();
                         faaliyet = faaliyet.Select(randevuId);
                         if (faaliyet != null)
-                            aramaItem.Randevu = "<a target=_blank href=" + ProjeConstants.PAGE_FAALIYET_GIRIS + "?RandevuId=" + randevuId + " class='btn btn-outline-secondary'>Randevu</a>";
+                        {
+                            string acikTarihli = faaliyet.AcikTarih ? " (Açık)" : string.Empty;
+                            aramaItem.Randevu = "<a target=_blank href=" + ProjeConstants.PAGE_FAALIYET_GIRIS + "?RandevuId=" + randevuId + " class='btn btn-outline-secondary'>Randevu"+acikTarihli+"</a>";
+                        }
                         else
                             aramaItem.Randevu = string.Empty;
                     }

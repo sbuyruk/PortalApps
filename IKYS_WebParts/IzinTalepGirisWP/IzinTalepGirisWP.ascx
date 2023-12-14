@@ -168,10 +168,15 @@
                             <asp:Label CssClass="col-form-label" ID="IzinSuresiLbl" runat="server" Text=""></asp:Label>
                         </div>
                         <div class="form-group">
-                            <asp:Label CssClass="col-form-label" ID="KullanilanIzinLbl" runat="server" Text=""></asp:Label>
+                            <asp:Label CssClass="col-form-label " ID="KullanilanIzinLbl" runat="server" Text=""></asp:Label>
                         </div>
+                        <hr />
                         <div class="form-group">
-                            <asp:Label CssClass="col-form-label" ID="KalanIzinLbl" runat="server" Text=""></asp:Label>
+                            <asp:Label CssClass="col-form-label" ID="GecmisDonemlerdenKalanIznLbl" runat="server" Text=""></asp:Label>
+                        </div>
+                        <hr />
+                        <div class="form-group">
+                            <asp:Label CssClass="col-form-label font-weight-bold" ID="KalanIzinLbl" runat="server" Text=""></asp:Label>
                         </div>
                         <div class="form-group">
                             <asp:Label CssClass="col-form-label" ID="UyariLbl" runat="server" Text=""></asp:Label>
@@ -197,7 +202,7 @@
     </div>
     <asp:UpdatePanel ID="TableUpdatePanel" runat="server" UpdateMode="Conditional" ViewStateMode="Enabled">
         <ContentTemplate>
-            <div class="card">
+            <div class="card" Id="IzinTalepTableDiv" runat="server" style="display:none">
                 <div class="card-header">
                     <a style="font-weight: bold">Son İzin Talepleri</a>
                 </div>

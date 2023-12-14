@@ -20,7 +20,7 @@ namespace Model.MTS
         public string FaaliyetTipi { get; set; }
         public int FaaliyetAmaci { get; set; }
         public string FaaliyetKonusu { get; set; }
-        public int FaaliyetYeri { get; set; }        
+        public string FaaliyetYeriStr { get; set; }        
         public int FaaliyetDurumu { get; set; }
         public bool TumGun { get; set; }
         public bool AcikTarih { get; set; }
@@ -32,6 +32,7 @@ namespace Model.MTS
         public string BitisSaati { get; set; }
         public string Aciklama { get; set; }
         public string YoneticiNotu { get; set; }
+        public bool TakvimeIslendi { get; set; }
         public override bool Equals(object obj)
         {
             var other = obj as Faaliyet;
@@ -41,8 +42,8 @@ namespace Model.MTS
 
             if (FaaliyetTipi != other.FaaliyetTipi 
                 || FaaliyetAmaci != other.FaaliyetAmaci
-                || FaaliyetKonusu != other.FaaliyetKonusu
-                || FaaliyetYeri != other.FaaliyetYeri
+                || !FaaliyetKonusu.Equals(other.FaaliyetKonusu)
+                || !FaaliyetYeriStr.Equals(other.FaaliyetYeriStr)
                 || TumGun != other.TumGun
                 || AcikTarih != other.AcikTarih
                 || IcIrtibatId != other.IcIrtibatId
@@ -252,7 +253,7 @@ namespace Model.MTS
             string faaliyetIdStr = faaliyetId == ProjeConstants.HEPSI_INT ? "" : " AND A.FaaliyetId=" + faaliyetId;
             string monthBeforeStr = monthBefore == 0 ? string.Empty : string.Format("AND BaslangicTarihi > DateAdd(month, {0}, Convert(date, GetDate()))", monthBefore);
             string sqlString = string.Format(@"
-                SELECT A.KatilimciTipi,A.KatilimciId, A.Id KatilimId,G.Adi FaaliyetYeri,
+                SELECT A.KatilimciTipi,A.KatilimciId, A.Id KatilimId,
                     CASE
 	                    WHEN A.KatilimciTipi=1 THEN D.Adi
                         WHEN A.KatilimciTipi=2 THEN C.Adi
@@ -275,7 +276,7 @@ namespace Model.MTS
                     ELSE C.Kurumu
 	                END AS Kurumu,
 	                B.Id FaaliyetId, B.BaslangicTarihi,B.BaslangicSaati, B.BitisTarihi,B.BitisSaati,
-	                B.FaaliyetAmaci,B.FaaliyetDurumu,B.FaaliyetKonusu,B.FaaliyetTipi,B.FaaliyetYeri FaaliyetYeriId,B.TumGun,B.AcikTarih
+	                B.FaaliyetAmaci,B.FaaliyetDurumu,B.FaaliyetKonusu,B.FaaliyetTipi,B.FaaliyetYeriStr FaaliyetYeri, B.TumGun,B.AcikTarih
 	
                 FROM Faaliyet_Table B  
 	                LEFT JOIN FaaliyetKatilim_Table A ON A.FaaliyetId=B.Id 
@@ -283,7 +284,6 @@ namespace Model.MTS
 	                LEFT JOIN Personel_Table D ON D.Id = A.KatilimciId
                     LEFT JOIN NakitBagisci_Table E ON E.Id = A.KatilimciId
                     LEFT JOIN TasinmazBagisci_Table F ON F.Id = A.KatilimciId
-                    LEFT JOIN FaaliyetYeri_Table G ON G.Id=B.FaaliyetYeri 
                 WHERE B.Id IS NOT NULL
                 {0}
                 {1}
@@ -298,7 +298,7 @@ namespace Model.MTS
             string katilimciIdStr = katilimciId > 0 ? " AND A.FaaliyetId in (SELECT FaaliyetId FROM FaaliyetKatilim_Table WHERE KatilimciTipi=" + katilimciTipi + " AND KatilimciId=" + katilimciId + ")" : "";
             string faaliyetIdStr = faaliyetId > 0 ? " AND A.FaaliyetId=" + faaliyetId : "";
             string sqlString = string.Format(@"
-                SELECT A.KatilimciTipi,A.KatilimciId, A.Id KatilimId,G.Adi FaaliyetYeri,
+                SELECT A.KatilimciTipi,A.KatilimciId, A.Id KatilimId,
                     CASE
 	                    WHEN A.KatilimciTipi=1 THEN D.Adi
                         WHEN A.KatilimciTipi=2 THEN C.Adi
@@ -321,7 +321,7 @@ namespace Model.MTS
                     ELSE C.Kurumu
 	                END AS Kurumu,
 	                B.Id FaaliyetId, B.BaslangicTarihi,B.BaslangicSaati, B.BitisTarihi,B.BitisSaati,
-	                B.FaaliyetAmaci,B.FaaliyetDurumu,B.FaaliyetKonusu,B.FaaliyetTipi,B.FaaliyetYeri FaaliyetYeriId,B.TumGun,B.AcikTarih
+	                B.FaaliyetAmaci,B.FaaliyetDurumu,B.FaaliyetKonusu,B.FaaliyetTipi,B.FaaliyetYeriStr FaaliyetYeri,B.TumGun,B.AcikTarih
 	
                 FROM Faaliyet_Table B  
 	                LEFT JOIN FaaliyetKatilim_Table A ON A.FaaliyetId=B.Id {0}
@@ -329,7 +329,6 @@ namespace Model.MTS
 	                LEFT JOIN Personel_Table D ON D.Id = A.KatilimciId
                     LEFT JOIN NakitBagisci_Table E ON E.Id = A.KatilimciId
                     LEFT JOIN TasinmazBagisci_Table F ON F.Id = A.KatilimciId
-                    LEFT JOIN FaaliyetYeri_Table G ON G.Id=B.FaaliyetYeri 
                 WHERE A.FaaliyetId IS NOT NULL
                 {1}
                 ORDER BY B.BaslangicTarihi DESC, KatilimciTipi, Adi,Soyadi 
@@ -338,20 +337,6 @@ namespace Model.MTS
 
             return dataTable;
         }
-        public List<Faaliyet> SelectByFaaliyetYeriId(int parametreId)
-        {
-            string sqlString = string.Format(@"
-                SELECT *
-                FROM Faaliyet_Table 
-                WHERE FaaliyetYeri={0}
-                ",parametreId);
-
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<Faaliyet> list = ToList<Faaliyet>(dataTable);
-
-            return list;
-        }
-
         public void RenkBelirle(CalendarEvent item)
         {
 
@@ -479,7 +464,7 @@ namespace Model.MTS
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(FaaliyetTipi);
             hashCode = hashCode * -1521134295 + FaaliyetAmaci.GetHashCode();
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(FaaliyetKonusu);
-            hashCode = hashCode * -1521134295 + FaaliyetYeri.GetHashCode();
+            hashCode = hashCode * -1521134295 + FaaliyetYeriStr.GetHashCode();
             hashCode = hashCode * -1521134295 + FaaliyetDurumu.GetHashCode();
             hashCode = hashCode * -1521134295 + TumGun.GetHashCode();
             hashCode = hashCode * -1521134295 + AcikTarih.GetHashCode();
@@ -492,6 +477,19 @@ namespace Model.MTS
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(Aciklama);
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(YoneticiNotu);
             return hashCode;
+        }
+
+        public List<string> SelectAllDistinctFaaliyetYeri()
+        {
+            string sqlString = @"
+                SELECT DISTINCT(FaaliyetYeriStr) FaaliyetYeri FROM Faaliyet_Table
+            ";
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            List<string> list = dataTable.AsEnumerable()
+                           .Select(r => r.Field<string>("FaaliyetYeri"))
+                           .ToList();
+
+            return list;
         }
 
         public static bool operator ==(Faaliyet left, Faaliyet right)

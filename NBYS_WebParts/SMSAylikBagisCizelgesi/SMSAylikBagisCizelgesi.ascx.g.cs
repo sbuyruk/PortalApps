@@ -245,7 +245,7 @@ namespace NBYS_WebParts.SMSAylikBagisCizelgesi {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label col-2";
+            @__ctrl.CssClass = "col-form-label col-3";
             @__ctrl.Font.Bold = true;
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Yıl :"));

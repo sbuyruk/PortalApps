@@ -1,4 +1,5 @@
-﻿using Model.Ortak;
+﻿using DocumentFormat.OpenXml.Bibliography;
+using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -867,5 +868,32 @@ namespace Model.NBYS
             }
             return dataTable;
         }
+        public DataTable SelectSUMByTarih(DateTime bastar,DateTime bittar)
+        {
+            bastar = bastar.Date;
+            bittar= bittar.Date;
+            bastar = UtilityHelper.TariheSaatEkle(bastar, ProjeConstants.GUN_BASLAMA_SAATI.ToString());
+            bittar = UtilityHelper.TariheSaatEkle(bittar, ProjeConstants.GUN_BITIS_SAATI.ToString());
+            decimal toplam = 0;
+            string sqlString = string.Format(@"             
+                SELECT SUM(BagisMiktari + ISNULL(IadeMiktari,0)) ToplamBagisTutari, COUNT(Id) ToplamBagisciAdedi
+                FROM NakitBagisHareket_Table A
+                WHERE  IadeEdildiMi=0 AND BagisTarihi BETWEEN {0} AND {1}
+
+            ", bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat());
+            DataTable dataTable;
+            try
+            {
+                dataTable = dao.SelectFromDb(sqlString, "");
+                
+            }
+            catch (Exception e)
+            {
+                Exception ex = new Exception("sql=" + sqlString, e);
+                throw ex;
+            }
+            return dataTable;
+        }
     }
+    
 }

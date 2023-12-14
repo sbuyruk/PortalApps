@@ -216,8 +216,64 @@ namespace TBYS_WebParts.TasinmazKartiWP
 
             }
             TasinmazResimleriniDoldur(tasinmaz);
+            PDFGoster(tasinmaz.Id);
             KiraciBilgileriniDoldur(tasinmaz.Id);
             OnarimBilgileriniDoldur(tasinmaz.Id);
+        }
+        private void PDFGoster(int tasinmazId)
+        {
+            try
+            {
+                if (tasinmazId > 0)
+                {
+                    string emlakBeyaniDosyaAdi = ProjeConstants.DOSYA_EMLAKBEYAN_FORMU + tasinmazId + ".pdf";
+                    string emlakBeyaniDosyaUrl = UtilityHelper.TbysBelgelerURLGetir() + "/" + emlakBeyaniDosyaAdi;
+                    bool emlakBeyaniDosyaVarMi = UtilityHelper.DosyaVarMi(UtilityHelper.TbysBelgelerURLGetir(), ProjeConstants.TBYSBELGELERI_LIB, emlakBeyaniDosyaAdi);
+                    if (emlakBeyaniDosyaVarMi)
+                    {
+                        string belgePdfLink = @"'<a class=\'btn btn-secondary\' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + emlakBeyaniDosyaUrl + @"> Belge Görüntüle </a>'";
+
+                        EmlakBeyaniDosyaLnk.Target = "_blank";
+                        EmlakBeyaniDosyaLnk.HRef = emlakBeyaniDosyaUrl;
+
+                        EmlakBeyaniDosyaLnk.Visible = true;
+                    }
+                    else
+                    {
+                        EmlakBeyaniDosyaLnk.Visible = false;
+                        MessageHelper.PublishMessage("Lütfen Emlak Beyan Formunu pdf olarak yükleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                    }
+                    string yapiKayitDosyaAdi = ProjeConstants.DOSYA_YAPIKAYIT_BELGESI + tasinmazId + ".pdf";
+                    string yapiKayitDosyaUrl = UtilityHelper.TbysBelgelerURLGetir() + "/" + yapiKayitDosyaAdi;
+                    bool yapiKayitdosyaVarMi = UtilityHelper.DosyaVarMi(UtilityHelper.TbysBelgelerURLGetir(), ProjeConstants.TBYSBELGELERI_LIB, yapiKayitDosyaAdi);
+                    if (yapiKayitdosyaVarMi)
+                    {
+                        string belgePdfLink = @"'<a class=\'btn btn-secondary\' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + yapiKayitDosyaUrl + @"> Belge Görüntüle </a>'";
+
+                        YapiKayitDosyaLnk.Target = "_blank";
+                        YapiKayitDosyaLnk.HRef = yapiKayitDosyaUrl;
+
+                        YapiKayitDosyaLnk.Visible = true;
+                    }
+                    else
+                    {
+                        YapiKayitDosyaLnk.Visible = false;
+                        MessageHelper.PublishMessage("Lütfen Yapı Kayıt Belgesini pdf olarak yükleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                    }
+                }
+                else
+                {
+                    MessageHelper.PublishMessage("Bağışçı bulunamadı.", ProjeConstants.MESAJ_HATA);
+                }
+
+            }
+            catch (Exception exception)
+            {
+                Exception ex = new Exception("PDF Yüklenemedi");
+                ExceptionHelper exhelper = new ExceptionHelper(exception);
+                exhelper.Exceptions.Add(ex);
+                exhelper.PublishException();
+            }
         }
 
         protected void ExportToExcel()
@@ -665,6 +721,8 @@ namespace TBYS_WebParts.TasinmazKartiWP
             string imageFileName4 = (string.IsNullOrEmpty(tasinmaz.TahkikatFoto) ? ProjeConstants.PARAM_TASINMAZ_TAHKIKATFOTO : tasinmaz.TahkikatFoto) + ".jpg";
             string imageFileName5 = (string.IsNullOrEmpty(tasinmaz.KrokiFoto) ? ProjeConstants.PARAM_TASINMAZ_KROKIFOTO : tasinmaz.KrokiFoto) + ".jpg";
             string imageFileName6 = (string.IsNullOrEmpty(tasinmaz.TapuFoto) ? ProjeConstants.PARAM_TASINMAZ_TAPUFOTO : tasinmaz.TapuFoto) + ".jpg";
+            string imageFileName7 = (string.IsNullOrEmpty(tasinmaz.TasinmazFoto3) ? ProjeConstants.PARAM_TASINMAZ_TASINMAZFOTO3 : tasinmaz.TasinmazFoto3) + ".jpg";
+            string imageFileName8 = (string.IsNullOrEmpty(tasinmaz.TasinmazFoto4) ? ProjeConstants.PARAM_TASINMAZ_TASINMAZFOTO4 : tasinmaz.TasinmazFoto4) + ".jpg";
 
             string imgUrl1 = newUrl + imageFileName1;
             string imgUrl2 = newUrl + imageFileName2;
@@ -672,6 +730,8 @@ namespace TBYS_WebParts.TasinmazKartiWP
             string imgUrl4 = newUrl + imageFileName4;
             string imgUrl5 = newUrl + imageFileName5;
             string imgUrl6 = newUrl + imageFileName6;
+            string imgUrl7 = newUrl + imageFileName7;
+            string imgUrl8 = newUrl + imageFileName8;
 
             string aTag1 = ATagEkle(imgUrl1);
             string aTag2 = ATagEkle(imgUrl2);
@@ -679,6 +739,8 @@ namespace TBYS_WebParts.TasinmazKartiWP
             string aTag4 = ATagEkle(imgUrl4);
             string aTag5 = ATagEkle(imgUrl5);
             string aTag6 = ATagEkle(imgUrl6);
+            string aTag7 = ATagEkle(imgUrl7);
+            string aTag8 = ATagEkle(imgUrl8);
 
             r1c1.Text=aTag1;
             r1c2.Text=aTag2;
@@ -686,6 +748,8 @@ namespace TBYS_WebParts.TasinmazKartiWP
             r1c4.Text=aTag4;
             r2c1.Text=aTag5;
             r2c2.Text=aTag6;
+            r2c3.Text=aTag7;
+            r2c4.Text=aTag8;
 
            
             BorderEkle(row1);

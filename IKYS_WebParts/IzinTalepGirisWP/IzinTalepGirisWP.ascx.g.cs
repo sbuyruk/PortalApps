@@ -177,6 +177,10 @@ namespace IKYS_WebParts.IzinTalepGirisWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.Label GecmisDonemlerdenKalanIznLbl;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.Label KalanIzinLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -414,6 +418,10 @@ namespace IKYS_WebParts.IzinTalepGirisWP {
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.Table IzinTalepTable;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl IzinTalepTableDiv;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -1034,8 +1042,22 @@ namespace IKYS_WebParts.IzinTalepGirisWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.KullanilanIzinLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label";
+            @__ctrl.CssClass = "col-form-label ";
             @__ctrl.ID = "KullanilanIzinLbl";
+            @__ctrl.Text = "";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlGecmisDonemlerdenKalanIznLbl() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.GecmisDonemlerdenKalanIznLbl = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.CssClass = "col-form-label";
+            @__ctrl.ID = "GecmisDonemlerdenKalanIznLbl";
             @__ctrl.Text = "";
             return @__ctrl;
         }
@@ -1048,7 +1070,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.KalanIzinLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label";
+            @__ctrl.CssClass = "col-form-label font-weight-bold";
             @__ctrl.ID = "KalanIzinLbl";
             @__ctrl.Text = "";
             return @__ctrl;
@@ -1205,31 +1227,36 @@ namespace IKYS_WebParts.IzinTalepGirisWP {
             global::System.Web.UI.WebControls.Label @__ctrl17;
             @__ctrl17 = this.@__BuildControlKullanilanIzinLbl();
             @__parser.AddParsedSubObject(@__ctrl17);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"form-group\"" +
-                        ">\r\n                            "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <hr />\r\n               " +
+                        "         <div class=\"form-group\">\r\n                            "));
             global::System.Web.UI.WebControls.Label @__ctrl18;
-            @__ctrl18 = this.@__BuildControlKalanIzinLbl();
+            @__ctrl18 = this.@__BuildControlGecmisDonemlerdenKalanIznLbl();
             @__parser.AddParsedSubObject(@__ctrl18);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"form-group\"" +
-                        ">\r\n                            "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <hr />\r\n               " +
+                        "         <div class=\"form-group\">\r\n                            "));
             global::System.Web.UI.WebControls.Label @__ctrl19;
-            @__ctrl19 = this.@__BuildControlUyariLbl();
+            @__ctrl19 = this.@__BuildControlKalanIzinLbl();
             @__parser.AddParsedSubObject(@__ctrl19);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"form-group\"" +
                         ">\r\n                            "));
             global::System.Web.UI.WebControls.Label @__ctrl20;
-            @__ctrl20 = this.@__BuildControlKullanilmayanLbl();
+            @__ctrl20 = this.@__BuildControlUyariLbl();
             @__parser.AddParsedSubObject(@__ctrl20);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"form-group\"" +
+                        ">\r\n                            "));
+            global::System.Web.UI.WebControls.Label @__ctrl21;
+            @__ctrl21 = this.@__BuildControlKullanilmayanLbl();
+            @__parser.AddParsedSubObject(@__ctrl21);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n                </d" +
                         "iv>\r\n                \r\n                <div class=\"form-group\">\r\n               " +
                         "     "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl21;
-            @__ctrl21 = this.@__BuildControlMazereteMahsupDilekceBtn();
-            @__parser.AddParsedSubObject(@__ctrl21);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl22;
-            @__ctrl22 = this.@__BuildControlUcretliIzinDilekceBtn();
+            @__ctrl22 = this.@__BuildControlMazereteMahsupDilekceBtn();
             @__parser.AddParsedSubObject(@__ctrl22);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl23;
+            @__ctrl23 = this.@__BuildControlUcretliIzinDilekceBtn();
+            @__parser.AddParsedSubObject(@__ctrl23);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                </div>\r\n            "));
             return @__ctrl;
         }
@@ -2309,7 +2336,6 @@ namespace IKYS_WebParts.IzinTalepGirisWP {
             global::System.Web.UI.WebControls.Table @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Table();
             this.IzinTalepTable = @__ctrl;
-            @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "IzinTalepTable";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "table ");
@@ -2320,20 +2346,36 @@ namespace IKYS_WebParts.IzinTalepGirisWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control4(System.Web.UI.Control @__ctrl) {
+        private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControlIzinTalepTableDiv() {
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
+            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
+            this.IzinTalepTableDiv = @__ctrl;
+            @__ctrl.TemplateControl = this;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "card");
+            @__ctrl.ID = "IzinTalepTableDiv";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "display:none");
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-            <div class=""card"">
-                <div class=""card-header"">
-                    <a style=""font-weight: bold"">Son İzin Talepleri</a>
-                </div>
-                <div class=""card-body"" style=""overflow: auto; max-height: 400px;"">
-                    "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                <div class=\"card-header\">\r\n                    <a style=\"font-w" +
+                        "eight: bold\">Son İzin Talepleri</a>\r\n                </div>\r\n                <di" +
+                        "v class=\"card-body\" style=\"overflow: auto; max-height: 400px;\">\r\n               " +
+                        "     "));
             global::System.Web.UI.WebControls.Table @__ctrl1;
             @__ctrl1 = this.@__BuildControlIzinTalepTable();
             @__parser.AddParsedSubObject(@__ctrl1);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("</div><div class=\"card-footer\">\r\n                </div>\r\n            </div>\r\n    " +
-                        "    "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("</div><div class=\"card-footer\">\r\n                </div>\r\n            "));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private void @__BuildControl__control4(System.Web.UI.Control @__ctrl) {
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl1;
+            @__ctrl1 = this.@__BuildControlIzinTalepTableDiv();
+            @__parser.AddParsedSubObject(@__ctrl1);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n        "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]

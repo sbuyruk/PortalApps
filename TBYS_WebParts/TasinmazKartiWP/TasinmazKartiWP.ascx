@@ -61,7 +61,10 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    
+                    <a id="EmlakBeyaniDosyaLnk" runat="server" class="btn btn-outline-primary" data-fancybox data-type="pdf" data-width="960" data-height="720" href="#">Emlak Beyanı 
+                    </a>
+                    <a id="YapiKayitDosyaLnk" runat="server" class="btn btn-outline-primary" data-fancybox data-type="pdf" data-width="960" data-height="720" href="#">Yapı Kayıt Belgesi 
+                    </a>
                     <asp:LinkButton CssClass="btn btn-outline-success float-right" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
                     <asp:LinkButton CssClass="btn btn-outline-secondary float-right" ID="TasinmazListesiBtn" runat="server" Text="Taşınmaz Listesi" CausesValidation="false" OnClick="TasinmazListesiBtn_Click" />
                 </div>

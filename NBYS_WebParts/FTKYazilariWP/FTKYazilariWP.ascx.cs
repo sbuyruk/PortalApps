@@ -123,9 +123,9 @@ namespace NBYS_WebParts.FTKYazilariWP
             Parafe2Txt.Text = parafeTarihi + (string.IsNullOrEmpty(parafe2) ? " Vakıf Hiz.Grp.Bşk. Z. YAĞCI" : " " + parafe2);
 
             IrtibatNoktasiTxt.Text = string.IsNullOrEmpty(irtibat) ? "Dorukhan GÜNDÜR (Dâhili Tel:261)" : irtibat;
-            ImzalayanTxt.Text = string.IsNullOrEmpty(imza1) ? "SBilal TOPÇU" : imza1;
+            ImzalayanTxt.Text = string.IsNullOrEmpty(imza1) ? "Bilal TOPÇU" : imza1;
             ImzalayanUnvanTxt.Text = string.IsNullOrEmpty(imza2) ? string.Empty: imza2;
-            ImzalayanMakamTxt.Text = string.IsNullOrEmpty(imza3) ? "TSKGV Genel Müdürü" : imza3;
+            ImzalayanMakamTxt.Text = string.IsNullOrEmpty(imza3) ? string.Empty: imza3;
         }
 
         private void IlDDLDoldur()

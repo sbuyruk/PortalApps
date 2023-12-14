@@ -194,6 +194,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
         {
             try
             {
+                IzinTalepTableDiv.Attributes["style"] = "display:none";
                 if (!Page.IsPostBack)
                 {
                     if (string.IsNullOrEmpty(DestinationAppQS) || (!DestinationAppQS.Equals("TD")))
@@ -311,6 +312,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                 int siraNo = 1;
                 if (dataTable == null)
                 {
+                    IzinTalepTableDiv.Attributes["style"] = "display:block";
                     IzinTalepTable.Rows.Clear();
                     TableRow tr = new TableRow();
                     TableCell tc = new TableCell();
@@ -320,6 +322,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                 }
                 else
                 {
+                    IzinTalepTableDiv.Attributes["style"] = "display:block";
                     foreach (DataRow dataRow in dataTable.Rows)
                     {
                         if (siraNo > 5)
@@ -1411,9 +1414,9 @@ namespace IKYS_WebParts.IzinTalepGirisWP
 
                 if (izinTipi == ProjeConstants.IZINTIPI_MAZERET_INT)
                 {
-                    
+                    GecmisDonemlerdenKalanIznLbl.Text=string.Empty;
                     KullanilanIzinLbl.Text = izinDonemi.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + "-" + izinDonemi.BitisTarihi.ConvertToDatetimeEmptyIfNull()
-                        + " İzin döneminde, " + izinDonemi.IzinHakki.ConvertToTimeSpanReturnInHHmm() + " " + ProjeConstants.IZINTIPI_MAZERET + " izninizden kullandığınız izin süresi : "
+                        + " İzin döneminde, " + izinDonemi.IzinHakki.ConvertToTimeSpanReturnInHHmm() + " " + ProjeConstants.IZINTIPI_MAZERET + " izninizden kullandığınız izin süresi "
                         + izinDonemi.KullanilanIzin.ConvertToTimeSpanReturnInHHmm()
                         + System.Environment.NewLine;
                     TimeSpan kalanIzinTs = izinDonemi.KalanIzin.ConvertToTimeSpan();
@@ -1459,18 +1462,67 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                 }
                 else if (izinTipi == ProjeConstants.IZINTIPI_UCRETLI_INT)
                 {
-                    KullanilanIzinLbl.Text = izinDonemi.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + "-" + izinDonemi.BitisTarihi.ConvertToDatetimeEmptyIfNull()
+                    KullanilanIzinLbl.Text = izinDonemi.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + "-" + izinDonemi.BitisTarihi.ConvertToDatetimeEmptyIfNull() 
                         + " İzin döneminde, " + izinDonemi.IzinHakki.ConvertToInt() + " " + izinDonemi.Birim + " " + ProjeConstants.IZINTIPI_UCRETLI + " izninizden kullandığınız izin süresi : "
                         + izinDonemi.KullanilanIzin.ConvertToInt() + " " + izinDonemi.Birim + "dür. " + System.Environment.NewLine;
-                    int kalanIzinInt = izinDonemi.KalanIzin.ConvertToInt();
 
+                    int kalanIzinInt = izinDonemi.KalanIzin.ConvertToInt();
+                    int kalanIzinToplami = GecmisDonemlerdenKalanIzinToplamı(personel, izinDonemi);
+                    int gecmisDonemlerdenKalanIzin = kalanIzinToplami - kalanIzinInt;
+
+                    if (kalanIzinInt < 0)
+                    {
+                        if (gecmisDonemlerdenKalanIzin > 0)
+                        {
+                           
+                            
+                            if (gecmisDonemlerdenKalanIzin >= Math.Abs(kalanIzinInt))
+                            {
+                                KullanilanIzinLbl.Text = izinDonemi.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + "-" + izinDonemi.BitisTarihi.ConvertToDatetimeEmptyIfNull()
+                                   + " İzin dönemine ait izninizin tamamını kullandınız. İlave olarak geçmiş dönemleden kalan izin hakkınızdan karşılanan " + Math.Abs(kalanIzinInt) + " gün ile birlikte, bu izin döneminde kullandığınız izin toplamı "
+                                   + izinDonemi.KullanilanIzin.ConvertToInt() + " " + izinDonemi.Birim + "dür. " + System.Environment.NewLine;
+
+                                GecmisDonemlerdenKalanIznLbl.Text = " Geçmiş dönemlerden kalan <strong>" + gecmisDonemlerdenKalanIzin + "</strong> gün izninizin <strong>" + Math.Abs(kalanIzinInt) + "</strong> gününü kullandınız.";
+                            }
+                            else
+                            {
+                                KullanilanIzinLbl.Text = izinDonemi.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + "-" + izinDonemi.BitisTarihi.ConvertToDatetimeEmptyIfNull()
+                                   + " İzin dönemine ait izninizin tamamını kullandınız. İlave olarak geçmiş dönemleden kalan izin hakkınızdan karşılanan " + gecmisDonemlerdenKalanIzin + " gün ve fazladan kullandığınız "
+                                   + (Math.Abs(kalanIzinInt)- gecmisDonemlerdenKalanIzin) + "gün ile birlikte, bu izin döneminde kullandığınız izin toplamı "
+                                   + izinDonemi.KullanilanIzin.ConvertToInt() + " gündür. " + System.Environment.NewLine;
+                                
+                                GecmisDonemlerdenKalanIznLbl.Text = " Geçmiş dönemlerden kalan <strong>" + gecmisDonemlerdenKalanIzin + "</strong> gün izninizi kullandınız.";
+                            }
+                        }
+                        else
+                        {
+                            KullanilanIzinLbl.Text = izinDonemi.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + "-" + izinDonemi.BitisTarihi.ConvertToDatetimeEmptyIfNull()
+                                  + " İzin dönemine ait izninizin tamamını kullandınız. İlave olarak fazladan kullandığınız "
+                                  + Math.Abs(kalanIzinInt)  + "gün ile birlikte, bu izin döneminde kullandığınız izin toplamı "
+                                  + izinDonemi.KullanilanIzin.ConvertToInt() + " gündür. " + System.Environment.NewLine;
+                            
+                            GecmisDonemlerdenKalanIznLbl.Text = " Geçmiş Dönemlerden kalan kullanılmamış izniniz bulunmamaktadır.";
+                        } 
+                    }
+                    else
+                    {
+                        if (gecmisDonemlerdenKalanIzin > 0)
+                        {
+                            
+                                GecmisDonemlerdenKalanIznLbl.Text = " Geçmiş dönemlerden kalan <strong>" + gecmisDonemlerdenKalanIzin + "</strong> gün izniniz bulunmaktadır.";
+                         }
+                        else
+                            GecmisDonemlerdenKalanIznLbl.Text = " Geçmiş Dönemlerden kalan kullanılmamış izniniz bulunmamaktadır.";
+                    }
+                    
+                     
 
                     DateTime bitisTarihi = IzinBitTarTxt.Value.ConvertToDatetime();
                     string sureStr = IKYSOrtak.IzinSuresiHesapla(izinTipi, baslangicTarihi, bitisTarihi);
                     IzinSuresiLbl.Text = "Kullanmak istediğiniz izin süresi: " + sureStr + " "+ izinDonemi.Birim;
                     int sureInt = sureStr.ConvertToInt();
-                    int sonuctaKalanIzinInt = kalanIzinInt - sureInt;
-                    if (kalanIzinInt <= 0)
+                    int sonuctaKalanIzinInt = kalanIzinToplami - sureInt;
+                    if (kalanIzinToplami <= 0)
                     {
                         isValid = false;
                         SaveBtn.Visible = false;
@@ -1485,7 +1537,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                         //kalan izine göre yeni bitis tarihi girip kaydetsin
                         isValid = false;
                         SaveBtn.Visible = false;
-                        KalanIzinLbl.Text = " Kullanabileceğiniz, en fazla " + kalanIzinInt + " " + izinDonemi.Birim + " " + ProjeConstants.IZINTIPI_UCRETLI + " izniniz bulunmaktadır.";
+                        KalanIzinLbl.Text = " Kullanabileceğiniz, en fazla <strong>" + kalanIzinToplami + "</strong> " + izinDonemi.Birim + " " + ProjeConstants.IZINTIPI_UCRETLI + " izniniz bulunmaktadır.";
                         UyariLbl.Text = " Lütfen izin bitiş tarihini buna göre seçerek tekrar talebinizi gönderiniz.";
                         IzinBitTarTxt.Value = baslangicTarihi.AddDays(kalanIzinInt - 1).ConvertToDatetimeEmptyIfNull();
                     }
@@ -1493,7 +1545,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                     {
                         isValid = true;
                         SaveBtn.Visible = true;
-                        KalanIzinLbl.Text = " Kullanabileceğiniz, " + izinDonemi.KalanIzin.ConvertToInt() + " " + izinDonemi.Birim + " " + ProjeConstants.IZINTIPI_UCRETLI + " izniniz bulunmaktadır.";
+                        KalanIzinLbl.Text = " Kullanabileceğiniz toplam " + kalanIzinToplami + " " + izinDonemi.Birim + " " + ProjeConstants.IZINTIPI_UCRETLI + " izniniz bulunmaktadır.";
                     }
                 }
                 else// diğer izinler
@@ -1507,8 +1559,8 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                 if (isValid)
                 {
                     UyariLbl.Text = string.Empty;
-                    KalanIzinLbl.ForeColor = System.Drawing.Color.Black;
-                    KalanIzinLbl.Font.Bold = false;
+                    KalanIzinLbl.ForeColor = System.Drawing.Color.Green;
+                    KalanIzinLbl.Font.Bold = true;
                 }
                 else
                 {
@@ -1520,6 +1572,26 @@ namespace IKYS_WebParts.IzinTalepGirisWP
             #endregion
 
 
+        }
+
+        private int GecmisDonemlerdenKalanIzinToplamı(Personel personel,IzinDonem izinDonemi)
+        {
+           
+            IzinDonem izinDonemDao=new IzinDonem();
+            int izinHakkiToplami = 0;
+            int kullanilanIzinToplami = 0;
+            int kalanIzinToplami = 0;
+
+            DataTable dataTable = izinDonemDao.SelectSUMByPersonelId(personel.Id);
+            if (dataTable != null)
+            {
+                DataRow dataRow = dataTable.Rows[0];
+                izinHakkiToplami = dataRow ["IzinHakkiToplami"].ConvertToInt() - izinDonemi.IzinHakki.ConvertToInt();
+                kullanilanIzinToplami = dataRow ["KullanilanIzinToplami"].ConvertToInt() - izinDonemi.KullanilanIzin.ConvertToInt();
+                kalanIzinToplami = dataRow["KalanIzinToplami"].ConvertToInt();// - izinDonemi.KalanIzin.ConvertToInt();
+            }
+            
+            return kalanIzinToplami;
         }
 
         private bool ValidateInputs(int izinTipi)

@@ -2,12 +2,12 @@
 <webParts>
   <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
     <metaData>
-      <type name="MTS_WebParts.FaaliyetParametreWP.FaaliyetParametreWP, $SharePoint.Project.AssemblyFullName$" />
+      <type name="Portal_WebParts.YoneticiOzetiWP.YoneticiOzetiWP, $SharePoint.Project.AssemblyFullName$" />
       <importErrorMessage>$Resources:core,ImportErrorMessage;</importErrorMessage>
     </metaData>
     <data>
       <properties>
-        <property name="Title" type="string">MTS_WebParts - FaaliyetParametreWP</property>
+        <property name="Title" type="string">Portal_WebParts - YoneticiOzetiWP</property>
         <property name="Description" type="string">My Visual Web Part</property>
       </properties>
     </data>

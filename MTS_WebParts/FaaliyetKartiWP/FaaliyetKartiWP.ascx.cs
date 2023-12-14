@@ -280,10 +280,8 @@ namespace MTS_WebParts.FaaliyetKartiWP
                 r1c2.Text = "Faaliyet Tarihi : " + faaliyet.BaslangicTarihi.ToString("dd-MM-yyyy") + "-" + faaliyet.BitisTarihi.ToString("dd-MM-yyyy");
                 r1c3.Text = "Faaliyet Saati : " + faaliyet.BaslangicSaati + "-" + faaliyet.BitisSaati;
 
-                FaaliyetYeri faaliyetYeri = new FaaliyetYeri();
-                faaliyetYeri = faaliyetYeri.Select(faaliyet.FaaliyetYeri.ConvertToInt());
 
-                r2c1.Text = "Faaliyet Yeri : " + (faaliyetYeri == null ? "" : faaliyetYeri.Adi);
+                r2c1.Text = "Faaliyet Yeri : " + (faaliyet.FaaliyetYeriStr== null ? "" : faaliyet.FaaliyetYeriStr);
                 r2c2.Text = "Faaliyet Amacı : " + ParseFaaliyetAmaci(faaliyet.FaaliyetAmaci.ToString());
                 r2c3.Text = "Faaliyet Durumu : " + ParseFaaliyetDurumu(faaliyet.FaaliyetDurumu.ConvertToInt());
 

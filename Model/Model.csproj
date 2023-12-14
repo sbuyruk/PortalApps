@@ -83,7 +83,6 @@
     <Compile Include="MTS\AniObjesiTanim.cs" />
     <Compile Include="MTS\DepoStok.cs" />
     <Compile Include="MTS\DepoTanim.cs" />
-    <Compile Include="MTS\FaaliyetYeri.cs" />
     <Compile Include="MTS\MTSKurumGorev.cs" />
     <Compile Include="MTS\MTSUnvanTanim.cs" />
     <Compile Include="MTS\MTSGorevTanim.cs" />
@@ -91,7 +90,6 @@
     <Compile Include="MTS\KaynakTanim.cs" />
     <Compile Include="MTS\Faaliyet.cs" />
     <Compile Include="MTS\FaaliyetKatilim.cs" />
-    <Compile Include="MTS\FaaliyetParametre.cs" />
     <Compile Include="Ortak\Extentions.cs" />
     <Compile Include="Ortak\Olay.cs" />
     <Compile Include="Ortak\OlayKayit.cs" />

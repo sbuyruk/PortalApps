@@ -299,6 +299,43 @@
         CloseModals();
     }
 </script>
+<%--Faaliyet Yeri Autocomplete--%>
+<script>
+    var faaliyetYerleri = [
+        "ActionScript",
+        "AppleScript",
+        "Asp",
+        "BASIC",
+        "C",
+        "C++",
+        "Clojure",
+        "COBOL",
+        "ColdFusion",
+        "Erlang",
+        "Fortran",
+        "Groovy",
+        "Haskell",
+        "Java",
+        "JavaScript",
+        "Lisp",
+        "Perl",
+        "PHP",
+        "Python",
+        "Ruby",
+        "Scala",
+        "Scheme"
+    ];
+    $(function () {
+        
+        $("#FaaliyetYeriTxt").autocomplete({
+            source: faaliyetYerleri
+        });
+        
+    });
+    function setDataSet(myset) {
+        faaliyetYerleri = myset;
+    }
+</script>
 <div class="container ">
     <div class="card shadow">
         <div class="card-header">
@@ -335,7 +372,9 @@
                                             </div>
                                             <div class="form-group">
                                                 <asp:Label CssClass="col-form-label" runat="server" Text="Faaliyet Yeri"></asp:Label>
-                                                <asp:DropDownList ID="FaaliyetYeriDDL" CssClass="form-control" runat="server" Style="height: auto"></asp:DropDownList>
+                                                <div class="ui-widget">
+                                                    <asp:TextBox ID="FaaliyetYeriTxt" runat="server" ClientIDMode="Static" />
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="col">
@@ -387,7 +426,7 @@
                                         <div class="form-group col">
                                             <div class="checkbox pt-3">
                                                 <label>
-                                                    <asp:CheckBox ID="AcikTarihChk" runat="server" Checked="false" ToolTip="Tarihi sonradan belli olacak faaliyetlar için işaretleyiniz." />
+                                                    <asp:CheckBox ID="AcikTarihChk" runat="server" Checked="false" ToolTip="Tarihi sonradan belli olacak faaliyetlar için işaretleyiniz." OnCheckedChanged="AcikTarihChk_CheckedChanged" AutoPostBack="true" />
                                                     Açık Tarihli
                                                 </label>
                                             </div>
@@ -405,7 +444,7 @@
                                 <div class="col-4">
                                     <div class="checkbox pt-3">
                                         <label class="float-right">
-                                            <asp:CheckBox ID="OzelKalemTakvimiChk" runat="server" Checked="true" ToolTip="Özel Kalemin İnternet Takvimine girecek faaliyetlar için işaretleyiniz." />
+                                            <asp:CheckBox ID="OzelKalemTakvimiChk" runat="server" Checked="true" ToolTip="Özel Kalemin İnternet Takvimine girecek faaliyetlar için işaretleyiniz." OnCheckedChanged="OzelKalemTakvimiChk_CheckedChanged" AutoPostBack="True" />
                                             Özel Kalem Takvimine İşlensin
                                         </label>
                                     </div>

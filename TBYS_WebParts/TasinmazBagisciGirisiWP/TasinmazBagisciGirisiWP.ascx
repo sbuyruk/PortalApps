@@ -49,7 +49,12 @@
                                         <label class="col-form-label" for="AdiTxt">TC Kimlik No</label>
                                         <asp:TextBox ID="TCKimlikNoTxt" runat="server" class="form-control" type="text"></asp:TextBox>
                                     </div>
-
+                                    <div class="checkbox pt-3 text-danger">
+                                        <label>
+                                            <asp:CheckBox CssClass="" ID="GizliChk" runat="server" Checked="false" ToolTip="Bağışçı yaptığı bağışın gizli tutulmasını istiyor." />
+                                            Bağışım Gizli Kalsın
+                                        </label>
+                                    </div>
 
                                 </div>
                                 <div class="form-group col">
@@ -92,11 +97,9 @@
                                         <label class="col-form-label" for="Telefon2Txt">Telefon(2)</label>
                                         <asp:TextBox ID="Telefon2Txt" runat="server" CssClass="form-control" ToolTip="Bağışçının ikinci telefonu"></asp:TextBox>
                                     </div>
-                                    <div class="checkbox pt-3 text-danger">
-                                        <label>
-                                            <asp:CheckBox CssClass="" ID="GizliChk" runat="server" Checked="false" ToolTip="Bağışçı yaptığı bağışın gizli tutulmasını istiyor." />
-                                            Bağışım Gizli Kalsın
-                                        </label>
+                                    <div class="form-group ">
+                                        <label class="col-form-label" for="EPostaTxt">E-Posta</label>
+                                        <asp:TextBox ID="EPostaTxt" runat="server" CssClass="form-control" ToolTip="Bağışçının e-posta adresi"></asp:TextBox>
                                     </div>
                                 </div>
                                 <div class="form-group col" >

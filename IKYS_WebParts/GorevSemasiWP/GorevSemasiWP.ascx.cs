@@ -112,6 +112,10 @@ namespace IKYS_WebParts.GorevSemasiWP
             {
                 Personel birimAmiri = new Personel();
                 birimAmiri = birimAmiri.Select<Personel>(item.AmirId);
+                if (birimAmiri == null)
+                {
+                    birimAmiri=new Personel();
+                }
                 string amirKullaniciAdi = birimAmiri == null ? "" : birimAmiri.KullaniciAdi.ReturnEmptyIfNull().ToString();
                 string amirAdi = birimAmiri == null ? "" : birimAmiri.Adi.ReturnEmptyIfNull().ToString();
                 string amirSoyadi = birimAmiri == null ? "" : birimAmiri.Soyadi.ReturnEmptyIfNull().ToString();

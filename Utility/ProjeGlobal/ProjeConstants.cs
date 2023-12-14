@@ -22,7 +22,6 @@ namespace Utility.ProjeGlobal
         public const string MTS_KAYNAKTANIM = "Kaynak Tanım";
         public const string MTS_ANIOBJESI = "Anı Objesi";
         public const string MTS_FAALIYETKATILIM = "Faaliyet Katılım";
-        public const string MTS_FAALIYETPARAMETRE = "Faaliyet Parametre";
         public const string MTS_ANIOBJESISTOKLU = "Stoklu";
         public const string MTS_ANIOBJESISTOKSUZ = "Stoksuz";
         public const string MTS_KURUMGOREV = "MTS Kurum Görev";
@@ -119,6 +118,7 @@ namespace Utility.ProjeGlobal
         public const string RESIMLER_FTKKISI = "FtkKisiResimleri";
 
         public const string TBYSBELGELERI_LIB = "TBYSBelgeleri";
+        public const string TBYSBELGELERI_TEMP = "TBYSBelgeleriTemp";
         public const string NBYSBELGELERI_LIB = "NBYSBelgeleri";
 
         public const string PATH_TBYS_URL = "/YonetimBirimleri/InsaatVeEmlakYonetimiSubesi";
@@ -202,7 +202,7 @@ namespace Utility.ProjeGlobal
         public const char DELIMITER = ';';
 
         //Birimler
-        public const string BIRIM_INSAATEMLAK = "İnşaat ve Emlak Yönetim Şube Müdürlüğü";
+        public const string BIRIM_INSAATEMLAK = "İnşaat ve Emlak Yönetim Direktörlüğü";
         public const string BIRIM_HUKUK = "Hukuk Müşavirliği";
         public const string BIRIM_BOLGETEMSILCILIGI = "Bölge Temsilciliği";
 
@@ -836,7 +836,8 @@ namespace Utility.ProjeGlobal
         public static TimeSpan MESAI_BITIS_SAATI = new TimeSpan(0, 17, 0, 0);//Aksam 1700
         public static TimeSpan MAZERETIZNI_SAAT_ARALIGI = new TimeSpan(0, 5, 0);//new TimeSpan(0, 17, 0, 0);//Aksam 1700
 
-        public static TimeSpan GUN_BITIS_SAATI = new TimeSpan(0, 23, 59, 0);//Aksam 1700
+        public static TimeSpan GUN_BASLAMA_SAATI = new TimeSpan(0, 0, 0, 0);//gece 1200
+        public static TimeSpan GUN_BITIS_SAATI = new TimeSpan(0, 23, 59, 59);//gece 1200
         public static int MESAI_GUNLUKSURE_SAAT = 8;
         //izin tipleri
         /*
@@ -1042,7 +1043,7 @@ namespace Utility.ProjeGlobal
         public const string PARAM_TOPLANTI_MAILGRUBU = "ToplantiMailGrubu";//"ToplantiMailTestGrubu";//
         public const string PARAM_BILGISISTEM_MAILGRUBU = "BilgiSistemMailGrubu";
         public const string PARAM_IKRAM_MAILGRUBU = "IkramMailGrubu";
-        public const string PARAM_OZELKALEMMAILADRESI = "ozelkalem@tskgv.org.tr";
+        public const string PARAM_OZELKALEMMAILADRESI = "ozelkalem@tskgv.org.tr";//
         public const string PARAM_MTSMAILADRESI = "Makam Takip Sistemi <mts@tskgv.local>";
 
         #endregion

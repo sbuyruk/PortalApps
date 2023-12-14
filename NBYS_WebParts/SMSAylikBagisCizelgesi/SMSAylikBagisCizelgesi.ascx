@@ -40,7 +40,7 @@
                 </div>
                 <div class="card-body " id="MainCardDiv" runat="server">
                     <div class="form-group col-4 row">
-                        <asp:Label CssClass="col-form-label col-2" runat="server" Font-Bold="True">Yıl :</asp:Label>
+                        <asp:Label CssClass="col-form-label col-3" runat="server" Font-Bold="True">Yıl :</asp:Label>
                         <asp:DropDownList ID="YilDDL" runat="server" CssClass="form-control col-6" OnSelectedIndexChanged="YilDDL_SelectedIndexChanged" AutoPostBack="true" Height="34px"></asp:DropDownList>
                     </div>
                     <div id="SMSTableDiv" class="table" runat="server">

@@ -65,7 +65,6 @@
                             <div class="col-5">
                                 <div class="form-group ">
                                     <asp:Label CssClass="col-form-label" runat="server" for="MTSKurumTanimDDL">Kurum</asp:Label>
-                                    <%--<asp:DropDownList ID="MTSKurumTanimDDL" runat="server" CssClass="form-control " Style="height: auto"></asp:DropDownList>--%>
                                     <asp:TextBox ID="MTSKurumTanimTxt" CssClass="form-control" runat="server" Text="" ReadOnly></asp:TextBox>
                                 </div>
                                 <div class="form-group">
@@ -74,7 +73,6 @@
                                 </div>
                                 <div class="form-group">
                                     <asp:Label CssClass="col-form-label" runat="server" for="MTSGorevTanimDDL">Görev</asp:Label>
-                                    <%--<asp:DropDownList ID="MTSGorevTanimDDL" runat="server" CssClass="form-control " Style="height: auto"></asp:DropDownList>--%>
                                     <asp:TextBox ID="MTSGorevTanimTxt" CssClass="form-control" runat="server" Text="" ReadOnly></asp:TextBox>
                                 </div>
 

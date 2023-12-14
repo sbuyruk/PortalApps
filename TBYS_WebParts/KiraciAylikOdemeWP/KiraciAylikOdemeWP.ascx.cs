@@ -508,8 +508,8 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
                         string kiralamaAmaci = row["KiralamaAmaci"].ToString();
                         
                         string odemeTarihi = row["OdemeTarihi"].ConvertToDatetime().ToString("dd.MM.yyyy HH:mm");
-                        string odenenTutar = row["OdenenTutar"].ConvertToDecimal().ToString("N", cultureInfo);
-                        string kiraBedeli = row["KiraBedeli"].ConvertToDecimal().ToString("N", cultureInfo);
+                        string odenenTutar = row["OdenenTutar"].ConvertToDecimal().ToString("N", cultureInfo) + "TL";
+                        string kiraBedeli = row["KiraBedeli"].ConvertToDecimal().ToString("N", cultureInfo) +"TL";
                         string artisAyi = row["ArtisAyi"].ToString();
 
                         string sozBasTar = row["SozBasTar"].ConvertToDatetimeEmptyIfNull();
@@ -568,7 +568,8 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
             {
                 foreach (DataRow row in dataTable.Rows)
                 {
-                    adres = row["Adres"].ToString()+"</br>";
+                    string ilceIl = row["Ilcesi"].ToString() + " " + row["Ili"].ToString();
+                    adres = row["Adres"].ToString() + " " + ilceIl;
                 }
             }
             return adres;

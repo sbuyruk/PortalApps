@@ -1361,7 +1361,7 @@ namespace MTS_WebParts.KisiGirisiWP {
             global::System.Web.UI.WebControls.Label @__ctrl21;
             @__ctrl21 = this.@__BuildControl__control11();
             @__parser.AddParsedSubObject(@__ctrl21);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    \r\n                                    "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    "));
             global::System.Web.UI.WebControls.TextBox @__ctrl22;
             @__ctrl22 = this.@__BuildControlMTSKurumTanimTxt();
             @__parser.AddParsedSubObject(@__ctrl22);
@@ -1379,7 +1379,7 @@ namespace MTS_WebParts.KisiGirisiWP {
             global::System.Web.UI.WebControls.Label @__ctrl25;
             @__ctrl25 = this.@__BuildControl__control13();
             @__parser.AddParsedSubObject(@__ctrl25);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    \r\n                                    "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    "));
             global::System.Web.UI.WebControls.TextBox @__ctrl26;
             @__ctrl26 = this.@__BuildControlMTSGorevTanimTxt();
             @__parser.AddParsedSubObject(@__ctrl26);

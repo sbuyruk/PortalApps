@@ -124,7 +124,7 @@ namespace Portal_WebParts.GunlukNobetcilerMoveWP
                                     if (urs != null)
                                     {
                                         DataRow row = dt.NewRow();
-                                        row["Bolum"] = "Per. ve İd. İşl. Ş. Md.lüğü";
+                                        row["Bolum"] = "İns.Kay. ve İd. İşl. Ş. Md.lüğü";
                                         row["Isim"] = Convert.ToString(urs.LookupValue);
                                         row["KullaniciAdi"] = urs.LoginName.Split('\\')[1];
                                         row["PersonelResimleri"] = ProjeConstants.PATH_RESIMLER_PERSONEL;

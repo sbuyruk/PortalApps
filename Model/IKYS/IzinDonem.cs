@@ -200,6 +200,18 @@ namespace Model.IKYS
             List<IzinDonem> list = ToList<IzinDonem>(dataTable);
             return (list);
         }
+        public DataTable SelectSUMByPersonelId(int personelId)
+        {
+            string sqlString = string.Format(@"
+                SELECT SUM(CONVERT(INT,IzinHakki)) IzinHakkiToplami,SUM(CONVERT(INT,KullanilanIzin)) KullanilanIzinToplami,SUM(CONVERT(INT,KalanIzin)) KalanIzinToplami
+                FROM IzinDonem_Table
+                WHERE IzinTipi={0} AND PersonelId={1}
+                GROUP BY PersonelId
+            ", ProjeConstants.IZINTIPI_UCRETLI_INT,personelId);
+
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            return (dataTable);
+        }
         public string SelectByPersonelIdReturnJSon(int personelId, int izinTipi)
         {
             string sqlString = SelectByPersonelSQL(personelId, izinTipi);

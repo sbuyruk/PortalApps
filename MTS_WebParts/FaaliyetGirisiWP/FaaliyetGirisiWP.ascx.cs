@@ -1,9 +1,7 @@
-﻿using Microsoft.SharePoint.ApplicationPages.Calendar.Exchange;
-using Model.IKYS;
+﻿using Model.IKYS;
 using Model.MTS;
 using Model.NBYS;
 using Model.Ortak;
-using Model.Portal;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -11,6 +9,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Web.Script.Serialization;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -221,7 +220,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                     FaaliyetTipiDDLDoldur();
                     FaaliyetAmaciDDLDoldur();
                     FaaliyetDurumuDDLDoldur();
-                    FaaliyetYeriDDLDoldur();
+                    FaaliyetYeriDoldur();
                     BaslangicSaatiDDLDoldur();
                     BitisSaatiDDLDoldur();
                     Faaliyet faaliyet = new Faaliyet();
@@ -261,11 +260,13 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                 BitisTarihiTxt.Text = faaliyet.BitisTarihi.ConvertToDatetimeEmptyIfNull();
                 AciklamaTxt.Text = faaliyet.Aciklama;
                 YoneticiNotuTxt.Text = faaliyet.YoneticiNotu;
+                OzelKalemTakvimiChk.Checked= faaliyet.TakvimeIslendi;
 
                 UtilityHelper.SetDDLValue(FaaliyetTipiDDL, faaliyet.FaaliyetTipi);
                 UtilityHelper.SetDDLValue(FaaliyetAmaciDDL, faaliyet.FaaliyetAmaci.ToString());
                 UtilityHelper.SetDDLValue(FaaliyetDurumuDDL, faaliyet.FaaliyetDurumu.ToString());
-                UtilityHelper.SetDDLValue(FaaliyetYeriDDL, faaliyet.FaaliyetYeri.ToString());
+                //UtilityHelper.SetDDLValue(FaaliyetYeriDDL, faaliyet.FaaliyetYeri.ToString());
+                FaaliyetYeriTxt.Text = faaliyet.FaaliyetYeriStr;
                 UtilityHelper.SetDDLValue(BasSaatDDL, faaliyet.BaslangicSaati);
                 UtilityHelper.SetDDLValue(BitSaatDDL, faaliyet.BitisSaati);
 
@@ -342,7 +343,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         {
             BasSaatDDL.Items.Clear();
             TimeSpan bastarTS = new TimeSpan(6, 0, 0);
-            TimeSpan aralikTS = new TimeSpan(0, 15, 0);
+            TimeSpan aralikTS = new TimeSpan(0, 5, 0);
             TimeSpan bittarTS = new TimeSpan(21, 0, 0);
 
             TimeSpan nextTS = bastarTS;
@@ -370,7 +371,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                 basSaatStr = "08:00";
             }
             TimeSpan bastarTS = basSaatStr.ConvertToTimeSpan();
-            TimeSpan aralikTS = new TimeSpan(0, 15, 0);
+            TimeSpan aralikTS = new TimeSpan(0, 5, 0);
             TimeSpan bittarTS = new TimeSpan(21, 0, 0);
 
             TimeSpan nextTS = bastarTS;
@@ -400,7 +401,8 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                 faaliyet.FaaliyetTipi = FaaliyetTipiDDL.SelectedItem.Text;
                 faaliyet.FaaliyetAmaci = FaaliyetAmaciDDL.SelectedItem.Value.ConvertToInt();
                 faaliyet.FaaliyetKonusu = FaaliyetKonusuTxt.Text;
-                faaliyet.FaaliyetYeri = FaaliyetYeriDDL.SelectedItem.Value.ConvertToInt();
+                //faaliyet.FaaliyetYeri = FaaliyetYeriDDL.SelectedItem.Value.ConvertToInt();
+                faaliyet.FaaliyetYeriStr = FaaliyetYeriTxt.Text;
                 faaliyet.FaaliyetDurumu = FaaliyetDurumuDDL.SelectedItem.Value.ConvertToInt();
                 faaliyet.TumGun = TumGunChk.Checked.ConvertToBool();
                 faaliyet.AcikTarih = AcikTarihChk.Checked.ConvertToBool();
@@ -414,6 +416,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                 faaliyet.BitisSaati = bitsaat;
                 faaliyet.Aciklama = AciklamaTxt.Text;
                 faaliyet.YoneticiNotu = YoneticiNotuTxt.Text;
+                faaliyet.TakvimeIslendi = OzelKalemTakvimiChk.Checked;
                 faaliyet.IcIrtibatId = IcIrtibatIdQS.ConvertToInt();
                 faaliyet.DisIrtibatId = DisIrtibatIdQS.ConvertToInt();
                 faaliyet.Olusturan = UtilityHelper.GetCurrentUserName();
@@ -461,15 +464,25 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                 string from = ProjeConstants.PARAM_MTSMAILADRESI;
                 string userto = ProjeConstants.PARAM_OZELKALEMMAILADRESI;
                 string baslik = faaliyet.FaaliyetKonusu;
-                FaaliyetYeri faaliyetYeri = new FaaliyetYeri();
-                faaliyetYeri = faaliyetYeri.Select(faaliyet.FaaliyetYeri);
-                string faaliyetYeriStr = faaliyetYeri != null ? faaliyetYeri.Adi : string.Empty;
+                string faaliyetYeriStr = faaliyet.FaaliyetYeriStr;
 
-                if (islemTipi.Equals(ProjeConstants.KAYDET) || islemTipi.Equals(ProjeConstants.GUNCELLE))
+                if (islemTipi.Equals(ProjeConstants.KAYDET))
                 {
                     MailHelper.TakvimeEkle(faaliyet.UniqueId, from, userto, baslik, faaliyet.BaslangicTarihi, faaliyet.BitisTarihi, faaliyetYeriStr,
                         faaliyet.Aciklama, ProjeConstants.PARAM_INTERNET_SMTP_IP_ADRESI);
 
+                }else if (islemTipi.Equals(ProjeConstants.GUNCELLE))
+                {
+                    if (AcikTarihChk.Checked)
+                    {
+                        MailHelper.TakvimdenSil(faaliyet.UniqueId, from, userto, " -Açık Tarihe Alındı- " + baslik, faaliyet.BaslangicTarihi, faaliyet.BitisTarihi, faaliyetYeriStr,
+                            faaliyet.Aciklama, ProjeConstants.PARAM_INTERNET_SMTP_IP_ADRESI);
+                    }
+                    else
+                    {
+                        MailHelper.TakvimeEkle(faaliyet.UniqueId, from, userto, baslik, faaliyet.BaslangicTarihi, faaliyet.BitisTarihi, faaliyetYeriStr,
+                            faaliyet.Aciklama, ProjeConstants.PARAM_INTERNET_SMTP_IP_ADRESI);
+                    }
                 }else if (islemTipi.Equals(ProjeConstants.SIL))
                 {
                     MailHelper.TakvimdenSil(faaliyet.UniqueId, from, userto, baslik, faaliyet.BaslangicTarihi, faaliyet.BitisTarihi, faaliyetYeriStr, 
@@ -502,7 +515,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                     faaliyet.FaaliyetTipi = FaaliyetTipiDDL.SelectedItem.Text;
                     faaliyet.FaaliyetAmaci = FaaliyetAmaciDDL.SelectedItem.Value.ConvertToInt();
                     faaliyet.FaaliyetKonusu = FaaliyetKonusuTxt.Text;
-                    faaliyet.FaaliyetYeri = FaaliyetYeriDDL.SelectedItem.Value.ConvertToInt();
+                    faaliyet.FaaliyetYeriStr = FaaliyetYeriTxt.Text;
                     faaliyet.FaaliyetDurumu = FaaliyetDurumuDDL.SelectedItem.Value.ConvertToInt();
                     faaliyet.TumGun = TumGunChk.Checked.ConvertToBool();
                     faaliyet.AcikTarih = AcikTarihChk.Checked.ConvertToBool();
@@ -516,6 +529,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                     faaliyet.BitisSaati = bitsaat;
                     faaliyet.Aciklama = AciklamaTxt.Text;
                     faaliyet.YoneticiNotu = YoneticiNotuTxt.Text;
+                    faaliyet.TakvimeIslendi = OzelKalemTakvimiChk.Checked;
                     faaliyet.IcIrtibatId = IcIrtibatIdQS.ConvertToInt();
                     faaliyet.DisIrtibatId = DisIrtibatIdQS.ConvertToInt();
                     faaliyet.Degistiren = UtilityHelper.GetCurrentUserName();
@@ -880,16 +894,19 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             FaaliyetDurumuDDL.Items.Add(li2);
             FaaliyetDurumuDDL.Items.Add(li3);
         }
-        private void FaaliyetYeriDDLDoldur()
+       
+        private void FaaliyetYeriDoldur()
         {
-            FaaliyetYeriDDL.Items.Clear();
-            FaaliyetYeri faaliyetYeri = new FaaliyetYeri();
-            List<FaaliyetYeri> list = faaliyetYeri.SelectAll<FaaliyetYeri>();
-            foreach (var item in list)
-            {
-                ListItem li = new ListItem(item.Adi, item.Id.ToString());
-                FaaliyetYeriDDL.Items.Add(li);
-            }
+            Faaliyet faaliyetDdo = new Faaliyet();
+            List<string> list = faaliyetDdo.SelectAllDistinctFaaliyetYeri();
+
+            var fyerleristr = "\"" + string.Join("\", \"", list) + "\"";
+            StringBuilder fyerleri = new StringBuilder();
+            fyerleri.Append("[");
+            fyerleri.Append(fyerleristr);
+
+            fyerleri.Append("]");
+            UtilityHelper.ScriptCalistir("setDataSet(" + fyerleri + ");");
         }
         private void StokluAniObjesiDDLDoldur()
         {
@@ -2205,24 +2222,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         private void AddRefreshLink(int faaliyetId, HtmlGenericControl divName, string message, TempFaaliyet tempFaaliyetSonHali)
         {
             HyperLink refreshLink = HyperLinkGetir(faaliyetId, message);
-            //+ " TempFaaliyetQS.Id=" + TempFaaliyetQS.Id+" FaaliyetIdQS="+FaaliyetIdQS
-            //+ " TempFaaliyetQS.Id=" + TempFaaliyetQS.Id+ " =? " +tempFaaliyetSonHali.Id
-            //+ " TempFaaliyetQS.IcIrtibatId=" + TempFaaliyetQS.IcIrtibatId+ " =? " +tempFaaliyetSonHali.IcIrtibatId
-            //+ " TempFaaliyetQS.DisIrtibatId=" + TempFaaliyetQS.DisIrtibatId+ " =? " +tempFaaliyetSonHali.DisIrtibatId
-            //+ " TempFaaliyetQS.FaaliyetYeri=" + TempFaaliyetQS.FaaliyetYeri+ " =? " +tempFaaliyetSonHali.FaaliyetYeri
-            //+ " TempFaaliyetQS.Aciklama=" + TempFaaliyetQS.Aciklama+ " =? " +tempFaaliyetSonHali.Aciklama
-            //+ " TempFaaliyetQS.AcikTarih=" + TempFaaliyetQS.AcikTarih+ " =? " +tempFaaliyetSonHali.AcikTarih
-            //+ " TempFaaliyetQS.BaslangicSaati=" + TempFaaliyetQS.BaslangicSaati+ " =? " +tempFaaliyetSonHali.BaslangicSaati
-            //+ " TempFaaliyetQS.BaslangicTarihi=" + TempFaaliyetQS.BaslangicTarihi+ " =? " +tempFaaliyetSonHali.BaslangicTarihi
-            //+ " TempFaaliyetQS.BitisSaati=" + TempFaaliyetQS.BitisSaati+ " =? " +tempFaaliyetSonHali.BitisSaati
-            //+ " TempFaaliyetQS.BitisTarihi=" + TempFaaliyetQS.BitisTarihi+ " =? " +tempFaaliyetSonHali.BitisTarihi
-            //+ " TempFaaliyetQS.FaaliyetAmaci=" + TempFaaliyetQS.FaaliyetAmaci+ " =? " +tempFaaliyetSonHali.FaaliyetAmaci
-            //+ " TempFaaliyetQS.FaaliyetDurumu=" + TempFaaliyetQS.FaaliyetDurumu+ " =? " +tempFaaliyetSonHali.FaaliyetDurumu
-            //+ " TempFaaliyetQS.FaaliyetKonusu=" + TempFaaliyetQS.FaaliyetKonusu+ " =? " +tempFaaliyetSonHali.FaaliyetKonusu
-            //+ " TempFaaliyetQS.FaaliyetTipi=" + TempFaaliyetQS.FaaliyetTipi+ " =? " +tempFaaliyetSonHali.FaaliyetTipi
-            //+ " TempFaaliyetQS.FaaliyetYeri=" + TempFaaliyetQS.FaaliyetYeri+ " =? " +tempFaaliyetSonHali.FaaliyetYeri
-            //+ " TempFaaliyetQS.TumGun=" + TempFaaliyetQS.TumGun + " =? " +tempFaaliyetSonHali.TumGun
-            //+ " TempFaaliyetQS.FaaliyetTipi=" + TempFaaliyetQS.FaaliyetTipi + tempFaaliyetSonHali.FaaliyetTipi);
+           
             divName.Controls.Add(refreshLink);
 
         }
@@ -2235,7 +2235,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             BasSaatDDL.Enabled = false;
             BitisTarihiTxt.Enabled = false;
             BitSaatDDL.Enabled = false;
-            FaaliyetYeriDDL.Enabled = false;
+            FaaliyetYeriTxt.Enabled = false;
             FaaliyetDurumuDDL.Enabled = false;
             FaaliyetKonusuTxt.Enabled = false;
             TumGunChk.Enabled = false;
@@ -2293,7 +2293,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                 FaaliyetTipi = faaliyet.FaaliyetTipi;
                 FaaliyetAmaci = faaliyet.FaaliyetAmaci;
                 FaaliyetKonusu = faaliyet.FaaliyetKonusu;
-                FaaliyetYeri = faaliyet.FaaliyetYeri;
+                FaaliyetYeriStr = faaliyet.FaaliyetYeriStr;
                 FaaliyetDurumu = faaliyet.FaaliyetDurumu;
                 TumGun = faaliyet.TumGun;
                 AcikTarih = faaliyet.AcikTarih;
@@ -2305,13 +2305,14 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                 BitisSaati = faaliyet.BitisSaati;
                 Aciklama = faaliyet.Aciklama;
                 YoneticiNotu = faaliyet.YoneticiNotu;
+                TakvimeIslendi = faaliyet.TakvimeIslendi;
             }
 
             public int Id { get; set; }
             public string FaaliyetTipi { get; set; }
             public int FaaliyetAmaci { get; set; }
             public string FaaliyetKonusu { get; set; }
-            public int FaaliyetYeri { get; set; }
+            public string FaaliyetYeriStr { get; set; }
             public int FaaliyetDurumu { get; set; }
             public bool TumGun { get; set; }
             public bool AcikTarih { get; set; }
@@ -2323,6 +2324,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             public string BitisSaati { get; set; }
             public string Aciklama { get; set; }
             public string YoneticiNotu { get; set; }
+            public bool TakvimeIslendi{ get; set; }
             public override bool Equals(object obj)
             {
                 var other = obj as Faaliyet;
@@ -2333,7 +2335,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                 if (FaaliyetTipi != other.FaaliyetTipi
                     || FaaliyetAmaci != other.FaaliyetAmaci
                     || FaaliyetKonusu != other.FaaliyetKonusu
-                    || FaaliyetYeri != other.FaaliyetYeri
+                    || !FaaliyetYeriStr.Equals(other.FaaliyetYeriStr)
                     || TumGun != other.TumGun
                     || AcikTarih != other.AcikTarih
                     || IcIrtibatId != other.IcIrtibatId
@@ -2355,7 +2357,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                        FaaliyetTipi == other.FaaliyetTipi &&
                        FaaliyetAmaci == other.FaaliyetAmaci &&
                        FaaliyetKonusu == other.FaaliyetKonusu &&
-                       FaaliyetYeri == other.FaaliyetYeri &&
+                       FaaliyetYeriStr == other.FaaliyetYeriStr &&
                        FaaliyetDurumu == other.FaaliyetDurumu &&
                        TumGun == other.TumGun &&
                        AcikTarih == other.AcikTarih &&
@@ -2374,7 +2376,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                 hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(FaaliyetTipi);
                 hashCode = hashCode * -1521134295 + FaaliyetAmaci.GetHashCode();
                 hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(FaaliyetKonusu);
-                hashCode = hashCode * -1521134295 + FaaliyetYeri.GetHashCode();
+                hashCode = hashCode * -1521134295 + FaaliyetYeriStr.GetHashCode();
                 hashCode = hashCode * -1521134295 + FaaliyetDurumu.GetHashCode();
                 hashCode = hashCode * -1521134295 + TumGun.GetHashCode();
                 hashCode = hashCode * -1521134295 + AcikTarih.GetHashCode();
@@ -2399,5 +2401,26 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             }
         }
         #endregion
+
+        protected void AcikTarihChk_CheckedChanged(object sender, EventArgs e)
+        {
+            AcikTarihliKontrolu();
+        }
+
+        private void AcikTarihliKontrolu()
+        {
+            Faaliyet faaliyet = new Faaliyet();
+            faaliyet = faaliyet.Select(FaaliyetIdQS.ConvertToInt());
+            if (faaliyet==null && AcikTarihChk.Checked)
+            {
+                OzelKalemTakvimiChk.Checked = false;
+                MessageHelper.PublishMessage("Açık Tarihli faaliyet olduğundan Özel Kalem takvimine gönderilmeyecek", ProjeConstants.MESAJ_BILGI,2000);
+            }
+        }
+
+        protected void OzelKalemTakvimiChk_CheckedChanged(object sender, EventArgs e)
+        {
+            AcikTarihliKontrolu();
+        }
     }
 }

@@ -421,8 +421,8 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
             {
                 // Dosya adları 
                 string zaman = DateTime.Now.ToString("dd-MM-yyyy-HH-mm");
-                string yaziDosyaAdi = "Kira-Artis-" + SecilenBolgeQS + "-(" + zaman + ").docx";
-                string etiketDosyaAdi = "Adres-EtiketiKA-" + SecilenBolgeQS + "-(" + zaman + ").docx";
+                string yaziDosyaAdi = ("Kira-Artis-" + SecilenBolgeQS + "-(" + zaman + ").docx").Replace(" ","");
+                string etiketDosyaAdi = ("Adres-EtiketiKA-" + SecilenBolgeQS + "-(" + zaman + ").docx").Replace(" ", "");
                 bool isYaziOlusturuldu = YeniYaziOlustur(yaziDosyaAdi);
                 if (isYaziOlusturuldu)
                 {

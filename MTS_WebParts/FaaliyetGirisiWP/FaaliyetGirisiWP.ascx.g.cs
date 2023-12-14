@@ -77,7 +77,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.DropDownList FaaliyetYeriDDL;
+        protected global::System.Web.UI.WebControls.TextBox FaaliyetYeriTxt;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -606,15 +606,14 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.DropDownList @__BuildControlFaaliyetYeriDDL() {
-            global::System.Web.UI.WebControls.DropDownList @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.DropDownList();
-            this.FaaliyetYeriDDL = @__ctrl;
+        private global::System.Web.UI.WebControls.TextBox @__BuildControlFaaliyetYeriTxt() {
+            global::System.Web.UI.WebControls.TextBox @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.TextBox();
+            this.FaaliyetYeriTxt = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "FaaliyetYeriDDL";
-            @__ctrl.CssClass = "form-control";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: auto");
+            @__ctrl.ID = "FaaliyetYeriTxt";
+            @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
             return @__ctrl;
         }
         
@@ -889,6 +888,9 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             @__ctrl.ID = "AcikTarihChk";
             @__ctrl.Checked = false;
             @__ctrl.ToolTip = "Tarihi sonradan belli olacak faaliyetlar için işaretleyiniz.";
+            @__ctrl.AutoPostBack = true;
+            @__ctrl.CheckedChanged -= new System.EventHandler(this.AcikTarihChk_CheckedChanged);
+            @__ctrl.CheckedChanged += new System.EventHandler(this.AcikTarihChk_CheckedChanged);
             return @__ctrl;
         }
         
@@ -946,6 +948,9 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             @__ctrl.ID = "OzelKalemTakvimiChk";
             @__ctrl.Checked = true;
             @__ctrl.ToolTip = "Özel Kalemin İnternet Takvimine girecek faaliyetlar için işaretleyiniz.";
+            @__ctrl.AutoPostBack = true;
+            @__ctrl.CheckedChanged -= new System.EventHandler(this.OzelKalemTakvimiChk_CheckedChanged);
+            @__ctrl.CheckedChanged += new System.EventHandler(this.OzelKalemTakvimiChk_CheckedChanged);
             return @__ctrl;
         }
         
@@ -1038,11 +1043,13 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             global::System.Web.UI.WebControls.Label @__ctrl4;
             @__ctrl4 = this.@__BuildControl__control6();
             @__parser.AddParsedSubObject(@__ctrl4);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                                "));
-            global::System.Web.UI.WebControls.DropDownList @__ctrl5;
-            @__ctrl5 = this.@__BuildControlFaaliyetYeriDDL();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                                <div class=\"ui-widget\">\r\n      " +
+                        "                                              "));
+            global::System.Web.UI.WebControls.TextBox @__ctrl5;
+            @__ctrl5 = this.@__BuildControlFaaliyetYeriTxt();
             @__parser.AddParsedSubObject(@__ctrl5);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                                                </div>
                                             </div>
                                         </div>
                                         <div class=""col"">
@@ -3393,8 +3400,51 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
                     "        document.getElementById(\'");
                          @__w.Write( StokluAniObjesiIadeEtBtn.ClientID);
 
-            @__w.Write("\').click();\r\n        CloseModals();\r\n    }\r\n</script>\r\n<div class=\"container \">\r\n" +
-                    "    <div class=\"card shadow\">\r\n        <div class=\"card-header\">\r\n            ");
+            @__w.Write(@"').click();
+        CloseModals();
+    }
+</script>
+
+<script>
+    var faaliyetYerleri = [
+        ""ActionScript"",
+        ""AppleScript"",
+        ""Asp"",
+        ""BASIC"",
+        ""C"",
+        ""C++"",
+        ""Clojure"",
+        ""COBOL"",
+        ""ColdFusion"",
+        ""Erlang"",
+        ""Fortran"",
+        ""Groovy"",
+        ""Haskell"",
+        ""Java"",
+        ""JavaScript"",
+        ""Lisp"",
+        ""Perl"",
+        ""PHP"",
+        ""Python"",
+        ""Ruby"",
+        ""Scala"",
+        ""Scheme""
+    ];
+    $(function () {
+        
+        $(""#FaaliyetYeriTxt"").autocomplete({
+            source: faaliyetYerleri
+        });
+        
+    });
+    function setDataSet(myset) {
+        faaliyetYerleri = myset;
+    }
+</script>
+<div class=""container "">
+    <div class=""card shadow"">
+        <div class=""card-header"">
+            ");
             parameterContainer.Controls[0].RenderControl(@__w);
             @__w.Write("\r\n            <h3 class=\"mb-2\">\r\n\r\n                ");
             parameterContainer.Controls[1].RenderControl(@__w);

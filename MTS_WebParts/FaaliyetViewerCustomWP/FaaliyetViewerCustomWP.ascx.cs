@@ -99,7 +99,7 @@ namespace MTS_WebParts.FaaliyetViewerCustomWP
                         Durumu = item.FaaliyetDurumu,
                         Id = item.Id,
                         Konusu = item.FaaliyetKonusu,
-                        Yeri = item.FaaliyetYeri,
+                        Yeri = item.FaaliyetYeriStr,
                         Tipi = item.FaaliyetTipi,
                     };
                     gunlukFaaliyetListesi.Add(gunlukFaaliyet);
@@ -115,7 +115,7 @@ namespace MTS_WebParts.FaaliyetViewerCustomWP
                         BitisTarihi = item.BitisTarihi,
                         Id = item.Id,
                         Konusu = item.ToplantiKonusu,
-                        Yeri = item.ToplantiYeri,
+                        Yeri = item.ToplantiYeri.ToString(),
                     };
                     gunlukFaaliyetListesi.Add(gunlukFaaliyet);
                 }
@@ -349,7 +349,7 @@ namespace MTS_WebParts.FaaliyetViewerCustomWP
         {
             public int Id { get; set; }
             public string Tipi { get; set; }
-            public int Yeri { get; set; }
+            public string Yeri { get; set; }
             public string Konusu { get; set; }
             public int Amaci { get; set; }
             public int Durumu { get; set; }

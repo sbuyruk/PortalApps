@@ -85,6 +85,14 @@ namespace TBYS_WebParts.TasinmazKartiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor EmlakBeyaniDosyaLnk;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor YapiKayitDosyaLnk;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton ExcelBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -298,6 +306,46 @@ namespace TBYS_WebParts.TasinmazKartiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.HtmlControls.HtmlAnchor @__BuildControlEmlakBeyaniDosyaLnk() {
+            global::System.Web.UI.HtmlControls.HtmlAnchor @__ctrl;
+            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlAnchor();
+            this.EmlakBeyaniDosyaLnk = @__ctrl;
+            @__ctrl.TemplateControl = this;
+            @__ctrl.ID = "EmlakBeyaniDosyaLnk";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "btn btn-outline-primary");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-fancybox", "");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-type", "pdf");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-width", "960");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-height", "720");
+            @__ctrl.HRef = "#";
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Emlak Beyanı \r\n                    "));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.HtmlControls.HtmlAnchor @__BuildControlYapiKayitDosyaLnk() {
+            global::System.Web.UI.HtmlControls.HtmlAnchor @__ctrl;
+            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlAnchor();
+            this.YapiKayitDosyaLnk = @__ctrl;
+            @__ctrl.TemplateControl = this;
+            @__ctrl.ID = "YapiKayitDosyaLnk";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "btn btn-outline-primary");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-fancybox", "");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-type", "pdf");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-width", "960");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-height", "720");
+            @__ctrl.HRef = "#";
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Yapı Kayıt Belgesi \r\n                    "));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlExcelBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -345,15 +393,22 @@ namespace TBYS_WebParts.TasinmazKartiWP {
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl2;
             @__ctrl2 = this.@__BuildControlMainCardDiv();
             @__parser.AddParsedSubObject(@__ctrl2);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                <div class=\"card-footer\">\r\n                    \r\n              " +
-                        "      "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl3;
-            @__ctrl3 = this.@__BuildControlExcelBtn();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                <div class=\"card-footer\">\r\n                    "));
+            global::System.Web.UI.HtmlControls.HtmlAnchor @__ctrl3;
+            @__ctrl3 = this.@__BuildControlEmlakBeyaniDosyaLnk();
             @__parser.AddParsedSubObject(@__ctrl3);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl4;
-            @__ctrl4 = this.@__BuildControlTasinmazListesiBtn();
+            global::System.Web.UI.HtmlControls.HtmlAnchor @__ctrl4;
+            @__ctrl4 = this.@__BuildControlYapiKayitDosyaLnk();
             @__parser.AddParsedSubObject(@__ctrl4);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl5;
+            @__ctrl5 = this.@__BuildControlExcelBtn();
+            @__parser.AddParsedSubObject(@__ctrl5);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl6;
+            @__ctrl6 = this.@__BuildControlTasinmazListesiBtn();
+            @__parser.AddParsedSubObject(@__ctrl6);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                </div>\r\n            </div>\r\n        "));
         }
         

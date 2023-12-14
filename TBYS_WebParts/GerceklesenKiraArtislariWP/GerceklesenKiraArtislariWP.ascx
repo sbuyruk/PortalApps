@@ -28,20 +28,23 @@
         myjsons = myset;
     }
     var myjsons = [{
-        "KiraciAdi": "", "KiralamaAmaci": "", "Bolge": "", "SozlesmeTarihi": "", "KiraSuresi": "", "ArtisAyi": "", "TamAdres": "","OncekiKiraBedeli": "", "YasalArtisOrani": "", "YasalOranaGoreKiraBedeli": "", "KiraBedeli": "", "UygulananArtisOrani": "", "KiraBedeli": ""
+        "Bolge": "", "Adres": "", "Ilcesi": "", "Ili": "", "KiraciAdi": "", "KiralamaAmaci": "", "SozlesmeTarihi": "", "KiraSuresi": "", "ArtisAyi": "", "OdemeSekli": "", "OncekiKiraBedeli": "", "YasalArtisOrani": "", "YasalOranaGoreKiraBedeli": "", "KiraBedeli": "", "UygulananArtisOrani": "", "KiraBedeli": ""
     }];
     jQuery(document).ready(function () {
 
         var table = jQuery('#CustomDataTable').DataTable({
             data: myjsons,
             columns: [
-                { data: "KiraciAdi", "width": "20%" },
-                { data: "KiralamaAmaci" },
                 { data: "Bolge" },
+                { data: "KiraciAdi", "width": "20%" },
+                { data: "Adres", "width": "20%" },
+                { data: "Ilcesi", "width": "20%" },
+                { data: "Ili", "width": "20%" },
+                { data: "KiralamaAmaci" },
                 { data: "SozlesmeTarihi" },
                 { data: "KiraSuresi" },
                 { data: "ArtisAyi" },
-                { data: "TamAdres", "width": "20%" },
+                { data: "OdemeSekli" },
                 { data: "OncekiKiraBedeli", type: "decimal",class:"text-right" },
                 { data: "YasalArtisOrani", type: "decimal" },
                 { data: "YasalOranaGoreKiraBedeli", type: "decimal", class: "text-right" },
@@ -49,7 +52,7 @@
                 { data: "KiraBedeli", type: "decimal",class:"text-right" },
 
             ],            
-            'order': [[2, 'asc']],//AdiSoyadi Sıralı
+            'order': [[0, 'asc']],//AdiSoyadi Sıralı
             "language": {
                 "url": "http://tskgv-portal/OrtakBelgeler/Turkish.txt",
                 "decimal": ",",
@@ -91,7 +94,7 @@
                         //});
                         //count = 0;
                         //skippedHeader = 0;
-                        $('row c[r^="E"]', sheet).each(function () {
+                        $('row c[r^="H"]', sheet).each(function () {
                             if (count++>0) {
                                 var text = $(this).text();
                                 var yilInt = text.replace(' Yıl', '');
@@ -147,13 +150,16 @@
                         <table id="CustomDataTable" class="table table-striped table-bordered" width="100%">
                             <thead>
                                 <tr>
-                                    <th>Kiracı</th>
-                                    <th>Cinsi</th>
                                     <th>Bölge</th>
+                                    <th>Kiracı</th>
+                                    <th>Adres</th>
+                                    <th>İlçe</th>
+                                    <th>İl</th>
+                                    <th>Cinsi</th>
                                     <th>İlk Söz. Tar.</th>
                                     <th>Kira Süresi</th>
                                     <th>Artış Ayı</th>
-                                    <th>Adres</th>
+                                    <th>Ödeme Şekli</th>
                                     <th>Artıştan Önceki Kira Bedeli (TL)</th>
                                     <th>Yasal Artış Oranı (%)</th>
                                     <th>Yasal Artış Oranına Göre Kira Bedeli (TL)</th>

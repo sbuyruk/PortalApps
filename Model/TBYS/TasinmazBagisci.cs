@@ -22,6 +22,7 @@ namespace Model.TBYS
         public string Adres { get; set; }
         public string Telefon1 { get; set; }
         public string Telefon2 { get; set; }
+        public string EPosta { get; set; }
         public string Meslegi { get; set; }
         public string SosyalGuvence { get; set; }
         //public string SorumluBolge { get; set; }
@@ -191,34 +192,6 @@ namespace Model.TBYS
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<TasinmazBagisci> list = ToList<TasinmazBagisci>(dataTable);
             return list;
-        }
-        public string SelectAllCountBagisAdediReturnJson()
-        {
-            string sqlString = string.Format(@"
-                 SELECT ROW_NUMBER() OVER (ORDER BY A.Id) AS Sirano, Count(C.Id) ToplamBagisAdedi, 
-                    A.Id TasinmazBagisciId, E.Bolge,
-	                A.Adi+' '+ A.Soyadi AdiSoyadi, A.TCKimlikNo, A.DogumYeri, A.DogumTarihi, A.Meslegi, A.SosyalGuvence, 
-	                A.Ilcesi +'-'+A.Ili IlIlce, A.Adres, A.Telefon1, A.Telefon2, A.Foto, A.Sag_vefat, FORMAT(A.vefatTarihi,'dd.MM.yyyy') VefatTarihi
-                FROM TasinmazBagisci_Table A 
-                    LEFT JOIN Bagis_Table C on C.BagisciId=A.Id AND C.Envanterde=1
-                    LEFT JOIN Tasinmaz_Table D on D.Id=C.TasinmazId AND D.EnvanterdeMi=1
-					LEFT JOIN Il_Table E on E.IlAdi=A.Ili 
-                GROUP BY  C.BagisciId,
-				A.Id, A.Adi, A.Soyadi, A.TCKimlikNo, A.DogumYeri, A.DogumTarihi, A.Meslegi, A.SosyalGuvence, 
-	                A.Ili, A.Ilcesi, A.Adres, A.Telefon1, A.Telefon2, A.Foto, A.Sag_vefat,E.Bolge , A.vefatTarihi                                   
-                ");
-            
-            DataTable dataTable = null;
-            try
-            {
-                dataTable = dao.SelectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-            string json = ToJSON(dataTable);
-            return json;
         }
         public DataTable SelectAllCountBagisAdediReturnDataTable(bool vefatEdenBagiscilarHaric, bool gizliBagiscilarHaric)
         {
