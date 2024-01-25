@@ -276,8 +276,14 @@ namespace NBYS_WebParts.NakitBagisciByBankaWP
 
 
 
-            DateTime bastar = new DateTime(yil, ay, 1);
+            DateTime bastar = new DateTime(yil, ay==0?1:ay, 1);
             DateTime bittar = bastar.AddMonths(1).AddDays(-1);
+
+            if (AyDDL.SelectedItem.Text.Equals(ProjeConstants.HEPSI))
+            {
+                bastar = new DateTime(yil, 1, 1);
+                bittar = new DateTime(yil, 12, 31);
+            }
 
             NakitBagisHareket nbh = new NakitBagisHareket();
             DataTable dataTable = nbh.SelectCountSumByBagisBanka(bastar, bittar);
@@ -519,6 +525,7 @@ namespace NBYS_WebParts.NakitBagisciByBankaWP
             AyDDL.Items.Add(new ListItem("Ekim", "10"));
             AyDDL.Items.Add(new ListItem("Kasım", "11"));
             AyDDL.Items.Add(new ListItem("Aralık", "12"));
+            AyDDL.Items.Add(new ListItem("Hepsi", "0"));
 
 
         }

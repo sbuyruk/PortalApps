@@ -5,12 +5,18 @@
 <%@ Register Tagprefix="asp" Namespace="System.Web.UI" Assembly="System.Web.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" %>
 <%@ Import Namespace="Microsoft.SharePoint" %> 
 <%@ Register Tagprefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
-<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="FaaliyetViewerWP.ascx.cs" Inherits="MTS_WebParts.FaaliyetViewerWP.FaaliyetViewerWP" %>
+<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="FaaliyetViewerOLD.ascx.cs" Inherits="MTS_WebParts.FaaliyetViewerOLD.FaaliyetViewerOLD" %>
 
 <script type="text/javascript" src="/Style%20Library/lib/fullcalendar/index.global.js"></script>
 <script type="text/javascript" src="/Style%20Library/tskgv/js/fullcalendar/locales/tr.js"></script>
 <style>
-   
+    <%-- scroll için --%>
+    #AcikTarihliFaaliyetListDiv {
+      background-color: lightblue;
+      height: 550px;
+      width: auto;
+      overflow-y: scroll;
+    }
   body {
     /*margin-top: 40px;*/
     font-size: 14px;
@@ -51,8 +57,8 @@
   }
   #calendar {
 /*    max-width: 1100px;
-    margin: 0 auto;
-    margin-left:220px;*/
+    margin: 0 auto;*/
+    margin-left:220px;
   }
   .title-wrap {
     white-space: normal !important;
@@ -187,6 +193,15 @@
     </div>
     <div id='wrap'>
      
+        <div id='external-events'>
+            <div class="form-group" >
+                <iframe id="txtArea1" style="display:none"></iframe>
+            </div>
+            <h4>Açık Tarihli Faaliyetler</h4>
+            <div id="AcikTarihliFaaliyetListDiv" runat="server" ClientIDMode="Static">
+
+            </div>
+        </div>
         <div id="calendar-wrap">
             
             <div id="calendar"></div>

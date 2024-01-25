@@ -75,6 +75,10 @@ namespace NBYS_WebParts.NakitBagisciByBankaWP {
             "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.UpdatePanel TableUpdatePanel;
         
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.UpdateProgress updateProgress;
+        
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebPartCodeGenerator", "17.0.0.0")]
         public static implicit operator global::System.Web.UI.TemplateControl(NakitBagisciByBankaWP target) 
         {
@@ -192,7 +196,7 @@ namespace NBYS_WebParts.NakitBagisciByBankaWP {
                             <div class=""card-body p-0"">
                                 <div class=""row m-2"">
                                     <div class=""input-group col-4 row"">
-                                        <label  for=""AyDDL"" class=""col-form-label col-3"">Ay</label>
+                                        <label for=""AyDDL"" class=""col-form-label col-3"">Ay</label>
                                         <div class=""col-8"">
                                             "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl1;
@@ -214,8 +218,8 @@ namespace NBYS_WebParts.NakitBagisciByBankaWP {
             global::System.Web.UI.WebControls.Table @__ctrl3;
             @__ctrl3 = this.@__BuildControlNakitBagisciTable();
             @__parser.AddParsedSubObject(@__ctrl3);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n\r\n                            </div>\r\n " +
-                        "                       "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                                \r\n     " +
+                        "                       </div>\r\n                        "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -281,6 +285,28 @@ namespace NBYS_WebParts.NakitBagisciByBankaWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private void @__BuildControl__control4(System.Web.UI.Control @__ctrl) {
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            <div class=\'loaderMainContainer\'>\r\n                <div class=\'load" +
+                        "erContainer\'>\r\n                    <div class=\'loaderCircle\'></div>\r\n           " +
+                        "     </div>\r\n            </div>\r\n\r\n        "));
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.UpdateProgress @__BuildControlupdateProgress() {
+            global::System.Web.UI.UpdateProgress @__ctrl;
+            @__ctrl = new global::System.Web.UI.UpdateProgress();
+            this.updateProgress = @__ctrl;
+            @__ctrl.ProgressTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control4));
+            @__ctrl.ID = "updateProgress";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControlTree(global::NBYS_WebParts.NakitBagisciByBankaWP.NakitBagisciByBankaWP @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n<script type=\"text/javascript\">\r\n\r\n    //On Page Load.\r\n    $(function () {\r\n  " +
@@ -305,11 +331,15 @@ namespace NBYS_WebParts.NakitBagisciByBankaWP {
                         "equestManager.getInstance();\r\n    if (prm != null) {\r\n        prm.add_endRequest" +
                         "(function (sender, e) {\r\n            if (sender._postBackSettings.panelsToUpdate" +
                         " != null) {\r\n                SetDatePicker();\r\n            }\r\n        });\r\n    }" +
-                        ";\r\n    \r\n</script>\r\n<div class=\"container shadow\">\r\n    "));
+                        ";\r\n\r\n</script>\r\n<div class=\"container shadow\">\r\n    "));
             global::System.Web.UI.UpdatePanel @__ctrl1;
             @__ctrl1 = this.@__BuildControlTableUpdatePanel();
             @__parser.AddParsedSubObject(@__ctrl1);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n</div>"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n    "));
+            global::System.Web.UI.UpdateProgress @__ctrl2;
+            @__ctrl2 = this.@__BuildControlupdateProgress();
+            @__parser.AddParsedSubObject(@__ctrl2);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n</div>\r\n"));
         }
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +

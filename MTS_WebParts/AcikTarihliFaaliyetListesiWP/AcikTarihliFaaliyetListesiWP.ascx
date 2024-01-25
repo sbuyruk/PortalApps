@@ -1,22 +1,16 @@
 ﻿<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
-<%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
-<%@ Register TagPrefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
-<%@ Register TagPrefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
-<%@ Register TagPrefix="asp" Namespace="System.Web.UI" Assembly="System.Web.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" %>
-<%@ Import Namespace="Microsoft.SharePoint" %>
-<%@ Register TagPrefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
-<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="FaaliyetListesiWP.ascx.cs" Inherits="MTS_WebParts.FaaliyetListesiWP.FaaliyetListesiWP" %>
+<%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %> 
+<%@ Register Tagprefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %> 
+<%@ Register Tagprefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
+<%@ Register Tagprefix="asp" Namespace="System.Web.UI" Assembly="System.Web.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" %>
+<%@ Import Namespace="Microsoft.SharePoint" %> 
+<%@ Register Tagprefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
+<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="AcikTarihliFaaliyetListesiWP.ascx.cs" Inherits="MTS_WebParts.AcikTarihliFaaliyetListesiWP.AcikTarihliFaaliyetListesiWP" %>
+
 <style>
-     /*Tarih seçiminde açılan takvim altta kalmasın*/
-     .ui-datepicker {
-         z-index: 9999 !important;
-         width: 15em;
-         font-size: small;
-     }
     .ui-datatable tbody td {
         white-space: normal;
     }
-
     .alinan {
         background-color: #fff3cd !important;
     }
@@ -39,7 +33,7 @@
         myjsons = myset;
     }
     var myjsons = [{
-        "FaaliyetId": "", "BaslangicTarihi": "", "BitisTarihi": "", "FaaliyetYeri": "", "FaaliyetKonusu": "", "FaaliyetAmaci": "", "FaaliyetDurumu": "", "FaaliyetTipi": "", "Katilimci": "", "Duzenle": ""
+        "FaaliyetId": "", "FaaliyetYeri": "", "FaaliyetKonusu": "", "FaaliyetAmaci": "", "FaaliyetDurumu": "", "FaaliyetTipi": "", "Katilimci": "", "Aciklama": "", "OlusturmaTarihi": "", "Duzenle": ""
     }];
     jQuery(document).ready(function () {
         jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
@@ -58,19 +52,19 @@
             data: myjsons,
             columns: [
                 { data: "FaaliyetId" },
-                { data: "BaslangicTarihi" },
-                { data: "BitisTarihi" },
                 { data: "FaaliyetYeri" },
                 { data: "FaaliyetKonusu" },
                 { data: "FaaliyetAmaci" },
                 { data: "FaaliyetDurumu" },
                 { data: "FaaliyetTipi" },
                 { data: "Katilimci" },
+                { data: "Aciklama" },
+                { data: "OlusturmaTarihi" },
                 { data: "Duzenle" },
 
             ],
             columnDefs: [
-                { type: 'turkish', targets: [3, 4, 5, 6, 7] }
+                { type: 'turkish', targets: [1,2,3,4,5,6] }
             ],
             'order': [[1, 'desc']],//sort date desc
             "language": {
@@ -120,61 +114,35 @@
     });
 
 </script>
-<div class="container col-xl ">
+<div class="container ">
     <div class="card shadow">
         <div class="card-header">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-1">
-                <asp:Label ID="TitleLbl" runat="server" CssClass="col-form-label text-danger font-weight-bold mb-1" Text="Faaliyet Listesi"></asp:Label>
+                <asp:Label ID="TitleLbl" runat="server" CssClass="col-form-label text-danger font-weight-bold mb-1" Text="Açık Tarihli Faaliyet Listesi"></asp:Label>
                 <asp:Label ID="IdLbl" runat="server" CssClass="col-form-label text-white" Visible="false"></asp:Label>
                 <asp:Label CssClass="col-form-label" ID="AdiLbl" runat="server"></asp:Label>
             </h3>
         </div>
         <div class="card-body">
-            <div class="form-group alert-secondary p-2">
-                <div class="form-group ">
-                    <div class="row">
-                        <div class="col-2">
-                            <div class="form-group">
-                                <asp:Label runat="server" CssClass="col-form-label font-weight-bold">Başlangıç</asp:Label>
-                                <asp:TextBox ID="BaslangicTarihiTxt" CssClass="form-control DateTimePickerV1 input-date" runat="server" ClientIDMode="Static" AutoPostBack="true" OnTextChanged="BaslangicTarihiTxt_TextChanged" placeholder="dd.mm.yyyy"></asp:TextBox>
-                            </div>
-                        </div>
-                        <div class="col-2">
-                            <div class="form-group">
-                                <asp:Label runat="server" CssClass="col-form-label font-weight-bold">Bitiş</asp:Label>
-                                <asp:TextBox ID="BitisTarihiTxt" CssClass="form-control DateTimePickerV1 input-date" runat="server" ClientIDMode="Static" AutoPostBack="true" OnTextChanged="BitisTarihiTxt_TextChanged" placeholder="dd.mm.yyyy"></asp:TextBox>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="form-group">
+                <table id="CustomDataTable" class="table table-striped table-bordered" width="100%">
+                    <thead>
+                        <tr>
+                            <th>F.No</th>
+                            <th>Yeri</th>
+                            <th>Konusu</th>
+                            <th>Amacı</th>
+                            <th>Durumu</th>
+                            <th>Tipi</th>
+                            <th>Katılımcılar</th>
+                            <th>Açıklama</th>
+                            <th>Oluşturma Tarihi</th>
+                            <th>Düzenle</th>
+                        </tr>
+                    </thead>
+                </table>
             </div>
-<%--            <asp:UpdatePanel ID="TableUpdatePanel" runat="server">
-                <ContentTemplate>--%>
-                    <div class="form-group">
-                        <table id="CustomDataTable" class="table table-striped table-bordered" width="100%">
-                            <thead>
-                                <tr>
-                                    <th>F.No</th>
-                                    <th>Başlangıç</th>
-                                    <th>Bitiş</th>
-                                    <th>Yeri</th>
-                                    <th>Konusu</th>
-                                    <th>Amacı</th>
-                                    <th>Durumu</th>
-                                    <th>Tipi</th>
-                                    <th>Katılımcılar</th>
-                                    <th>Düzenle</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-<%--                </ContentTemplate>
-                <Triggers>
-                    <asp:AsyncPostBackTrigger ControlID="BaslangicTarihiTxt" EventName="TextChanged" />
-                    <asp:AsyncPostBackTrigger ControlID="BitisTarihiTxt" EventName="TextChanged" />
-                </Triggers>
-            </asp:UpdatePanel>--%>
         </div>
         <div class="card-footer">
             <asp:LinkButton ID="YeniKayitBtn" CssClass="btn btn-outline-success" runat="server" Text="Yeni Faaliyet" OnClick="YeniKayitBtn_Click"></asp:LinkButton>

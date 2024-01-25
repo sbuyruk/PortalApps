@@ -12,20 +12,19 @@ using Utility.HelperClasses;
 using Utility.ProjeGlobal;
 using Model.Ortak;
 
-namespace MTS_WebParts.FaaliyetListesiWP
+namespace MTS_WebParts.AcikTarihliFaaliyetListesiWP
 {
     [ToolboxItemAttribute(false)]
-    public partial class FaaliyetListesiWP : WebPart
+    public partial class AcikTarihliFaaliyetListesiWP : WebPart
     {
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
         // your constructor, it's not recommended for production purposes.
         // [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Assert, UnmanagedCode = true)]
-        public FaaliyetListesiWP()
+        public AcikTarihliFaaliyetListesiWP()
         {
         }
-
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -60,12 +59,7 @@ namespace MTS_WebParts.FaaliyetListesiWP
         {
             try
             {
-                if (!Page.IsPostBack)
-                {
-                    BaslangicTarihiTxt.Text = DateTime.Today.AddMonths(-2).ConvertToDatetimeEmptyIfNull();
-                    BitisTarihiTxt.Text = DateTime.Today.ConvertToDatetimeEmptyIfNull();
-                }
-                    TabloOlustur(); 
+                TabloOlustur();
             }
             catch (Exception ex)
             {
@@ -99,11 +93,9 @@ namespace MTS_WebParts.FaaliyetListesiWP
         }
         private List<FaaliyetListItem> GetDataList()
         {
-            DateTime bastar = BaslangicTarihiTxt.Text.ConvertToDatetime();
-            DateTime bittar = BitisTarihiTxt.Text.ConvertToDatetime();
             List<FaaliyetListItem> faaliyetList = new List<FaaliyetListItem>();
             Faaliyet faaliyetDao = new Faaliyet();
-            DataTable dataTable = faaliyetDao.SelectAllByKatilimciFaaliyetReturnDataTable(ProjeConstants.HEPSI_INT, ProjeConstants.HEPSI_INT, ProjeConstants.FAALIYET_ACIKTARIHLI_DEGIL, bastar,bittar);
+            DataTable dataTable = faaliyetDao.SelectAllByKatilimciFaaliyetReturnDataTable(ProjeConstants.HEPSI_INT, ProjeConstants.HEPSI_INT, ProjeConstants.FAALIYET_ACIKTARIHLI,ProjeConstants.NULL_TARIH,ProjeConstants.NULL_TARIH);
 
             if (dataTable != null)
             {
@@ -119,12 +111,8 @@ namespace MTS_WebParts.FaaliyetListesiWP
                     string faaliyetKonusu = row["FaaliyetKonusu"].ToString();
                     string faaliyetAmaci = row["FaaliyetAmaci"].ToString();
                     string faaliyetDurumu = row["FaaliyetDurumu"].ToString();
-
-                    DateTime basTar = row["BaslangicTarihi"].ConvertToDatetime();
-                    DateTime bitTar = row["BitisTarihi"].ConvertToDatetime();
-
-                    string baslangicTarihi = basTar.ToString("dd.MM.yyyy HH:mm");
-                    string bitisTarihi = bitTar.ToString("dd.MM.yyyy HH:mm");
+                    string aciklama = row["Aciklama"].ToString();
+                    string olusturmaTarihi = row["OlusturmaTarihi"].ToString();
 
                     string faaliyetAmaciStr = MTSOrtak.ParseFaaliyetAmaci(faaliyetAmaci);
                     string faaliyetDurumuStr = MTSOrtak.ParseFaaliyetDurumu(faaliyetDurumu.ConvertToInt());
@@ -147,10 +135,10 @@ namespace MTS_WebParts.FaaliyetListesiWP
                         faaliyetListItem.FaaliyetTipi = faaliyetTipi;
                         faaliyetListItem.FaaliyetYeri = faaliyetYeri;
                         faaliyetListItem.FaaliyetKonusu = faaliyetKonusu;
-                        faaliyetListItem.BaslangicTarihi = baslangicTarihi;
-                        faaliyetListItem.BitisTarihi = bitisTarihi;
                         faaliyetListItem.FaaliyetAmaci = faaliyetAmaciStr;
                         faaliyetListItem.FaaliyetDurumu = faaliyetDurumuStr;
+                        faaliyetListItem.Aciklama = aciklama;
+                        faaliyetListItem.OlusturmaTarihi = olusturmaTarihi;
 
                         faaliyetListItem.Katilimci += katilimci + "; ";
                         faaliyetListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_FAALIYET_GIRIS + "?FaaliyetId=" + faaliyetId + " class='btn btn-outline-primary'>Düzenle</a>";
@@ -179,7 +167,7 @@ namespace MTS_WebParts.FaaliyetListesiWP
                 exHelper.PublishException();
             }
         }
-        
+       
         protected void YeniKayitBtn_Click(object sender, EventArgs e)
         {
             RedirectToPage(ProjeConstants.PAGE_FAALIYET_GIRIS);
@@ -259,15 +247,6 @@ namespace MTS_WebParts.FaaliyetListesiWP
         {
             RedirectToPage(ProjeConstants.PAGE_FAALIYET_TAKVIM);
         }
-        protected void BaslangicTarihiTxt_TextChanged(object sender, EventArgs e)
-        {
-            TabloOlustur();
-        }
-
-        protected void BitisTarihiTxt_TextChanged(object sender, EventArgs e)
-        {
-            TabloOlustur();
-        }
         private class FaaliyetListItem
         {
             public int FaaliyetId { get; set; }
@@ -276,10 +255,9 @@ namespace MTS_WebParts.FaaliyetListesiWP
             public string FaaliyetKonusu { get; set; }
             public string FaaliyetAmaci { get; set; }
             public string FaaliyetDurumu { get; set; }
-            public string BaslangicTarihi { get; set; }
-            public string BitisTarihi { get; set; }
             public string Katilimci { get; set; }
-            //public string Arama { get; set; }
+            public string Aciklama { get; set; }
+            public string OlusturmaTarihi { get; set; }
             public string Duzenle { get; set; }
             public bool Secildi { get; set; }
         }

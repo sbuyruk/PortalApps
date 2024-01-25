@@ -119,15 +119,18 @@ namespace NBYS_WebParts.SMSAylikCizelgeReadOnlyWP
         private decimal SMSTutariBul(int ay, int yil)
         {
             decimal smsBedeli;
-            DateTime smsDegisimTarihi = ProjeConstants.SMS_TUTAR_DEGISIM_TARIHI;
             DateTime smstarihi = new DateTime(yil, ay, 1);
-            if (smstarihi < smsDegisimTarihi)
+            if (smstarihi > ProjeConstants.SMS_2024)
             {
-                smsBedeli = ProjeConstants.SMS_TUTAR_01022023ONCESI;
+                smsBedeli = ProjeConstants.SMS_TUTAR_2024;
             }
-            else
+            else if(smstarihi > ProjeConstants.SMS_2023)
             {
-                smsBedeli = ProjeConstants.SMS_TUTAR_01022023SONRASI;
+                smsBedeli = ProjeConstants.SMS_TUTAR_2023;
+            }
+            else 
+            {
+                smsBedeli = ProjeConstants.SMS_TUTAR_2022;
             }
             return smsBedeli;
         }

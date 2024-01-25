@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MTS_WebParts.FaaliyetListesiWP {
+namespace MTS_WebParts.AcikTarihliFaaliyetListesiWP {
     using System.Web.UI.WebControls.Expressions;
     using System.Web.UI.HtmlControls;
     using System.Collections;
@@ -37,7 +37,7 @@ namespace MTS_WebParts.FaaliyetListesiWP {
     using System.CodeDom.Compiler;
     
     
-    public partial class FaaliyetListesiWP {
+    public partial class AcikTarihliFaaliyetListesiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -54,14 +54,6 @@ namespace MTS_WebParts.FaaliyetListesiWP {
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.Label AdiLbl;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TextBox BaslangicTarihiTxt;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TextBox BitisTarihiTxt;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -84,7 +76,7 @@ namespace MTS_WebParts.FaaliyetListesiWP {
         protected global::System.Web.UI.WebControls.LinkButton KisiListesiBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebPartCodeGenerator", "17.0.0.0")]
-        public static implicit operator global::System.Web.UI.TemplateControl(FaaliyetListesiWP target) 
+        public static implicit operator global::System.Web.UI.TemplateControl(AcikTarihliFaaliyetListesiWP target) 
         {
             return target == null ? null : target.TemplateControl;
         }
@@ -116,7 +108,7 @@ namespace MTS_WebParts.FaaliyetListesiWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "TitleLbl";
             @__ctrl.CssClass = "col-form-label text-danger font-weight-bold mb-1";
-            @__ctrl.Text = "Faaliyet Listesi";
+            @__ctrl.Text = "Açık Tarihli Faaliyet Listesi";
             return @__ctrl;
         }
         
@@ -144,68 +136,6 @@ namespace MTS_WebParts.FaaliyetListesiWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.CssClass = "col-form-label";
             @__ctrl.ID = "AdiLbl";
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControl__control2() {
-            global::System.Web.UI.WebControls.Label @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.Label();
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label font-weight-bold";
-            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Başlangıç"));
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TextBox @__BuildControlBaslangicTarihiTxt() {
-            global::System.Web.UI.WebControls.TextBox @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.TextBox();
-            this.BaslangicTarihiTxt = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "BaslangicTarihiTxt";
-            @__ctrl.CssClass = "form-control DateTimePickerV1 input-date";
-            @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
-            @__ctrl.AutoPostBack = true;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("placeholder", "dd.mm.yyyy");
-            @__ctrl.TextChanged -= new System.EventHandler(this.BaslangicTarihiTxt_TextChanged);
-            @__ctrl.TextChanged += new System.EventHandler(this.BaslangicTarihiTxt_TextChanged);
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControl__control3() {
-            global::System.Web.UI.WebControls.Label @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.Label();
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label font-weight-bold";
-            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Bitiş"));
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TextBox @__BuildControlBitisTarihiTxt() {
-            global::System.Web.UI.WebControls.TextBox @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.TextBox();
-            this.BitisTarihiTxt = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "BitisTarihiTxt";
-            @__ctrl.CssClass = "form-control DateTimePickerV1 input-date";
-            @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
-            @__ctrl.AutoPostBack = true;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("placeholder", "dd.mm.yyyy");
-            @__ctrl.TextChanged -= new System.EventHandler(this.BitisTarihiTxt_TextChanged);
-            @__ctrl.TextChanged += new System.EventHandler(this.BitisTarihiTxt_TextChanged);
             return @__ctrl;
         }
         
@@ -292,57 +222,55 @@ namespace MTS_WebParts.FaaliyetListesiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControlTree(global::MTS_WebParts.FaaliyetListesiWP.FaaliyetListesiWP @__ctrl) {
+        private void @__BuildControlTree(global::MTS_WebParts.AcikTarihliFaaliyetListesiWP.AcikTarihliFaaliyetListesiWP @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n<style>\r\n     /*Tarih seçiminde açılan takvim altta kalmasın*/\r\n     .ui-datepi" +
-                        "cker {\r\n         z-index: 9999 !important;\r\n         width: 15em;\r\n         font" +
-                        "-size: small;\r\n     }\r\n    .ui-datatable tbody td {\r\n        white-space: normal" +
-                        ";\r\n    }\r\n\r\n    .alinan {\r\n        background-color: #fff3cd !important;\r\n    }\r" +
-                        "\n</style>\r\n<script type=\"text/javascript\">\r\n    //excele export ettikten donup s" +
-                        "onra kalmasın diye\r\n    function setFormSubmitToFalse() {\r\n        setTimeout(fu" +
-                        "nction () { _spFormOnSubmitCalled = false; }, 3000);\r\n        return true;\r\n    " +
-                        "}\r\n\r\n</script>\r\n<script type=\"text/javascript\">\r\n    //excele export ettikten do" +
-                        "nup sonra kalmasın diye\r\n    function setFormSubmitToFalse() {\r\n        setTimeo" +
-                        "ut(function () { _spFormOnSubmitCalled = false; }, 3000);\r\n        return true;\r" +
-                        "\n    }\r\n    function setDataSet(myset) {\r\n        myjsons = myset;\r\n    }\r\n    v" +
-                        "ar myjsons = [{\r\n        \"FaaliyetId\": \"\", \"BaslangicTarihi\": \"\", \"BitisTarihi\":" +
-                        " \"\", \"FaaliyetYeri\": \"\", \"FaaliyetKonusu\": \"\", \"FaaliyetAmaci\": \"\", \"FaaliyetDur" +
-                        "umu\": \"\", \"FaaliyetTipi\": \"\", \"Katilimci\": \"\", \"Duzenle\": \"\"\r\n    }];\r\n    jQuer" +
-                        "y(document).ready(function () {\r\n        jQuery.fn.dataTable.moment(\'DD.MM.YYYY " +
-                        "HH:mm\');//sort date\r\n        jQuery(\'#CustomDataTable\').DataTable({\r\n           " +
-                        " \'initComplete\': function (settings, json) {//tablo yüklendiğinde\r\n             " +
-                        "   var api = this.api();\r\n                var row = api.row(function (idx, data," +
-                        " node) { //secilen Id\'ye gider\r\n                    return data[\'Secildi\'] == tr" +
-                        "ue;\r\n                });\r\n                if (row.length > 0) {\r\n               " +
-                        "     row.select()\r\n                        .show()\r\n                        .dra" +
-                        "w(false);\r\n                }\r\n            },\r\n            data: myjsons,\r\n      " +
-                        "      columns: [\r\n                { data: \"FaaliyetId\" },\r\n                { dat" +
-                        "a: \"BaslangicTarihi\" },\r\n                { data: \"BitisTarihi\" },\r\n             " +
-                        "   { data: \"FaaliyetYeri\" },\r\n                { data: \"FaaliyetKonusu\" },\r\n     " +
-                        "           { data: \"FaaliyetAmaci\" },\r\n                { data: \"FaaliyetDurumu\" " +
-                        "},\r\n                { data: \"FaaliyetTipi\" },\r\n                { data: \"Katilimc" +
-                        "i\" },\r\n                { data: \"Duzenle\" },\r\n\r\n            ],\r\n            colum" +
-                        "nDefs: [\r\n                { type: \'turkish\', targets: [3, 4, 5, 6, 7] }\r\n       " +
-                        "     ],\r\n            \'order\': [[1, \'desc\']],//sort date desc\r\n            \"langu" +
-                        "age\": {\r\n                \"url\": \"http://tskgv-portal/OrtakBelgeler/Turkish.txt\"," +
-                        "\r\n                \"decimal\": \",\",\r\n                \"thousands\": \".\"\r\n           " +
-                        " },\r\n            responsive: true,\r\n            dom: \'Bfrtip\',\r\n            butt" +
-                        "ons: [\r\n                {\r\n                    extend: \'print\',\r\n               " +
-                        "     exportOptions: {\r\n                        columns: \':visible\'\r\n            " +
-                        "        }\r\n                },\r\n                {\r\n                    extend: \'e" +
-                        "xcel\',\r\n                    exportOptions: {\r\n                        columns: \'" +
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n<style>\r\n    .ui-datatable tbody td {\r\n        white-space: normal;\r\n    }\r\n " +
+                        "   .alinan {\r\n        background-color: #fff3cd !important;\r\n    }\r\n</style>\r\n<s" +
+                        "cript type=\"text/javascript\">\r\n    //excele export ettikten donup sonra kalmasın" +
+                        " diye\r\n    function setFormSubmitToFalse() {\r\n        setTimeout(function () { _" +
+                        "spFormOnSubmitCalled = false; }, 3000);\r\n        return true;\r\n    }\r\n\r\n</script" +
+                        ">\r\n<script type=\"text/javascript\">\r\n    //excele export ettikten donup sonra kal" +
+                        "masın diye\r\n    function setFormSubmitToFalse() {\r\n        setTimeout(function (" +
+                        ") { _spFormOnSubmitCalled = false; }, 3000);\r\n        return true;\r\n    }\r\n    f" +
+                        "unction setDataSet(myset) {\r\n        myjsons = myset;\r\n    }\r\n    var myjsons = " +
+                        "[{\r\n        \"FaaliyetId\": \"\", \"FaaliyetYeri\": \"\", \"FaaliyetKonusu\": \"\", \"Faaliye" +
+                        "tAmaci\": \"\", \"FaaliyetDurumu\": \"\", \"FaaliyetTipi\": \"\", \"Katilimci\": \"\", \"Aciklam" +
+                        "a\": \"\", \"OlusturmaTarihi\": \"\", \"Duzenle\": \"\"\r\n    }];\r\n    jQuery(document).read" +
+                        "y(function () {\r\n        jQuery.fn.dataTable.moment(\'DD.MM.YYYY HH:mm\');//sort d" +
+                        "ate\r\n        jQuery(\'#CustomDataTable\').DataTable({\r\n            \'initComplete\':" +
+                        " function (settings, json) {//tablo yüklendiğinde\r\n                var api = thi" +
+                        "s.api();\r\n                var row = api.row(function (idx, data, node) { //secil" +
+                        "en Id\'ye gider\r\n                    return data[\'Secildi\'] == true;\r\n           " +
+                        "     });\r\n                if (row.length > 0) {\r\n                    row.select(" +
+                        ")\r\n                        .show()\r\n                        .draw(false);\r\n     " +
+                        "           }\r\n            },\r\n            data: myjsons,\r\n            columns: [" +
+                        "\r\n                { data: \"FaaliyetId\" },\r\n                { data: \"FaaliyetYeri" +
+                        "\" },\r\n                { data: \"FaaliyetKonusu\" },\r\n                { data: \"Faal" +
+                        "iyetAmaci\" },\r\n                { data: \"FaaliyetDurumu\" },\r\n                { da" +
+                        "ta: \"FaaliyetTipi\" },\r\n                { data: \"Katilimci\" },\r\n                {" +
+                        " data: \"Aciklama\" },\r\n                { data: \"OlusturmaTarihi\" },\r\n            " +
+                        "    { data: \"Duzenle\" },\r\n\r\n            ],\r\n            columnDefs: [\r\n         " +
+                        "       { type: \'turkish\', targets: [1,2,3,4,5,6] }\r\n            ],\r\n            " +
+                        "\'order\': [[1, \'desc\']],//sort date desc\r\n            \"language\": {\r\n            " +
+                        "    \"url\": \"http://tskgv-portal/OrtakBelgeler/Turkish.txt\",\r\n                \"de" +
+                        "cimal\": \",\",\r\n                \"thousands\": \".\"\r\n            },\r\n            resp" +
+                        "onsive: true,\r\n            dom: \'Bfrtip\',\r\n            buttons: [\r\n             " +
+                        "   {\r\n                    extend: \'print\',\r\n                    exportOptions: {" +
+                        "\r\n                        columns: \':visible\'\r\n                    }\r\n          " +
+                        "      },\r\n                {\r\n                    extend: \'excel\',\r\n             " +
+                        "       exportOptions: {\r\n                        columns: \':visible\'\r\n          " +
+                        "          }\r\n                },\r\n                {\r\n                    extend: " +
+                        "\'pdf\',\r\n                    exportOptions: {\r\n                        columns: \'" +
                         ":visible\'\r\n                    }\r\n                },\r\n                {\r\n       " +
-                        "             extend: \'pdf\',\r\n                    exportOptions: {\r\n             " +
-                        "           columns: \':visible\'\r\n                    }\r\n                },\r\n     " +
-                        "           {\r\n                    extend: \'copy\',\r\n                    exportOpt" +
-                        "ions: {\r\n                        columns: \':visible\'\r\n                    }\r\n   " +
-                        "             },\r\n                , \'pageLength\', \"colvis\"\r\n            ],\r\n     " +
-                        "       \"createdRow\": function (row, data, dataIndex) {\r\n                if (data" +
-                        ".FaaliyetTipi == \"Alınan Randevu\") {\r\n                    if (data[\'Secildi\'] ==" +
-                        " false)\r\n                        $(row).addClass(\'alinan\');\r\n\r\n                }" +
-                        "\r\n            },//set row color \r\n        });\r\n\r\n        \r\n    });\r\n\r\n</script>\r" +
-                        "\n<div class=\"container col-xl \">\r\n    <div class=\"card shadow\">\r\n        <div cl" +
-                        "ass=\"card-header\">\r\n            "));
+                        "             extend: \'copy\',\r\n                    exportOptions: {\r\n            " +
+                        "            columns: \':visible\'\r\n                    }\r\n                },\r\n    " +
+                        "            , \'pageLength\', \"colvis\"\r\n            ],\r\n            \"createdRow\": " +
+                        "function (row, data, dataIndex) {\r\n                if (data.FaaliyetTipi == \"Alı" +
+                        "nan Randevu\") {\r\n                    if (data[\'Secildi\'] == false)\r\n            " +
+                        "            $(row).addClass(\'alinan\');\r\n\r\n                }\r\n            },//set" +
+                        " row color \r\n        });\r\n\r\n        \r\n    });\r\n\r\n</script>\r\n<div class=\"containe" +
+                        "r \">\r\n    <div class=\"card shadow\">\r\n        <div class=\"card-header\">\r\n        " +
+                        "    "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl1;
             @__ctrl1 = this.@__BuildControlCloseBtn();
             @__parser.AddParsedSubObject(@__ctrl1);
@@ -362,77 +290,46 @@ namespace MTS_WebParts.FaaliyetListesiWP {
             </h3>
         </div>
         <div class=""card-body"">
-            <div class=""form-group alert-secondary p-2"">
-                <div class=""form-group "">
-                    <div class=""row"">
-                        <div class=""col-2"">
-                            <div class=""form-group"">
-                                "));
-            global::System.Web.UI.WebControls.Label @__ctrl5;
-            @__ctrl5 = this.@__BuildControl__control2();
-            @__parser.AddParsedSubObject(@__ctrl5);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl6;
-            @__ctrl6 = this.@__BuildControlBaslangicTarihiTxt();
-            @__parser.AddParsedSubObject(@__ctrl6);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                        </div>\r\n           " +
-                        "             <div class=\"col-2\">\r\n                            <div class=\"form-g" +
-                        "roup\">\r\n                                "));
-            global::System.Web.UI.WebControls.Label @__ctrl7;
-            @__ctrl7 = this.@__BuildControl__control3();
-            @__parser.AddParsedSubObject(@__ctrl7);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl8;
-            @__ctrl8 = this.@__BuildControlBitisTarihiTxt();
-            @__parser.AddParsedSubObject(@__ctrl8);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class=""form-group"">
+                <table id=""CustomDataTable"" class=""table table-striped table-bordered"" width=""100%"">
+                    <thead>
+                        <tr>
+                            <th>F.No</th>
+                            <th>Yeri</th>
+                            <th>Konusu</th>
+                            <th>Amacı</th>
+                            <th>Durumu</th>
+                            <th>Tipi</th>
+                            <th>Katılımcılar</th>
+                            <th>Açıklama</th>
+                            <th>Oluşturma Tarihi</th>
+                            <th>Düzenle</th>
+                        </tr>
+                    </thead>
+                </table>
             </div>
-
-                    <div class=""form-group"">
-                        <table id=""CustomDataTable"" class=""table table-striped table-bordered"" width=""100%"">
-                            <thead>
-                                <tr>
-                                    <th>F.No</th>
-                                    <th>Başlangıç</th>
-                                    <th>Bitiş</th>
-                                    <th>Yeri</th>
-                                    <th>Konusu</th>
-                                    <th>Amacı</th>
-                                    <th>Durumu</th>
-                                    <th>Tipi</th>
-                                    <th>Katılımcılar</th>
-                                    <th>Düzenle</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-
         </div>
         <div class=""card-footer"">
             "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl5;
+            @__ctrl5 = this.@__BuildControlYeniKayitBtn();
+            @__parser.AddParsedSubObject(@__ctrl5);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl6;
+            @__ctrl6 = this.@__BuildControlFaaliyetTakvimiBtn();
+            @__parser.AddParsedSubObject(@__ctrl6);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl7;
+            @__ctrl7 = this.@__BuildControlFaaliyetListesiBtn();
+            @__parser.AddParsedSubObject(@__ctrl7);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl8;
+            @__ctrl8 = this.@__BuildControlAcikTarihliFaaliyetListesiBtn();
+            @__parser.AddParsedSubObject(@__ctrl8);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl9;
-            @__ctrl9 = this.@__BuildControlYeniKayitBtn();
+            @__ctrl9 = this.@__BuildControlKisiListesiBtn();
             @__parser.AddParsedSubObject(@__ctrl9);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl10;
-            @__ctrl10 = this.@__BuildControlFaaliyetTakvimiBtn();
-            @__parser.AddParsedSubObject(@__ctrl10);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl11;
-            @__ctrl11 = this.@__BuildControlFaaliyetListesiBtn();
-            @__parser.AddParsedSubObject(@__ctrl11);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl12;
-            @__ctrl12 = this.@__BuildControlAcikTarihliFaaliyetListesiBtn();
-            @__parser.AddParsedSubObject(@__ctrl12);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl13;
-            @__ctrl13 = this.@__BuildControlKisiListesiBtn();
-            @__parser.AddParsedSubObject(@__ctrl13);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n        </div>\r\n\r\n    </div>\r\n</div>\r\n"));
         }
         

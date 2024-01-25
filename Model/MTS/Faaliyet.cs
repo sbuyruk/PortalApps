@@ -248,12 +248,15 @@ namespace Model.MTS
 
             return list;
         }
-        public DataTable SelectAllByKatilimciFaaliyetReturnDataTable( int faaliyetId, int monthBefore)
+        public DataTable SelectAllByKatilimciFaaliyetReturnDataTable( int faaliyetId, int monthBefore, string acikTarihli, DateTime bastar, DateTime bittar)
         {
+            string bastarStr = bastar < ProjeConstants.REFERANS_TARIHI ? string.Empty : string.Format(" AND BaslangicTarihi >= {0}",bastar.ReturnTRDateFormat());
+            string bittarStr = bittar < ProjeConstants.REFERANS_TARIHI ? string.Empty : string.Format(" AND BitisTarihi <= {0}",bittar.ReturnTRDateFormat());
+            string acikTarililerHaric = acikTarihli.Equals(ProjeConstants.HEPSI) ? string.Empty: (acikTarihli.Equals(ProjeConstants.FAALIYET_ACIKTARIHLI) ? " AND B.AcikTarih=1 ": " AND B.AcikTarih=0 ");
             string faaliyetIdStr = faaliyetId == ProjeConstants.HEPSI_INT ? "" : " AND A.FaaliyetId=" + faaliyetId;
             string monthBeforeStr = monthBefore == 0 ? string.Empty : string.Format("AND BaslangicTarihi > DateAdd(month, {0}, Convert(date, GetDate()))", monthBefore);
             string sqlString = string.Format(@"
-                SELECT A.KatilimciTipi,A.KatilimciId, A.Id KatilimId,
+                SELECT A.KatilimciTipi,A.KatilimciId, A.Id KatilimId,A.TakvimDaveti,B.Aciklama, B.OlusturmaTarihi,
                     CASE
 	                    WHEN A.KatilimciTipi=1 THEN D.Adi
                         WHEN A.KatilimciTipi=2 THEN C.Adi
@@ -275,6 +278,13 @@ namespace Model.MTS
 		                WHEN A.KatilimciTipi=4 THEN 'Taşınmaz Bağışçı'
                     ELSE C.Kurumu
 	                END AS Kurumu,
+					CASE
+		                WHEN A.KatilimciTipi=1 THEN G.InternetEPosta
+                        WHEN A.KatilimciTipi=2 THEN C.EPosta
+		                WHEN A.KatilimciTipi=3 THEN E.EPosta
+		                WHEN A.KatilimciTipi=4 THEN F.EPosta
+                    ELSE C.EPosta
+	                END AS EPosta,
 	                B.Id FaaliyetId, B.BaslangicTarihi,B.BaslangicSaati, B.BitisTarihi,B.BitisSaati,
 	                B.FaaliyetAmaci,B.FaaliyetDurumu,B.FaaliyetKonusu,B.FaaliyetTipi,B.FaaliyetYeriStr FaaliyetYeri, B.TumGun,B.AcikTarih
 	
@@ -284,11 +294,15 @@ namespace Model.MTS
 	                LEFT JOIN Personel_Table D ON D.Id = A.KatilimciId
                     LEFT JOIN NakitBagisci_Table E ON E.Id = A.KatilimciId
                     LEFT JOIN TasinmazBagisci_Table F ON F.Id = A.KatilimciId
+                    LEFT JOIN IletisimBilgileri_Table G ON G.PersonelId = A.KatilimciId
                 WHERE B.Id IS NOT NULL
                 {0}
                 {1}
+                {2}
+                {3}
+                {4}
                 ORDER BY B.BaslangicTarihi DESC, KatilimciTipi, Adi,Soyadi 
-            ", faaliyetIdStr, monthBeforeStr);
+            ", acikTarililerHaric, faaliyetIdStr, monthBeforeStr,bastarStr,bittarStr);
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
 
             return dataTable;

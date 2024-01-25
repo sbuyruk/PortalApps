@@ -31,6 +31,8 @@ namespace Utility.ProjeGlobal
         public const string MTSGOREVDURUMU_GOREVDE = "Görevde";
         public const string MTSGOREVDURUMU_AYRILDI = "Ayrıldı";
         public const string MTSAYRILMASEBEBI_BOS = "";
+        public const string MTSTAKVIMDAVETIYESI_GONDERILMEDI = "";
+        public const string MTSTAKVIMDAVETIYESI_GONDERILDI = "Davet Gönderildi";
         //moduller IKYS
         public const string IKYS_AILE = "Aile";        
         public const string IKYS_BIRIMTANIM = "Birim Tanım";
@@ -188,15 +190,15 @@ namespace Utility.ProjeGlobal
         public const bool NBYS_UPDATE_LOG = true;
         public const bool NBYS_SAVE_LOG = true;
         //TBYS
-        public const bool TBYS_DELETE_LOG = true;
-        public const bool TBYS_UPDATE_LOG = true;
-        public const bool TBYS_SAVE_LOG = true;
+        public const bool TBYS_DELETE_LOG = false;
+        public const bool TBYS_UPDATE_LOG = false;
+        public const bool TBYS_SAVE_LOG = false;
         //TYS
         
         //PORTAL
-        public const bool PORTAL_DELETE_LOG = true;
-        public const bool PORTAL_UPDATE_LOG = true;
-        public const bool PORTAL_SAVE_LOG = true;
+        public const bool PORTAL_DELETE_LOG = false;
+        public const bool PORTAL_UPDATE_LOG = false;
+        public const bool PORTAL_SAVE_LOG = false;
 
 
         public const char DELIMITER = ';';
@@ -348,6 +350,7 @@ namespace Utility.ProjeGlobal
         public const string PAGE_KISI_LIST = "KisiListesi.aspx";
         public const string PAGE_FAALIYET_GIRIS = "FaaliyetGirisi.aspx";
         public const string PAGE_FAALIYET_LIST = "FaaliyetListesi.aspx";
+        public const string PAGE_ACIKTARIHLIFAALIYET_LIST = "AcikTarihliFaaliyetListesi.aspx";
         public const string PAGE_FAALIYET_TAKVIM = "FaaliyetViewer.aspx";
         public const string PAGE_FAALIYET_TAKVIM_RO = "FaaliyetROViewer.aspx";
         public const string PAGE_FAALIYET_TAKVIM_CUSTOM = "FaaliyetViewerCustom.aspx";
@@ -908,9 +911,12 @@ namespace Utility.ProjeGlobal
         public static bool DERGI_GONDERILSIN = false;
 
         public static DateTime TL_GECIS_TARIHI = new DateTime(2005, 1, 1);
-        public static decimal SMS_TUTAR_01022023ONCESI = 10;
-        public static DateTime SMS_TUTAR_DEGISIM_TARIHI = new DateTime(2023, 1, 1);
-        public static decimal SMS_TUTAR_01022023SONRASI = 20;
+        public static DateTime SMS_2024 = new DateTime(2024, 1, 1);
+        public static DateTime SMS_2023 = new DateTime(2023, 1, 1);
+        public static DateTime SMS_2022 = new DateTime(2022, 1, 1);
+        public static decimal SMS_TUTAR_2022 = 10;
+        public static decimal SMS_TUTAR_2023 = 20;
+        public static decimal SMS_TUTAR_2024= 100;
         //yazılar
         public const string KIRABORCU_DOSYA = "Kira-Borcu";
         public const string KIRAARTIS_DOSYA = "Kira-Artis";
@@ -928,6 +934,7 @@ namespace Utility.ProjeGlobal
 
         public static string RANDEVU_VERILEN = "Verilen Randevu";
         public static string RANDEVU_ALINAN = "Alınan Randevu";
+        public static string RANDEVU_DIGER = "Diğer";
 
         public const string FAALIYET_AMACI_TOPLANTI = "Toplantı";
         public const string FAALIYET_AMACI_ZIYARET = "Ziyaret";
@@ -937,6 +944,9 @@ namespace Utility.ProjeGlobal
         public const string FAALIYET_AMACI_OZELCALISMA = "Özel Çalışma";
         public const string FAALIYET_AMACI_IZIN = "İzin";
         public const string FAALIYET_AMACI_RESMITATIL = "Resmi Tatil";
+        public const string FAALIYET_AMACI_SEYAHAT = "Seyahat";
+        public const string FAALIYET_AMACI_GORUSME = "Görüşme";
+        public const string FAALIYET_AMACI_BILGI = "Bilgi";
 
         public const string FAALIYET_AMACI_TOPLANTI_INT = "1";
         public const string FAALIYET_AMACI_ZIYARET_INT = "2";
@@ -946,6 +956,9 @@ namespace Utility.ProjeGlobal
         public const string FAALIYET_AMACI_OZELCALISMA_INT = "6";        
         public const string FAALIYET_AMACI_IZIN_INT = "7";
         public const string FAALIYET_AMACI_RESMITATIL_INT = "8";
+        public const string FAALIYET_AMACI_GORUSME_INT = "9";
+        public const string FAALIYET_AMACI_SEYAHAT_INT = "10";
+        public const string FAALIYET_AMACI_BILGI_INT = "11";
         //public enum RandevuAmaciEnum { Diğer, Toplantı, Ziyaret, Davet, Yıldönümü, ÖzelÇalışma, İzin }
 
         public static string FAALIYET_DURUMU_PLANLANDI = "Planlandı";

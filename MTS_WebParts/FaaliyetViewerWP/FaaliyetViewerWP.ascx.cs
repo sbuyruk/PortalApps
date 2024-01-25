@@ -182,7 +182,6 @@ namespace MTS_WebParts.FaaliyetViewerWP
             if (!Page.IsPostBack)
             {
                 KayitGetir();
-                AcikTarihliFaaliyetListesiniGetir();
             }
         }
         private void KayitGetir()
@@ -373,19 +372,6 @@ namespace MTS_WebParts.FaaliyetViewerWP
             string calendarView = string.IsNullOrEmpty(CalendarViewQS) ? "'dayGridMonth'" : CalendarViewQS.ReturnQuotedValue().ToString();
             string calendarStr = @" 
             document.addEventListener('DOMContentLoaded', function() {
-                 var containerEl = document.getElementById('AcikTarihliFaaliyetListDiv');
-                 var eventEls = Array.prototype.slice.call(
-                   containerEl.querySelectorAll('.fc-event')
-                 );
-                 eventEls.forEach(function(eventEl) {
-                   new FullCalendar.Draggable(eventEl, {
-                     eventData: {
-                        title: eventEl.innerText.trim(),
-                        id : eventEl.id.trim(),
-                     }
-                   });
-                 });
-
                 /* initialize the calendar
                 -----------------------------------------------------------------*/
 
@@ -483,30 +469,8 @@ namespace MTS_WebParts.FaaliyetViewerWP
 
             return calendarStr;
         }
-        private void AcikTarihliFaaliyetListesiniGetir()
-        {
-            Faaliyet randevu = new Faaliyet();
-            List<Faaliyet> list = randevu.SelectAllReturnList(ProjeConstants.FAALIYET_ACIKTARIHLI);
-            foreach (var item in list)
-            {
-                CreateDiv(item.Id.ToString(), item.FaaliyetKonusu);
-            }
-        }
-        private void CreateDiv(string divId, string value)
-        {
-            HtmlGenericControl outerDiv = new HtmlGenericControl("div");
-
-            outerDiv.Attributes.Add("class", "bg-light border border-dark fc-event fc-h-event fc-daygrid-event fc-daygrid-block-event title-wrap");
-            outerDiv.Attributes.Add("id", divId);
-
-            HtmlGenericControl innerDiv = new HtmlGenericControl("div");
-            innerDiv.Attributes.Add("class", "fc-event-main");
-            HyperLink randevuLink = HyperLinkGetir(divId.ConvertToInt(), value);
-            innerDiv.Controls.Add(randevuLink);
-            //innerDiv.InnerHtml = string.IsNullOrEmpty(value)?"Konu Yok":value;
-            outerDiv.Controls.Add(innerDiv);
-            AcikTarihliFaaliyetListDiv.Controls.Add(outerDiv);
-        }
+       
+        
         private HyperLink HyperLinkGetir(int randevuId, string randevuKonusu)
         {
             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
@@ -690,28 +654,24 @@ namespace MTS_WebParts.FaaliyetViewerWP
         {
             DogumGunuQS = VakifIciKutlamaChk.Checked.ToString();
             KayitGetir();
-            AcikTarihliFaaliyetListesiniGetir();
         }
 
         protected void VakifDisiKutlamaChk_CheckedChanged(object sender, EventArgs e)
         {
             KisiDogumGunuQS = VakifDisiKutlamaChk.Checked.ToString();
             KayitGetir();
-            AcikTarihliFaaliyetListesiniGetir();
         }
 
         protected void ResmiTatilChk_CheckedChanged(object sender, EventArgs e)
         {
             ResmiTatilQS = ResmiTatilChk.Checked.ToString();
             KayitGetir();
-            AcikTarihliFaaliyetListesiniGetir();
         }
 
         protected void ToplantiChk_CheckedChanged(object sender, EventArgs e)
         {
             ToplantiQS = ToplantiChk.Checked.ToString();
             KayitGetir();
-            AcikTarihliFaaliyetListesiniGetir();
         }
         #endregion
     }

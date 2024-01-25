@@ -1467,7 +1467,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                         + izinDonemi.KullanilanIzin.ConvertToInt() + " " + izinDonemi.Birim + "dür. " + System.Environment.NewLine;
 
                     int kalanIzinInt = izinDonemi.KalanIzin.ConvertToInt();
-                    int kalanIzinToplami = GecmisDonemlerdenKalanIzinToplamı(personel, izinDonemi);
+                    int kalanIzinToplami = KalanIzinToplamıGetir(personel);
                     int gecmisDonemlerdenKalanIzin = kalanIzinToplami - kalanIzinInt;
 
                     if (kalanIzinInt < 0)
@@ -1574,20 +1574,17 @@ namespace IKYS_WebParts.IzinTalepGirisWP
 
         }
 
-        private int GecmisDonemlerdenKalanIzinToplamı(Personel personel,IzinDonem izinDonemi)
+        private int KalanIzinToplamıGetir(Personel personel)
         {
            
             IzinDonem izinDonemDao=new IzinDonem();
-            int izinHakkiToplami = 0;
-            int kullanilanIzinToplami = 0;
             int kalanIzinToplami = 0;
 
-            DataTable dataTable = izinDonemDao.SelectSUMByPersonelId(personel.Id);
+            DataTable dataTable = izinDonemDao.SelectSUMKalanIzinByPersonelId(personel.Id,false);
             if (dataTable != null)
             {
                 DataRow dataRow = dataTable.Rows[0];
-                izinHakkiToplami = dataRow ["IzinHakkiToplami"].ConvertToInt() - izinDonemi.IzinHakki.ConvertToInt();
-                kullanilanIzinToplami = dataRow ["KullanilanIzinToplami"].ConvertToInt() - izinDonemi.KullanilanIzin.ConvertToInt();
+
                 kalanIzinToplami = dataRow["KalanIzinToplami"].ConvertToInt();// - izinDonemi.KalanIzin.ConvertToInt();
             }
             

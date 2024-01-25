@@ -348,6 +348,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ResmiTatilListesiWP.ascx</DependentUpon>
     </Compile>
+    <Compile Include="SonIzinDurumuWP\SonIzinDurumuWP.ascx.cs">
+      <DependentUpon>SonIzinDurumuWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="SonIzinDurumuWP\SonIzinDurumuWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SonIzinDurumuWP.ascx</DependentUpon>
+    </Compile>
     <Compile Include="TarihBazliIzinKullanimRaporuWP\TarihBazliIzinKullanimRaporuWP.ascx.cs">
       <DependentUpon>TarihBazliIzinKullanimRaporuWP.ascx</DependentUpon>
     </Compile>
@@ -534,6 +542,10 @@
     <None Include="ResmiTatilListesiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{d59ca40b-0953-4cbb-b14d-9c21c329c16a}</SharePointProjectItemId>
     </None>
+    <None Include="SonIzinDurumuWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{170ae8be-9217-40ca-a5c1-2ce2866614f2}</SharePointProjectItemId>
+    </None>
+    <None Include="SonIzinDurumuWP\SonIzinDurumuWP.webpart" />
     <None Include="TarihBazliIzinKullanimRaporuWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{d64b76f1-a23c-4f3d-8be1-ae34a9d6ea34}</SharePointProjectItemId>
     </None>
@@ -723,6 +735,11 @@
     <Content Include="ResmiTatilListesiWP\ResmiTatilListesiWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>ResmiTatilListesiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="SonIzinDurumuWP\Elements.xml" />
+    <Content Include="SonIzinDurumuWP\SonIzinDurumuWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>SonIzinDurumuWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="TarihBazliIzinKullanimRaporuWP\Elements.xml" />
     <Content Include="TarihBazliIzinKullanimRaporuWP\TarihBazliIzinKullanimRaporuWP.ascx">

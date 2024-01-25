@@ -439,15 +439,15 @@ namespace TBYS_WebParts.TasinmazListesiWP
                 string ilce = row0["Ilcesi"].ReturnEmptyIfNull().ToString();
                 string adi0 = row0["Adi"].ToString();
                 string soyadi0 = row0["Soyadi"].ToString();
-                string nitelik = row0["Nitelik"].ToString();
-                string aciklama = row0["Aciklama"].ToString();
+                
                 BagisciLbl.Text = "Bağışçı : "+ (adi0 + " " + soyadi0).Trim() ;
                 AdresLbl.Text = "Adres : "+ adres +" " +ilce+"/"+il ;
                 foreach (DataRow row in dataTable.Rows)
                 {
                     int bolumId = row["BolumId"].ConvertToInt();
                     string bolumNo = row["BolumNo"].ToString();
-                    
+                    string aciklama = row["Aciklama"].ToString();
+                    string nitelik = row["Nitelik"].ToString();
 
                     BagimsizBolumListItem bagimsizBolum = new BagimsizBolumListItem();
                     bagimsizBolum.Bagisci =(adi0 + " " + soyadi0).Trim() ;

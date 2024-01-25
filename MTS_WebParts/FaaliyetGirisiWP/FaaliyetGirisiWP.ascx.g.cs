@@ -213,6 +213,10 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.LinkButton AcikTarihliFaaliyetListesiBtn;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton KisiListesiBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -394,6 +398,22 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.UpdatePanel UpdatePanel10;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl H1;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.LinkButton TakvimDavetiGonderNowBtn;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.TextBox EPostaAdresiTxt;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.UpdatePanel UpdatePanel11;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebPartCodeGenerator", "17.0.0.0")]
         public static implicit operator global::System.Web.UI.TemplateControl(FaaliyetGirisiWP target) 
@@ -1411,11 +1431,10 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
                                             <tr>
                                                 <th>Adı Soyadı</th>
                                                 <th>Kurumu</th>
-                                                <th>Katilimci int</th>
+                                                <th>Katılımcı</th>
                                                 <th>Katilimci Tipi</th>
-                                                <th>Anı Objesi (Stoklu)</th>
-                                                <th>Anı Objesi (Stoksuz)</th>
-                                                <th>Getirilen Anı Objesi</th>
+                                                <th>Anı Objesi </th>
+                                                <th>E-posta Daveti</th>
                                                 <th>Kişi Kartı</th>
                                                 <th>Çıkar</th>
                                             </tr>
@@ -1715,6 +1734,23 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlAcikTarihliFaaliyetListesiBtn() {
+            global::System.Web.UI.WebControls.LinkButton @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
+            this.AcikTarihliFaaliyetListesiBtn = @__ctrl;
+            @__ctrl.TemplateControl = this;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "AcikTarihliFaaliyetListesiBtn";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.Text = "Açık Tarihli Faal. List.";
+            @__ctrl.Click -= new System.EventHandler(this.AcikTarihliFaaliyetListesiBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.AcikTarihliFaaliyetListesiBtn_Click);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlKisiListesiBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -1759,10 +1795,14 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             global::System.Web.UI.WebControls.LinkButton @__ctrl6;
             @__ctrl6 = this.@__BuildControlFaaliyetListesiBtn();
             @__parser.AddParsedSubObject(@__ctrl6);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                     "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl7;
-            @__ctrl7 = this.@__BuildControlKisiListesiBtn();
+            @__ctrl7 = this.@__BuildControlAcikTarihliFaaliyetListesiBtn();
             @__parser.AddParsedSubObject(@__ctrl7);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl8;
+            @__ctrl8 = this.@__BuildControlKisiListesiBtn();
+            @__parser.AddParsedSubObject(@__ctrl8);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                "));
         }
         
@@ -3039,6 +3079,158 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControlH1() {
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
+            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("h3");
+            this.H1 = @__ctrl;
+            @__ctrl.TemplateControl = this;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-form-label font-weight-bold");
+            @__ctrl.ID = "H1";
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Takvim Daveti"));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlTakvimDavetiGonderNowBtn() {
+            global::System.Web.UI.WebControls.LinkButton @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
+            this.TakvimDavetiGonderNowBtn = @__ctrl;
+            @__ctrl.TemplateControl = this;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "TakvimDavetiGonderNowBtn";
+            @__ctrl.CssClass = "btn btn-success";
+            @__ctrl.CausesValidation = false;
+            @__ctrl.Text = " Gönder ";
+            @__ctrl.Click -= new System.EventHandler(this.TakvimDavetiGonderNowBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.TakvimDavetiGonderNowBtn_Click);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControl__control62() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            @__ctrl.TemplateControl = this;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.CssClass = "col-form-label font-weight-bold";
+            @__ctrl.Text = "EPosta Adresi";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.TextBox @__BuildControlEPostaAdresiTxt() {
+            global::System.Web.UI.WebControls.TextBox @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.TextBox();
+            this.EPostaAdresiTxt = @__ctrl;
+            @__ctrl.TemplateControl = this;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "EPostaAdresiTxt";
+            @__ctrl.CssClass = "form-control";
+            @__ctrl.Text = "";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private void @__BuildControl__control61(System.Web.UI.Control @__ctrl) {
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n        <div class=\"modal\" id=\"TakvimDavetiModalDiv\" role=\"dialog\">\r\n          " +
+                        "  <div class=\"modal-dialog\">\r\n                <div class=\"modal-content\">\r\n     " +
+                        "               <div class=\"modal-header text-danger\">\r\n                        "));
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl1;
+            @__ctrl1 = this.@__BuildControlH1();
+            @__parser.AddParsedSubObject(@__ctrl1);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                    <div class=\"modal-body \">\r\n    " +
+                        "                    <div id=\"TakvimDavetiGonderNowDiv\" style=\"display: none\">\r\n " +
+                        "                           "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl2;
+            @__ctrl2 = this.@__BuildControlTakvimDavetiGonderNowBtn();
+            @__parser.AddParsedSubObject(@__ctrl2);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"form-group\"" +
+                        ">\r\n                            "));
+            global::System.Web.UI.WebControls.Label @__ctrl3;
+            @__ctrl3 = this.@__BuildControl__control62();
+            @__parser.AddParsedSubObject(@__ctrl3);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
+            global::System.Web.UI.WebControls.TextBox @__ctrl4;
+            @__ctrl4 = this.@__BuildControlEPostaAdresiTxt();
+            @__parser.AddParsedSubObject(@__ctrl4);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                        </div>
+                    </div>
+                    <div class=""modal-footer"">
+                        <button type=""button"" class=""btn btn-secondary"" data-dismiss=""modal"">Kapat</button>
+                        <div id=""TakvimDavetiGonderBtnDiv"" style=""display: block"">
+                            <input id=""TakvimDavetiGonderBtn"" class=""btn btn-success"" type=""button"" value=""Gönder"" onclick=""TakvimDavetiGonderBtnClicked();"" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    "));
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control64() {
+            global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
+            @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
+            @__ctrl.ControlID = "GetirilenAniObjesiSecBtn";
+            @__ctrl.EventName = "click";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control65() {
+            global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
+            @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
+            @__ctrl.ControlID = "GetirilenAniObjesiKaydetBtn";
+            @__ctrl.EventName = "click";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private void @__BuildControl__control63(System.Web.UI.UpdatePanelTriggerCollection @__ctrl) {
+            global::System.Web.UI.AsyncPostBackTrigger @__ctrl1;
+            @__ctrl1 = this.@__BuildControl__control64();
+            @__ctrl.Add(@__ctrl1);
+            global::System.Web.UI.AsyncPostBackTrigger @__ctrl2;
+            @__ctrl2 = this.@__BuildControl__control65();
+            @__ctrl.Add(@__ctrl2);
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.UpdatePanel @__BuildControlUpdatePanel11() {
+            global::System.Web.UI.UpdatePanel @__ctrl;
+            @__ctrl = new global::System.Web.UI.UpdatePanel();
+            this.UpdatePanel11 = @__ctrl;
+            @__ctrl.ContentTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control61));
+            @__ctrl.ID = "UpdatePanel11";
+            @__ctrl.UpdateMode = global::System.Web.UI.UpdatePanelUpdateMode.Conditional;
+            @__ctrl.ViewStateMode = global::System.Web.UI.ViewStateMode.Enabled;
+            this.@__BuildControl__control63(@__ctrl.Triggers);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControlTree(global::MTS_WebParts.FaaliyetGirisiWP.FaaliyetGirisiWP @__ctrl) {
             global::System.Web.UI.WebControls.LinkButton @__ctrl1;
             @__ctrl1 = this.@__BuildControlCloseBtn();
@@ -3101,6 +3293,9 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             global::System.Web.UI.UpdatePanel @__ctrl20;
             @__ctrl20 = this.@__BuildControlUpdatePanel10();
             @__parser.AddParsedSubObject(@__ctrl20);
+            global::System.Web.UI.UpdatePanel @__ctrl21;
+            @__ctrl21 = this.@__BuildControlUpdatePanel11();
+            @__parser.AddParsedSubObject(@__ctrl21);
             @__ctrl.SetRenderMethodDelegate(new System.Web.UI.RenderMethod(this.@__Render__control1));
         }
         
@@ -3117,49 +3312,52 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
                     "tepicker {\r\n        z-index: 9999 !important;\r\n        width: 15em;\r\n        fon" +
                     "t-size: small;\r\n    }\r\n\r\n    .disabled-item {\r\n        background-color: rgba(20" +
                     "6, 220, 229, 0.40) !important;\r\n        color: darkgrey !important;\r\n    }\r\n</st" +
-                    "yle>\r\n\r\n<script type=\"text/javascript\">\r\n    //On Page Load.\r\n    $(function () " +
-                    "{\r\n        SetDatePicker();\r\n    });\r\n    //ikinci tarih için\r\n    function SetD" +
-                    "atePicker() {\r\n        $(\"#BitisTarihiTxt\").datepicker({\r\n            dateFormat" +
-                    ": \"dd.mm.yy\",\r\n            firstDay: 1,\r\n            monthNames: [\"Ocak\", \"Şubat" +
-                    "\", \"Mart\", \"Nisan\", \"Mayıs\", \"Haziran\", \"Temmuz\", \"Ağustos\", \"Eylül\", \"Ekim\", \"K" +
-                    "asım\", \"Aralık\"],\r\n            monthNamesShort: [\"Oca\", \"Şub\", \"Mar\", \"Nis\", \"Ma" +
-                    "y\", \"Haz\", \"Tem\", \"Ağu\", \"Eyl\", \"Eki\", \"Kas\", \"Ara\"],\r\n            dayNames: [\"P" +
-                    "azar\", \"Pazartesi\", \"Salı\", \"Çarşamba\", \"Perşembe\", \"Cuma\", \"Cumartesi\"],\r\n     " +
-                    "       dayNamesMin: [\"Pz\", \"Pt\", \"Sl\", \"Çr\", \"Pr\", \"Cu\", \"Ct\"],\r\n            cha" +
-                    "ngeMonth: true,\r\n            changeYear: true,\r\n            inline: true,\r\n     " +
-                    "       altField: \"#BitisTarihiTxt\",\r\n            beforeShow: function (input, in" +
-                    "st) {\r\n                var mindate = $(\'#BaslangicTarihiTxt\').datepicker(\'getDat" +
-                    "e\');\r\n                $(this).datepicker(\'option\', \'minDate\', mindate);\r\n       " +
-                    "         var newDate = new Date($(\'#BaslangicTarihiTxt\').datepicker(\'getDate\'));" +
-                    "\r\n                newDate.setDate(newDate.getDate() + 30);\r\n                $(th" +
-                    "is).datepicker(\'option\', \'maxDate\', newDate);\r\n            },\r\n            befor" +
-                    "eShowDay: function (date) {\r\n                $(\'#ui-datepicker-div\').css(\'clip\'," +
-                    " \'auto\');\r\n                return [true, \'\', \'\'];\r\n            }\r\n        });\r\n " +
-                    "       $(\"#BaslangicTarihiTxt\").datepicker({\r\n            dateFormat: \"dd.mm.yy\"" +
-                    ",\r\n            firstDay: 1,\r\n            monthNames: [\"Ocak\", \"Şubat\", \"Mart\", \"" +
-                    "Nisan\", \"Mayıs\", \"Haziran\", \"Temmuz\", \"Ağustos\", \"Eylül\", \"Ekim\", \"Kasım\", \"Aral" +
-                    "ık\"],\r\n            monthNamesShort: [\"Oca\", \"Şub\", \"Mar\", \"Nis\", \"May\", \"Haz\", \"" +
-                    "Tem\", \"Ağu\", \"Eyl\", \"Eki\", \"Kas\", \"Ara\"],\r\n            dayNames: [\"Pazar\", \"Paza" +
-                    "rtesi\", \"Salı\", \"Çarşamba\", \"Perşembe\", \"Cuma\", \"Cumartesi\"],\r\n            dayNa" +
-                    "mesMin: [\"Pz\", \"Pt\", \"Sl\", \"Çr\", \"Pr\", \"Cu\", \"Ct\"],\r\n            changeMonth: tr" +
-                    "ue,\r\n            changeYear: true,\r\n            inline: true,\r\n            altFi" +
-                    "eld: \"#BaslangicTarihiTxt\",\r\n            beforeShow: function (input, inst) {\r\n " +
-                    "               var mindate = new Date();\r\n                $(this).datepicker(\'op" +
-                    "tion\', \'minDate\', mindate);\r\n            },\r\n        }).on(\"change\", function ()" +
-                    " {\r\n\r\n            var dateMin = $(\'[id$=BaslangicTarihiTxt]\').datepicker(\"getDat" +
-                    "e\");\r\n            var rMin = new Date(dateMin.getFullYear(), dateMin.getMonth()," +
-                    " dateMin.getDate());\r\n            var rMax = new Date(dateMin.getFullYear(), dat" +
-                    "eMin.getMonth(), dateMin.getDate());\r\n\r\n            $(\'[id$=BitisTarihiTxt]\').da" +
-                    "tepicker(\"option\", \"minDate\", rMin);\r\n            $(\'[id$=BitisTarihiTxt]\').date" +
-                    "picker(\"option\", \"maxDate\", rMax);\r\n\r\n            var newDate = new Date($(\'#Bas" +
-                    "langicTarihiTxt\').datepicker(\'getDate\'));\r\n            newDate.setDate(newDate.g" +
-                    "etDate());\r\n\r\n        });\r\n\r\n\r\n    }\r\n</script>\r\n\r\n\r\n<script type=\"text/javascri" +
-                    "pt\">\r\n    function OpenSilModal() {\r\n        $(\"#ModalSilDiv\").modal({ backdrop:" +
-                    " true });\r\n    }\r\n    function KatilimciSecimiModal() {\r\n        $(\"#KatilimciSe" +
-                    "cimiModal\").modal({ backdrop: false });\r\n    }\r\n    $(\"#KatilimciSecimiModal\").d" +
-                    "raggable({\r\n        handle: \".modal-dialog\"\r\n    });\r\n    function KatilimciSeci" +
-                    "ldiBtnClick(katilimciId, faaliyetId, katilimciTipi) {\r\n        document.getEleme" +
-                    "ntById(\'");
+                    "yle>\r\n\r\n<script type=\"text/javascript\">\r\n    //On Page Load.<a href=\"{4BB30692-6" +
+                    "04D-4C8D-ADF7-3A049AD260F3}|MTS_WebParts\\MTS_WebParts.csproj|c:\\users\\taylis\\sou" +
+                    "rce\\repos\\portalapps\\mts_webparts\\kisilistesiwp\\\">{4BB30692-604D-4C8D-ADF7-3A049" +
+                    "AD260F3}|MTS_WebParts\\MTS_WebParts.csproj|c:\\users\\taylis\\source\\repos\\portalapp" +
+                    "s\\mts_webparts\\kisilistesiwp\\</a>\r\n    $(function () {\r\n        SetDatePicker();" +
+                    "\r\n    });\r\n    //ikinci tarih için\r\n    function SetDatePicker() {\r\n        $(\"#" +
+                    "BitisTarihiTxt\").datepicker({\r\n            dateFormat: \"dd.mm.yy\",\r\n            " +
+                    "firstDay: 1,\r\n            monthNames: [\"Ocak\", \"Şubat\", \"Mart\", \"Nisan\", \"Mayıs\"" +
+                    ", \"Haziran\", \"Temmuz\", \"Ağustos\", \"Eylül\", \"Ekim\", \"Kasım\", \"Aralık\"],\r\n        " +
+                    "    monthNamesShort: [\"Oca\", \"Şub\", \"Mar\", \"Nis\", \"May\", \"Haz\", \"Tem\", \"Ağu\", \"E" +
+                    "yl\", \"Eki\", \"Kas\", \"Ara\"],\r\n            dayNames: [\"Pazar\", \"Pazartesi\", \"Salı\"," +
+                    " \"Çarşamba\", \"Perşembe\", \"Cuma\", \"Cumartesi\"],\r\n            dayNamesMin: [\"Pz\", " +
+                    "\"Pt\", \"Sl\", \"Çr\", \"Pr\", \"Cu\", \"Ct\"],\r\n            changeMonth: true,\r\n          " +
+                    "  changeYear: true,\r\n            inline: true,\r\n            altField: \"#BitisTar" +
+                    "ihiTxt\",\r\n            beforeShow: function (input, inst) {\r\n                var " +
+                    "mindate = $(\'#BaslangicTarihiTxt\').datepicker(\'getDate\');\r\n                $(thi" +
+                    "s).datepicker(\'option\', \'minDate\', mindate);\r\n                var newDate = new " +
+                    "Date($(\'#BaslangicTarihiTxt\').datepicker(\'getDate\'));\r\n                newDate.s" +
+                    "etDate(newDate.getDate() + 30);\r\n                $(this).datepicker(\'option\', \'m" +
+                    "axDate\', newDate);\r\n            },\r\n            beforeShowDay: function (date) {" +
+                    "\r\n                $(\'#ui-datepicker-div\').css(\'clip\', \'auto\');\r\n                " +
+                    "return [true, \'\', \'\'];\r\n            }\r\n        });\r\n        $(\"#BaslangicTarihiT" +
+                    "xt\").datepicker({\r\n            dateFormat: \"dd.mm.yy\",\r\n            firstDay: 1," +
+                    "\r\n            monthNames: [\"Ocak\", \"Şubat\", \"Mart\", \"Nisan\", \"Mayıs\", \"Haziran\"," +
+                    " \"Temmuz\", \"Ağustos\", \"Eylül\", \"Ekim\", \"Kasım\", \"Aralık\"],\r\n            monthNam" +
+                    "esShort: [\"Oca\", \"Şub\", \"Mar\", \"Nis\", \"May\", \"Haz\", \"Tem\", \"Ağu\", \"Eyl\", \"Eki\", " +
+                    "\"Kas\", \"Ara\"],\r\n            dayNames: [\"Pazar\", \"Pazartesi\", \"Salı\", \"Çarşamba\"," +
+                    " \"Perşembe\", \"Cuma\", \"Cumartesi\"],\r\n            dayNamesMin: [\"Pz\", \"Pt\", \"Sl\", " +
+                    "\"Çr\", \"Pr\", \"Cu\", \"Ct\"],\r\n            changeMonth: true,\r\n            changeYear" +
+                    ": true,\r\n            inline: true,\r\n            altField: \"#BaslangicTarihiTxt\"," +
+                    "\r\n            beforeShow: function (input, inst) {\r\n                var mindate " +
+                    "= new Date();\r\n                $(this).datepicker(\'option\', \'minDate\', mindate);" +
+                    "\r\n            },\r\n        }).on(\"change\", function () {\r\n\r\n            var dateM" +
+                    "in = $(\'[id$=BaslangicTarihiTxt]\').datepicker(\"getDate\");\r\n            var rMin " +
+                    "= new Date(dateMin.getFullYear(), dateMin.getMonth(), dateMin.getDate());\r\n     " +
+                    "       var rMax = new Date(dateMin.getFullYear(), dateMin.getMonth(), dateMin.ge" +
+                    "tDate());\r\n\r\n            $(\'[id$=BitisTarihiTxt]\').datepicker(\"option\", \"minDate" +
+                    "\", rMin);\r\n            $(\'[id$=BitisTarihiTxt]\').datepicker(\"option\", \"maxDate\"," +
+                    " rMax);\r\n\r\n            var newDate = new Date($(\'#BaslangicTarihiTxt\').datepicke" +
+                    "r(\'getDate\'));\r\n            newDate.setDate(newDate.getDate());\r\n\r\n        });\r\n" +
+                    "\r\n\r\n    }\r\n</script>\r\n\r\n\r\n<script type=\"text/javascript\">\r\n    function OpenSilM" +
+                    "odal() {\r\n        $(\"#ModalSilDiv\").modal({ backdrop: true });\r\n    }\r\n    funct" +
+                    "ion KatilimciSecimiModal() {\r\n        $(\"#KatilimciSecimiModal\").modal({ backdro" +
+                    "p: false });\r\n    }\r\n    $(\"#KatilimciSecimiModal\").draggable({\r\n        handle:" +
+                    " \".modal-dialog\"\r\n    });\r\n    function KatilimciSecildiBtnClick(katilimciId, fa" +
+                    "aliyetId, katilimciTipi) {\r\n        document.getElementById(\'");
                          @__w.Write( paramFaaliyetKatilimciIdLbl.ClientID);
 
             @__w.Write("\').value = katilimciId;\r\n        document.getElementById(\'");
@@ -3407,28 +3605,11 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
 
 <script>
     var faaliyetYerleri = [
-        ""ActionScript"",
-        ""AppleScript"",
-        ""Asp"",
-        ""BASIC"",
-        ""C"",
-        ""C++"",
-        ""Clojure"",
-        ""COBOL"",
-        ""ColdFusion"",
-        ""Erlang"",
-        ""Fortran"",
-        ""Groovy"",
-        ""Haskell"",
-        ""Java"",
-        ""JavaScript"",
-        ""Lisp"",
-        ""Perl"",
-        ""PHP"",
-        ""Python"",
-        ""Ruby"",
-        ""Scala"",
-        ""Scheme""
+        ""TUSAŞ"",
+        ""ASELSAN"",
+        ""HAVELSAN"",
+        ""İŞBİR"",
+        ""ASPİLSAN""
     ];
     $(function () {
         
@@ -3441,10 +3622,33 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         faaliyetYerleri = myset;
     }
 </script>
-<div class=""container "">
-    <div class=""card shadow"">
-        <div class=""card-header"">
-            ");
+
+
+<script type=""text/javascript""> 
+    function TakvimDavetiyesiModalAc(katilimId,faaliyetId, katilimciId, katilimciTipi, eposta) {
+        document.getElementById('");
+                         @__w.Write( paramFaaliyetKatilimciIdLbl.ClientID);
+
+            @__w.Write("\').value = katilimciId;\r\n        document.getElementById(\'");
+                         @__w.Write( paramFaaliyetKatilimIdLbl.ClientID);
+
+            @__w.Write("\').value = katilimId;\r\n        document.getElementById(\'");
+                         @__w.Write( paramFaaliyetIdLbl.ClientID);
+
+            @__w.Write("\').value = faaliyetId;\r\n        document.getElementById(\'");
+                         @__w.Write( paramFaaliyetKatilimciTipiLbl.ClientID);
+
+            @__w.Write("\').value = katilimciTipi;\r\n        document.getElementById(\'");
+                         @__w.Write( EPostaAdresiTxt.ClientID);
+
+            @__w.Write("\').value = eposta;\r\n        \r\n        $(\"#TakvimDavetiModalDiv\").modal({ backdrop" +
+                    ": true });\r\n    }\r\n    function TakvimDavetiGonderBtnClicked() {\r\n        \r\n    " +
+                    "    document.getElementById(\'");
+                         @__w.Write( TakvimDavetiGonderNowBtn.ClientID);
+
+            @__w.Write("\').click();        \r\n        CloseModals();\r\n    }\r\n</script>\r\n<div class=\"contai" +
+                    "ner \">\r\n    <div class=\"card shadow\">\r\n        <div class=\"card-header\">\r\n      " +
+                    "      ");
             parameterContainer.Controls[0].RenderControl(@__w);
             @__w.Write("\r\n            <h3 class=\"mb-2\">\r\n\r\n                ");
             parameterContainer.Controls[1].RenderControl(@__w);
@@ -3486,9 +3690,9 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             parameterContainer.Controls[17].RenderControl(@__w);
             @__w.Write("\r\n<!-- Getirilen Anı Objesi Modal -->\r\n");
             parameterContainer.Controls[18].RenderControl(@__w);
-            @__w.Write("\r\n\r\n<!-- Stoklu Anı Objesi Modal -->\r\n<div class=\"modal\" id=\"StokluAniObjesiModal" +
-                    "\" role=\"dialog\">\r\n\r\n    <div class=\"modal-dialog modal-lg\">\r\n        <div class=" +
-                    "\"modal-content\">\r\n            ");
+            @__w.Write("\r\n<!-- Stoklu Anı Objesi Modal -->\r\n<div class=\"modal\" id=\"StokluAniObjesiModal\" " +
+                    "role=\"dialog\">\r\n\r\n    <div class=\"modal-dialog modal-lg\">\r\n        <div class=\"m" +
+                    "odal-content\">\r\n            ");
             parameterContainer.Controls[19].RenderControl(@__w);
             @__w.Write(@"
             <div class=""modal-footer"">
@@ -3503,7 +3707,9 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         </div>
     </div>
 </div>
+<!-- TakvimDaveti Modal -->
 ");
+            parameterContainer.Controls[20].RenderControl(@__w);
         }
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +

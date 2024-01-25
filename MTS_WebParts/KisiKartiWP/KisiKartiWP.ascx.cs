@@ -466,7 +466,7 @@ namespace MTS_WebParts.KisiKartiWP
 
 
                     string faaliyetAmaciStr = ParseFaaliyetAmaci(faaliyetAmaci);
-                    string faaliyetDurumuStr = ParseFaaliyetDurumu(faaliyetDurumu.ConvertToInt());
+                    string faaliyetDurumuStr = MTSOrtak.ParseFaaliyetDurumu(faaliyetDurumu.ConvertToInt());
                     string verilenAniObjesiStr = VerilenAniOjesiGetir(faaliyetId, KatilimciIdQS.ConvertToInt(), KatilimciTipiQS.ConvertToInt());
                     string getirilenAniObjesiStr = GetirilenAniOjesiGetir(faaliyetId, KatilimciIdQS.ConvertToInt(), KatilimciTipiQS.ConvertToInt());
                     string buKatilimci = katilimciId.Equals(KatilimciIdQS) && katilimciTipi.Equals(KatilimciTipiQS) ? "*" : string.Empty;
@@ -592,31 +592,6 @@ namespace MTS_WebParts.KisiKartiWP
                     break;
             }
             return amacStr;
-        }
-        private string ParseFaaliyetDurumu(int durum)
-        {
-            string durumStr = string.Empty;
-            switch (durum)
-            {
-                case ProjeConstants.FAALIYET_DURUMU_PLANLANDI_INT:
-                    {
-                        durumStr = ProjeConstants.FAALIYET_DURUMU_PLANLANDI;
-                        break;
-                    }
-                case ProjeConstants.FAALIYET_DURUMU_ONAYLANDI_INT:
-                    {
-                        durumStr = ProjeConstants.FAALIYET_DURUMU_ONAYLANDI;
-                        break;
-                    }
-                case ProjeConstants.FAALIYET_DURUMU_IPTALEDILDI_INT:
-                    {
-                        durumStr = ProjeConstants.FAALIYET_DURUMU_IPTALEDILDI;
-                        break;
-                    }
-                default:
-                    break;
-            }
-            return durumStr;
         }
         private void TabloyaAramaBilgileriniDoldur()
         {

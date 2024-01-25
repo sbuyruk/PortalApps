@@ -35,8 +35,8 @@
         $("#KatilimciSecimiModal").modal({ backdrop: false });
     }
     function KatilimciSecildiBtnClick(katilimciId, katilimciTipi) {
-        document.getElementById('<%= paramRandevuKatilimciIdLbl.ClientID%>').value = katilimciId;
-        document.getElementById('<%= paramRandevuKatilimciTipiLbl.ClientID%>').value = katilimciTipi;
+        document.getElementById('<%= paramFaaliyetKatilimciIdLbl.ClientID%>').value = katilimciId;
+        document.getElementById('<%= paramFaaliyetKatilimciTipiLbl.ClientID%>').value = katilimciTipi;
         document.getElementById('<%= SecilenKatilimciyiGetirBtn.ClientID%>').click();
     }
 </script>
@@ -214,15 +214,15 @@
             </div>
         </div>
         <div id="KatilimciHiddenDiv" style="display: none">
-            <input id="paramRandevuKatilimciIdLbl" runat="server" type="text" />
-            <input id="paramRandevuKatilimciTipiLbl" runat="server" type="text" />
-            <asp:LinkButton ID="SecilenKatilimciyiGetirBtn" runat="server" CausesValidation="false" Text="Randevuya Ekle" OnClientClick="{return true;};" OnClick="SecilenKatilimciyiGetirBtn_Click" />
+            <input id="paramFaaliyetKatilimciIdLbl" runat="server" type="text" />
+            <input id="paramFaaliyetKatilimciTipiLbl" runat="server" type="text" />
+            <asp:LinkButton ID="SecilenKatilimciyiGetirBtn" runat="server" CausesValidation="false" Text="Faaliyetya Ekle" OnClientClick="{return true;};" OnClick="SecilenKatilimciyiGetirBtn_Click" />
         </div>
         <div class="card-footer">
             <asp:LinkButton ID="YeniAramaGirisiBtn" CssClass="btn btn-outline-success " runat="server" Text="Yeni Arama Girişi" OnClick="YeniAramaGirisiBtn_Click"></asp:LinkButton>
             <asp:LinkButton ID="YeniKisiBtn" CssClass="btn btn-outline-secondary " runat="server" Text="Yeni Kişi Girişi" OnClick="YeniKisiBtn_Click"></asp:LinkButton>
-            <asp:LinkButton ID="RandevuTakvimiBtn" CssClass="btn btn-outline-info float-right" runat="server" Text="Faaliyet Takvimi" OnClick="RandevuTakvimiBtn_Click"></asp:LinkButton>
-            <asp:LinkButton ID="RandevuListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Faaliyet Listesi" OnClick="RandevuListesiBtn_Click"></asp:LinkButton>
+            <asp:LinkButton ID="FaaliyetTakvimiBtn" CssClass="btn btn-outline-info float-right" runat="server" Text="Faaliyet Takvimi" OnClick="FaaliyetTakvimiBtn_Click"></asp:LinkButton>
+            <asp:LinkButton ID="FaaliyetListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Faaliyet Listesi" OnClick="FaaliyetListesiBtn_Click"></asp:LinkButton>
             <asp:LinkButton ID="KisiListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Kişi Listesi" OnClick="KisiListesiBtn_Click"></asp:LinkButton>
         </div>
     </div>

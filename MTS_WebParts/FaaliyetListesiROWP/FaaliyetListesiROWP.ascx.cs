@@ -71,7 +71,7 @@ namespace MTS_WebParts.FaaliyetListesiROWP
         {
             List<FaaliyetListItem> faaliyetList = new List<FaaliyetListItem>();
             Faaliyet faaliyetDao = new Faaliyet();
-            DataTable dataTable = faaliyetDao.SelectAllByKatilimciFaaliyetReturnDataTable(ProjeConstants.HEPSI_INT, -3);
+            DataTable dataTable = faaliyetDao.SelectAllByKatilimciFaaliyetReturnDataTable(ProjeConstants.HEPSI_INT, -3, ProjeConstants.FAALIYET_ACIKTARIHLI_DEGIL, ProjeConstants.NULL_TARIH, ProjeConstants.NULL_TARIH);
 
             if (dataTable != null)
             {
@@ -94,8 +94,8 @@ namespace MTS_WebParts.FaaliyetListesiROWP
                     string baslangicTarihi = basTar.ToString("dd.MM.yyyy HH:mm");
                     string bitisTarihi = bitTar.ToString("dd.MM.yyyy HH:mm");
 
-                    string faaliyetAmaciStr = ParseFaaliyetAmaci(faaliyetAmaci);
-                    string faaliyetDurumuStr = ParseFaaliyetDurumu(faaliyetDurumu.ConvertToInt());
+                    string faaliyetAmaciStr = MTSOrtak.ParseFaaliyetAmaci(faaliyetAmaci);
+                    string faaliyetDurumuStr = MTSOrtak.ParseFaaliyetDurumu(faaliyetDurumu.ConvertToInt());
                     string katilimci = row["Adi"].ToString() + " " + row["Soyadi"].ToString();
 
                     if (tempFaaliyetId == faaliyetId)
@@ -143,77 +143,7 @@ namespace MTS_WebParts.FaaliyetListesiROWP
                 exHelper.PublishException();
             }
         }
-        private string ParseFaaliyetAmaci(string amac)
-        {
-            string amacStr = string.Empty;
-            switch (amac)
-            {
-                case ProjeConstants.FAALIYET_AMACI_DAVET_INT:
-                    {
-                        amacStr = ProjeConstants.FAALIYET_AMACI_DAVET;
-                        break;
-                    }
-                case ProjeConstants.FAALIYET_AMACI_IZIN_INT:
-                    {
-                        amacStr = ProjeConstants.FAALIYET_AMACI_IZIN;
-                        break;
-                    }
-                case ProjeConstants.FAALIYET_AMACI_OZELCALISMA_INT:
-                    {
-                        amacStr = ProjeConstants.FAALIYET_AMACI_OZELCALISMA;
-                        break;
-                    }
-                case ProjeConstants.FAALIYET_AMACI_RESMITATIL_INT:
-                    {
-                        amacStr = ProjeConstants.FAALIYET_AMACI_RESMITATIL;
-                        break;
-                    }
-                case ProjeConstants.FAALIYET_AMACI_TOPLANTI_INT:
-                    {
-                        amacStr = ProjeConstants.FAALIYET_AMACI_TOPLANTI;
-                        break;
-                    }
-                case ProjeConstants.FAALIYET_AMACI_YILDONUMU_INT:
-                    {
-                        amacStr = ProjeConstants.FAALIYET_AMACI_YILDONUMU;
-                        break;
-                    }
-                case ProjeConstants.FAALIYET_AMACI_ZIYARET_INT:
-                    {
-                        amacStr = ProjeConstants.FAALIYET_AMACI_ZIYARET;
-                        break;
-                    }
-                default:
-                    break;
-            }
-            return amacStr;
-        }
-        private string ParseFaaliyetDurumu(int durum)
-        {
-            string durumStr = string.Empty;
-            switch (durum)
-            {
-                case ProjeConstants.FAALIYET_DURUMU_PLANLANDI_INT:
-                    {
-                        durumStr = ProjeConstants.FAALIYET_DURUMU_PLANLANDI;
-                        break;
-                    }
-                case ProjeConstants.FAALIYET_DURUMU_ONAYLANDI_INT:
-                    {
-                        durumStr = ProjeConstants.FAALIYET_DURUMU_ONAYLANDI;
-                        break;
-                    }
-                case ProjeConstants.FAALIYET_DURUMU_IPTALEDILDI_INT:
-                    {
-                        durumStr = ProjeConstants.FAALIYET_DURUMU_IPTALEDILDI;
-                        break;
-                    }
-                default:
-                    break;
-            }
-            return durumStr;
-        }
-
+ 
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
             try

@@ -38,6 +38,9 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             InitializeControl();
             this.ChromeType = PartChromeType.None;
         }
+
+        #region Globals
+        
         private string FaaliyetIdQS
         {
             get
@@ -206,6 +209,9 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                 ViewState["InitialDate"] = value;
             }
         }
+        #endregion
+
+        #region PageLoad, DDL, Form vs
         protected void Page_Load(object sender, EventArgs e)
         {
 
@@ -275,25 +281,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             }
 
         }
-        private void KatilimciBilgileriniDoldur(Faaliyet faaliyet, bool buttonsEnabled)
-        {
-            if (faaliyet != null)
-            {
-                AramaGorusmeBilgileriniDoldur(faaliyet);
-                IcIrtibatNoktasiDoldur(faaliyet.IcIrtibatId, buttonsEnabled);
-                DisIrtibatNoktasiDoldur(faaliyet.DisIrtibatId, buttonsEnabled);
-
-                TabloOlustur(buttonsEnabled);
-                if (buttonsEnabled)
-                {
-                    TempFaaliyetQS.IcIrtibatId = faaliyet.IcIrtibatId;
-                    TempFaaliyetQS.DisIrtibatId = faaliyet.DisIrtibatId;
-                }
-
-
-            }
-
-        }
+        
 
         private void GirisiAc()
         {
@@ -542,7 +530,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                         //KatilimciBilgileriniDoldur();
                         MessageHelper.PublishMessage("Faaliyet güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                         OzelKalemTakvimineIsle(faaliyet, ProjeConstants.GUNCELLE);
-
+                        KatilimcilaraTakvimDavetiGonder(faaliyet);
                     }
                     else
                     {
@@ -558,6 +546,9 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                 exhelper.PublishException();
             }
         }
+
+        
+
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
             try
@@ -655,6 +646,10 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         {
             RedirectToPage(ProjeConstants.PAGE_FAALIYET_LIST + "?SecilenId=" + FaaliyetIdQS);
         }
+        protected void AcikTarihliFaaliyetListesiBtn_Click(object sender, EventArgs e)
+        {
+            RedirectToPage(ProjeConstants.PAGE_ACIKTARIHLIFAALIYET_LIST);
+        }
         protected void FaaliyetTakvimiBtn_Click(object sender, EventArgs e)
         {
             RedirectToPage(ProjeConstants.PAGE_FAALIYET_TAKVIM + "?InitialDate=" + InitialDateQS);
@@ -708,180 +703,43 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                 eh.PublishException();
             }
         }
-        private void KatilimciModalAc(int katilimciTipi)
-        {
-            TabloModalOlustur();
-            UtilityHelper.ScriptCalistir("KatilimciSecimiModal();");
-        }
-        protected void SecilenKatilimciyiKaydetNowBtn_Click(object sender, EventArgs e)
-        {
-            int katilimciId = paramFaaliyetKatilimciIdLbl.Value.ConvertToInt();
-            int faaliyetId = paramFaaliyetIdLbl.Value.ConvertToInt();
-            int katilimciTipi = paramFaaliyetKatilimciTipiLbl.Value.ConvertToInt();
-            if (katilimciId > 0)
-            {
-                FaaliyetKatilim faaliyetKatilim = new FaaliyetKatilim();
+       
 
-                List<FaaliyetKatilim> list = faaliyetKatilim.Select(faaliyetId, katilimciId, katilimciTipi);
-                if (list.Count < 1)
-                {
-                    string kurumGorevStr = string.Empty;
-                    if (katilimciTipi==ProjeConstants.FAALIYET_KATILIMCI_DIS_INT)
-                    {
-                        Kisi katilimci = new Kisi();
-                        katilimci = katilimci.Select(katilimciId);
-                        if (katilimci != null)
-                        {
-                            MTSKurumGorev kurumGorev = new MTSKurumGorev();
-                            string kurum = string.Empty;
-                            string gorev = string.Empty;
-                            kurumGorevStr = kurumGorev.SelectByKisiIdReturnKurumGorev(katilimci.Id, ref kurum, ref gorev);
-                            if (string.IsNullOrEmpty(kurumGorevStr))
-                            {
-                                kurumGorevStr = katilimci.Kurumu + " / " + katilimci.Gorevi;
-                            }
-                        } 
-                    }
-                    else if (katilimciTipi == ProjeConstants.FAALIYET_KATILIMCI_IC_INT)
-                    {
-                        Personel katilimci = new Personel();
-                        katilimci = katilimci.Select(katilimciId);
-                        if (katilimci != null)
-                        {
-                            MTSKurumGorev kurumGorev = new MTSKurumGorev();
-                            string kurum = string.Empty;
-                            string gorev = string.Empty;
-                            kurumGorevStr = kurumGorev.SelectByKisiIdReturnKurumGorev(katilimciId,ref kurum,ref gorev);
-                            if (string.IsNullOrEmpty(kurumGorevStr))
-                            {
-                                kurumGorevStr = ProjeConstants.FAALIYET_KATILIMCI_IC;
-                            }
-                        }
-                    }
-                    else if (katilimciTipi == ProjeConstants.FAALIYET_KATILIMCI_IC_INT)
-                    {
-                        TasinmazBagisci katilimci = new TasinmazBagisci();
-                        katilimci = katilimci.Select<TasinmazBagisci>(katilimciId);
-                        if (katilimci != null)
-                        {
-                            MTSKurumGorev kurumGorev = new MTSKurumGorev();
-                            string kurum = string.Empty;
-                            string gorev = string.Empty;
-                            kurumGorevStr = kurumGorev.SelectByKisiIdReturnKurumGorev(katilimciId,ref kurum, ref gorev);
-                            if (string.IsNullOrEmpty(kurumGorevStr))
-                            {
-                                kurumGorevStr = ProjeConstants.FAALIYET_KATILIMCI_TASINMAZBAGISCI;
-                            }
-                        }
-                    }
-                    else if (katilimciTipi == ProjeConstants.FAALIYET_KATILIMCI_TASINMAZBAGISCI_INT)
-                    {
-                        NakitBagisci katilimci = new NakitBagisci();
-                        katilimci = katilimci.Select<NakitBagisci>(katilimciId);
-                        if (katilimci != null)
-                        {
-                            MTSKurumGorev kurumGorev = new MTSKurumGorev();
-                            string kurum = string.Empty;
-                            string gorev = string.Empty;
-                            kurumGorevStr = kurumGorev.SelectByKisiIdReturnKurumGorev(katilimciId, ref kurum, ref gorev);
-                            if (string.IsNullOrEmpty(kurumGorevStr))
-                            {
-                                kurumGorevStr = ProjeConstants.FAALIYET_KATILIMCI_NAKITBAGISCI;
-                            }
-                        }
-                    }
-
-                    faaliyetKatilim.KatilimciId = katilimciId;
-                    faaliyetKatilim.FaaliyetId = faaliyetId;
-                    faaliyetKatilim.KatilimciTipi = katilimciTipi;
-                    faaliyetKatilim.KurumGorev = kurumGorevStr;
-                    faaliyetKatilim.Save();
-                }
-            }
-            else
-            {
-                MessageHelper.PublishMessage("Katılımcı Bulunamadı", ProjeConstants.MESAJ_HATA);
-            }
-            Faaliyet faaliyet = new Faaliyet();
-            faaliyet = faaliyet.Select(FaaliyetIdQS.ConvertToInt());
-            if (faaliyet != null)
-            {
-                KatilimciBilgileriniDoldur(faaliyet, true);
-            }
-
-
-        }
-        //katılımcı seçme ve ekleme
-        protected void KatilimciEkleBtn_Click(object sender, EventArgs e)
-        {
-            KatilimciModalAc(ProjeConstants.FAALIYET_KATILIMCI_IC_INT);
-        }
-
-        protected void KatilimciCikarBtn_Click(object sender, EventArgs e)
-        {
-            int faaliyetkatilimId = paramFaaliyetKatilimIdLbl.Value.ConvertToInt();
-            if (faaliyetkatilimId > 0)
-            {
-                FaaliyetKatilim faaliyetKatilim = new FaaliyetKatilim();
-                faaliyetKatilim = faaliyetKatilim.Select(faaliyetkatilimId);
-                if (faaliyetKatilim != null)
-                {
-                    AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
-                    DataTable dataTable = aniObjesiDagitim.SelectByKatilimcidKatilimciTipiRandevuId(faaliyetKatilim.KatilimciId, faaliyetKatilim.KatilimciTipi,faaliyetKatilim.FaaliyetId,string.Empty);
-                    if (dataTable == null)
-                    {
-                        if (faaliyetKatilim.Delete())
-                        {
-                            MessageHelper.PublishMessage("Katılımcı faaliyetten çıkarıldı", ProjeConstants.MESAJ_BASARILI);
-                        }
-                    }
-                    else
-                    {
-                        ExceptionHelper eh= new ExceptionHelper();
-                        Exception ex = new Exception("Faaliyetin bağlantılı olduğu Anı Objeleri bulunmaktadır.");
-                        eh.Exceptions.Add(ex);
-                        eh.PublishException();
-                    }
-                }
-
-            }
-            else
-            {
-                MessageHelper.PublishMessage("Katılımcı Bulunamadı", ProjeConstants.MESAJ_HATA);
-            }
-            Faaliyet faaliyet = new Faaliyet();
-            faaliyet = faaliyet.Select(FaaliyetIdQS.ConvertToInt());
-            if (faaliyet != null)
-            {
-                KatilimciBilgileriniDoldur(faaliyet, true);
-            }
-        }
+        
         private void FaaliyetTipiDDLDoldur()
         {
             ListItem li = new ListItem(ProjeConstants.RANDEVU_VERILEN);
             ListItem li2 = new ListItem(ProjeConstants.RANDEVU_ALINAN);
+            ListItem li3 = new ListItem(ProjeConstants.RANDEVU_DIGER);
 
             FaaliyetTipiDDL.Items.Clear();
             FaaliyetTipiDDL.Items.Add(li);
             FaaliyetTipiDDL.Items.Add(li2);
+            FaaliyetTipiDDL.Items.Add(li3);
         }
         private void FaaliyetAmaciDDLDoldur()
         {
             ListItem li5 = new ListItem(ProjeConstants.FAALIYET_AMACI_TOPLANTI, ProjeConstants.FAALIYET_AMACI_TOPLANTI_INT);
             ListItem li = new ListItem(ProjeConstants.FAALIYET_AMACI_ZIYARET, ProjeConstants.FAALIYET_AMACI_ZIYARET_INT);
+            ListItem li7 = new ListItem(ProjeConstants.FAALIYET_AMACI_GORUSME, ProjeConstants.FAALIYET_AMACI_GORUSME_INT);
             ListItem li2 = new ListItem(ProjeConstants.FAALIYET_AMACI_DAVET, ProjeConstants.FAALIYET_AMACI_DAVET_INT);
             ListItem li3 = new ListItem(ProjeConstants.FAALIYET_AMACI_YILDONUMU, ProjeConstants.FAALIYET_AMACI_YILDONUMU_INT);
             ListItem li4 = new ListItem(ProjeConstants.FAALIYET_AMACI_OZELCALISMA, ProjeConstants.FAALIYET_AMACI_OZELCALISMA_INT);
             ListItem li6 = new ListItem(ProjeConstants.FAALIYET_AMACI_IZIN, ProjeConstants.FAALIYET_AMACI_IZIN_INT);
+            ListItem li8 = new ListItem(ProjeConstants.FAALIYET_AMACI_SEYAHAT, ProjeConstants.FAALIYET_AMACI_SEYAHAT_INT);
+            ListItem li9 = new ListItem(ProjeConstants.FAALIYET_AMACI_BILGI, ProjeConstants.FAALIYET_AMACI_BILGI_INT);
 
 
             FaaliyetAmaciDDL.Items.Clear();
             FaaliyetAmaciDDL.Items.Add(li5);
             FaaliyetAmaciDDL.Items.Add(li);
+            FaaliyetAmaciDDL.Items.Add(li7);
             FaaliyetAmaciDDL.Items.Add(li2);
             FaaliyetAmaciDDL.Items.Add(li3);
             FaaliyetAmaciDDL.Items.Add(li4);
             FaaliyetAmaciDDL.Items.Add(li6);
+            FaaliyetAmaciDDL.Items.Add(li8);
+            FaaliyetAmaciDDL.Items.Add(li9);
         }
         private void FaaliyetDurumuDDLDoldur()
         {
@@ -1048,9 +906,8 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                 { data: 'Kurumu' },
                 { data: 'KatilimciTipi', visible: false },
                 { data: 'KatilimciTipiStr' },
-                { data: 'AniObjesiStoklu' },
-                { data: 'AniObjesiStoksuz' },
-                { data: 'GetirilenAniObjesi' },
+                { data: 'AniObjesi' },
+                { data: 'TakvimDavetiBtn' },
                 { data: 'KisiKarti' },
                 { data: 'Cikar' },
             ],
@@ -1109,8 +966,9 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         }
         private List<KatilimciListItem> GetDataList(bool buttonsEnable)
         {
+
             Faaliyet faaliyetDao = new Faaliyet();
-            DataTable dataTable = faaliyetDao.SelectAllByKatilimciFaaliyetReturnDataTable(FaaliyetIdQS.ConvertToInt(), ProjeConstants.HEPSI_INT);
+            DataTable dataTable = faaliyetDao.SelectAllByKatilimciFaaliyetReturnDataTable(FaaliyetIdQS.ConvertToInt(), ProjeConstants.HEPSI_INT, ProjeConstants.FAALIYET_ACIKTARIHLI_DEGIL, ProjeConstants.NULL_TARIH, ProjeConstants.NULL_TARIH);
             int SiraNo = 1;
             List<KatilimciListItem> list = new List<KatilimciListItem>();
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
@@ -1118,29 +976,30 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             {
                 foreach (DataRow row in dataTable.Rows)
                 {
-                    string katilimId = row["KatilimId"].ToString();
-                    string katilimciId = row["KatilimciId"].ToString();
-                    int katilimciTipi = row["KatilimciTipi"].ConvertToInt();
+                    int katilimId = row["KatilimId"].ReturnZeroIfNull().ConvertToInt();
+                    int katilimciId = row["KatilimciId"].ReturnZeroIfNull().ConvertToInt();
+                    int katilimciTipi = row["KatilimciTipi"].ReturnZeroIfNull().ConvertToInt();
                     string adi = row["Adi"].ToString();
                     string soyadi = row["Soyadi"].ToString();
-                    string kurumu = row["Kurumu"].ToString();
+                    string kurumu = row["Kurumu"].ReturnEmptyIfNull().ToString();
+                    string takvimDaveti = row["TakvimDaveti"].ReturnEmptyIfNull().ToString();
+                    string eposta = row["EPosta"].ReturnEmptyIfNull().ToString();
+
+                    //Katilimci katilimci = new Katilimci();
+                    //katilimci = katilimci.GetKatilimci(katilimciId, katilimciTipi);
+                    //string epostaAdresi = katilimci != null ? katilimci.EPosta : string.Empty;
 
                     KatilimciListItem katilimciItem = new KatilimciListItem();
                     katilimciItem.Sirano = SiraNo++.ToString();
-                    katilimciItem.KatilimciId = katilimciId;
+                    katilimciItem.KatilimciId = katilimciId.ToString();
                     katilimciItem.Adi = adi;
                     katilimciItem.Soyadi = soyadi;
                     katilimciItem.AdiSoyadi = (adi + " " + soyadi.Trim());
                     katilimciItem.Kurumu = kurumu;
                     katilimciItem.KatilimciTipi = katilimciTipi.ToString();
                     katilimciItem.KatilimciTipiStr = KatilimciTipiGetir(katilimciTipi);
-                    //if (katilimciItem.KatilimciTipi.ConvertToInt() == ProjeConstants.RANDEVU_KATILIMCI_IC_INT)
-                    //{
-                    //    katilimciItem.AniObjesiStoklu = string.Empty;
-                    //    katilimciItem.AniObjesiStoksuz = string.Empty;
-                    //    katilimciItem.GetirilenAniObjesi = string.Empty;
-                    //}
-                    //else
+                    katilimciItem.TakvimDavetiBtn = TakvimDavetiBtnOlustur(katilimId,takvimDaveti,katilimciId,katilimciTipi, eposta   );
+
                     {
                         string stoksuzAniObjeleri = AniObjeleriniGetir(katilimciItem.KatilimciId.ConvertToInt(),
                             katilimciItem.KatilimciTipi.ConvertToInt(), FaaliyetIdQS.ConvertToInt(), ProjeConstants.MTS_ANIOBJESISTOKSUZ);
@@ -1151,12 +1010,14 @@ namespace MTS_WebParts.FaaliyetGirisiWP
 
                         if (buttonsEnable)
                         {
-                            katilimciItem.AniObjesiStoksuz = "<a href='#' class='btn btn-outline-primary' onclick=StoksuzAniObjesiBtnClick(" + katilimciId + "," + FaaliyetIdQS + "," + katilimciTipi + ")>Anı Objesi (Stoksuz)</a>" +
+                            katilimciItem.AniObjesiStoksuz = "<a href='#' class='btn btn-outline-primary' onclick=StoksuzAniObjesiBtnClick(" + katilimciId + "," + FaaliyetIdQS + "," + katilimciTipi + ")>Stoksuz Anı Objesi</a>" +
                                 "<br>" + stoksuzAniObjeleri;
-                            katilimciItem.AniObjesiStoklu = "<a href='#' class='btn btn-outline-success' onclick=StokluAniObjesiBtnClick(" + katilimciId + "," + FaaliyetIdQS + "," + katilimciTipi + ")>Anı Objesi (Stoklu)</a>" +
+                            katilimciItem.AniObjesiStoklu = "<a href='#' class='btn btn-outline-success' onclick=StokluAniObjesiBtnClick(" + katilimciId + "," + FaaliyetIdQS + "," + katilimciTipi + ")>Stoklu Anı Objesi</a>" +
                                 "<br>" + stokluAniObjeleri;
                             katilimciItem.GetirilenAniObjesi = "<a href='#' class='btn btn-outline-info' onclick=GetirilenAniObjesiBtnClick(" + katilimciId + "," + FaaliyetIdQS + "," + katilimciTipi + ")>Getirilen Anı Objesi </a>" +
                                 "<br>" + getirilenAniObjeleri;
+
+                            katilimciItem.AniObjesi = katilimciItem.AniObjesiStoklu  + "<hr>" +katilimciItem.AniObjesiStoksuz + "<hr>" + katilimciItem.GetirilenAniObjesi;
                         }
                         else
                         {
@@ -1175,219 +1036,194 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             }
             return list;
         }
-        private string AniObjeleriniGetir(int katilimciId, int katilimciTipi, int faaliyetId, string stokluMu)
-        {
-            AniObjesiDagitim aniobjesiDagitim = new AniObjesiDagitim();
-            DataTable dataTable = aniobjesiDagitim.SelectByKatilimcidKatilimciTipiRandevuId(katilimciId, katilimciTipi, faaliyetId, stokluMu);
-            string aniObjeleri = string.Empty;
 
-            if (dataTable != null)
+        protected void FaaliyetKartiBtn_Click(object sender, EventArgs e)
+        {
+            RedirectToPage(ProjeConstants.PAGE_FAALIYET_KARTI + "?FaaliyetId=" + FaaliyetIdQS);
+        }
+
+        protected void AcikTarihChk_CheckedChanged(object sender, EventArgs e)
+        {
+            AcikTarihliKontrolu();
+        }
+
+        private void AcikTarihliKontrolu()
+        {
+            Faaliyet faaliyet = new Faaliyet();
+            faaliyet = faaliyet.Select(FaaliyetIdQS.ConvertToInt());
+            if (faaliyet == null && AcikTarihChk.Checked)
             {
-                if (dataTable != null)
+                OzelKalemTakvimiChk.Checked = false;
+                MessageHelper.PublishMessage("Açık Tarihli faaliyet olduğundan Özel Kalem takvimine gönderilmeyecek", ProjeConstants.MESAJ_BILGI, 2000);
+            }
+        }
+
+        protected void OzelKalemTakvimiChk_CheckedChanged(object sender, EventArgs e)
+        {
+            AcikTarihliKontrolu();
+        }
+        #endregion
+
+        #region katılımcı seçme ve ekleme
+        protected void KatilimciEkleBtn_Click(object sender, EventArgs e)
+        {
+            KatilimciModalAc(ProjeConstants.FAALIYET_KATILIMCI_IC_INT);
+        }
+
+        protected void KatilimciCikarBtn_Click(object sender, EventArgs e)
+        {
+            int faaliyetkatilimId = paramFaaliyetKatilimIdLbl.Value.ConvertToInt();
+            if (faaliyetkatilimId > 0)
+            {
+                FaaliyetKatilim faaliyetKatilim = new FaaliyetKatilim();
+                faaliyetKatilim = faaliyetKatilim.Select(faaliyetkatilimId);
+                if (faaliyetKatilim != null)
                 {
-                    foreach (DataRow row in dataTable.Rows)
+                    AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
+                    DataTable dataTable = aniObjesiDagitim.SelectByKatilimcidKatilimciTipiRandevuId(faaliyetKatilim.KatilimciId, faaliyetKatilim.KatilimciTipi,faaliyetKatilim.FaaliyetId,string.Empty);
+                    if (dataTable == null)
                     {
-                        int aniObjesiDagitimId = row["AniObjesiDagitimId"].ReturnZeroIfNull().ConvertToInt();
-                        int depoId = row["CikisDepoId"].ReturnZeroIfNull().ConvertToInt();
-                        string aniObjesi = row["Adi"].ReturnEmptyIfNull().ToString();
-                        string adet = row["Adet"].ReturnZeroIfNull().ToString();
-                        if (stokluMu.Equals(ProjeConstants.MTS_ANIOBJESISTOKLU))
+                        if (faaliyetKatilim.Delete())
                         {
-                            aniObjeleri += !string.IsNullOrEmpty(aniObjesi) ? "<br> * "
-                                               + "<a href='#' class='btn btn-link' onclick=StokluAniObjesiDuzenleClick(" + aniObjesiDagitimId + ")>" + aniObjesi + " (" + adet + "), " + "</a>"
-                                               : string.Empty;
+                            MessageHelper.PublishMessage("Katılımcı faaliyetten çıkarıldı", ProjeConstants.MESAJ_BASARILI);
                         }
-                        else
-                        {
-                            aniObjeleri += !string.IsNullOrEmpty(aniObjesi) ? "<br> * " + aniObjesi + "(" + adet + "), " : string.Empty;
-                        }
-                        //aniObjeleri += !string.IsNullOrEmpty(aniObjesi) ? "<br> * " + aniObjesi + "(" + adet + "), " : string.Empty;
-                    }
-                }
-            }
-            return (aniObjeleri);
-        }
-        private string GetirilenAniObjeleriniGetir(int katilimciId, int katilimciTipi, int faaliyetId)
-        {
-            AniObjesiDagitim aniobjesiDagitim = new AniObjesiDagitim();
-            string aniObjeleri = aniobjesiDagitim.SelectGetirilenByKatilimcidKatilimciTipiRandevuId(katilimciId, katilimciTipi, faaliyetId);
-            return (aniObjeleri);
-        }
-        private void TabloModalOlustur()
-        {
-            var jsonData = TabloModalJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateModalDataTable(jsonData); //javascript kodu hazırlanıyor.
-            UtilityHelper.ScriptCalistir(jsString);
-        }
-        private string TabloModalJson()
-        {
-            string jSon = string.Empty;
-
-            try
-            {
-                List<KatilimciListItem> list = GetModalDataList();
-                var serializer = new JavaScriptSerializer();
-                serializer.MaxJsonLength = Int32.MaxValue;
-                jSon = serializer.Serialize(list);
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(exception);
-                exceptionHelper.PublishException();
-            }
-            return jSon;
-        }
-        private string CreateModalDataTable(string jsonData)
-        {
-            string tableString = @"
-            if ( $.fn.DataTable.isDataTable('#CustomModalDataTable') ) {
-              $('#CustomModalDataTable').DataTable().destroy();
-            }
-            $('#CustomModalDataTable tbody').empty();
-
-            jQuery('#CustomModalDataTable').DataTable({
-            data: " + jsonData + @",
-            columns: [
-                { data: 'AdiSoyadi' },
-                { data: 'Kurumu' },
-                { data: 'KatilimciSec' },
-                { data: 'IrtibatSec' }
-            ],
-            'language': {
-                'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
-            },
-            responsive: true,
-            dom: 'fpirt',
-            'createdRow': function (row, data, dataIndex) {
-                if (data.KatilimciTipi == 1) {
-                    $(row).addClass('icKatilimci');
-
-                } else if (data.KatilimciTipi == 2) {
-                    $(row).addClass('disKatilimci');
-
-                } else if (data.KatilimciTipi == 3) {
-                    $(row).addClass('nakitBagisci');
-
-                } else if (data.KatilimciTipi == 4) {
-                    $(row).addClass('tasinmazBagisci');
-                }
-            }
-        });
-            ";
-
-            return tableString;
-        }
-        private List<KatilimciListItem> GetModalDataList()
-        {
-            Personel personel = new Personel();
-            DataTable dataTableIc = personel.SelectSecilmemisIcKatilimcilarByFaaliyetIdReturnDT(FaaliyetIdQS.ConvertToInt());
-            Kisi kisi = new Kisi();
-            DataTable dataTableDis = kisi.SelectSecilmemisDisKatilimcilarByFaaliyetIdReturnDT(FaaliyetIdQS.ConvertToInt());
-            NakitBagisci nakitBagisci = new NakitBagisci();
-            DataTable dataTableNakit = nakitBagisci.SelectSecilmemisKatilimcilarByFaaliyetIdReturnDT(FaaliyetIdQS.ConvertToInt());
-            TasinmazBagisci tasinmazBagisci = new TasinmazBagisci();
-            DataTable dataTableTasinmaz = tasinmazBagisci.SelectSecilmemisKatilimcilarByFaaliyetIdReturnDT(FaaliyetIdQS.ConvertToInt()); //veri çekilip json a çeviriliyor
-
-            dataTableIc.Merge(dataTableDis);
-            dataTableIc.Merge(dataTableNakit);
-            dataTableIc.Merge(dataTableTasinmaz);
-            int SiraNo = 1;
-            List<KatilimciListItem> list = new List<KatilimciListItem>();
-            IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
-            if (dataTableIc != null)
-            {
-                foreach (DataRow row in dataTableIc.Rows)
-                {
-                    string katilimciId = row["KatilimciId"].ToString();
-                    int katilimciTipi = row["KatilimciTipi"].ConvertToInt();
-                    string adi = row["Adi"].ToString();
-                    string soyadi = row["Soyadi"].ToString();
-
-                    KatilimciListItem katilimciItem = new KatilimciListItem();
-                    katilimciItem.Sirano = SiraNo++.ToString();
-                    katilimciItem.KatilimciId = katilimciId;
-                    katilimciItem.AdiSoyadi = (adi + " " + soyadi.Trim());
-                    katilimciItem.Adi = adi;
-                    katilimciItem.Soyadi = soyadi;
-                    katilimciItem.KatilimciTipiStr = KatilimciTipiGetir(katilimciTipi);
-                    katilimciItem.Kurumu = katilimciItem.KatilimciTipiStr;
-                    katilimciItem.KatilimciTipi = katilimciTipi.ToString();
-
-
-                    katilimciItem.KatilimciSec = "<a href='#' class='btn btn-outline-primary' onclick=KatilimciSecildiBtnClick(" + katilimciId + "," + FaaliyetIdQS + "," + katilimciTipi + ")>Faaliyete Ekle</a>";
-                    if (katilimciTipi == ProjeConstants.FAALIYET_KATILIMCI_IC_INT ||
-                        katilimciTipi == ProjeConstants.FAALIYET_KATILIMCI_DIS_INT)
-                    {
-                        katilimciItem.IrtibatSec = "<a href='#' class='btn btn-outline-primary' onclick=IrtibatSecBtnClick(" + katilimciId + "," + FaaliyetIdQS + "," + katilimciTipi + ")>İrtibat Ekle</a>";
                     }
                     else
                     {
-                        katilimciItem.IrtibatSec = string.Empty;
+                        ExceptionHelper eh= new ExceptionHelper();
+                        Exception ex = new Exception("Faaliyetin bağlantılı olduğu Anı Objeleri bulunmaktadır.");
+                        eh.Exceptions.Add(ex);
+                        eh.PublishException();
+                    }
+                }
+
+            }
+            else
+            {
+                MessageHelper.PublishMessage("Katılımcı Bulunamadı", ProjeConstants.MESAJ_HATA);
+            }
+            Faaliyet faaliyet = new Faaliyet();
+            faaliyet = faaliyet.Select(FaaliyetIdQS.ConvertToInt());
+            if (faaliyet != null)
+            {
+                KatilimciBilgileriniDoldur(faaliyet, true);
+            }
+        }
+        private void KatilimciModalAc(int katilimciTipi)
+        {
+            TabloModalOlustur();
+            UtilityHelper.ScriptCalistir("KatilimciSecimiModal();");
+        }
+        protected void SecilenKatilimciyiKaydetNowBtn_Click(object sender, EventArgs e)
+        {
+            int katilimciId = paramFaaliyetKatilimciIdLbl.Value.ConvertToInt();
+            int faaliyetId = paramFaaliyetIdLbl.Value.ConvertToInt();
+            int katilimciTipi = paramFaaliyetKatilimciTipiLbl.Value.ConvertToInt();
+            if (katilimciId > 0)
+            {
+                
+
+                FaaliyetKatilim faaliyetKatilim = new FaaliyetKatilim();
+
+                List<FaaliyetKatilim> list = faaliyetKatilim.Select(faaliyetId, katilimciId, katilimciTipi);
+                if (list.Count < 1)
+                {
+                    string kurumGorevStr = string.Empty;
+                    if (katilimciTipi == ProjeConstants.FAALIYET_KATILIMCI_DIS_INT)
+                    {
+                        Kisi katilimci = new Kisi();
+                        katilimci = katilimci.Select(katilimciId);
+                        if (katilimci != null)
+                        {
+                            MTSKurumGorev kurumGorev = new MTSKurumGorev();
+                            string kurum = string.Empty;
+                            string gorev = string.Empty;
+                            kurumGorevStr = kurumGorev.SelectByKisiIdReturnKurumGorev(katilimci.Id, ref kurum, ref gorev);
+                            if (string.IsNullOrEmpty(kurumGorevStr))
+                            {
+                                kurumGorevStr = katilimci.Kurumu + " / " + katilimci.Gorevi;
+                            }
+                        }
+                    }
+                    else if (katilimciTipi == ProjeConstants.FAALIYET_KATILIMCI_IC_INT)
+                    {
+                        Personel personel = new Personel();
+                        personel = personel.Select(katilimciId);
+                        if (personel != null)
+                        {
+                            if (string.IsNullOrEmpty(kurumGorevStr))
+                            {
+                                kurumGorevStr = ProjeConstants.FAALIYET_KATILIMCI_IC;
+                            }
+                        }
+                    }
+                    else if (katilimciTipi == ProjeConstants.FAALIYET_KATILIMCI_TASINMAZBAGISCI_INT)
+                    {
+                        TasinmazBagisci tasinmazBagisci = new TasinmazBagisci();
+                        tasinmazBagisci = tasinmazBagisci.Select<TasinmazBagisci>(katilimciId);
+                        if (tasinmazBagisci != null)
+                        {
+                            if (string.IsNullOrEmpty(kurumGorevStr))
+                            {
+                                kurumGorevStr = ProjeConstants.FAALIYET_KATILIMCI_TASINMAZBAGISCI;
+                            }
+                        }
+                    }
+                    else if (katilimciTipi == ProjeConstants.FAALIYET_KATILIMCI_NAKITBAGISCI_INT)
+                    {
+                        NakitBagisci nakitBagisci = new NakitBagisci();
+                        nakitBagisci = nakitBagisci.Select<NakitBagisci>(katilimciId);
+                        if (nakitBagisci != null)
+                        {
+                            if (string.IsNullOrEmpty(kurumGorevStr))
+                            {
+                                kurumGorevStr = ProjeConstants.FAALIYET_KATILIMCI_NAKITBAGISCI;
+                            }
+                        }
                     }
 
-
-                    list.Add(katilimciItem);
+                    faaliyetKatilim.KatilimciId = katilimciId;
+                    faaliyetKatilim.FaaliyetId = faaliyetId;
+                    faaliyetKatilim.KatilimciTipi = katilimciTipi;
+                    faaliyetKatilim.KurumGorev = kurumGorevStr;
+                    int faaliyetKatilimId=faaliyetKatilim.Save();
+                    
                 }
             }
-            return list;
-        }
-        private string KatilimciTipiGetir(int katilimciTipi)
-        {
-            string katilimciTipStr = ProjeConstants.FAALIYET_KATILIMCI_DIS;
-            switch (katilimciTipi)
+            else
             {
-                case ProjeConstants.FAALIYET_KATILIMCI_IC_INT:
-                    {
-                        katilimciTipStr = ProjeConstants.FAALIYET_KATILIMCI_IC;
-                        break;
-                    }
-                case ProjeConstants.FAALIYET_KATILIMCI_DIS_INT:
-                    {
-                        katilimciTipStr = ProjeConstants.FAALIYET_KATILIMCI_DIS;
-                        break;
-                    }
-                case ProjeConstants.FAALIYET_KATILIMCI_NAKITBAGISCI_INT:
-                    {
-                        katilimciTipStr = ProjeConstants.FAALIYET_KATILIMCI_NAKITBAGISCI;
-                        break;
-                    }
-                case ProjeConstants.FAALIYET_KATILIMCI_TASINMAZBAGISCI_INT:
-                    {
-                        katilimciTipStr = ProjeConstants.FAALIYET_KATILIMCI_TASINMAZBAGISCI;
-                        break;
-                    }
-                default:
-                    break;
+                MessageHelper.PublishMessage("Katılımcı Bulunamadı", ProjeConstants.MESAJ_HATA);
             }
-            return katilimciTipStr;
-        }
-        protected void IcIrtibatCikarBtn_Click(object sender, EventArgs e)
-        {
             Faaliyet faaliyet = new Faaliyet();
             faaliyet = faaliyet.Select(FaaliyetIdQS.ConvertToInt());
             if (faaliyet != null)
             {
-                faaliyet.IcIrtibatId = 0;
-                faaliyet.Update();
-                IcIrtibatLbl.Text = string.Empty;
-                IcIrtibatCikarBtn.Visible = false;
                 KatilimciBilgileriniDoldur(faaliyet, true);
             }
+
+
         }
-        protected void DisIrtibatCikarBtn_Click(object sender, EventArgs e)
+        private void KatilimciBilgileriniDoldur(Faaliyet faaliyet, bool buttonsEnabled)
         {
-            Faaliyet faaliyet = new Faaliyet();
-            faaliyet = faaliyet.Select(FaaliyetIdQS.ConvertToInt());
             if (faaliyet != null)
             {
-                faaliyet.DisIrtibatId = 0;
-                faaliyet.Update();
-                DisIrtibatLbl.Text = string.Empty;
-                DisIrtibatCikarBtn.Visible = false;
-                KatilimciBilgileriniDoldur(faaliyet, true);
+                AramaGorusmeBilgileriniDoldur(faaliyet);
+                IcIrtibatNoktasiDoldur(faaliyet.IcIrtibatId, buttonsEnabled);
+                DisIrtibatNoktasiDoldur(faaliyet.DisIrtibatId, buttonsEnabled);
+
+                TabloOlustur(buttonsEnabled);
+                if (buttonsEnabled)
+                {
+                    TempFaaliyetQS.IcIrtibatId = faaliyet.IcIrtibatId;
+                    TempFaaliyetQS.DisIrtibatId = faaliyet.DisIrtibatId;
+                }
+
+
             }
+
         }
+        #endregion
+
         #region Arama/Gorusme bilgileri
         private void AramaGorusmeBilgileriniDoldur(Faaliyet faaliyet)
         {
@@ -1419,6 +1255,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             }
         }
         #endregion
+
         #region Ani Objesi
         protected void AniObjesiSecBtn_Click(object sender, EventArgs e)
         {
@@ -1825,11 +1662,6 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             UtilityHelper.ScriptCalistir("ArrayDoldur();");
             UtilityHelper.ScriptCalistir("AniObjesiModal();");
         }
-        #endregion
-        protected void FaaliyetKartiBtn_Click(object sender, EventArgs e)
-        {
-            RedirectToPage(ProjeConstants.PAGE_FAALIYET_KARTI + "?FaaliyetId=" + FaaliyetIdQS);
-        }
         /// <summary>
         /// ilk olarak bu Faaliyet ve KatilimciId için AniObjesiDagitim_Table'daki kayıtları al (list1)
         /// sonra
@@ -2078,7 +1910,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                         depoStok.Aciklama = adet + " adet verildi FaaliyetID=" + aniObjesiDagitim.RandevuId;
                         depoStok.SonIslemYapan = UtilityHelper.GetCurrentUserName();
                         depoStok.Update();
-                        if (aniObjesiDagitim.Adet>0)
+                        if (aniObjesiDagitim.Adet > 0)
                         {
                             aniObjesiDagitim.Update();
                         }
@@ -2166,8 +1998,379 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
             aniObjesiDagitim.Delete(faaliyetId, katilimciId, katilimciTipi, joined);
         }
-        #region timer
+        private string AniObjeleriniGetir(int katilimciId, int katilimciTipi, int faaliyetId, string stokluMu)
+        {
+            AniObjesiDagitim aniobjesiDagitim = new AniObjesiDagitim();
+            DataTable dataTable = aniobjesiDagitim.SelectByKatilimcidKatilimciTipiRandevuId(katilimciId, katilimciTipi, faaliyetId, stokluMu);
+            string aniObjeleri = string.Empty;
 
+            if (dataTable != null)
+            {
+                if (dataTable != null)
+                {
+                    foreach (DataRow row in dataTable.Rows)
+                    {
+                        int aniObjesiDagitimId = row["AniObjesiDagitimId"].ReturnZeroIfNull().ConvertToInt();
+                        int depoId = row["CikisDepoId"].ReturnZeroIfNull().ConvertToInt();
+                        string aniObjesi = row["Adi"].ReturnEmptyIfNull().ToString();
+                        string adet = row["Adet"].ReturnZeroIfNull().ToString();
+                        if (stokluMu.Equals(ProjeConstants.MTS_ANIOBJESISTOKLU))
+                        {
+                            aniObjeleri += !string.IsNullOrEmpty(aniObjesi) ? "<br> * "
+                                               + "<a href='#' class='btn btn-link' onclick=StokluAniObjesiDuzenleClick(" + aniObjesiDagitimId + ")>" + aniObjesi + " (" + adet + "), " + "</a>"
+                                               : string.Empty;
+                        }
+                        else
+                        {
+                            aniObjeleri += !string.IsNullOrEmpty(aniObjesi) ? "<br> * " + aniObjesi + "(" + adet + "), " : string.Empty;
+                        }
+                        //aniObjeleri += !string.IsNullOrEmpty(aniObjesi) ? "<br> * " + aniObjesi + "(" + adet + "), " : string.Empty;
+                    }
+                }
+            }
+            return (aniObjeleri);
+        }
+        private string GetirilenAniObjeleriniGetir(int katilimciId, int katilimciTipi, int faaliyetId)
+        {
+            AniObjesiDagitim aniobjesiDagitim = new AniObjesiDagitim();
+            string aniObjeleri = aniobjesiDagitim.SelectGetirilenByKatilimcidKatilimciTipiRandevuId(katilimciId, katilimciTipi, faaliyetId);
+            return (aniObjeleri);
+        }
+        private void TabloModalOlustur()
+        {
+            var jsonData = TabloModalJson(); //veri çekilip json a çeviriliyor
+            var jsString = CreateModalDataTable(jsonData); //javascript kodu hazırlanıyor.
+            UtilityHelper.ScriptCalistir(jsString);
+        }
+        private string TabloModalJson()
+        {
+            string jSon = string.Empty;
+
+            try
+            {
+                List<KatilimciListItem> list = GetModalDataList();
+                var serializer = new JavaScriptSerializer();
+                serializer.MaxJsonLength = Int32.MaxValue;
+                jSon = serializer.Serialize(list);
+            }
+            catch (Exception exception)
+            {
+                ExceptionHelper exceptionHelper = new ExceptionHelper();
+                exceptionHelper.Exceptions.Add(exception);
+                exceptionHelper.PublishException();
+            }
+            return jSon;
+        }
+        private string CreateModalDataTable(string jsonData)
+        {
+            string tableString = @"
+            if ( $.fn.DataTable.isDataTable('#CustomModalDataTable') ) {
+              $('#CustomModalDataTable').DataTable().destroy();
+            }
+            $('#CustomModalDataTable tbody').empty();
+
+            jQuery('#CustomModalDataTable').DataTable({
+            data: " + jsonData + @",
+            columns: [
+                { data: 'AdiSoyadi' },
+                { data: 'Kurumu' },
+                { data: 'KatilimciSec' },
+                { data: 'IrtibatSec' }
+            ],
+            'language': {
+                'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
+            },
+            responsive: true,
+            dom: 'fpirt',
+            'createdRow': function (row, data, dataIndex) {
+                if (data.KatilimciTipi == 1) {
+                    $(row).addClass('icKatilimci');
+
+                } else if (data.KatilimciTipi == 2) {
+                    $(row).addClass('disKatilimci');
+
+                } else if (data.KatilimciTipi == 3) {
+                    $(row).addClass('nakitBagisci');
+
+                } else if (data.KatilimciTipi == 4) {
+                    $(row).addClass('tasinmazBagisci');
+                }
+            }
+        });
+            ";
+
+            return tableString;
+        }
+        private List<KatilimciListItem> GetModalDataList()
+        {
+            Personel personel = new Personel();
+            DataTable dataTableIc = personel.SelectSecilmemisIcKatilimcilarByFaaliyetIdReturnDT(FaaliyetIdQS.ConvertToInt());
+            Kisi kisi = new Kisi();
+            DataTable dataTableDis = kisi.SelectSecilmemisDisKatilimcilarByFaaliyetIdReturnDT(FaaliyetIdQS.ConvertToInt());
+            NakitBagisci nakitBagisci = new NakitBagisci();
+            DataTable dataTableNakit = nakitBagisci.SelectSecilmemisKatilimcilarByFaaliyetIdReturnDT(FaaliyetIdQS.ConvertToInt());
+            TasinmazBagisci tasinmazBagisci = new TasinmazBagisci();
+            DataTable dataTableTasinmaz = tasinmazBagisci.SelectSecilmemisKatilimcilarByFaaliyetIdReturnDT(FaaliyetIdQS.ConvertToInt()); //veri çekilip json a çeviriliyor
+
+            dataTableIc.Merge(dataTableDis);
+            dataTableIc.Merge(dataTableNakit);
+            dataTableIc.Merge(dataTableTasinmaz);
+            int SiraNo = 1;
+            List<KatilimciListItem> list = new List<KatilimciListItem>();
+            IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
+            if (dataTableIc != null)
+            {
+                foreach (DataRow row in dataTableIc.Rows)
+                {
+                    string katilimciId = row["KatilimciId"].ToString();
+                    int katilimciTipi = row["KatilimciTipi"].ConvertToInt();
+                    string adi = row["Adi"].ToString();
+                    string soyadi = row["Soyadi"].ToString();
+
+                    KatilimciListItem katilimciItem = new KatilimciListItem();
+                    katilimciItem.Sirano = SiraNo++.ToString();
+                    katilimciItem.KatilimciId = katilimciId;
+                    katilimciItem.AdiSoyadi = (adi + " " + soyadi.Trim());
+                    katilimciItem.Adi = adi;
+                    katilimciItem.Soyadi = soyadi;
+                    katilimciItem.KatilimciTipiStr = KatilimciTipiGetir(katilimciTipi);
+                    katilimciItem.Kurumu = katilimciItem.KatilimciTipiStr;
+                    katilimciItem.KatilimciTipi = katilimciTipi.ToString();
+
+
+                    katilimciItem.KatilimciSec = "<a href='#' class='btn btn-outline-primary' onclick=KatilimciSecildiBtnClick(" + katilimciId + "," + FaaliyetIdQS + "," + katilimciTipi + ")>Faaliyete Ekle</a>";
+                    if (katilimciTipi == ProjeConstants.FAALIYET_KATILIMCI_IC_INT ||
+                        katilimciTipi == ProjeConstants.FAALIYET_KATILIMCI_DIS_INT)
+                    {
+                        katilimciItem.IrtibatSec = "<a href='#' class='btn btn-outline-primary' onclick=IrtibatSecBtnClick(" + katilimciId + "," + FaaliyetIdQS + "," + katilimciTipi + ")>İrtibat Ekle</a>";
+                    }
+                    else
+                    {
+                        katilimciItem.IrtibatSec = string.Empty;
+                    }
+
+
+                    list.Add(katilimciItem);
+                }
+            }
+            return list;
+        }
+        private string KatilimciTipiGetir(int katilimciTipi)
+        {
+            string katilimciTipStr = ProjeConstants.FAALIYET_KATILIMCI_DIS;
+            switch (katilimciTipi)
+            {
+                case ProjeConstants.FAALIYET_KATILIMCI_IC_INT:
+                    {
+                        katilimciTipStr = ProjeConstants.FAALIYET_KATILIMCI_IC;
+                        break;
+                    }
+                case ProjeConstants.FAALIYET_KATILIMCI_DIS_INT:
+                    {
+                        katilimciTipStr = ProjeConstants.FAALIYET_KATILIMCI_DIS;
+                        break;
+                    }
+                case ProjeConstants.FAALIYET_KATILIMCI_NAKITBAGISCI_INT:
+                    {
+                        katilimciTipStr = ProjeConstants.FAALIYET_KATILIMCI_NAKITBAGISCI;
+                        break;
+                    }
+                case ProjeConstants.FAALIYET_KATILIMCI_TASINMAZBAGISCI_INT:
+                    {
+                        katilimciTipStr = ProjeConstants.FAALIYET_KATILIMCI_TASINMAZBAGISCI;
+                        break;
+                    }
+                default:
+                    break;
+            }
+            return katilimciTipStr;
+        }
+        protected void IcIrtibatCikarBtn_Click(object sender, EventArgs e)
+        {
+            Faaliyet faaliyet = new Faaliyet();
+            faaliyet = faaliyet.Select(FaaliyetIdQS.ConvertToInt());
+            if (faaliyet != null)
+            {
+                faaliyet.IcIrtibatId = 0;
+                faaliyet.Update();
+                IcIrtibatLbl.Text = string.Empty;
+                IcIrtibatCikarBtn.Visible = false;
+                KatilimciBilgileriniDoldur(faaliyet, true);
+            }
+        }
+        protected void DisIrtibatCikarBtn_Click(object sender, EventArgs e)
+        {
+            Faaliyet faaliyet = new Faaliyet();
+            faaliyet = faaliyet.Select(FaaliyetIdQS.ConvertToInt());
+            if (faaliyet != null)
+            {
+                faaliyet.DisIrtibatId = 0;
+                faaliyet.Update();
+                DisIrtibatLbl.Text = string.Empty;
+                DisIrtibatCikarBtn.Visible = false;
+                KatilimciBilgileriniDoldur(faaliyet, true);
+            }
+        }
+        #endregion
+
+
+        #region Takvim Daveti
+        private string TakvimDavetiBtnOlustur(int katilimId,string takvimDaveti, int katilimciId, int katilimciTipi, string eposta)
+        {
+            string btn = string.Empty;
+            if (!string.IsNullOrEmpty(eposta))
+            {
+                FaaliyetKatilim faaliyetKatilim = new FaaliyetKatilim();
+                faaliyetKatilim = faaliyetKatilim.Select(katilimId);
+                if (faaliyetKatilim != null && faaliyetKatilim.TakvimDaveti.Equals(ProjeConstants.MTSTAKVIMDAVETIYESI_GONDERILDI))
+                {
+                    btn =  ProjeConstants.MTSTAKVIMDAVETIYESI_GONDERILDI;
+                }
+                else
+                {
+                    btn = "<a href='#' class='btn btn-outline-info' onclick=TakvimDavetiyesiModalAc(" + katilimId + "," + FaaliyetIdQS + "," + katilimciId + "," + katilimciTipi + "," + eposta.ReturnQuotedValue() + ")>Davet Gönder</a>" +
+                                (string.IsNullOrEmpty(takvimDaveti) || takvimDaveti.Equals(ProjeConstants.MTSTAKVIMDAVETIYESI_GONDERILMEDI) ? string.Empty : "<br>" + ProjeConstants.MTSTAKVIMDAVETIYESI_GONDERILDI) + "";
+                }
+            }
+            else
+            {
+                btn = "E-posta adresi yok";
+            }
+
+
+            return btn;
+        }
+        private bool TakvimDavetiGonder(FaaliyetKatilim faaliyetKatilim, int faaliyetId, string toAdress, string islemTipi)
+        {
+            bool gonderildi = false;
+            Faaliyet faaliyet = new Faaliyet();
+            faaliyet = faaliyet.Select(faaliyetId);
+            if (faaliyet != null)
+            {
+                string from = ProjeConstants.PARAM_MTSMAILADRESI;
+                string userto = toAdress;
+                string baslik = faaliyet.FaaliyetKonusu;
+                string faaliyetYeriStr = faaliyet.FaaliyetYeriStr;
+
+
+
+                if (faaliyetKatilim == null 
+                    || string.IsNullOrEmpty(faaliyetKatilim.TakvimDaveti) 
+                    || faaliyetKatilim.TakvimDaveti.Equals(ProjeConstants.MTSTAKVIMDAVETIYESI_GONDERILMEDI))
+                {
+                    islemTipi = ProjeConstants.KAYDET;
+                }
+                
+                if (islemTipi.Equals(ProjeConstants.KAYDET))
+                {
+                    if (AcikTarihChk.Checked)
+                    {
+                        MessageHelper.PublishMessage("Açık Tarihli faaliyet olduğundan takvim daveti gönderilmedi", ProjeConstants.MESAJ_HATA);
+                    }
+                    else{
+                        MailHelper.TakvimeEkle(faaliyet.UniqueId, from, userto, baslik, faaliyet.BaslangicTarihi, faaliyet.BitisTarihi, faaliyetYeriStr,
+                                        faaliyet.Aciklama, ProjeConstants.PARAM_INTERNET_SMTP_IP_ADRESI);
+                        gonderildi = true;
+                    }
+
+                }
+                else if (islemTipi.Equals(ProjeConstants.GUNCELLE))
+                {
+                    if (AcikTarihChk.Checked)
+                    {
+                        MailHelper.TakvimdenSil(faaliyet.UniqueId, from, userto, " -Açık Tarihe Alındı- " + baslik, faaliyet.BaslangicTarihi, faaliyet.BitisTarihi, faaliyetYeriStr,
+                            faaliyet.Aciklama, ProjeConstants.PARAM_INTERNET_SMTP_IP_ADRESI);
+                        gonderildi = true;
+                    }
+                    else
+                    {
+                        MailHelper.TakvimeEkle(faaliyet.UniqueId, from, userto, baslik, faaliyet.BaslangicTarihi, faaliyet.BitisTarihi, faaliyetYeriStr,
+                            faaliyet.Aciklama, ProjeConstants.PARAM_INTERNET_SMTP_IP_ADRESI);
+                        gonderildi = true;
+                    }
+                }
+                else if (islemTipi.Equals(ProjeConstants.SIL))
+                {
+                    MailHelper.TakvimdenSil(faaliyet.UniqueId, from, userto, baslik, faaliyet.BaslangicTarihi, faaliyet.BitisTarihi, faaliyetYeriStr,
+                        faaliyet.Aciklama, ProjeConstants.PARAM_INTERNET_SMTP_IP_ADRESI);
+                    gonderildi = true;
+                }
+
+            }
+            else
+            {
+                MessageHelper.PublishMessage("Takvim daveti gönderilmedi", ProjeConstants.MESAJ_BILGI, 2000);
+            }
+            return gonderildi;
+        }
+        protected void TakvimDavetiGonderNowBtn_Click(object sender, EventArgs e)
+        {
+            int katilimId = paramFaaliyetKatilimIdLbl.Value.ConvertToInt();
+            int katilimciId = paramFaaliyetKatilimciIdLbl.Value.ConvertToInt();
+            int katilimciTipi = paramFaaliyetKatilimciTipiLbl.Value.ConvertToInt();
+            int faaliyetId = paramFaaliyetIdLbl.Value.ConvertToInt();
+
+            TakvimDavetiHazırla(faaliyetId,katilimId, katilimciId, katilimciTipi, ProjeConstants.GUNCELLE);
+        }
+
+        private void TakvimDavetiHazırla(int faaliyetId,int katilimId, int katilimciId, int katilimciTipi, string islemTipi)
+        {
+            Katilimci katilimci = new Katilimci();
+            katilimci = katilimci.GetKatilimci(katilimciId, katilimciTipi);
+            if (katilimci != null)
+            {
+                string epostaAdresi = katilimci != null ? katilimci.EPosta : string.Empty;
+
+                if (string.IsNullOrEmpty(epostaAdresi))
+                {
+                    MessageHelper.PublishMessage("Katılımcının e-posta adresi bulunmuyor", ProjeConstants.MESAJ_HATA);
+                }
+                else
+                {
+                    try
+                    {
+                        FaaliyetKatilim faaliyetKatilim = new FaaliyetKatilim();
+                        faaliyetKatilim = faaliyetKatilim.Select(katilimId);
+                        if (faaliyetKatilim != null)
+                        {
+                            TakvimDavetiGonder(faaliyetKatilim, faaliyetId, epostaAdresi, islemTipi);
+                            faaliyetKatilim.TakvimDaveti = ProjeConstants.MTSTAKVIMDAVETIYESI_GONDERILDI;
+                            faaliyetKatilim.Update();
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageHelper.PublishMessage(ex.Message, ProjeConstants.MESAJ_HATA);
+                    }
+                }
+            }
+            else
+            {
+                MessageHelper.PublishMessage("Katılımcı bulunamadığından takvim daveti gönderilmedi", ProjeConstants.MESAJ_HATA);
+            }
+        }
+
+        private void KatilimcilaraTakvimDavetiGonder(Faaliyet faaliyet)
+        {
+            FaaliyetKatilim faaliyetKatilimDao = new FaaliyetKatilim();
+            List<FaaliyetKatilim> list= faaliyetKatilimDao.SelectByFaaliyetId(faaliyet.Id);
+            foreach (var item in list)
+            {
+                if (string.IsNullOrEmpty(item.TakvimDaveti) || item.TakvimDaveti.Equals(ProjeConstants.MTSTAKVIMDAVETIYESI_GONDERILMEDI))
+                {
+
+                }
+                else
+                {
+                    TakvimDavetiHazırla(item.FaaliyetId, item.Id, item.KatilimciId, item.KatilimciTipi, ProjeConstants.GUNCELLE);
+                }
+            }
+
+        }
+        #endregion
+
+        #region timer
         protected void RefreshTimer_Tick(object sender, EventArgs e)
         {
 
@@ -2264,6 +2467,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             return hyperLink;
         }
         #endregion
+
         #region classes
         private class KatilimciListItem
         {
@@ -2275,9 +2479,13 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             public string Adi { get; set; }
             public string Soyadi { get; set; }
             public string Kurumu { get; set; }
+            public string AniObjesi { get; set; }
             public string AniObjesiStoklu { get; set; }
             public string AniObjesiStoksuz { get; set; }
             public string GetirilenAniObjesi { get; set; }
+            public string TakvimDavetiBtn{ get; set; }
+            public string EPosta{ get; set; }
+            
             public string KisiKarti { get; set; }
             public string Cikar { get; set; }
             public string KatilimciSec { get; set; }
@@ -2402,25 +2610,6 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         }
         #endregion
 
-        protected void AcikTarihChk_CheckedChanged(object sender, EventArgs e)
-        {
-            AcikTarihliKontrolu();
-        }
-
-        private void AcikTarihliKontrolu()
-        {
-            Faaliyet faaliyet = new Faaliyet();
-            faaliyet = faaliyet.Select(FaaliyetIdQS.ConvertToInt());
-            if (faaliyet==null && AcikTarihChk.Checked)
-            {
-                OzelKalemTakvimiChk.Checked = false;
-                MessageHelper.PublishMessage("Açık Tarihli faaliyet olduğundan Özel Kalem takvimine gönderilmeyecek", ProjeConstants.MESAJ_BILGI,2000);
-            }
-        }
-
-        protected void OzelKalemTakvimiChk_CheckedChanged(object sender, EventArgs e)
-        {
-            AcikTarihliKontrolu();
-        }
+   
     }
 }

@@ -119,15 +119,18 @@ namespace NBYS_WebParts.SMSAylikBagisCizelgesi
         private decimal SMSTutariBul(int ay, int yil)
         {
             decimal smsBedeli;
-            DateTime smsDegisimTarihi = ProjeConstants.SMS_TUTAR_DEGISIM_TARIHI;
             DateTime smstarihi= new DateTime(yil,ay,1);
-            if (smstarihi < smsDegisimTarihi)
+            if (smstarihi > ProjeConstants.SMS_2024)
             {
-                smsBedeli = ProjeConstants.SMS_TUTAR_01022023ONCESI;
+                smsBedeli = ProjeConstants.SMS_TUTAR_2024;
+            }
+            else if (smstarihi > ProjeConstants.SMS_2023)
+            {
+                smsBedeli = ProjeConstants.SMS_TUTAR_2023;
             }
             else
             {
-                smsBedeli = ProjeConstants.SMS_TUTAR_01022023SONRASI;
+                smsBedeli = ProjeConstants.SMS_TUTAR_2022;
             }
             return smsBedeli;
         }
@@ -174,12 +177,12 @@ namespace NBYS_WebParts.SMSAylikBagisCizelgesi
                 VodafoneSMSTutariCell.Text = (item.VodafoneSMSAdedi * item.SMSTutari).ToString("N", culturInfo);
                 VodafoneSMSTutariCell.CssClass = "text-right";
 
-                ToplamTurkTelekomSMSAdedi += item.TurkcellSMSAdedi ;
+                ToplamTurkTelekomSMSAdedi += item.TurkTelekomSMSAdedi;
                 TableCell TurkTelekomSMSAdediCell = new TableCell();
                 TurkTelekomSMSAdediCell.Text = item.TurkTelekomSMSAdedi.ToString();
                 TurkTelekomSMSAdediCell.CssClass = "text-right";
 
-                ToplamTurkTelekomSMSTutari += item.TurkcellSMSAdedi * item.SMSTutari;
+                ToplamTurkTelekomSMSTutari += item.TurkTelekomSMSAdedi * item.SMSTutari;
                 TableCell TurkTelekomSMSTutariCell = new TableCell();
                 TurkTelekomSMSTutariCell.Text = (item.TurkTelekomSMSAdedi * item.SMSTutari).ToString("N", culturInfo);
                 TurkTelekomSMSTutariCell.CssClass = "text-right";
@@ -483,8 +486,8 @@ namespace NBYS_WebParts.SMSAylikBagisCizelgesi
         private void YilDDLDoldur()
         {
             var year = DateTime.Now.Year;
-            int ikiYilOnce = year - 1;
-            for (int i = ikiYilOnce; i <= year; i++)
+            int ilkYear = 2019;
+            for (int i = ilkYear; i <= year; i++)
             {
                 YilDDL.Items.Add(new ListItem(i.ToString(), i.ToString()));
             }

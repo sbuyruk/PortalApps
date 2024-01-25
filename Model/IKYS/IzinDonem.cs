@@ -200,14 +200,16 @@ namespace Model.IKYS
             List<IzinDonem> list = ToList<IzinDonem>(dataTable);
             return (list);
         }
-        public DataTable SelectSUMByPersonelId(int personelId)
+        public DataTable SelectSUMKalanIzinByPersonelId(int personelId,bool sadeceEskiDonemler)
         {
+            string sadeceEskiDonemlerStr = sadeceEskiDonemler ? " AND BitisTarihi < GETDATE() " : string.Empty;
             string sqlString = string.Format(@"
                 SELECT SUM(CONVERT(INT,IzinHakki)) IzinHakkiToplami,SUM(CONVERT(INT,KullanilanIzin)) KullanilanIzinToplami,SUM(CONVERT(INT,KalanIzin)) KalanIzinToplami
                 FROM IzinDonem_Table
                 WHERE IzinTipi={0} AND PersonelId={1}
+                {2}
                 GROUP BY PersonelId
-            ", ProjeConstants.IZINTIPI_UCRETLI_INT,personelId);
+            ", ProjeConstants.IZINTIPI_UCRETLI_INT,personelId, sadeceEskiDonemlerStr);
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return (dataTable);

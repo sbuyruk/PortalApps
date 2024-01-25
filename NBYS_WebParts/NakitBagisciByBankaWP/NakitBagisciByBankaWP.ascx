@@ -1,10 +1,10 @@
 ﻿<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
-<%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %> 
-<%@ Register Tagprefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %> 
-<%@ Register Tagprefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
-<%@ Register Tagprefix="asp" Namespace="System.Web.UI" Assembly="System.Web.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" %>
-<%@ Import Namespace="Microsoft.SharePoint" %> 
-<%@ Register Tagprefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
+<%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
+<%@ Register TagPrefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
+<%@ Register TagPrefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
+<%@ Register TagPrefix="asp" Namespace="System.Web.UI" Assembly="System.Web.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" %>
+<%@ Import Namespace="Microsoft.SharePoint" %>
+<%@ Register TagPrefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="NakitBagisciByBankaWP.ascx.cs" Inherits="NBYS_WebParts.NakitBagisciByBankaWP.NakitBagisciByBankaWP" %>
 <script type="text/javascript">
 
@@ -47,7 +47,7 @@
             }
         });
     };
-    
+
 </script>
 <div class="container shadow">
     <asp:UpdatePanel ID="TableUpdatePanel" runat="server">
@@ -65,7 +65,7 @@
                             <div class="card-body p-0">
                                 <div class="row m-2">
                                     <div class="input-group col-4 row">
-                                        <label  for="AyDDL" class="col-form-label col-3">Ay</label>
+                                        <label for="AyDDL" class="col-form-label col-3">Ay</label>
                                         <div class="col-8">
                                             <asp:DropDownList ID="AyDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="AyDDL_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
                                         </div>
@@ -81,7 +81,7 @@
                                     <asp:Table ID="NakitBagisciTable" runat="server" class="table table-bordered table-striped">
                                     </asp:Table>
                                 </div>
-<%--                                <div class="table loader">
+                                <%--                                <div class="table loader">
                                     <asp:Table ID="SMSTable" runat="server" class="table table-bordered table-striped">
                                     </asp:Table>
                                 </div>--%>
@@ -94,4 +94,14 @@
             </div>
         </ContentTemplate>
     </asp:UpdatePanel>
+    <asp:UpdateProgress ID="updateProgress" runat="server">
+        <ProgressTemplate>
+            <div class='loaderMainContainer'>
+                <div class='loaderContainer'>
+                    <div class='loaderCircle'></div>
+                </div>
+            </div>
+
+        </ProgressTemplate>
+    </asp:UpdateProgress>
 </div>

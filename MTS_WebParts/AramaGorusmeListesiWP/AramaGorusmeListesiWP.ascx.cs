@@ -326,7 +326,7 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
                         if (faaliyet != null)
                         {
                             string acikTarihli = faaliyet.AcikTarih ? " (Açık)" : string.Empty;
-                            aramaItem.Randevu = "<a target=_blank href=" + ProjeConstants.PAGE_FAALIYET_GIRIS + "?RandevuId=" + randevuId + " class='btn btn-outline-secondary'>Randevu"+acikTarihli+"</a>";
+                            aramaItem.Randevu = "<a target=_blank href=" + ProjeConstants.PAGE_FAALIYET_GIRIS + "?FaaliyetId=" + randevuId + " class='btn btn-outline-secondary'>Randevu"+acikTarihli+"</a>";
                         }
                         else
                             aramaItem.Randevu = string.Empty;
@@ -387,11 +387,11 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
         {
             RedirectToPage(ProjeConstants.PAGE_KISI_LIST);
         }
-        protected void RandevuListesiBtn_Click(object sender, EventArgs e)
+        protected void FaaliyetListesiBtn_Click(object sender, EventArgs e)
         {
             RedirectToPage(ProjeConstants.PAGE_FAALIYET_LIST);
         }
-        protected void RandevuTakvimiBtn_Click(object sender, EventArgs e)
+        protected void FaaliyetTakvimiBtn_Click(object sender, EventArgs e)
         {
             RedirectToPage(ProjeConstants.PAGE_FAALIYET_TAKVIM);
         }
@@ -550,7 +550,7 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
         }
         protected void SecilenKatilimciyiGetirBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_ARAMAGORUSME_LIST + "?ArayanId=" + paramRandevuKatilimciIdLbl.Value + "&KatilimciTipi=" + paramRandevuKatilimciTipiLbl.Value);
+            RedirectToPage(ProjeConstants.PAGE_ARAMAGORUSME_LIST + "?ArayanId=" + paramFaaliyetKatilimciIdLbl.Value + "&KatilimciTipi=" + paramFaaliyetKatilimciTipiLbl.Value);
         }
         private class KatilimciListItem
         {

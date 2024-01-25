@@ -271,7 +271,7 @@ namespace Model.TBYS
             
             string sqlString = string.Format(@"
                 SELECT A.Id SigortaId, B.SorumluBolge, A.TasinmazId,B.SorumluBolge,A.SigortaCinsi,A.AdresKodu,A.PoliceNo,A.SigortaBasTar,A.SigortaBitTar,A.YapiTarzi,A.InsaYili,
-                    A.BulunduguKat,A.ToplamKatSayisi, A.Metrekare ,A.BrutYuzolcumu, A.SigortaBedeli, A.Prim,A.DaskPoliceNo,A.BagimsizBolumNo,
+                     A.BulunduguKat,B.BulunduguKat, A.ToplamKatSayisi,B.ToplamKatSayisi, A.Metrekare, B.Metrekare ,A.BrutYuzolcumu, B.Yuzolcumu,A.SigortaBedeli, A.Prim,A.DaskPoliceNo,A.BagimsizBolumNo,
                     B.Adres+ISNULL(C.BolumNo,'') Adres, B.Ili,B.Ilcesi, B.Ilcesi +' '+ B.Ili IliIlcesi, B.KullanimSekli, B.Cinsi, B.PaftaNo,B.AdaNo,B.ParselNo,B.SahifeNo,C.BolumNo,
                     A.TeminatListesi,A.TeminatAciklama,A.Aciklama,B.EnvanterdeMi,
                     B.Adres+ISNULL(C.BolumNo,'') +' '+ B.Ilcesi+'-'+ B.Ili TamAdres,

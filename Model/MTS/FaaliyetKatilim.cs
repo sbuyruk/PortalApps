@@ -15,6 +15,7 @@ namespace Model.MTS
         public int KatilimciId { get; set; }
         public int KatilimciTipi { get; set; }
         public string KurumGorev { get; set; }
+        public string TakvimDaveti { get; set; }
         public string Aciklama { get; set; }
 
         public override int Save()

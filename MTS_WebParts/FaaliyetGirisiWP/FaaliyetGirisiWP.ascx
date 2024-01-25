@@ -44,7 +44,7 @@
 </style>
 <%-- Başlangıç bitiş Tarihi --%>
 <script type="text/javascript">
-    //On Page Load.
+    //On Page Load.<a href="{4BB30692-604D-4C8D-ADF7-3A049AD260F3}|MTS_WebParts\MTS_WebParts.csproj|c:\users\taylis\source\repos\portalapps\mts_webparts\kisilistesiwp\">{4BB30692-604D-4C8D-ADF7-3A049AD260F3}|MTS_WebParts\MTS_WebParts.csproj|c:\users\taylis\source\repos\portalapps\mts_webparts\kisilistesiwp\</a>
     $(function () {
         SetDatePicker();
     });
@@ -302,28 +302,11 @@
 <%--Faaliyet Yeri Autocomplete--%>
 <script>
     var faaliyetYerleri = [
-        "ActionScript",
-        "AppleScript",
-        "Asp",
-        "BASIC",
-        "C",
-        "C++",
-        "Clojure",
-        "COBOL",
-        "ColdFusion",
-        "Erlang",
-        "Fortran",
-        "Groovy",
-        "Haskell",
-        "Java",
-        "JavaScript",
-        "Lisp",
-        "Perl",
-        "PHP",
-        "Python",
-        "Ruby",
-        "Scala",
-        "Scheme"
+        "TUSAŞ",
+        "ASELSAN",
+        "HAVELSAN",
+        "İŞBİR",
+        "ASPİLSAN"
     ];
     $(function () {
         
@@ -334,6 +317,24 @@
     });
     function setDataSet(myset) {
         faaliyetYerleri = myset;
+    }
+</script>
+
+<%-- TakvimDavetiGonder --%>
+<script type="text/javascript"> 
+    function TakvimDavetiyesiModalAc(katilimId,faaliyetId, katilimciId, katilimciTipi, eposta) {
+        document.getElementById('<%= paramFaaliyetKatilimciIdLbl.ClientID%>').value = katilimciId;
+        document.getElementById('<%= paramFaaliyetKatilimIdLbl.ClientID%>').value = katilimId;
+        document.getElementById('<%= paramFaaliyetIdLbl.ClientID%>').value = faaliyetId;
+        document.getElementById('<%= paramFaaliyetKatilimciTipiLbl.ClientID%>').value = katilimciTipi;
+        document.getElementById('<%= EPostaAdresiTxt.ClientID%>').value = eposta;
+        
+        $("#TakvimDavetiModalDiv").modal({ backdrop: true });
+    }
+    function TakvimDavetiGonderBtnClicked() {
+        
+        document.getElementById('<%= TakvimDavetiGonderNowBtn.ClientID%>').click();        
+        CloseModals();
     }
 </script>
 <div class="container ">
@@ -477,11 +478,10 @@
                                             <tr>
                                                 <th>Adı Soyadı</th>
                                                 <th>Kurumu</th>
-                                                <th>Katilimci int</th>
+                                                <th>Katılımcı</th>
                                                 <th>Katilimci Tipi</th>
-                                                <th>Anı Objesi (Stoklu)</th>
-                                                <th>Anı Objesi (Stoksuz)</th>
-                                                <th>Getirilen Anı Objesi</th>
+                                                <th>Anı Objesi </th>
+                                                <th>E-posta Daveti</th>
                                                 <th>Kişi Kartı</th>
                                                 <th>Çıkar</th>
                                             </tr>
@@ -534,6 +534,7 @@
                     <asp:LinkButton ID="FaaliyetKartiBtn" CssClass="btn btn-outline-secondary" runat="server" Text="Faaliyet Kartı" OnClick="FaaliyetKartiBtn_Click" Visible="False"></asp:LinkButton>
                     <asp:LinkButton ID="FaaliyetTakvimiBtn" CssClass="btn btn-outline-info float-right" runat="server" Text="Faaliyet Takvimi" OnClick="FaaliyetTakvimiBtn_Click" CausesValidation="false"></asp:LinkButton>
                     <asp:LinkButton ID="FaaliyetListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Faaliyet Listesi" OnClick="FaaliyetListesiBtn_Click" CausesValidation="false"></asp:LinkButton>
+                     <asp:LinkButton ID="AcikTarihliFaaliyetListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Açık Tarihli Faal. List." OnClick="AcikTarihliFaaliyetListesiBtn_Click"></asp:LinkButton>
                     <asp:LinkButton ID="KisiListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Kişi Listesi" OnClick="KisiListesiBtn_Click" CausesValidation="false"></asp:LinkButton>
                 </ContentTemplate>
                 <Triggers>
@@ -711,7 +712,6 @@
         <asp:AsyncPostBackTrigger ControlID="GetirilenAniObjesiKaydetBtn" EventName="click" />
     </Triggers>
 </asp:UpdatePanel>
-
 <!-- Stoklu Anı Objesi Modal -->
 <div class="modal" id="StokluAniObjesiModal" role="dialog">
 
@@ -783,3 +783,37 @@
         </div>
     </div>
 </div>
+<!-- TakvimDaveti Modal -->
+<asp:UpdatePanel ID="UpdatePanel11" runat="server" UpdateMode="Conditional" ViewStateMode="Enabled">
+    <ContentTemplate>
+        <div class="modal" id="TakvimDavetiModalDiv" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header text-danger">
+                        <h3 class="col-form-label font-weight-bold" id="H1" runat="server">Takvim Daveti</h3>
+                    </div>
+                    <div class="modal-body ">
+                        <div id="TakvimDavetiGonderNowDiv" style="display: none">
+                            <asp:LinkButton ID="TakvimDavetiGonderNowBtn" runat="server" CssClass="btn btn-success" CausesValidation="false" Text=" Gönder " OnClick="TakvimDavetiGonderNowBtn_Click" />
+                        </div>
+                        <div class="form-group">
+                            <asp:Label CssClass="col-form-label font-weight-bold" runat="server" Text="EPosta Adresi"></asp:Label>
+                            <asp:TextBox ID="EPostaAdresiTxt" CssClass="form-control" runat="server" Text="" ></asp:TextBox>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                        <div id="TakvimDavetiGonderBtnDiv" style="display: block">
+                            <input id="TakvimDavetiGonderBtn" class="btn btn-success" type="button" value="Gönder" onclick="TakvimDavetiGonderBtnClicked();" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </ContentTemplate>
+    <Triggers>
+        <asp:AsyncPostBackTrigger ControlID="GetirilenAniObjesiSecBtn" EventName="click" />
+        <asp:AsyncPostBackTrigger ControlID="GetirilenAniObjesiKaydetBtn" EventName="click" />
+    </Triggers>
+</asp:UpdatePanel>

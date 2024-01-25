@@ -83,6 +83,7 @@
     <Compile Include="MTS\AniObjesiTanim.cs" />
     <Compile Include="MTS\DepoStok.cs" />
     <Compile Include="MTS\DepoTanim.cs" />
+    <Compile Include="MTS\Katilimci.cs" />
     <Compile Include="MTS\MTSKurumGorev.cs" />
     <Compile Include="MTS\MTSUnvanTanim.cs" />
     <Compile Include="MTS\MTSGorevTanim.cs" />

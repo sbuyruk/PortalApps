@@ -1,6 +1,7 @@
 ﻿using Model.IKYS;
 using Model.MTS;
 using Model.NBYS;
+using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -282,8 +283,8 @@ namespace MTS_WebParts.FaaliyetKartiWP
 
 
                 r2c1.Text = "Faaliyet Yeri : " + (faaliyet.FaaliyetYeriStr== null ? "" : faaliyet.FaaliyetYeriStr);
-                r2c2.Text = "Faaliyet Amacı : " + ParseFaaliyetAmaci(faaliyet.FaaliyetAmaci.ToString());
-                r2c3.Text = "Faaliyet Durumu : " + ParseFaaliyetDurumu(faaliyet.FaaliyetDurumu.ConvertToInt());
+                r2c2.Text = "Faaliyet Amacı : " + MTSOrtak.ParseFaaliyetAmaci(faaliyet.FaaliyetAmaci.ToString());
+                r2c3.Text = "Faaliyet Durumu : " + MTSOrtak.ParseFaaliyetDurumu(faaliyet.FaaliyetDurumu.ConvertToInt());
 
                 r3c1.Text = "Faaliyet Konusu : " + faaliyet.FaaliyetKonusu;
                 r3c2.Text = "Açıklama : " + faaliyet.Aciklama;
@@ -301,76 +302,6 @@ namespace MTS_WebParts.FaaliyetKartiWP
             {
                 MessageHelper.PublishMessage("Faaliyet Bulunamadı", ProjeConstants.MESAJ_HATA);
             }
-        }
-        private string ParseFaaliyetAmaci(string amac)
-        {
-            string amacStr = string.Empty;
-            switch (amac)
-            {
-                case ProjeConstants.FAALIYET_AMACI_DAVET_INT:
-                    {
-                        amacStr = ProjeConstants.FAALIYET_AMACI_DAVET;
-                        break;
-                    }
-                case ProjeConstants.FAALIYET_AMACI_IZIN_INT:
-                    {
-                        amacStr = ProjeConstants.FAALIYET_AMACI_IZIN;
-                        break;
-                    }
-                case ProjeConstants.FAALIYET_AMACI_OZELCALISMA_INT:
-                    {
-                        amacStr = ProjeConstants.FAALIYET_AMACI_OZELCALISMA;
-                        break;
-                    }
-                case ProjeConstants.FAALIYET_AMACI_RESMITATIL_INT:
-                    {
-                        amacStr = ProjeConstants.FAALIYET_AMACI_RESMITATIL;
-                        break;
-                    }
-                case ProjeConstants.FAALIYET_AMACI_TOPLANTI_INT:
-                    {
-                        amacStr = ProjeConstants.FAALIYET_AMACI_TOPLANTI;
-                        break;
-                    }
-                case ProjeConstants.FAALIYET_AMACI_YILDONUMU_INT:
-                    {
-                        amacStr = ProjeConstants.FAALIYET_AMACI_YILDONUMU;
-                        break;
-                    }
-                case ProjeConstants.FAALIYET_AMACI_ZIYARET_INT:
-                    {
-                        amacStr = ProjeConstants.FAALIYET_AMACI_ZIYARET;
-                        break;
-                    }
-                default:
-                    break;
-            }
-            return amacStr;
-        }
-        private string ParseFaaliyetDurumu(int durum)
-        {
-            string durumStr = string.Empty;
-            switch (durum)
-            {
-                case ProjeConstants.FAALIYET_DURUMU_PLANLANDI_INT:
-                    {
-                        durumStr = ProjeConstants.FAALIYET_DURUMU_PLANLANDI;
-                        break;
-                    }
-                case ProjeConstants.FAALIYET_DURUMU_ONAYLANDI_INT:
-                    {
-                        durumStr = ProjeConstants.FAALIYET_DURUMU_ONAYLANDI;
-                        break;
-                    }
-                case ProjeConstants.FAALIYET_DURUMU_IPTALEDILDI_INT:
-                    {
-                        durumStr = ProjeConstants.FAALIYET_DURUMU_IPTALEDILDI;
-                        break;
-                    }
-                default:
-                    break;
-            }
-            return durumStr;
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
