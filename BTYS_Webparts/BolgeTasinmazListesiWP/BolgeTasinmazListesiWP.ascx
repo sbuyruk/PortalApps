@@ -52,6 +52,7 @@
                 { data: "Cinsi" },
                 { data: "KiraDurumu" },
                 { data: "TasinmazKarti" },
+                { data: "Resimler" },
             ],
             'order': [[0, 'asc']],//Id Sıralı
             "language": {
@@ -134,6 +135,7 @@
                             <th>Cinsi</th>
                             <th>KiraDurumu</th>
                             <th>Taşınmaz Kartı</th>
+                            <th>Resimler/Belgeler</th>
                         </tr>
                     </thead>
                 </table>

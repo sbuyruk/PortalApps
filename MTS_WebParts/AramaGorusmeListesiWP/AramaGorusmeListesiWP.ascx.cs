@@ -307,6 +307,7 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
 
                     bool gorusmeSaglandi = row["GorusmeSaglandi"].ConvertToBool();
                     bool randevuIstendi = row["RandevuIstendi"].ConvertToBool();
+                    bool randevuKisiti = row["RandevuKisiti"].ReturnFalseIfNull().ConvertToBool();
 
 
                     AramaListItem aramaItem = new AramaListItem();
@@ -331,10 +332,15 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
                         else
                             aramaItem.Randevu = string.Empty;
                     }
+                    else if (randevuKisiti)
+                    {
+                        aramaItem.Randevu = "RK";
+                    }
                     else if (randevuIstendi)
                     {
                         aramaItem.Randevu = "İstendi";
                     }
+
                     aramaItem.Duzenle = "<a href=" + ProjeConstants.PAGE_ARAMAGORUSME_GIRIS + "?AramaGorusmeId=" + aramaId + "&ArayanId=" + arayanId + " class='btn btn-outline-success'>Arama/Görüşme</a>";
                     aramaItem.Secildi = SecilenIdQS.Equals(aramaItem.AramaId);
                     list.Add(aramaItem);

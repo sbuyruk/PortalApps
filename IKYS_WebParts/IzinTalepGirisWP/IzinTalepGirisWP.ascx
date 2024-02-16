@@ -138,12 +138,13 @@
                         <div class="row">
                             <div class="form-group col-4" id="VekilDiv" runat="server" style="display: block;">
                                 <label class="col-form-label" for="VekilImzaDDL">Vekil</label>
-                                <%--<asp:RequiredFieldValidator runat="server" ControlToValidate="VekilImzaDDL" ForeColor="Red" ErrorMessage="Zorunlu Alan"> </asp:RequiredFieldValidator>--%>
+                                <%--<asp:RequiredFieldValidator ID="VekilImzaDDLRequiredFieldValidator"  runat="server" ControlToValidate="VekilImzaDDL" ForeColor="Red" ErrorMessage="Zorunlu Alan"> </asp:RequiredFieldValidator>--%>
                                 <asp:DropDownList ID="VekilImzaDDL" runat="server" class="form-control" style="height:auto" />
                             </div>
                             <div class="form-group col-4" id="AmirDiv" runat="server" style="display: block;">
                                 <label class="col-form-label" for="AmirImzaDDL">Amir</label>
                                 <asp:DropDownList ID="AmirImzaDDL" runat="server" class="form-control" style="height:auto" />
+                                <%--<asp:RequiredFieldValidator ID="AmirImzaDDLRequiredFieldValidator"  runat="server" ControlToValidate="VekilImzaDDL" ForeColor="Red" ErrorMessage="Zorunlu Alan"> </asp:RequiredFieldValidator>--%>
                             </div>
                             <div class="form-group col-4" id="OnayDiv" runat="server" style="display: block;">
                                 <label class="col-form-label" for="OnayImzaDDL">Onay</label>

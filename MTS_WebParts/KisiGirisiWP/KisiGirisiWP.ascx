@@ -58,7 +58,7 @@
                                     <asp:TextBox ID="GoreviTxt" CssClass="form-control" runat="server" Text="" Enabled="false"></asp:TextBox>
                                 </div>
                                 <div class="form-group">
-                                    <asp:Label CssClass="col-from-label" runat="server" Text="Doğum Günü"></asp:Label>
+                                    <asp:Label CssClass="col-from-label" runat="server" Text="Kutlama"></asp:Label>
                                     <asp:CheckBox ID="KutlamaChk" CssClass="form-control" runat="server" Text="Kutlansın" Checked="false"></asp:CheckBox>
                                 </div>
                             </div>
@@ -75,7 +75,10 @@
                                     <asp:Label CssClass="col-form-label" runat="server" for="MTSGorevTanimDDL">Görev</asp:Label>
                                     <asp:TextBox ID="MTSGorevTanimTxt" CssClass="form-control" runat="server" Text="" ReadOnly></asp:TextBox>
                                 </div>
-
+                                <div class="form-group">
+                                    <asp:Label CssClass="col-from-label" runat="server" Text="Randevu Kısıtı"></asp:Label>
+                                    <asp:CheckBox ID="RandevuKisitiChk" CssClass="form-control" runat="server" Text="Randevu Kısıtı" Checked="false"></asp:CheckBox>
+                                </div>
                             </div>
                         </div>
                         <div class="col-5 row ">

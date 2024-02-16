@@ -474,6 +474,38 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                     YapiKayitSilBtn.Visible = false;
                     MessageHelper.PublishMessage("Lütfen Yapı Kayıt Belgesi yükleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
                 }
+                if (TapuKayitYukleFU.HasFile)
+                {
+                    string hedefDosyaAdi = ProjeConstants.DOSYA_TAPUKAYIT_BELGESI + tasinmazId + ".pdf";
+                    bool isOk = UtilityHelper.UploadFileToSharePoint(TapuKayitYukleFU, ProjeConstants.TBYSBELGELERI_LIB, hedefDosyaAdi);
+                    if (isOk)
+                    {
+                        TapuKayitDosyaLnk.Visible = true;
+                        MessageHelper.PublishMessage("Tapu Kayıt Belgesi Yüklendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    }
+                }
+                else
+                {
+                    TapuKayitDosyaLnk.Visible = false;
+                    TapuKayitSilBtn.Visible = false;
+                    MessageHelper.PublishMessage("Lütfen Tapu Kayıt Belgesi yükleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                }
+                if (ImarDurumuYukleFU.HasFile)
+                {
+                    string hedefDosyaAdi = ProjeConstants.DOSYA_IMARDURUMU_BELGESI + tasinmazId + ".pdf";
+                    bool isOk = UtilityHelper.UploadFileToSharePoint(ImarDurumuYukleFU, ProjeConstants.TBYSBELGELERI_LIB, hedefDosyaAdi);
+                    if (isOk)
+                    {
+                        ImarDurumuDosyaLnk.Visible = true;
+                        MessageHelper.PublishMessage("İmar Durumu Belgesi Yüklendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    }
+                }
+                else
+                {
+                    ImarDurumuDosyaLnk.Visible = false;
+                    ImarDurumuSilBtn.Visible = false;
+                    MessageHelper.PublishMessage("Lütfen İmar Durumu Belgesi yükleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                }
             }
             catch (Exception exception)
             {
@@ -510,6 +542,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                         EmlakBeyaniYukleFU.Visible = true;
                         MessageHelper.PublishMessage("Lütfen Emlak Beyan Formunu pdf olarak yükleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
                     }
+                    
                     string yapiKayitDosyaAdi = ProjeConstants.DOSYA_YAPIKAYIT_BELGESI + tasinmazId + ".pdf";
                     string yapiKayitDosyaUrl = UtilityHelper.TbysBelgelerURLGetir() + "/" + yapiKayitDosyaAdi;
                     bool yapiKayitdosyaVarMi = UtilityHelper.DosyaVarMi(UtilityHelper.TbysBelgelerURLGetir(), ProjeConstants.TBYSBELGELERI_LIB, yapiKayitDosyaAdi);
@@ -530,6 +563,48 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                         YapiKayitSilBtn.Visible = false;
                         YapiKayitYukleFU.Visible = true;
                         MessageHelper.PublishMessage("Lütfen Yapı Kayıt Belgesini pdf olarak yükleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                    }
+                    string tapuKayitDosyaAdi = ProjeConstants.DOSYA_TAPUKAYIT_BELGESI + tasinmazId + ".pdf";
+                    string tapuKayitDosyaUrl = UtilityHelper.TbysBelgelerURLGetir() + "/" + tapuKayitDosyaAdi;
+                    bool tapuKayitdosyaVarMi = UtilityHelper.DosyaVarMi(UtilityHelper.TbysBelgelerURLGetir(), ProjeConstants.TBYSBELGELERI_LIB, tapuKayitDosyaAdi);
+                    if (tapuKayitdosyaVarMi)
+                    {
+                        string belgePdfLink = @"'<a class=\'btn btn-secondary\' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + tapuKayitDosyaUrl + @"> Belge Görüntüle </a>'";
+
+                        TapuKayitDosyaLnk.Target = "_blank";
+                        TapuKayitDosyaLnk.HRef = tapuKayitDosyaUrl;
+
+                        TapuKayitDosyaLnk.Visible = true;
+                        TapuKayitSilBtn.Visible = true;
+                        TapuKayitYukleFU.Visible = false;
+                    }
+                    else
+                    {
+                        TapuKayitDosyaLnk.Visible = false;
+                        TapuKayitSilBtn.Visible = false;
+                        TapuKayitYukleFU.Visible = true;
+                        MessageHelper.PublishMessage("Lütfen Tapu Kayıt Belgesini pdf olarak yükleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                    }
+                    string imarDurumuDosyaAdi = ProjeConstants.DOSYA_IMARDURUMU_BELGESI + tasinmazId + ".pdf";
+                    string imarDurumuDosyaUrl = UtilityHelper.TbysBelgelerURLGetir() + "/" + imarDurumuDosyaAdi;
+                    bool imarDurumudosyaVarMi = UtilityHelper.DosyaVarMi(UtilityHelper.TbysBelgelerURLGetir(), ProjeConstants.TBYSBELGELERI_LIB, imarDurumuDosyaAdi);
+                    if (imarDurumudosyaVarMi)
+                    {
+                        string belgePdfLink = @"'<a class=\'btn btn-secondary\' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + imarDurumuDosyaUrl + @"> Belge Görüntüle </a>'";
+
+                        ImarDurumuDosyaLnk.Target = "_blank";
+                        ImarDurumuDosyaLnk.HRef = imarDurumuDosyaUrl;
+
+                        ImarDurumuDosyaLnk.Visible = true;
+                        ImarDurumuSilBtn.Visible = true;
+                        ImarDurumuYukleFU.Visible = false;
+                    }
+                    else
+                    {
+                        ImarDurumuDosyaLnk.Visible = false;
+                        ImarDurumuSilBtn.Visible = false;
+                        ImarDurumuYukleFU.Visible = true;
+                        MessageHelper.PublishMessage("Lütfen İmar Durumu Belgesini pdf olarak yükleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
                     }
                 }
                 else
@@ -593,8 +668,52 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                 eh.PublishException();
             }
         }
-
-
+        protected void TapuKayitSilBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string dosyaAdi = ProjeConstants.DOSYA_TAPUKAYIT_BELGESI + TasinmazIdQS + ".pdf";
+                if (UtilityHelper.DeleteFileFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi))
+                {
+                    MessageHelper.PublishMessage(dosyaAdi + " Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    TapuKayitSilBtn.Visible = false;
+                    TapuKayitDosyaLnk.Visible = false;
+                    TapuKayitYukleFU.Visible = true;
+                }
+                else
+                {
+                    MessageHelper.PublishMessage(dosyaAdi + " Silinemedi", ProjeConstants.MESAJ_HATA);
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelper eh = new ExceptionHelper(ex);
+                eh.PublishException();
+            }
+        }
+        protected void ImarDurumuSilBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string dosyaAdi = ProjeConstants.DOSYA_IMARDURUMU_BELGESI+ TasinmazIdQS + ".pdf";
+                if (UtilityHelper.DeleteFileFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi))
+                {
+                    MessageHelper.PublishMessage(dosyaAdi + " Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    ImarDurumuSilBtn.Visible = false;
+                    ImarDurumuDosyaLnk.Visible = false;
+                    ImarDurumuYukleFU.Visible = true;
+                }
+                else
+                {
+                    MessageHelper.PublishMessage(dosyaAdi + " Silinemedi", ProjeConstants.MESAJ_HATA);
+                }
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelper eh = new ExceptionHelper(ex);
+                eh.PublishException();
+            }
+        }
         #endregion
     }
 }

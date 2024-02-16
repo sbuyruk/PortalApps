@@ -103,7 +103,7 @@ namespace MTS_WebParts.FaaliyetListesiWP
             DateTime bittar = BitisTarihiTxt.Text.ConvertToDatetime();
             List<FaaliyetListItem> faaliyetList = new List<FaaliyetListItem>();
             Faaliyet faaliyetDao = new Faaliyet();
-            DataTable dataTable = faaliyetDao.SelectAllByKatilimciFaaliyetReturnDataTable(ProjeConstants.HEPSI_INT, ProjeConstants.HEPSI_INT, ProjeConstants.FAALIYET_ACIKTARIHLI_DEGIL, bastar,bittar);
+            DataTable dataTable = faaliyetDao.SelectAllByKatilimciFaaliyetReturnDataTable(ProjeConstants.HEPSI_INT, ProjeConstants.HEPSI_INT, ProjeConstants.HEPSI, bastar,bittar);
 
             if (dataTable != null)
             {

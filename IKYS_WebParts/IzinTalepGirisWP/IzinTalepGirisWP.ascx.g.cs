@@ -900,7 +900,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP {
             global::System.Web.UI.WebControls.DropDownList @__ctrl1;
             @__ctrl1 = this.@__BuildControlAmirImzaDDL();
             @__parser.AddParsedSubObject(@__ctrl1);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                \r\n                            "));
             return @__ctrl;
         }
         

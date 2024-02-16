@@ -76,6 +76,9 @@ namespace Model.MTS
         
         [DisplayName("Kutlama")]
         public bool Kutlama { get; set; } = false;
+        [DisplayName("Randevu Kısıtı")]
+        public bool RandevuKisiti { get; set; } = false;
+
         public override bool Delete()
         {
             throw new NotImplementedException();
@@ -133,6 +136,7 @@ namespace Model.MTS
                         Soyadi = kisi.Soyadi,
                         Unvani = kisi.Unvani,
                         EPosta = kisi.EPosta,
+                        RandevuKisiti = kisi.RandevuKisiti,
                     };
 
                     

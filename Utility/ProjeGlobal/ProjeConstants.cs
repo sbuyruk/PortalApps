@@ -327,6 +327,7 @@ namespace Utility.ProjeGlobal
         public const string PAGE_TASINMAZ_SORGU = "TasinmazSorgu.aspx";
         public const string PAGE_TASINMAZ_BAGIMSIZBOLUM = "BagimsizBolum.aspx";
         public const string PAGE_TASINMAZ_RESIMLER = "TasinmazResimleri.aspx";
+        public const string PAGE_TASINMAZ_RESIMLER_BOLGE = "BolgeTasinmazResimleri.aspx";
         public const string PAGE_YASALFAIZ = "YasalFaiz.aspx";
         public const string PAGE_GECIKMEZAMMI = "GecikmeZammi.aspx";
         public const string PAGE_KIRACI_AYLIKODEME = "KiraciAylikOdeme.aspx";
@@ -1088,6 +1089,9 @@ namespace Utility.ProjeGlobal
         public static string DOSYA_SIGORTAPOLICESI_DASK = "SigortaPolicesiDask";
         public static string DOSYA_EMLAKBEYAN_FORMU = "EmlakBeyanFormu";
         public static string DOSYA_YAPIKAYIT_BELGESI = "YapiKayitBelgesi";
+        public static string DOSYA_TAPUKAYIT_BELGESI = "TapuKayitBelgesi";
+        public static string DOSYA_IMARDURUMU_BELGESI = "ImarDurumu";
+
 
         public static string COKBAGISYAPAN_BASLAMATARIHI = "01.01.2018";
 

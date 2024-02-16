@@ -89,6 +89,10 @@ namespace MTS_WebParts.AramaGirisiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.CheckBox RandevuKisitliChk;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.TextBox AciklamaTxt;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -456,6 +460,19 @@ namespace MTS_WebParts.AramaGirisiWP {
             @__ctrl.AutoPostBack = true;
             @__ctrl.CheckedChanged -= new System.EventHandler(this.RandevuIstendiChk_CheckedChanged);
             @__ctrl.CheckedChanged += new System.EventHandler(this.RandevuIstendiChk_CheckedChanged);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.CheckBox @__BuildControlRandevuKisitliChk() {
+            global::System.Web.UI.WebControls.CheckBox @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.CheckBox();
+            this.RandevuKisitliChk = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "RandevuKisitliChk";
+            @__ctrl.Enabled = false;
             return @__ctrl;
         }
         
@@ -1074,30 +1091,33 @@ namespace MTS_WebParts.AramaGirisiWP {
             global::System.Web.UI.WebControls.CheckBox @__ctrl20;
             @__ctrl20 = this.@__BuildControlRandevuIstendiChk();
             @__parser.AddParsedSubObject(@__ctrl20);
-            global::System.Web.UI.WebControls.Label @__ctrl21;
-            @__ctrl21 = this.@__BuildControl__control10();
+            global::System.Web.UI.WebControls.CheckBox @__ctrl21;
+            @__ctrl21 = this.@__BuildControlRandevuKisitliChk();
             @__parser.AddParsedSubObject(@__ctrl21);
-            global::System.Web.UI.WebControls.TextBox @__ctrl22;
-            @__ctrl22 = this.@__BuildControlAciklamaTxt();
+            global::System.Web.UI.WebControls.Label @__ctrl22;
+            @__ctrl22 = this.@__BuildControl__control10();
             @__parser.AddParsedSubObject(@__ctrl22);
-            global::System.Web.UI.UpdatePanel @__ctrl23;
-            @__ctrl23 = this.@__BuildControlUpdatePanel1();
+            global::System.Web.UI.WebControls.TextBox @__ctrl23;
+            @__ctrl23 = this.@__BuildControlAciklamaTxt();
             @__parser.AddParsedSubObject(@__ctrl23);
-            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl24;
-            @__ctrl24 = this.@__BuildControlparamFaaliyetKatilimciIdLbl();
+            global::System.Web.UI.UpdatePanel @__ctrl24;
+            @__ctrl24 = this.@__BuildControlUpdatePanel1();
             @__parser.AddParsedSubObject(@__ctrl24);
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl25;
-            @__ctrl25 = this.@__BuildControlparamFaaliyetKatilimciTipiLbl();
+            @__ctrl25 = this.@__BuildControlparamFaaliyetKatilimciIdLbl();
             @__parser.AddParsedSubObject(@__ctrl25);
-            global::System.Web.UI.WebControls.LinkButton @__ctrl26;
-            @__ctrl26 = this.@__BuildControlSecilenKatilimciyiGetirBtn();
+            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl26;
+            @__ctrl26 = this.@__BuildControlparamFaaliyetKatilimciTipiLbl();
             @__parser.AddParsedSubObject(@__ctrl26);
-            global::System.Web.UI.UpdatePanel @__ctrl27;
-            @__ctrl27 = this.@__BuildControlUpdatePanel6();
+            global::System.Web.UI.WebControls.LinkButton @__ctrl27;
+            @__ctrl27 = this.@__BuildControlSecilenKatilimciyiGetirBtn();
             @__parser.AddParsedSubObject(@__ctrl27);
             global::System.Web.UI.UpdatePanel @__ctrl28;
-            @__ctrl28 = this.@__BuildControlUpdatePanel2();
+            @__ctrl28 = this.@__BuildControlUpdatePanel6();
             @__parser.AddParsedSubObject(@__ctrl28);
+            global::System.Web.UI.UpdatePanel @__ctrl29;
+            @__ctrl29 = this.@__BuildControlUpdatePanel2();
+            @__parser.AddParsedSubObject(@__ctrl29);
             @__ctrl.SetRenderMethodDelegate(new System.Web.UI.RenderMethod(this.@__Render__control1));
         }
         
@@ -1221,31 +1241,41 @@ namespace MTS_WebParts.AramaGirisiWP {
                                     Randevu İstendi
                                 </label>
                             </div>
+                        </div>                        
+                        <div class=""col-3 form-group"">
+                            <div class=""checkbox"">
+                                <label>
+                                    ");
+            parameterContainer.Controls[20].RenderControl(@__w);
+            @__w.Write(@"
+                                    Randevu Kısıtlı
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class=""form-group"">
                 ");
-            parameterContainer.Controls[20].RenderControl(@__w);
-            @__w.Write("\r\n                ");
             parameterContainer.Controls[21].RenderControl(@__w);
+            @__w.Write("\r\n                ");
+            parameterContainer.Controls[22].RenderControl(@__w);
             @__w.Write("\r\n            </div>\r\n        </div>\r\n        <div class=\"card-footer\">\r\n        " +
                     "    ");
-            parameterContainer.Controls[22].RenderControl(@__w);
+            parameterContainer.Controls[23].RenderControl(@__w);
             @__w.Write("\r\n        </div>\r\n    </div>\r\n    <div id=\"KatilimciHiddenDiv\" style=\"display: no" +
                     "ne\">\r\n        ");
-            parameterContainer.Controls[23].RenderControl(@__w);
-            @__w.Write("\r\n        ");
             parameterContainer.Controls[24].RenderControl(@__w);
             @__w.Write("\r\n        ");
             parameterContainer.Controls[25].RenderControl(@__w);
-            @__w.Write("\r\n    </div>\r\n\r\n    ");
+            @__w.Write("\r\n        ");
             parameterContainer.Controls[26].RenderControl(@__w);
+            @__w.Write("\r\n    </div>\r\n\r\n    ");
+            parameterContainer.Controls[27].RenderControl(@__w);
             @__w.Write("\r\n    <div class=\"modal\" id=\"ModalOnay\" role=\"dialog\">\r\n        <div class=\"modal" +
                     "-dialog\">\r\n            <!-- Modal content-->\r\n            <div class=\"modal-cont" +
                     "ent\">\r\n                ");
-            parameterContainer.Controls[27].RenderControl(@__w);
+            parameterContainer.Controls[28].RenderControl(@__w);
             @__w.Write("\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n");
         }
         

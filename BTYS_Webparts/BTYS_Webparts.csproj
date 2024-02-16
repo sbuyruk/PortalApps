@@ -146,6 +146,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>BolgeTasinmazRaporuWP.ascx</DependentUpon>
     </Compile>
+    <Compile Include="BolgeTasinmazResimleriWP\BolgeTasinmazResimleriWP.ascx.cs">
+      <DependentUpon>BolgeTasinmazResimleriWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="BolgeTasinmazResimleriWP\BolgeTasinmazResimleriWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BolgeTasinmazResimleriWP.ascx</DependentUpon>
+    </Compile>
     <Compile Include="DavaDurusmaListesiWP\DavaDurusmaListesiWP.ascx.cs">
       <DependentUpon>DavaDurusmaListesiWP.ascx</DependentUpon>
     </Compile>
@@ -197,6 +205,10 @@
     <None Include="BolgeTasinmazRaporuWP\BolgeTasinmazRaporuWP.webpart" />
     <None Include="BolgeTasinmazRaporuWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{4b6d64e2-1756-4885-90e6-5fa3805233f0}</SharePointProjectItemId>
+    </None>
+    <None Include="BolgeTasinmazResimleriWP\BolgeTasinmazResimleriWP.webpart" />
+    <None Include="BolgeTasinmazResimleriWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{632f0d00-c1fe-4ac2-b8c5-cf257cc6da52}</SharePointProjectItemId>
     </None>
     <None Include="DavaDurusmaListesiWP\DavaDurusmaListesiWP.webpart" />
     <None Include="DavaDurusmaListesiWP\SharePointProjectItem.spdata">
@@ -264,6 +276,11 @@
       <LastGenOutput>BolgeTasinmazRaporuWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="BolgeTasinmazRaporuWP\Elements.xml" />
+    <Content Include="BolgeTasinmazResimleriWP\BolgeTasinmazResimleriWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>BolgeTasinmazResimleriWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="BolgeTasinmazResimleriWP\Elements.xml" />
     <Content Include="DavaDurusmaListesiWP\DavaDurusmaListesiWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>DavaDurusmaListesiWP.ascx.g.cs</LastGenOutput>

@@ -71,7 +71,7 @@ namespace MTS_WebParts.FaaliyetListesiROWP
         {
             List<FaaliyetListItem> faaliyetList = new List<FaaliyetListItem>();
             Faaliyet faaliyetDao = new Faaliyet();
-            DataTable dataTable = faaliyetDao.SelectAllByKatilimciFaaliyetReturnDataTable(ProjeConstants.HEPSI_INT, -3, ProjeConstants.FAALIYET_ACIKTARIHLI_DEGIL, ProjeConstants.NULL_TARIH, ProjeConstants.NULL_TARIH);
+            DataTable dataTable = faaliyetDao.SelectAllByKatilimciFaaliyetReturnDataTable(ProjeConstants.HEPSI_INT, -3, ProjeConstants.HEPSI, ProjeConstants.NULL_TARIH, ProjeConstants.NULL_TARIH);
 
             if (dataTable != null)
             {

@@ -68,14 +68,22 @@ namespace MTS_WebParts.KisiGirisiWP
                 {
                     Kisi kisi = new Kisi();
                     kisi = kisi.Select(KisiIdQS.ConvertToInt());
-                    IdLbl.Text = kisi == null ? string.Empty : "( " + kisi.Id + ProjeConstants.FAALIYET_KATILIMCI_DIS + " )";
-                    KaydetBtn.Visible = false;
-                    GuncelleBtn.Visible = true;
-                    //KisiyiSilBtn.Visible = true;
-                    FaaliyetGirBtn.Visible = true;
-                    TitleLbl.Text = "Kişi Düzenle";
-                    TitleLbl.CssClass = "col-form-label text-primary font-weight-bold mb-1";
-                    FormuDoldur();
+                    if (kisi != null)
+                    {
+
+                        IdLbl.Text = kisi == null ? string.Empty : "( " + kisi.Id + ProjeConstants.FAALIYET_KATILIMCI_DIS + " )";
+                        KaydetBtn.Visible = false;
+                        GuncelleBtn.Visible = true;
+                        //KisiyiSilBtn.Visible = true;
+                        FaaliyetGirBtn.Visible = true;
+                        TitleLbl.Text = "Kişi Düzenle";
+                        TitleLbl.CssClass = "col-form-label text-primary font-weight-bold mb-1";
+                        FormuDoldur();
+                    }
+                    else
+                    {
+                        MessageHelper.PublishMessage("Kişi Bulunamadı",ProjeConstants.MESAJ_HATA);
+                    }
                 }
                 else
                 {
@@ -167,6 +175,7 @@ namespace MTS_WebParts.KisiGirisiWP
 
                     DogumTarihiTxt.Text = kisi.DogumTarihi.ConvertToDatetimeEmptyIfNull();
                     KutlamaChk.Checked = kisi.Kutlama;
+                    RandevuKisitiChk.Checked = kisi.RandevuKisiti;
                     TelAciklama1Txt.Text = kisi.TelAciklama1;
                     TelAciklama2Txt.Text = kisi.TelAciklama2;
                     TelAciklama3Txt.Text = kisi.TelAciklama3;
@@ -248,6 +257,7 @@ namespace MTS_WebParts.KisiGirisiWP
                         yeniKisi.TelAciklama3 = TelAciklama3Txt.Text;
                         yeniKisi.DogumTarihi = DogumTarihiTxt.Text.ConvertToDatetime();
                         yeniKisi.Kutlama = KutlamaChk.Checked;
+                        yeniKisi.RandevuKisiti = RandevuKisitiChk.Checked;
                         yeniKisi.Adres = AdresTxt.Text;
 
                         yeniKisi.Ilcesi = IlcesiDDL.SelectedValue.ConvertToInt();
@@ -360,6 +370,7 @@ namespace MTS_WebParts.KisiGirisiWP
                     kisi.Aciklama = AciklamaTxt.Text;
                     kisi.DogumTarihi = DogumTarihiTxt.Text.ConvertToDatetime();
                     kisi.Kutlama = KutlamaChk.Checked;
+                    kisi.RandevuKisiti = RandevuKisitiChk.Checked;
                     kisi.Degistiren=UtilityHelper.GetCurrentUserName();
                 }
 

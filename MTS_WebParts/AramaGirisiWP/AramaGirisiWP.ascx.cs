@@ -294,6 +294,9 @@ namespace MTS_WebParts.AramaGirisiWP
                             string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/";
                             AdiSoyadiLnk.NavigateUrl = newUrl + ProjeConstants.PAGE_KISI_KARTI + "?KatilimciId=" + ArayanIdQS + "&KatilimciTipi=" + KatilimciTipiQS;
                             katilimciBulundu = true;
+
+                            RandevuKisitliChk.Checked = kisi.RandevuKisiti.ReturnFalseIfNull().ConvertToBool();
+                            RandevuIstendiChk.Enabled = !RandevuKisitliChk.Checked;
                         }
                         else
                         {
@@ -515,7 +518,7 @@ namespace MTS_WebParts.AramaGirisiWP
                     }
                     else
                     {
-                        if (aramaGorusme.RandevuIstendi)
+                        if (aramaGorusme.RandevuIstendi && !RandevuKisitliChk.Checked)
                         {
                             RandevuBtn.Text = "Randevu Oluştur";
                             RandevuBtn.CssClass = "btn btn-outline-secondary";

@@ -34,9 +34,11 @@ namespace Model.MTS
         public string Dahili3 { get; set; }
         public DateTime DogumTarihi { get; set; }
         public bool Kutlama { get; set; }
+        public bool RandevuKisiti { get; set; }
 
         public override int Save()
         {
+            
             try
             {
                 GenericEntity<Kisi> genericEntity = new GenericEntity<Kisi>(ProjeConstants.SQL_INSERT);
@@ -205,7 +207,7 @@ namespace Model.MTS
                 string.Format(" WHERE A.Id NOT IN (select KatilimciId FROM FaaliyetKatilim_Table WHERE KatilimciTipi={0} AND FaaliyetId={1})", ProjeConstants.FAALIYET_KATILIMCI_DIS_INT, faaliyetId) :
                 string.Empty;
             string sqlString = string.Format(@"
-                SELECT A.Id KatilimciId, A.Adi, A.Soyadi, {0} KatilimciTipi
+                SELECT A.Id KatilimciId, A.Adi, A.Soyadi, {0} KatilimciTipi, RandevuKisiti
                 FROM Kisi_Table A
 	               {1}
                 ORDER BY A.Adi", ProjeConstants.FAALIYET_KATILIMCI_DIS_INT, faaliyetIdStr);

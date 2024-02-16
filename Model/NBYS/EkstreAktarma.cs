@@ -1698,6 +1698,13 @@ namespace Model.NBYS
                                     }
                                     else
                                     {
+                                        if (aciklama.Contains("- Pazarcık Depremi Bağış"))
+                                        {
+                                            var splitText = new string[] { "- Pazarcık Depremi Bağış" };
+                                            var holder = aciklama.Split(splitText, StringSplitOptions.None);
+                                            var adi = holder[0].ReturnEmptyIfNull().ToString().TrimEnd();
+                                            ekstreAktarma.Adi = adi;
+                                        }
                                         if (aciklama.Contains("Tsk Güçlendirme Vakfı Bağış/"))
                                         {
                                             var holder = aciklama.Split('/');

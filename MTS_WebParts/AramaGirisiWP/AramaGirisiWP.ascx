@@ -105,6 +105,14 @@
                                     Randevu İstendi
                                 </label>
                             </div>
+                        </div>                        
+                        <div class="col-3 form-group">
+                            <div class="checkbox">
+                                <label>
+                                    <asp:CheckBox ID="RandevuKisitliChk" runat="server"  Enabled="False" />
+                                    Randevu Kısıtlı
+                                </label>
+                            </div>
                         </div>
                     </div>
                 </div>

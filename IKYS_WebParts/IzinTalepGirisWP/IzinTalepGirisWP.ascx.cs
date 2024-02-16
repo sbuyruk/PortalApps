@@ -293,7 +293,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
 
                 if (personel != null)
                 {
-                    SetDefaultVekilAmirOnay(personel.Id);
+                    SetDefaultVekilAmirOnay();
                     IzinBasTarTxt.Value = DateTime.Today.ConvertToDatetimeEmptyIfNull();
                     IzinBitTarTxt.Value = DateTime.Today.ConvertToDatetimeEmptyIfNull();
                     KalanIzinKontrolIslemleri();
@@ -724,35 +724,11 @@ namespace IKYS_WebParts.IzinTalepGirisWP
             return sonuctaKalanIzin;
         }
 
-        private void SetDefaultVekilAmirOnay(int personelId)
+        private void SetDefaultVekilAmirOnay()
         {
-            int izinTipi = IzinTanimDDL.SelectedItem.Value.ConvertToInt();
-            if (izinTipi > 0)
-            {
-                if (izinTipi == ProjeConstants.IZINTIPI_SUTIZNI_INT)
-                {
-                }
-                else if (izinTipi == ProjeConstants.IZINTIPI_MAZERET_INT)
-                {
-                    IzinTalep oncekiIzinTalebi = new IzinTalep();
-                    oncekiIzinTalebi = oncekiIzinTalebi.SelectSonIzinTalebiByPersonel(izinTipi, personelId);
-                    if (oncekiIzinTalebi != null)
-                    {
-                        SelectDDLValue(AmirImzaDDL, oncekiIzinTalebi.VekilImza.ToString());
-                    }
-                }
-                else
-                {
-                    IzinTalep oncekiIzinTalebi = new IzinTalep();
-                    oncekiIzinTalebi = oncekiIzinTalebi.SelectSonIzinTalebiByPersonel(izinTipi, personelId);
-                    if (oncekiIzinTalebi != null)
-                    {
-                        SelectDDLValue(VekilImzaDDL, oncekiIzinTalebi.VekilImza.ToString());
-                        SelectDDLValue(AmirImzaDDL, oncekiIzinTalebi.AmirImza.ToString());
-                        SelectDDLValue(OnayImzaDDL, oncekiIzinTalebi.OnayImza.ToString());
-                    }
-                }
-            }
+            SelectDDLValue(VekilImzaDDL, ProjeConstants.BOS_INT.ToString());
+            SelectDDLValue(AmirImzaDDL, ProjeConstants.BOS_INT.ToString());
+            SelectDDLValue(OnayImzaDDL, ProjeConstants.BOS_INT.ToString());
 
         }
         private void FillPersonelDDL()
@@ -783,12 +759,19 @@ namespace IKYS_WebParts.IzinTalepGirisWP
             VekilImzaDDL.Items.Clear();
             Personel personel = new Personel();
             List<Personel> list = personel.SelectCalisanPersonel();
-            ListItem bosLi = new ListItem("", "0");
+            ListItem bosLi = new ListItem(ProjeConstants.BOS, ProjeConstants.BOS_INT.ToString());
             VekilImzaDDL.Items.Add(bosLi);
             foreach (Personel item in list)
             {
-                ListItem li = new ListItem(item.Adi.ReturnEmptyIfNull().ToString() + " " + item.Soyadi.ReturnEmptyIfNull().ToString(), item.Id.ReturnZeroIfNull().ToString());
-                VekilImzaDDL.Items.Add(li);
+                if (item.Id == ProjeConstants.GENELMUDUR_PERSONELID)
+                {
+                    continue;
+                }
+                else
+                {
+                    ListItem li = new ListItem(item.Adi.ReturnEmptyIfNull().ToString() + " " + item.Soyadi.ReturnEmptyIfNull().ToString(), item.Id.ReturnZeroIfNull().ToString());
+                    VekilImzaDDL.Items.Add(li);
+                }
             }
         }
         private void FillAmirImzaDDL()
@@ -796,7 +779,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
             AmirImzaDDL.Items.Clear();
             Personel personel = new Personel();
             List<Personel> list = personel.SelectCalisanPersonel();
-            ListItem bosLi = new ListItem("", "0");
+            ListItem bosLi = new ListItem(ProjeConstants.BOS, ProjeConstants.BOS_INT.ToString());
             AmirImzaDDL.Items.Add(bosLi);
             foreach (Personel item in list)
             {
@@ -807,16 +790,26 @@ namespace IKYS_WebParts.IzinTalepGirisWP
         private void FillOnayImzaDDL()
         {
             OnayImzaDDL.Items.Clear();
-            Personel personel = new Personel();
-            List<Personel> list = personel.SelectCalisanPersonel();
-            ListItem bosLi = new ListItem("", "0");
+            ListItem bosLi = new ListItem(ProjeConstants.BOS, ProjeConstants.BOS_INT.ToString());
             OnayImzaDDL.Items.Add(bosLi);
-            foreach (Personel item in list)
+            Personel personel = new Personel();
+            DataTable dataTable = personel.SelectAmirReturnDataTable();
+            foreach (DataRow dataRow in dataTable.Rows)
             {
-                ListItem li = new ListItem(item.Adi.ReturnEmptyIfNull().ToString() + " " + item.Soyadi.ReturnEmptyIfNull().ToString(), item.Id.ReturnZeroIfNull().ToString());
-                OnayImzaDDL.Items.Add(li);
-            }
 
+                int personelId = dataRow["PersonelId"].ConvertToInt();
+                string adiSoyadi = dataRow["Adi"].ToString() + " " + dataRow["Soyadi"].ToString();
+                if (OnayImzaDDL.Items.FindByText(adiSoyadi) != null)
+                {
+                    continue;
+                }
+                else
+                {
+                    ListItem li = new ListItem(adiSoyadi, personelId.ToString());
+                    OnayImzaDDL.Items.Add(li);
+                }
+
+            }
         }
         private void FillIzinTanim()
         {
@@ -1204,12 +1197,13 @@ namespace IKYS_WebParts.IzinTalepGirisWP
         }
         protected void IzinTanimDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            
             IzinTanimIdQS = IzinTanimDDL.SelectedItem.Value;
-
+            SetDefaultVekilAmirOnay();
             KalanIzinKontrolIslemleri();
             SetLayoutByIzinTipi();
             TabloyuDoldur();
+
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
@@ -1232,48 +1226,67 @@ namespace IKYS_WebParts.IzinTalepGirisWP
         {
             try
             {
-                Personel personel = new Personel();
-                personel = PersonelGetir();
-                if (personel != null)
+                if ((IzinTanimDDL.SelectedItem.Value.ConvertToInt()==ProjeConstants.IZINTIPI_UCRETLI_INT)
+                    || (IzinTanimDDL.SelectedItem.Value.ConvertToInt() == ProjeConstants.IZINTIPI_BABALIK_INT)
+                    || (IzinTanimDDL.SelectedItem.Value.ConvertToInt() == ProjeConstants.IZINTIPI_DOGUM_INT)
+                    || (IzinTanimDDL.SelectedItem.Value.ConvertToInt() == ProjeConstants.IZINTIPI_EVLENME_INT)
+                    || (IzinTanimDDL.SelectedItem.Value.ConvertToInt() == ProjeConstants.IZINTIPI_OLUM_INT)
+                    || (IzinTanimDDL.SelectedItem.Value.ConvertToInt() == ProjeConstants.IZINTIPI_UCRETSIZ_INT)
+                 )
                 {
-                    bool isValid = KalanIzinKontrolIslemleri();
-                    if (isValid)
+                    if (string.IsNullOrEmpty(VekilImzaDDL.SelectedItem.Text) || string.IsNullOrEmpty(AmirImzaDDL.SelectedItem.Text) )
                     {
-                        bool devamEdenIzinTalebiVarMi = IslemiDevamEdenIzinTalebiVarMi(personel.Id);// SB 13/09/2019 devam eden izin talebi kontrolu eklendi
-                        //bool cakismaVarMi = BuTarihteCakisanIzinTalebiVarMi(personel.Id);//  SB 13/09/2019 devam eden izin talebi kontrolu eklendiğinden çalışma kontrolüne gerek kalmadı
-                        if (devamEdenIzinTalebiVarMi)//if (cakismaVarMi)
-                        {
-                            //MessageHelper.PublishMessage("Bu tarihle çakışan bir izin talebiniz zaten var."+System.Environment.NewLine+
-                            //    "Kişisel sayfanızdan İzin taleplerinizi görebilirsiniz.", ProjeConstants.MESAJ_HATA,15000);
-                            MessageHelper.PublishMessage("İşlemi devam eden bir izin talebiniz zaten var." + System.Environment.NewLine +
-                               "Yeni bir izin talep etmeden önce var olan izin talebinizin sonuçlanması gerekmektedir.", ProjeConstants.MESAJ_HATA, 15000);
-                        }
-                        else
-                        {
-                            //Talebi kaydet
-                            //İzinTalepTablosunu Doldur
-                            int izinTalepId = YeniTalebiKaydet(ProjeConstants.PER_IZINTALEBI_ISLEMBEKLIYOR);
-                            if (izinTalepId > 0)
-                            {
-                                if (EPostaGonderChk.Checked)
-                                {
-                                    IKYSOrtak.IzinTalepOlusturmaEPostasiGonder(personel, izinTalepId);
-                                }
-                                TabloyuDoldur();
-                                SaveBtn.Visible = false;
-                                MessageHelper.PublishMessage("İzin Talebi Kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
-                            }
-                        }
+                        TabloyuDoldur();
+                        MessageHelper.PublishMessage("Vekil ve Amir Seçiniz.", ProjeConstants.MESAJ_HATA);
+                        return;
+                    }
 
-                    }
-                    else
-                    {
-                        MessageHelper.PublishMessage("Lütfen Kalan İzin sürenizi Kontrol Ediniz.", ProjeConstants.MESAJ_HATA);
-                    }
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Personel Bulunamadı!", ProjeConstants.MESAJ_HATA);
+                    Personel personel = new Personel();
+                    personel = PersonelGetir();
+                    if (personel != null)
+                    {
+                        bool isValid = KalanIzinKontrolIslemleri();
+                        if (isValid)
+                        {
+                            bool devamEdenIzinTalebiVarMi = IslemiDevamEdenIzinTalebiVarMi(personel.Id);// SB 13/09/2019 devam eden izin talebi kontrolu eklendi
+                                                                                                        //bool cakismaVarMi = BuTarihteCakisanIzinTalebiVarMi(personel.Id);//  SB 13/09/2019 devam eden izin talebi kontrolu eklendiğinden çalışma kontrolüne gerek kalmadı
+                            if (devamEdenIzinTalebiVarMi)//if (cakismaVarMi)
+                            {
+                                //MessageHelper.PublishMessage("Bu tarihle çakışan bir izin talebiniz zaten var."+System.Environment.NewLine+
+                                //    "Kişisel sayfanızdan İzin taleplerinizi görebilirsiniz.", ProjeConstants.MESAJ_HATA,15000);
+                                MessageHelper.PublishMessage("İşlemi devam eden bir izin talebiniz zaten var." + System.Environment.NewLine +
+                                   "Yeni bir izin talep etmeden önce var olan izin talebinizin sonuçlanması gerekmektedir.", ProjeConstants.MESAJ_HATA, 15000);
+                            }
+                            else
+                            {
+                                //Talebi kaydet
+                                //İzinTalepTablosunu Doldur
+                                int izinTalepId = YeniTalebiKaydet(ProjeConstants.PER_IZINTALEBI_ISLEMBEKLIYOR);
+                                if (izinTalepId > 0)
+                                {
+                                    if (EPostaGonderChk.Checked)
+                                    {
+                                        IKYSOrtak.IzinTalepOlusturmaEPostasiGonder(personel, izinTalepId);
+                                    }
+                                    TabloyuDoldur();
+                                    SaveBtn.Visible = false;
+                                    MessageHelper.PublishMessage("İzin Talebi Kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            MessageHelper.PublishMessage("Lütfen Kalan İzin sürenizi Kontrol Ediniz.", ProjeConstants.MESAJ_HATA);
+                        }
+                    }
+                    else
+                    {
+                        MessageHelper.PublishMessage("Personel Bulunamadı!", ProjeConstants.MESAJ_HATA);
+                    } 
                 }
 
             }
@@ -1660,7 +1673,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                 PersonelAdiLbl.Text = personel.Adi + " " + personel.Soyadi;
                 SetLayoutByIzinTipi();
                 TabloyuDoldur();
-                SetDefaultVekilAmirOnay(personel.Id);
+                SetDefaultVekilAmirOnay();
                 KalanIzinKontrolIslemleri();
             }
             else

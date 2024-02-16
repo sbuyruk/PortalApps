@@ -198,6 +198,28 @@ namespace Model.IKYS
             Personel personel = list.FirstOrDefault();
             return personel;
         }
+        //eksik
+        public Personel SelectAmirByPersonelId(int personelId)
+        {
+
+            string sqlString = string.Format(@"
+                    SELECT P.* 
+                        --P.Id PersonelId,P.Adi,Soyadi,P.PerId, P.SicilNo, P.Tahsili, P.KullaniciAdi, P.Asker_sivil,
+						--U.Adi Unvan, G.Adi Gorev, B.Adi BirimSube
+					FROM Personel_Table P
+                    INNER JOIN IsBilgileri_Table I on P.Id=I.PersonelId
+					Left Outer Join  UnvanTanim_Table U on I.UnvanId=U.Id
+					Left Outer Join  BirimTanim_Table B on I.BirimId=B.Id
+					Left Outer Join  GorevTanim_Table G on I.GorevId=G.Id
+                    WHERE CalismaDurumu=1 And B.AmirId={0}
+					ORDER BY I.ProtokolSiraNo
+                                    ", personelId);
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            List<Personel> list = ToList<Personel>(dataTable);
+            _ = new Personel();
+            Personel personel = list.FirstOrDefault();
+            return personel;
+        }
         public List<Personel> SelectCalisanPersonelByBirimId(int birimId)
         {
 

@@ -968,7 +968,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         {
 
             Faaliyet faaliyetDao = new Faaliyet();
-            DataTable dataTable = faaliyetDao.SelectAllByKatilimciFaaliyetReturnDataTable(FaaliyetIdQS.ConvertToInt(), ProjeConstants.HEPSI_INT, ProjeConstants.FAALIYET_ACIKTARIHLI_DEGIL, ProjeConstants.NULL_TARIH, ProjeConstants.NULL_TARIH);
+            DataTable dataTable = faaliyetDao.SelectAllByKatilimciFaaliyetReturnDataTable(FaaliyetIdQS.ConvertToInt(), ProjeConstants.HEPSI_INT, ProjeConstants.HEPSI, ProjeConstants.NULL_TARIH, ProjeConstants.NULL_TARIH);
             int SiraNo = 1;
             List<KatilimciListItem> list = new List<KatilimciListItem>();
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
@@ -1000,32 +1000,32 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                     katilimciItem.KatilimciTipiStr = KatilimciTipiGetir(katilimciTipi);
                     katilimciItem.TakvimDavetiBtn = TakvimDavetiBtnOlustur(katilimId,takvimDaveti,katilimciId,katilimciTipi, eposta   );
 
+                    
+                    string stoksuzAniObjeleri = AniObjeleriniGetir(katilimciItem.KatilimciId.ConvertToInt(),
+                        katilimciItem.KatilimciTipi.ConvertToInt(), FaaliyetIdQS.ConvertToInt(), ProjeConstants.MTS_ANIOBJESISTOKSUZ);
+                    string stokluAniObjeleri = AniObjeleriniGetir(katilimciItem.KatilimciId.ConvertToInt(),
+                        katilimciItem.KatilimciTipi.ConvertToInt(), FaaliyetIdQS.ConvertToInt(), ProjeConstants.MTS_ANIOBJESISTOKLU);
+                    string getirilenAniObjeleri = GetirilenAniObjeleriniGetir(katilimciItem.KatilimciId.ConvertToInt(),
+                        katilimciItem.KatilimciTipi.ConvertToInt(), FaaliyetIdQS.ConvertToInt());
+
+                    if (buttonsEnable)
                     {
-                        string stoksuzAniObjeleri = AniObjeleriniGetir(katilimciItem.KatilimciId.ConvertToInt(),
-                            katilimciItem.KatilimciTipi.ConvertToInt(), FaaliyetIdQS.ConvertToInt(), ProjeConstants.MTS_ANIOBJESISTOKSUZ);
-                        string stokluAniObjeleri = AniObjeleriniGetir(katilimciItem.KatilimciId.ConvertToInt(),
-                            katilimciItem.KatilimciTipi.ConvertToInt(), FaaliyetIdQS.ConvertToInt(), ProjeConstants.MTS_ANIOBJESISTOKLU);
-                        string getirilenAniObjeleri = GetirilenAniObjeleriniGetir(katilimciItem.KatilimciId.ConvertToInt(),
-                            katilimciItem.KatilimciTipi.ConvertToInt(), FaaliyetIdQS.ConvertToInt());
+                        katilimciItem.AniObjesiStoksuz = "<a href='#' class='btn btn-outline-primary' onclick=StoksuzAniObjesiBtnClick(" + katilimciId + "," + FaaliyetIdQS + "," + katilimciTipi + ")>Stoksuz Anı Objesi</a>" +
+                            "<br>" + stoksuzAniObjeleri;
+                        katilimciItem.AniObjesiStoklu = "<a href='#' class='btn btn-outline-success' onclick=StokluAniObjesiBtnClick(" + katilimciId + "," + FaaliyetIdQS + "," + katilimciTipi + ")>Stoklu Anı Objesi</a>" +
+                            "<br>" + stokluAniObjeleri;
+                        katilimciItem.GetirilenAniObjesi = "<a href='#' class='btn btn-outline-info' onclick=GetirilenAniObjesiBtnClick(" + katilimciId + "," + FaaliyetIdQS + "," + katilimciTipi + ")>Getirilen Anı Objesi </a>" +
+                            "<br>" + getirilenAniObjeleri;
 
-                        if (buttonsEnable)
-                        {
-                            katilimciItem.AniObjesiStoksuz = "<a href='#' class='btn btn-outline-primary' onclick=StoksuzAniObjesiBtnClick(" + katilimciId + "," + FaaliyetIdQS + "," + katilimciTipi + ")>Stoksuz Anı Objesi</a>" +
-                                "<br>" + stoksuzAniObjeleri;
-                            katilimciItem.AniObjesiStoklu = "<a href='#' class='btn btn-outline-success' onclick=StokluAniObjesiBtnClick(" + katilimciId + "," + FaaliyetIdQS + "," + katilimciTipi + ")>Stoklu Anı Objesi</a>" +
-                                "<br>" + stokluAniObjeleri;
-                            katilimciItem.GetirilenAniObjesi = "<a href='#' class='btn btn-outline-info' onclick=GetirilenAniObjesiBtnClick(" + katilimciId + "," + FaaliyetIdQS + "," + katilimciTipi + ")>Getirilen Anı Objesi </a>" +
-                                "<br>" + getirilenAniObjeleri;
-
-                            katilimciItem.AniObjesi = katilimciItem.AniObjesiStoklu  + "<hr>" +katilimciItem.AniObjesiStoksuz + "<hr>" + katilimciItem.GetirilenAniObjesi;
-                        }
-                        else
-                        {
-                            katilimciItem.AniObjesiStoksuz = stoksuzAniObjeleri;
-                            katilimciItem.AniObjesiStoklu = stokluAniObjeleri;
-                            katilimciItem.GetirilenAniObjesi = getirilenAniObjeleri;
-                        }
+                        katilimciItem.AniObjesi = katilimciItem.AniObjesiStoklu  + "<hr>" +katilimciItem.AniObjesiStoksuz + "<hr>" + katilimciItem.GetirilenAniObjesi;
                     }
+                    else
+                    {
+                        katilimciItem.AniObjesiStoksuz = stoksuzAniObjeleri;
+                        katilimciItem.AniObjesiStoklu = stokluAniObjeleri;
+                        katilimciItem.GetirilenAniObjesi = getirilenAniObjeleri;
+                    }
+                    
 
                     katilimciItem.KisiKarti = "<a  target='_blank' href=" + ProjeConstants.PAGE_KISI_KARTI + "?KatilimciId=" + katilimciId + "&KatilimciTipi=" + katilimciTipi + " class='btn btn-outline-info'>Kişi Kartı</a>";
                     if (buttonsEnable)
@@ -2126,6 +2126,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                     int katilimciTipi = row["KatilimciTipi"].ConvertToInt();
                     string adi = row["Adi"].ToString();
                     string soyadi = row["Soyadi"].ToString();
+                    bool randevuKisiti = row["RandevuKisiti"].ReturnFalseIfNull().ConvertToBool();
 
                     KatilimciListItem katilimciItem = new KatilimciListItem();
                     katilimciItem.Sirano = SiraNo++.ToString();
@@ -2137,8 +2138,14 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                     katilimciItem.Kurumu = katilimciItem.KatilimciTipiStr;
                     katilimciItem.KatilimciTipi = katilimciTipi.ToString();
 
+                    if (randevuKisiti)//randevu kısıtı varsa faaliyete ekle çıkmasın
+                    {
+                        katilimciItem.KatilimciSec = "RK";
+                    }
+                    else{ 
 
-                    katilimciItem.KatilimciSec = "<a href='#' class='btn btn-outline-primary' onclick=KatilimciSecildiBtnClick(" + katilimciId + "," + FaaliyetIdQS + "," + katilimciTipi + ")>Faaliyete Ekle</a>";
+                        katilimciItem.KatilimciSec = "<a href='#' class='btn btn-outline-primary' onclick=KatilimciSecildiBtnClick(" + katilimciId + "," + FaaliyetIdQS + "," + katilimciTipi + ")>Faaliyete Ekle</a>";
+                    }                    
                     if (katilimciTipi == ProjeConstants.FAALIYET_KATILIMCI_IC_INT ||
                         katilimciTipi == ProjeConstants.FAALIYET_KATILIMCI_DIS_INT)
                     {
@@ -2490,6 +2497,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             public string Cikar { get; set; }
             public string KatilimciSec { get; set; }
             public string IrtibatSec { get; set; }
+            public bool RandevuKisiti { get; set; } = false;
 
         }
         [Serializable]

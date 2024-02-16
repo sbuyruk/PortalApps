@@ -189,6 +189,38 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.Label Label3;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor TapuKayitDosyaLnk;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.LinkButton TapuKayitSilBtn;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.FileUpload TapuKayitYukleFU;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.Label Label4;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor ImarDurumuDosyaLnk;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.LinkButton ImarDurumuSilBtn;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.FileUpload ImarDurumuYukleFU;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl MainCardDiv;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -850,6 +882,144 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlLabel3() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.Label3 = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.CssClass = "col-form-label font-weight-bold";
+            @__ctrl.ID = "Label3";
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Tapu Kayıt Belgesi (pdf)"));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.HtmlControls.HtmlAnchor @__BuildControlTapuKayitDosyaLnk() {
+            global::System.Web.UI.HtmlControls.HtmlAnchor @__ctrl;
+            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlAnchor();
+            this.TapuKayitDosyaLnk = @__ctrl;
+            @__ctrl.ID = "TapuKayitDosyaLnk";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "btn btn-outline-primary");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-fancybox", "");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-type", "pdf");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-width", "960");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-height", "720");
+            @__ctrl.HRef = "#";
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Tapu Kayıt Belgesi \r\n                                "));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlTapuKayitSilBtn() {
+            global::System.Web.UI.WebControls.LinkButton @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
+            this.TapuKayitSilBtn = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "TapuKayitSilBtn";
+            @__ctrl.CssClass = "btn btn-outline-danger";
+            @__ctrl.CausesValidation = false;
+            @__ctrl.Text = "Sil";
+            @__ctrl.OnClientClick = "if(confirm(\' Silme İşlemini Onaylıyor musunuz?\')){return true;} else{return false" +
+                ";};";
+            @__ctrl.Visible = false;
+            @__ctrl.Click -= new System.EventHandler(this.TapuKayitSilBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.TapuKayitSilBtn_Click);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.FileUpload @__BuildControlTapuKayitYukleFU() {
+            global::System.Web.UI.WebControls.FileUpload @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.FileUpload();
+            this.TapuKayitYukleFU = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "TapuKayitYukleFU";
+            @__ctrl.CssClass = "btn btn-danger form-control";
+            @__ctrl.ToolTip = "Yüklemek İçin PDF Dosya Seçiniz";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlLabel4() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.Label4 = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.CssClass = "col-form-label font-weight-bold";
+            @__ctrl.ID = "Label4";
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("İmar Durumu Belgesi (pdf)"));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.HtmlControls.HtmlAnchor @__BuildControlImarDurumuDosyaLnk() {
+            global::System.Web.UI.HtmlControls.HtmlAnchor @__ctrl;
+            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlAnchor();
+            this.ImarDurumuDosyaLnk = @__ctrl;
+            @__ctrl.ID = "ImarDurumuDosyaLnk";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "btn btn-outline-primary");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-fancybox", "");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-type", "pdf");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-width", "960");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-height", "720");
+            @__ctrl.HRef = "#";
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("İmar Durumu Belgesi \r\n                                "));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlImarDurumuSilBtn() {
+            global::System.Web.UI.WebControls.LinkButton @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
+            this.ImarDurumuSilBtn = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "ImarDurumuSilBtn";
+            @__ctrl.CssClass = "btn btn-outline-danger";
+            @__ctrl.CausesValidation = false;
+            @__ctrl.Text = "Sil";
+            @__ctrl.OnClientClick = "if(confirm(\' Silme İşlemini Onaylıyor musunuz?\')){return true;} else{return false" +
+                ";};";
+            @__ctrl.Visible = false;
+            @__ctrl.Click -= new System.EventHandler(this.ImarDurumuSilBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.ImarDurumuSilBtn_Click);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.FileUpload @__BuildControlImarDurumuYukleFU() {
+            global::System.Web.UI.WebControls.FileUpload @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.FileUpload();
+            this.ImarDurumuYukleFU = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "ImarDurumuYukleFU";
+            @__ctrl.CssClass = "btn btn-danger form-control";
+            @__ctrl.ToolTip = "Yüklemek İçin PDF Dosya Seçiniz";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControlMainCardDiv() {
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
@@ -1040,6 +1210,46 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             global::System.Web.UI.WebControls.FileUpload @__ctrl32;
             @__ctrl32 = this.@__BuildControlYapiKayitYukleFU();
             @__parser.AddParsedSubObject(@__ctrl32);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                        </div>\r\n           " +
+                        "             <div class=\"col-3 border border-dark p-2\">\r\n                       " +
+                        "     <div class=\"form-group\">\r\n                                "));
+            global::System.Web.UI.WebControls.Label @__ctrl33;
+            @__ctrl33 = this.@__BuildControlLabel3();
+            @__parser.AddParsedSubObject(@__ctrl33);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <div class=\"for" +
+                        "m-group text-center\">\r\n                                "));
+            global::System.Web.UI.HtmlControls.HtmlAnchor @__ctrl34;
+            @__ctrl34 = this.@__BuildControlTapuKayitDosyaLnk();
+            @__parser.AddParsedSubObject(@__ctrl34);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl35;
+            @__ctrl35 = this.@__BuildControlTapuKayitSilBtn();
+            @__parser.AddParsedSubObject(@__ctrl35);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <div class=\"for" +
+                        "m-group\">\r\n                                "));
+            global::System.Web.UI.WebControls.FileUpload @__ctrl36;
+            @__ctrl36 = this.@__BuildControlTapuKayitYukleFU();
+            @__parser.AddParsedSubObject(@__ctrl36);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                        </div>\r\n           " +
+                        "             <div class=\"col-3 border border-dark p-2\">\r\n                       " +
+                        "     <div class=\"form-group\">\r\n                                "));
+            global::System.Web.UI.WebControls.Label @__ctrl37;
+            @__ctrl37 = this.@__BuildControlLabel4();
+            @__parser.AddParsedSubObject(@__ctrl37);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <div class=\"for" +
+                        "m-group text-center\">\r\n                                "));
+            global::System.Web.UI.HtmlControls.HtmlAnchor @__ctrl38;
+            @__ctrl38 = this.@__BuildControlImarDurumuDosyaLnk();
+            @__parser.AddParsedSubObject(@__ctrl38);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl39;
+            @__ctrl39 = this.@__BuildControlImarDurumuSilBtn();
+            @__parser.AddParsedSubObject(@__ctrl39);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <div class=\"for" +
+                        "m-group\">\r\n                                "));
+            global::System.Web.UI.WebControls.FileUpload @__ctrl40;
+            @__ctrl40 = this.@__BuildControlImarDurumuYukleFU();
+            @__parser.AddParsedSubObject(@__ctrl40);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                        </div>\r\n           " +
                         "         </div>\r\n                "));
             return @__ctrl;

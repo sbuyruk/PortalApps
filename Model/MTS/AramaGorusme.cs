@@ -198,7 +198,14 @@ namespace Model.MTS
 		                WHEN A.KatilimciTipi=3 THEN 'Nakit Bağışçı'
 		                WHEN A.KatilimciTipi=4 THEN 'Taşınmaz Bağışçı'
                     ELSE C.Kurumu
-	                END AS Kurumu
+	                END AS Kurumu,
+                    CASE
+		                WHEN A.KatilimciTipi=1 THEN '0' 
+                        WHEN A.KatilimciTipi=2 THEN C.RandevuKisiti
+		                WHEN A.KatilimciTipi=3 THEN '0' 
+		                WHEN A.KatilimciTipi=4 THEN '0' 
+                    ELSE C.RandevuKisiti
+	                END AS RandevuKisiti
                 FROM AramaGorusme_Table A
                     LEFT JOIN Kisi_Table C ON C.Id = A.ArayanId
 	                LEFT JOIN Personel_Table D ON D.Id = A.ArayanId
