@@ -176,7 +176,7 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
 
             ImzalayanTxt.Text = @"Bilal TOPÇU";
             ImzalayanUnvanTxt.Text = string.Empty;
-            ImzalayanMakamTxt.Text = @"TSKGV Genel Müdürü";
+            ImzalayanMakamTxt.Text = @"Genel Müdür";
             EvrakTarihiTxt.Text = bugun.ToString("dd") + " " + bugun.ToString("MMMM") + " " + bugun.Year;
         }
         private void FillDropDownList()

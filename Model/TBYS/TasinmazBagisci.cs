@@ -287,17 +287,17 @@ namespace Model.TBYS
             }
             return dataTable;
         }
-        public DataTable SelectSecilmemisKatilimcilarByFaaliyetIdReturnDT(int randevuId)
+        public DataTable SelectSecilmemisKatilimcilarByFaaliyetIdReturnDT(int faaliyetId)
         {
-            string randevuIdStr = randevuId > 0 ? string.Format(@" 
-                AND A.Id NOT IN (SELECT KatilimciId FROM FaaliyetKatilim_Table WHERE KatilimciTipi={0} AND FaaliyetId={1})", ProjeConstants.FAALIYET_KATILIMCI_TASINMAZBAGISCI_INT, randevuId) : string.Empty;
+            string faaliyetIdStr = faaliyetId > 0 ? string.Format(@" 
+                AND A.Id NOT IN (SELECT KatilimciId FROM FaaliyetKatilim_Table WHERE KatilimciTipi={0} AND FaaliyetId={1})", ProjeConstants.FAALIYET_KATILIMCI_TASINMAZBAGISCI_INT, faaliyetId) : string.Empty;
             string sqlString = string.Format(@"
                 SELECT A.Id KatilimciId, A.Adi, A.Soyadi, {0} KatilimciTipi,
                     A.Adres,A.Telefon1 Telefon,A.Sag_vefat,A.Ilcesi Ilce,A.Ili Il
                 FROM TasinmazBagisci_Table A
                 WHERE Sag_vefat='Sağ' 
                 {1}
-                ORDER BY A.Adi", ProjeConstants.FAALIYET_KATILIMCI_TASINMAZBAGISCI_INT, randevuIdStr);
+                ORDER BY A.Adi", ProjeConstants.FAALIYET_KATILIMCI_TASINMAZBAGISCI_INT, faaliyetIdStr);
             DataTable dataTable;
             try
             {

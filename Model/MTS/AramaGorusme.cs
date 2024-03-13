@@ -12,7 +12,7 @@ namespace Model.MTS
     {
         public int ArayanId { get; set; }
         public int KatilimciTipi { get; set; }
-        public int RandevuId { get; set; }
+        public int FaaliyetId { get; set; }
         public DateTime Tarih { get; set; }
         public string GorusmeSekli { get; set; }
         public string Konu { get; set; }
@@ -112,13 +112,13 @@ namespace Model.MTS
             item = list.FirstOrDefault();
             return item;
         }
-        public AramaGorusme SelectByRandevuId(int randevuId)
+        public AramaGorusme SelectByFaaliyetId(int faaliyetId)
         {
 
             string sqlString = string.Format(@"
                 SELECT * FROM AramaGorusme_Table
-                WHERE RandevuId={0}
-            ", randevuId);
+                WHERE FaaliyetId={0}
+            ", faaliyetId);
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<AramaGorusme> list = ToList<AramaGorusme>(dataTable);
@@ -177,7 +177,7 @@ namespace Model.MTS
                 (string.Format(string.IsNullOrEmpty(gorusmeSekliStr) && string.IsNullOrEmpty(arayanIdstr) ?
                 " WHERE Tarih BETWEEN {0} AND {1} " : " AND Tarih BETWEEN {0} AND {1}  ", basTar.ReturnTRDateFormat(), bitTar.ReturnTRDateFormat()));
             string sqlString = string.Format(@"
-                SELECT A.Id AramaId, C.Id ArayanId, A.GorusmeSekli, A.Tarih, A.Konu, A.GorusmeSaglandi, A.RandevuIstendi, A.RandevuId,
+                SELECT A.Id AramaId, C.Id ArayanId, A.GorusmeSekli, A.Tarih, A.Konu, A.GorusmeSaglandi, A.RandevuIstendi, A.FaaliyetId,
                     CASE
 	                    WHEN A.KatilimciTipi=1 THEN D.Adi
                         WHEN A.KatilimciTipi=2 THEN C.Adi

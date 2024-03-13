@@ -330,9 +330,9 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         private void BaslangicSaatiDDLDoldur()
         {
             BasSaatDDL.Items.Clear();
-            TimeSpan bastarTS = new TimeSpan(6, 0, 0);
+            TimeSpan bastarTS = new TimeSpan(0, 0, 0);
             TimeSpan aralikTS = new TimeSpan(0, 5, 0);
-            TimeSpan bittarTS = new TimeSpan(21, 0, 0);
+            TimeSpan bittarTS = new TimeSpan(23, 50, 0);
 
             TimeSpan nextTS = bastarTS;
 
@@ -360,7 +360,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             }
             TimeSpan bastarTS = basSaatStr.ConvertToTimeSpan();
             TimeSpan aralikTS = new TimeSpan(0, 5, 0);
-            TimeSpan bittarTS = new TimeSpan(21, 0, 0);
+            TimeSpan bittarTS = new TimeSpan(23, 55, 0);
 
             TimeSpan nextTS = bastarTS;
 
@@ -605,12 +605,12 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             ExceptionHelper eh = new ExceptionHelper();
 
             AramaGorusme aramaGorusme = new AramaGorusme();
-            aramaGorusme = aramaGorusme.SelectByRandevuId(faaliyet.Id);
+            aramaGorusme = aramaGorusme.SelectByFaaliyetId(faaliyet.Id);
 
             FaaliyetKatilim faaliyetKatilim = new FaaliyetKatilim();
             List<FaaliyetKatilim> faaliyetKatilimList = faaliyetKatilim.SelectByFaaliyetId(faaliyet.Id);
             AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
-            List<AniObjesiDagitim> aniObjesiDagitimList = aniObjesiDagitim.SelectByRandevuId(faaliyet.Id);
+            List<AniObjesiDagitim> aniObjesiDagitimList = aniObjesiDagitim.SelectByFaaliyetId(faaliyet.Id);
             if (aramaGorusme != null)
             {
                 Exception ex = new Exception("Faaliyetin bağlantılı olduğu Arama/Görüşme bulunmaktadır.");
@@ -1080,7 +1080,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                 if (faaliyetKatilim != null)
                 {
                     AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
-                    DataTable dataTable = aniObjesiDagitim.SelectByKatilimcidKatilimciTipiRandevuId(faaliyetKatilim.KatilimciId, faaliyetKatilim.KatilimciTipi,faaliyetKatilim.FaaliyetId,string.Empty);
+                    DataTable dataTable = aniObjesiDagitim.SelectByKatilimcidKatilimciTipiFaaliyetId(faaliyetKatilim.KatilimciId, faaliyetKatilim.KatilimciTipi,faaliyetKatilim.FaaliyetId,string.Empty);
                     if (dataTable == null)
                     {
                         if (faaliyetKatilim.Delete())
@@ -1228,7 +1228,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         private void AramaGorusmeBilgileriniDoldur(Faaliyet faaliyet)
         {
             AramaGorusme aramaGorusme = new AramaGorusme();
-            aramaGorusme = aramaGorusme.SelectByRandevuId(faaliyet.Id);
+            aramaGorusme = aramaGorusme.SelectByFaaliyetId(faaliyet.Id);
             if (aramaGorusme != null)
             {
                 AramaGorusmeIdQS = aramaGorusme.Id.ToString();
@@ -1714,7 +1714,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                         {
 
                             item.Adet = adet;
-                            item.RandevuId = faaliyetId;
+                            item.FaaliyetId = faaliyetId;
                             item.KatilimciId = katilimciId;
                             item.KatilimciTipi = katilimciTipi;
                             item.VerilisTarihi = BaslangicTarihiTxt.Text.ConvertToDatetime();
@@ -1724,7 +1724,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                         else //eski adetle adet farklı  update et
                         {
                             item.Adet = adet;
-                            item.RandevuId = faaliyetId;
+                            item.FaaliyetId = faaliyetId;
                             item.KatilimciId = katilimciId;
                             item.KatilimciTipi = katilimciTipi;
                             item.VerilisTarihi = BaslangicTarihiTxt.Text.ConvertToDatetime();
@@ -1793,13 +1793,13 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                         if (aniObjesiDagitim == null)
                         {
                             aniObjesiDagitim = new AniObjesiDagitim();
-                            aniObjesiDagitim.Aciklama = adet + " adet verildi FaaliyetID=" + aniObjesiDagitim.RandevuId;
+                            aniObjesiDagitim.Aciklama = adet + " adet verildi FaaliyetID=" + aniObjesiDagitim.FaaliyetId;
                             aniObjesiDagitim.Adet = StokluAdetTxt.Text.ConvertToInt(); //ilk defa verildi
                             aniObjesiDagitim.AniObjesiId = aniObjesiId;
                             aniObjesiDagitim.CikisDepoId = depoId;
                             aniObjesiDagitim.KatilimciId = paramFaaliyetKatilimciIdLbl.Value.ConvertToInt();
                             aniObjesiDagitim.KatilimciTipi = paramFaaliyetKatilimciTipiLbl.Value.ConvertToInt();
-                            aniObjesiDagitim.RandevuId = paramFaaliyetIdLbl.Value.ConvertToInt();
+                            aniObjesiDagitim.FaaliyetId = paramFaaliyetIdLbl.Value.ConvertToInt();
                             aniObjesiDagitim.VerilisTarihi = BaslangicTarihiTxt.Text.ConvertToDatetime();
                             aniObjesiDagitim.VerilenAlinan = ProjeConstants.ANIOBJESI_VERILEN_INT;
                             aniObjesiDagitim.Save();
@@ -1812,20 +1812,20 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                         }
                         else
                         {
-                            aniObjesiDagitim.Aciklama = adet + " adet verildi FaaliyetID=" + aniObjesiDagitim.RandevuId;
+                            aniObjesiDagitim.Aciklama = adet + " adet verildi FaaliyetID=" + aniObjesiDagitim.FaaliyetId;
                             aniObjesiDagitim.Adet += StokluAdetTxt.Text.ConvertToInt(); //adet artırıldı
                             aniObjesiDagitim.AniObjesiId = aniObjesiId;
                             aniObjesiDagitim.CikisDepoId = depoId;
                             aniObjesiDagitim.KatilimciId = paramFaaliyetKatilimciIdLbl.Value.ConvertToInt();
                             aniObjesiDagitim.KatilimciTipi = paramFaaliyetKatilimciTipiLbl.Value.ConvertToInt();
-                            aniObjesiDagitim.RandevuId = paramFaaliyetIdLbl.Value.ConvertToInt();
+                            aniObjesiDagitim.FaaliyetId = paramFaaliyetIdLbl.Value.ConvertToInt();
                             aniObjesiDagitim.VerilisTarihi = BaslangicTarihiTxt.Text.ConvertToDatetime();
                             aniObjesiDagitim.VerilenAlinan = ProjeConstants.ANIOBJESI_VERILEN_INT;
                             aniObjesiDagitim.Update();
                             //DepoStoktan düş
 
                             depoStok.SonAdet -= adet;
-                            depoStok.Aciklama = adet + " adet verildi FaaliyetID=" + aniObjesiDagitim.RandevuId;
+                            depoStok.Aciklama = adet + " adet verildi FaaliyetID=" + aniObjesiDagitim.FaaliyetId;
                             depoStok.SonIslemYapan = UtilityHelper.GetCurrentUserName();
                             depoStok.Update();
                         }
@@ -1888,7 +1888,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                     else
                     {
                         int depoId = aniObjesiDagitim.CikisDepoId.ConvertToInt();
-                        aniObjesiDagitim.Aciklama = adet + " adet İade edildi FaaliyetID=" + aniObjesiDagitim.RandevuId;
+                        aniObjesiDagitim.Aciklama = adet + " adet İade edildi FaaliyetID=" + aniObjesiDagitim.FaaliyetId;
                         aniObjesiDagitim.Adet -= adet; //adet artırıldı
                         aniObjesiDagitim.AniObjesiId = aniObjesiId;
 
@@ -1907,7 +1907,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                         }
 
                         depoStok.SonAdet += adet;
-                        depoStok.Aciklama = adet + " adet verildi FaaliyetID=" + aniObjesiDagitim.RandevuId;
+                        depoStok.Aciklama = adet + " adet verildi FaaliyetID=" + aniObjesiDagitim.FaaliyetId;
                         depoStok.SonIslemYapan = UtilityHelper.GetCurrentUserName();
                         depoStok.Update();
                         if (aniObjesiDagitim.Adet > 0)
@@ -1964,7 +1964,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             {
                 aniObjesiDagitim = new AniObjesiDagitim();
                 aniObjesiDagitim.AniObjesiId = ProjeConstants.GETIRILEN_ANIOBJESIID_INT;
-                aniObjesiDagitim.RandevuId = faaliyetId;
+                aniObjesiDagitim.FaaliyetId = faaliyetId;
                 aniObjesiDagitim.KatilimciId = katilimciId;
                 aniObjesiDagitim.KatilimciTipi = katilimciTipi;
 
@@ -2001,7 +2001,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         private string AniObjeleriniGetir(int katilimciId, int katilimciTipi, int faaliyetId, string stokluMu)
         {
             AniObjesiDagitim aniobjesiDagitim = new AniObjesiDagitim();
-            DataTable dataTable = aniobjesiDagitim.SelectByKatilimcidKatilimciTipiRandevuId(katilimciId, katilimciTipi, faaliyetId, stokluMu);
+            DataTable dataTable = aniobjesiDagitim.SelectByKatilimcidKatilimciTipiFaaliyetId(katilimciId, katilimciTipi, faaliyetId, stokluMu);
             string aniObjeleri = string.Empty;
 
             if (dataTable != null)
@@ -2033,7 +2033,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         private string GetirilenAniObjeleriniGetir(int katilimciId, int katilimciTipi, int faaliyetId)
         {
             AniObjesiDagitim aniobjesiDagitim = new AniObjesiDagitim();
-            string aniObjeleri = aniobjesiDagitim.SelectGetirilenByKatilimcidKatilimciTipiRandevuId(katilimciId, katilimciTipi, faaliyetId);
+            string aniObjeleri = aniobjesiDagitim.SelectGetirilenByKatilimcidKatilimciTipiFaaliyetId(katilimciId, katilimciTipi, faaliyetId);
             return (aniObjeleri);
         }
         private void TabloModalOlustur()

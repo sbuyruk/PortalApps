@@ -140,7 +140,7 @@ namespace MTS_WebParts.AramaGirisiWP
             if (!Page.IsPostBack)
             {
                 AramaGorusmeDDLDoldur();
-                //RandevuBtnEnable();
+                //FaaliyetBtnEnable();
                 if (AramaGorusmeIdQS.ConvertToInt() > 0)
                 {
                     //düzenleme
@@ -151,7 +151,7 @@ namespace MTS_WebParts.AramaGirisiWP
                     //Yeni Giriş
                     GirisiAc();
                 }
-                RandevuBtnEnable();
+                FaaliyetBtnEnable();
             }
         }
         private void GirisiAc()
@@ -192,8 +192,8 @@ namespace MTS_WebParts.AramaGirisiWP
             aramaGorusme = aramaGorusme.Select(AramaGorusmeIdQS.ConvertToInt());
             if (aramaGorusme != null)
             {
-                FaaliyetIdQS = aramaGorusme.RandevuId.ToString();
-                if (aramaGorusme.RandevuId > 0)
+                FaaliyetIdQS = aramaGorusme.FaaliyetId.ToString();
+                if (aramaGorusme.FaaliyetId > 0)
                 {
                     RandevuIstendiChk.Enabled = false;
                 }
@@ -362,21 +362,21 @@ namespace MTS_WebParts.AramaGirisiWP
             string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
             Page.Response.Redirect(newUrl);
         }
-        protected void RandevuBtn_Click(object sender, EventArgs e)
+        protected void FaaliyetBtn_Click(object sender, EventArgs e)
         {
-            //randevu ilgisi var mı bak (varsa popup ? olarak randevu bilgilerini göster randevuya git butonına basarak o randevuya git) 
+            //faaliyet ilgisi var mı bak (varsa popup ? olarak faaliyet bilgilerini göster faaliyetya git butonına basarak o faaliyetya git) 
             //
-            //yoksa yeni randevu yaratayım mı diye sor, evetse yeni randevu yarat, yeni randevunun irtibat kişisine bu kişiyi ekle
+            //yoksa yeni faaliyet yaratayım mı diye sor, evetse yeni faaliyet yarat, yeni faaliyetnun irtibat kişisine bu kişiyi ekle
             if (FaaliyetIdQS.ConvertToInt() > 0)
             {
                 RedirectToPage(ProjeConstants.PAGE_FAALIYET_GIRIS + "?FaaliyetId=" + FaaliyetIdQS);
             }
             else
             {
-                ModalLbl.Text = "Yeni Randevu Oluşturulacak";
+                ModalLbl.Text = "Yeni Faaliyet Oluşturulacak";
                 ModalLbl.CssClass = "col-form-label text-success font-weight-bold";
-                MessageLbl.Text = "Bu arama/görüşme ile ilişkilendirilmiş bir randevu bulunmamaktadır. Yeni randevu oluşturulmasını oyanlıyor musunuz.";
-                OnaylaBtn.Text = "Yeni Randevu Oluştur";
+                MessageLbl.Text = "Bu arama/görüşme ile ilişkilendirilmiş bir faaliyet bulunmamaktadır. Yeni faaliyet oluşturulmasını onaylıyor musunuz.";
+                OnaylaBtn.Text = "Yeni Faaliyet Oluştur";
                 OnaylaBtn.CssClass = "btn btn-outline-success";
 
                 kaydetGuncelleSilHdn.Value = ProjeConstants.YENI;
@@ -410,7 +410,7 @@ namespace MTS_WebParts.AramaGirisiWP
             aramaGorusme.Konu = KonuTxt.Text;
             aramaGorusme.GorusmeSekli = GorusmeSekliDDL.SelectedItem.Text;
             aramaGorusme.Olusturan = UtilityHelper.GetCurrentUserName();
-            aramaGorusme.RandevuId = FaaliyetIdQS.ConvertToInt();
+            aramaGorusme.FaaliyetId = FaaliyetIdQS.ConvertToInt();
             aramaGorusme.GorusmeSaglandi = GorusmeSaglandiChk.Checked;
             aramaGorusme.RandevuIstendi = RandevuIstendiChk.Checked;
             DateTime tarih = string.IsNullOrEmpty(TarihTxt.Text) ? DateTime.Now : TarihTxt.Text.ConvertToDatetime();
@@ -443,7 +443,7 @@ namespace MTS_WebParts.AramaGirisiWP
                 aramaGorusme.Konu = KonuTxt.Text;
                 aramaGorusme.GorusmeSekli = GorusmeSekliDDL.SelectedItem.Text;
                 aramaGorusme.Olusturan = UtilityHelper.GetCurrentUserName();
-                aramaGorusme.RandevuId = FaaliyetIdQS.ConvertToInt();
+                aramaGorusme.FaaliyetId = FaaliyetIdQS.ConvertToInt();
                 aramaGorusme.GorusmeSaglandi = GorusmeSaglandiChk.Checked;
                 aramaGorusme.RandevuIstendi = RandevuIstendiChk.Checked;
                 DateTime tarih = string.IsNullOrEmpty(TarihTxt.Text) ? DateTime.Now : TarihTxt.Text.ConvertToDatetime();
@@ -453,7 +453,7 @@ namespace MTS_WebParts.AramaGirisiWP
                 bool guncellendiMi = aramaGorusme.Update();
                 if (guncellendiMi)
                 {
-                    RandevuBtnEnable();
+                    FaaliyetBtnEnable();
                     MessageHelper.PublishMessage("Kayıt Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                 }
 
@@ -468,16 +468,17 @@ namespace MTS_WebParts.AramaGirisiWP
             {
                 ModalLbl.Text = "Arama/Görüşme Kaydı Silinecek";
                 ModalLbl.CssClass = "col-form-label text-danger font-weight-bold";
-                if (aramaGorusme.RandevuId > 0)
+                if (aramaGorusme.FaaliyetId > 0)
                 {
                     Faaliyet faaliyet = new Faaliyet();
-                    faaliyet = faaliyet.Select(aramaGorusme.RandevuId);
+                    faaliyet = faaliyet.Select(aramaGorusme.FaaliyetId);
                     if (faaliyet != null)
                     {
-                        MessageLbl.Text = "Bu arama/görüşme ile ilişkilendirilmiş bir randevu bulunmaktadır. Arama kaydını silseniz de Randevu silinmeyecektir.";
+                        MessageLbl.Text = "Bu arama/görüşme ile ilişkilendirilmiş bir faaliyet bulunmaktadır. Arama kaydını silseniz de Faaliyet silinmeyecektir.";
                     }
                 }
-                MessageLbl.Text += " Arama/Görüşme kaydının silinmesini oyanlıyor musunuz.";
+                MessageLbl.Text = "Bu arama/görüşme ile ilişkilendirilmiş bir faaliyet bulunmamaktadır. ";
+                MessageLbl.Text += " Arama/Görüşme kaydının silinmesini onaylıyor musunuz.";
                 OnaylaBtn.Text = "Aramayı/Görüşmeyi Sil";
                 OnaylaBtn.CssClass = "btn btn-outline-danger";
 
@@ -491,7 +492,7 @@ namespace MTS_WebParts.AramaGirisiWP
 
         }
 
-        private void RandevuBtnEnable()
+        private void FaaliyetBtnEnable()
         {
             if (AramaGorusmeIdQS.ConvertToInt() > 0)
             {
@@ -499,35 +500,35 @@ namespace MTS_WebParts.AramaGirisiWP
                 aramaGorusme = aramaGorusme.Select(AramaGorusmeIdQS.ConvertToInt());
                 if (aramaGorusme != null)
                 {
-                    Faaliyet randevu = new Faaliyet();
-                    randevu = randevu.Select(aramaGorusme.RandevuId);
-                    if (randevu == null)
+                    Faaliyet faaliyet = new Faaliyet();
+                    faaliyet = faaliyet.Select(aramaGorusme.FaaliyetId);
+                    if (faaliyet == null)
                     {
-                        aramaGorusme.RandevuId = 0;
+                        aramaGorusme.FaaliyetId = 0;
                         aramaGorusme.Update();
                     }
-                    FaaliyetIdQS = aramaGorusme.RandevuId.ToString();
+                    FaaliyetIdQS = aramaGorusme.FaaliyetId.ToString();
                     if (FaaliyetIdQS.ConvertToInt() > 0)
                     {
                         aramaGorusme.RandevuIstendi = true;
                         aramaGorusme.Update();
-                        RandevuBtn.Text = "İlgili Randevu";
-                        RandevuBtn.CssClass = "btn btn-outline-primary";
-                        RandevuBtn.Visible = true;
+                        FaaliyetBtn.Text = "İlgili Faaliyet";
+                        FaaliyetBtn.CssClass = "btn btn-outline-primary";
+                        FaaliyetBtn.Visible = true;
                         RandevuIstendiChk.Checked = true;
                     }
                     else
                     {
                         if (aramaGorusme.RandevuIstendi && !RandevuKisitliChk.Checked)
                         {
-                            RandevuBtn.Text = "Randevu Oluştur";
-                            RandevuBtn.CssClass = "btn btn-outline-secondary";
-                            RandevuBtn.Visible = true;
+                            FaaliyetBtn.Text = "Faaliyet Oluştur";
+                            FaaliyetBtn.CssClass = "btn btn-outline-secondary";
+                            FaaliyetBtn.Visible = true;
                             RandevuIstendiChk.Checked = true;
                         }
                         else
                         {
-                            RandevuBtn.Visible = false;
+                            FaaliyetBtn.Visible = false;
                             RandevuIstendiChk.Checked = false;
                         }
 
@@ -545,43 +546,43 @@ namespace MTS_WebParts.AramaGirisiWP
                 {
                     if (kaydetGuncelleSilHdn.Value.Equals(ProjeConstants.YENI))
                     {
-                        Faaliyet randevu = new Faaliyet();
+                        Faaliyet faaliyet = new Faaliyet();
                         if (aramaGorusme.GorusmeSekli.Equals(ProjeConstants.ARAMAGORUSME_GIDENTELEFON))
                         {
-                            randevu.FaaliyetTipi = ProjeConstants.RANDEVU_ALINAN;
+                            faaliyet.FaaliyetTipi = ProjeConstants.RANDEVU_ALINAN;
                         }
                         else
                         {
-                            randevu.FaaliyetTipi = ProjeConstants.RANDEVU_VERILEN;
+                            faaliyet.FaaliyetTipi = ProjeConstants.RANDEVU_VERILEN;
                         }
-                        randevu.FaaliyetAmaci = ProjeConstants.FAALIYET_AMACI_ZIYARET_INT.ConvertToInt();
-                        randevu.FaaliyetKonusu = aramaGorusme.Konu;
-                        randevu.FaaliyetDurumu = ProjeConstants.FAALIYET_DURUMU_PLANLANDI_INT;
-                        randevu.TumGun = false;
-                        randevu.AcikTarih = false;
+                        faaliyet.FaaliyetAmaci = ProjeConstants.FAALIYET_AMACI_ZIYARET_INT.ConvertToInt();
+                        faaliyet.FaaliyetKonusu = aramaGorusme.Konu;
+                        faaliyet.FaaliyetDurumu = ProjeConstants.FAALIYET_DURUMU_PLANLANDI_INT;
+                        faaliyet.TumGun = false;
+                        faaliyet.AcikTarih = false;
                         DateTime baslangictarihi = DateTime.Today.AddDays(1);
                         DateTime bitistarihi = baslangictarihi;
                         string bassaat = "10:00";
                         string bitsaat = "10:30";
-                        randevu.BaslangicTarihi = UtilityHelper.TariheSaatEkle(baslangictarihi, bassaat);
-                        randevu.BitisTarihi = UtilityHelper.TariheSaatEkle(bitistarihi, bitsaat);
-                        randevu.BaslangicSaati = bassaat;
-                        randevu.BitisSaati = bitsaat;
-                        randevu.Aciklama = AciklamaTxt.Text;
+                        faaliyet.BaslangicTarihi = UtilityHelper.TariheSaatEkle(baslangictarihi, bassaat);
+                        faaliyet.BitisTarihi = UtilityHelper.TariheSaatEkle(bitistarihi, bitsaat);
+                        faaliyet.BaslangicSaati = bassaat;
+                        faaliyet.BitisSaati = bitsaat;
+                        faaliyet.Aciklama = AciklamaTxt.Text;
 
                         if (aramaGorusme.KatilimciTipi == ProjeConstants.FAALIYET_KATILIMCI_DIS_INT)
-                            randevu.DisIrtibatId = aramaGorusme.ArayanId;
+                            faaliyet.DisIrtibatId = aramaGorusme.ArayanId;
                         else if (aramaGorusme.KatilimciTipi == ProjeConstants.FAALIYET_KATILIMCI_IC_INT)
-                            randevu.IcIrtibatId = aramaGorusme.ArayanId;
+                            faaliyet.IcIrtibatId = aramaGorusme.ArayanId;
 
-                        randevu.Olusturan = UtilityHelper.GetCurrentUserName();
-                        randevu.Id = randevu.Save();
-                        if (randevu.Id > 0)
+                        faaliyet.Olusturan = UtilityHelper.GetCurrentUserName();
+                        faaliyet.Id = faaliyet.Save();
+                        if (faaliyet.Id > 0)
                         {
-                            FaaliyetIdQS = randevu.Id.ToString();
-                            aramaGorusme.RandevuId = randevu.Id;
+                            FaaliyetIdQS = faaliyet.Id.ToString();
+                            aramaGorusme.FaaliyetId = faaliyet.Id;
                             aramaGorusme.Update();
-                            RedirectToPage(ProjeConstants.PAGE_FAALIYET_GIRIS + "?FaaliyetId=" + randevu.Id);
+                            RedirectToPage(ProjeConstants.PAGE_FAALIYET_GIRIS + "?FaaliyetId=" + faaliyet.Id);
                         }
                     }
                     else if (kaydetGuncelleSilHdn.Value.Equals(ProjeConstants.GUNCELLE))
@@ -800,11 +801,11 @@ namespace MTS_WebParts.AramaGirisiWP
             {
                 if (aramaGorusme.RandevuIstendi && RandevuIstendiChk.Checked)
                 {
-                    RandevuBtn.Visible = true;
+                    FaaliyetBtn.Visible = true;
                 }
                 else
                 {
-                    RandevuBtn.Visible = false;
+                    FaaliyetBtn.Visible = false;
                 }
             }
 

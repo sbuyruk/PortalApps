@@ -150,11 +150,11 @@ namespace Model.Ortak
         public static int UcretliIzinHakkiHesapla(Personel personel, DateTime izinDonemiBasi, DateTime izinDonemBasTar)
         {
             int hakEdilenIzinGunSayisi = ProjeConstants.IZIN_SURESI_1_5;
-            if (personel.Asker_sivil == ProjeConstants.PER_ASKER_INT)
-            {
-                hakEdilenIzinGunSayisi = ProjeConstants.IZIN_SURESI_ASKER;
-            }
-            else
+            //if (personel.Asker_sivil == ProjeConstants.PER_ASKER_INT)
+            //{
+            //    hakEdilenIzinGunSayisi = ProjeConstants.IZIN_SURESI_ASKER;
+            //}
+            //else
             {
                 try
                 {

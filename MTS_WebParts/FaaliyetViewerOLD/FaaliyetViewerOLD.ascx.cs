@@ -506,7 +506,7 @@ namespace MTS_WebParts.FaaliyetViewerOLD
             outerDiv.Controls.Add(innerDiv);
             AcikTarihliFaaliyetListDiv.Controls.Add(outerDiv);
         }
-        private HyperLink HyperLinkGetir(int randevuId, string randevuKonusu)
+        private HyperLink HyperLinkGetir(int faaliyetId, string randevuKonusu)
         {
             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
             HyperLink hyperLink = new HyperLink
@@ -514,9 +514,9 @@ namespace MTS_WebParts.FaaliyetViewerOLD
                 Text = string.IsNullOrEmpty(randevuKonusu) ? "Konu Yok" : randevuKonusu
             };
 
-            if (randevuId > 0)
+            if (faaliyetId > 0)
             {
-                string linkUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_FAALIYET_GIRIS + "?FaaliyetId=" + randevuId;
+                string linkUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_FAALIYET_GIRIS + "?FaaliyetId=" + faaliyetId;
 
                 hyperLink.NavigateUrl = linkUrl;
             }
@@ -540,15 +540,15 @@ namespace MTS_WebParts.FaaliyetViewerOLD
         }
         protected void FaaliyetKaydetNowBtn_Click(object sender, EventArgs e)
         {
-            int randevuId = paramFaaliyetId.Value.ConvertToInt();
+            int faaliyetId = paramFaaliyetId.Value.ConvertToInt();
             DateTime basTar = paramBasTar.Value.ConvertToDatetime();
             DateTime bitTar = paramBitTar.Value.ConvertToDatetime();
             CalendarViewQS = paramView.Value;
             InitialDateQS = basTar.ToString("yyyy-MM-dd");
-            if (randevuId > 0)
+            if (faaliyetId > 0)
             {
                 Faaliyet faaliyet = new Faaliyet();
-                faaliyet = faaliyet.Select(randevuId);
+                faaliyet = faaliyet.Select(faaliyetId);
                 if (faaliyet != null)
                 {
                     faaliyet.BaslangicTarihi = basTar;

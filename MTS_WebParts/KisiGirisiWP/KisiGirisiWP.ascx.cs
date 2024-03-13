@@ -181,8 +181,7 @@ namespace MTS_WebParts.KisiGirisiWP
                     TelAciklama3Txt.Text = kisi.TelAciklama3;
 
                     AdresTxt.Text = kisi.Adres;
-                    //UtilityHelper.SetDDLValue(MTSKurumTanimDDL, kisi.MTSKurumTanimId.ToString()) ;
-                    //UtilityHelper.SetDDLValue(MTSGorevTanimDDL, kisi.MTSGorevTanimId.ToString()) ;
+
                     UtilityHelper.SetDDLValue(MTSUnvanTanimDDL, kisi.MTSUnvanTanimId.ToString()) ;
                     ListItem ilItem = IliDDL.Items.FindByValue(IliDDL.Items.FindByValue(kisi.Ili.ToString()).Value);
                     if (ilItem != null)
@@ -240,8 +239,7 @@ namespace MTS_WebParts.KisiGirisiWP
                         yeniKisi.Adi = AdiTxt.Text;
                         yeniKisi.Soyadi = SoyadiTxt.Text;
                         yeniKisi.TCKimlikNo = TCKimlikNoTxt.Text.ConvertToLong();
-                        //yeniKisi.MTSKurumTanimId = MTSKurumTanimDDL.SelectedItem.Value.ConvertToInt();
-                        //yeniKisi.MTSGorevTanimId = MTSGorevTanimDDL.SelectedItem.Value.ConvertToInt();
+
                         yeniKisi.MTSUnvanTanimId = MTSUnvanTanimDDL.SelectedItem.Value.ConvertToInt();
                         yeniKisi.Kurumu = KurumuTxt.Text;
                         yeniKisi.Unvani = UnvaniTxt.Text;
@@ -346,8 +344,7 @@ namespace MTS_WebParts.KisiGirisiWP
                     kisi.Adi = AdiTxt.Text;
                     kisi.Soyadi = SoyadiTxt.Text;
                     kisi.TCKimlikNo = TCKimlikNoTxt.Text.ConvertToLong();
-                    //kisi.MTSKurumTanimId = MTSKurumTanimDDL.SelectedItem.Value.ConvertToInt();
-                    //kisi.MTSGorevTanimId = MTSGorevTanimDDL.SelectedItem.Value.ConvertToInt();
+
                     kisi.MTSUnvanTanimId = MTSUnvanTanimDDL.SelectedItem.Value.ConvertToInt();
                     kisi.Kurumu = KurumuTxt.Text;
                     kisi.Unvani = UnvaniTxt.Text;

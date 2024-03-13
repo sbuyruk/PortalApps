@@ -109,7 +109,7 @@ namespace MTS_WebParts.AramaGirisiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.LinkButton RandevuBtn;
+        protected global::System.Web.UI.WebControls.LinkButton FaaliyetBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -558,19 +558,19 @@ namespace MTS_WebParts.AramaGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.LinkButton @__BuildControlRandevuBtn() {
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlFaaliyetBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
-            this.RandevuBtn = @__ctrl;
+            this.FaaliyetBtn = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "RandevuBtn";
+            @__ctrl.ID = "FaaliyetBtn";
             @__ctrl.CssClass = "btn btn-outline-secondary";
             @__ctrl.CausesValidation = false;
-            @__ctrl.Text = "Randevu";
+            @__ctrl.Text = "Faaliyet";
             @__ctrl.Visible = false;
-            @__ctrl.Click -= new System.EventHandler(this.RandevuBtn_Click);
-            @__ctrl.Click += new System.EventHandler(this.RandevuBtn_Click);
+            @__ctrl.Click -= new System.EventHandler(this.FaaliyetBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.FaaliyetBtn_Click);
             return @__ctrl;
         }
         
@@ -682,7 +682,7 @@ namespace MTS_WebParts.AramaGirisiWP {
             @__parser.AddParsedSubObject(@__ctrl3);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl4;
-            @__ctrl4 = this.@__BuildControlRandevuBtn();
+            @__ctrl4 = this.@__BuildControlFaaliyetBtn();
             @__parser.AddParsedSubObject(@__ctrl4);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl5;
@@ -981,7 +981,7 @@ namespace MTS_WebParts.AramaGirisiWP {
         private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control18() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
-            @__ctrl.ControlID = "RandevuBtn";
+            @__ctrl.ControlID = "FaaliyetBtn";
             @__ctrl.EventName = "click";
             return @__ctrl;
         }

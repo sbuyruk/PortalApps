@@ -17,7 +17,7 @@ namespace Model.MTS
         public int Adet { get; set; }
         public int KatilimciId { get; set; }
         public int KatilimciTipi { get; set; }
-        public int RandevuId { get; set; }
+        public int FaaliyetId { get; set; }
         public int VerilenAlinan { get; set; } //verilen 0; alinan 1
         public int DagitimYeriTanimId { get; set; } = 0;
         public int CikisDepoId { get; set; } = 0;
@@ -118,18 +118,18 @@ namespace Model.MTS
             item = list.FirstOrDefault();
             return item;
         }
-        public int Delete(int randevuId, int katilimciId, int katilimciTipi, string aniObjesiIdList="")
+        public int Delete(int faaliyetId, int katilimciId, int katilimciTipi, string aniObjesiIdList="")
         {
             int deleted;
             string aniObjesiIdListStr = string.IsNullOrEmpty(aniObjesiIdList) ? string.Empty : string.Format(" AND AniObjesiId IN ({0})", aniObjesiIdList);
             string sqlString = string.Format(@"
                 DELETE FROM AniObjesiDagitim_Table
-                WHERE RandevuId={0} AND KatilimciId={1} AND KatilimciTipi={2}
+                WHERE FaaliyetId={0} AND KatilimciId={1} AND KatilimciTipi={2}
                 {3}
-            ", randevuId, katilimciId, katilimciTipi, aniObjesiIdListStr);
+            ", faaliyetId, katilimciId, katilimciTipi, aniObjesiIdListStr);
 
 
-            string wherestr = string.Format("WHERE RandevuId={0} AND KatilimciId={1} AND KatilimciTipi={2} {3}", randevuId, katilimciId, katilimciTipi, aniObjesiIdListStr);
+            string wherestr = string.Format("WHERE FaaliyetId={0} AND KatilimciId={1} AND KatilimciTipi={2} {3}", faaliyetId, katilimciId, katilimciTipi, aniObjesiIdListStr);
             GenericEntity<AniObjesiDagitim> genericEntitySelect = new GenericEntity<AniObjesiDagitim>(ProjeConstants.SQL_SELECT);
             string sqlStringSelect = genericEntitySelect.GetQuery(this, wherestr);
             DataTable dataTable = dao.SelectFromDb(sqlStringSelect, "");
@@ -164,7 +164,7 @@ namespace Model.MTS
         {
             string sqlString = string.Format(@"
                 SELECT *
-                FROM AniObjesiDagitim_Table ORDER BY RandevuId 
+                FROM AniObjesiDagitim_Table ORDER BY FaaliyetId 
                 ");
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
@@ -172,66 +172,66 @@ namespace Model.MTS
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
         }
-        public AniObjesiDagitim SelectGetirilenAniObjesi(int randevuId, int katilimciId, int katilimciTipi)
+        public AniObjesiDagitim SelectGetirilenAniObjesi(int faaliyetId, int katilimciId, int katilimciTipi)
         {
             string sqlString = string.Format(@"
                 SELECT *
                 FROM AniObjesiDagitim_Table 
-                WHERE RandevuId={0} AND KatilimciId={1} AND KatilimciTipi={2} AND VerilenAlinan={3}
+                WHERE FaaliyetId={0} AND KatilimciId={1} AND KatilimciTipi={2} AND VerilenAlinan={3}
                 ORDER BY Id
-                ", randevuId, katilimciId, katilimciTipi, ProjeConstants.ANIOBJESI_GETIRILEN_INT);
+                ", faaliyetId, katilimciId, katilimciTipi, ProjeConstants.ANIOBJESI_GETIRILEN_INT);
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<AniObjesiDagitim> list = ToList<AniObjesiDagitim>(dataTable);
             AniObjesiDagitim item = new AniObjesiDagitim();
             item = list.FirstOrDefault();
             return item;
         }
-        public DataTable SelectReturnDT(int randevuId, int katilimciId, int katilimciTipi)
+        public DataTable SelectReturnDT(int faaliyetId, int katilimciId, int katilimciTipi)
         {
             string sqlString = string.Format(@"
-                SELECT A.Id AniObjesiId, A.Sira, A.Adi, B.Id AniObjesiDagitimId, B.Adet, B.RandevuId,B.KatilimciId,B.KatilimciTipi
+                SELECT A.Id AniObjesiId, A.Sira, A.Adi, B.Id AniObjesiDagitimId, B.Adet, B.FaaliyetId,B.KatilimciId,B.KatilimciTipi
                 FROM AniObjesiTanim_Table A
-                    LEFT JOIN AniObjesiDagitim_Table B ON B.AniObjesiId=A.Id AND RandevuId={0} AND KatilimciId={1} AND KatilimciTipi={2}
+                    LEFT JOIN AniObjesiDagitim_Table B ON B.AniObjesiId=A.Id AND FaaliyetId={0} AND KatilimciId={1} AND KatilimciTipi={2}
                 
                 ORDER BY A.Id
-                ", randevuId, katilimciId, katilimciTipi);
+                ", faaliyetId, katilimciId, katilimciTipi);
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
 
             return dataTable;
         }
-        public DataTable SelectReturnDT(int randevuId, int katilimciId, int katilimciTipi,string stokluMu)
+        public DataTable SelectReturnDT(int faaliyetId, int katilimciId, int katilimciTipi,string stokluMu)
         {
             string stokStr=string.IsNullOrEmpty(stokluMu)?string.Empty:" WHERE A.StokluMu="+stokluMu.ReturnQuotedValue();
             string sqlString = string.Format(@"
-                SELECT A.Id AniObjesiId, A.Sira, A.Adi, B.Id AniObjesiDagitimId, B.Adet, B.RandevuId,B.KatilimciId,B.KatilimciTipi
+                SELECT A.Id AniObjesiId, A.Sira, A.Adi, B.Id AniObjesiDagitimId, B.Adet, B.FaaliyetId,B.KatilimciId,B.KatilimciTipi
                 FROM AniObjesiTanim_Table A
-                    LEFT JOIN AniObjesiDagitim_Table B ON B.AniObjesiId=A.Id AND RandevuId={0} AND KatilimciId={1} AND KatilimciTipi={2}
+                    LEFT JOIN AniObjesiDagitim_Table B ON B.AniObjesiId=A.Id AND FaaliyetId={0} AND KatilimciId={1} AND KatilimciTipi={2}
                 {3}
                 ORDER BY A.Id
-                ", randevuId, katilimciId, katilimciTipi,stokStr);
+                ", faaliyetId, katilimciId, katilimciTipi,stokStr);
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
 
             return dataTable;
         }
-        public List<AniObjesiDagitim> SelectStoksuzAniObjeleriReturnList(int randevuId, int katilimciId, int katilimciTipi)
+        public List<AniObjesiDagitim> SelectStoksuzAniObjeleriReturnList(int faaliyetId, int katilimciId, int katilimciTipi)
         {
             string sqlString = string.Format(@"
-                SELECT B.Id, A.Id AniObjesiId, IsNull(B.Adet,0) Adet ,b.RandevuId, B.KatilimciId,B.KatilimciTipi,B.VerilenAlinan
+                SELECT B.Id, A.Id AniObjesiId, IsNull(B.Adet,0) Adet ,b.FaaliyetId, B.KatilimciId,B.KatilimciTipi,B.VerilenAlinan
                 FROM AniObjesiTanim_Table A
-                    LEFT JOIN AniObjesiDagitim_Table B ON B.AniObjesiId=A.Id AND RandevuId={0} AND KatilimciId={1} AND KatilimciTipi={2}
+                    LEFT JOIN AniObjesiDagitim_Table B ON B.AniObjesiId=A.Id AND FaaliyetId={0} AND KatilimciId={1} AND KatilimciTipi={2}
                 WHERE A.StokluMu={3}
-                ", randevuId, katilimciId, katilimciTipi,ProjeConstants.MTS_ANIOBJESISTOKSUZ.ReturnQuotedValue());
+                ", faaliyetId, katilimciId, katilimciTipi,ProjeConstants.MTS_ANIOBJESISTOKSUZ.ReturnQuotedValue());
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<AniObjesiDagitim> list = ToList<AniObjesiDagitim>(dataTable);
             return list;
         }
-        public AniObjesiDagitim Select(int randevuId, int katilimciId, int katilimciTipi, int aniObjesiId)
+        public AniObjesiDagitim Select(int faaliyetId, int katilimciId, int katilimciTipi, int aniObjesiId)
         {
             string sqlString = string.Format(@"
                 SELECT *
                 FROM AniObjesiDagitim_Table  
-                WHERE AniObjesiId={0} AND RandevuId={1} AND KatilimciId={2} AND KatilimciTipi={3}
-                ", aniObjesiId,randevuId, katilimciId, katilimciTipi);
+                WHERE AniObjesiId={0} AND FaaliyetId={1} AND KatilimciId={2} AND KatilimciTipi={3}
+                ", aniObjesiId,faaliyetId, katilimciId, katilimciTipi);
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<AniObjesiDagitim> list = ToList<AniObjesiDagitim>(dataTable);
             return list.FirstOrDefault();
@@ -241,7 +241,7 @@ namespace Model.MTS
             string verilenGetirilenStr = verilenGetirilen.Equals(ProjeConstants.ANIOBJESI_VERILENGETIRILEN) ? string.Empty :
                 verilenGetirilenStr = " AND B.VerilenAlinan=" + verilenGetirilen;
             string sqlString = string.Format(@"
-                SELECT B.Id, A.Id AniObjesiId, IsNull(B.Adet,0) Adet ,b.RandevuId, B.KatilimciId,B.KatilimciTipi,B.VerilenAlinan
+                SELECT B.Id, A.Id AniObjesiId, IsNull(B.Adet,0) Adet ,b.FaaliyetId, B.KatilimciId,B.KatilimciTipi,B.VerilenAlinan
                 FROM AniObjesiTanim_Table A
                     LEFT JOIN AniObjesiDagitim_Table B ON B.AniObjesiId=A.Id AND KatilimciId={0} AND KatilimciTipi={1}
                 WHERE 1>0 
@@ -251,14 +251,14 @@ namespace Model.MTS
             List<AniObjesiDagitim> list = ToList<AniObjesiDagitim>(dataTable);
             return list;
         }
-        public string SelectByKatilimcidKatilimciTipiRandevuId(int katilimciId, int katilimciTipi, int randevuId)
+        public string SelectByKatilimcidKatilimciTipiFaaliyetId(int katilimciId, int katilimciTipi, int faaliyetId)
         {
             string retval = string.Empty;
             string sqlString = string.Format(@"
                 SELECT  B.Adi, A.Adet  FROM AniObjesiDagitim_Table A
                 INNER JOIN AniObjesiTanim_Table B ON B.Id=A.AniObjesiId
-                WHERE KatilimciId={0} AND KatilimciTipi={1} AND RandevuId={2}                
-                ", katilimciId, katilimciTipi, randevuId);
+                WHERE KatilimciId={0} AND KatilimciTipi={1} AND FaaliyetId={2}                
+                ", katilimciId, katilimciTipi, faaliyetId);
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null )
             {
@@ -271,13 +271,13 @@ namespace Model.MTS
             }
             return retval;
         }
-        public string SelectGetirilenByKatilimcidKatilimciTipiRandevuId(int katilimciId, int katilimciTipi, int randevuId)
+        public string SelectGetirilenByKatilimcidKatilimciTipiFaaliyetId(int katilimciId, int katilimciTipi, int faaliyetId)
         {
             string retval = string.Empty;
             string sqlString = string.Format(@"
                 SELECT  GetirilenAniObjesi  FROM AniObjesiDagitim_Table A
-                WHERE KatilimciId={0} AND KatilimciTipi={1} AND RandevuId={2} AND AniObjesiId={3}
-                ", katilimciId, katilimciTipi, randevuId, ProjeConstants.GETIRILEN_ANIOBJESIID_INT);
+                WHERE KatilimciId={0} AND KatilimciTipi={1} AND FaaliyetId={2} AND AniObjesiId={3}
+                ", katilimciId, katilimciTipi, faaliyetId, ProjeConstants.GETIRILEN_ANIOBJESIID_INT);
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
@@ -289,16 +289,16 @@ namespace Model.MTS
             }
             return retval;
         }
-        public DataTable SelectByKatilimcidKatilimciTipiRandevuId(int katilimciId, int katilimciTipi, int randevuId,string stokluMu)
+        public DataTable SelectByKatilimcidKatilimciTipiFaaliyetId(int katilimciId, int katilimciTipi, int faaliyetId,string stokluMu)
         {
             string retval = string.Empty;
             string stokStr = string.IsNullOrEmpty(stokluMu) ? string.Empty :" AND StokluMu="+stokluMu.ReturnQuotedValue();
             string sqlString = string.Format(@"
                 SELECT A.Id AniObjesiDagitimId, B.Id AniObjesiId, B.Adi, A.Adet, A.CikisDepoId  FROM AniObjesiDagitim_Table A
                 INNER JOIN AniObjesiTanim_Table B ON B.Id=A.AniObjesiId
-                WHERE KatilimciId={0} AND KatilimciTipi={1} AND RandevuId={2}
+                WHERE KatilimciId={0} AND KatilimciTipi={1} AND FaaliyetId={2}
                     {3}
-                ", katilimciId, katilimciTipi, randevuId,stokStr);
+                ", katilimciId, katilimciTipi, faaliyetId,stokStr);
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return dataTable;
         }
@@ -315,12 +315,12 @@ namespace Model.MTS
 
             return list;
         }
-        public List<AniObjesiDagitim> SelectByRandevuId(int parametreId)
+        public List<AniObjesiDagitim> SelectByFaaliyetId(int parametreId)
         {
             string sqlString = string.Format(@"
                 SELECT *
                 FROM AniObjesiDagitim_Table 
-                WHERE RandevuId={0}
+                WHERE FaaliyetId={0}
                 ", parametreId);
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
@@ -364,7 +364,7 @@ namespace Model.MTS
                         childRow.Add("KatilimciTipi", item.KatilimciTipi);
                         childRow.Add("Olusturan", item.Olusturan);
                         childRow.Add("OlusturmaTarihi", item.OlusturmaTarihi);
-                        childRow.Add("RandevuId", item.RandevuId);
+                        childRow.Add("FaaliyetId", item.FaaliyetId);
                         childRow.Add("VerilenAlinan", item.VerilenAlinan);
                         childRow.Add("Degistiren", item.Degistiren);
                         childRow.Add("DegistirmeTarihi", item.DegistirmeTarihi);

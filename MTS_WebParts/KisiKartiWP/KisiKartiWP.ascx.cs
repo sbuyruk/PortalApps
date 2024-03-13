@@ -612,10 +612,10 @@ namespace MTS_WebParts.KisiKartiWP
                 konucell.Text = item.Konu;
 
                 TableCell faaliyetcell = new TableCell();
-                if (item.RandevuId > 0)
+                if (item.FaaliyetId > 0)
                 {
                     Faaliyet faaliyet = new Faaliyet();
-                    faaliyet = faaliyet.Select(item.RandevuId);
+                    faaliyet = faaliyet.Select(item.FaaliyetId);
                     if (faaliyet != null)
                     {
                         string faaliyetTarihiStr = faaliyet.BaslangicTarihi.Year == faaliyet.BitisTarihi.Year &&

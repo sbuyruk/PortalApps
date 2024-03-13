@@ -254,8 +254,7 @@ namespace MTS_WebParts.KisiListesiWP
             public string KisiId { get; set; }
             public string AdiSoyadi { get; set; }
             public string TCKimlikNo { get; set; }
-            public int MTSKurumTanimId { get; set; }
-            public int MTSGorevTanimId { get; set; }
+
             public int MTSUnvanTanimId { get; set; }
             public string Kurumu { get; set; }
             public string Unvani { get; set; }

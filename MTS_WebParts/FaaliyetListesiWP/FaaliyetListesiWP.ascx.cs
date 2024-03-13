@@ -62,7 +62,7 @@ namespace MTS_WebParts.FaaliyetListesiWP
             {
                 if (!Page.IsPostBack)
                 {
-                    BaslangicTarihiTxt.Text = DateTime.Today.AddMonths(-2).ConvertToDatetimeEmptyIfNull();
+                    BaslangicTarihiTxt.Text = DateTime.Today.AddYears(-1).ConvertToDatetimeEmptyIfNull();
                     BitisTarihiTxt.Text = DateTime.Today.ConvertToDatetimeEmptyIfNull();
                 }
                     TabloOlustur(); 

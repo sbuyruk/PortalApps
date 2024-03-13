@@ -298,7 +298,7 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
                 {
                     string aramaId = row["AramaId"].ToString();
                     string arayanId = row["ArayanId"].ToString();
-                    int randevuId = row["RandevuId"].ReturnZeroIfNull().ConvertToInt();
+                    int faaliyetId = row["FaaliyetId"].ReturnZeroIfNull().ConvertToInt();
                     string adi = row["Adi"].ToString();
                     string tarih = row["Tarih"].ConvertToDatetime().ToString("dd.MM.yyyy HH:mm");
                     string soyadi = row["Soyadi"].ToString();
@@ -319,26 +319,26 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
                     aramaItem.Kurumu = kurumu;
                     aramaItem.GorusmeSaglandi = gorusmeSaglandi;
                     aramaItem.RandevuIstendi = randevuIstendi;
-                    if (randevuId > 0)
+                    if (faaliyetId > 0)
                     {
-                        aramaItem.RandevuId = randevuId.ToString();
+                        aramaItem.FaaliyetId = faaliyetId.ToString();
                         Faaliyet faaliyet = new Faaliyet();
-                        faaliyet = faaliyet.Select(randevuId);
+                        faaliyet = faaliyet.Select(faaliyetId);
                         if (faaliyet != null)
                         {
                             string acikTarihli = faaliyet.AcikTarih ? " (Açık)" : string.Empty;
-                            aramaItem.Randevu = "<a target=_blank href=" + ProjeConstants.PAGE_FAALIYET_GIRIS + "?FaaliyetId=" + randevuId + " class='btn btn-outline-secondary'>Randevu"+acikTarihli+"</a>";
+                            aramaItem.Faaliyet = "<a target=_blank href=" + ProjeConstants.PAGE_FAALIYET_GIRIS + "?FaaliyetId=" + faaliyetId + " class='btn btn-outline-secondary'>Faaliyet"+acikTarihli+"</a>";
                         }
                         else
-                            aramaItem.Randevu = string.Empty;
+                            aramaItem.Faaliyet = string.Empty;
                     }
                     else if (randevuKisiti)
                     {
-                        aramaItem.Randevu = "RK";
+                        aramaItem.Faaliyet = "RK";
                     }
                     else if (randevuIstendi)
                     {
-                        aramaItem.Randevu = "İstendi";
+                        aramaItem.Faaliyet = "İstendi";
                     }
 
                     aramaItem.Duzenle = "<a href=" + ProjeConstants.PAGE_ARAMAGORUSME_GIRIS + "?AramaGorusmeId=" + aramaId + "&ArayanId=" + arayanId + " class='btn btn-outline-success'>Arama/Görüşme</a>";
@@ -356,14 +356,14 @@ namespace MTS_WebParts.AramaGorusmeListesiWP
         {
             public string AramaId { get; set; }
             public string ArayanId { get; set; }
-            public string RandevuId { get; set; }
+            public string FaaliyetId { get; set; }
             public string AdiSoyadi { get; set; }
             public string Tarih { get; set; }
             public string Konu { get; set; }
             public string Kurumu { get; set; }
             public bool GorusmeSaglandi { get; set; }
             public bool RandevuIstendi { get; set; }
-            public string Randevu { get; set; }
+            public string Faaliyet { get; set; }
             public string Duzenle { get; set; }
             public bool Secildi { get; set; }
         }

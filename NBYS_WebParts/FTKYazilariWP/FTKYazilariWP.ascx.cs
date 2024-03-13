@@ -108,7 +108,7 @@ namespace NBYS_WebParts.FTKYazilariWP
 
             ImzalayanTxt.Text = @"Bilal TOPÇU";
             ImzalayanUnvanTxt.Text = string.Empty;// @"(E)Tümgeneral";
-            ImzalayanMakamTxt.Text = @"TSKGV Genel Müdürü";
+            ImzalayanMakamTxt.Text = @"Genel Müdür";
 
             string parafe1 = NBYSOrtak.ParametreGetir(ProjeConstants.PARAM_FTKYAZI, ProjeConstants.PARAM_FTKYAZI_PARAFE1);
             string parafe2 = NBYSOrtak.ParametreGetir(ProjeConstants.PARAM_FTKYAZI, ProjeConstants.PARAM_FTKYAZI_PARAFE2);

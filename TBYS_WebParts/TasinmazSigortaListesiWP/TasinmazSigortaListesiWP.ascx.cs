@@ -621,7 +621,7 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
                 sigortaItem.KullanimSekli = katMulkiyeti.Equals(ProjeConstants.KAT_MULKIYETI_VAR)?kullanimSekli:kullanimAmaci;
                 sigortaItem.TeminatListesi = teminatListesi;
                 sigortaItem.Adres = tamAdres;
-                sigortaItem.Police = FormLinkiGetir(policeDosyalari, ProjeConstants.DOSYA_SIGORTAPOLICESI_DASK, sigortaId,"Poliçe", "btn btn-outline-secondary");
+                sigortaItem.Police = FormLinkiGetir(policeDosyalari, ProjeConstants.DOSYA_SIGORTAPOLICESI_DASK, adresKodu,"Poliçe", "btn btn-outline-secondary");
                 sigortaItem.TasinmazKarti = "<a href=" + ProjeConstants.PAGE_TASINMAZ_KARTI + "?DestinationApp=TD&SenderApp=OL&TasinmazId=" + tasinmazId + " class='btn btn-outline-primary'>Taşınmaz Kartı</a>";
                 bool duzenleGorunsunMu = !string.IsNullOrEmpty(AuthQS) && AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM);
                 if (duzenleGorunsunMu)
@@ -633,10 +633,10 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
             }
             return list;
         }
-        private string FormLinkiGetir(List<string> list, string form, string sigortaId, string linkText, string classString)
+        private string FormLinkiGetir(List<string> list, string form, string adresKodu, string linkText, string classString)
         {
             string belgePdfLink = string.Empty;
-            string dosyaAdi = form + sigortaId + ".pdf";
+            string dosyaAdi = form + adresKodu + ".pdf";
             string dosyaUrl = UtilityHelper.TbysBelgelerURLGetir() + "/" + dosyaAdi;
             bool dosyaVarMi = list.Contains(dosyaAdi);
             if (dosyaVarMi)

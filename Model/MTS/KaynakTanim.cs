@@ -124,7 +124,7 @@ namespace Model.MTS
         {
             string sqlString = string.Format(@"
                 SELECT *
-                FROM KaynakTanim_Table ORDER BY RandevuId 
+                FROM KaynakTanim_Table ORDER BY Adi 
                 ");
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");

@@ -334,7 +334,6 @@ namespace Model.NBYS
                 {0}", ilStr);
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            list = ToList<NakitBagisci>(dataTable);
             if (dataTable != null)
             {
                 rowCount = dataTable.Rows.Count;
@@ -372,8 +371,7 @@ namespace Model.NBYS
 
                 throw e;
             }
-            //List<NakitBagisci> 
-            list = ToList<NakitBagisci>(dataTable);
+
             if (dataTable != null)
             {
                 rowCount = dataTable.Rows.Count;
@@ -399,8 +397,8 @@ namespace Model.NBYS
                     ,Adi
                     ,Soyadi
                     ,TCKimlikNo
-                    ,Il_Table.IlAdi Ili
-                    ,Ilce_Table.IlceAdi Ilcesi
+                    ,Ili  --,Il_Table.IlAdi Ili
+                    ,Ilcesi --,Ilce_Table.IlceAdi Ilcesi
                     ,Adres
                     ,Telefon1
                     ,Telefon2
@@ -435,8 +433,6 @@ namespace Model.NBYS
 
                 throw e;
             }
-            //List<NakitBagisci> 
-            list = ToList<NakitBagisci>(dataTable);
             if (dataTable != null)
             {
                 rowCount = dataTable.Rows.Count;
@@ -631,10 +627,7 @@ namespace Model.NBYS
                 throw e;
             }
 
-            //if (dataTable != null)
-            //{
-            //    List<NakitBagisci> list = ToList<NakitBagisci>(dataTable);
-            //}
+           
             string json = ToJSON(dataTable);
             return json;
         }

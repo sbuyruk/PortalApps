@@ -1242,51 +1242,48 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                     }
 
                 }
-                else
+                Personel personel = new Personel();
+                personel = PersonelGetir();
+                if (personel != null)
                 {
-                    Personel personel = new Personel();
-                    personel = PersonelGetir();
-                    if (personel != null)
+                    bool isValid = KalanIzinKontrolIslemleri();
+                    if (isValid)
                     {
-                        bool isValid = KalanIzinKontrolIslemleri();
-                        if (isValid)
+                        bool devamEdenIzinTalebiVarMi = IslemiDevamEdenIzinTalebiVarMi(personel.Id);// SB 13/09/2019 devam eden izin talebi kontrolu eklendi
+                                                                                                    //bool cakismaVarMi = BuTarihteCakisanIzinTalebiVarMi(personel.Id);//  SB 13/09/2019 devam eden izin talebi kontrolu eklendiğinden çalışma kontrolüne gerek kalmadı
+                        if (devamEdenIzinTalebiVarMi)//if (cakismaVarMi)
                         {
-                            bool devamEdenIzinTalebiVarMi = IslemiDevamEdenIzinTalebiVarMi(personel.Id);// SB 13/09/2019 devam eden izin talebi kontrolu eklendi
-                                                                                                        //bool cakismaVarMi = BuTarihteCakisanIzinTalebiVarMi(personel.Id);//  SB 13/09/2019 devam eden izin talebi kontrolu eklendiğinden çalışma kontrolüne gerek kalmadı
-                            if (devamEdenIzinTalebiVarMi)//if (cakismaVarMi)
-                            {
-                                //MessageHelper.PublishMessage("Bu tarihle çakışan bir izin talebiniz zaten var."+System.Environment.NewLine+
-                                //    "Kişisel sayfanızdan İzin taleplerinizi görebilirsiniz.", ProjeConstants.MESAJ_HATA,15000);
-                                MessageHelper.PublishMessage("İşlemi devam eden bir izin talebiniz zaten var." + System.Environment.NewLine +
-                                   "Yeni bir izin talep etmeden önce var olan izin talebinizin sonuçlanması gerekmektedir.", ProjeConstants.MESAJ_HATA, 15000);
-                            }
-                            else
-                            {
-                                //Talebi kaydet
-                                //İzinTalepTablosunu Doldur
-                                int izinTalepId = YeniTalebiKaydet(ProjeConstants.PER_IZINTALEBI_ISLEMBEKLIYOR);
-                                if (izinTalepId > 0)
-                                {
-                                    if (EPostaGonderChk.Checked)
-                                    {
-                                        IKYSOrtak.IzinTalepOlusturmaEPostasiGonder(personel, izinTalepId);
-                                    }
-                                    TabloyuDoldur();
-                                    SaveBtn.Visible = false;
-                                    MessageHelper.PublishMessage("İzin Talebi Kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
-                                }
-                            }
-
+                            //MessageHelper.PublishMessage("Bu tarihle çakışan bir izin talebiniz zaten var."+System.Environment.NewLine+
+                            //    "Kişisel sayfanızdan İzin taleplerinizi görebilirsiniz.", ProjeConstants.MESAJ_HATA,15000);
+                            MessageHelper.PublishMessage("İşlemi devam eden bir izin talebiniz zaten var." + System.Environment.NewLine +
+                               "Yeni bir izin talep etmeden önce var olan izin talebinizin sonuçlanması gerekmektedir.", ProjeConstants.MESAJ_HATA, 15000);
                         }
                         else
                         {
-                            MessageHelper.PublishMessage("Lütfen Kalan İzin sürenizi Kontrol Ediniz.", ProjeConstants.MESAJ_HATA);
+                            //Talebi kaydet
+                            //İzinTalepTablosunu Doldur
+                            int izinTalepId = YeniTalebiKaydet(ProjeConstants.PER_IZINTALEBI_ISLEMBEKLIYOR);
+                            if (izinTalepId > 0)
+                            {
+                                if (EPostaGonderChk.Checked)
+                                {
+                                    IKYSOrtak.IzinTalepOlusturmaEPostasiGonder(personel, izinTalepId);
+                                }
+                                TabloyuDoldur();
+                                SaveBtn.Visible = false;
+                                MessageHelper.PublishMessage("İzin Talebi Kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
+                            }
                         }
+
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Personel Bulunamadı!", ProjeConstants.MESAJ_HATA);
-                    } 
+                        MessageHelper.PublishMessage("Lütfen Kalan İzin sürenizi Kontrol Ediniz.", ProjeConstants.MESAJ_HATA);
+                    }
+                }
+                else
+                {
+                    MessageHelper.PublishMessage("Personel Bulunamadı!", ProjeConstants.MESAJ_HATA);
                 }
 
             }

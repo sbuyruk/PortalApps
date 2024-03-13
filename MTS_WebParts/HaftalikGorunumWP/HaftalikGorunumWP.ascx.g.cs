@@ -1111,11 +1111,11 @@ namespace MTS_WebParts.HaftalikGorunumWP {
             @__w.Write("\').value = toplantiId;\r\n        document.getElementById(\'");
                          @__w.Write( ToplantiDetaylariBtn.ClientID);
 
-            @__w.Write("\').click();\r\n    }\r\n    function FaaliyetKaydet(randevuId, basTar, endTar, newVie" +
+            @__w.Write("\').click();\r\n    }\r\n    function FaaliyetKaydet(faaliyetId, basTar, endTar, newVie" +
                     "w) {\r\n        document.getElementById(\'");
                          @__w.Write( paramFaaliyetId.ClientID);
 
-            @__w.Write("\').value = randevuId;\r\n        document.getElementById(\'");
+            @__w.Write("\').value = faaliyetId;\r\n        document.getElementById(\'");
                          @__w.Write( paramBasTar.ClientID);
 
             @__w.Write("\').value = basTar;\r\n        document.getElementById(\'");

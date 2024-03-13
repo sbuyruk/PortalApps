@@ -128,7 +128,7 @@
                     <asp:LinkButton ID="KaydetBtn" CssClass="btn btn-outline-success" runat="server" Text="Kaydet" OnClick="KaydetBtn_Click" />
                     <asp:LinkButton ID="GuncelleBtn" CssClass="btn btn-outline-primary" runat="server" Text="Güncelle" OnClick="GuncelleBtn_Click" />
                     <asp:LinkButton ID="SilBtn" CssClass="btn btn-outline-danger" runat="server" Text="Sil" OnClick="SilBtn_Click" />
-                    <asp:LinkButton ID="RandevuBtn" CssClass="btn btn-outline-secondary" runat="server" CausesValidation="false" Text="Randevu" OnClick="RandevuBtn_Click" Visible="False" />
+                    <asp:LinkButton ID="FaaliyetBtn" CssClass="btn btn-outline-secondary" runat="server" CausesValidation="false" Text="Faaliyet" OnClick="FaaliyetBtn_Click" Visible="False" />
                     <asp:LinkButton ID="YeniKisiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Yeni Kişi Girişi" OnClick="YeniKisiBtn_Click"></asp:LinkButton>
                     <asp:LinkButton ID="FaaliyetTakvimiBtn" CssClass="btn btn-outline-info float-right" runat="server" CausesValidation="false" Text="Faaliyet Takvimi" OnClick="FaaliyetTakvimiBtn_Click"></asp:LinkButton>
                     <asp:LinkButton ID="FaaliyetListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" CausesValidation="false" Text="Faaliyet Listesi" OnClick="FaaliyetListesiBtn_Click"></asp:LinkButton>
@@ -210,7 +210,7 @@
                     </ContentTemplate>
                     <Triggers>
                         <asp:AsyncPostBackTrigger ControlID="GuncelleBtn" EventName="click" />
-                        <asp:AsyncPostBackTrigger ControlID="RandevuBtn" EventName="click" />
+                        <asp:AsyncPostBackTrigger ControlID="FaaliyetBtn" EventName="click" />
                         <asp:AsyncPostBackTrigger ControlID="SilBtn" EventName="click" />
                     </Triggers>
                 </asp:UpdatePanel>

@@ -379,15 +379,15 @@ headerToolbar: {
         Random random = new Random();
         protected void FaaliyetKaydetNowBtn_Click(object sender, EventArgs e)
         {
-            int randevuId = paramFaaliyetId.Value.ConvertToInt();
+            int faaliyetId = paramFaaliyetId.Value.ConvertToInt();
             DateTime basTar = paramBasTar.Value.ConvertToDatetime();
             DateTime bitTar = paramBitTar.Value.ConvertToDatetime();
             CalendarViewQS = paramView.Value;
             InitialDateQS = basTar.ToString("yyyy-MM-dd");
-            if (randevuId > 0)
+            if (faaliyetId > 0)
             {
                 Faaliyet randevu = new Faaliyet();
-                randevu = randevu.Select(randevuId);
+                randevu = randevu.Select(faaliyetId);
                 if (randevu != null)
                 {
                     randevu.BaslangicTarihi = basTar;

@@ -76,6 +76,30 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                 ViewState["SigortaId"] = value;
             }
         }
+        private string AdresKoduQS
+        {
+            get
+            {
+
+                if (ViewState["AdresKodu"] == null)
+                {
+                    if (Page.Request.QueryString["AdresKodu"] != null)
+                    {
+                        ViewState["AdresKodu"] = Page.Request.QueryString["AdresKodu"];
+                    }
+                    else
+                    {
+                        ViewState["AdresKodu"] = string.Empty;
+                    }
+                }
+                return ViewState["AdresKodu"].ToString();
+            }
+
+            set
+            {
+                ViewState["AdresKodu"] = value;
+            }
+        }
         private string TasinmazIdQS
         {
             get
@@ -256,6 +280,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                 BagimsizBolumDDLDoldur(sigorta);
 
                 AdresKoduTxt.Text = sigorta.AdresKodu.ToString();
+                AdresKoduQS = AdresKoduTxt.Text;
                 BrutYuzolcumuTxt.Text = sigorta.BrutYuzolcumu;
                 BulunduguKatTxt.Text = sigorta.BulunduguKat;
                 MetrekareTxt.Text = sigorta.Metrekare;
@@ -365,6 +390,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             if (sigorta != null)
             {
                 sigorta.AdresKodu = AdresKoduTxt.Text;
+                AdresKoduQS = AdresKoduTxt.Text;
                 sigorta.BrutYuzolcumu = BrutYuzolcumuTxt.Text;
                 sigorta.BulunduguKat = BulunduguKatTxt.Text;
                 sigorta.Metrekare = MetrekareTxt.Text;
@@ -404,6 +430,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
         {
             Sigorta sigorta = new Sigorta();
             sigorta.AdresKodu = AdresKoduTxt.Text;
+            AdresKoduQS = AdresKoduTxt.Text;
             sigorta.BrutYuzolcumu = BrutYuzolcumuTxt.Text;
             sigorta.BulunduguKat = BulunduguKatTxt.Text;
             sigorta.Metrekare = MetrekareTxt.Text;
@@ -626,6 +653,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
         {
             RedirectToPage(ProjeConstants.PAGE_TASINMAZSIGORTA_LIST);
         }
+
         protected void NextBtn_Click(object sender, EventArgs e)
         {
             Sigorta sigorta = new Sigorta();
@@ -672,7 +700,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
         {
             try
             {
-                string dosyaAdi = ProjeConstants.DOSYA_SIGORTAPOLICESI_DASK + SigortaIdQS + ".pdf";
+                string dosyaAdi = ProjeConstants.DOSYA_SIGORTAPOLICESI_DASK + AdresKoduQS + ".pdf";
                 if (UtilityHelper.DeleteFileFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi))
                 {
                     MessageHelper.PublishMessage(dosyaAdi + " Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
@@ -701,7 +729,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             {
                 if (BelgeYukleFU.HasFile)
                 {
-                    string hedefDosyaAdi = ProjeConstants.DOSYA_SIGORTAPOLICESI_DASK + sigorta.Id + ".pdf";
+                    string hedefDosyaAdi = ProjeConstants.DOSYA_SIGORTAPOLICESI_DASK + AdresKoduQS + ".pdf";
                     bool isOk = UtilityHelper.UploadFileToSharePoint(BelgeYukleFU, ProjeConstants.TBYSBELGELERI_LIB, hedefDosyaAdi);
                     if (isOk)
                     {

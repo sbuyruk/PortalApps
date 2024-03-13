@@ -76,7 +76,7 @@
         myjsons = myset;
     }
     var myjsons = [{
-        "AramaGorusmeId": "", "AdiSoyadi": "", "Tarih": "", "Konu": "", "Kurumu": "", "Randevu": "", "Duzenle": ""
+        "AramaGorusmeId": "", "AdiSoyadi": "", "Tarih": "", "Konu": "", "Kurumu": "", "Faaliyet": "", "Duzenle": ""
     }];
 
     jQuery(document).ready(function () {
@@ -100,7 +100,7 @@
                 { data: "Tarih" },
                 { data: "Konu" },
                 { data: "Kurumu" },
-                { data: "Randevu" },
+                { data: "Faaliyet" },
                 { data: "Duzenle" },
             ],
             'order': [[2, 'desc']],//AdiSoyadi Sıralı
@@ -205,7 +205,7 @@
                                 <th>Tarih</th>
                                 <th>Konu</th>
                                 <th>Kurumu</th>
-                                <th>Randevu</th>
+                                <th>Faaliyet</th>
                                 <th>Düzenle</th>
                             </tr>
                         </thead>

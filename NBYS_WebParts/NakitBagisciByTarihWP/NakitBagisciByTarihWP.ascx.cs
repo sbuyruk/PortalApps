@@ -258,8 +258,8 @@ namespace NBYS_WebParts.NakitBagisciByTarihWP
                 TableCell toplamAdetToplamCell = new TableCell();
 
                 labelToplamCell.Text = "Toplam";
-                eskiAdetToplamCell.Text = yeniAdetToplam1.ToString();
-                yeniAdetToplamCell.Text = eskiAdetToplam1.ToString();
+                eskiAdetToplamCell.Text = eskiAdetToplam1.ToString();
+                yeniAdetToplamCell.Text = yeniAdetToplam1.ToString();
                 toplamAdetToplamCell.Text = toplamAdetToplam.ToString();
 
                 toplamTableRow.Controls.Add(labelToplamCell);
@@ -271,8 +271,8 @@ namespace NBYS_WebParts.NakitBagisciByTarihWP
                 TableCell yeniTutarToplamCell = new TableCell();
                 TableCell toplamTutarToplamCell = new TableCell();
 
-                eskiTutarToplamCell.Text = yeniTutarToplam1.ToString("N", culturInfo);
-                yeniTutarToplamCell.Text = eskiTutarToplam1.ToString("N", culturInfo);
+                eskiTutarToplamCell.Text = eskiTutarToplam1.ToString("N", culturInfo);
+                yeniTutarToplamCell.Text = yeniTutarToplam1.ToString("N", culturInfo);
                 toplamTutarToplamCell.Text = toplamTutarToplam.ToString("N", culturInfo);
                 eskiTutarToplamCell.CssClass = "text-right";
                 yeniTutarToplamCell.CssClass = "text-right";

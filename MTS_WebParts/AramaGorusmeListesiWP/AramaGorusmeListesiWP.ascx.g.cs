@@ -732,39 +732,39 @@ namespace MTS_WebParts.AramaGorusmeListesiWP {
                     "\n    //            $(\'[id$=BitisTarihiTxt]\').datepicker(\"option\", \"maxDate\", rMa" +
                     "x);\r\n    //        }\r\n\r\n    //    });\r\n\r\n    //}\r\n    function setDataSet(myset)" +
                     " {\r\n        myjsons = myset;\r\n    }\r\n    var myjsons = [{\r\n        \"AramaGorusme" +
-                    "Id\": \"\", \"AdiSoyadi\": \"\", \"Tarih\": \"\", \"Konu\": \"\", \"Kurumu\": \"\", \"Randevu\": \"\", " +
-                    "\"Duzenle\": \"\"\r\n    }];\r\n\r\n    jQuery(document).ready(function () {\r\n        jQue" +
-                    "ry.fn.dataTable.moment(\'DD.MM.YYYY HH:mm\');//sort date\r\n        jQuery(\'#CustomD" +
-                    "ataTable\').DataTable({\r\n            \'initComplete\': function (settings, json) {/" +
-                    "/tablo yüklendiğinde\r\n                var api = this.api();\r\n                var" +
-                    " row = api.row(function (idx, data, node) { //secilen Id\'ye gider\r\n             " +
-                    "       return data[\'Secildi\'] == true;\r\n                });\r\n                if " +
-                    "(row.length > 0) {\r\n                    row.select()\r\n                        .s" +
-                    "how()\r\n                        .draw(false);\r\n                }\r\n            },\r" +
-                    "\n            data: myjsons,\r\n            columns: [\r\n                { data: \"Ar" +
-                    "amaId\" },\r\n                { data: \"AdiSoyadi\" },\r\n                { data: \"Tari" +
-                    "h\" },\r\n                { data: \"Konu\" },\r\n                { data: \"Kurumu\" },\r\n " +
-                    "               { data: \"Randevu\" },\r\n                { data: \"Duzenle\" },\r\n     " +
-                    "       ],\r\n            \'order\': [[2, \'desc\']],//AdiSoyadi Sıralı\r\n            \"l" +
-                    "anguage\": {\r\n                \"url\": \"http://tskgv-portal/OrtakBelgeler/Turkish.t" +
-                    "xt\",\r\n                \"decimal\": \",\",\r\n                \"thousands\": \".\"\r\n       " +
-                    "     },\r\n            responsive: true,\r\n            dom: \'Bfrtip\',\r\n            " +
-                    "buttons: [\r\n                {\r\n                    extend: \'print\',\r\n           " +
-                    "         exportOptions: {\r\n                        columns: \':visible\'\r\n        " +
-                    "            }\r\n                },\r\n                {\r\n                    extend" +
-                    ": \'excel\',\r\n                    exportOptions: {\r\n                        column" +
-                    "s: \':visible\'\r\n                    }\r\n                },\r\n                {\r\n   " +
-                    "                 extend: \'pdf\',\r\n                    exportOptions: {\r\n         " +
-                    "               columns: \':visible\'\r\n                    }\r\n                },\r\n " +
-                    "               {\r\n                    extend: \'copy\',\r\n                    expor" +
-                    "tOptions: {\r\n                        columns: \':visible\'\r\n                    }\r" +
-                    "\n                },\r\n                , \'pageLength\', \"colvis\"\r\n            ],\r\n " +
-                    "           \"createdRow\": function (row, data, dataIndex) {\r\n                if (" +
-                    "!data.GorusmeSaglandi) {\r\n                    if (data[\'Secildi\'] == false)\r\n   " +
-                    "                     $(row).addClass(\'gorusmeSaglanamadi\');\r\n\r\n                }" +
-                    "\r\n            },//set row color \r\n        });\r\n    });\r\n</script>\r\n<div class=\"c" +
-                    "ontainer\">\r\n    <div class=\"card shadow\">\r\n        <div class=\"card-header\">\r\n  " +
-                    "          ");
+                    "Id\": \"\", \"AdiSoyadi\": \"\", \"Tarih\": \"\", \"Konu\": \"\", \"Kurumu\": \"\", \"Faaliyet\": \"\"," +
+                    " \"Duzenle\": \"\"\r\n    }];\r\n\r\n    jQuery(document).ready(function () {\r\n        jQu" +
+                    "ery.fn.dataTable.moment(\'DD.MM.YYYY HH:mm\');//sort date\r\n        jQuery(\'#Custom" +
+                    "DataTable\').DataTable({\r\n            \'initComplete\': function (settings, json) {" +
+                    "//tablo yüklendiğinde\r\n                var api = this.api();\r\n                va" +
+                    "r row = api.row(function (idx, data, node) { //secilen Id\'ye gider\r\n            " +
+                    "        return data[\'Secildi\'] == true;\r\n                });\r\n                if" +
+                    " (row.length > 0) {\r\n                    row.select()\r\n                        ." +
+                    "show()\r\n                        .draw(false);\r\n                }\r\n            }," +
+                    "\r\n            data: myjsons,\r\n            columns: [\r\n                { data: \"A" +
+                    "ramaId\" },\r\n                { data: \"AdiSoyadi\" },\r\n                { data: \"Tar" +
+                    "ih\" },\r\n                { data: \"Konu\" },\r\n                { data: \"Kurumu\" },\r\n" +
+                    "                { data: \"Faaliyet\" },\r\n                { data: \"Duzenle\" },\r\n   " +
+                    "         ],\r\n            \'order\': [[2, \'desc\']],//AdiSoyadi Sıralı\r\n            " +
+                    "\"language\": {\r\n                \"url\": \"http://tskgv-portal/OrtakBelgeler/Turkish" +
+                    ".txt\",\r\n                \"decimal\": \",\",\r\n                \"thousands\": \".\"\r\n     " +
+                    "       },\r\n            responsive: true,\r\n            dom: \'Bfrtip\',\r\n          " +
+                    "  buttons: [\r\n                {\r\n                    extend: \'print\',\r\n         " +
+                    "           exportOptions: {\r\n                        columns: \':visible\'\r\n      " +
+                    "              }\r\n                },\r\n                {\r\n                    exte" +
+                    "nd: \'excel\',\r\n                    exportOptions: {\r\n                        colu" +
+                    "mns: \':visible\'\r\n                    }\r\n                },\r\n                {\r\n " +
+                    "                   extend: \'pdf\',\r\n                    exportOptions: {\r\n       " +
+                    "                 columns: \':visible\'\r\n                    }\r\n                },\r" +
+                    "\n                {\r\n                    extend: \'copy\',\r\n                    exp" +
+                    "ortOptions: {\r\n                        columns: \':visible\'\r\n                    " +
+                    "}\r\n                },\r\n                , \'pageLength\', \"colvis\"\r\n            ],\r" +
+                    "\n            \"createdRow\": function (row, data, dataIndex) {\r\n                if" +
+                    " (!data.GorusmeSaglandi) {\r\n                    if (data[\'Secildi\'] == false)\r\n " +
+                    "                       $(row).addClass(\'gorusmeSaglanamadi\');\r\n\r\n               " +
+                    " }\r\n            },//set row color \r\n        });\r\n    });\r\n</script>\r\n<div class=" +
+                    "\"container\">\r\n    <div class=\"card shadow\">\r\n        <div class=\"card-header\">\r\n" +
+                    "            ");
             parameterContainer.Controls[0].RenderControl(@__w);
             @__w.Write("\r\n            <h3 class=\"mb-2\">\r\n                ");
             parameterContainer.Controls[1].RenderControl(@__w);
@@ -821,7 +821,7 @@ namespace MTS_WebParts.AramaGorusmeListesiWP {
                                 <th>Tarih</th>
                                 <th>Konu</th>
                                 <th>Kurumu</th>
-                                <th>Randevu</th>
+                                <th>Faaliyet</th>
                                 <th>Düzenle</th>
                             </tr>
                         </thead>

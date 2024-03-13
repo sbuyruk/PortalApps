@@ -228,7 +228,7 @@ namespace NBYS_WebParts.BeratBelgesiYazisiWP
 
             ImzalayanTxt.Text = @"Bilal TOPÇU";
             ImzalayanUnvanTxt.Text = string.Empty;// @"(E)Tümgeneral";
-            ImzalayanMakamTxt.Text = @"TSKGV Genel Müdürü";
+            ImzalayanMakamTxt.Text = @"Genel Müdür";
             EvrakTarihiTxt.Text = bugun.ToString("dd") + " " + bugun.ToString("MMMM") + " " + bugun.Year;
         }
         private void FillDropDownList()
@@ -849,7 +849,14 @@ namespace NBYS_WebParts.BeratBelgesiYazisiWP
                     //values represent values in document in place of keys.
                     Dictionary<string, string> keyValues = new Dictionary<string, string>();
                     keyValues.Add("AdSoyad" + index + "Var", nakitBagisciAdi + " -" + armaganId);
-                    keyValues.Add("Adres" + index + "Var", adres.Substring(0, adres.Length > 100 ? 100 : adres.Length - 1) + (string.IsNullOrEmpty(telefon) ? "" : " (" + telefon + ")"));
+                    if (string.IsNullOrEmpty(adres))
+                    {
+                        keyValues.Add("Adres" + index + "Var", string.Empty + (string.IsNullOrEmpty(telefon) ? "" : " (" + telefon + ")"));
+                    }
+                    else
+                    {
+                        keyValues.Add("Adres" + index + "Var", adres.Substring(0, adres.Length > 100 ? 100 : adres.Length - 1) + (string.IsNullOrEmpty(telefon) ? "" : " (" + telefon + ")"));
+                    }
                     keyValues.Add("SemtIlceIl" + index + "Var", semtIlceIl);
                     if (adres.Trim().Length > 100)
                     {

@@ -80,8 +80,8 @@
         document.getElementById('<%= paramToplantiIdLbl.ClientID%>').value = toplantiId;
         document.getElementById('<%= ToplantiDetaylariBtn.ClientID%>').click();
     }
-    function FaaliyetKaydet(randevuId, basTar, endTar, newView) {
-        document.getElementById('<%= paramFaaliyetId.ClientID%>').value = randevuId;
+    function FaaliyetKaydet(faaliyetId, basTar, endTar, newView) {
+        document.getElementById('<%= paramFaaliyetId.ClientID%>').value = faaliyetId;
         document.getElementById('<%= paramBasTar.ClientID%>').value = basTar;
         document.getElementById('<%= paramBitTar.ClientID%>').value = endTar;
         document.getElementById('<%= paramView.ClientID%>').value = newView;
