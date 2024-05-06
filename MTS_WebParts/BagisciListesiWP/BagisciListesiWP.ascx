@@ -23,20 +23,17 @@
         myjsons = myset;
     }
     var myjsons = [{
-        "AdiSoyadi": "", "KatilimciTipiStr": "", "Telefon": "", "Adres": "", "Il": "", "Ilce": "", "KisiKarti": "", "BagisciKarti": ""}];
+        "AdiSoyadi": "", "Telefon": "", "Adres": "", "Il": "", "Ilce": ""}];
     jQuery(document).ready(function () {
 
         jQuery('#CustomDataTable').DataTable({
             data: myjsons,
             columns: [
                 { data: "AdiSoyadi" },
-                { data: "KatilimciTipiStr" },
                 { data: "Telefon", "width": "14%" },
                 { data: "Adres" },
                 { data: "Il" },
                 { data: "Ilce" },
-                { data: "BagisciKarti" },
-                { data: "KisiKarti" },
             ],
             "order": [[1, 'desc'],[0, 'asc']],
             "language": {
@@ -46,10 +43,6 @@
             },
             responsive: true,
             dom: 'Bfrtip',
-            //colon resizable
-            //initComplete: function (settings) {
-            //    $('#CustomDataTable').colResizable({ liveDrag: true });
-            //},
             buttons: [
                 {
                     extend: 'print',
@@ -96,13 +89,10 @@
                     <thead>
                         <tr>
                             <th>Adı Soyadı</th>
-                            <th>Bağışçı</th>
                             <th>Telefon</th>
                             <th>Adres</th>
                             <th>İl</th>
                             <th>İlçe</th>
-                            <th>Bağışçı Kartı</th>
-                            <th>Kişi Kartı</th>
                         </tr>
                     </thead>
                 </table>

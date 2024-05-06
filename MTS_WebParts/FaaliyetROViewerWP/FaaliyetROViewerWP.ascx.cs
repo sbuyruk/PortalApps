@@ -570,7 +570,6 @@ namespace MTS_WebParts.FaaliyetROViewerWP
                 {
                     string katilimId = row["KatilimId"].ToString();
                     string katilimciId = row["KatilimciId"].ToString();
-                    int katilimciTipi = row["KatilimciTipi"].ConvertToInt();
                     string adi = row["Adi"].ToString();
                     string soyadi = row["Soyadi"].ToString();
                     string kurumu = row["Kurumu"].ToString();

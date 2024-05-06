@@ -381,8 +381,8 @@ namespace IKYS_WebParts.PersonelGirisiWP
             SGKBasTarTxt.Disabled = personel.Asker_sivil == ProjeConstants.PER_ASKER_INT;
             EmeklilikTarTxt.Value = personel.Asker_sivil == ProjeConstants.PER_ASKER_INT ? "" : isb.EmeklilikTarihi.ConvertToDatetimeEmptyIfNull();
             EmeklilikTarTxt.Disabled = personel.Asker_sivil == ProjeConstants.PER_ASKER_INT;
-            VakifOncesiPrimGunSayisiTxt.Text = personel.Asker_sivil == ProjeConstants.PER_ASKER_INT ? "" : isb.VakifOncesiPrimGunSayisi.ReturnEmptyIfNull().ToString();
-            VakifOncesiPrimGunSayisiTxt.Enabled = !(personel.Asker_sivil == ProjeConstants.PER_ASKER_INT);
+            VakifOncesiPrimGunSayisiTxt.Text = isb.VakifOncesiPrimGunSayisi.ReturnEmptyIfNull().ToString();
+            //VakifOncesiPrimGunSayisiTxt.Enabled = !(personel.Asker_sivil == ProjeConstants.PER_ASKER_INT);
         }
         private void FillBirimTxt()
         {

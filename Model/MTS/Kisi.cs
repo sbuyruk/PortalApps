@@ -204,13 +204,15 @@ namespace Model.MTS
         public DataTable SelectSecilmemisDisKatilimcilarByFaaliyetIdReturnDT(int faaliyetId)
         {
             string faaliyetIdStr = faaliyetId > 0 ?
-                string.Format(" WHERE A.Id NOT IN (select KatilimciId FROM FaaliyetKatilim_Table WHERE KatilimciTipi={0} AND FaaliyetId={1})", ProjeConstants.FAALIYET_KATILIMCI_DIS_INT, faaliyetId) :
+                string.Format(" WHERE A.Id NOT IN (select KatilimciId FROM FaaliyetKatilim_Table WHERE FaaliyetId={0})", faaliyetId) :
                 string.Empty;
             string sqlString = string.Format(@"
-                SELECT A.Id KatilimciId, A.Adi, A.Soyadi, {0} KatilimciTipi, RandevuKisiti
+                SELECT A.Id KatilimciId, A.Adi, A.Soyadi, A.KatilimciTipi, RandevuKisiti,C.Adi Kurumu
                 FROM Kisi_Table A
+                    LEFT JOIN MTSKurumGorev_Table B ON B.KisiId = A.Id AND B.Durum={0}
+					LEFT JOIN MTSKurumTanim_Table C ON C.Id = B.MTSKurumTanimId
 	               {1}
-                ORDER BY A.Adi", ProjeConstants.FAALIYET_KATILIMCI_DIS_INT, faaliyetIdStr);
+                ORDER BY A.Adi", ProjeConstants.MTSGOREVDURUMU_GOREVDE.ReturnQuotedValue(), faaliyetIdStr);
             DataTable dataTable;
             try
             {

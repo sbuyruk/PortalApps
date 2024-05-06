@@ -11,7 +11,6 @@ namespace Model.MTS
     public class AramaGorusme : ParentClass
     {
         public int ArayanId { get; set; }
-        public int KatilimciTipi { get; set; }
         public int FaaliyetId { get; set; }
         public DateTime Tarih { get; set; }
         public string GorusmeSekli { get; set; }
@@ -149,28 +148,28 @@ namespace Model.MTS
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
         }
-        public List<AramaGorusme> SelectAllByArayanIdReturnList(int arayanId, int katilimciTipi)
+        public List<AramaGorusme> SelectAllByArayanIdReturnList(int arayanId)
         {
             string sqlString = string.Format(@"
                 SELECT *
                 FROM AramaGorusme_Table
-                WHERE ArayanId={0} AND
-                      KatilimciTipi={1}
-            ", arayanId, katilimciTipi);
+                WHERE ArayanId={0}
+                      
+            ", arayanId);
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<AramaGorusme> list = ToList<AramaGorusme>(dataTable);
 
             return list;
         }
-        public DataTable SelectAllReturnDT(int arayanId, int katilimciTipi, string gorusmeSekli, DateTime basTar, DateTime bitTar)
+        public DataTable SelectAllReturnDT(int arayanId, string gorusmeSekli, DateTime basTar, DateTime bitTar)
         {
             if (bitTar < ProjeConstants.REFERANS_TARIHI)
             {
                 bitTar = DateTime.Today;
             }
             gorusmeSekli = string.IsNullOrEmpty(gorusmeSekli) || gorusmeSekli.Equals(ProjeConstants.HEPSI) ? "" : gorusmeSekli;
-            string arayanIdstr = string.Format(arayanId > 0 ? " WHERE ArayanId={0} AND KatilimciTipi= {1}" : "", arayanId, katilimciTipi);
+            string arayanIdstr = string.Format(arayanId > 0 ? " WHERE ArayanId={0} " : "", arayanId);
             string gorusmeSekliStr = string.IsNullOrEmpty(gorusmeSekli) ? "" :
                 (string.Format(string.IsNullOrEmpty(arayanIdstr) ? " WHERE GorusmeSekli={0}" : " AND GorusmeSekli={0} ", gorusmeSekli.ReturnQuotedValue()));
             string basTarStr = basTar < ProjeConstants.REFERANS_TARIHI ? "" :
@@ -178,46 +177,20 @@ namespace Model.MTS
                 " WHERE Tarih BETWEEN {0} AND {1} " : " AND Tarih BETWEEN {0} AND {1}  ", basTar.ReturnTRDateFormat(), bitTar.ReturnTRDateFormat()));
             string sqlString = string.Format(@"
                 SELECT A.Id AramaId, C.Id ArayanId, A.GorusmeSekli, A.Tarih, A.Konu, A.GorusmeSaglandi, A.RandevuIstendi, A.FaaliyetId,
-                    CASE
-	                    WHEN A.KatilimciTipi=1 THEN D.Adi
-                        WHEN A.KatilimciTipi=2 THEN C.Adi
-	                    WHEN A.KatilimciTipi=3 THEN E.Adi
-                        WHEN A.KatilimciTipi=4 THEN F.Adi
-                    ELSE C.Adi
-                    END AS Adi,
-                    CASE
-	                    WHEN A.KatilimciTipi=1 THEN D.Soyadi
-                        WHEN A.KatilimciTipi=2 THEN C.Soyadi
-	                    WHEN A.KatilimciTipi=3 THEN E.Soyadi
-                        WHEN A.KatilimciTipi=4 THEN F.Soyadi
-                    ELSE C.Soyadi
-                    END AS Soyadi,
-	                CASE
-		                WHEN A.KatilimciTipi=1 THEN 'TSKGV'
-                        WHEN A.KatilimciTipi=2 THEN H.Adi
-		                WHEN A.KatilimciTipi=3 THEN 'Nakit Bağışçı'
-		                WHEN A.KatilimciTipi=4 THEN 'Taşınmaz Bağışçı'
-                    ELSE C.Kurumu
-	                END AS Kurumu,
-                    CASE
-		                WHEN A.KatilimciTipi=1 THEN '0' 
-                        WHEN A.KatilimciTipi=2 THEN C.RandevuKisiti
-		                WHEN A.KatilimciTipi=3 THEN '0' 
-		                WHEN A.KatilimciTipi=4 THEN '0' 
-                    ELSE C.RandevuKisiti
-	                END AS RandevuKisiti
+                    C.Adi,
+                    C.Soyadi,
+	                H.Adi Kurumu,
+                    C.RandevuKisiti
+	               
                 FROM AramaGorusme_Table A
                     LEFT JOIN Kisi_Table C ON C.Id = A.ArayanId
-	                LEFT JOIN Personel_Table D ON D.Id = A.ArayanId
-                    LEFT JOIN NakitBagisci_Table E ON E.Id = A.ArayanId
-                    LEFT JOIN TasinmazBagisci_Table F ON F.Id = A.ArayanId
 					LEFT JOIN MTSKurumGorev_Table G ON G.KisiId = C.Id AND G.Durum={3}
 					LEFT JOIN MTSKurumTanim_Table H ON H.Id = G.MTSKurumTanimId
                 {0}
                 {1}
                 {2}
                 ORDER BY Tarih DESC
-                ", arayanIdstr, gorusmeSekliStr, basTarStr,ProjeConstants.MTSGOREVDURUMU_GOREVDE.ReturnQuotedValue());
+                ", arayanIdstr, gorusmeSekliStr, basTarStr, ProjeConstants.MTSGOREVDURUMU_GOREVDE.ReturnQuotedValue());
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
 

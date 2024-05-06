@@ -29,49 +29,18 @@
         background-color: wheat !important;
     }
 </style>
-<%-- Katılımcı/itribat personeli ekleme / çıkartma --%>
+<%-- Katılımcı/itribat  ekleme / çıkartma --%>
 <script type="text/javascript">
     function KatilimciSecimiModal() {
         $("#KatilimciSecimiModal").modal({ backdrop: false });
     }
-    function KatilimciSecildiBtnClick(katilimciId, katilimciTipi) {
+    function KatilimciSecildiBtnClick(katilimciId) {
         document.getElementById('<%= paramFaaliyetKatilimciIdLbl.ClientID%>').value = katilimciId;
-        document.getElementById('<%= paramFaaliyetKatilimciTipiLbl.ClientID%>').value = katilimciTipi;
         document.getElementById('<%= SecilenKatilimciyiGetirBtn.ClientID%>').click();
     }
 </script>
 <script type="text/javascript">
-    //On Page Load.
-    //$(function () {
-    //    SetDatePicker();
-    //});
-    ////ikinci tarih için
-    //function SetDatePicker() {
 
-    //    $("[id$=BaslangicTarihiTxt],[id$=BitisTarihiTxt]").datepicker({
-    //        dateFormat: "dd.mm.yy",
-    //        firstDay: 1,
-    //        monthNames: ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"],
-    //        monthNamesShort: ["Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara"],
-    //        dayNames: ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"],
-    //        dayNamesMin: ["Pz", "Pt", "Sl", "Çr", "Pr", "Cu", "Ct"],
-    //        showAnim: "fold",
-    //        changeMonth: true,
-    //        changeYear: true,
-
-    //    }).on("change", function () {
-    //        if (this.id == 'BaslangicTarihiTxt') {
-    //            var dateMin = $('[id$=BaslangicTarihiTxt]').datepicker("getDate");
-    //            var rMin = new Date(dateMin.getFullYear(), dateMin.getMonth(), dateMin.getDate());
-    //            var rMax = new Date(dateMin.getFullYear(), dateMin.getMonth(), dateMin.getDate() + 90);
-
-    //            $('[id$=BitisTarihiTxt]').datepicker("option", "minDate", rMin);
-    //            $('[id$=BitisTarihiTxt]').datepicker("option", "maxDate", rMax);
-    //        }
-
-    //    });
-
-    //}
     function setDataSet(myset) {
         myjsons = myset;
     }
@@ -215,7 +184,6 @@
         </div>
         <div id="KatilimciHiddenDiv" style="display: none">
             <input id="paramFaaliyetKatilimciIdLbl" runat="server" type="text" />
-            <input id="paramFaaliyetKatilimciTipiLbl" runat="server" type="text" />
             <asp:LinkButton ID="SecilenKatilimciyiGetirBtn" runat="server" CausesValidation="false" Text="Faaliyetya Ekle" OnClientClick="{return true;};" OnClick="SecilenKatilimciyiGetirBtn_Click" />
         </div>
         <div class="card-footer">

@@ -121,7 +121,6 @@ namespace MTS_WebParts.MtsOlayListesiWP
             int katilimciTipi = 0;
             Faaliyet faaliyet = null;
             string katilimci = string.Empty;
-            string katilimciTipiStr =string.Empty;
             string aniObjesiStr=string.Empty;
             string getirilenAniObjesiStr = string.Empty;
             foreach (string item in words)
@@ -148,161 +147,50 @@ namespace MTS_WebParts.MtsOlayListesiWP
             }
             if (katilimciId > 0)
             {
-                switch (katilimciTipi)
+
+                Kisi kisi = new Kisi();
+                kisi = kisi.Select<Kisi>(katilimciId);
+                if (kisi != null)
                 {
-                    case ProjeConstants.FAALIYET_KATILIMCI_TASINMAZBAGISCI_INT:
+                    katilimci = kisi.Adi + " " + kisi.Soyadi;
+
+                    //Burada verilen ani objeleri alınıyor
+                    AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
+                    DataTable dataTable = aniObjesiDagitim.SelectReturnDT(faaliyetId, kisi.Id);
+                    if (dataTable != null)
+                    {
+                        string objeStr = string.Empty;
+                        foreach (DataRow row in dataTable.Rows)
                         {
-                            TasinmazBagisci tasinmazBagisci = new TasinmazBagisci();
-                            tasinmazBagisci = tasinmazBagisci.Select<TasinmazBagisci>(katilimciId);
-                            if (tasinmazBagisci != null)
+                            int adet = row["Adet"].ReturnZeroIfNull().ConvertToInt();
+                            if (adet > 0)
                             {
-                                katilimci = tasinmazBagisci.Adi + " " + tasinmazBagisci.Soyadi;
-                                katilimciTipiStr = ProjeConstants.FAALIYET_KATILIMCI_TASINMAZBAGISCI;
-                                //Burada verilen ani objeleri alınıyor
-                                AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
-                                DataTable dataTable = aniObjesiDagitim.SelectReturnDT(faaliyetId, tasinmazBagisci.Id, ProjeConstants.FAALIYET_KATILIMCI_TASINMAZBAGISCI_INT);
-                                if (dataTable != null)
-                                {
-                                    string objeStr = string.Empty;
-                                    foreach (DataRow row in dataTable.Rows)
-                                    {
-                                        int adet = row["Adet"].ReturnZeroIfNull().ConvertToInt();
-                                        if (adet > 0)
-                                        {
-                                            string deger = row["Adi"].ToString();
-                                            objeStr += " - " + deger + "(" + adet + ")";
-                                        }
-                                    }
+                                string deger = row["Adi"].ToString();
+                                objeStr += " - " + deger + "(" + adet + ")";
+                            }
 
-                                    aniObjesiStr = objeStr;
-                                }
-                                //Getirilen Ani Objeleri ayrıca alınıyor
-                                AniObjesiDagitim getirilenAniObjesi = new AniObjesiDagitim();
-                                getirilenAniObjesi = getirilenAniObjesi.SelectGetirilenAniObjesi(faaliyetId, tasinmazBagisci.Id, ProjeConstants.FAALIYET_KATILIMCI_TASINMAZBAGISCI_INT);
-                                if (getirilenAniObjesi != null)
-                                {
-                                    getirilenAniObjesiStr = getirilenAniObjesi.GetirilenAniObjesi;
-                                }
-                            }
-                            else
-                            {
-                                MessageHelper.PublishMessage("Taşınmaz Bağışçı Bulunamadı", ProjeConstants.MESAJ_HATA);
-                            }
-                            break;
                         }
+                        aniObjesiStr = objeStr;
+                    }
 
-                    case ProjeConstants.FAALIYET_KATILIMCI_NAKITBAGISCI_INT:
-                        {
-                            NakitBagisci nakitBagisci = new NakitBagisci();
-                            nakitBagisci = nakitBagisci.Select<NakitBagisci>(katilimciId);
-                            if (nakitBagisci != null)
-                            {
-                                katilimci= nakitBagisci.Adi + " " + nakitBagisci.Soyadi;
-                                katilimciTipiStr= ProjeConstants.FAALIYET_KATILIMCI_NAKITBAGISCI;
-
-                                //Burada verilen ani objeleri alınıyor
-                                AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
-                                DataTable dataTable = aniObjesiDagitim.SelectReturnDT(faaliyetId, nakitBagisci.Id, ProjeConstants.FAALIYET_KATILIMCI_NAKITBAGISCI_INT);
-                                if (dataTable != null)
-                                {
-                                    string objeStr = string.Empty;
-                                    foreach (DataRow row in dataTable.Rows)
-                                    {
-                                        int adet = row["Adet"].ReturnZeroIfNull().ConvertToInt();
-                                        if (adet > 0)
-                                        {
-                                            string deger = row["Adi"].ToString();
-                                            objeStr += " - " + deger + "(" + adet + ")";
-                                        }
-                                    }
-
-                                    aniObjesiStr= objeStr;
-                                }
-
-                                //Getirilen Ani Objeleri ayrıca alınıyor
-                                AniObjesiDagitim getirilenAniObjesi = new AniObjesiDagitim();
-                                getirilenAniObjesi = getirilenAniObjesi.SelectGetirilenAniObjesi(faaliyetId, nakitBagisci.Id, ProjeConstants.FAALIYET_KATILIMCI_NAKITBAGISCI_INT);
-                                if (getirilenAniObjesi != null)
-                                {
-                                    getirilenAniObjesiStr = getirilenAniObjesi.GetirilenAniObjesi;
-                                }
-                            }
-                            else
-                            {
-                                MessageHelper.PublishMessage("Nakit bağışçı Bulunamadı", ProjeConstants.MESAJ_HATA);
-                            }
-                            break;
-                        }
-
-                    case ProjeConstants.FAALIYET_KATILIMCI_DIS_INT:
-                        {
-                            Kisi kisi = new Kisi();
-                            kisi = kisi.Select<Kisi>(katilimciId);
-                            if (kisi != null)
-                            {
-                                katilimci= kisi.Adi + " " + kisi.Soyadi;
-                                katilimciTipiStr= ProjeConstants.FAALIYET_KATILIMCI_DIS;
-
-                                //Burada verilen ani objeleri alınıyor
-                                AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
-                                DataTable dataTable = aniObjesiDagitim.SelectReturnDT(faaliyetId, kisi.Id, ProjeConstants.FAALIYET_KATILIMCI_DIS_INT);
-                                if (dataTable != null)
-                                {
-                                    string objeStr = string.Empty;
-                                    foreach (DataRow row in dataTable.Rows)
-                                    {
-                                        int adet = row["Adet"].ReturnZeroIfNull().ConvertToInt();
-                                        if (adet > 0)
-                                        {
-                                            string deger = row["Adi"].ToString();
-                                            objeStr += " - " + deger + "(" + adet + ")";
-                                        }
-
-                                    }
-                                    aniObjesiStr= objeStr;
-                                }
-
-                                //Getirilen Ani Objeleri ayrıca alınıyor
-                                AniObjesiDagitim getirilenAniObjesi = new AniObjesiDagitim();
-                                getirilenAniObjesi = getirilenAniObjesi.SelectGetirilenAniObjesi(faaliyetId, kisi.Id, ProjeConstants.FAALIYET_KATILIMCI_DIS_INT);
-                                if (getirilenAniObjesi != null)
-                                {
-                                    getirilenAniObjesiStr= getirilenAniObjesi.GetirilenAniObjesi;
-                                }
-                            }
-                            else
-                            {
-                                MessageHelper.PublishMessage("Kişi Bulunamadı", ProjeConstants.MESAJ_HATA);
-                            }
-                            break;
-                        }
-
-                    case ProjeConstants.FAALIYET_KATILIMCI_IC_INT:
-                        {
-                            Personel personel = new Personel();
-                            personel = personel.Select<Personel>(katilimciId);
-                            if (personel != null)
-                            {
-                                katilimci = personel.Adi + " " + personel.Soyadi;
-                                katilimciTipiStr= ProjeConstants.FAALIYET_KATILIMCI_IC;
-                                aniObjesiStr= string.Empty;
-                                getirilenAniObjesiStr= string.Empty;
-                            }
-                            else
-                            {
-                                MessageHelper.PublishMessage("Personel Bulunamadı", ProjeConstants.MESAJ_HATA);
-                            }
-                            break;
-                        }
-
-                        ///////////////////
+                    //Getirilen Ani Objeleri ayrıca alınıyor
+                    AniObjesiDagitim getirilenAniObjesi = new AniObjesiDagitim();
+                    getirilenAniObjesi = getirilenAniObjesi.SelectGetirilenAniObjesi(faaliyetId, kisi.Id);
+                    if (getirilenAniObjesi != null)
+                    {
+                        getirilenAniObjesiStr = getirilenAniObjesi.GetirilenAniObjesi;
+                    }
                 }
+                else
+                {
+                    MessageHelper.PublishMessage("Kişi Bulunamadı", ProjeConstants.MESAJ_HATA);
+                }
+
             }
             string faaliyetStr = faaliyet == null ?
                             string.Empty :
                              "<strong>"+ faaliyet.FaaliyetKonusu + "</strong> konulu ve  <strong>" + faaliyet.BaslangicTarihi + "</strong> tarihli faaliyetin ";
             string ayrintiStr = (string.IsNullOrEmpty(katilimci) ? string.Empty : "- Katılımcı : " + katilimci) +
-                (string.IsNullOrEmpty(katilimciTipiStr) ? string.Empty : "-" + katilimciTipiStr) +
                 (string.IsNullOrEmpty(aniObjesiStr) ? string.Empty : "- Verilen Anı Objesi : " + aniObjesiStr)+
                 (string.IsNullOrEmpty(getirilenAniObjesiStr) ? string.Empty : "- Getirilen Anı Objesi : " + getirilenAniObjesiStr);
             string retval = "(" + olay.IslemTarihi.ConvertToDDMMYYYHHmmFormat() + ") -" +

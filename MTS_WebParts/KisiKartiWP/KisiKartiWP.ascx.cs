@@ -60,30 +60,7 @@ namespace MTS_WebParts.KisiKartiWP
                 ViewState["KatilimciId"] = value;
             }
         }
-        private string KatilimciTipiQS
-        {
-            get
-            {
-
-                if (ViewState["KatilimciTipi"] == null)
-                {
-                    if (Page.Request.QueryString["KatilimciTipi"] != null)
-                    {
-                        ViewState["KatilimciTipi"] = Page.Request.QueryString["KatilimciTipi"];
-                    }
-                    else
-                    {
-                        ViewState["KatilimciTipi"] = string.Empty;
-                    }
-                }
-                return ViewState["KatilimciTipi"].ToString();
-            }
-
-            set
-            {
-                ViewState["KatilimciTipi"] = value;
-            }
-        }
+      
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -104,151 +81,33 @@ namespace MTS_WebParts.KisiKartiWP
 
         private void KisiKartiniOlustur()
         {
-            switch (KatilimciTipiQS.ConvertToInt())
+            Kisi kisi = new Kisi();
+            kisi = kisi.Select(KatilimciIdQS.ConvertToInt());
+            if (kisi != null)
             {
-                case ProjeConstants.FAALIYET_KATILIMCI_TASINMAZBAGISCI_INT:
-                    {
-                        TasinmazBagisci tasinmazBagisci = new TasinmazBagisci();
-                        tasinmazBagisci = tasinmazBagisci.Select<TasinmazBagisci>(KatilimciIdQS.ConvertToInt());
-                        if (tasinmazBagisci != null)
-                        {
-                            KatilimciItem katilimci = new KatilimciItem();
-                            katilimci.KatilimciTipiStr = ProjeConstants.FAALIYET_KATILIMCI_TASINMAZBAGISCI;
-                            katilimci.KatilimciId = tasinmazBagisci.Id + "/" + katilimci.KatilimciTipiStr;
-
-                            katilimci.AdiSoyadi = tasinmazBagisci.Adi + " " + tasinmazBagisci.Soyadi;
-                            katilimci.Adresi = tasinmazBagisci.Adres;
-                            katilimci.IlcesiIli = (string.IsNullOrEmpty(tasinmazBagisci.Ilcesi) ? "" : tasinmazBagisci.Ilcesi) + " " + (string.IsNullOrEmpty(tasinmazBagisci.Ili) ? "" : tasinmazBagisci.Ili.ToUpper());
-                            string telefon1 = string.IsNullOrEmpty(tasinmazBagisci.Telefon1.ToString()) ? "" : String.Format("{0:(###) ### ####}", tasinmazBagisci.Telefon1);
-                            string telefon2 = string.IsNullOrEmpty(tasinmazBagisci.Telefon2.ToString()) ? "" : String.Format("{0:(###) ### ####}", tasinmazBagisci.Telefon2);
-
-                            katilimci.Telefon = telefon1 + " - " + telefon2;
-                            katilimci.Unvani = katilimci.KatilimciTipiStr;
-                            TumTablolariDoldur(katilimci);
-                        }
-                        else
-                        {
-                            MessageHelper.PublishMessage("Kişi Bulunamadı", ProjeConstants.MESAJ_HATA);
-                        }
-                        break;
-                    }
-
-                case ProjeConstants.FAALIYET_KATILIMCI_NAKITBAGISCI_INT:
-                    {
-                        NakitBagisci nakitBagisci = new NakitBagisci();
-                        nakitBagisci = nakitBagisci.Select<NakitBagisci>(KatilimciIdQS.ConvertToInt());
-                        if (nakitBagisci != null)
-                        {
-                            KatilimciItem katilimci = new KatilimciItem();
-                            katilimci.KatilimciTipiStr = ProjeConstants.FAALIYET_KATILIMCI_NAKITBAGISCI;
-                            katilimci.KatilimciId = nakitBagisci.Id + "/" + katilimci.KatilimciTipiStr;
-                            katilimci.AdiSoyadi = nakitBagisci.Adi + " " + nakitBagisci.Soyadi;
-                            katilimci.Adresi = nakitBagisci.Adres;
-                            Il il = new Il();
-                            il = il.Select<Il>(nakitBagisci.Ili.ConvertToInt());
-                            Ilce ilce = new Ilce();
-                            ilce = ilce.Select<Ilce>(nakitBagisci.Ilcesi.ConvertToInt());
-
-                            katilimci.IlcesiIli = (ilce == null ? "" : ilce.IlceAdi) + " " + (il == null ? "" : il.IlAdi.ToUpper());
-                            string telefon1 = string.IsNullOrEmpty(nakitBagisci.Telefon1.ToString()) ? "" : String.Format("{0:(###) ### ####}", nakitBagisci.Telefon1);
-                            string telefon2 = string.IsNullOrEmpty(nakitBagisci.Telefon2.ToString()) ? "" : String.Format("{0:(###) ### ####}", nakitBagisci.Telefon2);
-
-                            katilimci.Telefon = telefon1 + " - " + telefon2;
-                            katilimci.Unvani = katilimci.KatilimciTipiStr;
-
-                            TumTablolariDoldur(katilimci);
-                        }
-                        else
-                        {
-                            MessageHelper.PublishMessage("Kişi Bulunamadı", ProjeConstants.MESAJ_HATA);
-                        }
-                        break;
-                    }
-                case ProjeConstants.FAALIYET_KATILIMCI_DIS_INT:
-                    {
-                        Kisi kisi = new Kisi();
-                        kisi = kisi.Select(KatilimciIdQS.ConvertToInt());
-                        if (kisi != null)
-                        {
-                            KatilimciItem katilimci = new KatilimciItem();
-                            katilimci.KatilimciTipiStr = ProjeConstants.FAALIYET_KATILIMCI_DIS;
-                            katilimci.KatilimciId = kisi.Id + "/" + katilimci.KatilimciTipiStr;
-                            katilimci.AdiSoyadi = kisi.Adi + " " + kisi.Soyadi;
-                            katilimci.Adresi = kisi.Adres;
-                            Il il = new Il();
-                            il = il.Select<Il>(kisi.Ili);
-                            Ilce ilce = new Ilce();
-                            ilce = ilce.Select<Ilce>(kisi.Ilcesi);
-                            katilimci.IlcesiIli = ilce == null ? "" : ilce.IlceAdi + " " + (il == null ? "" : il.IlAdi.ToUpper());
-                            string telefon1 = string.IsNullOrEmpty(kisi.Telefon1.ToString()) ? "" : String.Format("{0:(###) ### ####}", kisi.Telefon1)
-                                + (string.IsNullOrEmpty(kisi.Dahili1) ? "" : " /" + kisi.Dahili1.Trim());
-                            string telefon2 = string.IsNullOrEmpty(kisi.Telefon2.ToString()) ? "" : String.Format("{0:(###) ### ####}", kisi.Telefon2)
-                                    + (string.IsNullOrEmpty(kisi.Dahili2) ? "" : " /" + kisi.Dahili2.Trim());
-                            string telefon3 = string.IsNullOrEmpty(kisi.Telefon3.ToString()) ? "" : String.Format("{0:(###) ### ####}", kisi.Telefon3)
-                                    + (string.IsNullOrEmpty(kisi.Dahili3) ? "" : " /" + kisi.Dahili3.Trim());
-                            katilimci.Telefon = telefon1 + " - " + telefon2 + " - " + telefon3;
-                            katilimci.Unvani = kisi.Unvani;
-                            katilimci.Gorevi = kisi.Gorevi;
-                            TumTablolariDoldur(katilimci);
-                        }
-                        else
-                        {
-                            MessageHelper.PublishMessage("Kişi Bulunamadı", ProjeConstants.MESAJ_HATA);
-                        }
-                        break;
-                    }
-                case ProjeConstants.FAALIYET_KATILIMCI_IC_INT:
-                    {
-                        Personel personel = new Personel();
-                        personel = personel.SelectCalisanPersonel(KatilimciIdQS.ConvertToInt());
-                        if (personel != null)
-                        {
-                            KatilimciItem katilimci = new KatilimciItem();
-                            katilimci.KatilimciTipiStr = ProjeConstants.FAALIYET_KATILIMCI_IC;
-                            katilimci.KatilimciId = personel.Id + "/" + katilimci.KatilimciTipiStr;
-                            katilimci.AdiSoyadi = personel.Adi + " " + personel.Soyadi;
-
-                            #region İş bilgileri
-                            IsBilgileri isBilgisi = new IsBilgileri();
-                            isBilgisi = isBilgisi.SelectByPersonelId(personel.Id);
-                            if (isBilgisi != null)
-                            {
-                                GorevTanim gt = new GorevTanim();
-                                gt = gt.Select<GorevTanim>(isBilgisi.GorevId);
-                                UnvanTanim unvan = new UnvanTanim();
-                                unvan = unvan.Select<UnvanTanim>(isBilgisi.UnvanId);
-
-                                katilimci.Unvani = gt != null ? gt.Adi : "";
-                                katilimci.Gorevi = unvan != null ? unvan.Adi : "";
-                            }
-                            #endregion
-                            IletisimBilgileri iletisimBilgileri = new IletisimBilgileri();
-                            iletisimBilgileri = iletisimBilgileri.SelectByPersonelId(personel.Id);
-
-                            if (iletisimBilgileri != null)
-                            {
-                                katilimci.Adresi = iletisimBilgileri != null ? iletisimBilgileri.Adres : "";
-
-                                Il il = new Il();
-                                il = il.Select<Il>(iletisimBilgileri.Ili.ConvertToInt());
-                                Ilce ilce = new Ilce();
-                                ilce = ilce.Select<Ilce>(iletisimBilgileri.Ilcesi.ConvertToInt());
-
-                                katilimci.IlcesiIli = (string.IsNullOrEmpty(ilce.IlceAdi) ? "" : ilce.IlceAdi) + " " + (string.IsNullOrEmpty(il.IlAdi) ? "" : il.IlAdi.ToUpper());
-                                string telefon1 = string.IsNullOrEmpty(iletisimBilgileri.EvTelefonu.ToString()) ? "" : String.Format("{0:(###) ### ####}", iletisimBilgileri.EvTelefonu);
-                                string telefon2 = string.IsNullOrEmpty(iletisimBilgileri.CepTelefonu.ToString()) ? "" : String.Format("{0:(###) ### ####}", iletisimBilgileri.CepTelefonu);
-                                string telefon3 = string.IsNullOrEmpty(iletisimBilgileri.CepTelefonu2.ToString()) ? "" : String.Format("{0:(###) ### ####}", iletisimBilgileri.CepTelefonu2);
-                                katilimci.Telefon = telefon1 + " - " + telefon2 + " - " + telefon3;
-                            }
-
-                            TumTablolariDoldur(katilimci);
-                        }
-                        else
-                        {
-                            MessageHelper.PublishMessage("Personel Bulunamadı", ProjeConstants.MESAJ_HATA);
-                        }
-                        break;
-                    }
+                KatilimciItem katilimci = new KatilimciItem();
+                katilimci.KatilimciId = kisi.Id.ToString() ;
+                katilimci.AdiSoyadi = kisi.Adi + " " + kisi.Soyadi;
+                katilimci.Adresi = kisi.Adres;
+                Il il = new Il();
+                il = il.Select<Il>(kisi.Ili);
+                Ilce ilce = new Ilce();
+                ilce = ilce.Select<Ilce>(kisi.Ilcesi);
+                katilimci.IlcesiIli = ilce == null ? "" : ilce.IlceAdi + " " + (il == null ? "" : il.IlAdi.ToUpper());
+                string telefon1 = string.IsNullOrEmpty(kisi.Telefon1.ToString()) ? "" : String.Format("{0:(###) ### ####}", kisi.Telefon1)
+                    + (string.IsNullOrEmpty(kisi.Dahili1) ? "" : " /" + kisi.Dahili1.Trim());
+                string telefon2 = string.IsNullOrEmpty(kisi.Telefon2.ToString()) ? "" : String.Format("{0:(###) ### ####}", kisi.Telefon2)
+                        + (string.IsNullOrEmpty(kisi.Dahili2) ? "" : " /" + kisi.Dahili2.Trim());
+                string telefon3 = string.IsNullOrEmpty(kisi.Telefon3.ToString()) ? "" : String.Format("{0:(###) ### ####}", kisi.Telefon3)
+                        + (string.IsNullOrEmpty(kisi.Dahili3) ? "" : " /" + kisi.Dahili3.Trim());
+                katilimci.Telefon = telefon1 + " - " + telefon2 + " - " + telefon3;
+                katilimci.Unvani = kisi.Unvani;
+                katilimci.Gorevi = kisi.Gorevi;
+                TumTablolariDoldur(katilimci);
+            }
+            else
+            {
+                MessageHelper.PublishMessage("Kişi Bulunamadı", ProjeConstants.MESAJ_HATA);
             }
         }
 
@@ -437,7 +296,7 @@ namespace MTS_WebParts.KisiKartiWP
         {
             List<FaaliyetListItem> faaliyetList = new List<FaaliyetListItem>();
             Faaliyet faaliyetDao = new Faaliyet();
-            DataTable dataTable = faaliyetDao.SelectByKatilimciReturnDataTable(KatilimciIdQS.ConvertToInt(), KatilimciTipiQS.ConvertToInt(), ProjeConstants.HEPSI_INT);
+            DataTable dataTable = faaliyetDao.SelectByKatilimciReturnDataTable(KatilimciIdQS.ConvertToInt(), ProjeConstants.HEPSI_INT);
 
             if (dataTable != null)
             {
@@ -454,8 +313,6 @@ namespace MTS_WebParts.KisiKartiWP
                     string faaliyetAmaci = row["FaaliyetAmaci"].ToString();
                     string faaliyetDurumu = row["FaaliyetDurumu"].ToString();
                     string katilimciId = row["KatilimciId"].ToString();
-                    string katilimciTipi = row["KatilimciTipi"].ToString();
-
 
                     DateTime basTar = row["BaslangicTarihi"].ConvertToDatetime();
                     DateTime bitTar = row["BitisTarihi"].ConvertToDatetime();
@@ -467,9 +324,9 @@ namespace MTS_WebParts.KisiKartiWP
 
                     string faaliyetAmaciStr = ParseFaaliyetAmaci(faaliyetAmaci);
                     string faaliyetDurumuStr = MTSOrtak.ParseFaaliyetDurumu(faaliyetDurumu.ConvertToInt());
-                    string verilenAniObjesiStr = VerilenAniOjesiGetir(faaliyetId, KatilimciIdQS.ConvertToInt(), KatilimciTipiQS.ConvertToInt());
-                    string getirilenAniObjesiStr = GetirilenAniOjesiGetir(faaliyetId, KatilimciIdQS.ConvertToInt(), KatilimciTipiQS.ConvertToInt());
-                    string buKatilimci = katilimciId.Equals(KatilimciIdQS) && katilimciTipi.Equals(KatilimciTipiQS) ? "*" : string.Empty;
+                    string verilenAniObjesiStr = VerilenAniOjesiGetir(faaliyetId, KatilimciIdQS.ConvertToInt());
+                    string getirilenAniObjesiStr = GetirilenAniOjesiGetir(faaliyetId, KatilimciIdQS.ConvertToInt());
+                    string buKatilimci = katilimciId.Equals(KatilimciIdQS)  ? "*" : string.Empty;
                     string katilimci = buKatilimci + row["Adi"].ToString() + " " + row["Soyadi"].ToString();
 
 
@@ -513,11 +370,11 @@ namespace MTS_WebParts.KisiKartiWP
             return faaliyetList;
         }
 
-        private string VerilenAniOjesiGetir(int faaliyetId, int katilimciId, int katilimciTipi)
+        private string VerilenAniOjesiGetir(int faaliyetId, int katilimciId)
         {
             string objeStr = string.Empty;
             AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
-            DataTable dataTable = aniObjesiDagitim.SelectReturnDT(faaliyetId, katilimciId, katilimciTipi);
+            DataTable dataTable = aniObjesiDagitim.SelectReturnDT(faaliyetId, katilimciId);
             if (dataTable != null)
             {
 
@@ -536,11 +393,11 @@ namespace MTS_WebParts.KisiKartiWP
             return objeStr;
         }
 
-        private string GetirilenAniOjesiGetir(int faaliyetId, int katilimciId, int katilimciTipi)
+        private string GetirilenAniOjesiGetir(int faaliyetId, int katilimciId)
         {
             string aniobjeStr = string.Empty;
             AniObjesiDagitim getirilenAniObjesi = new AniObjesiDagitim();
-            getirilenAniObjesi = getirilenAniObjesi.SelectGetirilenAniObjesi(faaliyetId, katilimciId, katilimciTipi);
+            getirilenAniObjesi = getirilenAniObjesi.SelectGetirilenAniObjesi(faaliyetId, katilimciId);
             if (getirilenAniObjesi != null)
             {
                 aniobjeStr = getirilenAniObjesi.GetirilenAniObjesi;
@@ -653,9 +510,9 @@ namespace MTS_WebParts.KisiKartiWP
         {
             AramaGorusme aramaDao = new AramaGorusme();
             List<AramaGorusme> aramaList = new List<AramaGorusme>();
-            if (KatilimciTipiQS.ConvertToInt() > 0)
+            if (KatilimciIdQS.ConvertToInt() > 0)
             {
-                aramaList = aramaDao.SelectAllByArayanIdReturnList(KatilimciIdQS.ConvertToInt(), KatilimciTipiQS.ConvertToInt());
+                aramaList = aramaDao.SelectAllByArayanIdReturnList(KatilimciIdQS.ConvertToInt());
             }
 
             return aramaList;
@@ -709,8 +566,6 @@ namespace MTS_WebParts.KisiKartiWP
             public string Sirano { get; set; }
             //public string Id { get; set; }
             public string KatilimciId { get; set; }
-            public string KatilimciTipi { get; set; }
-            public string KatilimciTipiStr { get; set; }
             public string AdiSoyadi { get; set; }
             public string Unvani { get; set; }
             public string Gorevi { get; set; }

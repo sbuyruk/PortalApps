@@ -23,8 +23,7 @@ namespace Model.MTS
         public string FaaliyetYeriStr { get; set; }        
         public int FaaliyetDurumu { get; set; }
         public bool TumGun { get; set; }
-        public bool AcikTarih { get; set; }
-        public int IcIrtibatId { get; set; }
+        public bool AcikTarih { get; set; }        
         public int DisIrtibatId { get; set; }
         public DateTime BaslangicTarihi { get; set; }
         public DateTime BitisTarihi { get; set; }
@@ -46,7 +45,6 @@ namespace Model.MTS
                 || !FaaliyetYeriStr.Equals(other.FaaliyetYeriStr)
                 || TumGun != other.TumGun
                 || AcikTarih != other.AcikTarih
-                || IcIrtibatId != other.IcIrtibatId
                 || DisIrtibatId != other.DisIrtibatId
                 || BaslangicTarihi != other.BaslangicTarihi
                 || BitisTarihi != other.BitisTarihi
@@ -256,97 +254,49 @@ namespace Model.MTS
             string faaliyetIdStr = faaliyetId == ProjeConstants.HEPSI_INT ? "" : " AND A.FaaliyetId=" + faaliyetId;
             string monthBeforeStr = monthBefore == 0 ? string.Empty : string.Format("AND BaslangicTarihi > DateAdd(month, {0}, Convert(date, GetDate()))", monthBefore);
             string sqlString = string.Format(@"
-                SELECT A.KatilimciTipi,A.KatilimciId, A.Id KatilimId,A.TakvimDaveti,B.Aciklama, B.OlusturmaTarihi,
-                    CASE
-	                    WHEN A.KatilimciTipi=1 THEN D.Adi
-                        WHEN A.KatilimciTipi=2 THEN C.Adi
-	                    WHEN A.KatilimciTipi=3 THEN E.Adi
-                        WHEN A.KatilimciTipi=4 THEN F.Adi
-                    ELSE C.Adi
-                    END AS Adi,
-                    CASE
-	                    WHEN A.KatilimciTipi=1 THEN D.Soyadi
-                        WHEN A.KatilimciTipi=2 THEN C.Soyadi
-	                    WHEN A.KatilimciTipi=3 THEN E.Soyadi
-                        WHEN A.KatilimciTipi=4 THEN F.Soyadi
-                    ELSE C.Soyadi
-                    END AS Soyadi,
-	                CASE
-		                WHEN A.KatilimciTipi=1 THEN 'TSKGV'
-                        WHEN A.KatilimciTipi=2 THEN C.Kurumu
-		                WHEN A.KatilimciTipi=3 THEN 'Nakit Bağışçı'
-		                WHEN A.KatilimciTipi=4 THEN 'Taşınmaz Bağışçı'
-                    ELSE C.Kurumu
-	                END AS Kurumu,
-					CASE
-		                WHEN A.KatilimciTipi=1 THEN G.InternetEPosta
-                        WHEN A.KatilimciTipi=2 THEN C.EPosta
-		                WHEN A.KatilimciTipi=3 THEN E.EPosta
-		                WHEN A.KatilimciTipi=4 THEN F.EPosta
-                    ELSE C.EPosta
-	                END AS EPosta,
+                SELECT C.KatilimciTipi,A.KatilimciId, A.Id KatilimId,A.TakvimDaveti,B.Aciklama, B.OlusturmaTarihi,
+                    C.Adi, C.Soyadi, C.EPosta,C.EPosta,
 	                B.Id FaaliyetId, B.BaslangicTarihi,B.BaslangicSaati, B.BitisTarihi,B.BitisSaati,
-	                B.FaaliyetAmaci,B.FaaliyetDurumu,B.FaaliyetKonusu,B.FaaliyetTipi,B.FaaliyetYeriStr FaaliyetYeri, B.TumGun,B.AcikTarih
-	
+	                B.FaaliyetAmaci,B.FaaliyetDurumu,B.FaaliyetKonusu,B.FaaliyetTipi,B.FaaliyetYeriStr FaaliyetYeri, B.TumGun,B.AcikTarih,
+	                H.Adi Kurumu
                 FROM Faaliyet_Table B  
 	                LEFT JOIN FaaliyetKatilim_Table A ON A.FaaliyetId=B.Id 
 	                LEFT JOIN Kisi_Table C ON C.Id = A.KatilimciId
-	                LEFT JOIN Personel_Table D ON D.Id = A.KatilimciId
-                    LEFT JOIN NakitBagisci_Table E ON E.Id = A.KatilimciId
-                    LEFT JOIN TasinmazBagisci_Table F ON F.Id = A.KatilimciId
+                    LEFT JOIN MTSKurumGorev_Table D ON D.KisiId = C.Id AND D.Durum={0}
+					LEFT JOIN MTSKurumTanim_Table H ON H.Id = D.MTSKurumTanimId
                     LEFT JOIN IletisimBilgileri_Table G ON G.PersonelId = A.KatilimciId
                 WHERE B.Id IS NOT NULL
-                {0}
                 {1}
                 {2}
                 {3}
                 {4}
-                ORDER BY B.BaslangicTarihi DESC, KatilimciTipi, Adi,Soyadi 
-            ", acikTarililerHaric, faaliyetIdStr, monthBeforeStr,bastarStr,bittarStr);
+                {5}
+                ORDER BY B.BaslangicTarihi DESC, C.KatilimciTipi, Adi,Soyadi 
+            ", ProjeConstants.MTSGOREVDURUMU_GOREVDE.ReturnQuotedValue(), acikTarililerHaric, faaliyetIdStr, monthBeforeStr, bastarStr, bittarStr);
+            
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
 
             return dataTable;
         }
-        public DataTable SelectByKatilimciReturnDataTable(int katilimciId, int katilimciTipi, int faaliyetId)
+        public DataTable SelectByKatilimciReturnDataTable(int katilimciId, int faaliyetId)
         {
-            string katilimciIdStr = katilimciId > 0 ? " AND A.FaaliyetId in (SELECT FaaliyetId FROM FaaliyetKatilim_Table WHERE KatilimciTipi=" + katilimciTipi + " AND KatilimciId=" + katilimciId + ")" : "";
+            string katilimciIdStr = katilimciId > 0 ? " AND KatilimciId=" + katilimciId : "";//" AND A.FaaliyetId in (SELECT FaaliyetId FROM FaaliyetKatilim_Table WHERE KatilimciId=" + katilimciId + ")" : "";
             string faaliyetIdStr = faaliyetId > 0 ? " AND A.FaaliyetId=" + faaliyetId : "";
             string sqlString = string.Format(@"
-                SELECT A.KatilimciTipi,A.KatilimciId, A.Id KatilimId,
-                    CASE
-	                    WHEN A.KatilimciTipi=1 THEN D.Adi
-                        WHEN A.KatilimciTipi=2 THEN C.Adi
-	                    WHEN A.KatilimciTipi=3 THEN E.Adi
-                        WHEN A.KatilimciTipi=4 THEN F.Adi
-                    ELSE C.Adi
-                    END AS Adi,
-                    CASE
-	                    WHEN A.KatilimciTipi=1 THEN D.Soyadi
-                        WHEN A.KatilimciTipi=2 THEN C.Soyadi
-	                    WHEN A.KatilimciTipi=3 THEN E.Soyadi
-                        WHEN A.KatilimciTipi=4 THEN F.Soyadi
-                    ELSE C.Soyadi
-                    END AS Soyadi,
-	                CASE
-		                WHEN A.KatilimciTipi=1 THEN 'TSKGV'
-                        WHEN A.KatilimciTipi=2 THEN C.Kurumu
-		                WHEN A.KatilimciTipi=3 THEN 'Nakit Bağışçı'
-		                WHEN A.KatilimciTipi=4 THEN 'Taşınmaz Bağışçı'
-                    ELSE C.Kurumu
-	                END AS Kurumu,
+                SELECT C.KatilimciTipi,A.KatilimciId, A.Id KatilimId,
+                    C.Adi, C.Soyadi, E.Adi Kurumu,
 	                B.Id FaaliyetId, B.BaslangicTarihi,B.BaslangicSaati, B.BitisTarihi,B.BitisSaati,
 	                B.FaaliyetAmaci,B.FaaliyetDurumu,B.FaaliyetKonusu,B.FaaliyetTipi,B.FaaliyetYeriStr FaaliyetYeri,B.TumGun,B.AcikTarih
 	
                 FROM Faaliyet_Table B  
 	                LEFT JOIN FaaliyetKatilim_Table A ON A.FaaliyetId=B.Id {0}
 	                LEFT JOIN Kisi_Table C ON C.Id = A.KatilimciId
-	                LEFT JOIN Personel_Table D ON D.Id = A.KatilimciId
-                    LEFT JOIN NakitBagisci_Table E ON E.Id = A.KatilimciId
-                    LEFT JOIN TasinmazBagisci_Table F ON F.Id = A.KatilimciId
+	                LEFT JOIN MTSKurumGorev_Table D ON D.KisiId = C.Id AND D.Durum={1}
+					LEFT JOIN MTSKurumTanim_Table E ON E.Id = D.MTSKurumTanimId
                 WHERE A.FaaliyetId IS NOT NULL
-                {1}
-                ORDER BY B.BaslangicTarihi DESC, KatilimciTipi, Adi,Soyadi 
-            ", katilimciIdStr, faaliyetIdStr);
+                {2}
+                ORDER BY B.BaslangicTarihi DESC, C.KatilimciTipi, Adi,Soyadi 
+            ", katilimciIdStr,ProjeConstants.MTSGOREVDURUMU_GOREVDE.ReturnQuotedValue(), faaliyetIdStr);
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
 
             return dataTable;
@@ -482,7 +432,6 @@ namespace Model.MTS
             hashCode = hashCode * -1521134295 + FaaliyetDurumu.GetHashCode();
             hashCode = hashCode * -1521134295 + TumGun.GetHashCode();
             hashCode = hashCode * -1521134295 + AcikTarih.GetHashCode();
-            hashCode = hashCode * -1521134295 + IcIrtibatId.GetHashCode();
             hashCode = hashCode * -1521134295 + DisIrtibatId.GetHashCode();
             hashCode = hashCode * -1521134295 + BaslangicTarihi.GetHashCode();
             hashCode = hashCode * -1521134295 + BitisTarihi.GetHashCode();

@@ -13,7 +13,6 @@ namespace Model.MTS
     {
         public int FaaliyetId { get; set; }
         public int KatilimciId { get; set; }
-        public int KatilimciTipi { get; set; }
         public string KurumGorev { get; set; }
         public string TakvimDaveti { get; set; }
         public string Aciklama { get; set; }
@@ -111,28 +110,28 @@ namespace Model.MTS
             item = list.FirstOrDefault();
             return item;
         }
-        public List<FaaliyetKatilim> Select(int faaliyetId, int katilimciId, int katilimciTipi)
+        public List<FaaliyetKatilim> Select(int faaliyetId, int katilimciId)
         {
 
             string sqlString = string.Format(
                 @"
                 SELECT * FROM FaaliyetKatilim_Table
-                WHERE FaaliyetId={0} AND KatilimciId={1} AND KatilimciTipi={2}    
-                ", faaliyetId, katilimciId, katilimciTipi);
+                WHERE FaaliyetId={0} AND KatilimciId={1}     
+                ", faaliyetId, katilimciId);
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<FaaliyetKatilim> list = ToList<FaaliyetKatilim>(dataTable);
 
             return list;
         }
-        public List<FaaliyetKatilim> SelectByKatilimciIdKatilimciTipi(int katilimciId, int katilimciTipi)
+        public List<FaaliyetKatilim> SelectByKatilimciId(int katilimciId)
         {
 
             string sqlString = string.Format(
                 @"
                 SELECT * FROM FaaliyetKatilim_Table
-                WHERE KatilimciId={0} AND KatilimciTipi={1}    
-                ", katilimciId,katilimciTipi);
+                WHERE KatilimciId={0}     
+                ", katilimciId);
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<FaaliyetKatilim> list = ToList<FaaliyetKatilim>(dataTable);

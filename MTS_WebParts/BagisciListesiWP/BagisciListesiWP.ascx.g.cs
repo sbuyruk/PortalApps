@@ -191,32 +191,28 @@ namespace MTS_WebParts.BagisciListesiWP {
                         "onra kalmasın diye\r\n    function setFormSubmitToFalse() {\r\n        setTimeout(fu" +
                         "nction () { _spFormOnSubmitCalled = false; }, 3000);\r\n        return true;\r\n    " +
                         "}\r\n    function setDataSet(myset) {\r\n        myjsons = myset;\r\n    }\r\n    var my" +
-                        "jsons = [{\r\n        \"AdiSoyadi\": \"\", \"KatilimciTipiStr\": \"\", \"Telefon\": \"\", \"Adr" +
-                        "es\": \"\", \"Il\": \"\", \"Ilce\": \"\", \"KisiKarti\": \"\", \"BagisciKarti\": \"\"}];\r\n    jQuer" +
-                        "y(document).ready(function () {\r\n\r\n        jQuery(\'#CustomDataTable\').DataTable(" +
-                        "{\r\n            data: myjsons,\r\n            columns: [\r\n                { data: \"" +
-                        "AdiSoyadi\" },\r\n                { data: \"KatilimciTipiStr\" },\r\n                { " +
-                        "data: \"Telefon\", \"width\": \"14%\" },\r\n                { data: \"Adres\" },\r\n        " +
-                        "        { data: \"Il\" },\r\n                { data: \"Ilce\" },\r\n                { da" +
-                        "ta: \"BagisciKarti\" },\r\n                { data: \"KisiKarti\" },\r\n            ],\r\n " +
-                        "           \"order\": [[1, \'desc\'],[0, \'asc\']],\r\n            \"language\": {\r\n      " +
-                        "          \"url\": \"http://tskgv-portal/OrtakBelgeler/Turkish.txt\",\r\n             " +
-                        "   \"decimal\": \",\",\r\n                \"thousands\": \".\"\r\n            },\r\n          " +
-                        "  responsive: true,\r\n            dom: \'Bfrtip\',\r\n            //colon resizable\r\n" +
-                        "            //initComplete: function (settings) {\r\n            //    $(\'#CustomD" +
-                        "ataTable\').colResizable({ liveDrag: true });\r\n            //},\r\n            butt" +
-                        "ons: [\r\n                {\r\n                    extend: \'print\',\r\n               " +
-                        "     exportOptions: {\r\n                        columns: \':visible\'\r\n            " +
-                        "        }\r\n                },\r\n                {\r\n                    extend: \'e" +
-                        "xcel\',\r\n                    exportOptions: {\r\n                        columns: \'" +
-                        ":visible\'\r\n                    }\r\n                },\r\n                {\r\n       " +
-                        "             extend: \'pdf\',\r\n                    exportOptions: {\r\n             " +
-                        "           columns: \':visible\'\r\n                    }\r\n                },\r\n     " +
-                        "           {\r\n                    extend: \'copy\',\r\n                    exportOpt" +
-                        "ions: {\r\n                        columns: \':visible\'\r\n                    }\r\n   " +
-                        "             },\r\n                , \'pageLength\', \"colvis\"\r\n            ]\r\n      " +
-                        "  });\r\n    });\r\n</script>\r\n<div class=\"container \">\r\n    <div class=\"card shadow" +
-                        "\">\r\n        <div class=\"card-header\">\r\n            "));
+                        "jsons = [{\r\n        \"AdiSoyadi\": \"\", \"Telefon\": \"\", \"Adres\": \"\", \"Il\": \"\", \"Ilce" +
+                        "\": \"\"}];\r\n    jQuery(document).ready(function () {\r\n\r\n        jQuery(\'#CustomDat" +
+                        "aTable\').DataTable({\r\n            data: myjsons,\r\n            columns: [\r\n      " +
+                        "          { data: \"AdiSoyadi\" },\r\n                { data: \"Telefon\", \"width\": \"1" +
+                        "4%\" },\r\n                { data: \"Adres\" },\r\n                { data: \"Il\" },\r\n   " +
+                        "             { data: \"Ilce\" },\r\n            ],\r\n            \"order\": [[1, \'desc\'" +
+                        "],[0, \'asc\']],\r\n            \"language\": {\r\n                \"url\": \"http://tskgv-" +
+                        "portal/OrtakBelgeler/Turkish.txt\",\r\n                \"decimal\": \",\",\r\n           " +
+                        "     \"thousands\": \".\"\r\n            },\r\n            responsive: true,\r\n          " +
+                        "  dom: \'Bfrtip\',\r\n            buttons: [\r\n                {\r\n                   " +
+                        " extend: \'print\',\r\n                    exportOptions: {\r\n                       " +
+                        " columns: \':visible\'\r\n                    }\r\n                },\r\n               " +
+                        " {\r\n                    extend: \'excel\',\r\n                    exportOptions: {\r\n" +
+                        "                        columns: \':visible\'\r\n                    }\r\n            " +
+                        "    },\r\n                {\r\n                    extend: \'pdf\',\r\n                 " +
+                        "   exportOptions: {\r\n                        columns: \':visible\'\r\n              " +
+                        "      }\r\n                },\r\n                {\r\n                    extend: \'cop" +
+                        "y\',\r\n                    exportOptions: {\r\n                        columns: \':vi" +
+                        "sible\'\r\n                    }\r\n                },\r\n                , \'pageLength" +
+                        "\', \"colvis\"\r\n            ]\r\n        });\r\n    });\r\n</script>\r\n<div class=\"contain" +
+                        "er \">\r\n    <div class=\"card shadow\">\r\n        <div class=\"card-header\">\r\n       " +
+                        "     "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl1;
             @__ctrl1 = this.@__BuildControlCloseBtn();
             @__parser.AddParsedSubObject(@__ctrl1);
@@ -241,13 +237,10 @@ namespace MTS_WebParts.BagisciListesiWP {
                     <thead>
                         <tr>
                             <th>Adı Soyadı</th>
-                            <th>Bağışçı</th>
                             <th>Telefon</th>
                             <th>Adres</th>
                             <th>İl</th>
                             <th>İlçe</th>
-                            <th>Bağışçı Kartı</th>
-                            <th>Kişi Kartı</th>
                         </tr>
                     </thead>
                 </table>

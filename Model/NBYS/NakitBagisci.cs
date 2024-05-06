@@ -631,25 +631,22 @@ namespace Model.NBYS
             string json = ToJSON(dataTable);
             return json;
         }
-        public DataTable SelectSecilmemisKatilimcilarByFaaliyetIdReturnDT(int faaliyetId)
+        public DataTable SelectSecilmemisKatilimcilarByFaaliyetIdReturnDT()
         {
-            string faaliyetIdStr = faaliyetId > 0 ? string.Format(@" 
-                AND A.Id Not in (SELECT KatilimciId FROM FaaliyetKatilim_Table WHERE KatilimciTipi={0} AND FaaliyetId={1})", ProjeConstants.FAALIYET_KATILIMCI_NAKITBAGISCI_INT, faaliyetId) : string.Empty;
             string tarihStr = DateTime.Today.AddYears(-2).ReturnTRDateFormat();
             string sqlString = string.Format(@"              
-                SELECT DISTINCT(A.Id) KatilimciId, A.Adi, A.Soyadi, {0} KatilimciTipi,
+                SELECT DISTINCT(A.Id) KatilimciId, A.Adi, A.Soyadi, 
 					A.Adres,A.Telefon1 Telefon,A.Sag,D.IlceAdi Ilce,C.IlAdi Il,MAX(B.BagisMiktari)
                 FROM NakitBagisci_Table A
 					INNER JOIN Armagan_Table B ON B.BagisciId =A.Id 
-						AND Tarih>{1} AND BagisMiktari >= {2}
+						AND Tarih>{0} AND BagisMiktari >= {1}
                     LEFT JOIN Il_Table C ON C.Id=A.Ili 
 					LEFT JOIN Ilce_Table D ON D.Id=A.Ilcesi AND D.IlId=A.Ili 
 				WHERE A.Sag=1 AND A.TuzelKisi=0 AND A.Adi IS NOT NULL AND A.Adi!='' AND A.Adi NOT Like '%BİLİNMEYEN%'
-                    {3}
 				GROUP BY  A.Id , A.Adi, A.Soyadi,
 					A.Adres,A.Telefon1,A.Sag,D.IlceAdi,C.IlAdi
                 ORDER BY A.Id
-            ", ProjeConstants.FAALIYET_KATILIMCI_NAKITBAGISCI_INT, tarihStr, ProjeConstants.NAKITBAGISCI_SORGUBAGISTUTARI, faaliyetIdStr);
+            ",  tarihStr, ProjeConstants.NAKITBAGISCI_SORGUBAGISTUTARI);
             DataTable dataTable = null;
             try
             {

@@ -2017,17 +2017,22 @@ namespace Model.NBYS
                 //}
 
                 //15 Günde bir
-                if (bagisGunu < 16)
-                {
-                    bastar = new DateTime(bagisTarihi.Year, bagisTarihi.Month, 1);
-                    bittar = new DateTime(bagisTarihi.Year, bagisTarihi.Month, 15);
-                }
-                else
-                {
-                    bastar = new DateTime(bagisTarihi.Year, bagisTarihi.Month, 16);
-                    DateTime ilkGun = new DateTime(bastar.Year, bastar.Month, 1);
-                    bittar = ilkGun.AddMonths(1).AddDays(-1);
-                }
+                //if (bagisGunu < 16)
+                //{
+                //    bastar = new DateTime(bagisTarihi.Year, bagisTarihi.Month, 1);
+                //    bittar = new DateTime(bagisTarihi.Year, bagisTarihi.Month, 15);
+                //}
+                //else
+                //{
+                //    bastar = new DateTime(bagisTarihi.Year, bagisTarihi.Month, 16);
+                //    DateTime ilkGun = new DateTime(bastar.Year, bastar.Month, 1);
+                //    bittar = ilkGun.AddMonths(1).AddDays(-1);
+                //}
+                
+                //Ayda bir
+                bastar = new DateTime(bagisTarihi.Year, bagisTarihi.Month, 1);
+                bittar = bastar.AddMonths(1).AddDays(-1);
+                
                 decimal toplamBagis = nakitBagisHareket.GetSumBagisMiktariByNakitBagisciIdBetweenBasTarBitTar(bastar, bittar, nakitBagisciId);
 
                 ArmaganTanim hakedilenArmaganTanim = new ArmaganTanim();

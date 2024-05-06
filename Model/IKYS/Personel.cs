@@ -162,21 +162,6 @@ namespace Model.IKYS
                     ORDER BY Id", userName.ReturnQuotedValue());
             return sqlstr;
         }
-        private string SelectSQL(int id)
-        {
-            string sqlstr = string.Format(@"SELECT *
-                               FROM Personel_Table 
-                               WHERE  Id={0}", id);
-            return sqlstr;
-        }
-        private string DeleteSQL()
-        {
-            string sqlString = string.Format(@"
-                            DELETE 
-                            FROM Personel_Table
-                            WHERE Id={0}", Id);
-            return sqlString;
-        }
         public Personel SelectCalisanPersonel(int personelId)
         {
 
@@ -197,29 +182,7 @@ namespace Model.IKYS
             _ = new Personel();
             Personel personel = list.FirstOrDefault();
             return personel;
-        }
-        //eksik
-        public Personel SelectAmirByPersonelId(int personelId)
-        {
-
-            string sqlString = string.Format(@"
-                    SELECT P.* 
-                        --P.Id PersonelId,P.Adi,Soyadi,P.PerId, P.SicilNo, P.Tahsili, P.KullaniciAdi, P.Asker_sivil,
-						--U.Adi Unvan, G.Adi Gorev, B.Adi BirimSube
-					FROM Personel_Table P
-                    INNER JOIN IsBilgileri_Table I on P.Id=I.PersonelId
-					Left Outer Join  UnvanTanim_Table U on I.UnvanId=U.Id
-					Left Outer Join  BirimTanim_Table B on I.BirimId=B.Id
-					Left Outer Join  GorevTanim_Table G on I.GorevId=G.Id
-                    WHERE CalismaDurumu=1 And B.AmirId={0}
-					ORDER BY I.ProtokolSiraNo
-                                    ", personelId);
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<Personel> list = ToList<Personel>(dataTable);
-            _ = new Personel();
-            Personel personel = list.FirstOrDefault();
-            return personel;
-        }
+        }    
         public List<Personel> SelectCalisanPersonelByBirimId(int birimId)
         {
 
@@ -412,7 +375,6 @@ namespace Model.IKYS
 
             return list;
         }
-
         public DataTable SelectCalisanPersonelReturnDT()
         {
             string sqlString = string.Format(@"
@@ -543,29 +505,6 @@ namespace Model.IKYS
             List<Personel> list = ToList<Personel>(dataTable);
 
             return list;
-        }
-
-        public DataTable SelectSecilmemisIcKatilimcilarByFaaliyetIdReturnDT(int faaliyetId)
-        {
-            string faaliyetIdStr = faaliyetId > 0 ? string.Format(" AND A.Id Not in (SELECT KatilimciId FROM FaaliyetKatilim_Table WHERE KatilimciTipi={0} AND FaaliyetId={1} )", ProjeConstants.FAALIYET_KATILIMCI_IC_INT, faaliyetId) : string.Empty;
-            string sqlString = string.Format(@"
-                SELECT A.Id KatilimciId, A.Adi,A.Soyadi, {0} KatilimciTipi
-                FROM Personel_Table A
-	                INNER JOIN IsBilgileri_Table B ON B.PersonelId=A.Id
-                WHERE B.CalismaDurumu=1 
-                    {1}
-                ORDER BY A.Adi", ProjeConstants.FAALIYET_KATILIMCI_IC_INT, faaliyetIdStr);
-            DataTable dataTable = null;
-            try
-            {
-                dataTable = dao.SelectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-
-            return dataTable;
         }
         public DataTable SelectSecilmemisIcKatilimcilarByToplantiIdReturnDT(int toplantiId)
         {

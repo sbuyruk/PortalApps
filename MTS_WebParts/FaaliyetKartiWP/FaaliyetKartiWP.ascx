@@ -39,7 +39,7 @@
                     </asp:TableHeaderRow>
                     <asp:TableHeaderRow>
                         <asp:TableHeaderCell>Katılımcılar</asp:TableHeaderCell>
-                        <asp:TableHeaderCell>Katılımcı Tipi</asp:TableHeaderCell>
+                        <asp:TableHeaderCell>Kurumu</asp:TableHeaderCell>
                         <asp:TableHeaderCell>Verilen Anı Objesi</asp:TableHeaderCell>
                         <asp:TableHeaderCell>Getirilen Anı Objesi</asp:TableHeaderCell>
                     </asp:TableHeaderRow>

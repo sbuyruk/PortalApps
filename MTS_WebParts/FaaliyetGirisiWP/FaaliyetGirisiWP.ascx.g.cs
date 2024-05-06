@@ -145,18 +145,6 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.Label IcIrtibatLbl;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.LinkButton IcIrtibatCikarBtn;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl IcIrtibatDiv;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.Label DisIrtibatLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -234,10 +222,6 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.HtmlControls.HtmlInputText paramFaaliyetKatilimciIdLbl;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.HtmlControls.HtmlInputText paramFaaliyetKatilimciTipiLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -1315,59 +1299,6 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControlIcIrtibatLbl() {
-            global::System.Web.UI.WebControls.Label @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.Label();
-            this.IcIrtibatLbl = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "IcIrtibatLbl";
-            @__ctrl.Text = "";
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.LinkButton @__BuildControlIcIrtibatCikarBtn() {
-            global::System.Web.UI.WebControls.LinkButton @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
-            this.IcIrtibatCikarBtn = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "IcIrtibatCikarBtn";
-            @__ctrl.CssClass = "btn btn-outline-danger";
-            @__ctrl.Text = "Çıkar";
-            @__ctrl.CausesValidation = false;
-            @__ctrl.Click -= new System.EventHandler(this.IcIrtibatCikarBtn_Click);
-            @__ctrl.Click += new System.EventHandler(this.IcIrtibatCikarBtn_Click);
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControlIcIrtibatDiv() {
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
-            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
-            this.IcIrtibatDiv = @__ctrl;
-            @__ctrl.TemplateControl = this;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-group");
-            @__ctrl.ID = "IcIrtibatDiv";
-            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    "));
-            global::System.Web.UI.WebControls.Label @__ctrl1;
-            @__ctrl1 = this.@__BuildControlIcIrtibatLbl();
-            @__parser.AddParsedSubObject(@__ctrl1);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl2;
-            @__ctrl2 = this.@__BuildControlIcIrtibatCikarBtn();
-            @__parser.AddParsedSubObject(@__ctrl2);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                "));
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlDisIrtibatLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -1432,7 +1363,6 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
                                                 <th>Adı Soyadı</th>
                                                 <th>Kurumu</th>
                                                 <th>Katılımcı</th>
-                                                <th>Katilimci Tipi</th>
                                                 <th>Anı Objesi </th>
                                                 <th>E-posta Daveti</th>
                                                 <th>Kişi Kartı</th>
@@ -1445,14 +1375,10 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl1;
             @__ctrl1 = this.@__BuildControlAramaGorusmeDiv();
             @__parser.AddParsedSubObject(@__ctrl1);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n                                "));
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl2;
-            @__ctrl2 = this.@__BuildControlIcIrtibatDiv();
+            @__ctrl2 = this.@__BuildControlDisIrtibatDiv();
             @__parser.AddParsedSubObject(@__ctrl2);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                "));
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl3;
-            @__ctrl3 = this.@__BuildControlDisIrtibatDiv();
-            @__parser.AddParsedSubObject(@__ctrl3);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n                            </div>\r\n\r\n                        "));
         }
         
@@ -1473,17 +1399,6 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control25() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
-            @__ctrl.ControlID = "IrtibatSecBtn";
-            @__ctrl.EventName = "click";
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control26() {
-            global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
-            @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
             @__ctrl.ControlID = "SecilenKatilimciyiKaydetNowBtn";
             @__ctrl.EventName = "click";
             return @__ctrl;
@@ -1499,9 +1414,6 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl2;
             @__ctrl2 = this.@__BuildControl__control25();
             @__ctrl.Add(@__ctrl2);
-            global::System.Web.UI.AsyncPostBackTrigger @__ctrl3;
-            @__ctrl3 = this.@__BuildControl__control26();
-            @__ctrl.Add(@__ctrl3);
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -1558,7 +1470,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control27(System.Web.UI.Control @__ctrl) {
+        private void @__BuildControl__control26(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        "));
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl1;
@@ -1570,7 +1482,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control29() {
+        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control28() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
             @__ctrl.ControlID = "RefreshTimer";
@@ -1581,9 +1493,9 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control28(System.Web.UI.UpdatePanelTriggerCollection @__ctrl) {
+        private void @__BuildControl__control27(System.Web.UI.UpdatePanelTriggerCollection @__ctrl) {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl1;
-            @__ctrl1 = this.@__BuildControl__control29();
+            @__ctrl1 = this.@__BuildControl__control28();
             @__ctrl.Add(@__ctrl1);
         }
         
@@ -1594,11 +1506,11 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             global::System.Web.UI.UpdatePanel @__ctrl;
             @__ctrl = new global::System.Web.UI.UpdatePanel();
             this.UpdatePanel8 = @__ctrl;
-            @__ctrl.ContentTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control27));
+            @__ctrl.ContentTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control26));
             @__ctrl.ID = "UpdatePanel8";
             @__ctrl.UpdateMode = global::System.Web.UI.UpdatePanelUpdateMode.Conditional;
             @__ctrl.ViewStateMode = global::System.Web.UI.ViewStateMode.Enabled;
-            this.@__BuildControl__control28(@__ctrl.Triggers);
+            this.@__BuildControl__control27(@__ctrl.Triggers);
             return @__ctrl;
         }
         
@@ -1769,7 +1681,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control30(System.Web.UI.Control @__ctrl) {
+        private void @__BuildControl__control29(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl1;
@@ -1809,7 +1721,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control32() {
+        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control31() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
             @__ctrl.ControlID = "RefreshTimer";
@@ -1820,9 +1732,9 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control31(System.Web.UI.UpdatePanelTriggerCollection @__ctrl) {
+        private void @__BuildControl__control30(System.Web.UI.UpdatePanelTriggerCollection @__ctrl) {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl1;
-            @__ctrl1 = this.@__BuildControl__control32();
+            @__ctrl1 = this.@__BuildControl__control31();
             @__ctrl.Add(@__ctrl1);
         }
         
@@ -1833,11 +1745,11 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             global::System.Web.UI.UpdatePanel @__ctrl;
             @__ctrl = new global::System.Web.UI.UpdatePanel();
             this.UpdatePanel3 = @__ctrl;
-            @__ctrl.ContentTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control30));
+            @__ctrl.ContentTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control29));
             @__ctrl.ID = "UpdatePanel3";
             @__ctrl.UpdateMode = global::System.Web.UI.UpdatePanelUpdateMode.Conditional;
             @__ctrl.ViewStateMode = global::System.Web.UI.ViewStateMode.Enabled;
-            this.@__BuildControl__control31(@__ctrl.Triggers);
+            this.@__BuildControl__control30(@__ctrl.Triggers);
             return @__ctrl;
         }
         
@@ -1873,18 +1785,6 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
             this.paramFaaliyetKatilimciIdLbl = @__ctrl;
             @__ctrl.ID = "paramFaaliyetKatilimciIdLbl";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.HtmlControls.HtmlInputText @__BuildControlparamFaaliyetKatilimciTipiLbl() {
-            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl;
-            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
-            this.paramFaaliyetKatilimciTipiLbl = @__ctrl;
-            @__ctrl.ID = "paramFaaliyetKatilimciTipiLbl";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
             return @__ctrl;
         }
@@ -2057,7 +1957,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control33(System.Web.UI.Control @__ctrl) {
+        private void @__BuildControl__control32(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
         <div class=""modal"" id=""ModalSilDiv"" role=""dialog"">
@@ -2096,7 +1996,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control35() {
+        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control34() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
             @__ctrl.ControlID = "FaaliyetSilBtn";
@@ -2107,7 +2007,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control36() {
+        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control35() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
             @__ctrl.ControlID = "GuncelleBtn";
@@ -2118,12 +2018,12 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control34(System.Web.UI.UpdatePanelTriggerCollection @__ctrl) {
+        private void @__BuildControl__control33(System.Web.UI.UpdatePanelTriggerCollection @__ctrl) {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl1;
-            @__ctrl1 = this.@__BuildControl__control35();
+            @__ctrl1 = this.@__BuildControl__control34();
             @__ctrl.Add(@__ctrl1);
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl2;
-            @__ctrl2 = this.@__BuildControl__control36();
+            @__ctrl2 = this.@__BuildControl__control35();
             @__ctrl.Add(@__ctrl2);
         }
         
@@ -2134,11 +2034,11 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             global::System.Web.UI.UpdatePanel @__ctrl;
             @__ctrl = new global::System.Web.UI.UpdatePanel();
             this.UpdatePanel1 = @__ctrl;
-            @__ctrl.ContentTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control33));
+            @__ctrl.ContentTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control32));
             @__ctrl.ID = "UpdatePanel1";
             @__ctrl.UpdateMode = global::System.Web.UI.UpdatePanelUpdateMode.Conditional;
             @__ctrl.ViewStateMode = global::System.Web.UI.ViewStateMode.Enabled;
-            this.@__BuildControl__control34(@__ctrl.Triggers);
+            this.@__BuildControl__control33(@__ctrl.Triggers);
             return @__ctrl;
         }
         
@@ -2188,7 +2088,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control37(System.Web.UI.Control @__ctrl) {
+        private void @__BuildControl__control36(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n        <div class=\"modal \" id=\"KatilimciSecimiModal\" role=\"dialog\">\r\n         " +
                         "   <div class=\"modal-dialog modal-lg\">\r\n                <div class=\"modal-conten" +
@@ -2227,7 +2127,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control39() {
+        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control38() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
             @__ctrl.ControlID = "KatilimciEkleBtn";
@@ -2238,9 +2138,9 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control38(System.Web.UI.UpdatePanelTriggerCollection @__ctrl) {
+        private void @__BuildControl__control37(System.Web.UI.UpdatePanelTriggerCollection @__ctrl) {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl1;
-            @__ctrl1 = this.@__BuildControl__control39();
+            @__ctrl1 = this.@__BuildControl__control38();
             @__ctrl.Add(@__ctrl1);
         }
         
@@ -2251,11 +2151,11 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             global::System.Web.UI.UpdatePanel @__ctrl;
             @__ctrl = new global::System.Web.UI.UpdatePanel();
             this.UpdatePanel6 = @__ctrl;
-            @__ctrl.ContentTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control37));
+            @__ctrl.ContentTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control36));
             @__ctrl.ID = "UpdatePanel6";
             @__ctrl.UpdateMode = global::System.Web.UI.UpdatePanelUpdateMode.Conditional;
             @__ctrl.ViewStateMode = global::System.Web.UI.ViewStateMode.Enabled;
-            this.@__BuildControl__control38(@__ctrl.Triggers);
+            this.@__BuildControl__control37(@__ctrl.Triggers);
             return @__ctrl;
         }
         
@@ -2321,7 +2221,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControl__control41() {
+        private global::System.Web.UI.WebControls.Label @__BuildControl__control40() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.TemplateControl = this;
@@ -2361,7 +2261,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control40(System.Web.UI.Control @__ctrl) {
+        private void @__BuildControl__control39(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n        <div class=\"modal\" id=\"AniObjesiModal\" role=\"dialog\">\r\n            <div" +
                         " class=\"modal-dialog modal-xl\">\r\n                <div class=\"modal-content\">\r\n  " +
@@ -2387,7 +2287,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"form-group\"" +
                         ">\r\n                            "));
             global::System.Web.UI.WebControls.Label @__ctrl5;
-            @__ctrl5 = this.@__BuildControl__control41();
+            @__ctrl5 = this.@__BuildControl__control40();
             @__parser.AddParsedSubObject(@__ctrl5);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
             global::System.Web.UI.WebControls.Table @__ctrl6;
@@ -2417,7 +2317,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control43() {
+        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control42() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
             @__ctrl.ControlID = "AniObjesiSecBtn";
@@ -2428,7 +2328,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control44() {
+        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control43() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
             @__ctrl.ControlID = "StokluAniObjesiSecBtn";
@@ -2439,12 +2339,12 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control42(System.Web.UI.UpdatePanelTriggerCollection @__ctrl) {
+        private void @__BuildControl__control41(System.Web.UI.UpdatePanelTriggerCollection @__ctrl) {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl1;
-            @__ctrl1 = this.@__BuildControl__control43();
+            @__ctrl1 = this.@__BuildControl__control42();
             @__ctrl.Add(@__ctrl1);
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl2;
-            @__ctrl2 = this.@__BuildControl__control44();
+            @__ctrl2 = this.@__BuildControl__control43();
             @__ctrl.Add(@__ctrl2);
         }
         
@@ -2455,11 +2355,11 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             global::System.Web.UI.UpdatePanel @__ctrl;
             @__ctrl = new global::System.Web.UI.UpdatePanel();
             this.UpdatePanel7 = @__ctrl;
-            @__ctrl.ContentTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control40));
+            @__ctrl.ContentTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control39));
             @__ctrl.ID = "UpdatePanel7";
             @__ctrl.UpdateMode = global::System.Web.UI.UpdatePanelUpdateMode.Conditional;
             @__ctrl.ViewStateMode = global::System.Web.UI.ViewStateMode.Enabled;
-            this.@__BuildControl__control42(@__ctrl.Triggers);
+            this.@__BuildControl__control41(@__ctrl.Triggers);
             return @__ctrl;
         }
         
@@ -2497,7 +2397,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControl__control46() {
+        private global::System.Web.UI.WebControls.Label @__BuildControl__control45() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.TemplateControl = this;
@@ -2527,7 +2427,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control45(System.Web.UI.Control @__ctrl) {
+        private void @__BuildControl__control44(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n        <div class=\"modal\" id=\"GetirilenAniObjesiModal\" role=\"dialog\">\r\n       " +
                         "     <div class=\"modal-dialog\">\r\n                <div class=\"modal-content\">\r\n  " +
@@ -2545,7 +2445,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"form-group\"" +
                         ">\r\n                            "));
             global::System.Web.UI.WebControls.Label @__ctrl3;
-            @__ctrl3 = this.@__BuildControl__control46();
+            @__ctrl3 = this.@__BuildControl__control45();
             @__parser.AddParsedSubObject(@__ctrl3);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
             global::System.Web.UI.WebControls.TextBox @__ctrl4;
@@ -2570,7 +2470,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control48() {
+        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control47() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
             @__ctrl.ControlID = "GetirilenAniObjesiSecBtn";
@@ -2581,7 +2481,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control49() {
+        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control48() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
             @__ctrl.ControlID = "GetirilenAniObjesiKaydetBtn";
@@ -2592,12 +2492,12 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control47(System.Web.UI.UpdatePanelTriggerCollection @__ctrl) {
+        private void @__BuildControl__control46(System.Web.UI.UpdatePanelTriggerCollection @__ctrl) {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl1;
-            @__ctrl1 = this.@__BuildControl__control48();
+            @__ctrl1 = this.@__BuildControl__control47();
             @__ctrl.Add(@__ctrl1);
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl2;
-            @__ctrl2 = this.@__BuildControl__control49();
+            @__ctrl2 = this.@__BuildControl__control48();
             @__ctrl.Add(@__ctrl2);
         }
         
@@ -2608,11 +2508,11 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             global::System.Web.UI.UpdatePanel @__ctrl;
             @__ctrl = new global::System.Web.UI.UpdatePanel();
             this.UpdatePanel9 = @__ctrl;
-            @__ctrl.ContentTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control45));
+            @__ctrl.ContentTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control44));
             @__ctrl.ID = "UpdatePanel9";
             @__ctrl.UpdateMode = global::System.Web.UI.UpdatePanelUpdateMode.Conditional;
             @__ctrl.ViewStateMode = global::System.Web.UI.ViewStateMode.Enabled;
-            this.@__BuildControl__control47(@__ctrl.Triggers);
+            this.@__BuildControl__control46(@__ctrl.Triggers);
             return @__ctrl;
         }
         
@@ -2707,7 +2607,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControl__control51() {
+        private global::System.Web.UI.WebControls.Label @__BuildControl__control50() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -2735,7 +2635,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControl__control52() {
+        private global::System.Web.UI.WebControls.Label @__BuildControl__control51() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -2763,7 +2663,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControl__control53() {
+        private global::System.Web.UI.WebControls.Label @__BuildControl__control52() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -2806,7 +2706,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            <div class=\"row\">\r\n                                " +
                         "<div class=\"form-group col-5\">\r\n                                    "));
             global::System.Web.UI.WebControls.Label @__ctrl1;
-            @__ctrl1 = this.@__BuildControl__control51();
+            @__ctrl1 = this.@__BuildControl__control50();
             @__parser.AddParsedSubObject(@__ctrl1);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    "));
             global::System.Web.UI.WebControls.TextBox @__ctrl2;
@@ -2815,7 +2715,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                                <div cl" +
                         "ass=\"form-group col-5\">\r\n                                    "));
             global::System.Web.UI.WebControls.Label @__ctrl3;
-            @__ctrl3 = this.@__BuildControl__control52();
+            @__ctrl3 = this.@__BuildControl__control51();
             @__parser.AddParsedSubObject(@__ctrl3);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    "));
             global::System.Web.UI.WebControls.TextBox @__ctrl4;
@@ -2824,7 +2724,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                                <div cl" +
                         "ass=\"form-group col-2\">\r\n                                    "));
             global::System.Web.UI.WebControls.Label @__ctrl5;
-            @__ctrl5 = this.@__BuildControl__control53();
+            @__ctrl5 = this.@__BuildControl__control52();
             @__parser.AddParsedSubObject(@__ctrl5);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    "));
             global::System.Web.UI.WebControls.TextBox @__ctrl6;
@@ -2838,7 +2738,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControl__control54() {
+        private global::System.Web.UI.WebControls.Label @__BuildControl__control53() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -2868,7 +2768,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControl__control55() {
+        private global::System.Web.UI.WebControls.Label @__BuildControl__control54() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -2898,7 +2798,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControl__control56() {
+        private global::System.Web.UI.WebControls.Label @__BuildControl__control55() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -2941,7 +2841,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            <div class=\"row\">\r\n                                " +
                         "<div class=\"form-group col-5\">\r\n                                    "));
             global::System.Web.UI.WebControls.Label @__ctrl1;
-            @__ctrl1 = this.@__BuildControl__control54();
+            @__ctrl1 = this.@__BuildControl__control53();
             @__parser.AddParsedSubObject(@__ctrl1);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl2;
@@ -2950,7 +2850,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                                <div cl" +
                         "ass=\"form-group col-5\">\r\n                                    "));
             global::System.Web.UI.WebControls.Label @__ctrl3;
-            @__ctrl3 = this.@__BuildControl__control55();
+            @__ctrl3 = this.@__BuildControl__control54();
             @__parser.AddParsedSubObject(@__ctrl3);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl4;
@@ -2959,7 +2859,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                                <div cl" +
                         "ass=\"form-group col-2\">\r\n                                    "));
             global::System.Web.UI.WebControls.Label @__ctrl5;
-            @__ctrl5 = this.@__BuildControl__control56();
+            @__ctrl5 = this.@__BuildControl__control55();
             @__parser.AddParsedSubObject(@__ctrl5);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    "));
             global::System.Web.UI.WebControls.TextBox @__ctrl6;
@@ -2973,7 +2873,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control50(System.Web.UI.Control @__ctrl) {
+        private void @__BuildControl__control49(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    <div class=\"modal-header text-danger\">\r\n                   " +
                         "     "));
@@ -3016,7 +2916,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control58() {
+        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control57() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
             @__ctrl.ControlID = "StokluAniObjesiSecBtn";
@@ -3027,7 +2927,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control59() {
+        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control58() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
             @__ctrl.ControlID = "StokluAniObjesiKaydetBtn";
@@ -3038,7 +2938,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control60() {
+        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control59() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
             @__ctrl.ControlID = "StokluAniObjesiIadeEtBtn";
@@ -3049,15 +2949,15 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control57(System.Web.UI.UpdatePanelTriggerCollection @__ctrl) {
+        private void @__BuildControl__control56(System.Web.UI.UpdatePanelTriggerCollection @__ctrl) {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl1;
-            @__ctrl1 = this.@__BuildControl__control58();
+            @__ctrl1 = this.@__BuildControl__control57();
             @__ctrl.Add(@__ctrl1);
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl2;
-            @__ctrl2 = this.@__BuildControl__control59();
+            @__ctrl2 = this.@__BuildControl__control58();
             @__ctrl.Add(@__ctrl2);
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl3;
-            @__ctrl3 = this.@__BuildControl__control60();
+            @__ctrl3 = this.@__BuildControl__control59();
             @__ctrl.Add(@__ctrl3);
         }
         
@@ -3068,11 +2968,11 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             global::System.Web.UI.UpdatePanel @__ctrl;
             @__ctrl = new global::System.Web.UI.UpdatePanel();
             this.UpdatePanel10 = @__ctrl;
-            @__ctrl.ContentTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control50));
+            @__ctrl.ContentTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control49));
             @__ctrl.ID = "UpdatePanel10";
             @__ctrl.UpdateMode = global::System.Web.UI.UpdatePanelUpdateMode.Conditional;
             @__ctrl.ViewStateMode = global::System.Web.UI.ViewStateMode.Enabled;
-            this.@__BuildControl__control57(@__ctrl.Triggers);
+            this.@__BuildControl__control56(@__ctrl.Triggers);
             return @__ctrl;
         }
         
@@ -3112,7 +3012,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControl__control62() {
+        private global::System.Web.UI.WebControls.Label @__BuildControl__control61() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.TemplateControl = this;
@@ -3140,7 +3040,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control61(System.Web.UI.Control @__ctrl) {
+        private void @__BuildControl__control60(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n        <div class=\"modal\" id=\"TakvimDavetiModalDiv\" role=\"dialog\">\r\n          " +
                         "  <div class=\"modal-dialog\">\r\n                <div class=\"modal-content\">\r\n     " +
@@ -3157,7 +3057,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"form-group\"" +
                         ">\r\n                            "));
             global::System.Web.UI.WebControls.Label @__ctrl3;
-            @__ctrl3 = this.@__BuildControl__control62();
+            @__ctrl3 = this.@__BuildControl__control61();
             @__parser.AddParsedSubObject(@__ctrl3);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
             global::System.Web.UI.WebControls.TextBox @__ctrl4;
@@ -3182,7 +3082,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control64() {
+        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control63() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
             @__ctrl.ControlID = "GetirilenAniObjesiSecBtn";
@@ -3193,7 +3093,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control65() {
+        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control64() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
             @__ctrl.ControlID = "GetirilenAniObjesiKaydetBtn";
@@ -3204,12 +3104,12 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control63(System.Web.UI.UpdatePanelTriggerCollection @__ctrl) {
+        private void @__BuildControl__control62(System.Web.UI.UpdatePanelTriggerCollection @__ctrl) {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl1;
-            @__ctrl1 = this.@__BuildControl__control64();
+            @__ctrl1 = this.@__BuildControl__control63();
             @__ctrl.Add(@__ctrl1);
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl2;
-            @__ctrl2 = this.@__BuildControl__control65();
+            @__ctrl2 = this.@__BuildControl__control64();
             @__ctrl.Add(@__ctrl2);
         }
         
@@ -3220,11 +3120,11 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             global::System.Web.UI.UpdatePanel @__ctrl;
             @__ctrl = new global::System.Web.UI.UpdatePanel();
             this.UpdatePanel11 = @__ctrl;
-            @__ctrl.ContentTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control61));
+            @__ctrl.ContentTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control60));
             @__ctrl.ID = "UpdatePanel11";
             @__ctrl.UpdateMode = global::System.Web.UI.UpdatePanelUpdateMode.Conditional;
             @__ctrl.ViewStateMode = global::System.Web.UI.ViewStateMode.Enabled;
-            this.@__BuildControl__control63(@__ctrl.Triggers);
+            this.@__BuildControl__control62(@__ctrl.Triggers);
             return @__ctrl;
         }
         
@@ -3257,45 +3157,42 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl8;
             @__ctrl8 = this.@__BuildControlparamFaaliyetKatilimciIdLbl();
             @__parser.AddParsedSubObject(@__ctrl8);
-            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl9;
-            @__ctrl9 = this.@__BuildControlparamFaaliyetKatilimciTipiLbl();
+            global::System.Web.UI.WebControls.LinkButton @__ctrl9;
+            @__ctrl9 = this.@__BuildControlSecilenKatilimciyiKaydetNowBtn();
             @__parser.AddParsedSubObject(@__ctrl9);
             global::System.Web.UI.WebControls.LinkButton @__ctrl10;
-            @__ctrl10 = this.@__BuildControlSecilenKatilimciyiKaydetNowBtn();
+            @__ctrl10 = this.@__BuildControlKatilimciCikarBtn();
             @__parser.AddParsedSubObject(@__ctrl10);
             global::System.Web.UI.WebControls.LinkButton @__ctrl11;
-            @__ctrl11 = this.@__BuildControlKatilimciCikarBtn();
+            @__ctrl11 = this.@__BuildControlIrtibatSecBtn();
             @__parser.AddParsedSubObject(@__ctrl11);
             global::System.Web.UI.WebControls.LinkButton @__ctrl12;
-            @__ctrl12 = this.@__BuildControlIrtibatSecBtn();
+            @__ctrl12 = this.@__BuildControlAniObjesiSecBtn();
             @__parser.AddParsedSubObject(@__ctrl12);
             global::System.Web.UI.WebControls.LinkButton @__ctrl13;
-            @__ctrl13 = this.@__BuildControlAniObjesiSecBtn();
+            @__ctrl13 = this.@__BuildControlStokluAniObjesiSecBtn();
             @__parser.AddParsedSubObject(@__ctrl13);
             global::System.Web.UI.WebControls.LinkButton @__ctrl14;
-            @__ctrl14 = this.@__BuildControlStokluAniObjesiSecBtn();
+            @__ctrl14 = this.@__BuildControlGetirilenAniObjesiSecBtn();
             @__parser.AddParsedSubObject(@__ctrl14);
-            global::System.Web.UI.WebControls.LinkButton @__ctrl15;
-            @__ctrl15 = this.@__BuildControlGetirilenAniObjesiSecBtn();
+            global::System.Web.UI.UpdatePanel @__ctrl15;
+            @__ctrl15 = this.@__BuildControlUpdatePanel1();
             @__parser.AddParsedSubObject(@__ctrl15);
             global::System.Web.UI.UpdatePanel @__ctrl16;
-            @__ctrl16 = this.@__BuildControlUpdatePanel1();
+            @__ctrl16 = this.@__BuildControlUpdatePanel6();
             @__parser.AddParsedSubObject(@__ctrl16);
             global::System.Web.UI.UpdatePanel @__ctrl17;
-            @__ctrl17 = this.@__BuildControlUpdatePanel6();
+            @__ctrl17 = this.@__BuildControlUpdatePanel7();
             @__parser.AddParsedSubObject(@__ctrl17);
             global::System.Web.UI.UpdatePanel @__ctrl18;
-            @__ctrl18 = this.@__BuildControlUpdatePanel7();
+            @__ctrl18 = this.@__BuildControlUpdatePanel9();
             @__parser.AddParsedSubObject(@__ctrl18);
             global::System.Web.UI.UpdatePanel @__ctrl19;
-            @__ctrl19 = this.@__BuildControlUpdatePanel9();
+            @__ctrl19 = this.@__BuildControlUpdatePanel10();
             @__parser.AddParsedSubObject(@__ctrl19);
             global::System.Web.UI.UpdatePanel @__ctrl20;
-            @__ctrl20 = this.@__BuildControlUpdatePanel10();
+            @__ctrl20 = this.@__BuildControlUpdatePanel11();
             @__parser.AddParsedSubObject(@__ctrl20);
-            global::System.Web.UI.UpdatePanel @__ctrl21;
-            @__ctrl21 = this.@__BuildControlUpdatePanel11();
-            @__parser.AddParsedSubObject(@__ctrl21);
             @__ctrl.SetRenderMethodDelegate(new System.Web.UI.RenderMethod(this.@__Render__control1));
         }
         
@@ -3357,29 +3254,23 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
                     "ion KatilimciSecimiModal() {\r\n        $(\"#KatilimciSecimiModal\").modal({ backdro" +
                     "p: false });\r\n    }\r\n    $(\"#KatilimciSecimiModal\").draggable({\r\n        handle:" +
                     " \".modal-dialog\"\r\n    });\r\n    function KatilimciSecildiBtnClick(katilimciId, fa" +
-                    "aliyetId, katilimciTipi) {\r\n        document.getElementById(\'");
+                    "aliyetId) {\r\n        document.getElementById(\'");
                          @__w.Write( paramFaaliyetKatilimciIdLbl.ClientID);
 
             @__w.Write("\').value = katilimciId;\r\n        document.getElementById(\'");
                          @__w.Write( paramFaaliyetIdLbl.ClientID);
 
             @__w.Write("\').value = faaliyetId;\r\n        document.getElementById(\'");
-                         @__w.Write( paramFaaliyetKatilimciTipiLbl.ClientID);
-
-            @__w.Write("\').value = katilimciTipi;\r\n        document.getElementById(\'");
                          @__w.Write( SecilenKatilimciyiKaydetNowBtn.ClientID);
 
-            @__w.Write("\').click();\r\n    }\r\n    function IrtibatSecBtnClick(kisiId, faaliyetId, katilimci" +
-                    "Tipi) {\r\n        document.getElementById(\'");
+            @__w.Write("\').click();\r\n    }\r\n    function IrtibatSecBtnClick(kisiId, faaliyetId) {\r\n      " +
+                    "  document.getElementById(\'");
                          @__w.Write( paramFaaliyetKatilimciIdLbl.ClientID);
 
             @__w.Write("\').value = kisiId;\r\n        document.getElementById(\'");
                          @__w.Write( paramFaaliyetIdLbl.ClientID);
 
             @__w.Write("\').value = faaliyetId;\r\n        document.getElementById(\'");
-                         @__w.Write( paramFaaliyetKatilimciTipiLbl.ClientID);
-
-            @__w.Write("\').value = katilimciTipi;\r\n        document.getElementById(\'");
                          @__w.Write(IrtibatSecBtn.ClientID);
 
             @__w.Write("\').click();\r\n    }\r\n    function KatilimciCikarBtnClick(katilimId) {\r\n        doc" +
@@ -3420,7 +3311,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         $(""#StokluAniObjesiModal"").modal('hide');
         $("".modal-backdrop"").remove();//ekran modaldan sonra normale dönsün
     }
-    function StoksuzAniObjesiBtnClick(katilimciId, faaliyetId, katilimciTipi) {
+    function StoksuzAniObjesiBtnClick(katilimciId, faaliyetId) {
 
         document.getElementById('");
                          @__w.Write( GetirilenAniObjesiTxt.ClientID);
@@ -3438,15 +3329,12 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
                          @__w.Write( paramFaaliyetIdLbl.ClientID);
 
             @__w.Write("\').value = faaliyetId;\r\n        document.getElementById(\'");
-                         @__w.Write( paramFaaliyetKatilimciTipiLbl.ClientID);
-
-            @__w.Write("\').value = katilimciTipi;\r\n        document.getElementById(\'");
                          @__w.Write( AniObjesiSecBtn.ClientID);
 
             @__w.Write(@"').click();
         ArrayDoldur();
     }
-    function StokluAniObjesiBtnClick(katilimciId, faaliyetId, katilimciTipi) {
+    function StokluAniObjesiBtnClick(katilimciId, faaliyetId) {
 
         document.getElementById(""StokluAniObjesiIadeEtTriggerBtn"").style.display = ""none"";
         document.getElementById(""StokluAniObjesiKaydetTriggerBtn"").style.display = ""block"";
@@ -3459,10 +3347,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             @__w.Write("\').value = katilimciId;\r\n        document.getElementById(\'");
                          @__w.Write( paramFaaliyetIdLbl.ClientID);
 
-            @__w.Write("\').value = faaliyetId;\r\n        document.getElementById(\'");
-                         @__w.Write( paramFaaliyetKatilimciTipiLbl.ClientID);
-
-            @__w.Write("\').value = katilimciTipi;\r\n\r\n        document.getElementById(\'");
+            @__w.Write("\').value = faaliyetId;\r\n\r\n        document.getElementById(\'");
                          @__w.Write( StokluAniObjesiSecBtn.ClientID);
 
             @__w.Write(@"').click();
@@ -3478,16 +3363,13 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
                          @__w.Write( StokluAniObjesiSecBtn.ClientID);
 
             @__w.Write("\').click();\r\n\r\n    }\r\n    function  GetirilenAniObjesiBtnClick(katilimciId, faali" +
-                    "yetId, katilimciTipi) {\r\n        document.getElementById(\'");
+                    "yetId) {\r\n        document.getElementById(\'");
                          @__w.Write( paramFaaliyetKatilimciIdLbl.ClientID);
 
             @__w.Write("\').value = katilimciId;\r\n        document.getElementById(\'");
                          @__w.Write( paramFaaliyetIdLbl.ClientID);
 
             @__w.Write("\').value = faaliyetId;\r\n        document.getElementById(\'");
-                         @__w.Write( paramFaaliyetKatilimciTipiLbl.ClientID);
-
-            @__w.Write("\').value = katilimciTipi;\r\n        document.getElementById(\'");
                          @__w.Write( GetirilenAniObjesiSecBtn.ClientID);
 
             @__w.Write("\').click();        \r\n    }\r\n    function ArrayDoldur() {\r\n        var idString = " +
@@ -3625,7 +3507,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
 
 
 <script type=""text/javascript""> 
-    function TakvimDavetiyesiModalAc(katilimId,faaliyetId, katilimciId, katilimciTipi, eposta) {
+    function TakvimDavetiyesiModalAc(katilimId,faaliyetId, katilimciId, eposta) {
         document.getElementById('");
                          @__w.Write( paramFaaliyetKatilimciIdLbl.ClientID);
 
@@ -3636,9 +3518,6 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
                          @__w.Write( paramFaaliyetIdLbl.ClientID);
 
             @__w.Write("\').value = faaliyetId;\r\n        document.getElementById(\'");
-                         @__w.Write( paramFaaliyetKatilimciTipiLbl.ClientID);
-
-            @__w.Write("\').value = katilimciTipi;\r\n        document.getElementById(\'");
                          @__w.Write( EPostaAdresiTxt.ClientID);
 
             @__w.Write("\').value = eposta;\r\n        \r\n        $(\"#TakvimDavetiModalDiv\").modal({ backdrop" +
@@ -3680,20 +3559,18 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             parameterContainer.Controls[12].RenderControl(@__w);
             @__w.Write("\r\n        ");
             parameterContainer.Controls[13].RenderControl(@__w);
-            @__w.Write("\r\n        ");
-            parameterContainer.Controls[14].RenderControl(@__w);
             @__w.Write("\r\n    </div>\r\n</div>\r\n<!-- Silme Onayı Modal -->\r\n");
-            parameterContainer.Controls[15].RenderControl(@__w);
+            parameterContainer.Controls[14].RenderControl(@__w);
             @__w.Write("\r\n<!-- Katılımcı Seçimi Modal -->\r\n");
-            parameterContainer.Controls[16].RenderControl(@__w);
+            parameterContainer.Controls[15].RenderControl(@__w);
             @__w.Write("\r\n<!-- Stoksuz Anı Objesi Modal -->\r\n");
-            parameterContainer.Controls[17].RenderControl(@__w);
+            parameterContainer.Controls[16].RenderControl(@__w);
             @__w.Write("\r\n<!-- Getirilen Anı Objesi Modal -->\r\n");
-            parameterContainer.Controls[18].RenderControl(@__w);
+            parameterContainer.Controls[17].RenderControl(@__w);
             @__w.Write("\r\n<!-- Stoklu Anı Objesi Modal -->\r\n<div class=\"modal\" id=\"StokluAniObjesiModal\" " +
                     "role=\"dialog\">\r\n\r\n    <div class=\"modal-dialog modal-lg\">\r\n        <div class=\"m" +
                     "odal-content\">\r\n            ");
-            parameterContainer.Controls[19].RenderControl(@__w);
+            parameterContainer.Controls[18].RenderControl(@__w);
             @__w.Write(@"
             <div class=""modal-footer"">
                 <button type=""button"" class=""btn btn-secondary"" data-dismiss=""modal"">Kapat</button>
@@ -3709,7 +3586,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
 </div>
 <!-- TakvimDaveti Modal -->
 ");
-            parameterContainer.Controls[20].RenderControl(@__w);
+            parameterContainer.Controls[19].RenderControl(@__w);
         }
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +

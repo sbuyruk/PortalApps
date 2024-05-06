@@ -141,10 +141,6 @@ namespace MTS_WebParts.AramaGirisiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.HtmlControls.HtmlInputText paramFaaliyetKatilimciTipiLbl;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton SecilenKatilimciyiGetirBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -736,18 +732,6 @@ namespace MTS_WebParts.AramaGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.HtmlControls.HtmlInputText @__BuildControlparamFaaliyetKatilimciTipiLbl() {
-            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl;
-            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
-            this.paramFaaliyetKatilimciTipiLbl = @__ctrl;
-            @__ctrl.ID = "paramFaaliyetKatilimciTipiLbl";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlSecilenKatilimciyiGetirBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -1106,18 +1090,15 @@ namespace MTS_WebParts.AramaGirisiWP {
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl25;
             @__ctrl25 = this.@__BuildControlparamFaaliyetKatilimciIdLbl();
             @__parser.AddParsedSubObject(@__ctrl25);
-            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl26;
-            @__ctrl26 = this.@__BuildControlparamFaaliyetKatilimciTipiLbl();
+            global::System.Web.UI.WebControls.LinkButton @__ctrl26;
+            @__ctrl26 = this.@__BuildControlSecilenKatilimciyiGetirBtn();
             @__parser.AddParsedSubObject(@__ctrl26);
-            global::System.Web.UI.WebControls.LinkButton @__ctrl27;
-            @__ctrl27 = this.@__BuildControlSecilenKatilimciyiGetirBtn();
+            global::System.Web.UI.UpdatePanel @__ctrl27;
+            @__ctrl27 = this.@__BuildControlUpdatePanel6();
             @__parser.AddParsedSubObject(@__ctrl27);
             global::System.Web.UI.UpdatePanel @__ctrl28;
-            @__ctrl28 = this.@__BuildControlUpdatePanel6();
+            @__ctrl28 = this.@__BuildControlUpdatePanel2();
             @__parser.AddParsedSubObject(@__ctrl28);
-            global::System.Web.UI.UpdatePanel @__ctrl29;
-            @__ctrl29 = this.@__BuildControlUpdatePanel2();
-            @__parser.AddParsedSubObject(@__ctrl29);
             @__ctrl.SetRenderMethodDelegate(new System.Web.UI.RenderMethod(this.@__Render__control1));
         }
         
@@ -1156,14 +1137,11 @@ namespace MTS_WebParts.AramaGirisiWP {
     function KatilimciSecimiModal() {
         $(""#KatilimciSecimiModal"").modal({ backdrop: false });
     }
-    function KatilimciSecildiBtnClick(katilimciId, katilimciTipi) {
+    function KatilimciSecildiBtnClick(katilimciId) {
         document.getElementById('");
                          @__w.Write( paramFaaliyetKatilimciIdLbl.ClientID);
 
             @__w.Write("\').value = katilimciId;\r\n        document.getElementById(\'");
-                         @__w.Write( paramFaaliyetKatilimciTipiLbl.ClientID);
-
-            @__w.Write("\').value = katilimciTipi;\r\n        document.getElementById(\'");
                          @__w.Write( SecilenKatilimciyiGetirBtn.ClientID);
 
             @__w.Write("\').click();\r\n    }\r\n\r\n\r\n</script>\r\n<div class=\"container\">\r\n    <div class=\"card " +
@@ -1268,14 +1246,12 @@ namespace MTS_WebParts.AramaGirisiWP {
             parameterContainer.Controls[24].RenderControl(@__w);
             @__w.Write("\r\n        ");
             parameterContainer.Controls[25].RenderControl(@__w);
-            @__w.Write("\r\n        ");
-            parameterContainer.Controls[26].RenderControl(@__w);
             @__w.Write("\r\n    </div>\r\n\r\n    ");
-            parameterContainer.Controls[27].RenderControl(@__w);
+            parameterContainer.Controls[26].RenderControl(@__w);
             @__w.Write("\r\n    <div class=\"modal\" id=\"ModalOnay\" role=\"dialog\">\r\n        <div class=\"modal" +
                     "-dialog\">\r\n            <!-- Modal content-->\r\n            <div class=\"modal-cont" +
                     "ent\">\r\n                ");
-            parameterContainer.Controls[28].RenderControl(@__w);
+            parameterContainer.Controls[27].RenderControl(@__w);
             @__w.Write("\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n");
         }
         

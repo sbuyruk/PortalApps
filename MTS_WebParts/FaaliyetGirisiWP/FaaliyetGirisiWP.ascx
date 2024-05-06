@@ -106,7 +106,7 @@
     }
 </script>
 
-<%-- Katılımcı/itribat personeli ekleme / çıkartma --%>
+<%-- Katılımcı/itribat ekleme / çıkartma --%>
 <script type="text/javascript">
     function OpenSilModal() {
         $("#ModalSilDiv").modal({ backdrop: true });
@@ -117,16 +117,14 @@
     $("#KatilimciSecimiModal").draggable({
         handle: ".modal-dialog"
     });
-    function KatilimciSecildiBtnClick(katilimciId, faaliyetId, katilimciTipi) {
+    function KatilimciSecildiBtnClick(katilimciId, faaliyetId) {
         document.getElementById('<%= paramFaaliyetKatilimciIdLbl.ClientID%>').value = katilimciId;
         document.getElementById('<%= paramFaaliyetIdLbl.ClientID%>').value = faaliyetId;
-        document.getElementById('<%= paramFaaliyetKatilimciTipiLbl.ClientID%>').value = katilimciTipi;
         document.getElementById('<%= SecilenKatilimciyiKaydetNowBtn.ClientID%>').click();
     }
-    function IrtibatSecBtnClick(kisiId, faaliyetId, katilimciTipi) {
+    function IrtibatSecBtnClick(kisiId, faaliyetId) {
         document.getElementById('<%= paramFaaliyetKatilimciIdLbl.ClientID%>').value = kisiId;
         document.getElementById('<%= paramFaaliyetIdLbl.ClientID%>').value = faaliyetId;
-        document.getElementById('<%= paramFaaliyetKatilimciTipiLbl.ClientID%>').value = katilimciTipi;
         document.getElementById('<%=IrtibatSecBtn.ClientID%>').click();
     }
     function KatilimciCikarBtnClick(katilimId) {
@@ -165,7 +163,7 @@
         $("#StokluAniObjesiModal").modal('hide');
         $(".modal-backdrop").remove();//ekran modaldan sonra normale dönsün
     }
-    function StoksuzAniObjesiBtnClick(katilimciId, faaliyetId, katilimciTipi) {
+    function StoksuzAniObjesiBtnClick(katilimciId, faaliyetId) {
 
         document.getElementById('<%= GetirilenAniObjesiTxt.ClientID%>').value = "";
         document.getElementById('<%= paramAniObjesiIdArray.ClientID%>').value = "";
@@ -174,18 +172,16 @@
 
         document.getElementById('<%= paramFaaliyetKatilimciIdLbl.ClientID%>').value = katilimciId;
         document.getElementById('<%= paramFaaliyetIdLbl.ClientID%>').value = faaliyetId;
-        document.getElementById('<%= paramFaaliyetKatilimciTipiLbl.ClientID%>').value = katilimciTipi;
         document.getElementById('<%= AniObjesiSecBtn.ClientID%>').click();
         ArrayDoldur();
     }
-    function StokluAniObjesiBtnClick(katilimciId, faaliyetId, katilimciTipi) {
+    function StokluAniObjesiBtnClick(katilimciId, faaliyetId) {
 
         document.getElementById("StokluAniObjesiIadeEtTriggerBtn").style.display = "none";
         document.getElementById("StokluAniObjesiKaydetTriggerBtn").style.display = "block";
         document.getElementById('<%= paramStokluAniObjesiDagitimIdLbl.ClientID%>').value = 0;
         document.getElementById('<%= paramFaaliyetKatilimciIdLbl.ClientID%>').value = katilimciId;
         document.getElementById('<%= paramFaaliyetIdLbl.ClientID%>').value = faaliyetId;
-        document.getElementById('<%= paramFaaliyetKatilimciTipiLbl.ClientID%>').value = katilimciTipi;
 
         document.getElementById('<%= StokluAniObjesiSecBtn.ClientID%>').click();
 
@@ -197,10 +193,9 @@
         document.getElementById('<%= StokluAniObjesiSecBtn.ClientID%>').click();
 
     }
-    function  GetirilenAniObjesiBtnClick(katilimciId, faaliyetId, katilimciTipi) {
+    function  GetirilenAniObjesiBtnClick(katilimciId, faaliyetId) {
         document.getElementById('<%= paramFaaliyetKatilimciIdLbl.ClientID%>').value = katilimciId;
         document.getElementById('<%= paramFaaliyetIdLbl.ClientID%>').value = faaliyetId;
-        document.getElementById('<%= paramFaaliyetKatilimciTipiLbl.ClientID%>').value = katilimciTipi;
         document.getElementById('<%= GetirilenAniObjesiSecBtn.ClientID%>').click();        
     }
     function ArrayDoldur() {
@@ -322,11 +317,10 @@
 
 <%-- TakvimDavetiGonder --%>
 <script type="text/javascript"> 
-    function TakvimDavetiyesiModalAc(katilimId,faaliyetId, katilimciId, katilimciTipi, eposta) {
+    function TakvimDavetiyesiModalAc(katilimId,faaliyetId, katilimciId, eposta) {
         document.getElementById('<%= paramFaaliyetKatilimciIdLbl.ClientID%>').value = katilimciId;
         document.getElementById('<%= paramFaaliyetKatilimIdLbl.ClientID%>').value = katilimId;
         document.getElementById('<%= paramFaaliyetIdLbl.ClientID%>').value = faaliyetId;
-        document.getElementById('<%= paramFaaliyetKatilimciTipiLbl.ClientID%>').value = katilimciTipi;
         document.getElementById('<%= EPostaAdresiTxt.ClientID%>').value = eposta;
         
         $("#TakvimDavetiModalDiv").modal({ backdrop: true });
@@ -479,7 +473,6 @@
                                                 <th>Adı Soyadı</th>
                                                 <th>Kurumu</th>
                                                 <th>Katılımcı</th>
-                                                <th>Katilimci Tipi</th>
                                                 <th>Anı Objesi </th>
                                                 <th>E-posta Daveti</th>
                                                 <th>Kişi Kartı</th>
@@ -492,10 +485,7 @@
                                     <asp:Label ID="AramaGorusmeLbl" runat="server" Text=""></asp:Label>
                                     <asp:LinkButton ID="AramaGorusmeBtn" runat="server" CssClass="btn btn-warning" Text="Arama/Görüşmeye Git" OnClick="AramaGorusmeBtn_Click" CausesValidation="false" />
                                 </div>
-                                <div class="form-group" id="IcIrtibatDiv" runat="server">
-                                    <asp:Label ID="IcIrtibatLbl" runat="server" Text=""></asp:Label>
-                                    <asp:LinkButton ID="IcIrtibatCikarBtn" runat="server" CssClass="btn btn-outline-danger" Text="Çıkar" OnClick="IcIrtibatCikarBtn_Click" CausesValidation="false" />
-                                </div>
+
                                 <div class="form-group" id="DisIrtibatDiv" runat="server">
                                     <asp:Label ID="DisIrtibatLbl" runat="server" Text=""></asp:Label>
                                     <asp:LinkButton ID="DisIrtibatCikarBtn" runat="server" CssClass="btn btn-outline-danger" Text="Çıkar" OnClick="DisIrtibatCikarBtn_Click" CausesValidation="false" />
@@ -506,7 +496,6 @@
                         </ContentTemplate>
                         <Triggers>
                             <asp:AsyncPostBackTrigger ControlID="KatilimciCikarBtn" EventName="click" />
-                            <asp:AsyncPostBackTrigger ControlID="IrtibatSecBtn" EventName="click" />
                             <asp:AsyncPostBackTrigger ControlID="SecilenKatilimciyiKaydetNowBtn" EventName="click" />
                         </Triggers>
                     </asp:UpdatePanel>
@@ -547,7 +536,6 @@
         <input id="paramFaaliyetIdLbl" runat="server" type="text" />
         <input id="paramFaaliyetKatilimIdLbl" runat="server" type="text" />
         <input id="paramFaaliyetKatilimciIdLbl" runat="server" type="text" />
-        <input id="paramFaaliyetKatilimciTipiLbl" runat="server" type="text" />
         <asp:LinkButton ID="SecilenKatilimciyiKaydetNowBtn" runat="server" CausesValidation="false" Text="Faaliyete Ekle" OnClientClick="{return true;};" OnClick="SecilenKatilimciyiKaydetNowBtn_Click" />
         <asp:LinkButton ID="KatilimciCikarBtn" runat="server" CssClass="btn btn-outline-success" Text="Faaliyetden Çıkar" OnClick="KatilimciCikarBtn_Click" />
         <asp:LinkButton ID="IrtibatSecBtn" runat="server" CausesValidation="false" Text="" OnClientClick="{return true;};" OnClick="IrtibatSecBtn_Click" ClientIDMode="Static" />

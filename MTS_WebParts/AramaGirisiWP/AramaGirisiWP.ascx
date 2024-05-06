@@ -36,9 +36,8 @@
     function KatilimciSecimiModal() {
         $("#KatilimciSecimiModal").modal({ backdrop: false });
     }
-    function KatilimciSecildiBtnClick(katilimciId, katilimciTipi) {
+    function KatilimciSecildiBtnClick(katilimciId) {
         document.getElementById('<%= paramFaaliyetKatilimciIdLbl.ClientID%>').value = katilimciId;
-        document.getElementById('<%= paramFaaliyetKatilimciTipiLbl.ClientID%>').value = katilimciTipi;
         document.getElementById('<%= SecilenKatilimciyiGetirBtn.ClientID%>').click();
     }
 
@@ -141,7 +140,6 @@
     </div>
     <div id="KatilimciHiddenDiv" style="display: none">
         <input id="paramFaaliyetKatilimciIdLbl" runat="server" type="text" />
-        <input id="paramFaaliyetKatilimciTipiLbl" runat="server" type="text" />
         <asp:LinkButton ID="SecilenKatilimciyiGetirBtn" runat="server" CausesValidation="false" Text="Faaliyete Ekle" OnClientClick="{return true;};" OnClick="SecilenKatilimciyiGetirBtn_Click" />
     </div>
 

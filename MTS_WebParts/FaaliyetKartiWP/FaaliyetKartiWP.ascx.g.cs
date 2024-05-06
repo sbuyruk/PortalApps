@@ -292,7 +292,7 @@ namespace MTS_WebParts.FaaliyetKartiWP {
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Katılımcı Tipi"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Kurumu"));
             return @__ctrl;
         }
         

@@ -74,7 +74,7 @@ namespace MTS_WebParts.BagisciListesiWP
 
             try
             {
-                List<BagisciListItem> list = GetModalDataList();
+                List<BagisciListItem> list = GetDataList();
                 var serializer = new JavaScriptSerializer();
                 serializer.MaxJsonLength = Int32.MaxValue;
                 jSon = serializer.Serialize(list);
@@ -87,12 +87,12 @@ namespace MTS_WebParts.BagisciListesiWP
             }
             return jSon;
         }
-        private List<BagisciListItem> GetModalDataList()
+        private List<BagisciListItem> GetDataList()
         {
             NakitBagisci nakitBagisci = new NakitBagisci();
-            DataTable dataTableNakit = nakitBagisci.SelectSecilmemisKatilimcilarByFaaliyetIdReturnDT(ProjeConstants.HEPSI_INT);
+            DataTable dataTableNakit = nakitBagisci.SelectSecilmemisKatilimcilarByFaaliyetIdReturnDT();
             TasinmazBagisci tasinmazBagisci = new TasinmazBagisci();
-            DataTable dataTableTasinmaz = tasinmazBagisci.SelectSecilmemisKatilimcilarByFaaliyetIdReturnDT(ProjeConstants.HEPSI_INT);
+            DataTable dataTableTasinmaz = tasinmazBagisci.SelectSecilmemisKatilimcilarByFaaliyetIdReturnDT();
 
             dataTableTasinmaz.Merge(dataTableNakit);
             int SiraNo = 1;
@@ -103,7 +103,6 @@ namespace MTS_WebParts.BagisciListesiWP
                 foreach (DataRow row in dataTableTasinmaz.Rows)
                 {
                     string katilimciId = row["KatilimciId"].ToString();
-                    int katilimciTipi = row["KatilimciTipi"].ConvertToInt();
                     string adi = row["Adi"].ToString();
                     string soyadi = row["Soyadi"].ToString();
                     string telefon = row["Telefon"].ToString();
@@ -121,50 +120,14 @@ namespace MTS_WebParts.BagisciListesiWP
                     katilimciItem.Adres = adres;
                     katilimciItem.Il = il;
                     katilimciItem.Ilce = ilce;
-                    katilimciItem.KatilimciTipiStr = KatilimciTipiGetir(katilimciTipi);
-                    if (katilimciTipi == ProjeConstants.FAALIYET_KATILIMCI_TASINMAZBAGISCI_INT)
-                    {
-                        katilimciItem.BagisciKarti= "<a  target='_blank' href=" + ProjeConstants.PAGE_TASINMAZBAGISCI_KARTI + "?BagisciId=" + katilimciId + " class='btn btn-outline-secondary'>Bağışçı Kartı</a>";
-                    }
-                    katilimciItem.KatilimciTipi = katilimciTipi.ToString();
 
-                    katilimciItem.KisiKarti = "<a  target='_blank' href=" + ProjeConstants.PAGE_KISI_KARTI + "?KatilimciId=" + katilimciId + "&KatilimciTipi=" + katilimciTipi + " class='btn btn-outline-info'>Kişi Kartı</a>";
 
                     list.Add(katilimciItem);
                 }
             }
             return list;
         }
-        private string KatilimciTipiGetir(int katilimciTipi)
-        {
-            string katilimciTipStr = ProjeConstants.FAALIYET_KATILIMCI_DIS;
-            switch (katilimciTipi)
-            {
-                case ProjeConstants.FAALIYET_KATILIMCI_IC_INT:
-                    {
-                        katilimciTipStr = ProjeConstants.FAALIYET_KATILIMCI_IC;
-                        break;
-                    }
-                case ProjeConstants.FAALIYET_KATILIMCI_DIS_INT:
-                    {
-                        katilimciTipStr = ProjeConstants.FAALIYET_KATILIMCI_DIS;
-                        break;
-                    }
-                case ProjeConstants.FAALIYET_KATILIMCI_NAKITBAGISCI_INT:
-                    {
-                        katilimciTipStr = ProjeConstants.FAALIYET_KATILIMCI_NAKITBAGISCI;
-                        break;
-                    }
-                case ProjeConstants.FAALIYET_KATILIMCI_TASINMAZBAGISCI_INT:
-                    {
-                        katilimciTipStr = ProjeConstants.FAALIYET_KATILIMCI_TASINMAZBAGISCI;
-                        break;
-                    }
-                default:
-                    break;
-            }
-            return katilimciTipStr;
-        }
+      
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
             try
@@ -187,8 +150,6 @@ namespace MTS_WebParts.BagisciListesiWP
         {
             public string Sirano { get; set; }
             public string KatilimciId { get; set; }
-            public string KatilimciTipi { get; set; }
-            public string KatilimciTipiStr { get; set; }
             public string AdiSoyadi { get; set; }
             public string Adi { get; set; }
             public string Soyadi { get; set; }
@@ -196,9 +157,6 @@ namespace MTS_WebParts.BagisciListesiWP
             public string Adres { get; set; }
             public string Il { get; set; }
             public string Ilce { get; set; }
-            public string BagisciKarti { get; set; }
-
-            public string KisiKarti { get; set; }
 
         }
     }

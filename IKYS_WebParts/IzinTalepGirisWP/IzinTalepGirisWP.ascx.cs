@@ -1331,6 +1331,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
         private bool KalanIzinKontrolIslemleri()
         {
             SaveBtn.Visible = false;
+            ClearIzinBilgileri();
             Personel personel = new Personel();
             personel = PersonelGetir();
             int izinTipi = IzinTanimDDL.SelectedItem.Value.ConvertToInt();
@@ -1582,6 +1583,22 @@ namespace IKYS_WebParts.IzinTalepGirisWP
             #endregion
 
 
+        }
+
+        private void ClearIzinBilgileri()
+        {
+            IzinSuresiLbl.Text = string.Empty;
+            KullanilanIzinLbl.Text = string.Empty;
+            GecmisDonemlerdenKalanIznLbl.Text = string.Empty;
+            KalanIzinLbl.Text = string.Empty;
+            UyariLbl.Text = string.Empty;
+            KullanilmayanLbl.Text=string.Empty;
+            IzinSuresiLbl.Text = string.Empty;
+            KullanilanIzinLbl.Text = string.Empty;
+            GecmisDonemlerdenKalanIznLbl.Text = string.Empty;
+            KalanIzinLbl.Text = string.Empty;
+            UyariLbl.Text = string.Empty;
+            KullanilmayanLbl.Text = string.Empty;
         }
 
         private int KalanIzinToplamıGetir(Personel personel)

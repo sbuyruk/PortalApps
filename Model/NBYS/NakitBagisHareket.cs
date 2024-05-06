@@ -536,17 +536,28 @@ namespace Model.NBYS
             string ilStr = string.Empty;
             if (ilId < ProjeConstants.IL_HEPSI)
             {
-                ilStr = " AND Il_Table.Id =" + ilId;
+                //ilStr = " AND Il_Table.Id =" + ilId;
+                ilStr = string.Format(" AND (D.Id={0})" , ilId);
             }
 
+            //sqlString = string.Format(@"
+            //            SELECT YEAR(BagisTarihi) Yil , SUM(BagisMiktari) BagisToplam, count(BagisMiktari) BagisSayisi , Il_Table.IlAdi IlAdi from NakitBagisHareket_Table
+            //            LEFT OUTER JOIN IL_Table on Il_Table.Id= NakitBagisHareket_Table.Ili
+            //            WHERE BagisTarihi > {0} 
+            //            {1}
+            //            GROUP BY YEAR(BagisTarihi), IlAdi
+            //            ORDER BY Yil DESC
+            //            ", tarih.ReturnQuotedValue(), ilStr);
             sqlString = string.Format(@"
-                        SELECT YEAR(BagisTarihi) Yil , SUM(BagisMiktari) BagisToplam, count(BagisMiktari) BagisSayisi , Il_Table.IlAdi IlAdi from NakitBagisHareket_Table
-                        LEFT OUTER JOIN IL_Table on Il_Table.Id= NakitBagisHareket_Table.Ili
-                        WHERE BagisTarihi > {0} 
-                        {1}
-                        GROUP BY YEAR(BagisTarihi), IlAdi
-                        ORDER BY Yil DESC
-                        ", tarih.ReturnQuotedValue(), ilStr);
+                SELECT YEAR(BagisTarihi) Yil , SUM(BagisMiktari) BagisToplam, count(BagisMiktari) BagisSayisi , D.IlAdi IlAdi 
+                FROM NakitBagisHareket_Table A
+                LEFT JOIN NakitBagisci_Table B on B.Id= A.BagisciId
+                LEFT JOIN IL_Table D on D.Id= B.Ili
+                WHERE BagisTarihi > {0} 
+                {1}
+                GROUP BY YEAR(BagisTarihi), D.IlAdi
+                ORDER BY Yil DESC
+                ", tarih.ReturnQuotedValue(), ilStr);
             DataTable dataTable = null;
             try
             {

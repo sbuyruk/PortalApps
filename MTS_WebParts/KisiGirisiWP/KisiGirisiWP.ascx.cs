@@ -451,13 +451,13 @@ namespace MTS_WebParts.KisiGirisiWP
             OnayMesajiLbl.Text = string.Empty;
 
 
-            bool averilenAniObjesiVarmi = VerilenAniObjesiVarMi(KisiIdQS.ConvertToInt(), ProjeConstants.FAALIYET_KATILIMCI_DIS_INT);
+            bool averilenAniObjesiVarmi = VerilenAniObjesiVarMi(KisiIdQS.ConvertToInt());
             if (averilenAniObjesiVarmi)
             {
                 silinebilirMi = false;
                 OnayMesajiLbl.Text += " Seçtiğiniz kişiye verilen anı objesi kaydı bulunmaktadır." + "</br>";
             }
-            bool getirilenAniObjesiVarmi = GetirilenAniObjesiVarMi(KisiIdQS.ConvertToInt(), ProjeConstants.FAALIYET_KATILIMCI_DIS_INT);
+            bool getirilenAniObjesiVarmi = GetirilenAniObjesiVarMi(KisiIdQS.ConvertToInt());
             if (getirilenAniObjesiVarmi)
             {
                 silinebilirMi = false;
@@ -466,7 +466,7 @@ namespace MTS_WebParts.KisiGirisiWP
             
 
             FaaliyetKatilim faaliyetKatilimDao = new FaaliyetKatilim();
-            List<FaaliyetKatilim> list = faaliyetKatilimDao.SelectByKatilimciIdKatilimciTipi(KisiIdQS.ConvertToInt(), ProjeConstants.FAALIYET_KATILIMCI_DIS_INT);
+            List<FaaliyetKatilim> list = faaliyetKatilimDao.SelectByKatilimciId(KisiIdQS.ConvertToInt());
 
             if (list.Count > 0)
             {
@@ -477,7 +477,7 @@ namespace MTS_WebParts.KisiGirisiWP
 
             }
             AramaGorusme aramaGorusmeDao = new AramaGorusme();
-            List<AramaGorusme> aramalistlist = aramaGorusmeDao.SelectAllByArayanIdReturnList(KisiIdQS.ConvertToInt(), ProjeConstants.FAALIYET_KATILIMCI_DIS_INT);
+            List<AramaGorusme> aramalistlist = aramaGorusmeDao.SelectAllByArayanIdReturnList(KisiIdQS.ConvertToInt());
 
             if (aramalistlist.Count > 0)
             {
@@ -504,16 +504,16 @@ namespace MTS_WebParts.KisiGirisiWP
             UtilityHelper.ScriptCalistir(openModal);
         }
 
-        private bool VerilenAniObjesiVarMi(int kisiId, int katilimciTipi)
+        private bool VerilenAniObjesiVarMi(int kisiId)
         {
             AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
-            List<AniObjesiDagitim> aniObjesiDagitimList =  aniObjesiDagitim.SelectByKisiIdReturnList(kisiId, katilimciTipi, ProjeConstants.ANIOBJESI_VERILEN_INT.ToString());
+            List<AniObjesiDagitim> aniObjesiDagitimList =  aniObjesiDagitim.SelectByKisiIdReturnList(kisiId, ProjeConstants.ANIOBJESI_VERILEN_INT.ToString());
             return aniObjesiDagitimList.Count > 0;
         }
-        private bool GetirilenAniObjesiVarMi(int kisiId, int katilimciTipi)
+        private bool GetirilenAniObjesiVarMi(int kisiId)
         {
             AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
-            List<AniObjesiDagitim> aniObjesiDagitimList = aniObjesiDagitim.SelectByKisiIdReturnList(kisiId, katilimciTipi, ProjeConstants.ANIOBJESI_GETIRILEN_INT.ToString());
+            List<AniObjesiDagitim> aniObjesiDagitimList = aniObjesiDagitim.SelectByKisiIdReturnList(kisiId, ProjeConstants.ANIOBJESI_GETIRILEN_INT.ToString());
             return aniObjesiDagitimList.Count > 0;
         }
         protected void KisiSilNowBtn_Click(object sender, EventArgs e)
@@ -637,7 +637,6 @@ namespace MTS_WebParts.KisiGirisiWP
                             FaaliyetKatilim faaliyetKatilim = new FaaliyetKatilim();
                             faaliyetKatilim.FaaliyetId = faaliyet.Id;
                             faaliyetKatilim.KatilimciId = KisiIdQS.ConvertToInt();
-                            faaliyetKatilim.KatilimciTipi = ProjeConstants.FAALIYET_KATILIMCI_DIS_INT;
                             faaliyetKatilim.KurumGorev = kurumGorevStr;
                             faaliyetKatilim.Olusturan = UtilityHelper.GetCurrentUserName();
                             int faaliyetKatilimId = faaliyetKatilim.Save();

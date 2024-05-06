@@ -89,10 +89,6 @@ namespace MTS_WebParts.AramaGorusmeListesiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.HtmlControls.HtmlInputText paramFaaliyetKatilimciTipiLbl;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton SecilenKatilimciyiGetirBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -370,18 +366,6 @@ namespace MTS_WebParts.AramaGorusmeListesiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.HtmlControls.HtmlInputText @__BuildControlparamFaaliyetKatilimciTipiLbl() {
-            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl;
-            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
-            this.paramFaaliyetKatilimciTipiLbl = @__ctrl;
-            @__ctrl.ID = "paramFaaliyetKatilimciTipiLbl";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlSecilenKatilimciyiGetirBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -642,30 +626,27 @@ namespace MTS_WebParts.AramaGorusmeListesiWP {
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl16;
             @__ctrl16 = this.@__BuildControlparamFaaliyetKatilimciIdLbl();
             @__parser.AddParsedSubObject(@__ctrl16);
-            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl17;
-            @__ctrl17 = this.@__BuildControlparamFaaliyetKatilimciTipiLbl();
+            global::System.Web.UI.WebControls.LinkButton @__ctrl17;
+            @__ctrl17 = this.@__BuildControlSecilenKatilimciyiGetirBtn();
             @__parser.AddParsedSubObject(@__ctrl17);
             global::System.Web.UI.WebControls.LinkButton @__ctrl18;
-            @__ctrl18 = this.@__BuildControlSecilenKatilimciyiGetirBtn();
+            @__ctrl18 = this.@__BuildControlYeniAramaGirisiBtn();
             @__parser.AddParsedSubObject(@__ctrl18);
             global::System.Web.UI.WebControls.LinkButton @__ctrl19;
-            @__ctrl19 = this.@__BuildControlYeniAramaGirisiBtn();
+            @__ctrl19 = this.@__BuildControlYeniKisiBtn();
             @__parser.AddParsedSubObject(@__ctrl19);
             global::System.Web.UI.WebControls.LinkButton @__ctrl20;
-            @__ctrl20 = this.@__BuildControlYeniKisiBtn();
+            @__ctrl20 = this.@__BuildControlFaaliyetTakvimiBtn();
             @__parser.AddParsedSubObject(@__ctrl20);
             global::System.Web.UI.WebControls.LinkButton @__ctrl21;
-            @__ctrl21 = this.@__BuildControlFaaliyetTakvimiBtn();
+            @__ctrl21 = this.@__BuildControlFaaliyetListesiBtn();
             @__parser.AddParsedSubObject(@__ctrl21);
             global::System.Web.UI.WebControls.LinkButton @__ctrl22;
-            @__ctrl22 = this.@__BuildControlFaaliyetListesiBtn();
+            @__ctrl22 = this.@__BuildControlKisiListesiBtn();
             @__parser.AddParsedSubObject(@__ctrl22);
-            global::System.Web.UI.WebControls.LinkButton @__ctrl23;
-            @__ctrl23 = this.@__BuildControlKisiListesiBtn();
+            global::System.Web.UI.UpdatePanel @__ctrl23;
+            @__ctrl23 = this.@__BuildControlUpdatePanel6();
             @__parser.AddParsedSubObject(@__ctrl23);
-            global::System.Web.UI.UpdatePanel @__ctrl24;
-            @__ctrl24 = this.@__BuildControlUpdatePanel6();
-            @__parser.AddParsedSubObject(@__ctrl24);
             @__ctrl.SetRenderMethodDelegate(new System.Web.UI.RenderMethod(this.@__Render__control1));
         }
         
@@ -702,69 +683,48 @@ namespace MTS_WebParts.AramaGorusmeListesiWP {
     function KatilimciSecimiModal() {
         $(""#KatilimciSecimiModal"").modal({ backdrop: false });
     }
-    function KatilimciSecildiBtnClick(katilimciId, katilimciTipi) {
+    function KatilimciSecildiBtnClick(katilimciId) {
         document.getElementById('");
                          @__w.Write( paramFaaliyetKatilimciIdLbl.ClientID);
 
             @__w.Write("\').value = katilimciId;\r\n        document.getElementById(\'");
-                         @__w.Write( paramFaaliyetKatilimciTipiLbl.ClientID);
-
-            @__w.Write("\').value = katilimciTipi;\r\n        document.getElementById(\'");
                          @__w.Write( SecilenKatilimciyiGetirBtn.ClientID);
 
-            @__w.Write("\').click();\r\n    }\r\n</script>\r\n<script type=\"text/javascript\">\r\n    //On Page Loa" +
-                    "d.\r\n    //$(function () {\r\n    //    SetDatePicker();\r\n    //});\r\n    ////ikinci" +
-                    " tarih için\r\n    //function SetDatePicker() {\r\n\r\n    //    $(\"[id$=BaslangicTari" +
-                    "hiTxt],[id$=BitisTarihiTxt]\").datepicker({\r\n    //        dateFormat: \"dd.mm.yy\"" +
-                    ",\r\n    //        firstDay: 1,\r\n    //        monthNames: [\"Ocak\", \"Şubat\", \"Mart" +
-                    "\", \"Nisan\", \"Mayıs\", \"Haziran\", \"Temmuz\", \"Ağustos\", \"Eylül\", \"Ekim\", \"Kasım\", \"" +
-                    "Aralık\"],\r\n    //        monthNamesShort: [\"Oca\", \"Şub\", \"Mar\", \"Nis\", \"May\", \"H" +
-                    "az\", \"Tem\", \"Ağu\", \"Eyl\", \"Eki\", \"Kas\", \"Ara\"],\r\n    //        dayNames: [\"Pazar" +
-                    "\", \"Pazartesi\", \"Salı\", \"Çarşamba\", \"Perşembe\", \"Cuma\", \"Cumartesi\"],\r\n    //   " +
-                    "     dayNamesMin: [\"Pz\", \"Pt\", \"Sl\", \"Çr\", \"Pr\", \"Cu\", \"Ct\"],\r\n    //        sho" +
-                    "wAnim: \"fold\",\r\n    //        changeMonth: true,\r\n    //        changeYear: true" +
-                    ",\r\n\r\n    //    }).on(\"change\", function () {\r\n    //        if (this.id == \'Basl" +
-                    "angicTarihiTxt\') {\r\n    //            var dateMin = $(\'[id$=BaslangicTarihiTxt]\'" +
-                    ").datepicker(\"getDate\");\r\n    //            var rMin = new Date(dateMin.getFullY" +
-                    "ear(), dateMin.getMonth(), dateMin.getDate());\r\n    //            var rMax = new" +
-                    " Date(dateMin.getFullYear(), dateMin.getMonth(), dateMin.getDate() + 90);\r\n\r\n   " +
-                    " //            $(\'[id$=BitisTarihiTxt]\').datepicker(\"option\", \"minDate\", rMin);\r" +
-                    "\n    //            $(\'[id$=BitisTarihiTxt]\').datepicker(\"option\", \"maxDate\", rMa" +
-                    "x);\r\n    //        }\r\n\r\n    //    });\r\n\r\n    //}\r\n    function setDataSet(myset)" +
-                    " {\r\n        myjsons = myset;\r\n    }\r\n    var myjsons = [{\r\n        \"AramaGorusme" +
-                    "Id\": \"\", \"AdiSoyadi\": \"\", \"Tarih\": \"\", \"Konu\": \"\", \"Kurumu\": \"\", \"Faaliyet\": \"\"," +
-                    " \"Duzenle\": \"\"\r\n    }];\r\n\r\n    jQuery(document).ready(function () {\r\n        jQu" +
-                    "ery.fn.dataTable.moment(\'DD.MM.YYYY HH:mm\');//sort date\r\n        jQuery(\'#Custom" +
-                    "DataTable\').DataTable({\r\n            \'initComplete\': function (settings, json) {" +
-                    "//tablo yüklendiğinde\r\n                var api = this.api();\r\n                va" +
-                    "r row = api.row(function (idx, data, node) { //secilen Id\'ye gider\r\n            " +
-                    "        return data[\'Secildi\'] == true;\r\n                });\r\n                if" +
-                    " (row.length > 0) {\r\n                    row.select()\r\n                        ." +
-                    "show()\r\n                        .draw(false);\r\n                }\r\n            }," +
-                    "\r\n            data: myjsons,\r\n            columns: [\r\n                { data: \"A" +
-                    "ramaId\" },\r\n                { data: \"AdiSoyadi\" },\r\n                { data: \"Tar" +
-                    "ih\" },\r\n                { data: \"Konu\" },\r\n                { data: \"Kurumu\" },\r\n" +
-                    "                { data: \"Faaliyet\" },\r\n                { data: \"Duzenle\" },\r\n   " +
-                    "         ],\r\n            \'order\': [[2, \'desc\']],//AdiSoyadi Sıralı\r\n            " +
-                    "\"language\": {\r\n                \"url\": \"http://tskgv-portal/OrtakBelgeler/Turkish" +
-                    ".txt\",\r\n                \"decimal\": \",\",\r\n                \"thousands\": \".\"\r\n     " +
-                    "       },\r\n            responsive: true,\r\n            dom: \'Bfrtip\',\r\n          " +
-                    "  buttons: [\r\n                {\r\n                    extend: \'print\',\r\n         " +
-                    "           exportOptions: {\r\n                        columns: \':visible\'\r\n      " +
-                    "              }\r\n                },\r\n                {\r\n                    exte" +
-                    "nd: \'excel\',\r\n                    exportOptions: {\r\n                        colu" +
-                    "mns: \':visible\'\r\n                    }\r\n                },\r\n                {\r\n " +
-                    "                   extend: \'pdf\',\r\n                    exportOptions: {\r\n       " +
-                    "                 columns: \':visible\'\r\n                    }\r\n                },\r" +
-                    "\n                {\r\n                    extend: \'copy\',\r\n                    exp" +
-                    "ortOptions: {\r\n                        columns: \':visible\'\r\n                    " +
-                    "}\r\n                },\r\n                , \'pageLength\', \"colvis\"\r\n            ],\r" +
-                    "\n            \"createdRow\": function (row, data, dataIndex) {\r\n                if" +
-                    " (!data.GorusmeSaglandi) {\r\n                    if (data[\'Secildi\'] == false)\r\n " +
-                    "                       $(row).addClass(\'gorusmeSaglanamadi\');\r\n\r\n               " +
-                    " }\r\n            },//set row color \r\n        });\r\n    });\r\n</script>\r\n<div class=" +
-                    "\"container\">\r\n    <div class=\"card shadow\">\r\n        <div class=\"card-header\">\r\n" +
-                    "            ");
+            @__w.Write("\').click();\r\n    }\r\n</script>\r\n<script type=\"text/javascript\">\r\n\r\n    function se" +
+                    "tDataSet(myset) {\r\n        myjsons = myset;\r\n    }\r\n    var myjsons = [{\r\n      " +
+                    "  \"AramaGorusmeId\": \"\", \"AdiSoyadi\": \"\", \"Tarih\": \"\", \"Konu\": \"\", \"Kurumu\": \"\", " +
+                    "\"Faaliyet\": \"\", \"Duzenle\": \"\"\r\n    }];\r\n\r\n    jQuery(document).ready(function ()" +
+                    " {\r\n        jQuery.fn.dataTable.moment(\'DD.MM.YYYY HH:mm\');//sort date\r\n        " +
+                    "jQuery(\'#CustomDataTable\').DataTable({\r\n            \'initComplete\': function (se" +
+                    "ttings, json) {//tablo yüklendiğinde\r\n                var api = this.api();\r\n   " +
+                    "             var row = api.row(function (idx, data, node) { //secilen Id\'ye gide" +
+                    "r\r\n                    return data[\'Secildi\'] == true;\r\n                });\r\n   " +
+                    "             if (row.length > 0) {\r\n                    row.select()\r\n          " +
+                    "              .show()\r\n                        .draw(false);\r\n                }\r" +
+                    "\n            },\r\n            data: myjsons,\r\n            columns: [\r\n           " +
+                    "     { data: \"AramaId\" },\r\n                { data: \"AdiSoyadi\" },\r\n             " +
+                    "   { data: \"Tarih\" },\r\n                { data: \"Konu\" },\r\n                { data" +
+                    ": \"Kurumu\" },\r\n                { data: \"Faaliyet\" },\r\n                { data: \"D" +
+                    "uzenle\" },\r\n            ],\r\n            \'order\': [[2, \'desc\']],//AdiSoyadi Sıral" +
+                    "ı\r\n            \"language\": {\r\n                \"url\": \"http://tskgv-portal/OrtakB" +
+                    "elgeler/Turkish.txt\",\r\n                \"decimal\": \",\",\r\n                \"thousan" +
+                    "ds\": \".\"\r\n            },\r\n            responsive: true,\r\n            dom: \'Bfrti" +
+                    "p\',\r\n            buttons: [\r\n                {\r\n                    extend: \'pri" +
+                    "nt\',\r\n                    exportOptions: {\r\n                        columns: \':v" +
+                    "isible\'\r\n                    }\r\n                },\r\n                {\r\n         " +
+                    "           extend: \'excel\',\r\n                    exportOptions: {\r\n             " +
+                    "           columns: \':visible\'\r\n                    }\r\n                },\r\n     " +
+                    "           {\r\n                    extend: \'pdf\',\r\n                    exportOpti" +
+                    "ons: {\r\n                        columns: \':visible\'\r\n                    }\r\n    " +
+                    "            },\r\n                {\r\n                    extend: \'copy\',\r\n        " +
+                    "            exportOptions: {\r\n                        columns: \':visible\'\r\n     " +
+                    "               }\r\n                },\r\n                , \'pageLength\', \"colvis\"\r\n" +
+                    "            ],\r\n            \"createdRow\": function (row, data, dataIndex) {\r\n   " +
+                    "             if (!data.GorusmeSaglandi) {\r\n                    if (data[\'Secildi" +
+                    "\'] == false)\r\n                        $(row).addClass(\'gorusmeSaglanamadi\');\r\n\r\n" +
+                    "                }\r\n            },//set row color \r\n        });\r\n    });\r\n</scrip" +
+                    "t>\r\n<div class=\"container\">\r\n    <div class=\"card shadow\">\r\n        <div class=\"" +
+                    "card-header\">\r\n            ");
             parameterContainer.Controls[0].RenderControl(@__w);
             @__w.Write("\r\n            <h3 class=\"mb-2\">\r\n                ");
             parameterContainer.Controls[1].RenderControl(@__w);
@@ -834,9 +794,9 @@ namespace MTS_WebParts.AramaGorusmeListesiWP {
             parameterContainer.Controls[15].RenderControl(@__w);
             @__w.Write("\r\n            ");
             parameterContainer.Controls[16].RenderControl(@__w);
-            @__w.Write("\r\n            ");
-            parameterContainer.Controls[17].RenderControl(@__w);
             @__w.Write("\r\n        </div>\r\n        <div class=\"card-footer\">\r\n            ");
+            parameterContainer.Controls[17].RenderControl(@__w);
+            @__w.Write("\r\n            ");
             parameterContainer.Controls[18].RenderControl(@__w);
             @__w.Write("\r\n            ");
             parameterContainer.Controls[19].RenderControl(@__w);
@@ -844,10 +804,8 @@ namespace MTS_WebParts.AramaGorusmeListesiWP {
             parameterContainer.Controls[20].RenderControl(@__w);
             @__w.Write("\r\n            ");
             parameterContainer.Controls[21].RenderControl(@__w);
-            @__w.Write("\r\n            ");
-            parameterContainer.Controls[22].RenderControl(@__w);
             @__w.Write("\r\n        </div>\r\n    </div>\r\n    ");
-            parameterContainer.Controls[23].RenderControl(@__w);
+            parameterContainer.Controls[22].RenderControl(@__w);
             @__w.Write("\r\n</div>\r\n");
         }
         
