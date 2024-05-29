@@ -46,6 +46,10 @@
                                     <label class="col-form-label text-white" for="AktifChk">.... ... ...</label>
                                     <asp:CheckBox ID="AktifChk" CssClass="form-control" runat="server" Text=". Aktif" Checked="true" TextAlign="Right"  />                                        
                                 </div>
+                                                                <div class="form-group col-4 m-0">
+                                    <label class="col-form-label text-white" for="AktifChk">.... ... ...</label>
+                                    <asp:CheckBox ID="BirimKaldirildiChk" CssClass="form-control" runat="server" Text=". Birim Kaldırıldı" Checked="true" TextAlign="Right"  />                                        
+                                </div>
                             </div>
                             
                         </div>

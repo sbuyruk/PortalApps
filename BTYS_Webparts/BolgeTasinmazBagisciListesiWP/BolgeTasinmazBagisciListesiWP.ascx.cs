@@ -103,7 +103,7 @@ namespace BTYS_Webparts.BolgeTasinmazBagisciListesiWP
         {
             try
             {
-                BolgeQS = IKYSOrtak.PersonelinBolgesiniGetir(CurrentUserName);
+                BolgeQS = IKYSOrtak.PersonelinBolgesiniGetir_Deprecated(CurrentUserName);
                 if (!string.IsNullOrEmpty(BolgeQS))
                 {
                     TitleLbl.Text = "Bağışçı Listesi" + " (" + BolgeQS + " Bölgesi)";

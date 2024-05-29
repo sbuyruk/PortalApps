@@ -96,8 +96,30 @@ namespace IKYS_WebParts.GorevTanimEditWP
             {
                 FillBirimDDL();
                 FillPersonelDDL();
-                FillGorevToForm();
+                if (GorevTanimIdQS.ConvertToInt() > 0)
+                {
+                    OpenDuzenle();
+                }
+                else
+                {
+                    OpenGiris();
+                }
             }
+        }
+
+        private void OpenGiris()
+        {
+            SaveBtn.Visible = true;
+            UpdateBtn.Visible = false;
+            DeleteBtn.Visible = false;
+            
+        }
+        private void OpenDuzenle()
+        {
+            SaveBtn.Visible = false;
+            UpdateBtn.Visible = true;
+            DeleteBtn.Visible = true;
+            FillGorevToForm();
         }
         private void FillGorevToForm()
         {
@@ -152,31 +174,30 @@ namespace IKYS_WebParts.GorevTanimEditWP
             try
             {
                 GorevTanim gorev = new GorevTanim();
-                if (gorev != null)
-                {
-                    gorev.Adi = AdiTxt.Text;
-                    gorev.KisaAdi = KisaAdiTxt.Text;
-                    gorev.BirimId = BirimDDL.SelectedItem.Value.ConvertToInt();
-                    gorev.PersonelId = PersonelDDL.SelectedItem.Value.ConvertToInt();
-                    gorev.Vekil = VekilChk.Checked;
-                    gorev.Aktif = AktifChk.Checked;
-                    gorev.Degistiren = CurrentUserName;
-                    int id = gorev.Save();
-                    if (id > 0)
-                    {
-                        MessageHelper.PublishMessage("Yeni gorev kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
-                        GorevTanimIdQS = id.ToString();
-                        SaveBtn.Visible = false;
-                        UpdateBtn.Visible = true;
-                    }
-                    else
-                    {
-                        MessageHelper.PublishMessage("Gorev kaydedilemedi", ProjeConstants.MESAJ_HATA);
-                        UpdateBtn.Visible = false;
-                        SaveBtn.Visible = true;
-                    }
 
+                gorev.Adi = AdiTxt.Text;
+                gorev.KisaAdi = KisaAdiTxt.Text;
+                gorev.BirimId = BirimDDL.SelectedItem.Value.ConvertToInt();
+                gorev.PersonelId = PersonelDDL.SelectedItem.Value.ConvertToInt();
+                gorev.Vekil = VekilChk.Checked;
+                gorev.Aktif = AktifChk.Checked;
+                int id = gorev.Save();
+                if (id > 0)
+                {
+                    MessageHelper.PublishMessage("Yeni gorev kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    GorevTanimIdQS = id.ToString();
+                    SaveBtn.Visible = false;
+                    UpdateBtn.Visible = true;
+                    RedirectToPage(ProjeConstants.PAGE_GOREVTANIM_LIST + "?SecilenId=" + GorevTanimIdQS);
                 }
+                else
+                {
+                    MessageHelper.PublishMessage("Gorev kaydedilemedi", ProjeConstants.MESAJ_HATA);
+                    UpdateBtn.Visible = false;
+                    SaveBtn.Visible = true;
+                }
+
+
             }
             catch (Exception exception)
             {
@@ -188,7 +209,28 @@ namespace IKYS_WebParts.GorevTanimEditWP
         }
         protected void DeleteBtn_Click(object sender, EventArgs e)
         {
-
+            IsBilgileri isBilgileri = new IsBilgileri();
+            isBilgileri = isBilgileri.SelectByGorevId(GorevTanimIdQS.ConvertToInt());
+            if (isBilgileri == null)
+            {
+                GorevTanim gorevTanim = new GorevTanim();
+                gorevTanim = gorevTanim.SelectByGorevId(GorevTanimIdQS.ConvertToInt());
+                if (gorevTanim != null)
+                {
+                    if (gorevTanim.Delete())
+                        RedirectToPage(ProjeConstants.PAGE_GOREVTANIM_LIST + "?Mesaj=true");
+                    else
+                        MessageHelper.PublishMessage("Kadroyu silinemedi", ProjeConstants.MESAJ_HATA);
+                }
+            }
+            else
+            {
+                Personel personel = new Personel();
+                personel = personel.Select(isBilgileri.PersonelId);
+                string adi = personel!=null? "(" + personel.Adi + " " + personel.Soyadi +")":string.Empty;
+                MessageHelper.PublishMessage("Bu kadroda tanımlı personel bulunmaktadır.\n+" + adi +
+                    " Kadroyu silmek için önce kadroyu boşaltın", ProjeConstants.MESAJ_HATA);
+            }
         }
         protected void UpdateBtn_Click(object sender, EventArgs e)
         {

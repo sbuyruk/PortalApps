@@ -349,8 +349,8 @@ namespace Model.MTS
                     }
                 case ProjeConstants.FAALIYET_AMACI_IZIN_INT:
                     {
-                        item.color = Color.Aqua.Name;
-                        item.textColor = Color.White.Name;
+                        item.color = Color.Yellow.Name;
+                        item.textColor = Color.Black.Name;
                         item.purpose = ProjeConstants.FAALIYET_AMACI_IZIN;
                         break;
                     }
@@ -359,6 +359,34 @@ namespace Model.MTS
                         item.color = Color.MediumVioletRed.Name;
                         item.textColor = Color.White.Name;
                         item.purpose = ProjeConstants.FAALIYET_AMACI_RESMITATIL;
+                        break;
+                    }
+                case ProjeConstants.FAALIYET_AMACI_GORUSME_INT:
+                    {
+                        item.color = Color.DeepSkyBlue.Name;
+                        item.textColor = Color.White.Name;
+                        item.purpose = ProjeConstants.FAALIYET_AMACI_GORUSME;
+                        break;
+                    }
+                case ProjeConstants.FAALIYET_AMACI_SEYAHAT_INT:
+                    {
+                        item.color = Color.Coral.Name;
+                        item.textColor = Color.White.Name;
+                        item.purpose = ProjeConstants.FAALIYET_AMACI_SEYAHAT;
+                        break;
+                    }
+                case ProjeConstants.FAALIYET_AMACI_BILGI_INT:
+                    {
+                        item.color = Color.DimGray.Name;
+                        item.textColor = Color.White.Name;
+                        item.purpose = ProjeConstants.FAALIYET_AMACI_BILGI;
+                        break;
+                    }
+                case ProjeConstants.FAALIYET_AMACI_VAKIF_TOPLANISI_INT:
+                    {
+                        item.color = Color.Red.Name;
+                        item.textColor = Color.White.Name;
+                        item.purpose = ProjeConstants.FAALIYET_AMACI_VAKIF_TOPLANISI;
                         break;
                     }
                 default:

@@ -31,6 +31,30 @@ namespace IKYS_WebParts.GorevTanimListesiWP
             InitializeControl();
             this.ChromeType = PartChromeType.None;
         }
+        private string MesajQS
+        {
+            get
+            {
+
+                if (ViewState["Mesaj"] == null)
+                {
+                    if (Page.Request.QueryString["Mesaj"] != null)
+                    {
+                        ViewState["Mesaj"] = Page.Request.QueryString["Mesaj"];
+                    }
+                    else
+                    {
+                        ViewState["Mesaj"] = string.Empty;
+                    }
+                }
+                return ViewState["Mesaj"].ToString();
+            }
+
+            set
+            {
+                ViewState["Mesaj"] = value;
+            }
+        }
         private string SecilenIdQS
         {
             get
@@ -61,6 +85,11 @@ namespace IKYS_WebParts.GorevTanimListesiWP
             {
                 if (!Page.IsPostBack)
                 {
+                    if (!string.IsNullOrEmpty(MesajQS))
+                    {
+                        MessageHelper.PublishMessage("Kadro Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        MesajQS = string.Empty;
+                    }
                     TabloOlustur();
                 }
             }

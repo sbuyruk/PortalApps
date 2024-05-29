@@ -500,19 +500,22 @@ namespace Utility.ProjeGlobal
         public const string HARCAMAUSULU_PIYASADANALIM = "Piyasadan Alım";
         public const string HARCAMAUSULU_YONETIMEKATILMA = "Yönetime Katılma";
         //Bolgeler
-        public const string BOLGE_GENELMUDURLUK = "Genel Md.lük";
+        public const string BOLGE_ANKARA = "Ankara";
         public const string BOLGE_ISTANBUL = "İstanbul";
         public const string BOLGE_IZMIR = "İzmir";
         public const string BOLGE_MERSIN = "Mersin";
         public const string BOLGE_YURTDISI = "Yurtdışı";
         public const string BOLGE_HEPSI = "Hepsi";
+        public const string BOLGE_GENELMUDURLUK = "Genel Md.lük";
         public const string BOLGE_TEMSILCILIGI = "Bölge Temsilciliği";
 
-        public const int BOLGE_GENELMUDURLUK_INT = 1;
+        public const int BOLGE_HEPSI_INT = 0;
+        public const int BOLGE_ANKARA_INT = 1;
         public const int BOLGE_ISTANBUL_INT = 2;
         public const int BOLGE_IZMIR_INT = 3;
         public const int BOLGE_MERSIN_INT = 4;
-        public const int BOLGE_HEPSI_INT = 5;
+        public const int BOLGE_YURTDISI_INT = 5;
+        public const int BOLGE_GENELMUDURLUK_INT = 8;
 
         
         //Vasiyet Durumu
@@ -652,7 +655,9 @@ namespace Utility.ProjeGlobal
         //Kart ile
         public const int BANKA_KARTILE_ILKKACSATIRHARIC = 0;//hastitle true o yüzden 0
         public const int BANKA_KARTILE_SONKACSATIRHARIC = 0;
-
+        //EDevlet
+        public const int BANKA_EDEVLET_ILKKACSATIRHARIC = 0;//hastitle true o yüzden 0
+        public const int BANKA_EDEVLET_SONKACSATIRHARIC = 0;
         //Teb
         public const string BANKA_TEB = "TEB";
 
@@ -676,6 +681,8 @@ namespace Utility.ProjeGlobal
 
         //Kart ile
         public const string BANKA_KARTILEBAGIS = "Kart ile Bağış";
+        //EDevlet
+        public const string BANKA_EDEVLETBAGIS = "EDevlet ile Bağış";
         #endregion 
         //armagan durumu
         public const string DURUM_BOS = "";
@@ -940,7 +947,7 @@ namespace Utility.ProjeGlobal
         public const string FAALIYET_AMACI_TOPLANTI = "Toplantı";
         public const string FAALIYET_AMACI_ZIYARET = "Ziyaret";
         public const string FAALIYET_AMACI_DAVET = "Davet";
-        public const string FAALIYET_AMACI_YILDONUMU = "Yildönümü";
+        public const string FAALIYET_AMACI_YILDONUMU = "Yıldönümü";
         public const string FAALIYET_AMACI_DOGUMGUNU = "Doğum Günü";
         public const string FAALIYET_AMACI_OZELCALISMA = "Özel Çalışma";
         public const string FAALIYET_AMACI_IZIN = "İzin";
@@ -948,6 +955,7 @@ namespace Utility.ProjeGlobal
         public const string FAALIYET_AMACI_SEYAHAT = "Seyahat";
         public const string FAALIYET_AMACI_GORUSME = "Görüşme";
         public const string FAALIYET_AMACI_BILGI = "Bilgi";
+        public const string FAALIYET_AMACI_VAKIF_TOPLANISI = "Vakıf Toplantısı";
 
         public const string FAALIYET_AMACI_TOPLANTI_INT = "1";
         public const string FAALIYET_AMACI_ZIYARET_INT = "2";
@@ -960,6 +968,7 @@ namespace Utility.ProjeGlobal
         public const string FAALIYET_AMACI_GORUSME_INT = "9";
         public const string FAALIYET_AMACI_SEYAHAT_INT = "10";
         public const string FAALIYET_AMACI_BILGI_INT = "11";
+        public const string FAALIYET_AMACI_VAKIF_TOPLANISI_INT = "12";
         //public enum RandevuAmaciEnum { Diğer, Toplantı, Ziyaret, Davet, Yıldönümü, ÖzelÇalışma, İzin }
 
         public static string FAALIYET_DURUMU_PLANLANDI = "Planlandı";

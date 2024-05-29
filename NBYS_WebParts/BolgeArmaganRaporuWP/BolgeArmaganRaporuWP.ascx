@@ -12,6 +12,11 @@
         return true;
     }
 </script>
+<style>
+    .table-cell-bordered {
+    border: 1px solid black;
+}
+</style>
 <div class="container shadow">
     <div class="card">
         <div class="card-header ">
@@ -63,67 +68,67 @@
                 <div class="card-body">
                     <asp:Table ID="NBTable" runat="server" class="loader table table-bordered table-hover table-striped">
                         <asp:TableHeaderRow HorizontalAlign="Center">
-                            <asp:TableCell ID="TableHeaderCell" runat="server" CssClass="btn-light font-weight-bold" ColumnSpan="6"></asp:TableCell>
+                            <asp:TableCell ID="TableHeaderCell" runat="server" CssClass="btn-light font-weight-bold" Style="border: 1px solid black;" ColumnSpan="6"></asp:TableCell>
                         </asp:TableHeaderRow>
                         <asp:TableHeaderRow HorizontalAlign="Center">
-                            <asp:TableCell CssClass="btn-light font-weight-bold">Bölge</asp:TableCell>
-                            <asp:TableCell CssClass="btn-light font-weight-bold">Altın Madalya</asp:TableCell>
-                            <asp:TableCell CssClass="btn-light font-weight-bold">Gümüş Madalya</asp:TableCell>
-                            <asp:TableCell CssClass="btn-light font-weight-bold">Bronz Madalya</asp:TableCell>
-                            <asp:TableCell CssClass="btn-light font-weight-bold">Teşekkür Belgesi</asp:TableCell>
-                            <asp:TableCell CssClass="btn-light font-weight-bold">Bölge Toplam</asp:TableCell>
+                            <asp:TableCell CssClass="btn-light font-weight-bold" Style="border: 1px solid black;">Bölge</asp:TableCell>
+                            <asp:TableCell CssClass="btn-light font-weight-bold" Style="border: 1px solid black;">Altın Madalya</asp:TableCell>
+                            <asp:TableCell CssClass="btn-light font-weight-bold" Style="border: 1px solid black;">Gümüş Madalya</asp:TableCell>
+                            <asp:TableCell CssClass="btn-light font-weight-bold" Style="border: 1px solid black;">Bronz Madalya</asp:TableCell>
+                            <asp:TableCell CssClass="btn-light font-weight-bold" Style="border: 1px solid black;">Teşekkür Belgesi</asp:TableCell>
+                            <asp:TableCell CssClass="btn-light font-weight-bold" Style="border: 1px solid black;">Bölge Toplam</asp:TableCell>
                         </asp:TableHeaderRow>
                         <asp:TableRow HorizontalAlign="Center">
-                            <asp:TableCell ID="GMBaslikCell" CssClass="font-weight-bold">Gn.Md.lük</asp:TableCell>
-                            <asp:TableCell ID="GMAltinAdetCell" runat="server"></asp:TableCell>
-                            <asp:TableCell ID="GMGumusAdetCell" runat="server"></asp:TableCell>
-                            <asp:TableCell ID="GMBronzAdetCell" runat="server"></asp:TableCell>
-                            <asp:TableCell ID="GMTesAdetCell" runat="server"></asp:TableCell>
-                            <asp:TableCell ID="GmAdetTopCell" CssClass="font-weight-bold"></asp:TableCell>
+                            <asp:TableCell ID="AnkBaslikCell" CssClass="font-weight-bold" Style="border: 1px solid black;">Ankara Bölge</asp:TableCell>
+                            <asp:TableCell ID="AnkAltinAdetCell" runat="server" Style="border: 1px solid black;"></asp:TableCell>
+                            <asp:TableCell ID="AnkGumusAdetCell" runat="server" Style="border: 1px solid black;"></asp:TableCell>
+                            <asp:TableCell ID="AnkBronzAdetCell" runat="server" Style="border: 1px solid black;"></asp:TableCell>
+                            <asp:TableCell ID="AnkTesAdetCell" runat="server" Style="border: 1px solid black;"></asp:TableCell>
+                            <asp:TableCell ID="AnkAdetTopCell" CssClass="font-weight-bold" Style="border: 1px solid black;"></asp:TableCell>
                         </asp:TableRow>
                         <asp:TableRow HorizontalAlign="Center">
-                            <asp:TableCell ID="IstBaslikCell" CssClass="font-weight-bold">İstanbul Bölge</asp:TableCell>
-                            <asp:TableCell ID="IstAltinAdetCell" runat="server"></asp:TableCell>
-                            <asp:TableCell ID="IstGumusAdetCell" runat="server"></asp:TableCell>
-                            <asp:TableCell ID="IstBronzAdetCell" runat="server"></asp:TableCell>
-                            <asp:TableCell ID="IstTesAdetCell" runat="server"></asp:TableCell>
-                            <asp:TableCell ID="IstAdetTopCell" CssClass="font-weight-bold"></asp:TableCell>
+                            <asp:TableCell ID="IstBaslikCell" CssClass="font-weight-bold" Style="border: 1px solid black;">İstanbul Bölge</asp:TableCell>
+                            <asp:TableCell ID="IstAltinAdetCell" runat="server" Style="border: 1px solid black;"></asp:TableCell>
+                            <asp:TableCell ID="IstGumusAdetCell" runat="server" Style="border: 1px solid black;"></asp:TableCell>
+                            <asp:TableCell ID="IstBronzAdetCell" runat="server" Style="border: 1px solid black;"></asp:TableCell>
+                            <asp:TableCell ID="IstTesAdetCell" runat="server" Style="border: 1px solid black;"></asp:TableCell>
+                            <asp:TableCell ID="IstAdetTopCell" CssClass="font-weight-bold" Style="border: 1px solid black;"></asp:TableCell>
                         </asp:TableRow>
                         <asp:TableRow HorizontalAlign="Center">
-                            <asp:TableCell ID="IzmBaslikCell" CssClass="font-weight-bold">İzmir Bölge</asp:TableCell>
-                            <asp:TableCell ID="IzmAltinAdetCell" runat="server"></asp:TableCell>
-                            <asp:TableCell ID="IzmGumusAdetCell" runat="server"></asp:TableCell>
-                            <asp:TableCell ID="IzmBronzAdetCell" runat="server"></asp:TableCell>
-                            <asp:TableCell ID="IzmTesAdetCell" runat="server"></asp:TableCell>
-                            <asp:TableCell ID="IzmAdetTopCell" CssClass="font-weight-bold"></asp:TableCell>
+                            <asp:TableCell ID="IzmBaslikCell" CssClass="font-weight-bold" Style="border: 1px solid black;">İzmir Bölge</asp:TableCell>
+                            <asp:TableCell ID="IzmAltinAdetCell" runat="server" Style="border: 1px solid black;"></asp:TableCell>
+                            <asp:TableCell ID="IzmGumusAdetCell" runat="server" Style="border: 1px solid black;"></asp:TableCell>
+                            <asp:TableCell ID="IzmBronzAdetCell" runat="server" Style="border: 1px solid black;"></asp:TableCell>
+                            <asp:TableCell ID="IzmTesAdetCell" runat="server" Style="border: 1px solid black;"></asp:TableCell>
+                            <asp:TableCell ID="IzmAdetTopCell" CssClass="font-weight-bold" Style="border: 1px solid black;"></asp:TableCell>
                         </asp:TableRow>
                         <asp:TableRow HorizontalAlign="Center">
-                            <asp:TableCell ID="MerBaslikCell" CssClass="font-weight-bold">Mersin Bölge</asp:TableCell>
-                            <asp:TableCell ID="MerAltinAdetCell" runat="server"></asp:TableCell>
-                            <asp:TableCell ID="MerGumusAdetCell" runat="server"></asp:TableCell>
-                            <asp:TableCell ID="MerBronzAdetCell" runat="server"></asp:TableCell>
-                            <asp:TableCell ID="MerTesAdetCell" runat="server"></asp:TableCell>
-                            <asp:TableCell ID="MerAdetTopCell" CssClass="font-weight-bold"></asp:TableCell>
+                            <asp:TableCell ID="MerBaslikCell" CssClass="font-weight-bold" Style="border: 1px solid black;">Mersin Bölge</asp:TableCell>
+                            <asp:TableCell ID="MerAltinAdetCell" runat="server" Style="border: 1px solid black;"></asp:TableCell>
+                            <asp:TableCell ID="MerGumusAdetCell" runat="server" Style="border: 1px solid black;"></asp:TableCell>
+                            <asp:TableCell ID="MerBronzAdetCell" runat="server" Style="border: 1px solid black;"></asp:TableCell>
+                            <asp:TableCell ID="MerTesAdetCell" runat="server" Style="border: 1px solid black;"></asp:TableCell>
+                            <asp:TableCell ID="MerAdetTopCell" CssClass="font-weight-bold" Style="border: 1px solid black;"></asp:TableCell>
                         </asp:TableRow>
                         <asp:TableRow HorizontalAlign="Center">
-                            <asp:TableCell ID="YurtDisiBaslikCell" CssClass="font-weight-bold">Yurtdışı</asp:TableCell>
-                            <asp:TableCell ID="YurtDisiAltinAdetCell" runat="server"></asp:TableCell>
-                            <asp:TableCell ID="YurtDisiGumusAdetCell" runat="server"></asp:TableCell>
-                            <asp:TableCell ID="YurtDisiBronzAdetCell" runat="server"></asp:TableCell>
-                            <asp:TableCell ID="YurtDisiTesAdetCell" runat="server"></asp:TableCell>
-                            <asp:TableCell ID="YurtDisiAdetTopCell" CssClass="font-weight-bold"></asp:TableCell>
+                            <asp:TableCell ID="YurtDisiBaslikCell" CssClass="font-weight-bold" Style="border: 1px solid black;">Yurtdışı</asp:TableCell>
+                            <asp:TableCell ID="YurtDisiAltinAdetCell" runat="server" Style="border: 1px solid black;"></asp:TableCell>
+                            <asp:TableCell ID="YurtDisiGumusAdetCell" runat="server" Style="border: 1px solid black;"></asp:TableCell>
+                            <asp:TableCell ID="YurtDisiBronzAdetCell" runat="server" Style="border: 1px solid black;"></asp:TableCell>
+                            <asp:TableCell ID="YurtDisiTesAdetCell" runat="server" Style="border: 1px solid black;"></asp:TableCell>
+                            <asp:TableCell ID="YurtDisiAdetTopCell" CssClass="font-weight-bold" Style="border: 1px solid black;"></asp:TableCell>
                         </asp:TableRow>
                         <asp:TableRow HorizontalAlign="Center">
-                            <asp:TableCell ID="TopBaslikCell" CssClass="font-weight-bold">Toplam</asp:TableCell>
-                            <asp:TableCell ID="AltinAdetToplamCell" CssClass="font-weight-bold" runat="server"></asp:TableCell>
-                            <asp:TableCell ID="GumusAdetToplamCell" CssClass="font-weight-bold" runat="server"></asp:TableCell>
-                            <asp:TableCell ID="BronzAdetToplamCell" CssClass="font-weight-bold" runat="server"></asp:TableCell>
-                            <asp:TableCell ID="TesAdetToplamCell" CssClass="font-weight-bold" runat="server"></asp:TableCell>
-                            <asp:TableCell ID="TopAdetTopCell" CssClass="font-weight-bold text-danger"></asp:TableCell>
+                            <asp:TableCell ID="TopBaslikCell" CssClass="font-weight-bold" Style="border: 1px solid black;">Toplam</asp:TableCell>
+                            <asp:TableCell ID="AltinAdetToplamCell" CssClass="font-weight-bold" Style="border: 1px solid black;" runat="server" ></asp:TableCell>
+                            <asp:TableCell ID="GumusAdetToplamCell" CssClass="font-weight-bold" Style="border: 1px solid black;" runat="server" ></asp:TableCell>
+                            <asp:TableCell ID="BronzAdetToplamCell" CssClass="font-weight-bold" Style="border: 1px solid black;" runat="server" ></asp:TableCell>
+                            <asp:TableCell ID="TesAdetToplamCell" CssClass="font-weight-bold" Style="border: 1px solid black;" runat="server" ></asp:TableCell>
+                            <asp:TableCell ID="TopAdetTopCell" CssClass="font-weight-bold text-danger" Style="border: 1px solid black;"></asp:TableCell>
                         </asp:TableRow>
                     </asp:Table>
                     <div>
-                        <asp:Label Text="* İl bilgisi olmayan bağışçıların armağanları Genel Müd.lük sayılarına dahil edilmiştir." runat="server" />
+                        <asp:Label Text="* İl bilgisi olmayan bağışçıların armağanları Ankara Bölge sayılarına dahil edilmiştir." runat="server" />
                     </div>
                 </div>
             </ContentTemplate>

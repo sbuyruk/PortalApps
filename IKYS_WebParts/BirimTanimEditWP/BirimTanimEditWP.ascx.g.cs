@@ -81,6 +81,10 @@ namespace IKYS_WebParts.BirimTanimEditWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.CheckBox BirimKaldirildiChk;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.UpdatePanel UpdatePanel;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -308,6 +312,23 @@ namespace IKYS_WebParts.BirimTanimEditWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.CheckBox @__BuildControlBirimKaldirildiChk() {
+            global::System.Web.UI.WebControls.CheckBox @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.CheckBox();
+            this.BirimKaldirildiChk = @__ctrl;
+            @__ctrl.TemplateControl = this;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "BirimKaldirildiChk";
+            @__ctrl.CssClass = "form-control";
+            @__ctrl.Text = ". Birim Kaldırıldı";
+            @__ctrl.Checked = true;
+            @__ctrl.TextAlign = global::System.Web.UI.WebControls.TextAlign.Right;
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControl__control2(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
@@ -356,6 +377,14 @@ namespace IKYS_WebParts.BirimTanimEditWP {
             global::System.Web.UI.WebControls.CheckBox @__ctrl7;
             @__ctrl7 = this.@__BuildControlAktifChk();
             @__parser.AddParsedSubObject(@__ctrl7);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"                                        
+                                </div>
+                                                                <div class=""form-group col-4 m-0"">
+                                    <label class=""col-form-label text-white"" for=""AktifChk"">.... ... ...</label>
+                                    "));
+            global::System.Web.UI.WebControls.CheckBox @__ctrl8;
+            @__ctrl8 = this.@__BuildControlBirimKaldirildiChk();
+            @__parser.AddParsedSubObject(@__ctrl8);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("                                        \r\n                                </div>\r" +
                         "\n                            </div>\r\n                            \r\n             " +
                         "           </div>\r\n                    </div>\r\n                "));

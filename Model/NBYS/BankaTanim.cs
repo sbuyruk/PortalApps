@@ -108,8 +108,11 @@ namespace Model.NBYS
 
         public override List<T> SelectAll<T>()
         {
-            string sqlString = string.Format(@"SELECT * 
-                               FROM BankaTanim_Table");
+            string sqlString = string.Format(
+                @"
+                SELECT * 
+                FROM BankaTanim_Table
+                ORDER BY Banka");
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<BankaTanim> list = ToList<BankaTanim>(dataTable);

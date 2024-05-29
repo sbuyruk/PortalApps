@@ -222,7 +222,12 @@ namespace NBYS_WebParts.FTKIslemleriWP
             il = il.Select<Il>(IliDDL.SelectedItem.Value.ConvertToInt());
             if (il != null)
             {
-                SorumluBolgeTxt.Text = il.Bolge;
+                
+
+                Bolge bolge = new Bolge();
+                bolge = bolge.Select<Bolge>(il.BolgeId);
+                BolgeIdTxt.Text = bolge==null?string.Empty:bolge.Id.ToString();
+                SorumluBolgeTxt.Text = bolge == null ? string.Empty : bolge.Adi;
             }
         }
         private void GirisiAc()
@@ -420,6 +425,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
                 IdLbl.Text = string.Empty;
 
                 SorumluBolgeTxt.Enabled = false;
+                BolgeIdTxt.Enabled = false;
                 FTKKurulusTarihiTxt.Text = DateTime.Today.ConvertToDatetimeEmptyIfNull();
                 FTKGuncellemeTarihiTxt.Text = DateTime.Today.ConvertToDatetimeEmptyIfNull();
                 AciklamaTxt.Text = string.Empty;
@@ -431,6 +437,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
                 TitleLbl.Text = "FTK İşlemleri Düzenle";
                 IdLbl.Text = " ( FTK No: " + ftkislemleri.Id.ToString() + " )";
                 SorumluBolgeTxt.Enabled = false;
+                BolgeIdTxt.Enabled = false;
                 FTKKurulusTarihiTxt.Text = ftkislemleri.KurulusTarihi.ConvertToDatetimeEmptyIfNull();
                 FTKGuncellemeTarihiTxt.Text = ftkislemleri.GuncellemeTarihi.ConvertToDatetimeEmptyIfNull();
 
@@ -611,7 +618,8 @@ namespace NBYS_WebParts.FTKIslemleriWP
                     ftkIslemleri.Ili = IliDDL.SelectedItem.Value.ConvertToInt();
                     ftkIslemleri.Ilcesi = IlcesiDDL.SelectedItem.Value.ConvertToInt();
 
-                    ftkIslemleri.SorumluBolge = SorumluBolgeTxt.Text;
+                    ftkIslemleri.BolgeId = BolgeIdTxt.Text.ConvertToInt();
+                    //ftkIslemleri.SorumluBolge = SorumluBolgeTxt.Text;
                     ftkIslemleri.KurulusTarihi = FTKKurulusTarihiTxt.Text.ConvertToDatetime();
                     ftkIslemleri.GuncellemeTarihi = FTKGuncellemeTarihiTxt.Text.ConvertToDatetime();
                     ftkIslemleri.Aciklama = AciklamaTxt.Text;
@@ -693,7 +701,8 @@ namespace NBYS_WebParts.FTKIslemleriWP
                 ftk.FTKIslemId = ftkIslem.Id;
                 ftk.Ili = IliDDL.SelectedItem.Value.ConvertToInt();
                 ftk.Ilcesi = IlcesiDDL.SelectedItem.Value.ConvertToInt();
-                ftk.Bolge = ftkIslem.SorumluBolge;
+                //ftk.Bolge = ftkIslem.SorumluBolge;
+                ftk.BolgeId = ftkIslem.BolgeId;
                 ftk.KurulusTarihi = ftkIslem.KurulusTarihi;
                 ftk.GuncellemeTarihi = ftkIslem.GuncellemeTarihi;
                 ftk.FTKGorevi = ParseGorevi(item.FTKGorevi);
@@ -726,7 +735,8 @@ namespace NBYS_WebParts.FTKIslemleriWP
                 ftkIslemleri.Ili = IliDDL.SelectedItem.Value.ConvertToInt();
                 ftkIslemleri.Ilcesi = IlcesiDDL.SelectedItem.Value.ConvertToInt();
 
-                ftkIslemleri.SorumluBolge = SorumluBolgeTxt.Text;
+                ftkIslemleri.BolgeId = BolgeIdTxt.Text.ConvertToInt();
+                //ftkIslemleri.SorumluBolge = SorumluBolgeTxt.Text;
                 ftkIslemleri.KurulusTarihi = FTKKurulusTarihiTxt.Text.ConvertToDatetime();
                 ftkIslemleri.GuncellemeTarihi = FTKGuncellemeTarihiTxt.Text.ConvertToDatetime();
                 ftkIslemleri.Aciklama = AciklamaTxt.Text;

@@ -76,7 +76,7 @@ namespace TBYS_WebParts.GerceklesenKiraArtislariWP
             try
             {
 
-                BolgeQS = IKYSOrtak.PersonelinBolgesiniGetir(CurrentUserName);
+                BolgeQS = IKYSOrtak.PersonelinBolgesiniGetir_Deprecated(CurrentUserName);
                 if (!Page.IsPostBack)
                 {
                     TabloOlustur();

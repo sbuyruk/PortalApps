@@ -109,6 +109,7 @@ namespace IKYS_WebParts.BirimTanimEditWP
                 UpdateBtn.Visible = false;
                 SaveBtn.Visible = true;
                 AktifChk.Checked = true;
+                BirimKaldirildiChk.Checked = false;
             }
             else
             {
@@ -126,6 +127,7 @@ namespace IKYS_WebParts.BirimTanimEditWP
                 AdiTxt.Text = birim.Adi;
                 KisaAdiTxt.Text = birim.KisaAdi;
                 AktifChk.Checked = birim.Aktif;
+                BirimKaldirildiChk.Checked = birim.BirimKaldirildi;
                 if (UstBirimDDL.Items.FindByValue(birim.ParentId.ReturnZeroIfNull().ToString()) != null)
                     UstBirimDDL.SelectedValue = UstBirimDDL.Items.FindByValue(birim.ParentId.ReturnZeroIfNull().ToString()).Value;
                 if (AmirDDL.Items.FindByValue(birim.AmirId.ReturnZeroIfNull().ToString()) != null)
@@ -181,6 +183,7 @@ namespace IKYS_WebParts.BirimTanimEditWP
                     birim.ParentId = UstBirimDDL.SelectedItem.Value.ConvertToInt();
                     birim.AmirId = AmirDDL.SelectedItem.Value.ConvertToInt();
                     birim.Aktif = AktifChk.Checked;
+                    birim.BirimKaldirildi = BirimKaldirildiChk.Checked;
                     birim.Degistiren = CurrentUserName;
                     int id = birim.Save();
                     if (id > 0)
@@ -225,6 +228,7 @@ namespace IKYS_WebParts.BirimTanimEditWP
                     birim.ParentId = UstBirimDDL.SelectedItem.Value.ConvertToInt();
                     birim.AmirId = AmirDDL.SelectedItem.Value.ConvertToInt();
                     birim.Aktif = AktifChk.Checked;
+                    birim.BirimKaldirildi = BirimKaldirildiChk.Checked;
                     birim.Degistiren = CurrentUserName;
                     bool isupdated = birim.Update();
                     if (isupdated)

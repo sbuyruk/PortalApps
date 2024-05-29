@@ -164,8 +164,8 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP
 
             SetCellValues(bastar, bittar);
 
-            GmAdetTopCell.Text = GMAltinAdetCell.Text.ConvertToInt() + GMGumusAdetCell.Text.ConvertToInt() + GMBronzAdetCell.Text.ConvertToInt() +
-                GMTesAdetCell.Text.ConvertToInt() + "";
+            AnkAdetTopCell.Text = AnkAltinAdetCell.Text.ConvertToInt() + AnkGumusAdetCell.Text.ConvertToInt() + AnkBronzAdetCell.Text.ConvertToInt() +
+                AnkTesAdetCell.Text.ConvertToInt() + "";
 
             IstAdetTopCell.Text = IstAltinAdetCell.Text.ConvertToInt() + IstGumusAdetCell.Text.ConvertToInt() + IstBronzAdetCell.Text.ConvertToInt() +
                 IstTesAdetCell.Text.ConvertToInt() + "";
@@ -179,10 +179,10 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP
             YurtDisiAdetTopCell.Text = YurtDisiAltinAdetCell.Text.ConvertToInt() + YurtDisiGumusAdetCell.Text.ConvertToInt() + YurtDisiBronzAdetCell.Text.ConvertToInt() +
                YurtDisiTesAdetCell.Text.ConvertToInt() + "";
 
-            AltinAdetToplamCell.Text = GMAltinAdetCell.Text.ConvertToInt() + IstAltinAdetCell.Text.ConvertToInt() + IzmAltinAdetCell.Text.ConvertToInt() + MerAltinAdetCell.Text.ConvertToInt() + YurtDisiAltinAdetCell.Text.ConvertToInt() + "";
-            GumusAdetToplamCell.Text = GMGumusAdetCell.Text.ConvertToInt() + IstGumusAdetCell.Text.ConvertToInt() + IzmGumusAdetCell.Text.ConvertToInt() + MerGumusAdetCell.Text.ConvertToInt() + YurtDisiGumusAdetCell.Text.ConvertToInt() + "";
-            BronzAdetToplamCell.Text = GMBronzAdetCell.Text.ConvertToInt() + IstBronzAdetCell.Text.ConvertToInt() + IzmBronzAdetCell.Text.ConvertToInt() + MerBronzAdetCell.Text.ConvertToInt() + "";
-            TesAdetToplamCell.Text = GMTesAdetCell.Text.ConvertToInt() + IstTesAdetCell.Text.ConvertToInt() + IzmTesAdetCell.Text.ConvertToInt() + MerTesAdetCell.Text.ConvertToInt() + YurtDisiTesAdetCell.Text.ConvertToInt() + "";
+            AltinAdetToplamCell.Text = AnkAltinAdetCell.Text.ConvertToInt() + IstAltinAdetCell.Text.ConvertToInt() + IzmAltinAdetCell.Text.ConvertToInt() + MerAltinAdetCell.Text.ConvertToInt() + YurtDisiAltinAdetCell.Text.ConvertToInt() + "";
+            GumusAdetToplamCell.Text = AnkGumusAdetCell.Text.ConvertToInt() + IstGumusAdetCell.Text.ConvertToInt() + IzmGumusAdetCell.Text.ConvertToInt() + MerGumusAdetCell.Text.ConvertToInt() + YurtDisiGumusAdetCell.Text.ConvertToInt() + "";
+            BronzAdetToplamCell.Text = AnkBronzAdetCell.Text.ConvertToInt() + IstBronzAdetCell.Text.ConvertToInt() + IzmBronzAdetCell.Text.ConvertToInt() + MerBronzAdetCell.Text.ConvertToInt() + "";
+            TesAdetToplamCell.Text = AnkTesAdetCell.Text.ConvertToInt() + IstTesAdetCell.Text.ConvertToInt() + IzmTesAdetCell.Text.ConvertToInt() + MerTesAdetCell.Text.ConvertToInt() + YurtDisiTesAdetCell.Text.ConvertToInt() + "";
             TopAdetTopCell.Text = AltinAdetToplamCell.Text.ConvertToInt() + GumusAdetToplamCell.Text.ConvertToInt() + BronzAdetToplamCell.Text.ConvertToInt() + TesAdetToplamCell.Text.ConvertToInt() + YurtDisiAdetTopCell.Text.ConvertToInt() + "";
         }
         private void SetCellValues(DateTime bastar, DateTime bittar)
@@ -199,38 +199,38 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP
                         {
 
                             string adet = row["Adet"].ReturnZeroIfNull().ToString();
-                            string bolge = row["Bolge"].ReturnEmptyIfNull().ToString();
+                            int bolgeId = row["BolgeId"].ReturnZeroIfNull().ConvertToInt();
                             int armaganTanimId = Int32.Parse(row["ArmaganTanimId"].ReturnZeroIfNull().ToString());
 
-                            if (bolge.Equals(ProjeConstants.BOLGE_GENELMUDURLUK))
+                            if (bolgeId==ProjeConstants.BOLGE_ANKARA_INT)
                             {
                                 switch (armaganTanimId)
                                 {
                                     case ProjeConstants.ARMAGAN_ALTINID:
                                         {
-                                            GMAltinAdetCell.Text = adet;
+                                            AnkAltinAdetCell.Text = adet;
                                             break;
                                         }
                                     case ProjeConstants.ARMAGAN_GUMUSID:
                                         {
-                                            GMGumusAdetCell.Text = adet;
+                                            AnkGumusAdetCell.Text = adet;
                                             break;
                                         }
                                     case ProjeConstants.ARMAGAN_BRONZID:
                                         {
-                                            GMBronzAdetCell.Text = adet;
+                                            AnkBronzAdetCell.Text = adet;
                                             break;
                                         }
                                     case ProjeConstants.ARMAGAN_TESEKKURID:
                                         {
-                                            GMTesAdetCell.Text = adet;
+                                            AnkTesAdetCell.Text = adet;
                                             break;
                                         }
                                     default:
                                         break;
                                 }
                             }
-                            else if (bolge.Equals(ProjeConstants.BOLGE_ISTANBUL))
+                            else if (bolgeId == ProjeConstants.BOLGE_ISTANBUL_INT)
                             {
                                 switch (armaganTanimId)
                                 {
@@ -258,7 +258,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP
                                         break;
                                 }
                             }
-                            else if (bolge.Equals(ProjeConstants.BOLGE_IZMIR))
+                            else if (bolgeId == ProjeConstants.BOLGE_IZMIR_INT)
                             {
                                 switch (armaganTanimId)
                                 {
@@ -286,7 +286,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP
                                         break;
                                 }
                             }
-                            else if (bolge.Equals(ProjeConstants.BOLGE_MERSIN))
+                            else if (bolgeId == ProjeConstants.BOLGE_MERSIN_INT)
                             {
                                 switch (armaganTanimId)
                                 {
@@ -314,7 +314,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP
                                         break;
                                 }
                             }
-                            else if (bolge.Equals(ProjeConstants.BOLGE_YURTDISI))
+                            else if (bolgeId == ProjeConstants.BOLGE_YURTDISI_INT)
                             {
                                 switch (armaganTanimId)
                                 {
@@ -457,8 +457,9 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP
         protected void ExportToExcel()
         {
             string filename = "ArmaganRaporu" + DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + ".xls";
-            Page.Response.ContentEncoding = System.Text.Encoding.GetEncoding("windows-1254");
-            Page.Response.Charset = "windows-1254";//ISO-8859-9
+            Page.Response.ContentEncoding = System.Text.Encoding.Unicode;
+            Page.Response.BinaryWrite(System.Text.Encoding.Unicode.GetPreamble());
+
             System.IO.StringWriter tw = new System.IO.StringWriter();
             System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
 

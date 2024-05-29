@@ -185,7 +185,7 @@ namespace TBYS_WebParts.BorcluKiracilarWP
                 {
 
                     SetAyYilValues();
-                    BolgeQS = IKYSOrtak.PersonelinBolgesiniGetir(UtilityHelper.GetCurrentUserLoginName());
+                    BolgeQS = IKYSOrtak.PersonelinBolgesiniGetir_Deprecated(UtilityHelper.GetCurrentUserLoginName());
                     if (!string.IsNullOrEmpty(BolgeQS))
                     {
                         TitleLbl.Text = "Borçlu Kiracı Listesi" + " (" + BolgeQS + " Bölgesi)";

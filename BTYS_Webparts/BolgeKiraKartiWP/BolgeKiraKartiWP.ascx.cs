@@ -148,7 +148,7 @@ namespace BTYS_Webparts.BolgeKiraKartiWP
         {
             if (!Page.IsPostBack)
             {
-                BolgeQS = IKYSOrtak.PersonelinBolgesiniGetir(CurrentUserName);
+                BolgeQS = IKYSOrtak.PersonelinBolgesiniGetir_Deprecated(CurrentUserName);
                 if (!string.IsNullOrEmpty(BolgeQS))
                 {
                     Kiraci kiraci = new Kiraci();

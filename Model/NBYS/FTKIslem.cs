@@ -12,7 +12,8 @@ namespace Model.NBYS
     {
         public int Ili { get; set; }
         public int Ilcesi { get; set; }
-        public string SorumluBolge { get; set; }     
+        public int BolgeId { get; set; }
+        //public string SorumluBolge { get; set; }     
         public DateTime KurulusTarihi { get; set; }
         public DateTime GuncellemeTarihi { get; set; }
         public string Aciklama { get; set; }

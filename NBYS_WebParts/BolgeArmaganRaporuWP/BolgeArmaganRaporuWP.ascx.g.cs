@@ -77,27 +77,27 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMBaslikCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkBaslikCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMAltinAdetCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkAltinAdetCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMGumusAdetCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkGumusAdetCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMBronzAdetCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkBronzAdetCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMTesAdetCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkTesAdetCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GmAdetTopCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkAdetTopCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -373,6 +373,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "TableHeaderCell";
             @__ctrl.CssClass = "btn-light font-weight-bold";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             @__ctrl.ColumnSpan = 6;
             return @__ctrl;
         }
@@ -406,6 +407,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.CssClass = "btn-light font-weight-bold";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Bölge"));
             return @__ctrl;
@@ -419,6 +421,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.CssClass = "btn-light font-weight-bold";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Altın Madalya"));
             return @__ctrl;
@@ -432,6 +435,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.CssClass = "btn-light font-weight-bold";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Gümüş Madalya"));
             return @__ctrl;
@@ -445,6 +449,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.CssClass = "btn-light font-weight-bold";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Bronz Madalya"));
             return @__ctrl;
@@ -458,6 +463,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.CssClass = "btn-light font-weight-bold";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Teşekkür Belgesi"));
             return @__ctrl;
@@ -471,6 +477,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.CssClass = "btn-light font-weight-bold";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Bölge Toplam"));
             return @__ctrl;
@@ -515,76 +522,82 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMBaslikCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkBaslikCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMBaslikCell = @__ctrl;
+            this.AnkBaslikCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMBaslikCell";
+            @__ctrl.ID = "AnkBaslikCell";
             @__ctrl.CssClass = "font-weight-bold";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Gn.Md.lük"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Ankara Bölge"));
             return @__ctrl;
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMAltinAdetCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkAltinAdetCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMAltinAdetCell = @__ctrl;
+            this.AnkAltinAdetCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMAltinAdetCell";
+            @__ctrl.ID = "AnkAltinAdetCell";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             return @__ctrl;
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMGumusAdetCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkGumusAdetCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMGumusAdetCell = @__ctrl;
+            this.AnkGumusAdetCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMGumusAdetCell";
+            @__ctrl.ID = "AnkGumusAdetCell";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             return @__ctrl;
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMBronzAdetCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkBronzAdetCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMBronzAdetCell = @__ctrl;
+            this.AnkBronzAdetCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMBronzAdetCell";
+            @__ctrl.ID = "AnkBronzAdetCell";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             return @__ctrl;
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMTesAdetCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkTesAdetCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMTesAdetCell = @__ctrl;
+            this.AnkTesAdetCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMTesAdetCell";
+            @__ctrl.ID = "AnkTesAdetCell";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             return @__ctrl;
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGmAdetTopCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkAdetTopCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GmAdetTopCell = @__ctrl;
+            this.AnkAdetTopCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GmAdetTopCell";
+            @__ctrl.ID = "AnkAdetTopCell";
             @__ctrl.CssClass = "font-weight-bold";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             return @__ctrl;
         }
         
@@ -593,22 +606,22 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControl__control15(System.Web.UI.WebControls.TableCellCollection @__ctrl) {
             global::System.Web.UI.WebControls.TableCell @__ctrl1;
-            @__ctrl1 = this.@__BuildControlGMBaslikCell();
+            @__ctrl1 = this.@__BuildControlAnkBaslikCell();
             @__ctrl.Add(@__ctrl1);
             global::System.Web.UI.WebControls.TableCell @__ctrl2;
-            @__ctrl2 = this.@__BuildControlGMAltinAdetCell();
+            @__ctrl2 = this.@__BuildControlAnkAltinAdetCell();
             @__ctrl.Add(@__ctrl2);
             global::System.Web.UI.WebControls.TableCell @__ctrl3;
-            @__ctrl3 = this.@__BuildControlGMGumusAdetCell();
+            @__ctrl3 = this.@__BuildControlAnkGumusAdetCell();
             @__ctrl.Add(@__ctrl3);
             global::System.Web.UI.WebControls.TableCell @__ctrl4;
-            @__ctrl4 = this.@__BuildControlGMBronzAdetCell();
+            @__ctrl4 = this.@__BuildControlAnkBronzAdetCell();
             @__ctrl.Add(@__ctrl4);
             global::System.Web.UI.WebControls.TableCell @__ctrl5;
-            @__ctrl5 = this.@__BuildControlGMTesAdetCell();
+            @__ctrl5 = this.@__BuildControlAnkTesAdetCell();
             @__ctrl.Add(@__ctrl5);
             global::System.Web.UI.WebControls.TableCell @__ctrl6;
-            @__ctrl6 = this.@__BuildControlGmAdetTopCell();
+            @__ctrl6 = this.@__BuildControlAnkAdetTopCell();
             @__ctrl.Add(@__ctrl6);
         }
         
@@ -634,6 +647,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "IstBaslikCell";
             @__ctrl.CssClass = "font-weight-bold";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("İstanbul Bölge"));
             return @__ctrl;
@@ -648,6 +662,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
             this.IstAltinAdetCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "IstAltinAdetCell";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             return @__ctrl;
         }
         
@@ -660,6 +675,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
             this.IstGumusAdetCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "IstGumusAdetCell";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             return @__ctrl;
         }
         
@@ -672,6 +688,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
             this.IstBronzAdetCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "IstBronzAdetCell";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             return @__ctrl;
         }
         
@@ -684,6 +701,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
             this.IstTesAdetCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "IstTesAdetCell";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             return @__ctrl;
         }
         
@@ -697,6 +715,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "IstAdetTopCell";
             @__ctrl.CssClass = "font-weight-bold";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             return @__ctrl;
         }
         
@@ -746,6 +765,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "IzmBaslikCell";
             @__ctrl.CssClass = "font-weight-bold";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("İzmir Bölge"));
             return @__ctrl;
@@ -760,6 +780,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
             this.IzmAltinAdetCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "IzmAltinAdetCell";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             return @__ctrl;
         }
         
@@ -772,6 +793,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
             this.IzmGumusAdetCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "IzmGumusAdetCell";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             return @__ctrl;
         }
         
@@ -784,6 +806,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
             this.IzmBronzAdetCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "IzmBronzAdetCell";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             return @__ctrl;
         }
         
@@ -796,6 +819,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
             this.IzmTesAdetCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "IzmTesAdetCell";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             return @__ctrl;
         }
         
@@ -809,6 +833,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "IzmAdetTopCell";
             @__ctrl.CssClass = "font-weight-bold";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             return @__ctrl;
         }
         
@@ -858,6 +883,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "MerBaslikCell";
             @__ctrl.CssClass = "font-weight-bold";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Mersin Bölge"));
             return @__ctrl;
@@ -872,6 +898,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
             this.MerAltinAdetCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "MerAltinAdetCell";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             return @__ctrl;
         }
         
@@ -884,6 +911,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
             this.MerGumusAdetCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "MerGumusAdetCell";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             return @__ctrl;
         }
         
@@ -896,6 +924,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
             this.MerBronzAdetCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "MerBronzAdetCell";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             return @__ctrl;
         }
         
@@ -908,6 +937,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
             this.MerTesAdetCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "MerTesAdetCell";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             return @__ctrl;
         }
         
@@ -921,6 +951,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "MerAdetTopCell";
             @__ctrl.CssClass = "font-weight-bold";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             return @__ctrl;
         }
         
@@ -970,6 +1001,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "YurtDisiBaslikCell";
             @__ctrl.CssClass = "font-weight-bold";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Yurtdışı"));
             return @__ctrl;
@@ -984,6 +1016,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
             this.YurtDisiAltinAdetCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "YurtDisiAltinAdetCell";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             return @__ctrl;
         }
         
@@ -996,6 +1029,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
             this.YurtDisiGumusAdetCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "YurtDisiGumusAdetCell";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             return @__ctrl;
         }
         
@@ -1008,6 +1042,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
             this.YurtDisiBronzAdetCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "YurtDisiBronzAdetCell";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             return @__ctrl;
         }
         
@@ -1020,6 +1055,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
             this.YurtDisiTesAdetCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "YurtDisiTesAdetCell";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             return @__ctrl;
         }
         
@@ -1033,6 +1069,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "YurtDisiAdetTopCell";
             @__ctrl.CssClass = "font-weight-bold";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             return @__ctrl;
         }
         
@@ -1082,6 +1119,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "TopBaslikCell";
             @__ctrl.CssClass = "font-weight-bold";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Toplam"));
             return @__ctrl;
@@ -1097,6 +1135,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "AltinAdetToplamCell";
             @__ctrl.CssClass = "font-weight-bold";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             return @__ctrl;
         }
         
@@ -1110,6 +1149,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "GumusAdetToplamCell";
             @__ctrl.CssClass = "font-weight-bold";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             return @__ctrl;
         }
         
@@ -1123,6 +1163,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "BronzAdetToplamCell";
             @__ctrl.CssClass = "font-weight-bold";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             return @__ctrl;
         }
         
@@ -1136,6 +1177,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "TesAdetToplamCell";
             @__ctrl.CssClass = "font-weight-bold";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             return @__ctrl;
         }
         
@@ -1149,6 +1191,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "TopAdetTopCell";
             @__ctrl.CssClass = "font-weight-bold text-danger";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "border: 1px solid black;");
             return @__ctrl;
         }
         
@@ -1241,8 +1284,8 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.Text = "* İl bilgisi olmayan bağışçıların armağanları Genel Müd.lük sayılarına dahil edil" +
-                "miştir.";
+            @__ctrl.Text = "* İl bilgisi olmayan bağışçıların armağanları Ankara Bölge sayılarına dahil edilm" +
+                "iştir.";
             return @__ctrl;
         }
         
@@ -1325,6 +1368,11 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
         return true;
     }
 </script>
+<style>
+    .table-cell-bordered {
+    border: 1px solid black;
+}
+</style>
 <div class=""container shadow"">
     <div class=""card"">
         <div class=""card-header "">

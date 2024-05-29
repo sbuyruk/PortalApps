@@ -445,6 +445,8 @@ namespace NBYS_WebParts.EkstreListesiWP
         private void BankaEtiketleriniBaşlat()
         {
             AkbankLbl.Text = ProjeConstants.BANKA_AKBANK;
+            AkbankEkstreLbl.Text = ProjeConstants.BANKA_AKBANKEKSTRE;
+            EDevletLbl.Text = ProjeConstants.BANKA_EDEVLETBAGIS;
             GarantiLbl.Text = ProjeConstants.BANKA_GARANTI;
             HalkbankLbl.Text = ProjeConstants.BANKA_HALKBANK;
             Halkbank2Lbl.Text = ProjeConstants.BANKA_HALKBANK2;
@@ -454,9 +456,11 @@ namespace NBYS_WebParts.EkstreListesiWP
             ZiraatKatilimLbl.Text = ProjeConstants.BANKA_ZIRAAT_KATILIM;
             VakifbankLbl.Text = ProjeConstants.BANKA_VAKIF;
             Vakifbank2Lbl.Text = ProjeConstants.BANKA_VAKIF2;
-            KartIleOkLbl.Text = string.Empty;
+            KartIleLbl.Text = ProjeConstants.BANKA_KARTILEBAGIS;
 
             AkbankOkLbl.Text = string.Empty;
+            AkbankEkstreOkLbl.Text = string.Empty;
+            EDevletOkLbl.Text = string.Empty;
             GarantiOkLbl.Text = string.Empty;
             HalkbankOkLbl.Text = string.Empty;
             Halkbank2OkLbl.Text = string.Empty;
@@ -482,8 +486,28 @@ namespace NBYS_WebParts.EkstreListesiWP
                 AkbankOkLbl.ForeColor = System.Drawing.Color.Red;
                 AkbankOkLbl.Text = "X";
             }
-
-
+            bool isAkbankEkstreAktarildi = ekstreAktarma.CheckIsExistByBankaAdiAndIslemTarihi(ProjeConstants.BANKA_AKBANKEKSTRE, islemTarihi);
+            if (isAkbankEkstreAktarildi)
+            {
+                AkbankEkstreOkLbl.ForeColor = System.Drawing.Color.Green;
+                AkbankEkstreOkLbl.Text = "  " + ((char)0x221A).ToString();
+            }
+            else
+            {
+                AkbankEkstreOkLbl.ForeColor = System.Drawing.Color.Red;
+                AkbankEkstreOkLbl.Text = "X";
+            }
+            bool isEDevletAktarildi = ekstreAktarma.CheckIsExistByBankaAdiAndIslemTarihi(ProjeConstants.BANKA_EDEVLETBAGIS, islemTarihi);
+            if (isEDevletAktarildi)
+            {
+                EDevletOkLbl.ForeColor = System.Drawing.Color.Green;
+                EDevletOkLbl.Text = "  " + ((char)0x221A).ToString();
+            }
+            else
+            {
+                EDevletOkLbl.ForeColor = System.Drawing.Color.Red;
+                EDevletOkLbl.Text = "X";
+            }
             bool isGarantiAktarildi = ekstreAktarma.CheckIsExistByBankaAdiAndIslemTarihi(ProjeConstants.BANKA_GARANTI, islemTarihi);
             if (isGarantiAktarildi)
             {
@@ -494,6 +518,17 @@ namespace NBYS_WebParts.EkstreListesiWP
             {
                 GarantiOkLbl.ForeColor = System.Drawing.Color.Red;
                 GarantiOkLbl.Text = "X";
+            }
+            bool isGarantiEkstreAktarildi = ekstreAktarma.CheckIsExistByBankaAdiAndIslemTarihi(ProjeConstants.BANKA_GARANTIEKSTRE, islemTarihi);
+            if (isGarantiEkstreAktarildi)
+            {
+                GarantiEkstreOkLbl.ForeColor = System.Drawing.Color.Green;
+                GarantiEkstreOkLbl.Text = "  " + ((char)0x221A).ToString();
+            }
+            else
+            {
+                GarantiEkstreOkLbl.ForeColor = System.Drawing.Color.Red;
+                GarantiEkstreOkLbl.Text = "X";
             }
 
 
@@ -530,6 +565,17 @@ namespace NBYS_WebParts.EkstreListesiWP
                 IsbankOkLbl.ForeColor = System.Drawing.Color.Red;
                 IsbankOkLbl.Text = "X";
             }
+            bool isIsbankEkstreAktarildi = ekstreAktarma.CheckIsExistByBankaAdiAndIslemTarihi(ProjeConstants.BANKA_ISBANKEKSTRE, islemTarihi);
+            if (isIsbankEkstreAktarildi)
+            {
+                IsbankEkstreOkLbl.ForeColor = System.Drawing.Color.Green;
+                IsbankEkstreOkLbl.Text = "  " + ((char)0x221A).ToString();
+            }
+            else
+            {
+                IsbankEkstreOkLbl.ForeColor = System.Drawing.Color.Red;
+                IsbankEkstreOkLbl.Text = "X";
+            }
 
             bool isVakifBankAktarildi = ekstreAktarma.CheckIsExistByBankaAdiAndIslemTarihi(ProjeConstants.BANKA_VAKIF, islemTarihi);
             if (isVakifBankAktarildi)
@@ -552,6 +598,17 @@ namespace NBYS_WebParts.EkstreListesiWP
             {
                 Vakifbank2OkLbl.ForeColor = System.Drawing.Color.Red;
                 Vakifbank2OkLbl.Text = "X";
+            }
+            bool isVakifKatilimAktarildi = ekstreAktarma.CheckIsExistByBankaAdiAndIslemTarihi(ProjeConstants.BANKA_VAKIF_KATILIM, islemTarihi);
+            if (isVakifKatilimAktarildi)
+            {
+                VakifKatilimOkLbl.ForeColor = System.Drawing.Color.Green;
+                VakifKatilimOkLbl.Text = "  " + ((char)0x221A).ToString();
+            }
+            else
+            {
+                VakifKatilimOkLbl.ForeColor = System.Drawing.Color.Red;
+                VakifKatilimOkLbl.Text = "X";
             }
             bool isZiraatAktarildi = ekstreAktarma.CheckIsExistByBankaAdiAndIslemTarihi(ProjeConstants.BANKA_ZIRAAT, islemTarihi);
             if (isZiraatAktarildi)

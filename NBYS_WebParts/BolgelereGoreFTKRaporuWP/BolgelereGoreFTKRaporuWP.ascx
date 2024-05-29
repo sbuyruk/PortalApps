@@ -27,7 +27,7 @@
                     href="http://tskgv-portal/YonetimBirimleri/BasinTanitimHalklaIliskilerSubesi/NBYSBelgeleri/BolgelereGoreFTKRaporu.pdf">
                     <i class="fa fa-book" aria-hidden="true"></i>
                 </a>
-                <asp:Label ID="TitleLbl" runat="server" CssClass="col-form-label text-danger font-weight-bold mb-1" Text="Bölgelere Göre Kurul FTK Raporu"></asp:Label>
+                <asp:Label ID="TitleLbl" runat="server" CssClass="col-form-label text-danger font-weight-bold mb-1" Text="Bölgelere Göre Kurulu FTK Raporu"></asp:Label>
                 <asp:Label ID="IdLbl" runat="server" CssClass="col-form-label"></asp:Label>
             </h3>
         </div>
@@ -66,17 +66,17 @@
                                 <%--<asp:TableCell CssClass="alert-info border-dark">İlçe %</asp:TableCell>--%>
                             </asp:TableHeaderRow>
                             <asp:TableRow HorizontalAlign="Center">
-                                <asp:TableCell CssClass="alert-primary border-dark">Genel Müdürlük Bölgesi</asp:TableCell>
-                                <asp:TableCell ID="GMSBIlCell" CssClass="alert-primary border-dark"></asp:TableCell>
-                                <asp:TableCell ID="GMSBIlceCell" CssClass="alert-primary border-dark"></asp:TableCell>
-                                <asp:TableCell ID="GMKOIlCell" CssClass="alert-success border-dark"></asp:TableCell>
-                                <asp:TableCell ID="GMKOIlceCell" CssClass="alert-success border-dark"></asp:TableCell>
-                                <asp:TableCell ID="GMKOlmayanIlCell" CssClass="alert-danger border-dark"></asp:TableCell>
-                                <asp:TableCell ID="GMKOlmayanIlceCell" CssClass="alert-danger border-dark"></asp:TableCell>
-                                <asp:TableCell ID="GMGuncellenenCell" CssClass="alert-warning border-dark"></asp:TableCell>
-                                <asp:TableCell ID="GMYeniKurulanCell" CssClass="alert-success border-dark"></asp:TableCell>
-                                <asp:TableCell ID="GMKurulumOraniCell" CssClass="alert-info border-dark"></asp:TableCell>
-                                <asp:TableCell ID="GMGuncellemeDurumuCell" CssClass="alert-warning border-dark"></asp:TableCell>
+                                <asp:TableCell CssClass="alert-primary border-dark">Ankara Bölgesi</asp:TableCell>
+                                <asp:TableCell ID="AnkSBIlCell" CssClass="alert-primary border-dark"></asp:TableCell>
+                                <asp:TableCell ID="AnkSBIlceCell" CssClass="alert-primary border-dark"></asp:TableCell>
+                                <asp:TableCell ID="AnkKOIlCell" CssClass="alert-success border-dark"></asp:TableCell>
+                                <asp:TableCell ID="AnkKOIlceCell" CssClass="alert-success border-dark"></asp:TableCell>
+                                <asp:TableCell ID="AnkKOlmayanIlCell" CssClass="alert-danger border-dark"></asp:TableCell>
+                                <asp:TableCell ID="AnkKOlmayanIlceCell" CssClass="alert-danger border-dark"></asp:TableCell>
+                                <asp:TableCell ID="AnkGuncellenenCell" CssClass="alert-warning border-dark"></asp:TableCell>
+                                <asp:TableCell ID="AnkYeniKurulanCell" CssClass="alert-success border-dark"></asp:TableCell>
+                                <asp:TableCell ID="AnkKurulumOraniCell" CssClass="alert-info border-dark"></asp:TableCell>
+                                <asp:TableCell ID="AnkGuncellemeDurumuCell" CssClass="alert-warning border-dark"></asp:TableCell>
                             </asp:TableRow>
                             <asp:TableRow HorizontalAlign="Center">
                                 <asp:TableCell CssClass="alert-primary border-dark">İstanbul Bölgesi</asp:TableCell>

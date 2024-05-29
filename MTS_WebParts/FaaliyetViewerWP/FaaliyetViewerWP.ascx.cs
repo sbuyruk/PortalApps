@@ -186,7 +186,7 @@ namespace MTS_WebParts.FaaliyetViewerWP
         }
         private void KayitGetir()
         {
-            var randevuJsonData = FaaliyetListesiniGetir();
+            var faaliyetJsonData = FaaliyetListesiniGetir();
             //var resmiTatilJsonData = ResmiTatilListesiniGetir();
             //var kisiDogumGunleriJsonData = KisiDogumGunuListesiniGetir();
             //var toplantiJsonData = ToplantiListesiniGetir();
@@ -196,13 +196,13 @@ namespace MTS_WebParts.FaaliyetViewerWP
             var personelDogumGunleriJsonData = DogumGunuQS.ConvertToBool() ? PersonelDogumGunuListesiniGetir() : string.Empty;
             var kisiDogumGunleriJsonData = KisiDogumGunuQS.ConvertToBool() ? KisiDogumGunuListesiniGetir() : string.Empty;
 
-            randevuJsonData = randevuJsonData.Equals("[]") ? string.Empty : randevuJsonData;
+            faaliyetJsonData = faaliyetJsonData.Equals("[]") ? string.Empty : faaliyetJsonData;
             resmiTatilJsonData = resmiTatilJsonData.Equals("[]") ? string.Empty : resmiTatilJsonData;
             kisiDogumGunleriJsonData = kisiDogumGunleriJsonData.Equals("[]") ? string.Empty : kisiDogumGunleriJsonData;
             toplantiJsonData = toplantiJsonData.Equals("[]") ? string.Empty : toplantiJsonData;
             personelDogumGunleriJsonData = personelDogumGunleriJsonData.Equals("[]") ? string.Empty : personelDogumGunleriJsonData;
 
-            randevuJsonData = string.IsNullOrEmpty(randevuJsonData) ? string.Empty : randevuJsonData.Replace("[{", "{").Replace("}]", "},");
+            faaliyetJsonData = string.IsNullOrEmpty(faaliyetJsonData) ? string.Empty : faaliyetJsonData.Replace("[{", "{").Replace("}]", "},");
             resmiTatilJsonData = string.IsNullOrEmpty(resmiTatilJsonData) ? string.Empty : resmiTatilJsonData.Replace("[{", "{").Replace("}]", "},");
             kisiDogumGunleriJsonData = string.IsNullOrEmpty(kisiDogumGunleriJsonData) ? string.Empty : kisiDogumGunleriJsonData.Replace("[{", "{").Replace("}]", "},");
             toplantiJsonData = string.IsNullOrEmpty(toplantiJsonData) ? string.Empty : toplantiJsonData.Replace("[{", "{").Replace("}]", "},");
@@ -210,7 +210,7 @@ namespace MTS_WebParts.FaaliyetViewerWP
 
             string jsonArrayString =
                 "[" +
-                randevuJsonData +
+                faaliyetJsonData +
                 resmiTatilJsonData +
                 kisiDogumGunleriJsonData +
                 toplantiJsonData +
@@ -241,7 +241,7 @@ namespace MTS_WebParts.FaaliyetViewerWP
                     item.url = "Toplanti";
                     item.startEditable = false;
                     item.color = Color.Red.Name;
-                    item.textColor = Color.White.Name;
+                    item.textColor = Color.White.Name;  
                     item.purpose = ProjeConstants.FAALIYET_AMACI_TOPLANTI_INT.ToString();
                     eventItems.Add(item);
                 }

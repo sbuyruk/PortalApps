@@ -319,14 +319,10 @@ namespace Model.NBYS
                     ,Telefon1
                     ,Telefon2
                     ,TuzelKisi
-                    ,OlusturmaTarihi
-                    ,Olusturan
-                    ,DegistirmeTarihi
-                    ,Degistiren
                     ,Sag
                     ,Eposta
                     ,PostaKodu
-                    ,Aciklama
+                    ,A.Aciklama
                     ,Ulasilamiyor,BelgeIstemiyor
                 FROM NakitBagisci_Table A 
 	                LEFT OUTER JOIN Il_Table B ON B.Id= A.Ili 

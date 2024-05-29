@@ -624,8 +624,9 @@ namespace Model.NBYS
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return dataTable;
         }
-        public DataTable SelectByBolgeTarih(string bolge, DateTime ilkTarih, DateTime sonTarih)
+        public DataTable SelectByBolgeTarih(int bolgeId, DateTime ilkTarih, DateTime sonTarih)
         {
+            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND C.BolgeId={0} ", bolgeId);
             string sqlString = string.Format(@"
                 SELECT A.BagisTarihi, A.BagisMiktari, 
                     B.Id NakitBagisciId, B.Adi, B.Soyadi, B.Telefon1, B.Telefon2, B.Adres, B.BelgeIstemiyor,
@@ -637,10 +638,11 @@ namespace Model.NBYS
                 LEFT JOIN Ilce_Table D ON D.Id=B.Ilcesi
                 LEFT JOIN Armagan_Table E ON E.Id=A.ArmaganId
                 LEFT JOIN ArmaganTanim_Table F ON F.Id=E.ArmaganTanimId
-                WHERE Bolge={0} AND BagisTarihi BETWEEN {1} AND {2}
+                WHERE (BagisTarihi BETWEEN {1} AND {2})
+                    {0} 
                     --AND E.Durum NOT IN ('Ulaşılamıyor', 'Belge İstemiyor') --30.12.2022 Deniz Hanım aradı, Zeki Alb. ve Kemal Alb.. tarafından bu şeklde olmasının istendiğini iletti
                 ORDER BY BagisMiktari DESC,Adi, BagisTarihi DESC
-            ", bolge.ReturnQuotedValue(), ilkTarih.ReturnTRDateFormat(),sonTarih.ReturnTRDateFormat());
+            ", bolgeStr, ilkTarih.ReturnTRDateFormat(),sonTarih.ReturnTRDateFormat());
             DataTable dataTable;
             try
             {

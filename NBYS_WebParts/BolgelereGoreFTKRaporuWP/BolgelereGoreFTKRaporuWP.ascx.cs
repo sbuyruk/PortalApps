@@ -28,14 +28,59 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP
             InitializeControl();
             this.ChromeType = PartChromeType.None;
         }
+        private int BolgeIdQS
+        {
+            get
+            {
 
+                if (ViewState["BolgeId"] == null)
+                {
+                    if (Page.Request.QueryString["BolgeId"] != null)
+                    {
+                        ViewState["BolgeId"] = Page.Request.QueryString["BolgeId"];
+                    }
+                    else
+                    {
+                        ViewState["BolgeId"] = string.Empty;
+                    }
+                }
+                return ViewState["BolgeId"].ReturnZeroIfNull().ConvertToInt();
+            }
+
+            set
+            {
+                ViewState["BolgeId"] = value;
+            }
+        }
+        private string CurrentUserName
+        {
+            get
+            {
+
+                if (ViewState["CurrentUserName"] == null)
+                {
+                    ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUserLoginName();
+                }
+                return ViewState["CurrentUserName"].ToString();
+            }
+
+            set
+            {
+                ViewState["CurrentUserName"] = value;
+            }
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
 
             if (!Page.IsPostBack)
             {
+                Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
+                BolgeIdQS = bolge == null ? 0 : bolge.Id;
+
+
                 KurulusTarihiTxt.Text = (new DateTime(2017, 01, 01)).ConvertToDatetimeEmptyIfNull();
                 GuncellemeTarihiTxt.Text = (new DateTime(2017, 01, 01)).ConvertToDatetimeEmptyIfNull();
+
 
             }
             TabloyuDoldur();
@@ -60,11 +105,11 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP
             TabloyuDoldur();
         }
 
-        private int gmIl, gmIlce, istIl, istIlce, izmIl, izmIlce, merIl, merIlce, toplamIl, toplamIlce;
-        private int gmKOIl, gmKOIlce, istKOIl, istKOIlce, izmKOIl, izmKOIlce, merKOIl, merKOIlce, toplamKOIl, toplamKOIlce;
-        private int gmKOlmayanIl, gmKOlmayanIlce, istKOlmayanIl, istKOlmayanIlce, izmKOlmayanIl, izmKOlmayanIlce, merKOlmayanIl, merKOlmayanIlce, toplamKOlmayanIl, toplamKOlmayanIlce;
-        private int gmGuncellenen, istGuncellenen, izmGuncellenen, merGuncellenen, toplamGuncellenen;
-        private int gmYeniKurulan, istYeniKurulan, izmYeniKurulan, merYeniKurulan, toplamYeniKurulan;
+        private int ankIl, ankIlce, istIl, istIlce, izmIl, izmIlce, merIl, merIlce, toplamIl, toplamIlce;
+        private int ankKOIl, ankKOIlce, istKOIl, istKOIlce, izmKOIl, izmKOIlce, merKOIl, merKOIlce, toplamKOIl, toplamKOIlce;
+        private int ankKOlmayanIl, ankKOlmayanIlce, istKOlmayanIl, istKOlmayanIlce, izmKOlmayanIl, izmKOlmayanIlce, merKOlmayanIl, merKOlmayanIlce, toplamKOlmayanIl, toplamKOlmayanIlce;
+        private int ankGuncellenen, istGuncellenen, izmGuncellenen, merGuncellenen, toplamGuncellenen;
+        private int ankYeniKurulan, istYeniKurulan, izmYeniKurulan, merYeniKurulan, toplamYeniKurulan;
 
         private const string KURULU_ILLER = "KURULU_ILLER";
         private const string KURULU_ILCELER = "KURULU_ILCELER";
@@ -94,161 +139,162 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP
             GuncellemeDurumuDoldur();
         }
 
-        private int IlSayisiGetir(string bolge)
+        private int IlSayisiGetir(int bolgeId)
         {
             Il il = new Il();
-            int ilSayisi = il.SelectCountIlByBolge(bolge);
+            int ilSayisi = il.SelectCountIlByBolgeId(bolgeId);
             return ilSayisi;
         }
-        private int IlceSayisiGetir(string bolge)
+        private int IlceSayisiGetir(int bolgeId)
         {
             Ilce ilce = new Ilce();
-            int ilceSayisi = ilce.SelectCountIlceByBolge(bolge);
+            int ilceSayisi = ilce.SelectCountIlceByBolgeId(bolgeId);
             return ilceSayisi;
         }
         private void KuruluIlSayilariniDoldur()
         {
-            gmKOIl = KOIlSayisiGetir(ProjeConstants.BOLGE_GENELMUDURLUK);
-            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, GMKOIlCell, gmKOIl, ProjeConstants.BOLGE_GENELMUDURLUK, KURULU_ILLER);
-            istKOIl = KOIlSayisiGetir(ProjeConstants.BOLGE_ISTANBUL);
-            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, IstKOIlCell, istKOIl, ProjeConstants.BOLGE_ISTANBUL, KURULU_ILLER);
-            izmKOIl = KOIlSayisiGetir(ProjeConstants.BOLGE_IZMIR);
-            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, IzmKOIlCell, izmKOIl, ProjeConstants.BOLGE_IZMIR, KURULU_ILLER);
-            merKOIl = KOIlSayisiGetir(ProjeConstants.BOLGE_MERSIN);
-            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, MerKOIlCell, merKOIl, ProjeConstants.BOLGE_MERSIN, KURULU_ILLER);
-            toplamKOIl = gmKOIl + istKOIl + izmKOIl + merKOIl;
-            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, TopKOIlCell, toplamKOIl, ProjeConstants.BOLGE_HEPSI, KURULU_ILLER);
+            ankKOIl = KOIlSayisiGetir(ProjeConstants.BOLGE_ANKARA_INT);
+            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, AnkKOIlCell, ankKOIl, ProjeConstants.BOLGE_ANKARA_INT, KURULU_ILLER);
+            istKOIl = KOIlSayisiGetir(ProjeConstants.BOLGE_ISTANBUL_INT);
+            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, IstKOIlCell, istKOIl, ProjeConstants.BOLGE_ISTANBUL_INT, KURULU_ILLER);
+            izmKOIl = KOIlSayisiGetir(ProjeConstants.BOLGE_IZMIR_INT);
+            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, IzmKOIlCell, izmKOIl, ProjeConstants.BOLGE_IZMIR_INT, KURULU_ILLER);
+            merKOIl = KOIlSayisiGetir(ProjeConstants.BOLGE_MERSIN_INT);
+            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, MerKOIlCell, merKOIl, ProjeConstants.BOLGE_MERSIN_INT, KURULU_ILLER);
+            toplamKOIl = ankKOIl + istKOIl + izmKOIl + merKOIl;
+            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, TopKOIlCell, toplamKOIl, ProjeConstants.BOLGE_HEPSI_INT, KURULU_ILLER);
         }
         private void KuruluIlceSayilariniDoldur()
         {
-            gmKOIlce = KOIlceSayisiGetir(ProjeConstants.BOLGE_GENELMUDURLUK);
-            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, GMKOIlceCell, gmKOIlce, ProjeConstants.BOLGE_GENELMUDURLUK, KURULU_ILCELER);
-            istKOIlce = KOIlceSayisiGetir(ProjeConstants.BOLGE_ISTANBUL);
-            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, IstKOIlceCell, istKOIlce, ProjeConstants.BOLGE_ISTANBUL, KURULU_ILCELER);
-            izmKOIlce = KOIlceSayisiGetir(ProjeConstants.BOLGE_IZMIR);
-            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, IzmKOIlceCell, izmKOIlce, ProjeConstants.BOLGE_IZMIR, KURULU_ILCELER);
-            merKOIlce = KOIlceSayisiGetir(ProjeConstants.BOLGE_MERSIN);
-            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, MerKOIlceCell, merKOIlce, ProjeConstants.BOLGE_MERSIN, KURULU_ILCELER);
-            toplamKOIlce = gmKOIlce + istKOIlce + izmKOIlce + merKOIlce;
-            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, TopKOIlceCell, toplamKOIlce, ProjeConstants.BOLGE_HEPSI, KURULU_ILCELER);
+            ankKOIlce = KOIlceSayisiGetir(ProjeConstants.BOLGE_ANKARA_INT);
+            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, AnkKOIlceCell, ankKOIlce, ProjeConstants.BOLGE_ANKARA_INT, KURULU_ILCELER);
+            istKOIlce = KOIlceSayisiGetir(ProjeConstants.BOLGE_ISTANBUL_INT);
+            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, IstKOIlceCell, istKOIlce, ProjeConstants.BOLGE_ISTANBUL_INT, KURULU_ILCELER);
+            izmKOIlce = KOIlceSayisiGetir(ProjeConstants.BOLGE_IZMIR_INT);
+            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, IzmKOIlceCell, izmKOIlce, ProjeConstants.BOLGE_IZMIR_INT, KURULU_ILCELER);
+            merKOIlce = KOIlceSayisiGetir(ProjeConstants.BOLGE_MERSIN_INT);
+            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, MerKOIlceCell, merKOIlce, ProjeConstants.BOLGE_MERSIN_INT, KURULU_ILCELER);
+            toplamKOIlce = ankKOIlce + istKOIlce + izmKOIlce + merKOIlce;
+            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, TopKOIlceCell, toplamKOIlce, ProjeConstants.BOLGE_HEPSI_INT, KURULU_ILCELER);
         }
         private void IlSayilariniDoldur()
         {
-            GMSBIlCell.Text = (gmIl = IlSayisiGetir(ProjeConstants.BOLGE_GENELMUDURLUK)).ToString();
-            IstSBIlCell.Text = (istIl = IlSayisiGetir(ProjeConstants.BOLGE_ISTANBUL)).ToString();
-            IzmSBIlCell.Text = (izmIl = IlSayisiGetir(ProjeConstants.BOLGE_IZMIR)).ToString();
-            MerSBIlCell.Text = (merIl = IlSayisiGetir(ProjeConstants.BOLGE_MERSIN)).ToString();
-            TopSBIlCell.Text = (toplamIl = gmIl + istIl + izmIl + merIl).ToString();
+            AnkSBIlCell.Text = (ankIl = IlSayisiGetir(ProjeConstants.BOLGE_ANKARA_INT)).ToString();
+            IstSBIlCell.Text = (istIl = IlSayisiGetir(ProjeConstants.BOLGE_ISTANBUL_INT)).ToString();
+            IzmSBIlCell.Text = (izmIl = IlSayisiGetir(ProjeConstants.BOLGE_IZMIR_INT)).ToString();
+            MerSBIlCell.Text = (merIl = IlSayisiGetir(ProjeConstants.BOLGE_MERSIN_INT)).ToString();
+            TopSBIlCell.Text = (toplamIl = ankIl + istIl + izmIl + merIl).ToString();
         }
         private void IlceSayilariniDoldur()
         {
-            GMSBIlceCell.Text = (gmIlce = IlceSayisiGetir(ProjeConstants.BOLGE_GENELMUDURLUK)).ToString();
-            IstSBIlceCell.Text = (istIlce = IlceSayisiGetir(ProjeConstants.BOLGE_ISTANBUL)).ToString();
-            IzmSBIlceCell.Text = (izmIlce = IlceSayisiGetir(ProjeConstants.BOLGE_IZMIR)).ToString();
-            MerSBIlceCell.Text = (merIlce = IlceSayisiGetir(ProjeConstants.BOLGE_MERSIN)).ToString();
-            TopSBIlceCell.Text = (toplamIlce = gmIlce + istIlce + izmIlce + merIlce).ToString();
+            AnkSBIlceCell.Text = (ankIlce = IlceSayisiGetir(ProjeConstants.BOLGE_ANKARA_INT)).ToString();
+            IstSBIlceCell.Text = (istIlce = IlceSayisiGetir(ProjeConstants.BOLGE_ISTANBUL_INT)).ToString();
+            IzmSBIlceCell.Text = (izmIlce = IlceSayisiGetir(ProjeConstants.BOLGE_IZMIR_INT)).ToString();
+            MerSBIlceCell.Text = (merIlce = IlceSayisiGetir(ProjeConstants.BOLGE_MERSIN_INT)).ToString();
+            TopSBIlceCell.Text = (toplamIlce = ankIlce + istIlce + izmIlce + merIlce).ToString();
         }
-        private int KOIlSayisiGetir(string bolge)
+        private int KOIlSayisiGetir(int bolgeId)
         {
             FTK ftk = new FTK();
-            int ilSayisi = ftk.SelectKuruluOlanIlSayisiByBolge(bolge);
+            int ilSayisi = ftk.SelectKuruluOlanIlSayisiByBolgeId(bolgeId);
             return ilSayisi;
         }
-        private int KOIlceSayisiGetir(string bolge)
+        private int KOIlceSayisiGetir(int bolgeId)
         {
             FTK ftk = new FTK();
-            int ilSayisi = ftk.SelectKuruluOlanIlceSayisiByBolge(bolge);
+            int ilSayisi = ftk.SelectKuruluOlanIlceSayisiByBolgeId(bolgeId);
             return ilSayisi;
         }
         private void GuncellenenIlIlceSayisiniDoldur()
         {
             FTK ftk = new FTK();
-            gmGuncellenen = ftk.SelectGuncellenenIlIlceSayisiByBolge(ProjeConstants.BOLGE_GENELMUDURLUK, GuncellemeTarihiTxt.Text.ConvertToDatetime());
-            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, GMGuncellenenCell, gmGuncellenen, ProjeConstants.BOLGE_GENELMUDURLUK, GUNCELLENEN);
-            istGuncellenen = ftk.SelectGuncellenenIlIlceSayisiByBolge(ProjeConstants.BOLGE_ISTANBUL, GuncellemeTarihiTxt.Text.ConvertToDatetime());
-            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, IstGuncellenenCell, istGuncellenen, ProjeConstants.BOLGE_ISTANBUL, GUNCELLENEN);
-            izmGuncellenen = ftk.SelectGuncellenenIlIlceSayisiByBolge(ProjeConstants.BOLGE_IZMIR, GuncellemeTarihiTxt.Text.ConvertToDatetime());
-            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, IzmGuncellenenCell, izmGuncellenen, ProjeConstants.BOLGE_IZMIR, GUNCELLENEN);
-            merGuncellenen = ftk.SelectGuncellenenIlIlceSayisiByBolge(ProjeConstants.BOLGE_MERSIN, GuncellemeTarihiTxt.Text.ConvertToDatetime());
-            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, MerGuncellenenCell, merGuncellenen, ProjeConstants.BOLGE_MERSIN, GUNCELLENEN);
-            toplamGuncellenen = gmGuncellenen + istGuncellenen + izmGuncellenen + merGuncellenen;
-            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, TopGuncellenenCell, toplamGuncellenen, ProjeConstants.BOLGE_HEPSI, GUNCELLENEN);
+            ankGuncellenen = ftk.SelectGuncellenenIlIlceSayisiByBolgeId(ProjeConstants.BOLGE_ANKARA_INT, GuncellemeTarihiTxt.Text.ConvertToDatetime());
+            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, AnkGuncellenenCell, ankGuncellenen, ProjeConstants.BOLGE_ANKARA_INT, GUNCELLENEN);
+            istGuncellenen = ftk.SelectGuncellenenIlIlceSayisiByBolgeId(ProjeConstants.BOLGE_ISTANBUL_INT, GuncellemeTarihiTxt.Text.ConvertToDatetime());
+            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, IstGuncellenenCell, istGuncellenen, ProjeConstants.BOLGE_ISTANBUL_INT, GUNCELLENEN);
+            izmGuncellenen = ftk.SelectGuncellenenIlIlceSayisiByBolgeId(ProjeConstants.BOLGE_IZMIR_INT, GuncellemeTarihiTxt.Text.ConvertToDatetime());
+            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, IzmGuncellenenCell, izmGuncellenen, ProjeConstants.BOLGE_IZMIR_INT, GUNCELLENEN);
+            merGuncellenen = ftk.SelectGuncellenenIlIlceSayisiByBolgeId(ProjeConstants.BOLGE_MERSIN_INT, GuncellemeTarihiTxt.Text.ConvertToDatetime());
+            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, MerGuncellenenCell, merGuncellenen, ProjeConstants.BOLGE_MERSIN_INT, GUNCELLENEN);
+            toplamGuncellenen = ankGuncellenen + istGuncellenen + izmGuncellenen + merGuncellenen;
+            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, TopGuncellenenCell, toplamGuncellenen, ProjeConstants.BOLGE_HEPSI_INT, GUNCELLENEN);
         }
         private void YeniKurulanIlIlceSayisiniDoldur()
         {
             FTK ftk = new FTK();
-            gmYeniKurulan = ftk.SelectKuruluIlIlceSayisiByBolge(ProjeConstants.BOLGE_GENELMUDURLUK, KurulusTarihiTxt.Text.ConvertToDatetime());
-            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, GMYeniKurulanCell, gmYeniKurulan, ProjeConstants.BOLGE_GENELMUDURLUK, YENI_KURULAN);
-            istYeniKurulan = ftk.SelectKuruluIlIlceSayisiByBolge(ProjeConstants.BOLGE_ISTANBUL, KurulusTarihiTxt.Text.ConvertToDatetime());
-            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, IstYeniKurulanCell, istYeniKurulan, ProjeConstants.BOLGE_ISTANBUL, YENI_KURULAN);
-            izmYeniKurulan = ftk.SelectKuruluIlIlceSayisiByBolge(ProjeConstants.BOLGE_IZMIR, KurulusTarihiTxt.Text.ConvertToDatetime());
-            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, IzmYeniKurulanCell, izmYeniKurulan, ProjeConstants.BOLGE_IZMIR, YENI_KURULAN);
-            merYeniKurulan = ftk.SelectKuruluIlIlceSayisiByBolge(ProjeConstants.BOLGE_MERSIN, KurulusTarihiTxt.Text.ConvertToDatetime());
-            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, MerYeniKurulanCell, merYeniKurulan, ProjeConstants.BOLGE_MERSIN, YENI_KURULAN);
-            toplamYeniKurulan = gmYeniKurulan + istYeniKurulan + izmYeniKurulan + merYeniKurulan;
-            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, TopYeniKurulanCell, toplamYeniKurulan, ProjeConstants.BOLGE_HEPSI, YENI_KURULAN);
+            ankYeniKurulan = ftk.SelectKuruluIlIlceSayisiByBolgeId(ProjeConstants.BOLGE_ANKARA_INT, KurulusTarihiTxt.Text.ConvertToDatetime());
+            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, AnkYeniKurulanCell, ankYeniKurulan, ProjeConstants.BOLGE_ANKARA_INT, YENI_KURULAN);
+            istYeniKurulan = ftk.SelectKuruluIlIlceSayisiByBolgeId(ProjeConstants.BOLGE_ISTANBUL_INT, KurulusTarihiTxt.Text.ConvertToDatetime());
+            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, IstYeniKurulanCell, istYeniKurulan, ProjeConstants.BOLGE_ISTANBUL_INT, YENI_KURULAN);
+            izmYeniKurulan = ftk.SelectKuruluIlIlceSayisiByBolgeId(ProjeConstants.BOLGE_IZMIR_INT, KurulusTarihiTxt.Text.ConvertToDatetime());
+            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, IzmYeniKurulanCell, izmYeniKurulan, ProjeConstants.BOLGE_IZMIR_INT, YENI_KURULAN);
+            merYeniKurulan = ftk.SelectKuruluIlIlceSayisiByBolgeId(ProjeConstants.BOLGE_MERSIN_INT, KurulusTarihiTxt.Text.ConvertToDatetime());
+            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, MerYeniKurulanCell, merYeniKurulan, ProjeConstants.BOLGE_MERSIN_INT, YENI_KURULAN);
+            toplamYeniKurulan = ankYeniKurulan + istYeniKurulan + izmYeniKurulan + merYeniKurulan;
+            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, TopYeniKurulanCell, toplamYeniKurulan, ProjeConstants.BOLGE_HEPSI_INT, YENI_KURULAN);
         }
         private void KOlmayanIlSayisiniDoldur()
         {
-            gmKOlmayanIl = gmIl - gmKOIl;
-            HyperLinkEkle(ProjeConstants.PAGE_FTKKURULU_OLMAYAN_ILILCE_LIST, GMKOlmayanIlCell, gmKOlmayanIl, ProjeConstants.BOLGE_GENELMUDURLUK, KURULUOLMAYAN_ILLER);
+            ankKOlmayanIl = ankIl - ankKOIl;
+            HyperLinkEkle(ProjeConstants.PAGE_FTKKURULU_OLMAYAN_ILILCE_LIST, AnkKOlmayanIlCell, ankKOlmayanIl, ProjeConstants.BOLGE_ANKARA_INT, KURULUOLMAYAN_ILLER);
             istKOlmayanIl = istIl - istKOIl;
-            HyperLinkEkle(ProjeConstants.PAGE_FTKKURULU_OLMAYAN_ILILCE_LIST, IstKOlmayanIlCell, istKOlmayanIl, ProjeConstants.BOLGE_ISTANBUL, KURULUOLMAYAN_ILLER);
+            HyperLinkEkle(ProjeConstants.PAGE_FTKKURULU_OLMAYAN_ILILCE_LIST, IstKOlmayanIlCell, istKOlmayanIl, ProjeConstants.BOLGE_ISTANBUL_INT, KURULUOLMAYAN_ILLER);
             izmKOlmayanIl = izmIl - izmKOIl;
-            HyperLinkEkle(ProjeConstants.PAGE_FTKKURULU_OLMAYAN_ILILCE_LIST, IzmKOlmayanIlCell, izmKOlmayanIl, ProjeConstants.BOLGE_IZMIR, KURULUOLMAYAN_ILLER);
+            HyperLinkEkle(ProjeConstants.PAGE_FTKKURULU_OLMAYAN_ILILCE_LIST, IzmKOlmayanIlCell, izmKOlmayanIl, ProjeConstants.BOLGE_IZMIR_INT, KURULUOLMAYAN_ILLER);
             merKOlmayanIl = merIl - merKOIl;
-            HyperLinkEkle(ProjeConstants.PAGE_FTKKURULU_OLMAYAN_ILILCE_LIST, MerKOlmayanIlCell, merKOlmayanIl, ProjeConstants.BOLGE_MERSIN, KURULUOLMAYAN_ILLER);
-            toplamKOlmayanIl = gmKOlmayanIl + istKOlmayanIl + izmKOlmayanIl + merKOlmayanIl;
-            HyperLinkEkle(ProjeConstants.PAGE_FTKKURULU_OLMAYAN_ILILCE_LIST, TopKOlmayanIlCell, toplamKOlmayanIl, ProjeConstants.BOLGE_HEPSI, KURULUOLMAYAN_ILLER);
+            HyperLinkEkle(ProjeConstants.PAGE_FTKKURULU_OLMAYAN_ILILCE_LIST, MerKOlmayanIlCell, merKOlmayanIl, ProjeConstants.BOLGE_MERSIN_INT, KURULUOLMAYAN_ILLER);
+            toplamKOlmayanIl = ankKOlmayanIl + istKOlmayanIl + izmKOlmayanIl + merKOlmayanIl;
+            HyperLinkEkle(ProjeConstants.PAGE_FTKKURULU_OLMAYAN_ILILCE_LIST, TopKOlmayanIlCell, toplamKOlmayanIl, ProjeConstants.BOLGE_HEPSI_INT, KURULUOLMAYAN_ILLER);
 
         }
         private void KOlmayanIlceSayisiniDoldur()
         {
-            gmKOlmayanIlce = gmIlce - gmKOIlce;
-            HyperLinkEkle(ProjeConstants.PAGE_FTKKURULU_OLMAYAN_ILILCE_LIST, GMKOlmayanIlceCell, gmKOlmayanIlce, ProjeConstants.BOLGE_GENELMUDURLUK, KURULUOLMAYAN_ILCELER);
+            ankKOlmayanIlce = ankIlce - ankKOIlce;
+            HyperLinkEkle(ProjeConstants.PAGE_FTKKURULU_OLMAYAN_ILILCE_LIST, AnkKOlmayanIlceCell, ankKOlmayanIlce, ProjeConstants.BOLGE_ANKARA_INT, KURULUOLMAYAN_ILCELER);
             istKOlmayanIlce = istIlce - istKOIlce;
-            HyperLinkEkle(ProjeConstants.PAGE_FTKKURULU_OLMAYAN_ILILCE_LIST, IstKOlmayanIlceCell, istKOlmayanIlce, ProjeConstants.BOLGE_ISTANBUL, KURULUOLMAYAN_ILCELER);
+            HyperLinkEkle(ProjeConstants.PAGE_FTKKURULU_OLMAYAN_ILILCE_LIST, IstKOlmayanIlceCell, istKOlmayanIlce, ProjeConstants.BOLGE_ISTANBUL_INT, KURULUOLMAYAN_ILCELER);
             izmKOlmayanIlce = izmIlce - izmKOIlce;
-            HyperLinkEkle(ProjeConstants.PAGE_FTKKURULU_OLMAYAN_ILILCE_LIST, IzmKOlmayanIlceCell, izmKOlmayanIlce, ProjeConstants.BOLGE_IZMIR, KURULUOLMAYAN_ILCELER);
+            HyperLinkEkle(ProjeConstants.PAGE_FTKKURULU_OLMAYAN_ILILCE_LIST, IzmKOlmayanIlceCell, izmKOlmayanIlce, ProjeConstants.BOLGE_IZMIR_INT, KURULUOLMAYAN_ILCELER);
             merKOlmayanIlce = merIlce - merKOIlce;
-            HyperLinkEkle(ProjeConstants.PAGE_FTKKURULU_OLMAYAN_ILILCE_LIST, MerKOlmayanIlceCell, merKOlmayanIlce, ProjeConstants.BOLGE_MERSIN, KURULUOLMAYAN_ILCELER);
-            toplamKOlmayanIlce = gmKOlmayanIlce + istKOlmayanIlce + izmKOlmayanIlce + merKOlmayanIlce;
-            HyperLinkEkle(ProjeConstants.PAGE_FTKKURULU_OLMAYAN_ILILCE_LIST, TopKOlmayanIlceCell, toplamKOlmayanIlce, ProjeConstants.BOLGE_HEPSI, KURULUOLMAYAN_ILCELER);
+            HyperLinkEkle(ProjeConstants.PAGE_FTKKURULU_OLMAYAN_ILILCE_LIST, MerKOlmayanIlceCell, merKOlmayanIlce, ProjeConstants.BOLGE_MERSIN_INT, KURULUOLMAYAN_ILCELER);
+            toplamKOlmayanIlce = ankKOlmayanIlce + istKOlmayanIlce + izmKOlmayanIlce + merKOlmayanIlce;
+            HyperLinkEkle(ProjeConstants.PAGE_FTKKURULU_OLMAYAN_ILILCE_LIST, TopKOlmayanIlceCell, toplamKOlmayanIlce, ProjeConstants.BOLGE_HEPSI_INT, KURULUOLMAYAN_ILCELER);
         }
 
         private void KurulumOraniniDoldur()
         {
-            decimal gmKuruluIlIlceOrani = (gmIl + gmIlce) == 0 ? 0 : ((decimal)(gmKOIl + gmKOIlce) / (gmIl + gmIlce)) * 100;
-            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, GMKurulumOraniCell, gmKuruluIlIlceOrani, ProjeConstants.BOLGE_GENELMUDURLUK, KURULUM_ORANI);
+            decimal gmKuruluIlIlceOrani = (ankIl + ankIlce) == 0 ? 0 : ((decimal)(ankKOIl + ankKOIlce) / (ankIl + ankIlce)) * 100;
+            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, AnkKurulumOraniCell, gmKuruluIlIlceOrani, ProjeConstants.BOLGE_ANKARA_INT, KURULUM_ORANI);
             decimal istKuruluIlIlceOrani = (istIl + istIlce) == 0 ? 0 : ((decimal)(istKOIl + istKOIlce) / (istIl + istIlce)) * 100;
-            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, IstKurulumOraniCell, istKuruluIlIlceOrani, ProjeConstants.BOLGE_ISTANBUL, KURULUM_ORANI);
+            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, IstKurulumOraniCell, istKuruluIlIlceOrani, ProjeConstants.BOLGE_ISTANBUL_INT, KURULUM_ORANI);
 
             decimal izmKuruluIlIlceOrani = (izmIl + izmIlce) == 0 ? 0 : ((decimal)(izmKOIl + izmKOIlce) / (izmIl + izmIlce)) * 100;
-            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, IzmKurulumOraniCell, izmKuruluIlIlceOrani, ProjeConstants.BOLGE_IZMIR, KURULUM_ORANI);
+            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, IzmKurulumOraniCell, izmKuruluIlIlceOrani, ProjeConstants.BOLGE_IZMIR_INT, KURULUM_ORANI);
             decimal merKuruluIlIlceOrani = (decimal)(merIl + merIlce) == 0 ? 0 : ((decimal)(merKOIl + merKOIlce) / (merIl + merIlce)) * 100;
-            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, MerKurulumOraniCell, merKuruluIlIlceOrani, ProjeConstants.BOLGE_MERSIN, KURULUM_ORANI);
+            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, MerKurulumOraniCell, merKuruluIlIlceOrani, ProjeConstants.BOLGE_MERSIN_INT, KURULUM_ORANI);
             decimal topKuruluIlIlceOrani = (toplamIl + toplamIlce) == 0 ? 0 : ((decimal)(toplamKOIl + toplamKOIlce) / (toplamIl + toplamIlce)) * 100;
-            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, TopKurulumOraniCell, topKuruluIlIlceOrani, ProjeConstants.BOLGE_HEPSI, KURULUM_ORANI);
+            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, TopKurulumOraniCell, topKuruluIlIlceOrani, ProjeConstants.BOLGE_HEPSI_INT, KURULUM_ORANI);
         }
         private void GuncellemeDurumuDoldur()
         {
-            decimal gmGuncellenenIlIlceOrani = (gmIl + gmIlce) == 0 ? 0 : ((decimal)(gmGuncellenen) / (gmIl + gmIlce)) * 100;
-            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, GMGuncellemeDurumuCell, gmGuncellenenIlIlceOrani, ProjeConstants.BOLGE_GENELMUDURLUK, GUNCELLEME_DURUMU);
+            decimal gmGuncellenenIlIlceOrani = (ankIl + ankIlce) == 0 ? 0 : ((decimal)(ankGuncellenen) / (ankIl + ankIlce)) * 100;
+            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, AnkGuncellemeDurumuCell, gmGuncellenenIlIlceOrani, ProjeConstants.BOLGE_ANKARA_INT, GUNCELLEME_DURUMU);
             decimal istGuncellenenIlIlceOrani = (istIl + istIlce) == 0 ? 0 : ((decimal)(istGuncellenen) / (istIl + istIlce)) * 100;
-            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, IstGuncellemeDurumuCell, istGuncellenenIlIlceOrani, ProjeConstants.BOLGE_ISTANBUL, GUNCELLEME_DURUMU);
+            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, IstGuncellemeDurumuCell, istGuncellenenIlIlceOrani, ProjeConstants.BOLGE_ISTANBUL_INT, GUNCELLEME_DURUMU);
 
             decimal izmGuncellenenIlIlceOrani = (izmIl + izmIlce) == 0 ? 0 : ((decimal)(izmGuncellenen) / (izmIl + izmIlce)) * 100;
-            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, IzmGuncellemeDurumuCell, izmGuncellenenIlIlceOrani, ProjeConstants.BOLGE_IZMIR, GUNCELLEME_DURUMU);
+            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, IzmGuncellemeDurumuCell, izmGuncellenenIlIlceOrani, ProjeConstants.BOLGE_IZMIR_INT, GUNCELLEME_DURUMU);
             decimal merGuncellenenIlIlceOrani = (decimal)(merIl + merIlce) == 0 ? 0 : ((decimal)(merGuncellenen) / (merIl + merIlce)) * 100;
-            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, MerGuncellemeDurumuCell, merGuncellenenIlIlceOrani, ProjeConstants.BOLGE_MERSIN, GUNCELLEME_DURUMU);
+            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, MerGuncellemeDurumuCell, merGuncellenenIlIlceOrani, ProjeConstants.BOLGE_MERSIN_INT, GUNCELLEME_DURUMU);
             decimal topGuncellenenIlIlceOrani = (toplamIl + toplamIlce) == 0 ? 0 : ((decimal)(toplamGuncellenen) / (toplamIl + toplamIlce)) * 100;
-            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, TopGuncellemeDurumuCell, topGuncellenenIlIlceOrani, ProjeConstants.BOLGE_HEPSI, GUNCELLEME_DURUMU);
+            HyperLinkEkle(ProjeConstants.PAGE_FTK_LIST, TopGuncellemeDurumuCell, topGuncellenenIlIlceOrani, ProjeConstants.BOLGE_HEPSI_INT, GUNCELLEME_DURUMU);
         }
-        private void HyperLinkEkle(string page, TableCell cell, decimal value, string bolge, string ozellik)
+        private void HyperLinkEkle(string page, TableCell cell, decimal value, int bolgeId, string ozellik)
         {
             HyperLink cellLnk = new HyperLink();
             cellLnk.Text = ((int)value).ToString();
             string queryString = string.Empty;
+            
             if (ozellik.Equals(KURULU_ILLER))
             {
                 queryString = "&Grup=" + ProjeConstants.FTK_GRUPLAMA_IL_ILCEYE_GORE_INT + "&IlcesiId=" + ProjeConstants.VALILIK_INT;
@@ -289,10 +335,10 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP
             }
             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
 
-
-            if (value > 0)
+            bool bolgeBool = (bolgeId == BolgeIdQS) || (BolgeIdQS == ProjeConstants.BOLGE_GENELMUDURLUK_INT);
+            if (value > 0 && bolgeBool)
             {
-                string linkUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + page + "?Bolge=" + bolge + queryString;
+                string linkUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + page + "?Bolge=" + bolgeId + queryString;
                 cellLnk.NavigateUrl = linkUrl;
             }
             cell.Controls.Clear();

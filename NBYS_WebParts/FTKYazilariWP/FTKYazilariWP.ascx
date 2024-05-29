@@ -66,11 +66,11 @@
 
                             <div class="form-group">
                                 <asp:Label CssClass="col-form-label" runat="server">Parafe (Grup Başkanı)</asp:Label>
-                                <asp:TextBox ID="Parafe1Txt" runat="server" CssClass="form-control">…./01/2022 Vakıf Hiz.Grp.Bşk. Z. YAĞCI</asp:TextBox>
+                                <asp:TextBox ID="Parafe1Txt" runat="server" CssClass="form-control"></asp:TextBox>
                             </div>
                             <div class="form-group">
                                 <asp:Label CssClass="col-form-label" runat="server">Parafe (Şb.Md.)</asp:Label>
-                                <asp:TextBox ID="Parafe2Txt" runat="server" CssClass="form-control">…./01/2022 BTHİ.Ş.Md. K.KARABABA</asp:TextBox>
+                                <asp:TextBox ID="Parafe2Txt" runat="server" CssClass="form-control">…./01/2024 B.H.Dir. M.DİRİCAN</asp:TextBox>
                             </div>
                             <div class="form-group">
                                 <asp:Label CssClass="col-form-label" runat="server">İrtibat Noktası</asp:Label>

@@ -92,6 +92,7 @@
     <Compile Include="MTS\Faaliyet.cs" />
     <Compile Include="MTS\FaaliyetKatilim.cs" />
     <Compile Include="Ortak\Extentions.cs" />
+    <Compile Include="Ortak\Bolge.cs" />
     <Compile Include="Ortak\Olay.cs" />
     <Compile Include="Ortak\OlayKayit.cs" />
     <Compile Include="Portal\ProgramYetki.cs" />

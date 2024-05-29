@@ -61,43 +61,43 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMSBIlCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkSBIlCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMSBIlceCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkSBIlceCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMKOIlCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkKOIlCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMKOIlceCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkKOIlceCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMKOlmayanIlCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkKOlmayanIlCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMKOlmayanIlceCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkKOlmayanIlceCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMGuncellenenCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkGuncellenenCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMYeniKurulanCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkYeniKurulanCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMKurulumOraniCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkKurulumOraniCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMGuncellemeDurumuCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkGuncellemeDurumuCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -312,7 +312,7 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "TitleLbl";
             @__ctrl.CssClass = "col-form-label text-danger font-weight-bold mb-1";
-            @__ctrl.Text = "Bölgelere Göre Kurul FTK Raporu";
+            @__ctrl.Text = "Bölgelere Göre Kurulu FTK Raporu";
             return @__ctrl;
         }
         
@@ -668,19 +668,19 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.CssClass = "alert-primary border-dark";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Genel Müdürlük Bölgesi"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Ankara Bölgesi"));
             return @__ctrl;
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMSBIlCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkSBIlCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMSBIlCell = @__ctrl;
+            this.AnkSBIlCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMSBIlCell";
+            @__ctrl.ID = "AnkSBIlCell";
             @__ctrl.CssClass = "alert-primary border-dark";
             return @__ctrl;
         }
@@ -688,12 +688,12 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMSBIlceCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkSBIlceCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMSBIlceCell = @__ctrl;
+            this.AnkSBIlceCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMSBIlceCell";
+            @__ctrl.ID = "AnkSBIlceCell";
             @__ctrl.CssClass = "alert-primary border-dark";
             return @__ctrl;
         }
@@ -701,12 +701,12 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMKOIlCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkKOIlCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMKOIlCell = @__ctrl;
+            this.AnkKOIlCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMKOIlCell";
+            @__ctrl.ID = "AnkKOIlCell";
             @__ctrl.CssClass = "alert-success border-dark";
             return @__ctrl;
         }
@@ -714,12 +714,12 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMKOIlceCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkKOIlceCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMKOIlceCell = @__ctrl;
+            this.AnkKOIlceCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMKOIlceCell";
+            @__ctrl.ID = "AnkKOIlceCell";
             @__ctrl.CssClass = "alert-success border-dark";
             return @__ctrl;
         }
@@ -727,12 +727,12 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMKOlmayanIlCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkKOlmayanIlCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMKOlmayanIlCell = @__ctrl;
+            this.AnkKOlmayanIlCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMKOlmayanIlCell";
+            @__ctrl.ID = "AnkKOlmayanIlCell";
             @__ctrl.CssClass = "alert-danger border-dark";
             return @__ctrl;
         }
@@ -740,12 +740,12 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMKOlmayanIlceCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkKOlmayanIlceCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMKOlmayanIlceCell = @__ctrl;
+            this.AnkKOlmayanIlceCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMKOlmayanIlceCell";
+            @__ctrl.ID = "AnkKOlmayanIlceCell";
             @__ctrl.CssClass = "alert-danger border-dark";
             return @__ctrl;
         }
@@ -753,12 +753,12 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMGuncellenenCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkGuncellenenCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMGuncellenenCell = @__ctrl;
+            this.AnkGuncellenenCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMGuncellenenCell";
+            @__ctrl.ID = "AnkGuncellenenCell";
             @__ctrl.CssClass = "alert-warning border-dark";
             return @__ctrl;
         }
@@ -766,12 +766,12 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMYeniKurulanCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkYeniKurulanCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMYeniKurulanCell = @__ctrl;
+            this.AnkYeniKurulanCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMYeniKurulanCell";
+            @__ctrl.ID = "AnkYeniKurulanCell";
             @__ctrl.CssClass = "alert-success border-dark";
             return @__ctrl;
         }
@@ -779,12 +779,12 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMKurulumOraniCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkKurulumOraniCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMKurulumOraniCell = @__ctrl;
+            this.AnkKurulumOraniCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMKurulumOraniCell";
+            @__ctrl.ID = "AnkKurulumOraniCell";
             @__ctrl.CssClass = "alert-info border-dark";
             return @__ctrl;
         }
@@ -792,12 +792,12 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMGuncellemeDurumuCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkGuncellemeDurumuCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMGuncellemeDurumuCell = @__ctrl;
+            this.AnkGuncellemeDurumuCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMGuncellemeDurumuCell";
+            @__ctrl.ID = "AnkGuncellemeDurumuCell";
             @__ctrl.CssClass = "alert-warning border-dark";
             return @__ctrl;
         }
@@ -810,34 +810,34 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP {
             @__ctrl1 = this.@__BuildControl__control26();
             @__ctrl.Add(@__ctrl1);
             global::System.Web.UI.WebControls.TableCell @__ctrl2;
-            @__ctrl2 = this.@__BuildControlGMSBIlCell();
+            @__ctrl2 = this.@__BuildControlAnkSBIlCell();
             @__ctrl.Add(@__ctrl2);
             global::System.Web.UI.WebControls.TableCell @__ctrl3;
-            @__ctrl3 = this.@__BuildControlGMSBIlceCell();
+            @__ctrl3 = this.@__BuildControlAnkSBIlceCell();
             @__ctrl.Add(@__ctrl3);
             global::System.Web.UI.WebControls.TableCell @__ctrl4;
-            @__ctrl4 = this.@__BuildControlGMKOIlCell();
+            @__ctrl4 = this.@__BuildControlAnkKOIlCell();
             @__ctrl.Add(@__ctrl4);
             global::System.Web.UI.WebControls.TableCell @__ctrl5;
-            @__ctrl5 = this.@__BuildControlGMKOIlceCell();
+            @__ctrl5 = this.@__BuildControlAnkKOIlceCell();
             @__ctrl.Add(@__ctrl5);
             global::System.Web.UI.WebControls.TableCell @__ctrl6;
-            @__ctrl6 = this.@__BuildControlGMKOlmayanIlCell();
+            @__ctrl6 = this.@__BuildControlAnkKOlmayanIlCell();
             @__ctrl.Add(@__ctrl6);
             global::System.Web.UI.WebControls.TableCell @__ctrl7;
-            @__ctrl7 = this.@__BuildControlGMKOlmayanIlceCell();
+            @__ctrl7 = this.@__BuildControlAnkKOlmayanIlceCell();
             @__ctrl.Add(@__ctrl7);
             global::System.Web.UI.WebControls.TableCell @__ctrl8;
-            @__ctrl8 = this.@__BuildControlGMGuncellenenCell();
+            @__ctrl8 = this.@__BuildControlAnkGuncellenenCell();
             @__ctrl.Add(@__ctrl8);
             global::System.Web.UI.WebControls.TableCell @__ctrl9;
-            @__ctrl9 = this.@__BuildControlGMYeniKurulanCell();
+            @__ctrl9 = this.@__BuildControlAnkYeniKurulanCell();
             @__ctrl.Add(@__ctrl9);
             global::System.Web.UI.WebControls.TableCell @__ctrl10;
-            @__ctrl10 = this.@__BuildControlGMKurulumOraniCell();
+            @__ctrl10 = this.@__BuildControlAnkKurulumOraniCell();
             @__ctrl.Add(@__ctrl10);
             global::System.Web.UI.WebControls.TableCell @__ctrl11;
-            @__ctrl11 = this.@__BuildControlGMGuncellemeDurumuCell();
+            @__ctrl11 = this.@__BuildControlAnkGuncellemeDurumuCell();
             @__ctrl.Add(@__ctrl11);
         }
         

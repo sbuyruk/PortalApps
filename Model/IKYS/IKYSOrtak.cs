@@ -495,7 +495,7 @@ namespace Model.Ortak
             sb.Append("<p>");
             sb.Append("İnsan Kaynakları Yönetim Sistemi</br>" + DateTime.Now.ToString("dd.MM.yyyy HH:mm"));
             sb.Append("</p>");
-            sb.Append("<p style='color:gray; font-family: arial;font-size:xx-small;'>IKYS &trade; Bilgi Sistem Kısmı </p> ");
+            sb.Append("<p style='color:gray; font-family: arial;font-size:xx-small;'>IKYS &trade; Bilgi Sistemleri Kısmı </p> ");
             return sb;
         }
         private static string UstBirimGetir(int parentId)
@@ -547,7 +547,7 @@ namespace Model.Ortak
             }
             return personel;
         }
-        public static string PersonelinBolgesiniGetir(string currentUserName)
+        public static string PersonelinBolgesiniGetir_Deprecated(string currentUserName)
         {
             Personel personel = PersonelGetir(currentUserName);
            
@@ -572,6 +572,30 @@ namespace Model.Ortak
             {
                 MessageHelper.PublishMessage("Personel bulunamadı",ProjeConstants.MESAJ_HATA);
                 return string.Empty;
+            }
+        }
+        public static Bolge BolgeGetirByUserName(string currentUserName)
+        {
+            Personel personel = PersonelGetir(currentUserName);
+
+            if (personel != null)
+            {
+                PersonelItem personelItem = new PersonelItem();
+                personelItem.PersonelId = personel.Id;
+                if (personelItem.IsBilgileriItem.Bolge != null)
+                {
+                    Bolge bolge = personelItem.IsBilgileriItem.Bolge;
+                    return bolge;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                MessageHelper.PublishMessage("Personel bulunamadı", ProjeConstants.MESAJ_HATA);
+                return null;
             }
         }
         #endregion IKYS

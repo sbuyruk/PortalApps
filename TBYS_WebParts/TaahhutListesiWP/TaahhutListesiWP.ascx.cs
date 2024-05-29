@@ -128,7 +128,7 @@ namespace TBYS_WebParts.TaahhutListesiWP
             {
                 if (!Page.IsPostBack)
                 {
-                    BolgeQS = IKYSOrtak.PersonelinBolgesiniGetir(CurrentUserName);
+                    BolgeQS = IKYSOrtak.PersonelinBolgesiniGetir_Deprecated(CurrentUserName);
                     if (!string.IsNullOrEmpty(BolgeQS))
                     {
                         TitleLbl.Text = "Taahhüt Listesi" + " (" + BolgeQS + " Bölgesi)";

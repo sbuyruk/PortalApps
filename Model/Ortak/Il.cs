@@ -13,6 +13,7 @@ namespace Model.Ortak
         public int PlakaKodu { get; set; }
         public string IngIlAdi { get; set; }
         public string Bolge { get; set; }
+        public int BolgeId { get; set; }
 
         public override int Save()
         {
@@ -72,26 +73,38 @@ namespace Model.Ortak
             return il;
         }
 
-        public int SelectCountIlByBolge(string bolge)
+        public int SelectCountIlByBolgeId(int bolgeId)
         {
             string sqlString = string.Format(@"
                 SELECT COUNT(Id) Adet
                 FROM Il_Table
-                WHERE Id BETWEEN 1 AND 81 AND Bolge={0}", bolge.ReturnQuotedValue());
+                WHERE Id BETWEEN 1 AND 81 AND BolgeId={0}", bolgeId);
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            if (dataTable!=null)
+            if (dataTable != null)
             {
                 DataRow row = dataTable.Rows[0];
                 int adet = row["Adet"].ReturnZeroIfNull().ConvertToInt();
-                return adet; 
+                return adet;
             }
             return 0;
         }
-
         public List<Il> SelectByBolge(string bolge)
         {
             string bolgeStr = string.IsNullOrEmpty(bolge)||bolge.Equals(ProjeConstants.HEPSI)?string.Empty: string.Format(" AND Bolge={0} ",bolge.ReturnQuotedValue());
+            string sqlString = string.Format(@"
+                SELECT *
+                FROM Il_Table
+                WHERE (Id BETWEEN 1 AND 81)
+                {0}", bolgeStr);
+
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            List<Il> list = ToList<Il>(dataTable);
+            return list;
+        }
+        public List<Il> SelectByBolgeId(int bolgeId)
+        {
+            string bolgeStr = bolgeId==ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND BolgeId={0} ", bolgeId);
             string sqlString = string.Format(@"
                 SELECT *
                 FROM Il_Table

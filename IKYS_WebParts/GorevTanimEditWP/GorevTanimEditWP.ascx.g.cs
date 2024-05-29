@@ -270,6 +270,8 @@ namespace IKYS_WebParts.GorevTanimEditWP {
             @__ctrl.ID = "PersonelDDL";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "height:auto");
+            @__ctrl.Enabled = false;
+            @__ctrl.ToolTip = "Personel atamasını kişinin sayfasından yapınız";
             return @__ctrl;
         }
         

@@ -30,28 +30,28 @@ namespace NBYS_WebParts.FTKKuruluOlmayanIlIlceListesiWP
             InitializeControl();
             this.ChromeType = PartChromeType.None;
         }
-        private string BolgeQS
+        private int BolgeIdQS
         {
             get
             {
 
-                if (ViewState["Bolge"] == null)
+                if (ViewState["BolgeId"] == null)
                 {
-                    if (Page.Request.QueryString["Bolge"] != null)
+                    if (Page.Request.QueryString["BolgeId"] != null)
                     {
-                        ViewState["Bolge"] = Page.Request.QueryString["Bolge"];
+                        ViewState["BolgeId"] = Page.Request.QueryString["BolgeId"];
                     }
                     else
                     {
-                        ViewState["Bolge"] = string.Empty;
+                        ViewState["BolgeId"] = string.Empty;
                     }
                 }
-                return ViewState["Bolge"].ToString();
+                return ViewState["BolgeId"].ReturnZeroIfNull().ConvertToInt();
             }
 
             set
             {
-                ViewState["Bolge"] = value;
+                ViewState["BolgeId"] = value;
             }
         }
         private string IliIdQS
@@ -102,22 +102,32 @@ namespace NBYS_WebParts.FTKKuruluOlmayanIlIlceListesiWP
                 ViewState["IlcesiId"] = value;
             }
         }
+        private string CurrentUserName
+        {
+            get
+            {
+
+                if (ViewState["CurrentUserName"] == null)
+                {
+                    ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUserLoginName();
+                }
+                return ViewState["CurrentUserName"].ToString();
+            }
+
+            set
+            {
+                ViewState["CurrentUserName"] = value;
+            }
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!Page.IsPostBack)
             {
+                Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
+                BolgeIdQS = bolge == null ? 0 : bolge.Id;
                 BolgeDDLDoldur();
 
-                if (string.IsNullOrEmpty(BolgeQS))
-                {
-                    if (IliIdQS.ConvertToInt() > 0)
-                    {
-                        Il il = new Il();
-                        il = il.Select<Il>(IliIdQS.ConvertToInt());
-                        BolgeQS = il != null ? il.Bolge : string.Empty;
-                    }
-                }
-                UtilityHelper.SetDDLValue(BolgeDDL, BolgeQS);
+                UtilityHelper.SetDDLValue(BolgeDDL, BolgeIdQS.ToString());
                 IlDDLDoldur();
                 UtilityHelper.SetDDLValue(IliDDL, IliIdQS);
                 IlceDDLDoldur();
@@ -129,17 +139,16 @@ namespace NBYS_WebParts.FTKKuruluOlmayanIlIlceListesiWP
         private void BolgeDDLDoldur()
         {
             BolgeDDL.Items.Clear();
+            Bolge bolgeDao = new Bolge();
+            List<Bolge> list = bolgeDao.SelectAktifBolgeler(BolgeIdQS);
+            foreach (Bolge item in list)
+            {
+                if (string.IsNullOrEmpty(item.Adi.Trim()))
+                    continue;
+                BolgeDDL.Items.Add(new ListItem(item.Adi, item.Id.ToString()));
+            }
 
-            ListItem li0 = new ListItem(ProjeConstants.BOLGE_HEPSI);
-            ListItem li1 = new ListItem(ProjeConstants.BOLGE_GENELMUDURLUK);
-            ListItem li2 = new ListItem(ProjeConstants.BOLGE_ISTANBUL);
-            ListItem li3 = new ListItem(ProjeConstants.BOLGE_IZMIR);
-            ListItem li4 = new ListItem(ProjeConstants.BOLGE_MERSIN);
-            BolgeDDL.Items.Add(li0);
-            BolgeDDL.Items.Add(li1);
-            BolgeDDL.Items.Add(li2);
-            BolgeDDL.Items.Add(li3);
-            BolgeDDL.Items.Add(li4);
+
         }
         private void IlDDLDoldur()
         {
@@ -148,17 +157,16 @@ namespace NBYS_WebParts.FTKKuruluOlmayanIlIlceListesiWP
             ListItem li0 = new ListItem(ProjeConstants.HEPSI, ProjeConstants.HEPSI_INT.ToString());
             IliDDL.Items.Add(li0);
 
-            string bolge = !string.IsNullOrEmpty(BolgeDDL.SelectedItem.Text) ? BolgeDDL.SelectedItem.Text : string.Empty;
+            int bolgeId = !string.IsNullOrEmpty(BolgeDDL.SelectedItem.Value) ? BolgeDDL.SelectedItem.Value.ConvertToInt() : 0;
 
             Il newil = new Il();
-            List<Il> list = newil.SelectByBolge(bolge);
+            List<Il> list = newil.SelectByBolgeId(bolgeId);
             foreach (Il il in list)
             {
                 if (string.IsNullOrEmpty(il.IlAdi.Trim()))
                     continue;
                 IliDDL.Items.Add(new ListItem(il.IlAdi, il.Id.ToString()));
             }
-
         }
         private void IlceDDLDoldur()
         {
@@ -225,7 +233,7 @@ namespace NBYS_WebParts.FTKKuruluOlmayanIlIlceListesiWP
         {
             List<IlIlceItem> liste = new List<IlIlceItem>();
             FTK ftkDao = new FTK();
-            DataTable dataTable = ftkDao.SelectFTKKuruluOlmayanIller(BolgeDDL.SelectedItem.Value, IliDDL.SelectedItem.Value.ConvertToInt());
+            DataTable dataTable = ftkDao.SelectFTKKuruluOlmayanIller(BolgeDDL.SelectedItem.Value.ConvertToInt(), IliDDL.SelectedItem.Value.ConvertToInt());
             if (dataTable != null)
             {
                 foreach (DataRow row in dataTable.Rows)
@@ -254,7 +262,7 @@ namespace NBYS_WebParts.FTKKuruluOlmayanIlIlceListesiWP
         {
             List<IlIlceItem> liste = new List<IlIlceItem>();
             FTK ftkDao = new FTK();
-            DataTable dataTable = ftkDao.SelectFTKKuruluOlmayanIlceler(BolgeDDL.SelectedItem.Value, IliDDL.SelectedItem.Value.ConvertToInt());
+            DataTable dataTable = ftkDao.SelectFTKKuruluOlmayanIlceler(BolgeDDL.SelectedItem.Value.ConvertToInt(), IliDDL.SelectedItem.Value.ConvertToInt());
             if (dataTable != null)
             {
                 foreach (DataRow row in dataTable.Rows)

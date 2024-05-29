@@ -139,7 +139,7 @@ namespace NBYS_WebParts.FTKKuruluOlmayanIlIlceListesiWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.CssClass = "col-form-label text-danger font-weight-bold mb-1";
             @__ctrl.ID = "TitleLbl";
-            @__ctrl.Text = "FTK Kurulu Olmayan İL ve İlçeler ";
+            @__ctrl.Text = "FTK Kurulu Olmayan İl ve İlçeler ";
             return @__ctrl;
         }
         

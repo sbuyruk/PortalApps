@@ -76,7 +76,7 @@ namespace BTYS_Webparts.BolgeKiraArtisCizelgesiWP
         {
             try
             {
-                BolgeQS = IKYSOrtak.PersonelinBolgesiniGetir(CurrentUserName);
+                BolgeQS = IKYSOrtak.PersonelinBolgesiniGetir_Deprecated(CurrentUserName);
                 if (!string.IsNullOrEmpty(BolgeQS))
                 {
                     if (!Page.IsPostBack)

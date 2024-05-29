@@ -468,11 +468,14 @@ namespace Model.NBYS
         public DataTable SelectCountByBagisTarihiBolge(DateTime basTar, DateTime bitTar)
         {
             string sqlString = string.Format(@"        
-                               SELECT  COUNT(A.Id) Adet, I.Bolge, A.ArmaganTanimId ArmaganTanimId FROM Armagan_Table A
-                                INNER JOIN NakitBagisci_Table N on N.Id=A.BagisciId
-								INNER JOIN Il_Table I on I.Id=N.Ili
-                                WHERE Tarih BETWEEN {0} AND {1} 
-                                GROUP BY Bolge, ArmaganTanimId ", basTar.ReturnTRDateFormat(), bitTar.ReturnTRDateFormat());
+                SELECT  COUNT(A.Id) Adet, D.Id As BolgeId, A.ArmaganTanimId ArmaganTanimId 
+                FROM 
+	                Armagan_Table A
+	                INNER JOIN NakitBagisci_Table B on B.Id=A.BagisciId
+	                INNER JOIN Il_Table C on C.Id=B.Ili
+	                LEFT JOIN Bolge_Table D on D.Id=C.BolgeId
+                WHERE Tarih BETWEEN {0} AND {1} 
+                GROUP BY  D.Id, ArmaganTanimId ", basTar.ReturnTRDateFormat(), bitTar.ReturnTRDateFormat());
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return dataTable;
         }

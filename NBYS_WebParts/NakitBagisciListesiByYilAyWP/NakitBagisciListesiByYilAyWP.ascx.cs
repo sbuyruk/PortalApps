@@ -8,23 +8,23 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Web.Script.Serialization;
-using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Web.UI;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
 
-namespace BTYS_Webparts.BolgeNakitBagisciListesiWP
+namespace NBYS_WebParts.NakitBagisciListesiByYilAyWP
 {
     [ToolboxItemAttribute(false)]
-    public partial class BolgeNakitBagisciListesiWP : WebPart
+    public partial class NakitBagisciListesiByYilAyWP : WebPart
     {
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
         // your constructor, it's not recommended for production purposes.
         // [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Assert, UnmanagedCode = true)]
-        public BolgeNakitBagisciListesiWP()
+        public NakitBagisciListesiByYilAyWP()
         {
         }
 
@@ -105,10 +105,16 @@ namespace BTYS_Webparts.BolgeNakitBagisciListesiWP
             {
                 if (!Page.IsPostBack)
                 {
+                    
+                    DateTime d1 = DateTime.Now;
+                    DateTime d2 = DateTime.Now;
+                    DateTime d3 = DateTime.Now;
+                    DateTime d4 = DateTime.Now;
                     Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
                     BolgeIdQS = bolge == null ? 0 : bolge.Id;
                     AyDDLDoldur();
                     YilDDLDoldur();
+
                     TabloOlustur();
                 }
             }
@@ -118,15 +124,16 @@ namespace BTYS_Webparts.BolgeNakitBagisciListesiWP
                 exHelper.PublishException();
             }
         }
+
         private void AyDDLDoldur()
         {
             AyDDL.Items.Clear();
             DateTime bugun = DateTime.Today;
-            
+
             for (int i = 0; i < 12; i++)
             {
-                DateTime tarih = bugun.AddMonths(-i); 
-                ListItem li = new ListItem(tarih.ToString("MMMM") , tarih.ToString("MM"));
+                DateTime tarih = bugun.AddMonths(-i);
+                ListItem li = new ListItem(tarih.ToString("MMMM"), tarih.ToString("MM"));
                 AyDDL.Items.Add(li);
             }
             AyDDL.Items.Add(new ListItem("Tüm Aylar", "0"));
@@ -138,42 +145,10 @@ namespace BTYS_Webparts.BolgeNakitBagisciListesiWP
 
             for (int i = 0; i < 5; i++)
             {
-                DateTime tarih = bugun.AddYears(-i); 
+                DateTime tarih = bugun.AddYears(-i);
                 ListItem li = new ListItem(tarih.Year.ToString(), tarih.Year.ToString());
                 YilDDL.Items.Add(li);
             }
-        }
-        protected void CallDialog(object sender, EventArgs e)
-        {
-            /* Put all your Code here */
-
-
-            // Define the name and type of the client scripts on the page.
-            String csname1 = "PopupScript";
-            Type cstype = this.GetType();
-
-            // Get a ClientScriptManager reference from the Page class.
-            ClientScriptManager cs = Page.ClientScript;
-
-            // Check to see if the startup script is already registered.
-            if (!cs.IsStartupScriptRegistered(cstype, csname1))
-            {
-                StringBuilder cstext1 = new StringBuilder();
-                cstext1.Append(@"<script type=text/javascript>
-                            ExecuteOrDelayUntilScriptLoaded(function(){
-                                                            var options = {
-                                                            title: 'My Dialog Title',
-                                                            width: 400,
-                                                            height: 600,
-                                                            url: '" + ProjeConstants.PAGE_TASINMAZBAGISCI_KARTI + @"' };
-                            
-                                                            SP.UI.ModalDialog.showModalDialog(options);
-                                                            }, 'sp.js'); </");
-                cstext1.Append("script>");
-
-                cs.RegisterStartupScript(cstype, csname1, cstext1.ToString());
-            }
-
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
@@ -226,6 +201,7 @@ namespace BTYS_Webparts.BolgeNakitBagisciListesiWP
         }
         private void TabloOlustur()
         {
+            
             var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
             UtilityHelper.ScriptCalistir(jsString);
@@ -240,6 +216,7 @@ namespace BTYS_Webparts.BolgeNakitBagisciListesiWP
                 var serializer = new JavaScriptSerializer();
                 serializer.MaxJsonLength = Int32.MaxValue;
                 jSon = serializer.Serialize(list);
+
             }
             catch (Exception exception)
             {
@@ -260,17 +237,6 @@ namespace BTYS_Webparts.BolgeNakitBagisciListesiWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
                 jQuery(document).ready(function () {
                     jQuery('#CustomDataTable').DataTable({
-                        'initComplete': function (settings, json) {//tablo yüklendiğinde
-                            var api = this.api();
-                            var row = api.row(function (idx, data, node) { //secilen toplantıya gider
-                                return data['Secildi'] == true;
-                            });
-                            if (row.length > 0) {
-                                row.select()
-                                    .show()
-                                    .draw(false);
-                            }
-                        },
                         data: " + jsonData + @",
                         columns: [
                             { data: 'AdiSoyadi' },
@@ -343,30 +309,29 @@ namespace BTYS_Webparts.BolgeNakitBagisciListesiWP
         {
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             NakitBagisHareket nakitBagis = new NakitBagisHareket();
-            
-            int ay = AyDDL.SelectedItem.Value.ConvertToInt()==0?1: AyDDL.SelectedItem.Value.ConvertToInt();
+
+            int ay = AyDDL.SelectedItem.Value.ConvertToInt() == 0 ? 1 : AyDDL.SelectedItem.Value.ConvertToInt();
             int yil = YilDDL.SelectedItem.Value.ConvertToInt();
             DateTime ilkTarih = new DateTime(yil, ay, 1);
-            DateTime sonTarih = AyDDL.SelectedItem.Value.ConvertToInt() == 0 ? ilkTarih.AddYears(1).AddDays(-1):
+            DateTime sonTarih = AyDDL.SelectedItem.Value.ConvertToInt() == 0 ? ilkTarih.AddYears(1).AddDays(-1) :
                 ilkTarih.AddMonths(1).AddDays(-1);
-
-            DataTable dataTable = nakitBagis.SelectByBolgeTarih(BolgeIdQS,ilkTarih,sonTarih);
-
+            DataTable dataTable = nakitBagis.SelectByBolgeTarih(BolgeIdQS, ilkTarih, sonTarih);
+            
             BaslikTH.InnerText = string.Empty;
             List<NakitBagisciListItem> list = new List<NakitBagisciListItem>();
-            if (dataTable!=null)
+           
+            if (dataTable != null)
             {
                 Bolge bolge = new Bolge();
                 bolge = bolge.Select<Bolge>(BolgeIdQS);
-                if (bolge == null || bolge.Id==ProjeConstants.BOLGE_GENELMUDURLUK_INT) {
-                    BaslikTH.InnerText =  ilkTarih.ToString("dd.MM.yyyy") + " - " + sonTarih.ToString("dd.MM.yyyy") + " Tarihleri Arası Nakit Bağışlar";
-                }
-                else
+                if (bolge == null || bolge.Id == ProjeConstants.BOLGE_GENELMUDURLUK_INT)
                 {
-                    BaslikTH.InnerText = bolge.Adi +" " + ilkTarih.ToString("dd.MM.yyyy") + " - " + sonTarih.ToString("dd.MM.yyyy") + " Tarihleri Arası Nakit Bağışlar";
+                    BaslikTH.InnerText = ilkTarih.ToString("dd.MM.yyyy") + " - " + sonTarih.ToString("dd.MM.yyyy") + " Tarihleri Arası Nakit Bağışlar";
                 }
+                
                 foreach (DataRow row in dataTable.Rows)
                 {
+
                     int nakitBagisciId = row["NakitBagisciId"].ConvertToInt();
                     string adi = row["Adi"].ToString();
                     string soyadi = row["Soyadi"].ToString();
@@ -397,7 +362,6 @@ namespace BTYS_Webparts.BolgeNakitBagisciListesiWP
                     bagisItem.ArmaganDurumu = armaganDurumu;
                     bagisItem.NakitBagisciId = nakitBagisciId;
 
-                    bagisItem.Secildi = SecilenIdQS.Equals(nakitBagisciId);
                     list.Add(bagisItem);
                 }
 
@@ -417,7 +381,6 @@ namespace BTYS_Webparts.BolgeNakitBagisciListesiWP
             public string Armagan { get; set; }
             public string ArmaganDurumu { get; set; }
             public string BelgeIstemiyor { get; set; }
-            public bool Secildi { get; set; }
         }
 
         protected void AyDDL_SelectedIndexChanged(object sender, EventArgs e)
@@ -443,7 +406,7 @@ namespace BTYS_Webparts.BolgeNakitBagisciListesiWP
         }
         private void ModalTabloOlustur()
         {
-            
+
             var jsonData = ModalTabloJson(); //veri çekilip json a çeviriliyor
             var jsString = CreateModalDataTable(jsonData); //javascript kodu hazırlanıyor.
             UtilityHelper.ScriptCalistir(jsString);
@@ -475,17 +438,6 @@ namespace BTYS_Webparts.BolgeNakitBagisciListesiWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY');//sort date
                 jQuery(document).ready(function () {
                     jQuery('#CustomModalDataTable').DataTable({
-                        'initComplete': function (settings, json) {//tablo yüklendiğinde
-                            var api = this.api();
-                            var row = api.row(function (idx, data, node) { //secilen toplantıya gider
-                                return data['Secildi'] == true;
-                            });
-                            if (row.length > 0) {
-                                row.select()
-                                    .show()
-                                    .draw(false);
-                            }
-                        },
                         data: " + jsonData + @",
                         columns: [
                             { data: 'BagisTarihi' },
@@ -512,8 +464,7 @@ namespace BTYS_Webparts.BolgeNakitBagisciListesiWP
         private List<NakitBagisciListItem> GetModalDataList()
         {
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
-            NakitBagisHareket nakitBagis = new NakitBagisHareket();
-
+            NakitBagisHareket nakitBagis = new NakitBagisHareket();            
             DataTable dataTable = nakitBagis.SelectByNakitBagisciId(paramNakitBagisciIdLbl.Value.ConvertToInt());
 
             List<NakitBagisciListItem> list = new List<NakitBagisciListItem>();
@@ -521,8 +472,8 @@ namespace BTYS_Webparts.BolgeNakitBagisciListesiWP
             int nakitBagisciId0 = row0["NakitBagisciId"].ConvertToInt();
             string adi0 = row0["Adi"].ToString();
             string soyadi0 = row0["Soyadi"].ToString();
-            AdiLbl.Text = (adi0 + " " + soyadi0).Trim() + " ("+nakitBagisciId0+")";
-            if (dataTable!=null)
+            AdiLbl.Text = (adi0 + " " + soyadi0).Trim() + " (" + nakitBagisciId0 + ")";
+            if (dataTable != null)
             {
                 foreach (DataRow row in dataTable.Rows)
                 {
@@ -556,9 +507,8 @@ namespace BTYS_Webparts.BolgeNakitBagisciListesiWP
                     bagisItem.ArmaganDurumu = armaganDurumu;
                     bagisItem.NakitBagisciId = nakitBagisciId;
 
-                    bagisItem.Secildi = SecilenIdQS.Equals(nakitBagisciId);
                     list.Add(bagisItem);
-                } 
+                }
             }
             return list;
         }

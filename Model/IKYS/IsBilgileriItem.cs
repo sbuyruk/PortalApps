@@ -50,6 +50,19 @@ namespace Model.IKYS
                 _Birim = value;
             }
         }
+        private Bolge _Bolge
+        {
+            get
+            {
+                Bolge bolge = new Bolge();
+                bolge = bolge.Select<Bolge>(_Birim.BolgeId);
+                return bolge;
+            }
+            set
+            {
+                _Bolge = value;
+            }
+        }
         public IsBilgileri IsBilgileri
         {
             get { return _IsBilgileri; }
@@ -64,6 +77,11 @@ namespace Model.IKYS
         {
             get { return _Birim; }
             set { _Birim = value; }
+        }
+        public Bolge Bolge
+        {
+            get { return _Bolge; }
+            set { _Bolge = value; }
         }
         public override bool Delete()
         {

@@ -105,7 +105,7 @@ namespace TBYS_WebParts.VasiyetciListesiWP
         {
             try
             {
-                BolgeQS = IKYSOrtak.PersonelinBolgesiniGetir(CurrentUserName);
+                BolgeQS = IKYSOrtak.PersonelinBolgesiniGetir_Deprecated(CurrentUserName);
                 if (!string.IsNullOrEmpty(BolgeQS))
                 {
                     TitleLbl.Text = "Vasiyetçi Listesi" + " (" + BolgeQS + " Bölgesi)";

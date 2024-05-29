@@ -35,7 +35,7 @@
 
                             <div class="form-group m-0">
                                 <label class="col-form-label" for="PersonelDDL">Personel</label>
-                                <asp:DropDownList ID="PersonelDDL" runat="server" class="form-control" style="height:auto"></asp:DropDownList>
+                                <asp:DropDownList ID="PersonelDDL" runat="server" class="form-control" style="height:auto" Enabled="false" ToolTip="Personel atamasını kişinin sayfasından yapınız"></asp:DropDownList>
                             </div>
                             <div class="form-group m-0">
                                 <label class="col-form-label" for="BirimDDL">Birim/Şube</label>

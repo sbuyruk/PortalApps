@@ -261,6 +261,18 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.Label EDevletLbl;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.Label EDevletOkLbl;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.FileUpload EDevletFU;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton KaydetBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -330,7 +342,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
             @__ctrl.Text = "AKBANK";
             @__ctrl.Font.Size = global::System.Web.UI.WebControls.FontUnit.XLarge;
             @__ctrl.Font.Bold = true;
-            @__ctrl.ForeColor = ((System.Drawing.Color)(global::System.Drawing.Color.FromArgb(255, 51, 0)));
+            @__ctrl.ForeColor = global::System.Drawing.Color.Red;
             return @__ctrl;
         }
         
@@ -375,7 +387,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
             @__ctrl.Text = "GARANTİ BANKASI";
             @__ctrl.Font.Size = global::System.Web.UI.WebControls.FontUnit.XLarge;
             @__ctrl.Font.Bold = true;
-            @__ctrl.ForeColor = ((System.Drawing.Color)(global::System.Drawing.Color.FromArgb(0, 102, 0)));
+            @__ctrl.ForeColor = global::System.Drawing.Color.Green;
             return @__ctrl;
         }
         
@@ -420,7 +432,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
             @__ctrl.Text = "HALKBANK";
             @__ctrl.Font.Size = global::System.Web.UI.WebControls.FontUnit.XLarge;
             @__ctrl.Font.Bold = true;
-            @__ctrl.ForeColor = ((System.Drawing.Color)(global::System.Drawing.Color.FromArgb(51, 153, 255)));
+            @__ctrl.ForeColor = global::System.Drawing.Color.DeepSkyBlue;
             return @__ctrl;
         }
         
@@ -465,7 +477,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
             @__ctrl.Text = "İŞBANK";
             @__ctrl.Font.Size = global::System.Web.UI.WebControls.FontUnit.XLarge;
             @__ctrl.Font.Bold = true;
-            @__ctrl.ForeColor = ((System.Drawing.Color)(global::System.Drawing.Color.FromArgb(51, 51, 255)));
+            @__ctrl.ForeColor = global::System.Drawing.Color.Blue;
             return @__ctrl;
         }
         
@@ -510,7 +522,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
             @__ctrl.Text = "TEB";
             @__ctrl.Font.Size = global::System.Web.UI.WebControls.FontUnit.XLarge;
             @__ctrl.Font.Bold = true;
-            @__ctrl.ForeColor = ((System.Drawing.Color)(global::System.Drawing.Color.FromArgb(0, 102, 0)));
+            @__ctrl.ForeColor = global::System.Drawing.Color.LimeGreen;
             return @__ctrl;
         }
         
@@ -555,7 +567,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
             @__ctrl.Text = "Vakıfbank(Günlük)";
             @__ctrl.Font.Size = global::System.Web.UI.WebControls.FontUnit.XLarge;
             @__ctrl.Font.Bold = true;
-            @__ctrl.ForeColor = ((System.Drawing.Color)(global::System.Drawing.Color.FromArgb(255, 204, 0)));
+            @__ctrl.ForeColor = global::System.Drawing.Color.Orange;
             return @__ctrl;
         }
         
@@ -599,7 +611,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
             @__ctrl.Text = "ZİRAAT BANKASI";
             @__ctrl.Font.Size = global::System.Web.UI.WebControls.FontUnit.XLarge;
             @__ctrl.Font.Bold = true;
-            @__ctrl.ForeColor = ((System.Drawing.Color)(global::System.Drawing.Color.FromArgb(204, 0, 0)));
+            @__ctrl.ForeColor = global::System.Drawing.Color.OrangeRed;
             return @__ctrl;
         }
         
@@ -643,7 +655,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
             @__ctrl.Text = "Akbank (Ekstre)";
             @__ctrl.Font.Size = global::System.Web.UI.WebControls.FontUnit.XLarge;
             @__ctrl.Font.Bold = true;
-            @__ctrl.ForeColor = ((System.Drawing.Color)(global::System.Drawing.Color.FromArgb(255, 51, 0)));
+            @__ctrl.ForeColor = global::System.Drawing.Color.Red;
             return @__ctrl;
         }
         
@@ -688,7 +700,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
             @__ctrl.Text = "Garanti (Ekstre)";
             @__ctrl.Font.Size = global::System.Web.UI.WebControls.FontUnit.XLarge;
             @__ctrl.Font.Bold = true;
-            @__ctrl.ForeColor = ((System.Drawing.Color)(global::System.Drawing.Color.FromArgb(0, 102, 0)));
+            @__ctrl.ForeColor = global::System.Drawing.Color.Green;
             return @__ctrl;
         }
         
@@ -733,7 +745,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
             @__ctrl.Text = "HALKBANK 2";
             @__ctrl.Font.Size = global::System.Web.UI.WebControls.FontUnit.XLarge;
             @__ctrl.Font.Bold = true;
-            @__ctrl.ForeColor = ((System.Drawing.Color)(global::System.Drawing.Color.FromArgb(51, 153, 255)));
+            @__ctrl.ForeColor = global::System.Drawing.Color.DeepSkyBlue;
             return @__ctrl;
         }
         
@@ -778,7 +790,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
             @__ctrl.Text = "İşbank (Ekstre)";
             @__ctrl.Font.Size = global::System.Web.UI.WebControls.FontUnit.XLarge;
             @__ctrl.Font.Bold = true;
-            @__ctrl.ForeColor = ((System.Drawing.Color)(global::System.Drawing.Color.FromArgb(51, 51, 255)));
+            @__ctrl.ForeColor = global::System.Drawing.Color.Blue;
             return @__ctrl;
         }
         
@@ -823,7 +835,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
             @__ctrl.Text = "Kart ile Bağış";
             @__ctrl.Font.Size = global::System.Web.UI.WebControls.FontUnit.XLarge;
             @__ctrl.Font.Bold = true;
-            @__ctrl.ForeColor = ((System.Drawing.Color)(global::System.Drawing.Color.FromArgb(255, 102, 0)));
+            @__ctrl.ForeColor = global::System.Drawing.Color.Coral;
             return @__ctrl;
         }
         
@@ -898,7 +910,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
             @__ctrl.Text = "VakıfBank";
             @__ctrl.Font.Size = global::System.Web.UI.WebControls.FontUnit.XLarge;
             @__ctrl.Font.Bold = true;
-            @__ctrl.ForeColor = ((System.Drawing.Color)(global::System.Drawing.Color.FromArgb(255, 204, 0)));
+            @__ctrl.ForeColor = global::System.Drawing.Color.Orange;
             return @__ctrl;
         }
         
@@ -945,7 +957,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
             @__ctrl.Text = "VakıfBank 2";
             @__ctrl.Font.Size = global::System.Web.UI.WebControls.FontUnit.XLarge;
             @__ctrl.Font.Bold = true;
-            @__ctrl.ForeColor = ((System.Drawing.Color)(global::System.Drawing.Color.FromArgb(255, 89, 0)));
+            @__ctrl.ForeColor = global::System.Drawing.Color.Orange;
             return @__ctrl;
         }
         
@@ -991,7 +1003,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
             @__ctrl.Text = "ZİRAAT BANKASI (Ekstre)";
             @__ctrl.Font.Size = global::System.Web.UI.WebControls.FontUnit.XLarge;
             @__ctrl.Font.Bold = true;
-            @__ctrl.ForeColor = ((System.Drawing.Color)(global::System.Drawing.Color.FromArgb(204, 0, 0)));
+            @__ctrl.ForeColor = global::System.Drawing.Color.OrangeRed;
             return @__ctrl;
         }
         
@@ -1109,6 +1121,50 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
             this.ZiraatKatilimFU = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "ZiraatKatilimFU";
+            @__ctrl.CssClass = "form-control";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlEDevletLbl() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.EDevletLbl = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "EDevletLbl";
+            @__ctrl.Text = "E-Devlet";
+            @__ctrl.Font.Size = global::System.Web.UI.WebControls.FontUnit.XLarge;
+            @__ctrl.Font.Bold = true;
+            @__ctrl.ForeColor = global::System.Drawing.Color.Turquoise;
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlEDevletOkLbl() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.EDevletOkLbl = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "EDevletOkLbl";
+            @__ctrl.Font.Size = global::System.Web.UI.WebControls.FontUnit.XLarge;
+            @__ctrl.Font.Bold = true;
+            @__ctrl.ForeColor = ((System.Drawing.Color)(global::System.Drawing.Color.FromArgb(51, 204, 51)));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.FileUpload @__BuildControlEDevletFU() {
+            global::System.Web.UI.WebControls.FileUpload @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.FileUpload();
+            this.EDevletFU = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "EDevletFU";
             @__ctrl.CssClass = "form-control";
             return @__ctrl;
         }
@@ -1453,16 +1509,31 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
             global::System.Web.UI.WebControls.FileUpload @__ctrl56;
             @__ctrl56 = this.@__BuildControlZiraatKatilimFU();
             @__parser.AddParsedSubObject(@__ctrl56);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n\r\n                <" +
-                        "/div>\r\n            </div>\r\n        </div>\r\n        <div id=\"FooterCard\" class=\"c" +
-                        "ard-footer\">\r\n            "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl57;
-            @__ctrl57 = this.@__BuildControlKaydetBtn();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n                   " +
+                        " <div class=\"card  m-4\">\r\n                        <div class=\"card-header\">\r\n   " +
+                        "                         "));
+            global::System.Web.UI.WebControls.Label @__ctrl57;
+            @__ctrl57 = this.@__BuildControlEDevletLbl();
             @__parser.AddParsedSubObject(@__ctrl57);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl58;
-            @__ctrl58 = this.@__BuildControlNextBtn();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
+            global::System.Web.UI.WebControls.Label @__ctrl58;
+            @__ctrl58 = this.@__BuildControlEDevletOkLbl();
             @__parser.AddParsedSubObject(@__ctrl58);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"card-body\">" +
+                        "\r\n                            "));
+            global::System.Web.UI.WebControls.FileUpload @__ctrl59;
+            @__ctrl59 = this.@__BuildControlEDevletFU();
+            @__parser.AddParsedSubObject(@__ctrl59);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n                </d" +
+                        "iv>\r\n            </div>\r\n        </div>\r\n        <div id=\"FooterCard\" class=\"car" +
+                        "d-footer\">\r\n            "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl60;
+            @__ctrl60 = this.@__BuildControlKaydetBtn();
+            @__parser.AddParsedSubObject(@__ctrl60);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl61;
+            @__ctrl61 = this.@__BuildControlNextBtn();
+            @__parser.AddParsedSubObject(@__ctrl61);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n        </div>\r\n    </div>\r\n</div>"));
         }
         

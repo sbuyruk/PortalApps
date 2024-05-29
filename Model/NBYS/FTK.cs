@@ -14,7 +14,7 @@ namespace Model.NBYS
         public int FTKIslemId { get; set; }
         public int Ili { get; set; }
         public int Ilcesi { get; set; }
-        public string Bolge { get; set; }
+        public int BolgeId { get; set; }
         public DateTime KurulusTarihi { get; set; }
         public DateTime GuncellemeTarihi { get; set; }
         public string FTKGorevi { get; set; }
@@ -119,15 +119,15 @@ namespace Model.NBYS
             item = list.FirstOrDefault();
             return item;
         }
-        public DataTable SelectSonFTKListesiByIliIlcesiReturnDataTable(string bolge, int ili, int ilcesi, string kurulusTarihi, string guncellemeTarihi)
+        public DataTable SelectSonFTKListesiByIliIlcesiReturnDataTable(int bolgeId, int ili, int ilcesi, string kurulusTarihi, string guncellemeTarihi)
         {
             string kurulusTarihiStr = string.IsNullOrEmpty(kurulusTarihi) ? string.Empty : string.Format(" AND A.KurulusTarihi>={0} ", kurulusTarihi.ConvertToDatetime().ReturnTRDateFormat());
             string guncellemeTarihiStr = string.IsNullOrEmpty(guncellemeTarihi.ConvertToDatetimeEmptyIfNull()) ? string.Empty : string.Format(" AND A.GuncellemeTarihi>={0} ", guncellemeTarihi.ConvertToDatetime().ReturnTRDateFormat());
-            string bolgeStr = string.IsNullOrEmpty(bolge) || bolge.Equals(ProjeConstants.HEPSI) ? string.Empty : string.Format(" AND B.Bolge={0} ", bolge.ReturnQuotedValue());
-            string iliStr = ili > 0 ? string.Format(" AND A.Ili={0} ",ili) : string.Empty;
-            string ilcesiStr = ilcesi == 0 ? string.Empty:
-                (ilcesi == ProjeConstants.SADECE_ILCELER_INT  ?" AND Ilcesi!="+ProjeConstants.VALILIK_INT: string.Format(" AND Ilcesi={0} ",ilcesi)) ;
-            
+            string bolgeStr = bolgeId==ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND B.BolgeId={0} ", bolgeId);
+            string iliStr = ili > 0 ? string.Format(" AND A.Ili={0} ", ili) : string.Empty;
+            string ilcesiStr = ilcesi == 0 ? string.Empty :
+                (ilcesi == ProjeConstants.SADECE_ILCELER_INT ? " AND Ilcesi!=" + ProjeConstants.VALILIK_INT : string.Format(" AND Ilcesi={0} ", ilcesi));
+
             string sqlString = string.Format(@"
                 SELECT A.Id FTKId,* FROM FTK_Table A
                     LEFT JOIN Il_Table B ON B.Id = A.Ili
@@ -161,7 +161,7 @@ namespace Model.NBYS
         }
         public List<FTK> SelectSonFTKListesiByIliIlcesiReturnList(int ili, int ilcesi)
         {
-            DataTable dataTable = SelectSonFTKListesiByIliIlcesiReturnDataTable(string.Empty,ili, ilcesi, string.Empty, string.Empty);
+            DataTable dataTable = SelectSonFTKListesiByIliIlcesiReturnDataTable(ProjeConstants.HEPSI_INT,ili, ilcesi, string.Empty, string.Empty);
             List<FTK> list = ToList<FTK>(dataTable);
             return list;
         }
@@ -189,52 +189,52 @@ namespace Model.NBYS
             item = list.FirstOrDefault();
             return ((T)Convert.ChangeType(item, typeof(T)));
         }
-        public int SelectKuruluOlanIlSayisiByBolge(string bolge)
+        public int SelectKuruluOlanIlSayisiByBolgeId(int bolgeId)
         {
             string sqlString = string.Format(@"
-                SELECT Bolge,Ili,Ilcesi
+                SELECT BolgeId,Ili,Ilcesi
                 FROM FTK_Table A
-                WHERE  Bolge={0} AND Ilcesi = {1}  
-                GROUP BY Bolge,Ili,Ilcesi", bolge.ReturnQuotedValue(),ProjeConstants.VALILIK_INT);
+                WHERE  BolgeId={0} AND Ilcesi = {1}  
+                GROUP BY BolgeId,Ili,Ilcesi", bolgeId,ProjeConstants.VALILIK_INT);
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             int adet = dataTable!=null ? dataTable.Rows.Count : 0;
             return adet;
             
         }
-        public int SelectKuruluOlanIlceSayisiByBolge(string bolge)
+        public int SelectKuruluOlanIlceSayisiByBolgeId(int bolgeId)
         {
             string sqlString = string.Format(@"
-                SELECT Bolge,Ili,Ilcesi
+                SELECT BolgeId,Ili,Ilcesi
                 FROM FTK_Table A
-                WHERE  Ilcesi > 0 AND Bolge={0} 
-                GROUP BY Bolge,Ili,Ilcesi", bolge.ReturnQuotedValue());
+                WHERE  Ilcesi > 0 AND BolgeId={0} 
+                GROUP BY BolgeId,Ili,Ilcesi", bolgeId);
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             int adet = dataTable != null ? dataTable.Rows.Count : 0;
             return adet;
 
         }
-        public int SelectGuncellenenIlIlceSayisiByBolge(string bolge, DateTime guncellemeTarihi)
+        public int SelectGuncellenenIlIlceSayisiByBolgeId(int bolgeId, DateTime guncellemeTarihi)
         {
             string sqlString = string.Format(@"
-                SELECT Bolge,Ili,Ilcesi
+                SELECT BolgeId,Ili,Ilcesi
                 FROM FTK_Table A
                 WHERE A.Sayac= (SELECT MAX(Sayac) FROM FTK_Table WHERE FTKIslemId=A.FtkIslemId)
-                    AND (Bolge={0} AND GuncellemeTarihi >= {1})
-                GROUP BY Bolge,Ili,Ilcesi", bolge.ReturnQuotedValue(), guncellemeTarihi.ReturnTRDateFormat());
+                    AND (BolgeId={0} AND GuncellemeTarihi >= {1})
+                GROUP BY BolgeId,Ili,Ilcesi", bolgeId, guncellemeTarihi.ReturnTRDateFormat());
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             int adet = dataTable != null ? dataTable.Rows.Count : 0;
             return adet;
         }
-        public int SelectKuruluIlIlceSayisiByBolge(string bolge, DateTime kurulusTarihi)
+        public int SelectKuruluIlIlceSayisiByBolgeId(int bolgeId, DateTime kurulusTarihi)
         {
             string sqlString = string.Format(@"
-                SELECT Bolge,Ili,Ilcesi
+                SELECT BolgeId,Ili,Ilcesi
                 FROM FTK_Table A
-                WHERE Bolge={0} AND KurulusTarihi >= {1}
-                GROUP BY Bolge,Ili,Ilcesi", bolge.ReturnQuotedValue(), kurulusTarihi.ReturnTRDateFormat());
+                WHERE BolgeId={0} AND KurulusTarihi >= {1}
+                GROUP BY BolgeId,Ili,Ilcesi", bolgeId, kurulusTarihi.ReturnTRDateFormat());
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             int adet = dataTable != null ? dataTable.Rows.Count : 0;            
@@ -262,37 +262,39 @@ namespace Model.NBYS
             bool isDeleted = dao.DeleteFromDb(sqlString, "");
             return isDeleted;
         }
-        public DataTable SelectFTKKuruluOlmayanIller(string bolge, int ilId)
+        public DataTable SelectFTKKuruluOlmayanIller(int bolgeId, int ilId)
         {
-            string bolgeStr = string.IsNullOrEmpty(bolge) || bolge.Equals(ProjeConstants.HEPSI) ? string.Empty : string.Format(" AND Bolge={0} ", bolge.ReturnQuotedValue());
+            string bolgeStr = bolgeId==ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND BolgeId={0} ", bolgeId);
             string iliStr = ilId < 1 ? string.Empty : string.Format(" AND A.Id={0}", ilId);
             string sqlString = string.Format(@"
-                SELECT A.Id IlId,A.Bolge, A.IlAdi 
+                SELECT A.Id IlId,A.BolgeId, C.Adi Bolge, A.IlAdi 
                 FROM Il_Table A 
+                LEFT JOIN Bolge_Table C ON C.Id= A.BolgeId
                 WHERE (A.Id BETWEEN 0 AND 81 AND A.IlAdi != '') 
                     {0}
                     {1}
                     AND  A.Id NOT IN (SELECT Ili FROM FTK_Table WHERE Ilcesi={2}) 
-                ORDER BY A.Bolge, A.Id    
+                ORDER BY A.BolgeId, A.Id    
             ", bolgeStr, iliStr, ProjeConstants.VALILIK_INT);
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return dataTable;
         }
-        public DataTable SelectFTKKuruluOlmayanIlceler(string bolge, int ilId)
+        public DataTable SelectFTKKuruluOlmayanIlceler(int bolgeId, int ilId)
         {
-            string bolgeStr = string.IsNullOrEmpty(bolge) || bolge.Equals(ProjeConstants.HEPSI) ? string.Empty : string.Format(" AND Bolge={0} ", bolge.ReturnQuotedValue());
+            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND BolgeId={0} ", bolgeId);
             string iliStr = ilId < 1 ? string.Empty : string.Format(" AND B.Id={0}", ilId);
             string sqlString = string.Format(@"
-                SELECT A.Id IlceId,A.IlceAdi, B.Bolge, B.Id IlId, B.IlAdi 
+                SELECT A.Id IlceId,A.IlceAdi, C.Adi Bolge, B.Id IlId, B.IlAdi 
                 FROM Ilce_Table A 
 	                INNER JOIN Il_Table B ON B.Id= A.IlId
+                    LEFT JOIN Bolge_Table C ON C.Id= B.BolgeId
                 WHERE A.IlceAdi!= {0} 
                     AND (B.Id BETWEEN 0 AND 81 AND B.IlAdi != '') 
                     AND  A.Id NOT IN (SELECT Ilcesi FROM FTK_Table WHERE Ilcesi > 0) 
                     {1}
                     {2}
                     
-                ORDER BY B.Bolge, B.Id, A.Id     
+                ORDER BY B.BolgeId, B.Id, A.Id     
             ", ProjeConstants.ILCE_MERKEZ.ReturnQuotedValue(), bolgeStr, iliStr);
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return dataTable;

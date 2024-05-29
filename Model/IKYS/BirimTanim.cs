@@ -17,6 +17,8 @@ namespace Model.IKYS
         public int AmirId { get; set; }
         public int Sira { get; set; }
         public bool Aktif { get; set; }
+        public bool BirimKaldirildi { get; set; } = false;
+        public int BolgeId { get; set; } = ProjeConstants.BOLGE_GENELMUDURLUK_INT;
         public override T Select<T>(int id)
         {
             GenericEntity<BirimTanim> genericEntity = new GenericEntity<BirimTanim>(ProjeConstants.SQL_SELECT);
@@ -135,6 +137,19 @@ namespace Model.IKYS
             List<BirimTanim> list = ToList<BirimTanim>(dataTable);
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
+        }
+        public List<BirimTanim> SelectByBirimKaldirildi(bool birimKaldirildiMi)
+        {
+            string birimKaldirildiMiStr= string.Format(" WHERE BirimKaldirildi={0}", birimKaldirildiMi ? 1 : 0); 
+            string sqlString = string.Format(@"SELECT *
+                               FROM BirimTanim_Table 
+                               {0}
+                               ORDER BY ParentId, Sira",birimKaldirildiMiStr);
+
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            List<BirimTanim> list = ToList<BirimTanim>(dataTable);
+
+            return list;
         }
         private string SelectSQL(int id)
         {

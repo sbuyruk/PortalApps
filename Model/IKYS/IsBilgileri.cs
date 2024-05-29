@@ -12,7 +12,6 @@ namespace Model.IKYS
     public class IsBilgileri : ParentClass
     {
         public int PersonelId { get; set; }
-        public int BolgeId { get; set; }
         public int UnvanId { get; set; }
         public int GorevId { get; set; }
         public int BirimId { get; set; }
@@ -140,6 +139,18 @@ namespace Model.IKYS
         public IsBilgileri SelectByPersonelId(int personelId)
         {
             string sqlString = SelectByPersonelIdSQL(personelId);
+
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            List<IsBilgileri> list = ToList<IsBilgileri>(dataTable);
+            IsBilgileri ib = list.FirstOrDefault();
+            return (ib);
+        }
+        public IsBilgileri SelectByGorevId(int gorevId)
+        {
+            string sqlString = string.Format(@" 
+                    SELECT * FROM IsBilgileri_Table  
+                    WHERE GorevId={0}
+                    ORDER BY UnvanId", gorevId);
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<IsBilgileri> list = ToList<IsBilgileri>(dataTable);

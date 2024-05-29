@@ -71,7 +71,7 @@ namespace BTYS_Webparts.BolgeTasinmazRaporuWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            BolgeQS = IKYSOrtak.PersonelinBolgesiniGetir(CurrentUserName);
+            BolgeQS = IKYSOrtak.PersonelinBolgesiniGetir_Deprecated(CurrentUserName);
             if (!string.IsNullOrEmpty(BolgeQS))
             {
                 TablolariDoldur(BolgeQS);

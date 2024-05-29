@@ -114,20 +114,20 @@ namespace Model.Ortak
             return list;
         }
 
-        public int SelectCountIlceByBolge(string bolge)
+        
+        public int SelectCountIlceByBolgeId(int bolgeId)
         {
             string sqlString = string.Format(@"
                 SELECT COUNT(A.Id) Adet
                 FROM Ilce_Table A
 	                INNER JOIN Il_Table B ON B.Id=A.IlId
-                WHERE B.Id BETWEEN 1 AND 81 AND B.Bolge={0} AND IlceAdi!={1} ", bolge.ReturnQuotedValue(), ProjeConstants.ILCE_MERKEZ.ReturnQuotedValue());
+                WHERE B.Id BETWEEN 1 AND 81 AND B.BolgeId={0} AND IlceAdi!={1} ", bolgeId, ProjeConstants.ILCE_MERKEZ.ReturnQuotedValue());
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             DataRow row = dataTable.Rows[0];
             int adet = row["Adet"].ReturnZeroIfNull().ConvertToInt();
             return adet;
         }
-
         public List<Ilce> SelectByIlId(int pIlId)
         {
             string sqlString = string.Format(@"SELECT *

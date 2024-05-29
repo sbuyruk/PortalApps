@@ -79,7 +79,7 @@ namespace IKYS_WebParts.BirimSemasiWP
             csChartConfig += "config,";
 
             BirimTanim birimTanim = new BirimTanim();
-            var birimListesi = birimTanim.SelectAll<BirimTanim>();
+            var birimListesi = birimTanim.SelectByBirimKaldirildi(false);
 
             BirimTanim parent = birimListesi.Where(a => a.ParentId == 0).FirstOrDefault<BirimTanim>();
             Personel ilknode = new Personel();

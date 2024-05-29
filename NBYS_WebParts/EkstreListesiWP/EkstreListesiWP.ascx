@@ -111,19 +111,23 @@
                                         <asp:Label ID="AkbankOkLbl" runat="server" Text=""></asp:Label>
                                     </div>
                                     <div class="form-group m-0">
+                                        <asp:Label ID="AkbankEkstreLbl" runat="server" Text="Akbank (Ekstre)"></asp:Label>
+                                        <asp:Label ID="AkbankEkstreOkLbl" runat="server" Text=""></asp:Label>
+                                    </div>
+                                    <div class="form-group m-0">
+                                        <asp:Label ID="EDevletLbl" runat="server" Text="EDevlet"></asp:Label>
+                                        <asp:Label ID="EDevletOkLbl" runat="server" Text=""></asp:Label>
+                                    </div>
+                                    <div class="form-group m-0">
                                         <asp:Label ID="GarantiLbl" runat="server" Text="Garanti"></asp:Label>
                                         <asp:Label ID="GarantiOkLbl" runat="server" Text=""></asp:Label>
                                     </div>
                                     <div class="form-group m-0">
-                                        <asp:Label ID="KartIleLbl" runat="server" Text="Kart ile Bağış"></asp:Label>
-                                        <asp:Label ID="KartIleOkLbl" runat="server" Text=""></asp:Label>
+                                        <asp:Label ID="GarantiEkstreLbl" runat="server" Text="Garanti (Ekstre)"></asp:Label>
+                                        <asp:Label ID="GarantiEkstreOkLbl" runat="server" Text=""></asp:Label>
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <div class="form-group m-0">
-                                        <asp:Label ID="IsbankLbl" runat="server" Text="İşbank"></asp:Label>
-                                        <asp:Label ID="IsbankOkLbl" runat="server" Text=""></asp:Label>
-                                    </div>
                                     <div class="form-group m-0">
                                         <asp:Label ID="HalkbankLbl" runat="server" Text="Halkbank"></asp:Label>
                                         <asp:Label ID="HalkbankOkLbl" runat="server" Text=""></asp:Label>
@@ -131,6 +135,18 @@
                                     <div class="form-group m-0">
                                         <asp:Label ID="Halkbank2Lbl" runat="server" Text="Halkbank 2"></asp:Label>
                                         <asp:Label ID="Halkbank2OkLbl" runat="server" Text=""></asp:Label>
+                                    </div>
+                                    <div class="form-group m-0">
+                                        <asp:Label ID="IsbankLbl" runat="server" Text="İşbank"></asp:Label>
+                                        <asp:Label ID="IsbankOkLbl" runat="server" Text=""></asp:Label>
+                                    </div>
+                                    <div class="form-group m-0">
+                                        <asp:Label ID="IsbankEkstreLbl" runat="server" Text="İşbank (Ekstre)"></asp:Label>
+                                        <asp:Label ID="IsbankEkstreOkLbl" runat="server" Text=""></asp:Label>
+                                    </div>
+                                    <div class="form-group m-0">
+                                        <asp:Label ID="KartIleLbl" runat="server" Text="Kart ile Bağış"></asp:Label>
+                                        <asp:Label ID="KartIleOkLbl" runat="server" Text=""></asp:Label>
                                     </div>
                                 </div>
                                 <div class="col">
@@ -145,6 +161,10 @@
                                     <div class="form-group m-0">
                                         <asp:Label ID="Vakifbank2Lbl" runat="server" Text="Vakıfbank2"></asp:Label>
                                         <asp:Label ID="Vakifbank2OkLbl" runat="server" Text=""></asp:Label>
+                                    </div>
+                                    <div class="form-group m-0">
+                                        <asp:Label ID="VakifKatilimLbl" runat="server" Text="Vakıf Katılım"></asp:Label>
+                                        <asp:Label ID="VakifKatilimOkLbl" runat="server" Text=""></asp:Label>
                                     </div>
                                 </div>
                                 <div class="col-3">
@@ -165,7 +185,12 @@
                             <div class="row">
 
                                 <div class="col-3 form-group">
-                                    <asp:CheckBox ID="AktarilanlarHaricChk" AutoPostBack="true" runat="server" CssClass="form-control" Text="Aktarılanları Gösterme " Checked="True" OnCheckedChanged="AktarilanlarHaricChk_CheckedChanged" TextAlign="Left" />
+                                    <div class="checkbox pt-3">
+                                        <label>
+                                            <asp:CheckBox ID="AktarilanlarHaricChk" runat="server" Checked="True" AutoPostBack="true" OnCheckedChanged="AktarilanlarHaricChk_CheckedChanged" ToolTip="Aktarilanları görmek için işareti kaldırınız." />
+                                            Aktarılanları Gösterme
+                                        </label>
+                                    </div>
                                 </div>
                                 <div class="col form-group">
                                     <asp:Label class="col-form-label float-right" ID="RowCountLbl" runat="server" Text="" Font-Bold="True"></asp:Label>
@@ -176,9 +201,15 @@
 
                             <div class="table loader table-striped table-hower table-bordered table-responsive">
                                 <input id="globalFilter" placeholder="Aranacak Kelime" size="30" />
-                                <asp:CheckBox ID="TumunuSecChk" AutoPostBack="true" runat="server" Text="Sayfanın Tümünü Seç" Checked="false" OnCheckedChanged="TumunuSecChk_CheckedChanged" TextAlign="Left" />
-                                <input id="sayfaTxt" type="number" class="float-right" min="1" max="9" style="width: 40px; text-align: center;" onkeyup="SayfayaGit();" />
-                                <asp:Label ID="Label1" runat="server" Text="" CssClass="float-right">Sayfaya Git :</asp:Label>
+                                <%--<asp:CheckBox ID="TumunuSecChk" AutoPostBack="true" runat="server" Text="Sayfanın Tümünü Seç" Checked="false" OnCheckedChanged="TumunuSecChk_CheckedChanged" TextAlign="Left" />--%>
+                                <div class="checkbox pt-3">
+                                    <label>
+                                        <asp:CheckBox ID="TumunuSecChk" runat="server" Checked="True" AutoPostBack="true" OnCheckedChanged="TumunuSecChk_CheckedChanged" ToolTip="Bu sayfadakilerin tümünü seç" />
+                                        Sayfanın Tümünü Seç
+                                    </label>
+                                    <input id="sayfaTxt" type="number" class="float-right" min="1" max="9" style="width: 40px; text-align: center;" onkeyup="SayfayaGit();" />
+                                    <asp:Label ID="Label1" runat="server" Text="" CssClass="float-right">Sayfaya Git :</asp:Label>
+                                </div>
                                 <div id="tblfilter"></div>
                                 <div id="messages"></div>
                             </div>

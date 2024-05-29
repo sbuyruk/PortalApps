@@ -24,7 +24,7 @@
                 <div class="col">
                     <div class="card  m-4">
                         <div class="card-header">
-                            <asp:Label ID="AkbankLbl" runat="server" Text="AKBANK" Font-Size="X-Large" Font-Bold="True" ForeColor="#FF3300"></asp:Label>
+                            <asp:Label ID="AkbankLbl" runat="server" Text="AKBANK" Font-Size="X-Large" Font-Bold="True" ForeColor="red"></asp:Label>
                             <asp:Label ID="AkbankOkLbl" runat="server" Text="" Font-Size="X-Large" Font-Bold="True" ForeColor="#33CC33"></asp:Label>
                         </div>
                         <div class="card-body">
@@ -34,7 +34,7 @@
                     </div>
                     <div class="card  m-4">
                         <div class="card-header">
-                            <asp:Label ID="GarantiLbl" runat="server" Text="GARANTİ BANKASI" Font-Size="X-Large" Font-Bold="True" ForeColor="#006600"></asp:Label>
+                            <asp:Label ID="GarantiLbl" runat="server" Text="GARANTİ BANKASI" Font-Size="X-Large" Font-Bold="True" ForeColor="green"></asp:Label>
                             <asp:Label ID="GarantiOkLbl" runat="server" Text="" Font-Size="X-Large" Font-Bold="True" ForeColor="#33CC33"></asp:Label>
                         </div>
                         <div class="card-body">
@@ -43,7 +43,7 @@
                     </div>
                     <div class="card  m-4">
                         <div class="card-header">
-                            <asp:Label ID="HalkbankLbl" runat="server" Text="HALKBANK" Font-Size="X-Large" Font-Bold="True" ForeColor="#3399FF"></asp:Label>
+                            <asp:Label ID="HalkbankLbl" runat="server" Text="HALKBANK" Font-Size="X-Large" Font-Bold="True" ForeColor="DeepSkyBlue"></asp:Label>
                             <asp:Label ID="HalkbankOkLbl" runat="server" Text="" Font-Size="X-Large" Font-Bold="True" ForeColor="#33CC33"></asp:Label>
                         </div>
                         <div class="card-body">
@@ -55,7 +55,7 @@
                 <div class="col">
                     <div class="card  m-4">
                         <div class="card-header">
-                            <asp:Label ID="IsbankLbl" runat="server" Text="İŞBANK" Font-Size="X-Large" Font-Bold="True" ForeColor="#3333FF"></asp:Label>
+                            <asp:Label ID="IsbankLbl" runat="server" Text="İŞBANK" Font-Size="X-Large" Font-Bold="True" ForeColor="blue"></asp:Label>
                             <asp:Label ID="IsbankOkLbl" runat="server" Text="" Font-Size="X-Large" Font-Bold="True" ForeColor="#33CC33"></asp:Label>
                         </div>
                         <div class="card-body">
@@ -64,7 +64,7 @@
                     </div>
                     <div class="card  m-4">
                         <div class="card-header">
-                            <asp:Label ID="TebLbl" runat="server" Text="TEB" Font-Size="X-Large" Font-Bold="True" ForeColor="#006600"></asp:Label>
+                            <asp:Label ID="TebLbl" runat="server" Text="TEB" Font-Size="X-Large" Font-Bold="True" ForeColor="limegreen"></asp:Label>
                             <asp:Label ID="TebOkLbl" runat="server" Text="" Font-Size="X-Large" Font-Bold="True" ForeColor="#33CC33"></asp:Label>
                         </div>
                         <div class="card-body">
@@ -74,7 +74,7 @@
                     </div>
                     <div class="card  m-4">
                         <div class="card-header">
-                            <asp:Label ID="VakifbankGunlukLbl" runat="server" Text="Vakıfbank(Günlük)" Font-Size="X-Large" Font-Bold="True" ForeColor="#FFCC00"></asp:Label>
+                            <asp:Label ID="VakifbankGunlukLbl" runat="server" Text="Vakıfbank(Günlük)" Font-Size="X-Large" Font-Bold="True" ForeColor="orange"></asp:Label>
                             <asp:Label ID="VakifbankGunlukOkLbl" runat="server" Font-Size="X-Large" Font-Bold="True" ForeColor="#33CC33"></asp:Label>
                         </div>
                         <div class="card-body">
@@ -83,7 +83,7 @@
                     </div>
                     <div class="card  m-4">
                         <div class="card-header">
-                            <asp:Label ID="ZiraatLbl" runat="server" Text="ZİRAAT BANKASI" Font-Size="X-Large" Font-Bold="True" ForeColor="#CC0000"></asp:Label>
+                            <asp:Label ID="ZiraatLbl" runat="server" Text="ZİRAAT BANKASI" Font-Size="X-Large" Font-Bold="True" ForeColor="orangered"></asp:Label>
                             <asp:Label ID="ZiraatOkLbl" runat="server" Font-Size="X-Large" Font-Bold="True" ForeColor="#33CC33"></asp:Label>
                         </div>
                         <div class="card-body">
@@ -97,7 +97,7 @@
                 <div class="col">
                     <div class="card  m-4">
                         <div class="card-header">
-                            <asp:Label ID="AkbankEkstreLbl" runat="server" Text="Akbank (Ekstre)" Font-Size="X-Large" Font-Bold="True" ForeColor="#FF3300"></asp:Label>
+                            <asp:Label ID="AkbankEkstreLbl" runat="server" Text="Akbank (Ekstre)" Font-Size="X-Large" Font-Bold="True" ForeColor="red"></asp:Label>
                             <asp:Label ID="AkbankEkstreOkLbl" runat="server" Text="" Font-Size="X-Large" Font-Bold="True" ForeColor="#33CC33"></asp:Label>
                         </div>
                         <div class="card-body">
@@ -106,7 +106,7 @@
                     </div>
                     <div class="card  m-4">
                         <div class="card-header">
-                            <asp:Label ID="GarantiEkstreLbl" runat="server" Text="Garanti (Ekstre)" Font-Size="X-Large" Font-Bold="True" ForeColor="#006600"></asp:Label>
+                            <asp:Label ID="GarantiEkstreLbl" runat="server" Text="Garanti (Ekstre)" Font-Size="X-Large" Font-Bold="True" ForeColor="green"></asp:Label>
                             <asp:Label ID="GarantiEkstreOkLbl" runat="server" Text="" Font-Size="X-Large" Font-Bold="True" ForeColor="#33CC33"></asp:Label>
                         </div>
                         <div class="card-body">
@@ -115,7 +115,7 @@
                     </div>
                     <div class="card  m-4">
                         <div class="card-header">
-                            <asp:Label ID="Halkbank2Lbl" runat="server" Text="HALKBANK 2" Font-Size="X-Large" Font-Bold="True" ForeColor="#3399FF"></asp:Label>
+                            <asp:Label ID="Halkbank2Lbl" runat="server" Text="HALKBANK 2" Font-Size="X-Large" Font-Bold="True" ForeColor="DeepSkyBlue"></asp:Label>
                             <asp:Label ID="Halkbank2OkLbl" runat="server" Text="" Font-Size="X-Large" Font-Bold="True" ForeColor="#33CC33"></asp:Label>
                         </div>
                         <div class="card-body">
@@ -124,7 +124,7 @@
                     </div>
                     <div class="card  m-4">
                         <div class="card-header">
-                            <asp:Label ID="IsbankEkstreLbl" runat="server" Text="İşbank (Ekstre)" Font-Size="X-Large" Font-Bold="True" ForeColor="#3333FF"></asp:Label>
+                            <asp:Label ID="IsbankEkstreLbl" runat="server" Text="İşbank (Ekstre)" Font-Size="X-Large" Font-Bold="True" ForeColor="blue"></asp:Label>
                             <asp:Label ID="IsbankEkstreOkLbl" runat="server" Text="" Font-Size="X-Large" Font-Bold="True" ForeColor="#33CC33"></asp:Label>
                         </div>
                         <div class="card-body">
@@ -133,7 +133,7 @@
                     </div>
                     <div class="card  m-4">
                         <div class="card-header">
-                            <asp:Label ID="KartIleLbl" runat="server" Text="Kart ile Bağış" Font-Size="X-Large" Font-Bold="True" ForeColor="#FF6600"></asp:Label>
+                            <asp:Label ID="KartIleLbl" runat="server" Text="Kart ile Bağış" Font-Size="X-Large" Font-Bold="True" ForeColor="coral"></asp:Label>
                             <asp:Label ID="KartIleOkLbl" runat="server" Text="" Font-Size="X-Large" Font-Bold="True" ForeColor="#33CC33"></asp:Label>
                         </div>
                         <div class="card-body">
@@ -149,7 +149,7 @@
 
                     <div class="card  m-4" style="display: none">
                         <div class="card-header">
-                            <asp:Label ID="VakifbankLbl" runat="server" Text="VakıfBank" Font-Size="X-Large" Font-Bold="True" ForeColor="#FFCC00"></asp:Label>
+                            <asp:Label ID="VakifbankLbl" runat="server" Text="VakıfBank" Font-Size="X-Large" Font-Bold="True" ForeColor="orange"></asp:Label>
                             <asp:Label ID="VakifbankOkLbl" runat="server" Text="" Font-Size="X-Large" Font-Bold="True" ForeColor="#33CC33"></asp:Label>
                         </div>
                         <div class="card-body">
@@ -158,7 +158,7 @@
                     </div>
                     <div class="card  m-4">
                         <div class="card-header">
-                            <asp:Label ID="Vakifbank2Lbl" runat="server" Text="VakıfBank 2" Font-Size="X-Large" Font-Bold="True" ForeColor="#FF5900"></asp:Label>
+                            <asp:Label ID="Vakifbank2Lbl" runat="server" Text="VakıfBank 2" Font-Size="X-Large" Font-Bold="True" ForeColor="orange"></asp:Label>
                             <asp:Label ID="Vakifbank2OkLbl" runat="server" Text="" Font-Size="X-Large" Font-Bold="True" ForeColor="#33CC33"></asp:Label>
                         </div>
                         <div class="card-body">
@@ -168,7 +168,7 @@
                     </div>
                     <div class="card  m-4">
                         <div class="card-header">
-                            <asp:Label ID="ZiraatEkstreLbl" runat="server" Text="ZİRAAT BANKASI (Ekstre)" Font-Size="X-Large" Font-Bold="True" ForeColor="#CC0000"></asp:Label>
+                            <asp:Label ID="ZiraatEkstreLbl" runat="server" Text="ZİRAAT BANKASI (Ekstre)" Font-Size="X-Large" Font-Bold="True" ForeColor="OrangeRed"></asp:Label>
                             <asp:Label ID="ZiraatEkstreOkLbl" runat="server" Font-Size="X-Large" Font-Bold="True" ForeColor="#33CC33"></asp:Label>
                         </div>
                         <div class="card-body">
@@ -193,7 +193,15 @@
                             <asp:FileUpload ID="ZiraatKatilimFU" runat="server" CssClass="form-control" />
                         </div>
                     </div>
-
+                    <div class="card  m-4">
+                        <div class="card-header">
+                            <asp:Label ID="EDevletLbl" runat="server" Text="E-Devlet" Font-Size="X-Large" Font-Bold="True" ForeColor="turquoise"></asp:Label>
+                            <asp:Label ID="EDevletOkLbl" runat="server" Font-Size="X-Large" Font-Bold="True" ForeColor="#33CC33"></asp:Label>
+                        </div>
+                        <div class="card-body">
+                            <asp:FileUpload ID="EDevletFU" runat="server" CssClass="form-control" />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

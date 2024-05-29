@@ -128,7 +128,7 @@ namespace BTYS_Webparts.BolgeTasinmazKartiWP
             {
                 if (!Page.IsPostBack)
                 {
-                    BolgeQS = IKYSOrtak.PersonelinBolgesiniGetir(CurrentUserName);
+                    BolgeQS = IKYSOrtak.PersonelinBolgesiniGetir_Deprecated(CurrentUserName);
                     if (!string.IsNullOrEmpty(BolgeQS))
                     {
                         Tasinmaz tasinmaz = new Tasinmaz();

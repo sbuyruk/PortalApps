@@ -191,14 +191,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EkstreListesiWP.ascx</DependentUpon>
     </Compile>
-    <Compile Include="ExtreDosyaYuklemeWP\ExtreDosyaYuklemeWP.ascx.cs">
-      <DependentUpon>ExtreDosyaYuklemeWP.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="ExtreDosyaYuklemeWP\ExtreDosyaYuklemeWP.ascx.g.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ExtreDosyaYuklemeWP.ascx</DependentUpon>
-    </Compile>
     <Compile Include="FTKFahriBaskanListesiWP\FTKFahriBaskanListesiWP.ascx.cs">
       <DependentUpon>FTKFahriBaskanListesiWP.ascx</DependentUpon>
     </Compile>
@@ -334,6 +326,14 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>NakitBagisciEslestirWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="NakitBagisciListesiByYilAyWP\NakitBagisciListesiByYilAyWP.ascx.cs">
+      <DependentUpon>NakitBagisciListesiByYilAyWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="NakitBagisciListesiByYilAyWP\NakitBagisciListesiByYilAyWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NakitBagisciListesiByYilAyWP.ascx</DependentUpon>
     </Compile>
     <Compile Include="NakitBagisciListesiWP\NakitBagisciListesiWP.ascx.cs">
       <DependentUpon>NakitBagisciListesiWP.ascx</DependentUpon>
@@ -511,10 +511,6 @@
     <None Include="EkstreListesiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{b6a696b7-5149-412a-a7a4-0b87102dc3e3}</SharePointProjectItemId>
     </None>
-    <None Include="ExtreDosyaYuklemeWP\ExtreDosyaYuklemeWP.webpart" />
-    <None Include="ExtreDosyaYuklemeWP\SharePointProjectItem.spdata">
-      <SharePointProjectItemId>{cc1f6a43-33c6-47bf-9ddb-55ed55258e9c}</SharePointProjectItemId>
-    </None>
     <None Include="Features\Feature1\Feature1.feature">
       <FeatureId>{d7d486bf-69ed-4072-aef3-f508451f76fc}</FeatureId>
     </None>
@@ -586,6 +582,10 @@
     <None Include="NakitBagisciEslestirWP\NakitBagisciEslestirWP.webpart" />
     <None Include="NakitBagisciEslestirWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{b81a54c5-68a8-4e68-84df-42f085e45db2}</SharePointProjectItemId>
+    </None>
+    <None Include="NakitBagisciListesiByYilAyWP\NakitBagisciListesiByYilAyWP.webpart" />
+    <None Include="NakitBagisciListesiByYilAyWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{5297dc93-66d7-4451-ad87-e79bc90aa2ab}</SharePointProjectItemId>
     </None>
     <None Include="NakitBagisciListesiWP\NakitBagisciListesiWP.webpart" />
     <None Include="NakitBagisciListesiWP\SharePointProjectItem.spdata">
@@ -721,11 +721,6 @@
       <LastGenOutput>EkstreListesiWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="EkstreListesiWP\Elements.xml" />
-    <Content Include="ExtreDosyaYuklemeWP\Elements.xml" />
-    <Content Include="ExtreDosyaYuklemeWP\ExtreDosyaYuklemeWP.ascx">
-      <Generator>SharePointWebPartCodeGenerator</Generator>
-      <LastGenOutput>ExtreDosyaYuklemeWP.ascx.g.cs</LastGenOutput>
-    </Content>
     <Content Include="Features\Feature1\Feature1.Template.xml">
       <DependentUpon>Feature1.feature</DependentUpon>
     </Content>
@@ -813,6 +808,11 @@
     <Content Include="NakitBagisciEslestirWP\NakitBagisciEslestirWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>NakitBagisciEslestirWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="NakitBagisciListesiByYilAyWP\Elements.xml" />
+    <Content Include="NakitBagisciListesiByYilAyWP\NakitBagisciListesiByYilAyWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>NakitBagisciListesiByYilAyWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="NakitBagisciListesiWP\Elements.xml" />
     <Content Include="NakitBagisciListesiWP\NakitBagisciListesiWP.ascx">

@@ -102,28 +102,29 @@ namespace BTYS_Webparts.BolgeFTKListesiWP
                 ViewState["Grup"] = value;
             }
         }
-        private string BolgeQS
+        
+        private int BolgeIdQS
         {
             get
             {
 
-                if (ViewState["Bolge"] == null)
+                if (ViewState["BolgeId"] == null)
                 {
-                    if (Page.Request.QueryString["Bolge"] != null)
+                    if (Page.Request.QueryString["BolgeId"] != null)
                     {
-                        ViewState["Bolge"] = Page.Request.QueryString["Bolge"];
+                        ViewState["BolgeId"] = Page.Request.QueryString["BolgeId"];
                     }
                     else
                     {
-                        ViewState["Bolge"] = string.Empty;
+                        ViewState["BolgeId"] = string.Empty;
                     }
                 }
-                return ViewState["Bolge"].ToString();
+                return ViewState["BolgeId"].ReturnZeroIfNull().ConvertToInt();
             }
 
             set
             {
-                ViewState["Bolge"] = value;
+                ViewState["BolgeId"] = value;
             }
         }
         private string CurrentUserName
@@ -196,23 +197,22 @@ namespace BTYS_Webparts.BolgeFTKListesiWP
         {
             if (!Page.IsPostBack)
             {
-                BolgeQS = IKYSOrtak.PersonelinBolgesiniGetir(CurrentUserName);
-                if (!string.IsNullOrEmpty(BolgeQS))
+                Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
+                BolgeIdQS=bolge==null?0:bolge.Id;
+                if (BolgeIdQS>0)
                 {
                     KurulusTarihiTxt.Text = KurulusTarihiQS;
                     GuncellemeTarihiTxt.Text = GuncellemeTarihiQS;
                     GrupDDLDoldur();
                     UtilityHelper.SetDDLValue(GrupDDL, GrupQS);
 
-                    if (string.IsNullOrEmpty(BolgeQS))
+                    if (IliIdQS.ConvertToInt() > 0)
                     {
-                        if (IliIdQS.ConvertToInt() > 0)
-                        {
-                            Il il = new Il();
-                            il = il.Select<Il>(IliIdQS.ConvertToInt());
-                            BolgeQS = il != null ? il.Bolge : string.Empty;
-                        }
+                        Il il = new Il();
+                        il = il.Select<Il>(IliIdQS.ConvertToInt());
+                        BolgeIdQS = il != null ? il.BolgeId : 0;
                     }
+
                     IlDDLDoldur();
                     UtilityHelper.SetDDLValue(IliDDL, IliIdQS);
                     IlceDDLDoldur();
@@ -241,10 +241,8 @@ namespace BTYS_Webparts.BolgeFTKListesiWP
             ListItem li0 = new ListItem(ProjeConstants.HEPSI, ProjeConstants.HEPSI_INT.ToString());
             IliDDL.Items.Add(li0);
 
-            string bolge = !string.IsNullOrEmpty(BolgeQS) ? BolgeQS : string.Empty;
-
             Il newil = new Il();
-            List<Il> list = newil.SelectByBolge(bolge);
+            List<Il> list = newil.SelectByBolgeId(BolgeIdQS);
             foreach (Il il in list)
             {
                 if (string.IsNullOrEmpty(il.IlAdi.Trim()))
@@ -302,7 +300,7 @@ namespace BTYS_Webparts.BolgeFTKListesiWP
         {
             List<FTKListItem> ftkList = new List<FTKListItem>();
             FTK ftkDao = new FTK();
-            DataTable dataTable = ftkDao.SelectSonFTKListesiByIliIlcesiReturnDataTable(BolgeQS, IliIdQS.ConvertToInt(), IlcesiIdQS.ConvertToInt(),
+            DataTable dataTable = ftkDao.SelectSonFTKListesiByIliIlcesiReturnDataTable(BolgeIdQS, IliIdQS.ConvertToInt(), IlcesiIdQS.ConvertToInt(),
                 //BolgeDDL.SelectedItem.Value, IliDDL.SelectedItem.Value.ConvertToInt(), 
                 //IlcesiDDL.SelectedItem.Value.ConvertToInt(),
                 KurulusTarihiTxt.Text, GuncellemeTarihiTxt.Text);

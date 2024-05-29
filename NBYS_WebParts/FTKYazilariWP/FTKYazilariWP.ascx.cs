@@ -106,9 +106,9 @@ namespace NBYS_WebParts.FTKYazilariWP
             EvrakSayisiTxt.Text = "TSKGV.62-14-" + bugun.Year + "/";
             EvrakTarihiTxt.Text = bugun.ToString("dd") + " " + bugun.ToString("MMMM").ToUpper() + " " + bugun.Year;
 
-            ImzalayanTxt.Text = @"Bilal TOPÇU";
+            ImzalayanTxt.Text = @"Erhan SİPAHİOĞLU";
             ImzalayanUnvanTxt.Text = string.Empty;// @"(E)Tümgeneral";
-            ImzalayanMakamTxt.Text = @"Genel Müdür";
+            ImzalayanMakamTxt.Text = @"Genel Müdür Yardımcısı";
 
             string parafe1 = NBYSOrtak.ParametreGetir(ProjeConstants.PARAM_FTKYAZI, ProjeConstants.PARAM_FTKYAZI_PARAFE1);
             string parafe2 = NBYSOrtak.ParametreGetir(ProjeConstants.PARAM_FTKYAZI, ProjeConstants.PARAM_FTKYAZI_PARAFE2);
@@ -119,11 +119,11 @@ namespace NBYS_WebParts.FTKYazilariWP
 
             string parafeTarihi = ".../" + DateTime.Today.ToString("MM") + "/" + DateTime.Today.ToString("yyyy");
 
-            Parafe1Txt.Text = parafeTarihi + (string.IsNullOrEmpty(parafe1) ? " BTHİ.Ş.Md. K.KARABABA" : " " + parafe1);
-            Parafe2Txt.Text = parafeTarihi + (string.IsNullOrEmpty(parafe2) ? " Vakıf Hiz.Grp.Bşk. Z. YAĞCI" : " " + parafe2);
+            Parafe1Txt.Text = parafeTarihi + (string.IsNullOrEmpty(parafe1) ? " BH.Dir. M.DİRİCAN" : " " + parafe1);
+            Parafe2Txt.Text = parafeTarihi + (string.IsNullOrEmpty(parafe2) ? "" : " " + parafe2);
 
             IrtibatNoktasiTxt.Text = string.IsNullOrEmpty(irtibat) ? "Dorukhan GÜNDÜR (Dâhili Tel:261)" : irtibat;
-            ImzalayanTxt.Text = string.IsNullOrEmpty(imza1) ? "Bilal TOPÇU" : imza1;
+            ImzalayanTxt.Text = string.IsNullOrEmpty(imza1) ? "Erhan SİPAHİOĞLU" : imza1;
             ImzalayanUnvanTxt.Text = string.IsNullOrEmpty(imza2) ? string.Empty: imza2;
             ImzalayanMakamTxt.Text = string.IsNullOrEmpty(imza3) ? string.Empty: imza3;
         }

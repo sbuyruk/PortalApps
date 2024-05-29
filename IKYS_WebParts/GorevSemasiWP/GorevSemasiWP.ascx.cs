@@ -80,7 +80,7 @@ namespace IKYS_WebParts.GorevSemasiWP
             csChartConfig += "config,";
 
             BirimTanim birimTanimDao = new BirimTanim();
-            var birimListesi = birimTanimDao.SelectAll<BirimTanim>();
+            var birimListesi = birimTanimDao.SelectByBirimKaldirildi(false);
 
             BirimTanim parent = birimListesi.Where(a => a.ParentId == 0).FirstOrDefault<BirimTanim>();
             Personel ilknode = new Personel();

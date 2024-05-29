@@ -85,11 +85,16 @@
                                     <asp:DropDownList ID="IlcesiDDL" runat="server" CssClass="form-control" AutoPostBack="true" Style="height: auto" OnSelectedIndexChanged="IlcesiDDL_SelectedIndexChanged"></asp:DropDownList>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <asp:Label CssClass="col-from-label" runat="server" Text="Sor.Bölge" Enabled="False"></asp:Label>
-                                <asp:TextBox ID="SorumluBolgeTxt" CssClass="form-control" runat="server" Style="height: auto" Text="" ReadOnly="true"></asp:TextBox>
+                            <div class="row">
+                                <div class="form-group col">
+                                    <asp:Label CssClass="col-from-label" runat="server" Text="Sor.Bölge" Enabled="False"></asp:Label>
+                                    <asp:TextBox ID="SorumluBolgeTxt" CssClass="form-control" runat="server" Style="height: auto" Text="" ReadOnly="true"></asp:TextBox>
+                                </div>
+                                <div class="form-group col">
+                                    <asp:Label CssClass="col-from-label" runat="server" Text="Sor.Bölge Id" Enabled="False"></asp:Label>
+                                    <asp:TextBox ID="BolgeIdTxt" CssClass="form-control" runat="server" Style="height: auto" Text="" ReadOnly="true"></asp:TextBox>
+                                </div>
                             </div>
-
                             <div class="row">
                                 <div class="form-group col">
                                     <asp:Label CssClass="col-from-label" runat="server" Text="FTK Kuruluş Tarihi"></asp:Label>
@@ -100,7 +105,6 @@
                                     <asp:TextBox ID="FTKGuncellemeTarihiTxt" CssClass="form-control DateTimePickerV1 input-date" placeholder="dd.mm.yyyy" runat="server" Text="" ClientIDMode="Static"></asp:TextBox>
                                 </div>
                             </div>
-
                             <div class="row">
                                 <div class="form-group col-6">
                                     <asp:Label CssClass="col-from-label" runat="server" Text="Vali"></asp:Label>
@@ -111,7 +115,6 @@
                                     <asp:TextBox ID="KaymakamTxt" CssClass="form-control" runat="server" Text="" ReadOnly="true"></asp:TextBox>
                                 </div>
                             </div>
-
                             <div class="form-group">
                                 <asp:Label CssClass="col-form-label" runat="server" Text="Açıklama"></asp:Label>
                                 <asp:TextBox ID="AciklamaTxt" CssClass="form-control" runat="server" Text="" TextMode="MultiLine" Rows="6"></asp:TextBox>

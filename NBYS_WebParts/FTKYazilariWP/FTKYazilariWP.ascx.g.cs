@@ -398,7 +398,6 @@ namespace NBYS_WebParts.FTKYazilariWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "Parafe1Txt";
             @__ctrl.CssClass = "form-control";
-            @__ctrl.Text = "…./01/2022 Vakıf Hiz.Grp.Bşk. Z. YAĞCI";
             return @__ctrl;
         }
         
@@ -427,7 +426,7 @@ namespace NBYS_WebParts.FTKYazilariWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "Parafe2Txt";
             @__ctrl.CssClass = "form-control";
-            @__ctrl.Text = "…./01/2022 BTHİ.Ş.Md. K.KARABABA";
+            @__ctrl.Text = "…./01/2024 B.H.Dir. M.DİRİCAN";
             return @__ctrl;
         }
         

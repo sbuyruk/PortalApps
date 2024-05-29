@@ -596,6 +596,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
             kiraSozlesme.KiraciId = KiraciIdQS.ConvertToInt();
             kiraSozlesme.Aktif = true;
+            kiraSozlesme.SozlesmeDurumu = ProjeConstants.KIRASOZLESME_DURUMU_DEVAM;
             kiraSozlesme.Id = kiraSozlesme.Save();
             if (kiraSozlesme.Id > 0)
             {

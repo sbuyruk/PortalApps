@@ -111,7 +111,7 @@ namespace TBYS_WebParts.KiraSozlesmeListesiWP
             {
                 if (!Page.IsPostBack)
                 {
-                    AuthQS = IKYSOrtak.PersonelinBolgesiniGetir(UtilityHelper.GetCurrentUserLoginName());
+                    AuthQS = IKYSOrtak.PersonelinBolgesiniGetir_Deprecated(UtilityHelper.GetCurrentUserLoginName());
                     if (!string.IsNullOrEmpty(AuthQS) && !AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM))
                     {
                         TitleLbl.Text = "Kira Sözleşme Listesi" + " (" + AuthQS + " Bölgesi)";

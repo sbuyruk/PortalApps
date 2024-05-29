@@ -68,7 +68,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                     }
                     else
                     {
-                        ViewState["Bolge"] = IKYSOrtak.PersonelinBolgesiniGetir(CurrentUserName);
+                        ViewState["Bolge"] = IKYSOrtak.PersonelinBolgesiniGetir_Deprecated(CurrentUserName);
                     }
                 }
                 return ViewState["Bolge"].ToString();
@@ -206,7 +206,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
 
                     SetAyYilValues();
                     IslemSaatiSaatiDDLDoldur();
-                    BolgeQS = IKYSOrtak.PersonelinBolgesiniGetir(UtilityHelper.GetCurrentUserLoginName());
+                    BolgeQS = IKYSOrtak.PersonelinBolgesiniGetir_Deprecated(UtilityHelper.GetCurrentUserLoginName());
                     if (!string.IsNullOrEmpty(BolgeQS))
                     {
                         TitleLbl.Text = "Borçlu Kiracı Listesi" + " (" + BolgeQS + " Bölgesi)";
