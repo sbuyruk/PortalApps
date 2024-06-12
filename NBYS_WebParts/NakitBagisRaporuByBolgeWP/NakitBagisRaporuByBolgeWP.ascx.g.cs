@@ -195,7 +195,7 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP {
             @__ctrl.CssClass = "btn-light font-weight-bold";
             @__ctrl.ColumnSpan = 2;
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Genel Md.lük"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Ankara Bölge"));
             return @__ctrl;
         }
         

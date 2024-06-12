@@ -589,7 +589,7 @@ namespace MTS_WebParts.KisiGirisiWP
                 if (KisiIdQS.ConvertToInt() > 0)
                 {
                     Faaliyet faaliyet = new Faaliyet();
-                    faaliyet.FaaliyetAmaci = ProjeConstants.FAALIYET_AMACI_ZIYARET_INT.ConvertToInt();
+                    faaliyet.FaaliyetAmaciId = ProjeConstants.FAALIYET_AMACI_ZIYARET_INT.ConvertToInt();
                     faaliyet.FaaliyetKonusu = string.Empty;
                     faaliyet.FaaliyetDurumu = ProjeConstants.FAALIYET_DURUMU_PLANLANDI_INT;
                     faaliyet.TumGun = false;

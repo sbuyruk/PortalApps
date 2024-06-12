@@ -451,7 +451,7 @@ namespace MTS_WebParts.AramaGirisiWP
                         {
                             faaliyet.FaaliyetTipi = ProjeConstants.RANDEVU_VERILEN;
                         }
-                        faaliyet.FaaliyetAmaci = ProjeConstants.FAALIYET_AMACI_ZIYARET_INT.ConvertToInt();
+                        faaliyet.FaaliyetAmaciId = ProjeConstants.FAALIYET_AMACI_ZIYARET_INT.ConvertToInt();
                         faaliyet.FaaliyetKonusu = aramaGorusme.Konu;
                         faaliyet.FaaliyetDurumu = ProjeConstants.FAALIYET_DURUMU_PLANLANDI_INT;
                         faaliyet.TumGun = false;

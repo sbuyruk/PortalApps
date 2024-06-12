@@ -64,41 +64,41 @@
             </div>
             <div class="card-columns  text-center">
                 <div class="card bg-warning">
-                    <h3 class="card-title">Genel Müdürlük</h3>
+                    <h3 class="card-title">Ankara Bölge</h3>
                     <div class="card">
                         <h5 class="card-title">Altın Madalya</h5>
                         <div class="card-body durumTable">
-                            <asp:Table ID="GMATable" runat="server" class="table table-sm table-striped">
+                            <asp:Table ID="AnkATable" runat="server" class="table table-sm table-striped">
                             </asp:Table>
                         </div>
                         <div class="card-footer">
-                            <asp:CheckBox ID="GmAltinDurumChk" runat="server" Checked="false" Text=" -Gönderildi- yap" Enabled="False" />
-                            <asp:Button ID="GMAltinBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Altın Madalya Beratları" OnClick="GMAltinBtn_Click" />
-                            <asp:Button ID="GMAltinEtiketBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Adres Etiketleri" OnClick="GMAltinEtiketBtn_Click" />
+                            <asp:CheckBox ID="AnkAltinDurumChk" runat="server" Checked="false" Text=" -Gönderildi- yap" Enabled="False" />
+                            <asp:Button ID="AnkAltinBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Altın Madalya Beratları" OnClick="AnkAltinBtn_Click" />
+                            <asp:Button ID="AnkAltinEtiketBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Adres Etiketleri" OnClick="AnkAltinEtiketBtn_Click" />
                         </div>
                     </div>
                     <div class="card">
                         <h5 class="card-title">Gümüş Madalya</h5>
                         <div class="card-body durumTable">
-                            <asp:Table ID="GMGTable" runat="server" class="table table-sm table-striped">
+                            <asp:Table ID="AnkGTable" runat="server" class="table table-sm table-striped">
                             </asp:Table>
                         </div>
                         <div class="card-footer">
-                            <asp:CheckBox ID="GmGumusDurumChk" runat="server" Checked="false" Text=" -Gönderildi- yap" Enabled="False" />
-                            <asp:Button ID="GMGumusBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Gümüş Madalya Beratları" OnClick="GMGumusBtn_Click" />
-                            <asp:Button ID="GMGumusEtiketBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Adres Etiketleri" OnClick="GMGumusEtiketBtn_Click" />
+                            <asp:CheckBox ID="AnkGumusDurumChk" runat="server" Checked="false" Text=" -Gönderildi- yap" Enabled="False" />
+                            <asp:Button ID="AnkGumusBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Gümüş Madalya Beratları" OnClick="AnkGumusBtn_Click" />
+                            <asp:Button ID="AnkGumusEtiketBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Adres Etiketleri" OnClick="AnkGumusEtiketBtn_Click" />
                         </div>
                     </div>
                     <div class="card">
                         <h5 class="card-title">Bronz Madalya</h5>
                         <div class="card-body durumTable">
-                            <asp:Table ID="GMBTable" runat="server" class="table table-sm table-striped">
+                            <asp:Table ID="AnkBTable" runat="server" class="table table-sm table-striped">
                             </asp:Table>
                         </div>
                         <div class="card-footer">
-                            <asp:CheckBox ID="GmBronzDurumChk" runat="server" Checked="false" Text=" -Gönderildi- yap" Enabled="False" />
-                            <asp:Button ID="GMBronzBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Bronz Madalya Beratları" OnClick="GMBronzBtn_Click" />
-                            <asp:Button ID="GMBronzEtiketBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Adres Etiketleri" OnClick="GMBronzEtiketBtn_Click" />
+                            <asp:CheckBox ID="AnkBronzDurumChk" runat="server" Checked="false" Text=" -Gönderildi- yap" Enabled="False" />
+                            <asp:Button ID="AnkBronzBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Bronz Madalya Beratları" OnClick="AnkBronzBtn_Click" />
+                            <asp:Button ID="AnkBronzEtiketBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Adres Etiketleri" OnClick="AnkBronzEtiketBtn_Click" />
                         </div>
                     </div>
                 </div>

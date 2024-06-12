@@ -102,54 +102,7 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
                 ViewState["TasinmazId"] = value;
             }
         }
-        private string EnvanterdeMiQS
-        {
-            get
-            {
 
-                if (ViewState["EnvanterdeMi"] == null)
-                {
-                    if (Page.Request.QueryString["EnvanterdeMi"] != null)
-                    {
-                        ViewState["EnvanterdeMi"] = Page.Request.QueryString["EnvanterdeMi"];
-                    }
-                    else
-                    {
-                        ViewState["EnvanterdeMi"] = string.Empty;
-                    }
-                }
-                return ViewState["EnvanterdeMi"].ToString();
-            }
-
-            set
-            {
-                ViewState["EnvanterdeMi"] = value;
-            }
-        }
-        private string PageIndexQS
-        {
-            get
-            {
-
-                if (ViewState["PageIndex"] == null)
-                {
-                    if (Page.Request.QueryString["PageIndex"] != null)
-                    {
-                        ViewState["PageIndex"] = Page.Request.QueryString["PageIndex"];
-                    }
-                    else
-                    {
-                        ViewState["PageIndex"] = string.Empty;
-                    }
-                }
-                return ViewState["PageIndex"].ToString();
-            }
-
-            set
-            {
-                ViewState["PageIndex"] = value;
-            }
-        }
         protected void Page_Load(object sender, EventArgs e)
         {
             TasinmazBagisci bagisci = new TasinmazBagisci();

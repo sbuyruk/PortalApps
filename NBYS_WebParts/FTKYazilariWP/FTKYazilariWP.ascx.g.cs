@@ -109,6 +109,14 @@ namespace NBYS_WebParts.FTKYazilariWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.CheckBox EPostaGonderChk;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl EPostaDiv;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.HyperLink DosyaLnk;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -546,6 +554,41 @@ namespace NBYS_WebParts.FTKYazilariWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.CheckBox @__BuildControlEPostaGonderChk() {
+            global::System.Web.UI.WebControls.CheckBox @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.CheckBox();
+            this.EPostaGonderChk = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "EPostaGonderChk";
+            @__ctrl.Checked = true;
+            @__ctrl.ToolTip = "Kayıt ve güncelleme yapıldığında sorumlu bölgeye E-Posta göndermek için seçin.";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControlEPostaDiv() {
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
+            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
+            this.EPostaDiv = @__ctrl;
+            @__ctrl.TemplateControl = this;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-group col checkbox");
+            @__ctrl.ID = "EPostaDiv";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "display: block;");
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        <label>\r\n                            "));
+            global::System.Web.UI.WebControls.CheckBox @__ctrl1;
+            @__ctrl1 = this.@__BuildControlEPostaGonderChk();
+            @__parser.AddParsedSubObject(@__ctrl1);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            Kayıt veya güncelleme yapıldığında sorumlu bölgeye " +
+                        "E-Posta gönderilsin.\r\n                        </label>\r\n                    "));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.WebControls.HyperLink @__BuildControlDosyaLnk() {
             global::System.Web.UI.WebControls.HyperLink @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.HyperLink();
@@ -772,28 +815,32 @@ namespace NBYS_WebParts.FTKYazilariWP {
             @__ctrl27 = this.@__BuildControlImzalayanMakamTxt();
             @__parser.AddParsedSubObject(@__ctrl27);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                        </div>\r\n           " +
-                        "         </div>\r\n                </div>\r\n                <div class=\"form-group\"" +
-                        ">\r\n                    "));
-            global::System.Web.UI.WebControls.HyperLink @__ctrl28;
-            @__ctrl28 = this.@__BuildControlDosyaLnk();
+                        "         </div>\r\n                    "));
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl28;
+            @__ctrl28 = this.@__BuildControlEPostaDiv();
             @__parser.AddParsedSubObject(@__ctrl28);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                </div>\r\n                <div class=\"form-group\">\r\n             " +
+                        "       "));
+            global::System.Web.UI.WebControls.HyperLink @__ctrl29;
+            @__ctrl29 = this.@__BuildControlDosyaLnk();
+            @__parser.AddParsedSubObject(@__ctrl29);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                </div>\r\n\r\n                <div class=\"card-footer\">\r\n          " +
                         "          "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl29;
-            @__ctrl29 = this.@__BuildControlKurulusYazisiOlusturBtn();
-            @__parser.AddParsedSubObject(@__ctrl29);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl30;
-            @__ctrl30 = this.@__BuildControlGuncellemeYazisiOlusturBtn();
+            @__ctrl30 = this.@__BuildControlKurulusYazisiOlusturBtn();
             @__parser.AddParsedSubObject(@__ctrl30);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl31;
-            @__ctrl31 = this.@__BuildControlFTKListesiBtn();
+            @__ctrl31 = this.@__BuildControlGuncellemeYazisiOlusturBtn();
             @__parser.AddParsedSubObject(@__ctrl31);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl32;
-            @__ctrl32 = this.@__BuildControlFTKIslemleriBtn();
+            @__ctrl32 = this.@__BuildControlFTKListesiBtn();
             @__parser.AddParsedSubObject(@__ctrl32);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl33;
+            @__ctrl33 = this.@__BuildControlFTKIslemleriBtn();
+            @__parser.AddParsedSubObject(@__ctrl33);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                </div>\r\n            </div>\r\n        "));
         }
         

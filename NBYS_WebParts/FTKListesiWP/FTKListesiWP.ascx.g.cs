@@ -448,6 +448,7 @@ namespace NBYS_WebParts.FTKListesiWP {
                                     <th>İli Id</th>
                                     <th>İlçesi Id</th>
                                     <th>FTK Görevi Id</th>
+                                    <th>Bölge</th>
                                     <th>İli</th>
                                     <th>İlçesi</th>
                                     <th>FTK Kuruluş Tarihi</th>

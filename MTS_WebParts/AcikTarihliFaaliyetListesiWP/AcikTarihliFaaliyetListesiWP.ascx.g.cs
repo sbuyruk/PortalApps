@@ -57,6 +57,46 @@ namespace MTS_WebParts.AcikTarihliFaaliyetListesiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.CheckBox ToplantiChk;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl Div1;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.CheckBox ZiyaretChk;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl Div2;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.CheckBox GorusmeChk;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl AcikTarhliDiv;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.CheckBox SeyahatChk;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl Div3;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.CheckBox DavetChk;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl Div4;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton YeniKayitBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -136,6 +176,191 @@ namespace MTS_WebParts.AcikTarihliFaaliyetListesiWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.CssClass = "col-form-label";
             @__ctrl.ID = "AdiLbl";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.CheckBox @__BuildControlToplantiChk() {
+            global::System.Web.UI.WebControls.CheckBox @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.CheckBox();
+            this.ToplantiChk = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "ToplantiChk";
+            @__ctrl.ToolTip = "Toplantıları göstermek için seçiniz.";
+            @__ctrl.Checked = false;
+            @__ctrl.AutoPostBack = true;
+            @__ctrl.CheckedChanged -= new System.EventHandler(this.ToplantiChk_CheckedChanged);
+            @__ctrl.CheckedChanged += new System.EventHandler(this.ToplantiChk_CheckedChanged);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControlDiv1() {
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
+            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
+            this.Div1 = @__ctrl;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-group col checkbox");
+            @__ctrl.ID = "Div1";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "display: block;");
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                <label>\r\n                                    "));
+            global::System.Web.UI.WebControls.CheckBox @__ctrl1;
+            @__ctrl1 = this.@__BuildControlToplantiChk();
+            @__parser.AddParsedSubObject(@__ctrl1);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                   Toplantı\r\n                                </" +
+                        "label>\r\n                            "));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.CheckBox @__BuildControlZiyaretChk() {
+            global::System.Web.UI.WebControls.CheckBox @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.CheckBox();
+            this.ZiyaretChk = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "ZiyaretChk";
+            @__ctrl.ToolTip = "Toplantıları göstermek için seçiniz.";
+            @__ctrl.Checked = false;
+            @__ctrl.AutoPostBack = true;
+            @__ctrl.CheckedChanged -= new System.EventHandler(this.ZiyaretChk_CheckedChanged);
+            @__ctrl.CheckedChanged += new System.EventHandler(this.ZiyaretChk_CheckedChanged);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControlDiv2() {
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
+            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
+            this.Div2 = @__ctrl;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-group col checkbox");
+            @__ctrl.ID = "Div2";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "display: block;");
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                <label>\r\n                                    "));
+            global::System.Web.UI.WebControls.CheckBox @__ctrl1;
+            @__ctrl1 = this.@__BuildControlZiyaretChk();
+            @__parser.AddParsedSubObject(@__ctrl1);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    Ziyaret\r\n                                </" +
+                        "label>\r\n                            "));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.CheckBox @__BuildControlGorusmeChk() {
+            global::System.Web.UI.WebControls.CheckBox @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.CheckBox();
+            this.GorusmeChk = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "GorusmeChk";
+            @__ctrl.ToolTip = "Görüşmeleri göstermek için seçiniz.";
+            @__ctrl.Checked = false;
+            @__ctrl.AutoPostBack = true;
+            @__ctrl.CheckedChanged -= new System.EventHandler(this.GorusmeChk_CheckedChanged);
+            @__ctrl.CheckedChanged += new System.EventHandler(this.GorusmeChk_CheckedChanged);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControlAcikTarhliDiv() {
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
+            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
+            this.AcikTarhliDiv = @__ctrl;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-group col checkbox");
+            @__ctrl.ID = "AcikTarhliDiv";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "display: block;");
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                <label>\r\n                                    "));
+            global::System.Web.UI.WebControls.CheckBox @__ctrl1;
+            @__ctrl1 = this.@__BuildControlGorusmeChk();
+            @__parser.AddParsedSubObject(@__ctrl1);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    Görüşme\r\n                                </" +
+                        "label>\r\n                            "));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.CheckBox @__BuildControlSeyahatChk() {
+            global::System.Web.UI.WebControls.CheckBox @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.CheckBox();
+            this.SeyahatChk = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "SeyahatChk";
+            @__ctrl.ToolTip = "Seyahatleri göstermek için seçiniz.";
+            @__ctrl.Checked = false;
+            @__ctrl.AutoPostBack = true;
+            @__ctrl.CheckedChanged -= new System.EventHandler(this.SeyahatChk_CheckedChanged);
+            @__ctrl.CheckedChanged += new System.EventHandler(this.SeyahatChk_CheckedChanged);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControlDiv3() {
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
+            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
+            this.Div3 = @__ctrl;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-group col checkbox");
+            @__ctrl.ID = "Div3";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "display: block;");
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                <label>\r\n                                    "));
+            global::System.Web.UI.WebControls.CheckBox @__ctrl1;
+            @__ctrl1 = this.@__BuildControlSeyahatChk();
+            @__parser.AddParsedSubObject(@__ctrl1);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    Seyahat\r\n                                </" +
+                        "label>\r\n                            "));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.CheckBox @__BuildControlDavetChk() {
+            global::System.Web.UI.WebControls.CheckBox @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.CheckBox();
+            this.DavetChk = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "DavetChk";
+            @__ctrl.ToolTip = "Davetleri göstermek için seçiniz.";
+            @__ctrl.Checked = false;
+            @__ctrl.AutoPostBack = true;
+            @__ctrl.CheckedChanged -= new System.EventHandler(this.DavetChk_CheckedChanged);
+            @__ctrl.CheckedChanged += new System.EventHandler(this.DavetChk_CheckedChanged);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControlDiv4() {
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
+            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
+            this.Div4 = @__ctrl;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-group col checkbox");
+            @__ctrl.ID = "Div4";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "display: block;");
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                <label>\r\n                                    "));
+            global::System.Web.UI.WebControls.CheckBox @__ctrl1;
+            @__ctrl1 = this.@__BuildControlDavetChk();
+            @__parser.AddParsedSubObject(@__ctrl1);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    Davet\r\n                                </la" +
+                        "bel>\r\n                            "));
             return @__ctrl;
         }
         
@@ -251,7 +476,7 @@ namespace MTS_WebParts.AcikTarihliFaaliyetListesiWP {
                         " data: \"Aciklama\" },\r\n                { data: \"OlusturmaTarihi\" },\r\n            " +
                         "    { data: \"Duzenle\" },\r\n\r\n            ],\r\n            columnDefs: [\r\n         " +
                         "       { type: \'turkish\', targets: [1,2,3,4,5,6] }\r\n            ],\r\n            " +
-                        "\'order\': [[1, \'desc\']],//sort date desc\r\n            \"language\": {\r\n            " +
+                        "\'order\': [[8, \'desc\']],//sort date desc\r\n            \"language\": {\r\n            " +
                         "    \"url\": \"http://tskgv-portal/OrtakBelgeler/Turkish.txt\",\r\n                \"de" +
                         "cimal\": \",\",\r\n                \"thousands\": \".\"\r\n            },\r\n            resp" +
                         "onsive: true,\r\n            dom: \'Bfrtip\',\r\n            buttons: [\r\n             " +
@@ -269,8 +494,8 @@ namespace MTS_WebParts.AcikTarihliFaaliyetListesiWP {
                         "nan Randevu\") {\r\n                    if (data[\'Secildi\'] == false)\r\n            " +
                         "            $(row).addClass(\'alinan\');\r\n\r\n                }\r\n            },//set" +
                         " row color \r\n        });\r\n\r\n        \r\n    });\r\n\r\n</script>\r\n<div class=\"containe" +
-                        "r \">\r\n    <div class=\"card shadow\">\r\n        <div class=\"card-header\">\r\n        " +
-                        "    "));
+                        "r col-xl\">\r\n    <div class=\"card shadow\">\r\n        <div class=\"card-header\">\r\n  " +
+                        "          "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl1;
             @__ctrl1 = this.@__BuildControlCloseBtn();
             @__parser.AddParsedSubObject(@__ctrl1);
@@ -290,6 +515,39 @@ namespace MTS_WebParts.AcikTarihliFaaliyetListesiWP {
             </h3>
         </div>
         <div class=""card-body"">
+            <div class=""form-group alert-secondary p-2"">
+                <div class=""form-group "">
+                    <div class=""row"">
+                        <div class=""col-2"">
+                            "));
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl5;
+            @__ctrl5 = this.@__BuildControlDiv1();
+            @__parser.AddParsedSubObject(@__ctrl5);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"col-2\">\r\n  " +
+                        "                          "));
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl6;
+            @__ctrl6 = this.@__BuildControlDiv2();
+            @__parser.AddParsedSubObject(@__ctrl6);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"col-2\">\r\n  " +
+                        "                          "));
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl7;
+            @__ctrl7 = this.@__BuildControlAcikTarhliDiv();
+            @__parser.AddParsedSubObject(@__ctrl7);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"col-2\">\r\n  " +
+                        "                          "));
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl8;
+            @__ctrl8 = this.@__BuildControlDiv3();
+            @__parser.AddParsedSubObject(@__ctrl8);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"col-2\">\r\n  " +
+                        "                          "));
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl9;
+            @__ctrl9 = this.@__BuildControlDiv4();
+            @__parser.AddParsedSubObject(@__ctrl9);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class=""form-group"">
                 <table id=""CustomDataTable"" class=""table table-striped table-bordered"" width=""100%"">
                     <thead>
@@ -311,25 +569,25 @@ namespace MTS_WebParts.AcikTarihliFaaliyetListesiWP {
         </div>
         <div class=""card-footer"">
             "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl5;
-            @__ctrl5 = this.@__BuildControlYeniKayitBtn();
-            @__parser.AddParsedSubObject(@__ctrl5);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl10;
+            @__ctrl10 = this.@__BuildControlYeniKayitBtn();
+            @__parser.AddParsedSubObject(@__ctrl10);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl6;
-            @__ctrl6 = this.@__BuildControlFaaliyetTakvimiBtn();
-            @__parser.AddParsedSubObject(@__ctrl6);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl11;
+            @__ctrl11 = this.@__BuildControlFaaliyetTakvimiBtn();
+            @__parser.AddParsedSubObject(@__ctrl11);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl7;
-            @__ctrl7 = this.@__BuildControlFaaliyetListesiBtn();
-            @__parser.AddParsedSubObject(@__ctrl7);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl12;
+            @__ctrl12 = this.@__BuildControlFaaliyetListesiBtn();
+            @__parser.AddParsedSubObject(@__ctrl12);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl8;
-            @__ctrl8 = this.@__BuildControlAcikTarihliFaaliyetListesiBtn();
-            @__parser.AddParsedSubObject(@__ctrl8);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl13;
+            @__ctrl13 = this.@__BuildControlAcikTarihliFaaliyetListesiBtn();
+            @__parser.AddParsedSubObject(@__ctrl13);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl9;
-            @__ctrl9 = this.@__BuildControlKisiListesiBtn();
-            @__parser.AddParsedSubObject(@__ctrl9);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl14;
+            @__ctrl14 = this.@__BuildControlKisiListesiBtn();
+            @__parser.AddParsedSubObject(@__ctrl14);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n        </div>\r\n\r\n    </div>\r\n</div>\r\n"));
         }
         

@@ -184,17 +184,6 @@ namespace NBYS_WebParts.SPDosyaListesiWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
                 jQuery(document).ready(function () {
                     jQuery('#CustomDataTable').DataTable({
-                        'initComplete': function (settings, json) {//tablo yüklendiğinde
-                            var api = this.api();
-                            var row = api.row(function (idx, data, node) { //secilen toplantıya gider
-                                return data['Secildi'] == true;
-                            });
-                            if (row.length > 0) {
-                                row.select()
-                                    .show()
-                                    .draw(false);
-                            }
-                        },
                         data: " + jsonData + @",
                         columns: [
                             { data: 'FileName' },

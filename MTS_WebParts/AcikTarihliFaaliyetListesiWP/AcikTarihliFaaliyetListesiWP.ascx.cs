@@ -69,8 +69,7 @@ namespace MTS_WebParts.AcikTarihliFaaliyetListesiWP
         private void TabloOlustur()
         {
             var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler,
-                typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "setDataSet(" + jsonData + ");", true);
+            UtilityHelper.ScriptCalistir( "setDataSet(" + jsonData + ");");
         }
         private string TabloJson()
         {
@@ -93,9 +92,32 @@ namespace MTS_WebParts.AcikTarihliFaaliyetListesiWP
         }
         private List<FaaliyetListItem> GetDataList()
         {
+            string faaliyetAmaciIdStr = string.Empty;
+            if (ToplantiChk.Checked)
+            {
+                faaliyetAmaciIdStr = string.IsNullOrEmpty(faaliyetAmaciIdStr) ? ProjeConstants.FAALIYET_AMACI_TOPLANTI_INT: ProjeConstants.FAALIYET_AMACI_TOPLANTI_INT.ToString();
+            }
+            if (ZiyaretChk.Checked)
+            {
+                faaliyetAmaciIdStr += string.IsNullOrEmpty(faaliyetAmaciIdStr) ? ProjeConstants.FAALIYET_AMACI_ZIYARET_INT : ","+ ProjeConstants.FAALIYET_AMACI_ZIYARET_INT.ToString();
+            }
+            if (GorusmeChk.Checked)
+            {
+                faaliyetAmaciIdStr += string.IsNullOrEmpty(faaliyetAmaciIdStr) ? ProjeConstants.FAALIYET_AMACI_GORUSME_INT : "," + ProjeConstants.FAALIYET_AMACI_GORUSME_INT.ToString();
+            }
+            if (SeyahatChk.Checked)
+            {
+                faaliyetAmaciIdStr += string.IsNullOrEmpty(faaliyetAmaciIdStr) ? ProjeConstants.FAALIYET_AMACI_SEYAHAT_INT : "," + ProjeConstants.FAALIYET_AMACI_SEYAHAT_INT.ToString();
+            }
+            if (DavetChk.Checked)
+            {
+                faaliyetAmaciIdStr += string.IsNullOrEmpty(faaliyetAmaciIdStr) ? ProjeConstants.FAALIYET_AMACI_DAVET_INT : "," + ProjeConstants.FAALIYET_AMACI_DAVET_INT.ToString();
+            }
+
+            faaliyetAmaciIdStr =string.IsNullOrEmpty(faaliyetAmaciIdStr)?string.Empty:"("+ faaliyetAmaciIdStr +")";
             List<FaaliyetListItem> faaliyetList = new List<FaaliyetListItem>();
             Faaliyet faaliyetDao = new Faaliyet();
-            DataTable dataTable = faaliyetDao.SelectAllByKatilimciFaaliyetReturnDataTable(ProjeConstants.HEPSI_INT, ProjeConstants.HEPSI_INT, ProjeConstants.FAALIYET_ACIKTARIHLI,ProjeConstants.NULL_TARIH,ProjeConstants.NULL_TARIH);
+            DataTable dataTable = faaliyetDao.SelectAllByKatilimciFaaliyetReturnDataTable(ProjeConstants.HEPSI_INT, ProjeConstants.HEPSI_INT, ProjeConstants.FAALIYET_ACIKTARIHLI,ProjeConstants.NULL_TARIH,ProjeConstants.NULL_TARIH, faaliyetAmaciIdStr);
 
             if (dataTable != null)
             {
@@ -109,10 +131,10 @@ namespace MTS_WebParts.AcikTarihliFaaliyetListesiWP
                     string faaliyetTipi = row["FaaliyetTipi"].ToString();
                     string faaliyetYeri = row["FaaliyetYeri"].ToString(); ;
                     string faaliyetKonusu = row["FaaliyetKonusu"].ToString();
-                    string faaliyetAmaci = row["FaaliyetAmaci"].ToString();
+                    string faaliyetAmaci = row["FaaliyetAmaciId"].ToString();
                     string faaliyetDurumu = row["FaaliyetDurumu"].ToString();
                     string aciklama = row["Aciklama"].ToString();
-                    string olusturmaTarihi = row["OlusturmaTarihi"].ToString();
+                    string olusturmaTarihi = row["OlusturmaTarihi"].ReturnEmptyIfNull().ConvertToDatetime().ToString("dd.MM.yyyy HH:mm");
 
                     string faaliyetAmaciStr = MTSOrtak.ParseFaaliyetAmaci(faaliyetAmaci);
                     string faaliyetDurumuStr = MTSOrtak.ParseFaaliyetDurumu(faaliyetDurumu.ConvertToInt());
@@ -261,7 +283,30 @@ namespace MTS_WebParts.AcikTarihliFaaliyetListesiWP
             public string Duzenle { get; set; }
             public bool Secildi { get; set; }
         }
+        protected void ToplantiChk_CheckedChanged(object sender, EventArgs e)
+        {
+            TabloOlustur();
 
+        }
+        protected void ZiyaretChk_CheckedChanged(object sender, EventArgs e)
+        {
+            TabloOlustur();
 
+        }
+        protected void GorusmeChk_CheckedChanged(object sender, EventArgs e)
+        {
+            TabloOlustur();
+
+        }
+        protected void SeyahatChk_CheckedChanged(object sender, EventArgs e)
+        {
+            TabloOlustur();
+
+        }
+        protected void DavetChk_CheckedChanged(object sender, EventArgs e)
+        {
+            TabloOlustur();
+
+        }
     }
 }

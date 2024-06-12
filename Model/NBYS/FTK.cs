@@ -129,9 +129,10 @@ namespace Model.NBYS
                 (ilcesi == ProjeConstants.SADECE_ILCELER_INT ? " AND Ilcesi!=" + ProjeConstants.VALILIK_INT : string.Format(" AND Ilcesi={0} ", ilcesi));
 
             string sqlString = string.Format(@"
-                SELECT A.Id FTKId,* FROM FTK_Table A
+                SELECT A.Id FTKId,D.KisaAdi Bolge, * FROM FTK_Table A
                     LEFT JOIN Il_Table B ON B.Id = A.Ili
                     LEFT JOIN Ilce_Table C ON C.Id = A.Ilcesi AND C.IlId=A.Ili
+                    LEFT JOIN Bolge_Table D ON D.Id = B.BolgeId
                 WHERE Sayac= (SELECT MAX(Sayac) FROM FTK_Table WHERE FTKIslemId=A.FtkIslemId) --birden fazla guncellenen FTKların son guncellemesini dikkate alsın diye
                     {0}
                     {1}

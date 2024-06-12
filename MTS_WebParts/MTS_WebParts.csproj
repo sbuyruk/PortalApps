@@ -162,14 +162,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>FaaliyetViewerCustomWP.ascx</DependentUpon>
     </Compile>
-    <Compile Include="FaaliyetViewerOLD\FaaliyetViewerOLD.ascx.cs">
-      <DependentUpon>FaaliyetViewerOLD.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="FaaliyetViewerOLD\FaaliyetViewerOLD.ascx.g.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>FaaliyetViewerOLD.ascx</DependentUpon>
-    </Compile>
     <Compile Include="FaaliyetViewerWP\FaaliyetViewerWP.ascx.cs">
       <DependentUpon>FaaliyetViewerWP.ascx</DependentUpon>
     </Compile>
@@ -270,10 +262,6 @@
     <None Include="FaaliyetViewerCustomWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{1b562562-8854-4344-a1a1-b9cb8f646fd8}</SharePointProjectItemId>
     </None>
-    <None Include="FaaliyetViewerOLD\FaaliyetViewerOLD.webpart" />
-    <None Include="FaaliyetViewerOLD\SharePointProjectItem.spdata">
-      <SharePointProjectItemId>{e0c87f91-8e4b-4097-9194-f75fc09c662c}</SharePointProjectItemId>
-    </None>
     <None Include="FaaliyetViewerWP\FaaliyetViewerWP.webpart" />
     <None Include="FaaliyetViewerWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{69d7f1de-30f0-43a8-a856-e45f1834d5b4}</SharePointProjectItemId>
@@ -367,11 +355,6 @@
     <Content Include="FaaliyetViewerCustomWP\FaaliyetViewerCustomWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>FaaliyetViewerCustomWP.ascx.g.cs</LastGenOutput>
-    </Content>
-    <Content Include="FaaliyetViewerOLD\Elements.xml" />
-    <Content Include="FaaliyetViewerOLD\FaaliyetViewerOLD.ascx">
-      <Generator>SharePointWebPartCodeGenerator</Generator>
-      <LastGenOutput>FaaliyetViewerOLD.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="FaaliyetViewerWP\Elements.xml" />
     <Content Include="FaaliyetViewerWP\FaaliyetViewerWP.ascx">

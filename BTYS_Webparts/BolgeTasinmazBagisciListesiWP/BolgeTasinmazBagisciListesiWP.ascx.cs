@@ -319,7 +319,7 @@ namespace BTYS_Webparts.BolgeTasinmazBagisciListesiWP
         private DataTable GetBagisciData()
         {
             TasinmazBagisci tasinmazBagisci = new TasinmazBagisci();
-            DataTable dataTable = tasinmazBagisci.SelectAllCountBagisAdediReturnDataTable(BolgeQS);
+            DataTable dataTable = tasinmazBagisci.SelectAllCountBagisAdediReturnDataTable_Deprecated(BolgeQS);
             return dataTable;
         }
         protected void YeniKayitBtn_Click(object sender, EventArgs e)

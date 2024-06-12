@@ -72,9 +72,9 @@ namespace Model.Ortak
             bolge = list.FirstOrDefault();
             return bolge;
         }
-        public Bolge SelectByBolgeId(int bolgeId)
+        public Bolge Select(int bolgeId)
         {
-            string bolgeStr = bolgeId > 0 ? string.Format(" AND Id={0}", bolgeId):string.Empty;
+            string bolgeStr = bolgeId > 0 ? string.Format(" WHERE Id={0}", bolgeId):string.Empty;
             string sqlString = string.Format(@"SELECT *
                                                 FROM Bolge_Table
                                                 {0}", bolgeStr);

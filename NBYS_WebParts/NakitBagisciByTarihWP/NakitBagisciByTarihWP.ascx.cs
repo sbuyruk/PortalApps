@@ -198,15 +198,15 @@ namespace NBYS_WebParts.NakitBagisciByTarihWP
                     tableRow.HorizontalAlign = HorizontalAlign.Right;
 
                     TableCell bolgeCell = new TableCell();
+                    int bolgeId = row == null ? ProjeConstants.BOLGE_HEPSI_INT : row["BolgeId"].ReturnZeroIfNull().ConvertToInt();
                     string bolge = row == null ? "" : row["Bolge"].ReturnEmptyIfNull().ToString();
-
                     bolgeCell.Text = string.IsNullOrEmpty(bolge) ? "" : bolge;
                     tableRow.Controls.Add(bolgeCell);
 
                     int toplamAdet = 0;
                     NakitBagisHareket nbh1 = new NakitBagisHareket();
 
-                    Decimal toplamTutar = nbh1.SelectSumBagisMiktariByBagisTarihiBolge(bastar, bittar, bolge, ref toplamAdet);
+                    Decimal toplamTutar = nbh1.SelectSumBagisMiktariByBagisTarihiBolge(bastar, bittar, bolgeId, ref toplamAdet);
                     toplamAdetToplam += toplamAdet;
                     toplamTutarToplam += toplamTutar;
 

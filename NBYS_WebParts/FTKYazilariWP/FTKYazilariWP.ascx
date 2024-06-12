@@ -92,6 +92,12 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-group col checkbox" id="EPostaDiv" runat="server" style="display: block;">
+                        <label>
+                            <asp:CheckBox ID="EPostaGonderChk" runat="server" Checked="true" ToolTip="Kayıt ve güncelleme yapıldığında sorumlu bölgeye E-Posta göndermek için seçin." />
+                            Kayıt veya güncelleme yapıldığında sorumlu bölgeye E-Posta gönderilsin.
+                        </label>
+                    </div>
                 </div>
                 <div class="form-group">
                     <asp:HyperLink ID="DosyaLnk" runat="server" CssClass="btn-link m-3" Visible="false">Yazı</asp:HyperLink>

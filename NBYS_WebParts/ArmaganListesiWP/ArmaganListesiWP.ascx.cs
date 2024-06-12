@@ -29,6 +29,47 @@ namespace NBYS_WebParts.ArmaganListesiWP
             InitializeControl();
             this.ChromeType = PartChromeType.None;
         }
+        private int BolgeIdQS
+        {
+            get
+            {
+
+                if (ViewState["BolgeId"] == null)
+                {
+                    if (Page.Request.QueryString["BolgeId"] != null)
+                    {
+                        ViewState["BolgeId"] = Page.Request.QueryString["BolgeId"];
+                    }
+                    else
+                    {
+                        ViewState["BolgeId"] = string.Empty;
+                    }
+                }
+                return ViewState["BolgeId"].ReturnZeroIfNull().ConvertToInt();
+            }
+
+            set
+            {
+                ViewState["BolgeId"] = value;
+            }
+        }
+        private string CurrentUserName
+        {
+            get
+            {
+
+                if (ViewState["CurrentUserName"] == null)
+                {
+                    ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUserLoginName();
+                }
+                return ViewState["CurrentUserName"].ToString();
+            }
+
+            set
+            {
+                ViewState["CurrentUserName"] = value;
+            }
+        }
         private string SecilenIdQS
         {
             get
@@ -249,6 +290,8 @@ namespace NBYS_WebParts.ArmaganListesiWP
         {
             if (!Page.IsPostBack)
             {
+                Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
+                BolgeIdQS = bolge == null ? 0 : bolge.Id;
                 SecilenIdQS = string.IsNullOrEmpty(SecilenIdQS) ? "0" : SecilenIdQS;
                 DDLleriDoldur();
                 SetDDLValues(); //ay ve yılı querystringden al
@@ -826,7 +869,7 @@ namespace NBYS_WebParts.ArmaganListesiWP
 
             }
             int ili = SecilenIlQS.ConvertToInt();
-            var json = armagan.SelectByDurumTarih(DurumDDL.SelectedItem.Text, bastar, bittar, ArmaganDDL.SelectedItem.Value, ref rowCount, ProjeConstants.BOLGE_HEPSI, ili);
+            var json = armagan.SelectByDurumTarih(DurumDDL.SelectedItem.Text, bastar, bittar, ArmaganDDL.SelectedItem.Value, ref rowCount, ProjeConstants.BOLGE_HEPSI_INT, ili);
             return json;
 
         }

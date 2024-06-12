@@ -201,6 +201,22 @@ namespace Model.IKYS
 
             return list;
         }
+        public List<Personel> SelectByBolgeId(int bolgeId)
+        {
+
+            string sqlString = string.Format(@"
+                SELECT * 
+                FROM Personel_Table A
+                INNER JOIN IsBilgileri_Table B on B.PersonelId=A.Id
+                INNER JOIN BirimTanim_Table C on C.Id=B.BirimId
+                WHERE CalismaDurumu=1 And C.BolgeId={0}
+                ORDER BY B.ProtokolSiraNo
+                                    ", bolgeId);
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            List<Personel> list = ToList<Personel>(dataTable);
+
+            return list;
+        }
         public DataTable SelectCalisanPersonelReturnDataTable()
         {
 

@@ -170,7 +170,7 @@ namespace MTS_WebParts.FaaliyetKartiWP
 
 
                 r2c1.Text = "Faaliyet Yeri : " + (faaliyet.FaaliyetYeriStr== null ? "" : faaliyet.FaaliyetYeriStr);
-                r2c2.Text = "Faaliyet Amacı : " + MTSOrtak.ParseFaaliyetAmaci(faaliyet.FaaliyetAmaci.ToString());
+                r2c2.Text = "Faaliyet Amacı : " + MTSOrtak.ParseFaaliyetAmaci(faaliyet.FaaliyetAmaciId.ToString());
                 r2c3.Text = "Faaliyet Durumu : " + MTSOrtak.ParseFaaliyetDurumu(faaliyet.FaaliyetDurumu.ConvertToInt());
 
                 r3c1.Text = "Faaliyet Konusu : " + faaliyet.FaaliyetKonusu;

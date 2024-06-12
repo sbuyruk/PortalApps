@@ -36,7 +36,7 @@ namespace NBYS_WebParts.FTKYazilariWP
             this.ChromeType = PartChromeType.None;
         }
         IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
-        private string IliIdQS
+        private int IliIdQS
         {
             get
             {
@@ -52,7 +52,7 @@ namespace NBYS_WebParts.FTKYazilariWP
                         ViewState["IliId"] = string.Empty;
                     }
                 }
-                return ViewState["IliId"].ToString();
+                return ViewState["IliId"].ConvertToInt();
             }
 
             set
@@ -60,7 +60,7 @@ namespace NBYS_WebParts.FTKYazilariWP
                 ViewState["IliId"] = value;
             }
         }
-        private string IlcesiIdQS
+        private int IlcesiIdQS
         {
             get
             {
@@ -76,7 +76,7 @@ namespace NBYS_WebParts.FTKYazilariWP
                         ViewState["IlcesiId"] = string.Empty;
                     }
                 }
-                return ViewState["IlcesiId"].ToString();
+                return ViewState["IlcesiId"].ConvertToInt();
             }
 
             set
@@ -93,9 +93,9 @@ namespace NBYS_WebParts.FTKYazilariWP
             {
                 YonergeLnk.HRef = NBYSOrtak.YonergeURLGetir(ProjeConstants.PARAM_FTKYONERGE, ProjeConstants.PAGE_FTK_YAZILARI);
                 IlDDLDoldur();
-                UtilityHelper.SetDDLValue(IliDDL, IliIdQS);
+                UtilityHelper.SetDDLValue(IliDDL, IliIdQS.ToString());
                 IlceDDLDoldur();
-                UtilityHelper.SetDDLValue(IlcesiDDL, IlcesiIdQS);
+                UtilityHelper.SetDDLValue(IlcesiDDL, IlcesiIdQS.ToString());
                 FormuDoldur();
             }
 
@@ -119,8 +119,8 @@ namespace NBYS_WebParts.FTKYazilariWP
 
             string parafeTarihi = ".../" + DateTime.Today.ToString("MM") + "/" + DateTime.Today.ToString("yyyy");
 
-            Parafe1Txt.Text = parafeTarihi + (string.IsNullOrEmpty(parafe1) ? " BH.Dir. M.DİRİCAN" : " " + parafe1);
-            Parafe2Txt.Text = parafeTarihi + (string.IsNullOrEmpty(parafe2) ? "" : " " + parafe2);
+            Parafe1Txt.Text = string.IsNullOrEmpty(parafe1) ? string.Empty : parafeTarihi + (string.IsNullOrEmpty(parafe1) ? "" : " " + parafe1);
+            Parafe2Txt.Text = string.IsNullOrEmpty(parafe2) ? string.Empty : parafeTarihi + (string.IsNullOrEmpty(parafe2) ? "" : " " + parafe2);
 
             IrtibatNoktasiTxt.Text = string.IsNullOrEmpty(irtibat) ? "Dorukhan GÜNDÜR (Dâhili Tel:261)" : irtibat;
             ImzalayanTxt.Text = string.IsNullOrEmpty(imza1) ? "Erhan SİPAHİOĞLU" : imza1;
@@ -144,7 +144,7 @@ namespace NBYS_WebParts.FTKYazilariWP
         {
             IlcesiDDL.Items.Clear();
             Ilce pilce = new Ilce();
-
+            IlcesiDDL.Items.Add(new System.Web.UI.WebControls.ListItem(ProjeConstants.VALILIK, ProjeConstants.VALILIK_INT.ToString()));
             if (IliDDL.SelectedItem != null)
             {
                 List<Ilce> list = pilce.SelectFTKKuruluOlanIlceler(IliDDL.SelectedValue.ConvertToInt());
@@ -248,7 +248,7 @@ namespace NBYS_WebParts.FTKYazilariWP
             keyValues.Add("BelgeSayisiVar", EvrakSayisiTxt.Text);
             keyValues.Add("BelgeTarihiVar", EvrakTarihiTxt.Text);
 
-            string ilgiVar = ilceAdi.Equals(ProjeConstants.VALILIK) ? ilAdi + " Valiliğinin " : ilceAdi + " Kaymakamlığı'nın " + IlgiTarihiTxt.Text + " tarih ve " + IlgiSayisiTxt.Text + " sayılı yazısı.";
+            string ilgiVar = (ilceAdi.Equals(ProjeConstants.VALILIK) ? ilAdi + " Valiliğinin " : ilceAdi + " Kaymakamlığı'nın ") + IlgiTarihiTxt.Text + " tarih ve " + IlgiSayisiTxt.Text + " sayılı yazısı.";
             keyValues.Add("IlgiVar", ilgiVar);
 
             keyValues.Add("BaslikDosyaVar", "(DOSYA)");
@@ -282,9 +282,16 @@ namespace NBYS_WebParts.FTKYazilariWP
 
         private string BolgeGetir(string ilAdi)
         {
+            string bolgeAdi=string.Empty;
             Il il = new Il();
             il = il.SelectByIlAdi(ilAdi);
-            return (il != null ? il.Bolge : string.Empty);
+            if (il!=null)
+            {
+                Bolge bolge = new Bolge();
+                bolge = bolge.Select(il.BolgeId); 
+                bolgeAdi=bolge.KisaAdi;
+            }
+            return (bolgeAdi);
         }
 
         private void UyeListesiniDoldur(MemoryStream templateStream)
@@ -334,17 +341,18 @@ namespace NBYS_WebParts.FTKYazilariWP
 
                     Table table1 = doc.Body.Descendants<Table>().ElementAt(0);
                     Table table2 = doc.Body.Descendants<Table>().ElementAt(1);
-                    Table table3 = doc.Body.Descendants<Table>().ElementAt(2);
+                    //Table table3 = doc.Body.Descendants<Table>().ElementAt(2);
 
 
                     TabloyaUyeEkle(table1, ftkGoreviVar, adiSoyadiVar, unvaniVar, kartnoVar);
                     TabloyaUyeEkle(table2, ftkGoreviVar, adiSoyadiVar, unvaniVar, kartnoVar);
-                    TabloyaUyeEkle(table3, ftkGoreviVar, adiSoyadiVar, unvaniVar, kartnoVar);
-                    if (!bolge.Equals(ProjeConstants.BOLGE_GENELMUDURLUK))
-                    {
-                        Table table4 = doc.Body.Descendants<Table>().ElementAt(3);
-                        TabloyaUyeEkle(table4, ftkGoreviVar, adiSoyadiVar, unvaniVar, kartnoVar);
-                    }
+                    //TabloyaUyeEkle(table3, ftkGoreviVar, adiSoyadiVar, unvaniVar, kartnoVar);
+                    //Bölgelere yazı gitmeyecek o yüzden kapatıldı 05.06.2024
+                    //if (!bolge.Equals(ProjeConstants.BOLGE_GENELMUDURLUK))
+                    //{
+                    //    Table table4 = doc.Body.Descendants<Table>().ElementAt(3);
+                    //    TabloyaUyeEkle(table4, ftkGoreviVar, adiSoyadiVar, unvaniVar, kartnoVar);
+                    //}
 
 
                 }
@@ -498,12 +506,12 @@ namespace NBYS_WebParts.FTKYazilariWP
         }
         protected void IliDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            IliIdQS = IliDDL.SelectedItem.Value;
+            IliIdQS = IliDDL.SelectedItem.Value.ConvertToInt();
             IlceDDLDoldur();
         }
         protected void IlcesiDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            IlcesiIdQS = IlcesiDDL.SelectedItem.Value;
+            IlcesiIdQS = IlcesiDDL.SelectedItem.Value.ConvertToInt();
         }
         protected void KurulusYazisiOlusturBtn_Click(object sender, EventArgs e)
         {
@@ -512,20 +520,44 @@ namespace NBYS_WebParts.FTKYazilariWP
 
                 string ilAdi = IliDDL.SelectedItem.Text;
                 string ilcesiAdi = IlcesiDDL.SelectedItem.Text;
+                IliIdQS= IliDDL.SelectedItem.Value.ConvertToInt();
+                IlcesiIdQS= IlcesiDDL.SelectedItem.Value.ConvertToInt();
                 string bolge = BolgeGetir(ilAdi);
                 // Dosya adları 
                 string zaman = DateTime.Now.ToString("dd-MM-yyyy-HH-mm");
                 string yaziDosyaAdi = ilAdi + "-" + ilcesiAdi + "-FTK-kurulus-yazisi(" + zaman + ").docx";
-                string templateFileName = bolge.Equals(ProjeConstants.BOLGE_GENELMUDURLUK) ?
-                    ProjeConstants.FTK_ILCE_KURULUMGMYAZI_TEMPLATE :
-                    ProjeConstants.FTK_ILCE_KURLUMANAYAZI_TEMPLATE;
-                bool isYaziOlusturuldu = YaziOlustur(yaziDosyaAdi, templateFileName);
-                if (isYaziOlusturuldu)
+                //string templateFileName = bolge.Equals(ProjeConstants.BOLGE_GENELMUDURLUK) ?
+                //    ProjeConstants.FTK_ILCE_KURULUMGMYAZI_TEMPLATE :
+                //    ProjeConstants.FTK_ILCE_KURLUMANAYAZI_TEMPLATE;
+                if (IlcesiIdQS == ProjeConstants.VALILIK_INT)
                 {
-                    MessageHelper.PublishMessage("Kurulum Yazısı hazırlandı, Dosya ismine basarak yazıyı indirebilirsiniz.", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Kurulum yapılacak il mevcut Değil.", ProjeConstants.MESAJ_BILGI, 3000);
+
                 }
-                //else
-                //    MessageHelper.PublishMessage("Hata Oluştu", ProjeConstants.MESAJ_HATA);
+                else                {
+                    string templateFileName = IlcesiIdQS == ProjeConstants.VALILIK_INT ?
+                                ProjeConstants.FTK_IL_GUNCELLEME_YAZI_TEMPLATE :
+                                 ProjeConstants.FTK_ILCE_KURLUMANAYAZI_TEMPLATE;
+                    bool isYaziOlusturuldu = YaziOlustur(yaziDosyaAdi, templateFileName);
+                    if (isYaziOlusturuldu)
+                    {
+
+
+                        if (EPostaGonderChk.Checked)
+                        {
+                            if (NBYSOrtak.FTKOlusturmaEPostasiGonder(IliIdQS, IlcesiIdQS))
+                            {
+                                MessageHelper.PublishMessage("Kurulum Yazısı hazırlandı ve e-posta gönderildi. Dosya ismine basarak yazıyı indirebilirsiniz.", ProjeConstants.MESAJ_BASARILI, 3000);
+                            }
+                        }
+                        else
+                        {
+                            MessageHelper.PublishMessage("Kurulum Yazısı hazırlandı, Dosya ismine basarak yazıyı indirebilirsiniz. (E-posta Gönderilmedi)", ProjeConstants.MESAJ_BASARILI, 2000);
+                        }
+                    }
+                    //else
+                    //    MessageHelper.PublishMessage("Hata Oluştu", ProjeConstants.MESAJ_HATA); 
+                }
             }
             catch (Exception ex)
             {
@@ -541,21 +573,33 @@ namespace NBYS_WebParts.FTKYazilariWP
             {
                 string ilAdi = IliDDL.SelectedItem.Text;
                 string ilcesiAdi = IlcesiDDL.SelectedItem.Text;
+                IliIdQS = IliDDL.SelectedItem.Value.ConvertToInt();
+                IlcesiIdQS = IlcesiDDL.SelectedItem.Value.ConvertToInt();
                 string bolge = BolgeGetir(ilAdi);
                 // Dosya adları 
                 string zaman = DateTime.Now.ToString("dd-MM-yyyy-HH-mm");
                 string yaziDosyaAdi = ilAdi + "-" + ilcesiAdi + "-FTK-guncelleme-yazisi(" + zaman + ").docx";
-                string templateFileName = bolge.Equals(ProjeConstants.BOLGE_GENELMUDURLUK) ?
-                    ProjeConstants.FTK_ILCE_GUNCELLEMEGMYAZI_TEMPLATE :
-                    ProjeConstants.FTK_ILCE_GUNCELLEMEANAYAZI_TEMPLATE;
-
+               
+                string templateFileName = IlcesiIdQS == ProjeConstants.VALILIK_INT ?
+                                ProjeConstants.FTK_IL_GUNCELLEME_YAZI_TEMPLATE :
+                                 ProjeConstants.FTK_ILCE_GUNCELLEME_YAZI_TEMPLATE;
                 bool isYaziOlusturuldu = YaziOlustur(yaziDosyaAdi, templateFileName);
                 if (isYaziOlusturuldu)
                 {
-                    MessageHelper.PublishMessage("Güncelleme Yazısı hazırlandı, Dosya ismine basarak yazıyı indirebilirsiniz.", ProjeConstants.MESAJ_BASARILI, 2000);
+
+
+                    if (EPostaGonderChk.Checked)
+                    {
+                        if (NBYSOrtak.FTKOlusturmaEPostasiGonder(IliIdQS, IlcesiIdQS))
+                        {
+                            MessageHelper.PublishMessage("Kurulum Yazısı hazırlandı ve e-posta gönderildi. Dosya ismine basarak yazıyı indirebilirsiniz.", ProjeConstants.MESAJ_BASARILI, 3000);
+                        }
+                    }
+                    else
+                    {
+                        MessageHelper.PublishMessage("Kurulum Yazısı hazırlandı, Dosya ismine basarak yazıyı indirebilirsiniz. (E-posta Gönderilmedi)", ProjeConstants.MESAJ_BASARILI, 2000);
+                    }
                 }
-                //else
-                //    MessageHelper.PublishMessage("Hata Oluştu", ProjeConstants.MESAJ_HATA);
             }
             catch (Exception ex)
             {
@@ -567,8 +611,8 @@ namespace NBYS_WebParts.FTKYazilariWP
         }
         protected void FTKIslemleriBtn_Click(object sender, EventArgs e)
         {
-            IliIdQS = IliDDL.SelectedItem == null ? "1" : IliDDL.SelectedItem.Value;
-            IlcesiIdQS = IlcesiDDL.SelectedItem == null ? ProjeConstants.VALILIK_INT.ToString() : IlcesiDDL.SelectedItem.Value;
+            IliIdQS = IliDDL.SelectedItem == null ? ProjeConstants.IL_BOS : IliDDL.SelectedItem.Value.ConvertToInt();
+            IlcesiIdQS = IlcesiDDL.SelectedItem == null ? ProjeConstants.VALILIK_INT : IlcesiDDL.SelectedItem.Value.ConvertToInt();
             RedirectToPage(ProjeConstants.PAGE_FTKISLEMLERI + "?IliId=" + IliDDL.SelectedItem.Value + "&IlcesiId=" + IlcesiIdQS);
         }
         protected void FTKListesiBtn_Click(object sender, EventArgs e)

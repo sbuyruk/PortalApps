@@ -71,7 +71,7 @@ namespace MTS_WebParts.FaaliyetListesiROWP
         {
             List<FaaliyetListItem> faaliyetList = new List<FaaliyetListItem>();
             Faaliyet faaliyetDao = new Faaliyet();
-            DataTable dataTable = faaliyetDao.SelectAllByKatilimciFaaliyetReturnDataTable(ProjeConstants.HEPSI_INT, -3, ProjeConstants.HEPSI, ProjeConstants.NULL_TARIH, ProjeConstants.NULL_TARIH);
+            DataTable dataTable = faaliyetDao.SelectAllByKatilimciFaaliyetReturnDataTable(ProjeConstants.HEPSI_INT, -3, ProjeConstants.HEPSI, ProjeConstants.NULL_TARIH, ProjeConstants.NULL_TARIH, ProjeConstants.HEPSI);
 
             if (dataTable != null)
             {
@@ -85,7 +85,7 @@ namespace MTS_WebParts.FaaliyetListesiROWP
                     string faaliyetTipi = row["FaaliyetTipi"].ToString();
                     string faaliyetYeri = row["FaaliyetYeri"].ToString(); ;
                     string faaliyetKonusu = row["FaaliyetKonusu"].ToString();
-                    string faaliyetAmaci = row["FaaliyetAmaci"].ToString();
+                    string faaliyetAmaci = row["FaaliyetAmaciId"].ToString();
                     string faaliyetDurumu = row["FaaliyetDurumu"].ToString();
 
                     DateTime basTar = row["BaslangicTarihi"].ConvertToDatetime();

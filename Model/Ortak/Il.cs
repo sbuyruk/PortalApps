@@ -109,7 +109,8 @@ namespace Model.Ortak
                 SELECT *
                 FROM Il_Table
                 WHERE (Id BETWEEN 1 AND 81)
-                {0}", bolgeStr);
+                {0}
+                ORDER BY IlAdi ", bolgeStr);
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Il> list = ToList<Il>(dataTable);
@@ -141,7 +142,7 @@ namespace Model.Ortak
                 FROM Il_Table A 
                 WHERE (A.Id BETWEEN 0 AND 81 AND A.IlAdi != '') 
                     AND  A.Id IN (SELECT Ili FROM FTK_Table) 
-                ORDER BY A.Bolge, A.Id    
+                ORDER BY A.IlAdi    
             ");
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Il> list = ToList<Il>(dataTable);

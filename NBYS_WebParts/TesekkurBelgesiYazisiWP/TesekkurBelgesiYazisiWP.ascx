@@ -66,11 +66,19 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="table loader table-bordered " id="tbl" runat="server">
-                            <input id="globalFilter" placeholder="Aranacak Kelime" size="30" />
-                            <div id="tblfilter" class="table"></div>
-                            <div id="messages"></div>
-                        </div>
+                    <div class="form-group">
+                        <table id="CustomDataTable" class="table table-bordered table-hover small" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Adı</th>
+                                    <th>Belgede Yazan İsim</th>
+                                    <th>TC Kimlik</th>
+                                    <th>Tarih</th>
+                                    <th>Tutar</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
                     </div>
                     <div class="form-group">
                         <asp:Label ID="TableDataLbl" runat="server" Text=""></asp:Label>

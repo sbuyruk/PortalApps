@@ -93,7 +93,7 @@ namespace MTS_WebParts.FaaliyetViewerCustomWP
                 {
                     FaaliyetListItem gunlukFaaliyet = new FaaliyetListItem
                     {
-                        Amaci = item.FaaliyetAmaci,
+                        Amaci = item.FaaliyetAmaciId,
                         BaslangicTarihi = item.BaslangicTarihi,
                         BitisTarihi = item.BitisTarihi,
                         Durumu = item.FaaliyetDurumu,

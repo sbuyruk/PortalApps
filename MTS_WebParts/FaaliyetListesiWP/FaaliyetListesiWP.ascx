@@ -146,6 +146,14 @@
                                 <asp:TextBox ID="BitisTarihiTxt" CssClass="form-control DateTimePickerV1 input-date" runat="server" ClientIDMode="Static" AutoPostBack="true" OnTextChanged="BitisTarihiTxt_TextChanged" placeholder="dd.mm.yyyy"></asp:TextBox>
                             </div>
                         </div>
+                        <div class="col-4">
+                            <div class="form-group col checkbox" id="AcikTarhliDiv" runat="server" style="display: block;">
+                                <label>
+                                    <asp:CheckBox ID="AcikTarhliChk" runat="server" ToolTip="Açık Tarihli faaliyetleri göstermek için seçiniz." Checked="false" OnCheckedChanged="AcikTarhliChk_CheckedChanged" AutoPostBack="true" />
+                                    Açık tarihli faaliyetleri listede göster
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -66,7 +66,7 @@
             columnDefs: [
                 { type: 'turkish', targets: [1,2,3,4,5,6] }
             ],
-            'order': [[1, 'desc']],//sort date desc
+            'order': [[8, 'desc']],//sort date desc
             "language": {
                 "url": "http://tskgv-portal/OrtakBelgeler/Turkish.txt",
                 "decimal": ",",
@@ -114,7 +114,7 @@
     });
 
 </script>
-<div class="container ">
+<div class="container col-xl">
     <div class="card shadow">
         <div class="card-header">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
@@ -125,6 +125,52 @@
             </h3>
         </div>
         <div class="card-body">
+            <div class="form-group alert-secondary p-2">
+                <div class="form-group ">
+                    <div class="row">
+                        <div class="col-2">
+                            <div class="form-group col checkbox" id="Div1" runat="server" style="display: block;">
+                                <label>
+                                    <asp:CheckBox ID="ToplantiChk" runat="server" ToolTip="Toplantıları göstermek için seçiniz." Checked="false" OnCheckedChanged="ToplantiChk_CheckedChanged" AutoPostBack="true" />
+                                   Toplantı
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="form-group col checkbox" id="Div2" runat="server" style="display: block;">
+                                <label>
+                                    <asp:CheckBox ID="ZiyaretChk" runat="server" ToolTip="Toplantıları göstermek için seçiniz." Checked="false" OnCheckedChanged="ZiyaretChk_CheckedChanged" AutoPostBack="true" />
+                                    Ziyaret
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="form-group col checkbox" id="AcikTarhliDiv" runat="server" style="display: block;">
+                                <label>
+                                    <asp:CheckBox ID="GorusmeChk" runat="server" ToolTip="Görüşmeleri göstermek için seçiniz." Checked="false" OnCheckedChanged="GorusmeChk_CheckedChanged" AutoPostBack="true" />
+                                    Görüşme
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="form-group col checkbox" id="Div3" runat="server" style="display: block;">
+                                <label>
+                                    <asp:CheckBox ID="SeyahatChk" runat="server" ToolTip="Seyahatleri göstermek için seçiniz." Checked="false" OnCheckedChanged="SeyahatChk_CheckedChanged" AutoPostBack="true" />
+                                    Seyahat
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-2">
+                            <div class="form-group col checkbox" id="Div4" runat="server" style="display: block;">
+                                <label>
+                                    <asp:CheckBox ID="DavetChk" runat="server" ToolTip="Davetleri göstermek için seçiniz." Checked="false" OnCheckedChanged="DavetChk_CheckedChanged" AutoPostBack="true" />
+                                    Davet
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="form-group">
                 <table id="CustomDataTable" class="table table-striped table-bordered" width="100%">
                     <thead>

@@ -101,14 +101,6 @@ namespace NBYS_WebParts.BeratBelgesiYazisiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.HyperLink DosyaLnk;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.HyperLink AdresEtiketLnk;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.CheckBox BeratDurumChk;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -382,38 +374,6 @@ namespace NBYS_WebParts.BeratBelgesiYazisiWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "TableDataLbl";
             @__ctrl.Text = "";
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.HyperLink @__BuildControlDosyaLnk() {
-            global::System.Web.UI.WebControls.HyperLink @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.HyperLink();
-            this.DosyaLnk = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "DosyaLnk";
-            @__ctrl.CssClass = "btn-link m-3";
-            @__ctrl.Visible = false;
-            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Berat Belgeleri"));
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.HyperLink @__BuildControlAdresEtiketLnk() {
-            global::System.Web.UI.WebControls.HyperLink @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.HyperLink();
-            this.AdresEtiketLnk = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "AdresEtiketLnk";
-            @__ctrl.CssClass = "btn-link m-3";
-            @__ctrl.Visible = false;
-            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Adres Etiketleri"));
             return @__ctrl;
         }
         
@@ -761,24 +721,18 @@ namespace NBYS_WebParts.BeratBelgesiYazisiWP {
             global::System.Web.UI.WebControls.Label @__ctrl15;
             @__ctrl15 = this.@__BuildControlTableDataLbl();
             @__parser.AddParsedSubObject(@__ctrl15);
-            global::System.Web.UI.WebControls.HyperLink @__ctrl16;
-            @__ctrl16 = this.@__BuildControlDosyaLnk();
+            global::System.Web.UI.WebControls.CheckBox @__ctrl16;
+            @__ctrl16 = this.@__BuildControlBeratDurumChk();
             @__parser.AddParsedSubObject(@__ctrl16);
-            global::System.Web.UI.WebControls.HyperLink @__ctrl17;
-            @__ctrl17 = this.@__BuildControlAdresEtiketLnk();
+            global::System.Web.UI.WebControls.LinkButton @__ctrl17;
+            @__ctrl17 = this.@__BuildControlDosyaOlusturBtn();
             @__parser.AddParsedSubObject(@__ctrl17);
-            global::System.Web.UI.WebControls.CheckBox @__ctrl18;
-            @__ctrl18 = this.@__BuildControlBeratDurumChk();
+            global::System.Web.UI.UpdatePanel @__ctrl18;
+            @__ctrl18 = this.@__BuildControlUpdatePanel();
             @__parser.AddParsedSubObject(@__ctrl18);
-            global::System.Web.UI.WebControls.LinkButton @__ctrl19;
-            @__ctrl19 = this.@__BuildControlDosyaOlusturBtn();
+            global::System.Web.UI.UpdateProgress @__ctrl19;
+            @__ctrl19 = this.@__BuildControlupdateProgress();
             @__parser.AddParsedSubObject(@__ctrl19);
-            global::System.Web.UI.UpdatePanel @__ctrl20;
-            @__ctrl20 = this.@__BuildControlUpdatePanel();
-            @__parser.AddParsedSubObject(@__ctrl20);
-            global::System.Web.UI.UpdateProgress @__ctrl21;
-            @__ctrl21 = this.@__BuildControlupdateProgress();
-            @__parser.AddParsedSubObject(@__ctrl21);
             @__ctrl.SetRenderMethodDelegate(new System.Web.UI.RenderMethod(this.@__Render__control1));
         }
         
@@ -830,7 +784,7 @@ namespace NBYS_WebParts.BeratBelgesiYazisiWP {
                                 </div>
                             </div>
                             <div class=""row"">
-                                <div class=""form-group col-4"">
+                                <div class=""form-group col-8"">
                                     <label class=""col-form-label"" for=""BolgeDDL"">Bölge </label>
                                     ");
             parameterContainer.Controls[7].RenderControl(@__w);
@@ -879,20 +833,15 @@ namespace NBYS_WebParts.BeratBelgesiYazisiWP {
                     "                       </div>\r\n                    </div>\r\n                    <" +
                     "div class=\"form-group\">\r\n                        ");
             parameterContainer.Controls[14].RenderControl(@__w);
-            @__w.Write("\r\n                    </div>\r\n                </div>\r\n                <div class=" +
-                    "\"form-group\">\r\n                    ");
+            @__w.Write("\r\n                    </div>\r\n                </div>\r\n\r\n                <div clas" +
+                    "s=\"card-footer\">\r\n                    ");
             parameterContainer.Controls[15].RenderControl(@__w);
             @__w.Write("\r\n                    ");
             parameterContainer.Controls[16].RenderControl(@__w);
-            @__w.Write("\r\n                </div>\r\n                <div class=\"card-footer\">\r\n            " +
-                    "        ");
-            parameterContainer.Controls[17].RenderControl(@__w);
-            @__w.Write("\r\n                    ");
-            parameterContainer.Controls[18].RenderControl(@__w);
             @__w.Write("\r\n                </div>\r\n            </div>\r\n        ");
-            parameterContainer.Controls[19].RenderControl(@__w);
+            parameterContainer.Controls[17].RenderControl(@__w);
             @__w.Write("\r\n    ");
-            parameterContainer.Controls[20].RenderControl(@__w);
+            parameterContainer.Controls[18].RenderControl(@__w);
             @__w.Write("\r\n</div>\r\n");
         }
         

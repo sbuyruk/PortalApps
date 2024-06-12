@@ -153,14 +153,14 @@ namespace Model.TBYS
 
             return (list);
         }        
-        public List<TasinmazBagisci> SelectByBolge(string bolge)
+        public List<TasinmazBagisci> SelectByBolge(int bolgeId)
         {
-            string bolgestr = bolge.Equals(ProjeConstants.BOLGE_HEPSI)?string.Empty:string.Format(" WHERE Bolge={0}",bolge.ReturnQuotedValue());
+            string bolgeStr = bolgeId == ProjeConstants.BOLGE_HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" WHERE BolgeId={0} ", bolgeId);
             string sqlString = string.Format(@"
                 SELECT *
                 FROM TasinmazBagisci_Table A
                     LEFT JOIN Il_Table B ON B.IlAdi = A.Ili
-                {0}", bolgestr);
+                {0}", bolgeStr);
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<TasinmazBagisci> list = ToList<TasinmazBagisci>(dataTable);
@@ -224,7 +224,7 @@ namespace Model.TBYS
             }
             return dataTable;
         }
-        public DataTable SelectAllCountBagisAdediReturnDataTable(string bolge)
+        public DataTable SelectAllCountBagisAdediReturnDataTable_Deprecated(string bolge)
         {
             string bolgeStr = string.IsNullOrEmpty(bolge) ||
                 bolge.Equals(ProjeConstants.BOLGE_HEPSI) ||
@@ -242,6 +242,50 @@ namespace Model.TBYS
                 GROUP BY  C.BagisciId,
 				    A.Id, A.Adi, A.Soyadi, A.TCKimlikNo, A.DogumYeri, A.DogumTarihi, A.Meslegi, A.SosyalGuvence, 
 	                A.Ili, A.Ilcesi, A.Adres, A.Telefon1, A.Telefon2, A.Foto, A.Sag_vefat,E.Bolge  , A.VefatTarihi, DefinYeri,DefinIli,DefinIlcesi,DefinAciklama                         
+                ", bolgeStr);
+
+            DataTable dataTable = null;
+            try
+            {
+                dataTable = dao.SelectFromDb(sqlString, "");
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            return dataTable;
+        }
+        public DataTable SelectAllCountBagisAdediReturnDataTable(int bolgeId)
+        {
+            string bolgeStr = bolgeId == ProjeConstants.BOLGE_HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" WHERE E.Id={0} ", bolgeId);
+            string sqlString = string.Format(@"
+                 SELECT 
+	                 A.Id As TasinmazBagisciId
+	                 ,A.Adi,A.Soyadi,A.Sag_vefat, A.Adi+' '+ A.Soyadi AdiSoyadi
+	                 ,COUNT(B.Id) As ToplamBagisAdedi
+	                 ,C.IlAdi
+	                 ,D.IlceAdi,D.IlceAdi, D.IlceAdi +'-'+ C.IlAdi As IlIlce
+	                 ,E.Adi As Bolge
+                FROM 
+	                TasinmazBagisci_Table A
+                LEFT JOIN 
+	                Bagis_Table B ON B.BagisciId=A.Id 
+                LEFT JOIN 
+	                Il_Table C ON C.Id=A.IlId
+                LEFT JOIN 
+	                Ilce_Table D ON D.Id=A.IlceId
+                LEFT JOIN 
+	                Bolge_Table E ON E.Id=C.BolgeId
+                LEFT JOIN 
+	                Tasinmaz_Table F on F.Id=B.TasinmazId AND F.EnvanterdeMi=1
+                {0}
+                GROUP BY 
+	                A.Id
+	                ,A.Adi,A.Soyadi,A.Sag_vefat
+	                ,C.IlAdi
+	                ,D.IlceAdi
+	                ,E.Adi
+                 ORDER BY A.Adi,A.Soyadi                      
                 ", bolgeStr);
 
             DataTable dataTable = null;

@@ -548,7 +548,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP
                 FaaliyetYeriCell.Text =faaliyetYeriStr;
                 FaaliyetAciklamaCell.Text = faaliyet.Aciklama;
                 FaaliyetTipiCell.Text = faaliyet.FaaliyetTipi;
-                string faaliyetAmaciStr = ParseFaaliyetAmaci(faaliyet.FaaliyetAmaci.ToString());
+                string faaliyetAmaciStr = ParseFaaliyetAmaci(faaliyet.FaaliyetAmaciId.ToString());
                 string faaliyetDurumuStr = MTSOrtak.ParseFaaliyetDurumu(faaliyet.FaaliyetDurumu);
                 
                 FaaliyetAmaciCell.Text = faaliyetAmaciStr;
@@ -561,7 +561,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP
         private string GetDataList(int faaliyetId)
         {
             Faaliyet faaliyetDao = new Faaliyet();
-            System.Data.DataTable dataTable = faaliyetDao.SelectAllByKatilimciFaaliyetReturnDataTable(faaliyetId,3,ProjeConstants.HEPSI, ProjeConstants.NULL_TARIH, ProjeConstants.NULL_TARIH);
+            System.Data.DataTable dataTable = faaliyetDao.SelectAllByKatilimciFaaliyetReturnDataTable(faaliyetId,3,ProjeConstants.HEPSI, ProjeConstants.NULL_TARIH, ProjeConstants.NULL_TARIH, ProjeConstants.HEPSI);
             StringBuilder sb = new StringBuilder();
             int sirano = 1;
             if (dataTable != null)
@@ -583,29 +583,24 @@ namespace MTS_WebParts.FaaliyetROViewerWP
             string amacStr = string.Empty;
             switch (amac)
             {
-                case ProjeConstants.FAALIYET_AMACI_DAVET_INT:
-                    {
-                        amacStr = ProjeConstants.FAALIYET_AMACI_DAVET;
-                        break;
-                    }
-                case ProjeConstants.FAALIYET_AMACI_IZIN_INT:
-                    {
-                        amacStr = ProjeConstants.FAALIYET_AMACI_IZIN;
-                        break;
-                    }
-                case ProjeConstants.FAALIYET_AMACI_OZELCALISMA_INT:
-                    {
-                        amacStr = ProjeConstants.FAALIYET_AMACI_OZELCALISMA;
-                        break;
-                    }
-                case ProjeConstants.FAALIYET_AMACI_RESMITATIL_INT:
-                    {
-                        amacStr = ProjeConstants.FAALIYET_AMACI_RESMITATIL;
-                        break;
-                    }
                 case ProjeConstants.FAALIYET_AMACI_TOPLANTI_INT:
                     {
                         amacStr = ProjeConstants.FAALIYET_AMACI_TOPLANTI;
+                        break;
+                    }
+                case ProjeConstants.FAALIYET_AMACI_ZIYARET_INT:
+                    {
+                        amacStr = ProjeConstants.FAALIYET_AMACI_ZIYARET;
+                        break;
+                    }
+                case ProjeConstants.FAALIYET_AMACI_GORUSME_INT:
+                    {
+                        amacStr = ProjeConstants.FAALIYET_AMACI_GORUSME;
+                        break;
+                    }
+                case ProjeConstants.FAALIYET_AMACI_DAVET_INT:
+                    {
+                        amacStr = ProjeConstants.FAALIYET_AMACI_DAVET;
                         break;
                     }
                 case ProjeConstants.FAALIYET_AMACI_YILDONUMU_INT:
@@ -613,9 +608,39 @@ namespace MTS_WebParts.FaaliyetROViewerWP
                         amacStr = ProjeConstants.FAALIYET_AMACI_YILDONUMU;
                         break;
                     }
-                case ProjeConstants.FAALIYET_AMACI_ZIYARET_INT:
+                case ProjeConstants.FAALIYET_AMACI_DOGUMGUNU_INT:
                     {
-                        amacStr = ProjeConstants.FAALIYET_AMACI_ZIYARET;
+                        amacStr = ProjeConstants.FAALIYET_AMACI_DOGUMGUNU_INT;
+                        break;
+                    }
+                case ProjeConstants.FAALIYET_AMACI_OZELCALISMA_INT:
+                    {
+                        amacStr = ProjeConstants.FAALIYET_AMACI_OZELCALISMA;
+                        break;
+                    }
+                case ProjeConstants.FAALIYET_AMACI_IZIN_INT:
+                    {
+                        amacStr = ProjeConstants.FAALIYET_AMACI_IZIN;
+                        break;
+                    }
+                case ProjeConstants.FAALIYET_AMACI_RESMITATIL_INT:
+                    {
+                        amacStr = ProjeConstants.FAALIYET_AMACI_RESMITATIL;
+                        break;
+                    }
+                case ProjeConstants.FAALIYET_AMACI_SEYAHAT_INT:
+                    {
+                        amacStr = ProjeConstants.FAALIYET_AMACI_SEYAHAT;
+                        break;
+                    }
+                case ProjeConstants.FAALIYET_AMACI_BILGI_INT:
+                    {
+                        amacStr = ProjeConstants.FAALIYET_AMACI_BILGI;
+                        break;
+                    }
+                case ProjeConstants.FAALIYET_AMACI_VAKIF_TOPLANISI_INT:
+                    {
+                        amacStr = ProjeConstants.FAALIYET_AMACI_VAKIF_TOPLANISI;
                         break;
                     }
                 default:

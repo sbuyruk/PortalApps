@@ -1050,9 +1050,10 @@ namespace Utility.ProjeGlobal
         public static string TBYS_KIRAARTIS_TEMPLATE = "TemplateKiraArtis.docx";
         
         //FTK
+        public static string FTK_IL_GUNCELLEME_YAZI_TEMPLATE = "TemplateFTKIlGuncellemeYazisi.docx";
         public static string FTK_ILCE_KURLUMANAYAZI_TEMPLATE = "TemplateFTKIlceAnaYazisi.docx";
         public static string FTK_ILCE_KURULUMGMYAZI_TEMPLATE = "TemplateFTKIlceGMYazisi.docx";
-        public static string FTK_ILCE_GUNCELLEMEANAYAZI_TEMPLATE = "TemplateIlceFTKGuncellemeAnaYazisi.docx";
+        public static string FTK_ILCE_GUNCELLEME_YAZI_TEMPLATE = "TemplateIlceFTKGuncellemeAnaYazisi.docx";
         public static string FTK_ILCE_GUNCELLEMEGMYAZI_TEMPLATE = "TemplateIlceFTKGuncellemeGMYazisi.docx";
 
         public static string NBYS_TASINMAZBAGISCI_ADRESETIKETI_TEMPLATE = "AdresEtiketiTemplate.docx";

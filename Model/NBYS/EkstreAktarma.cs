@@ -1631,19 +1631,19 @@ namespace Model.NBYS
                             //var soyAdi = row[1].ReturnEmptyIfNull().ToString();
                             var tcKimlikNo = row[2].ReturnEmptyIfNull().ToString();
                             var telefon = row[3].ReturnEmptyIfNull().ToString();
+                            var eposta = row[4].ReturnEmptyIfNull().ToString();
 
-                            var tutar = row[4].ReturnZeroIfNull().ToString().Replace("₺", "").Replace(".", "").ConvertToDecimal();
-                            var aciklama = row[5].ReturnEmptyIfNull().ToString();
-                            var adres = row[6].ReturnEmptyIfNull().ToString();
-                            var bagisKanali = row[7].ReturnEmptyIfNull().ToString();
-                            var odemeMetodu = row[8].ReturnEmptyIfNull().ToString();
+                            var tutar = row[5].ReturnZeroIfNull().ToString().Replace("₺", "").Replace(".", "").ConvertToDecimal();
+                            var aciklama = row[6].ReturnEmptyIfNull().ToString();
+                            var adres = row[7].ReturnEmptyIfNull().ToString();
+                            var bagisKanali = row[8].ReturnEmptyIfNull().ToString();
+                            var odemeMetodu = row[9].ReturnEmptyIfNull().ToString();
                             //var il = row[5].ReturnEmptyIfNull().ToString();
                             //var ulke = row[6].ReturnEmptyIfNull().ToString();
                             //var ilce = row[7].ReturnEmptyIfNull().ToString();
-                            //var eposta = row[8].ReturnEmptyIfNull().ToString();
 
-                            var bagisTarihi = row[9].ReturnEmptyIfNull().ToString().ConvertToDatetime();
-                            var sonIslemTarihi = row[10].ReturnEmptyIfNull().ToString().ConvertToDatetime();
+                            var bagisTarihi = row[10].ReturnEmptyIfNull().ToString().ConvertToDatetime();
+                            var sonIslemTarihi = row[11].ReturnEmptyIfNull().ToString().ConvertToDatetime();
 
                             if (tutar > 0)
                             {
@@ -1653,7 +1653,7 @@ namespace Model.NBYS
                                 ekstreAktarma.Adres = adres;
                                 //ekstreAktarma.Ili = il;
                                 //ekstreAktarma.Ilcesi = ilce;
-                                //ekstreAktarma.Eposta = eposta;
+                                ekstreAktarma.Eposta = eposta;
                                 ekstreAktarma.AktarildiMi = false;
                                 ekstreAktarma.Tutar = tutar.ConvertToDecimal();
                                 ekstreAktarma.BagisTarihi = bagisTarihi.AddDays(1);//burada bağış tarihine bir gün eklenmesinin sebebi, bankanın gün içindeki bağışları vakıf hesabına ertesi gün kaydetmesi nedeniyle oluşan tutarsızlığı gidermektir. 15.06.2020 SB

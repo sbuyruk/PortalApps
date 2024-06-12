@@ -172,37 +172,37 @@ namespace NBYS_WebParts.BeratBasimiWP
 
             Armagan armagan = new Armagan();
             //Genel Müdürlük
-            DataTable gmal = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_ALTINID, ProjeConstants.BOLGE_GENELMUDURLUK);
-            DataTable gmgum = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_GUMUSID, ProjeConstants.BOLGE_GENELMUDURLUK);
-            DataTable gmbro = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_BRONZID, ProjeConstants.BOLGE_GENELMUDURLUK);
+            DataTable gmal = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_ALTINID, ProjeConstants.BOLGE_ANKARA_INT);
+            DataTable gmgum = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_GUMUSID, ProjeConstants.BOLGE_ANKARA_INT);
+            DataTable gmbro = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_BRONZID, ProjeConstants.BOLGE_ANKARA_INT);
 
 
-            FillTable(gmal, GMATable, GMAltinBtn, GMAltinEtiketBtn, GmAltinDurumChk);
-            FillTable(gmgum, GMGTable, GMGumusBtn, GMGumusEtiketBtn, GmGumusDurumChk);
-            FillTable(gmbro, GMBTable, GMBronzBtn, GMBronzEtiketBtn, GmBronzDurumChk);
+            FillTable(gmal, AnkATable, AnkAltinBtn, AnkAltinEtiketBtn, AnkAltinDurumChk);
+            FillTable(gmgum, AnkGTable, AnkGumusBtn, AnkGumusEtiketBtn, AnkGumusDurumChk);
+            FillTable(gmbro, AnkBTable, AnkBronzBtn, AnkBronzEtiketBtn, AnkBronzDurumChk);
 
             //İstanbul
-            DataTable istal = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_ALTINID, ProjeConstants.BOLGE_ISTANBUL);
-            DataTable istgum = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_GUMUSID, ProjeConstants.BOLGE_ISTANBUL);
-            DataTable istbro = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_BRONZID, ProjeConstants.BOLGE_ISTANBUL);
+            DataTable istal = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_ALTINID, ProjeConstants.BOLGE_ISTANBUL_INT);
+            DataTable istgum = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_GUMUSID, ProjeConstants.BOLGE_ISTANBUL_INT);
+            DataTable istbro = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_BRONZID, ProjeConstants.BOLGE_ISTANBUL_INT);
 
             FillTable(istal, IstATable, IstAltinBtn, IstAltinEtiketBtn, IstAltinDurumChk);
             FillTable(istgum, IstGTable, IstGumusBtn, IstGumusEtiketBtn, IstGumusDurumChk);
             FillTable(istbro, IstBTable, IstBronzBtn, IstBronzEtiketBtn, IstBronzDurumChk);
 
             //İzmir
-            DataTable izmal = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_ALTINID, ProjeConstants.BOLGE_IZMIR);
-            DataTable izmgum = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_GUMUSID, ProjeConstants.BOLGE_IZMIR);
-            DataTable izmbro = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_BRONZID, ProjeConstants.BOLGE_IZMIR);
+            DataTable izmal = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_ALTINID, ProjeConstants.BOLGE_IZMIR_INT);
+            DataTable izmgum = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_GUMUSID, ProjeConstants.BOLGE_IZMIR_INT);
+            DataTable izmbro = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_BRONZID, ProjeConstants.BOLGE_IZMIR_INT);
 
             FillTable(izmal, IzmATable, IzmAltinBtn, IzmAltinEtiketBtn, IzmAltinDurumChk);
             FillTable(izmgum, IzmGTable, IzmGumusBtn, IzmGumusEtiketBtn, IzmGumusDurumChk);
             FillTable(izmbro, IzmBTable, IzmBronzBtn, IzmBronzEtiketBtn, IzmBronzDurumChk);
 
             //Mersin
-            DataTable meral = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_ALTINID, ProjeConstants.BOLGE_MERSIN);
-            DataTable mergum = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_GUMUSID, ProjeConstants.BOLGE_MERSIN);
-            DataTable merbro = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_BRONZID, ProjeConstants.BOLGE_MERSIN);
+            DataTable meral = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_ALTINID, ProjeConstants.BOLGE_MERSIN_INT);
+            DataTable mergum = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_GUMUSID, ProjeConstants.BOLGE_MERSIN_INT);
+            DataTable merbro = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_BRONZID, ProjeConstants.BOLGE_MERSIN_INT);
 
             FillTable(meral, MerATable, MerAltinBtn, MerAltinEtiketBtn, MerAltinDurumChk);
             FillTable(mergum, MerGTable, MerGumusBtn, MerGumusEtiketBtn, MerGumusDurumChk);
@@ -211,18 +211,18 @@ namespace NBYS_WebParts.BeratBasimiWP
         }
         private void SetButtonsToFalse()
         {
-            GMAltinBtn.Enabled = false;
-            GMGumusBtn.Enabled = false;
-            GMBronzBtn.Enabled = false;
-            GMAltinEtiketBtn.Enabled = false;
-            GMGumusEtiketBtn.Enabled = false;
-            GMBronzEtiketBtn.Enabled = false;
-            GmAltinDurumChk.Checked = false;
-            GmGumusDurumChk.Checked = false;
-            GmBronzDurumChk.Checked = false;
-            GmAltinDurumChk.Enabled = false;
-            GmGumusDurumChk.Enabled = false;
-            GmBronzDurumChk.Enabled = false;
+            AnkAltinBtn.Enabled = false;
+            AnkGumusBtn.Enabled = false;
+            AnkBronzBtn.Enabled = false;
+            AnkAltinEtiketBtn.Enabled = false;
+            AnkGumusEtiketBtn.Enabled = false;
+            AnkBronzEtiketBtn.Enabled = false;
+            AnkAltinDurumChk.Checked = false;
+            AnkGumusDurumChk.Checked = false;
+            AnkBronzDurumChk.Checked = false;
+            AnkAltinDurumChk.Enabled = false;
+            AnkGumusDurumChk.Enabled = false;
+            AnkBronzDurumChk.Enabled = false;
 
             IstAltinBtn.Enabled = false;
             IstGumusBtn.Enabled = false;
@@ -319,9 +319,11 @@ namespace NBYS_WebParts.BeratBasimiWP
             //GunDDL.Items.Add(new ListItem("20-Ay Sonu", "3"));
 
             //15 Günde bir
-            GunDDL.Items.Add(new ListItem("Tüm Ay", "0"));
-            GunDDL.Items.Add(new ListItem("1-15", "1"));
-            GunDDL.Items.Add(new ListItem("16-Ay Sonu", "2"));
+            //GunDDL.Items.Add(new ListItem("Tüm Ay", "0"));
+            //GunDDL.Items.Add(new ListItem("1-15", "1"));
+            //GunDDL.Items.Add(new ListItem("16-Ay Sonu", "2"));
+            //Ayda bir
+            GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Tüm Ay", "0"));
         }
         private void AyDDLDoldur()
         {
@@ -483,55 +485,55 @@ namespace NBYS_WebParts.BeratBasimiWP
             FillDurumValues();
             //KayitGetir();
         }
-        protected void GMAltinBtn_Click(object sender, EventArgs e)
+        protected void AnkAltinBtn_Click(object sender, EventArgs e)
         {
-            BasimaGonder(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.ARMAGAN_ALTINID, GmAltinDurumChk);
+            BasimaGonder(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.ARMAGAN_ALTINID, AnkAltinDurumChk);
         }
-        protected void GMGumusBtn_Click(object sender, EventArgs e)
+        protected void AnkGumusBtn_Click(object sender, EventArgs e)
         {
-            BasimaGonder(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.ARMAGAN_GUMUSID, GmGumusDurumChk);
+            BasimaGonder(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.ARMAGAN_GUMUSID, AnkGumusDurumChk);
         }
-        protected void GMBronzBtn_Click(object sender, EventArgs e)
+        protected void AnkBronzBtn_Click(object sender, EventArgs e)
         {
-            BasimaGonder(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.ARMAGAN_BRONZID, GmBronzDurumChk);
+            BasimaGonder(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.ARMAGAN_BRONZID, AnkBronzDurumChk);
         }
         protected void IstAltinBtn_Click(object sender, EventArgs e)
         {
-            BasimaGonder(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.ARMAGAN_ALTINID, IstAltinDurumChk);
+            BasimaGonder(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.ARMAGAN_ALTINID, IstAltinDurumChk);
         }
         protected void IstGumusBtn_Click(object sender, EventArgs e)
         {
-            BasimaGonder(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.ARMAGAN_GUMUSID, IstGumusDurumChk);
+            BasimaGonder(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.ARMAGAN_GUMUSID, IstGumusDurumChk);
         }
         protected void IstBronzBtn_Click(object sender, EventArgs e)
         {
-            BasimaGonder(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.ARMAGAN_BRONZID, IstBronzDurumChk);
+            BasimaGonder(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.ARMAGAN_BRONZID, IstBronzDurumChk);
         }
         protected void IzmAltinBtn_Click(object sender, EventArgs e)
         {
-            BasimaGonder(ProjeConstants.BOLGE_IZMIR, ProjeConstants.ARMAGAN_ALTINID, IzmAltinDurumChk);
+            BasimaGonder(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.ARMAGAN_ALTINID, IzmAltinDurumChk);
         }
         protected void IzmGumusBtn_Click(object sender, EventArgs e)
         {
-            BasimaGonder(ProjeConstants.BOLGE_IZMIR, ProjeConstants.ARMAGAN_GUMUSID, IzmGumusDurumChk);
+            BasimaGonder(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.ARMAGAN_GUMUSID, IzmGumusDurumChk);
         }
         protected void IzmBronzBtn_Click(object sender, EventArgs e)
         {
-            BasimaGonder(ProjeConstants.BOLGE_IZMIR, ProjeConstants.ARMAGAN_BRONZID, IzmBronzDurumChk);
+            BasimaGonder(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.ARMAGAN_BRONZID, IzmBronzDurumChk);
         }
         protected void MerAltinBtn_Click(object sender, EventArgs e)
         {
-            BasimaGonder(ProjeConstants.BOLGE_MERSIN, ProjeConstants.ARMAGAN_ALTINID, MerAltinDurumChk);
+            BasimaGonder(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.ARMAGAN_ALTINID, MerAltinDurumChk);
         }
         protected void MerGumusBtn_Click(object sender, EventArgs e)
         {
-            BasimaGonder(ProjeConstants.BOLGE_MERSIN, ProjeConstants.ARMAGAN_GUMUSID, MerGumusDurumChk);
+            BasimaGonder(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.ARMAGAN_GUMUSID, MerGumusDurumChk);
         }
         protected void MerBronzBtn_Click(object sender, EventArgs e)
         {
-            BasimaGonder(ProjeConstants.BOLGE_MERSIN, ProjeConstants.ARMAGAN_BRONZID, MerBronzDurumChk);
+            BasimaGonder(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.ARMAGAN_BRONZID, MerBronzDurumChk);
         }
-        private void BasimaGonder(string bolge, int armaganTipi, CheckBox checkBox)
+        private void BasimaGonder(int bolgeId, int armaganTipi, CheckBox checkBox)
         {
             if (checkBox.Checked)
             {
@@ -541,7 +543,7 @@ namespace NBYS_WebParts.BeratBasimiWP
                     bool isUpdated = armagan.UpdateDurumByBolge(
                         ProjeConstants.DURUM_KONTROLEDILDI, ProjeConstants.DURUM_GONDERILDI,
                         SecilenBastarQS, SecilenBittarQS,
-                        armaganTipi, bolge);
+                        armaganTipi, bolgeId);
 
                 }
                 catch (Exception ex)
@@ -551,72 +553,72 @@ namespace NBYS_WebParts.BeratBasimiWP
                 }
             }
             FillDurumValues();
-            var queryString = string.Format("?Bastar={0}&Bittar={1}&ArmaganTanimId={2}&PBolge={3}", SecilenBastarQS, SecilenBittarQS, armaganTipi, bolge);
+            var queryString = string.Format("?Bastar={0}&Bittar={1}&ArmaganTanimId={2}&BolgeId={3}", SecilenBastarQS, SecilenBittarQS, armaganTipi, bolgeId);
             RedirectToPage(ProjeConstants.PAGE_BERATBELGESI_VIEWER + queryString + "&target=_blank");
         }
-        private void EtiketleriBasimaGonder(string bolge, int armaganTipi)
+        private void EtiketleriBasimaGonder(int bolgeId, int armaganTipi)
         {
             FillDurumValues();
-            var queryString = string.Format("?Bastar={0}&Bittar={1}&ArmaganTanimId={2}&PBolge={3}", SecilenBastarQS, SecilenBittarQS, armaganTipi, bolge);
+            var queryString = string.Format("?Bastar={0}&Bittar={1}&ArmaganTanimId={2}&BolgeId={3}", SecilenBastarQS, SecilenBittarQS, armaganTipi, bolgeId);
             RedirectToPage(ProjeConstants.PAGE_BERATETIKET_VIEWER + queryString);
         }
-        protected void GMAltinEtiketBtn_Click(object sender, EventArgs e)
+        protected void AnkAltinEtiketBtn_Click(object sender, EventArgs e)
         {
-            EtiketleriBasimaGonder(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.ARMAGAN_ALTINID);
+            EtiketleriBasimaGonder(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.ARMAGAN_ALTINID);
         }
 
-        protected void GMGumusEtiketBtn_Click(object sender, EventArgs e)
+        protected void AnkGumusEtiketBtn_Click(object sender, EventArgs e)
         {
-            EtiketleriBasimaGonder(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.ARMAGAN_GUMUSID);
+            EtiketleriBasimaGonder(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.ARMAGAN_GUMUSID);
         }
 
-        protected void GMBronzEtiketBtn_Click(object sender, EventArgs e)
+        protected void AnkBronzEtiketBtn_Click(object sender, EventArgs e)
         {
-            EtiketleriBasimaGonder(ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.ARMAGAN_BRONZID);
+            EtiketleriBasimaGonder(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.ARMAGAN_BRONZID);
         }
 
         protected void IstAltinEtiketBtn_Click(object sender, EventArgs e)
         {
-            EtiketleriBasimaGonder(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.ARMAGAN_ALTINID);
+            EtiketleriBasimaGonder(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.ARMAGAN_ALTINID);
         }
 
         protected void IstGumusEtiketBtn_Click(object sender, EventArgs e)
         {
-            EtiketleriBasimaGonder(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.ARMAGAN_GUMUSID);
+            EtiketleriBasimaGonder(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.ARMAGAN_GUMUSID);
         }
 
         protected void IstBronzEtiketBtn_Click(object sender, EventArgs e)
         {
-            EtiketleriBasimaGonder(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.ARMAGAN_BRONZID);
+            EtiketleriBasimaGonder(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.ARMAGAN_BRONZID);
         }
         protected void IzmAltinEtiketBtn_Click(object sender, EventArgs e)
         {
-            EtiketleriBasimaGonder(ProjeConstants.BOLGE_IZMIR, ProjeConstants.ARMAGAN_ALTINID);
+            EtiketleriBasimaGonder(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.ARMAGAN_ALTINID);
         }
 
         protected void IzmGumusEtiketBtn_Click(object sender, EventArgs e)
         {
-            EtiketleriBasimaGonder(ProjeConstants.BOLGE_IZMIR, ProjeConstants.ARMAGAN_GUMUSID);
+            EtiketleriBasimaGonder(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.ARMAGAN_GUMUSID);
         }
 
         protected void IzmBronzEtiketBtn_Click(object sender, EventArgs e)
         {
-            EtiketleriBasimaGonder(ProjeConstants.BOLGE_IZMIR, ProjeConstants.ARMAGAN_BRONZID);
+            EtiketleriBasimaGonder(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.ARMAGAN_BRONZID);
         }
 
         protected void MerAltinEtiketBtn_Click(object sender, EventArgs e)
         {
-            EtiketleriBasimaGonder(ProjeConstants.BOLGE_MERSIN, ProjeConstants.ARMAGAN_ALTINID);
+            EtiketleriBasimaGonder(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.ARMAGAN_ALTINID);
         }
 
         protected void MerGumusEtiketBtn_Click(object sender, EventArgs e)
         {
-            EtiketleriBasimaGonder(ProjeConstants.BOLGE_MERSIN, ProjeConstants.ARMAGAN_GUMUSID);
+            EtiketleriBasimaGonder(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.ARMAGAN_GUMUSID);
         }
 
         protected void MerBronzEtiketBtn_Click(object sender, EventArgs e)
         {
-            EtiketleriBasimaGonder(ProjeConstants.BOLGE_MERSIN, ProjeConstants.ARMAGAN_BRONZID);
+            EtiketleriBasimaGonder(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.ARMAGAN_BRONZID);
         }
         private void RedirectToPage(string pageUrl)
         {

@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Elements xmlns="http://schemas.microsoft.com/sharepoint/" >
-  <Module Name="FaaliyetViewerOLD" List="113" Url="_catalogs/wp">
-    <File Path="FaaliyetViewerOLD\FaaliyetViewerOLD.webpart" Url="MTS_WebParts_FaaliyetViewerOLD.webpart" Type="GhostableInLibrary" >
-      <Property Name="Group" Value="Custom" />
-    </File>
-  </Module>
-</Elements>

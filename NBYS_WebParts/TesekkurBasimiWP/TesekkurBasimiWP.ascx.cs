@@ -274,7 +274,7 @@ namespace NBYS_WebParts.TesekkurBasimiWP
 
             Armagan armagan = new Armagan();
             //DataTable tesekkur = armagan.SelectCountDurumByBolge(SecilenAyQS, SecilenYilQS, ProjeConstants.ARMAGAN_TESEKKURID, "");
-            DataTable tesekkur = armagan.SelectCountDurumByBolgeTarih(ProjeConstants.ARMAGAN_TESEKKURID, "", SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime());
+            DataTable tesekkur = armagan.SelectCountDurumByBolgeTarih(ProjeConstants.ARMAGAN_TESEKKURID, ProjeConstants.BOLGE_HEPSI_INT, SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime());
             FillTable(tesekkur, TesekkurTable, TesekkurBtn, AdresEtiketBtn, TesekkurDurumChk);
 
         }
@@ -351,7 +351,7 @@ namespace NBYS_WebParts.TesekkurBasimiWP
                 Armagan armagan = new Armagan();
                 try
                 {
-                    bool isUpdated = armagan.UpdateDurumByBolge(ProjeConstants.DURUM_KONTROLEDILDI, ProjeConstants.DURUM_GONDERILDI, SecilenBastarQS, SecilenBittarQS, ProjeConstants.ARMAGAN_TESEKKURID, "");
+                    bool isUpdated = armagan.UpdateDurumByBolge(ProjeConstants.DURUM_KONTROLEDILDI, ProjeConstants.DURUM_GONDERILDI, SecilenBastarQS, SecilenBittarQS, ProjeConstants.ARMAGAN_TESEKKURID, ProjeConstants.BOLGE_HEPSI_INT);
 
                 }
                 catch (Exception ex)

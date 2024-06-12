@@ -62,7 +62,7 @@ namespace MTS_WebParts.FaaliyetListesiWP
             {
                 if (!Page.IsPostBack)
                 {
-                    BaslangicTarihiTxt.Text = DateTime.Today.AddYears(-1).ConvertToDatetimeEmptyIfNull();
+                    BaslangicTarihiTxt.Text = DateTime.Today.AddYears(-5).ConvertToDatetimeEmptyIfNull();
                     BitisTarihiTxt.Text = DateTime.Today.ConvertToDatetimeEmptyIfNull();
                 }
                     TabloOlustur(); 
@@ -103,7 +103,8 @@ namespace MTS_WebParts.FaaliyetListesiWP
             DateTime bittar = BitisTarihiTxt.Text.ConvertToDatetime();
             List<FaaliyetListItem> faaliyetList = new List<FaaliyetListItem>();
             Faaliyet faaliyetDao = new Faaliyet();
-            DataTable dataTable = faaliyetDao.SelectAllByKatilimciFaaliyetReturnDataTable(ProjeConstants.HEPSI_INT, ProjeConstants.HEPSI_INT, ProjeConstants.HEPSI, bastar,bittar);
+            string acikTarihli = AcikTarhliChk.Checked ? ProjeConstants.HEPSI : ProjeConstants.FAALIYET_ACIKTARIHLI_DEGIL;
+            DataTable dataTable = faaliyetDao.SelectAllByKatilimciFaaliyetReturnDataTable(ProjeConstants.HEPSI_INT, ProjeConstants.HEPSI_INT, acikTarihli, bastar,bittar, ProjeConstants.HEPSI);
 
             if (dataTable != null)
             {
@@ -117,7 +118,7 @@ namespace MTS_WebParts.FaaliyetListesiWP
                     string faaliyetTipi = row["FaaliyetTipi"].ToString();
                     string faaliyetYeri = row["FaaliyetYeri"].ToString(); ;
                     string faaliyetKonusu = row["FaaliyetKonusu"].ToString();
-                    string faaliyetAmaci = row["FaaliyetAmaci"].ToString();
+                    string faaliyetAmaci = row["FaaliyetAmaciId"].ToString();
                     string faaliyetDurumu = row["FaaliyetDurumu"].ToString();
 
                     DateTime basTar = row["BaslangicTarihi"].ConvertToDatetime();
@@ -267,6 +268,11 @@ namespace MTS_WebParts.FaaliyetListesiWP
         protected void BitisTarihiTxt_TextChanged(object sender, EventArgs e)
         {
             TabloOlustur();
+        }
+        protected void AcikTarhliChk_CheckedChanged(object sender, EventArgs e)
+        {
+            TabloOlustur();
+
         }
         private class FaaliyetListItem
         {

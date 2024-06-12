@@ -361,10 +361,10 @@ namespace Model.NBYS
 
             return toplam;
         }
-        public decimal SelectSumBagisMiktariByBagisTarihiBolge(DateTime basTar, DateTime bitTar, string bolge, ref int adet)
+        public decimal SelectSumBagisMiktariByBagisTarihiBolge(DateTime basTar, DateTime bitTar, int bolgeId, ref int adet)
         {
             decimal toplam = 0;
-            string bolgeStr = string.IsNullOrEmpty(bolge) ? " AND Bolge is NULL " : "AND Bolge=" + bolge.ReturnQuotedValue().ToString();
+            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND B.BolgeId={0} ", bolgeId);
             string sqlString = string.Format(@"
                     SELECT COUNT(H.Id) Adet,SUM(BagisMiktari) Toplam FROM NakitBagisHareket_Table H
                         LEFT OUTER JOIN NakitBagisci_Table A ON A.Id= H.BagisciId
@@ -573,28 +573,48 @@ namespace Model.NBYS
         }
         public DataTable SelectCountByBagisTarihiBolge(int yil, int ay)
         {
-            string sqlString = string.Format(@"        
-                                SELECT  Convert(nvarchar,replace (SUM(A.BagisMiktari),'.',',')) as Toplam , 
-										COUNT(A.Id) Adet, I.Bolge Bolge, MONTH(A.BagisTarihi) Ay 
-								FROM NakitBagisHareket_Table A
-                                INNER JOIN NakitBagisci_Table N on N.Id=A.BagisciId
-								INNER JOIN Il_Table I on I.Id=N.Ili
-                                WHERE YEAR(A.BagisTarihi)=  {0}
-                                      AND  MONTH(A.BagisTarihi)= {1}
-                                GROUP BY Bolge , MONTH(A.BagisTarihi) ", yil, ay);
+            string sqlString = string.Format(@"
+                SELECT  
+                    SUM(A.BagisMiktari) as Toplam,
+                    COUNT(A.Id) as Adet, 
+                    D.KisaAdi as Bolge, 
+                    MONTH(A.BagisTarihi) as Ay 
+                FROM 
+                    NakitBagisHareket_Table A
+                INNER JOIN 
+                    NakitBagisci_Table B on B.Id = A.BagisciId
+                INNER JOIN 
+                    Il_Table C on C.Id = B.Ili
+                INNER JOIN 
+                    Bolge_Table D on D.Id = C.BolgeId
+                WHERE 
+                    YEAR(A.BagisTarihi)={0}
+                    AND MONTH(A.BagisTarihi)={1}
+                GROUP BY 
+                    D.KisaAdi, 
+                    MONTH(A.BagisTarihi);
+            ", yil, ay);
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return dataTable;
         }
         public DataTable SelectCountSumByBagisTarihi(DateTime bastar, DateTime bittar)
         {
             string sqlString = string.Format(@"        
-                                Select COUNT(H.Id) Adet,SUM(BagisMiktari) Toplam,B.Bolge FROM NakitBagisHareket_Table H
-                                    INNER JOIN NakitBagisci_Table A ON A.Id= H.BagisciId
-                                    LEFT OUTER JOIN Il_Table B ON B.Id=H.Ili
-                                WHERE BagisTarihi between {0} and {1}
-	                                AND BagisciId IN (Select BagisciId FROM NakitBagisHareket_Table WHERE BagisTarihi < {0} )
-                                GROUP BY B.Bolge 
-                                ORDER BY B.Bolge ", bastar.ReturnQuotedValue(), bittar.ReturnQuotedValue());
+                 SELECT 
+	                COUNT(H.Id) As Adet,
+	                SUM(BagisMiktari) As Toplam,
+	                D.Id As BolgeId,
+                    D.KisaAdi As Bolge
+                FROM 
+	                NakitBagisHareket_Table H
+                INNER JOIN 
+	                NakitBagisci_Table B ON B.Id= H.BagisciId
+                LEFT JOIN Il_Table C ON C.Id=H.Ili
+                LEFT JOIN Bolge_Table D ON D.Id=C.BolgeId
+                WHERE BagisTarihi BETWEEN {0} and {1}
+	                AND BagisciId IN (Select BagisciId FROM NakitBagisHareket_Table WHERE BagisTarihi < {0} )
+                GROUP BY D.Id,D.KisaAdi 
+                ORDER BY D.KisaAdi ", bastar.ReturnQuotedValue(), bittar.ReturnQuotedValue());
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return dataTable;
         }

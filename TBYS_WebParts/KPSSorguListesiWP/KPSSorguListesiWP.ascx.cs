@@ -110,7 +110,7 @@ namespace TBYS_WebParts.KPSSorguListesiWP
                 TasinmazTaahhut ttDao = new TasinmazTaahhut();
 
                 List<TasinmazTaahhut> ttlist = ttDao.SelectByFilters(SagVefatChk.Checked, 
-                    TCKimlikChk.Checked, DogumTarihiChk.Checked, ProjeConstants.BOLGE_HEPSI);
+                    TCKimlikChk.Checked, DogumTarihiChk.Checked, ProjeConstants.BOLGE_HEPSI_INT);
                 sorgulanacakTaahhutList = ttlist.Select(a => new SorgulanacakKisi()
                 {
                     KimlikNo = a.TCKimlikNo,

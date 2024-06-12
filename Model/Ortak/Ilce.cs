@@ -26,7 +26,8 @@ namespace Model.Ortak
         {
             string sqlString = string.Format(@"SELECT *
                                FROM Ilce_Table 
-                               WHERE Id={0}", id);
+                               WHERE Id={0}
+                               ORDER BY IlceAdi ", id);
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Ilce> list = ToList<Ilce>(dataTable);
             Ilce ilce = new Ilce();
@@ -36,7 +37,7 @@ namespace Model.Ortak
         public override List<T> SelectAll<T>()
         {
             string sqlString = string.Format(@"SELECT *
-                               FROM Ilce_Table");
+                               FROM Ilce_Table ORDER BY IlceAdi");
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Ilce> list = ToList<Ilce>(dataTable);
@@ -68,7 +69,7 @@ namespace Model.Ortak
         {
             string sqlString = string.Format(@"SELECT *
                                                 FROM Ilce_Table
-                                                WHERE Id='{0}'", ilceId);
+                                                WHERE Id={0} ORDER BY IlceAdi", ilceId);
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Ilce> list = ToList<Ilce>(dataTable);
@@ -81,7 +82,7 @@ namespace Model.Ortak
         {
             string sqlString = string.Format(@"SELECT *
                                                 FROM ILCELER
-                                                WHERE ILCE_ID='{0}'", ilceId);
+                                                WHERE ILCE_ID={0} ORDER BY IlceAdi", ilceId);
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
 
@@ -93,7 +94,7 @@ namespace Model.Ortak
             string sqlString = string.Format(@"SELECT *
                                                 FROM Ilce_Table
                                                 WHERE IlAdi='{0}'
-                                                AND IlceAdi LIKE '%{1}%'", ilAdi, ilceAdi);
+                                                AND IlceAdi LIKE '%{1}%' ORDER BY IlceAdi", ilAdi, ilceAdi);
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Ilce> list = ToList<Ilce>(dataTable);
@@ -107,7 +108,7 @@ namespace Model.Ortak
         {
             string sqlString = string.Format(@"SELECT *
                                                 FROM Ilce_Table
-                                                WHERE IlAdi='{0}'", pIlAdi);
+                                                WHERE IlAdi='{0}' ORDER BY IlceAdi", pIlAdi);
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Ilce> list = ToList<Ilce>(dataTable);
@@ -132,7 +133,7 @@ namespace Model.Ortak
         {
             string sqlString = string.Format(@"SELECT *
                                                 FROM Ilce_Table
-                                                WHERE IlId='{0}'", pIlId);
+                                                WHERE IlId={0} ORDER BY IlceAdi", pIlId);
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Ilce> list = ToList<Ilce>(dataTable);
@@ -143,7 +144,7 @@ namespace Model.Ortak
         {
             string sqlString = string.Format(@"SELECT *
                                                 FROM Ilce_Table
-                                                WHERE LOWER(IlceAdi)=LOWER('{0}') AND LOWER(IlAdi)=LOWER('{1}')", ilceName, ilName);
+                                                WHERE LOWER(IlceAdi)=LOWER('{0}') AND LOWER(IlAdi)=LOWER('{1}') ORDER BY IlceAdi", ilceName, ilName);
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Ilce> list = ToList<Ilce>(dataTable);
@@ -162,7 +163,7 @@ namespace Model.Ortak
                     AND (B.Id BETWEEN 0 AND 81 AND B.IlAdi != '') 
                     AND  A.Id IN (SELECT Ilcesi FROM FTK_Table WHERE Ilcesi > 0) 
                     {1}                    
-                ORDER BY B.Bolge, B.Id, A.Id     
+                ORDER BY A.IlceAdi     
             ", ProjeConstants.ILCE_MERKEZ.ReturnQuotedValue(), iliStr);
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Ilce> list = ToList<Ilce>(dataTable);

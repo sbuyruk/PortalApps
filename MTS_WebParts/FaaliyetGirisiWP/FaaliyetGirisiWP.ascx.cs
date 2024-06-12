@@ -245,7 +245,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                 OzelKalemTakvimiChk.Checked= faaliyet.TakvimeIslendi;
 
                 UtilityHelper.SetDDLValue(FaaliyetTipiDDL, faaliyet.FaaliyetTipi);
-                UtilityHelper.SetDDLValue(FaaliyetAmaciDDL, faaliyet.FaaliyetAmaci.ToString());
+                UtilityHelper.SetDDLValue(FaaliyetAmaciDDL, faaliyet.FaaliyetAmaciId.ToString());
                 UtilityHelper.SetDDLValue(FaaliyetDurumuDDL, faaliyet.FaaliyetDurumu.ToString());
                 //UtilityHelper.SetDDLValue(FaaliyetYeriDDL, faaliyet.FaaliyetYeri.ToString());
                 FaaliyetYeriTxt.Text = faaliyet.FaaliyetYeriStr;
@@ -357,7 +357,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             {
                 Faaliyet faaliyet = new Faaliyet();
                 faaliyet.FaaliyetTipi = FaaliyetTipiDDL.SelectedItem.Text;
-                faaliyet.FaaliyetAmaci = FaaliyetAmaciDDL.SelectedItem.Value.ConvertToInt();
+                faaliyet.FaaliyetAmaciId = FaaliyetAmaciDDL.SelectedItem.Value.ConvertToInt();
                 faaliyet.FaaliyetKonusu = FaaliyetKonusuTxt.Text;
                 //faaliyet.FaaliyetYeri = FaaliyetYeriDDL.SelectedItem.Value.ConvertToInt();
                 faaliyet.FaaliyetYeriStr = FaaliyetYeriTxt.Text;
@@ -470,7 +470,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                 else
                 {
                     faaliyet.FaaliyetTipi = FaaliyetTipiDDL.SelectedItem.Text;
-                    faaliyet.FaaliyetAmaci = FaaliyetAmaciDDL.SelectedItem.Value.ConvertToInt();
+                    faaliyet.FaaliyetAmaciId = FaaliyetAmaciDDL.SelectedItem.Value.ConvertToInt();
                     faaliyet.FaaliyetKonusu = FaaliyetKonusuTxt.Text;
                     faaliyet.FaaliyetYeriStr = FaaliyetYeriTxt.Text;
                     faaliyet.FaaliyetDurumu = FaaliyetDurumuDDL.SelectedItem.Value.ConvertToInt();
@@ -906,7 +906,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
         {
 
             Faaliyet faaliyetDao = new Faaliyet();
-            DataTable dataTable = faaliyetDao.SelectAllByKatilimciFaaliyetReturnDataTable(FaaliyetIdQS.ConvertToInt(), ProjeConstants.HEPSI_INT, ProjeConstants.HEPSI, ProjeConstants.NULL_TARIH, ProjeConstants.NULL_TARIH);
+            DataTable dataTable = faaliyetDao.SelectAllByKatilimciFaaliyetReturnDataTable(FaaliyetIdQS.ConvertToInt(), ProjeConstants.HEPSI_INT, ProjeConstants.HEPSI, ProjeConstants.NULL_TARIH, ProjeConstants.NULL_TARIH, ProjeConstants.HEPSI);
             int SiraNo = 1;
             List<KatilimciListItem> list = new List<KatilimciListItem>();
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
@@ -916,6 +916,8 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                 {
                     int katilimId = row["KatilimId"].ReturnZeroIfNull().ConvertToInt();
                     int katilimciId = row["KatilimciId"].ReturnZeroIfNull().ConvertToInt();
+                    if (katilimciId < 1)
+                        continue;
                     int katilimciTipi = row["KatilimciTipi"].ReturnZeroIfNull().ConvertToInt();
                     string adi = row["Adi"].ToString();
                     string soyadi = row["Soyadi"].ToString();
@@ -2191,7 +2193,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             {
                 Id = faaliyet.Id;
                 FaaliyetTipi = faaliyet.FaaliyetTipi;
-                FaaliyetAmaci = faaliyet.FaaliyetAmaci;
+                FaaliyetAmaciId = faaliyet.FaaliyetAmaciId;
                 FaaliyetKonusu = faaliyet.FaaliyetKonusu;
                 FaaliyetYeriStr = faaliyet.FaaliyetYeriStr;
                 FaaliyetDurumu = faaliyet.FaaliyetDurumu;
@@ -2209,7 +2211,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
 
             public int Id { get; set; }
             public string FaaliyetTipi { get; set; }
-            public int FaaliyetAmaci { get; set; }
+            public int FaaliyetAmaciId { get; set; }
             public string FaaliyetKonusu { get; set; }
             public string FaaliyetYeriStr { get; set; }
             public int FaaliyetDurumu { get; set; }
@@ -2231,7 +2233,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                     return false;
 
                 if (FaaliyetTipi != other.FaaliyetTipi
-                    || FaaliyetAmaci != other.FaaliyetAmaci
+                    || FaaliyetAmaciId != other.FaaliyetAmaciId
                     || FaaliyetKonusu != other.FaaliyetKonusu
                     || !FaaliyetYeriStr.Equals(other.FaaliyetYeriStr)
                     || TumGun != other.TumGun
@@ -2252,7 +2254,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             {
                 return !(other is null) &&
                        FaaliyetTipi == other.FaaliyetTipi &&
-                       FaaliyetAmaci == other.FaaliyetAmaci &&
+                       FaaliyetAmaciId == other.FaaliyetAmaciId &&
                        FaaliyetKonusu == other.FaaliyetKonusu &&
                        FaaliyetYeriStr == other.FaaliyetYeriStr &&
                        FaaliyetDurumu == other.FaaliyetDurumu &&
@@ -2270,7 +2272,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             {
                 int hashCode = 477006145;
                 hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(FaaliyetTipi);
-                hashCode = hashCode * -1521134295 + FaaliyetAmaci.GetHashCode();
+                hashCode = hashCode * -1521134295 + FaaliyetAmaciId.GetHashCode();
                 hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(FaaliyetKonusu);
                 hashCode = hashCode * -1521134295 + FaaliyetYeriStr.GetHashCode();
                 hashCode = hashCode * -1521134295 + FaaliyetDurumu.GetHashCode();

@@ -309,13 +309,10 @@ namespace Model.NBYS
                 }
             }
         }
-        public bool UpdateDurumByBolge(string fromdurum, string todurum, string bastar, string bittar, int armaganTanimId, string bolge)
+        public bool UpdateDurumByBolge(string fromdurum, string todurum, string bastar, string bittar, int armaganTanimId, int bolgeId)
         {
             bool isSuccess = false;
-            string bolgeStr = string.Empty;
-
-            if (!string.IsNullOrEmpty(bolge))
-                bolgeStr = string.Format(@" AND Il_Table.Bolge={0}", bolge.ReturnQuotedValue());
+            string bolgeStr = bolgeId == ProjeConstants.BOLGE_HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format("  AND Il_Table.BolgeId={0} ", bolgeId);
 
             string sqlString = string.Format(@"UPDATE A
                                                 SET Durum={0}
@@ -330,7 +327,7 @@ namespace Model.NBYS
                                                 WHERE A.BelgeGecersizMi!=1 AND A.Durum = {1}
                                                     AND A.Tarih BETWEEN {2} AND {3} --AND MONTH(A.Tarih)={2} AND YEAR(A.Tarih)={3} 
                                                     AND A.ArmaganTanimId={4} " + bolgeStr
-                                                    , todurum.ReturnQuotedValue(), fromdurum.ReturnQuotedValue(), bastar.ReturnQuotedValue(), bittar.ReturnQuotedValue(), armaganTanimId, bolge.ReturnQuotedValue());
+                                                    , todurum.ReturnQuotedValue(), fromdurum.ReturnQuotedValue(), bastar.ReturnQuotedValue(), bittar.ReturnQuotedValue(), armaganTanimId);
 
             isSuccess = dao.Update2Db(sqlString);
 
@@ -368,9 +365,9 @@ namespace Model.NBYS
         /// <param name="rowCount"></param>
         /// Parası iade edilen armaganları da göstersin diye BelgeGecersizMi kontrolu burada yok
         /// <returns></returns>
-        public string SelectByDurumTarih(string durum, DateTime bastar, DateTime bittar, string armaganTanimId, ref int rowCount, string bolge, int ili)
+        public string SelectByDurumTarih(string durum, DateTime bastar, DateTime bittar, string armaganTanimId, ref int rowCount, int bolgeId, int ili)
         {
-            DataTable dataTable = SelectByDurumTarihReturnDT(durum, bastar, bittar, armaganTanimId, bolge,ili);
+            DataTable dataTable = SelectByDurumTarihReturnDT(durum, bastar, bittar, armaganTanimId, bolgeId,ili);
             if (dataTable != null)
             {
                 rowCount = dataTable.Rows.Count;
@@ -378,7 +375,7 @@ namespace Model.NBYS
             string json = ToJSON(dataTable);
             return json;
         }
-        public DataTable SelectByDurumTarihReturnDT(string durum, DateTime bastar, DateTime bittar, string armaganTanimId, string bolge, int ili)
+        public DataTable SelectByDurumTarihReturnDT(string durum, DateTime bastar, DateTime bittar, string armaganTanimId, int bolgeId, int ili)
         {
             var durumQuery = string.Empty;
             if (!durum.Equals(ProjeConstants.HEPSI)) //eğer boş ise query'e hiç eklenmesin
@@ -391,9 +388,9 @@ namespace Model.NBYS
             {
                 armaganTanimIdQuery = string.Format("AND ArmaganTanimId={0}", armaganTanimId);
             }
-            string bolgeQuery = string.Empty;
-            if (!string.IsNullOrEmpty(bolge) && !bolge.Equals(ProjeConstants.BOLGE_HEPSI))
-                bolgeQuery = string.Format(@" AND B.Ili IN (SELECT Id FROM Il_Table WHERE Bolge = '{0}' ) ", bolge);
+           
+            string bolgeQuery = (bolgeId == ProjeConstants.BOLGE_HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT)?string.Empty
+                :string.Format(@" AND B.Ili IN (SELECT Id FROM Il_Table WHERE BolgeId = '{0}' ) ", bolgeId);
 
             string ilQuery = string.Empty;
             if (ili > 0 || ili != ProjeConstants.HEPSI_INT)
@@ -414,6 +411,8 @@ namespace Model.NBYS
                     ,A.BagisciId
                     ,ArmaganTanimId
                     ,Tarih 
+                    ,CONVERT(varchar,FORMAT(Tarih,'dd.MM.yyyy')) ArmaganTarihi
+                    ,FORMAT(A.BagisMiktari, 'N2', 'tr-TR') ArmaganTutari
                     ,A.Durum
                     ,ISNULL(BelgedeYazanIsim, '') BelgedeYazanIsim
                     ,A.BelgeGecersizMi, A.IadeMiktari, A.DovizCinsi,A.BagisMiktariYazmasin
@@ -429,12 +428,12 @@ namespace Model.NBYS
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return dataTable;
         }
-        public DataTable SelectCountDurumByBolgeBasTarBitTar(DateTime basTar, DateTime bitTar, int armaganTanimId, string bolge)
+        public DataTable SelectCountDurumByBolgeBasTarBitTar(DateTime basTar, DateTime bitTar, int armaganTanimId, int bolgeId)
         {
-            string bolgeStr = string.Empty;
+            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND N.Ili IN (SELECT Id FROM Il_Table WHERE BolgeId={0})", bolgeId);
 
-            if (!string.IsNullOrEmpty(bolge))
-                bolgeStr = string.Format(@" AND N.Ili IN (SELECT Id FROM Il_Table WHERE Bolge = '{0}' ) ", bolge);
+            //if (!string.IsNullOrEmpty(bolge))
+            //    bolgeStr = string.Format(@" AND N.Ili IN (SELECT Id FROM Il_Table WHERE Bolge = '{0}' ) ", bolge);
 
             string sqlString = string.Format(@"        
                                 SELECT A.Durum , COUNT(Durum) Adet FROM Armagan_Table A
@@ -444,12 +443,10 @@ namespace Model.NBYS
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return dataTable;
         }
-        public DataTable SelectCountDurumByBolgeTarih(int armaganTanimId, string bolge, DateTime bastar, DateTime bittar)
+        public DataTable SelectCountDurumByBolgeTarih(int armaganTanimId, int bolgeId, DateTime bastar, DateTime bittar)
         {
-            string bolgeStr = string.Empty;
-
-            if (!string.IsNullOrEmpty(bolge))
-                bolgeStr = string.Format(@" AND N.Ili IN (SELECT Id FROM Il_Table WHERE Bolge = '{0}' ) ", bolge);
+            string bolgeStr = (bolgeId == ProjeConstants.BOLGE_HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT) ? string.Empty
+                    :string.Format(@" AND N.Ili IN (SELECT Id FROM Il_Table WHERE BolgeId = '{0}' ) ", bolgeId);
 
             string sqlString = string.Format(@"        
                                 SELECT A.Durum , COUNT(Durum) Adet FROM Armagan_Table A

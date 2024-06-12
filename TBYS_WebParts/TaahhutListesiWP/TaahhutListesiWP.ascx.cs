@@ -81,28 +81,29 @@ namespace TBYS_WebParts.TaahhutListesiWP
                 ViewState["SecilenId"] = value;
             }
         }
-        private string BolgeQS
+       
+        private int BolgeIdQS
         {
             get
             {
 
-                if (ViewState["Bolge"] == null)
+                if (ViewState["BolgeId"] == null)
                 {
-                    if (Page.Request.QueryString["Bolge"] != null)
+                    if (Page.Request.QueryString["BolgeId"] != null)
                     {
-                        ViewState["Bolge"] = Page.Request.QueryString["Bolge"];
+                        ViewState["BolgeId"] = Page.Request.QueryString["BolgeId"];
                     }
                     else
                     {
-                        ViewState["Bolge"] = string.Empty;
+                        ViewState["BolgeId"] = string.Empty;
                     }
                 }
-                return ViewState["Bolge"].ToString();
+                return ViewState["BolgeId"].ReturnZeroIfNull().ConvertToInt();
             }
 
             set
             {
-                ViewState["Bolge"] = value;
+                ViewState["BolgeId"] = value;
             }
         }
         private string CurrentUserName
@@ -128,11 +129,16 @@ namespace TBYS_WebParts.TaahhutListesiWP
             {
                 if (!Page.IsPostBack)
                 {
-                    BolgeQS = IKYSOrtak.PersonelinBolgesiniGetir_Deprecated(CurrentUserName);
-                    if (!string.IsNullOrEmpty(BolgeQS))
+                    Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
+                    BolgeIdQS = bolge == null ? 0 : bolge.Id;
+                    TitleLbl.Text = "Taahhüt Listesi";
+                    if (BolgeIdQS != ProjeConstants.BOLGE_HEPSI_INT && BolgeIdQS != ProjeConstants.BOLGE_GENELMUDURLUK_INT)
                     {
-                        TitleLbl.Text = "Taahhüt Listesi" + " (" + BolgeQS + " Bölgesi)";
+                        Bolge bolgeDao = new Bolge();
+                        bolgeDao = bolgeDao.Select(bolge.Id);
+                        TitleLbl.Text = bolgeDao == null ? "Taahhüt Listesi" : "Taahhüt Listesi" + " (" + bolge.KisaAdi + " Bölgesi )";
                     }
+ 
                     TabloOlustur();
                 }
             }
@@ -182,9 +188,7 @@ namespace TBYS_WebParts.TaahhutListesiWP
         private List<TasinmazTaahhut> GetBagisciData()
         {
             TasinmazTaahhut ttDao = new TasinmazTaahhut();
-            List<TasinmazTaahhut> ttlist = (string.IsNullOrEmpty(BolgeQS) ? 
-                ttDao.SelectByFilters(false, false, false, ProjeConstants.BOLGE_HEPSI) : 
-                ttDao.SelectByFilters(false, false, false,BolgeQS)); 
+            List<TasinmazTaahhut> ttlist = ttDao.SelectByFilters(false, false, false,BolgeIdQS); 
             return ttlist;
         }
         private List<TasinmazTaahhutListItem> GetDataList()
@@ -192,9 +196,9 @@ namespace TBYS_WebParts.TaahhutListesiWP
             List<TasinmazTaahhutListItem> list = new List<TasinmazTaahhutListItem>();
             string pageUrl = ProjeConstants.PAGE_TASINMAZBAGISCI_GIRIS;
             List<string> bagisciTaahhutFormuDosyalari = UtilityHelper.GetFileNameListFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, ProjeConstants.DOSYA_TAAHHUT_FORMU);
-
+            bool isEditable = BolgeIdQS == ProjeConstants.BOLGE_HEPSI_INT || BolgeIdQS == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? true : false;
             TasinmazBagisci tb= new TasinmazBagisci();
-            List<TasinmazBagisci> tblist = (!string.IsNullOrEmpty(BolgeQS)? tb.SelectByBolge(BolgeQS):tb.SelectAll<TasinmazBagisci>());
+            List<TasinmazBagisci> tblist =  tb.SelectByBolge(BolgeIdQS);
             foreach (var item in tblist) 
             {
                 string dosyaAdi = ProjeConstants.DOSYA_TAAHHUT_FORMU + item.Id + ".pdf";
@@ -209,8 +213,12 @@ namespace TBYS_WebParts.TaahhutListesiWP
                     tasinmazBagisciListItem.TCKimlikNo = item.TCKimlikNo;
                     tasinmazBagisciListItem.DogumTarihi = item.DogumTarihi.ConvertToDatetimeEmptyIfNull();
                     tasinmazBagisciListItem.Sag_vefat = item.Sag_vefat;
+                    tasinmazBagisciListItem.Duzenle =string.Empty;
                     tasinmazBagisciListItem.Bolge=BolgeGetir(item.Id);
-                    tasinmazBagisciListItem.Duzenle = "<a href=" + pageUrl + @"?DestinationApp=TBD&BagisciId=" + item.Id + "  class='btn btn-outline-primary'>Düzenle</a>"; //"<a href=" + pageUrl + @"?DestinationApp=TBD&BagisciId=" + item.Id + "  class='btn btn-outline-primary'>Düzenle</a>";
+                    if (isEditable)
+                    {
+                        tasinmazBagisciListItem.Duzenle = "<a href=" + pageUrl + @"?DestinationApp=TBD&BagisciId=" + item.Id + "  class='btn btn-outline-primary'>Düzenle</a>"; //"<a href=" + pageUrl + @"?DestinationApp=TBD&BagisciId=" + item.Id + "  class='btn btn-outline-primary'>Düzenle</a>"; 
+                    }
                     tasinmazBagisciListItem.Secildi = SecilenIdQS.Equals(item.Id);
                     list.Add(tasinmazBagisciListItem);
                 }
@@ -233,8 +241,7 @@ namespace TBYS_WebParts.TaahhutListesiWP
                 tasinmazBagisciListItem.Bolge = BolgeGetir(item.BagisciId);
                 tasinmazBagisciListItem.Bagisci = BagisciBilgisiGetir(item.BagisciId);
                 
-                bool duzenleGorunsunMu = !string.IsNullOrEmpty(AuthQS) && AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM);
-                if (duzenleGorunsunMu)
+                if (isEditable)
                 {
                     tasinmazBagisciListItem.Duzenle = "<a href=" + pageUrl + @"?DestinationApp=TBD&BagisciId=" + item.BagisciId + "  class='btn btn-outline-primary'>Düzenle</a>";
                 }
@@ -287,9 +294,9 @@ namespace TBYS_WebParts.TaahhutListesiWP
 
         private string CreateDataTable(string jsonData)
         {
-            string duzenleGorunsun = string.IsNullOrEmpty(AuthQS) || !AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM)
-                ? "{ targets:10, visible:false}," 
-                : "{ targets:10, visible:true},";
+            string duzenleGorunsun = BolgeIdQS == ProjeConstants.BOLGE_HEPSI_INT || BolgeIdQS == ProjeConstants.BOLGE_GENELMUDURLUK_INT
+                ? "{ targets:10, visible:true}," 
+                : "{ targets:10, visible:false},";
             string tableString = @"
             jQuery(document).ready(function() {
 

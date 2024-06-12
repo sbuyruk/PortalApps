@@ -74,14 +74,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>BolgeBagisciKartiWP.ascx</DependentUpon>
     </Compile>
-    <Compile Include="BolgeFTKListesiWP\BolgeFTKListesiWP.ascx.cs">
-      <DependentUpon>BolgeFTKListesiWP.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="BolgeFTKListesiWP\BolgeFTKListesiWP.ascx.g.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>BolgeFTKListesiWP.ascx</DependentUpon>
-    </Compile>
     <Compile Include="BolgeKiraArtisCizelgesiWP\BolgeKiraArtisCizelgesiWP.ascx.cs">
       <DependentUpon>BolgeKiraArtisCizelgesiWP.ascx</DependentUpon>
     </Compile>
@@ -105,14 +97,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>BolgeKiraKartiWP.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="BolgeNakitBagisciListesiWP\BolgeNakitBagisciListesiWP.ascx.cs">
-      <DependentUpon>BolgeNakitBagisciListesiWP.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="BolgeNakitBagisciListesiWP\BolgeNakitBagisciListesiWP.ascx.g.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>BolgeNakitBagisciListesiWP.ascx</DependentUpon>
     </Compile>
     <Compile Include="BolgeTasinmazBagisciListesiWP\BolgeTasinmazBagisciListesiWP.ascx.cs">
       <DependentUpon>BolgeTasinmazBagisciListesiWP.ascx</DependentUpon>
@@ -170,10 +154,6 @@
     <None Include="BolgeBagisciKartiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{38d19c4f-2557-4e3c-9fae-35d9e6b3e673}</SharePointProjectItemId>
     </None>
-    <None Include="BolgeFTKListesiWP\BolgeFTKListesiWP.webpart" />
-    <None Include="BolgeFTKListesiWP\SharePointProjectItem.spdata">
-      <SharePointProjectItemId>{9c0131ae-1a83-4120-b121-ffa9646ca4c1}</SharePointProjectItemId>
-    </None>
     <None Include="BolgeKiraArtisCizelgesiWP\BolgeKiraArtisCizelgesiWP.webpart" />
     <None Include="BolgeKiraArtisCizelgesiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{6ed4358a-1ef4-45da-be40-59a1026fd761}</SharePointProjectItemId>
@@ -185,10 +165,6 @@
     <None Include="BolgeKiraKartiWP\BolgeKiraKartiWP.webpart" />
     <None Include="BolgeKiraKartiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{7d95c811-9409-400b-b705-15306377aed8}</SharePointProjectItemId>
-    </None>
-    <None Include="BolgeNakitBagisciListesiWP\BolgeNakitBagisciListesiWP.webpart" />
-    <None Include="BolgeNakitBagisciListesiWP\SharePointProjectItem.spdata">
-      <SharePointProjectItemId>{44dc0d6b-5a58-4fd7-87ff-38d52db17c27}</SharePointProjectItemId>
     </None>
     <None Include="BolgeTasinmazBagisciListesiWP\BolgeTasinmazBagisciListesiWP.webpart" />
     <None Include="BolgeTasinmazBagisciListesiWP\SharePointProjectItem.spdata">
@@ -231,11 +207,6 @@
       <LastGenOutput>BolgeBagisciKartiWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="BolgeBagisciKartiWP\Elements.xml" />
-    <Content Include="BolgeFTKListesiWP\BolgeFTKListesiWP.ascx">
-      <Generator>SharePointWebPartCodeGenerator</Generator>
-      <LastGenOutput>BolgeFTKListesiWP.ascx.g.cs</LastGenOutput>
-    </Content>
-    <Content Include="BolgeFTKListesiWP\Elements.xml" />
     <Content Include="BolgeKiraArtisCizelgesiWP\BolgeKiraArtisCizelgesiWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>BolgeKiraArtisCizelgesiWP.ascx.g.cs</LastGenOutput>
@@ -251,11 +222,6 @@
       <LastGenOutput>BolgeKiraKartiWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="BolgeKiraKartiWP\Elements.xml" />
-    <Content Include="BolgeNakitBagisciListesiWP\BolgeNakitBagisciListesiWP.ascx">
-      <Generator>SharePointWebPartCodeGenerator</Generator>
-      <LastGenOutput>BolgeNakitBagisciListesiWP.ascx.g.cs</LastGenOutput>
-    </Content>
-    <Content Include="BolgeNakitBagisciListesiWP\Elements.xml" />
     <Content Include="BolgeTasinmazBagisciListesiWP\BolgeTasinmazBagisciListesiWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>BolgeTasinmazBagisciListesiWP.ascx.g.cs</LastGenOutput>

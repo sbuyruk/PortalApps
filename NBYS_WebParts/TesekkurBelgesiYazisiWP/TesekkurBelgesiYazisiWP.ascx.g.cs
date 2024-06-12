@@ -89,10 +89,6 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl tbl;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.Label TableDataLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -313,24 +309,6 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControltbl() {
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
-            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
-            this.tbl = @__ctrl;
-            @__ctrl.TemplateControl = this;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "table loader table-bordered ");
-            @__ctrl.ID = "tbl";
-            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            <input id=\"globalFilter\" placeholder=\"Aranacak Keli" +
-                        "me\" size=\"30\" />\r\n                            <div id=\"tblfilter\" class=\"table\">" +
-                        "</div>\r\n                            <div id=\"messages\"></div>\r\n                 " +
-                        "       "));
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlTableDataLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -496,35 +474,48 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP {
             global::System.Web.UI.WebControls.TextBox @__ctrl12;
             @__ctrl12 = this.@__BuildControlEvrakTarihiTxt();
             @__parser.AddParsedSubObject(@__ctrl12);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                        </div>\r\n           " +
-                        "         </div>\r\n                    <div class=\"form-group\">\r\n                 " +
-                        "       "));
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl13;
-            @__ctrl13 = this.@__BuildControltbl();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                            </div>
+                        </div>
+                    </div>
+                    <div class=""form-group"">
+                    <div class=""form-group"">
+                        <table id=""CustomDataTable"" class=""table table-bordered table-hover small"" width=""100%"">
+                            <thead>
+                                <tr>
+                                    <th>Adı</th>
+                                    <th>Belgede Yazan İsim</th>
+                                    <th>TC Kimlik</th>
+                                    <th>Tarih</th>
+                                    <th>Tutar</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                    </div>
+                    <div class=""form-group"">
+                        "));
+            global::System.Web.UI.WebControls.Label @__ctrl13;
+            @__ctrl13 = this.@__BuildControlTableDataLbl();
             @__parser.AddParsedSubObject(@__ctrl13);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                    <div class=\"form-group\">\r\n     " +
-                        "                   "));
-            global::System.Web.UI.WebControls.Label @__ctrl14;
-            @__ctrl14 = this.@__BuildControlTableDataLbl();
-            @__parser.AddParsedSubObject(@__ctrl14);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                </div>\r\n                <div class=" +
                         "\"form-group\">\r\n                    "));
-            global::System.Web.UI.WebControls.HyperLink @__ctrl15;
-            @__ctrl15 = this.@__BuildControlDosyaLnk();
-            @__parser.AddParsedSubObject(@__ctrl15);
+            global::System.Web.UI.WebControls.HyperLink @__ctrl14;
+            @__ctrl14 = this.@__BuildControlDosyaLnk();
+            @__parser.AddParsedSubObject(@__ctrl14);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
-            global::System.Web.UI.WebControls.HyperLink @__ctrl16;
-            @__ctrl16 = this.@__BuildControlAdresEtiketLnk();
-            @__parser.AddParsedSubObject(@__ctrl16);
+            global::System.Web.UI.WebControls.HyperLink @__ctrl15;
+            @__ctrl15 = this.@__BuildControlAdresEtiketLnk();
+            @__parser.AddParsedSubObject(@__ctrl15);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                </div>\r\n\r\n                <div class=\"card-footer\">\r\n          " +
                         "          "));
-            global::System.Web.UI.WebControls.CheckBox @__ctrl17;
-            @__ctrl17 = this.@__BuildControlTesekkurDurumChk();
-            @__parser.AddParsedSubObject(@__ctrl17);
+            global::System.Web.UI.WebControls.CheckBox @__ctrl16;
+            @__ctrl16 = this.@__BuildControlTesekkurDurumChk();
+            @__parser.AddParsedSubObject(@__ctrl16);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl18;
-            @__ctrl18 = this.@__BuildControlDosyaOlusturBtn();
-            @__parser.AddParsedSubObject(@__ctrl18);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl17;
+            @__ctrl17 = this.@__BuildControlDosyaOlusturBtn();
+            @__parser.AddParsedSubObject(@__ctrl17);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                </div>\r\n            </div>\r\n        "));
         }
         

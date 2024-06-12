@@ -128,6 +128,23 @@ namespace NBYS_WebParts.FTKListesiWP
                 ViewState["BolgeId"] = value;
             }
         }
+        private string CurrentUserName
+        {
+            get
+            {
+
+                if (ViewState["CurrentUserName"] == null)
+                {
+                    ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUserLoginName();
+                }
+                return ViewState["CurrentUserName"].ToString();
+            }
+
+            set
+            {
+                ViewState["CurrentUserName"] = value;
+            }
+        }
         private string IliIdQS
         {
             get
@@ -174,23 +191,6 @@ namespace NBYS_WebParts.FTKListesiWP
             set
             {
                 ViewState["IlcesiId"] = value;
-            }
-        }
-        private string CurrentUserName
-        {
-            get
-            {
-
-                if (ViewState["CurrentUserName"] == null)
-                {
-                    ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUserLoginName();
-                }
-                return ViewState["CurrentUserName"].ToString();
-            }
-
-            set
-            {
-                ViewState["CurrentUserName"] = value;
             }
         }
         protected void Page_Load(object sender, EventArgs e)
@@ -347,12 +347,14 @@ namespace NBYS_WebParts.FTKListesiWP
                     string adiSoyadi = row["Adi"].ToString() + " " + row["Soyadi"].ToString();
                     string unvani = row["Unvani"].ReturnEmptyIfNull().ToString();
                     string telefon = row["Telefon"].ReturnEmptyIfNull().ToString();
+                    string bolge = row["Bolge"].ReturnEmptyIfNull().ToString();
 
                     FTKListItem ftkListItem = new FTKListItem();
                     ftkListItem.FTKId = ftkId.ToString();
                     ftkListItem.Sayac = sayac.ToString();
                     ftkListItem.IlId = iliId;
                     ftkListItem.IlceId = ilcesiId;
+                    ftkListItem.SorumluBolge = bolge;
 
                     ftkListItem.Ili = ilAdi;
                     ftkListItem.Ilcesi = (ilcesiId == ProjeConstants.VALILIK_INT ? ProjeConstants.VALILIK : ilceAdi);
@@ -414,6 +416,7 @@ namespace NBYS_WebParts.FTKListesiWP
                         { data: 'IlId' },
                         { data: 'IlceId' },
                         { data: 'FTKGoreviId' },
+                        { data: 'SorumluBolge' },
                         { data: 'Ili' },
                         { data: 'Ilcesi' },
                         { data: 'KurulusTarihi' },
@@ -426,13 +429,6 @@ namespace NBYS_WebParts.FTKListesiWP
                     ],
                     'columnDefs': [
                         { type: 'turkish', targets: [3,4,7,8,9] },
-                        //{ 'width': '15%', 'targets': 3 },
-                        //{ 'width': '15%', 'targets': 4 },
-                        //{ 'width': '15%', 'targets': 5 },
-                        //{ 'width': '15%', 'targets': 6 },
-                        //{ 'width': '15%', 'targets': 7 },
-                        //{ 'width': '15%', 'targets': 8 },
-                        //{ 'width': '10%', 'targets': 9 },
                         {
                             'targets': [0],
                             'visible': false,
@@ -449,7 +445,7 @@ namespace NBYS_WebParts.FTKListesiWP
                             'searchable': false
                         },
                     ],
-                    'order': [[0, 'asc'],[1, 'asc'],[2, 'asc'],[2, 'asc']],//sort IlId,IlceId
+                    'order': [[3, 'asc'],[4, 'asc']],//sort Ili,Ilcesi
                     'scrollY': '300px',
                     'language': {
                     'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
@@ -509,6 +505,7 @@ namespace NBYS_WebParts.FTKListesiWP
             public string Sayac { get; set; }
             public int IlId { get; set; }
             public int IlceId { get; set; }
+            public string SorumluBolge { get; set; }
             public int FTKGoreviId { get; set; }
             public string Ili { get; set; }
             public string Ilcesi { get; set; }

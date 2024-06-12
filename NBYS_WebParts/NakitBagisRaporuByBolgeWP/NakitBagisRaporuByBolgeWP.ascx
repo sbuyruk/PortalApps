@@ -43,7 +43,7 @@
                         </asp:TableHeaderRow>
                         <asp:TableHeaderRow HorizontalAlign="Center">
                             <asp:TableCell CssClass="btn-light font-weight-bold" RowSpan="2">Bölge</asp:TableCell>
-                            <asp:TableCell CssClass="btn-light font-weight-bold" ColumnSpan="2">Genel Md.lük</asp:TableCell>
+                            <asp:TableCell CssClass="btn-light font-weight-bold" ColumnSpan="2">Ankara Bölge</asp:TableCell>
                             <asp:TableCell CssClass="btn-light font-weight-bold" ColumnSpan="2">İstanbul Bölge</asp:TableCell>
                             <asp:TableCell CssClass="btn-light font-weight-bold" ColumnSpan="2">İzmir Bölge</asp:TableCell>
                             <asp:TableCell CssClass="btn-light font-weight-bold" ColumnSpan="2">Mersin Bölge</asp:TableCell>

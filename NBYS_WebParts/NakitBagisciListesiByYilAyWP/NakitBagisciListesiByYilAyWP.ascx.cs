@@ -142,8 +142,8 @@ namespace NBYS_WebParts.NakitBagisciListesiByYilAyWP
         {
             YilDDL.Items.Clear();
             DateTime bugun = DateTime.Today;
-
-            for (int i = 0; i < 5; i++)
+            int yilSayisi = bugun.Year - 2005;
+            for (int i = 0; i <= yilSayisi; i++)
             {
                 DateTime tarih = bugun.AddYears(-i);
                 ListItem li = new ListItem(tarih.Year.ToString(), tarih.Year.ToString());

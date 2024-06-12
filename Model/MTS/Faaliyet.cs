@@ -18,7 +18,7 @@ namespace Model.MTS
         }
         public Guid UniqueId { get; set; }
         public string FaaliyetTipi { get; set; }
-        public int FaaliyetAmaci { get; set; }
+        public int FaaliyetAmaciId { get; set; }
         public string FaaliyetKonusu { get; set; }
         public string FaaliyetYeriStr { get; set; }        
         public int FaaliyetDurumu { get; set; }
@@ -40,7 +40,7 @@ namespace Model.MTS
                 return false;
 
             if (FaaliyetTipi != other.FaaliyetTipi 
-                || FaaliyetAmaci != other.FaaliyetAmaci
+                || FaaliyetAmaciId != other.FaaliyetAmaciId
                 || !FaaliyetKonusu.Equals(other.FaaliyetKonusu)
                 || !FaaliyetYeriStr.Equals(other.FaaliyetYeriStr)
                 || TumGun != other.TumGun
@@ -198,7 +198,7 @@ namespace Model.MTS
                     item.state = dataRow["FaaliyetDurumu"].ToString();
 
                     item.id = int.Parse(dataRow["Id"].ToString());
-                    int faaliyetAmaci= dataRow["FaaliyetAmaci"].ReturnZeroIfNull().ConvertToInt();
+                    int faaliyetAmaci= dataRow["FaaliyetAmaciId"].ReturnZeroIfNull().ConvertToInt();
                     item.purpose = faaliyetAmaci.ToString();
                     item.title = dataRow["FaaliyetKonusu"].ToString();
                     //item.description = item.title;
@@ -246,18 +246,19 @@ namespace Model.MTS
 
             return list;
         }
-        public DataTable SelectAllByKatilimciFaaliyetReturnDataTable( int faaliyetId, int monthBefore, string acikTarihli, DateTime bastar, DateTime bittar)
+        public DataTable SelectAllByKatilimciFaaliyetReturnDataTable( int faaliyetId, int monthBefore, string acikTarihli, DateTime bastar, DateTime bittar,string faaliyetAmaci)
         {
             string bastarStr = bastar < ProjeConstants.REFERANS_TARIHI ? string.Empty : string.Format(" AND BaslangicTarihi >= {0}",bastar.ReturnTRDateFormat());
             string bittarStr = bittar < ProjeConstants.REFERANS_TARIHI ? string.Empty : string.Format(" AND BitisTarihi <= {0}",bittar.ReturnTRDateFormat());
             string acikTarililerHaric = acikTarihli.Equals(ProjeConstants.HEPSI) ? string.Empty: (acikTarihli.Equals(ProjeConstants.FAALIYET_ACIKTARIHLI) ? " AND B.AcikTarih=1 ": " AND B.AcikTarih=0 ");
-            string faaliyetIdStr = faaliyetId == ProjeConstants.HEPSI_INT ? "" : " AND A.FaaliyetId=" + faaliyetId;
+            string faaliyetIdStr = faaliyetId == ProjeConstants.HEPSI_INT ? "" : " AND B.Id=" + faaliyetId;
             string monthBeforeStr = monthBefore == 0 ? string.Empty : string.Format("AND BaslangicTarihi > DateAdd(month, {0}, Convert(date, GetDate()))", monthBefore);
+            string faaliyetAmaciStr = string.IsNullOrEmpty(faaliyetAmaci.Trim()) || faaliyetAmaci.Equals(ProjeConstants.HEPSI) ? "" : " AND B.FaaliyetAmaciId IN " + faaliyetAmaci;
             string sqlString = string.Format(@"
                 SELECT C.KatilimciTipi,A.KatilimciId, A.Id KatilimId,A.TakvimDaveti,B.Aciklama, B.OlusturmaTarihi,
                     C.Adi, C.Soyadi, C.EPosta,C.EPosta,
 	                B.Id FaaliyetId, B.BaslangicTarihi,B.BaslangicSaati, B.BitisTarihi,B.BitisSaati,
-	                B.FaaliyetAmaci,B.FaaliyetDurumu,B.FaaliyetKonusu,B.FaaliyetTipi,B.FaaliyetYeriStr FaaliyetYeri, B.TumGun,B.AcikTarih,
+	                B.FaaliyetAmaciId,B.FaaliyetDurumu,B.FaaliyetKonusu,B.FaaliyetTipi,B.FaaliyetYeriStr FaaliyetYeri, B.TumGun,B.AcikTarih,
 	                H.Adi Kurumu
                 FROM Faaliyet_Table B  
 	                LEFT JOIN FaaliyetKatilim_Table A ON A.FaaliyetId=B.Id 
@@ -271,8 +272,9 @@ namespace Model.MTS
                 {3}
                 {4}
                 {5}
+                {6}
                 ORDER BY B.BaslangicTarihi DESC, C.KatilimciTipi, Adi,Soyadi 
-            ", ProjeConstants.MTSGOREVDURUMU_GOREVDE.ReturnQuotedValue(), acikTarililerHaric, faaliyetIdStr, monthBeforeStr, bastarStr, bittarStr);
+            ", ProjeConstants.MTSGOREVDURUMU_GOREVDE.ReturnQuotedValue(), acikTarililerHaric, faaliyetIdStr, monthBeforeStr, bastarStr, bittarStr, faaliyetAmaciStr);
             
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
 
@@ -286,7 +288,7 @@ namespace Model.MTS
                 SELECT C.KatilimciTipi,A.KatilimciId, A.Id KatilimId,
                     C.Adi, C.Soyadi, E.Adi Kurumu,
 	                B.Id FaaliyetId, B.BaslangicTarihi,B.BaslangicSaati, B.BitisTarihi,B.BitisSaati,
-	                B.FaaliyetAmaci,B.FaaliyetDurumu,B.FaaliyetKonusu,B.FaaliyetTipi,B.FaaliyetYeriStr FaaliyetYeri,B.TumGun,B.AcikTarih
+	                B.FaaliyetAmaciId,B.FaaliyetDurumu,B.FaaliyetKonusu,B.FaaliyetTipi,B.FaaliyetYeriStr FaaliyetYeri,B.TumGun,B.AcikTarih
 	
                 FROM Faaliyet_Table B  
 	                LEFT JOIN FaaliyetKatilim_Table A ON A.FaaliyetId=B.Id {0}
@@ -454,7 +456,7 @@ namespace Model.MTS
         {
             int hashCode = 477006145;
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(FaaliyetTipi);
-            hashCode = hashCode * -1521134295 + FaaliyetAmaci.GetHashCode();
+            hashCode = hashCode * -1521134295 + FaaliyetAmaciId.GetHashCode();
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(FaaliyetKonusu);
             hashCode = hashCode * -1521134295 + FaaliyetYeriStr.GetHashCode();
             hashCode = hashCode * -1521134295 + FaaliyetDurumu.GetHashCode();

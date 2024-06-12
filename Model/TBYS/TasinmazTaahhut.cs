@@ -153,12 +153,12 @@ namespace Model.TBYS
 
             return list.FirstOrDefault<TasinmazTaahhut>();
         }
-        public List<TasinmazTaahhut> SelectByFilters(bool isSagVefat,  bool isTCKimlikNoFull, bool isDogumTarihiFull, string bolge)
+        public List<TasinmazTaahhut> SelectByFilters(bool isSagVefat,  bool isTCKimlikNoFull, bool isDogumTarihiFull, int bolgeId)
         {
             string TCKimlikNoStr = isTCKimlikNoFull ? string.Format(" AND TCKimlikNo IS NOT NULL AND TCKimlikNo > 0 ") : string.Empty;
             string dogumTarihiStr = isDogumTarihiFull ? string.Format(" AND DogumTarihi IS NOT NULL AND DogumTarihi!='' AND DogumTarihi>'01.01.1900' ") : string.Empty;
             string sagVefatStr = isSagVefat ? string.Format(" AND Sag_vefat={0}", ProjeConstants.BAGISCI_SAG.ReturnQuotedValue()) : string.Empty;
-            string bolgeStr = bolge.Equals(ProjeConstants.BOLGE_HEPSI) ? string.Empty : string.Format(" AND Bolge={0}", bolge.ReturnQuotedValue() );
+            string bolgeStr = bolgeId == ProjeConstants.BOLGE_HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND BolgeId={0} ", bolgeId);
             string whereStr = TCKimlikNoStr + dogumTarihiStr + sagVefatStr + bolgeStr;
             string sqlString = string.Format(@"
                 SELECT *

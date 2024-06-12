@@ -69,51 +69,51 @@ namespace NBYS_WebParts.BeratBasimiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.Table GMATable;
+        protected global::System.Web.UI.WebControls.Table AnkATable;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.CheckBox GmAltinDurumChk;
+        protected global::System.Web.UI.WebControls.CheckBox AnkAltinDurumChk;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.Button GMAltinBtn;
+        protected global::System.Web.UI.WebControls.Button AnkAltinBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.Button GMAltinEtiketBtn;
+        protected global::System.Web.UI.WebControls.Button AnkAltinEtiketBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.Table GMGTable;
+        protected global::System.Web.UI.WebControls.Table AnkGTable;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.CheckBox GmGumusDurumChk;
+        protected global::System.Web.UI.WebControls.CheckBox AnkGumusDurumChk;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.Button GMGumusBtn;
+        protected global::System.Web.UI.WebControls.Button AnkGumusBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.Button GMGumusEtiketBtn;
+        protected global::System.Web.UI.WebControls.Button AnkGumusEtiketBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.Table GMBTable;
+        protected global::System.Web.UI.WebControls.Table AnkBTable;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.CheckBox GmBronzDurumChk;
+        protected global::System.Web.UI.WebControls.CheckBox AnkBronzDurumChk;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.Button GMBronzBtn;
+        protected global::System.Web.UI.WebControls.Button AnkBronzBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.Button GMBronzEtiketBtn;
+        protected global::System.Web.UI.WebControls.Button AnkBronzEtiketBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -388,13 +388,13 @@ namespace NBYS_WebParts.BeratBasimiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Table @__BuildControlGMATable() {
+        private global::System.Web.UI.WebControls.Table @__BuildControlAnkATable() {
             global::System.Web.UI.WebControls.Table @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Table();
-            this.GMATable = @__ctrl;
+            this.AnkATable = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMATable";
+            @__ctrl.ID = "AnkATable";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "table table-sm table-striped");
             return @__ctrl;
         }
@@ -402,13 +402,13 @@ namespace NBYS_WebParts.BeratBasimiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.CheckBox @__BuildControlGmAltinDurumChk() {
+        private global::System.Web.UI.WebControls.CheckBox @__BuildControlAnkAltinDurumChk() {
             global::System.Web.UI.WebControls.CheckBox @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.CheckBox();
-            this.GmAltinDurumChk = @__ctrl;
+            this.AnkAltinDurumChk = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GmAltinDurumChk";
+            @__ctrl.ID = "AnkAltinDurumChk";
             @__ctrl.Checked = false;
             @__ctrl.Text = " -Gönderildi- yap";
             @__ctrl.Enabled = false;
@@ -418,49 +418,49 @@ namespace NBYS_WebParts.BeratBasimiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Button @__BuildControlGMAltinBtn() {
+        private global::System.Web.UI.WebControls.Button @__BuildControlAnkAltinBtn() {
             global::System.Web.UI.WebControls.Button @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Button();
-            this.GMAltinBtn = @__ctrl;
+            this.AnkAltinBtn = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMAltinBtn";
+            @__ctrl.ID = "AnkAltinBtn";
             @__ctrl.CssClass = "btn btn-outline-successs";
             @__ctrl.Enabled = false;
             @__ctrl.Text = "Altın Madalya Beratları";
-            @__ctrl.Click -= new System.EventHandler(this.GMAltinBtn_Click);
-            @__ctrl.Click += new System.EventHandler(this.GMAltinBtn_Click);
+            @__ctrl.Click -= new System.EventHandler(this.AnkAltinBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.AnkAltinBtn_Click);
             return @__ctrl;
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Button @__BuildControlGMAltinEtiketBtn() {
+        private global::System.Web.UI.WebControls.Button @__BuildControlAnkAltinEtiketBtn() {
             global::System.Web.UI.WebControls.Button @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Button();
-            this.GMAltinEtiketBtn = @__ctrl;
+            this.AnkAltinEtiketBtn = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMAltinEtiketBtn";
+            @__ctrl.ID = "AnkAltinEtiketBtn";
             @__ctrl.CssClass = "btn btn-outline-successs";
             @__ctrl.Enabled = false;
             @__ctrl.Text = "Adres Etiketleri";
-            @__ctrl.Click -= new System.EventHandler(this.GMAltinEtiketBtn_Click);
-            @__ctrl.Click += new System.EventHandler(this.GMAltinEtiketBtn_Click);
+            @__ctrl.Click -= new System.EventHandler(this.AnkAltinEtiketBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.AnkAltinEtiketBtn_Click);
             return @__ctrl;
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Table @__BuildControlGMGTable() {
+        private global::System.Web.UI.WebControls.Table @__BuildControlAnkGTable() {
             global::System.Web.UI.WebControls.Table @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Table();
-            this.GMGTable = @__ctrl;
+            this.AnkGTable = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMGTable";
+            @__ctrl.ID = "AnkGTable";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "table table-sm table-striped");
             return @__ctrl;
         }
@@ -468,13 +468,13 @@ namespace NBYS_WebParts.BeratBasimiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.CheckBox @__BuildControlGmGumusDurumChk() {
+        private global::System.Web.UI.WebControls.CheckBox @__BuildControlAnkGumusDurumChk() {
             global::System.Web.UI.WebControls.CheckBox @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.CheckBox();
-            this.GmGumusDurumChk = @__ctrl;
+            this.AnkGumusDurumChk = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GmGumusDurumChk";
+            @__ctrl.ID = "AnkGumusDurumChk";
             @__ctrl.Checked = false;
             @__ctrl.Text = " -Gönderildi- yap";
             @__ctrl.Enabled = false;
@@ -484,49 +484,49 @@ namespace NBYS_WebParts.BeratBasimiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Button @__BuildControlGMGumusBtn() {
+        private global::System.Web.UI.WebControls.Button @__BuildControlAnkGumusBtn() {
             global::System.Web.UI.WebControls.Button @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Button();
-            this.GMGumusBtn = @__ctrl;
+            this.AnkGumusBtn = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMGumusBtn";
+            @__ctrl.ID = "AnkGumusBtn";
             @__ctrl.CssClass = "btn btn-outline-successs";
             @__ctrl.Enabled = false;
             @__ctrl.Text = "Gümüş Madalya Beratları";
-            @__ctrl.Click -= new System.EventHandler(this.GMGumusBtn_Click);
-            @__ctrl.Click += new System.EventHandler(this.GMGumusBtn_Click);
+            @__ctrl.Click -= new System.EventHandler(this.AnkGumusBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.AnkGumusBtn_Click);
             return @__ctrl;
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Button @__BuildControlGMGumusEtiketBtn() {
+        private global::System.Web.UI.WebControls.Button @__BuildControlAnkGumusEtiketBtn() {
             global::System.Web.UI.WebControls.Button @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Button();
-            this.GMGumusEtiketBtn = @__ctrl;
+            this.AnkGumusEtiketBtn = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMGumusEtiketBtn";
+            @__ctrl.ID = "AnkGumusEtiketBtn";
             @__ctrl.CssClass = "btn btn-outline-successs";
             @__ctrl.Enabled = false;
             @__ctrl.Text = "Adres Etiketleri";
-            @__ctrl.Click -= new System.EventHandler(this.GMGumusEtiketBtn_Click);
-            @__ctrl.Click += new System.EventHandler(this.GMGumusEtiketBtn_Click);
+            @__ctrl.Click -= new System.EventHandler(this.AnkGumusEtiketBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.AnkGumusEtiketBtn_Click);
             return @__ctrl;
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Table @__BuildControlGMBTable() {
+        private global::System.Web.UI.WebControls.Table @__BuildControlAnkBTable() {
             global::System.Web.UI.WebControls.Table @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Table();
-            this.GMBTable = @__ctrl;
+            this.AnkBTable = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMBTable";
+            @__ctrl.ID = "AnkBTable";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "table table-sm table-striped");
             return @__ctrl;
         }
@@ -534,13 +534,13 @@ namespace NBYS_WebParts.BeratBasimiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.CheckBox @__BuildControlGmBronzDurumChk() {
+        private global::System.Web.UI.WebControls.CheckBox @__BuildControlAnkBronzDurumChk() {
             global::System.Web.UI.WebControls.CheckBox @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.CheckBox();
-            this.GmBronzDurumChk = @__ctrl;
+            this.AnkBronzDurumChk = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GmBronzDurumChk";
+            @__ctrl.ID = "AnkBronzDurumChk";
             @__ctrl.Checked = false;
             @__ctrl.Text = " -Gönderildi- yap";
             @__ctrl.Enabled = false;
@@ -550,36 +550,36 @@ namespace NBYS_WebParts.BeratBasimiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Button @__BuildControlGMBronzBtn() {
+        private global::System.Web.UI.WebControls.Button @__BuildControlAnkBronzBtn() {
             global::System.Web.UI.WebControls.Button @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Button();
-            this.GMBronzBtn = @__ctrl;
+            this.AnkBronzBtn = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMBronzBtn";
+            @__ctrl.ID = "AnkBronzBtn";
             @__ctrl.CssClass = "btn btn-outline-successs";
             @__ctrl.Enabled = false;
             @__ctrl.Text = "Bronz Madalya Beratları";
-            @__ctrl.Click -= new System.EventHandler(this.GMBronzBtn_Click);
-            @__ctrl.Click += new System.EventHandler(this.GMBronzBtn_Click);
+            @__ctrl.Click -= new System.EventHandler(this.AnkBronzBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.AnkBronzBtn_Click);
             return @__ctrl;
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Button @__BuildControlGMBronzEtiketBtn() {
+        private global::System.Web.UI.WebControls.Button @__BuildControlAnkBronzEtiketBtn() {
             global::System.Web.UI.WebControls.Button @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Button();
-            this.GMBronzEtiketBtn = @__ctrl;
+            this.AnkBronzEtiketBtn = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMBronzEtiketBtn";
+            @__ctrl.ID = "AnkBronzEtiketBtn";
             @__ctrl.CssClass = "btn btn-outline-successs";
             @__ctrl.Enabled = false;
             @__ctrl.Text = "Adres Etiketleri";
-            @__ctrl.Click -= new System.EventHandler(this.GMBronzEtiketBtn_Click);
-            @__ctrl.Click += new System.EventHandler(this.GMBronzEtiketBtn_Click);
+            @__ctrl.Click -= new System.EventHandler(this.AnkBronzEtiketBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.AnkBronzEtiketBtn_Click);
             return @__ctrl;
         }
         
@@ -1223,26 +1223,26 @@ namespace NBYS_WebParts.BeratBasimiWP {
             </div>
             <div class=""card-columns  text-center"">
                 <div class=""card bg-warning"">
-                    <h3 class=""card-title"">Genel Müdürlük</h3>
+                    <h3 class=""card-title"">Ankara Bölge</h3>
                     <div class=""card"">
                         <h5 class=""card-title"">Altın Madalya</h5>
                         <div class=""card-body durumTable"">
                             "));
             global::System.Web.UI.WebControls.Table @__ctrl4;
-            @__ctrl4 = this.@__BuildControlGMATable();
+            @__ctrl4 = this.@__BuildControlAnkATable();
             @__parser.AddParsedSubObject(@__ctrl4);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"card-footer" +
                         "\">\r\n                            "));
             global::System.Web.UI.WebControls.CheckBox @__ctrl5;
-            @__ctrl5 = this.@__BuildControlGmAltinDurumChk();
+            @__ctrl5 = this.@__BuildControlAnkAltinDurumChk();
             @__parser.AddParsedSubObject(@__ctrl5);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
             global::System.Web.UI.WebControls.Button @__ctrl6;
-            @__ctrl6 = this.@__BuildControlGMAltinBtn();
+            @__ctrl6 = this.@__BuildControlAnkAltinBtn();
             @__parser.AddParsedSubObject(@__ctrl6);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
             global::System.Web.UI.WebControls.Button @__ctrl7;
-            @__ctrl7 = this.@__BuildControlGMAltinEtiketBtn();
+            @__ctrl7 = this.@__BuildControlAnkAltinEtiketBtn();
             @__parser.AddParsedSubObject(@__ctrl7);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                         </div>
@@ -1252,20 +1252,20 @@ namespace NBYS_WebParts.BeratBasimiWP {
                         <div class=""card-body durumTable"">
                             "));
             global::System.Web.UI.WebControls.Table @__ctrl8;
-            @__ctrl8 = this.@__BuildControlGMGTable();
+            @__ctrl8 = this.@__BuildControlAnkGTable();
             @__parser.AddParsedSubObject(@__ctrl8);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"card-footer" +
                         "\">\r\n                            "));
             global::System.Web.UI.WebControls.CheckBox @__ctrl9;
-            @__ctrl9 = this.@__BuildControlGmGumusDurumChk();
+            @__ctrl9 = this.@__BuildControlAnkGumusDurumChk();
             @__parser.AddParsedSubObject(@__ctrl9);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
             global::System.Web.UI.WebControls.Button @__ctrl10;
-            @__ctrl10 = this.@__BuildControlGMGumusBtn();
+            @__ctrl10 = this.@__BuildControlAnkGumusBtn();
             @__parser.AddParsedSubObject(@__ctrl10);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
             global::System.Web.UI.WebControls.Button @__ctrl11;
-            @__ctrl11 = this.@__BuildControlGMGumusEtiketBtn();
+            @__ctrl11 = this.@__BuildControlAnkGumusEtiketBtn();
             @__parser.AddParsedSubObject(@__ctrl11);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                         </div>
@@ -1275,20 +1275,20 @@ namespace NBYS_WebParts.BeratBasimiWP {
                         <div class=""card-body durumTable"">
                             "));
             global::System.Web.UI.WebControls.Table @__ctrl12;
-            @__ctrl12 = this.@__BuildControlGMBTable();
+            @__ctrl12 = this.@__BuildControlAnkBTable();
             @__parser.AddParsedSubObject(@__ctrl12);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"card-footer" +
                         "\">\r\n                            "));
             global::System.Web.UI.WebControls.CheckBox @__ctrl13;
-            @__ctrl13 = this.@__BuildControlGmBronzDurumChk();
+            @__ctrl13 = this.@__BuildControlAnkBronzDurumChk();
             @__parser.AddParsedSubObject(@__ctrl13);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
             global::System.Web.UI.WebControls.Button @__ctrl14;
-            @__ctrl14 = this.@__BuildControlGMBronzBtn();
+            @__ctrl14 = this.@__BuildControlAnkBronzBtn();
             @__parser.AddParsedSubObject(@__ctrl14);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
             global::System.Web.UI.WebControls.Button @__ctrl15;
-            @__ctrl15 = this.@__BuildControlGMBronzEtiketBtn();
+            @__ctrl15 = this.@__BuildControlAnkBronzEtiketBtn();
             @__parser.AddParsedSubObject(@__ctrl15);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                         </div>

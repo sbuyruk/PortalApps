@@ -28,7 +28,11 @@ namespace Utility.HelperClasses
                     mail.From = new MailAddress(from);
                     mail.Subject = subject;
                     mail.IsBodyHtml = true;
-                    mail.To.Add(new MailAddress(to));
+                    string[] toList= to.Split(new char[] { ';' });
+                    foreach (var item in toList)
+                    {
+                        mail.To.Add(new MailAddress(item)); 
+                    }
 
                     mail.Body = body;
                     smtp.Send(mail);

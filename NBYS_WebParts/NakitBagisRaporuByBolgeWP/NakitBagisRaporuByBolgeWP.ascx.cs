@@ -87,8 +87,8 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP
             try
             {
                 IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
-                int GMToplamAdet = 0;
-                Decimal GMToplamTutar = 0;
+                int AnkToplamAdet = 0;
+                Decimal AnkToplamTutar = 0;
                 int IstToplamAdet = 0;
                 Decimal IstToplamTutar = 0;
                 int IzmToplamAdet = 0;
@@ -114,11 +114,11 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP
                             AyCell.Text = aystr;
                             tableRow.Controls.Add(AyCell);
 
-                            TableCell GMAdetCell = new TableCell();
-                            tableRow.Controls.Add(GMAdetCell);
-                            TableCell GMTutarCell = new TableCell();
-                            GMTutarCell.CssClass = "text-right";
-                            tableRow.Controls.Add(GMTutarCell);
+                            TableCell AnkAdetCell = new TableCell();
+                            tableRow.Controls.Add(AnkAdetCell);
+                            TableCell AnkTutarCell = new TableCell();
+                            AnkTutarCell.CssClass = "text-right";
+                            tableRow.Controls.Add(AnkTutarCell);
 
                             TableCell IstAdetCell = new TableCell();
                             tableRow.Controls.Add(IstAdetCell);
@@ -156,12 +156,12 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP
                                 string bolge = row["Bolge"].ReturnEmptyIfNull().ToString();
                                 AyToplamAdet += adet;
                                 AyToplamTutar += tutar;
-                                if (bolge.Equals(ProjeConstants.BOLGE_GENELMUDURLUK))
+                                if (bolge.Equals(ProjeConstants.BOLGE_ANKARA))
                                 {
-                                    GMTutarCell.Text = tutarStr;
-                                    GMAdetCell.Text = adetStr;
-                                    GMToplamAdet += adet;
-                                    GMToplamTutar += tutar;
+                                    AnkTutarCell.Text = tutarStr;
+                                    AnkAdetCell.Text = adetStr;
+                                    AnkToplamAdet += adet;
+                                    AnkToplamTutar += tutar;
                                 }
                                 else if (bolge.Equals(ProjeConstants.BOLGE_ISTANBUL))
                                 {
@@ -216,14 +216,14 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP
                 ToplamBaslikCell.Text = "Toplam";
                 toplamRow.Controls.Add(ToplamBaslikCell);
 
-                TableCell GMToplamAdetCell = new TableCell();
-                GMToplamAdetCell.CssClass = "font-weight-bold text-right";
-                GMToplamAdetCell.Text = GMToplamAdet + "";
-                toplamRow.Controls.Add(GMToplamAdetCell);
-                TableCell GMToplamTutarCell = new TableCell();
-                GMToplamTutarCell.Text = GMToplamTutar.ToString("N", culturInfo);
-                GMToplamTutarCell.CssClass = "font-weight-bold text-right";
-                toplamRow.Controls.Add(GMToplamTutarCell);
+                TableCell AnkToplamAdetCell = new TableCell();
+                AnkToplamAdetCell.CssClass = "font-weight-bold text-right";
+                AnkToplamAdetCell.Text = AnkToplamAdet + "";
+                toplamRow.Controls.Add(AnkToplamAdetCell);
+                TableCell AnkToplamTutarCell = new TableCell();
+                AnkToplamTutarCell.Text = AnkToplamTutar.ToString("N", culturInfo);
+                AnkToplamTutarCell.CssClass = "font-weight-bold text-right";
+                toplamRow.Controls.Add(AnkToplamTutarCell);
 
                 TableCell IstToplamAdetCell = new TableCell();
                 IstToplamAdetCell.CssClass = "font-weight-bold text-right";
@@ -264,10 +264,10 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP
 
                 TableCell EnToplamAdetCell = new TableCell();
                 EnToplamAdetCell.CssClass = "text-danger font-weight-bold text-right text-right";
-                EnToplamAdetCell.Text = GMToplamAdet + IstToplamAdet + IzmToplamAdet + MerToplamAdet + YurtdisiToplamAdet + "";
+                EnToplamAdetCell.Text = AnkToplamAdet + IstToplamAdet + IzmToplamAdet + MerToplamAdet + YurtdisiToplamAdet + "";
                 toplamRow.Controls.Add(EnToplamAdetCell);
                 TableCell EnToplamTutarCell = new TableCell();
-                EnToplamTutarCell.Text = (GMToplamTutar + IstToplamTutar + IzmToplamTutar + MerToplamTutar + YurtdisiToplamTutar).ToString("N", culturInfo);
+                EnToplamTutarCell.Text = (AnkToplamTutar + IstToplamTutar + IzmToplamTutar + MerToplamTutar + YurtdisiToplamTutar).ToString("N", culturInfo);
                 EnToplamTutarCell.CssClass = "text-danger font-weight-bold text-right";
                 toplamRow.Controls.Add(EnToplamTutarCell);
 

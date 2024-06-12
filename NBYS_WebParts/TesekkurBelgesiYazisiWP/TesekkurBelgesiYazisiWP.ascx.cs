@@ -2,6 +2,7 @@
 using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.SharePoint;
 using Model.NBYS;
+using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,6 +10,7 @@ using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Web.Script.Serialization;
 using System.Web.UI;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
@@ -168,7 +170,7 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
                 FormuDoldur();
                 FillDurumValues();
             }
-            KayitGetir();
+            TabloOlustur();
         }
         private void FormuDoldur()
         {
@@ -195,9 +197,12 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
             //GunDDL.Items.Add(new ListItem("20-Ay Sonu", "3"));
 
             //15 Günde bir
+            //GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Tüm Ay", "0"));
+            //GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("1-15", "1"));
+            //GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("16-Ay Sonu", "2"));
+
+            //Ayda bir
             GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Tüm Ay", "0"));
-            GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("1-15", "1"));
-            GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("16-Ay Sonu", "2"));
         }
         private void AyDDLDoldur()
         {
@@ -231,16 +236,17 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
                 //acilista ay ve yili querystring ile gelen ay ve yıla eşitle boş geldiyse gecen aya/yila eşitle
                 //gün
                 int gunBolumu = DateTime.Today.Day < 15 ? 1 : 2;
-                string gun = !string.IsNullOrEmpty(SecilenGunQS) ? SecilenGunQS : gunBolumu.ToString();
-                System.Web.UI.WebControls.ListItem gunItem = new System.Web.UI.WebControls.ListItem();
-                if (!string.IsNullOrEmpty(gun))
-                    gunItem = GunDDL.Items.FindByValue(gun);
+                // Periyod 15 ise
+                //string gun = !string.IsNullOrEmpty(SecilenGunQS) ? SecilenGunQS : gunBolumu.ToString();
+                //System.Web.UI.WebControls.ListItem gunItem = new System.Web.UI.WebControls.ListItem();
+                //if (!string.IsNullOrEmpty(gun))
+                //    gunItem = GunDDL.Items.FindByValue(gun);
 
-                if (gunItem != null)
-                {
-                    GunDDL.SelectedValue = gunItem.Value;
-                    SecilenGunQS = gunItem.Value;
-                }
+                //if (gunItem != null)
+                //{
+                //    GunDDL.SelectedValue = gunItem.Value;
+                //    SecilenGunQS = gunItem.Value;
+                //}
                 //ay
                 string ay = !string.IsNullOrEmpty(SecilenAyQS) ? SecilenAyQS : (gunBolumu == 1 ? DateTime.Today.AddMonths(-1).Month.ToString() : DateTime.Today.Month.ToString());
                 System.Web.UI.WebControls.ListItem AyItem = new System.Web.UI.WebControls.ListItem();
@@ -346,7 +352,7 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
             SecilenBastarQS = basTar.ConvertToDatetimeEmptyIfNull();
             SecilenBittarQS = bitTar.ConvertToDatetimeEmptyIfNull();
         }
-        private void KayitGetir()
+        private void TabloOlustur()
         {
             var jsonData = GetData(); //veri çekilip json a çeviriliyor
 
@@ -354,8 +360,8 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
             if (!jasonDataBosMu)
             {
                 DosyaOlusturBtn.Visible = true;
-                var jsString = CreateJsString(jsonData); //javascript kodu hazırlanıyor.
-                System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), jsString, true);
+                var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+                UtilityHelper.ScriptCalistir(jsString);
             }
             else
             {
@@ -371,7 +377,7 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
             DateTime bastar = GetBasTar();
             DateTime bittar = GetBitTar();
 
-            var json = armagan.SelectByDurumTarih(ProjeConstants.DURUM_KONTROLEDILDI, bastar, bittar, ProjeConstants.ARMAGAN_TESEKKURID.ToString(), ref rowCount, ProjeConstants.BOLGE_HEPSI, ProjeConstants.HEPSI_INT);
+            var json = armagan.SelectByDurumTarih(ProjeConstants.DURUM_KONTROLEDILDI, bastar, bittar, ProjeConstants.ARMAGAN_TESEKKURID.ToString(), ref rowCount, ProjeConstants.BOLGE_HEPSI_INT, ProjeConstants.HEPSI_INT);
             TableDataLbl.Text = rowCount + " adet Teşekkür Belgesi mevcut";
             if (rowCount > 0)
             {
@@ -385,6 +391,47 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
             }
             return json;
         }
+
+       
+        private string CreateDataTable(string jsonData)
+        {
+
+            string tableString = @"
+                if ( jQuery.fn.DataTable.isDataTable('#CustomDataTable') ) {
+                    jQuery('#CustomDataTable').DataTable().destroy();
+                }
+                jQuery('#CustomDataTable tbody').empty();
+
+                jQuery.fn.dataTable.moment('DD.MM.YYYY');//sort date
+
+                jQuery('#CustomDataTable').DataTable({ 
+                    data: " + jsonData + @",
+                    columns: [
+                        { data: 'NakitBagisciAdi'},
+                        { data: 'BelgedeYazanIsim', 'width':'20%' },
+                        { data: 'NakitBagisciTC' },
+                        { data: 'ArmaganTarihi' },
+                        { data: 'ArmaganTutari', 'width':'10%', 'className': 'text-right'},
+
+                    ],
+                    pageLength: 8,
+                    'order': [[3, 'desc']],//sort date desc
+                    'language': {
+                    'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
+                        'decimal': ',',
+                        'thousands': '.'
+                    },
+                    responsive: true,
+                    dom: 'frtip',   
+
+                });
+
+            ";
+
+            return tableString;
+        }
+
+        //
         private DateTime GetBasTar()
         {
 
@@ -498,54 +545,12 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
             }
             return bittar;
         }
-        private string CreateJsString(string jsonData)
-        {
-            string tableString = @"
-                // paginationa tıklandığında page degerini pageIndex degiskeninde saklar 
-                $(document).on('click', '.ui-paginator-page', function () {
-                    pageIndex = parseInt($(this).text());
-                });
-
-                $('#tblfilter').puidatatable({
-                caption: '',
-                editMode: 'cell',
-                paginator: {
-                            rows: 8
-                            },
-                columns: [
-                    { field: 'NakitBagisciAdi', headerText: 'Bağışçı',filter: true,sortable:true,headerStyle:'width: 20%' },   
-                    { field: 'BelgedeYazanIsim', headerText: 'B.Yazan İsim',filter: true,sortable:true,headerStyle:'width: 9%' },                     
-                    { field: 'NakitBagisciTC', headerText: 'TC Kimlik No',filter: true,headerStyle:'width: 10%' },
-                    { field: 'Tarih', headerText: 'Tarih',filter: true,headerStyle:'width: 25%', 
-                        content: function (rowData){ 
-                            if(rowData.Tarih!=null)
-                            {
-                            var date = new Date(parseInt(rowData.Tarih.substr(6)));
-                            return date.getDate()+'/'+(date.getMonth()+1)+'/'+date.getFullYear(); 
-                            }
-                            else
-                            {
-                                return '';
-                            }
-                        }
-                    },
-                    { field: 'Tutar', headerText: 'Tutar',filter: true ,bodyClass:'text-right',headerStyle:'width: 9%' }
-
-                ],
-                datasource:" + jsonData + @",
-                resizableColumns: true,
-                globalFilter:'#globalFilter'
-                });
-            ";
-
-            return tableString;
-        }
         private void FillDurumValues()
         {
 
             Armagan armagan = new Armagan();
             //DataTable tesekkur = armagan.SelectCountDurumByBolge(SecilenAyQS, SecilenYilQS, ProjeConstants.ARMAGAN_TESEKKURID, "");
-            DataTable dataTable = armagan.SelectCountDurumByBolgeTarih(ProjeConstants.ARMAGAN_TESEKKURID, "", SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime());
+            DataTable dataTable = armagan.SelectCountDurumByBolgeTarih(ProjeConstants.ARMAGAN_TESEKKURID, ProjeConstants.HEPSI_INT, SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime());
             FillTable(dataTable);
 
         }
@@ -746,7 +751,7 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
                     Armagan armagan = new Armagan();
                     try
                     {
-                        bool isUpdated = armagan.UpdateDurumByBolge(ProjeConstants.DURUM_KONTROLEDILDI, ProjeConstants.DURUM_GONDERILDI, SecilenBastarQS, SecilenBittarQS, ProjeConstants.ARMAGAN_TESEKKURID, "");
+                        bool isUpdated = armagan.UpdateDurumByBolge(ProjeConstants.DURUM_KONTROLEDILDI, ProjeConstants.DURUM_GONDERILDI, SecilenBastarQS, SecilenBittarQS, ProjeConstants.ARMAGAN_TESEKKURID, ProjeConstants.BOLGE_HEPSI_INT);
                         if (isUpdated)
                         {
                             MessageHelper.PublishMessage("Belgelerin durumu '" + ProjeConstants.DURUM_GONDERILDI + "' olarak değiştirildi.", ProjeConstants.MESAJ_BASARILI, 2000);
@@ -776,7 +781,7 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
             DateTime bastar = GetBasTar();
             DateTime bittar = GetBitTar();
             Armagan armagan = new Armagan();
-            DataTable dataTable = armagan.SelectByDurumTarihReturnDT(ProjeConstants.DURUM_KONTROLEDILDI, bastar, bittar, ProjeConstants.ARMAGAN_TESEKKURID.ToString(), ProjeConstants.BOLGE_HEPSI, ProjeConstants.HEPSI_INT);
+            DataTable dataTable = armagan.SelectByDurumTarihReturnDT(ProjeConstants.DURUM_KONTROLEDILDI, bastar, bittar, ProjeConstants.ARMAGAN_TESEKKURID.ToString(), ProjeConstants.BOLGE_HEPSI_INT, ProjeConstants.HEPSI_INT);
 
             if (dataTable != null)
             {
@@ -853,7 +858,7 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
             DateTime bastar = GetBasTar();
             DateTime bittar = GetBitTar();
             Armagan armagan = new Armagan();
-            DataTable dataTable = armagan.SelectByDurumTarihReturnDT(ProjeConstants.DURUM_KONTROLEDILDI, bastar, bittar, ProjeConstants.ARMAGAN_TESEKKURID.ToString(), ProjeConstants.BOLGE_HEPSI, ProjeConstants.HEPSI_INT);
+            DataTable dataTable = armagan.SelectByDurumTarihReturnDT(ProjeConstants.DURUM_KONTROLEDILDI, bastar, bittar, ProjeConstants.ARMAGAN_TESEKKURID.ToString(), ProjeConstants.BOLGE_HEPSI_INT, ProjeConstants.HEPSI_INT);
             if (dataTable != null)
             {
                 int index = 1;
@@ -907,23 +912,6 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
             }
 
 
-            return destinationStream;
-        }
-        private MemoryStream AddParagraph2DestinationStream(MemoryStream destinationStream, IEnumerable<Paragraph> templateParagraphs)
-        {
-            using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(destinationStream, true))
-            {
-                //boş sayfa ekle
-                Paragraph PageBreakParagraph = new Paragraph(new DocumentFormat.OpenXml.Wordprocessing.Run(new DocumentFormat.OpenXml.Wordprocessing.Break() { Type = BreakValues.Page }));
-                wordDoc.MainDocumentPart.Document.Body.Append(PageBreakParagraph);
-
-                //template yaziyi ekle
-                foreach (var paragraph in templateParagraphs)
-                {
-                    Paragraph newPara = (Paragraph)paragraph.CloneNode(true);// new Paragraph(new DocumentFormat.OpenXml.Wordprocessing.Run(new DocumentFormat.OpenXml.Wordprocessing.Break() { Type = BreakValues.Page }));
-                    wordDoc.MainDocumentPart.Document.Body.Append(newPara);
-                }
-            }
             return destinationStream;
         }
         private MemoryStream AddTable2DestinationStream(MemoryStream destinationStream, IEnumerable<DocumentFormat.OpenXml.Wordprocessing.Table> templateTables)

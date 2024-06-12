@@ -45,7 +45,7 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="form-group col-4">
+                                <div class="form-group col-8">
                                     <label class="col-form-label" for="BolgeDDL">Bölge </label>
                                     <asp:DropDownList ID="BolgeDDL" runat="server" CssClass="form-control" AutoPostBack="True" OnSelectedIndexChanged="BolgeDDL_SelectedIndexChanged" Style="height: auto" />
                                 </div>
@@ -90,10 +90,10 @@
                         <asp:Label ID="TableDataLbl" runat="server" Text=""></asp:Label>
                     </div>
                 </div>
-                <div class="form-group">
+<%--                <div class="form-group">
                     <asp:HyperLink ID="DosyaLnk" runat="server" CssClass="btn-link m-3" Visible="false">Berat Belgeleri</asp:HyperLink>
                     <asp:HyperLink ID="AdresEtiketLnk" runat="server" CssClass="btn-link m-3" Visible="false">Adres Etiketleri</asp:HyperLink>
-                </div>
+                </div>--%>
                 <div class="card-footer">
                     <asp:CheckBox ID="BeratDurumChk" runat="server" Checked="false" Text=" -Gönderildi- yap" Enabled="False" />
                     <asp:LinkButton ID="DosyaOlusturBtn" runat="server" CssClass="btn btn-outline-success" OnClick="DosyaOlusturBtn_Click">Berat Belgelerini Oluştur</asp:LinkButton>

@@ -65,6 +65,14 @@ namespace MTS_WebParts.FaaliyetListesiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.CheckBox AcikTarhliChk;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl AcikTarhliDiv;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton YeniKayitBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -206,6 +214,43 @@ namespace MTS_WebParts.FaaliyetListesiWP {
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("placeholder", "dd.mm.yyyy");
             @__ctrl.TextChanged -= new System.EventHandler(this.BitisTarihiTxt_TextChanged);
             @__ctrl.TextChanged += new System.EventHandler(this.BitisTarihiTxt_TextChanged);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.CheckBox @__BuildControlAcikTarhliChk() {
+            global::System.Web.UI.WebControls.CheckBox @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.CheckBox();
+            this.AcikTarhliChk = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "AcikTarhliChk";
+            @__ctrl.ToolTip = "Açık Tarihli faaliyetleri göstermek için seçiniz.";
+            @__ctrl.Checked = false;
+            @__ctrl.AutoPostBack = true;
+            @__ctrl.CheckedChanged -= new System.EventHandler(this.AcikTarhliChk_CheckedChanged);
+            @__ctrl.CheckedChanged += new System.EventHandler(this.AcikTarhliChk_CheckedChanged);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControlAcikTarhliDiv() {
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
+            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
+            this.AcikTarhliDiv = @__ctrl;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-group col checkbox");
+            @__ctrl.ID = "AcikTarhliDiv";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "display: block;");
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                <label>\r\n                                    "));
+            global::System.Web.UI.WebControls.CheckBox @__ctrl1;
+            @__ctrl1 = this.@__BuildControlAcikTarhliChk();
+            @__parser.AddParsedSubObject(@__ctrl1);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    Açık tarihli faaliyetleri listede göster\r\n " +
+                        "                               </label>\r\n                            "));
             return @__ctrl;
         }
         
@@ -385,8 +430,12 @@ namespace MTS_WebParts.FaaliyetListesiWP {
             global::System.Web.UI.WebControls.TextBox @__ctrl8;
             @__ctrl8 = this.@__BuildControlBitisTarihiTxt();
             @__parser.AddParsedSubObject(@__ctrl8);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                        </div>\r\n           " +
+                        "             <div class=\"col-4\">\r\n                            "));
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl9;
+            @__ctrl9 = this.@__BuildControlAcikTarhliDiv();
+            @__parser.AddParsedSubObject(@__ctrl9);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -414,25 +463,25 @@ namespace MTS_WebParts.FaaliyetListesiWP {
         </div>
         <div class=""card-footer"">
             "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl9;
-            @__ctrl9 = this.@__BuildControlYeniKayitBtn();
-            @__parser.AddParsedSubObject(@__ctrl9);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl10;
-            @__ctrl10 = this.@__BuildControlFaaliyetTakvimiBtn();
+            @__ctrl10 = this.@__BuildControlYeniKayitBtn();
             @__parser.AddParsedSubObject(@__ctrl10);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl11;
-            @__ctrl11 = this.@__BuildControlFaaliyetListesiBtn();
+            @__ctrl11 = this.@__BuildControlFaaliyetTakvimiBtn();
             @__parser.AddParsedSubObject(@__ctrl11);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl12;
-            @__ctrl12 = this.@__BuildControlAcikTarihliFaaliyetListesiBtn();
+            @__ctrl12 = this.@__BuildControlFaaliyetListesiBtn();
             @__parser.AddParsedSubObject(@__ctrl12);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl13;
-            @__ctrl13 = this.@__BuildControlKisiListesiBtn();
+            @__ctrl13 = this.@__BuildControlAcikTarihliFaaliyetListesiBtn();
             @__parser.AddParsedSubObject(@__ctrl13);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl14;
+            @__ctrl14 = this.@__BuildControlKisiListesiBtn();
+            @__parser.AddParsedSubObject(@__ctrl14);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n        </div>\r\n\r\n    </div>\r\n</div>\r\n"));
         }
         
