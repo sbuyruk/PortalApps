@@ -33,8 +33,9 @@ namespace TBYS_WebParts.KiraGelirleriAyDokumuWP
         {
             if (!Page.IsPostBack)
             {
+
                 YilDDLDoldur();
-                SetDDLValues();
+                UtilityHelper.SetDDLValue(YilDDL,DateTime.Today.Year.ReturnEmptyIfNull().ToString());
 
             }
             int yil = YilDDL.SelectedItem!=null? YilDDL.SelectedItem.Value.ConvertToInt():DateTime.Today.Year;
@@ -58,10 +59,10 @@ namespace TBYS_WebParts.KiraGelirleriAyDokumuWP
                 for (int ay = 1; ay <= 12; ay++)
                 {
                     OdemePlani odemePlaniDao = new OdemePlani();
-                    DataTable dataTableGM = odemePlaniDao.SelectKiraGeliriByBolgeAyYil(ProjeConstants.BOLGE_GENELMUDURLUK, ay, yil);
-                    DataTable dataTableIST = odemePlaniDao.SelectKiraGeliriByBolgeAyYil(ProjeConstants.BOLGE_ISTANBUL, ay, yil);
-                    DataTable dataTableIZM = odemePlaniDao.SelectKiraGeliriByBolgeAyYil(ProjeConstants.BOLGE_IZMIR, ay, yil);
-                    DataTable dataTableMER = odemePlaniDao.SelectKiraGeliriByBolgeAyYil(ProjeConstants.BOLGE_MERSIN, ay, yil);
+                    DataTable dataTableGM = odemePlaniDao.SelectKiraGeliriByBolgeAyYil(ProjeConstants.BOLGE_ANKARA_INT, ay, yil);
+                    DataTable dataTableIST = odemePlaniDao.SelectKiraGeliriByBolgeAyYil(ProjeConstants.BOLGE_ISTANBUL_INT, ay, yil);
+                    DataTable dataTableIZM = odemePlaniDao.SelectKiraGeliriByBolgeAyYil(ProjeConstants.BOLGE_IZMIR_INT, ay, yil);
+                    DataTable dataTableMER = odemePlaniDao.SelectKiraGeliriByBolgeAyYil(ProjeConstants.BOLGE_MERSIN_INT, ay, yil);
 
                     int kiraciSayisiToplam = 0;
                     decimal meskenToplam = 0;
@@ -79,7 +80,7 @@ namespace TBYS_WebParts.KiraGelirleriAyDokumuWP
                     decimal tesisOdenen = 0;
                     decimal bisOdenen = 0;
 
-                    AylikKiraGeliriniHesaplaVeTabloyaEkle(ProjeConstants.BOLGE_GENELMUDURLUK, true, ay, yil, dataTableGM,
+                    AylikKiraGeliriniHesaplaVeTabloyaEkle(ProjeConstants.BOLGE_ANKARA, true, ay, yil, dataTableGM,
                         out arsaOdenen, out isyeriOdenen, out meskenOdenen, out tarlaOdenen, out tesisOdenen, out bisOdenen, out kiraciSayisi);
 
                     kiraciSayisiToplam = kiraciSayisi;
@@ -644,27 +645,7 @@ namespace TBYS_WebParts.KiraGelirleriAyDokumuWP
                 YilDDL.Items.Add(new ListItem(i.ToString(), i.ToString()));
             }
         }
-        private void SetDDLValues()
-        {
-            try
-            {
-                //yil
-                string yil = DateTime.Today.Year.ReturnEmptyIfNull().ToString();
-                ListItem YilItem = new ListItem();
-                if (!string.IsNullOrEmpty(yil))
-                    YilItem = YilDDL.Items.FindByValue(yil);
 
-                if (YilItem != null)
-                {
-                    YilDDL.SelectedValue = YilItem.Value;
-                }
-            }
-            catch (Exception)
-            {
-
-                //TODO
-            }
-        }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();

@@ -59,6 +59,48 @@ namespace TBYS_WebParts.TasinmazListesiWP
                 ViewState["Auth"] = value;
             }
         }
+
+        private int BolgeIdQS
+        {
+            get
+            {
+
+                if (ViewState["BolgeId"] == null)
+                {
+                    if (Page.Request.QueryString["BolgeId"] != null)
+                    {
+                        ViewState["BolgeId"] = Page.Request.QueryString["BolgeId"];
+                    }
+                    else
+                    {
+                        ViewState["BolgeId"] = string.Empty;
+                    }
+                }
+                return ViewState["BolgeId"].ReturnZeroIfNull().ConvertToInt();
+            }
+
+            set
+            {
+                ViewState["BolgeId"] = value;
+            }
+        }
+        private string CurrentUserName
+        {
+            get
+            {
+
+                if (ViewState["CurrentUserName"] == null)
+                {
+                    ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUserLoginName();
+                }
+                return ViewState["CurrentUserName"].ToString();
+            }
+
+            set
+            {
+                ViewState["CurrentUserName"] = value;
+            }
+        }
         private string SecilenIdQS
         {
             get
@@ -89,6 +131,8 @@ namespace TBYS_WebParts.TasinmazListesiWP
             {
                 if (!Page.IsPostBack)
                 {
+                    Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
+                    BolgeIdQS = bolge == null ? 0 : bolge.Id;
                     TabloOlustur();
                 }
             }
@@ -144,9 +188,10 @@ namespace TBYS_WebParts.TasinmazListesiWP
         }
         private string CreateDataTable(string jsonData)
         {
-            string duzenleGorunsun = string.IsNullOrEmpty(AuthQS) || !AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM)
-                ? "{ targets:9, visible:false},"
-                : "{ targets:9, visible:true},";
+            string duzenleGorunsun = string.IsNullOrEmpty(AuthQS) || !AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM) || 
+                (BolgeIdQS != ProjeConstants.HEPSI_INT && BolgeIdQS != ProjeConstants.BOLGE_GENELMUDURLUK_INT )
+                ? "{ targets:10, visible:false},"
+                : "{ targets:10, visible:true},";
             string tableString = @"
 
                 $(document).ready(function () {
@@ -159,15 +204,16 @@ namespace TBYS_WebParts.TasinmazListesiWP
                       var table =  $('#CustomDataTable').DataTable({
                         data: " + jsonData + @",
                         columns: [
-                            { data: 'Id', 'width': '4%'   },
-                            { data: 'KullanimSekli' , 'width': '10%' },
-                            { data: 'MulkiyetSekli' },
-                            { data: 'IliIlcesi', 'width': '10%'},
-                            { data: 'Adres', 'width': '15%'},
+                            { data: 'Id'},
+                            { data: 'KullanimSekli'},
+                            { data: 'MulkiyetSekli'},
+                            { data: 'IliIlcesi',},
+                            { data: 'Adres',},
                             { data: 'Bagisci' },
-                            { data: 'BagisYili', 'width': '5%' },
-                            { data: 'SorumluBolge' },                            
-                            { data: 'TasinmazKarti' },
+                            { data: 'BagisYili',},
+                            { data: 'Bolge'},                            
+                            { data: 'TasinmazKarti'},
+                            { data: 'Resimler'},
                             { data: 'Duzenle' },
                             { data: 'EmlakBeyanDegeri' },
                             { data: 'TahminiRayicDegeri' },
@@ -182,8 +228,11 @@ namespace TBYS_WebParts.TasinmazListesiWP
                         columnDefs:
                             [
                             " + duzenleGorunsun + @"
-                            { 'visible': false, targets: [10,11,12,13,14,15,16,17]},
-                            {  targets : [10,11],className: 'dt-body-right'},
+                            { 'visible': false, targets: [11,12,13,14,15,16,17,18]},
+                            {  targets : [11,12],className: 'dt-body-right'},
+                        { width: '20%', targets: 4 },
+                            { width: '20%', targets: 4 },
+                            { width: '15%', targets: 5 }
                             ],
                         'language': {
                             'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
@@ -207,7 +256,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
                                         $(api.column(colIdx).header()).index()
                                     );
                                     var title = $(cell).text();
-                                    $(cell).html('<input type=text  placeholder=' + title + ' />');
+                                    $(cell).html('<input type=text style=\'max-width: 80px\' placeholder=' + title + ' />');
 
                                     // On every keypress in this input
                                     $(
@@ -253,7 +302,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
         private List<TasinmazListesiListItem> GetDataList()
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            DataTable dataTable = tasinmaz.SelectByBolgeReturnJson(AuthQS);
+            DataTable dataTable = tasinmaz.SelectByBolgeReturnJson(BolgeIdQS);
 
             List<TasinmazListesiListItem> list = new List<TasinmazListesiListItem>();
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
@@ -270,7 +319,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
                 string bagisYili = row["BagisYili"].ToString();
 
                 string kiraDurumu = row["KiraDurumu"].ToString();
-                string sorumluBolge = row["SorumluBolge"].ToString();
+                string bolge = row["Bolge"].ToString();
                 string emlakSicilNo = row["EmlakSicilNo"].ToString();
 
                 string adaNo = row["AdaNo"].ToString();
@@ -305,14 +354,22 @@ namespace TBYS_WebParts.TasinmazListesiWP
                 tasinmazListesiListItem.BagisYili = bagisYili.Trim();
 
                 tasinmazListesiListItem.TasinmazKarti = "<a target='_blank' href=" + ProjeConstants.PAGE_TASINMAZ_KARTI + "?SenderApp=TL&TasinmazId=" + tasinmazId + " class='btn btn-outline-info'>Taşınmaz Kartı</a>";
-                bool duzenleGorunsunMu = !string.IsNullOrEmpty(AuthQS) && AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM);
+                tasinmazListesiListItem.Resimler = "<a target='_blank' href=" + ProjeConstants.PAGE_TASINMAZ_RESIMLER_BOLGE + "?TasinmazId=" + tasinmazId + " class='btn btn-outline-info'>Resimler/Belgeler</a>";
+
+                bool duzenleGorunsunMu = !string.IsNullOrEmpty(AuthQS) ||
+                    AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM) ||
+                    (BolgeIdQS != ProjeConstants.HEPSI_INT && BolgeIdQS != ProjeConstants.BOLGE_GENELMUDURLUK_INT);
                 if (duzenleGorunsunMu)
                 {
                     tasinmazListesiListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_TASINMAZ_GIRIS + "?DestinationApp=TD&TasinmazId=" + tasinmazId + " class='btn btn-outline-primary'>Düzenle</a>"; 
                 }
+                else
+                {
+                    tasinmazListesiListItem.Duzenle = string.Empty;
+                }
 
                 tasinmazListesiListItem.KiraDurumu = kiraDurumu;
-                tasinmazListesiListItem.SorumluBolge = sorumluBolge;
+                tasinmazListesiListItem.Bolge = bolge;
                 tasinmazListesiListItem.EmlakSicilNo = emlakSicilNo;
                 tasinmazListesiListItem.AdaNo = adaNo;
                 tasinmazListesiListItem.ParselNo = parselNo;
@@ -540,9 +597,10 @@ namespace TBYS_WebParts.TasinmazListesiWP
             public string Bagisci { get; set; }
             public string BagisYili { get; set; }
             public string TasinmazKarti { get; set; }
+            public string Resimler { get; set; }
             public string Duzenle { get; set; }
             
-            public string SorumluBolge { get; set; }
+            public string Bolge { get; set; }
             public string EmlakSicilNo { get; set; }
             public string YevmiyeNo { get; set; }
             public string CiltNo { get; set; }

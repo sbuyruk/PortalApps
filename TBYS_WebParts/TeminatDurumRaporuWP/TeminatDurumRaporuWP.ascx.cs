@@ -39,13 +39,13 @@ namespace TBYS_WebParts.TeminatDurumRaporuWP
 
             TasinmazDurumuTableHeaders();
 
-            TabloyaBolgeEkle(ProjeConstants.BOLGE_GENELMUDURLUK);
-            TabloyaBolgeEkle(ProjeConstants.BOLGE_ISTANBUL);
-            TabloyaBolgeEkle(ProjeConstants.BOLGE_IZMIR);
-            TabloyaBolgeEkle(ProjeConstants.BOLGE_MERSIN);
+            TabloyaBolgeEkle(ProjeConstants.BOLGE_ANKARA, ProjeConstants.BOLGE_ANKARA_INT);
+            TabloyaBolgeEkle(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.BOLGE_ISTANBUL_INT);
+            TabloyaBolgeEkle(ProjeConstants.BOLGE_IZMIR, ProjeConstants.BOLGE_IZMIR_INT);
+            TabloyaBolgeEkle(ProjeConstants.BOLGE_MERSIN, ProjeConstants.BOLGE_MERSIN_INT);
         }
 
-        private void TabloyaBolgeEkle(string bolge)
+        private void TabloyaBolgeEkle(string bolge,int bolgeId)
         {
             TableRow tableRow = new TableRow();
             TableCell bolgeCell = new TableCell();
@@ -101,7 +101,7 @@ namespace TBYS_WebParts.TeminatDurumRaporuWP
             TeminatDurumuTable.Rows.Add(tableRow);
 
             KiraSozlesme ksDao = new KiraSozlesme();
-            DataTable dataTable = ksDao.SelectSUMTeminatByBolgeKiralamaAmaciReturnDT(bolge, ProjeConstants.HEPSI);
+            DataTable dataTable = ksDao.SelectSUMTeminatByBolgeKiralamaAmaciReturnDT(bolgeId, ProjeConstants.HEPSI);
             int adetToplam = 0;
             decimal teminatToplam = 0;
             foreach (DataRow row in dataTable.Rows)

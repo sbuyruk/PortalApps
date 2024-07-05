@@ -317,12 +317,18 @@ namespace TBYS_WebParts.TasinmazGirisiWP
         }
         private void BolgeTxtDoldur()
         {
-            Il il = new Il();
-            il = il.SelectByIlAdi(IliDDL.SelectedItem.ToString());
-            if (il != null)
-            {
-                SorumluBolgeTxt.Text = il.Bolge;
-            }
+            Bolge bolge = BolgeGetir();
+            SorumluBolgeTxt.Text = bolge != null ? bolge.KisaAdi : "";
+            SorumluBolgeIdTxt.Text = bolge != null ? bolge.Id.ToString() : "";
+        }
+        private Bolge BolgeGetir()
+        {
+            int ilId = IliDDL.SelectedItem.Value.ConvertToInt();
+            Il Il = new Il();
+            Il = Il.Select<Il>(ilId);
+            Bolge bolge = new Bolge();
+            bolge = bolge.Select(Il.BolgeId);
+            return bolge;
         }
         private void EdinmeSekliDDLDoldur()
         {
@@ -498,9 +504,11 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             tasinmaz.InsaYili = InsaYiliTxt.Value;
             tasinmaz.TahminiRayicDegeri = TahminiRayicDegeriTxt.Value.ConvertToDecimal();
             tasinmaz.EmlakSicilNo = EmlakSicilNoTxt.Text;
-            tasinmaz.Ilcesi = IlcesiDDL.SelectedItem.ToString();
-            ListItem ilItem = IliDDL.SelectedItem;
-            tasinmaz.Ili = ilItem.Text;
+            tasinmaz.Ilcesi = IlcesiDDL.SelectedItem.Text.ToString();
+            tasinmaz.IlceId = IlcesiDDL.SelectedItem.Value.ConvertToInt();
+
+            tasinmaz.Ili = IliDDL.SelectedItem.Text.ToString();
+            tasinmaz.IlId = IliDDL.SelectedItem.Value.ConvertToInt();
             tasinmaz.SorumluBolge = SorumluBolgeTxt.Text;
             tasinmaz.KiraDurumu = KiraDurumuDDL.SelectedValue;
             tasinmaz.KirayaUygunluk = KirayaUygunlukDDL.SelectedValue;
@@ -589,10 +597,11 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 tasinmaz.TapuTasinmazNo = TapuTasinmazNoTxt.Value;
                 tasinmaz.InsaYili = InsaYiliTxt.Value;
                 tasinmaz.EmlakSicilNo = EmlakSicilNoTxt.Text;
-                tasinmaz.Ilcesi = IlcesiDDL.SelectedItem.ToString();
-                ListItem ilItem = IliDDL.SelectedItem;
+                tasinmaz.Ilcesi = IlcesiDDL.SelectedItem.Text.ToString();
+                tasinmaz.IlceId = IlcesiDDL.SelectedItem.Value.ConvertToInt();
 
-                tasinmaz.Ili = ilItem.Text;
+                tasinmaz.Ili = IliDDL.SelectedItem.Text.ToString();
+                tasinmaz.IlId = IliDDL.SelectedItem.Value.ConvertToInt();
                 tasinmaz.SorumluBolge = SorumluBolgeTxt.Text;
                 tasinmaz.KiraDurumu = KiraDurumuDDL.SelectedValue;
                 tasinmaz.KirayaUygunluk = KirayaUygunlukDDL.SelectedValue;
@@ -662,6 +671,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
 
             return isSaved;
         }
+
         protected void SaveBtn_Click(object sender, EventArgs e)
         {
 

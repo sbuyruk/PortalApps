@@ -291,31 +291,38 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
         {
             DataTable dataTable = BirlesecekBagisciGetData();
             List<NakitBagisciListItem> list = new List<NakitBagisciListItem>();
-            foreach (DataRow row in dataTable.Rows)
+            if (dataTable!=null)
             {
-                int nakitBagisciId = row["NakitBagisciId"].ReturnZeroIfNull().ConvertToInt();
-                string adi = "<a href=# onclick=OpenModal(" + nakitBagisciId + "); class='text-link'>" + row["Adi"].ToString() + "</a>";
-                string TcKimlik = row["TcKimlikNo"].ToString();
-                string ili = row["Ili"].ToString();
-                string ilcesi = row["Ilcesi"].ToString();
-                string telefon = row["Telefon1"].ToString();
-                string adres = row["Adres"].ToString();
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    int nakitBagisciId = row["NakitBagisciId"].ReturnZeroIfNull().ConvertToInt();
+                    string adi = "<a href=# onclick=OpenModal(" + nakitBagisciId + "); class='text-link'>" + row["Adi"].ToString() + "</a>";
+                    string TcKimlik = row["TcKimlikNo"].ToString();
+                    string ili = row["Ili"].ToString();
+                    string ilcesi = row["Ilcesi"].ToString();
+                    string telefon = row["Telefon1"].ToString();
+                    string adres = row["Adres"].ToString();
 
-                string secUrl = "<input id=chk onchange=addRemoveBagisciToList(" + nakitBagisciId + ",this); type=checkbox />";
+                    string secUrl = "<input id=chk onchange=addRemoveBagisciToList(" + nakitBagisciId + ",this); type=checkbox />";
 
-                NakitBagisciListItem nakitBagisciListItem = new NakitBagisciListItem();
-                nakitBagisciListItem.NakitBagisciId = nakitBagisciId;
-                nakitBagisciListItem.Adi = adi.Trim();
-                nakitBagisciListItem.TCKimlikNo = TcKimlik;
-                nakitBagisciListItem.Ili = ili;
-                nakitBagisciListItem.Ilcesi = ilcesi;
-                nakitBagisciListItem.Telefon = telefon;
-                nakitBagisciListItem.Adres = adres;
+                    NakitBagisciListItem nakitBagisciListItem = new NakitBagisciListItem();
+                    nakitBagisciListItem.NakitBagisciId = nakitBagisciId;
+                    nakitBagisciListItem.Adi = adi.Trim();
+                    nakitBagisciListItem.TCKimlikNo = TcKimlik;
+                    nakitBagisciListItem.Ili = ili;
+                    nakitBagisciListItem.Ilcesi = ilcesi;
+                    nakitBagisciListItem.Telefon = telefon;
+                    nakitBagisciListItem.Adres = adres;
 
-                nakitBagisciListItem.Sec = adi.IndexOf("BİLİNMEYEN") >= 0 ? string.Empty : secUrl;
+                    nakitBagisciListItem.Sec = adi.IndexOf("BİLİNMEYEN") >= 0 ? string.Empty : secUrl;
 
-                nakitBagisciListItem.Secildi = SecilenIdQS.Equals(nakitBagisciListItem.NakitBagisciId);
-                list.Add(nakitBagisciListItem);
+                    nakitBagisciListItem.Secildi = SecilenIdQS.Equals(nakitBagisciListItem.NakitBagisciId);
+                    list.Add(nakitBagisciListItem);
+                }
+            }
+            else
+            {
+                MessageHelper.PublishMessage("Kayıt bulunamadı", ProjeConstants.MESAJ_BILGI,2000);
             }
             return list;
         }

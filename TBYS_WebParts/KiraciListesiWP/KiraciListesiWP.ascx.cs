@@ -79,12 +79,55 @@ namespace TBYS_WebParts.KiraciListesiWP
                 ViewState["Auth"] = value;
             }
         }
+        private int BolgeIdQS
+        {
+            get
+            {
+
+                if (ViewState["BolgeId"] == null)
+                {
+                    if (Page.Request.QueryString["BolgeId"] != null)
+                    {
+                        ViewState["BolgeId"] = Page.Request.QueryString["BolgeId"];
+                    }
+                    else
+                    {
+                        ViewState["BolgeId"] = string.Empty;
+                    }
+                }
+                return ViewState["BolgeId"].ReturnZeroIfNull().ConvertToInt();
+            }
+
+            set
+            {
+                ViewState["BolgeId"] = value;
+            }
+        }
+        private string CurrentUserName
+        {
+            get
+            {
+
+                if (ViewState["CurrentUserName"] == null)
+                {
+                    ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUserLoginName();
+                }
+                return ViewState["CurrentUserName"].ToString();
+            }
+
+            set
+            {
+                ViewState["CurrentUserName"] = value;
+            }
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
                 if (!Page.IsPostBack)
                 {
+                    Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
+                    BolgeIdQS = bolge == null ? 0 : bolge.Id;
                     KiraciSecimiDDLDoldur();
                     TabloOlustur();
                 }
@@ -247,11 +290,11 @@ namespace TBYS_WebParts.KiraciListesiWP
             DataTable dataTable;
             if (KiraciSecimiDDL.SelectedItem.Value.ConvertToInt()==ProjeConstants.KIRASOZLESME_AKTIF_DEGIL_INT)
             {
-                dataTable = kiraci.SelectAktifSozlesmesiOlmayanKiracilarReturnDT(ProjeConstants.BOLGE_HEPSI);
+                dataTable = kiraci.SelectAktifSozlesmesiOlmayanKiracilarReturnDT(BolgeIdQS);
             }
             else
             {
-                dataTable = kiraci.SelectAllReturnDT(kiraciSecimi, ProjeConstants.BOLGE_HEPSI); 
+                dataTable = kiraci.SelectAllReturnDT(kiraciSecimi, BolgeIdQS); 
             }
             int SiraNo = 1;
 
@@ -326,7 +369,7 @@ namespace TBYS_WebParts.KiraciListesiWP
             GridView GridView1 = new GridView();
             GridView1.AllowPaging = false;
             Kiraci kiraci = new Kiraci();
-            GridView1.DataSource = kiraci.SelectAllReturnDT(KiraciSecimiDDL.SelectedItem.Value,ProjeConstants.BOLGE_HEPSI);
+            GridView1.DataSource = kiraci.SelectAllReturnDT(KiraciSecimiDDL.SelectedItem.Value,ProjeConstants.BOLGE_HEPSI_INT);
             GridView1.DataBind();
 
             Page.Response.Clear();

@@ -749,5 +749,18 @@ namespace Model.Ortak
             
         }
         #endregion
+        public static string BolgeGetir(int ilId)
+        {
+            string bolgeAdi = string.Empty;
+            Il il = new Il();
+            il = il.Select<Il>(ilId);
+            if (il != null)
+            {
+                Bolge bolge = new Bolge();
+                bolge = bolge.Select(il.BolgeId);
+                bolgeAdi = bolge.KisaAdi;
+            }
+            return (bolgeAdi);
+        }
     }
 }

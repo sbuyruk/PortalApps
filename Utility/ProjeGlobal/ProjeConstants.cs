@@ -1048,6 +1048,8 @@ namespace Utility.ProjeGlobal
         #region Yazı Template
         //TBYS
         public static string TBYS_KIRAARTIS_TEMPLATE = "TemplateKiraArtis.docx";
+        public static string TBYS_KIRAARTIS_5YIL_TEMPLATE = "TemplateKiraArtis5.docx";
+        public static string TBYS_KIRAARTIS_10YIL_TEMPLATE = "TemplateKiraArtis10.docx";
         
         //FTK
         public static string FTK_IL_GUNCELLEME_YAZI_TEMPLATE = "TemplateFTKIlGuncellemeYazisi.docx";

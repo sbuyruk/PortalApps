@@ -53,14 +53,14 @@
                     <asp:TableHeaderCell BorderStyle="Solid" BorderWidth="1" BorderColor="Black">İcra Takibi</asp:TableHeaderCell>
                 </asp:TableHeaderRow>
                 <asp:TableRow HorizontalAlign="Center">
-                    <asp:TableCell ID="GMSiraCell" BorderStyle="Solid" BorderWidth="1" BorderColor="Black">1</asp:TableCell>
-                    <asp:TableCell ID="GMBaslikCell" BorderStyle="Solid" BorderWidth="1" BorderColor="Black">Genel Müdürlük</asp:TableCell>
-                    <asp:TableCell ID="GMKiraciSayisiCell" BorderStyle="Solid" BorderWidth="1" BorderColor="Black" runat="server"></asp:TableCell>
-                    <asp:TableCell ID="GM1AyCell" runat="server" BorderStyle="Solid" BorderWidth="1" BorderColor="Black"></asp:TableCell>
-                    <asp:TableCell ID="GM2AyCell" runat="server" BorderStyle="Solid" BorderWidth="1" BorderColor="Black"></asp:TableCell>
-                    <asp:TableCell ID="GM3AyCell" runat="server" BorderStyle="Solid" BorderWidth="1" BorderColor="Black"></asp:TableCell>
-                    <asp:TableCell ID="GM4AyCell" runat="server" BorderStyle="Solid" BorderWidth="1" BorderColor="Black"></asp:TableCell>
-                    <asp:TableCell ID="GMTopCell" runat="server" BorderStyle="Solid" BorderWidth="1" BorderColor="Black"></asp:TableCell>
+                    <asp:TableCell ID="AnkSiraCell" BorderStyle="Solid" BorderWidth="1" BorderColor="Black">1</asp:TableCell>
+                    <asp:TableCell ID="AnkBaslikCell" BorderStyle="Solid" BorderWidth="1" BorderColor="Black">Ankara Temsilciliği</asp:TableCell>
+                    <asp:TableCell ID="AnkKiraciSayisiCell" BorderStyle="Solid" BorderWidth="1" BorderColor="Black" runat="server"></asp:TableCell>
+                    <asp:TableCell ID="Ank1AyCell" runat="server" BorderStyle="Solid" BorderWidth="1" BorderColor="Black"></asp:TableCell>
+                    <asp:TableCell ID="Ank2AyCell" runat="server" BorderStyle="Solid" BorderWidth="1" BorderColor="Black"></asp:TableCell>
+                    <asp:TableCell ID="Ank3AyCell" runat="server" BorderStyle="Solid" BorderWidth="1" BorderColor="Black"></asp:TableCell>
+                    <asp:TableCell ID="Ank4AyCell" runat="server" BorderStyle="Solid" BorderWidth="1" BorderColor="Black"></asp:TableCell>
+                    <asp:TableCell ID="AnkTopCell" runat="server" BorderStyle="Solid" BorderWidth="1" BorderColor="Black"></asp:TableCell>
                 </asp:TableRow>
                 <asp:TableRow HorizontalAlign="Center">
                     <asp:TableCell ID="IstSiraCell" BorderStyle="Solid" BorderWidth="1" BorderColor="Black">2</asp:TableCell>

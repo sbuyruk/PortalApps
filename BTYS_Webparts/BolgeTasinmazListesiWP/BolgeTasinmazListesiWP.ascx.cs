@@ -34,28 +34,28 @@ namespace BTYS_Webparts.BolgeTasinmazListesiWP
             InitializeControl();
             this.ChromeType = PartChromeType.None;
         }
-        private string BolgeQS
+        private int BolgeIdQS
         {
             get
             {
 
-                if (ViewState["Bolge"] == null)
+                if (ViewState["BolgeId"] == null)
                 {
-                    if (Page.Request.QueryString["Bolge"] != null)
+                    if (Page.Request.QueryString["BolgeId"] != null)
                     {
-                        ViewState["Bolge"] = Page.Request.QueryString["Bolge"];
+                        ViewState["BolgeId"] = Page.Request.QueryString["BolgeId"];
                     }
                     else
                     {
-                        ViewState["Bolge"] = string.Empty;
+                        ViewState["BolgeId"] = string.Empty;
                     }
                 }
-                return ViewState["Bolge"].ToString();
+                return ViewState["BolgeId"].ReturnZeroIfNull().ConvertToInt();
             }
 
             set
             {
-                ViewState["Bolge"] = value;
+                ViewState["BolgeId"] = value;
             }
         }
         private string CurrentUserName
@@ -79,13 +79,9 @@ namespace BTYS_Webparts.BolgeTasinmazListesiWP
         {
             try
             {
-                BolgeQS=IKYSOrtak.PersonelinBolgesiniGetir_Deprecated(CurrentUserName);
-                if (!string.IsNullOrEmpty(BolgeQS))
-                {
-                    TabloOlustur();
-                }
-                else 
-                    MessageHelper.PublishMessage("Bölgeniz Belirlenemedi", ProjeConstants.MESAJ_HATA);
+                Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
+                BolgeIdQS = bolge == null ? 0 : bolge.Id;
+                TabloOlustur();
             }
             catch (Exception ex)
             {
@@ -119,7 +115,7 @@ namespace BTYS_Webparts.BolgeTasinmazListesiWP
         private List<TasinmazListesiListItem> GetDataList()
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            DataTable dataTable = tasinmaz.SelectByBolgeReturnJson(BolgeQS);
+            DataTable dataTable = tasinmaz.SelectByBolgeReturnJson(BolgeIdQS);
 
             List<TasinmazListesiListItem> list = new List<TasinmazListesiListItem>();
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
@@ -262,6 +258,7 @@ namespace BTYS_Webparts.BolgeTasinmazListesiWP
             public string Cinsi { get; set; }
             public string KiraDurumu { get; set; }
             public string Resimler { get; set; }
+
         }
     }
 }

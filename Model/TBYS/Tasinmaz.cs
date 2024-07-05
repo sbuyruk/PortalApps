@@ -14,6 +14,8 @@ namespace Model.TBYS
         public string Cinsi { get; set; }
         public string Ili { get; set; }
         public string Ilcesi { get; set; }
+        public int IlId { get; set; }
+        public int IlceId { get; set; }
         public string SigortaDurumu { get; set; }
         public string Adres { get; set; }
         public string MulkiyetSekli { get; set; }
@@ -220,23 +222,20 @@ namespace Model.TBYS
             return tasinmaz;
 
         }
-        public DataTable SelectByBolgeReturnJson(string bolgeQS)
+        public DataTable SelectByBolgeReturnJson(int bolgeId)
         {
-            string bolgeStr = string.Empty;
-            if (!string.IsNullOrEmpty(bolgeQS)) {
-                if (bolgeQS.Equals(ProjeConstants.BOLGE_ISTANBUL)||
-                    bolgeQS.Equals(ProjeConstants.BOLGE_IZMIR) ||
-                    bolgeQS.Equals(ProjeConstants.BOLGE_MERSIN))
-                bolgeStr = string.Format(" AND Bolge={0}", bolgeQS.ReturnQuotedValue());
-            }
+            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND E.Id={0} ", bolgeId);
+
             string sqlString = string.Format(@"
-                SELECT ROW_NUMBER() OVER(ORDER BY T.Id) AS Sirano, T.Id, T.Id TasinmazId, T.Ilcesi+'/'+T.Ili IliIlcesi,
+                SELECT ROW_NUMBER() OVER(ORDER BY T.Id) AS Sirano, T.Id, T.Id TasinmazId,  D.IlceAdi +'/'+C.IlAdi IliIlcesi,E.KisaAdi Bolge,
                     T.*,
                     B.Adi+' '+B.Soyadi Bagisci, B.Id BagisciId, B.Sag_vefat                    
                 FROM Tasinmaz_Table T
 	                LEFT JOIN Bagis_Table A ON A.TasinmazId=T.Id
 	                LEFT JOIN TasinmazBagisci_Table B ON B.Id=A.BagisciId
-                    LEFT JOIN IL_Table C ON C.IlAdi=T.Ili
+                    LEFT JOIN IL_Table C ON C.Id=T.IlId
+					LEFT JOIN ILCE_Table D ON D.Id=T.IlceId
+					LEFT JOIN Bolge_Table E ON E.Id=C.BolgeId
                 WHERE T.EnvanterdeMi=1 
 				    {0}", bolgeStr);
             DataTable dataTable = null;
@@ -382,7 +381,20 @@ namespace Model.TBYS
         }
         public DataTable SelectAllReturnDataTable()
         {
-            string sqlString = SelectAllSQL();
+            string sqlString = string.Format(@"
+                SELECT ROW_NUMBER() OVER(ORDER BY T.Id) AS Sirano, T.Id, T.Id TasinmazId, D.IlceAdi+'/'+C.IlAdi IliIlcesi,E.Adi Bolge,
+                    T.*,
+                    B.Adi+' '+B.Soyadi Bagisci, B.Id BagisciId, B.Sag_vefat                    
+                FROM Tasinmaz_Table T
+	                LEFT OUTER JOIN Bagis_Table A ON A.TasinmazId=T.Id
+	                LEFT OUTER JOIN TasinmazBagisci_Table B ON B.Id=A.BagisciId
+                
+					LEFT JOIN IL_Table C ON C.Id=T.IlId
+					LEFT JOIN ILCE_Table D ON D.Id=T.IlceId
+					LEFT JOIN Bolge_Table E ON E.Id=C.BolgeId
+				WHERE T.EnvanterdeMi=1 
+
+                ");
             DataTable dataTable = null;
             try
             {
@@ -394,19 +406,7 @@ namespace Model.TBYS
             }
             return dataTable;
         }
-        private string SelectAllSQL()
-        {
-            string sqlString = string.Format(@"
-                SELECT ROW_NUMBER() OVER(ORDER BY T.Id) AS Sirano, T.Id, T.Id TasinmazId, T.Ilcesi+'/'+T.Ili IliIlcesi,
-                    T.*,
-                    B.Adi+' '+B.Soyadi Bagisci, B.Id BagisciId, B.Sag_vefat                    
-                FROM Tasinmaz_Table T
-	                LEFT OUTER JOIN Bagis_Table A ON A.TasinmazId=T.Id
-	                LEFT OUTER JOIN TasinmazBagisci_Table B ON B.Id=A.BagisciId
-                WHERE T.EnvanterdeMi=1 
-                ");
-            return sqlString;
-        }
+
         public DataTable SelectAllEnvanterdenCikanReturnDataTable()
         {
             string sqlString = SelectAllEnvanterdenCikanSQL();
@@ -529,14 +529,18 @@ namespace Model.TBYS
                 return null;
             }
         }
-        public decimal SelectTahminiRayicToplami(string bolge)
+        public decimal SelectTahminiRayicToplami(int bolgeId)
         {
-            string bolgeStr = string.IsNullOrEmpty(bolge) ? string.Empty : string.Format(" AND SorumluBolge={0}", bolge.ReturnQuotedValue());
+            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND BolgeId={0} ", bolgeId);
             decimal toplam = 0;
             string sqlString = string.Format(@"
                 SELECT SUM(TahminiRayicDegeri) Toplam 
-                FROM Tasinmaz_Table 
-                WHERE EnvanterdeMi=1 {0}",bolgeStr);
+                FROM Tasinmaz_Table T
+                    LEFT JOIN IL_Table C ON C.Id=T.IlId
+	                LEFT JOIN ILCE_Table D ON D.Id=T.IlceId
+	                LEFT JOIN Bolge_Table E ON E.Id=C.BolgeId
+                WHERE T.EnvanterdeMi=1 
+                 {0}", bolgeStr);
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
@@ -546,14 +550,17 @@ namespace Model.TBYS
             }
             return toplam;
         }
-        public decimal SelectEmlakBeyanDegeriToplami(string bolge)
+        public decimal SelectEmlakBeyanDegeriToplami(int bolgeId)
         {
-            string bolgeStr = string.IsNullOrEmpty(bolge) ? string.Empty : string.Format(" AND SorumluBolge={0}", bolge.ReturnQuotedValue());
+            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND BolgeId={0} ", bolgeId);
             decimal toplam = 0;
             string sqlString = string.Format(@"
                 SELECT SUM(EmlakBeyanDegeri) Toplam 
-                FROM Tasinmaz_Table 
-                WHERE EnvanterdeMi=1 {0}", bolgeStr);
+                FROM Tasinmaz_Table T
+                    LEFT JOIN IL_Table C ON C.Id=T.IlId
+	                LEFT JOIN ILCE_Table D ON D.Id=T.IlceId
+	                LEFT JOIN Bolge_Table E ON E.Id=C.BolgeId
+                WHERE T.EnvanterdeMi=1  {0}", bolgeStr);
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
@@ -638,15 +645,18 @@ namespace Model.TBYS
             }
             return toplam;
         }
-        public int SelectTasinmazAdetByBolgeMulkiyetSekli(string bolge, string mulkiyetSekli)
+        public int SelectTasinmazAdetByBolgeMulkiyetSekli(int bolgeId, string mulkiyetSekli)
         {
+            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND BolgeId={0} ", bolgeId);
             int Adet = 0;
             string sqlString = string.Format(@"
                 SELECT COUNT(MulkiyetSekli) Adet 
-                FROM Tasinmaz_Table 
+                FROM Tasinmaz_Table A
+                LEFT JOIN Il_Table B ON B.Id=A.IlId
+                LEFT JOIN Bolge_Table D ON D.Id=B.BolgeId 
                 WHERE EnvanterdeMi=1 
-                    AND SorumluBolge ={0}
-                    AND MulkiyetSekli ={1}", bolge.ReturnQuotedValue(), mulkiyetSekli.ReturnQuotedValue());
+                    {0}
+                    AND MulkiyetSekli ={1}", bolgeStr, mulkiyetSekli.ReturnQuotedValue());
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
@@ -656,7 +666,7 @@ namespace Model.TBYS
             }
             return Adet;
         }
-        public int SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(string bolge, string kullanimSekli, string kiraDurumu, string mülkiyetSekli, string kirayaUygunluk = null)
+        public int SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(int bolgeId, string kullanimSekli, string kiraDurumu, string mülkiyetSekli, string kirayaUygunluk = null)
         {
             string whereStr = string.Empty;
             if (!string.IsNullOrEmpty(kiraDurumu))
@@ -665,15 +675,17 @@ namespace Model.TBYS
                 whereStr += " AND MulkiyetSekli = " + mülkiyetSekli.ReturnQuotedValue();
             if (!string.IsNullOrEmpty(kirayaUygunluk))
                 whereStr += " AND KirayaUygunluk = " + kirayaUygunluk.ReturnQuotedValue();
-
+            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND BolgeId={0} ", bolgeId);
             int Adet = 0;
             string sqlString = string.Format(@"
                 SELECT COUNT(KullanimSekli) Adet 
-                FROM Tasinmaz_Table 
+                FROM Tasinmaz_Table A
+                LEFT JOIN Il_Table B ON B.Id=A.IlId
+                LEFT JOIN Bolge_Table D ON D.Id=B.BolgeId
                 WHERE EnvanterdeMi=1 
-                    AND SorumluBolge ={0}
+                    {0}
                     AND KullanimSekli ={1}
-                    {2}", bolge.ReturnQuotedValue(), kullanimSekli.ReturnQuotedValue(), whereStr);
+                    {2}", bolgeStr, kullanimSekli.ReturnQuotedValue(), whereStr);
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
@@ -683,23 +695,25 @@ namespace Model.TBYS
             }
             return Adet;
         }
-        public int SelectTasinmazAdetByBolgeKullanimSekliKirayaUygunluk(string bolge, string kullanimSekli, string kirayaUygunluk, string mülkiyetSekli)
+        public int SelectTasinmazAdetByBolgeKullanimSekliKirayaUygunluk(int bolgeId, string kullanimSekli, string kirayaUygunluk, string mülkiyetSekli)
         {
             string whereStr = string.Empty;
             if (!string.IsNullOrEmpty(kirayaUygunluk))
                 whereStr = " AND KirayaUygunluk = " + kirayaUygunluk.ReturnQuotedValue();
             if (!string.IsNullOrEmpty(mülkiyetSekli))
                 whereStr += " AND MulkiyetSekli = " + mülkiyetSekli.ReturnQuotedValue();
-
+            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND BolgeId={0} ", bolgeId);
 
             int Adet = 0;
             string sqlString = string.Format(@"
                 SELECT COUNT(KullanimSekli) Adet 
-                FROM Tasinmaz_Table 
+                FROM Tasinmaz_Table A
+                LEFT JOIN Il_Table B ON B.Id=A.IlId
+                LEFT JOIN Bolge_Table D ON D.Id=B.BolgeId
                 WHERE EnvanterdeMi=1 
-                    AND SorumluBolge ={0}
+                    {0}
                     AND KullanimSekli ={1}
-                    {2}", bolge.ReturnQuotedValue(), kullanimSekli.ReturnQuotedValue(), whereStr);
+                    {2}", bolgeStr, kullanimSekli.ReturnQuotedValue(), whereStr);
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
@@ -709,20 +723,22 @@ namespace Model.TBYS
             }
             return Adet;
         }
-        public int SelectTasinmazAdetByBolgeKirayaUygunluk(string bolge, string kirayaUygunluk, string mulkiyetSekli)
+        public int SelectTasinmazAdetByBolgeKirayaUygunluk(int bolgeId, string kirayaUygunluk, string mulkiyetSekli)
         {
             string whereStr = " AND KirayaUygunluk=" + kirayaUygunluk.ReturnQuotedValue();
 
             string mulkiyetStr = string.IsNullOrEmpty(mulkiyetSekli) ? string.Empty : " AND MulkiyetSekli=" + mulkiyetSekli.ReturnQuotedValue();
-
+            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND BolgeId={0} ", bolgeId);
             int Adet = 0;
             string sqlString = string.Format(@"
                 SELECT COUNT(KullanimSekli) Adet 
-                FROM Tasinmaz_Table 
+                FROM Tasinmaz_Table A
+                LEFT JOIN Il_Table B ON B.Id=A.IlId
+                LEFT JOIN Bolge_Table D ON D.Id=B.BolgeId 
                 WHERE EnvanterdeMi=1 
-                    AND SorumluBolge ={0}
+                    {0}
                     {1}
-                    {2}", bolge.ReturnQuotedValue(), whereStr, mulkiyetStr);
+                    {2}", bolgeStr, whereStr, mulkiyetStr);
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {

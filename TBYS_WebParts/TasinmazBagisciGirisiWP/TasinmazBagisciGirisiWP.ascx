@@ -88,6 +88,7 @@
                                     <div class="form-group ">
                                         <label class="col-form-label" for="SorumluBolgeTxt">Sor.Bölge</label>
                                         <asp:TextBox ID="SorumluBolgeTxt" runat="server" CssClass="form-control small" ToolTip="Sorumlu Bölge/Temsilcilik" ReadOnly="true"></asp:TextBox>
+                                        <asp:TextBox ID="SorumluBolgeIdTxt" runat="server" class="form-control " ToolTip="Sorumlu Bölge/Temsilcilik" ReadOnly="true"></asp:TextBox>
                                     </div>
                                     <div class="form-group ">
                                         <label class="col-form-label" for="Telefon1Txt">Telefon(1)</label>

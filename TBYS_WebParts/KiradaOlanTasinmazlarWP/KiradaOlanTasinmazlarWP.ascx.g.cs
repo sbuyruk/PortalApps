@@ -61,7 +61,7 @@ namespace TBYS_WebParts.KiradaOlanTasinmazlarWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMHeaderCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkHeaderCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -69,7 +69,7 @@ namespace TBYS_WebParts.KiradaOlanTasinmazlarWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GM1Cell;
+        protected global::System.Web.UI.WebControls.TableCell Ank1Cell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -207,12 +207,12 @@ namespace TBYS_WebParts.KiradaOlanTasinmazlarWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMHeaderCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkHeaderCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMHeaderCell = @__ctrl;
+            this.AnkHeaderCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMHeaderCell";
+            @__ctrl.ID = "AnkHeaderCell";
             @__ctrl.CssClass = "btn-primary";
             @__ctrl.ColumnSpan = 6;
             @__ctrl.HorizontalAlign = global::System.Web.UI.WebControls.HorizontalAlign.Center;
@@ -226,7 +226,7 @@ namespace TBYS_WebParts.KiradaOlanTasinmazlarWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControl__control4(System.Web.UI.WebControls.TableCellCollection @__ctrl) {
             global::System.Web.UI.WebControls.TableCell @__ctrl1;
-            @__ctrl1 = this.@__BuildControlGMHeaderCell();
+            @__ctrl1 = this.@__BuildControlAnkHeaderCell();
             @__ctrl.Add(@__ctrl1);
         }
         
@@ -259,15 +259,15 @@ namespace TBYS_WebParts.KiradaOlanTasinmazlarWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGM1Cell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnk1Cell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GM1Cell = @__ctrl;
+            this.Ank1Cell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GM1Cell";
+            @__ctrl.ID = "Ank1Cell";
             @__ctrl.CssClass = "btn-primary";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Gn.Md.lük"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Ankara"));
             return @__ctrl;
         }
         
@@ -339,7 +339,7 @@ namespace TBYS_WebParts.KiradaOlanTasinmazlarWP {
             @__ctrl1 = this.@__BuildControlKVSCell();
             @__ctrl.Add(@__ctrl1);
             global::System.Web.UI.WebControls.TableCell @__ctrl2;
-            @__ctrl2 = this.@__BuildControlGM1Cell();
+            @__ctrl2 = this.@__BuildControlAnk1Cell();
             @__ctrl.Add(@__ctrl2);
             global::System.Web.UI.WebControls.TableCell @__ctrl3;
             @__ctrl3 = this.@__BuildControlIst1Cell();

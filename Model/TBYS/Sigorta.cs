@@ -204,25 +204,30 @@ namespace Model.TBYS
         private string SelectAllString()
         {
             string sqlString = string.Format(@"
-                SELECT A.Id SigortaId, B.SorumluBolge, A.TasinmazId,B.SorumluBolge,A.SigortaCinsi,A.AdresKodu,A.PoliceNo,A.SigortaBasTar,A.SigortaBitTar,A.YapiTarzi,A.InsaYili,
+                SELECT A.Id SigortaId, E.KisaAdi SorumluBolge, A.TasinmazId,B.SorumluBolge,A.SigortaCinsi,A.AdresKodu,A.PoliceNo,A.SigortaBasTar,A.SigortaBitTar,A.YapiTarzi,A.InsaYili,
                     A.BulunduguKat,A.ToplamKatSayisi, A.Metrekare, A.BrutYuzolcumu, A.SigortaBedeli, A.Prim,A.DaskPoliceNo,
-                    B.Adres+ISNULL(C.BolumNo,'') +' '+ B.Ilcesi +'-'+ B.Ili Adres, B.Ili,B.Ilcesi, B.Ilcesi +' '+ B.Ili IliIlcesi, 
-                    B.KullanimSekli, B.Cinsi, B.PaftaNo,B.AdaNo,B.ParselNo,B.SahifeNo,C.BolumNo,
+                    B.Adres+ISNULL(F.BolumNo,'') +' '+ D.IlceAdi +'-'+ C.IlAdi Adres, C.IlAdi,D.IlceAdi, D.IlceAdi +' '+ C.IlAdi IliIlcesi, 
+                    B.KullanimSekli, B.Cinsi, B.PaftaNo,B.AdaNo,B.ParselNo,B.SahifeNo,F.BolumNo,
                     B.TapuTasinmazNo,
                     A.TeminatListesi,A.TeminatAciklama,A.Aciklama
                 FROM Sigorta_Table A
                 INNER JOIN Tasinmaz_Table B ON B.Id=A.TasinmazId AND B.EnvanterdeMi=1
-                LEFT JOIN BagimsizBolum_Table C ON C.Id=A.BolumId
-                ORDER BY B.SorumluBolge, B.Ili,B.Ilcesi, A.Id, SigortaBasTar DESC
+                LEFT JOIN BagimsizBolum_Table F ON F.Id=A.BolumId
+                    LEFT JOIN IL_Table C ON C.Id=B.IlId
+	                LEFT JOIN ILCE_Table D ON D.Id=B.IlceId
+	                LEFT JOIN Bolge_Table E ON E.Id=C.BolgeId
+                WHERE 1>0
+                ORDER BY E.Id, B.Ili,B.Ilcesi, A.Id, SigortaBasTar DESC
                             ");
             return sqlString;
         }
         
-        public DataTable SelectByTeminatSigortaCinsiReturnDataTable(string sigortaCinsi, bool vadesiGelenler, bool isDeprem, bool isYangin, bool isMakine100000, bool isMakine5000, bool isJenerator, bool isAsansor, bool isKazan, string bolge)
+        public DataTable SelectByTeminatSigortaCinsiReturnDataTable(string sigortaCinsi, bool vadesiGelenler, bool isDeprem, bool isYangin, bool isMakine100000,
+            bool isMakine5000, bool isJenerator, bool isAsansor, bool isKazan, int bolgeId, string auth)
         {
             string bolgeStr = string.Empty;
             
-            string sqlString = SelectByTeminatSigortaCinsiSQL(sigortaCinsi, vadesiGelenler, isDeprem, isYangin, isMakine100000, isMakine5000, isJenerator, isAsansor, isKazan, bolge);
+            string sqlString = SelectByTeminatSigortaCinsiSQL(sigortaCinsi, vadesiGelenler, isDeprem, isYangin, isMakine100000, isMakine5000, isJenerator, isAsansor, isKazan, bolgeId,auth);
             DataTable dataTable = null;
             try
             {
@@ -235,16 +240,13 @@ namespace Model.TBYS
             return dataTable;
 
         }
-        private string SelectByTeminatSigortaCinsiSQL(string sigortaCinsi, bool vadesiGelenler, bool isDeprem, bool isYangin, bool isMakine100000, bool isMakine5000, bool isJenerator, bool isAsansor, bool isKazan, string bolge)
+        private string SelectByTeminatSigortaCinsiSQL(string sigortaCinsi, bool vadesiGelenler, bool isDeprem, bool isYangin, bool isMakine100000, bool isMakine5000, 
+            bool isJenerator, bool isAsansor, bool isKazan, int bolgeId, string auth)
         {
-            string bolgeStr = string.Empty;
-            if (!string.IsNullOrEmpty(bolge))
-            {
-                if (bolge.Equals(ProjeConstants.BOLGE_ISTANBUL) ||
-                    bolge.Equals(ProjeConstants.BOLGE_IZMIR) ||
-                    bolge.Equals(ProjeConstants.BOLGE_MERSIN))
-                    bolgeStr = string.Format(" AND Bolge={0}", bolge.ReturnQuotedValue());
-            }
+            
+            string bolgeStr = (!string.IsNullOrEmpty(auth) && auth.Equals(ProjeConstants.TBYS_YETKILI_BIRIM)) ||
+                (bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT) ? string.Empty : string.Format(" AND E.Id={0} ", bolgeId);
+
 
             string sigortaCinsiStr = string.IsNullOrEmpty(sigortaCinsi) || sigortaCinsi.Equals(ProjeConstants.HEPSI) ? " AND SigortaCinsi is not null " : " AND SigortaCinsi = " + sigortaCinsi.ReturnQuotedValue();
             string depremStr = isDeprem ? string.Format(" TeminatListesi Like '%{0}%'", "1") : "";
@@ -270,16 +272,20 @@ namespace Model.TBYS
             string vadeStr = vadesiGelenler?string.Format(" AND SigortaBitTar <{0}", DateTime.Today.AddMonths(1).ReturnTRDateFormat()):string.Empty;
             
             string sqlString = string.Format(@"
-                SELECT A.Id SigortaId, B.SorumluBolge, A.TasinmazId,B.SorumluBolge,A.SigortaCinsi,A.AdresKodu,A.PoliceNo,A.SigortaBasTar,A.SigortaBitTar,A.YapiTarzi,A.InsaYili,
-                     A.BulunduguKat,B.BulunduguKat, A.ToplamKatSayisi,B.ToplamKatSayisi, A.Metrekare, B.Metrekare ,A.BrutYuzolcumu, B.Yuzolcumu,A.SigortaBedeli, A.Prim,A.DaskPoliceNo,A.BagimsizBolumNo,
-                    B.Adres+ISNULL(C.BolumNo,'') Adres, B.Ili,B.Ilcesi, B.Ilcesi +' '+ B.Ili IliIlcesi, B.KullanimSekli, B.Cinsi, B.PaftaNo,B.AdaNo,B.ParselNo,B.SahifeNo,C.BolumNo,
+                SELECT A.Id SigortaId, B.SorumluBolge,E.KisaAdi Bolge, A.TasinmazId,B.SorumluBolge,A.SigortaCinsi,A.AdresKodu,A.PoliceNo,A.SigortaBasTar,A.SigortaBitTar,
+	                A.YapiTarzi,A.InsaYili, A.BulunduguKat,B.BulunduguKat, A.ToplamKatSayisi,B.ToplamKatSayisi, A.Metrekare, B.Metrekare ,A.BrutYuzolcumu, B.Yuzolcumu,
+	                A.SigortaBedeli, A.Prim,A.DaskPoliceNo,A.BagimsizBolumNo,A.PDFDosyasi,
+                    B.Adres+ISNULL(F.BolumNo,'') Adres, B.Ili,B.Ilcesi, B.Ilcesi +' '+ B.Ili IliIlcesi, B.KullanimSekli, B.Cinsi, B.PaftaNo,B.AdaNo,B.ParselNo,B.SahifeNo,F.BolumNo,
                     A.TeminatListesi,A.TeminatAciklama,A.Aciklama,B.EnvanterdeMi,
-                    B.Adres+ISNULL(C.BolumNo,'') +' '+ B.Ilcesi+'-'+ B.Ili TamAdres,
-                    B.KatMulkiyeti,A.KullanimAmaci,B.TapuTasinmazNo
+                    B.Adres+ISNULL(F.BolumNo,'') +' '+ B.Ilcesi+'-'+ B.Ili TamAdres,
+                    B.KatMulkiyeti,A.KullanimAmaci,B.TapuTasinmazNo,
+	                E.KisaAdi Bolge
                 FROM Sigorta_Table A
                     INNER JOIN Tasinmaz_Table B ON B.Id=A.TasinmazId AND (B.EnvanterdeMi=1 OR B.EnvanterdeMi=2) 
-                    LEFT JOIN BagimsizBolum_Table C ON C.Id=A.BolumId AND C.TasinmazId=B.Id
-                    LEFT JOIN IL_Table D ON D.IlAdi=B.Ili
+                    LEFT JOIN BagimsizBolum_Table F ON F.Id=A.BolumId AND F.TasinmazId=B.Id
+                    LEFT JOIN IL_Table C ON C.Id=B.IlId
+	                LEFT JOIN ILCE_Table D ON D.Id=B.IlceId
+	                LEFT JOIN Bolge_Table E ON E.Id=C.BolgeId
                 WHERE 1>0
                     {0}
                     {1} 

@@ -84,88 +84,65 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
                 ViewState["SecilenYil"] = value;
             }
         }
-        private string SecilenBolgeQS
+        private int BolgeIdQS
         {
             get
             {
 
-                if (ViewState["SecilenBolge"] == null)
+                if (ViewState["BolgeId"] == null)
                 {
-                    if (Page.Request.QueryString["SecilenBolge"] != null)
+                    if (Page.Request.QueryString["BolgeId"] != null)
                     {
-                        ViewState["SecilenBolge"] = Page.Request.QueryString["SecilenBolge"];
+                        ViewState["BolgeId"] = Page.Request.QueryString["BolgeId"].ConvertToInt();
                     }
                     else
                     {
-                        ViewState["SecilenBolge"] = string.Empty;
+                        ViewState["BolgeId"] = ProjeConstants.BOLGE_HEPSI_INT;
                     }
                 }
-                return ViewState["SecilenBolge"].ToString();
+                return ViewState["SecilenBolge"].ConvertToInt();
             }
 
             set
             {
-                ViewState["SecilenBolge"] = value;
+                ViewState["BolgeId"] = value;
             }
         }
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!Page.IsPostBack)
             {
-                FillDropDownList();
-                SetDDLValues(); //ay ve yılı querystringden al
+                AyDDLDoldur();
+                YilDDLDoldur();
+                BolgeDDLDoldur();
+                //SetDDLValues(); //ay ve yılı querystringden al
                 ParametreleriDoldur();
                 TabloOlustur();
             }
             
         }
-        private void FillDropDownList()
-        {
-            AyDDLDoldur();
-            YilDDLDoldur();
-            BolgeDDLDoldur();
-        }
+       
         private void BolgeDDLDoldur()
         {
             BolgeDDL.Items.Clear();
-            System.Web.UI.WebControls.ListItem li = new System.Web.UI.WebControls.ListItem(ProjeConstants.BOLGE_GENELMUDURLUK);
-            System.Web.UI.WebControls.ListItem li1 = new System.Web.UI.WebControls.ListItem(ProjeConstants.BOLGE_ISTANBUL);
-            System.Web.UI.WebControls.ListItem li2 = new System.Web.UI.WebControls.ListItem(ProjeConstants.BOLGE_IZMIR);
-            System.Web.UI.WebControls.ListItem li3 = new System.Web.UI.WebControls.ListItem(ProjeConstants.BOLGE_MERSIN);
-            BolgeDDL.Items.Add(li);
-            BolgeDDL.Items.Add(li1);
-            BolgeDDL.Items.Add(li2);
-            BolgeDDL.Items.Add(li3);
-            SecilenBolgeQS = string.IsNullOrEmpty(SecilenBolgeQS) ? BolgeDDL.SelectedItem.Text : SecilenBolgeQS;
-        }
-        //private void AyDDLDoldur()
-        //{
-
-        //    AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Ocak", "1"));
-        //    AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Şubat", "2"));
-        //    AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Mart", "3"));
-        //    AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Nisan", "4"));
-        //    AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Mayıs", "5"));
-        //    AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Haziran", "6"));
-        //    AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Temmuz", "7"));
-        //    AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Ağustos", "8"));
-        //    AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Eylül", "9"));
-        //    AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Ekim", "10"));
-        //    AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Kasım", "11"));
-        //    AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Aralık", "12"));
-
-        //}
-        protected void AyYilDDL_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            TabloOlustur();
+            Bolge bolgeDao = new Bolge();
+            List<Bolge> list = bolgeDao.SelectAktifBolgeler(BolgeIdQS);
+            foreach (Bolge item in list)
+            {
+                if (string.IsNullOrEmpty(item.Adi.Trim()))
+                    continue;
+                BolgeDDL.Items.Add(new System.Web.UI.WebControls.ListItem(item.KisaAdi, item.Id.ToString()));
+            }
         }
         private void AyDDLDoldur()
         {
             AyDDL.Items.Clear();
             System.Web.UI.WebControls.ListItem li = new System.Web.UI.WebControls.ListItem(DateTime.Today.ToString("MMMM"), DateTime.Today.AddMonths(-1).ToString("MM"));//DİKKAT Bir önceki ay
             System.Web.UI.WebControls.ListItem li1 = new System.Web.UI.WebControls.ListItem(DateTime.Today.AddMonths(1).ToString("MMMM"), DateTime.Today.ToString("MM"));
+            System.Web.UI.WebControls.ListItem li2 = new System.Web.UI.WebControls.ListItem(DateTime.Today.AddMonths(2).ToString("MMMM"), DateTime.Today.ToString("MM"));
             AyDDL.Items.Add(li);
             AyDDL.Items.Add(li1);
+            AyDDL.Items.Add(li2);
         }
         private void YilDDLDoldur()
         {
@@ -208,13 +185,13 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
                 #region bolge
                 //bolge
                 System.Web.UI.WebControls.ListItem bolgeItem = new System.Web.UI.WebControls.ListItem();
-                if (!string.IsNullOrEmpty(SecilenBolgeQS))
-                    bolgeItem = BolgeDDL.Items.FindByValue(SecilenBolgeQS);
+                if (BolgeIdQS>-1)
+                    bolgeItem = BolgeDDL.Items.FindByValue(BolgeIdQS.ToString());
 
                 if (bolgeItem != null)
                 {
                     BolgeDDL.SelectedValue = bolgeItem.Value;
-                    SecilenBolgeQS = bolgeItem.Value;
+                    BolgeIdQS = bolgeItem.Value.ConvertToInt();
                 }
                 #endregion
             }
@@ -282,8 +259,8 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
             int ay = AyDDL.SelectedItem.Value.ConvertToInt();
             DateTime tarih = new DateTime(DateTime.Today.Year, ay, 1);
             KiraSozlesme kiraSozlesmeDao = new KiraSozlesme();
-
-            DataTable dataTable = kiraSozlesmeDao.SelectKiraArtisiGelenSozlesmelerReturnDT(SecilenBolgeQS,tarih);
+            int bolgeId= BolgeDDL.SelectedItem==null ? ProjeConstants.BOLGE_HEPSI_INT:BolgeDDL.SelectedItem.Value.ConvertToInt();
+            DataTable dataTable = kiraSozlesmeDao.SelectKiraArtisiGelenSozlesmelerReturnDT(bolgeId,tarih);
             int SiraNo = 1;
 
             List<KiraArtisListItem> list = new List<KiraArtisListItem>();
@@ -405,7 +382,7 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
         }
         protected void BolgeDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SecilenBolgeQS = BolgeDDL.SelectedItem.Text;
+            BolgeIdQS = BolgeDDL.SelectedItem.Value.ConvertToInt();
             //KayitGetir();
             TabloOlustur();
         }
@@ -421,8 +398,8 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
             {
                 // Dosya adları 
                 string zaman = DateTime.Now.ToString("dd-MM-yyyy-HH-mm");
-                string yaziDosyaAdi = ("Kira-Artis-" + SecilenBolgeQS + "-(" + zaman + ").docx").Replace(" ","");
-                string etiketDosyaAdi = ("Adres-EtiketiKA-" + SecilenBolgeQS + "-(" + zaman + ").docx").Replace(" ", "");
+                string yaziDosyaAdi = ("Kira-Artis-" + BolgeIdQS + "-(" + zaman + ").docx").Replace(" ","");
+                string etiketDosyaAdi = ("Adres-EtiketiKA-" + BolgeIdQS + "-(" + zaman + ").docx").Replace(" ", "");
                 bool isYaziOlusturuldu = YeniYaziOlustur(yaziDosyaAdi);
                 if (isYaziOlusturuldu)
                 {
@@ -564,7 +541,7 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
             DateTime gecenAySonGun = new DateTime(bugun.Year, bugun.Month, 1).AddDays(-1);
             DateTime gecenAyIlkGun = new DateTime(bugun.Year, bugun.AddMonths(-1).Month, 1);
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            DataTable dataTable = kiraSozlesme.SelectKiraArtisiGelenSozlesmelerReturnDT(SecilenBolgeQS, tarih);
+            DataTable dataTable = kiraSozlesme.SelectKiraArtisiGelenSozlesmelerReturnDT(BolgeIdQS, tarih);
             if (dataTable != null)
             {
                 foreach (DataRow row in dataTable.Rows)
@@ -688,7 +665,7 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
             MemoryStream destinationStream = null;
 
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            DataTable dataTable = kiraSozlesme.SelectKiraArtisiGelenSozlesmelerReturnDT(SecilenBolgeQS, tarih);
+            DataTable dataTable = kiraSozlesme.SelectKiraArtisiGelenSozlesmelerReturnDT(BolgeIdQS, tarih);
             if (dataTable != null)
             {
                 int index = 1;

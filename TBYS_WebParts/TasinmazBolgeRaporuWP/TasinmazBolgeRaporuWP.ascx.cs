@@ -28,12 +28,105 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP
             InitializeControl();
             this.ChromeType = PartChromeType.None;
         }
+        private int BolgeIdQS
+        {
+            get
+            {
+
+                if (ViewState["BolgeId"] == null)
+                {
+                    if (Page.Request.QueryString["BolgeId"] != null)
+                    {
+                        ViewState["BolgeId"] = Page.Request.QueryString["BolgeId"];
+                    }
+                    else
+                    {
+                        ViewState["BolgeId"] = string.Empty;
+                    }
+                }
+                return ViewState["BolgeId"].ReturnZeroIfNull().ConvertToInt();
+            }
+
+            set
+            {
+                ViewState["BolgeId"] = value;
+            }
+        }
+        private string CurrentUserName
+        {
+            get
+            {
+
+                if (ViewState["CurrentUserName"] == null)
+                {
+                    ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUserLoginName();
+                }
+                return ViewState["CurrentUserName"].ToString();
+            }
+
+            set
+            {
+                ViewState["CurrentUserName"] = value;
+            }
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
-            TablolariDoldur("Genel Md.lük");
-            TablolariDoldur("İstanbul");
-            TablolariDoldur("İzmir");
-            TablolariDoldur("Mersin");
+            Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
+            BolgeIdQS = bolge == null ? 0 : bolge.Id;
+            switch (bolge.Id)
+            {
+                case ProjeConstants.BOLGE_GENELMUDURLUK_INT:
+                    {
+                        TablolariDoldur(ProjeConstants.BOLGE_ANKARA_INT);
+                        TablolariDoldur(ProjeConstants.BOLGE_ISTANBUL_INT);
+                        TablolariDoldur(ProjeConstants.BOLGE_IZMIR_INT);
+                        TablolariDoldur(ProjeConstants.BOLGE_MERSIN_INT);
+                        AnkTable.Attributes["style"] = "display:block";
+                        IstTable.Attributes["style"] = "display:block";
+                        IzmTable.Attributes["style"] = "display:block";
+                        MerTable.Attributes["style"] = "display:block";
+                        break;
+                    }
+                case ProjeConstants.BOLGE_ANKARA_INT:
+                    {
+                        TablolariDoldur(ProjeConstants.BOLGE_ANKARA_INT);
+                        AnkTable.Attributes["style"] = "display:block";
+                        IstTable.Attributes["style"] = "display:none";
+                        IzmTable.Attributes["style"] = "display:none";
+                        MerTable.Attributes["style"] = "display:none";
+                        break;
+                    }
+                case ProjeConstants.BOLGE_ISTANBUL_INT:
+                    {
+                        TablolariDoldur(ProjeConstants.BOLGE_ISTANBUL_INT);
+                        AnkTable.Attributes["style"] = "display:none";
+                        IstTable.Attributes["style"] = "display:block";
+                        IzmTable.Attributes["style"] = "display:none";
+                        MerTable.Attributes["style"] = "display:none";
+                        break;
+                    }
+                case ProjeConstants.BOLGE_IZMIR_INT:
+                    {
+                        TablolariDoldur(ProjeConstants.BOLGE_IZMIR_INT);
+                        AnkTable.Attributes["style"] = "display:none";
+                        IstTable.Attributes["style"] = "display:none";
+                        IzmTable.Attributes["style"] = "display:block";
+                        MerTable.Attributes["style"] = "display:none";
+                        break;
+                    }
+                case ProjeConstants.BOLGE_MERSIN_INT:
+                    {
+                        TablolariDoldur(ProjeConstants.BOLGE_MERSIN_INT);
+                        AnkTable.Attributes["style"] = "display:none";
+                        IstTable.Attributes["style"] = "display:none";
+                        IzmTable.Attributes["style"] = "display:none";
+                        MerTable.Attributes["style"] = "display:block";
+                        break;
+                    }
+                default:
+                    break;
+            }
+            
             TahminiRayicTopTxt.Value = TahminiRayicToplaminiBul().ToString();
             EmlakBeyanTopTxt.Value = EmlakBeyanToplaminiBul().ToString();
         }
@@ -41,21 +134,21 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP
         {
             decimal toplam = 0;
             Tasinmaz tasinmaz = new Tasinmaz();
-            toplam = tasinmaz.SelectTahminiRayicToplami(string.Empty);
+            toplam = tasinmaz.SelectTahminiRayicToplami(BolgeIdQS);
             return toplam;
         }
         private decimal EmlakBeyanToplaminiBul()
         {
             decimal toplam = 0;
             Tasinmaz tasinmaz = new Tasinmaz();
-            toplam = tasinmaz.SelectEmlakBeyanDegeriToplami(string.Empty);
+            toplam = tasinmaz.SelectEmlakBeyanDegeriToplami(BolgeIdQS);
             return toplam;
         }
-        private void TablolariDoldur(string bolge)
+        private void TablolariDoldur(int bolgeId)
         {
             Tasinmaz tasinmaz = new Tasinmaz();
             Il il = new Il();
-            List<Il> ilList = il.SelectByBolge(bolge);
+            List<Il> ilList = il.SelectByBolgeId(bolgeId);
             int AptTMToplam = 0;
             int AptCMToplam = 0;
             int MeskenTMToplam = 0;
@@ -186,18 +279,18 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP
                         TableCell ToplamCell = new TableCell();
                         ToplamCell.Text = TMCMToplam.ReturnEmptyIfZeroOrNull().ToString();
                         row.Controls.Add(ToplamCell);
-                        switch (bolge)
+                        switch (bolgeId)
                         {
-                            case "Genel Md.lük":
-                                GMTable.Controls.Add(row);
+                            case ProjeConstants.BOLGE_ANKARA_INT:
+                                AnkTable.Controls.Add(row);
                                 break;
-                            case "İstanbul":
+                            case ProjeConstants.BOLGE_ISTANBUL_INT:
                                 IstTable.Controls.Add(row);
                                 break;
-                            case "İzmir":
+                            case ProjeConstants.BOLGE_IZMIR_INT:
                                 IzmTable.Controls.Add(row);
                                 break;
-                            case "Mersin":
+                            case ProjeConstants.BOLGE_MERSIN_INT:
                                 MerTable.Controls.Add(row);
                                 break;
                         }
@@ -322,29 +415,29 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP
 
                 SonToplamrow.Controls.Add(SonTarlaToplamCell);
 
-                switch (bolge)
+                switch (bolgeId)
                 {
-                    case "Genel Md.lük":
+                    case ProjeConstants.BOLGE_ANKARA_INT:
                         {
-                            GMTable.Controls.Add(footerrow);
-                            GMTable.Controls.Add(SonToplamrow);
+                            AnkTable.Controls.Add(footerrow);
+                            AnkTable.Controls.Add(SonToplamrow);
                             break;
                         }
 
-                    case "İstanbul":
+                    case ProjeConstants.BOLGE_ISTANBUL_INT:
                         {
                             IstTable.Controls.Add(footerrow);
                             IstTable.Controls.Add(SonToplamrow);
                             break;
                         }
 
-                    case "İzmir":
+                    case ProjeConstants.BOLGE_IZMIR_INT:
                         {
                             IzmTable.Controls.Add(footerrow);
                             IzmTable.Controls.Add(SonToplamrow);
                             break;
                         }
-                    case "Mersin":
+                    case ProjeConstants.BOLGE_MERSIN_INT:
                         {
                             MerTable.Controls.Add(footerrow);
                             MerTable.Controls.Add(SonToplamrow);
@@ -369,7 +462,7 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP
             System.Web.UI.HtmlTextWriter hw = new System.Web.UI.HtmlTextWriter(tw);
 
             //Get the HTML for the control.             
-            GMTable.RenderControl(hw);
+            AnkTable.RenderControl(hw);
             IstTable.RenderControl(hw);
             IzmTable.RenderControl(hw);
             MerTable.RenderControl(hw);

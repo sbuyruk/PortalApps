@@ -105,6 +105,47 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
                 ViewState["SecilenBolge"] = value;
             }
         }
+        private int BolgeIdQS
+        {
+            get
+            {
+
+                if (ViewState["BolgeId"] == null)
+                {
+                    if (Page.Request.QueryString["BolgeId"] != null)
+                    {
+                        ViewState["BolgeId"] = Page.Request.QueryString["BolgeId"];
+                    }
+                    else
+                    {
+                        ViewState["BolgeId"] = string.Empty;
+                    }
+                }
+                return ViewState["BolgeId"].ReturnZeroIfNull().ConvertToInt();
+            }
+
+            set
+            {
+                ViewState["BolgeId"] = value;
+            }
+        }
+        private string CurrentUserName
+        {
+            get
+            {
+
+                if (ViewState["CurrentUserName"] == null)
+                {
+                    ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUserLoginName();
+                }
+                return ViewState["CurrentUserName"].ToString();
+            }
+
+            set
+            {
+                ViewState["CurrentUserName"] = value;
+            }
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!Page.IsPostBack)
@@ -125,15 +166,14 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
         private void BolgeDDLDoldur()
         {
             BolgeDDL.Items.Clear();
-            System.Web.UI.WebControls.ListItem li = new System.Web.UI.WebControls.ListItem(ProjeConstants.BOLGE_GENELMUDURLUK);
-            System.Web.UI.WebControls.ListItem li1 = new System.Web.UI.WebControls.ListItem(ProjeConstants.BOLGE_ISTANBUL);
-            System.Web.UI.WebControls.ListItem li2 = new System.Web.UI.WebControls.ListItem(ProjeConstants.BOLGE_IZMIR);
-            System.Web.UI.WebControls.ListItem li3 = new System.Web.UI.WebControls.ListItem(ProjeConstants.BOLGE_MERSIN);
-            BolgeDDL.Items.Add(li);
-            BolgeDDL.Items.Add(li1);
-            BolgeDDL.Items.Add(li2);
-            BolgeDDL.Items.Add(li3);
-            SecilenBolgeQS = string.IsNullOrEmpty(SecilenBolgeQS) ? BolgeDDL.SelectedItem.Text : SecilenBolgeQS;
+            Bolge bolgeDao = new Bolge();
+            List<Bolge> list = bolgeDao.SelectAktifBolgeler(BolgeIdQS);
+            foreach (Bolge item in list)
+            {
+                if (string.IsNullOrEmpty(item.Adi.Trim()))
+                    continue;
+                BolgeDDL.Items.Add(new System.Web.UI.WebControls.ListItem(item.KisaAdi, item.Id.ToString()));
+            }
         }
         private void AyDDLDoldur()
         {
@@ -193,13 +233,11 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
                 #region bolge
                 //bolge
                 System.Web.UI.WebControls.ListItem bolgeItem = new System.Web.UI.WebControls.ListItem();
-                if (!string.IsNullOrEmpty(SecilenBolgeQS))
-                    bolgeItem = BolgeDDL.Items.FindByValue(SecilenBolgeQS);
-
-                if (bolgeItem != null)
+                if (BolgeIdQS>0)
                 {
-                    BolgeDDL.SelectedValue = bolgeItem.Value;
-                    SecilenBolgeQS = bolgeItem.Value;
+                    UtilityHelper.SetDDLValue(BolgeDDL, BolgeIdQS.ToString());
+
+                    SecilenBolgeQS = BolgeDDL.SelectedItem.Text;
                 }
                 #endregion
             }
@@ -214,9 +252,10 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
             DateTime bugun = DateTime.Today;
             DateTime buAyIlkGun = new DateTime(bugun.Year, bugun.Month, 1);
             DateTime buAySonGun = new DateTime(bugun.Year, bugun.Month, 1).AddMonths(1).AddDays(-1);
+
             Parafe1Txt.Text = @"…./" + bugun.ToString("MM") + @"/" + bugun.Year + " Eml.Ynt.Kd.Uzm.Z.ÇALIŞ";
-            Parafe2Txt.Text = @"…./" + bugun.ToString("MM") + @"/" + bugun.Year + " İnş.Eml.Ynt.Ş.Md.H.ŞENEL";
-            ImzalayanTxt.Text = @"Tolga DURUTUNA";
+            Parafe2Txt.Text = @"…./" + bugun.ToString("MM") + @"/" + bugun.Year + " İnş.Eml.Ynt.Dir.M.TAŞKALDIRAN";
+            ImzalayanTxt.Text = @"Emrah ŞENGÜL";
             ImzalayanMakamTxt.Text = @"TSKGV Baş Hukuk Müşaviri";
             EvrakTarihiTxt.Text = bugun.ToString("dd") + " " + bugun.ToString("MMMM") + " " + bugun.Year;
             GecerlilikTarihiTxt.Text = buAyIlkGun.ToString("dd") + " " + buAyIlkGun.ToString("MMMM") + " " + buAyIlkGun.Year;
@@ -289,6 +328,7 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
             int ay = SecilenAyQS.ConvertToInt();
             int yil = SecilenYilQS.ConvertToInt();
             SecilenBolgeQS = BolgeDDL.SelectedItem.Text;
+            int bolgeId= BolgeDDL.SelectedItem.Value.ConvertToInt();
             DateTime secilenTarih = new DateTime(yil, ay, 1);
             DateTime vadeBastar = secilenTarih;
             DateTime vadeBittar = secilenTarih.AddMonths(1).AddDays(-1);
@@ -298,7 +338,7 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
             //DateTime sonTarih = secilenTarih.AddMonths(1).AddDays(-1); //AddDays(-1);
             OdemePlani opl = new OdemePlani();
             int kayitSayisi = 0;
-            string json = opl.SelectBorcluOdemePlanlariByBolgeTarihJson(SecilenBolgeQS, vadeBastar, vadeBittar, 2, 2, ref kayitSayisi);
+            string json = opl.SelectBorcluOdemePlanlariByBolgeTarihJson(bolgeId, vadeBastar, vadeBittar, 2, 2, ref kayitSayisi);
             TableDataLbl.Text = "Toplam " + kayitSayisi + " kayıt bulundu";
             return json;
         }
@@ -321,6 +361,7 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
         protected void BolgeDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
             SecilenBolgeQS = BolgeDDL.SelectedItem.Text;
+            BolgeIdQS = BolgeDDL.SelectedItem.Value.ConvertToInt();
             TabloOlustur();
         }
         protected void YaziyiOlusturBtn_Click(object sender, EventArgs e)
@@ -433,13 +474,14 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
             DateTime vadeBastar = secilenTarih;
             DateTime vadeBittar = secilenTarih.AddMonths(1).AddDays(-1);
             DateTime bugun = DateTime.Today;
+            int bolgeId = BolgeDDL.SelectedItem.Value.ConvertToInt();
             ////DateTime gecenAySonGun = new DateTime(bugun.Year, bugun.Month, 1).AddDays(-1);
             ////DateTime gecenAyIlkGun = new DateTime(bugun.Year, bugun.AddMonths(-1).Month, 1);
             //DateTime secilenTarih = DateTime.Today.AddMonths(-1);
             //DateTime ilkTarih = secilenTarih;//.AddDays(1);
             //DateTime sonTarih = secilenTarih.AddMonths(1).AddDays(-1); //AddDays(-1);
             OdemePlani opl = new OdemePlani();
-            DataTable dataTable = opl.SelectBorcluOdemePlanlariByBolgeTarih(SecilenBolgeQS, vadeBastar, vadeBittar, 2, 2);
+            DataTable dataTable = opl.SelectBorcluOdemePlanlariByBolgeTarih(bolgeId, vadeBastar, vadeBittar, 2, 2);
             if (dataTable != null)
             {
                 foreach (DataRow row in dataTable.Rows)
@@ -507,7 +549,7 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
             //DateTime ilkTarih = secilenTarih;//.AddDays(1);
             //DateTime sonTarih = secilenTarih.AddMonths(1).AddDays(-1); //AddDays(-1);
             OdemePlani opl = new OdemePlani();
-            DataTable dataTable = opl.SelectBorcluOdemePlanlariByBolgeTarih(SecilenBolgeQS, vadeBastar, vadeBittar, 2, 2);
+            DataTable dataTable = opl.SelectBorcluOdemePlanlariByBolgeTarih(BolgeIdQS, vadeBastar, vadeBittar, 2, 2);
             if (dataTable != null)
             {
                 int index = 1;

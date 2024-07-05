@@ -34,6 +34,7 @@
                                 <div class="form-group m-0 ">
                                     <label class="col-form-label" for="SorumluBolgeTxt">Sor.Bölge</label>
                                     <asp:TextBox ID="SorumluBolgeTxt" runat="server" class="form-control" ToolTip="Sorumlu Bölge/Temsilcilik" ReadOnly="true"></asp:TextBox>
+                                    <asp:TextBox ID="SorumluBolgeIdTxt" runat="server" class="form-control" ToolTip="Sorumlu Bölge/Temsilcilik" ReadOnly="true"></asp:TextBox>
                                 </div>
                                 <div class="form-group m-0 ">
                                     <label class="col-form-label" for="EmlakSicilNoTxt">Emlak Sic.No</label>

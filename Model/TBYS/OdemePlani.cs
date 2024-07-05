@@ -144,16 +144,16 @@ namespace Model.TBYS
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
         }
 
-        public DataTable SelectBorcluOdemePlanlariByBolgeTarih(string bolge, DateTime ilkTarih, DateTime sonTarih, int aySayisiBas, int aySayisiBit)
+        public DataTable SelectBorcluOdemePlanlariByBolgeTarih(int bolgeId, DateTime ilkTarih, DateTime sonTarih, int aySayisiBas, int aySayisiBit)
         {
-            string sqlString = GetBorcluOdemePlanlariByBolgeTarihSqlScript(bolge, ilkTarih, sonTarih, aySayisiBas, aySayisiBit);
+            string sqlString = GetBorcluOdemePlanlariByBolgeTarihSqlScript(bolgeId, ilkTarih, sonTarih, aySayisiBas, aySayisiBit);
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return dataTable;
         }
-        public string SelectBorcluOdemePlanlariByBolgeTarihJson(string bolge, DateTime ilkTarih, DateTime sonTarih, int aySayisi, int aySayisiBit, ref int kayitSayisi)
+        public string SelectBorcluOdemePlanlariByBolgeTarihJson(int bolgeId, DateTime ilkTarih, DateTime sonTarih, int aySayisi, int aySayisiBit, ref int kayitSayisi)
         {
-            string sqlString = GetBorcluOdemePlanlariByBolgeTarihSqlScript(bolge, ilkTarih, sonTarih, aySayisi, aySayisiBit);
+            string sqlString = GetBorcluOdemePlanlariByBolgeTarihSqlScript(bolgeId, ilkTarih, sonTarih, aySayisi, aySayisiBit);
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             kayitSayisi = dataTable == null ? 0 : dataTable.Rows.Count;
@@ -161,7 +161,7 @@ namespace Model.TBYS
             return json;
 
         }
-        private string GetBorcluOdemePlanlariByBolgeTarihSqlScript(string bolge, DateTime ilkTarih, DateTime sonTarih, int aySayisiBas, int aySayisiBit)
+        private string GetBorcluOdemePlanlariByBolgeTarihSqlScript(int bolgeId, DateTime ilkTarih, DateTime sonTarih, int aySayisiBas, int aySayisiBit)
         {
             //string aySayisiStr = string.Format(" ((ABS(C.FaizliBakiye) - ABS(A.KiraBedeli))  / A.KiraBedeli) BETWEEN {0} AND {1}  AND ", (aySayisiBas - 0.5).ToString().Replace(",", "."), (aySayisiBit + 0.5).ToString().Replace(",", "."));
             string aySayisiStr = string.Format(@"
@@ -180,11 +180,12 @@ namespace Model.TBYS
                      ) 
                 ) ", ilkTarih.ReturnTRDateFormat(), sonTarih.ReturnDDMMYYYFormat(), (aySayisiBas - 0.5).ToString().Replace(",", "."), (aySayisiBit + 0.5).ToString().Replace(",", "."));
 
-            string bolgeStr = string.Format(string.IsNullOrEmpty(bolge)||bolge.Equals(ProjeConstants.HEPSI) ? " " : " A.Bolge ={0} AND ", bolge.ReturnQuotedValue());
+            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND A.BolgeId={0} ", bolgeId);
+
 
             string sqlString = string.Format(@"
                 SELECT 
-                    A.Id KiraSozlesmeId, A.Bolge, A.DosyaNo, B.Adi+' '+B.Soyadi Kiraci, A.KiraciId,
+                    A.Id KiraSozlesmeId, H.KisaAdi Bolge, A.DosyaNo, B.Adi+' '+B.Soyadi Kiraci, A.KiraciId,
                     A.IlkSozlesmeTar, A.SozBasTar, A.SozBitTar, A.ArtisAyi, A.OdemeSekli, 
                     A.KiraBedeli, C.AnaPara AnaPara,C.FaizTutari, C.FaizliBakiye, C.VadeBasTar, C.VadeBitTar, C.Id OdemePlaniId,
                     FORMAT(C.FaizliBakiye,'###.00') FaizliBakiyeFormat,
@@ -193,10 +194,11 @@ namespace Model.TBYS
                     ABS(FaizliBakiye/A.KiraBedeli)*C.Sira AySayisi, A.TaksitSayisi
                 FROM KiraSozlesme_Table A
                     INNER JOIN Kiraci_Table B ON B.Id=A.KiraciId
+                    INNER JOIN Bolge_Table H ON H.Id=A.BolgeId
                     LEFT JOIN OdemePlani_Table C ON C.SozlesmeId=A.Id 
-                WHERE 
+                WHERE 1>0
                     {0}
-                    C.FaizliBakiye < 0 AND (C.VadeBitTar BETWEEN {1} AND {2}) AND
+                    AND C.FaizliBakiye < 0 AND (C.VadeBitTar BETWEEN {1} AND {2}) AND
 	                {3} AND 
                     (
                         A.SozBasTar<{2} AND A.SozBitTar >= {1} 
@@ -264,22 +266,26 @@ namespace Model.TBYS
             return odemePlani;
 
         }
-        public DataTable SelectKiraGeliriByBolgeAyYil(string bolge, int ay, int yil)
+        public DataTable SelectKiraGeliriByBolgeAyYil(int bolgeId, int ay, int yil)
         {
+            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND A.BolgeId={0} ", bolgeId);
+
             string sqlString = string.Format(@"
-				SELECT C.SorumluBolge Bolge,B.kiralamaAmaci, SUM(D.OdenenTutar) ToplamOdemeTutari, Count(A.Id) ToplamKiraciSayisi
+				SELECT H.KisaAdi Bolge,B.kiralamaAmaci, SUM(D.OdenenTutar) ToplamOdemeTutari, Count(A.Id) ToplamKiraciSayisi
 				FROM KiraSozlesme_Table A
 				    INNER JOIN Kiraci_Table B ON B.Id=A.KiraciId
 				    LEFT JOIN Odeme_Table D ON D.SozlesmeId=A.Id
                     INNER JOIN OdemePlani_Table E ON E.Id=D.OdemePlaniId --odeme planında karşılığı olmayan ödemeleri dikkate almsasın diye SB 03.05.2021
-				INNER JOIN Tasinmaz_Table C ON C.Id=(SELECT TOP 1 TasinmazId FROM SozlesmeTasinmaz_Table WHERE SozlesmeId= A.Id)
-                WHERE C.SorumluBolge ={0}
+                    LEFT JOIN Bolge_Table H ON H.Id=A.BolgeId
+				    --INNER JOIN Tasinmaz_Table C ON C.Id=(SELECT TOP 1 TasinmazId FROM SozlesmeTasinmaz_Table WHERE SozlesmeId= A.Id)
+                WHERE 1>0 
+                    {0}
                     AND YEAR(D.OdemeTarihi) ={1}
                     AND MONTH(D.OdemeTarihi) ={2}
-                GROUP BY C.SorumluBolge, B.KiralamaAmaci
-                ORDER BY C.SorumluBolge, B.KiralamaAmaci
+                GROUP BY H.KisaAdi, B.KiralamaAmaci
+                ORDER BY H.KisaAdi, B.KiralamaAmaci
                 
-            ", bolge.ReturnQuotedValue(), yil, ay);
+            ", bolgeStr, yil, ay);
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return dataTable;
             //SELECT E.Bolge, D.KullanimSekli, SUM(OdenenTutar) ToplamOdemeTutari, COUNT(DISTINCT(B.KiraciId)) ToplamKiraciSayisi

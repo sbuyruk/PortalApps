@@ -66,7 +66,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
                 kiraci = kiraci.Select<Kiraci>(KiraciIdQS.ConvertToInt());
                 if (!Page.IsPostBack)
                 {
-                    FillIlData();
+                    IlDDLDoldur();
                     KiralamaAmaciDDLDoldur();
                     if (kiraci != null)
                     {
@@ -86,7 +86,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
             {
                 if (!Page.IsPostBack)
                 {
-                    FillIlData();
+                    IlDDLDoldur();
                     KiralamaAmaciDDLDoldur();
                     OpenKiraciGirisi();
                 }
@@ -122,10 +122,10 @@ namespace TBYS_WebParts.KiraciGirisiWP
                 SoyadiTxt.Text = kiraci.Soyadi;
                 TCKimlikNoTxt.Text = kiraci.TCKimlikNo;
                 SemtTxt.Text = kiraci.Semt;
-                ListItem ilItem = IliDDL.Items.FindByValue(IliDDL.Items.FindByText(kiraci.Ili).Value);
+                ListItem ilItem = IliDDL.Items.FindByValue(IliDDL.Items.FindByValue(kiraci.IlId.ToString()).Value);
                 if (ilItem != null)
                     IliDDL.SelectedValue = ilItem.Value;
-                FillIlceDDL();
+                IlceDDLDoldur();
                 FillBolgeTxt();
                 if (KiralamaAmaciDDL.Items.FindByText(kiraci.KiralamaAmaci) != null)
                     KiralamaAmaciDDL.SelectedValue = KiralamaAmaciDDL.Items.FindByText(kiraci.KiralamaAmaci).Value;
@@ -179,12 +179,11 @@ namespace TBYS_WebParts.KiraciGirisiWP
             kiraci.Soyadi = SoyadiTxt.Text;
             kiraci.TCKimlikNo = TCKimlikNoTxt.Text;
             kiraci.Semt = SemtTxt.Text;
-            kiraci.Ilcesi = IlcesiDDL.SelectedItem.ToString();
-            ListItem ilItem = IliDDL.SelectedItem;
-            Il il = new Il();
-            il.Id = Convert.ToInt16(ilItem.Value);
-            il.IlAdi = ilItem.Text;
-            kiraci.Ili = il.IlAdi;
+            kiraci.Ilcesi = IlcesiDDL.SelectedItem.Text.ToString();
+            kiraci.IlceId = IlcesiDDL.SelectedItem.Value.ConvertToInt();
+           
+            kiraci.Ili = IliDDL.SelectedItem.Text.ToString();
+            kiraci.IlId = IliDDL.SelectedItem.Value.ConvertToInt();
             kiraci.Adres = AdresTxt.Text;
             kiraci.Aciklama = AciklamaTxt.Text;
             kiraci.VergiDairesi = VergiDairesiTxt.Text;
@@ -208,12 +207,11 @@ namespace TBYS_WebParts.KiraciGirisiWP
             kiraci.Soyadi = SoyadiTxt.Text;
             kiraci.TCKimlikNo = TCKimlikNoTxt.Text;
             kiraci.Semt = SemtTxt.Text;
-            kiraci.Ilcesi = IlcesiDDL.SelectedItem.ToString();
-            ListItem ilItem = IliDDL.SelectedItem;
-            Il il = new Il();
-            il.Id = Convert.ToInt16(ilItem.Value);
-            il.IlAdi = ilItem.Text;
-            kiraci.Ili = il.IlAdi;
+            kiraci.Ilcesi = IlcesiDDL.SelectedItem.Text.ToString();
+            kiraci.IlceId = IlcesiDDL.SelectedItem.Value.ConvertToInt();
+
+            kiraci.Ili = IliDDL.SelectedItem.Text.ToString();
+            kiraci.IlId = IliDDL.SelectedItem.Value.ConvertToInt();
             kiraci.Adres = AdresTxt.Text;
             kiraci.Aciklama = AciklamaTxt.Text;
             kiraci.VergiDairesi = VergiDairesiTxt.Text;
@@ -224,32 +222,36 @@ namespace TBYS_WebParts.KiraciGirisiWP
             isUpdated = kiraci.Update();
             return kiraci;
         }
-        private void FillIlData()
+        private void IlDDLDoldur()
         {
-            if (IliDDL.SelectedItem == null)
-            {
-                IliDDL.Items.Clear();
-                Il pIl = new Il();
-                List<Il> list = pIl.SelectAll<Il>();
-                foreach (Il il in list)
-                {
-                    IliDDL.Items.Add(new ListItem(il.IlAdi, il.Id.ToString()));
-                }
-                FillIlceDDL();
-                FillBolgeTxt();
-            }
+            IliDDL.Items.Clear();
 
+            Il newil = new Il();
+            List<Il> list = newil.SelectAll<Il>();
+            foreach (Il il in list)
+            {
+                if (string.IsNullOrEmpty(il.IlAdi.Trim()))
+                    continue;
+                IliDDL.Items.Add(new ListItem(il.IlAdi, il.Id.ToString()));
+            }
+            IlceDDLDoldur();
+            FillBolgeTxt();
         }
-        private void FillIlceDDL()
+        private void IlceDDLDoldur()
         {
             IlcesiDDL.Items.Clear();
-            Ilce pIlce = new Ilce();
-            List<Ilce> list = pIlce.SelectByIlId(IliDDL.SelectedValue.ConvertToInt());
+            Ilce pilce = new Ilce();
+
+            List<Ilce> list = pilce.SelectByIlId(IliDDL.SelectedValue.ConvertToInt());
             foreach (Ilce ilce in list)
             {
+                if (ilce.IlceAdi.ToUpper().Equals(ProjeConstants.ILCE_MERKEZ.ToUpper()))
+                    continue;
                 IlcesiDDL.Items.Add(new ListItem(ilce.IlceAdi, ilce.Id.ToString()));
             }
         }
+       
+      
         private void KiralamaAmaciDDLDoldur()
         {
             KiralamaAmaciDDL.Items.Clear();
@@ -262,9 +264,10 @@ namespace TBYS_WebParts.KiraciGirisiWP
         }
         private void FillBolgeTxt()
         {
-            Il il = new Il();
-            il = il.SelectByIlAdi(IliDDL.SelectedItem.ToString());
-            SorumluBolgeTxt.Text = il != null ? il.Bolge : "";
+
+            Bolge bolge = BolgeGetir();
+            SorumluBolgeTxt.Text = bolge != null ? bolge.KisaAdi : "";
+            SorumluBolgeIdTxt.Text = bolge != null ? bolge.Id.ToString() : "";
         }
         private void SozlesmelerTablosunuDoldur(int kiraciId)
         {
@@ -342,7 +345,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
 
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
             List<KiraSozlesmeListItem> list = new List<KiraSozlesmeListItem>();
-            DataTable dataTable = kiraSozlesme.SelectKiraSozlesmeListReturnDT(KiraciIdQS.ConvertToInt(), ProjeConstants.KIRASOZLESME_AKTIF_HEPSI_INT, ProjeConstants.BOLGE_HEPSI);
+            DataTable dataTable = kiraSozlesme.SelectKiraSozlesmeListReturnDT(KiraciIdQS.ConvertToInt(), ProjeConstants.KIRASOZLESME_AKTIF_HEPSI_INT, ProjeConstants.BOLGE_HEPSI_INT);
             if (dataTable != null)
             {
                 int SiraNo = 1;
@@ -430,7 +433,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
         }
         protected void IliDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            FillIlceDDL();
+            IlceDDLDoldur();
             FillBolgeTxt();
         }
         protected void SaveBtn_Click(object sender, EventArgs e)
@@ -459,8 +462,8 @@ namespace TBYS_WebParts.KiraciGirisiWP
             if (kiraci != null)
             {
                 KiraSozlesme ks = new KiraSozlesme();
-                string bolge = BolgeGetir(kiraci);
-                bool ksUpdateed = ks.UpdateByKiraciId(bolge, kiraci.Id);
+                Bolge bolge = BolgeGetir();
+                bool ksUpdateed = ks.UpdateByKiraciId(bolge.Id, kiraci.Id);
                 SozlesmelerTablosunuDoldur(kiraci.Id);
                 MessageHelper.PublishMessage("Kiracı Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
             }
@@ -469,12 +472,13 @@ namespace TBYS_WebParts.KiraciGirisiWP
                 MessageHelper.PublishMessage("Kiracı Güncellenemedi", ProjeConstants.MESAJ_HATA);
             }
         }
-        private string BolgeGetir(Kiraci kiraci)
+        private Bolge BolgeGetir()
         {
-            string ili = kiraci == null ? "" : kiraci.Ili;
-            Il il = new Il();
-            il = il.SelectByIlAdi(kiraci.Ili);
-            string bolge = il == null ? "" : il.Bolge;
+            int ilId = IliDDL.SelectedItem.Value.ConvertToInt();
+            Il Il = new Il();
+            Il = Il.Select<Il>(ilId);
+            Bolge bolge = new Bolge();
+            bolge = bolge.Select(Il.BolgeId);
             return bolge;
         }
         protected void SilBtn_Click(object sender, EventArgs e)

@@ -367,7 +367,7 @@ namespace TBYS_WebParts.TasinmazKartiWP
             row5.Controls.Add(r5c3);
             row5.Controls.Add(r5c4);
 
-            r1c1.Text = "Bölge : " + tasinmaz.SorumluBolge;
+            r1c1.Text = "Bölge : " + UtilityHelper.BolgeGetir(tasinmaz.IlId);
             r2c1.Text = "Mülkiyet Şekli : " + tasinmaz.MulkiyetSekli;
             r3c1.Text = "" + tasinmaz.KiraDurumu;
             r4c1.Text = "Sigorta : " + tasinmaz.SigortaDurumu;

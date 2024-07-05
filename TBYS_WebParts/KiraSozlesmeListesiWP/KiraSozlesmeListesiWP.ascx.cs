@@ -57,6 +57,47 @@ namespace TBYS_WebParts.KiraSozlesmeListesiWP
                 ViewState["Auth"] = value;
             }
         }
+        private int BolgeIdQS
+        {
+            get
+            {
+
+                if (ViewState["BolgeId"] == null)
+                {
+                    if (Page.Request.QueryString["BolgeId"] != null)
+                    {
+                        ViewState["BolgeId"] = Page.Request.QueryString["BolgeId"];
+                    }
+                    else
+                    {
+                        ViewState["BolgeId"] = string.Empty;
+                    }
+                }
+                return ViewState["BolgeId"].ReturnZeroIfNull().ConvertToInt();
+            }
+
+            set
+            {
+                ViewState["BolgeId"] = value;
+            }
+        }
+        private string CurrentUserName
+        {
+            get
+            {
+
+                if (ViewState["CurrentUserName"] == null)
+                {
+                    ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUserLoginName();
+                }
+                return ViewState["CurrentUserName"].ToString();
+            }
+
+            set
+            {
+                ViewState["CurrentUserName"] = value;
+            }
+        }
         private string SecilenIdQS
         {
             get
@@ -112,6 +153,8 @@ namespace TBYS_WebParts.KiraSozlesmeListesiWP
                 if (!Page.IsPostBack)
                 {
                     AuthQS = IKYSOrtak.PersonelinBolgesiniGetir_Deprecated(UtilityHelper.GetCurrentUserLoginName());
+                    Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
+                    BolgeIdQS = bolge == null ? 0 : bolge.Id;
                     if (!string.IsNullOrEmpty(AuthQS) && !AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM))
                     {
                         TitleLbl.Text = "Kira Sözleşme Listesi" + " (" + AuthQS + " Bölgesi)";
@@ -261,7 +304,7 @@ namespace TBYS_WebParts.KiraSozlesmeListesiWP
             }
 
             kiraSozlesme = new KiraSozlesme();
-            dataTable = kiraSozlesme.SelectKiraSozlesmeListReturnDT(0, AktifQS.ConvertToInt(),AuthQS);
+            dataTable = kiraSozlesme.SelectKiraSozlesmeListReturnDT(0, AktifQS.ConvertToInt(),BolgeIdQS);
 
             int SiraNo = 1;
             KiraSozlesmeListItem tempSozlesmeItem = null;

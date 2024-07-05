@@ -19,6 +19,8 @@ namespace Model.TBYS
         public DateTime DogumTarihi { get; set; }
         public string Ili { get; set; }
         public string Ilcesi { get; set; }
+        public int IlId { get; set; }
+        public int IlceId { get; set; }
         public string Adres { get; set; }
         public string Telefon1 { get; set; }
         public string Telefon2 { get; set; }
@@ -144,9 +146,9 @@ namespace Model.TBYS
         public List<TasinmazBagisci> SelectAllSagBagiscilar(string sag)
         {
             string sqlString = string.Format(@"
-                SELECT *
-                FROM TasinmazBagisci_Table
-                WHERE Sag_vefat={0}",sag.ReturnQuotedValue());
+                SELECT  *
+                FROM TasinmazBagisci_Table 
+                WHERE Sag_vefat={0}", sag.ReturnQuotedValue());
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<TasinmazBagisci> list = ToList<TasinmazBagisci>(dataTable);
@@ -265,7 +267,7 @@ namespace Model.TBYS
 	                 ,COUNT(B.Id) As ToplamBagisAdedi
 	                 ,C.IlAdi
 	                 ,D.IlceAdi,D.IlceAdi, D.IlceAdi +'-'+ C.IlAdi As IlIlce
-	                 ,E.Adi As Bolge
+	                 ,E.KisaAdi As Bolge
                 FROM 
 	                TasinmazBagisci_Table A
                 LEFT JOIN 
@@ -284,7 +286,7 @@ namespace Model.TBYS
 	                ,A.Adi,A.Soyadi,A.Sag_vefat
 	                ,C.IlAdi
 	                ,D.IlceAdi
-	                ,E.Adi
+	                ,E.KisaAdi
                  ORDER BY A.Adi,A.Soyadi                      
                 ", bolgeStr);
 

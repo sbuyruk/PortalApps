@@ -55,28 +55,28 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                 ViewState["Auth"] = value;
             }
         }
-        private string BolgeQS
+        private int BolgeIdQS
         {
             get
             {
 
-                if (string.IsNullOrEmpty(ViewState["Bolge"].ToString()) )
+                if (ViewState["BolgeId"] == null)
                 {
-                    if (Page.Request.QueryString["Bolge"] != null)
+                    if (Page.Request.QueryString["BolgeId"] != null)
                     {
-                        ViewState["Bolge"] = Page.Request.QueryString["Bolge"];
+                        ViewState["BolgeId"] = Page.Request.QueryString["BolgeId"];
                     }
                     else
                     {
-                        ViewState["Bolge"] = IKYSOrtak.PersonelinBolgesiniGetir_Deprecated(CurrentUserName);
+                        ViewState["BolgeId"] = string.Empty;
                     }
                 }
-                return ViewState["Bolge"].ToString();
+                return ViewState["BolgeId"].ReturnZeroIfNull().ConvertToInt();
             }
 
             set
             {
-                ViewState["Bolge"] = value;
+                ViewState["BolgeId"] = value;
             }
         }
         private string CurrentUserName
@@ -206,12 +206,12 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
 
                     SetAyYilValues();
                     IslemSaatiSaatiDDLDoldur();
-                    BolgeQS = IKYSOrtak.PersonelinBolgesiniGetir_Deprecated(UtilityHelper.GetCurrentUserLoginName());
-                    if (!string.IsNullOrEmpty(BolgeQS))
-                    {
-                        TitleLbl.Text = "Borçlu Kiracı Listesi" + " (" + BolgeQS + " Bölgesi)";
+                    Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
+                    BolgeIdQS = bolge == null ? 0 : bolge.Id;
+                    if (bolge!=null)
+                        TitleLbl.Text = "Borçlu Kiracı Listesi" + " (" + bolge.KisaAdi + " Bölgesi)";
 
-                    }
+                    
                     bool yetkiliMi = !string.IsNullOrEmpty(AuthQS) && AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM);
 
                     BorcluKiraclariTabloyaDoldur();
@@ -273,7 +273,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                 }
             }
             OdemePlani opl = new OdemePlani();
-            DataTable dataTable = opl.SelectBorcluOdemePlanlariByBolgeTarih(BolgeQS, vadeBastar, vadeBittar, AySayisiBasQS.ConvertToInt(), AySayisiBitQS.ConvertToInt());
+            DataTable dataTable = opl.SelectBorcluOdemePlanlariByBolgeTarih(BolgeIdQS, vadeBastar, vadeBittar, AySayisiBasQS.ConvertToInt(), AySayisiBitQS.ConvertToInt());
 
             if (dataTable != null)
             {

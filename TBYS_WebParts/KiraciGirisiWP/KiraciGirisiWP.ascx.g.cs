@@ -101,6 +101,10 @@ namespace TBYS_WebParts.KiraciGirisiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.TextBox SorumluBolgeIdTxt;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.TextBox VergiDairesiTxt;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -479,6 +483,22 @@ namespace TBYS_WebParts.KiraciGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "SorumluBolgeTxt";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control ");
+            @__ctrl.ToolTip = "Sorumlu Bölge/Temsilcilik";
+            @__ctrl.ReadOnly = true;
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.TextBox @__BuildControlSorumluBolgeIdTxt() {
+            global::System.Web.UI.WebControls.TextBox @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.TextBox();
+            this.SorumluBolgeIdTxt = @__ctrl;
+            @__ctrl.TemplateControl = this;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "SorumluBolgeIdTxt";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control ");
             @__ctrl.ToolTip = "Sorumlu Bölge/Temsilcilik";
             @__ctrl.ReadOnly = true;
@@ -1334,22 +1354,26 @@ namespace TBYS_WebParts.KiraciGirisiWP {
             global::System.Web.UI.WebControls.TextBox @__ctrl15;
             @__ctrl15 = this.@__BuildControlSorumluBolgeTxt();
             @__parser.AddParsedSubObject(@__ctrl15);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                        "));
+            global::System.Web.UI.WebControls.TextBox @__ctrl16;
+            @__ctrl16 = this.@__BuildControlSorumluBolgeIdTxt();
+            @__parser.AddParsedSubObject(@__ctrl16);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                     </div>
 
                                     <div class=""form-group "">
                                         <label class=""col-form-label"" for=""VergiDairesiTxt"">Vergi Dairesi</label>
                                         "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl16;
-            @__ctrl16 = this.@__BuildControlVergiDairesiTxt();
-            @__parser.AddParsedSubObject(@__ctrl16);
+            global::System.Web.UI.WebControls.TextBox @__ctrl17;
+            @__ctrl17 = this.@__BuildControlVergiDairesiTxt();
+            @__parser.AddParsedSubObject(@__ctrl17);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    </div>\r\n                                   " +
                         " <div class=\"form-group \">\r\n                                        <label class" +
                         "=\"col-form-label\" for=\"VergiNoTxt\">Vergi No</label>\r\n                           " +
                         "             "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl17;
-            @__ctrl17 = this.@__BuildControlVergiNoTxt();
-            @__parser.AddParsedSubObject(@__ctrl17);
+            global::System.Web.UI.WebControls.TextBox @__ctrl18;
+            @__ctrl18 = this.@__BuildControlVergiNoTxt();
+            @__parser.AddParsedSubObject(@__ctrl18);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                     </div>
                                 </div>
@@ -1357,9 +1381,9 @@ namespace TBYS_WebParts.KiraciGirisiWP {
                             <div class=""form-group "">
                                 <label class=""col-form-label"" for=""AciklamaTxt"">Açıklama</label>
                                 "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl18;
-            @__ctrl18 = this.@__BuildControlAciklamaTxt();
-            @__parser.AddParsedSubObject(@__ctrl18);
+            global::System.Web.UI.WebControls.TextBox @__ctrl19;
+            @__ctrl19 = this.@__BuildControlAciklamaTxt();
+            @__parser.AddParsedSubObject(@__ctrl19);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                             </div>
                         </div>
@@ -1383,54 +1407,54 @@ namespace TBYS_WebParts.KiraciGirisiWP {
                     </div>
                     <div class=""form-group"">
                         "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl19;
-            @__ctrl19 = this.@__BuildControlBitenSozlesmeOlusturBtn();
-            @__parser.AddParsedSubObject(@__ctrl19);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl20;
-            @__ctrl20 = this.@__BuildControlYeniSozlesmeOlusturBtn();
+            @__ctrl20 = this.@__BuildControlBitenSozlesmeOlusturBtn();
             @__parser.AddParsedSubObject(@__ctrl20);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl21;
+            @__ctrl21 = this.@__BuildControlYeniSozlesmeOlusturBtn();
+            @__parser.AddParsedSubObject(@__ctrl21);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                </div>\r\n                <div class=" +
                         "\"card-footer\">\r\n\r\n                    "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl21;
-            @__ctrl21 = this.@__BuildControlSaveBtn();
-            @__parser.AddParsedSubObject(@__ctrl21);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl22;
-            @__ctrl22 = this.@__BuildControlUpdateBtn();
+            @__ctrl22 = this.@__BuildControlSaveBtn();
             @__parser.AddParsedSubObject(@__ctrl22);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl23;
-            @__ctrl23 = this.@__BuildControlSilBtn();
+            @__ctrl23 = this.@__BuildControlUpdateBtn();
             @__parser.AddParsedSubObject(@__ctrl23);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl24;
-            @__ctrl24 = this.@__BuildControlNextBtn();
+            @__ctrl24 = this.@__BuildControlSilBtn();
             @__parser.AddParsedSubObject(@__ctrl24);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl25;
-            @__ctrl25 = this.@__BuildControlPrevBtn();
+            @__ctrl25 = this.@__BuildControlNextBtn();
             @__parser.AddParsedSubObject(@__ctrl25);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n                    "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl26;
-            @__ctrl26 = this.@__BuildControlOdemePlaniGoruntuleBtn();
-            @__parser.AddParsedSubObject(@__ctrl26);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl26;
+            @__ctrl26 = this.@__BuildControlPrevBtn();
+            @__parser.AddParsedSubObject(@__ctrl26);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n                    "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl27;
-            @__ctrl27 = this.@__BuildControlOdemeYapBtn();
+            @__ctrl27 = this.@__BuildControlOdemePlaniGoruntuleBtn();
             @__parser.AddParsedSubObject(@__ctrl27);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl28;
-            @__ctrl28 = this.@__BuildControlKiraKartiBtn();
+            @__ctrl28 = this.@__BuildControlOdemeYapBtn();
             @__parser.AddParsedSubObject(@__ctrl28);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl29;
-            @__ctrl29 = this.@__BuildControlKiraciListesiBtn();
+            @__ctrl29 = this.@__BuildControlKiraKartiBtn();
             @__parser.AddParsedSubObject(@__ctrl29);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl30;
-            @__ctrl30 = this.@__BuildControlBakiyeDevirBtn();
+            @__ctrl30 = this.@__BuildControlKiraciListesiBtn();
             @__parser.AddParsedSubObject(@__ctrl30);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl31;
+            @__ctrl31 = this.@__BuildControlBakiyeDevirBtn();
+            @__parser.AddParsedSubObject(@__ctrl31);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                 </div>
             </div>
@@ -1442,19 +1466,19 @@ namespace TBYS_WebParts.KiraciGirisiWP {
                             <div>
                                 <h3>Kira Ödeme Planı
 									"));
-            global::System.Web.UI.WebControls.Label @__ctrl31;
-            @__ctrl31 = this.@__BuildControlKiraciTitleLbl();
-            @__parser.AddParsedSubObject(@__ctrl31);
+            global::System.Web.UI.WebControls.Label @__ctrl32;
+            @__ctrl32 = this.@__BuildControlKiraciTitleLbl();
+            @__parser.AddParsedSubObject(@__ctrl32);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </h3>\r\n                            </div>\r\n\r\n  " +
                         "                          <div class=\"card-body\">\r\n                             " +
                         "   "));
-            global::System.Web.UI.WebControls.Label @__ctrl32;
-            @__ctrl32 = this.@__BuildControlDevirLbl();
-            @__parser.AddParsedSubObject(@__ctrl32);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                "));
-            global::System.Web.UI.WebControls.Table @__ctrl33;
-            @__ctrl33 = this.@__BuildControlOdemePlaniTable();
+            global::System.Web.UI.WebControls.Label @__ctrl33;
+            @__ctrl33 = this.@__BuildControlDevirLbl();
             @__parser.AddParsedSubObject(@__ctrl33);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                "));
+            global::System.Web.UI.WebControls.Table @__ctrl34;
+            @__ctrl34 = this.@__BuildControlOdemePlaniTable();
+            @__parser.AddParsedSubObject(@__ctrl34);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                             </div>
 
@@ -1473,26 +1497,26 @@ namespace TBYS_WebParts.KiraciGirisiWP {
                             <div class=""panel-heading alignCenter"">
                                 <h3>
                                     "));
-            global::System.Web.UI.WebControls.Label @__ctrl34;
-            @__ctrl34 = this.@__BuildControlModalLbl();
-            @__parser.AddParsedSubObject(@__ctrl34);
+            global::System.Web.UI.WebControls.Label @__ctrl35;
+            @__ctrl35 = this.@__BuildControlModalLbl();
+            @__parser.AddParsedSubObject(@__ctrl35);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("</h3>\r\n                            </div>\r\n                            <div class" +
                         "=\"panel panel-body\">\r\n                                <div class=\"alignCenter\">\r" +
                         "\n                                    "));
-            global::System.Web.UI.WebControls.Label @__ctrl35;
-            @__ctrl35 = this.@__BuildControlMessageLbl();
-            @__parser.AddParsedSubObject(@__ctrl35);
+            global::System.Web.UI.WebControls.Label @__ctrl36;
+            @__ctrl36 = this.@__BuildControlMessageLbl();
+            @__parser.AddParsedSubObject(@__ctrl36);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n\r\n                            </div>\r\n " +
                         "                           <div style=\"display: none\">\r\n                        " +
                         "        "));
-            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl36;
-            @__ctrl36 = this.@__BuildControlparamLbl();
-            @__parser.AddParsedSubObject(@__ctrl36);
+            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl37;
+            @__ctrl37 = this.@__BuildControlparamLbl();
+            @__parser.AddParsedSubObject(@__ctrl37);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                        </div>\r\n           " +
                         "             <div class=\"modal-footer\">\r\n                            "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl37;
-            @__ctrl37 = this.@__BuildControlYeniSozlesmeOnayBtn();
-            @__parser.AddParsedSubObject(@__ctrl37);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl38;
+            @__ctrl38 = this.@__BuildControlYeniSozlesmeOnayBtn();
+            @__parser.AddParsedSubObject(@__ctrl38);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                             <button type=""button"" class=""btn btn-default"" data-dismiss=""modal"">İptal</button>
                         </div>
@@ -1507,21 +1531,21 @@ namespace TBYS_WebParts.KiraciGirisiWP {
                             <div class=""panel-heading alignCenter"">
                                 <h3>
                                     "));
-            global::System.Web.UI.WebControls.Label @__ctrl38;
-            @__ctrl38 = this.@__BuildControlLabel1();
-            @__parser.AddParsedSubObject(@__ctrl38);
+            global::System.Web.UI.WebControls.Label @__ctrl39;
+            @__ctrl39 = this.@__BuildControlLabel1();
+            @__parser.AddParsedSubObject(@__ctrl39);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("</h3>\r\n                            </div>\r\n                            <div class" +
                         "=\"panel panel-body\">\r\n                                <div class=\"alignCenter\">\r" +
                         "\n                                    "));
-            global::System.Web.UI.WebControls.Label @__ctrl39;
-            @__ctrl39 = this.@__BuildControlLabel2();
-            @__parser.AddParsedSubObject(@__ctrl39);
+            global::System.Web.UI.WebControls.Label @__ctrl40;
+            @__ctrl40 = this.@__BuildControlLabel2();
+            @__parser.AddParsedSubObject(@__ctrl40);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                            </div>\r\n   " +
                         "                     </div>\r\n                        <div class=\"modal-footer\">\r" +
                         "\n                            "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl40;
-            @__ctrl40 = this.@__BuildControlBitenSozlesmeOnayBtn();
-            @__parser.AddParsedSubObject(@__ctrl40);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl41;
+            @__ctrl41 = this.@__BuildControlBitenSozlesmeOnayBtn();
+            @__parser.AddParsedSubObject(@__ctrl41);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                             <button type=""button"" class=""btn btn-default"" data-dismiss=""modal"">İptal</button>
                         </div>
@@ -1533,9 +1557,9 @@ namespace TBYS_WebParts.KiraciGirisiWP {
                     <!-- Modal content-->
                     <div class=""modal-content"" style=""width: 550px;"">
                         "));
-            global::System.Web.UI.UpdatePanel @__ctrl41;
-            @__ctrl41 = this.@__BuildControlUpdatePanel1();
-            @__parser.AddParsedSubObject(@__ctrl41);
+            global::System.Web.UI.UpdatePanel @__ctrl42;
+            @__ctrl42 = this.@__BuildControlUpdatePanel1();
+            @__parser.AddParsedSubObject(@__ctrl42);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                </div>\r\n            </div>\r\n       " +
                         " "));
         }

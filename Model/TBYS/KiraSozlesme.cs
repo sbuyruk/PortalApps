@@ -38,6 +38,10 @@ namespace Model.TBYS
         public DateTime DurumDegismeTar { get; set; }
         public string Aciklama { get; set; }
         public string SozlesmePDFDosyasi { get; set; }
+        public string ArtisAyi { get; set; }
+        public string Bolge { get; set; }
+        public int BolgeId { get; set; }
+        public string GecikmeZammiTipi { get; set; }
 
         public override T Select<T>(int id)
         {
@@ -63,26 +67,8 @@ namespace Model.TBYS
             return kiraSozlesme;
 
         }
-        public string ArtisAyi { get; set; }
-        public string Bolge { get; set; }
-        public string GecikmeZammiTipi { get; set; }
-        //public int SaveSozlesme()
-        //{
-        //    try
-        //    {
-        //        GenericEntity<KiraSozlesme> genericEntity = new GenericEntity<KiraSozlesme>(ProjeConstants.SQL_INSERT);
-        //        OlusturmaTarihi = DateTime.Now;
-        //        string sqlString = genericEntity.GetQuery(this);
-        //        int id = dao.Insert(sqlString);
-        //        this.Id = id;
-        //        return id;
-        //    }
-        //    catch (Exception)
-        //    {
 
-        //        throw;
-        //    }
-        //}
+      
         public override int Save()
         {
             try
@@ -190,12 +176,13 @@ namespace Model.TBYS
 
             return (list);
         }
-        public DataTable SelectKiraciSayisiByBolgeTarih(string bolge, int ay, int yil)
+        public DataTable SelectKiraciSayisiByBolgeTarih(int bolgeId, int ay, int yil)
         {
             DateTime ayinIlkGunu = new DateTime(yil, ay, 1);
             DateTime ayinSonGunu = ayinIlkGunu.AddMonths(1).AddDays(-1);
 
-            string bolgeStr = string.Format(bolge.Equals(ProjeConstants.HEPSI) ? " " : " A.Bolge ={0} AND ", bolge.ReturnQuotedValue());
+            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND A.BolgeId={0} ", bolgeId);
+
 
             string odemePlaniStr = string.Format(@"
                 (
@@ -219,7 +206,7 @@ namespace Model.TBYS
                 ", ayinIlkGunu.ReturnTRDateFormat(), ayinSonGunu.ReturnDDMMYYYFormat());
             string sqlString = string.Format(@"
                 SELECT --COUNT(A.Id) Adet
-                    A.Id KiraSozlesmeId, A.Bolge, A.DosyaNo, B.Adi+' '+B.Soyadi Kiraci, E.Adres + ' ' + ISNULL(F.BolumNo,'') Adres, 
+                    A.Id KiraSozlesmeId,H.KisaAdi Bolge,A.BolgeId,  A.DosyaNo, B.Adi+' '+B.Soyadi Kiraci, E.Adres + ' ' + ISNULL(F.BolumNo,'') Adres, 
                     A.IlkSozlesmeTar, A.SozBasTar, A.SozBitTar, A.ArtisAyi, A.OdemeSekli, 
                     A.KiraBedeli, C.AnaPara AnaPara,C.FaizTutari, C.FaizliBakiye, C.VadeBasTar, C.VadeBitTar, 
                     E.KullanimSekli,E.Ili,E.Ilcesi,
@@ -227,13 +214,14 @@ namespace Model.TBYS
                     ABS(FaizliBakiye/(A.KiraBedeli/12))*C.Sira/(A.KiraBedeli/12) AySayisi, A.TaksitSayisi
                 FROM KiraSozlesme_Table A
                     INNER JOIN Kiraci_Table B ON B.Id=A.KiraciId
+                    INNER JOIN Bolge_Table H ON H.Id=A.BolgeId
                     LEFT JOIN OdemePlani_Table C ON C.SozlesmeId=A.Id AND {3} 
                     LEFT JOIN SozlesmeTasinmaz_Table D On D.SozlesmeId=A.Id AND D.Id = (Select top 1 Id from SozlesmeTasinmaz_Table where SozlesmeId = A.Id) 
                     LEFT JOIN Tasinmaz_Table E On D.Id=D.TasinmazId
                     LEFT JOIN BagimsizBolum_Table F On F.Id=D.BolumId
-                WHERE 
+                WHERE 1>0
 	                {0}    
-                    ( 
+                    AND ( 
                         A.SozBasTar<{2} AND A.SozBitTar >= {1} 
 						AND 
 							(
@@ -244,22 +232,25 @@ namespace Model.TBYS
 		        				(A.SozlesmeDurumu='Yenilendi' AND A.SozBitTar>{2}) --sonOdemeTar dan sonra (önündeki aylarda) yenilenenler.. aslında A.SozlesmeDurumu != 'Devam Ediyor' daha doğru olabilir
 					        )
                     )
-                ORDER BY A.Bolge,A.DosyaNo,B.Adi
+                ORDER BY A.BolgeId,A.DosyaNo,B.Adi
                 ", bolgeStr, ayinIlkGunu.ConvertToDatetimeEmptyIfNull().ReturnQuotedValue(), ayinSonGunu.ConvertToDatetimeEmptyIfNull().ReturnQuotedValue(),odemePlaniStr);
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return dataTable;
 
         }
-        public DataTable SelectKiraSozlesmeListReturnDT(int kiraciId, int aktif, string bolge)
+        public DataTable SelectKiraSozlesmeListReturnDT(int kiraciId, int aktif, int bolgeId)
         {
-            string bolgeStr = string.IsNullOrEmpty(bolge) || 
-                bolge.Equals(ProjeConstants.BOLGE_HEPSI) || 
-                bolge.Equals(ProjeConstants.TBYS_YETKILI_BIRIM ) ? "" : " AND S.Bolge = " + bolge.ReturnQuotedValue();
+
+
+            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND S.BolgeId={0} ", bolgeId);
+
+
+
             string aktifStr = aktif == ProjeConstants.KIRASOZLESME_AKTIF_HEPSI_INT ? "" : " AND S.Aktif = " + aktif;
             string kiracistr = kiraciId < 1 ? "" : " AND S.KiraciId=" + kiraciId ;
 
             string sqlString = string.Format(@"				
-                SELECT S.Id KiraSozlesmeId, S.DosyaNo, E.Bolge, S.KiraciId, S.Aktif, F.BolumNo, D.Adres, D.Ili,D.Ilcesi,ArtisAyi,
+                SELECT S.Id KiraSozlesmeId, S.DosyaNo, H.KisaAdi Bolge,S.BolgeId, S.KiraciId, S.Aktif, F.BolumNo, D.Adres, D.Ili,D.Ilcesi,ArtisAyi,
                     IlkSozlesmeTar,SozBasTar, SozBitTar,DATEDIFF(dd,S.SozBasTar,GETDATE()) SozlesmeBasladi,
 	                S.KiraBedeli KiraBedeli,S.OdemeSekli,S.TaksitSayisi, S.KefilAdiSoyadi, 
 	                S.KefilTCKimlikNo, S.KefilAdresi, S.KefilTel,S.TeminatCinsi, 
@@ -271,7 +262,8 @@ namespace Model.TBYS
 					LEFT OUTER JOIN SozlesmeTasinmaz_Table C On C.SozlesmeId=S.Id 
 					LEFT OUTER JOIN Tasinmaz_Table D ON D.Id=C.TasinmazId
 	                LEFT OUTER JOIN BagimsizBolum_Table F ON F.TasinmazId=D.Id AND F.Id=C.BolumId
-					LEFT JOIN Il_Table E ON E.IlAdi=D.Ili
+					--LEFT JOIN Il_Table E ON E.IlAdi=D.Ili
+                    INNER JOIN Bolge_Table H ON H.Id=S.BolgeId
                 WHERE 1 > 0 
                 {0} {1} {2} -- AND D.EnvanterdeMi=1 envanterde olmayan ama kirada olanlar var
 				ORDER BY DosyaNo, S.Id", aktifStr, kiracistr,bolgeStr);
@@ -286,11 +278,12 @@ namespace Model.TBYS
             }
             return dataTable;
         }
-        public DataTable SelectKiraArtisiGelenSozlesmelerReturnDataTable(string bolge)
+        public DataTable SelectKiraArtisiGelenSozlesmelerReturnDataTable(int bolgeId)
         {
-            string bolgeStr = string.Format(bolge.Equals(ProjeConstants.BOLGE_HEPSI) ? " " : " AND S.Bolge ={0} ", bolge.ReturnQuotedValue());
+            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND S.BolgeId={0} ", bolgeId);
+
             string sqlString = string.Format(@"
-                SELECT S.Id KiraSozlesmeId, K.Adres, K.Ili,K.Ilcesi,K.Semt,S.Bolge,
+                SELECT S.Id KiraSozlesmeId, K.Adres, K.Ili,K.Ilcesi,K.Semt,S.Bolge,S.BolgeId,
                     IlkSozlesmeTar,SozBasTar,SozBitTar,S.ArtisAyi,
 	                S.KiraBedeli KiraBedeli, S.Aktif, S.OdemeSekli,               
 	                S.KiraciId, K.Adi KiraciAdi, K.Soyadi KiraciSoyadi,K.KiralamaAmaci
@@ -302,7 +295,7 @@ namespace Model.TBYS
                         --AND (ArtisAyi = DATEPART(MM,DATEADD(mm,1, GETDATE())) AND YEAR(SozBitTar)=YEAR(DATEADD(mm,1, GETDATE())) )
                         --AND CONVERT(int,ArtisAyi) = DATEPART(MM,DATEADD(mm,1, GETDATE())) --sözlesmesi yenilenenlerde esi v yeni kirabedeli yanlış çıkıyor                        
                         AND (CONVERT(int,ArtisAyi) = DATEPART(MM,DATEADD(mm,1, GETDATE())) AND YEAR(SozBitTar)=DATEPART(YYYY,DATEADD(mm,1, GETDATE())))--AND (YEAR(SozBitTar)=YEAR(GETDATE())) )
-	                ORDER BY S.Bolge, SozBitTar
+	                ORDER BY S.BolgeId, SozBitTar
             ", bolgeStr);
             DataTable dataTable;
             try
@@ -315,18 +308,19 @@ namespace Model.TBYS
             }
             return dataTable;
         }
-        public DataTable SelectKiraArtisiGelenSozlesmelerReturnDT(string bolge, DateTime tarih)
+        public DataTable SelectKiraArtisiGelenSozlesmelerReturnDT(int bolgeId, DateTime tarih)
         {
-            bolge = string.IsNullOrEmpty(bolge) ? ProjeConstants.BOLGE_HEPSI : bolge;
+         
+            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND S.BolgeId={0} ", bolgeId);
             string tarihStr = tarih.ReturnTRDateFormat();
-            string bolgeStr = string.Format(bolge.Equals(ProjeConstants.BOLGE_HEPSI) ? " " : " AND S.Bolge ={0} ", bolge.ReturnQuotedValue());
             string sqlString = string.Format(@"
-                SELECT S.Id KiraSozlesmeId, K.Adres, K.Ili,K.Ilcesi,K.Semt,S.Bolge,
+                SELECT S.Id KiraSozlesmeId, K.Adres, K.Ili,K.Ilcesi,K.Semt,H.KisaAdi Bolge,S.BolgeId,
                     IlkSozlesmeTar,SozBasTar,SozBitTar,S.ArtisAyi,
 	                S.KiraBedeli KiraBedeli, S.Aktif, S.OdemeSekli,               
 	                S.KiraciId, K.Adi KiraciAdi, K.Soyadi KiraciSoyadi,K.KiralamaAmaci
                 FROM KiraSozlesme_Table S
 	                LEFT JOIN Kiraci_Table K on K.Id= S.KiraciId
+                    INNER JOIN Bolge_Table H ON H.Id=S.BolgeId
 	                WHERE 1>0 AND S.Aktif = 1 
                         {0}
                         --AND ArtisAyi = MONTH(GETDATE())+1 AND YEAR(SozBitTar)=YEAR(GETDATE())  --12nci ayda yanlış çalıştı
@@ -334,7 +328,7 @@ namespace Model.TBYS
                         --AND CONVERT(int,ArtisAyi) = DATEPART(MM,DATEADD(mm,1, GETDATE())) --sözlesmesi yenilenenlerde esi v yeni kirabedeli yanlış çıkıyor                        
                         --AND (CONVERT(int,ArtisAyi) = DATEPART(MM,DATEADD(mm,1, GETDATE())) AND YEAR(SozBitTar)=DATEPART(YYYY,DATEADD(mm,1, GETDATE())))--AND (YEAR(SozBitTar)=YEAR(GETDATE())) )
                         AND (CONVERT(int,ArtisAyi) = DATEPART(MM,DATEADD(mm,1, {1})) AND YEAR(SozBitTar)=DATEPART(YYYY,DATEADD(mm,1, {1})))--AND (YEAR(SozBitTar)=YEAR(GETDATE())) )
-	                ORDER BY S.Bolge, SozBitTar
+	                ORDER BY S.BolgeId, SozBitTar
             ", bolgeStr,tarihStr);
             DataTable dataTable;
             try
@@ -347,15 +341,15 @@ namespace Model.TBYS
             }
             return dataTable;
         }
-        public DataTable SelectGerceklesenKiraArtislariReturnDT(string bolge)
+        public DataTable SelectGerceklesenKiraArtislariReturnDT(int bolgeId)
         {
-            string bolgeStr = string.Format(string.IsNullOrEmpty(bolge) || bolge.Equals(ProjeConstants.BOLGE_HEPSI) ? string.Empty : " AND A.Bolge ={0} ", bolge.ReturnQuotedValue());
+            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND A.BolgeId={0} ", bolgeId);
+
             DateTime bastar = new DateTime(DateTime.Today.Year,1,1);
             DateTime bittar = new DateTime(DateTime.Today.AddYears(1).Year,12,31);
-            DateTime buAyBasi = new DateTime(DateTime.Today.Year,DateTime.Today.Month,1);
 
             string sqlString = string.Format(@"
-                SELECT A.Id KiraSozlesmeId, C.Adres, C.Ili,C.Ilcesi,C.Semt,A.Bolge,
+                SELECT A.Id KiraSozlesmeId, C.Adres, C.Ili,C.Ilcesi,C.Semt,E.KisaAdi Bolge,A.BolgeId,
                     A.IlkSozlesmeTar,
 	                A.SozBasTar ,
 	                A.SozBitTar ,
@@ -370,9 +364,10 @@ namespace Model.TBYS
                 FROM KiraSozlesme_Table A
                 LEFT JOIN KiraSozlesme_Table B ON A.KiraciId=B.KiraciId AND B.SozBitTar=A.SozBasTar AND B.Aktif=0
 	                LEFT JOIN Kiraci_Table C on C.Id= A.KiraciId
-	                WHERE A.Aktif=1 AND A.SozBasTar >={0} AND A.SozBasTar<{1} 
-                        {2}
-                    ORDER BY A.Bolge, SozBitTar DESC
+                    LEFT JOIN Bolge_Table E ON E.Id=A.BolgeId
+	            WHERE A.Aktif=1 AND A.SozBasTar >={0} AND A.SozBasTar<{1} 
+                    {2}
+                ORDER BY A.BolgeId, SozBitTar DESC
 
             ", bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat(), bolgeStr);//sinirliKiraArtisiBastar.ReturnTRDateFormat(),buAyBasi.ReturnTRDateFormat());
             DataTable dataTable;
@@ -386,13 +381,13 @@ namespace Model.TBYS
             }
             return dataTable;
         }
-        public bool UpdateByKiraciId(string bolge, int kiraciId)
+        public bool UpdateByKiraciId(int bolgeId, int kiraciId)
         {
             bool isUpdated = false;
             string sqlString = string.Format(@"
                 Update KiraSozlesme_Table
-                Set Bolge= {0} 
-                Where KiraciId={1}", bolge.ReturnQuotedValue(), kiraciId);
+                Set BolgeId= {0} 
+                Where KiraciId={1}", bolgeId, kiraciId);
             isUpdated = dao.Update2Db(sqlString);
             return isUpdated;
         }
@@ -401,7 +396,7 @@ namespace Model.TBYS
         {
             //string aktifStr = string.Format(" AND Aktif={0}", aktif);
             string sqlString = string.Format(@"				
-                SELECT S.Id KiraSozlesmeId, S.DosyaNo, E.Bolge, S.KiraciId, S.Aktif, F.BolumNo, D.Adres, D.Ili,D.Ilcesi,
+                SELECT S.Id KiraSozlesmeId, S.DosyaNo, S.Bolge, S.BolgeId, S.KiraciId, S.Aktif, F.BolumNo, D.Adres, D.Ili,D.Ilcesi,
 	                FORMAT(S.IlkSozlesmeTar,'dd/MM/yyyy') IlkSozlesmeTar,
 	                FORMAT(S.SozBasTar, 'dd/MM/yyyy') SozBasTar, 
 	                FORMAT(S.SozBitTar, 'dd/MM/yyyy') SozBitTar,
@@ -434,7 +429,7 @@ namespace Model.TBYS
         {
             //string aktifStr = string.Format(" AND Aktif={0}", aktif);
             string sqlString = string.Format(@"				
-                SELECT S.Id KiraSozlesmeId, S.DosyaNo, E.Bolge, S.KiraciId, S.Aktif, F.BolumNo, D.Adres, D.Ili,D.Ilcesi,
+                SELECT S.Id KiraSozlesmeId, S.DosyaNo, S.Bolge, S.BolgeId, S.KiraciId, S.Aktif, F.BolumNo, D.Adres, D.Ili,D.Ilcesi,
 	                FORMAT(S.IlkSozlesmeTar,'dd/MM/yyyy') IlkSozlesmeTar,
 	                FORMAT(S.SozBasTar, 'dd/MM/yyyy') SozBasTar, 
 	                FORMAT(S.SozBitTar, 'dd/MM/yyyy') SozBitTar,
@@ -652,19 +647,20 @@ namespace Model.TBYS
             return dataTable;
 
         }
-        public DataTable SelectSUMTeminatByBolgeKiralamaAmaciReturnDT(string bolge, string kiralamaAmaci)
+        public DataTable SelectSUMTeminatByBolgeKiralamaAmaciReturnDT(int bolgeId, string kiralamaAmaci)
         {
-            string bolgeStr = string.IsNullOrEmpty(bolge) || bolge.Equals(ProjeConstants.BOLGE_HEPSI) ? "" : " AND Bolge=" + bolge.ReturnQuotedValue();
+            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND A.BolgeId={0} ", bolgeId);
+
             string kiralamaAmaciStr = string.IsNullOrEmpty(kiralamaAmaci) || kiralamaAmaci.Equals(ProjeConstants.HEPSI) ? "" : " AND KiralamaAmaci=" + kiralamaAmaci.ReturnQuotedValue();
             string sqlString = string.Format(@"				
-				SELECT Bolge,  B.KiralamaAmaci, COUNT(A.Id) Adet, SUM(TeminatTutari) TeminatTutari, SUM(KalanTeminatTutari) KalanTeminatTutari
+				SELECT BolgeId,  B.KiralamaAmaci, COUNT(A.Id) Adet, SUM(TeminatTutari) TeminatTutari, SUM(KalanTeminatTutari) KalanTeminatTutari
                 FROM KiraSozlesme_Table A
 					INNER JOIN Kiraci_Table B ON B.Id=A.KiraciId
                 WHERE A.Aktif=1
                     {0}
                     {1}
-                GROUP BY A.Bolge, B.KiralamaAmaci
-                ORDER BY Bolge", bolgeStr, kiralamaAmaciStr);
+                GROUP BY A.BolgeId, B.KiralamaAmaci
+                ORDER BY BolgeId", bolgeStr, kiralamaAmaciStr);
 
             DataTable dataTable = null;
             try

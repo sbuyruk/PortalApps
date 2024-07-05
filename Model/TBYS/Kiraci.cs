@@ -17,7 +17,9 @@ namespace Model.TBYS
         public string VergiDairesi { get; set; }
         public string VergiNo { get; set; }
         public string Ili { get; set; }
-        public string Ilcesi { get; set; }
+        public string Ilcesi { get; set; } 
+        public int IlId { get; set; }
+        public int IlceId { get; set; }
         public string Semt { get; set; }
         public string Adres { get; set; }
         public string Telefon { get; set; }
@@ -179,23 +181,31 @@ namespace Model.TBYS
         }
 
 
-        public DataTable SelectAllReturnDT(string secim, string bolge)
+        public DataTable SelectAllReturnDT(string secim, int bolgeId)
         {
             string aktifStr = secim.Equals(ProjeConstants.KIRASOZLESME_AKTIF_HEPSI_INT.ToString()) ? "" : " AND S.Aktif=" + secim;
-            string bolgeStr = bolge.Equals(ProjeConstants.BOLGE_HEPSI) ? string.Empty : string.Format(" AND S.Bolge={0}", bolge.ReturnQuotedValue());
+            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND S.BolgeId={0} ", bolgeId);
+
             string sqlString = string.Format(@"
                 SELECT 
-	                ROW_NUMBER() OVER (ORDER BY MAX(DosyaNo)) AS Sirano, 
-	                A.Id KiraciId, S.Bolge, A.Adi, Soyadi, MAX(SozBasTar) , COUNT(KiraciId), MAX(S.Id) SozlesmeId,S.Aktif, S.KiraBedeli,S.OdemeSekli,
-	                TCKimlikNo,VergiDairesi,VergiNo, A.Ilcesi, A.Ili, A.Ilcesi +'-'+ A.Ili IlIlce, Semt,
+	                C.IlAdi Ili,D.IlceAdi Ilcesi,D.IlceAdi, D.IlceAdi +'-'+ C.IlAdi As IlIlce
+	                 ,E.KisaAdi As Bolge,
+	                A.Id KiraciId, A.Adi, Soyadi, MAX(SozBasTar) , COUNT(KiraciId), MAX(S.Id) SozlesmeId,S.Aktif, S.KiraBedeli,S.OdemeSekli,
+	                TCKimlikNo,VergiDairesi,VergiNo, Semt,
                     A.Adres,A.Telefon,A.Eposta, A.KiralamaAmaci,A.Aciklama
                 FROM KiraSozlesme_Table S
 	                RIGHT JOIN Kiraci_Table A ON A.Id=S.KiraciId
+                LEFT JOIN 
+	                Il_Table C ON C.Id=A.IlId
+                LEFT JOIN 
+	                Ilce_Table D ON D.Id=A.IlceId
+                LEFT JOIN 
+	                Bolge_Table E ON E.Id=C.BolgeId
                 WHERE 1>0
                 {0}
                 {1}
-                GROUP BY A.Id, A.Adi,Soyadi,TCKimlikNo,VergiDairesi,VergiNo, A.Ilcesi, A.Ili,A.Ilcesi +'-'+ A.Ili , 
-				S.Bolge, Semt,A.Adres,A.Telefon,A.Eposta, A.KiralamaAmaci,A.Aciklama,S.Aktif, S.KiraBedeli,S.OdemeSekli
+                GROUP BY A.Id, A.Adi,Soyadi,TCKimlikNo,VergiDairesi,VergiNo, D.IlceAdi, C.IlAdi,D.IlceAdi +'-'+ C.IlAdi  ,E.KisaAdi , 
+				    Semt,A.Adres,A.Telefon,A.Eposta, A.KiralamaAmaci,A.Aciklama,S.Aktif, S.KiraBedeli,S.OdemeSekli
                 Order BY A.Adi --MAX(DosyaNo),KiraciId", aktifStr,bolgeStr);
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return dataTable;
@@ -223,16 +233,24 @@ namespace Model.TBYS
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return dataTable;
         }
-        public DataTable SelectAktifSozlesmesiOlmayanKiracilarReturnDT(string bolge)
+        public DataTable SelectAktifSozlesmesiOlmayanKiracilarReturnDT(int bolgeId)
         {
-            string bolgeStr = bolge.Equals(ProjeConstants.BOLGE_HEPSI) ? string.Empty : string.Format(" AND A.Bolge={0}", bolge.ReturnQuotedValue());
+            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND A.BolgeId={0} ", bolgeId);
+
             string sqlString = string.Format(@"
                 SELECT 
-	                A.KiraciId, A.Bolge, B.Adi,A.Aktif, B.Soyadi, MAX(A.Id) SozlesmeId,B.Ili,B.Ilcesi,
-	                TCKimlikNo,VergiDairesi,VergiNo,B.Ilcesi +'-'+ B.Ili IlIlce, 
+	                A.KiraciId, B.Adi,A.Aktif, B.Soyadi, MAX(A.Id) SozlesmeId,
+                    F.IlAdi Ili,D.IlceAdi Ilcesi,D.IlceAdi, D.IlceAdi +'-'+ F.IlAdi As IlIlce,E.KisaAdi As Bolge,
+	                TCKimlikNo,VergiDairesi,VergiNo,
 	                B.Semt,B.Adres,B.Telefon,B.Eposta, B.KiralamaAmaci
                 FROM Kiraci_Table B 
 	                INNER JOIN KiraSozlesme_Table A ON  A.KiraciId=B.Id
+                    LEFT JOIN 
+	                    Il_Table F ON F.Id=B.IlId
+                    LEFT JOIN 
+	                    Ilce_Table D ON D.Id=B.IlceId
+                    LEFT JOIN 
+	                    Bolge_Table E ON E.Id=A.BolgeId
                 WHERE not exists
                   (
                     SELECT 1 FROM KiraSozlesme_Table C 
@@ -240,14 +258,14 @@ namespace Model.TBYS
                       AND A.Aktif=0
                       AND C.Aktif=1
                   )
-                  AND Aktif=0
+                  AND A.Aktif=0
                   {0}
                 GROUP BY --A.KiraciId,A.Aktif,B.Adi
-                  A.KiraciId,A.Aktif, A.Bolge, B.Adi, B.Soyadi, 
-	                TCKimlikNo,VergiDairesi,VergiNo, B.Ilcesi ,B.Ili , 
+                  A.KiraciId,A.Aktif,  B.Adi, B.Soyadi, 
+	                TCKimlikNo,VergiDairesi,VergiNo,  D.IlceAdi, F.IlAdi,D.IlceAdi +'-'+ F.IlAdi  ,E.KisaAdi , 
 	                B.Semt,B.Adres,B.Telefon,B.Eposta, B.KiralamaAmaci
                   ORDER BY B.Adi --A.DosyaNo,A.KiraciId,A.Aktif	
-                ",bolgeStr);
+                ", bolgeStr);
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return dataTable;
         }

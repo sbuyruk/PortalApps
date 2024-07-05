@@ -61,103 +61,103 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMHeaderCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkHeaderCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMSiraNoCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkSiraNoCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMIllerCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkIllerCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMAptCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkAptCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMMEvCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkMEvCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMMeskenCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkMeskenCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMIsyeriCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkIsyeriCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMArsaCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkArsaCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMTarlaCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkTarlaCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMTMCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkTMCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMCMCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkCMCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMToplamCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkToplamCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMAptTMCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkAptTMCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMAptCMCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkAptCMCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMMEvTMCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkMEvTMCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMMEvCMCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkMEvCMCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMMeskenTMCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkMeskenTMCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMMeskenCMCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkMeskenCMCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMIsyeriTMCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkIsyeriTMCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMIsyeriCMCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkIsyeriCMCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMArsaTMCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkArsaTMCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMArsaCMCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkArsaCMCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMTarlaTMCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkTarlaTMCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMTarlaCMCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkTarlaCMCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.Table GMTable;
+        protected global::System.Web.UI.WebControls.Table AnkTable;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -559,17 +559,17 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMHeaderCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkHeaderCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMHeaderCell = @__ctrl;
+            this.AnkHeaderCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMHeaderCell";
+            @__ctrl.ID = "AnkHeaderCell";
             @__ctrl.CssClass = "btn-primary";
             @__ctrl.ColumnSpan = 17;
             @__ctrl.HorizontalAlign = global::System.Web.UI.WebControls.HorizontalAlign.Center;
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("GENEL MÜDÜRLÜK"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("ANKARA"));
             return @__ctrl;
         }
         
@@ -578,7 +578,7 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControl__control4(System.Web.UI.WebControls.TableCellCollection @__ctrl) {
             global::System.Web.UI.WebControls.TableCell @__ctrl1;
-            @__ctrl1 = this.@__BuildControlGMHeaderCell();
+            @__ctrl1 = this.@__BuildControlAnkHeaderCell();
             @__ctrl.Add(@__ctrl1);
         }
         
@@ -596,12 +596,12 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMSiraNoCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkSiraNoCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMSiraNoCell = @__ctrl;
+            this.AnkSiraNoCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMSiraNoCell";
+            @__ctrl.ID = "AnkSiraNoCell";
             @__ctrl.CssClass = "btn-primary";
             @__ctrl.RowSpan = 2;
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
@@ -612,12 +612,12 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMIllerCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkIllerCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMIllerCell = @__ctrl;
+            this.AnkIllerCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMIllerCell";
+            @__ctrl.ID = "AnkIllerCell";
             @__ctrl.CssClass = "btn-primary";
             @__ctrl.RowSpan = 2;
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
@@ -628,12 +628,12 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMAptCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkAptCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMAptCell = @__ctrl;
+            this.AnkAptCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMAptCell";
+            @__ctrl.ID = "AnkAptCell";
             @__ctrl.CssClass = "btn-primary";
             @__ctrl.ColumnSpan = 2;
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
@@ -644,12 +644,12 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMMEvCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkMEvCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMMEvCell = @__ctrl;
+            this.AnkMEvCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMMEvCell";
+            @__ctrl.ID = "AnkMEvCell";
             @__ctrl.CssClass = "btn-primary";
             @__ctrl.ColumnSpan = 2;
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
@@ -660,12 +660,12 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMMeskenCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkMeskenCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMMeskenCell = @__ctrl;
+            this.AnkMeskenCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMMeskenCell";
+            @__ctrl.ID = "AnkMeskenCell";
             @__ctrl.CssClass = "btn-primary";
             @__ctrl.ColumnSpan = 2;
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
@@ -676,12 +676,12 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMIsyeriCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkIsyeriCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMIsyeriCell = @__ctrl;
+            this.AnkIsyeriCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMIsyeriCell";
+            @__ctrl.ID = "AnkIsyeriCell";
             @__ctrl.CssClass = "btn-primary";
             @__ctrl.ColumnSpan = 2;
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
@@ -692,12 +692,12 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMArsaCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkArsaCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMArsaCell = @__ctrl;
+            this.AnkArsaCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMArsaCell";
+            @__ctrl.ID = "AnkArsaCell";
             @__ctrl.CssClass = "btn-primary";
             @__ctrl.ColumnSpan = 2;
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
@@ -708,12 +708,12 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMTarlaCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkTarlaCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMTarlaCell = @__ctrl;
+            this.AnkTarlaCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMTarlaCell";
+            @__ctrl.ID = "AnkTarlaCell";
             @__ctrl.CssClass = "btn-primary";
             @__ctrl.ColumnSpan = 2;
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
@@ -724,12 +724,12 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMTMCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkTMCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMTMCell = @__ctrl;
+            this.AnkTMCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMTMCell";
+            @__ctrl.ID = "AnkTMCell";
             @__ctrl.CssClass = "btn-primary";
             @__ctrl.RowSpan = 2;
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
@@ -740,12 +740,12 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMCMCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkCMCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMCMCell = @__ctrl;
+            this.AnkCMCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMCMCell";
+            @__ctrl.ID = "AnkCMCell";
             @__ctrl.CssClass = "btn-primary";
             @__ctrl.RowSpan = 2;
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
@@ -756,12 +756,12 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMToplamCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkToplamCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMToplamCell = @__ctrl;
+            this.AnkToplamCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMToplamCell";
+            @__ctrl.ID = "AnkToplamCell";
             @__ctrl.CssClass = "btn-primary";
             @__ctrl.RowSpan = 2;
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
@@ -774,37 +774,37 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControl__control6(System.Web.UI.WebControls.TableCellCollection @__ctrl) {
             global::System.Web.UI.WebControls.TableCell @__ctrl1;
-            @__ctrl1 = this.@__BuildControlGMSiraNoCell();
+            @__ctrl1 = this.@__BuildControlAnkSiraNoCell();
             @__ctrl.Add(@__ctrl1);
             global::System.Web.UI.WebControls.TableCell @__ctrl2;
-            @__ctrl2 = this.@__BuildControlGMIllerCell();
+            @__ctrl2 = this.@__BuildControlAnkIllerCell();
             @__ctrl.Add(@__ctrl2);
             global::System.Web.UI.WebControls.TableCell @__ctrl3;
-            @__ctrl3 = this.@__BuildControlGMAptCell();
+            @__ctrl3 = this.@__BuildControlAnkAptCell();
             @__ctrl.Add(@__ctrl3);
             global::System.Web.UI.WebControls.TableCell @__ctrl4;
-            @__ctrl4 = this.@__BuildControlGMMEvCell();
+            @__ctrl4 = this.@__BuildControlAnkMEvCell();
             @__ctrl.Add(@__ctrl4);
             global::System.Web.UI.WebControls.TableCell @__ctrl5;
-            @__ctrl5 = this.@__BuildControlGMMeskenCell();
+            @__ctrl5 = this.@__BuildControlAnkMeskenCell();
             @__ctrl.Add(@__ctrl5);
             global::System.Web.UI.WebControls.TableCell @__ctrl6;
-            @__ctrl6 = this.@__BuildControlGMIsyeriCell();
+            @__ctrl6 = this.@__BuildControlAnkIsyeriCell();
             @__ctrl.Add(@__ctrl6);
             global::System.Web.UI.WebControls.TableCell @__ctrl7;
-            @__ctrl7 = this.@__BuildControlGMArsaCell();
+            @__ctrl7 = this.@__BuildControlAnkArsaCell();
             @__ctrl.Add(@__ctrl7);
             global::System.Web.UI.WebControls.TableCell @__ctrl8;
-            @__ctrl8 = this.@__BuildControlGMTarlaCell();
+            @__ctrl8 = this.@__BuildControlAnkTarlaCell();
             @__ctrl.Add(@__ctrl8);
             global::System.Web.UI.WebControls.TableCell @__ctrl9;
-            @__ctrl9 = this.@__BuildControlGMTMCell();
+            @__ctrl9 = this.@__BuildControlAnkTMCell();
             @__ctrl.Add(@__ctrl9);
             global::System.Web.UI.WebControls.TableCell @__ctrl10;
-            @__ctrl10 = this.@__BuildControlGMCMCell();
+            @__ctrl10 = this.@__BuildControlAnkCMCell();
             @__ctrl.Add(@__ctrl10);
             global::System.Web.UI.WebControls.TableCell @__ctrl11;
-            @__ctrl11 = this.@__BuildControlGMToplamCell();
+            @__ctrl11 = this.@__BuildControlAnkToplamCell();
             @__ctrl.Add(@__ctrl11);
         }
         
@@ -823,12 +823,12 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMAptTMCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkAptTMCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMAptTMCell = @__ctrl;
+            this.AnkAptTMCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMAptTMCell";
+            @__ctrl.ID = "AnkAptTMCell";
             @__ctrl.CssClass = "btn-primary";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("TM"));
@@ -838,12 +838,12 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMAptCMCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkAptCMCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMAptCMCell = @__ctrl;
+            this.AnkAptCMCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMAptCMCell";
+            @__ctrl.ID = "AnkAptCMCell";
             @__ctrl.CssClass = "btn-primary";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("ÇM"));
@@ -853,12 +853,12 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMMEvTMCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkMEvTMCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMMEvTMCell = @__ctrl;
+            this.AnkMEvTMCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMMEvTMCell";
+            @__ctrl.ID = "AnkMEvTMCell";
             @__ctrl.CssClass = "btn-primary";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("TM"));
@@ -868,12 +868,12 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMMEvCMCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkMEvCMCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMMEvCMCell = @__ctrl;
+            this.AnkMEvCMCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMMEvCMCell";
+            @__ctrl.ID = "AnkMEvCMCell";
             @__ctrl.CssClass = "btn-primary";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("ÇM"));
@@ -883,12 +883,12 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMMeskenTMCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkMeskenTMCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMMeskenTMCell = @__ctrl;
+            this.AnkMeskenTMCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMMeskenTMCell";
+            @__ctrl.ID = "AnkMeskenTMCell";
             @__ctrl.CssClass = "btn-primary";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("TM"));
@@ -898,12 +898,12 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMMeskenCMCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkMeskenCMCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMMeskenCMCell = @__ctrl;
+            this.AnkMeskenCMCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMMeskenCMCell";
+            @__ctrl.ID = "AnkMeskenCMCell";
             @__ctrl.CssClass = "btn-primary";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("ÇM"));
@@ -913,12 +913,12 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMIsyeriTMCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkIsyeriTMCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMIsyeriTMCell = @__ctrl;
+            this.AnkIsyeriTMCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMIsyeriTMCell";
+            @__ctrl.ID = "AnkIsyeriTMCell";
             @__ctrl.CssClass = "btn-primary";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("TM"));
@@ -928,12 +928,12 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMIsyeriCMCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkIsyeriCMCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMIsyeriCMCell = @__ctrl;
+            this.AnkIsyeriCMCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMIsyeriCMCell";
+            @__ctrl.ID = "AnkIsyeriCMCell";
             @__ctrl.CssClass = "btn-primary";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("ÇM"));
@@ -943,12 +943,12 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMArsaTMCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkArsaTMCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMArsaTMCell = @__ctrl;
+            this.AnkArsaTMCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMArsaTMCell";
+            @__ctrl.ID = "AnkArsaTMCell";
             @__ctrl.CssClass = "btn-primary";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("TM"));
@@ -958,12 +958,12 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMArsaCMCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkArsaCMCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMArsaCMCell = @__ctrl;
+            this.AnkArsaCMCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMArsaCMCell";
+            @__ctrl.ID = "AnkArsaCMCell";
             @__ctrl.CssClass = "btn-primary";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("ÇM"));
@@ -973,12 +973,12 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMTarlaTMCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkTarlaTMCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMTarlaTMCell = @__ctrl;
+            this.AnkTarlaTMCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMTarlaTMCell";
+            @__ctrl.ID = "AnkTarlaTMCell";
             @__ctrl.CssClass = "btn-primary";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("TM"));
@@ -988,12 +988,12 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMTarlaCMCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkTarlaCMCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMTarlaCMCell = @__ctrl;
+            this.AnkTarlaCMCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMTarlaCMCell";
+            @__ctrl.ID = "AnkTarlaCMCell";
             @__ctrl.CssClass = "btn-primary";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("ÇM"));
@@ -1005,40 +1005,40 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControl__control8(System.Web.UI.WebControls.TableCellCollection @__ctrl) {
             global::System.Web.UI.WebControls.TableCell @__ctrl1;
-            @__ctrl1 = this.@__BuildControlGMAptTMCell();
+            @__ctrl1 = this.@__BuildControlAnkAptTMCell();
             @__ctrl.Add(@__ctrl1);
             global::System.Web.UI.WebControls.TableCell @__ctrl2;
-            @__ctrl2 = this.@__BuildControlGMAptCMCell();
+            @__ctrl2 = this.@__BuildControlAnkAptCMCell();
             @__ctrl.Add(@__ctrl2);
             global::System.Web.UI.WebControls.TableCell @__ctrl3;
-            @__ctrl3 = this.@__BuildControlGMMEvTMCell();
+            @__ctrl3 = this.@__BuildControlAnkMEvTMCell();
             @__ctrl.Add(@__ctrl3);
             global::System.Web.UI.WebControls.TableCell @__ctrl4;
-            @__ctrl4 = this.@__BuildControlGMMEvCMCell();
+            @__ctrl4 = this.@__BuildControlAnkMEvCMCell();
             @__ctrl.Add(@__ctrl4);
             global::System.Web.UI.WebControls.TableCell @__ctrl5;
-            @__ctrl5 = this.@__BuildControlGMMeskenTMCell();
+            @__ctrl5 = this.@__BuildControlAnkMeskenTMCell();
             @__ctrl.Add(@__ctrl5);
             global::System.Web.UI.WebControls.TableCell @__ctrl6;
-            @__ctrl6 = this.@__BuildControlGMMeskenCMCell();
+            @__ctrl6 = this.@__BuildControlAnkMeskenCMCell();
             @__ctrl.Add(@__ctrl6);
             global::System.Web.UI.WebControls.TableCell @__ctrl7;
-            @__ctrl7 = this.@__BuildControlGMIsyeriTMCell();
+            @__ctrl7 = this.@__BuildControlAnkIsyeriTMCell();
             @__ctrl.Add(@__ctrl7);
             global::System.Web.UI.WebControls.TableCell @__ctrl8;
-            @__ctrl8 = this.@__BuildControlGMIsyeriCMCell();
+            @__ctrl8 = this.@__BuildControlAnkIsyeriCMCell();
             @__ctrl.Add(@__ctrl8);
             global::System.Web.UI.WebControls.TableCell @__ctrl9;
-            @__ctrl9 = this.@__BuildControlGMArsaTMCell();
+            @__ctrl9 = this.@__BuildControlAnkArsaTMCell();
             @__ctrl.Add(@__ctrl9);
             global::System.Web.UI.WebControls.TableCell @__ctrl10;
-            @__ctrl10 = this.@__BuildControlGMArsaCMCell();
+            @__ctrl10 = this.@__BuildControlAnkArsaCMCell();
             @__ctrl.Add(@__ctrl10);
             global::System.Web.UI.WebControls.TableCell @__ctrl11;
-            @__ctrl11 = this.@__BuildControlGMTarlaTMCell();
+            @__ctrl11 = this.@__BuildControlAnkTarlaTMCell();
             @__ctrl.Add(@__ctrl11);
             global::System.Web.UI.WebControls.TableCell @__ctrl12;
-            @__ctrl12 = this.@__BuildControlGMTarlaCMCell();
+            @__ctrl12 = this.@__BuildControlAnkTarlaCMCell();
             @__ctrl.Add(@__ctrl12);
         }
         
@@ -1072,12 +1072,12 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Table @__BuildControlGMTable() {
+        private global::System.Web.UI.WebControls.Table @__BuildControlAnkTable() {
             global::System.Web.UI.WebControls.Table @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Table();
-            this.GMTable = @__ctrl;
+            this.AnkTable = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMTable";
+            @__ctrl.ID = "AnkTable";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "table table-bordered table-hover table-sm");
             this.@__BuildControl__control2(@__ctrl.Rows);
             return @__ctrl;
@@ -2697,7 +2697,7 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP {
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            <div id=\"TableContainer\">\r\n                <div>\r\n                 " +
                         "   "));
             global::System.Web.UI.WebControls.Table @__ctrl1;
-            @__ctrl1 = this.@__BuildControlGMTable();
+            @__ctrl1 = this.@__BuildControlAnkTable();
             @__parser.AddParsedSubObject(@__ctrl1);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                </div>\r\n                <div>\r\n                    "));
             global::System.Web.UI.WebControls.Table @__ctrl2;

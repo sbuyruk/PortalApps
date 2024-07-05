@@ -28,36 +28,36 @@
         <div class="card-body" id="TasimazDurumuPanel" runat="server">
             <div id="TableContainer">
                 <div>
-                    <asp:Table ID="GMTable" runat="server" class="table table-bordered table-hover table-sm">
+                    <asp:Table ID="AnkTable" runat="server" class="table table-bordered table-hover table-sm">
                         <asp:TableHeaderRow>
-                            <asp:TableCell ID="GMHeaderCell" CssClass="btn-primary" ColumnSpan="17" HorizontalAlign="Center">GENEL MÜDÜRLÜK</asp:TableCell>
+                            <asp:TableCell ID="AnkHeaderCell" CssClass="btn-primary" ColumnSpan="17" HorizontalAlign="Center">ANKARA</asp:TableCell>
                         </asp:TableHeaderRow>
                         <asp:TableHeaderRow HorizontalAlign="Center">
-                            <asp:TableCell ID="GMSiraNoCell" CssClass="btn-primary" RowSpan="2">Sıra</asp:TableCell>
-                            <asp:TableCell ID="GMIllerCell" CssClass="btn-primary" RowSpan="2">İller</asp:TableCell>
-                            <asp:TableCell ID="GMAptCell" CssClass="btn-primary" ColumnSpan="2">Bina</asp:TableCell>
-                            <asp:TableCell ID="GMMEvCell" CssClass="btn-primary" ColumnSpan="2">M.Ev</asp:TableCell>
-                            <asp:TableCell ID="GMMeskenCell" CssClass="btn-primary" ColumnSpan="2">Mesken</asp:TableCell>
-                            <asp:TableCell ID="GMIsyeriCell" CssClass="btn-primary" ColumnSpan="2">İşyeri</asp:TableCell>
-                            <asp:TableCell ID="GMArsaCell" CssClass="btn-primary" ColumnSpan="2">Arsa</asp:TableCell>
-                            <asp:TableCell ID="GMTarlaCell" CssClass="btn-primary" ColumnSpan="2">Tarla</asp:TableCell>
-                            <asp:TableCell ID="GMTMCell" CssClass="btn-primary" RowSpan="2">TM</asp:TableCell>
-                            <asp:TableCell ID="GMCMCell" CssClass="btn-primary" RowSpan="2">ÇM</asp:TableCell>
-                            <asp:TableCell ID="GMToplamCell" CssClass="btn-primary" RowSpan="2">Toplam</asp:TableCell>
+                            <asp:TableCell ID="AnkSiraNoCell" CssClass="btn-primary" RowSpan="2">Sıra</asp:TableCell>
+                            <asp:TableCell ID="AnkIllerCell" CssClass="btn-primary" RowSpan="2">İller</asp:TableCell>
+                            <asp:TableCell ID="AnkAptCell" CssClass="btn-primary" ColumnSpan="2">Bina</asp:TableCell>
+                            <asp:TableCell ID="AnkMEvCell" CssClass="btn-primary" ColumnSpan="2">M.Ev</asp:TableCell>
+                            <asp:TableCell ID="AnkMeskenCell" CssClass="btn-primary" ColumnSpan="2">Mesken</asp:TableCell>
+                            <asp:TableCell ID="AnkIsyeriCell" CssClass="btn-primary" ColumnSpan="2">İşyeri</asp:TableCell>
+                            <asp:TableCell ID="AnkArsaCell" CssClass="btn-primary" ColumnSpan="2">Arsa</asp:TableCell>
+                            <asp:TableCell ID="AnkTarlaCell" CssClass="btn-primary" ColumnSpan="2">Tarla</asp:TableCell>
+                            <asp:TableCell ID="AnkTMCell" CssClass="btn-primary" RowSpan="2">TM</asp:TableCell>
+                            <asp:TableCell ID="AnkCMCell" CssClass="btn-primary" RowSpan="2">ÇM</asp:TableCell>
+                            <asp:TableCell ID="AnkToplamCell" CssClass="btn-primary" RowSpan="2">Toplam</asp:TableCell>
                         </asp:TableHeaderRow>
                         <asp:TableHeaderRow HorizontalAlign="Center">
-                            <asp:TableCell ID="GMAptTMCell" CssClass="btn-primary">TM</asp:TableCell>
-                            <asp:TableCell ID="GMAptCMCell" CssClass="btn-primary">ÇM</asp:TableCell>
-                            <asp:TableCell ID="GMMEvTMCell" CssClass="btn-primary">TM</asp:TableCell>
-                            <asp:TableCell ID="GMMEvCMCell" CssClass="btn-primary">ÇM</asp:TableCell>
-                            <asp:TableCell ID="GMMeskenTMCell" CssClass="btn-primary">TM</asp:TableCell>
-                            <asp:TableCell ID="GMMeskenCMCell" CssClass="btn-primary">ÇM</asp:TableCell>
-                            <asp:TableCell ID="GMIsyeriTMCell" CssClass="btn-primary">TM</asp:TableCell>
-                            <asp:TableCell ID="GMIsyeriCMCell" CssClass="btn-primary">ÇM</asp:TableCell>
-                            <asp:TableCell ID="GMArsaTMCell" CssClass="btn-primary">TM</asp:TableCell>
-                            <asp:TableCell ID="GMArsaCMCell" CssClass="btn-primary">ÇM</asp:TableCell>
-                            <asp:TableCell ID="GMTarlaTMCell" CssClass="btn-primary">TM</asp:TableCell>
-                            <asp:TableCell ID="GMTarlaCMCell" CssClass="btn-primary">ÇM</asp:TableCell>
+                            <asp:TableCell ID="AnkAptTMCell" CssClass="btn-primary">TM</asp:TableCell>
+                            <asp:TableCell ID="AnkAptCMCell" CssClass="btn-primary">ÇM</asp:TableCell>
+                            <asp:TableCell ID="AnkMEvTMCell" CssClass="btn-primary">TM</asp:TableCell>
+                            <asp:TableCell ID="AnkMEvCMCell" CssClass="btn-primary">ÇM</asp:TableCell>
+                            <asp:TableCell ID="AnkMeskenTMCell" CssClass="btn-primary">TM</asp:TableCell>
+                            <asp:TableCell ID="AnkMeskenCMCell" CssClass="btn-primary">ÇM</asp:TableCell>
+                            <asp:TableCell ID="AnkIsyeriTMCell" CssClass="btn-primary">TM</asp:TableCell>
+                            <asp:TableCell ID="AnkIsyeriCMCell" CssClass="btn-primary">ÇM</asp:TableCell>
+                            <asp:TableCell ID="AnkArsaTMCell" CssClass="btn-primary">TM</asp:TableCell>
+                            <asp:TableCell ID="AnkArsaCMCell" CssClass="btn-primary">ÇM</asp:TableCell>
+                            <asp:TableCell ID="AnkTarlaTMCell" CssClass="btn-primary">TM</asp:TableCell>
+                            <asp:TableCell ID="AnkTarlaCMCell" CssClass="btn-primary">ÇM</asp:TableCell>
                         </asp:TableHeaderRow>
                     </asp:Table>
                 </div>

@@ -108,30 +108,30 @@ namespace TBYS_WebParts.BorcluKiracilarByBolgeWP
             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
 
-            DataTable gmDataTable = kiraSozlesme.SelectKiraciSayisiByBolgeTarih(ProjeConstants.BOLGE_GENELMUDURLUK, ay, yil);
-            DataTable istDataTable = kiraSozlesme.SelectKiraciSayisiByBolgeTarih(ProjeConstants.BOLGE_ISTANBUL, ay, yil);
-            DataTable izmDataTable = kiraSozlesme.SelectKiraciSayisiByBolgeTarih(ProjeConstants.BOLGE_IZMIR, ay, yil);
-            DataTable merDataTable = kiraSozlesme.SelectKiraciSayisiByBolgeTarih(ProjeConstants.BOLGE_MERSIN, ay, yil);
+            DataTable AnkDataTable = kiraSozlesme.SelectKiraciSayisiByBolgeTarih(ProjeConstants.BOLGE_ANKARA_INT, ay, yil);
+            DataTable istDataTable = kiraSozlesme.SelectKiraciSayisiByBolgeTarih(ProjeConstants.BOLGE_ISTANBUL_INT, ay, yil);
+            DataTable izmDataTable = kiraSozlesme.SelectKiraciSayisiByBolgeTarih(ProjeConstants.BOLGE_IZMIR_INT, ay, yil);
+            DataTable merDataTable = kiraSozlesme.SelectKiraciSayisiByBolgeTarih(ProjeConstants.BOLGE_MERSIN_INT, ay, yil);
 
-            int adetGM = gmDataTable == null ? 0 : gmDataTable.Rows.Count;
-            int adetIst = gmDataTable == null ? 0 : istDataTable.Rows.Count;
-            int adetIzm = gmDataTable == null ? 0 : izmDataTable.Rows.Count;
-            int adetMer = gmDataTable == null ? 0 : merDataTable.Rows.Count;
+            int adetAnk = AnkDataTable == null ? 0 : AnkDataTable.Rows.Count;
+            int adetIst = AnkDataTable == null ? 0 : istDataTable.Rows.Count;
+            int adetIzm = AnkDataTable == null ? 0 : izmDataTable.Rows.Count;
+            int adetMer = AnkDataTable == null ? 0 : merDataTable.Rows.Count;
 
-            int adetGT = adetGM + adetIst + adetIzm + adetMer;
+            int adetGT = adetAnk + adetIst + adetIzm + adetMer;
 
-            GMKiraciSayisiCell.Text = adetGM.ToString();
+            AnkKiraciSayisiCell.Text = adetAnk.ToString();
             IstKiraciSayisiCell.Text = adetIst.ToString();
             IzmKiraciSayisiCell.Text = adetIzm.ToString();
             MerKiraciSayisiCell.Text = adetMer.ToString();
             TopKiraciSayisiCell.Text = adetGT.ToString();
 
             //Kiracı sayıları ve linkleri
-            HyperLinkEkle(ProjeConstants.PAGE_MEVCUTKIRACI_LIST, GMKiraciSayisiCell, adetGM.ToString(), ProjeConstants.BOLGE_GENELMUDURLUK, ProjeConstants.HEPSI_INT, ProjeConstants.HEPSI_INT);
-            HyperLinkEkle(ProjeConstants.PAGE_MEVCUTKIRACI_LIST, IstKiraciSayisiCell, adetIst.ToString(), ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.HEPSI_INT, ProjeConstants.HEPSI_INT);
-            HyperLinkEkle(ProjeConstants.PAGE_MEVCUTKIRACI_LIST, IzmKiraciSayisiCell, adetIzm.ToString(), ProjeConstants.BOLGE_IZMIR, ProjeConstants.HEPSI_INT, ProjeConstants.HEPSI_INT);
-            HyperLinkEkle(ProjeConstants.PAGE_MEVCUTKIRACI_LIST, MerKiraciSayisiCell, adetMer.ToString(), ProjeConstants.BOLGE_MERSIN, ProjeConstants.HEPSI_INT, ProjeConstants.HEPSI_INT);
-            HyperLinkEkle(ProjeConstants.PAGE_MEVCUTKIRACI_LIST, TopKiraciSayisiCell, adetGT.ToString(), ProjeConstants.BOLGE_HEPSI, ProjeConstants.HEPSI_INT, ProjeConstants.HEPSI_INT);
+            HyperLinkEkle(ProjeConstants.PAGE_MEVCUTKIRACI_LIST, AnkKiraciSayisiCell, adetAnk.ToString(), ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.HEPSI_INT, ProjeConstants.HEPSI_INT);
+            HyperLinkEkle(ProjeConstants.PAGE_MEVCUTKIRACI_LIST, IstKiraciSayisiCell, adetIst.ToString(), ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.HEPSI_INT, ProjeConstants.HEPSI_INT);
+            HyperLinkEkle(ProjeConstants.PAGE_MEVCUTKIRACI_LIST, IzmKiraciSayisiCell, adetIzm.ToString(), ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.HEPSI_INT, ProjeConstants.HEPSI_INT);
+            HyperLinkEkle(ProjeConstants.PAGE_MEVCUTKIRACI_LIST, MerKiraciSayisiCell, adetMer.ToString(), ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.HEPSI_INT, ProjeConstants.HEPSI_INT);
+            HyperLinkEkle(ProjeConstants.PAGE_MEVCUTKIRACI_LIST, TopKiraciSayisiCell, adetGT.ToString(), ProjeConstants.BOLGE_HEPSI_INT, ProjeConstants.HEPSI_INT, ProjeConstants.HEPSI_INT);
 
             DateTime secilenTarih = new DateTime(yil, ay, 1);
             #region içinde bulunduğumuz ay için bugünü esas alsın
@@ -158,120 +158,120 @@ namespace TBYS_WebParts.BorcluKiracilarByBolgeWP
 
             OdemePlani odemePlaniDao = new OdemePlani();
 
-            //GM 
-            DataTable dortAyBorcluGMDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_GENELMUDURLUK, vadeBastar, vadeBittar, dortAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
-            int dortAyBorcluGM = dortAyBorcluGMDataTable == null ? 0 : dortAyBorcluGMDataTable.Rows.Count;
+            //Ank 
+            DataTable dortAyBorcluAnkDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_ANKARA_INT, vadeBastar, vadeBittar, dortAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
+            int dortAyBorcluAnk = dortAyBorcluAnkDataTable == null ? 0 : dortAyBorcluAnkDataTable.Rows.Count;
 
-            DataTable ucAyBorcluGMDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_GENELMUDURLUK, vadeBastar, vadeBittar, ucAyBorcluOlanlar, ucAyBorcluOlanlar);
-            int ucAyBorcluGM = ucAyBorcluGMDataTable == null ? 0 : ucAyBorcluGMDataTable.Rows.Count;
+            DataTable ucAyBorcluAnkDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_ANKARA_INT, vadeBastar, vadeBittar, ucAyBorcluOlanlar, ucAyBorcluOlanlar);
+            int ucAyBorcluAnk = ucAyBorcluAnkDataTable == null ? 0 : ucAyBorcluAnkDataTable.Rows.Count;
 
-            DataTable ikiAyBorcluGMDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_GENELMUDURLUK, vadeBastar, vadeBittar, ikiAyBorcluOlanlar, ikiAyBorcluOlanlar);
-            int ikiAyBorcluGM = ikiAyBorcluGMDataTable == null ? 0 : ikiAyBorcluGMDataTable.Rows.Count;
+            DataTable ikiAyBorcluAnkDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_ANKARA_INT, vadeBastar, vadeBittar, ikiAyBorcluOlanlar, ikiAyBorcluOlanlar);
+            int ikiAyBorcluAnk = ikiAyBorcluAnkDataTable == null ? 0 : ikiAyBorcluAnkDataTable.Rows.Count;
 
-            DataTable birAyBorcluGMDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_GENELMUDURLUK, vadeBastar, vadeBittar, birAyBorcluOlanlar, birAyBorcluOlanlar);
-            int birAyBorcluGM = birAyBorcluGMDataTable == null ? 0 : birAyBorcluGMDataTable.Rows.Count;
+            DataTable birAyBorcluAnkDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_ANKARA_INT, vadeBastar, vadeBittar, birAyBorcluOlanlar, birAyBorcluOlanlar);
+            int birAyBorcluAnk = birAyBorcluAnkDataTable == null ? 0 : birAyBorcluAnkDataTable.Rows.Count;
 
             //İst 
-            DataTable dortAyBorcluIstDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_ISTANBUL, vadeBastar, vadeBittar, dortAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
+            DataTable dortAyBorcluIstDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_ISTANBUL_INT, vadeBastar, vadeBittar, dortAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
             int dortAyBorcluIst = dortAyBorcluIstDataTable == null ? 0 : dortAyBorcluIstDataTable.Rows.Count;
 
-            DataTable ucAyBorcluIstDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_ISTANBUL, vadeBastar, vadeBittar, ucAyBorcluOlanlar, ucAyBorcluOlanlar);
+            DataTable ucAyBorcluIstDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_ISTANBUL_INT, vadeBastar, vadeBittar, ucAyBorcluOlanlar, ucAyBorcluOlanlar);
             int ucAyBorcluIst = ucAyBorcluIstDataTable == null ? 0 : ucAyBorcluIstDataTable.Rows.Count;
 
-            DataTable ikiAyBorcluIstDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_ISTANBUL, vadeBastar, vadeBittar, ikiAyBorcluOlanlar, ikiAyBorcluOlanlar);
+            DataTable ikiAyBorcluIstDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_ISTANBUL_INT, vadeBastar, vadeBittar, ikiAyBorcluOlanlar, ikiAyBorcluOlanlar);
             int ikiAyBorcluIst = ikiAyBorcluIstDataTable == null ? 0 : ikiAyBorcluIstDataTable.Rows.Count;
 
-            DataTable birAyBorcluIstDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_ISTANBUL, vadeBastar, vadeBittar, birAyBorcluOlanlar, birAyBorcluOlanlar);
+            DataTable birAyBorcluIstDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_ISTANBUL_INT, vadeBastar, vadeBittar, birAyBorcluOlanlar, birAyBorcluOlanlar);
             int birAyBorcluIst = birAyBorcluIstDataTable == null ? 0 : birAyBorcluIstDataTable.Rows.Count;
 
 
             //İzm 
-            DataTable dortAyBorcluIzmDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_IZMIR, vadeBastar, vadeBittar, dortAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
+            DataTable dortAyBorcluIzmDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_IZMIR_INT, vadeBastar, vadeBittar, dortAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
             int dortAyBorcluIzm = dortAyBorcluIzmDataTable == null ? 0 : dortAyBorcluIzmDataTable.Rows.Count;
 
-            DataTable ucAyBorcluIzmDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_IZMIR, vadeBastar, vadeBittar, ucAyBorcluOlanlar, ucAyBorcluOlanlar);
+            DataTable ucAyBorcluIzmDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_IZMIR_INT, vadeBastar, vadeBittar, ucAyBorcluOlanlar, ucAyBorcluOlanlar);
             int ucAyBorcluIzm = ucAyBorcluIzmDataTable == null ? 0 : ucAyBorcluIzmDataTable.Rows.Count;
 
-            DataTable ikiAyBorcluIzmDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_IZMIR, vadeBastar, vadeBittar, ikiAyBorcluOlanlar, ikiAyBorcluOlanlar);
+            DataTable ikiAyBorcluIzmDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_IZMIR_INT, vadeBastar, vadeBittar, ikiAyBorcluOlanlar, ikiAyBorcluOlanlar);
             int ikiAyBorcluIzm = ikiAyBorcluIzmDataTable == null ? 0 : ikiAyBorcluIzmDataTable.Rows.Count;
 
-            DataTable birAyBorcluIzmDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_IZMIR, vadeBastar, vadeBittar, birAyBorcluOlanlar, birAyBorcluOlanlar);
+            DataTable birAyBorcluIzmDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_IZMIR_INT, vadeBastar, vadeBittar, birAyBorcluOlanlar, birAyBorcluOlanlar);
             int birAyBorcluIzm = birAyBorcluIzmDataTable == null ? 0 : birAyBorcluIzmDataTable.Rows.Count;
 
 
             //Mer 
-            DataTable dortAyBorcluMerDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_MERSIN, vadeBastar, vadeBittar, dortAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
+            DataTable dortAyBorcluMerDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_MERSIN_INT, vadeBastar, vadeBittar, dortAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
             int dortAyBorcluMer = dortAyBorcluMerDataTable == null ? 0 : dortAyBorcluMerDataTable.Rows.Count;
 
-            DataTable ucAyBorcluMerDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_MERSIN, vadeBastar, vadeBittar, ucAyBorcluOlanlar, ucAyBorcluOlanlar);
+            DataTable ucAyBorcluMerDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_MERSIN_INT, vadeBastar, vadeBittar, ucAyBorcluOlanlar, ucAyBorcluOlanlar);
             int ucAyBorcluMer = ucAyBorcluMerDataTable == null ? 0 : ucAyBorcluMerDataTable.Rows.Count;
 
-            DataTable ikiAyBorcluMerDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_MERSIN, vadeBastar, vadeBittar, ikiAyBorcluOlanlar, ikiAyBorcluOlanlar);
+            DataTable ikiAyBorcluMerDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_MERSIN_INT, vadeBastar, vadeBittar, ikiAyBorcluOlanlar, ikiAyBorcluOlanlar);
             int ikiAyBorcluMer = ikiAyBorcluMerDataTable == null ? 0 : ikiAyBorcluMerDataTable.Rows.Count;
 
-            DataTable birAyBorcluMerDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_MERSIN, vadeBastar, vadeBittar, birAyBorcluOlanlar, birAyBorcluOlanlar);
+            DataTable birAyBorcluMerDataTable = odemePlaniDao.SelectBorcluOdemePlanlariByBolgeTarih(ProjeConstants.BOLGE_MERSIN_INT, vadeBastar, vadeBittar, birAyBorcluOlanlar, birAyBorcluOlanlar);
             int birAyBorcluMer = birAyBorcluMerDataTable == null ? 0 : birAyBorcluMerDataTable.Rows.Count;
 
             //Top
-            int birAyBorcluTop = birAyBorcluGM + birAyBorcluIst + birAyBorcluIzm + birAyBorcluMer;
-            int ikiAyBorcluTop = ikiAyBorcluGM + ikiAyBorcluIst + ikiAyBorcluIzm + ikiAyBorcluMer;
-            int ucAyBorcluTop = ucAyBorcluGM + ucAyBorcluIst + ucAyBorcluIzm + ucAyBorcluMer;
-            int dortAyBorcluTop = dortAyBorcluGM + dortAyBorcluIst + dortAyBorcluIzm + dortAyBorcluMer;
+            int birAyBorcluTop = birAyBorcluAnk + birAyBorcluIst + birAyBorcluIzm + birAyBorcluMer;
+            int ikiAyBorcluTop = ikiAyBorcluAnk + ikiAyBorcluIst + ikiAyBorcluIzm + ikiAyBorcluMer;
+            int ucAyBorcluTop = ucAyBorcluAnk + ucAyBorcluIst + ucAyBorcluIzm + ucAyBorcluMer;
+            int dortAyBorcluTop = dortAyBorcluAnk + dortAyBorcluIst + dortAyBorcluIzm + dortAyBorcluMer;
 
 
 
             //Genel Müdürlük
-            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, GM1AyCell, birAyBorcluGM.ToString(), ProjeConstants.BOLGE_GENELMUDURLUK, birAyBorcluOlanlar, birAyBorcluOlanlar);
-            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, GM2AyCell, ikiAyBorcluGM.ToString(), ProjeConstants.BOLGE_GENELMUDURLUK, ikiAyBorcluOlanlar, ikiAyBorcluOlanlar);
-            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, GM3AyCell, ucAyBorcluGM.ToString(), ProjeConstants.BOLGE_GENELMUDURLUK, ucAyBorcluOlanlar, ucAyBorcluOlanlar);
-            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, GM4AyCell, dortAyBorcluGM.ToString(), ProjeConstants.BOLGE_GENELMUDURLUK, dortAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
+            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Ank1AyCell, birAyBorcluAnk.ToString(), ProjeConstants.BOLGE_ANKARA_INT, birAyBorcluOlanlar, birAyBorcluOlanlar);
+            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Ank2AyCell, ikiAyBorcluAnk.ToString(), ProjeConstants.BOLGE_ANKARA_INT, ikiAyBorcluOlanlar, ikiAyBorcluOlanlar);
+            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Ank3AyCell, ucAyBorcluAnk.ToString(), ProjeConstants.BOLGE_ANKARA_INT, ucAyBorcluOlanlar, ucAyBorcluOlanlar);
+            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Ank4AyCell, dortAyBorcluAnk.ToString(), ProjeConstants.BOLGE_ANKARA_INT, dortAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
 
             //İstanbul
-            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Ist1AyCell, birAyBorcluIst.ToString(), ProjeConstants.BOLGE_ISTANBUL, birAyBorcluOlanlar, birAyBorcluOlanlar);
-            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Ist2AyCell, ikiAyBorcluIst.ToString(), ProjeConstants.BOLGE_ISTANBUL, ikiAyBorcluOlanlar, ikiAyBorcluOlanlar);
-            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Ist3AyCell, ucAyBorcluIst.ToString(), ProjeConstants.BOLGE_ISTANBUL, ucAyBorcluOlanlar, ucAyBorcluOlanlar);
-            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Ist4AyCell, dortAyBorcluIst.ToString(), ProjeConstants.BOLGE_ISTANBUL, dortAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
+            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Ist1AyCell, birAyBorcluIst.ToString(), ProjeConstants.BOLGE_ISTANBUL_INT, birAyBorcluOlanlar, birAyBorcluOlanlar);
+            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Ist2AyCell, ikiAyBorcluIst.ToString(), ProjeConstants.BOLGE_ISTANBUL_INT, ikiAyBorcluOlanlar, ikiAyBorcluOlanlar);
+            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Ist3AyCell, ucAyBorcluIst.ToString(), ProjeConstants.BOLGE_ISTANBUL_INT, ucAyBorcluOlanlar, ucAyBorcluOlanlar);
+            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Ist4AyCell, dortAyBorcluIst.ToString(), ProjeConstants.BOLGE_ISTANBUL_INT, dortAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
 
             //İzmir
-            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Izm1AyCell, birAyBorcluIzm.ToString(), ProjeConstants.BOLGE_IZMIR, birAyBorcluOlanlar, birAyBorcluOlanlar);
-            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Izm2AyCell, ikiAyBorcluIzm.ToString(), ProjeConstants.BOLGE_IZMIR, ikiAyBorcluOlanlar, ikiAyBorcluOlanlar);
-            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Izm3AyCell, ucAyBorcluIzm.ToString(), ProjeConstants.BOLGE_IZMIR, ucAyBorcluOlanlar, ucAyBorcluOlanlar);
-            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Izm4AyCell, dortAyBorcluIzm.ToString(), ProjeConstants.BOLGE_IZMIR, dortAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
+            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Izm1AyCell, birAyBorcluIzm.ToString(), ProjeConstants.BOLGE_IZMIR_INT, birAyBorcluOlanlar, birAyBorcluOlanlar);
+            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Izm2AyCell, ikiAyBorcluIzm.ToString(), ProjeConstants.BOLGE_IZMIR_INT, ikiAyBorcluOlanlar, ikiAyBorcluOlanlar);
+            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Izm3AyCell, ucAyBorcluIzm.ToString(), ProjeConstants.BOLGE_IZMIR_INT, ucAyBorcluOlanlar, ucAyBorcluOlanlar);
+            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Izm4AyCell, dortAyBorcluIzm.ToString(), ProjeConstants.BOLGE_IZMIR_INT, dortAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
 
             //Mersin
-            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Mer1AyCell, birAyBorcluMer.ToString(), ProjeConstants.BOLGE_MERSIN, birAyBorcluOlanlar, birAyBorcluOlanlar);
-            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Mer2AyCell, ikiAyBorcluMer.ToString(), ProjeConstants.BOLGE_MERSIN, ikiAyBorcluOlanlar, ikiAyBorcluOlanlar);
-            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Mer3AyCell, ucAyBorcluMer.ToString(), ProjeConstants.BOLGE_MERSIN, ucAyBorcluOlanlar, ucAyBorcluOlanlar);
-            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Mer4AyCell, dortAyBorcluMer.ToString(), ProjeConstants.BOLGE_MERSIN, dortAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
+            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Mer1AyCell, birAyBorcluMer.ToString(), ProjeConstants.BOLGE_MERSIN_INT, birAyBorcluOlanlar, birAyBorcluOlanlar);
+            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Mer2AyCell, ikiAyBorcluMer.ToString(), ProjeConstants.BOLGE_MERSIN_INT, ikiAyBorcluOlanlar, ikiAyBorcluOlanlar);
+            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Mer3AyCell, ucAyBorcluMer.ToString(), ProjeConstants.BOLGE_MERSIN_INT, ucAyBorcluOlanlar, ucAyBorcluOlanlar);
+            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Mer4AyCell, dortAyBorcluMer.ToString(), ProjeConstants.BOLGE_MERSIN_INT, dortAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
 
             //bölge toplamları
-            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Top1AyCell, birAyBorcluTop.ToString(), ProjeConstants.BOLGE_HEPSI, birAyBorcluOlanlar, birAyBorcluOlanlar);
-            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Top2AyCell, ikiAyBorcluTop.ToString(), ProjeConstants.BOLGE_HEPSI, ikiAyBorcluOlanlar, ikiAyBorcluOlanlar);
-            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Top3AyCell, ucAyBorcluTop.ToString(), ProjeConstants.BOLGE_HEPSI, ucAyBorcluOlanlar, ucAyBorcluOlanlar);
-            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Top4AyCell, dortAyBorcluTop.ToString(), ProjeConstants.BOLGE_HEPSI, dortAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
+            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Top1AyCell, birAyBorcluTop.ToString(), ProjeConstants.BOLGE_HEPSI_INT, birAyBorcluOlanlar, birAyBorcluOlanlar);
+            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Top2AyCell, ikiAyBorcluTop.ToString(), ProjeConstants.BOLGE_HEPSI_INT, ikiAyBorcluOlanlar, ikiAyBorcluOlanlar);
+            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Top3AyCell, ucAyBorcluTop.ToString(), ProjeConstants.BOLGE_HEPSI_INT, ucAyBorcluOlanlar, ucAyBorcluOlanlar);
+            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Top4AyCell, dortAyBorcluTop.ToString(), ProjeConstants.BOLGE_HEPSI_INT, dortAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
 
 
             //ay bölge toplamları --en sağ sütun
-            string gmTop = (birAyBorcluGM + ikiAyBorcluGM + ucAyBorcluGM + dortAyBorcluGM).ToString();
+            string AnkTop = (birAyBorcluAnk + ikiAyBorcluAnk + ucAyBorcluAnk + dortAyBorcluAnk).ToString();
             string istTop = (birAyBorcluIst + ikiAyBorcluIst + ucAyBorcluIst + dortAyBorcluIst).ToString();
             string izmTop = (birAyBorcluIzm + ikiAyBorcluIzm + ucAyBorcluIzm + dortAyBorcluIzm).ToString();
             string merTop = (birAyBorcluMer + ikiAyBorcluMer + ucAyBorcluMer + dortAyBorcluMer).ToString();
             string genTop = (birAyBorcluTop + ikiAyBorcluTop + ucAyBorcluTop + dortAyBorcluTop).ToString();
-            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, GMTopCell, gmTop, ProjeConstants.BOLGE_GENELMUDURLUK, birAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
-            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, IstTopCell, istTop, ProjeConstants.BOLGE_ISTANBUL, birAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
-            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, IzmTopCell, izmTop, ProjeConstants.BOLGE_IZMIR, birAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
-            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, MerTopCell, merTop, ProjeConstants.BOLGE_MERSIN, birAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
-            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, GenTopCell, genTop, ProjeConstants.BOLGE_HEPSI, birAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
+            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, AnkTopCell, AnkTop, ProjeConstants.BOLGE_ANKARA_INT, birAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
+            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, IstTopCell, istTop, ProjeConstants.BOLGE_ISTANBUL_INT, birAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
+            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, IzmTopCell, izmTop, ProjeConstants.BOLGE_IZMIR_INT, birAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
+            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, MerTopCell, merTop, ProjeConstants.BOLGE_MERSIN_INT, birAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
+            HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, GenTopCell, genTop, ProjeConstants.BOLGE_HEPSI_INT, birAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
         }
 
-        private void HyperLinkEkle(string page, TableCell cell, string value, string bolge, int aySayisiBas, int aySayisiBit)
+        private void HyperLinkEkle(string page, TableCell cell, string value, int bolgeId, int aySayisiBas, int aySayisiBit)
         {
             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
             HyperLink cellLnk = new HyperLink();
             cellLnk.Text = value;
             if (value.ConvertToInt() > 0)
             {
-                string linkUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + page + "?Auth=IEYS&Bolge=" + bolge + (aySayisiBas > 0 ? "&AySayisiBas=" + aySayisiBas : "") +
+                string linkUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + page + "?Auth=IEYS&BolgeId=" + bolgeId + (aySayisiBas > 0 ? "&AySayisiBas=" + aySayisiBas : "") +
                     (aySayisiBit > 0 ? "&AySayisiBit=" + aySayisiBit : "") + "&SecilenAy=" + SecilenAyQS + "&SecilenYil=" + SecilenYilQS;
                 cellLnk.NavigateUrl = linkUrl;
             }

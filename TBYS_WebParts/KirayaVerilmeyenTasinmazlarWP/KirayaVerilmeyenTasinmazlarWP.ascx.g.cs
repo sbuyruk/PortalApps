@@ -353,7 +353,7 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP {
             @__ctrl.ColumnSpan = 2;
             @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Gn.Md.lük"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Ankara"));
             return @__ctrl;
         }
         

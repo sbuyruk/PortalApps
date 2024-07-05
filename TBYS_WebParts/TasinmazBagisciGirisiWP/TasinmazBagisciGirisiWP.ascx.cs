@@ -193,13 +193,12 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
 
                 string sv = "Bilinmiyor";
                 
-                ListItem ilItem = IliDDL.Items.FindByValue(IliDDL.Items.FindByText(bagisci.Ili).Value);
+                ListItem ilItem = IliDDL.Items.FindByValue(IliDDL.Items.FindByValue(bagisci.IlId.ToString()).Value);
                 if (ilItem != null)
                     IliDDL.SelectedValue = ilItem.Value;
                 IlceDDLDoldur();
                 BolgeTxtDoldur();
-                if (IlcesiDDL.Items.FindByText(bagisci.Ilcesi) != null)
-                    IlcesiDDL.SelectedValue = IlcesiDDL.Items.FindByText(bagisci.Ilcesi).Value;
+                UtilityHelper.SetDDLValue(IlcesiDDL, bagisci.IlceId.ToString());
                 
                 if (!string.IsNullOrEmpty(bagisci.Sag_vefat))
                     sv = bagisci.Sag_vefat;
@@ -305,9 +304,18 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
         }
         private void BolgeTxtDoldur()
         {
-            Il il = new Il();
-            il = il.SelectByIlAdi(IliDDL.SelectedItem.ToString());
-            SorumluBolgeTxt.Text = il != null ? il.Bolge : "";
+            Bolge bolge = BolgeGetir();
+            SorumluBolgeTxt.Text = bolge != null ? bolge.KisaAdi : "";
+            SorumluBolgeIdTxt.Text = bolge != null ? bolge.Id.ToString() : "";
+        }
+        private Bolge BolgeGetir()
+        {
+            int ilId = IliDDL.SelectedItem.Value.ConvertToInt();
+            Il Il = new Il();
+            Il = Il.Select<Il>(ilId);
+            Bolge bolge = new Bolge();
+            bolge = bolge.Select(Il.BolgeId);
+            return bolge;
         }
         private TasinmazBagisci SaveBagisciData2Db()
         {
@@ -325,12 +333,11 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
             bagisci.Telefon1 = Telefon1Txt.Text;
             bagisci.Telefon2 = Telefon2Txt.Text;
             bagisci.EPosta = EPostaTxt.Text;
-            bagisci.Ilcesi = IlcesiDDL.SelectedItem.ToString();
-            ListItem ilItem = IliDDL.SelectedItem;
-            Il il = new Il();
-            il.Id = Convert.ToInt16(ilItem.Value);
-            il.IlAdi = ilItem.Text;
-            bagisci.Ili = il.IlAdi;
+            bagisci.Ilcesi = IlcesiDDL.SelectedItem.Text.ToString();
+            bagisci.IlceId = IlcesiDDL.SelectedItem.Value.ConvertToInt();
+
+            bagisci.Ili = IliDDL.SelectedItem.Text.ToString();
+            bagisci.IlId = IliDDL.SelectedItem.Value.ConvertToInt();
             bagisci.Foto = UtilityHelper.GenerateJpgId(bagisci.Adi + bagisci.Soyadi);
 
             bagisci.Sag_vefat = Sag_vefatDDL.SelectedValue;
@@ -368,12 +375,11 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
             bagisci.Telefon1 = Telefon1Txt.Text;
             bagisci.Telefon2 = Telefon2Txt.Text;
             bagisci.EPosta = EPostaTxt.Text;
-            bagisci.Ilcesi = IlcesiDDL.SelectedItem.ToString();
-            ListItem ilItem = IliDDL.SelectedItem;
-            Il il = new Il();
-            il.Id = Convert.ToInt16(ilItem.Value);
-            il.IlAdi = ilItem.Text;
-            bagisci.Ili = il.IlAdi;
+            bagisci.Ilcesi = IlcesiDDL.SelectedItem.Text.ToString();
+            bagisci.IlceId = IlcesiDDL.SelectedItem.Value.ConvertToInt();
+
+            bagisci.Ili = IliDDL.SelectedItem.Text.ToString();
+            bagisci.IlId = IliDDL.SelectedItem.Value.ConvertToInt();
             bagisci.Foto = UtilityHelper.GenerateJpgId(bagisci.Adi + bagisci.Soyadi);
 
             bagisci.Sag_vefat = Sag_vefatDDL.SelectedValue;

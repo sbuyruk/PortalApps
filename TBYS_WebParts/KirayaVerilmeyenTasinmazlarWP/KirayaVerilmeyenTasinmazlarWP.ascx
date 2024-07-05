@@ -35,7 +35,7 @@
                             <asp:TableHeaderCell ID="GMSiraNoCell" RowSpan="2"  BorderStyle="Solid">Sıra</asp:TableHeaderCell>
                             <asp:TableHeaderCell ID="KVSCell" RowSpan="2" BorderStyle="Solid">Kiraya Verilmeme Sebebi</asp:TableHeaderCell>
                             <asp:TableHeaderCell ID="KSCell" RowSpan="2" BorderStyle="Solid" >Kullanım Şekli</asp:TableHeaderCell>
-                            <asp:TableHeaderCell ID="GM1Cell" ColumnSpan="2" BorderStyle="Solid" >Gn.Md.lük</asp:TableHeaderCell>
+                            <asp:TableHeaderCell ID="GM1Cell" ColumnSpan="2" BorderStyle="Solid" >Ankara</asp:TableHeaderCell>
                             <asp:TableHeaderCell ID="Ist1Cell" ColumnSpan="2" BorderStyle="Solid" >İstanbul</asp:TableHeaderCell>
                             <asp:TableHeaderCell ID="Izm1Cell" ColumnSpan="2" BorderStyle="Solid" >İzmir</asp:TableHeaderCell>
                             <asp:TableHeaderCell ID="Mer1Cell" ColumnSpan="2" BorderStyle="Solid" >Mersin</asp:TableHeaderCell>

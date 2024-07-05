@@ -43,16 +43,16 @@
                     <%--<asp:TableCell CssClass="btn-primary">Müstakil Ev</asp:TableCell>--%>
                 </asp:TableHeaderRow>
                 <asp:TableRow HorizontalAlign="Center">
-                    <asp:TableCell ID="GMBaslikCell" CssClass="btn-primary">Gn.Md.lük</asp:TableCell>
-                    <asp:TableCell ID="GMTMCell" runat="server"></asp:TableCell>
-                    <asp:TableCell ID="GMCMCell" runat="server"></asp:TableCell>
-                    <asp:TableCell ID="GMTMCMTopCell" runat="server"></asp:TableCell>
-                    <asp:TableCell ID="GMAptCell" runat="server"></asp:TableCell>
-                    <asp:TableCell ID="GMMesCell" runat="server"></asp:TableCell>
-                    <asp:TableCell ID="GMIsyCell" runat="server"></asp:TableCell>
-                    <asp:TableCell ID="GMArsCell" runat="server"></asp:TableCell>
-                    <asp:TableCell ID="GMTarCell" runat="server"></asp:TableCell>
-                    <%--<asp:TableCell ID="GMMevCell" runat="server"></asp:TableCell>--%>
+                    <asp:TableCell ID="AnkBaslikCell" CssClass="btn-primary">Ankara</asp:TableCell>
+                    <asp:TableCell ID="AnkTMCell" runat="server"></asp:TableCell>
+                    <asp:TableCell ID="AnkCMCell" runat="server"></asp:TableCell>
+                    <asp:TableCell ID="AnkTMCMTopCell" runat="server"></asp:TableCell>
+                    <asp:TableCell ID="AnkAptCell" runat="server"></asp:TableCell>
+                    <asp:TableCell ID="AnkMesCell" runat="server"></asp:TableCell>
+                    <asp:TableCell ID="AnkIsyCell" runat="server"></asp:TableCell>
+                    <asp:TableCell ID="AnkArsCell" runat="server"></asp:TableCell>
+                    <asp:TableCell ID="AnkTarCell" runat="server"></asp:TableCell>
+                    <%--<asp:TableCell ID="AnkMevCell" runat="server"></asp:TableCell>--%>
                 </asp:TableRow>
                 <asp:TableRow HorizontalAlign="Center">
                     <asp:TableCell ID="IstBaslikCell" CssClass="btn-primary">İstanbul</asp:TableCell>

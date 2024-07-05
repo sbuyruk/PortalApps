@@ -700,22 +700,38 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
         {
             try
             {
-                string dosyaAdi = ProjeConstants.DOSYA_SIGORTAPOLICESI_DASK + AdresKoduQS + ".pdf";
-                if (UtilityHelper.DeleteFileFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi))
+                Sigorta sigorta = new Sigorta();
+                sigorta = sigorta.Select<Sigorta>(SigortaIdQS.ConvertToInt());
+                if (sigorta != null)
                 {
-                    MessageHelper.PublishMessage(dosyaAdi + " Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
-                    BelgeSilBtn.Visible = false;
-                    DosyaLnk.Visible = false;
-                    BelgeYukleFU.Visible = true;
-                    Sigorta sigorta = new Sigorta();
-                    sigorta = sigorta.Select<Sigorta>(SigortaIdQS.ConvertToInt());
-                    if (sigorta != null)
-                        SigortaFormunuDoldur(sigorta);
+                    string dosyaAdi = sigorta.PDFDosyasi;// ProjeConstants.DOSYA_SIGORTAPOLICESI_DASK + AdresKoduQS + ".pdf";
+                    if (!string.IsNullOrEmpty(dosyaAdi) )
+                    {
+
+                        if (UtilityHelper.DeleteFileFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi))
+                        {
+                            MessageHelper.PublishMessage(dosyaAdi + " Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
+                            BelgeSilBtn.Visible = false;
+                            DosyaLnk.Visible = false;
+                            BelgeYukleFU.Visible = true;
+
+                            if (sigorta != null)
+                                SigortaFormunuDoldur(sigorta);
+                        }
+                        else
+                        {
+                            MessageHelper.PublishMessage(dosyaAdi + " Silinemedi", ProjeConstants.MESAJ_HATA);
+                        }
+                    }
+                    else
+                    {
+                        MessageHelper.PublishMessage(dosyaAdi + " Bulunamadı", ProjeConstants.MESAJ_HATA);
+                    }
+
+
+
                 }
-                else
-                {
-                    MessageHelper.PublishMessage(dosyaAdi + " Silinemedi", ProjeConstants.MESAJ_HATA);
-                }
+
             }
             catch (Exception ex)
             {

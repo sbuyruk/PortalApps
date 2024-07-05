@@ -82,22 +82,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>BolgeKiraArtisCizelgesiWP.ascx</DependentUpon>
     </Compile>
-    <Compile Include="BolgeKiraciListesiWP\BolgeKiraciListesiWP.ascx.cs">
-      <DependentUpon>BolgeKiraciListesiWP.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="BolgeKiraciListesiWP\BolgeKiraciListesiWP.ascx.g.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>BolgeKiraciListesiWP.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="BolgeKiraKartiWP\BolgeKiraKartiWP.ascx.cs">
-      <DependentUpon>BolgeKiraKartiWP.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="BolgeKiraKartiWP\BolgeKiraKartiWP.ascx.g.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>BolgeKiraKartiWP.ascx</DependentUpon>
-    </Compile>
     <Compile Include="BolgeTasinmazBagisciListesiWP\BolgeTasinmazBagisciListesiWP.ascx.cs">
       <DependentUpon>BolgeTasinmazBagisciListesiWP.ascx</DependentUpon>
     </Compile>
@@ -121,14 +105,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>BolgeTasinmazListesiWP.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="BolgeTasinmazRaporuWP\BolgeTasinmazRaporuWP.ascx.cs">
-      <DependentUpon>BolgeTasinmazRaporuWP.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="BolgeTasinmazRaporuWP\BolgeTasinmazRaporuWP.ascx.g.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>BolgeTasinmazRaporuWP.ascx</DependentUpon>
     </Compile>
     <Compile Include="BolgeTasinmazResimleriWP\BolgeTasinmazResimleriWP.ascx.cs">
       <DependentUpon>BolgeTasinmazResimleriWP.ascx</DependentUpon>
@@ -158,14 +134,6 @@
     <None Include="BolgeKiraArtisCizelgesiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{6ed4358a-1ef4-45da-be40-59a1026fd761}</SharePointProjectItemId>
     </None>
-    <None Include="BolgeKiraciListesiWP\BolgeKiraciListesiWP.webpart" />
-    <None Include="BolgeKiraciListesiWP\SharePointProjectItem.spdata">
-      <SharePointProjectItemId>{cf4a1e37-c174-4717-952c-984f5213df74}</SharePointProjectItemId>
-    </None>
-    <None Include="BolgeKiraKartiWP\BolgeKiraKartiWP.webpart" />
-    <None Include="BolgeKiraKartiWP\SharePointProjectItem.spdata">
-      <SharePointProjectItemId>{7d95c811-9409-400b-b705-15306377aed8}</SharePointProjectItemId>
-    </None>
     <None Include="BolgeTasinmazBagisciListesiWP\BolgeTasinmazBagisciListesiWP.webpart" />
     <None Include="BolgeTasinmazBagisciListesiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{bc348be1-4240-4347-ab5d-f311b92b1bee}</SharePointProjectItemId>
@@ -177,10 +145,6 @@
     <None Include="BolgeTasinmazListesiWP\BolgeTasinmazListesiWP.webpart" />
     <None Include="BolgeTasinmazListesiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{72fa2477-3791-4541-bd41-8b0c820fc3aa}</SharePointProjectItemId>
-    </None>
-    <None Include="BolgeTasinmazRaporuWP\BolgeTasinmazRaporuWP.webpart" />
-    <None Include="BolgeTasinmazRaporuWP\SharePointProjectItem.spdata">
-      <SharePointProjectItemId>{4b6d64e2-1756-4885-90e6-5fa3805233f0}</SharePointProjectItemId>
     </None>
     <None Include="BolgeTasinmazResimleriWP\BolgeTasinmazResimleriWP.webpart" />
     <None Include="BolgeTasinmazResimleriWP\SharePointProjectItem.spdata">
@@ -212,16 +176,6 @@
       <LastGenOutput>BolgeKiraArtisCizelgesiWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="BolgeKiraArtisCizelgesiWP\Elements.xml" />
-    <Content Include="BolgeKiraciListesiWP\BolgeKiraciListesiWP.ascx">
-      <Generator>SharePointWebPartCodeGenerator</Generator>
-      <LastGenOutput>BolgeKiraciListesiWP.ascx.g.cs</LastGenOutput>
-    </Content>
-    <Content Include="BolgeKiraciListesiWP\Elements.xml" />
-    <Content Include="BolgeKiraKartiWP\BolgeKiraKartiWP.ascx">
-      <Generator>SharePointWebPartCodeGenerator</Generator>
-      <LastGenOutput>BolgeKiraKartiWP.ascx.g.cs</LastGenOutput>
-    </Content>
-    <Content Include="BolgeKiraKartiWP\Elements.xml" />
     <Content Include="BolgeTasinmazBagisciListesiWP\BolgeTasinmazBagisciListesiWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>BolgeTasinmazBagisciListesiWP.ascx.g.cs</LastGenOutput>
@@ -237,11 +191,6 @@
       <LastGenOutput>BolgeTasinmazListesiWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="BolgeTasinmazListesiWP\Elements.xml" />
-    <Content Include="BolgeTasinmazRaporuWP\BolgeTasinmazRaporuWP.ascx">
-      <Generator>SharePointWebPartCodeGenerator</Generator>
-      <LastGenOutput>BolgeTasinmazRaporuWP.ascx.g.cs</LastGenOutput>
-    </Content>
-    <Content Include="BolgeTasinmazRaporuWP\Elements.xml" />
     <Content Include="BolgeTasinmazResimleriWP\BolgeTasinmazResimleriWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>BolgeTasinmazResimleriWP.ascx.g.cs</LastGenOutput>

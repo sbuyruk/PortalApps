@@ -133,12 +133,18 @@ namespace TBYS_WebParts.TasinmazBagisciBilgiListesiWP
             return returnList;
         }
 
-        private string BolgeGetir(string ili)
+        private string BolgeGetir(string ilAdi)
         {
+            string bolgeAdi = string.Empty;
             Il il = new Il();
-            il = il.SelectByIlAdi(ili);
-            string bolge = il != null ? il.Bolge : string.Empty;
-            return bolge;
+            il = il.SelectByIlAdi(ilAdi);
+            if (il != null)
+            {
+                Bolge bolge = new Bolge();
+                bolge = bolge.Select(il.BolgeId);
+                bolgeAdi = bolge.KisaAdi;
+            }
+            return (bolgeAdi);
         }
 
         protected void CloseBtn_Click(object sender, EventArgs e)

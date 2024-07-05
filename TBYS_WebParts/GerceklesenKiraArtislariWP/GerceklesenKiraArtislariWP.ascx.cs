@@ -30,28 +30,28 @@ namespace TBYS_WebParts.GerceklesenKiraArtislariWP
             InitializeControl();
             this.ChromeType = PartChromeType.None;
         }
-        private string BolgeQS
+        private int BolgeIdQS
         {
             get
             {
 
-                if (ViewState["Bolge"] == null)
+                if (ViewState["BolgeId"] == null)
                 {
-                    if (Page.Request.QueryString["Bolge"] != null)
+                    if (Page.Request.QueryString["BolgeId"] != null)
                     {
-                        ViewState["Bolge"] = Page.Request.QueryString["Bolge"];
+                        ViewState["BolgeId"] = Page.Request.QueryString["BolgeId"];
                     }
                     else
                     {
-                        ViewState["Bolge"] = string.Empty;
+                        ViewState["BolgeId"] = string.Empty;
                     }
                 }
-                return ViewState["Bolge"].ToString();
+                return ViewState["BolgeId"].ReturnZeroIfNull().ConvertToInt();
             }
 
             set
             {
-                ViewState["Bolge"] = value;
+                ViewState["BolgeId"] = value;
             }
         }
         private string CurrentUserName
@@ -71,17 +71,15 @@ namespace TBYS_WebParts.GerceklesenKiraArtislariWP
                 ViewState["CurrentUserName"] = value;
             }
         }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
 
-                BolgeQS = IKYSOrtak.PersonelinBolgesiniGetir_Deprecated(CurrentUserName);
-                if (!Page.IsPostBack)
-                {
-                    TabloOlustur();
-                }
-               
+                Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
+                BolgeIdQS = bolge == null ? 0 : bolge.Id;
+                TabloOlustur();
             }
             catch (Exception ex)
             {
@@ -166,7 +164,7 @@ namespace TBYS_WebParts.GerceklesenKiraArtislariWP
 
             KiraSozlesme kiraSozlesmeDao = new KiraSozlesme();
 
-            DataTable dataTable = kiraSozlesmeDao.SelectGerceklesenKiraArtislariReturnDT(BolgeQS);
+            DataTable dataTable = kiraSozlesmeDao.SelectGerceklesenKiraArtislariReturnDT(BolgeIdQS);
             int SiraNo = 1;
 
             List<KiraArtisListItem> list = new List<KiraArtisListItem>();
@@ -242,7 +240,7 @@ namespace TBYS_WebParts.GerceklesenKiraArtislariWP
                 kiraArtisListItem.Ili = ili;
                 kiraArtisListItem.Bolge = bolge;
                 kiraArtisListItem.OdemeSekli = odemeSekli;
-                kiraArtisListItem.ArtisAyi = new DateTime(DateTime.Today.Year, artisAyi.ConvertToInt(), 1).ToString("MMMM");
+                kiraArtisListItem.ArtisAyi = string.IsNullOrEmpty(artisAyi) ? string.Empty : new DateTime(DateTime.Today.Year, artisAyi.ConvertToInt(), 1).ToString("MMMM");
                 kiraArtisListItem.YenilendiMi = aktif ? "Yenilenecek" : "Yenilendi";
                 list.Add(kiraArtisListItem);
             }

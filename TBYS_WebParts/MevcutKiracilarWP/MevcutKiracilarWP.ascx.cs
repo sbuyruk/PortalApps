@@ -53,28 +53,45 @@ namespace TBYS_WebParts.MevcutKiracilarWP
                 ViewState["KiraSozlesmeId"] = value;
             }
         }
-        private string BolgeQS
+        private int BolgeIdQS
         {
             get
             {
 
-                if (ViewState["Bolge"] == null)
+                if (ViewState["BolgeId"] == null)
                 {
-                    if (Page.Request.QueryString["Bolge"] != null)
+                    if (Page.Request.QueryString["BolgeId"] != null)
                     {
-                        ViewState["Bolge"] = Page.Request.QueryString["Bolge"];
+                        ViewState["BolgeId"] = Page.Request.QueryString["BolgeId"];
                     }
                     else
                     {
-                        ViewState["Bolge"] = ProjeConstants.BOLGE_HEPSI;
+                        ViewState["BolgeId"] = string.Empty;
                     }
                 }
-                return ViewState["Bolge"].ToString();
+                return ViewState["BolgeId"].ReturnZeroIfNull().ConvertToInt();
             }
 
             set
             {
-                ViewState["Bolge"] = value;
+                ViewState["BolgeId"] = value;
+            }
+        }
+        private string CurrentUserName
+        {
+            get
+            {
+
+                if (ViewState["CurrentUserName"] == null)
+                {
+                    ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUserLoginName();
+                }
+                return ViewState["CurrentUserName"].ToString();
+            }
+
+            set
+            {
+                ViewState["CurrentUserName"] = value;
             }
         }
         private string SecilenAyQS
@@ -130,6 +147,11 @@ namespace TBYS_WebParts.MevcutKiracilarWP
             AdiLbl.Text = DateTime.Today.ConvertToDatetimeEmptyIfNull();
             try
             {
+                if (BolgeIdQS==ProjeConstants.BOLGE_HEPSI_INT)
+                {
+                    Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
+                    BolgeIdQS = bolge == null ? 0 : bolge.Id;
+                }
                 SetAyYilValues();
                 MevcutKiraclariTabloyaDoldur();
             }
@@ -152,7 +174,7 @@ namespace TBYS_WebParts.MevcutKiracilarWP
             int ay = SecilenAyQS.ConvertToInt();
             int yil = SecilenYilQS.ConvertToInt();
             KiraSozlesme kiraSozlesmeDao = new KiraSozlesme();
-            DataTable dataTable = kiraSozlesmeDao.SelectKiraciSayisiByBolgeTarih(BolgeQS, ay, yil);
+            DataTable dataTable = kiraSozlesmeDao.SelectKiraciSayisiByBolgeTarih(BolgeIdQS, ay, yil);
             TableTitleCell.Text = (new DateTime(SecilenYilQS.ConvertToInt(), SecilenAyQS.ConvertToInt(), 1)).ToString("MMMM yyyy", culturInfo) + " İtibarı ile Kiracı Listesi";
             if (dataTable != null)
             {

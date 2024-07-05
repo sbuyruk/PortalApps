@@ -496,7 +496,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
                 kiraSozlesme.SozlesmeDurumu = SozlesmeDurumuDDL.SelectedValue;
                 kiraSozlesme.DurumDegismeTar = DurumDegismeTarTxt.Value.ConvertToDatetime(); 
             }
-            kiraSozlesme.Bolge = BolgeGetir(kiraSozlesme);
+            kiraSozlesme.BolgeId = BolgeIdGetir(kiraSozlesme);
             kiraSozlesme.GecikmeZammiTipi = string.IsNullOrEmpty(kiraSozlesme.GecikmeZammiTipi)?ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_AYLIK: kiraSozlesme.GecikmeZammiTipi;
             bool guncellendiMi = kiraSozlesme.Update();
             if (guncellendiMi)
@@ -763,15 +763,15 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
             }
 
         }
-        private string BolgeGetir(KiraSozlesme yeniSozlesme)
+        private int BolgeIdGetir(KiraSozlesme yeniSozlesme)
         {
             Kiraci kiraci = new Kiraci();
             kiraci = kiraci.Select(yeniSozlesme.KiraciId);
             string ili = kiraci == null ? "" : kiraci.Ili;
             Il il = new Il();
             il = il.SelectByIlAdi(kiraci.Ili);
-            string bolge = il == null ? "" : il.Bolge;
-            return bolge;
+            int bolgeId = il == null ? 0 : il.BolgeId;
+            return bolgeId;
         }
         private bool HukukiIslemleriGuncelle(KiraSozlesme kiraSozlesme)
         {
@@ -891,7 +891,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
 
                     yeniSozlesme.SozlesmeDurumu = ProjeConstants.KIRASOZLESME_DURUMU_DEVAM;
                     yeniSozlesme.Degistiren = CurrentUserName;
-                    yeniSozlesme.Bolge = BolgeGetir(yeniSozlesme);
+                    yeniSozlesme.BolgeId = BolgeIdGetir(yeniSozlesme);
                     yeniId = yeniSozlesme.Save();
                     yeniSozlesme.Id = yeniId;
                     //eski sözlesme tasinmaz bilgilerini al

@@ -57,15 +57,16 @@
                     </thead>
                     <tfoot> 
                         <tr >
-                            <th>T.No</th>
-                            <th>Kullanım Şekli</th>
-                            <th>Mülkiyet Şekli</th>
+                            <th>No</th>
+                            <th>K. Şekli</th>
+                            <th>M. Şekli</th>
                             <th>İl/İlçe</th>
                             <th>Adres</th>
                             <th>Bagışçı</th>
                             <th>"Bagış Yılı"</th>
-                            <th>Sorumlu Bölge</th>
+                            <th>Bölge</th>
                             <th>Taşınmaz Kartı</th>
+                            <th>Resimler</th>
                             <th>Düzenle</th>
                             <th>Emlak Beyan Değeri</th>
                             <th>Tahmini Rayiç Değeri</th>

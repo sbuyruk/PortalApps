@@ -214,7 +214,7 @@ namespace TBYS_WebParts.TaahhutListesiWP
                     tasinmazBagisciListItem.DogumTarihi = item.DogumTarihi.ConvertToDatetimeEmptyIfNull();
                     tasinmazBagisciListItem.Sag_vefat = item.Sag_vefat;
                     tasinmazBagisciListItem.Duzenle =string.Empty;
-                    tasinmazBagisciListItem.Bolge=BolgeGetir(item.Id);
+                    tasinmazBagisciListItem.Bolge=UtilityHelper.BolgeGetir(item.IlId);
                     if (isEditable)
                     {
                         tasinmazBagisciListItem.Duzenle = "<a href=" + pageUrl + @"?DestinationApp=TBD&BagisciId=" + item.Id + "  class='btn btn-outline-primary'>Düzenle</a>"; //"<a href=" + pageUrl + @"?DestinationApp=TBD&BagisciId=" + item.Id + "  class='btn btn-outline-primary'>Düzenle</a>"; 
@@ -238,7 +238,7 @@ namespace TBYS_WebParts.TaahhutListesiWP
                 tasinmazBagisciListItem.TaahhutAciklama = item.TaahhutAciklama;
 
                 tasinmazBagisciListItem.TaahhutFormu = FormLinkiGetir(bagisciTaahhutFormuDosyalari, ProjeConstants.DOSYA_TAAHHUT_FORMU, item.BagisciId.ToString(), "Taahhüt Formu", "btn btn-outline-secondary");
-                tasinmazBagisciListItem.Bolge = BolgeGetir(item.BagisciId);
+                tasinmazBagisciListItem.Bolge = UtilityHelper.BolgeGetir(item.Ili);
                 tasinmazBagisciListItem.Bagisci = BagisciBilgisiGetir(item.BagisciId);
                 
                 if (isEditable)
@@ -260,22 +260,6 @@ namespace TBYS_WebParts.TaahhutListesiWP
 
 
             return list;
-        }
-        private string BolgeGetir(int bagisciId)
-        {
-            string retval = string.Empty;
-            TasinmazBagisci tasinmazBagisci = new TasinmazBagisci();
-            tasinmazBagisci = tasinmazBagisci.Select<TasinmazBagisci>(bagisciId);
-            if (tasinmazBagisci != null)
-            {
-                Il ili = new Il();
-                ili = ili.SelectByIlAdi(tasinmazBagisci.Ili.ReturnEmptyIfNull().ToString());
-                if (ili != null)
-                {
-                    retval = ili.Bolge;
-                }
-            }
-            return retval;
         }
         private string BagisciBilgisiGetir(int bagisciId)
         {

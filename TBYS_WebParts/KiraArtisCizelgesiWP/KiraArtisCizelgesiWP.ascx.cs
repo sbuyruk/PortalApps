@@ -32,28 +32,28 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP
             InitializeControl();
             this.ChromeType = PartChromeType.None;
         }
-        private string BolgeQS
+        private int BolgeIdQS
         {
             get
             {
 
-                if (ViewState["Bolge"] == null)
+                if (ViewState["BolgeId"] == null)
                 {
-                    if (Page.Request.QueryString["Bolge"] != null)
+                    if (Page.Request.QueryString["BolgeId"] != null)
                     {
-                        ViewState["Bolge"] = Page.Request.QueryString["Bolge"];
+                        ViewState["BolgeId"] = Page.Request.QueryString["BolgeId"];
                     }
                     else
                     {
-                        ViewState["Bolge"] = string.Empty;
+                        ViewState["BolgeId"] = string.Empty;
                     }
                 }
-                return ViewState["Bolge"].ToString();
+                return ViewState["BolgeId"].ReturnZeroIfNull().ConvertToInt();
             }
 
             set
             {
-                ViewState["Bolge"] = value;
+                ViewState["BolgeId"] = value;
             }
         }
         private string CurrentUserName
@@ -73,11 +73,13 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP
                 ViewState["CurrentUserName"] = value;
             }
         }
+        
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
-                BolgeQS = IKYSOrtak.PersonelinBolgesiniGetir_Deprecated(CurrentUserName);
+                Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
+                BolgeIdQS = bolge == null ? 0 : bolge.Id;
                 if (!Page.IsPostBack)
                 {
                     AyDDLDoldur();
@@ -262,7 +264,7 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP
 
             KiraSozlesme kiraSozlesmeDao = new KiraSozlesme();
 
-            DataTable dataTable = kiraSozlesmeDao.SelectKiraArtisiGelenSozlesmelerReturnDT(BolgeQS, tarih);
+            DataTable dataTable = kiraSozlesmeDao.SelectKiraArtisiGelenSozlesmelerReturnDT(BolgeIdQS, tarih);
             int SiraNo = 1;
 
             List<KiraArtisListItem> list = new List<KiraArtisListItem>();
@@ -372,6 +374,11 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP
             ListItem li4= new ListItem(DateTime.Today.AddMonths(4).ToString("MMMM"), "3");
             ListItem li5= new ListItem(DateTime.Today.AddMonths(5).ToString("MMMM"), "4");
             ListItem li6= new ListItem(DateTime.Today.AddMonths(6).ToString("MMMM"), "5");
+            ListItem li7= new ListItem(DateTime.Today.AddMonths(7).ToString("MMMM"), "6");
+            ListItem li8= new ListItem(DateTime.Today.AddMonths(8).ToString("MMMM"), "7");
+            ListItem li9= new ListItem(DateTime.Today.AddMonths(9).ToString("MMMM"), "8");
+            ListItem li10= new ListItem(DateTime.Today.AddMonths(10).ToString("MMMM"), "9");
+            ListItem li11= new ListItem(DateTime.Today.AddMonths(11).ToString("MMMM"), "10");
             AyDDL.Items.Add(li);
             AyDDL.Items.Add(li1);
             AyDDL.Items.Add(li2);
@@ -379,6 +386,11 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP
             AyDDL.Items.Add(li4);
             AyDDL.Items.Add(li5);
             AyDDL.Items.Add(li6);
+            AyDDL.Items.Add(li7);
+            AyDDL.Items.Add(li8);
+            AyDDL.Items.Add(li9);
+            AyDDL.Items.Add(li10);
+            AyDDL.Items.Add(li11);
         }
         private void KiraSuresiDDLDoldur()
         {

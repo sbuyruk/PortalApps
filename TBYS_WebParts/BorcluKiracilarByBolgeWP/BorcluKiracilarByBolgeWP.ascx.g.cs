@@ -73,35 +73,35 @@ namespace TBYS_WebParts.BorcluKiracilarByBolgeWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMSiraCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkSiraCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMBaslikCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkBaslikCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMKiraciSayisiCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkKiraciSayisiCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GM1AyCell;
+        protected global::System.Web.UI.WebControls.TableCell Ank1AyCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GM2AyCell;
+        protected global::System.Web.UI.WebControls.TableCell Ank2AyCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GM3AyCell;
+        protected global::System.Web.UI.WebControls.TableCell Ank3AyCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GM4AyCell;
+        protected global::System.Web.UI.WebControls.TableCell Ank4AyCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TableCell GMTopCell;
+        protected global::System.Web.UI.WebControls.TableCell AnkTopCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -612,12 +612,12 @@ namespace TBYS_WebParts.BorcluKiracilarByBolgeWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMSiraCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkSiraCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMSiraCell = @__ctrl;
+            this.AnkSiraCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMSiraCell";
+            @__ctrl.ID = "AnkSiraCell";
             @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
             @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
             @__ctrl.BorderColor = global::System.Drawing.Color.Black;
@@ -629,29 +629,29 @@ namespace TBYS_WebParts.BorcluKiracilarByBolgeWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMBaslikCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkBaslikCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMBaslikCell = @__ctrl;
+            this.AnkBaslikCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMBaslikCell";
+            @__ctrl.ID = "AnkBaslikCell";
             @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
             @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
             @__ctrl.BorderColor = global::System.Drawing.Color.Black;
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Genel Müdürlük"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Ankara Temsilciliği"));
             return @__ctrl;
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMKiraciSayisiCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkKiraciSayisiCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMKiraciSayisiCell = @__ctrl;
+            this.AnkKiraciSayisiCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMKiraciSayisiCell";
+            @__ctrl.ID = "AnkKiraciSayisiCell";
             @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
             @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
             @__ctrl.BorderColor = global::System.Drawing.Color.Black;
@@ -661,12 +661,12 @@ namespace TBYS_WebParts.BorcluKiracilarByBolgeWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGM1AyCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnk1AyCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GM1AyCell = @__ctrl;
+            this.Ank1AyCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GM1AyCell";
+            @__ctrl.ID = "Ank1AyCell";
             @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
             @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
             @__ctrl.BorderColor = global::System.Drawing.Color.Black;
@@ -676,12 +676,12 @@ namespace TBYS_WebParts.BorcluKiracilarByBolgeWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGM2AyCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnk2AyCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GM2AyCell = @__ctrl;
+            this.Ank2AyCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GM2AyCell";
+            @__ctrl.ID = "Ank2AyCell";
             @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
             @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
             @__ctrl.BorderColor = global::System.Drawing.Color.Black;
@@ -691,12 +691,12 @@ namespace TBYS_WebParts.BorcluKiracilarByBolgeWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGM3AyCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnk3AyCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GM3AyCell = @__ctrl;
+            this.Ank3AyCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GM3AyCell";
+            @__ctrl.ID = "Ank3AyCell";
             @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
             @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
             @__ctrl.BorderColor = global::System.Drawing.Color.Black;
@@ -706,12 +706,12 @@ namespace TBYS_WebParts.BorcluKiracilarByBolgeWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGM4AyCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnk4AyCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GM4AyCell = @__ctrl;
+            this.Ank4AyCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GM4AyCell";
+            @__ctrl.ID = "Ank4AyCell";
             @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
             @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
             @__ctrl.BorderColor = global::System.Drawing.Color.Black;
@@ -721,12 +721,12 @@ namespace TBYS_WebParts.BorcluKiracilarByBolgeWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControlGMTopCell() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlAnkTopCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            this.GMTopCell = @__ctrl;
+            this.AnkTopCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GMTopCell";
+            @__ctrl.ID = "AnkTopCell";
             @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
             @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
             @__ctrl.BorderColor = global::System.Drawing.Color.Black;
@@ -738,28 +738,28 @@ namespace TBYS_WebParts.BorcluKiracilarByBolgeWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControl__control19(System.Web.UI.WebControls.TableCellCollection @__ctrl) {
             global::System.Web.UI.WebControls.TableCell @__ctrl1;
-            @__ctrl1 = this.@__BuildControlGMSiraCell();
+            @__ctrl1 = this.@__BuildControlAnkSiraCell();
             @__ctrl.Add(@__ctrl1);
             global::System.Web.UI.WebControls.TableCell @__ctrl2;
-            @__ctrl2 = this.@__BuildControlGMBaslikCell();
+            @__ctrl2 = this.@__BuildControlAnkBaslikCell();
             @__ctrl.Add(@__ctrl2);
             global::System.Web.UI.WebControls.TableCell @__ctrl3;
-            @__ctrl3 = this.@__BuildControlGMKiraciSayisiCell();
+            @__ctrl3 = this.@__BuildControlAnkKiraciSayisiCell();
             @__ctrl.Add(@__ctrl3);
             global::System.Web.UI.WebControls.TableCell @__ctrl4;
-            @__ctrl4 = this.@__BuildControlGM1AyCell();
+            @__ctrl4 = this.@__BuildControlAnk1AyCell();
             @__ctrl.Add(@__ctrl4);
             global::System.Web.UI.WebControls.TableCell @__ctrl5;
-            @__ctrl5 = this.@__BuildControlGM2AyCell();
+            @__ctrl5 = this.@__BuildControlAnk2AyCell();
             @__ctrl.Add(@__ctrl5);
             global::System.Web.UI.WebControls.TableCell @__ctrl6;
-            @__ctrl6 = this.@__BuildControlGM3AyCell();
+            @__ctrl6 = this.@__BuildControlAnk3AyCell();
             @__ctrl.Add(@__ctrl6);
             global::System.Web.UI.WebControls.TableCell @__ctrl7;
-            @__ctrl7 = this.@__BuildControlGM4AyCell();
+            @__ctrl7 = this.@__BuildControlAnk4AyCell();
             @__ctrl.Add(@__ctrl7);
             global::System.Web.UI.WebControls.TableCell @__ctrl8;
-            @__ctrl8 = this.@__BuildControlGMTopCell();
+            @__ctrl8 = this.@__BuildControlAnkTopCell();
             @__ctrl.Add(@__ctrl8);
         }
         
