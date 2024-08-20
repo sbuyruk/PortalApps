@@ -76,6 +76,47 @@ namespace TBYS_WebParts.BorcluKiraciTakibiByBolgeWP
                 ViewState["SecilenYil"] = value;
             }
         }
+        private int BolgeIdQS
+        {
+            get
+            {
+
+                if (ViewState["BolgeId"] == null)
+                {
+                    if (Page.Request.QueryString["BolgeId"] != null)
+                    {
+                        ViewState["BolgeId"] = Page.Request.QueryString["BolgeId"];
+                    }
+                    else
+                    {
+                        ViewState["BolgeId"] = string.Empty;
+                    }
+                }
+                return ViewState["BolgeId"].ReturnZeroIfNull().ConvertToInt();
+            }
+
+            set
+            {
+                ViewState["BolgeId"] = value;
+            }
+        }
+        private string CurrentUserName
+        {
+            get
+            {
+
+                if (ViewState["CurrentUserName"] == null)
+                {
+                    ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUserLoginName();
+                }
+                return ViewState["CurrentUserName"].ToString();
+            }
+
+            set
+            {
+                ViewState["CurrentUserName"] = value;
+            }
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -103,15 +144,15 @@ namespace TBYS_WebParts.BorcluKiraciTakibiByBolgeWP
 
             KiraBorcuTakip kiraBorcuTakip = new KiraBorcuTakip();
 
-            //GM 
-            int GMUyariAdet = kiraBorcuTakip.SelectCountAdetByTakipIslemiBolge(ProjeConstants.KIRABORCU_UYARI, ProjeConstants.BOLGE_GENELMUDURLUK, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
-            int GMYaziliIhtarAdet = kiraBorcuTakip.SelectCountAdetByTakipIslemiBolge(ProjeConstants.KIRABORCU_YAZILIIHTAR, ProjeConstants.BOLGE_GENELMUDURLUK, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
-            int GMIcraTakibiAdet = kiraBorcuTakip.SelectCountAdetByTakipIslemiBolge(ProjeConstants.KIRABORCU_ICRATAKIBI, ProjeConstants.BOLGE_GENELMUDURLUK, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
-            int GMToplamAdet = GMUyariAdet + GMYaziliIhtarAdet + GMIcraTakibiAdet;
-            GMUyariCell.Text = GMUyariAdet.ToString();
-            GMYaziliIhtarCell.Text = GMYaziliIhtarAdet.ToString();
-            GMIcraTakibiCell.Text = GMIcraTakibiAdet.ToString();
-            GMTopCell.Text = GMToplamAdet.ToString();
+            //Ank 
+            int AnkUyariAdet = kiraBorcuTakip.SelectCountAdetByTakipIslemiBolge(ProjeConstants.KIRABORCU_UYARI, ProjeConstants.BOLGE_ANKARA, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
+            int AnkYaziliIhtarAdet = kiraBorcuTakip.SelectCountAdetByTakipIslemiBolge(ProjeConstants.KIRABORCU_YAZILIIHTAR, ProjeConstants.BOLGE_ANKARA, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
+            int AnkIcraTakibiAdet = kiraBorcuTakip.SelectCountAdetByTakipIslemiBolge(ProjeConstants.KIRABORCU_ICRATAKIBI, ProjeConstants.BOLGE_ANKARA, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
+            int AnkToplamAdet = AnkUyariAdet + AnkYaziliIhtarAdet + AnkIcraTakibiAdet;
+            AnkUyariCell.Text = AnkUyariAdet.ToString();
+            AnkYaziliIhtarCell.Text = AnkYaziliIhtarAdet.ToString();
+            AnkIcraTakibiCell.Text = AnkIcraTakibiAdet.ToString();
+            AnkTopCell.Text = AnkToplamAdet.ToString();
             //İst 
             int IstUyariAdet = kiraBorcuTakip.SelectCountAdetByTakipIslemiBolge(ProjeConstants.KIRABORCU_UYARI, ProjeConstants.BOLGE_ISTANBUL, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
             int IstYaziliIhtarAdet = kiraBorcuTakip.SelectCountAdetByTakipIslemiBolge(ProjeConstants.KIRABORCU_YAZILIIHTAR, ProjeConstants.BOLGE_ISTANBUL, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
@@ -143,9 +184,9 @@ namespace TBYS_WebParts.BorcluKiraciTakibiByBolgeWP
             MerTopCell.Text = MerToplamAdet.ToString();
 
             //Top
-            int TopUyariAdet = GMUyariAdet + IstUyariAdet + IzmUyariAdet + MerUyariAdet;
-            int TopYaziliIhtarAdet = GMYaziliIhtarAdet + IstYaziliIhtarAdet + IzmYaziliIhtarAdet + MerYaziliIhtarAdet;
-            int TopIcraTakibiAdet = GMIcraTakibiAdet + IstIcraTakibiAdet + IzmIcraTakibiAdet + MerIcraTakibiAdet;
+            int TopUyariAdet = AnkUyariAdet + IstUyariAdet + IzmUyariAdet + MerUyariAdet;
+            int TopYaziliIhtarAdet = AnkYaziliIhtarAdet + IstYaziliIhtarAdet + IzmYaziliIhtarAdet + MerYaziliIhtarAdet;
+            int TopIcraTakibiAdet = AnkIcraTakibiAdet + IstIcraTakibiAdet + IzmIcraTakibiAdet + MerIcraTakibiAdet;
             int GenToplamAdet = TopUyariAdet + TopYaziliIhtarAdet + TopIcraTakibiAdet;
 
             TopUyariCell.Text = TopUyariAdet.ToString();

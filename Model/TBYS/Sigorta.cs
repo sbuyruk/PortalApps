@@ -268,8 +268,8 @@ namespace Model.TBYS
 
             teminatStr = andStr + teminatStr + (isDeprem || isYangin || isMakine100000 || isMakine5000 || isJenerator || isAsansor || isKazan ? " ) " : "");
 
-          
-            string vadeStr = vadesiGelenler?string.Format(" AND SigortaBitTar <{0}", DateTime.Today.AddMonths(1).ReturnTRDateFormat()):string.Empty;
+            DateTime sonGun = new DateTime(DateTime.Today.AddMonths(2).Year, DateTime.Today.AddMonths(2).Month, 1);
+            string vadeStr = vadesiGelenler?string.Format(" AND SigortaBitTar <{0}", sonGun.ReturnTRDateFormat()):string.Empty;
             
             string sqlString = string.Format(@"
                 SELECT A.Id SigortaId, B.SorumluBolge,E.KisaAdi Bolge, A.TasinmazId,B.SorumluBolge,A.SigortaCinsi,A.AdresKodu,A.PoliceNo,A.SigortaBasTar,A.SigortaBitTar,

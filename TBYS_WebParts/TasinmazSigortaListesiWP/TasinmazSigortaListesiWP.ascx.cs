@@ -660,8 +660,12 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
                 sigortaItem.Sirano = SiraNo++.ToString();
                 sigortaItem.Bolge = bolge;
                 sigortaItem.SigortaCinsi =sigortaCinsi;
-                if (sigortaBitTar < DateTime.Today.AddMonths(1))
+                DateTime sonGun=new DateTime(DateTime.Today.AddMonths(2).Year, DateTime.Today.AddMonths(2).Month, 1);
+                if (sigortaBitTar < sonGun)
+                {
                     sigortaItem.Renkli = true;
+                }
+                    
                 else
                     sigortaItem.Renkli = false;
                 sigortaItem.SigortaBitTar = sigortaBitTar<=DateTime.MinValue?string.Empty:sigortaBitTar.ToString("dd.MM.yyyy");

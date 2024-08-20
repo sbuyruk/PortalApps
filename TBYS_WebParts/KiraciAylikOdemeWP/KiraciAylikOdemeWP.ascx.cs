@@ -107,6 +107,30 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
                 ViewState["SecilenYil"] = value;
             }
         }
+        private int BolgeIdQS
+        {
+            get
+            {
+
+                if (ViewState["BolgeId"] == null)
+                {
+                    if (Page.Request.QueryString["BolgeId"] != null)
+                    {
+                        ViewState["BolgeId"] = Page.Request.QueryString["BolgeId"];
+                    }
+                    else
+                    {
+                        ViewState["BolgeId"] = string.Empty;
+                    }
+                }
+                return ViewState["BolgeId"].ReturnZeroIfNull().ConvertToInt();
+            }
+
+            set
+            {
+                ViewState["BolgeId"] = value;
+            }
+        }
         private string CurrentUserName
         {
             get
@@ -130,6 +154,8 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
         private IFormatProvider cultureInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
         protected void Page_Load(object sender, EventArgs e)
         {
+            Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
+            BolgeIdQS = bolge == null ? 0 : bolge.Id;
             if (!Page.IsPostBack)
             {
                 DDLListeleriDoldur();
@@ -233,8 +259,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
                 List<OdemeListItem> list = new List<OdemeListItem>();
                 var jsonData = GetJsonData(); //veri çekilip json a çeviriliyor
                                               //var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
-                System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler,
-                    typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "setDataSet(" + jsonData + ");", true);
+                UtilityHelper.ScriptCalistir("setDataSet(" + jsonData + ");");
             }
             catch (Exception exception)
             {
@@ -487,7 +512,8 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
                 int ay = SecilenAyQS.ConvertToInt();
                 int yil = SecilenYilQS.ConvertToInt();
                 Odeme odemeDao = new Odeme();
-                DataTable dataTable = odemeDao.SelectByKiraciAyYilReturnDataTable(KiraciIdQS.ConvertToInt(), ay, yil);
+                DataTable dataTable = odemeDao.SelectByKiraciAyYilReturnDataTable(BolgeIdQS, KiraciIdQS.ConvertToInt(), ay, yil);
+                
 
                 if (dataTable != null)
                 {
@@ -527,7 +553,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
                         item.OdemePlaniId = odemePlaniId;
                         item.SozlesmeId = sozlesmeId;
                         item.KiraciId = kiraciId;
-                        item.KiraciAdiSoyadi = "<a href=" + ProjeConstants.PAGE_ODEMEPLANI + "?KiraSozlesmeId=" + sozlesmeId + " class='btn-link'>" + (adi + " " + soyadi).Trim() + "</a>";
+                        item.KiraciAdiSoyadi = (adi + " " + soyadi).Trim();
                         item.TasinmazAdresi = TasinmazAdresGetir(item.SozlesmeId.ConvertToInt());
                         item.OdemeTarihi = odemeTarihi;
                         item.OdenenTutar = odenenTutar;
@@ -539,10 +565,19 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
                         item.KiralamaAmaci = kiralamaAmaci;
                         item.OdemeSekli = odemeSekli;
                         item.Aciklama = aciklama;
-                        item.Duzenle = "<a href=" + ProjeConstants.PAGE_ODEME_GIRIS + "?OdemeId=" + odemeId + " class='btn btn-outline-primary'>Düzenle</a>";
-                        if (teminatId.ConvertToInt() > 0)
+                        bool duzenleGorunsunMu = BolgeIdQS == ProjeConstants.HEPSI_INT || BolgeIdQS == ProjeConstants.BOLGE_GENELMUDURLUK_INT;
+                        if (duzenleGorunsunMu)
                         {
-                            item.Duzenle = "<a href=" + ProjeConstants.PAGE_TEMINAT_ISLEMLERI + "?KiraSozlesmeId=" + sozlesmeId + " class='btn btn-outline-secondary'>Teminat</a>";
+                            item.KiraciAdiSoyadi = "<a href=" + ProjeConstants.PAGE_ODEMEPLANI + "?KiraSozlesmeId=" + sozlesmeId + " class='btn-link'>" + (adi + " " + soyadi).Trim() + "</a>";
+                            item.Duzenle = "<a href=" + ProjeConstants.PAGE_ODEME_GIRIS + "?OdemeId=" + odemeId + " class='btn btn-outline-primary'>Düzenle</a>";
+                            if (teminatId.ConvertToInt() > 0)
+                            {
+                                item.Duzenle = "<a href=" + ProjeConstants.PAGE_TEMINAT_ISLEMLERI + "?KiraSozlesmeId=" + sozlesmeId + " class='btn btn-outline-secondary'>Teminat</a>";
+                            }
+                        }
+                        else
+                        {
+                            item.Duzenle =string.Empty;
                         }
                         item.Sil = "<a href=" + ProjeConstants.PAGE_ODEME_GIRIS + "?OdemeId=" + odemeId + " class='btn btn-outline-danger'>Sil</a>";
                         list.Add(item);

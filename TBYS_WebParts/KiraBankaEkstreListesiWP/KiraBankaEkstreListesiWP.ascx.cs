@@ -294,13 +294,20 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP
                     }
                     if (kiraSozlesme != null)
                     {
-                        int odemeId = 0;
-                        bool odemeYapildiMi = TBYSOrtak.OdemeYap(kiraSozlesme, odemeTarihi, odemeTutari, " Banka Ekstresinden Aktarma ", ref odemeId);
-                        if (odemeYapildiMi)
+                        if (!ekstreAktarma.AktarildiMi)
                         {
-                            ekstreAktarma.AktarildiMi = true;
-                            ekstreAktarma.Update();
+                            int odemeId = 0;
+                            bool odemeYapildiMi = TBYSOrtak.OdemeYap(kiraSozlesme, odemeTarihi, odemeTutari, " Banka Ekstresinden Aktarma ", ref odemeId);
+                            if (odemeYapildiMi)
+                            {
+                                ekstreAktarma.AktarildiMi = true;
+                                ekstreAktarma.Update();
 
+                            }
+                        }
+                        else
+                        {
+                            throw new Exception("Ödeme Zaten Kaydedilmiş!");
                         }
                     }
                     else

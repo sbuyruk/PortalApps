@@ -100,7 +100,7 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
                         ViewState["BolgeId"] = ProjeConstants.BOLGE_HEPSI_INT;
                     }
                 }
-                return ViewState["SecilenBolge"].ConvertToInt();
+                return ViewState["BolgeId"].ConvertToInt();
             }
 
             set
@@ -137,12 +137,18 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
         private void AyDDLDoldur()
         {
             AyDDL.Items.Clear();
-            System.Web.UI.WebControls.ListItem li = new System.Web.UI.WebControls.ListItem(DateTime.Today.ToString("MMMM"), DateTime.Today.AddMonths(-1).ToString("MM"));//DİKKAT Bir önceki ay
-            System.Web.UI.WebControls.ListItem li1 = new System.Web.UI.WebControls.ListItem(DateTime.Today.AddMonths(1).ToString("MMMM"), DateTime.Today.ToString("MM"));
-            System.Web.UI.WebControls.ListItem li2 = new System.Web.UI.WebControls.ListItem(DateTime.Today.AddMonths(2).ToString("MMMM"), DateTime.Today.ToString("MM"));
+            System.Web.UI.WebControls.ListItem li = new System.Web.UI.WebControls.ListItem(DateTime.Today.AddMonths(1).ToString("MMMM"), DateTime.Today.AddMonths(1).ToString("MM"));
+            System.Web.UI.WebControls.ListItem li1 = new System.Web.UI.WebControls.ListItem(DateTime.Today.AddMonths(2).ToString("MMMM"), DateTime.Today.AddMonths(2).ToString("MM"));
+            System.Web.UI.WebControls.ListItem li2 = new System.Web.UI.WebControls.ListItem(DateTime.Today.AddMonths(3).ToString("MMMM"), DateTime.Today.AddMonths(3).ToString("MM"));
+            System.Web.UI.WebControls.ListItem li3 = new System.Web.UI.WebControls.ListItem(DateTime.Today.AddMonths(4).ToString("MMMM"), DateTime.Today.AddMonths(4).ToString("MM"));
+            System.Web.UI.WebControls.ListItem li4 = new System.Web.UI.WebControls.ListItem(DateTime.Today.AddMonths(5).ToString("MMMM"), DateTime.Today.AddMonths(5).ToString("MM"));
+            System.Web.UI.WebControls.ListItem li5 = new System.Web.UI.WebControls.ListItem(DateTime.Today.AddMonths(6).ToString("MMMM"), DateTime.Today.AddMonths(6).ToString("MM"));
             AyDDL.Items.Add(li);
             AyDDL.Items.Add(li1);
             AyDDL.Items.Add(li2);
+            AyDDL.Items.Add(li3);
+            AyDDL.Items.Add(li4);
+            AyDDL.Items.Add(li5);
         }
         private void YilDDLDoldur()
         {
@@ -206,10 +212,10 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
             DateTime bugun = DateTime.Today;
 
             Parafe1Txt.Text = @"…./" + bugun.ToString("MM") + @"/" + bugun.Year + " Eml.Ynt.Kd.Uzm.Z.ÇALIŞ";
-            Parafe2Txt.Text = @"…./" + bugun.ToString("MM") + @"/" + bugun.Year + " İnş.Eml.Ynt.Ş.Md.H.ŞENEL";
+            Parafe2Txt.Text = @"…./" + bugun.ToString("MM") + @"/" + bugun.Year + " İnş.Eml.Ynt.Ş.Md.M.TAŞKALDIRAN";
             KoordineTxt.Text = @"…./" + bugun.ToString("MM") + @"/" + bugun.Year + " Huk.Müş.E.ŞENGÜL";
-            ImzalayanTxt.Text = @"Zeki YAĞCI";
-            ImzalayanMakamTxt.Text = @"Vakıf Hiz.Grp. Bşk.";
+            ImzalayanTxt.Text = @"Erhan SİPAHİOĞLU";
+            ImzalayanMakamTxt.Text = @"Genel Müdür Yardımcısı";
             EvrakTarihiTxt.Text = bugun.ToString("dd") + " " + bugun.ToString("MMMM") + " " + bugun.Year;
 
             EvrakSayisiYiliTxt.Text = bugun.ToString("yy");

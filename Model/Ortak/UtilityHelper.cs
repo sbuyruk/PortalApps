@@ -762,5 +762,14 @@ namespace Model.Ortak
             }
             return (bolgeAdi);
         }
+        private static Bolge BolgeGetirByIlId(int ilId)
+        {
+           
+            Il Il = new Il();
+            Il = Il.Select<Il>(ilId);
+            Bolge bolge = new Bolge();
+            bolge = bolge.Select(Il.BolgeId);
+            return bolge;
+        }
     }
 }

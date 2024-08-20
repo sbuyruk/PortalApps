@@ -188,6 +188,9 @@
                                     </table>
                                 </div>
 <%--                            </ContentTemplate>
+                            <Triggers>
+                                <asp:AsyncPostBackTrigger ControlID="AyDDL" EventName="SelectedIndexChanged" />
+                            </Triggers>
                         </asp:UpdatePanel>--%>
 
                         <asp:UpdateProgress ID="updateProgress" runat="server">

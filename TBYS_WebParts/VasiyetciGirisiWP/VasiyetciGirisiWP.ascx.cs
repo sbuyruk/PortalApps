@@ -219,7 +219,7 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
                         IlceDDLDoldur();
                         if (IlcesiDDL.Items.FindByValue(vasiyetci.IkametIlcesi.ToString()) != null)
                             IlcesiDDL.SelectedValue = IlcesiDDL.Items.FindByValue(vasiyetci.IkametIlcesi.ToString()).Value;
-                        SorumluBolgeTxt.Value = vasiyetci.SorumluBolge;
+                        //SorumluBolgeTxt.Value = vasiyetci.SorumluBolge;
                     }
 
                     IkametAdresiTxt.Text = vasiyetci.IkametAdresi;
@@ -359,7 +359,7 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
 
                 yeniVasiyetci.IkametAdresi = IkametAdresiTxt.Text;
                 yeniVasiyetci.VasiyetTipi = VasiyetTipiTxt.Text;
-                yeniVasiyetci.SorumluBolge = SorumluBolgeTxt.Value;
+                //yeniVasiyetci.SorumluBolge = SorumluBolgeTxt.Value;
                 yeniVasiyetci.Noter = NoterTxt.Text;
                 yeniVasiyetci.VasiyetTarihi = VasiyetTarihiTxt.Value.ConvertToDatetime();
                 yeniVasiyetci.YevmiyeNumarasi = YevmiyeNumarasiTxt.Text;
@@ -437,7 +437,7 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
 
                     vasiyetci.IkametAdresi = IkametAdresiTxt.Text;
                     vasiyetci.VasiyetTipi = VasiyetTipiTxt.Text;
-                    vasiyetci.SorumluBolge = SorumluBolgeTxt.Value;
+                    //vasiyetci.SorumluBolge = SorumluBolgeTxt.Value;
                     vasiyetci.Noter = NoterTxt.Text;
                     vasiyetci.VasiyetTarihi = VasiyetTarihiTxt.Value.ConvertToDatetime();
                     vasiyetci.YevmiyeNumarasi = YevmiyeNumarasiTxt.Text;

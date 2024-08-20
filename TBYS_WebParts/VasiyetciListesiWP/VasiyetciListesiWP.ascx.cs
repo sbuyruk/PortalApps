@@ -1,4 +1,5 @@
 ﻿using Microsoft.SharePoint;
+using Microsoft.SharePoint.Mobile.Controls;
 using Model.IKYS;
 using Model.Ortak;
 using Model.TBYS;
@@ -59,28 +60,28 @@ namespace TBYS_WebParts.VasiyetciListesiWP
                 ViewState["SecilenId"] = value;
             }
         }
-        private string BolgeQS
+        private int BolgeIdQS
         {
             get
             {
 
-                if (ViewState["Bolge"] == null)
+                if (ViewState["BolgeId"] == null)
                 {
-                    if (Page.Request.QueryString["Bolge"] != null)
+                    if (Page.Request.QueryString["BolgeId"] != null)
                     {
-                        ViewState["Bolge"] = Page.Request.QueryString["Bolge"];
+                        ViewState["BolgeId"] = Page.Request.QueryString["BolgeId"];
                     }
                     else
                     {
-                        ViewState["Bolge"] = string.Empty;
+                        ViewState["BolgeId"] = string.Empty;
                     }
                 }
-                return ViewState["Bolge"].ToString();
+                return ViewState["BolgeId"].ReturnZeroIfNull().ConvertToInt();
             }
 
             set
             {
-                ViewState["Bolge"] = value;
+                ViewState["BolgeId"] = value;
             }
         }
         private string CurrentUserName
@@ -105,10 +106,12 @@ namespace TBYS_WebParts.VasiyetciListesiWP
         {
             try
             {
-                BolgeQS = IKYSOrtak.PersonelinBolgesiniGetir_Deprecated(CurrentUserName);
-                if (!string.IsNullOrEmpty(BolgeQS))
+                TitleLbl.Text = "Vasiyetçi Listesi";
+                Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
+                BolgeIdQS = bolge == null ? 0 : bolge.Id;
+                if (BolgeIdQS>0)
                 {
-                    TitleLbl.Text = "Vasiyetçi Listesi" + " (" + BolgeQS + " Bölgesi)";
+                    TitleLbl.Text = "Vasiyetçi Listesi" + " (" + bolge.KisaAdi + " Bölgesi)";
                     
                 }
                 TabloOlustur();
@@ -133,7 +136,9 @@ namespace TBYS_WebParts.VasiyetciListesiWP
         }
         private string CreateDataTable(string jsonData)
         {
-            string duzenleGorunsun = string.IsNullOrEmpty(BolgeQS) ? "{ targets:11, visible:true}," : "{ targets:11, visible:false},";
+            string duzenleGorunsun = BolgeIdQS == ProjeConstants.BOLGE_HEPSI_INT || BolgeIdQS == ProjeConstants.BOLGE_GENELMUDURLUK_INT
+                ? "{ targets:11, visible:true}," 
+                : "{ targets:11, visible:false},";
             string dosyaAdi = "Vasiyet' + row.VasiyetciId + '.pdf";
             //string dosyaUrl = SPContext.Current.Web.Url + "/" + ProjeConstants.TASINMAZBELGELERI_LIB + "/" + dosyaAdi;
 
@@ -308,11 +313,12 @@ namespace TBYS_WebParts.VasiyetciListesiWP
         {
             Vasiyetci vasiyetci = new Vasiyetci();
 
-            DataTable dataTable = vasiyetci.SelectByBolgeReturnDataTable(BolgeQS);
+            DataTable dataTable = vasiyetci.SelectByBolgeReturnDataTable(BolgeIdQS);
 
             int SiraNo = 1;
             List<VasiyetciListItem> list = new List<VasiyetciListItem>();
 
+            bool duzenleGorunsunMu = BolgeIdQS == ProjeConstants.HEPSI_INT || BolgeIdQS == ProjeConstants.BOLGE_GENELMUDURLUK_INT;
             foreach (DataRow row in dataTable.Rows)
             {
                 string vasiyetciId = row["Id"].ToString();
@@ -330,7 +336,7 @@ namespace TBYS_WebParts.VasiyetciListesiWP
                 string dogumTarihi = row["DogumTarihi"].ConvertToDatetimeEmptyIfNull();
                 string dogumYeri = row["DogumYeri"].ToString();
                 string vasiyetTipi = row["VasiyetTipi"].ToString();
-                string sorumluBolge = row["SorumluBolge"].ToString();
+                string sorumluBolge = row["Bolge"].ToString();
                 string vasiyetinDurumu = row["VasiyetinDurumu"].ToString();
                 string noter = row["Noter"].ToString();
                 string vasiyetTarihi = row["VasiyetTarihi"].ConvertToDatetimeEmptyIfNull();
@@ -378,7 +384,12 @@ namespace TBYS_WebParts.VasiyetciListesiWP
                 bool dosyaVarMi = UtilityHelper.DosyaVarMi(UtilityHelper.TbysURLGetir(), ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi);
                 vasiyetciItem.VasiyetiYuklendiMi = dosyaVarMi;
                 vasiyetciItem.VasiyetYili = vasiyetTarihi.ConvertToDatetime().Year.ToString();
-                vasiyetciItem.Duzenle = vasiyetTarihi.ConvertToDatetime().Year.ToString();
+                vasiyetciItem.Duzenle=string.Empty;
+                if (duzenleGorunsunMu)
+                    if (duzenleGorunsunMu)
+                {
+                    vasiyetciItem.Duzenle = "'<a href=" + ProjeConstants.PAGE_VASIYETCI_GIRISI + @"?DestinationApp=Duzenle&VasiyetciId=' + row.VasiyetciId + ' class=\'btn btn-outline-primary \'>Düzenle</a>'";
+                }
 
 
                 list.Add(vasiyetciItem);

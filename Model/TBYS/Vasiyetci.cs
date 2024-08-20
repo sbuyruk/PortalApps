@@ -25,7 +25,7 @@ namespace Model.TBYS
         public string DogumYeri { get; set; }
         public string IkametAdresi { get; set; }
         public string VasiyetTipi { get; set; }
-        public string SorumluBolge { get; set; }
+        //public string SorumluBolge { get; set; }
         public string VasiyetinDurumu { get; set; }
         public string Noter { get; set; }
         public DateTime VasiyetTarihi { get; set; }
@@ -152,16 +152,18 @@ namespace Model.TBYS
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
         }
-        public DataTable SelectByBolgeReturnDataTable(string bolge)
+        public DataTable SelectByBolgeReturnDataTable(int bolgeId)
         {
-            string bolgeStr = string.IsNullOrEmpty(bolge) ? string.Empty: string.Format(" WHERE B.Bolge={0}",bolge.ReturnQuotedValue());
+            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND B.BolgeId={0} ", bolgeId);
             string sqlString = string.Format(@"
-                SELECT A.*, B.IlAdi, C.IlceAdi FROM Vasiyetci_Table A
-                LEFT JOIN Il_Table B on A.IkametIli = B.Id
+                SELECT A.*, B.IlAdi, C.IlceAdi, D.KisaAdi Bolge
+                FROM Vasiyetci_Table A
+                INNER JOIN Il_Table B on A.IkametIli = B.Id
                 LEFT JOIN Ilce_Table C on A.IkametIlcesi = C.Id
+                INNER JOIN Bolge_Table D on D.Id = B.BolgeId
                 {0}
                 ORDER BY Adi
-                ",bolgeStr);
+                ", bolgeStr);
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
 

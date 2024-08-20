@@ -2,7 +2,6 @@
 <feature xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="fae416df-4f55-4dfc-b650-e8c3d00465d9" featureId="fae416df-4f55-4dfc-b650-e8c3d00465d9" imageUrl="" scope="Site" solutionId="00000000-0000-0000-0000-000000000000" title="BTYS_Webparts Feature1" version="" deploymentPath="$SharePoint.Project.FileNameWithoutExtension$_$SharePoint.Feature.FileNameWithoutExtension$" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/FeatureModel">
   <projectItems>
     <projectItemReference itemId="72fa2477-3791-4541-bd41-8b0c820fc3aa" />
-    <projectItemReference itemId="93cce589-e256-4475-bf15-ec0792aaab3d" />
     <projectItemReference itemId="38d19c4f-2557-4e3c-9fae-35d9e6b3e673" />
     <projectItemReference itemId="6ed4358a-1ef4-45da-be40-59a1026fd761" />
     <projectItemReference itemId="bc348be1-4240-4347-ab5d-f311b92b1bee" />

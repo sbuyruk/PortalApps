@@ -1,4 +1,5 @@
-﻿using Model.TBYS;
+﻿using Model.Ortak;
+using Model.TBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -32,13 +33,55 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazListesiWP
             InitializeControl();
             this.ChromeType = PartChromeType.None;
         }
+        private int BolgeIdQS
+        {
+            get
+            {
 
+                if (ViewState["BolgeId"] == null)
+                {
+                    if (Page.Request.QueryString["BolgeId"] != null)
+                    {
+                        ViewState["BolgeId"] = Page.Request.QueryString["BolgeId"];
+                    }
+                    else
+                    {
+                        ViewState["BolgeId"] = string.Empty;
+                    }
+                }
+                return ViewState["BolgeId"].ReturnZeroIfNull().ConvertToInt();
+            }
+
+            set
+            {
+                ViewState["BolgeId"] = value;
+            }
+        }
+        private string CurrentUserName
+        {
+            get
+            {
+
+                if (ViewState["CurrentUserName"] == null)
+                {
+                    ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUserLoginName();
+                }
+                return ViewState["CurrentUserName"].ToString();
+            }
+
+            set
+            {
+                ViewState["CurrentUserName"] = value;
+            }
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
                 if (!Page.IsPostBack)
                 {
+                    Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
+                    BolgeIdQS = bolge == null ? 0 : bolge.Id;
                     TabloOlustur();
                 }
             }
@@ -50,11 +93,9 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazListesiWP
         }
         private void TabloOlustur()
         {
-            List<Tasinmaz> list = new List<Tasinmaz>();
             var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            //var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
-            System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler,
-                typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "setDataSet(" + jsonData + ");", true);
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            UtilityHelper.ScriptCalistir(jsString);
         }
 
         private string TabloJson()
@@ -98,9 +139,12 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazListesiWP
                 mulkiyetiOlmayanTasinmazListesiListItem.Adres = adres;
                 mulkiyetiOlmayanTasinmazListesiListItem.IliIlcesi = iliIlcesi;
                 mulkiyetiOlmayanTasinmazListesiListItem.SorumluBolge = sorumluBolge;
-
-                mulkiyetiOlmayanTasinmazListesiListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_MULKIYETIOLMAYANTASINMAZ_GIRIS + "?EnvanterdeMi=2&DestinationApp=TD&SenderApp=TL&TasinmazId=" + tasinmazId + " class='btn btn-outline-primary'>Düzenle</a>";
-                list.Add(mulkiyetiOlmayanTasinmazListesiListItem);
+                bool duzenleGorunsunMu = BolgeIdQS == ProjeConstants.HEPSI_INT || BolgeIdQS == ProjeConstants.BOLGE_GENELMUDURLUK_INT;
+                if (duzenleGorunsunMu)
+                {
+                    mulkiyetiOlmayanTasinmazListesiListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_MULKIYETIOLMAYANTASINMAZ_GIRIS + "?EnvanterdeMi=2&DestinationApp=TD&SenderApp=TL&TasinmazId=" + tasinmazId + " class='btn btn-outline-primary'>Düzenle</a>";
+                }
+                 list.Add(mulkiyetiOlmayanTasinmazListesiListItem);
             }
             return list;
         }
@@ -111,7 +155,68 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazListesiWP
             DataTable dataTable = tasinmaz.SelectEnvanterdeOlmayanTasinmazReturnDataTable();
             return dataTable;
         }
+        private string CreateDataTable(string jsonData)
+        {
+            string duzenleGorunsun = BolgeIdQS == ProjeConstants.BOLGE_HEPSI_INT || BolgeIdQS == ProjeConstants.BOLGE_GENELMUDURLUK_INT
+                ? "{ targets:4, visible:true},"
+                : "{ targets:4, visible:false},";
+            string tableString = @"
+            jQuery(document).ready(function () {
 
+                jQuery('#CustomDataTable').DataTable({
+                    data: " + jsonData + @",
+                    columns: [
+                        { data: 'KullanimSekli' },
+                        { data: 'Adres' },
+                        { data: 'IliIlcesi' },
+                        { data: 'SorumluBolge' },
+                        { data: 'Duzenle' },
+
+                    ],
+                    'order': [[1, 'asc']],
+                     columnDefs:
+                        [
+                        " + duzenleGorunsun + @"
+                        ],
+                    'language': {
+                                'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
+                        'decimal': ',',
+                        'thousands': '.'
+                    },
+                    responsive: true,
+                    dom: 'Bfrtip',
+                    buttons: [
+                        {
+                            extend: 'print',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        {
+                            extend: 'excel',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        {
+                            extend: 'pdf',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        {
+                            extend: 'copy',
+                            exportOptions: {
+                                columns: ':visible'
+                            }
+                        },
+                        , 'pageLength', 'colvis'
+                    ]
+
+                });
+            });";
+            return tableString;
+        }
         private class MulkiyetiOlmayanTasinmazListesiListItem
         {
             public string KullanimSekli { get; set; }
@@ -143,7 +248,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazListesiWP
 
             Page.Response.Clear();
             Page.Response.Buffer = true;
-            Page.Response.AddHeader("content-disposition",
+            Page.Response.AddHeader("content -disposition",
              "attachment;filename=MulkiyetiOlmayanTasinmazListesi" + DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + ".xls");
             Page.Response.ContentEncoding = System.Text.Encoding.GetEncoding("windows-1254");
             Page.Response.Charset = "windows-1254";//ISO-8859-9

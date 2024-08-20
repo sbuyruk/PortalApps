@@ -18,60 +18,7 @@
     var myjsons = [{
         "KullanimSekli": "", "Adres": "", "IliIlcesi": "", "SorumluBolge": "", "Duzenle": ""
     }];
-    jQuery(document).ready(function () {
-
-        jQuery('#CustomDataTable').DataTable({
-            data: myjsons,
-            columns: [
-                { data: "KullanimSekli" },
-                { data: "Adres" },
-                { data: "IliIlcesi" },
-                { data: "SorumluBolge" },
-                { data: "Duzenle" },
-
-            ],
-            'order': [[1, 'asc']],//AdiSoyadi Sıralı
-            "language": {
-                "url": "http://tskgv-portal/OrtakBelgeler/Turkish.txt",
-                "decimal": ",",
-                "thousands": "."
-            },
-            responsive: true,
-            dom: 'Bfrtip',
-            //colon resizable
-            //initComplete: function (settings) {
-            //    $('#CustomDataTable').colResizable({ liveDrag: true });
-            //},
-            buttons: [
-                {
-                    extend: 'print',
-                    exportOptions: {
-                        columns: ':visible'
-                    }
-                },
-                {
-                    extend: 'excel',
-                    exportOptions: {
-                        columns: ':visible'
-                    }
-                },
-                {
-                    extend: 'pdf',
-                    exportOptions: {
-                        columns: ':visible'
-                    }
-                },
-                {
-                    extend: 'copy',
-                    exportOptions: {
-                        columns: ':visible'
-                    }
-                },
-                , 'pageLength', "colvis"
-            ]
-
-        });
-    });
+    
 </script>
 <div class="container ">
     <div class="card shadow">

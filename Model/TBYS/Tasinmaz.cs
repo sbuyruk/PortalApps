@@ -12,8 +12,9 @@ namespace Model.TBYS
     public class Tasinmaz : ParentClass
     {
         public string Cinsi { get; set; }
-        public string Ili { get; set; }
-        public string Ilcesi { get; set; }
+        //public string Ili { get { return IliStr(); } set { Ili = value; } }
+        public string Ilcesi { get; set;}
+        public string Ili { get; set;}
         public int IlId { get; set; }
         public int IlceId { get; set; }
         public string SigortaDurumu { get; set; }
@@ -70,7 +71,12 @@ namespace Model.TBYS
         public string TapuTasinmazNo { get; set; }
         public string InsaYili { get; set; }
         public string KirayaUygunluk { get; set; }
-
+        private string IliStr() 
+        {
+            Il il = new Il();
+            il=il.Select<Il>(Id);
+            return il==null?string.Empty:il.IlAdi;
+        }
         public override T Select<T>(int id)
         {
             string sqlString = string.Format(@"SELECT *
@@ -356,15 +362,18 @@ namespace Model.TBYS
         public DataTable SelectEnvanterdeOlmayanTasinmazReturnDataTable()
         {
             string sqlString = string.Format(@"
-                SELECT ROW_NUMBER() OVER(ORDER BY A.Id) AS Sirano, A.Id, A.Id TasinmazId,A.Cinsi, A.Ili, A.Ilcesi, A.Ili+'/'+A.Ilcesi IliIlcesi, 
-                    A.SigortaDurumu, A.Adres,A.Adres+' '+A.Ili+'/'+A.Ilcesi AdresIliIlcesi,
-                    A.MulkiyetSekli, A.KiraDurumu, A.KatMulkiyeti, A.SorumluBolge, A.EdinmeSekli,A.BagisYili, A.EmlakSicilNo,
+                SELECT ROW_NUMBER() OVER(ORDER BY A.Id) AS Sirano, A.Id, A.Id TasinmazId,A.Cinsi, C.IlAdi Ili, D.IlceAdi Ilcesi, C.IlAdi+'/'+D.IlceAdi IliIlcesi, 
+                    A.SigortaDurumu, A.Adres,A.Adres+' '+C.IlAdi+'/'+D.IlceAdi AdresIliIlcesi,
+                    A.MulkiyetSekli, A.KiraDurumu, A.KatMulkiyeti, E.KisaAdi SorumluBolge, A.EdinmeSekli,A.BagisYili, A.EmlakSicilNo,
                     A.EmlakBeyanDegeri, A.TahminiRayicDegeri, A.TapuTarihi, A.AdaNo, A.ParselNo, A.PaftaNo, A.Yuzolcumu, A.ArsaPayi, A.VakifHissesi,
                     A.YevmiyeNo,A.CiltNo, A.SahifeNo, A.KullanimSekli, A.TasinmazFoto, A.TasinmazFoto1, A.TasinmazFoto2, A.TapuFoto, A.KrokiFoto, A.TahkikatFoto,
                     A.Nitelik,A.BulunduguKat,A.Aciklama,A.EnvantereGirisTarihi, 
                     B.BolumNo,B.Id BolumId
                 FROM Tasinmaz_Table A
                     LEFT JOIN BagimsizBolum_Table B ON B.TasinmazId=A.Id
+					LEFT JOIN IL_Table C ON C.Id=A.IlId
+					LEFT JOIN ILCE_Table D ON D.Id=A.IlceId
+					LEFT JOIN Bolge_Table E ON E.Id=C.BolgeId
                 WHERE A.EnvanterdeMi=2 
                 ");
             DataTable dataTable = null;
@@ -766,25 +775,19 @@ namespace Model.TBYS
             }
             return Adet;
         }
-        public int SelectTasinmazAdetByBolgeMulkiyetSekliSigorta(string bolge, string mulkiyetSekli, string sigorta)
+        public int SelectTasinmazAdetByBolgeMulkiyetSekliSigorta(int bolgeId, string mulkiyetSekli, string sigorta)
         {
             int Adet = 0;
+            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND BolgeId={0} ", bolgeId);
             string sqlString = string.Format(@"
                 SELECT COUNT(MulkiyetSekli) Adet 
                 FROM Sigorta_Table A
                     INNER JOIN Tasinmaz_Table B ON B.Id=A.TasinmazId
+                    INNER JOIN Il_Table C ON C.Id=B.IlId
                 WHERE EnvanterdeMi=1 
-                    AND SorumluBolge ={0}
+                    {0}
                     AND MulkiyetSekli ={1}
-                    AND SigortaDurumu ={2}", bolge.ReturnQuotedValue(), mulkiyetSekli.ReturnQuotedValue(), sigorta.ReturnQuotedValue());
-            // SB bir tasinmaz için birden fazla sigorta yapılabilir hale geldiği için sorgu değişti. 24.01.2020
-            //string sqlString = string.Format(@"
-            //    SELECT COUNT(MulkiyetSekli) Adet 
-            //    FROM Tasinmaz_Table 
-            //    WHERE EnvanterdeMi=1 
-            //        AND SorumluBolge ={0}
-            //        AND MulkiyetSekli ={1}
-            //        AND SigortaDurumu ={2}", bolge.ReturnQuotedValue(), mulkiyetSekli.ReturnQuotedValue(), sigorta.ReturnQuotedValue());
+                    AND SigortaDurumu ={2}", bolgeStr, mulkiyetSekli.ReturnQuotedValue(), sigorta.ReturnQuotedValue());
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {
@@ -793,24 +796,20 @@ namespace Model.TBYS
             }
             return Adet;
         }
-        public int SelectTasinmazAdetByBolgeKullanimSekliSigorta(string bolge, string kullanimSekli, string sigorta)
+        public int SelectTasinmazAdetByBolgeKullanimSekliSigorta(int bolgeId, string kullanimSekli, string sigorta)
         {
+            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND BolgeId={0} ", bolgeId);
             int Adet = 0;
             string sqlString = string.Format(@"
                 SELECT COUNT(KullanimSekli) Adet 
                 FROM Sigorta_Table A
                     INNER JOIN Tasinmaz_Table B ON B.Id=A.TasinmazId
+                    INNER JOIN Il_Table C ON C.Id=B.IlId
                 WHERE EnvanterdeMi=1 
-                    AND SorumluBolge ={0}
+                    {0}
                     AND KullanimSekli ={1}
-                    AND SigortaDurumu ={2}", bolge.ReturnQuotedValue(), kullanimSekli.ReturnQuotedValue(), sigorta.ReturnQuotedValue());
-            //string sqlString = string.Format(@"
-            //    SELECT COUNT(KullanimSekli) Adet 
-            //    FROM Tasinmaz_Table 
-            //    WHERE EnvanterdeMi=1 
-            //        AND SorumluBolge ={0}
-            //        AND KullanimSekli ={1}
-            //        AND SigortaDurumu ={2}", bolge.ReturnQuotedValue(), kullanimSekli.ReturnQuotedValue(), sigorta.ReturnQuotedValue());
+                    AND SigortaDurumu ={2}", bolgeStr, kullanimSekli.ReturnQuotedValue(), sigorta.ReturnQuotedValue());
+
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
             {

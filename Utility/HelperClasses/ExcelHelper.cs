@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
-
 namespace Utility.HelperClasses
 {
     public static class ExcelHelper

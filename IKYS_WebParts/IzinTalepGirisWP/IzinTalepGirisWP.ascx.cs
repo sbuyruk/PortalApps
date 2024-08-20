@@ -1257,6 +1257,10 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                             //    "Kişisel sayfanızdan İzin taleplerinizi görebilirsiniz.", ProjeConstants.MESAJ_HATA,15000);
                             MessageHelper.PublishMessage("İşlemi devam eden bir izin talebiniz zaten var." + System.Environment.NewLine +
                                "Yeni bir izin talep etmeden önce var olan izin talebinizin sonuçlanması gerekmektedir.", ProjeConstants.MESAJ_HATA, 15000);
+                            SaveBtn.Visible = false;
+                            UpdateBtn.Visible = false;
+                            UcretliIzinDilekceBtn.Visible = false;
+
                         }
                         else
                         {

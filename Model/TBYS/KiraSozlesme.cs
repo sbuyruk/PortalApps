@@ -323,11 +323,8 @@ namespace Model.TBYS
                     INNER JOIN Bolge_Table H ON H.Id=S.BolgeId
 	                WHERE 1>0 AND S.Aktif = 1 
                         {0}
-                        --AND ArtisAyi = MONTH(GETDATE())+1 AND YEAR(SozBitTar)=YEAR(GETDATE())  --12nci ayda yanlış çalıştı
-                        --AND (ArtisAyi = DATEPART(MM,DATEADD(mm,1, GETDATE())) AND YEAR(SozBitTar)=YEAR(DATEADD(mm,1, GETDATE())) )
-                        --AND CONVERT(int,ArtisAyi) = DATEPART(MM,DATEADD(mm,1, GETDATE())) --sözlesmesi yenilenenlerde esi v yeni kirabedeli yanlış çıkıyor                        
-                        --AND (CONVERT(int,ArtisAyi) = DATEPART(MM,DATEADD(mm,1, GETDATE())) AND YEAR(SozBitTar)=DATEPART(YYYY,DATEADD(mm,1, GETDATE())))--AND (YEAR(SozBitTar)=YEAR(GETDATE())) )
-                        AND (CONVERT(int,ArtisAyi) = DATEPART(MM,DATEADD(mm,1, {1})) AND YEAR(SozBitTar)=DATEPART(YYYY,DATEADD(mm,1, {1})))--AND (YEAR(SozBitTar)=YEAR(GETDATE())) )
+                        --AND (CONVERT(int,ArtisAyi) = DATEPART(MM,DATEADD(mm,1, {1})) AND YEAR(SozBitTar)=DATEPART(YYYY,DATEADD(mm,1, {1})))
+                        AND (CONVERT(int,ArtisAyi) = DATEPART(MM,{1}) AND YEAR(SozBitTar)=DATEPART(YYYY,{1}))
 	                ORDER BY S.BolgeId, SozBitTar
             ", bolgeStr,tarihStr);
             DataTable dataTable;

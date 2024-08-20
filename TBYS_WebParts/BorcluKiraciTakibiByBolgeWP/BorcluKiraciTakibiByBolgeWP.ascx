@@ -48,11 +48,11 @@
                     <asp:TableHeaderCell BorderStyle="Solid" BorderWidth="1" BorderColor="Black">Toplam</asp:TableHeaderCell>
                 </asp:TableHeaderRow>
                 <asp:TableRow HorizontalAlign="Center">
-                    <asp:TableCell ID="GMBaslikCell" BorderStyle="Solid" BorderWidth="1" BorderColor="Black">Genel Müdürlük</asp:TableCell>
-                    <asp:TableCell ID="GMUyariCell" runat="server" BorderStyle="Solid" BorderWidth="1" BorderColor="Black"></asp:TableCell>
-                    <asp:TableCell ID="GMYaziliIhtarCell" runat="server" BorderStyle="Solid" BorderWidth="1" BorderColor="Black"></asp:TableCell>
-                    <asp:TableCell ID="GMIcraTakibiCell" runat="server" BorderStyle="Solid" BorderWidth="1" BorderColor="Black"></asp:TableCell>
-                    <asp:TableCell ID="GMTopCell" runat="server" BorderStyle="Solid" BorderWidth="1" BorderColor="Black"></asp:TableCell>
+                    <asp:TableCell ID="AnkBaslikCell" BorderStyle="Solid" BorderWidth="1" BorderColor="Black">Ankara Bölge Temsilciliği</asp:TableCell>
+                    <asp:TableCell ID="AnkUyariCell" runat="server" BorderStyle="Solid" BorderWidth="1" BorderColor="Black"></asp:TableCell>
+                    <asp:TableCell ID="AnkYaziliIhtarCell" runat="server" BorderStyle="Solid" BorderWidth="1" BorderColor="Black"></asp:TableCell>
+                    <asp:TableCell ID="AnkIcraTakibiCell" runat="server" BorderStyle="Solid" BorderWidth="1" BorderColor="Black"></asp:TableCell>
+                    <asp:TableCell ID="AnkTopCell" runat="server" BorderStyle="Solid" BorderWidth="1" BorderColor="Black"></asp:TableCell>
                 </asp:TableRow>
                 <asp:TableRow HorizontalAlign="Center">
                     <asp:TableCell ID="IstBaslikCell" BorderStyle="Solid" BorderWidth="1" BorderColor="Black">İstanbul Bölge Temsilciliği</asp:TableCell>

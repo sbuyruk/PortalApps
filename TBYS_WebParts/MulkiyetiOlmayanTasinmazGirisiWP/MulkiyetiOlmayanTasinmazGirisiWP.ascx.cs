@@ -294,12 +294,9 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
         }
         private void BolgeTxtDoldur()
         {
-            Il il = new Il();
-            il = il.SelectByIlAdi(IliDDL.SelectedItem.ToString());
-            if (il != null)
-            {
-                SorumluBolgeTxt.Text = il.Bolge;
-            }
+            int ilId=IliDDL.SelectedItem!=null? IliDDL.SelectedItem.Value.ConvertToInt():0;
+            string bolge = UtilityHelper.BolgeGetir(ilId);
+            SorumluBolgeTxt.Text = !string.IsNullOrEmpty(bolge) ? bolge : "";
         }
         private void KirayaUygunlukDDLDoldur()
         {
@@ -367,16 +364,20 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
                 IlceDDLDoldur();
                 BolgeTxtDoldur();
                 SigortaDurumuDDLDoldur();
-                if (IlcesiDDL.Items.FindByText(tasinmaz.Ilcesi) != null)
-                    IlcesiDDL.SelectedValue = IlcesiDDL.Items.FindByText(tasinmaz.Ilcesi).Value;
-                if (KiraDurumuDDL.Items.FindByText(tasinmaz.KiraDurumu) != null)
-                    KiraDurumuDDL.SelectedValue = KiraDurumuDDL.Items.FindByText(tasinmaz.KiraDurumu).Value;
-                if (KatMulkiyetiDDL.Items.FindByText(tasinmaz.KatMulkiyeti) != null)
-                    KatMulkiyetiDDL.SelectedValue = KatMulkiyetiDDL.Items.FindByText(tasinmaz.KatMulkiyeti).Value;
-                if (KullanimSekliDDL.Items.FindByText(tasinmaz.KullanimSekli) != null)
-                    KullanimSekliDDL.SelectedValue = KullanimSekliDDL.Items.FindByText(tasinmaz.KullanimSekli).Value;
-                if (SigortaDDL.Items.FindByText(tasinmaz.SigortaDurumu) != null)
-                    SigortaDDL.SelectedValue = SigortaDDL.Items.FindByText(tasinmaz.SigortaDurumu).Value;
+                UtilityHelper.SetDDLValue(IlcesiDDL, tasinmaz.IlceId.ToString());
+                UtilityHelper.SetDDLValue(KiraDurumuDDL, tasinmaz.KiraDurumu);
+                UtilityHelper.SetDDLValue(KatMulkiyetiDDL, tasinmaz.KatMulkiyeti);
+                UtilityHelper.SetDDLValue(KullanimSekliDDL, tasinmaz.KullanimSekli);
+                UtilityHelper.SetDDLValue(SigortaDDL, tasinmaz.SigortaDurumu);
+               
+                //if (KiraDurumuDDL.Items.FindByText(tasinmaz.KiraDurumu) != null)
+                //    KiraDurumuDDL.SelectedValue = KiraDurumuDDL.Items.FindByText(tasinmaz.KiraDurumu).Value;
+                //if (KatMulkiyetiDDL.Items.FindByText(tasinmaz.KatMulkiyeti) != null)
+                //    KatMulkiyetiDDL.SelectedValue = KatMulkiyetiDDL.Items.FindByText(tasinmaz.KatMulkiyeti).Value;
+                //if (KullanimSekliDDL.Items.FindByText(tasinmaz.KullanimSekli) != null)
+                //    KullanimSekliDDL.SelectedValue = KullanimSekliDDL.Items.FindByText(tasinmaz.KullanimSekli).Value;
+                //if (SigortaDDL.Items.FindByText(tasinmaz.SigortaDurumu) != null)
+                //    SigortaDDL.SelectedValue = SigortaDDL.Items.FindByText(tasinmaz.SigortaDurumu).Value;
 
                 //UtilityHelper.SetDDLValue(IlcesiDDL, tasinmaz.Ilcesi);
                 //UtilityHelper.SetDDLValue(KiraDurumuDDL, tasinmaz.KiraDurumu);
@@ -413,9 +414,11 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
             Tasinmaz tasinmaz = new Tasinmaz();
             tasinmaz.Adres = AdresTxt.Text;
             tasinmaz.Cinsi = CinsiTxt.Text;
-            tasinmaz.Ilcesi = IlcesiDDL.SelectedItem.ToString();
+            tasinmaz.Ilcesi = IlcesiDDL.SelectedItem.Text;
+            tasinmaz.IlceId = IlcesiDDL.SelectedItem.Value.ConvertToInt();
             ListItem ilItem = IliDDL.SelectedItem;
             tasinmaz.Ili = ilItem.Text;
+            tasinmaz.IlId = ilItem.Value.ConvertToInt();
             tasinmaz.SorumluBolge = SorumluBolgeTxt.Text;
             tasinmaz.KiraDurumu = KiraDurumuDDL.SelectedValue;
             tasinmaz.KirayaUygunluk = KirayaUygunlukDDL.SelectedValue;
@@ -466,10 +469,11 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
 
                 tasinmaz.Cinsi = CinsiTxt.Text;
 
-                tasinmaz.Ilcesi = IlcesiDDL.SelectedItem.ToString();
+                tasinmaz.Ilcesi = IlcesiDDL.SelectedItem.Text;
+                tasinmaz.IlceId = IlcesiDDL.SelectedItem.Value.ConvertToInt();
                 ListItem ilItem = IliDDL.SelectedItem;
-
                 tasinmaz.Ili = ilItem.Text;
+                tasinmaz.IlId = ilItem.Value.ConvertToInt();
                 tasinmaz.SorumluBolge = SorumluBolgeTxt.Text;
                 tasinmaz.KiraDurumu = KiraDurumuDDL.SelectedValue;
                 tasinmaz.KirayaUygunluk = KirayaUygunlukDDL.SelectedValue;

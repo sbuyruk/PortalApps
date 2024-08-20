@@ -146,34 +146,25 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazListesiWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControlTree(global::TBYS_WebParts.MulkiyetiOlmayanTasinmazListesiWP.MulkiyetiOlmayanTasinmazListesiWP @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n<script type=\"text/javascript\">\r\n    //excele export ettikten donup sonra kalma" +
-                        "sın diye\r\n    function setFormSubmitToFalse() {\r\n        setTimeout(function () " +
-                        "{ _spFormOnSubmitCalled = false; }, 3000);\r\n        return true;\r\n    }\r\n    fun" +
-                        "ction setDataSet(myset) {\r\n        myjsons = myset;\r\n    }\r\n    var myjsons = [{" +
-                        "\r\n        \"KullanimSekli\": \"\", \"Adres\": \"\", \"IliIlcesi\": \"\", \"SorumluBolge\": \"\"," +
-                        " \"Duzenle\": \"\"\r\n    }];\r\n    jQuery(document).ready(function () {\r\n\r\n        jQu" +
-                        "ery(\'#CustomDataTable\').DataTable({\r\n            data: myjsons,\r\n            col" +
-                        "umns: [\r\n                { data: \"KullanimSekli\" },\r\n                { data: \"Ad" +
-                        "res\" },\r\n                { data: \"IliIlcesi\" },\r\n                { data: \"Soruml" +
-                        "uBolge\" },\r\n                { data: \"Duzenle\" },\r\n\r\n            ],\r\n            " +
-                        "\'order\': [[1, \'asc\']],//AdiSoyadi Sıralı\r\n            \"language\": {\r\n           " +
-                        "     \"url\": \"http://tskgv-portal/OrtakBelgeler/Turkish.txt\",\r\n                \"d" +
-                        "ecimal\": \",\",\r\n                \"thousands\": \".\"\r\n            },\r\n            res" +
-                        "ponsive: true,\r\n            dom: \'Bfrtip\',\r\n            //colon resizable\r\n     " +
-                        "       //initComplete: function (settings) {\r\n            //    $(\'#CustomDataTa" +
-                        "ble\').colResizable({ liveDrag: true });\r\n            //},\r\n            buttons: " +
-                        "[\r\n                {\r\n                    extend: \'print\',\r\n                    " +
-                        "exportOptions: {\r\n                        columns: \':visible\'\r\n                 " +
-                        "   }\r\n                },\r\n                {\r\n                    extend: \'excel\'" +
-                        ",\r\n                    exportOptions: {\r\n                        columns: \':visi" +
-                        "ble\'\r\n                    }\r\n                },\r\n                {\r\n            " +
-                        "        extend: \'pdf\',\r\n                    exportOptions: {\r\n                  " +
-                        "      columns: \':visible\'\r\n                    }\r\n                },\r\n          " +
-                        "      {\r\n                    extend: \'copy\',\r\n                    exportOptions:" +
-                        " {\r\n                        columns: \':visible\'\r\n                    }\r\n        " +
-                        "        },\r\n                , \'pageLength\', \"colvis\"\r\n            ]\r\n\r\n        }" +
-                        ");\r\n    });\r\n</script>\r\n<div class=\"container \">\r\n    <div class=\"card shadow\">\r" +
-                        "\n        <div class=\"card-header\">\r\n            "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+<script type=""text/javascript"">
+    //excele export ettikten donup sonra kalmasın diye
+    function setFormSubmitToFalse() {
+        setTimeout(function () { _spFormOnSubmitCalled = false; }, 3000);
+        return true;
+    }
+    function setDataSet(myset) {
+        myjsons = myset;
+    }
+    var myjsons = [{
+        ""KullanimSekli"": """", ""Adres"": """", ""IliIlcesi"": """", ""SorumluBolge"": """", ""Duzenle"": """"
+    }];
+    
+</script>
+<div class=""container "">
+    <div class=""card shadow"">
+        <div class=""card-header"">
+            "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl1;
             @__ctrl1 = this.@__BuildControlCloseBtn();
             @__parser.AddParsedSubObject(@__ctrl1);

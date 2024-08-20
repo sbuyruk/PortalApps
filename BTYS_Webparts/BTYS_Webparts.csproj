@@ -90,14 +90,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>BolgeTasinmazBagisciListesiWP.ascx</DependentUpon>
     </Compile>
-    <Compile Include="BolgeTasinmazKartiWP\BolgeTasinmazKartiWP.ascx.cs">
-      <DependentUpon>BolgeTasinmazKartiWP.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="BolgeTasinmazKartiWP\BolgeTasinmazKartiWP.ascx.g.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>BolgeTasinmazKartiWP.ascx</DependentUpon>
-    </Compile>
     <Compile Include="BolgeTasinmazListesiWP\BolgeTasinmazListesiWP.ascx.cs">
       <DependentUpon>BolgeTasinmazListesiWP.ascx</DependentUpon>
     </Compile>
@@ -138,10 +130,6 @@
     <None Include="BolgeTasinmazBagisciListesiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{bc348be1-4240-4347-ab5d-f311b92b1bee}</SharePointProjectItemId>
     </None>
-    <None Include="BolgeTasinmazKartiWP\BolgeTasinmazKartiWP.webpart" />
-    <None Include="BolgeTasinmazKartiWP\SharePointProjectItem.spdata">
-      <SharePointProjectItemId>{93cce589-e256-4475-bf15-ec0792aaab3d}</SharePointProjectItemId>
-    </None>
     <None Include="BolgeTasinmazListesiWP\BolgeTasinmazListesiWP.webpart" />
     <None Include="BolgeTasinmazListesiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{72fa2477-3791-4541-bd41-8b0c820fc3aa}</SharePointProjectItemId>
@@ -181,11 +169,6 @@
       <LastGenOutput>BolgeTasinmazBagisciListesiWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="BolgeTasinmazBagisciListesiWP\Elements.xml" />
-    <Content Include="BolgeTasinmazKartiWP\BolgeTasinmazKartiWP.ascx">
-      <Generator>SharePointWebPartCodeGenerator</Generator>
-      <LastGenOutput>BolgeTasinmazKartiWP.ascx.g.cs</LastGenOutput>
-    </Content>
-    <Content Include="BolgeTasinmazKartiWP\Elements.xml" />
     <Content Include="BolgeTasinmazListesiWP\BolgeTasinmazListesiWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>BolgeTasinmazListesiWP.ascx.g.cs</LastGenOutput>

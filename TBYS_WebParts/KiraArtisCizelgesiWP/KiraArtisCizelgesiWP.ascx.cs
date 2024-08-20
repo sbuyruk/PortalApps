@@ -367,18 +367,18 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP
         private void AyDDLDoldur()
         {
             AyDDL.Items.Clear();
-            ListItem li= new ListItem(DateTime.Today.ToString("MMMM"),"-1" );
-            ListItem li1= new ListItem(DateTime.Today.AddMonths(1).ToString("MMMM"), "0");
-            ListItem li2= new ListItem(DateTime.Today.AddMonths(2).ToString("MMMM"), "1");
-            ListItem li3= new ListItem(DateTime.Today.AddMonths(3).ToString("MMMM"), "2");
-            ListItem li4= new ListItem(DateTime.Today.AddMonths(4).ToString("MMMM"), "3");
-            ListItem li5= new ListItem(DateTime.Today.AddMonths(5).ToString("MMMM"), "4");
-            ListItem li6= new ListItem(DateTime.Today.AddMonths(6).ToString("MMMM"), "5");
-            ListItem li7= new ListItem(DateTime.Today.AddMonths(7).ToString("MMMM"), "6");
-            ListItem li8= new ListItem(DateTime.Today.AddMonths(8).ToString("MMMM"), "7");
-            ListItem li9= new ListItem(DateTime.Today.AddMonths(9).ToString("MMMM"), "8");
-            ListItem li10= new ListItem(DateTime.Today.AddMonths(10).ToString("MMMM"), "9");
-            ListItem li11= new ListItem(DateTime.Today.AddMonths(11).ToString("MMMM"), "10");
+            ListItem li= new ListItem(DateTime.Today.ToString("MMMM"),"0" );
+            ListItem li1= new ListItem(DateTime.Today.AddMonths(1).ToString("MMMM"), "1");
+            ListItem li2= new ListItem(DateTime.Today.AddMonths(2).ToString("MMMM"), "2");
+            ListItem li3= new ListItem(DateTime.Today.AddMonths(3).ToString("MMMM"), "3");
+            ListItem li4= new ListItem(DateTime.Today.AddMonths(4).ToString("MMMM"), "4");
+            ListItem li5= new ListItem(DateTime.Today.AddMonths(5).ToString("MMMM"), "5");
+            ListItem li6= new ListItem(DateTime.Today.AddMonths(6).ToString("MMMM"), "6");
+            ListItem li7= new ListItem(DateTime.Today.AddMonths(7).ToString("MMMM"), "7");
+            ListItem li8= new ListItem(DateTime.Today.AddMonths(8).ToString("MMMM"), "8");
+            ListItem li9= new ListItem(DateTime.Today.AddMonths(9).ToString("MMMM"), "9");
+            ListItem li10= new ListItem(DateTime.Today.AddMonths(10).ToString("MMMM"), "10");
+            ListItem li11= new ListItem(DateTime.Today.AddMonths(11).ToString("MMMM"), "11");
             AyDDL.Items.Add(li);
             AyDDL.Items.Add(li1);
             AyDDL.Items.Add(li2);

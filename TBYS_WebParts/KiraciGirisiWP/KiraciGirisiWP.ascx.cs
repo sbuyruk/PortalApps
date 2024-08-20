@@ -245,8 +245,6 @@ namespace TBYS_WebParts.KiraciGirisiWP
             List<Ilce> list = pilce.SelectByIlId(IliDDL.SelectedValue.ConvertToInt());
             foreach (Ilce ilce in list)
             {
-                if (ilce.IlceAdi.ToUpper().Equals(ProjeConstants.ILCE_MERKEZ.ToUpper()))
-                    continue;
                 IlcesiDDL.Items.Add(new ListItem(ilce.IlceAdi, ilce.Id.ToString()));
             }
         }

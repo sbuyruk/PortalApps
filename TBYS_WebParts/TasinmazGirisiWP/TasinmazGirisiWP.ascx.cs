@@ -317,19 +317,11 @@ namespace TBYS_WebParts.TasinmazGirisiWP
         }
         private void BolgeTxtDoldur()
         {
-            Bolge bolge = BolgeGetir();
-            SorumluBolgeTxt.Text = bolge != null ? bolge.KisaAdi : "";
-            SorumluBolgeIdTxt.Text = bolge != null ? bolge.Id.ToString() : "";
+            int ilId = IliDDL.SelectedItem != null ? IliDDL.SelectedItem.Value.ConvertToInt() : 0;
+            string bolge = UtilityHelper.BolgeGetir(ilId);
+            SorumluBolgeTxt.Text = !string.IsNullOrEmpty(bolge) ? bolge : "";
         }
-        private Bolge BolgeGetir()
-        {
-            int ilId = IliDDL.SelectedItem.Value.ConvertToInt();
-            Il Il = new Il();
-            Il = Il.Select<Il>(ilId);
-            Bolge bolge = new Bolge();
-            bolge = bolge.Select(Il.BolgeId);
-            return bolge;
-        }
+        
         private void EdinmeSekliDDLDoldur()
         {
             EdinmeSekliDDL.Items.Clear();
