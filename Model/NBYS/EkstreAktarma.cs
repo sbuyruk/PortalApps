@@ -1659,7 +1659,7 @@ namespace Model.NBYS
                                 ekstreAktarma.BagisTarihi = bagisTarihi.AddDays(1);//burada bağış tarihine bir gün eklenmesinin sebebi, bankanın gün içindeki bağışları vakıf hesabına ertesi gün kaydetmesi nedeniyle oluşan tutarsızlığı gidermektir. 15.06.2020 SB
                                 ekstreAktarma.Aciklama = aciklama;
                                 ekstreAktarma.FisNo = odemeId;
-                                ekstreAktarma.BankaAdi = ProjeConstants.BANKA_EDEVLETBAGIS;
+                                ekstreAktarma.BankaAdi = bagisKanali.ReturnEmptyIfNull().Equals("E-Devlet") ? ProjeConstants.BANKA_EDEVLETBAGIS: ProjeConstants.BANKA_KARTILEBAGIS;
                                 ekstreAktarma.IslemTarihi = islemTarihi;
                                 ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                                 ekstreAktarma.Olusturan = currentUser;
@@ -1988,17 +1988,20 @@ namespace Model.NBYS
 
             return result;
         }
-        public static ExceptionHelper SaveAll(List<EkstreAktarma> listEkstreAktarma, string currentUser)
+        public static ExceptionHelper SaveAll(List<int> idlist, string currentUser)//List<EkstreAktarma> listEkstreAktarma, string currentUser)
         {
             ExceptionHelper exceptionHelper = new ExceptionHelper();
 
 
-            foreach (EkstreAktarma ekstreAktarma in listEkstreAktarma)
+            foreach (int itemId in idlist)//EkstreAktarma ekstreAktarma in listEkstreAktarma)
             {
 
                 try
                 {
-                    SaveEkstreAktarma(ekstreAktarma, currentUser);
+                    EkstreAktarma ekstreAktarma= new EkstreAktarma();
+                    ekstreAktarma = ekstreAktarma.Select<EkstreAktarma>(itemId);
+                    if (ekstreAktarma!=null && ekstreAktarma.AktarildiMi==false)
+                        SaveEkstreAktarma(ekstreAktarma, currentUser);
                 }
                 catch (Exception e)
                 {
@@ -2188,7 +2191,11 @@ namespace Model.NBYS
             armagan.ArmaganTanimId = hakedilenArmaganTanimId;
             armagan.Olusturan = currentUser;
             armagan.Durum = nakitBagisci.BelgeIstemiyor ? ProjeConstants.DURUM_BELGE_ISTEMIYOR : ProjeConstants.DURUM_GONDERILMEDI;
-
+            if (hakedilenArmaganTanimId == ProjeConstants.ARMAGAN_TESEKKURID && nakitBagisHareketListesi!=null 
+                && nakitBagisHareketListesi.Count==1 && nakitBagisHareketListesi[0].BankaId == ProjeConstants.BANKA_EDEVLETBAGIS_INT) 
+            {
+                armagan.Durum = ProjeConstants.DURUM_EDEVLETTENBELGEGONDERILDI;
+            }
             Armagan iadeEdilmisArmagan = new Armagan();
             List<Armagan> iadeEdilmisArmaganListesi = iadeEdilmisArmagan.SelectByBagisciIdAndDurum(nakitBagisci.Id, ProjeConstants.DURUM_IADE);
             if (iadeEdilmisArmaganListesi.Count > 0)
@@ -2411,47 +2418,52 @@ namespace Model.NBYS
         private static int SaveBagisFromEkstreAktarma(EkstreAktarma ekstreAktarma, int nakitBagisciId, string currentUser)
         {
             CultureInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
+            NakitBagisHareket ea = new NakitBagisHareket();
+            ea = ea.SelectByEkstreAktarmaId(ekstreAktarma.Id);
             int nakitBagisHareketId = 0;
-            BankaTanim bankaTanim = new BankaTanim();
-            bankaTanim = bankaTanim.SelectByBankaName(ekstreAktarma.BankaAdi);
-
-            Ilce ilce = new Ilce();
-            ilce = ilce.SelectByIlNameAndIlceName(ekstreAktarma.Ili, ekstreAktarma.Ilcesi);
-
-            NakitBagisHareket nakitBagisHareket = new NakitBagisHareket();
-            nakitBagisHareket.BagisciId = nakitBagisciId;
-            nakitBagisHareket.BagisMiktari = ekstreAktarma.Tutar;
-            nakitBagisHareket.BagisTarihi = ekstreAktarma.BagisTarihi;
-            if (bankaTanim != null)
+            if (ea==null)
             {
-                nakitBagisHareket.BankaId = bankaTanim.Id;
-            }
-            nakitBagisHareket.Adresi = ekstreAktarma.Adres.ReturnEmptyIfNull().ToString().Trim().ToUpper(culturInfo);
-            nakitBagisHareket.DovizCinsi = string.IsNullOrEmpty(ekstreAktarma.DovizCinsi) ? ProjeConstants.DOVIZ_TL : ekstreAktarma.DovizCinsi;
-            if (!ekstreAktarma.DovizCinsi.Equals(ProjeConstants.DOVIZ_TL))
-            {
-                nakitBagisHareket.DovizTutari = ekstreAktarma.DovizTutari;
-                nakitBagisHareket.DovizKuru = ekstreAktarma.DovizKuru;
-                nakitBagisHareket.KurTarihi = ekstreAktarma.KurTarihi;
-            }
+                BankaTanim bankaTanim = new BankaTanim();
+                bankaTanim = bankaTanim.SelectByBankaName(ekstreAktarma.BankaAdi);
 
-            nakitBagisHareket.Telefon = UtilityHelper.TelefonFormatla(ekstreAktarma.Telefon1.ReturnEmptyIfNull().ToString());
-            nakitBagisHareket.Ili = GetIlId(ekstreAktarma.Ili);
-            nakitBagisHareket.Ilcesi = ilce != null ? ilce.Id : 0;
-            nakitBagisHareket.Olusturan = currentUser;
-            nakitBagisHareket.Aciklama = ekstreAktarma.Aciklama;
+                Ilce ilce = new Ilce();
+                ilce = ilce.SelectByIlNameAndIlceName(ekstreAktarma.Ili, ekstreAktarma.Ilcesi);
 
-            var id = nakitBagisHareket.Save();
-            if (id != 0)
-            {
+                NakitBagisHareket nakitBagisHareket = new NakitBagisHareket();
+                nakitBagisHareket.BagisciId = nakitBagisciId;
+                nakitBagisHareket.BagisMiktari = ekstreAktarma.Tutar;
+                nakitBagisHareket.BagisTarihi = ekstreAktarma.BagisTarihi;
+                if (bankaTanim != null)
+                {
+                    nakitBagisHareket.BankaId = bankaTanim.Id;
+                }
+                nakitBagisHareket.Adresi = ekstreAktarma.Adres.ReturnEmptyIfNull().ToString().Trim().ToUpper(culturInfo);
+                nakitBagisHareket.DovizCinsi = string.IsNullOrEmpty(ekstreAktarma.DovizCinsi) ? ProjeConstants.DOVIZ_TL : ekstreAktarma.DovizCinsi;
+                if (!ekstreAktarma.DovizCinsi.Equals(ProjeConstants.DOVIZ_TL))
+                {
+                    nakitBagisHareket.DovizTutari = ekstreAktarma.DovizTutari;
+                    nakitBagisHareket.DovizKuru = ekstreAktarma.DovizKuru;
+                    nakitBagisHareket.KurTarihi = ekstreAktarma.KurTarihi;
+                }
 
-                nakitBagisHareketId = nakitBagisHareket.Id;
+                nakitBagisHareket.Telefon = UtilityHelper.TelefonFormatla(ekstreAktarma.Telefon1.ReturnEmptyIfNull().ToString());
+                nakitBagisHareket.Ili = GetIlId(ekstreAktarma.Ili);
+                nakitBagisHareket.Ilcesi = ilce != null ? ilce.Id : 0;
+                nakitBagisHareket.Olusturan = currentUser;
+                nakitBagisHareket.Aciklama = ekstreAktarma.Aciklama;
+                nakitBagisHareket.EkstreAktarmaId = ekstreAktarma.Id;
+                var id = nakitBagisHareket.Save();
+                if (id != 0)
+                {
+
+                    nakitBagisHareketId = nakitBagisHareket.Id;
+                }
+                else
+                {
+                    //TODO: hata mesajı verilecek
+                }
+
             }
-            else
-            {
-                //TODO: hata mesajı verilecek
-            }
-
             return nakitBagisHareketId;
         }
         private static int SaveBagisciFromEkstreAktarma(NakitBagisci nakitBagisci, EkstreAktarma ekstreAktarma, bool isNew, string currentUser)

@@ -498,6 +498,7 @@ namespace NBYS_WebParts.ArmaganListesiWP
             DurumDDL.Items.Add(ProjeConstants.DURUM_DAHAONCEIADE);
             DurumDDL.Items.Add(ProjeConstants.DURUM_PARAIADE);
             DurumDDL.Items.Add(ProjeConstants.DURUM_AFETNEDENIYLE_GONDERILMEDI);
+            DurumDDL.Items.Add(ProjeConstants.DURUM_EDEVLETTENBELGEGONDERILDI);
 
             //acilista durumu querystring ile gelene eşitle
             ListItem DurumItem = new ListItem();

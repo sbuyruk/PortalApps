@@ -30,8 +30,9 @@ namespace Model.NBYS
         public decimal DovizTutari { get; set; }
         public decimal DovizKuru { get; set; }
         public DateTime KurTarihi { get; set; }
+        public int EkstreAktarmaId { get; set; }
         //Methods
- public override int Save()
+        public override int Save()
         {
             try
             {
@@ -271,6 +272,17 @@ namespace Model.NBYS
             List<NakitBagisHareket> list = ToList<NakitBagisHareket>(dataTable);
 
             return (list);
+        }
+        public NakitBagisHareket SelectByEkstreAktarmaId(int ekstreAktarmaId)
+        {
+            string sqlString = string.Format(@"SELECT *
+                               FROM NakitBagisHareket_Table 
+                               WHERE EkstreAktarmaId= {0}", ekstreAktarmaId);
+
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            List<NakitBagisHareket> list = ToList<NakitBagisHareket>(dataTable);
+
+            return (list.FirstOrDefault());
         }
         public List<NakitBagisHareket> SelectByBagisciIdTarih(int nakitBagisciId, DateTime bastar,DateTime bittar)
         {

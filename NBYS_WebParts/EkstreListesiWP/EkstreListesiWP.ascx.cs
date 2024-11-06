@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Web.Script.Serialization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -685,7 +686,8 @@ namespace NBYS_WebParts.EkstreListesiWP
                 List<EkstreAktarma> aktarilmayanlar = eaDao.selectByEkstreIdList(value, ref rowCount);
                 if (aktarilmayanlar.Count > 0)
                 {
-                    var exceptionHelper = EkstreAktarma.SaveAll(aktarilmayanlar, currentUser); //seçilenler diğer tablolara dağıtılıyor
+                    var numbers = value?.Split(',')?.Select(Int32.Parse)?.ToList();
+                    var exceptionHelper = EkstreAktarma.SaveAll(numbers, currentUser); //seçilenler diğer tablolara dağıtılıyor
                     if (exceptionHelper.Exceptions.Count > 0)
                     {
                         ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "CloseModalOnay();", true);
@@ -1065,7 +1067,7 @@ namespace NBYS_WebParts.EkstreListesiWP
                 SilNowBtn.Visible = false;
                 KaydetNowBtn.Visible = true;
                 var openPopup = "OpenModalOnay();";
-                System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), openPopup, true);
+                UtilityHelper.ScriptCalistir( openPopup);
             }
         }
         protected void SecilenleriSilBtn_Click(object sender, EventArgs e)
@@ -1093,6 +1095,9 @@ namespace NBYS_WebParts.EkstreListesiWP
         {
             try
             {
+                KaydetNowBtn.Visible = false;
+                var closepopup = "CloseModalOnay();";
+                UtilityHelper.ScriptCalistir(closepopup);
                 SecilenListeyiKaydet();
             }
             catch (Exception ex)

@@ -213,7 +213,7 @@ namespace Model.TBYS
 						    (A.SozlesmeDurumu='Yenilendi' AND A.SozBitTar>{2}) 
                         )--SB 12.08.2022
                     )
-                ORDER BY A.Bolge, A.DosyaNo,B.Adi
+                ORDER BY A.BolgeId, A.DosyaNo,B.Adi
 
                 ", bolgeStr, ilkTarih.ReturnTRDateFormat(), sonTarih.ReturnDDMMYYYFormat(), aySayisiStr);
             return sqlString;
@@ -361,7 +361,7 @@ namespace Model.TBYS
                     LEFT JOIN Il_Table E ON E.IlAdi=D.Ili
                     LEFT JOIN OdemePlani_Table F ON F.Id=(Select MAX(Id) from OdemePlani_Table where SozlesmeId=A.Id AND VadeBasTar < {0}) 
                 WHERE Aktif=1
-                ORDER BY CASE WHEN A.DosyaNo=0 THEN 2 ELSE 1 END,ISNULL(A.DosyaNo,999999),  ISNULL(E.Bolge,'ZZZZZ'),  A.Id
+                ORDER BY CASE WHEN A.DosyaNo=0 THEN 2 ELSE 1 END,ISNULL(A.DosyaNo,999999),  ISNULL(A.BolgeId,0),  A.Id
                 ", tarih.ReturnTRDateFormat());
             DataTable dataTable = null;
             try

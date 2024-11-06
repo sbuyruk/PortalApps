@@ -520,8 +520,8 @@ namespace TBYS_WebParts.YasalFaizWP
                     string tufeTxtStr = "Tufe" + i + "Txt";
                     string ufeTxtStr = "Ufe" + i + "Txt";
                     string faizOranix = ((TextBox)this.FindControl(faizOraniTxtStr)).Text;
-                    string tufex = ((TextBox)this.FindControl(faizOraniTxtStr)).Text;
-                    string ufex = ((TextBox)this.FindControl(faizOraniTxtStr)).Text;
+                    string tufex = ((TextBox)this.FindControl(tufeTxtStr)).Text;
+                    string ufex = ((TextBox)this.FindControl(ufeTxtStr)).Text;
                     string aciklamaTxtStr = "Aciklama" + i + "Txt";
                     string aciklama = ((TextBox)this.FindControl(aciklamaTxtStr)).Text;
                     YasalFaiz yasalFaiz = new YasalFaiz();

@@ -30,7 +30,7 @@
         return true;
     }
     function OpenModalOnay() {
-        $("#ModalOnayDiv").modal({ backdrop: true });
+        $("#ModalOnayDiv").modal({ backdrop: false });
     }
 
     function CloseModalOnay() {
@@ -59,10 +59,10 @@
     }
     function SecilenleriKaydetTriggerBtnClicked() {
         document.getElementById('<%= paramArray.ClientID%>').value = tableData;
-            document.getElementById('<%= SecilenleriKaydetBtn.ClientID%>').click();
-        }
+        document.getElementById('<%= SecilenleriKaydetBtn.ClientID%>').click();
+    }
     function SecilenleriSilTriggerBtnClicked() {
-            document.getElementById('<%= paramArray.ClientID%>').value = tableData;
+        document.getElementById('<%= paramArray.ClientID%>').value = tableData;
         document.getElementById('<%= SecilenleriSilBtn.ClientID%>').click();
     }
     window.onload = setStartupOptions;
@@ -247,32 +247,33 @@
                             </div>
                         </div>
                     </div>
+                    <div class="card-footer">
+                        <div id="BtnDiv" style="display: none">
+                            <input id="SecilenleriKaydetTriggerBtn" class="btn btn-success" type="button" value="Seçilenleri Kaydet" onclick="SecilenleriKaydetTriggerBtnClicked();" />
+                            <input id="SecilenleriSilTriggerBtn" class="btn btn-success" type="button" value="Seçilenleri Sil" onclick="SecilenleriSilTriggerBtnClicked();" />
+                        </div>
+                        <div id="InvisibleDiv" style="display: none">
+                            <input id="paramArray" runat="server" type="text" />
+                            <asp:LinkButton ID="SecilenleriKaydetBtn" runat="server" CssClass="btn btn-success" CausesValidation="false" Text=" Kaydet " OnClick="SecilenleriKaydetBtn_Click" />
+                            <asp:LinkButton ID="SecilenleriSilBtn" runat="server" CssClass="btn btn-danger" CausesValidation="false" Text=" Sil " OnClick="SecilenleriSilBtn_Click" />
+                        </div>
+                        <asp:LinkButton CssClass="btn btn-outline-success float-right" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
+                    </div>
                 </ContentTemplate>
             </asp:UpdatePanel>
-        </div>
-        <div class="card-footer">
-            <div id="BtnDiv" style="display: none">
-                <input id="SecilenleriKaydetTriggerBtn" class="btn btn-success" type="button" value="Seçilenleri Kaydet" onclick="SecilenleriKaydetTriggerBtnClicked();" />
-                <input id="SecilenleriSilTriggerBtn" class="btn btn-success" type="button" value="Seçilenleri Sil" onclick="SecilenleriSilTriggerBtnClicked();" />
-            </div>
-            <div id="InvisibleDiv" style="display: none">
-                <input id="paramArray" runat="server" type="text" />
-                <asp:LinkButton ID="SecilenleriKaydetBtn" runat="server" CssClass="btn btn-success" CausesValidation="false" Text=" Kaydet " OnClick="SecilenleriKaydetBtn_Click" />
-                <asp:LinkButton ID="SecilenleriSilBtn" runat="server" CssClass="btn btn-danger" CausesValidation="false" Text=" Sil " OnClick="SecilenleriSilBtn_Click" />
-            </div>
-            <asp:LinkButton CssClass="btn btn-outline-success float-right" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
+             <asp:UpdateProgress ID="updateProgress" runat="server">
+                 <ProgressTemplate>
+                     <div class='loaderMainContainer'>
+                         <div class='loaderContainer'>
+                             <div class='loaderCircle'></div>
+                         </div>
+                     </div>
+                 </ProgressTemplate>
+             </asp:UpdateProgress>
         </div>
 
     </div>
-    <asp:UpdateProgress ID="updateProgress" runat="server">
-        <ProgressTemplate>
-            <div class='loaderMainContainer'>
-                <div class='loaderContainer'>
-                    <div class='loaderCircle'></div>
-                </div>
-            </div>
-        </ProgressTemplate>
-    </asp:UpdateProgress>
+
 
 </div>
 

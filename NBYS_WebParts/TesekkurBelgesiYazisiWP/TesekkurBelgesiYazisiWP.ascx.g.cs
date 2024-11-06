@@ -109,6 +109,10 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.LinkButton AdresOlusturBtn;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.UpdatePanel UpdatePanel;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -391,6 +395,24 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlAdresOlusturBtn() {
+            global::System.Web.UI.WebControls.LinkButton @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
+            this.AdresOlusturBtn = @__ctrl;
+            @__ctrl.TemplateControl = this;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "AdresOlusturBtn";
+            @__ctrl.CssClass = "btn btn-outline-info";
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Adres Oluştur"));
+            @__ctrl.Click -= new System.EventHandler(this.AdresOlusturBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.AdresOlusturBtn_Click);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControl__control2(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            <div class=\"card\">\r\n                <div class=\"card-header\">\r\n    " +
@@ -516,6 +538,10 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP {
             global::System.Web.UI.WebControls.LinkButton @__ctrl17;
             @__ctrl17 = this.@__BuildControlDosyaOlusturBtn();
             @__parser.AddParsedSubObject(@__ctrl17);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl18;
+            @__ctrl18 = this.@__BuildControlAdresOlusturBtn();
+            @__parser.AddParsedSubObject(@__ctrl18);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                </div>\r\n            </div>\r\n        "));
         }
         

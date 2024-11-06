@@ -257,6 +257,7 @@ namespace NBYS_WebParts.ArmaganEditWP
             DurumDDL.Items.Add(ProjeConstants.DURUM_IADE);
             DurumDDL.Items.Add(ProjeConstants.DURUM_DAHAONCEIADE);
             DurumDDL.Items.Add(ProjeConstants.DURUM_AFETNEDENIYLE_GONDERILMEDI);
+            DurumDDL.Items.Add(ProjeConstants.DURUM_EDEVLETTENBELGEGONDERILDI);
         }
         private void FillArmaganTanim()
         {

@@ -241,10 +241,6 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.UpdatePanel TableUpdatePanel;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.HtmlControls.HtmlInputText paramArray;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -258,6 +254,10 @@ namespace NBYS_WebParts.EkstreListesiWP {
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton ExcelBtn;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.UpdatePanel TableUpdatePanel;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -1010,6 +1010,74 @@ namespace NBYS_WebParts.EkstreListesiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.HtmlControls.HtmlInputText @__BuildControlparamArray() {
+            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl;
+            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
+            this.paramArray = @__ctrl;
+            @__ctrl.TemplateControl = this;
+            @__ctrl.ID = "paramArray";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlSecilenleriKaydetBtn() {
+            global::System.Web.UI.WebControls.LinkButton @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
+            this.SecilenleriKaydetBtn = @__ctrl;
+            @__ctrl.TemplateControl = this;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "SecilenleriKaydetBtn";
+            @__ctrl.CssClass = "btn btn-success";
+            @__ctrl.CausesValidation = false;
+            @__ctrl.Text = " Kaydet ";
+            @__ctrl.Click -= new System.EventHandler(this.SecilenleriKaydetBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.SecilenleriKaydetBtn_Click);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlSecilenleriSilBtn() {
+            global::System.Web.UI.WebControls.LinkButton @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
+            this.SecilenleriSilBtn = @__ctrl;
+            @__ctrl.TemplateControl = this;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "SecilenleriSilBtn";
+            @__ctrl.CssClass = "btn btn-danger";
+            @__ctrl.CausesValidation = false;
+            @__ctrl.Text = " Sil ";
+            @__ctrl.Click -= new System.EventHandler(this.SecilenleriSilBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.SecilenleriSilBtn_Click);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlExcelBtn() {
+            global::System.Web.UI.WebControls.LinkButton @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
+            this.ExcelBtn = @__ctrl;
+            @__ctrl.TemplateControl = this;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.CssClass = "btn btn-outline-success float-right";
+            @__ctrl.ID = "ExcelBtn";
+            @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
+            @__ctrl.Text = "Excele Aktar";
+            @__ctrl.OnClientClick = "javascript:setFormSubmitToFalse()";
+            @__ctrl.Click -= new System.EventHandler(this.ExcelBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.ExcelBtn_Click);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControl__control2(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
@@ -1292,7 +1360,29 @@ namespace NBYS_WebParts.EkstreListesiWP {
                             </div>
                         </div>
                     </div>
-                "));
+                    <div class=""card-footer"">
+                        <div id=""BtnDiv"" style=""display: none"">
+                            <input id=""SecilenleriKaydetTriggerBtn"" class=""btn btn-success"" type=""button"" value=""Seçilenleri Kaydet"" onclick=""SecilenleriKaydetTriggerBtnClicked();"" />
+                            <input id=""SecilenleriSilTriggerBtn"" class=""btn btn-success"" type=""button"" value=""Seçilenleri Sil"" onclick=""SecilenleriSilTriggerBtnClicked();"" />
+                        </div>
+                        <div id=""InvisibleDiv"" style=""display: none"">
+                            "));
+            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl47;
+            @__ctrl47 = this.@__BuildControlparamArray();
+            @__parser.AddParsedSubObject(@__ctrl47);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl48;
+            @__ctrl48 = this.@__BuildControlSecilenleriKaydetBtn();
+            @__parser.AddParsedSubObject(@__ctrl48);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl49;
+            @__ctrl49 = this.@__BuildControlSecilenleriSilBtn();
+            @__parser.AddParsedSubObject(@__ctrl49);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl50;
+            @__ctrl50 = this.@__BuildControlExcelBtn();
+            @__parser.AddParsedSubObject(@__ctrl50);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -1310,75 +1400,15 @@ namespace NBYS_WebParts.EkstreListesiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.HtmlControls.HtmlInputText @__BuildControlparamArray() {
-            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl;
-            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
-            this.paramArray = @__ctrl;
-            @__ctrl.ID = "paramArray";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.LinkButton @__BuildControlSecilenleriKaydetBtn() {
-            global::System.Web.UI.WebControls.LinkButton @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
-            this.SecilenleriKaydetBtn = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "SecilenleriKaydetBtn";
-            @__ctrl.CssClass = "btn btn-success";
-            @__ctrl.CausesValidation = false;
-            @__ctrl.Text = " Kaydet ";
-            @__ctrl.Click -= new System.EventHandler(this.SecilenleriKaydetBtn_Click);
-            @__ctrl.Click += new System.EventHandler(this.SecilenleriKaydetBtn_Click);
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.LinkButton @__BuildControlSecilenleriSilBtn() {
-            global::System.Web.UI.WebControls.LinkButton @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
-            this.SecilenleriSilBtn = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "SecilenleriSilBtn";
-            @__ctrl.CssClass = "btn btn-danger";
-            @__ctrl.CausesValidation = false;
-            @__ctrl.Text = " Sil ";
-            @__ctrl.Click -= new System.EventHandler(this.SecilenleriSilBtn_Click);
-            @__ctrl.Click += new System.EventHandler(this.SecilenleriSilBtn_Click);
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.LinkButton @__BuildControlExcelBtn() {
-            global::System.Web.UI.WebControls.LinkButton @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
-            this.ExcelBtn = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-success float-right";
-            @__ctrl.ID = "ExcelBtn";
-            @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
-            @__ctrl.Text = "Excele Aktar";
-            @__ctrl.OnClientClick = "javascript:setFormSubmitToFalse()";
-            @__ctrl.Click -= new System.EventHandler(this.ExcelBtn_Click);
-            @__ctrl.Click += new System.EventHandler(this.ExcelBtn_Click);
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControl__control3(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            <div class=\'loaderMainContainer\'>\r\n                <div class=\'load" +
-                        "erContainer\'>\r\n                    <div class=\'loaderCircle\'></div>\r\n           " +
-                        "     </div>\r\n            </div>\r\n        "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                     <div class='loaderMainContainer'>
+                         <div class='loaderContainer'>
+                             <div class='loaderCircle'></div>
+                         </div>
+                     </div>
+                 "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -1413,21 +1443,9 @@ namespace NBYS_WebParts.EkstreListesiWP {
             global::System.Web.UI.UpdatePanel @__ctrl5;
             @__ctrl5 = this.@__BuildControlTableUpdatePanel();
             @__parser.AddParsedSubObject(@__ctrl5);
-            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl6;
-            @__ctrl6 = this.@__BuildControlparamArray();
+            global::System.Web.UI.UpdateProgress @__ctrl6;
+            @__ctrl6 = this.@__BuildControlupdateProgress();
             @__parser.AddParsedSubObject(@__ctrl6);
-            global::System.Web.UI.WebControls.LinkButton @__ctrl7;
-            @__ctrl7 = this.@__BuildControlSecilenleriKaydetBtn();
-            @__parser.AddParsedSubObject(@__ctrl7);
-            global::System.Web.UI.WebControls.LinkButton @__ctrl8;
-            @__ctrl8 = this.@__BuildControlSecilenleriSilBtn();
-            @__parser.AddParsedSubObject(@__ctrl8);
-            global::System.Web.UI.WebControls.LinkButton @__ctrl9;
-            @__ctrl9 = this.@__BuildControlExcelBtn();
-            @__parser.AddParsedSubObject(@__ctrl9);
-            global::System.Web.UI.UpdateProgress @__ctrl10;
-            @__ctrl10 = this.@__BuildControlupdateProgress();
-            @__parser.AddParsedSubObject(@__ctrl10);
             @__ctrl.SetRenderMethodDelegate(new System.Web.UI.RenderMethod(this.@__Render__control1));
         }
         
@@ -1460,7 +1478,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         return true;
     }
     function OpenModalOnay() {
-        $(""#ModalOnayDiv"").modal({ backdrop: true });
+        $(""#ModalOnayDiv"").modal({ backdrop: false });
     }
 
     function CloseModalOnay() {
@@ -1491,12 +1509,12 @@ namespace NBYS_WebParts.EkstreListesiWP {
         document.getElementById('");
                          @__w.Write( paramArray.ClientID);
 
-            @__w.Write("\').value = tableData;\r\n            document.getElementById(\'");
-                             @__w.Write( SecilenleriKaydetBtn.ClientID);
+            @__w.Write("\').value = tableData;\r\n        document.getElementById(\'");
+                         @__w.Write( SecilenleriKaydetBtn.ClientID);
 
-            @__w.Write("\').click();\r\n        }\r\n    function SecilenleriSilTriggerBtnClicked() {\r\n       " +
-                    "     document.getElementById(\'");
-                             @__w.Write( paramArray.ClientID);
+            @__w.Write("\').click();\r\n    }\r\n    function SecilenleriSilTriggerBtnClicked() {\r\n        doc" +
+                    "ument.getElementById(\'");
+                         @__w.Write( paramArray.ClientID);
 
             @__w.Write("\').value = tableData;\r\n        document.getElementById(\'");
                          @__w.Write( SecilenleriSilBtn.ClientID);
@@ -1533,25 +1551,9 @@ namespace NBYS_WebParts.EkstreListesiWP {
             @__w.Write("\r\n            </h3>\r\n        </div>\r\n        <div class=\"card-body\">\r\n           " +
                     " ");
             parameterContainer.Controls[4].RenderControl(@__w);
-            @__w.Write(@"
-        </div>
-        <div class=""card-footer"">
-            <div id=""BtnDiv"" style=""display: none"">
-                <input id=""SecilenleriKaydetTriggerBtn"" class=""btn btn-success"" type=""button"" value=""Seçilenleri Kaydet"" onclick=""SecilenleriKaydetTriggerBtnClicked();"" />
-                <input id=""SecilenleriSilTriggerBtn"" class=""btn btn-success"" type=""button"" value=""Seçilenleri Sil"" onclick=""SecilenleriSilTriggerBtnClicked();"" />
-            </div>
-            <div id=""InvisibleDiv"" style=""display: none"">
-                ");
+            @__w.Write("\r\n             ");
             parameterContainer.Controls[5].RenderControl(@__w);
-            @__w.Write("\r\n                ");
-            parameterContainer.Controls[6].RenderControl(@__w);
-            @__w.Write("\r\n                ");
-            parameterContainer.Controls[7].RenderControl(@__w);
-            @__w.Write("\r\n            </div>\r\n            ");
-            parameterContainer.Controls[8].RenderControl(@__w);
-            @__w.Write("\r\n        </div>\r\n\r\n    </div>\r\n    ");
-            parameterContainer.Controls[9].RenderControl(@__w);
-            @__w.Write("\r\n\r\n</div>\r\n\r\n");
+            @__w.Write("\r\n        </div>\r\n\r\n    </div>\r\n\r\n\r\n</div>\r\n\r\n");
         }
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +

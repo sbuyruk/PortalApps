@@ -406,11 +406,11 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP
         }
         private decimal SecilenAyIcinTufeBul(DateTime tarih)
         {
-            tarih = tarih.AddMonths(1);//bir önceki ay geliyor
+            //tarih = tarih.AddMonths(1);//bir önceki ay geliyor
             decimal tufe = 1M;
             YasalFaiz yasalFaiz = new YasalFaiz();
             //DateTime gelecekAy = DateTime.Today.AddMonths(1);
-            yasalFaiz = yasalFaiz.SelectByYilAy(tarih.Year, tarih.Month);//gelecek ay artacak
+            yasalFaiz = yasalFaiz.SelectByYilAy(tarih.Year, tarih.Month);
             if (yasalFaiz != null)
             {
                 tufe = yasalFaiz.Tufe;

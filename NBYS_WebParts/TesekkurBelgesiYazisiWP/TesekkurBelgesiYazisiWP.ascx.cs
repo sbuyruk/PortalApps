@@ -191,10 +191,11 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
         {
             //ARMAGAN PERIODU
             //10 Günde bir
-            //GunDDL.Items.Add(new ListItem("Tüm Ay", "0"));
-            //GunDDL.Items.Add(new ListItem("1-10", "1"));
-            //GunDDL.Items.Add(new ListItem("11-20", "2"));
-            //GunDDL.Items.Add(new ListItem("20-Ay Sonu", "3"));
+            GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Tüm Ay", "0"));
+            GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("1-7", "1"));
+            GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("8-14", "2"));
+            GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("15-22", "3"));
+            GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("23-Ay Sonu", "4"));
 
             //15 Günde bir
             //GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Tüm Ay", "0"));
@@ -202,7 +203,7 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
             //GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("16-Ay Sonu", "2"));
 
             //Ayda bir
-            GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Tüm Ay", "0"));
+            //GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Tüm Ay", "0"));
         }
         private void AyDDLDoldur()
         {
@@ -449,42 +450,40 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
             {
                 //ARMAGAN PERIODU
                 //15 Günde bir
+                //if (gunStr.Equals("0"))
+                //{
+                //    bastar = new DateTime(yil, ay, 1);
+                //}
+                //else if (gunStr.Equals("1"))
+                //{
+                //    bastar = new DateTime(yil, ay, 1);
+                //}
+                //else
+                //{
+                //    bastar = new DateTime(yil, ay, 16);
+                //}
+
+                // 10 Günde bir
                 if (gunStr.Equals("0"))
                 {
-                    bastar = new DateTime(yil, ay, 1);
+                    bastar = new DateTime(yil, ay, 1);//hepsi
                 }
                 else if (gunStr.Equals("1"))
                 {
                     bastar = new DateTime(yil, ay, 1);
                 }
-                else
+                else if (gunStr.Equals("2"))
                 {
-                    bastar = new DateTime(yil, ay, 16);
+                    bastar = new DateTime(yil, ay, 8);
                 }
-
-                // 10 Günde bir
-                //if (gunStr.Equals("0"))
-                //{
-                //    bastar = new DateTime(yil, ay, 1);
-                //    int songun = bastar.AddMonths(1).AddDays(-1).Day;
-                //    bittar = new DateTime(yil, ay, songun);
-                //}
-                //else if (gunStr.Equals("1"))
-                //{
-                //    bastar = new DateTime(yil, ay, 1);
-                //    bittar = new DateTime(yil, ay, 11);
-                //}
-                //else if (gunStr.Equals("2"))
-                //{
-                //    bastar = new DateTime(yil, ay, 11);
-                //    bittar = new DateTime(yil, ay, 20);
-                //}
-                //else if (gunStr.Equals("3"))
-                //{
-                //    bastar = new DateTime(yil, ay, 21);
-                //    DateTime basGun = new DateTime(yil, ay, 1).AddMonths(1).AddDays(-1);
-                //    bittar = new DateTime(yil, ay, basGun.Day);
-
+                else if (gunStr.Equals("3"))
+                {
+                    bastar = new DateTime(yil, ay, 15);
+                } 
+                else if (gunStr.Equals("4"))
+                {
+                    bastar = new DateTime(yil, ay, 23);
+                }
             }
             return bastar;
         }
@@ -504,43 +503,42 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
             {
                 //ARMAGAN PERIODU
                 //15 Günde bir
-                if (gunStr.Equals("0"))
-                {
-                    int songun = (new DateTime(yil, ay, 1)).AddMonths(1).AddDays(-1).Day;
-                    bittar = new DateTime(yil, ay, songun);
-                }
-                else if (gunStr.Equals("1"))
-                {
-                    bittar = new DateTime(yil, ay, 15);
-                }
-                else
-                {
-                    DateTime sonGun = new DateTime(yil, ay, 1).AddMonths(1).AddDays(-1);
-                    bittar = new DateTime(yil, ay, sonGun.Day);
-                }
-
-                // 10 Günde bir
                 //if (gunStr.Equals("0"))
                 //{
-                //    bastar = new DateTime(yil, ay, 1);
-                //    int songun = bastar.AddMonths(1).AddDays(-1).Day;
+                //    int songun = (new DateTime(yil, ay, 1)).AddMonths(1).AddDays(-1).Day;
                 //    bittar = new DateTime(yil, ay, songun);
                 //}
                 //else if (gunStr.Equals("1"))
                 //{
-                //    bastar = new DateTime(yil, ay, 1);
-                //    bittar = new DateTime(yil, ay, 11);
+                //    bittar = new DateTime(yil, ay, 15);
                 //}
-                //else if (gunStr.Equals("2"))
+                //else
                 //{
-                //    bastar = new DateTime(yil, ay, 11);
-                //    bittar = new DateTime(yil, ay, 20);
+                //    DateTime sonGun = new DateTime(yil, ay, 1).AddMonths(1).AddDays(-1);
+                //    bittar = new DateTime(yil, ay, sonGun.Day);
                 //}
-                //else if (gunStr.Equals("3"))
-                //{
-                //    bastar = new DateTime(yil, ay, 21);
-                //    DateTime basGun = new DateTime(yil, ay, 1).AddMonths(1).AddDays(-1);
-                //    bittar = new DateTime(yil, ay, basGun.Day);
+
+                // 10 Günde bir
+                if (gunStr.Equals("0"))
+                {
+                    bittar = new DateTime(yil, ay, 1).AddMonths(1).AddDays(-1);
+                }
+                else if (gunStr.Equals("1"))
+                {
+                    bittar = new DateTime(yil, ay, 7);
+                }
+                else if (gunStr.Equals("2"))
+                {
+                    bittar = new DateTime(yil, ay, 14);
+                }
+                else if (gunStr.Equals("3"))
+                {
+                    bittar = new DateTime(yil, ay, 22);
+                }
+                else if (gunStr.Equals("4"))
+                {
+                    bittar = new DateTime(yil, ay, 1).AddMonths(1).AddDays(-1);
+                }
 
             }
             return bittar;
@@ -634,10 +632,10 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
                 bool isYaziOlusturuldu = TesekkurBelgesiDosyasiOlustur(yaziDosyaAdi);
                 if (isYaziOlusturuldu)
                 {
-                    bool etiketOlustuMu = YeniAdresEtiketDosyasiOlustur(etiketDosyaAdi);
-                    if (etiketOlustuMu)
-                        MessageHelper.PublishMessage("Teşekkür belgeleri ve adres etiketleri hazırlandı, Dosya ismine basarak yazıyı indirebilirsiniz.", ProjeConstants.MESAJ_BASARILI, 2000);
-                    else
+                    //bool etiketOlustuMu = YeniAdresEtiketDosyasiOlustur(etiketDosyaAdi);
+                    //if (etiketOlustuMu)
+                    //    MessageHelper.PublishMessage("Teşekkür belgeleri ve adres etiketleri hazırlandı, Dosya ismine basarak yazıyı indirebilirsiniz.", ProjeConstants.MESAJ_BASARILI, 2000);
+                    //else
                     {
                         MessageHelper.PublishMessage("Teşekkür belgeleri hazırlandı, Dosya ismine basarak yazıyı indirebilirsiniz.", ProjeConstants.MESAJ_BASARILI, 2000);
                         MessageHelper.PublishMessage("Adres etiketleri oluşturulamadı.", ProjeConstants.MESAJ_BILGI, 3000);
@@ -646,6 +644,30 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
                 }
                 //else
                 //    MessageHelper.PublishMessage("Hata Oluştu", ProjeConstants.MESAJ_HATA);
+            }
+            catch (Exception ex)
+            {
+                Exception ex1 = new Exception("Yazı ve Adres oluşturmada hata");
+                ExceptionHelper exh = new ExceptionHelper(ex);
+                exh.PublishException();
+            }
+        }
+        protected void AdresOlusturBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Dosya adları 
+                string zaman = DateTime.Now.ToString("dd-MM-yyyy-HH-mm");
+                string etiketDosyaAdi = "Adres-EtiketiTES(" + zaman + ").docx";
+
+                bool etiketOlustuMu = YeniAdresEtiketDosyasiOlustur(etiketDosyaAdi);
+                if (etiketOlustuMu)
+                    MessageHelper.PublishMessage("Teşekkür belgeleri ve adres etiketleri hazırlandı, Dosya ismine basarak yazıyı indirebilirsiniz.", ProjeConstants.MESAJ_BASARILI, 2000);
+                else
+                {
+                    MessageHelper.PublishMessage("Teşekkür belgeleri hazırlandı, Dosya ismine basarak yazıyı indirebilirsiniz.", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Adres etiketleri oluşturulamadı.", ProjeConstants.MESAJ_BILGI, 3000);
+                }
             }
             catch (Exception ex)
             {

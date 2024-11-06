@@ -365,7 +365,7 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
         {
             decimal tufe = 1M;
             YasalFaiz yasalFaiz = new YasalFaiz();
-            tarih = tarih.AddMonths(1);//bir önceki ay geliyor
+            //tarih = tarih.AddMonths(1);//bir önceki ay geliyor
             //DateTime gelecekAy = DateTime.Today.AddMonths(1);
             yasalFaiz = yasalFaiz.SelectByYilAy(tarih.Year, tarih.Month);
             if (yasalFaiz != null)

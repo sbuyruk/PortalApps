@@ -656,6 +656,8 @@ namespace Utility.ProjeGlobal
         public const int BANKA_KARTILE_ILKKACSATIRHARIC = 0;//hastitle true o yüzden 0
         public const int BANKA_KARTILE_SONKACSATIRHARIC = 0;
         //EDevlet
+        public const string BANKA_EDEVLETBAGIS = "EDevlet ile Bağış";
+        public const int BANKA_EDEVLETBAGIS_INT = 22;
         public const int BANKA_EDEVLET_ILKKACSATIRHARIC = 0;//hastitle true o yüzden 0
         public const int BANKA_EDEVLET_SONKACSATIRHARIC = 0;
         //Teb
@@ -681,8 +683,7 @@ namespace Utility.ProjeGlobal
 
         //Kart ile
         public const string BANKA_KARTILEBAGIS = "Kart ile Bağış";
-        //EDevlet
-        public const string BANKA_EDEVLETBAGIS = "EDevlet ile Bağış";
+
         #endregion 
         //armagan durumu
         public const string DURUM_BOS = "";
@@ -699,6 +700,7 @@ namespace Utility.ProjeGlobal
         public const string DURUM_DAHAONCEIADE = "Daha Önce Belgesi İade Edildi";
         public const string DURUM_PARAIADE = "Parası İade Edildi";
         public const string DURUM_AFETNEDENIYLE_GONDERILMEDI = "Afet Nedeniyle Gönderilmedi";
+        public const string DURUM_EDEVLETTENBELGEGONDERILDI = "E-Devletten Belge Gönderildi";
 
         //Armaganlar
         public const int ARMAGAN_ALTINID = 4;
