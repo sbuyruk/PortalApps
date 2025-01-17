@@ -60,8 +60,7 @@ namespace TBYS_WebParts.TasinmazBagisciBilgiListesiWP
         {
             var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
             //var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
-            System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler,
-                typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "setDataSet(" + jsonData + ");", true);
+            UtilityHelper.ScriptCalistir("setDataSet(" + jsonData + ");");
         }
         private string TabloJson()
         {
@@ -102,10 +101,24 @@ namespace TBYS_WebParts.TasinmazBagisciBilgiListesiWP
                 bagisciListItem.Bolge = BolgeGetir(tasinmazBagisci.Ili);
                 bagisciListItem.AdiSoyadi = tasinmazBagisci.Adi + " " + tasinmazBagisci.Soyadi;
                 bagisciListItem.Meslegi = tasinmazBagisci.Meslegi;
+                bagisciListItem.Tahsil = tasinmazBagisci.Tahsil;
+                bagisciListItem.SagVefat = tasinmazBagisci.Sag_vefat;
                 bagisciListItem.Adres = tasinmazBagisci.Adres;
                 bagisciListItem.IlceIl = tasinmazBagisci.Ilcesi + "/" + tasinmazBagisci.Ili;
                 bagisciListItem.Telefon = tasinmazBagisci.Telefon1 +" - " + tasinmazBagisci.Telefon2;
 
+                string talepler = string.Empty;
+                BagisciTalepleri bagisciTalepleridao = new BagisciTalepleri();
+                List<BagisciTalepleri> talepList = bagisciTalepleridao.SelectByBagisciId(tasinmazBagisci.Id);
+           
+                foreach (BagisciTalepleri talep in talepList)
+                {
+
+                    talepler += talep.Aciklama + "</br>" + System.Environment.NewLine ;
+
+                }
+                
+                bagisciListItem.Talepleri = talepler;
                 string bagislari = string.Empty;
                 decimal tahminiRayicToplami = 0m;
                 DataTable dataTable = bagisdao.SelectByBagisciIdGroupByKullanimSekli(tasinmazBagisci.Id);
@@ -168,10 +181,13 @@ namespace TBYS_WebParts.TasinmazBagisciBilgiListesiWP
             public string Bolge { get; set; }
             public string AdiSoyadi { get; set; }
             public string Meslegi { get; set; }
+            public string Tahsil { get; set; }
+            public string SagVefat { get; set; }
             public string Adres { get; set; }
             public string IlceIl { get; set; }
             public string Telefon { get; set; }
             public string Bagislari { get; set; }
+            public string Talepleri { get; set; }
             public string TahminiRayic { get; set; }
         }
 

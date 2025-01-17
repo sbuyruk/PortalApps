@@ -189,7 +189,7 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP
 
         private List<TasinmazBagisciListItem> GetDataList()
         {
-            bool isEditable = BolgeIdQS == ProjeConstants.BOLGE_HEPSI_INT || BolgeIdQS == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? true : false;
+            
             DataTable dataTable = GetBagisciData();
             List<string> bagisciBilgiFormuDosyalari = UtilityHelper.GetFileNameListFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, ProjeConstants.DOSYA_BAGISBILGIVETALEP_FORMU);
             List<string> bagisciTaahhutFormuDosyalari = UtilityHelper.GetFileNameListFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, ProjeConstants.DOSYA_TAAHHUT_FORMU);
@@ -201,10 +201,13 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP
                 string toplamBagisAdedi = row["ToplamBagisAdedi"].ToString();
                 string sagVefat = row["Sag_vefat"].ToString();
                 string bolge = row["Bolge"].ToString();
+                int bolgeId = row["BagisciBolgeId"].ReturnZeroIfNull().ConvertToInt();
                 string ilIlce = row["IlIlce"].ToString();
 
                 string pageUrl = ProjeConstants.PAGE_TASINMAZBAGISCI_GIRIS;
-
+                bool isEditable = BolgeIdQS == ProjeConstants.BOLGE_HEPSI_INT 
+                    || BolgeIdQS == ProjeConstants.BOLGE_GENELMUDURLUK_INT 
+                    || BolgeIdQS == bolgeId;
                 TasinmazBagisciListItem tasinmazBagisciListItem = new TasinmazBagisciListItem();
                 tasinmazBagisciListItem.TasinmazBagisciId = tasinmazBagisciId;
                 tasinmazBagisciListItem.AdiSoyadi = adiSoyadi.Trim();
@@ -234,9 +237,9 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP
 
         private string CreateDataTable(string jsonData)
         {
-            string duzenleGorunsun = BolgeIdQS==ProjeConstants.BOLGE_HEPSI_INT || BolgeIdQS == ProjeConstants.BOLGE_GENELMUDURLUK_INT
-                ? "{ targets:10, visible:true}," 
-                : "{ targets:10, visible:false},";
+            //string duzenleGorunsun = BolgeIdQS==ProjeConstants.BOLGE_HEPSI_INT || BolgeIdQS == ProjeConstants.BOLGE_GENELMUDURLUK_INT
+            //    ? "{ targets:10, visible:true}," 
+            //    : "{ targets:10, visible:false},";
 
             string tableString = @"
             jQuery(document).ready(function() {
@@ -271,10 +274,7 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP
 
             ],
             'order': [[0, 'asc']],//AdiSoyadi Sıralı
-            columnDefs:
-                [
-                " + duzenleGorunsun + @"
-                ],
+
             'language': {
                         'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                 'decimal': ',',
@@ -362,7 +362,7 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP
         private DataTable GetBagisciData()
         {
             TasinmazBagisci tasinmazBagisci = new TasinmazBagisci();
-            DataTable dataTable = tasinmazBagisci.SelectAllCountBagisAdediReturnDataTable(BolgeIdQS);
+            DataTable dataTable = tasinmazBagisci.SelectAllCountBagisAdediReturnDataTable(ProjeConstants.BOLGE_HEPSI_INT);//BolgeIdQS);
             return dataTable;
         }
         protected void YeniKayitBtn_Click(object sender, EventArgs e)

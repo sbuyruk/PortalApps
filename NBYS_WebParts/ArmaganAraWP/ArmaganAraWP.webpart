@@ -2,12 +2,12 @@
 <webParts>
   <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
     <metaData>
-      <type name="IKYS_WebParts.PersonelBilgiGirisiWP.PersonelBilgiGirisiWP, $SharePoint.Project.AssemblyFullName$" />
+      <type name="NBYS_WebParts.ArmaganAraWP.ArmaganAraWP, $SharePoint.Project.AssemblyFullName$" />
       <importErrorMessage>$Resources:core,ImportErrorMessage;</importErrorMessage>
     </metaData>
     <data>
       <properties>
-        <property name="Title" type="string">IKYS_WebParts - PersonelBilgiGirisiWP</property>
+        <property name="Title" type="string">NBYS_WebParts - ArmaganAraWP</property>
         <property name="Description" type="string">My Visual Web Part</property>
       </properties>
     </data>

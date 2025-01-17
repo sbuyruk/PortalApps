@@ -64,7 +64,7 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
             {
                 if (!Page.IsPostBack)
                 {
-                    YonergeLnk.HRef = NBYSOrtak.YonergeURLGetir(ProjeConstants.PARAM_NBYSYONERGE, ProjeConstants.PAGE_COKDEFABAGISYAPAN_LIST);
+                    YonergeLnk.HRef = UtilityHelper.YonergeURLGetir(ProjeConstants.PARAM_NBYSYONERGE, ProjeConstants.NBYSBELGELERI_LIB, ProjeConstants.PAGE_COKDEFABAGISYAPAN_LIST);
                     TabloOlustur();
                 }
             }

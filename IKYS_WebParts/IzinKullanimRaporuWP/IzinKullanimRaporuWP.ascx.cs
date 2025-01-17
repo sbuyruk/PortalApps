@@ -225,9 +225,15 @@ namespace IKYS_WebParts.IzinKullanimRaporuWP
                         }
                         else
                         {
-                            izinHakki = izinDonemi.IzinHakki + " " + izinDonemi.Birim;
+                            int eskiDonemlerdenKalanIzin= IKYSOrtak.KalanIzinToplamiGetir(personelId, true) ;//
+                        
+                            izinHakki = izinDonemi.IzinHakki +
+                                " " + izinDonemi.Birim +
+                                (eskiDonemlerdenKalanIzin > 0 ? " ( +" + eskiDonemlerdenKalanIzin + " " + izinDonemi.Birim + ") " 
+                                : (eskiDonemlerdenKalanIzin < 0 ? "<strong style = 'color:red;'> ("  + eskiDonemlerdenKalanIzin + " " +izinDonemi.Birim + ") </strong>" : string.Empty));
+                               
                             kullanilanIzin = izinDonemi.KullanilanIzin + " " + izinDonemi.Birim;
-                            kalanIzin = izinDonemi.KalanIzin + " " + izinDonemi.Birim;
+                            kalanIzin = IKYSOrtak.KalanIzinToplamiGetir(personelId, false) + " " + izinDonemi.Birim; //izinDonemi.KalanIzin + " " + izinDonemi.Birim;
                         }
 
 

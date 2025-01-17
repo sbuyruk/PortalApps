@@ -152,7 +152,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
                 if (!Page.IsPostBack) // sayfa ilk kez açılıyorsa (bu sayfanın içindeki butona basılma anı hariç)
                 {
 
-                    YonergeLnk.HRef = NBYSOrtak.YonergeURLGetir(ProjeConstants.PARAM_FTKYONERGE, ProjeConstants.PAGE_FTKISLEMLERI);
+                    YonergeLnk.HRef = UtilityHelper.YonergeURLGetir(ProjeConstants.PARAM_FTKYONERGE, ProjeConstants.NBYSBELGELERI_LIB, ProjeConstants.PAGE_FTKISLEMLERI);
                     IlilceBolgeDDLDoldur();
                     FTKListQS.Clear();
                     if (string.IsNullOrEmpty(FTKIslemIdQS))

@@ -17,24 +17,29 @@
         myjsons = myset;
     }
     var myjsons = [{
-        "Sirano": "", "Bolge": "", "AdiSoyadi": "", "Meslegi": "", "Adres": "", "IlceIl": "", "Telefon": "", "Bagislari": "", "TahminiRayic": ""
+        "Sirano": "", "Bolge": "", "AdiSoyadi": "", "Meslegi": "", "Adres": "", "IlceIl": "", "Telefon": "", "Talepleri": "", "Bagislari": "", "TahminiRayic": ""
     }];
     jQuery(document).ready(function () {
 
         jQuery('#CustomDataTable').DataTable({
             data: myjsons,
             columns: [
-                { data: "Sirano" },
+                //{ data: "Sirano" },
                 { data: "Bolge" },
                 { data: "AdiSoyadi" },
                 { data: "Meslegi" },
+                { data: "SagVefat" },
                 { data: "Adres" },
                 { data: "IlceIl" },
                 { data: "Telefon" },
+                { data: "Talepleri" },
                 { data: "Bagislari" },
                 { data: "TahminiRayic", "className": "text-right" },
             
             ],
+            columnDefs: [
+                
+                { width: 15, targets: 1 }],
             'order': [[1, 'asc']],//sort Bolge
             "language": {
                 "url": "http://tskgv-portal/OrtakBelgeler/Turkish.txt",
@@ -92,20 +97,22 @@
             <asp:UpdatePanel ID="upPanel" runat="server">
                 <ContentTemplate>
                     <div class="form-group">
-                <table id="CustomDataTable" class="table table-striped row-border" width="100%">
+                <table id="CustomDataTable" class="table small table-striped row-border" width="100%">
 
                     <thead>
                         <tr>
                             <th colspan="10" Id="BaslikTH" runat ="server" class="text-center font-weight-bold">Bağışçı Listesi</th>
                         </tr>
                         <tr>
-                            <th>Sıra</th>
+                            <%--<th>Sıra</th>--%>
                             <th>Bölge</th>
                             <th>Adı Soyadı</th>
                             <th>Mesleği</th>
+                            <th>Sağ/Vefat</th>
                             <th>Adresi</th>
                             <th>İlçesi/İli</th>
                             <th>Telefon1</th>
+                            <th>Talepleri</th>
                             <th>Bağışları</th>
                             <th>Tahmini Rayiç</th>
                         </tr>

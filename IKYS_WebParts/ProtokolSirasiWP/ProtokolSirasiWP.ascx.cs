@@ -9,6 +9,7 @@ using System.Web.Script.Serialization;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using static Model.IKYS.Personel;
 
 namespace IKYS_WebParts.ProtokolSirasiWP
 {
@@ -134,7 +135,7 @@ $('#CustomDataTable').on( 'draw.dt', function () {
             DateTime islemTarihiDateTime = new DateTime(2020, 1, 9);
 
             Personel personelDao = new Personel();
-            DataTable dataTable = personelDao.SelectCalisanPersonelReturnDataTable();
+            DataTable dataTable = personelDao.SelectCalisanPersonelReturnDataTable(PersonelTipi.Kadrolu);
 
             List<PersonelListItem> returnlist = new List<PersonelListItem>();
             if (dataTable != null)

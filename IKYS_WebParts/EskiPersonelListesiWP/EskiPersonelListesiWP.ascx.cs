@@ -77,26 +77,19 @@ namespace IKYS_WebParts.EskiPersonelListesiWP
         {
             var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
             UtilityHelper.ScriptCalistir("setDataSet(" + jsonData + ");");
-            t5 = DateTime.Now;
             //MessageHelper.PublishMessage(string.Format("T1:{0} , T2:{1}, T3:{2}, T4:{3}, T5:{4}",t1.ToString("ss:fff"),t2.ToString("ss:fff"), t3.ToString("ss:fff"), t4.ToString("ss:fff"), t5.ToString("ss:fff")), ProjeConstants.MESAJ_BILGI);
         }
-        DateTime t1;
-        DateTime t2;
-        DateTime t3;
-        DateTime t4;
-        DateTime t5;
+
         private string TabloJson()
         {
             string jSon = string.Empty;
 
             try
             {
-                t1 = DateTime.Now;
                 List<PersonelListItem> list = GetDataList();
                 var serializer = new JavaScriptSerializer();
                 serializer.MaxJsonLength = Int32.MaxValue;
                 jSon = serializer.Serialize(list);
-                t5 = DateTime.Now;
             }
             catch (Exception exception)
             {
@@ -109,10 +102,8 @@ namespace IKYS_WebParts.EskiPersonelListesiWP
         private List<PersonelListItem> GetDataList()
         {
             PersonelItemListFactory listFactory = PersonelItemListFactory.Instance;
-            t2 = DateTime.Now;
 
             List<PersonelItem> ayrilanlar = listFactory.AyrilanPersonelItemList;
-            t3 = DateTime.Now;
             List<PersonelListItem> list = new List<PersonelListItem>();
 
             Parallel.ForEach(ayrilanlar, item =>
@@ -134,7 +125,6 @@ namespace IKYS_WebParts.EskiPersonelListesiWP
 
                 list.Add(TabloData);
             });
-            t4 = DateTime.Now;
             return list;
         }
         private class PersonelListItem

@@ -1633,7 +1633,7 @@ namespace Model.NBYS
                             var telefon = row[3].ReturnEmptyIfNull().ToString();
                             var eposta = row[4].ReturnEmptyIfNull().ToString();
 
-                            var tutar = row[5].ReturnZeroIfNull().ToString().Replace("₺", "").Replace(".", "").ConvertToDecimal();
+                            var tutar = row[5].ReturnZeroIfNull().ToString().Replace("₺", "").Replace(".", ",").ConvertToDecimal();
                             var aciklama = row[6].ReturnEmptyIfNull().ToString();
                             var adres = row[7].ReturnEmptyIfNull().ToString();
                             var bagisKanali = row[8].ReturnEmptyIfNull().ToString();

@@ -497,6 +497,7 @@ namespace NBYS_WebParts.NakitBagisciAdresListesiWP
                 string ili = row["Ili"].ToString();
                 string ilcesi = row["Ilcesi"].ToString();
                 string tuzelKisi = row["TuzelKisi"].ToString();
+                string eposta = row["TuzelKisi"].ToString();
                 bool dergiGonderilmesin = row["DergiGonderilmesin"].ReturnFalseIfNull().ConvertToBool();
 
                 NakitBagisciListItem nakitBagisciItem = new NakitBagisciListItem();

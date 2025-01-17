@@ -270,6 +270,8 @@ namespace IKYS_WebParts.IletisimBilgileriListesiWP
             cepTelCell.Text = "Cep Tel";
             TableHeaderCell kurumEPostaCell = new TableHeaderCell();
             kurumEPostaCell.Text = "Kurum E-Posta";
+            TableHeaderCell plakaCell = new TableHeaderCell();
+            plakaCell.Text = "AraçPlakası";
 
             th.Controls.Add(siraCell);
             th.Controls.Add(adiSoyadiCell);
@@ -280,6 +282,7 @@ namespace IKYS_WebParts.IletisimBilgileriListesiWP
             th.Controls.Add(evtTelCell);
             th.Controls.Add(cepTelCell);
             th.Controls.Add(kurumEPostaCell);
+            th.Controls.Add(plakaCell);
 
             IletisimTable.Controls.Add(th);
         }
@@ -296,7 +299,6 @@ namespace IKYS_WebParts.IletisimBilgileriListesiWP
             {
                 foreach (DataRow dataRow in dataTable.Rows)
                 {
-
                     int personelId = dataRow["PersonelId"].ConvertToInt();
                     string adiSoyadi = dataRow["Adi"].ToString() + " " + dataRow["Soyadi"].ToString();
                     string gorev = dataRow["Gorev"].ToString();
@@ -306,13 +308,14 @@ namespace IKYS_WebParts.IletisimBilgileriListesiWP
                     string evTelefonu = dataRow["EvTelefonu"].ToString();
                     string cepTelefonu = dataRow["CepTelefonu"].ToString();
                     string internetEPosta = dataRow["InternetEPosta"].ToString();
+                    string plaka = dataRow["Plaka"].ToString();
                     TableCell birimCell = new TableCell();
                     if (birimIdTemp != birimId)
                     {
                         birimIdTemp = birimId;
                         TableRow rowBirim = new TableRow();
 
-                        birimCell.ColumnSpan = 7;
+                        birimCell.ColumnSpan = 8;
                         birimCell.Text = birim;
                         birimCell.Font.Bold = true;
                         birimCell.BackColor = System.Drawing.Color.DarkGray;
@@ -349,12 +352,13 @@ namespace IKYS_WebParts.IletisimBilgileriListesiWP
                     InternetEPostaCell.Text = internetEPosta;
                     row.Controls.Add(InternetEPostaCell);
 
+                    TableCell PlakaCell = new TableCell();
+                    PlakaCell.Text = plaka;
+                    row.Controls.Add(PlakaCell);
                     IletisimTable.Controls.Add(row);
 
                 }
             }
-
-
         }
 
         protected void ExportToExcel()

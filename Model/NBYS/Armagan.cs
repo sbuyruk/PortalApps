@@ -484,12 +484,13 @@ namespace Model.NBYS
         /// <param name="eksiId"></param>
         /// Parası iade edilen armaganları da göstermesin
         /// <returns></returns>
-        public DataTable SelectByFilter(string filter, int eksiId)
+        public string SelectByFilter(string filter, int eksiId)
         {
             string ilStr = string.Empty;
 
             string sqlString = string.Format(@"
-                SELECT A.Id ArmaganId, B.Armagan, A.Durum, A.Tarih,A.BagisMiktari, C.Id BagisciId, C.Adi BagisciAdi,C.Soyadi, C.TCKimlikNo, D.IlAdi Ili ,E.IlceAdi Ilcesi,Adres,
+                SELECT A.Id ArmaganId, B.Armagan, A.Durum, A.Tarih, 
+					CONVERT(varchar,FORMAT(A.Tarih,'dd.MM.yyyy')) BelgeTarihi, A.BagisMiktari, C.Id NakitBagisciId, C.Adi, C.Soyadi, C.TCKimlikNo, D.IlAdi Ili ,E.IlceAdi Ilcesi,Adres,
 	                Telefon1,Telefon2, Telefon1 + IIF(ISNULL(Telefon1,'')!='' AND ISNULL(Telefon2,'')!='',' - ','') + Telefon2 Telefon, 
                     C.OlusturmaTarihi  ,C.DegistirmeTarihi,C.Degistiren,Sag,Eposta ,PostaKodu, Ulasilamiyor, BelgeIstemiyor                                            
                 FROM Armagan_Table A 
@@ -497,10 +498,13 @@ namespace Model.NBYS
 					INNER JOIN NakitBagisci_Table C ON C.Id= A.BagisciId 
                     LEFT JOIN Il_Table D ON D.Id= C.Ili 
                     LEFT JOIN Ilce_Table E ON E.Id= C.Ilcesi  AND E.IlId=D.Id
-                WHERE A.BelgeGecersizMi!=1 AND C.Id!= {0} AND C.Adi like '%{1}%'
-	                OR C.TCKimlikNo like '%{1}%'
-	                OR C.Telefon1 like '%{1}%'
-	                OR C.Adres like '%{1}%'
+                WHERE A.BelgeGecersizMi!=1 AND C.Id!= {0} 
+                    AND A.Id={1} --like '%{1}%'
+                    --AND (C.Adi like '%{1}%'
+	                --OR A.Id like '%{1}%')
+	                --OR C.TCKimlikNo like '%{1}%'
+	                --OR C.Telefon1 like '%{1}%'
+	                --OR C.Adres like '%{1}%'
 	                --OR C.BagisTarihi like '%{1}%'
 	                --OR C.BagisMiktari like '%{1}%'
 	                --OR A.IlAdi like '%{1}%'
@@ -515,7 +519,8 @@ namespace Model.NBYS
             {
                 throw e;
             }
-            return dataTable;
+            string json = ToJSON(dataTable);
+            return json;
         }
 
     }

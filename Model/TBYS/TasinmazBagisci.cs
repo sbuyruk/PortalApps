@@ -41,6 +41,7 @@ namespace Model.TBYS
         //public string PostaKodu { get; set; }                  
         public string Aciklama { get; set; }
         public bool Gizli { get; set; }
+        public string Tahsil { get; set; }
         public override T Select<T>(int id)
         {
             string sqlString = string.Format(@"SELECT *
@@ -145,10 +146,12 @@ namespace Model.TBYS
         }
         public List<TasinmazBagisci> SelectAllSagBagiscilar(string sag)
         {
+            string sagVefatStr = sag.Equals(ProjeConstants.HEPSI) ? string.Empty :string.Format( " WHERE Sag_vefat ={0} ", sag.ReturnQuotedValue());
+            
             string sqlString = string.Format(@"
                 SELECT  *
                 FROM TasinmazBagisci_Table 
-                WHERE Sag_vefat={0}", sag.ReturnQuotedValue());
+                {0} ", sagVefatStr);
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<TasinmazBagisci> list = ToList<TasinmazBagisci>(dataTable);
@@ -267,11 +270,11 @@ namespace Model.TBYS
 	                 ,COUNT(B.Id) As ToplamBagisAdedi
 	                 ,C.IlAdi
 	                 ,D.IlceAdi,D.IlceAdi, D.IlceAdi +'-'+ C.IlAdi As IlIlce
-	                 ,E.KisaAdi As Bolge
+	                 ,E.KisaAdi As Bolge, E.Id As BagisciBolgeId
                 FROM 
 	                TasinmazBagisci_Table A
                 LEFT JOIN 
-	                Bagis_Table B ON B.BagisciId=A.Id 
+	                Bagis_Table B ON B.BagisciId=A.Id AND B.Envanterde=1
                 LEFT JOIN 
 	                Il_Table C ON C.Id=A.IlId
                 LEFT JOIN 
@@ -287,6 +290,7 @@ namespace Model.TBYS
 	                ,C.IlAdi
 	                ,D.IlceAdi
 	                ,E.KisaAdi
+	                ,E.Id
                  ORDER BY A.Adi,A.Soyadi                      
                 ", bolgeStr);
 

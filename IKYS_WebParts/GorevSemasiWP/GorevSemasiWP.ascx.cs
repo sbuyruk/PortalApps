@@ -8,6 +8,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using static Model.IKYS.Personel;
 
 namespace IKYS_WebParts.GorevSemasiWP
 {

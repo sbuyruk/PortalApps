@@ -151,45 +151,6 @@ namespace Model.IKYS
 
             return list;
         }
-        private string SelectSQL(int id)
-        {
-            string sqlstr = string.Format(@"SELECT *
-                               FROM BirimTanim_Table 
-                               WHERE Id={0}", id);
-            return sqlstr;
-        }
-        private string DeleteSQL()
-        {
-            string sqlString = string.Format(@"
-                            DELETE 
-                            FROM BirimTanim_Table
-                            WHERE Id={0}", Id);
-            return sqlString;
-        }
-        public string SelectAllReturnJson()
-        {
-            string sqlString = string.Format(@"
-                SELECT 
-	                A.Id BirimId, A.Adi BirimAdi, A.KisaAdi BirimKisaAdi, 
-	                B.Adi UstBirim,
-	                ISNULL(C.Adi,'') + ' ' +ISNULL(C.Soyadi,'') BirimAmiri 
-                FROM BirimTanim_Table A
-                    LEFT JOIN BirimTanim_Table B on B.Id=A.ParentId
-                    LEFT JOIN Personel_Table C on C.Id=A.AmirId 
-                ORDER BY A.Sira
-                                    ");
-            DataTable dataTable = null;
-            try
-            {
-                dataTable = dao.SelectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-            string json = ToJSON(dataTable);
-            return json;
-        }
         public DataTable SelectAllReturnDataTable()
         {
             string sqlString = string.Format(@"

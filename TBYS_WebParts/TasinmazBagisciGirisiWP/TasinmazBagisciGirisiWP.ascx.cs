@@ -97,12 +97,10 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-
-            //önceki sayfayı tut, geri tuşuna basıldığında gerekli
             if (!Page.IsPostBack)
             {
                 DDLleriDoldur();
-                DeleteBtn.Visible = true;
+                DeleteBtn.Visible = false;
                 DosyaLnk.Visible = false;
                 BelgeSilBtn.Visible = false;
                 BelgeYukleFU.Visible = false;
@@ -126,6 +124,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
         {
             SaveBtn.Visible = false;
             UpdateBtn.Visible = true;
+            DeleteBtn.Visible = true;
             YakinlariBtn.Visible = true;
             TalepleriBtn.Visible = true;
             TaahhutleriBtn.Visible = true;
@@ -142,17 +141,22 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
             bagisci = bagisci.Select<TasinmazBagisci>(BagisciIdQS.ConvertToInt());
             if (bagisci != null)
             {
+                
                 AdiLbl.Text = bagisci.Adi + " " + bagisci.Soyadi;
                 BagisciFormunuDoldur(bagisci);
                 PDFGoster(bagisci);
             }
+
         }
         private void OpenBagisciGirisi()
         {
+
+            DisplayImage.ImageUrl = UtilityHelper.GetImageUrl(ProjeConstants.RESIMLER_BAGISCI) + "/_t/bagisci_jpg.jpg";
             TitleLbl.CssClass = "col-form-label text-success font-weight-bold mb-1";
             TitleLbl.Text = "Taşınmaz Bağışçısı Girişi";
             SaveBtn.Visible = true;
             UpdateBtn.Visible = false;
+            DeleteBtn.Visible = false;
             YakinlariBtn.Visible = false;
             TalepleriBtn.Visible = false;
             TaahhutleriBtn.Visible = false;
@@ -176,6 +180,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
                 DogumYeriTxt.Text = bagisci.DogumYeri;
                 DogumTarihiTxt.Value = bagisci.DogumTarihi.ConvertToDatetimeEmptyIfNull();
                 MeslegiTxt.Text = bagisci.Meslegi;
+                TahsilTxt.Text = bagisci.Tahsil;
                 SosyalGuvenceDDL.SelectedValue = bagisci.SosyalGuvence;
                 SoyadiTxt.Text = bagisci.Soyadi;
                 TCKimlikNoTxt.Text = bagisci.TCKimlikNo.ToString();
@@ -186,11 +191,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
                 GizliChk.Checked = bagisci.Gizli;
 
 
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
-                string imgUrl = newUrl + "/../" + ProjeConstants.RESIMLER_BAGISCI + "/_t/" + bagisci.Adi.ReplaceTrChars() + bagisci.Soyadi.ReplaceTrChars() + "_jpg.jpg";
-                DisplayImage.ImageUrl = imgUrl;
-
+                DisplayImage.ImageUrl = UtilityHelper.GetImageUrl(ProjeConstants.RESIMLER_BAGISCI) + "/_t/" + bagisci.Foto + "_jpg.jpg";
                 string sv = "Bilinmiyor";
                 
                 ListItem ilItem = IliDDL.Items.FindByValue(IliDDL.Items.FindByValue(bagisci.IlId.ToString()).Value);
@@ -327,6 +328,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
             bagisci.DogumTarihi = DogumTarihiTxt.Value.ConvertToDatetime();
             bagisci.DogumYeri = DogumYeriTxt.Text;
             bagisci.Meslegi = MeslegiTxt.Text;
+            bagisci.Tahsil = TahsilTxt.Text;
             bagisci.SosyalGuvence = SosyalGuvenceDDL.SelectedValue;
             bagisci.Soyadi = SoyadiTxt.Text;
             bagisci.TCKimlikNo = TCKimlikNoTxt.Text.ConvertToLong();
@@ -369,6 +371,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
             bagisci.DogumTarihi = DogumTarihiTxt.Value.ConvertToDatetime();
             bagisci.DogumYeri = DogumYeriTxt.Text;
             bagisci.Meslegi = MeslegiTxt.Text;
+            bagisci.Tahsil = TahsilTxt.Text;
             bagisci.SosyalGuvence = SosyalGuvenceDDL.SelectedValue;
             bagisci.Soyadi = SoyadiTxt.Text;
             bagisci.TCKimlikNo = TCKimlikNoTxt.Text.ConvertToLong();
@@ -446,16 +449,69 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
             bagisci = bagisci.Select<TasinmazBagisci>(BagisciIdQS.ConvertToInt());
             if (bagisci != null) //sildikten sonra önceki sayfaya dön
             {
-                bagisci.Delete();
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
-                newUrl += "/" + ProjeConstants.PAGE_TASINMAZBAGISCI_LIST;
-                Page.Response.Redirect(newUrl, true);
+                //Bağışçı talebi var mı
+                //Bağışçı yakını var mı
+                //Bağış var mı
+                //taahhüt var mı
+                //armagan var mı
+                //yoksa sil
+
+                if (BagisVarmi(bagisci) 
+                    || BagisciTalebiVarmi(bagisci)
+                    || BagisciYakiniVarmi(bagisci)
+                    || BagisciTaahhuduVarmi(bagisci)
+                    || BagisciyaArmaganVerilmisMi(bagisci))
+                {
+                    MessageHelper.PublishMessage("Bağışçıya ait talepler, kayıtlı bağışçı yakınları, bağışçı ahhütleri veya verilmiş armağan olduğundan dolayı bu bağışçı silinemez",ProjeConstants.MESAJ_HATA);
+                }
+                else
+                {
+                    bagisci.Delete();
+                    string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                    string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
+                    newUrl += "/" + ProjeConstants.PAGE_TASINMAZBAGISCI_LIST;
+                    Page.Response.Redirect(newUrl, true);
+                }
             }
             else
-                MessageHelper.PublishMessage("Hata Bağışçı Silinemedi", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Hata Bağışçı bulunamadı", ProjeConstants.MESAJ_HATA);
         }
-        
+
+        private bool BagisVarmi(TasinmazBagisci bagisci)
+        {
+            Bagis bagis=new Bagis();
+            List<Bagis> bagisList = bagis.SelectByBagisciId(bagisci.Id);
+            
+            return bagisList.Count > 0;
+        }
+        private bool BagisciTalebiVarmi(TasinmazBagisci bagisci)
+        {
+
+            BagisciTalepleri bagisciTalepleri = new BagisciTalepleri();
+            List<BagisciTalepleri> list = bagisciTalepleri.SelectByBagisciId(bagisci.Id);
+            return list.Count > 0;
+        }
+        private bool BagisciYakiniVarmi(TasinmazBagisci bagisci)
+        {
+            BagisciYakinlari bagisciYakinlari = new BagisciYakinlari();
+            List<BagisciYakinlari> list = bagisciYakinlari.SelectByBagisciId(bagisci.Id);
+
+            return list.Count > 0;
+        }
+        private bool BagisciTaahhuduVarmi(TasinmazBagisci bagisci)
+        {
+
+            TasinmazTaahhut tasinmazTaahhut = new TasinmazTaahhut();
+            List<TasinmazTaahhut> list = tasinmazTaahhut.SelectByBagisciId(bagisci.Id);
+            return list.Count > 0;
+        }
+        private bool BagisciyaArmaganVerilmisMi(TasinmazBagisci bagisci)
+        {
+
+            TasinmazTaahhut tasinmazTaahhut = new TasinmazTaahhut();
+            List<TasinmazTaahhut> list = tasinmazTaahhut.SelectByBagisciId(bagisci.Id);
+            return list.Count > 0;
+        }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
             try

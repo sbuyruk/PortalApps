@@ -2,6 +2,7 @@
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Linq;
 using Utility.HelperClasses;
@@ -12,6 +13,17 @@ namespace Model.IKYS
     [Serializable]
     public class Personel : ParentClass
     {
+        public enum PersonelTipi
+        {
+            [Display(Name = "Tüm Personel")]
+            Tumu = 0,
+
+            [Display(Name = "Kadrolu Personel")]
+            Kadrolu = 1,
+
+            [Display(Name = "Kadro Harici Personel")]
+            Kadrosuz = 2
+        }
         public Personel()
         {
 
@@ -24,6 +36,8 @@ namespace Model.IKYS
         public int Tahsili { get; set; }
         public string KullaniciAdi { get; set; }
         public int Asker_sivil { get; set; }
+        public int Tipi { get; set; } = (int)PersonelTipi.Kadrolu;
+
         public override T Select<T>(int id)
         {
             GenericEntity<Personel> genericEntity = new GenericEntity<Personel>(ProjeConstants.SQL_SELECT);
@@ -183,9 +197,10 @@ namespace Model.IKYS
             Personel personel = list.FirstOrDefault();
             return personel;
         }    
-        public List<Personel> SelectCalisanPersonelByBirimId(int birimId)
+        public List<Personel> SelectCalisanPersonelByBirimId(int birimId, PersonelTipi personelTipi = PersonelTipi.Kadrolu)
         {
-
+            int personelTipiInt = (int)personelTipi;
+            string personelTipiStr = personelTipi == PersonelTipi.Tumu ? string.Empty : string.Format(" AND Tipi={0}", personelTipiInt);
             string sqlString = string.Format(@"
                     SELECT P.* 
 					FROM Personel_Table P
@@ -194,8 +209,9 @@ namespace Model.IKYS
 					Left Outer Join  BirimTanim_Table B on I.BirimId=B.Id
 					Left Outer Join  GorevTanim_Table G on I.GorevId=G.Id
                     WHERE CalismaDurumu=1 And I.BirimId={0}
+                    {1}
 					ORDER BY I.ProtokolSiraNo
-                                    ", birimId);
+                                    ", birimId, personelTipiStr);
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Personel> list = ToList<Personel>(dataTable);
 
@@ -217,9 +233,10 @@ namespace Model.IKYS
 
             return list;
         }
-        public DataTable SelectCalisanPersonelReturnDataTable()
+        public DataTable SelectCalisanPersonelReturnDataTable(PersonelTipi personelTipi = PersonelTipi.Kadrolu)
         {
-
+            int personelTipiInt = (int)personelTipi;
+            string personelTipiStr = personelTipi == PersonelTipi.Tumu ? string.Empty : string.Format(" AND Tipi={0}", personelTipiInt);
             string sqlString = string.Format(@"
                                     SELECT P.Id PersonelId,P.Adi,Soyadi,P.PerId, P.SicilNo, P.Tahsili, P.KullaniciAdi, P.Asker_sivil,
 								        U.Adi Unvan, G.Adi Gorev, B.Adi BirimSube, B.Id BirimId, I.IzinDonemiBasTar,I.ProtokolSiraNo
@@ -228,9 +245,10 @@ namespace Model.IKYS
 								    Left Outer Join  UnvanTanim_Table U on I.UnvanId=U.Id
 								    Left Outer Join  BirimTanim_Table B on I.BirimId=B.Id
 								    Left Outer Join  GorevTanim_Table G on I.GorevId=G.Id
-                                    WHERE CalismaDurumu=1
+                                    WHERE CalismaDurumu=1 
+                                        {0}
 								    ORDER BY I.ProtokolSiraNo
-                                    ");
+                                    ", personelTipiStr);
             DataTable dataTable = null;
             try
             {
@@ -269,11 +287,12 @@ namespace Model.IKYS
             }
             return dataTable;
         }
-        public DataTable SelectCalisanPersonelListesiReturnDataTable()
+        public DataTable SelectCalisanPersonelListesiReturnDataTable(PersonelTipi personelTipi=PersonelTipi.Kadrolu)
         {
-
+            int personelTipiInt = (int)personelTipi;
+            string personelTipiStr = personelTipi == PersonelTipi.Tumu ? string.Empty : string.Format(" AND Tipi={0}", personelTipiInt); 
             string sqlString = string.Format(@"
-                SELECT A.Id PersonelId, B.TCKimlikNo, A.SicilNo,A.Adi,A.Soyadi, IIF (A.Asker_sivil=0,'Sivil','(E) Asker') as Asker_Sivil,A.KullaniciAdi,
+                SELECT A.Id PersonelId, B.TCKimlikNo, A.SicilNo,A.Adi,A.Soyadi, IIF (A.Asker_sivil=0,'Sivil','(E) Asker') as Asker_Sivil,A.KullaniciAdi,A.Tipi PersonelTipi,
 					B.AnneAdi,B.BabaAdi, FORMAT(B.DogumTar,'dd.MM.yyyy') DogumTarihi,B.MedeniHali,B.EvlilikTar,B.Cinsiyet, B.KanGrubu,
 	                B.DogumTar,B.DogumGunuKutlama,B.EvlilikTar, B.EvlilikKutlama, 
 					IIF(FORMAT(C.BaslamaTar,'dd.MM.yyyy')='01.01.1900','',FORMAT(C.BaslamaTar,'dd.MM.yyyy')) BaslamaTar,
@@ -286,7 +305,7 @@ namespace Model.IKYS
                     G.CepTelefonu,G.Adres,G.InternetEPosta,K.IlceAdi IkametIlcesi,K.IlAdi IkametIli,
 					H.TahsilDurumu,
                     I.IlAdi + ' - '+ I.IlceAdi DogumYeri,
-                    J.Adi +' '+ J.Soyadi Esi, J.TcKimlikNo EsTcKimlikNo,J.Telefon EsTelefon
+                    J.Adi +' '+ J.Soyadi Esi, J.TcKimlikNo EsTcKimlikNo,J.Telefon EsTelefon, Plaka
                 FROM Personel_Table A
                 INNER JOIN Kimlik_Table B on B.PersonelId=A.Id
                 INNER JOIN IsBilgileri_Table C on A.Id=C.PersonelId
@@ -298,8 +317,9 @@ namespace Model.IKYS
                 Left Join Ilce_Table I on I.Id=B.DogumYeri
                 Left Join Aile_Table J on J.PersonelId=A.Id AND YakinlikDerecesi=1
 				Left Join Ilce_Table K on K.Id=G.Ilcesi
-                WHERE CalismaDurumu=1
-                ORDER BY C.ProtokolSiraNo                               ");
+                WHERE CalismaDurumu=1 
+                {0}
+                ORDER BY C.ProtokolSiraNo                               ",personelTipiStr);
             DataTable dataTable = null;
             try
             {
@@ -375,9 +395,9 @@ namespace Model.IKYS
 								    Left Outer Join  UnvanTanim_Table U on I.UnvanId=U.Id
 								    Left Outer Join  BirimTanim_Table B on I.BirimId=B.Id
 								    Left Outer Join  GorevTanim_Table G on I.GorevId=G.Id
-                                    WHERE CalismaDurumu=1
+                                    WHERE CalismaDurumu=1 AND Tipi={0}
 								    ORDER BY I.ProtokolSiraNo
-                                    ");
+                                    ",(int)PersonelTipi.Kadrolu);
             DataTable dataTable = null;
             try
             {
@@ -421,7 +441,7 @@ namespace Model.IKYS
             string sqlString = string.Format(@"
                                     SELECT P.Id PersonelId,P.Id Id,P.Adi,Soyadi,P.PerId, P.SicilNo, P.Tahsili, P.KullaniciAdi, P.Asker_sivil,
 								        U.Adi Unvan, U.KisaAdi UnvanKisa,G.Adi Gorev,G.KisaAdi GorevKisa,  B.Id BirimId,B.Adi Birim, I.IzinDonemiBasTar,I.BaslamaTar IseBaslamaTar,
-                                        L.DahiliTelefonu, L.EvTelefonu, L.CepTelefonu, L.InternetEPosta
+                                        L.DahiliTelefonu, L.EvTelefonu, L.CepTelefonu, L.InternetEPosta,L.Plaka
 								    FROM Personel_Table P
                                     INNER JOIN IsBilgileri_Table I on P.Id=I.PersonelId
 								    Left Outer Join  UnvanTanim_Table U on I.UnvanId=U.Id

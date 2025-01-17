@@ -242,7 +242,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                     PersonelAdiLbl.Text = personel.Adi + " " + personel.Soyadi;
                     FillVekilImzaDDL();
                     FillAmirImzaDDL();
-                    FillOnayImzaDDL();
+                    //FillOnayImzaDDL(); SB OnayDiv kaldırıldı
                     FillIzinBasSaat();
                     FillIzinBitSaat();
 
@@ -264,7 +264,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                 FillIzinTanim();
                 FillVekilImzaDDL();
                 FillAmirImzaDDL();
-                FillOnayImzaDDL();
+                //FillOnayImzaDDL();SB OnayDiv kaldırıldı
 
                 FillIzinBasSaat();
                 FillIzinBitSaat();
@@ -728,7 +728,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
         {
             SelectDDLValue(VekilImzaDDL, ProjeConstants.BOS_INT.ToString());
             SelectDDLValue(AmirImzaDDL, ProjeConstants.BOS_INT.ToString());
-            SelectDDLValue(OnayImzaDDL, ProjeConstants.BOS_INT.ToString());
+            //SelectDDLValue(OnayImzaDDL, ProjeConstants.BOS_INT.ToString()); SB OnayDiv kaldırıldı
 
         }
         private void FillPersonelDDL()
@@ -787,30 +787,30 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                 AmirImzaDDL.Items.Add(li);
             }
         }
-        private void FillOnayImzaDDL()
-        {
-            OnayImzaDDL.Items.Clear();
-            ListItem bosLi = new ListItem(ProjeConstants.BOS, ProjeConstants.BOS_INT.ToString());
-            OnayImzaDDL.Items.Add(bosLi);
-            Personel personel = new Personel();
-            DataTable dataTable = personel.SelectAmirReturnDataTable();
-            foreach (DataRow dataRow in dataTable.Rows)
-            {
+        //private void FillOnayImzaDDL() SB OnayDiv kaldırıldı
+        //{
+        //    OnayImzaDDL.Items.Clear();
+        //    ListItem bosLi = new ListItem(ProjeConstants.BOS, ProjeConstants.BOS_INT.ToString());
+        //    OnayImzaDDL.Items.Add(bosLi);
+        //    Personel personel = new Personel();
+        //    DataTable dataTable = personel.SelectAmirReturnDataTable();
+        //    foreach (DataRow dataRow in dataTable.Rows)
+        //    {
 
-                int personelId = dataRow["PersonelId"].ConvertToInt();
-                string adiSoyadi = dataRow["Adi"].ToString() + " " + dataRow["Soyadi"].ToString();
-                if (OnayImzaDDL.Items.FindByText(adiSoyadi) != null)
-                {
-                    continue;
-                }
-                else
-                {
-                    ListItem li = new ListItem(adiSoyadi, personelId.ToString());
-                    OnayImzaDDL.Items.Add(li);
-                }
+        //        int personelId = dataRow["PersonelId"].ConvertToInt();
+        //        string adiSoyadi = dataRow["Adi"].ToString() + " " + dataRow["Soyadi"].ToString();
+        //        if (OnayImzaDDL.Items.FindByText(adiSoyadi) != null)
+        //        {
+        //            continue;
+        //        }
+        //        else
+        //        {
+        //            ListItem li = new ListItem(adiSoyadi, personelId.ToString());
+        //            OnayImzaDDL.Items.Add(li);
+        //        }
 
-            }
-        }
+        //    }
+        //}
         private void FillIzinTanim()
         {
             IzinTanimDDL.Items.Clear();
@@ -893,7 +893,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                 IzinTipiLbl.Text = it.Adi;
                 SelectDDLValue(VekilImzaDDL, izinTalep.VekilImza.ToString());
                 SelectDDLValue(AmirImzaDDL, izinTalep.AmirImza.ToString());
-                SelectDDLValue(OnayImzaDDL, izinTalep.OnayImza.ToString());
+                //SelectDDLValue(OnayImzaDDL, izinTalep.OnayImza.ToString()); SB OnayDiv kaldırıldı
                 SelectDDLValue(IzinTanimDDL, izinTalep.IzinTipi.ToString());
                 string bassaat = izinTalep.BaslangicTarihi.ToString("HH:mm");
                 SelectDDLByText(IzinBasSaatDDL, bassaat);
@@ -919,7 +919,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                 VekilDiv.Attributes["style"] = "display:none";
                 AmirDiv.Attributes["style"] = "display:block";
                 AciklamaDiv.Attributes["style"] = "display:none";
-                OnayDiv.Attributes["style"] = "display:none";
+                //OnayDiv.Attributes["style"] = "display:none"; SB OnayDiv kaldırıldı
                 IzinBitTarDiv.Attributes["style"] = "display:none";
                 IzinBasSaatDiv.Attributes["style"] = "display:block";
                 IzinBitSaatDiv.Attributes["style"] = "display:block";
@@ -932,7 +932,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
             {
                 VekilDiv.Attributes["style"] = "display:block";
                 AmirDiv.Attributes["style"] = "display:block";
-                OnayDiv.Attributes["style"] = "display:block";
+                //OnayDiv.Attributes["style"] = "display:block"; SB OnayDiv kaldırıldı
                 IzinBitTarDiv.Attributes["style"] = "display:block";
                 IzinBasSaatDiv.Attributes["style"] = "display:none";
                 IzinBitSaatDiv.Attributes["style"] = "display:none";
@@ -947,7 +947,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                 VekilDiv.Attributes["style"] = "display:none";
                 AmirDiv.Attributes["style"] = "display:none";
                 AciklamaDiv.Attributes["style"] = "display:block";
-                OnayDiv.Attributes["style"] = "display:none";
+                //OnayDiv.Attributes["style"] = "display:none"; SB OnayDiv kaldırıldı
                 IzinBitTarDiv.Attributes["style"] = "display:block";
                 IzinBasSaatDiv.Attributes["style"] = "display:block";
                 IzinBitSaatDiv.Attributes["style"] = "display:none";
@@ -968,7 +968,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
             {
                 VekilDiv.Attributes["style"] = "display:block";
                 VekilDiv.Attributes["style"] = "display:block";
-                OnayDiv.Attributes["style"] = "display:block";
+                //OnayDiv.Attributes["style"] = "display:block"; SB OnayDiv kaldırıldı
                 IzinBitTarDiv.Attributes["style"] = "display:block";
                 IzinBasSaatDiv.Attributes["style"] = "display:none";
                 IzinBitSaatDiv.Attributes["style"] = "display:none";
@@ -1040,7 +1040,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                     izinTalep.Sure = IKYSOrtak.IzinSuresiHesapla(izinTalep.IzinTipi, izinTalep.BaslangicTarihi, izinTalep.BitisTarihi);
                     izinTalep.VekilImza = VekilImzaDDL.SelectedItem.Value.ConvertToInt();
                     izinTalep.AmirImza = AmirImzaDDL.SelectedItem.Value.ConvertToInt();
-                    izinTalep.OnayImza = OnayImzaDDL.SelectedItem.Value.ConvertToInt();
+                    //izinTalep.OnayImza = OnayImzaDDL.SelectedItem.Value.ConvertToInt();SB OnayDiv kaldırıldı
 
 
                 }
@@ -1124,7 +1124,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                         izinTalep.Sure = IKYSOrtak.IzinSuresiHesapla(izinTalep.IzinTipi, izinTalep.BaslangicTarihi, izinTalep.BitisTarihi);
                         izinTalep.VekilImza = VekilImzaDDL.SelectedItem.Value.ConvertToInt();
                         izinTalep.AmirImza = AmirImzaDDL.SelectedItem.Value.ConvertToInt();
-                        izinTalep.OnayImza = OnayImzaDDL.SelectedItem.Value.ConvertToInt();
+                        //izinTalep.OnayImza = OnayImzaDDL.SelectedItem.Value.ConvertToInt();SB OnayDiv kaldırıldı
 
                     }
                     else if (izinTalep.IzinTipi == ProjeConstants.IZINTIPI_MAZERET_INT)
@@ -1482,7 +1482,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                         + izinDonemi.KullanilanIzin.ConvertToInt() + " " + izinDonemi.Birim + "dür. " + System.Environment.NewLine;
 
                     int kalanIzinInt = izinDonemi.KalanIzin.ConvertToInt();
-                    int kalanIzinToplami = KalanIzinToplamıGetir(personel);
+                    int kalanIzinToplami = IKYSOrtak.KalanIzinToplamiGetir(personel.Id,false);
                     int gecmisDonemlerdenKalanIzin = kalanIzinToplami - kalanIzinInt;
 
                     if (kalanIzinInt < 0)
@@ -1526,8 +1526,12 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                             
                                 GecmisDonemlerdenKalanIznLbl.Text = " Geçmiş dönemlerden kalan <strong>" + gecmisDonemlerdenKalanIzin + "</strong> gün izniniz bulunmaktadır.";
                          }
-                        else
+                        else if (gecmisDonemlerdenKalanIzin == 0)
                             GecmisDonemlerdenKalanIznLbl.Text = " Geçmiş Dönemlerden kalan kullanılmamış izniniz bulunmamaktadır.";
+                        else
+                        {
+                            GecmisDonemlerdenKalanIznLbl.Text = " Bu yılki izninizden  <strong>" + Math.Abs(gecmisDonemlerdenKalanIzin)+ "</strong> gün geçmiş dönemlerde kullandınız.";
+                        }
                     }
                     
                      
@@ -1605,23 +1609,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
             KullanilmayanLbl.Text = string.Empty;
         }
 
-        private int KalanIzinToplamıGetir(Personel personel)
-        {
-           
-            IzinDonem izinDonemDao=new IzinDonem();
-            int kalanIzinToplami = 0;
-
-            DataTable dataTable = izinDonemDao.SelectSUMKalanIzinByPersonelId(personel.Id,false);
-            if (dataTable != null)
-            {
-                DataRow dataRow = dataTable.Rows[0];
-
-                kalanIzinToplami = dataRow["KalanIzinToplami"].ConvertToInt();// - izinDonemi.KalanIzin.ConvertToInt();
-            }
-            
-            return kalanIzinToplami;
-        }
-
+        
         private bool ValidateInputs(int izinTipi)
         {
             bool isValidated = true;
@@ -1751,7 +1739,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                     string sure = IKYSOrtak.IzinSuresiHesapla(ProjeConstants.IZINTIPI_UCRETLI_INT, izinBasTar, izinBitTar);
                     var fullUrl = string.Format("{0}?PersonelId={1}&GelecekDonem={2}&IzinBasTar={3}&IzinBitTar={4}&Sure={5}&AmirId={6}&OnaylayanId={7}",
                         rootUrl + ProjeConstants.RAPOR_UCRETLIMAHSUPDILEKCE, PersonelIdQS, gelecekIzinDonemiBasi.ConvertToDatetimeEmptyIfNull(),
-                        izinBasTar.ConvertToDatetimeEmptyIfNull(), izinBitTar.ConvertToDatetimeEmptyIfNull(), sure, AmirImzaDDL.SelectedItem.Value, OnayImzaDDL.SelectedItem.Value);
+                        izinBasTar.ConvertToDatetimeEmptyIfNull(), izinBitTar.ConvertToDatetimeEmptyIfNull(), sure, AmirImzaDDL.SelectedItem.Value, ""); // OnayImzaDDL.SelectedItem.Value);SB OnayDiv kaldırıldı
                     ResponseHelper.Redirect(fullUrl, "_blank", "");
 
                 }

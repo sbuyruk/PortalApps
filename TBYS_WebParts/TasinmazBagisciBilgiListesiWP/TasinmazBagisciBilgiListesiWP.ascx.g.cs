@@ -174,21 +174,24 @@ namespace TBYS_WebParts.TasinmazBagisciBilgiListesiWP {
         private void @__BuildControl__control2(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    <div class=\"form-group\">\r\n                <table id=\"Custom" +
-                        "DataTable\" class=\"table table-striped row-border\" width=\"100%\">\r\n\r\n             " +
-                        "       <thead>\r\n                        <tr>\r\n                            "));
+                        "DataTable\" class=\"table small table-striped row-border\" width=\"100%\">\r\n\r\n       " +
+                        "             <thead>\r\n                        <tr>\r\n                            " +
+                        ""));
             global::System.Web.UI.HtmlControls.HtmlTableCell @__ctrl1;
             @__ctrl1 = this.@__BuildControlBaslikTH();
             @__parser.AddParsedSubObject(@__ctrl1);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                         </tr>
                         <tr>
-                            <th>Sıra</th>
+                            
                             <th>Bölge</th>
                             <th>Adı Soyadı</th>
                             <th>Mesleği</th>
+                            <th>Sağ/Vefat</th>
                             <th>Adresi</th>
                             <th>İlçesi/İli</th>
                             <th>Telefon1</th>
+                            <th>Talepleri</th>
                             <th>Bağışları</th>
                             <th>Tahmini Rayiç</th>
                         </tr>
@@ -243,30 +246,32 @@ namespace TBYS_WebParts.TasinmazBagisciBilgiListesiWP {
                         ") { _spFormOnSubmitCalled = false; }, 3000);\r\n        return true;\r\n    }\r\n    f" +
                         "unction setDataSet(myset) {\r\n        myjsons = myset;\r\n    }\r\n    var myjsons = " +
                         "[{\r\n        \"Sirano\": \"\", \"Bolge\": \"\", \"AdiSoyadi\": \"\", \"Meslegi\": \"\", \"Adres\": " +
-                        "\"\", \"IlceIl\": \"\", \"Telefon\": \"\", \"Bagislari\": \"\", \"TahminiRayic\": \"\"\r\n    }];\r\n " +
-                        "   jQuery(document).ready(function () {\r\n\r\n        jQuery(\'#CustomDataTable\').Da" +
-                        "taTable({\r\n            data: myjsons,\r\n            columns: [\r\n                {" +
-                        " data: \"Sirano\" },\r\n                { data: \"Bolge\" },\r\n                { data: " +
-                        "\"AdiSoyadi\" },\r\n                { data: \"Meslegi\" },\r\n                { data: \"A" +
-                        "dres\" },\r\n                { data: \"IlceIl\" },\r\n                { data: \"Telefon\"" +
-                        " },\r\n                { data: \"Bagislari\" },\r\n                { data: \"TahminiRay" +
-                        "ic\", \"className\": \"text-right\" },\r\n            \r\n            ],\r\n            \'or" +
-                        "der\': [[1, \'asc\']],//sort Bolge\r\n            \"language\": {\r\n                \"url" +
-                        "\": \"http://tskgv-portal/OrtakBelgeler/Turkish.txt\",\r\n                \"decimal\": " +
-                        "\",\",\r\n                \"thousands\": \".\"\r\n            },\r\n            responsive: " +
-                        "true,\r\n            dom: \'Bfrtip\',\r\n            buttons: [\r\n                {\r\n  " +
-                        "                  extend: \'print\',\r\n                    exportOptions: {\r\n      " +
-                        "                  columns: \':visible\'\r\n                    }\r\n                }," +
-                        "\r\n                {\r\n                    extend: \'excel\',\r\n                    e" +
-                        "xportOptions: {\r\n                        columns: \':visible\'\r\n                  " +
-                        "  }\r\n                },\r\n                {\r\n                    extend: \'pdf\',\r\n" +
-                        "                    exportOptions: {\r\n                        columns: \':visible" +
-                        "\'\r\n                    }\r\n                },\r\n                {\r\n               " +
-                        "     extend: \'copy\',\r\n                    exportOptions: {\r\n                    " +
-                        "    columns: \':visible\'\r\n                    }\r\n                },\r\n            " +
-                        "    , \'pageLength\', \"colvis\"\r\n            ]\r\n        });\r\n    });\r\n</script>\r\n<d" +
-                        "iv class=\"col-xl\">\r\n    <div class=\"card shadow\">\r\n        <div class=\"card-head" +
-                        "er \">\r\n            "));
+                        "\"\", \"IlceIl\": \"\", \"Telefon\": \"\", \"Talepleri\": \"\", \"Bagislari\": \"\", \"TahminiRayic" +
+                        "\": \"\"\r\n    }];\r\n    jQuery(document).ready(function () {\r\n\r\n        jQuery(\'#Cus" +
+                        "tomDataTable\').DataTable({\r\n            data: myjsons,\r\n            columns: [\r\n" +
+                        "                //{ data: \"Sirano\" },\r\n                { data: \"Bolge\" },\r\n     " +
+                        "           { data: \"AdiSoyadi\" },\r\n                { data: \"Meslegi\" },\r\n       " +
+                        "         { data: \"SagVefat\" },\r\n                { data: \"Adres\" },\r\n            " +
+                        "    { data: \"IlceIl\" },\r\n                { data: \"Telefon\" },\r\n                {" +
+                        " data: \"Talepleri\" },\r\n                { data: \"Bagislari\" },\r\n                {" +
+                        " data: \"TahminiRayic\", \"className\": \"text-right\" },\r\n            \r\n            ]" +
+                        ",\r\n            columnDefs: [\r\n                \r\n                { width: 15, tar" +
+                        "gets: 1 }],\r\n            \'order\': [[1, \'asc\']],//sort Bolge\r\n            \"langua" +
+                        "ge\": {\r\n                \"url\": \"http://tskgv-portal/OrtakBelgeler/Turkish.txt\",\r" +
+                        "\n                \"decimal\": \",\",\r\n                \"thousands\": \".\"\r\n            " +
+                        "},\r\n            responsive: true,\r\n            dom: \'Bfrtip\',\r\n            butto" +
+                        "ns: [\r\n                {\r\n                    extend: \'print\',\r\n                " +
+                        "    exportOptions: {\r\n                        columns: \':visible\'\r\n             " +
+                        "       }\r\n                },\r\n                {\r\n                    extend: \'ex" +
+                        "cel\',\r\n                    exportOptions: {\r\n                        columns: \':" +
+                        "visible\'\r\n                    }\r\n                },\r\n                {\r\n        " +
+                        "            extend: \'pdf\',\r\n                    exportOptions: {\r\n              " +
+                        "          columns: \':visible\'\r\n                    }\r\n                },\r\n      " +
+                        "          {\r\n                    extend: \'copy\',\r\n                    exportOpti" +
+                        "ons: {\r\n                        columns: \':visible\'\r\n                    }\r\n    " +
+                        "            },\r\n                , \'pageLength\', \"colvis\"\r\n            ]\r\n       " +
+                        " });\r\n    });\r\n</script>\r\n<div class=\"col-xl\">\r\n    <div class=\"card shadow\">\r\n " +
+                        "       <div class=\"card-header \">\r\n            "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl1;
             @__ctrl1 = this.@__BuildControlCloseBtn();
             @__parser.AddParsedSubObject(@__ctrl1);

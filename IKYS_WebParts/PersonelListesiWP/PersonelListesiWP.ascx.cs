@@ -3,15 +3,18 @@ using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Web.Script.Serialization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
+using static Model.IKYS.Personel;
 
 namespace IKYS_WebParts.PersonelListesiWP
 {
@@ -57,20 +60,69 @@ namespace IKYS_WebParts.PersonelListesiWP
                 ViewState["SecilenId"] = value;
             }
         }
+        private string PersonelTipiQS
+        {
+            get
+            {
+
+                if (ViewState["PersonelTipi"] == null)
+                {
+                    if (Page.Request.QueryString["PersonelTipi"] != null)
+                    {
+                        ViewState["PersonelTipi"] = Page.Request.QueryString["PersonelTipi"];
+                    }
+                    else
+                    {
+                        ViewState["PersonelTipi"] = 1;
+                    }
+                }
+                return ViewState["PersonelTipi"].ToString();
+            }
+
+            set
+            {
+                ViewState["PersonelTipi"] = value;
+            }
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
                 if (!Page.IsPostBack)
                 {
+                    PersonelTipiDDLDoldur();
                     TabloOlustur();
                 }
+
             }
             catch (Exception ex)
             {
                 ExceptionHelper exHelper = new ExceptionHelper(ex);
                 exHelper.PublishException();
             }
+        }
+
+        private void PersonelTipiDDLDoldur()
+        {
+            PersonelTipiDDL.Items.Clear();
+            // Enum'u Dropdown için listeye dönüştürme
+
+            var personelTipleri = Enum.GetValues(typeof(PersonelTipi))
+                           .Cast<PersonelTipi>()
+                           .ToList();
+
+            foreach (var item in personelTipleri)
+            {
+                int tipiInt = (int)item;
+                string displayName = UtilityHelper.GetEnumDisplayName(item);
+                PersonelTipiDDL.Items.Add(new ListItem( displayName, tipiInt.ToString()));
+            }
+        }
+
+        protected void PersonelTipiDDL_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            PersonelTipiQS = PersonelTipiDDL.SelectedItem.Value;
+            TabloOlustur();
         }
         private void TabloOlustur()
         {
@@ -103,93 +155,104 @@ namespace IKYS_WebParts.PersonelListesiWP
             DataTable dataTable = GetDataTable();
 
             List<PersonelListItem> list = new List<PersonelListItem>();
-
-            foreach (DataRow row in dataTable.Rows)
+            if (dataTable != null)
             {
-                int personelId = row["PersonelId"].ConvertToInt();
-                int protokolSiraNo = row["ProtokolSiraNo"].ReturnZeroIfNull().ConvertToInt();
-                string adi = row["Adi"].ToString();
-                string soyadi = row["Soyadi"].ToString();
-                string unvan = row["Unvan"].ToString();
-                string birimSube = row["BirimSube"].ToString();
 
-                int sicilNo = row["SicilNo"].ReturnZeroIfNull().ConvertToInt();
-                string tahsili = row["TahsilDurumu"].ToString();
-                string kullaniciAdi = row["KullaniciAdi"].ToString(); 
-                string tCKimlikNo = row["TCKimlikNo"].ReturnZeroIfNull().ToString();
-                string anneAdi = row["AnneAdi"].ReturnEmptyIfNull().ToString();
-                string babaAdi = row["BabaAdi"].ReturnEmptyIfNull().ToString();
-                string dogumYeri = row["DogumYeri"].ReturnEmptyIfNull().ToString();
-                string dogumTar = row["DogumTar"].ReturnEmptyIfNull().ConvertToDatetime().ConvertToDatetimeEmptyIfNull();
-                string medeniHali = row["MedeniHali"].ReturnEmptyIfNull().ConvertToInt() == 1 ? "Evli" : "Bekar";
-                string evlilikTar = row["EvlilikTar"].ReturnEmptyIfNull().ConvertToDatetime().ConvertToDatetimeEmptyIfNull();
-                string cinsiyet = row["Cinsiyet"].ReturnEmptyIfNull().ToString();
-                string kanGrubu = row["KanGrubu"].ReturnEmptyIfNull().ToString();
-                string baslamaTar = row["BaslamaTar"].ReturnEmptyIfNull().ConvertToDatetime().ConvertToDatetimeEmptyIfNull();
-                string izinDonemiBasTar = row["IzinDonemiBasTar"].ReturnEmptyIfNull().ConvertToDatetime().ConvertToDatetimeEmptyIfNull();
-                string sGKSicilNo = row["SGKSicilNo"].ReturnEmptyIfNull().ToString();
-                string vakifOncesiPrimGunSayisi = row["VakifOncesiPrimGunSayisi"].ReturnEmptyIfNull().ToString();
-                string emeklilikTarihi = row["EmeklilikTarihi"].ReturnEmptyIfNull().ConvertToDatetime().ConvertToDatetimeEmptyIfNull();
-                string calismaDurumu = row["CalismaDurumu"].ReturnEmptyIfNull().ConvertToInt()==0?"Ayrıldı":"Çalışıyor";
-                string ayrilmaTar = row["AyrilmaTar"].ReturnEmptyIfNull().ConvertToDatetime().ConvertToDatetimeEmptyIfNull();
-                string ayrilmaSebebi = row["AyrilmaSebebi"].ReturnEmptyIfNull().ToString();
-                string ceptelefonu = row["CepTelefonu"].ReturnEmptyIfNull().ToString();
-                string adres = row["Adres"].ReturnEmptyIfNull().ToString();
-                string ikametIli = row["IkametIli"].ReturnEmptyIfNull().ToString();
-                string ikametIlcesi = row["IkametIlcesi"].ReturnEmptyIfNull().ToString();
-                string esi = row["Esi"].ReturnEmptyIfNull().ToString();
-                string esTcKimlikNo = row["EsTcKimlikNo"].ReturnEmptyIfNull().ToString();
-                string esTelefon = row["EsTelefon"].ReturnEmptyIfNull().ToString();
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    int personelId = row["PersonelId"].ConvertToInt();
+                    int protokolSiraNo = row["ProtokolSiraNo"].ReturnZeroIfNull().ConvertToInt();
+                    string adi = row["Adi"].ToString();
+                    string soyadi = row["Soyadi"].ToString();
+                    string unvan = row["Unvan"].ToString();
+                    string birimSube = row["BirimSube"].ToString();
 
+                    int sicilNo = row["SicilNo"].ReturnZeroIfNull().ConvertToInt();
+                    string tahsili = row["TahsilDurumu"].ToString();
+                    string kullaniciAdi = row["KullaniciAdi"].ToString();
+                    string tCKimlikNo = row["TCKimlikNo"].ReturnZeroIfNull().ToString();
+                    string anneAdi = row["AnneAdi"].ReturnEmptyIfNull().ToString();
+                    string babaAdi = row["BabaAdi"].ReturnEmptyIfNull().ToString();
+                    string dogumYeri = row["DogumYeri"].ReturnEmptyIfNull().ToString();
+                    string dogumTar = row["DogumTar"].ReturnEmptyIfNull().ConvertToDatetime().ConvertToDatetimeEmptyIfNull();
+                    string medeniHali = row["MedeniHali"].ReturnEmptyIfNull().ConvertToInt() == 1 ? "Evli" : "Bekar";
+                    string evlilikTar = row["EvlilikTar"].ReturnEmptyIfNull().ConvertToDatetime().ConvertToDatetimeEmptyIfNull();
+                    string cinsiyet = row["Cinsiyet"].ReturnEmptyIfNull().ToString();
+                    string kanGrubu = row["KanGrubu"].ReturnEmptyIfNull().ToString();
+                    string baslamaTar = row["BaslamaTar"].ReturnEmptyIfNull().ConvertToDatetime().ConvertToDatetimeEmptyIfNull();
+                    string izinDonemiBasTar = row["IzinDonemiBasTar"].ReturnEmptyIfNull().ConvertToDatetime().ConvertToDatetimeEmptyIfNull();
+                    string sGKSicilNo = row["SGKSicilNo"].ReturnEmptyIfNull().ToString();
+                    string vakifOncesiPrimGunSayisi = row["VakifOncesiPrimGunSayisi"].ReturnEmptyIfNull().ToString();
+                    string emeklilikTarihi = row["EmeklilikTarihi"].ReturnEmptyIfNull().ConvertToDatetime().ConvertToDatetimeEmptyIfNull();
+                    string calismaDurumu = row["CalismaDurumu"].ReturnEmptyIfNull().ConvertToInt() == 0 ? "Ayrıldı" : "Çalışıyor";
+                    string ayrilmaTar = row["AyrilmaTar"].ReturnEmptyIfNull().ConvertToDatetime().ConvertToDatetimeEmptyIfNull();
+                    string ayrilmaSebebi = row["AyrilmaSebebi"].ReturnEmptyIfNull().ToString();
+                    string ceptelefonu = row["CepTelefonu"].ReturnEmptyIfNull().ToString();
+                    string adres = row["Adres"].ReturnEmptyIfNull().ToString();
+                    string ikametIli = row["IkametIli"].ReturnEmptyIfNull().ToString();
+                    string ikametIlcesi = row["IkametIlcesi"].ReturnEmptyIfNull().ToString();
+                    string esi = row["Esi"].ReturnEmptyIfNull().ToString();
+                    string esTcKimlikNo = row["EsTcKimlikNo"].ReturnEmptyIfNull().ToString();
+                    string esTelefon = row["EsTelefon"].ReturnEmptyIfNull().ToString();
+                    string plaka = row["Plaka"].ReturnEmptyIfNull().ToString();
+                    int personelTipiInt = row["PersonelTipi"].ReturnZeroIfNull().ConvertToInt();
+                    string personelTipi=((PersonelTipi)personelTipiInt).ToString();
 
-                PersonelListItem personelListItem = new PersonelListItem();
-                personelListItem.PersonelId = personelId.ToString();
-                personelListItem.ProtokolSiraNo = protokolSiraNo;
-                personelListItem.Adi = adi;
-                personelListItem.Soyadi = soyadi;
-                personelListItem.Unvan = unvan;
-                personelListItem.BirimSube = birimSube;
-                personelListItem.Secildi = SecilenIdQS.Equals(personelListItem.PersonelId);
+                    PersonelListItem personelListItem = new PersonelListItem();
+                    personelListItem.PersonelId = personelId.ToString();
+                    personelListItem.ProtokolSiraNo = protokolSiraNo;
+                    personelListItem.Adi = adi;
+                    personelListItem.Soyadi = soyadi;
+                    personelListItem.Unvan = unvan;
+                    personelListItem.BirimSube = birimSube;
+                    personelListItem.Secildi = SecilenIdQS.Equals(personelListItem.PersonelId);
 
-                personelListItem.PersonelKarti = "<a href=" + ProjeConstants.PAGE_PERSONEL_KARTI + "?PersonelId=" + personelId + " class='btn btn-outline-primary'>Per.Kartı</a>";
-                personelListItem.KisiselSayfa = "<a href=" + ProjeConstants.PAGE_KISISELSAYFA + "?PersonelId=" + personelId + " class='btn btn-outline-primary'>Kişis.Say.</a>";
-                personelListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_PERSONEL_EDIT + "?DestinationApp=PerD&PersonelId=" + personelId + " class='btn btn-outline-primary'>Düzenle</a>";
-                //ekleneneler
-                personelListItem.SicilNo = sicilNo;
-                personelListItem.Tahsili = tahsili;
-                personelListItem.KullaniciAdi = kullaniciAdi;
-                personelListItem.TCKimlikNo = tCKimlikNo;
-                personelListItem.AnneAdi = anneAdi;
-                personelListItem.BabaAdi = babaAdi;
-                personelListItem.DogumYeri = dogumYeri;
-                personelListItem.DogumTar = dogumTar;
-                personelListItem.MedeniHali = medeniHali;
-                personelListItem.EvlilikTar = evlilikTar;
-                personelListItem.Cinsiyet = cinsiyet;
-                personelListItem.KanGrubu = kanGrubu;
-                personelListItem.BaslamaTar = baslamaTar;
-                personelListItem.IzinDonemiBasTar = izinDonemiBasTar;
-                personelListItem.SGKSicilNo = sGKSicilNo;
-                personelListItem.VakifOncesiPrimGunSayisi = vakifOncesiPrimGunSayisi;
-                personelListItem.EmeklilikTarihi = emeklilikTarihi;
-                personelListItem.CalismaDurumu = calismaDurumu;
-                personelListItem.AyrilmaTar = ayrilmaTar;
-                personelListItem.AyrilmaSebebi = ayrilmaSebebi;
-                personelListItem.CepTelefonu= ceptelefonu;
-                personelListItem.Adres = adres;
-                personelListItem.IkametIli = ikametIli;
-                personelListItem.IkametIlcesi = ikametIlcesi;
-                personelListItem.Esi= esi;
-                personelListItem.EsTcKimlikNo = esTcKimlikNo;
-                personelListItem.EsTelefon = esTelefon;
-                //
-                list.Add(personelListItem);
+                    personelListItem.PersonelKarti = "<a href=" + ProjeConstants.PAGE_PERSONEL_KARTI + "?PersonelId=" + personelId + " class='btn btn-outline-primary'>Per.Kartı</a>";
+                    personelListItem.KisiselSayfa = "<a href=" + ProjeConstants.PAGE_KISISELSAYFA + "?PersonelId=" + personelId + " class='btn btn-outline-primary'>Kişis.Say.</a>";
+                    personelListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_PERSONEL_EDIT + "?DestinationApp=PerD&PersonelId=" + personelId + " class='btn btn-outline-primary'>Düzenle</a>";
+                    //ekleneneler
+                    personelListItem.SicilNo = sicilNo;
+                    personelListItem.Tahsili = tahsili;
+                    personelListItem.KullaniciAdi = kullaniciAdi;
+                    personelListItem.TCKimlikNo = tCKimlikNo;
+                    personelListItem.AnneAdi = anneAdi;
+                    personelListItem.BabaAdi = babaAdi;
+                    personelListItem.DogumYeri = dogumYeri;
+                    personelListItem.DogumTar = dogumTar;
+                    personelListItem.MedeniHali = medeniHali;
+                    personelListItem.EvlilikTar = evlilikTar;
+                    personelListItem.Cinsiyet = cinsiyet;
+                    personelListItem.KanGrubu = kanGrubu;
+                    personelListItem.BaslamaTar = baslamaTar;
+                    personelListItem.IzinDonemiBasTar = izinDonemiBasTar;
+                    personelListItem.SGKSicilNo = sGKSicilNo;
+                    personelListItem.VakifOncesiPrimGunSayisi = vakifOncesiPrimGunSayisi;
+                    personelListItem.EmeklilikTarihi = emeklilikTarihi;
+                    personelListItem.CalismaDurumu = calismaDurumu;
+                    personelListItem.AyrilmaTar = ayrilmaTar;
+                    personelListItem.AyrilmaSebebi = ayrilmaSebebi;
+                    personelListItem.CepTelefonu = ceptelefonu;
+                    personelListItem.Adres = adres;
+                    personelListItem.IkametIli = ikametIli;
+                    personelListItem.IkametIlcesi = ikametIlcesi;
+                    personelListItem.Esi = esi;
+                    personelListItem.EsTcKimlikNo = esTcKimlikNo;
+                    personelListItem.EsTelefon = esTelefon;
+                    personelListItem.Plaka = plaka;
+                    personelListItem.PersonelTipi = personelTipi;
+                    //
+                    list.Add(personelListItem);
+                }
             }
             return list;
         }
         private string CreateDataTable(string jsonData)
         {
             string tableString = @"
+                if ( jQuery.fn.DataTable.isDataTable('#CustomDataTable') ) {
+                    jQuery('#CustomDataTable').DataTable().destroy();
+                }
+                jQuery('#CustomDataTable tbody').empty();
                  jQuery(document).ready(function () {
 
                         jQuery('#CustomDataTable').DataTable({
@@ -204,12 +267,20 @@ namespace IKYS_WebParts.PersonelListesiWP
                                         .draw(false);
                                 }
                             },
+                            'createdRow': function(row, data, dataIndex) {
+                                var personelTipi = data['PersonelTipi']; 
+
+                                if (personelTipi == 'Kadrosuz') {
+                                    $(row).css('background-color', 'lightyellow'); // Green for Kadrosuz
+                                } 
+                            },
                             data: " + jsonData + @",
                             columns: [
                                 { data: 'ProtokolSiraNo' },
                                 { data: 'Adi' },
                                 { data: 'Soyadi' },
                                 { data: 'Unvan' },
+                                { data: 'PersonelTipi' },
                                 { data: 'BirimSube' },
                                 { data: 'PersonelKarti'},
                                 { data: 'KisiselSayfa'},
@@ -239,12 +310,13 @@ namespace IKYS_WebParts.PersonelListesiWP
                                 { data: 'Esi' },
                                 { data: 'EsTcKimlikNo' },
                                 { data: 'EsTelefon' },
+                                { data: 'Plaka' },
 
                             ],
                             columnDefs: [
                                 { type: 'turkish', targets:[1,2] },
                                 { type: 'num', targets: 0 },
-                                { 'visible': false, targets: [8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32]},
+                                { 'visible': false, 'targets': [9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34]},
                             ],
                             'order': [[0, 'asc']],// Sıralı
                             'language': {
@@ -253,6 +325,7 @@ namespace IKYS_WebParts.PersonelListesiWP
                                 'thousands': '.'
                             },
                             responsive: true,
+                            destroy: true,
                             dom: 'Bfrtip',
                             buttons: [
                                 {
@@ -287,8 +360,9 @@ namespace IKYS_WebParts.PersonelListesiWP
         }
         private DataTable GetDataTable()
         {
+            PersonelTipi personelTipi = (PersonelTipi)PersonelTipiDDL.SelectedItem.Value.ConvertToInt();
             Personel personel = new Personel();
-            DataTable dataTable = personel.SelectCalisanPersonelListesiReturnDataTable();
+            DataTable dataTable = personel.SelectCalisanPersonelListesiReturnDataTable(personelTipi);
             return dataTable;
         }
         private class PersonelListItem
@@ -339,10 +413,12 @@ namespace IKYS_WebParts.PersonelListesiWP
             public string Adres { get; set; }
             public string IkametIli { get; set; }
             public string IkametIlcesi { get; set; }
+            public string Plaka { get; set; }
             //Aile
             public string Esi { get; set; }
             public string EsTcKimlikNo { get; set; }
             public string EsTelefon { get; set; }
+            public string PersonelTipi { get; set; }
         }
         protected void ExcelBtn_Click(object sender, EventArgs e)
         {

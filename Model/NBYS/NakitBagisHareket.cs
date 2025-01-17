@@ -500,7 +500,7 @@ namespace Model.NBYS
             }
             else
             {
-                ayStr = " AND MONTH(BagisTarihi)=" + ay.ReturnQuotedValue();
+                ayStr = " AND MONTH(A.BagisTarihi)=" + ay.ReturnQuotedValue();
             }
 
             string sqlString = string.Format(@"
@@ -520,7 +520,7 @@ namespace Model.NBYS
                 INNER JOIN BankaTanim_Table C ON C.Id= A.BankaId
                 LEFT JOIN Armagan_Table D ON D.Id= A.ArmaganId
 			    LEFT JOIN Il_Table E ON E.Id= A.Ili
-                WHERE YEAR(BagisTarihi)={0}  
+                WHERE YEAR(A.BagisTarihi)={0}  
                 {1}
                 {2}
             ", yil, ayStr, ilStr);

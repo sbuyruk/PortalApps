@@ -51,6 +51,31 @@ namespace Portal_WebParts.OlayListesiWP
                 ViewState["SorguZamani"] = value;
             }
         }
+
+        private string ProgramQS
+        {
+            get
+            {
+
+                if (ViewState["Program"] == null)
+                {
+                    if (Page.Request.QueryString["Program"] != null)
+                    {
+                        ViewState["Program"] = Page.Request.QueryString["Program"];
+                    }
+                    else
+                    {
+                        ViewState["Program"] = string.Empty;
+                    }
+                }
+                return ViewState["Program"].ToString();
+            }
+
+            set
+            {
+                ViewState["Program"] = value;
+            }
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!Page.IsPostBack)
@@ -93,7 +118,7 @@ namespace Portal_WebParts.OlayListesiWP
         private List<Olay> GetDataList(DateTime tarih)
         {
             Olay olayDao = new Olay();
-            List<Olay> list = olayDao.SelectByTarihReturnList(tarih, ProjeConstants.HEPSI);
+            List<Olay> list = olayDao.SelectByTarihReturnList(tarih, ProgramQS);
             return list;
         }
         private List<OlayListItem> OlayListItemDoldur(List<Olay> list)

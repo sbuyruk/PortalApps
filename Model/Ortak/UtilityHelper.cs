@@ -1,8 +1,10 @@
 ﻿using Microsoft.SharePoint;
 using Microsoft.SharePoint.Utilities;
+using Model.NBYS;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.DirectoryServices.AccountManagement;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -770,6 +772,27 @@ namespace Model.Ortak
             Bolge bolge = new Bolge();
             bolge = bolge.Select(Il.BolgeId);
             return bolge;
+        }
+        // Display adını almak için yardımcı fonksiyon
+        public static string GetEnumDisplayName(Enum enumValue)
+        {
+            var fieldInfo = enumValue.GetType().GetField(enumValue.ToString());
+            var attribute = (DisplayAttribute)Attribute.GetCustomAttribute(fieldInfo, typeof(DisplayAttribute));
+            return attribute?.Name ?? enumValue.ToString();
+        }
+        public static string YonergeURLGetir(string grup, string lib, string anahtar)
+        {
+
+            string url = UtilityHelper.URLGetir();
+            string yonergeUrl = url + "/../" + lib + "/yonerge/default.pdf";
+            NBYSParametre param = new NBYSParametre();
+            param = param.SelectByGrupAnahtar(grup, anahtar);
+            if (param != null)
+            {
+                yonergeUrl = url + "/../" + lib + "/yonerge/" + param.Deger;
+            }
+
+            return yonergeUrl;
         }
     }
 }

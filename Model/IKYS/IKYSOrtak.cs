@@ -4,6 +4,7 @@ using Model.IKYS;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -27,8 +28,6 @@ namespace Model.Ortak
         #region IKYS
         //IKYS
         //İzin Hesapları
-
-
         /// <summary>
         /// Kullanılan izin süresini hesaplarken Cumartesi-Pazar günülerini ve Resmi Tatilleri dikkate alır
         /// </summary>
@@ -597,6 +596,22 @@ namespace Model.Ortak
                 MessageHelper.PublishMessage("Personel bulunamadı", ProjeConstants.MESAJ_HATA);
                 return null;
             }
+        }
+        public static int KalanIzinToplamiGetir(int personelId, bool sadeceEskiDonemler)
+        {
+
+            IzinDonem izinDonemDao = new IzinDonem();
+            int kalanIzinToplami = 0;
+
+            DataTable dataTable = izinDonemDao.SelectSUMKalanIzinByPersonelId(personelId, sadeceEskiDonemler);
+            if (dataTable != null)
+            {
+                DataRow dataRow = dataTable.Rows[0];
+
+                kalanIzinToplami = dataRow["KalanIzinToplami"].ConvertToInt();// - izinDonemi.KalanIzin.ConvertToInt();
+            }
+
+            return kalanIzinToplami;
         }
         #endregion IKYS
     }

@@ -91,7 +91,7 @@ namespace NBYS_WebParts.FTKYazilariWP
             _scriptMan.AsyncPostBackTimeout = 36000;
             if (!Page.IsPostBack)
             {
-                YonergeLnk.HRef = NBYSOrtak.YonergeURLGetir(ProjeConstants.PARAM_FTKYONERGE, ProjeConstants.PAGE_FTK_YAZILARI);
+                YonergeLnk.HRef = UtilityHelper.YonergeURLGetir(ProjeConstants.PARAM_FTKYONERGE, ProjeConstants.NBYSBELGELERI_LIB, ProjeConstants.PAGE_FTK_YAZILARI);
                 IlDDLDoldur();
                 UtilityHelper.SetDDLValue(IliDDL, IliIdQS.ToString());
                 IlceDDLDoldur();

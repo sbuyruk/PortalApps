@@ -281,14 +281,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>MazeretIzinTalepListesiWP.ascx</DependentUpon>
     </Compile>
-    <Compile Include="PersonelBilgiGirisiWP\PersonelBilgiGirisiWP.ascx.cs">
-      <DependentUpon>PersonelBilgiGirisiWP.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="PersonelBilgiGirisiWP\PersonelBilgiGirisiWP.ascx.g.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>PersonelBilgiGirisiWP.ascx</DependentUpon>
-    </Compile>
     <Compile Include="PersonelGirisiWP\PersonelGirisiWP.ascx.cs">
       <DependentUpon>PersonelGirisiWP.ascx</DependentUpon>
     </Compile>
@@ -525,10 +517,6 @@
     <None Include="Package\Package.Template.xml">
       <DependentUpon>Package.package</DependentUpon>
     </None>
-    <None Include="PersonelBilgiGirisiWP\PersonelBilgiGirisiWP.webpart" />
-    <None Include="PersonelBilgiGirisiWP\SharePointProjectItem.spdata">
-      <SharePointProjectItemId>{5e190d88-00b1-4376-96e9-33c2e7305a8d}</SharePointProjectItemId>
-    </None>
     <None Include="PersonelGirisiWP\PersonelGirisiWP.webpart" />
     <None Include="PersonelGirisiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{4f4b9ec1-8651-4d9d-93c0-5c9e5b43a66a}</SharePointProjectItemId>
@@ -734,11 +722,6 @@
     <Content Include="MazeretIzinTalepListesiWP\MazeretIzinTalepListesiWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>MazeretIzinTalepListesiWP.ascx.g.cs</LastGenOutput>
-    </Content>
-    <Content Include="PersonelBilgiGirisiWP\Elements.xml" />
-    <Content Include="PersonelBilgiGirisiWP\PersonelBilgiGirisiWP.ascx">
-      <Generator>SharePointWebPartCodeGenerator</Generator>
-      <LastGenOutput>PersonelBilgiGirisiWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="PersonelGirisiWP\Elements.xml" />
     <Content Include="PersonelGirisiWP\PersonelGirisiWP.ascx">

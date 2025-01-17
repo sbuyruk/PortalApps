@@ -2,12 +2,12 @@
 <webParts>
   <webPart xmlns="http://schemas.microsoft.com/WebPart/v3">
     <metaData>
-      <type name="MFYS_WebParts.AylikParaGirisiIslemToplamiWP.AylikParaGirisiIslemToplamiWP, $SharePoint.Project.AssemblyFullName$" />
+      <type name="NBYS_WebParts.BagisaVesileOlanArmaganBelgesiWP.BagisaVesileOlanArmaganBelgesiWP, $SharePoint.Project.AssemblyFullName$" />
       <importErrorMessage>$Resources:core,ImportErrorMessage;</importErrorMessage>
     </metaData>
     <data>
       <properties>
-        <property name="Title" type="string">MFYS_WebParts - AylikParaGirisiIslemToplamiWP</property>
+        <property name="Title" type="string">NBYS_WebParts - BagisaVesileOlanArmaganBelgesiWP</property>
         <property name="Description" type="string">My Visual Web Part</property>
       </properties>
     </data>

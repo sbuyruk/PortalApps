@@ -57,11 +57,19 @@ namespace IKYS_WebParts.PersonelListesiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.LinkButton ExcelBtn;
+        protected global::System.Web.UI.WebControls.DropDownList PersonelTipiDDL;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.UpdatePanel upPanel;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.UpdateProgress updateProgress;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.LinkButton ExcelBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebPartCodeGenerator", "17.0.0.0")]
         public static implicit operator global::System.Web.UI.TemplateControl(PersonelListesiWP target) 
@@ -130,6 +138,118 @@ namespace IKYS_WebParts.PersonelListesiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.DropDownList @__BuildControlPersonelTipiDDL() {
+            global::System.Web.UI.WebControls.DropDownList @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.DropDownList();
+            this.PersonelTipiDDL = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "PersonelTipiDDL";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control ");
+            @__ctrl.AutoPostBack = true;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "Height:auto");
+            @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.PersonelTipiDDL_SelectedIndexChanged);
+            @__ctrl.SelectedIndexChanged += new System.EventHandler(this.PersonelTipiDDL_SelectedIndexChanged);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private void @__BuildControl__control2(System.Web.UI.Control @__ctrl) {
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    <div class=\"form-group\">\r\n                        <table id" +
+                        "=\"CustomDataTable\" class=\"table small table-striped row-border\" width=\"100%\">\r\n " +
+                        "                           <thead>\r\n                                <tr>\r\n      " +
+                        "                              <th id=\"dynamic-header\" colspan=\"8\"></th>\r\n       " +
+                        "                         </tr>\r\n                                <tr>\r\n          " +
+                        "                          <th>Sıra No</th>\r\n                                    " +
+                        "<th>Adı</th>\r\n                                    <th>Soyadı</th>\r\n             " +
+                        "                       <th>Ünvan</th>\r\n                                    <th>P" +
+                        "ersonel Tipi</th>\r\n                                    <th>Birim/Şube</th>\r\n    " +
+                        "                                <th>Personel Kartı</th>\r\n                       " +
+                        "             <th>Kişisel Sayfa</th>\r\n                                    <th>Düz" +
+                        "enle</th>\r\n                                    <th>Sicil No</th>\r\n              " +
+                        "                      <th>Tahsili</th>\r\n                                    <th>" +
+                        "Kullanici Adi</th>\r\n                                    <th>TCKimlikNo</th>\r\n   " +
+                        "                                 <th>Anne Adı</th>\r\n                            " +
+                        "        <th>Baba Adı</th>\r\n                                    <th>Doğum Yeri</t" +
+                        "h>\r\n                                    <th>Doğum Tar.</th>\r\n                   " +
+                        "                 <th>Medeni Hali</th>\r\n                                    <th>E" +
+                        "vlilik Tar.</th>\r\n                                    <th>Cinsiyet</th>\r\n       " +
+                        "                             <th>Kan Grubu</th>\r\n                               " +
+                        "     <th>İşe Başlama Tar.</th>\r\n                                    <th>İzin Dön" +
+                        "emi Baş. Tar.</th>\r\n                                    <th>SGK Sicil No</th>\r\n " +
+                        "                                   <th>Vakıf Öncesi Prim Günü</th>\r\n            " +
+                        "                        <th>Emeklilik Tarihi</th>\r\n                             " +
+                        "       <th>Calışma Durumu</th>\r\n                                    <th>Cep Tele" +
+                        "fonu</th>\r\n                                    <th>Adres</th>\r\n                 " +
+                        "                   <th>İli</th>\r\n                                    <th>İlçesi<" +
+                        "/th>\r\n                                    <th>Eşi</th>\r\n                        " +
+                        "            <th>Eş TC Kimlik No</th>\r\n                                    <th>Eş" +
+                        " telefon</th>\r\n                                    <th>Araç-Plakası</th>\r\n      " +
+                        "                          </tr>\r\n                            </thead>\r\n         " +
+                        "               </table>\r\n                    </div>\r\n                "));
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control4() {
+            global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
+            @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
+            @__ctrl.ControlID = "PersonelTipiDDL";
+            @__ctrl.EventName = "SelectedIndexChanged";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private void @__BuildControl__control3(System.Web.UI.UpdatePanelTriggerCollection @__ctrl) {
+            global::System.Web.UI.AsyncPostBackTrigger @__ctrl1;
+            @__ctrl1 = this.@__BuildControl__control4();
+            @__ctrl.Add(@__ctrl1);
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.UpdatePanel @__BuildControlupPanel() {
+            global::System.Web.UI.UpdatePanel @__ctrl;
+            @__ctrl = new global::System.Web.UI.UpdatePanel();
+            this.upPanel = @__ctrl;
+            @__ctrl.ContentTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control2));
+            @__ctrl.ID = "upPanel";
+            this.@__BuildControl__control3(@__ctrl.Triggers);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private void @__BuildControl__control5(System.Web.UI.Control @__ctrl) {
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    <div class=\'loaderMainContainer\'>\r\n                        " +
+                        "<div class=\'loaderContainer\'>\r\n                            <div class=\'loaderCir" +
+                        "cle\'></div>\r\n                        </div>\r\n                    </div>\r\n\r\n     " +
+                        "           "));
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.UpdateProgress @__BuildControlupdateProgress() {
+            global::System.Web.UI.UpdateProgress @__ctrl;
+            @__ctrl = new global::System.Web.UI.UpdateProgress();
+            this.updateProgress = @__ctrl;
+            @__ctrl.ProgressTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control5));
+            @__ctrl.ID = "updateProgress";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlExcelBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -148,43 +268,10 @@ namespace IKYS_WebParts.PersonelListesiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control2(System.Web.UI.Control @__ctrl) {
-            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            <div class=\'loaderMainContainer\'>\r\n                <div class=\'load" +
-                        "erContainer\'>\r\n                    <div class=\'loaderCircle\'></div>\r\n           " +
-                        "     </div>\r\n            </div>\r\n        "));
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.UpdateProgress @__BuildControlupdateProgress() {
-            global::System.Web.UI.UpdateProgress @__ctrl;
-            @__ctrl = new global::System.Web.UI.UpdateProgress();
-            this.updateProgress = @__ctrl;
-            @__ctrl.ProgressTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control2));
-            @__ctrl.ID = "updateProgress";
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControlTree(global::IKYS_WebParts.PersonelListesiWP.PersonelListesiWP @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-<script type=""text/javascript"">
-    //excele export ettikten donup sonra kalmasın diye
-    function setFormSubmitToFalse() {
-        setTimeout(function () { _spFormOnSubmitCalled = false; }, 3000);
-        return true;
-    }
-
-</script>
-<div class=""container col-xl"">
-    <div class=""card shadow"">
-        <div class=""card-header "">
-            "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n<div class=\"container\">\r\n    <div class=\"card shadow\">\r\n        <div class=\"c" +
+                        "ard-header \">\r\n            "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl1;
             @__ctrl1 = this.@__BuildControlCloseBtn();
             @__parser.AddParsedSubObject(@__ctrl1);
@@ -201,39 +288,25 @@ namespace IKYS_WebParts.PersonelListesiWP {
             @__ctrl4 = this.@__BuildControlAdiLbl();
             @__parser.AddParsedSubObject(@__ctrl4);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            </h3>\r\n\r\n        </div>\r\n        <div class=\"card-body\">\r\n         " +
-                        "  <div class=\"form-group\">\r\n                <table id=\"CustomDataTable\" class=\"t" +
-                        "able table-striped row-border\" width=\"100%\">\r\n                    <thead>\r\n     " +
-                        "                   <tr>\r\n                            <th>Sıra No</th>\r\n         " +
-                        "                   <th>Adı</th>\r\n                            <th>Soyadı</th>\r\n  " +
-                        "                          <th>Ünvan</th>\r\n                            <th>Birim/" +
-                        "Şube</th>\r\n                            <th>Personel Kartı</th>\r\n                " +
-                        "            <th>Kişisel Sayfa</th>\r\n                            <th>Düzenle</th>" +
-                        "\r\n                            <th>Sicil No</th>\r\n                            <th" +
-                        ">Tahsili</th>\r\n                            <th>Kullanici Adi</th>\r\n             " +
-                        "               <th>TCKimlikNo</th>\r\n                            <th>Anne Adı</th" +
-                        ">\r\n                            <th>Baba Adı</th>\r\n                            <t" +
-                        "h>Doğum Yeri</th>\r\n                            <th>Doğum Tar.</th>\r\n            " +
-                        "                <th>Medeni Hali</th>\r\n                            <th>Evlilik Ta" +
-                        "r.</th>\r\n                            <th>Cinsiyet</th>\r\n                        " +
-                        "    <th>Kan Grubu</th>\r\n                            <th>İşe Başlama Tar.</th>\r\n " +
-                        "                           <th>İzin Dönemi Baş. Tar.</th>\r\n                     " +
-                        "       <th>SGK Sicil No</th>\r\n                            <th>Vakıf Öncesi Prim " +
-                        "Günü</th>\r\n                            <th>Emeklilik Tarihi</th>\r\n              " +
-                        "              <th>Calışma Durumu</th>\r\n                            <th>Cep Telef" +
-                        "onu</th>\r\n                            <th>Adres</th>\r\n                          " +
-                        "  <th>İli</th>\r\n                            <th>İlçesi</th>\r\n                   " +
-                        "         <th>Eşi</th>\r\n                            <th>Eş TC Kimlik No</th>\r\n   " +
-                        "                         <th>Eş telefon</th>\r\n                        </tr>\r\n   " +
-                        "                 </thead>\r\n                </table>\r\n            </div>\r\n       " +
-                        " </div>\r\n        <div class=\"card-footer\">\r\n            "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl5;
-            @__ctrl5 = this.@__BuildControlExcelBtn();
+                        "   <div class=\"form-group col-3\">\r\n                <label for=\"PersonelTipiDDL\" " +
+                        "class=\"col-form-label\">Personel Tipi</label>\r\n                <div>\r\n           " +
+                        "         "));
+            global::System.Web.UI.WebControls.DropDownList @__ctrl5;
+            @__ctrl5 = this.@__BuildControlPersonelTipiDDL();
             @__parser.AddParsedSubObject(@__ctrl5);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n        </div>\r\n    </div>\r\n    "));
-            global::System.Web.UI.UpdateProgress @__ctrl6;
-            @__ctrl6 = this.@__BuildControlupdateProgress();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                </div>\r\n            </div>\r\n            "));
+            global::System.Web.UI.UpdatePanel @__ctrl6;
+            @__ctrl6 = this.@__BuildControlupPanel();
             @__parser.AddParsedSubObject(@__ctrl6);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n</div>\r\n"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
+            global::System.Web.UI.UpdateProgress @__ctrl7;
+            @__ctrl7 = this.@__BuildControlupdateProgress();
+            @__parser.AddParsedSubObject(@__ctrl7);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n        </div>\r\n        <div class=\"card-footer\">\r\n            "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl8;
+            @__ctrl8 = this.@__BuildControlExcelBtn();
+            @__parser.AddParsedSubObject(@__ctrl8);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n        </div>\r\n    </div>\r\n\r\n</div>\r\n"));
         }
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +

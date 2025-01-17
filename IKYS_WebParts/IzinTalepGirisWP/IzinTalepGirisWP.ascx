@@ -146,11 +146,10 @@
                                 <asp:DropDownList ID="AmirImzaDDL" runat="server" class="form-control" style="height:auto" />
                                 <%--<asp:RequiredFieldValidator ID="AmirImzaDDLRequiredFieldValidator"  runat="server" ControlToValidate="VekilImzaDDL" ForeColor="Red" ErrorMessage="Zorunlu Alan"> </asp:RequiredFieldValidator>--%>
                             </div>
-                            <div class="form-group col-4" id="OnayDiv" runat="server" style="display: block;">
+                            <%-- <div class="form-group col-4" id="OnayDiv" runat="server" style="display: block;">
                                 <label class="col-form-label" for="OnayImzaDDL">Onay</label>
                                 <asp:DropDownList ID="OnayImzaDDL" runat="server" class="form-control" style="height:auto" />
-                                <%--<asp:RequiredFieldValidator runat="server" ControlToValidate="OnayImzaDDL" ForeColor="Red" ErrorMessage="Zorunlu Alan"> </asp:RequiredFieldValidator>--%>
-                            </div>
+                            </div>--%>
                         </div>
                         <div class="row">
                             <div class="form-group col">

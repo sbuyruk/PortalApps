@@ -340,6 +340,15 @@ namespace IKYS_WebParts.KisiselSayfaWP
                 row6.Controls.Add(IlR2H7);
                 row6.Controls.Add(IlR2H8);
 
+                TableRow row7 = new TableRow();
+                TableCell IlR2H9 = new TableCell();
+                TableCell IlR2H10 = new TableCell();
+                IlR2H9.Font.Bold = true;
+                IlR2H9.Text = "Araç Plakası";
+                IlR2H10.Text = iletisimBilgileri.Plaka;
+                row7.Controls.Add(IlR2H9);
+                row7.Controls.Add(IlR2H10);
+
                 IletisimTable.Controls.Add(row);
                 IletisimTable.Controls.Add(row0);
                 IletisimTable.Controls.Add(row1);
@@ -348,6 +357,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
                 IletisimTable.Controls.Add(row4);
                 IletisimTable.Controls.Add(row5);
                 IletisimTable.Controls.Add(row6);
+                IletisimTable.Controls.Add(row7);
             }
         }
         private void FillAileTable(Personel personel)

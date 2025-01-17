@@ -36,14 +36,73 @@
         }
     }
 </script>
+    <script>
+        let cropper;
 
-<div class="container shadow w-75">
+        function readPictureURL() {
 
-    <div class="card">
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const image = document.getElementById('imagePreview');
+                    image.src = e.target.result;
+                    image.style.display = 'block';
 
-        <div class="card-header" id="CardHeader" runat="server">
+                    // Initialize Cropper.js
+                    if (cropper) {
+                        cropper.destroy(); // Destroy previous instance
+                    }
+                    cropper = new Cropper(image, {
+                        aspectRatio: 1, // Example: Square crop
+                        viewMode: 2,
+                    });
+
+                    document.getElementById('cropButton').style.display = 'inline-block';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+
+        // Crop and upload button click event
+        function cropAndUpload() {
+            if (cropper) {
+                // Get cropped image as a blob
+                cropper.getCroppedCanvas().toBlob(async function (blob) {
+                    const formData = new FormData();
+                    formData.append('croppedImage', blob, 'cropped-image.jpg');
+
+                    // Send cropped image to the server
+                    const response = await fetch('/Admin/TasinmazBagisci/UploadCroppedImage', {
+                        method: 'POST',
+                        body: formData,
+                    });
+
+                    if (response.ok) {
+                        alert('Image uploaded successfully!');
+                    } else {
+                        alert('Error uploading image.XX');
+                    }
+                }, 'image/jpeg');
+            }
+        }
+    </script>
+<div class="container">
+
+    <div class="card shadow">
+
+        <div class="card-header">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-2">
+                <a class=" btn btn-outline-primary float-right mr-4" runat="server" id="YonergeLnk"
+                    data-fancybox
+                    data-type="pdf"
+                    data-width="960"
+                    data-height="720"
+                    href="">
+                    <i class="fa fa-book" aria-hidden="true"></i>
+                </a>
                 <asp:Label CssClass="col-form-label  btn-outline-success mb-1" ID="TitleLbl" runat="server" Text="Personel Girişi"></asp:Label>
                 <asp:Label CssClass="col-form-label text-white" ID="PersonelIdLbl" Visible="false" runat="server"></asp:Label>
             </h3>
@@ -51,15 +110,19 @@
         <div class="card-body">
             <asp:UpdatePanel ID="UpdatePanel3" runat="server">
                 <ContentTemplate>
-                    <div class="form-group m-0 row nopadding">
-                        <div class="form-group m-0 col-md-10 nopadding">
+
+                    <div class="row">
+                        <div class="form-group col-9">
                             <!-- Nav tabs -->
-                            <ul class="nav nav-tabs"  role="tablist">
-                                <li  class="nav-item" runat="server" id="KimlikNav">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li class="nav-item" runat="server" id="KimlikNav">
                                     <a class="nav-link active" data-toggle="tab" id="KimlikLi" href="#KimlikDiv">Kimlik</a>
                                 </li>
-                                <li class="nav-item"  runat="server" id="IsBilgileriNav">
+                                <li class="nav-item" runat="server" id="IsBilgileriNav">
                                     <a class="nav-link" id="IsBilgileriLi" data-toggle="tab" href="#IsBilgileriDiv">İş Bilgileri</a>
+                                </li>
+                                <li class="nav-item" runat="server" id="KadrosuzIsBilgileriNav">
+                                    <a class="nav-link" id="KadrosuzIsBilgileriLi" data-toggle="tab" href="#KadrosuzIsBilgileriDiv">İş Bilgileri</a>
                                 </li>
                                 <li runat="server" class="nav-item" id="IletisimNav">
                                     <a class="nav-link" id="IletisimLi" data-toggle="tab" href="#IletisimDiv">İletişim Bilgileri</a>
@@ -78,9 +141,9 @@
 
                             <!-- Tab panes -->
                             <div class="tab-content" runat="server">
-                                <div class="tab-pane active card mt-1" role="tabpanel" id="KimlikDiv">
-                                    <div class="card-columns">
-                                        <div class="card border-0">
+                                <div class="tab-pane active" role="tabpanel" id="KimlikDiv">
+                                    <div class="form-group row">
+                                        <div class="col">
                                             <div class="form-group m-0">
                                                 <label class="col-form-label" for="AdiTxt">Adı</label>
                                                 <asp:RequiredFieldValidator runat="server" ControlToValidate="AdiTxt" ForeColor="Red" ErrorMessage="Zorunlu Alan"> </asp:RequiredFieldValidator>
@@ -101,9 +164,9 @@
                                                     <asp:CheckBox ID="DogumGunuKutlamaChk" runat="server" CssClass="form-control" Text="    " Checked="True" />
                                                 </div>
                                             </div>
-                                            
+
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="DogumIliDDL" >Doğ.Yeri İl</label>
+                                                <label class="col-form-label" for="DogumIliDDL">Doğ.Yeri İl</label>
                                                 <asp:DropDownList ID="DogumIliDDL" runat="server" CssClass="form-control" Style="height: auto" OnSelectedIndexChanged="DogumIliDDL_SelectedIndexChanged" AutoPostBack="true" />
                                             </div>
                                             <div class="form-group m-0">
@@ -111,7 +174,7 @@
                                                 <asp:DropDownList ID="DogumIlceDDL" runat="server" CssClass="form-control" Style="height: auto"></asp:DropDownList>
                                             </div>
                                         </div>
-                                        <div class="card border-0">
+                                        <div class="col">
                                             <div class="form-group m-0">
                                                 <label class="col-form-label" for="TCKimlikNoTxt">TC Kimlik No</label>
                                                 <asp:RequiredFieldValidator runat="server" ControlToValidate="TCKimlikNoTxt" ForeColor="Red" ErrorMessage="Zorunlu Alan"> </asp:RequiredFieldValidator>
@@ -127,7 +190,7 @@
                                             </div>
                                             <div class="form-group m-0">
                                                 <label class="col-form-label" for="MedeniHaliDDL">Medeni Hali</label>
-                                                <asp:DropDownList ID="MedeniHaliDDL" runat="server"  CssClass="form-control" Style="height: auto" OnSelectedIndexChanged="MedeniHaliDDL_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
+                                                <asp:DropDownList ID="MedeniHaliDDL" runat="server" CssClass="form-control" Style="height: auto" OnSelectedIndexChanged="MedeniHaliDDL_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
                                             </div>
                                             <div class="row">
                                                 <div class="col-8" id="EvlilikTarihiDiv" runat="server">
@@ -143,14 +206,14 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="card border-0">
+                                        <div class="col">
                                             <div class="form-group m-0">
                                                 <label class="col-form-label" for="SicilNoTxt">Sicil No</label>
                                                 <asp:TextBox ID="SicilNoTxt" runat="server" CssClass="form-control" ToolTip="Sicil No" type="text"></asp:TextBox>
                                             </div>
                                             <div class="form-group m-0">
                                                 <label class="col-form-label" for="CinsiyetDDL">Cinsiyet</label>
-                                                <asp:DropDownList ID="CinsiyetDDL" runat="server"  CssClass="form-control" Style="height: auto"></asp:DropDownList>
+                                                <asp:DropDownList ID="CinsiyetDDL" runat="server" CssClass="form-control" Style="height: auto"></asp:DropDownList>
                                             </div>
                                             <div class="form-group m-0">
                                                 <label class="col-form-label" for="KanGrubuDDL">Kan Grubu</label>
@@ -177,8 +240,8 @@
 
                                 </div>
                                 <div class="tab-pane" role="tabpanel" id="IsBilgileriDiv">
-                                    <div class="card-columns">
-                                        <div class="card border-0">
+                                    <div class="form-group row">
+                                        <div class="col">
                                             <div class="form-group m-0">
                                                 <label class="col-form-label" for="UnvanTanimDDL">Ünvanı</label>
                                                 <asp:DropDownList ID="UnvanTanimDDL" runat="server" CssClass="form-control" Style="height: auto"></asp:DropDownList>
@@ -199,7 +262,7 @@
                                                 <input runat="server" type="text" id="IsbasTarTxt" name="IsbasTarTxt" class="form-control DateTimePickerV1" readonly="readonly" />
                                             </div>
                                         </div>
-                                        <div class="card border-0">
+                                        <div class="col">
                                             <div class="form-group m-0">
                                                 <label class="col-form-label" for="SGKSicilNoTxt">SGK Sic.No</label>
                                                 <asp:TextBox ID="SGKSicilNoTxt" runat="server" CssClass="form-control" type="text"></asp:TextBox>
@@ -217,7 +280,7 @@
                                                 <asp:TextBox ID="ProtokolSirasiTxt" runat="server" CssClass="form-control" type="text" ReadOnly="true"></asp:TextBox>
                                             </div>
                                         </div>
-                                        <div class="card border-0">
+                                        <div class="col">
                                             <div id="IzinDonemiBasTarDiv" class="form-group m-0" runat="server">
                                                 <label class="col-form-label" for="IzinDonemiBasTarTxt">izin Dönemi Baş.Tar.</label>
                                                 <input runat="server" type="text" id="IzinDonemiBasTarTxt" name="IzinDonemiBasTarTxt" class="form-control DateTimePickerV1" readonly="readonly" />
@@ -240,11 +303,57 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="form-group">
+                                        <label class="col-form-label" for="IsBilgileriAciklamaTxt">Açıklama</label>
+                                        <asp:TextBox ID="IsBilgileriAciklamaTxt" runat="server" TextMode="MultiLine" Rows="3" CssClass="form-control" type="text" />
+                                    </div>
                                     <div class="card-footer">
                                         <asp:LinkButton ID="UpdateIsBilgileriBtn" CssClass="btn btn-outline-primary" runat="server" Text="İş Bilgilerini Kaydet" OnClick="UpdateIsBilgileriBtn_Click" />
                                     </div>
                                 </div>
-                                <div class="tab-pane" role="tabpanel"  id="AileDiv">
+                                <div class="tab-pane" role="tabpanel" id="KadrosuzIsBilgileriDiv">
+                                    <div class="form-group row">
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label class="col-form-label" for="BirimDDL">Birim/Şube</label>
+                                                <asp:DropDownList ID="BirimDDL" runat="server" class="form-control" Style="height: auto"></asp:DropDownList>
+                                            </div>
+                                            <div class="form-group m-0">
+                                                <label class="col-form-label" for="KadrosuzIsbasTarihiTxt">İşe Baş.Tar.</label>
+                                                <input runat="server" type="text" id="KadrosuzIsbasTarihiTxt" name="KadrosuzIsbasTarihiTxt" class="form-control DateTimePickerV1" readonly="readonly" />
+                                            </div>
+                                        </div>
+                                        <div class="col" id="Div1" runat="server">
+                                            <div class="form-group m-0">
+                                                <label class="col-form-label" for="KadrosuzKurumuTxt">Kurumu</label>
+                                                <asp:TextBox ID="KadrosuzKurumuTxt" runat="server" CssClass="form-control" type="text"></asp:TextBox>
+                                            </div>
+
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-group m-0">
+                                                <label class="col-form-label" for="KadrosuzCalismaDurumuDDL">Çalışma Dur.</label>
+                                                <asp:DropDownList ID="KadrosuzCalismaDurumuDDL" runat="server" CssClass="form-control" Style="height: auto" OnSelectedIndexChanged="KadrosuzCalismaDurumuDDL_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
+                                            </div>
+                                            <div id="KadrosuzAyrilmaTarihiDiv" class="form-group m-0" runat="server">
+                                                <label class="col-form-label" for="KadrosuzAyrilmaTarihiTxt">Ayrılma Tar.</label>
+                                                <input runat="server" type="text" id="KadrosuzAyrilmaTarihiTxt" name="KadrosuzAyrilmaTarihiTxt" class="form-control DateTimePickerV1" readonly="readonly" />
+                                            </div>
+                                            <div id="KadrosuzAyrilmaSebebiDiv" class="form-group m-0" runat="server">
+                                                <label class="col-form-label" for="KadrosuzAyrilmaSebebiDDL">Ayrılma Sebebi</label>
+                                                <asp:DropDownList ID="KadrosuzAyrilmaSebebiDDL" runat="server" CssClass="form-control" Style="height: auto"></asp:DropDownList>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-form-label" for="KadrosuzIsBilgileriAciklamaTxt">Açıklama</label>
+                                        <asp:TextBox ID="KadrosuzIsBilgileriAciklamaTxt" runat="server" TextMode="MultiLine" Rows="3" CssClass="form-control" type="text" />
+                                    </div>
+                                    <div class="card-footer">
+                                        <asp:LinkButton ID="KadrosuzUpdateIsBilgileriBtn" CssClass="btn btn-outline-info" runat="server" Text="İş Bilgilerini Kaydet" OnClick="KadrosuzUpdateIsBilgileriBtn_Click" />
+                                    </div>
+                                </div>
+                                <div class="tab-pane" role="tabpanel" id="AileDiv">
                                     <div class="card">
                                         <div class="btn-secondary">
                                             <a class="text-white  text-center " data-toggle="collapse" data-target="#AileMainPanel" aria-expanded="false" aria-controls="AileMainPanel" style="font-weight: bold">Aile Bilgileri</a>
@@ -262,7 +371,7 @@
                                         <asp:LinkButton ID="AileDuzenleBtn" CssClass="btn btn-outline-primary" runat="server" Text="Aile Bilgilerini Düzenle" OnClick="AileDuzenleBtn_Click" />
                                     </div>
                                 </div>
-                                <div class="tab-pane" role="tabpanel"  id="IletisimDiv">
+                                <div class="tab-pane" role="tabpanel" id="IletisimDiv">
                                     <div class="row p-1">
                                         <div class="col-4 ">
                                             <div class="form-group m-0">
@@ -321,6 +430,10 @@
                                                 <label class="col-form-label" for="OzelEPostaTxt">EPosta (Özel)</label>
                                                 <asp:TextBox ID="OzelEPostaTxt" runat="server" CssClass="form-control"></asp:TextBox>
                                             </div>
+                                            <div class="form-group m-0">
+                                                <label class="col-form-label" for="PlakaTxt">Plaka</label>
+                                                <asp:TextBox ID="PlakaTxt" runat="server" CssClass="form-control"></asp:TextBox>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -328,7 +441,7 @@
                                         <asp:LinkButton ID="UpdateIletisimBtn" CssClass="btn btn-outline-primary" runat="server" Text="İletişim Bilgilerini Kaydet" OnClick="UpdateIletisimBtn_Click" />
                                     </div>
                                 </div>
-                                <div class="tab-pane"  role="tabpanel" id="EgitimDiv">
+                                <div class="tab-pane" role="tabpanel" id="EgitimDiv">
                                     <div class="card-body">
                                         <div class="card">
                                             <div class="btn-secondary">
@@ -375,8 +488,7 @@
                                     </div>
 
                                 </div>
-                                <div class="tab-pane"  role="tabpanel" id="IzinDiv">
-
+                                <div class="tab-pane" role="tabpanel" id="IzinDiv" runat="server">
                                     <div class="card-body">
                                         <div class="card">
                                             <div class="btn-secondary">
@@ -447,39 +559,48 @@
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group m-0 col-md-2 nopadding">
-                            <div class="row form-group m-0">
-                                <div class="row form-group m-0 ">
-                                    <asp:Image ID="DisplayImage" ClientIDMode="Static" runat="server" ImageUrl="../PersonelResimleri/_t/personel_jpg.jpg" CssClass="img-thumbnail" Height="190" Width="140" onerror="this.src='../PersonelResimleri/_t/personel_jpg.jpg';" />
-                                    <%--<div class="controls alignRight">
-                                        <asp:Image ID="PersonelFotoImg" runat="server" ImageUrl="/PersonelResimleri/personel.jpg" Height="190" Width="140" />
-                                    </div>--%>
+                        <div class="form-group col-3">
+                            <div class="form-group text-center">
+                                <div class="form-group">
+                                    <asp:Image ID="DisplayImage" ClientIDMode="Static" runat="server" ImageUrl="../PersonelResimleri/_t/personel_jpg.jpg" CssClass="img-thumbnail" Height="170" Width="132" onerror="this.src='../PersonelResimleri/_t/personel_jpg.jpg';" />
                                 </div>
-                                <div class="row form-group m-0 ">
-                                    <asp:FileUpload ID="xFileUpload" Width="140" class="btn form-control" runat="server" ToolTip="Yüklenecek Resmi Seçiniz" type="text" onchange="readURL(this,'DisplayImage')" />
-                                    <%--<div class="form-group">--%>
-                                    <%--<asp:Image ID="PersonelImg" runat="server" />--%>
-                                    <%--<asp:FileUpload ID="fileBrowserFoto" class="form-control" runat="server" ToolTip="Personelin Resmi" type="text" onchange="readURL(this,'PersonelFotoImg')" />--%>
-                                    <%--</div>--%>
+                                <div class="form-group">
+                                    <asp:FileUpload ID="xFileUpload" class="btn form-control" runat="server" ToolTip="Yüklenecek Resmi Seçiniz" type="text" onchange="readURL(this,'DisplayImage')" />
                                 </div>
-                                <div class="row form-group m-0 ">
+                                <div class="form-group">
                                     <asp:LinkButton ID="ResmiKaydetBtn" ClientIDMode="Static" CssClass="btn btn-outline-primary mt-2" runat="server" Text="Resmi Kaydet" OnClick="ResmiKaydetBtn_Click" Width="140px" />
+                                    <button id="cropButton" style="display: none;">Crop and Upload</button>
+                                </div>
+                                <br />
+                                <hr />
+                                <div>
+                                    <div>
+
+                                        <input type="file" id="fileInput" accept="image/*" onchange="readPictureURL();">
+                                    </div>
+                                    <div>
+                                        <img id="imagePreview"
+                                            src="../PersonelResimleri/personel.jpg"
+                                            alt="Placeholder Image"
+                                            style="max-width: 200px; max-height: 300px;" />
+                                    </div>
+                                    <div>
+                                        <button id="cropButton" style="display: none;"  onclick="cropAndUpload();">Crop and Upload</button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="PersonelTipiDDL" class="col-form-label">Personel Tipi</label>
+                                    <div>
+                                        <asp:DropDownList ID="PersonelTipiDDL" runat="server" class="form-control" OnSelectedIndexChanged="PersonelTipiDDL_SelectedIndexChanged" AutoPostBack="true" Style="height: auto"></asp:DropDownList>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </ContentTemplate>
-                <Triggers>
-                    <asp:AsyncPostBackTrigger ControlID="DogumIliDDL" EventName="SelectedIndexChanged" />
-                    <asp:AsyncPostBackTrigger ControlID="GorevTanimDDL" EventName="SelectedIndexChanged" />
-                    <asp:AsyncPostBackTrigger ControlID="IkametIliDDL" EventName="SelectedIndexChanged" />
-                    <asp:AsyncPostBackTrigger ControlID="CalismaDurumuDDL" EventName="SelectedIndexChanged" />
-                    <asp:AsyncPostBackTrigger ControlID="MedenihaliDDL" EventName="SelectedIndexChanged" />
-                </Triggers>
             </asp:UpdatePanel>
         </div>
         <div class="card-footer">
@@ -489,7 +610,6 @@
             <asp:LinkButton ID="DeleteBtn" Visible="false" CssClass="btn btn-danger" runat="server" CausesValidation="false" Text="Sil" OnClick="DeleteBtn_Click"
                 OnClientClick="if(confirm(' Silme İşlemini Onaylıyor musunuz?')){return true;} else{return false;};" />
         </div>
-
     </div>
 
 </div>

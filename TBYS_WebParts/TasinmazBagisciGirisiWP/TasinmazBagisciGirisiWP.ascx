@@ -46,8 +46,12 @@
                                         <asp:TextBox ID="SoyadiTxt" runat="server" CssClass="form-control " ToolTip="Bağışçının Soyadı" type="text"></asp:TextBox>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-form-label" for="AdiTxt">TC Kimlik No</label>
+                                        <label class="col-form-label" for="TCKimlikNoTxt">TC Kimlik No</label>
                                         <asp:TextBox ID="TCKimlikNoTxt" runat="server" class="form-control" type="text"></asp:TextBox>
+                                    </div>                                    
+                                    <div class="form-group">
+                                        <label class="col-form-label" for="TahsilTxt">Tahsil</label>
+                                        <asp:TextBox ID="TahsilTxt" runat="server" class="form-control" type="text"></asp:TextBox>
                                     </div>
                                     <div class="checkbox pt-3 text-danger">
                                         <label>
@@ -148,7 +152,7 @@
                             <div class="form-group ">
                                 <div class="form-group border border-dark p-2" style="background-color:antiquewhite" >
                                     <div class="form-group text-center">
-                                        <asp:Image ID="DisplayImage" ClientIDMode="Static" runat="server" ImageUrl="../BagisciResimleri/_t/bagisci_jpg.jpg" CssClass="img-thumbnail" onerror="this.src='../BagisciResimleri/_t/bagisci_jpg.jpg';" Style="height: 150px" />
+                                        <asp:Image ID="DisplayImage" ClientIDMode="Static" runat="server" ImageUrl="../BagisciResimleri/_t/bagisci_jpg.jpg" CssClass="img-thumbnail" onerror="this.src='../OrtakResimler/person.jpg';" Style="height: 150px" />
                                     </div>
                                     <div class="form-group">
                                         <asp:FileUpload ID="ResimYukleFU" CssClass="btn btn-danger form-control" runat="server" ToolTip="Yüklenecek Resmi Seçiniz" type="text" onchange="readURL(this,'DisplayImage')" />

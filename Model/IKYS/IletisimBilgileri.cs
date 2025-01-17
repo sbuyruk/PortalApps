@@ -24,6 +24,7 @@ namespace Model.IKYS
         public string IntranetEPosta { get; set; }
         public string InternetEPosta { get; set; }
         public string OzelEPosta { get; set; }
+        public string Plaka { get; set; }
 
         public override T Select<T>(int id)
         {
@@ -39,7 +40,6 @@ namespace Model.IKYS
         {
             try
             {
-
                 GenericEntity<IletisimBilgileri> genericEntity = new GenericEntity<IletisimBilgileri>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
                 Olusturan = UtilityHelper.GetCurrentUserName();
@@ -134,37 +134,7 @@ namespace Model.IKYS
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
         }
-        private string saveSQL()
-        {
-            //Insert  SQL
-            string InsertSQL = string.Format(@" 
-                                    INSERT INTO IletisimBilgileri_Table 
-                                        (PersonelId,Adres,Semt,Ilcesi,PostaKodu,DahiliTelefonu,EvTelefonu,CepTelefonu,CepTelefonu2,IntranetEPosta,
-                                         InternetEPosta,OzelEPosta,Olusturan,OlusturmaTarihi)
-                                    VALUES ({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13}) ",
-                                    PersonelId.ReturnZeroIfNull(), Adres.ReturnQuotedValue(), Semt.ReturnQuotedValue(),
-                                    Ilcesi.ReturnQuotedValue(), PostaKodu.ReturnQuotedValue(), DahiliTelefonu.ReturnQuotedValue(),
-                                    EvTelefonu.ReturnQuotedValue(), CepTelefonu.ReturnQuotedValue(), CepTelefonu2.ReturnQuotedValue(),
-                                    IntranetEPosta.ReturnQuotedValue(), InternetEPosta.ReturnQuotedValue(), OzelEPosta.ReturnQuotedValue(),
-                                    Olusturan.ReturnQuotedValue(), DateTime.Now.ReturnTRDateFormat());
-            return InsertSQL;
-        }
-        private string UpdateSQL()
-        {
-            //Insert  SQL
-            string sqlSQL = string.Format(@"
-                                    UPDATE IletisimBilgileri_Table 
-                                    SET PersonelId = {0},Adres={1}, Semt={2},Ilcesi={3}, PostaKodu={4},DahiliTelefonu={5}, 
-                                        EvTelefonu={6}, CepTelefonu={7}, CepTelefonu2={8},IntranetEPosta={9},InternetEPosta={10},
-                                        OzelEPosta={11},Degistiren={12},DegistirmeTarihi={13}
-                                        WHERE Id= {14}",
-                                        PersonelId.ReturnQuotedValue(), Adres.ReturnQuotedValue(), Semt.ReturnQuotedValue(),
-                                        Ilcesi.ReturnQuotedValue(), PostaKodu.ReturnQuotedValue(), DahiliTelefonu.ReturnQuotedValue(),
-                                        EvTelefonu.ReturnQuotedValue(), CepTelefonu.ReturnQuotedValue(), CepTelefonu2.ReturnQuotedValue(),
-                                        IntranetEPosta.ReturnQuotedValue(), InternetEPosta.ReturnQuotedValue(), OzelEPosta.ReturnQuotedValue(),
-                                        Degistiren.ReturnQuotedValue(), DateTime.Now.ReturnTRDateFormat(), Id);
-            return sqlSQL;
-        }
+        
         public IletisimBilgileri SelectByPersonelId(int personelId)
         {
             string sqlString = SelectByPersonelIdSQL(personelId);

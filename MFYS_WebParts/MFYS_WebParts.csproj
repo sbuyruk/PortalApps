@@ -57,14 +57,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AylikParaGirisiIslemToplamiWP\AylikParaGirisiIslemToplamiWP.ascx.cs">
-      <DependentUpon>AylikParaGirisiIslemToplamiWP.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="AylikParaGirisiIslemToplamiWP\AylikParaGirisiIslemToplamiWP.ascx.g.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AylikParaGirisiIslemToplamiWP.ascx</DependentUpon>
-    </Compile>
     <Compile Include="AylikParaGirisleriWP\AylikParaGirisleriWP.ascx.cs">
       <DependentUpon>AylikParaGirisleriWP.ascx</DependentUpon>
     </Compile>
@@ -100,10 +92,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="AylikParaGirisiIslemToplamiWP\AylikParaGirisiIslemToplamiWP.webpart" />
-    <None Include="AylikParaGirisiIslemToplamiWP\SharePointProjectItem.spdata">
-      <SharePointProjectItemId>{16ad206f-04e6-44f0-8f29-a9a16e08bce6}</SharePointProjectItemId>
-    </None>
     <None Include="AylikParaGirisleriWP\AylikParaGirisleriWP.webpart" />
     <None Include="AylikParaGirisleriWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{e999c652-033f-4caa-8ead-1752a72dd17e}</SharePointProjectItemId>
@@ -143,11 +131,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="AylikParaGirisiIslemToplamiWP\AylikParaGirisiIslemToplamiWP.ascx">
-      <Generator>SharePointWebPartCodeGenerator</Generator>
-      <LastGenOutput>AylikParaGirisiIslemToplamiWP.ascx.g.cs</LastGenOutput>
-    </Content>
-    <Content Include="AylikParaGirisiIslemToplamiWP\Elements.xml" />
     <Content Include="AylikParaGirisleriWP\AylikParaGirisleriWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>AylikParaGirisleriWP.ascx.g.cs</LastGenOutput>

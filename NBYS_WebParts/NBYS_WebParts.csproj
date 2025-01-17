@@ -85,6 +85,14 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArmaganAraWP\ArmaganAraWP.ascx.cs">
+      <DependentUpon>ArmaganAraWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="ArmaganAraWP\ArmaganAraWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ArmaganAraWP.ascx</DependentUpon>
+    </Compile>
     <Compile Include="ArmaganEditWP\ArmaganEditWP.ascx.cs">
       <DependentUpon>ArmaganEditWP.ascx</DependentUpon>
     </Compile>
@@ -100,6 +108,14 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ArmaganListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="BagisaVesileOlanArmaganBelgesiWP\BagisaVesileOlanArmaganBelgesiWP.ascx.cs">
+      <DependentUpon>BagisaVesileOlanArmaganBelgesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="BagisaVesileOlanArmaganBelgesiWP\BagisaVesileOlanArmaganBelgesiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BagisaVesileOlanArmaganBelgesiWP.ascx</DependentUpon>
     </Compile>
     <Compile Include="BagisHareketListesiWP\BagisHareketListesiWP.ascx.cs">
       <DependentUpon>BagisHareketListesiWP.ascx</DependentUpon>
@@ -458,6 +474,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="ArmaganAraWP\ArmaganAraWP.webpart" />
+    <None Include="ArmaganAraWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{c74d34cd-6abd-402d-b928-9ac9dee943d7}</SharePointProjectItemId>
+    </None>
     <None Include="ArmaganEditWP\ArmaganEditWP.webpart" />
     <None Include="ArmaganEditWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{7c0a05f8-ed06-4853-999e-1f65a20bdd89}</SharePointProjectItemId>
@@ -465,6 +485,10 @@
     <None Include="ArmaganListesiWP\ArmaganListesiWP.webpart" />
     <None Include="ArmaganListesiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{74a3a3af-5437-4cdf-982d-54b16864c68a}</SharePointProjectItemId>
+    </None>
+    <None Include="BagisaVesileOlanArmaganBelgesiWP\BagisaVesileOlanArmaganBelgesiWP.webpart" />
+    <None Include="BagisaVesileOlanArmaganBelgesiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{c8081658-03d4-4acc-a4f8-99e3fb2375e3}</SharePointProjectItemId>
     </None>
     <None Include="BagisHareketListesiWP\BagisHareketListesiWP.webpart" />
     <None Include="BagisHareketListesiWP\SharePointProjectItem.spdata">
@@ -679,6 +703,11 @@
     <None Include="TesekkurBelgesiYazisiWP\TesekkurBelgesiYazisiWP.webpart" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ArmaganAraWP\ArmaganAraWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>ArmaganAraWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="ArmaganAraWP\Elements.xml" />
     <Content Include="ArmaganEditWP\ArmaganEditWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>ArmaganEditWP.ascx.g.cs</LastGenOutput>
@@ -689,6 +718,11 @@
       <LastGenOutput>ArmaganListesiWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="ArmaganListesiWP\Elements.xml" />
+    <Content Include="BagisaVesileOlanArmaganBelgesiWP\BagisaVesileOlanArmaganBelgesiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>BagisaVesileOlanArmaganBelgesiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="BagisaVesileOlanArmaganBelgesiWP\Elements.xml" />
     <Content Include="BagisHareketListesiWP\BagisHareketListesiWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>BagisHareketListesiWP.ascx.g.cs</LastGenOutput>

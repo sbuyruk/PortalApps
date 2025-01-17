@@ -122,6 +122,7 @@ namespace Utility.ProjeGlobal
         public const string TBYSBELGELERI_LIB = "TBYSBelgeleri";
         public const string TBYSBELGELERI_TEMP = "TBYSBelgeleriTemp";
         public const string NBYSBELGELERI_LIB = "NBYSBelgeleri";
+        public const string IKYSBELGELERI_LIB = "IKYSBelgeleri";
 
         public const string PATH_TBYS_URL = "/YonetimBirimleri/InsaatVeEmlakYonetimiSubesi";
         public const string PATH_HUKUK_URL = "/YonetimBirimleri/HukukMusavirligi";
@@ -190,9 +191,9 @@ namespace Utility.ProjeGlobal
         public const bool NBYS_UPDATE_LOG = true;
         public const bool NBYS_SAVE_LOG = true;
         //TBYS
-        public const bool TBYS_DELETE_LOG = false;
-        public const bool TBYS_UPDATE_LOG = false;
-        public const bool TBYS_SAVE_LOG = false;
+        public const bool TBYS_DELETE_LOG = true;
+        public const bool TBYS_UPDATE_LOG = true;
+        public const bool TBYS_SAVE_LOG = true;
         //TYS
         
         //PORTAL
@@ -727,10 +728,11 @@ namespace Utility.ProjeGlobal
         public const string DOVIZ_EURO = "Euro";
         public const string DOVIZ_USD = "USD";
         public const string DOVIZ_GBP = "GBP";
-        //NBYS Parametre
+        //Yönerge Parametre
         public const string PARAM_NBYSYONERGE = "NBYS Yönergeleri";
         public const string PARAM_FTKYONERGE = "FTK Yönergeleri";
-        
+        public const string PARAM_IKYSYONERGE = "IKYS Yönergeleri";
+
         public const string PARAM_YETKI_FTK = "FTK";
         public const string PARAM_YETKI_ADMIN = "Admin";
 

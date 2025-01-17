@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using Utility.ProjeGlobal;
+using static Model.IKYS.Personel;
 
 namespace Model.IKYS
 {
@@ -178,40 +179,22 @@ namespace Model.IKYS
                     ORDER BY Id", pId);
             return sqlstr;
         }
-        public string SelectAllReturnJson()
+        
+        public DataTable SelectAllReturnDataTable(PersonelTipi personelTipi = PersonelTipi.Kadrolu)
         {
-            string sqlString = string.Format(@"
-				SELECT G.Id GorevTanimId, G.Adi GorevAdi, G.KisaAdi GorevKisaAdi, ISNULL(P.Adi,'') + ' ' +ISNULL(P.Soyadi,'') Personel, B.Adi BirimAdi  
-				FROM GorevTanim_Table G
-				LEFT OUTER JOIN Personel_Table P on P.Id=G.PersonelId AND G.PersonelId = (SELECT TOP 1 PersonelId FROM IsBilgileri_Table WHERE PersonelId=G.PersonelId AND CalismaDurumu=1 )
-				LEFT OUTER JOIN BirimTanim_Table B on B.Id=G.BirimId
-				WHERE G.Id>0
-                                    ");
-            DataTable dataTable = null;
-            try
-            {
-                dataTable = dao.SelectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-            string json = ToJSON(dataTable);
-            return json;
-        }
-        public DataTable SelectAllReturnDataTable()
-        {
+            int personelTipiInt = (int)personelTipi;
+            string personelTipiStr = personelTipi == PersonelTipi.Tumu ? string.Empty : string.Format(" AND Tipi={0}", personelTipiInt);
             string sqlString = string.Format(@"
                 SELECT
 	                A.Id GorevTanimId, A.Adi GorevAdi, A.KisaAdi GorevKisaAdi, C.Sira,
 	                ISNULL(B.Adi,'') + ' ' +ISNULL(B.Soyadi,'') Personel, 
 	                C.Adi BirimAdi  
                 FROM GorevTanim_Table A
-                LEFT JOIN Personel_Table B on B.Id=A.PersonelId
+                LEFT JOIN Personel_Table B on B.Id=A.PersonelId {0}
                 LEFT JOIN BirimTanim_Table C on C.Id=A.BirimId
                 WHERE A.Id>0
                 Order BY C.Sira,A.Id
-             ");
+             ", personelTipiStr);
             DataTable dataTable = null;
             try
             {
