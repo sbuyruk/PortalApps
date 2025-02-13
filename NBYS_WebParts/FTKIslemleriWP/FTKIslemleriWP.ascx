@@ -29,10 +29,12 @@
 
 <script type="text/javascript">
     function ModalFTKListesiAc() {
-        $("#ModalFTKListesiDiv").modal({ backdrop: false });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalFTKListesiDiv'));
+        myModalInstance.show();
     }
     function ModalFTKListesiKapat() {
         $("#ModalFTKListesiDiv").modal('hide');
+
     }
     function FTKKisiDuzenleBtnClick(ftkkisiId) {
         document.getElementById('<%= paramFTKIslemleriUyeIdLbl.ClientID%>').value = ftkkisiId;
@@ -48,7 +50,7 @@
                     <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
                     <h3 class="mb-2">
 
-                        <a class=" btn btn-outline-primary float-right mr-4" runat="server" id="YonergeLnk"
+                        <a class=" btn btn-outline-primary float-end mr-4" runat="server" id="YonergeLnk"
                             data-fancybox
                             data-type="pdf"
                             data-width="960"
@@ -145,7 +147,7 @@
                     <div class="card">
                         <div class="card-header">
                             <asp:Label CssClass="col-form-label font-weight-bold" runat="server" Text="Fahri Tanıtım Kurulu Listesi"></asp:Label>
-                            <div id="AktifOlmayanlariGostermeDiv" class="checkbox pt-3 float-right" runat="server">
+                            <div id="AktifOlmayanlariGostermeDiv" class="checkbox pt-3 float-end" runat="server">
                                 <label>
                                     <asp:CheckBox ID="AktifOlmayanlariGostermeChk" runat="server" Checked="True" ToolTip="Görevi Bitenleri Gösterme" OnCheckedChanged="AktifOlmayanlariGostermeChk_CheckedChanged" AutoPostBack="true" />
                                     Görevi Bitenleri Gösterme
@@ -191,9 +193,9 @@
                 <ContentTemplate>
                     <asp:LinkButton ID="KaydetBtn" runat="server" CssClass="btn btn-outline-success" Text="FTK Oluştur" OnClick="KaydetBtn_Click"></asp:LinkButton>
                     
-                    <asp:LinkButton ID="FTKListesiBtn" runat="server" CssClass="btn btn-outline-secondary float-right" Text="FTK Listesi" OnClick="FTKListesiBtn_Click"></asp:LinkButton>
-                    <asp:LinkButton ID="BolgelereGoreFTKRaporuBtn" runat="server" CssClass="btn btn-outline-secondary float-right mr-2" Text="Bölgelere göre FTK Dağılımı" OnClick="BolgelereGoreFTKRaporuBtn_Click" CausesValidation="False"></asp:LinkButton>
-                    <asp:LinkButton ID="FTKYazilariBtn" runat="server" CssClass="btn btn-outline-secondary float-right mr-2" Text="FTK Yazisi" OnClick="FTKYazilariBtnBtn_Click" CausesValidation="False" Visible="False"></asp:LinkButton>
+                    <asp:LinkButton ID="FTKListesiBtn" runat="server" CssClass="btn btn-outline-secondary float-end" Text="FTK Listesi" OnClick="FTKListesiBtn_Click"></asp:LinkButton>
+                    <asp:LinkButton ID="BolgelereGoreFTKRaporuBtn" runat="server" CssClass="btn btn-outline-secondary float-end mr-2" Text="Bölgelere göre FTK Dağılımı" OnClick="BolgelereGoreFTKRaporuBtn_Click" CausesValidation="False"></asp:LinkButton>
+                    <asp:LinkButton ID="FTKYazilariBtn" runat="server" CssClass="btn btn-outline-secondary float-end mr-2" Text="FTK Yazisi" OnClick="FTKYazilariBtnBtn_Click" CausesValidation="False" Visible="False"></asp:LinkButton>
                 </ContentTemplate>
                 <Triggers>
                     <asp:AsyncPostBackTrigger ControlID="IlcesiDDL" EventName="SelectedIndexChanged" />
@@ -246,7 +248,7 @@
                     <div class="modal-footer">
                         <asp:LinkButton ID="KaydetNowBtn" CssClass="btn btn-outline-success" runat="server" Text="FTK Oluştur" OnClick="KaydetNowBtn_Click"></asp:LinkButton>
                         <asp:LinkButton ID="TumununGoreviniSonlandirNowBtn" CssClass="btn btn-outline-danger" runat="server" Text="Üyelerin Görevini Sonlandır" OnClick="TumununGoreviniSonlandirNowBtn_Click"></asp:LinkButton>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                     </div>
                 </div>
             </div>

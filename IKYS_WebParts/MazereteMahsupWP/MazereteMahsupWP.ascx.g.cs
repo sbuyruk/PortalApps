@@ -173,7 +173,7 @@ namespace IKYS_WebParts.MazereteMahsupWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.EkranNo = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-secondary float-right";
+            @__ctrl.CssClass = "col-form-label text-secondary float-end";
             @__ctrl.ID = "EkranNo";
             @__ctrl.Text = "18";
             return @__ctrl;
@@ -292,7 +292,7 @@ namespace IKYS_WebParts.MazereteMahsupWP {
             this.ExcelBtn = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-warning float-right";
+            @__ctrl.CssClass = "btn btn-outline-warning float-end";
             @__ctrl.ID = "ExcelBtn";
             @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
             @__ctrl.Text = "Excele Aktar";
@@ -490,8 +490,8 @@ namespace IKYS_WebParts.MazereteMahsupWP {
             @__ctrl6 = this.@__BuildControlOnaylaModalBtn();
             @__parser.AddParsedSubObject(@__ctrl6);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            <button type=\"button\" class=\"btn btn-default\" data-" +
-                        "dismiss=\"modal\">Kapat</button>\r\n                        </div>\r\n                " +
-                        "    "));
+                        "bs-dismiss=\"modal\">Kapat</button>\r\n                        </div>\r\n             " +
+                        "       "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -531,7 +531,8 @@ namespace IKYS_WebParts.MazereteMahsupWP {
             @__w.Write(@"
 <script type=""text/javascript"">
     function OpenModalOnay() {
-        $(""#ModalOnayDiv"").modal({ backdrop: false });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
+        myModalInstance.show();
     }
     //ekrandan secilen onayla vb butonun serverside'da oncliclkini calistirsin
     function CallButtonClick(onay) {

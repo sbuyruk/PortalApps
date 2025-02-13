@@ -205,9 +205,9 @@
 
         </div>
         <div class="card-footer">
-            <asp:LinkButton CssClass="btn btn-outline-success float-right" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
-            <asp:LinkButton CssClass="btn btn-outline-secondary float-right mr-2" ID="PersonelListesiBtn" runat="server" Text="Personel Listesi" CausesValidation="false" OnClick="PersonelListesiBtn_Click" />
-            <%--<asp:LinkButton CssClass="btn btn-outline-success float-right" ID="PdfBtn" ClientIDMode="Static" runat="server" Text="PDF'e Aktar" OnClick="PdfBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />--%>
+            <asp:LinkButton CssClass="btn btn-outline-success float-end" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
+            <asp:LinkButton CssClass="btn btn-outline-secondary float-end mr-2" ID="PersonelListesiBtn" runat="server" Text="Personel Listesi" CausesValidation="false" OnClick="PersonelListesiBtn_Click" />
+            <%--<asp:LinkButton CssClass="btn btn-outline-success float-end" ID="PdfBtn" ClientIDMode="Static" runat="server" Text="PDF'e Aktar" OnClick="PdfBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />--%>
         </div>
     </div>
 </div>

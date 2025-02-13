@@ -668,7 +668,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP {
             this.BasadonBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "BasadonBtn";
-            @__ctrl.CssClass = "btn btn-secondary float-right";
+            @__ctrl.CssClass = "btn btn-secondary float-end";
             @__ctrl.CausesValidation = false;
             @__ctrl.Text = "Başa Dön";
             @__ctrl.Click -= new System.EventHandler(this.BasadonBtn_Click);
@@ -1067,7 +1067,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP {
                         </div>
                     </div>
                     <div class=""modal-footer"">
-                        <button type=""button"" class=""btn btn-default"" data-dismiss=""modal"">Kapat</button>
+                        <button type=""button"" class=""btn btn-default"" data-bs-dismiss=""modal"">Kapat</button>
                     </div>
                 "));
         }
@@ -1165,8 +1165,9 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP {
                     "tElementById(\'");
                          @__w.Write( paramNakitBagisciIdLbl.ClientID);
 
-            @__w.Write("\').value = nakitBagisciId;\r\n\r\n        $(\"#ModalUrlDiv\").modal({ backdrop: false }" +
-                    ");\r\n        document.getElementById(\'");
+            @__w.Write("\').value = nakitBagisciId;\r\n\r\n        var myModalInstance = bootstrap.Modal.getOr" +
+                    "CreateInstance(document.getElementById(\'ModalUrlDiv\'));\n        myModalInstance." +
+                    "show();\r\n        document.getElementById(\'");
                          @__w.Write( ModalDoldurBtn.ClientID);
 
             @__w.Write(@"').click();

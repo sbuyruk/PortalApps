@@ -398,7 +398,7 @@ namespace TBYS_WebParts.BorcluKiracilarByBolgeWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.OdemePlanlariniGuncelleBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-primary float-right";
+            @__ctrl.CssClass = "btn btn-outline-primary float-end";
             @__ctrl.ID = "OdemePlanlariniGuncelleBtn";
             @__ctrl.Text = "Ödeme Planlarını Güncelle";
             @__ctrl.Click -= new System.EventHandler(this.OdemePlanlariniGuncelleBtn_Click);
@@ -1469,7 +1469,7 @@ namespace TBYS_WebParts.BorcluKiracilarByBolgeWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.ExcelBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-success float-right";
+            @__ctrl.CssClass = "btn btn-outline-success float-end";
             @__ctrl.ID = "ExcelBtn";
             @__ctrl.Text = "Excel\'e Aktar";
             @__ctrl.OnClientClick = "javascript:setFormSubmitToFalse()";

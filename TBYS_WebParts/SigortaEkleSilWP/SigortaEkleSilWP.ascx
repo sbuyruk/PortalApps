@@ -147,7 +147,7 @@
 
 
                         </div>
-                        <div class="form-group float-right">
+                        <div class="form-group float-end">
                             <asp:LinkButton ID="SigortaEkleBtn" CssClass="btn btn-outline-success" runat="server" Text="Sigorta Ekle" OnClick="SigortaEkleBtn_Click" />
                         </div>
                     </div>
@@ -158,7 +158,7 @@
             <asp:LinkButton CssClass="btn btn-outline-secondary" ID="TasinmazBtn" runat="server" Text="Taşınmaza Git" CausesValidation="false" OnClick="TasinmazBtn_Click" />
             <asp:LinkButton CssClass="btn btn-outline-secondary" ID="TasinmazListesiBtn" runat="server" Text="Taşınmaz Listesi" CausesValidation="false" OnClick="TasinmazListesiBtn_Click" />
             <asp:LinkButton CssClass="btn btn-outline-secondary" ID="SigortaListesiBtn" runat="server" Text="Sigorta Listesi" CausesValidation="false" OnClick="SigortaListesiBtn_Click" />
-            <asp:LinkButton CssClass="btn btn-outline-secondary float-right mr-2" ID="BackBtn" runat="server" Text="Geri" CausesValidation="false" OnClick="BackBtn_Click" />
+            <asp:LinkButton CssClass="btn btn-outline-secondary float-end mr-2" ID="BackBtn" runat="server" Text="Geri" CausesValidation="false" OnClick="BackBtn_Click" />
         </div>
     </div>
 </div>

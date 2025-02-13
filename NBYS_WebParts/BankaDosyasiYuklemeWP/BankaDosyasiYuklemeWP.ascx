@@ -133,15 +133,15 @@
                     </div>
                     <div class="card  m-4">
                         <div class="card-header">
-                            <asp:Label ID="KartIleLbl" runat="server" Text="Kart ile Bağış" Font-Size="X-Large" Font-Bold="True" ForeColor="coral"></asp:Label>
-                            <asp:Label ID="KartIleOkLbl" runat="server" Text="" Font-Size="X-Large" Font-Bold="True" ForeColor="#33CC33"></asp:Label>
+                            <asp:Label ID="YKBEkstreLbl" runat="server" Text="Yapı Kredi Bankası" Font-Size="X-Large" Font-Bold="True" ForeColor="#9435dc"></asp:Label>
+                            <asp:Label ID="YKBEkstreOkLbl" runat="server" Text="" Font-Size="X-Large" Font-Bold="True" ForeColor="#33CC33"></asp:Label>
                         </div>
                         <div class="card-body">
-                            <div  class="row">
+ <%--                           <div  class="row">
                                 <asp:Label CssClass="col-form-label col" ID="Label1" runat="server" Text="Label">Bağış Tarihi:</asp:Label>
                                 <input runat="server" type="text" id="BagisTarihiTxt" class="form-control DateTimePickerV1 col-4" readonly="readonly" />
-                            </div>
-                            <asp:FileUpload ID="KartIleFU" runat="server" CssClass="form-control" />
+                            </div>--%>
+                            <asp:FileUpload ID="YKBEkstreFU" runat="server" CssClass="form-control" />
                         </div>
                     </div>
                 </div>

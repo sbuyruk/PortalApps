@@ -3708,7 +3708,7 @@ namespace TBYS_WebParts.YasalFaizWP {
             this.OdemePlaniListBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "OdemePlaniListBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Ödeme Planları";
             @__ctrl.Click -= new System.EventHandler(this.OdemePlaniListBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.OdemePlaniListBtn_Click);

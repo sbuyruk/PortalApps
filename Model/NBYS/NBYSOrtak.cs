@@ -98,5 +98,19 @@ namespace Model.NBYS
             userTo = userTo.Replace("##;","");
             return userTo;
         }
+        public static bool YetkiKontrolu(Bolge kullanicininBolgesi, int nakitbagisciId)
+        {
+            Bolge bagiscininBolgesi = new Bolge();
+            bagiscininBolgesi = bagiscininBolgesi.SelectByBagisciId(nakitbagisciId);
+            if (bagiscininBolgesi != null)
+            {
+
+                bool bolgeOk = kullanicininBolgesi.Id == ProjeConstants.HEPSI_INT
+                    || kullanicininBolgesi.Id == ProjeConstants.BOLGE_GENELMUDURLUK_INT
+                    || bagiscininBolgesi.Id == kullanicininBolgesi.Id ? true : false;
+                return bolgeOk;
+            }
+            return false;
+        }
     }
 }

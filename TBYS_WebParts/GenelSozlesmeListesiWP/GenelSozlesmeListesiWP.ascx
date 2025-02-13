@@ -41,7 +41,7 @@
                 </div>
                 <div class="card-body p-0" id="MainCardDiv" runat="server">
 
-                    <asp:Label ID="RowCountLbl" runat="server" Text="" CssClass="float-right text-right"></asp:Label>
+                    <asp:Label ID="RowCountLbl" runat="server" Text="" CssClass="float-end text-right"></asp:Label>
                     <div class="table loader" id="tbl" runat="server">
                         <input id="globalFilter" placeholder="Aranacak Kelime" size="30" />
                         <div id="tblfilter" class="table"></div>
@@ -50,7 +50,7 @@
 
                 </div>
                 <div class="card-footer">
-                    <asp:LinkButton CssClass="btn btn-outline-success float-right" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
+                    <asp:LinkButton CssClass="btn btn-outline-success float-end" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
                 </div>
             </div>
 

@@ -125,9 +125,7 @@
         </div>
         <div class="card-footer">
             <asp:LinkButton CssClass="btn btn-outline-success float-left" ID="KaydetBtn" runat="server" Text="Kaydet" OnClick="KaydetBtn_Click" />
-            <asp:LinkButton Visible="false" CssClass="btn btn-outline-secondary float-right " ID="SonrakiBtn" runat="server" Text="Sonraki>>" />
-            <asp:LinkButton Visible="false" CssClass="btn btn-outline-secondary float-right mr-2" ID="OncekiBtn" runat="server" Text="<<Önceki" />
-            <asp:LinkButton CssClass="btn btn-outline-secondary float-right mr-2" ID="NakitBagisciListesiBtn" runat="server" Text="Nakit Bağışçı Listesi" OnClick="NakitBagisciListesiBtn_Click" />
+            <%--<asp:LinkButton CssClass="btn btn-outline-secondary float-end mr-2" ID="NakitBagisciListesiBtn" runat="server" Text="Nakit Bağışçı Listesi" OnClick="NakitBagisciListesiBtn_Click" />--%>
         </div>
     </div>
 </div>

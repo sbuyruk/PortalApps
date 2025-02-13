@@ -46,7 +46,8 @@
 <script type="text/javascript">
 
     function OpenBagisInfoByIl() {
-        $("#BagisInfoByIl").modal({ backdrop: false });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('BagisInfoByIl'));
+        myModalInstance.show();
     }
 
 </script>
@@ -222,7 +223,7 @@
 
                         <div class="modal-footer">
                             <asp:Button ID="KayitGetirBtn" class="btn" runat="server" Text="Bağışçılar" OnClick="KayitGetirBtn_Click" Visible="false" />
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                            <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                         </div>
                     </ContentTemplate>
                     <Triggers>

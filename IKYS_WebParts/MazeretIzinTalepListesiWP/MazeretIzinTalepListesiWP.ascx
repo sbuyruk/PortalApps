@@ -8,7 +8,8 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="MazeretIzinTalepListesiWP.ascx.cs" Inherits="IKYS_WebParts.MazeretIzinTalepListesiWP.MazeretIzinTalepListesiWP" %>
 <script>
     function OpenModalOnay() {
-        $("#ModalOnayDiv").modal({ backdrop: true });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
+        myModalInstance.show();
     }
     //ekrandan secilen onayla vb butonun serverside'da oncliclkini calistirsin
     function CallButtonClick(onay) {
@@ -42,7 +43,7 @@
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3>
                 <asp:Label CssClass="col-form-label  btn-outline-primary" runat="server" Text="Mazeret İzin Talepleri"></asp:Label>
-                <asp:Label CssClass="col-form-label text-secondary float-right" ID="EkranNo" Text="14" runat="server" ></asp:Label>
+                <asp:Label CssClass="col-form-label text-secondary float-end" ID="EkranNo" Text="14" runat="server" ></asp:Label>
             </h3>
         </div>
         <div class="card-body">
@@ -122,7 +123,7 @@
                         <button id="OnaylaModalBtn" runat="server" class="btn btn-success" onclick="CallButtonClick('onay')" visible="False">Onayla</button>
                         <button id="KabuletModalBtn" runat="server" class="btn btn-info" onclick="CallButtonClick('kabul')" visible="False">Kabul Et</button>
                         <button id="ReddetModalBtn" runat="server" class="btn btn-danger" onclick="CallButtonClick('reddet')">Reddet</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>

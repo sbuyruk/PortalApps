@@ -8,12 +8,14 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="VasiyetciGirisiWP.ascx.cs" Inherits="TBYS_WebParts.VasiyetciGirisiWP.VasiyetciGirisiWP" %>
 <script>
     function OpenModal() {
-        $("#ModalUrlDiv").modal({ backdrop: true });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalUrlDiv'));
+        myModalInstance.show();
         document.getElementById('<%= ModalDoldurBtn.ClientID%>').click();
     }
 
     function OpenSilModal() {
-        $("#ModalSilDiv").modal({ backdrop: true });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalSilDiv'));
+        myModalInstance.show();
     }
 </script>
 
@@ -138,7 +140,7 @@
                                 </div>
                                 <div class="form-group">
                                     <asp:LinkButton ID="YukleBtn" CssClass="btn btn-outline-success" runat="server" Text="Vasiyet Kaydet" OnClick="YukleBtn_Click"></asp:LinkButton>
-                                    <asp:HyperLink ID="DosyaLnk" runat="server" data-fancybox data-type=pdf data-width=960 data-height=720 CssClass="btn btn-outline-primary float-right" Visible="false" Font-Size="Small">Vasiyet Görüntüle</asp:HyperLink>
+                                    <asp:HyperLink ID="DosyaLnk" runat="server" data-fancybox data-type=pdf data-width=960 data-height=720 CssClass="btn btn-outline-primary float-end" Visible="false" Font-Size="Small">Vasiyet Görüntüle</asp:HyperLink>
                                 </div>
                             </div>
                         </div>
@@ -216,7 +218,7 @@
                         <div class="modal-footer">
                             <asp:LinkButton ID="VasiyetciSilNowBtn" CssClass="btn btn-outline-danger" runat="server" Text="Vasiyetçiyi Sil" Visible="False" OnClick="VasiyetciSilNowBtn_Click"></asp:LinkButton>
                             <asp:LinkButton ID="NiteligiSilNowBtn" CssClass="btn btn-outline-danger" runat="server" Text="Vasiyete Konu Varlığı Sil" OnClick="NiteligiSilNowBtn_Click"></asp:LinkButton>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                            <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                         </div>
                     </div>
                 </div>
@@ -269,7 +271,7 @@
                     </div>
                     <div class="modal-footer">
                         <asp:LinkButton ID="VarlikKaydetBtn" CssClass="btn btn-outline-success" runat="server" Text="Kaydet" OnClick="VarlikKaydetBtn_Click"></asp:LinkButton>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>

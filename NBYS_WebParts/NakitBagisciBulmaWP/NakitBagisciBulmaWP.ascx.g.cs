@@ -152,7 +152,7 @@ namespace NBYS_WebParts.NakitBagisciBulmaWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.EkranNo = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-secondary float-right";
+            @__ctrl.CssClass = "col-form-label text-secondary float-end";
             @__ctrl.ID = "EkranNo";
             @__ctrl.Text = "24";
             return @__ctrl;
@@ -263,7 +263,7 @@ namespace NBYS_WebParts.NakitBagisciBulmaWP {
             this.YeniBagisGirisiBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "YeniBagisGirisiBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Yeni Bağışçı Girişine Git";
             @__ctrl.Click -= new System.EventHandler(this.YeniBagisGirisiBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.YeniBagisGirisiBtn_Click);
@@ -516,7 +516,7 @@ namespace NBYS_WebParts.NakitBagisciBulmaWP {
                         </div>
                     </div>
                     <div class=""modal-footer"">
-                        <button type=""button"" class=""btn btn-default"" data-dismiss=""modal"">Kapat</button>
+                        <button type=""button"" class=""btn btn-default"" data-bs-dismiss=""modal"">Kapat</button>
                     </div>
                 "));
         }
@@ -574,8 +574,9 @@ namespace NBYS_WebParts.NakitBagisciBulmaWP {
                     "    document.getElementById(\'");
                          @__w.Write( paramNakitBagisciIdLbl.ClientID);
 
-            @__w.Write("\').value = nakitBagisciId;\r\n\r\n        $(\"#ModalUrlDiv\").modal({ backdrop: false }" +
-                    ");\r\n        document.getElementById(\'");
+            @__w.Write("\').value = nakitBagisciId;\r\n\r\n        var myModalInstance = bootstrap.Modal.getOr" +
+                    "CreateInstance(document.getElementById(\'ModalUrlDiv\'));\n        myModalInstance." +
+                    "show();\r\n        document.getElementById(\'");
                          @__w.Write( ModalDoldurBtn.ClientID);
 
             @__w.Write("\').click();\r\n    }\r\n</script>\r\n\r\n<div class=\"container \">\r\n    <div style=\"displa" +

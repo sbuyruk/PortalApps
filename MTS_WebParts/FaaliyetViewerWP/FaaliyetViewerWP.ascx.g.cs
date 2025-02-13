@@ -1116,7 +1116,7 @@ namespace MTS_WebParts.FaaliyetViewerWP {
                     </div>
                     <div class=""modal-footer"">
                         
-                        <button type=""button"" class=""btn btn-default"" data-dismiss=""modal"">Kapat</button>
+                        <button type=""button"" class=""btn btn-default"" data-bs-dismiss=""modal"">Kapat</button>
                     </div>
                 </div>
 
@@ -1204,9 +1204,10 @@ namespace MTS_WebParts.FaaliyetViewerWP {
                     "pe=\"text/javascript\">\r\n    //excele export ettikten donup sonra kalmasın diye\r\n " +
                     "   function setFormSubmitToFalse() {\r\n        setTimeout(function () { _spFormOn" +
                     "SubmitCalled = false; }, 3000);\r\n        return true;\r\n    }\r\n    function OpenT" +
-                    "oplantiModal() {\r\n        $(\"#ToplantiDetaylariModal\").modal({ backdrop: true })" +
-                    ";\r\n    }\r\n    function ToplantiDetaylariModal(toplantiId) {\r\n        document.ge" +
-                    "tElementById(\'");
+                    "oplantiModal() {\r\n        var myModalInstance = bootstrap.Modal.getOrCreateInsta" +
+                    "nce(document.getElementById(\'ToplantiDetaylariModal\'));\n        myModalInstance." +
+                    "show();\r\n    }\r\n    function ToplantiDetaylariModal(toplantiId) {\r\n        docum" +
+                    "ent.getElementById(\'");
                          @__w.Write( paramToplantiIdLbl.ClientID);
 
             @__w.Write("\').value = toplantiId;\r\n        document.getElementById(\'");

@@ -188,18 +188,66 @@ namespace NBYS_WebParts.ArmaganEditWP
                 ViewState["CurrentUserName"] = value;
             }
         }
+        private int BolgeIdQS
+        {
+            get
+            {
+
+                if (ViewState["BolgeId"] == null)
+                {
+                    if (Page.Request.QueryString["BolgeId"] != null)
+                    {
+                        ViewState["BolgeId"] = Page.Request.QueryString["BolgeId"];
+                    }
+                    else
+                    {
+                        ViewState["BolgeId"] = string.Empty;
+                    }
+                }
+                return ViewState["BolgeId"].ReturnZeroIfNull().ConvertToInt();
+            }
+
+            set
+            {
+                ViewState["BolgeId"] = value;
+            }
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
-                if (!Page.IsPostBack)
-                {
-                    FillDropDownList();
-                    if (!string.IsNullOrEmpty(ArmaganIdQS))
-                    {
-                        FillArmaganForm();
-                    }
+                int armaganId = ArmaganIdQS.ConvertToInt();
 
+                Armagan armagan = new Armagan();
+                armagan = armagan.Select<Armagan>(armaganId);
+                if (armagan != null)
+                {
+                    Bolge kullanicininBolgesi = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
+                    BolgeIdQS = kullanicininBolgesi == null ? 0 : kullanicininBolgesi.Id;
+                    bool kullaniciGmtenmi = (kullanicininBolgesi.Id == ProjeConstants.BOLGE_HEPSI_INT || kullanicininBolgesi.Id == ProjeConstants.BOLGE_GENELMUDURLUK_INT);
+                    bool kullaniciYetkiliMi = NBYSOrtak.YetkiKontrolu(kullanicininBolgesi, armagan.BagisciId);
+                    if (kullaniciGmtenmi || kullaniciYetkiliMi)
+                    {
+                        if (!Page.IsPostBack)
+                        {
+                            FillDropDownList();
+                            if (!string.IsNullOrEmpty(ArmaganIdQS))
+                            {
+                                FillArmaganForm(armagan);
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        KaydetBtn.Visible = false;
+                        MessageHelper.PublishMessage("Armagan, Bölgenizdeki bir bağışçıya ait değil.", ProjeConstants.MESAJ_HATA);
+                    }
+                }
+                else
+                {
+                    KaydetBtn.Visible = false;
+                    MessageHelper.PublishMessage("Armagan Bulunamadı", ProjeConstants.MESAJ_HATA);
                 }
             }
             catch (Exception ex)
@@ -208,35 +256,27 @@ namespace NBYS_WebParts.ArmaganEditWP
                 exHelper.PublishException();
             }
         }
-        private void FillArmaganForm()
+        private void FillArmaganForm(Armagan armagan)
         {
             KaydetBtn.CssClass = "btn btn-outline-primary";
             KaydetBtn.Text = "Güncelle";
-            if (!string.IsNullOrEmpty(ArmaganIdQS))
+            if (armagan!=null)
             {
-                int armaganId = ArmaganIdQS.ConvertToInt();
-
-                Armagan armagan = new Armagan();
-                armagan = armagan.Select<Armagan>(armaganId);
-                if (armagan != null)
+                IdLbl.Text = armagan.Id.ToString();
+                NakitBagisci nakitBagisci = new NakitBagisci();
+                nakitBagisci = nakitBagisci.Select<NakitBagisci>(armagan.BagisciId);
+                if (nakitBagisci != null)
                 {
-                    IdLbl.Text = armaganId.ToString();
-                    NakitBagisci nakitBagisci = new NakitBagisci();
-                    nakitBagisci = nakitBagisci.Select<NakitBagisci>(armagan.BagisciId);
-                    if (nakitBagisci != null)
-                    {
-                        AdiTxt.Text = nakitBagisci.Adi.ReturnEmptyIfNull().ToString();
-                    }
-                    BagisMiktariTxt.Text = armagan.BagisMiktari.ReturnZeroIfNull().ToString();
-
-                    ArmaganDDL.Items.FindByValue(armagan.ArmaganTanimId.ReturnZeroIfNull().ToString()).Selected = true;
-                    DurumDDL.Items.FindByValue(armagan.Durum.ReturnZeroIfNull().ToString()).Selected = true;
-                    BagisTarihiTxt.Value = armagan.Tarih.ToString("dd.MM.yyyy");
-                    AciklamaTxt.Text = armagan.Aciklama.ReturnEmptyIfNull().ToString();
-                    BelgedeYazanIsimTxt.Text = armagan.BelgedeYazanIsim.ReturnEmptyIfNull().ToString();
-                    BagisMiktariYazmasinChk.Checked = armagan.BagisMiktariYazmasin;
+                    AdiTxt.Text = nakitBagisci.Adi.ReturnEmptyIfNull().ToString();
                 }
+                BagisMiktariTxt.Text = armagan.BagisMiktari.ReturnZeroIfNull().ToString();
 
+                ArmaganDDL.Items.FindByValue(armagan.ArmaganTanimId.ReturnZeroIfNull().ToString()).Selected = true;
+                DurumDDL.Items.FindByValue(armagan.Durum.ReturnZeroIfNull().ToString()).Selected = true;
+                BagisTarihiTxt.Value = armagan.Tarih.ToString("dd.MM.yyyy");
+                AciklamaTxt.Text = armagan.Aciklama.ReturnEmptyIfNull().ToString();
+                BelgedeYazanIsimTxt.Text = armagan.BelgedeYazanIsim.ReturnEmptyIfNull().ToString();
+                BagisMiktariYazmasinChk.Checked = armagan.BagisMiktariYazmasin;
             }
 
         }

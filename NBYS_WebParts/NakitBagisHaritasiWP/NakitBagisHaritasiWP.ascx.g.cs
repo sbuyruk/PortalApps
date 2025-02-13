@@ -271,8 +271,8 @@ namespace NBYS_WebParts.NakitBagisHaritasiWP {
             @__ctrl5 = this.@__BuildControlKayitGetirBtn();
             @__parser.AddParsedSubObject(@__ctrl5);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            <button type=\"button\" class=\"btn btn-default\" data-" +
-                        "dismiss=\"modal\">Kapat</button>\r\n                        </div>\r\n                " +
-                        "    "));
+                        "bs-dismiss=\"modal\">Kapat</button>\r\n                        </div>\r\n             " +
+                        "       "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -379,28 +379,30 @@ namespace NBYS_WebParts.NakitBagisHaritasiWP {
                     "eader\"\r\n        });\r\n        $(window).on(\'load\', function () {\r\n\r\n            i" +
                     "f ($(\"#loaderMainContainer\").length) {\r\n                $(\"#loaderMainContainer\"" +
                     ").fadeOut(\"slow\");\r\n            }\r\n\r\n        })\r\n    })\r\n</script>\r\n<script type" +
-                    "=\"text/javascript\">\r\n\r\n    function OpenBagisInfoByIl() {\r\n        $(\"#BagisInfo" +
-                    "ByIl\").modal({ backdrop: false });\r\n    }\r\n\r\n</script>\r\n<style type=\"text/css\">\r" +
-                    "\n    html, body {\r\n        height: 100%;\r\n    }\r\n\r\n    .nopadding {\r\n        pad" +
-                    "ding: 0 !important;\r\n        margin: 0 !important;\r\n        /*padding-right: 2px" +
-                    " !important;*/\r\n    }\r\n\r\n    .nopadding {\r\n        padding-top: 0 !important;\r\n " +
-                    "       margin: 0 !important;\r\n        /*padding-right: 2px !important;*/\r\n    }\r" +
-                    "\n\r\n    .stdpadding {\r\n        padding: 0 !important;\r\n        margin: 0 !importa" +
-                    "nt;\r\n        padding-right: 2px !important;\r\n        padding-left: 2px !importan" +
-                    "t;\r\n    }\r\n\r\n    .alignCenter {\r\n        text-align: center;\r\n    }\r\n\r\n    .alig" +
-                    "nRight {\r\n        text-align: right;\r\n    }\r\n\r\n    .alignLeft {\r\n        text-al" +
-                    "ign: left;\r\n    }\r\n\r\n    .alignBottom {\r\n        vertical-align: bottom;\r\n    }\r" +
-                    "\n\r\n    .alignTop {\r\n        vertical-align: top;\r\n    }\r\n    /*map*/\r\n    body {" +
-                    "\r\n        background: #fff;\r\n    }\r\n\r\n    #map {\r\n        width: 1050px;\r\n      " +
-                    "  height: 600px;\r\n        position: relative;\r\n        margin: auto;\r\n    }\r\n\r\n " +
-                    "       #map svg {\r\n            position: relative;\r\n            top: -80px !impo" +
-                    "rtant;\r\n        }\r\n\r\n    svg > a {\r\n        cursor: pointer;\r\n        display: b" +
-                    "lock;\r\n    }\r\n\r\n    #sehir {\r\n        font-size: 25px;\r\n        text-align: cent" +
-                    "er;\r\n        margin-top: 10px;\r\n        color: #666;\r\n    }\r\n\r\n    .table {\r\n   " +
-                    "     margin-left: auto;\r\n        margin-right: auto;\r\n        margin-bottom: -15" +
-                    "0px !important;\r\n    }\r\n\r\n    table.colors td {\r\n        font-size: 18px;\r\n     " +
-                    "   color: #666;\r\n    }\r\n</style>\r\n<div class=\"container shadow\">\r\n    <div class" +
-                    "=\"card\">\r\n        <div class=\"card-header\">\r\n            <h3>\r\n                ");
+                    "=\"text/javascript\">\r\n\r\n    function OpenBagisInfoByIl() {\r\n        var myModalIn" +
+                    "stance = bootstrap.Modal.getOrCreateInstance(document.getElementById(\'BagisInfoB" +
+                    "yIl\'));\n        myModalInstance.show();\r\n    }\r\n\r\n</script>\r\n<style type=\"text/c" +
+                    "ss\">\r\n    html, body {\r\n        height: 100%;\r\n    }\r\n\r\n    .nopadding {\r\n      " +
+                    "  padding: 0 !important;\r\n        margin: 0 !important;\r\n        /*padding-right" +
+                    ": 2px !important;*/\r\n    }\r\n\r\n    .nopadding {\r\n        padding-top: 0 !importan" +
+                    "t;\r\n        margin: 0 !important;\r\n        /*padding-right: 2px !important;*/\r\n " +
+                    "   }\r\n\r\n    .stdpadding {\r\n        padding: 0 !important;\r\n        margin: 0 !im" +
+                    "portant;\r\n        padding-right: 2px !important;\r\n        padding-left: 2px !imp" +
+                    "ortant;\r\n    }\r\n\r\n    .alignCenter {\r\n        text-align: center;\r\n    }\r\n\r\n    " +
+                    ".alignRight {\r\n        text-align: right;\r\n    }\r\n\r\n    .alignLeft {\r\n        te" +
+                    "xt-align: left;\r\n    }\r\n\r\n    .alignBottom {\r\n        vertical-align: bottom;\r\n " +
+                    "   }\r\n\r\n    .alignTop {\r\n        vertical-align: top;\r\n    }\r\n    /*map*/\r\n    b" +
+                    "ody {\r\n        background: #fff;\r\n    }\r\n\r\n    #map {\r\n        width: 1050px;\r\n " +
+                    "       height: 600px;\r\n        position: relative;\r\n        margin: auto;\r\n    }" +
+                    "\r\n\r\n        #map svg {\r\n            position: relative;\r\n            top: -80px " +
+                    "!important;\r\n        }\r\n\r\n    svg > a {\r\n        cursor: pointer;\r\n        displ" +
+                    "ay: block;\r\n    }\r\n\r\n    #sehir {\r\n        font-size: 25px;\r\n        text-align:" +
+                    " center;\r\n        margin-top: 10px;\r\n        color: #666;\r\n    }\r\n\r\n    .table {" +
+                    "\r\n        margin-left: auto;\r\n        margin-right: auto;\r\n        margin-bottom" +
+                    ": -150px !important;\r\n    }\r\n\r\n    table.colors td {\r\n        font-size: 18px;\r\n" +
+                    "        color: #666;\r\n    }\r\n</style>\r\n<div class=\"container shadow\">\r\n    <div " +
+                    "class=\"card\">\r\n        <div class=\"card-header\">\r\n            <h3>\r\n            " +
+                    "    ");
             parameterContainer.Controls[0].RenderControl(@__w);
             @__w.Write("\r\n                ");
             parameterContainer.Controls[1].RenderControl(@__w);

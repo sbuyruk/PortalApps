@@ -566,7 +566,10 @@ namespace TBYS_WebParts.KiraciGirisiWP
 
                 OdemePlaniTable.Controls.Add(row);
             }
-            var jsString = " $('#OdemePlaniModal').modal({ backdrop: false });";
+            var jsString = @"
+                var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('OdemePlaniModal'));
+                myModalInstance.show();
+            ";
             UtilityHelper.ScriptCalistir(jsString);
         }
         protected void YeniSozlesmeOlusturBtn_Click(object sender, EventArgs e)

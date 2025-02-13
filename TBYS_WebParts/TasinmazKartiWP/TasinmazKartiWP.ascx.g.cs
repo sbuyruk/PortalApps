@@ -352,7 +352,7 @@ namespace TBYS_WebParts.TasinmazKartiWP {
             this.ExcelBtn = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-success float-right";
+            @__ctrl.CssClass = "btn btn-outline-success float-end";
             @__ctrl.ID = "ExcelBtn";
             @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
             @__ctrl.Text = "Excele Aktar";
@@ -371,7 +371,7 @@ namespace TBYS_WebParts.TasinmazKartiWP {
             this.TasinmazListesiBtn = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.ID = "TasinmazListesiBtn";
             @__ctrl.Text = "Taşınmaz Listesi";
             @__ctrl.CausesValidation = false;

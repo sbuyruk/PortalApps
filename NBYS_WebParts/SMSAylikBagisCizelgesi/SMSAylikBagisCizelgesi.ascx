@@ -19,8 +19,9 @@
         setTimeout(function () { _spFormOnSubmitCalled = false; }, 3000);
         return true;
     }
-    function OpenModalOnay() {
-        $("#ModalOnayDiv").modal({ backdrop: "static" });
+    function OpenModalOnay() {        
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
+        myModalInstance.show();
     }
 
 </script>
@@ -31,7 +32,7 @@
             <div class="card">
                 <div class="card-header" id="CardHeader" runat="server">
                     <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
-                    <asp:Label CssClass="col-form-label text-danger float-right" ID="DosyaNoTxt" runat="server"></asp:Label>
+                    <asp:Label CssClass="col-form-label text-danger float-end" ID="DosyaNoTxt" runat="server"></asp:Label>
                     <h3 class="mb-2">
                         <asp:Label CssClass="col-form-label text-danger font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="SMS Aylik Bağış Çizelgesi"></asp:Label>
                         <asp:Label CssClass="col-form-label text-white" ID="IdLbl" runat="server"></asp:Label>
@@ -87,7 +88,7 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <asp:LinkButton CssClass="btn btn-outline-success float-right" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
+                    <asp:LinkButton CssClass="btn btn-outline-success float-end" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
                 </div>
             </div>
 
@@ -141,7 +142,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                            <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                         </div>
 
                     </div>

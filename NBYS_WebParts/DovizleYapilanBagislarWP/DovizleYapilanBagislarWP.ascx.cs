@@ -97,7 +97,7 @@ namespace NBYS_WebParts.DovizleYapilanBagislarWP
                         ],
                         columnDefs: [
                             {
-                                targets: 1,
+                                targets: [1,2,3],
                                 className: 'dt-body-right'
                             }
                           ],
@@ -157,8 +157,14 @@ namespace NBYS_WebParts.DovizleYapilanBagislarWP
         }
         private List<DovizleBagisListItem> GetDataList()
         {
-            DateTime bastar = new DateTime(YilDDL.SelectedItem.Value.ConvertToInt(), AyDDL.SelectedItem.Value.ConvertToInt(), 1);
+
+            int ay = AyDDL.SelectedItem.Value.ConvertToInt() < 1 ? 1 : AyDDL.SelectedItem.Value.ConvertToInt();
+            DateTime bastar = new DateTime(YilDDL.SelectedItem.Value.ConvertToInt(), ay, 1);
             DateTime bittar = bastar.AddMonths(1).AddDays(-1);
+            if (AyDDL.SelectedItem.Value.ConvertToInt() < 1)
+            {
+                bittar= new DateTime(YilDDL.SelectedItem.Value.ConvertToInt(), 12, 1);
+            }
             string bankaGrup = BankaDDL.SelectedItem.Value;
             NakitBagisHareket nakitBagisHareket = new NakitBagisHareket();
             DataTable dataTable = nakitBagisHareket.SelectDovizleBagisByTarihBankaId(bastar, bittar, bankaGrup);
@@ -177,7 +183,7 @@ namespace NBYS_WebParts.DovizleYapilanBagislarWP
                     DovizleBagisListItem bagisListItem = new DovizleBagisListItem();
                     bagisListItem.Banka = banka;
                     bagisListItem.DovizCinsi = dovizCinsi;
-                    bagisListItem.DovizTutari = dovizTutari.ToString("N", culturInfo) + " TL";
+                    bagisListItem.DovizTutari = dovizTutari.ToString("N", culturInfo) + " " + dovizCinsi;
                     bagisListItem.TlKarsiligiToplamBagis = tlKarsiligiToplamBagis.ToString("N", culturInfo) + " TL";
                     list.Add(bagisListItem);
                 }

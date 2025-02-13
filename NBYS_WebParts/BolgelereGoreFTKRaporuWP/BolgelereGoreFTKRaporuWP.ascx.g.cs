@@ -1764,7 +1764,7 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP {
             this.FTKListesiBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "FTKListesiBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "FTK Listesi";
             @__ctrl.Click -= new System.EventHandler(this.FTKListesiBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.FTKListesiBtn_Click);
@@ -1780,7 +1780,7 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP {
             this.FTKIslemleriBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "FTKIslemleriBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right mr-3";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end mr-3";
             @__ctrl.Text = "FTK İşlemleri";
             @__ctrl.CausesValidation = false;
             @__ctrl.Click -= new System.EventHandler(this.FTKIslemleriBtn_Click);
@@ -1811,7 +1811,7 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP {
             @__parser.AddParsedSubObject(@__ctrl1);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
             <h3 class=""mb-1"">
-                <a class="" btn btn-outline-primary float-right mr-4""
+                <a class="" btn btn-outline-primary float-end mr-4""
                     data-fancybox
                     data-type=""pdf""
                     data-width=""960""

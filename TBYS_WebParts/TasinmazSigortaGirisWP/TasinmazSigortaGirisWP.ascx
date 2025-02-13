@@ -11,7 +11,8 @@
         $("#ModalOnayDiv").modal('hide');
     }
     function ModalOnay() {
-        $("#ModalOnayDiv").modal({ backdrop: "static" });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
+        myModalInstance.show();
     }
 </script>
 
@@ -160,9 +161,9 @@
             </div>
         </div>
         <div class="card-footer">
-            <asp:LinkButton ID="NextBtn" CssClass="btn btn-outline-secondary float-right mr-2" runat="server" Text="Sonraki=>" Visible="false" OnClick="NextBtn_Click" />
-            <asp:LinkButton ID="PrevBtn" CssClass="btn btn-outline-secondary float-right mr-2" runat="server" Text="<=Önceki" Visible="false" OnClick="PrevBtn_Click" />
-            <asp:LinkButton ID="BackBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Geri" Visible="false" OnClick="BackBtn_Click" />
+            <asp:LinkButton ID="NextBtn" CssClass="btn btn-outline-secondary float-end mr-2" runat="server" Text="Sonraki=>" Visible="false" OnClick="NextBtn_Click" />
+            <asp:LinkButton ID="PrevBtn" CssClass="btn btn-outline-secondary float-end mr-2" runat="server" Text="<=Önceki" Visible="false" OnClick="PrevBtn_Click" />
+            <asp:LinkButton ID="BackBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Geri" Visible="false" OnClick="BackBtn_Click" />
             <asp:LinkButton ID="SaveBtn" CssClass="btn btn-success" runat="server" Text="Kaydet" OnClick="SaveBtn_Click" Width="150px" />
             <asp:LinkButton ID="UpdateBtn" CssClass="btn btn-primary" runat="server" Text="Güncelle" Visible="false" OnClick="UpdateBtn_Click" Width="150px" />
             <asp:LinkButton CssClass="btn btn-outline-secondary" ID="TasinmazBtn" runat="server" Text="Taşınmaza Git" CausesValidation="false" OnClick="TasinmazBtn_Click" />
@@ -191,7 +192,7 @@
                                         </div>
                                         <div class="card-footer">
                                             <asp:LinkButton CssClass="btn btn-danger" ID="SilNowBtn" runat="server" CausesValidation="false" Text="Sigortayı Sil" OnClientClick="{return true;};" OnClick="SilNowBtn_Click" />
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                                            <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                                         </div>
                                     </div>
                                     <div>

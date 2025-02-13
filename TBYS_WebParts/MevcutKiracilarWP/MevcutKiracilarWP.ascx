@@ -26,7 +26,7 @@
         </div>
         <div class="card-body">
             <div class="form-group">
-                <asp:LinkButton CssClass="btn btn-outline-primary float-right" ID="OdemePlanlariniGuncelleBtn" runat="server" Text="Ödeme Planlarını Güncelle" OnClick="OdemePlanlariniGuncelleBtn_Click" />
+                <asp:LinkButton CssClass="btn btn-outline-primary float-end" ID="OdemePlanlariniGuncelleBtn" runat="server" Text="Ödeme Planlarını Güncelle" OnClick="OdemePlanlariniGuncelleBtn_Click" />
             </div>
             <asp:Table ID="BorcluKiracilarTable" runat="server" CssClass="table table-bordered table-hover table-striped">
                  <asp:TableHeaderRow HorizontalAlign="Center">
@@ -46,7 +46,7 @@
             </asp:Table>
         </div>
         <div class="card-footer">
-            <asp:LinkButton CssClass="btn btn-outline-success float-right" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
+            <asp:LinkButton CssClass="btn btn-outline-success float-end" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
         </div>
     </div>
 </div>

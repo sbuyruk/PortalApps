@@ -288,7 +288,7 @@
             </div>
         </div>
         <div class="card-footer">
-            <asp:LinkButton CssClass="btn btn-outline-secondary float-right mr-2" ID="PersonelListesiBtn" runat="server" Text="Personel Listesi" CausesValidation="false" OnClick="PersonelListesiBtn_Click" />
+            <asp:LinkButton CssClass="btn btn-outline-secondary float-end mr-2" ID="PersonelListesiBtn" runat="server" Text="Personel Listesi" CausesValidation="false" OnClick="PersonelListesiBtn_Click" />
         </div>
     </div>
 </div>

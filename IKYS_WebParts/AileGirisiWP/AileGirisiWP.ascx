@@ -13,7 +13,7 @@
             <h3 class="mb-2">
                 <asp:Label CssClass="col-form-label  btn-outline-success mb-1" ID="TitleLbl" runat="server" Text="Aile Bilgileri Girişi"></asp:Label>
                 <asp:Label CssClass="col-form-label text-white" ID="PersonelIdLbl" Visible="false" runat="server"></asp:Label>
-                <asp:Label CssClass="col-form-label text-secondary float-right" ID="EkranNo" Text="3" runat="server" ></asp:Label>
+                <asp:Label CssClass="col-form-label text-secondary float-end" ID="EkranNo" Text="3" runat="server" ></asp:Label>
             </h3>
         </div>
         <div class="card-body">
@@ -100,7 +100,7 @@
             </asp:UpdatePanel>
         </div>
         <div class="card-footer">
-            <asp:LinkButton CssClass="btn btn-outline-secondary float-right mr-2" ID="BackBtn" runat="server" Text="Geri" CausesValidation="false" OnClick="BackBtn_Click" />
+            <asp:LinkButton CssClass="btn btn-outline-secondary float-end mr-2" ID="BackBtn" runat="server" Text="Geri" CausesValidation="false" OnClick="BackBtn_Click" />
         </div>
     </div>
 </div>

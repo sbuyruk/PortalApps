@@ -18,7 +18,8 @@
 </style>
 <script>
     function OpenModalOnay() {
-        $("#ModalOnayDiv").modal({ backdrop: false });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
+        myModalInstance.show();
     }
     //ekrandan secilen onayla vb butonun serverside'da oncliclkini calistirsin
     function CallButtonClick(onay) {
@@ -142,7 +143,7 @@
                         <button id="OnaylaModalBtn" runat="server" class="btn btn-success" onclick="CallButtonClick('onay')" visible="False">Onayla</button>
                         <button id="KabuletModalBtn" runat="server" class="btn btn-info" onclick="CallButtonClick('kabul')" visible="False">Kabul Et</button>
                         <button id="ReddetModalBtn" runat="server" class="btn btn-danger" onclick="CallButtonClick('reddet')">Reddet</button>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>

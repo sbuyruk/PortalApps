@@ -1071,7 +1071,7 @@ namespace Portal_WebParts.ToplantiGirisiWP {
             this.ToplantiTakvimiBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "ToplantiTakvimiBtn";
-            @__ctrl.CssClass = "btn btn-outline-info float-right";
+            @__ctrl.CssClass = "btn btn-outline-info float-end";
             @__ctrl.Text = "Toplantı Takvimi";
             @__ctrl.CausesValidation = false;
             @__ctrl.Click -= new System.EventHandler(this.ToplantiTakvimiBtn_Click);
@@ -1088,7 +1088,7 @@ namespace Portal_WebParts.ToplantiGirisiWP {
             this.ToplantiListesiBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "ToplantiListesiBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Toplantı Listesi";
             @__ctrl.CausesValidation = false;
             @__ctrl.Click -= new System.EventHandler(this.ToplantiListesiBtn_Click);
@@ -1105,7 +1105,7 @@ namespace Portal_WebParts.ToplantiGirisiWP {
             this.ToplantiKatilimTutanagiBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "ToplantiKatilimTutanagiBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Toplantı Katılım Tutanagi";
             @__ctrl.CausesValidation = false;
             @__ctrl.Click -= new System.EventHandler(this.ToplantiKatilimTutanagiBtn_Click);
@@ -1265,9 +1265,9 @@ namespace Portal_WebParts.ToplantiGirisiWP {
             global::System.Web.UI.WebControls.LinkButton @__ctrl4;
             @__ctrl4 = this.@__BuildControlToplantiSilNowBtn();
             @__parser.AddParsedSubObject(@__ctrl4);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        <button type=\"button\" class=\"btn btn-default\" data-dism" +
-                        "iss=\"modal\">Kapat</button>\r\n                    </div>\r\n                </div>\r\n" +
-                        "            </div>\r\n        </div>\r\n    "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        <button type=\"button\" class=\"btn btn-default\" data-bs-d" +
+                        "ismiss=\"modal\">Kapat</button>\r\n                    </div>\r\n                </div" +
+                        ">\r\n            </div>\r\n        </div>\r\n    "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -1390,7 +1390,7 @@ namespace Portal_WebParts.ToplantiGirisiWP {
                         </div>
                     </div>
                     <div class=""modal-footer"">
-                        <button type=""button"" class=""btn btn-default"" data-dismiss=""modal"">Kapat</button>
+                        <button type=""button"" class=""btn btn-default"" data-bs-dismiss=""modal"">Kapat</button>
                     </div>
                 </div>
             </div>
@@ -1913,9 +1913,9 @@ namespace Portal_WebParts.ToplantiGirisiWP {
             global::System.Web.UI.WebControls.LinkButton @__ctrl6;
             @__ctrl6 = this.@__BuildControlGuncelleNowBtn();
             @__parser.AddParsedSubObject(@__ctrl6);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        <button type=\"button\" class=\"btn btn-default\" data-dism" +
-                        "iss=\"modal\">Kapat</button>\r\n                    </div>\r\n                </div>\r\n" +
-                        "            </div>\r\n        </div>\r\n    "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        <button type=\"button\" class=\"btn btn-default\" data-bs-d" +
+                        "ismiss=\"modal\">Kapat</button>\r\n                    </div>\r\n                </div" +
+                        ">\r\n            </div>\r\n        </div>\r\n    "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -2160,17 +2160,20 @@ namespace Portal_WebParts.ToplantiGirisiWP {
                     "\"maxDate\", rMax);\r\n\r\n            var newDate = new Date($(\'#BaslangicTarihiTxt\')" +
                     ".datepicker(\'getDate\'));\r\n            newDate.setDate(newDate.getDate());\r\n\r\n   " +
                     "     });\r\n\r\n\r\n    }\r\n</script>\r\n\r\n<script type=\"text/javascript\">\r\n    function " +
-                    "OpenSilModal() {\r\n        $(\"#ModalSilDiv\").modal({ backdrop: true });\r\n    }\r\n " +
-                    "   function OpenOnayModal() {\r\n        $(\"#ModalOnayDiv\").modal({ backdrop: true" +
-                    " });\r\n    }\r\n    function CloseOnayModal() {\r\n        $(\"#ModalOnayDiv\").modal(\'" +
-                    "hide\');\r\n        $(\'.modal-backdrop\').remove()\r\n        $(document.body).removeC" +
-                    "lass(\"modal-open\");\r\n    }\r\n    function KatilimciSecimiModal() {\r\n        $(\"#K" +
-                    "atilimciSecimiModal\").modal({ backdrop: false });\r\n    }\r\n\r\n\r\n    function Katil" +
-                    "imciSecildiBtnClick(thisRow, katilimciId, bilgi) {\r\n\r\n\r\n        var table = $(\'#" +
-                    "CustomModalDataTable\').DataTable();\r\n        var pnum = table.page.info().page;\r" +
-                    "\n\r\n        var indexes = table.row(thisRow).index();\r\n        table.rows(indexes" +
-                    ").remove().draw();\r\n\r\n\r\n        table.page(pnum).draw(false);\r\n\r\n        documen" +
-                    "t.getElementById(\'");
+                    "OpenSilModal() {\r\n        var myModalInstance = bootstrap.Modal.getOrCreateInsta" +
+                    "nce(document.getElementById(\'ModalSilDiv\'));\n        myModalInstance.show();\r\n  " +
+                    "  }\r\n    function OpenOnayModal() {\r\n        var myModalInstance = bootstrap.Mod" +
+                    "al.getOrCreateInstance(document.getElementById(\'ModalOnayDiv\'));\n        myModal" +
+                    "Instance.show();\r\n    }\r\n    function CloseOnayModal() {\r\n        $(\"#ModalOnayD" +
+                    "iv\").modal(\'hide\');\r\n        $(\'.modal-backdrop\').remove()\r\n        $(document.b" +
+                    "ody).removeClass(\"modal-open\");\r\n    }\r\n    function KatilimciSecimiModal() {\r\n " +
+                    "       var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getEle" +
+                    "mentById(\'KatilimciSecimiModal\'));\n        myModalInstance.show();\r\n    }\r\n\r\n\r\n " +
+                    "   function KatilimciSecildiBtnClick(thisRow, katilimciId, bilgi) {\r\n\r\n\r\n       " +
+                    " var table = $(\'#CustomModalDataTable\').DataTable();\r\n        var pnum = table.p" +
+                    "age.info().page;\r\n\r\n        var indexes = table.row(thisRow).index();\r\n        t" +
+                    "able.rows(indexes).remove().draw();\r\n\r\n\r\n        table.page(pnum).draw(false);\r\n" +
+                    "\r\n        document.getElementById(\'");
                          @__w.Write( paramToplantiKatilimciIdLbl.ClientID);
 
             @__w.Write("\').value = katilimciId;\r\n        document.getElementById(\'");

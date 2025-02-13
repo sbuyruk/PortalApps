@@ -299,7 +299,7 @@ namespace Model.NBYS
         public string SelectByIl(int pIlId, ref List<NakitBagisci> list, ref int rowCount)
         {
             string ilStr = string.Empty;
-            if (pIlId < ProjeConstants.IL_HEPSI)
+            if (pIlId > ProjeConstants.IL_HEPSI)
             {
                 ilStr = string.Format(" WHERE Ili='{0}'", pIlId);
             }
@@ -340,7 +340,7 @@ namespace Model.NBYS
         public string SelectByIlBagisTarihi(int pIlId, string bTar, string sTar, ref List<NakitBagisci> list, ref int rowCount)
         {
             string ilStr = string.Empty;
-            if (pIlId < ProjeConstants.IL_HEPSI)
+            if (pIlId > ProjeConstants.IL_HEPSI)
             {
                 ilStr = string.Format(" AND A.Ili='{0}'", pIlId);
             }
@@ -378,7 +378,7 @@ namespace Model.NBYS
         public string SelectByIlBagisTarihiYeni(int pIlId, string basTar, string sonTar, ref List<NakitBagisci> list, ref int rowCount)
         {
             string ilStr = string.Empty;
-            if (pIlId < ProjeConstants.IL_HEPSI)
+            if (pIlId > ProjeConstants.IL_HEPSI)
             {
                 ilStr = string.Format(" AND N.Ili='{0}'", pIlId);
             }

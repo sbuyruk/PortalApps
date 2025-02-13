@@ -136,7 +136,7 @@
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-1">
                 <asp:Label CssClass="col-form-label  btn-outline-primary" Id="TitleLbl" runat="server" Text="Görev Onay Listesi"></asp:Label>
-                <asp:Label CssClass="col-form-label text-secondary float-right" ID="EkranNo" Text="30" runat="server" ></asp:Label>
+                <asp:Label CssClass="col-form-label text-secondary float-end" ID="EkranNo" Text="30" runat="server" ></asp:Label>
             </h3>
 
         </div>
@@ -174,7 +174,7 @@
         </div>
         <div class="card-footer">
             <asp:LinkButton ID="YeniGorevOnayiBtn" CssClass="btn btn-outline-success " runat="server" Text="Yeni Görev Onayı" OnClick="YeniGorevOnayiBtn_Click" />
-            <asp:LinkButton ID="RaporAlBtn" CssClass="btn btn-outline-success float-right" runat="server" Text="Seçilen Görevler İçin Rapor Al" OnClick="RaporAlBtn_Click" />
+            <asp:LinkButton ID="RaporAlBtn" CssClass="btn btn-outline-success float-end" runat="server" Text="Seçilen Görevler İçin Rapor Al" OnClick="RaporAlBtn_Click" />
         </div>
 
     </div>

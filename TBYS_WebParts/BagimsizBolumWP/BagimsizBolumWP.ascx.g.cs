@@ -269,7 +269,7 @@ namespace TBYS_WebParts.BagimsizBolumWP {
             this.TasinmazaGitBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "TasinmazaGitBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Taşınmaza Git";
             @__ctrl.Click -= new System.EventHandler(this.TasinmazaGitBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.TasinmazaGitBtn_Click);
@@ -571,8 +571,8 @@ namespace TBYS_WebParts.BagimsizBolumWP {
             @__ctrl14 = this.@__BuildControlSilBtn();
             @__parser.AddParsedSubObject(@__ctrl14);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <button type=\"button\" c" +
-                        "lass=\"btn btn-default\" data-dismiss=\"modal\">Kapat</button>\r\n                    " +
-                        "</div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    "));
+                        "lass=\"btn btn-default\" data-bs-dismiss=\"modal\">Kapat</button>\r\n                 " +
+                        "   </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -647,7 +647,8 @@ namespace TBYS_WebParts.BagimsizBolumWP {
 
 <script type=""text/javascript"">
     function BagimsizBolumModal() {
-        $(""#BagimsizBolumModal"").modal({ backdrop: false });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('BagimsizBolumModal'));
+        myModalInstance.show();
     }
 </script>
 

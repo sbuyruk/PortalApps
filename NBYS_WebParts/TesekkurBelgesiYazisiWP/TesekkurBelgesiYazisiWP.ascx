@@ -37,6 +37,10 @@
                                 <label class="col-form-label" for="YilDDL">Yıl </label>
                                 <asp:DropDownList ID="YilDDL" runat="server" CssClass="form-control" AutoPostBack="True" OnSelectedIndexChanged="YilDDL_SelectedIndexChanged" Style="height: auto" />
                             </div>
+                            <div class="form-group ">
+                                <label class="col-form-label" for="BolgeDDL">Bölge </label>
+                                <asp:DropDownList ID="BolgeDDL" runat="server" CssClass="form-control" AutoPostBack="True" OnSelectedIndexChanged="BolgeDDL_SelectedIndexChanged" Style="height: auto" />
+                            </div>
                         </div>
                         <div class="form-group col-3 border border-dark  border-right-0">
                             <div class="form-group">

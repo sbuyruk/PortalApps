@@ -299,7 +299,8 @@ namespace Portal_WebParts.GunlukNobetcilerMoveWP {
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
 <script type=""text/javascript"">
     function OpenNobetciPopup(clicked) {
-        $(""#NobetciPopupDiv"").modal({ backdrop: true });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('NobetciPopupDiv'));
+        myModalInstance.show();
     }
 
 </script>
@@ -350,7 +351,7 @@ namespace Portal_WebParts.GunlukNobetcilerMoveWP {
                 </div>
             </div>
             <div class=""modal-footer"">
-                <button type=""button"" class=""btn btn-default"" data-dismiss=""modal"">Kapat</button>
+                <button type=""button"" class=""btn btn-default"" data-bs-dismiss=""modal"">Kapat</button>
             </div>
         </div>
 

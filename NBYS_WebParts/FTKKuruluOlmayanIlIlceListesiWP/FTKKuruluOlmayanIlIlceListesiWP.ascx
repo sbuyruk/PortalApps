@@ -20,7 +20,7 @@
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             
             <h3 class="mb-2">
-                <asp:LinkButton ID="YonergeBtn" class="btn btn-outline-primary float-right mr-4" runat="server" OnClick="YonergeBtn_Click" ToolTip="Kullanım Yönergesi">
+                <asp:LinkButton ID="YonergeBtn" class="btn btn-outline-primary float-end mr-4" runat="server" OnClick="YonergeBtn_Click" ToolTip="Kullanım Yönergesi">
                     <i class="fa fa-book" aria-hidden="true"></i>
                 </asp:LinkButton>
                 <asp:Label CssClass="col-form-label text-danger font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="FTK Kurulu Olmayan İl ve İlçeler "></asp:Label>
@@ -73,8 +73,8 @@
             </asp:UpdateProgress>
         </div>
         <div class="card-footer">
-            <asp:LinkButton ID="FTKIslemleriBtn" CssClass="btn btn-outline-secondary float-right mr-3" runat="server" Text="FTK İşlemleri" OnClick="FTKIslemleriBtn_Click" CausesValidation="False"></asp:LinkButton>
-            <asp:LinkButton ID="BolgelereGoreFTKRaporuBtn" runat="server" CssClass="btn btn-outline-secondary float-right" Text="Bölgelere göre FTK Dağılımı" OnClick="BolgelereGoreFTKRaporuBtn_Click" CausesValidation="False"></asp:LinkButton>
+            <asp:LinkButton ID="FTKIslemleriBtn" CssClass="btn btn-outline-secondary float-end mr-3" runat="server" Text="FTK İşlemleri" OnClick="FTKIslemleriBtn_Click" CausesValidation="False"></asp:LinkButton>
+            <asp:LinkButton ID="BolgelereGoreFTKRaporuBtn" runat="server" CssClass="btn btn-outline-secondary float-end" Text="Bölgelere göre FTK Dağılımı" OnClick="BolgelereGoreFTKRaporuBtn_Click" CausesValidation="False"></asp:LinkButton>
         </div>
     </div>
 

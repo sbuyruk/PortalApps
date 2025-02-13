@@ -297,6 +297,7 @@ namespace NBYS_WebParts.BagisHareketListesiWP
                     { data: 'TCKimlikNo' },
                     { data: 'Telefon' },
                     { data: 'Banka' },
+                    { data: 'Aciklama' },
 
                 ],
                 'order': [[2, 'desc']],

@@ -29,7 +29,7 @@
             <asp:Table ID="KiraTable" runat="server" class="table ">
                 <asp:TableRow HorizontalAlign="Left">
                     <asp:TableCell CssClass="font-weight-bold" ColumnSpan="7" Font-Bold="True" Font-Size="XX-Large">TSKGV KİRA KARTI</asp:TableCell>
-                    <asp:TableCell CssClass="font-weight-bold float-right" ID="KartNoHdrCell">KART NO</asp:TableCell>
+                    <asp:TableCell CssClass="font-weight-bold float-end" ID="KartNoHdrCell">KART NO</asp:TableCell>
                 </asp:TableRow>
                 <asp:TableRow HorizontalAlign="Left">
                     <asp:TableCell BorderStyle="Solid" BorderWidth="1" CssClass="bg-light font-weight-bold" RowSpan="3" >KİRACININ</asp:TableCell>
@@ -98,9 +98,9 @@
         </div>
         <div class="card-footer">
             
-            <asp:LinkButton CssClass="btn btn-success float-right" ID="ExcelBtn" runat="server" Text="Excel'e Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
-            <asp:LinkButton ID="KiraciListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Kiracı Listesi" OnClick="KiraciListesiBtn_Click" />
-            <asp:CheckBox ID="TumunuSecChk" CssClass="float-right mr-4" AutoPostBack="true" runat="server" Text="Tüm Sözleşmeleri Göster" Checked="false" OnCheckedChanged="TumunuSecChk_CheckedChanged" TextAlign="Right" />
+            <asp:LinkButton CssClass="btn btn-success float-end" ID="ExcelBtn" runat="server" Text="Excel'e Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
+            <asp:LinkButton ID="KiraciListesiBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Kiracı Listesi" OnClick="KiraciListesiBtn_Click" />
+            <asp:CheckBox ID="TumunuSecChk" CssClass="float-end mr-4" AutoPostBack="true" runat="server" Text="Tüm Sözleşmeleri Göster" Checked="false" OnCheckedChanged="TumunuSecChk_CheckedChanged" TextAlign="Right" />
         </div>
     </div>
 </div>

@@ -209,7 +209,7 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "ToplamLbl";
-            @__ctrl.CssClass = "font-weight-bold float-right";
+            @__ctrl.CssClass = "font-weight-bold float-end";
             @__ctrl.Text = "Label";
             return @__ctrl;
         }

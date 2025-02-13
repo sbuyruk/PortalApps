@@ -11,7 +11,8 @@
     function OpenModal(nakitBagisciId) {
         document.getElementById('<%= paramNakitBagisciIdLbl.ClientID%>').value = nakitBagisciId;
 
-        $("#ModalUrlDiv").modal({ backdrop: false });
+        var myModal = new bootstrap.Modal(document.getElementById('ModalUrlDiv'));
+        myModal.show();
         document.getElementById('<%= ModalDoldurBtn.ClientID%>').click();
     }
     
@@ -125,7 +126,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>

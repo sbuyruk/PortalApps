@@ -220,7 +220,7 @@ namespace TBYS_WebParts.BagisciBagislariWP {
             this.BackBtn = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right mr-2";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end mr-2";
             @__ctrl.ID = "BackBtn";
             @__ctrl.Text = "Geri";
             @__ctrl.CausesValidation = false;
@@ -410,7 +410,7 @@ namespace TBYS_WebParts.BagisciBagislariWP {
             @__ctrl8 = this.@__BuildControlCikarNowBtn();
             @__parser.AddParsedSubObject(@__ctrl8);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-                            <button type=""button"" class=""btn btn-default float-right"" data-dismiss=""modal"">Kapat</button>
+                            <button type=""button"" class=""btn btn-default float-end"" data-bs-dismiss=""modal"">Kapat</button>
                         </div>
                     </div>
                 </div>
@@ -458,7 +458,7 @@ namespace TBYS_WebParts.BagisciBagislariWP {
                             </div>
                         </div>
                         <div class=""modal-footer"">
-                            <button type=""button"" class=""btn btn-default"" data-dismiss=""modal"">Kapat</button>
+                            <button type=""button"" class=""btn btn-default"" data-bs-dismiss=""modal"">Kapat</button>
                         </div>
                     </div>
                 </div>
@@ -496,10 +496,12 @@ namespace TBYS_WebParts.BagisciBagislariWP {
             @__w.Write(@"
 <script type=""text/javascript"">
     function OpenModalOnay() {
-        $(""#ModalOnayDiv"").modal({ backdrop: false });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
+        myModalInstance.show();
     }
     function OpenModal() {
-        $(""#ModalTasinmazListesiDiv"").modal({ backdrop: false });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalTasinmazListesiDiv'));
+        myModalInstance.show();
     }
     function CallButtonClick(bagisciId, tasinmazId) {
         document.getElementById('");

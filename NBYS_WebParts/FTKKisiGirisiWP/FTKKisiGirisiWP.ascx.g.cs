@@ -211,7 +211,7 @@ namespace NBYS_WebParts.FTKKisiGirisiWP {
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlAnchor();
             this.YonergeLnk = @__ctrl;
             @__ctrl.TemplateControl = this;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", " btn btn-outline-primary float-right mr-4");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", " btn btn-outline-primary float-end mr-4");
             @__ctrl.ID = "YonergeLnk";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-fancybox", "");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-type", "pdf");
@@ -874,7 +874,7 @@ namespace NBYS_WebParts.FTKKisiGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "FtkKisiListesiBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "FTK Kişi Listesi";
             @__ctrl.CausesValidation = false;
             @__ctrl.Click -= new System.EventHandler(this.FtkKisiListesiBtn_Click);
@@ -892,7 +892,7 @@ namespace NBYS_WebParts.FTKKisiGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "FTKFahriBaskanListesiBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right mr-3";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end mr-3";
             @__ctrl.Text = "Fahri Başkan Listesi";
             @__ctrl.Click -= new System.EventHandler(this.FTKFahriBaskanListesiBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.FTKFahriBaskanListesiBtn_Click);
@@ -909,7 +909,7 @@ namespace NBYS_WebParts.FTKKisiGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "FTKIslemleriBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right mr-3";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end mr-3";
             @__ctrl.Text = "FTK İşlemleri";
             @__ctrl.CausesValidation = false;
             @__ctrl.Click -= new System.EventHandler(this.FTKIslemleriBtn_Click);
@@ -1278,9 +1278,9 @@ namespace NBYS_WebParts.FTKKisiGirisiWP {
             global::System.Web.UI.WebControls.LinkButton @__ctrl4;
             @__ctrl4 = this.@__BuildControlSilNowBtn();
             @__parser.AddParsedSubObject(@__ctrl4);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        <button type=\"button\" class=\"btn btn-default\" data-dism" +
-                        "iss=\"modal\">Kapat</button>\r\n                    </div>\r\n                </div>\r\n" +
-                        "            </div>\r\n        </div>\r\n    "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        <button type=\"button\" class=\"btn btn-default\" data-bs-d" +
+                        "ismiss=\"modal\">Kapat</button>\r\n                    </div>\r\n                </div" +
+                        ">\r\n            </div>\r\n        </div>\r\n    "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -1342,10 +1342,12 @@ namespace NBYS_WebParts.FTKKisiGirisiWP {
 </style>
 <script type=""text/javascript"">
     function OpenSilModal() {
-        $(""#SilModalDiv"").modal({ backdrop: true });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('SilModalDiv'));
+        myModalInstance.show();
     }
     function ModalUyelikDurumuDegistirAc() {
-        $(""#ModalUyelikDurumuDiv"").modal({ backdrop: true });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalUyelikDurumuDiv'));
+        myModalInstance.show();
     }
 </script>
 

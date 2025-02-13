@@ -763,7 +763,9 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP
 
                 OdemePlaniTable.Controls.Add(row);
             }
-            var jsString = " $('#OdemePlaniModal').modal({ backdrop: false });";
+            var jsString = @"         
+                var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('OdemePlaniModal'));
+                myModalInstance.show();";
             ScriptCalistir(jsString);
 
         }

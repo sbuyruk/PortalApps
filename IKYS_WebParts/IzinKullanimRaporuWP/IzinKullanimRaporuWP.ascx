@@ -23,7 +23,7 @@
                     <h3 class="mb-2">
                         <asp:Label CssClass="col-form-label  btn-outline-primary mb-1" ID="TitleLbl" runat="server" Text="İzin Kullanim Raporu"></asp:Label>
                         <asp:Label CssClass="col-form-label text-white" ID="IdLbl" runat="server"></asp:Label>
-                        <asp:Label CssClass="col-form-label text-secondary float-right" ID="EkranNo" Text="17" runat="server"></asp:Label>
+                        <asp:Label CssClass="col-form-label text-secondary float-end" ID="EkranNo" Text="17" runat="server"></asp:Label>
                     </h3>
                 </div>
                 <div class="card-body alert-secondary" id="MainCardDiv" runat="server">
@@ -43,7 +43,7 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <asp:LinkButton CssClass="btn btn-outline-warning float-right" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
+                    <asp:LinkButton CssClass="btn btn-outline-warning float-end" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
                 </div>
             </div>
         </ContentTemplate>

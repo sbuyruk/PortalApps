@@ -202,7 +202,7 @@ namespace IKYS_WebParts.AileGirisiWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.EkranNo = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-secondary float-right";
+            @__ctrl.CssClass = "col-form-label text-secondary float-end";
             @__ctrl.ID = "EkranNo";
             @__ctrl.Text = "3";
             return @__ctrl;
@@ -710,7 +710,7 @@ namespace IKYS_WebParts.AileGirisiWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.BackBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right mr-2";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end mr-2";
             @__ctrl.ID = "BackBtn";
             @__ctrl.Text = "Geri";
             @__ctrl.CausesValidation = false;

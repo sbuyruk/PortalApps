@@ -515,7 +515,7 @@ namespace NBYS_WebParts.ArmaganListesiWP
                 IliDDL.Items.Clear();
 
                 Il pIl = new Il();
-                List<Il> list = pIl.SelectAll<Il>();
+                List<Il> list = pIl.SelectByBolge(BolgeIdQS.ConvertToInt());
                 IliDDL.Items.Add(new ListItem(ProjeConstants.HEPSI, ProjeConstants.HEPSI_INT.ToString()));
                 foreach (Il il in list)
                 {
@@ -870,7 +870,7 @@ namespace NBYS_WebParts.ArmaganListesiWP
 
             }
             int ili = SecilenIlQS.ConvertToInt();
-            var json = armagan.SelectByDurumTarih(DurumDDL.SelectedItem.Text, bastar, bittar, ArmaganDDL.SelectedItem.Value, ref rowCount, ProjeConstants.BOLGE_HEPSI_INT, ili);
+            var json = armagan.SelectByDurumTarih(DurumDDL.SelectedItem.Text, bastar, bittar, ArmaganDDL.SelectedItem.Value, ref rowCount, BolgeIdQS, ili);
             return json;
 
         }
@@ -878,6 +878,27 @@ namespace NBYS_WebParts.ArmaganListesiWP
         {
             string reportTesekkurUrl = "http://tskgv-portal/YonetimBirimleri/BasinTanitimHalklaIliskilerSubesi/Sayfalar" + "/" + ProjeConstants.PAGE_TESEKKURBELGESITEK_VIEWER + "?ArmaganId=";
             string reportBeratUrl = "http://tskgv-portal/YonetimBirimleri/BasinTanitimHalklaIliskilerSubesi/Sayfalar" + "/" + ProjeConstants.PAGE_BERATBELGESITEK_VIEWER + "?ArmaganId=";
+            bool yetkiliMi = BolgeIdQS == ProjeConstants.HEPSI_INT || BolgeIdQS == ProjeConstants.BOLGE_GENELMUDURLUK_INT;
+            string belgeStr = string.Empty;
+            if (yetkiliMi)
+            {
+                belgeStr = @"
+                    if(row.Durum.toString().indexOf('Kontrol Edildi')>=0){
+                        if(row.ArmaganBaslik.toString().indexOf('Teşekkür Belgesi')>=0)
+                        {
+                            var url='"" + reportTesekkurUrl + @""'+row.ArmaganId;
+                            link='<a target=_blank href='+url+' class=btn-link >'+row.ArmaganBaslik+'</a>';
+                        }
+                        else if(row.ArmaganBaslik.toString().indexOf('Bronz Madalya ve Beratı')>=0 || 
+                            row.ArmaganBaslik.toString().indexOf('Gümüş Madalya ve Beratı')>=0 || 
+                            row.ArmaganBaslik.toString().indexOf('Altın Madalya ve Beratı')>=0)
+                        {
+                            var url='"" + reportBeratUrl + @""'+row.ArmaganId;
+                            link='<a target=_blank href='+url+' class=btn-link >'+row.ArmaganBaslik+'</a>';
+                        }
+                    }
+                ";
+            }
 
             string queryStr = "&SecilenGun=" + SecilenGunQS + "&SecilenAy=" + SecilenAyQS + "&SecilenYil="
                 + SecilenYilQS + "&SecilenArmaganTanimId=" + SecilenArmaganTanimIdQS + "&SecilenDurum=" + SecilenDurumQS + "&SecilenIl=" + SecilenIlQS;
@@ -917,20 +938,9 @@ namespace NBYS_WebParts.ArmaganListesiWP
                         }},
                         {targets:5, render:function(data, type, row, meta){
                             var link= '<span class=grayLayout>'+row.ArmaganBaslik+'</span>';
-                            if(row.Durum.toString().indexOf('Kontrol Edildi')>=0){
-                                if(row.ArmaganBaslik.toString().indexOf('Teşekkür Belgesi')>=0)
-                                {
-                                    var url='" + reportTesekkurUrl + @"'+row.ArmaganId;
-                                    link='<a target=_blank href='+url+' class=btn-link >'+row.ArmaganBaslik+'</a>';
-                                }
-                                else if(row.ArmaganBaslik.toString().indexOf('Bronz Madalya ve Beratı')>=0 || 
-                                    row.ArmaganBaslik.toString().indexOf('Gümüş Madalya ve Beratı')>=0 || 
-                                    row.ArmaganBaslik.toString().indexOf('Altın Madalya ve Beratı')>=0)
-                                {
-                                    var url='" + reportBeratUrl + @"'+row.ArmaganId;
-                                    link='<a target=_blank href='+url+' class=btn-link >'+row.ArmaganBaslik+'</a>';
-                                }
-                            }
+                            "+
+                            belgeStr
+                            +@"
                             return link;
                         }},
                         {targets:7, render:function(data, type, row, meta){

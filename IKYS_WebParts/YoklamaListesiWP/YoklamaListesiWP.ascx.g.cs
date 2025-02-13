@@ -109,7 +109,7 @@ namespace IKYS_WebParts.YoklamaListesiWP {
             this.EkranNo = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "EkranNo";
-            @__ctrl.CssClass = "col-form-label text-secondary float-right";
+            @__ctrl.CssClass = "col-form-label text-secondary float-end";
             @__ctrl.Text = "25";
             return @__ctrl;
         }

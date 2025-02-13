@@ -17,16 +17,20 @@
 </style>
 <script>
     function OpenModalOnay() {
-        $("#OdemePlaniModal").modal({ backdrop: "static" });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('OdemePlaniModal'));
+        myModalInstance.show();
     }
     function DeleteModalOnay() {
-        $("#DeleteModalOnayDiv").modal({ backdrop: "static" });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('DeleteModalOnayDiv'));
+        myModalInstance.show();
     }
     function YeniSozlesmeModalOnay() {
-        $("#YeniSozlesmeModal").modal({ backdrop: "static" });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('YeniSozlesmeModal'));
+        myModalInstance.show();
     }
     function BitenSozlesmeModalOnay() {
-        $("#BitenSozlesmeModal").modal({ backdrop: "static" });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('BitenSozlesmeModal'));
+        myModalInstance.show();
     }
     //eğer aktif=0 ise satırı gri yap
     function contentFunc(rowData, prop, counter) {
@@ -147,7 +151,7 @@
                         </table>
                     </div>
                     <div class="form-group">
-                        <asp:LinkButton ID="BitenSozlesmeOlusturBtn" runat="server" CssClass="btn btn-outline-success float-right" Text="Bitmiş Sözleşme Oluştur" Visible="false" OnClick="BitenSozlesmeOlusturBtn_Click"></asp:LinkButton>
+                        <asp:LinkButton ID="BitenSozlesmeOlusturBtn" runat="server" CssClass="btn btn-outline-success float-end" Text="Bitmiş Sözleşme Oluştur" Visible="false" OnClick="BitenSozlesmeOlusturBtn_Click"></asp:LinkButton>
                         <asp:LinkButton ID="YeniSozlesmeOlusturBtn" runat="server" CssClass="btn btn-outline-success" Text="Yeni Sözleşme Oluştur" Visible="false" OnClick="YeniSozlesmeOlusturBtn_Click"></asp:LinkButton>
                     </div>
                 </div>
@@ -156,14 +160,14 @@
                     <asp:LinkButton ID="SaveBtn" CssClass="btn btn-outline-success" runat="server" Text="Kaydet" OnClick="SaveBtn_Click" />
                     <asp:LinkButton ID="UpdateBtn" CssClass="btn btn-outline-primary" runat="server" Text="Güncelle" Visible="false" OnClick="UpdateBtn_Click" />
                     <asp:LinkButton ID="SilBtn" Visible="false" CssClass="btn btn-outline-danger" runat="server" CausesValidation="false" Text="Sil" OnClick="SilBtn_Click" />
-                    <asp:LinkButton ID="NextBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Sonraki=>" Visible="false" OnClick="NextBtn_Click" />
-                    <asp:LinkButton ID="PrevBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="<=Önceki" Visible="false" OnClick="PrevBtn_Click" />
+                    <asp:LinkButton ID="NextBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Sonraki=>" Visible="false" OnClick="NextBtn_Click" />
+                    <asp:LinkButton ID="PrevBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="<=Önceki" Visible="false" OnClick="PrevBtn_Click" />
 
-                    <asp:LinkButton ID="OdemePlaniGoruntuleBtn" runat="server" CssClass="btn btn-outline-secondary float-right" Text="Ödeme Planı Görüntüle" Visible="false" OnClick="OdemePlaniGoruntuleBtn_Click"></asp:LinkButton>
-                    <asp:LinkButton ID="OdemeYapBtn" runat="server" CssClass="btn btn-outline-secondary float-right" Text="Ödeme Planı" Visible="false" OnClick="OdemeYapBtn_Click"></asp:LinkButton>
-                    <asp:LinkButton ID="KiraKartiBtn" runat="server" CssClass="btn btn-outline-secondary float-right" Text="Kira Karti" Visible="false" OnClick="KiraKartiBtn_Click"></asp:LinkButton>
-                    <asp:LinkButton ID="KiraciListesiBtn" runat="server" CssClass="btn btn-outline-secondary float-right" Text="Kiracı Listesi" OnClick="KiraciListesiBtn_Click"></asp:LinkButton>
-                    <asp:LinkButton ID="BakiyeDevirBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Bakiye Devir İşlemleri" OnClick="BakiyeDevirBtn_Click" />
+                    <asp:LinkButton ID="OdemePlaniGoruntuleBtn" runat="server" CssClass="btn btn-outline-secondary float-end" Text="Ödeme Planı Görüntüle" Visible="false" OnClick="OdemePlaniGoruntuleBtn_Click"></asp:LinkButton>
+                    <asp:LinkButton ID="OdemeYapBtn" runat="server" CssClass="btn btn-outline-secondary float-end" Text="Ödeme Planı" Visible="false" OnClick="OdemeYapBtn_Click"></asp:LinkButton>
+                    <asp:LinkButton ID="KiraKartiBtn" runat="server" CssClass="btn btn-outline-secondary float-end" Text="Kira Karti" Visible="false" OnClick="KiraKartiBtn_Click"></asp:LinkButton>
+                    <asp:LinkButton ID="KiraciListesiBtn" runat="server" CssClass="btn btn-outline-secondary float-end" Text="Kiracı Listesi" OnClick="KiraciListesiBtn_Click"></asp:LinkButton>
+                    <asp:LinkButton ID="BakiyeDevirBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Bakiye Devir İşlemleri" OnClick="BakiyeDevirBtn_Click" />
                 </div>
             </div>
             <div class="modal" id="OdemePlaniModal" role="dialog">
@@ -193,7 +197,7 @@
 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                            <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                         </div>
                     </div>
                 </div>
@@ -219,7 +223,7 @@
                         </div>
                         <div class="modal-footer">
                             <asp:LinkButton ID="YeniSozlesmeOnayBtn" Text="Yeni Sözleşme Oluştur" runat="server" class="btn btn-danger" OnClick="YeniSozlesmeOnayBtn_Click"></asp:LinkButton>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">İptal</button>
+                            <button type="button" class="btn btn-default" data-bs-dismiss="modal">İptal</button>
                         </div>
                     </div>
                 </div>
@@ -241,7 +245,7 @@
                         </div>
                         <div class="modal-footer">
                             <asp:LinkButton ID="BitenSozlesmeOnayBtn" Text="Bitmiş Sözleşme Oluştur" runat="server" class="btn btn-danger" OnClick="BitenSozlesmeOnayBtn_Click"></asp:LinkButton>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">İptal</button>
+                            <button type="button" class="btn btn-default" data-bs-dismiss="modal">İptal</button>
                         </div>
                     </div>
                 </div>
@@ -264,7 +268,7 @@
                                         </div>
                                         <div class="card-footer">
                                             <asp:LinkButton CssClass="btn btn-danger" ID="DeleteNowBtn" runat="server" CausesValidation="false" Text="Kiracyı Sil" OnClientClick="{return true;};" OnClick="DeleteNowBtn_Click" />
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">İptal</button>
+                                            <button type="button" class="btn btn-default" data-bs-dismiss="modal">İptal</button>
                                         </div>
                                     </div>
                                     <div class="card" runat="server" id="WarnDiv" style="display: none">
@@ -277,7 +281,7 @@
                                             <asp:Label ID="Label4" CssClass="col-form-label text-danger" runat="server" Text="Kiracıyı silmeden önce yapılmış sözleşmelerin silinmesi gerekmektedir."></asp:Label>
                                         </div>
                                         <div class="card-footer">
-                                            <button type="button" class="btn btn-default float-right" data-dismiss="modal">Kapat</button>
+                                            <button type="button" class="btn btn-default float-end" data-bs-dismiss="modal">Kapat</button>
                                         </div>
                                     </div>
                                     <div>

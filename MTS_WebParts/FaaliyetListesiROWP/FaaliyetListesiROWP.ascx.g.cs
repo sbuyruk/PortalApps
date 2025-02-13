@@ -132,7 +132,7 @@ namespace MTS_WebParts.FaaliyetListesiROWP {
             this.FaaliyetViewerROBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "FaaliyetViewerROBtn";
-            @__ctrl.CssClass = "btn btn-outline-info float-right";
+            @__ctrl.CssClass = "btn btn-outline-info float-end";
             @__ctrl.Text = "Faaliyet Takvimi";
             @__ctrl.Click -= new System.EventHandler(this.FaaliyetViewerROBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.FaaliyetViewerROBtn_Click);

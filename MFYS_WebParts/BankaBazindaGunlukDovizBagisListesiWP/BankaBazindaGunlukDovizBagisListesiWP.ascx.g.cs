@@ -233,7 +233,7 @@ namespace MFYS_WebParts.BankaBazindaGunlukDovizBagisListesiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "ToplamLbl";
-            @__ctrl.CssClass = "col-form-label font-weight-bold float-right";
+            @__ctrl.CssClass = "col-form-label font-weight-bold float-end";
             @__ctrl.Text = "Toplam";
             return @__ctrl;
         }

@@ -8,7 +8,8 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="GunlukNobetcilerMoveWP.ascx.cs" Inherits="Portal_WebParts.GunlukNobetcilerMoveWP.GunlukNobetcilerMoveWP" %>
 <script type="text/javascript">
     function OpenNobetciPopup(clicked) {
-        $("#NobetciPopupDiv").modal({ backdrop: true });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('NobetciPopupDiv'));
+        myModalInstance.show();
     }
 
 </script>
@@ -90,7 +91,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
             </div>
         </div>
 

@@ -27,8 +27,8 @@
         </div>
         <div id="FooterCard" class="card-footer">
             <asp:LinkButton CssClass="btn btn-outline-success float-left" ID="KaydetBtn" runat="server" Text="Kaydet" OnClick="KaydetBtn_Click" />
-            <asp:LinkButton CssClass="btn btn-outline-primary float-right" ID="NextBtn" runat="server" Text="İleri >>" OnClick="NextBtn_Click" />
-            <asp:LinkButton CssClass="btn btn-outline-primary float-right" ID="KiraEkstreListesiBtn" runat="server" Text="Kira Ekstre Listesi" OnClick="NextBtn_Click" />
+            <asp:LinkButton CssClass="btn btn-outline-primary float-end" ID="NextBtn" runat="server" Text="İleri >>" OnClick="NextBtn_Click" />
+            <asp:LinkButton CssClass="btn btn-outline-primary float-end" ID="KiraEkstreListesiBtn" runat="server" Text="Kira Ekstre Listesi" OnClick="NextBtn_Click" />
         </div>
     </div>
 </div>

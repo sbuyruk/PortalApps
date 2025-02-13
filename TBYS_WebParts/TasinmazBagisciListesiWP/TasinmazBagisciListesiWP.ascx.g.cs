@@ -175,7 +175,7 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.ExcelBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-success float-right";
+            @__ctrl.CssClass = "btn btn-outline-success float-end";
             @__ctrl.ID = "ExcelBtn";
             @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
             @__ctrl.Text = "Excele Aktar";
@@ -297,7 +297,7 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP {
                         </div>
                     </div>
                     <div class=""modal-footer"">
-                        <button type=""button"" class=""btn btn-default"" data-dismiss=""modal"">Kapat</button>
+                        <button type=""button"" class=""btn btn-default"" data-bs-dismiss=""modal"">Kapat</button>
                     </div>
                 "));
         }
@@ -369,9 +369,17 @@ namespace TBYS_WebParts.TasinmazBagisciListesiWP {
             @__w.Write("\').value = id;\r\n        document.getElementById(\'");
                          @__w.Write( TaahhutModalDoldurBtn.ClientID);
 
-            @__w.Write("\').click();\r\n        $(\"#TaahhutModalUrlDiv\").modal({ backdrop: \"static\" });\r\n   " +
-                    " }\r\n</script>\r\n\r\n<div class=\"container col-xl \">\r\n    <div class=\"card shadow\">\r" +
-                    "\n        <div class=\"card-header\">\r\n            ");
+            @__w.Write(@"').click();
+
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('TaahhutModalUrlDiv'));
+        myModalInstance.show();
+    }
+</script>
+
+<div class=""container col-xl "">
+    <div class=""card shadow"">
+        <div class=""card-header"">
+            ");
             parameterContainer.Controls[0].RenderControl(@__w);
             @__w.Write("\r\n            <h3 class=\"mb-1\">\r\n                ");
             parameterContainer.Controls[1].RenderControl(@__w);

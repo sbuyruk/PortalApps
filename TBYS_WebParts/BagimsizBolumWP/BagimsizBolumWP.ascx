@@ -9,7 +9,8 @@
 
 <script type="text/javascript">
     function BagimsizBolumModal() {
-        $("#BagimsizBolumModal").modal({ backdrop: false });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('BagimsizBolumModal'));
+        myModalInstance.show();
     }
 </script>
 
@@ -40,7 +41,7 @@
         </div>
         <div class="card-footer">
             <asp:LinkButton ID="BagimsizBolumBtn" CssClass="btn btn-outline-success" runat="server" Text="Bağımsız Bölüm Ekle" OnClick="BagimsizBolumBtn_Click" />
-            <asp:LinkButton ID="TasinmazaGitBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Taşınmaza Git" OnClick="TasinmazaGitBtn_Click" />
+            <asp:LinkButton ID="TasinmazaGitBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Taşınmaza Git" OnClick="TasinmazaGitBtn_Click" />
         </div>
     </div>
 </div>
@@ -94,7 +95,7 @@
                             <asp:LinkButton ID="GuncelleBtn" runat="server" CssClass="btn btn-success" CausesValidation="false" Text=" Güncelle " OnClick="GuncelleBtn_Click" />
                             <asp:LinkButton ID="SilBtn" runat="server" CssClass="btn btn-success" CausesValidation="false" Text=" Sil " OnClick="SilBtn_Click" />
                         </div>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                     </div>
                 </div>
             </div>

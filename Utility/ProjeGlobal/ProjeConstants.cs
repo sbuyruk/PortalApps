@@ -632,6 +632,11 @@ namespace Utility.ProjeGlobal
         public const int BANKA_ISBANKEKSTRE_ILKKACSATIRHARIC = 12;
         public const int BANKA_ISBANKEKSTRE_SONKACSATIRHARIC = 4;
         public const string IMAGE_PATH_ISBANK = "/" + IMAGE_PATH + "/isbank.png";
+        //YKB
+        public const string BANKA_YKBEKSTRE = "Yapı Kredi Bankası (Ekstre)";
+        public const string BANKA_YKBEKSTRE_KISA = "YKB (Ekstre)";
+        public const int BANKA_YKBEKSTRE_ILKKACSATIRHARIC = 11;
+        public const int BANKA_YKBEKSTRE_SONKACSATIRHARIC = 0;
         //Vakifbank
         public const string BANKA_VAKIF = "VakıfBank";
         public const string BANKA_VAKIF_BASLIKILKHUCRE = "HESAP NO";
@@ -780,9 +785,9 @@ namespace Utility.ProjeGlobal
         //İL İLÇE vs Default Values
         public const int DEFAULT_ILID = 6;
         public const string DEFAULT_ILADI = "Ankara";
-        public const int IL_HEPSI = 99;
-        public const int IL_BOS = 99;
-        public const int ILCE_BOS = 9999;
+        public const int IL_HEPSI = 0;
+        public const int IL_BOS = 0;
+        public const int ILCE_BOS = 0;
         public const string VALILIK = "Valilik";
         public const int VALILIK_INT = -1;
         public const string SADECE_ILCELER = "İlçeler";

@@ -731,7 +731,7 @@ namespace Portal_WebParts.DuyuruGirisiWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.HepsiniEkleBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-primary float-right";
+            @__ctrl.CssClass = "btn btn-outline-primary float-end";
             @__ctrl.ID = "HepsiniEkleBtn";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Hepsini Ekle"));
@@ -783,7 +783,7 @@ namespace Portal_WebParts.DuyuruGirisiWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.HepsiniCikar = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-danger float-right";
+            @__ctrl.CssClass = "btn btn-outline-danger float-end";
             @__ctrl.ID = "HepsiniCikar";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Hepsini Çıkar"));
@@ -983,44 +983,45 @@ namespace Portal_WebParts.DuyuruGirisiWP {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n\r\n<script type=\"text/javascript\">\r\n    function ClearDuyuruResmi() {\r\n       " +
                         " $(\'#SecilenResmiSilBtn\').on(\'click\', function () {\r\n            $(\'#DisplayImag" +
-                        "e\').attr(\'src\', \'\');\r\n        });\r\n    }\r\n    function OpenModal() {\r\n        $(" +
-                        "\"#ModalOnayDiv\").modal({ backdrop: false });\r\n    }\r\n    //On Page Load.\r\n    $(" +
-                        "function () {\r\n        SetDatePicker();\r\n    });\r\n    //ikinci tarih için\r\n    f" +
-                        "unction SetDatePicker() {\r\n        var mindate = new Date();\r\n        //$(\"[id$=" +
-                        "YayinBasTarTxt]\").datepicker(\'option\', \'minDate\', mindate);\r\n        $(\"[id$=Yay" +
-                        "inBitTarTxt]\").datepicker({\r\n            dateFormat: \"dd.mm.yy\",\r\n            fi" +
-                        "rstDay: 1,\r\n            monthNames: [\"Ocak\", \"Şubat\", \"Mart\", \"Nisan\", \"Mayıs\", " +
-                        "\"Haziran\", \"Temmuz\", \"Ağustos\", \"Eylül\", \"Ekim\", \"Kasım\", \"Aralık\"],\r\n          " +
-                        "  monthNamesShort: [\"Oca\", \"Şub\", \"Mar\", \"Nis\", \"May\", \"Haz\", \"Tem\", \"Ağu\", \"Eyl" +
-                        "\", \"Eki\", \"Kas\", \"Ara\"],\r\n            dayNames: [\"Pazar\", \"Pazartesi\", \"Salı\", \"" +
-                        "Çarşamba\", \"Perşembe\", \"Cuma\", \"Cumartesi\"],\r\n            dayNamesMin: [\"Pz\", \"P" +
-                        "t\", \"Sl\", \"Çr\", \"Pr\", \"Cu\", \"Ct\"],\r\n            showAnim: \"fold\",\r\n            c" +
-                        "hangeMonth: true,\r\n            changeYear: true,\r\n            beforeShow: functi" +
-                        "on (input, inst) {\r\n                var mindate = $(\'.DateTimePickerV1\').datepic" +
-                        "ker(\'getDate\');\r\n                $(this).datepicker(\'option\', \'minDate\', mindate" +
-                        ");\r\n\r\n            },\r\n            beforeShowDay: function (date) {\r\n            " +
-                        "    $(\'#ui-datepicker-div\').css(\'clip\', \'auto\');\r\n                return [true, " +
-                        "\'\', \'\'];\r\n            }\r\n        });\r\n    }\r\n    //On UpdatePanel Refresh.\r\n    " +
-                        "var prm = Sys.WebForms.PageRequestManager.getInstance();\r\n    if (prm != null) {" +
-                        "\r\n        prm.add_endRequest(function (sender, e) {\r\n            if (sender._pos" +
-                        "tBackSettings.panelsToUpdate != null) {\r\n                SetDatePicker();\r\n     " +
-                        "       }\r\n        });\r\n    };\r\n    function readURL(personelFU, sender) {\r\n     " +
-                        "   if (personelFU.files && personelFU.files[0]) {\r\n            var reader = new " +
-                        "FileReader();\r\n            reader.onload = function (e) {\r\n                $(\'#\'" +
-                        " + sender).attr(\'src\', e.target.result);\r\n\r\n            }\r\n            reader.re" +
-                        "adAsDataURL(personelFU.files[0]);\r\n        }\r\n    }\r\n\r\n    //summernote editor\r\n" +
-                        "    $(document).ready(function () {\r\n        $(\'#MetinTxt\').summernote({\r\n      " +
-                        "      //toolbar: [\r\n            //    // [groupName, [list of button]]\r\n        " +
-                        "    //    [\'style\', [\'bold\', \'italic\', \'underline\', \'clear\']],\r\n            //  " +
-                        "  [\'fontsize\', [\'fontsize\']],\r\n            //    [\'color\', [\'color\']],\r\n        " +
-                        "    //    [\'para\', [\'ul\', \'ol\', \'paragraph\']],\r\n            //]\r\n            lan" +
-                        "g: \'tr-TR\', // default: \'en-US\'\r\n            height: 300,                 // set" +
-                        " editor height\r\n            minHeight: null,             // set minimum height o" +
-                        "f editor\r\n            maxHeight: null,             // set maximum height of edit" +
-                        "or\r\n            focus: true                  // set focus to editable area after" +
-                        " initializing summe\r\n        });\r\n    });\r\n\r\n</script>\r\n\r\n\r\n<div class=\"containe" +
-                        "r shadow\">\r\n    <div class=\"card\">\r\n        <div class=\"card-header\">\r\n         " +
-                        "   "));
+                        "e\').attr(\'src\', \'\');\r\n        });\r\n    }\r\n    function OpenModal() {\r\n        va" +
+                        "r myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById(" +
+                        "\'ModalOnayDiv\'));\n        myModalInstance.show();\r\n    }\r\n    //On Page Load.\r\n " +
+                        "   $(function () {\r\n        SetDatePicker();\r\n    });\r\n    //ikinci tarih için\r\n" +
+                        "    function SetDatePicker() {\r\n        var mindate = new Date();\r\n        //$(\"" +
+                        "[id$=YayinBasTarTxt]\").datepicker(\'option\', \'minDate\', mindate);\r\n        $(\"[id" +
+                        "$=YayinBitTarTxt]\").datepicker({\r\n            dateFormat: \"dd.mm.yy\",\r\n         " +
+                        "   firstDay: 1,\r\n            monthNames: [\"Ocak\", \"Şubat\", \"Mart\", \"Nisan\", \"May" +
+                        "ıs\", \"Haziran\", \"Temmuz\", \"Ağustos\", \"Eylül\", \"Ekim\", \"Kasım\", \"Aralık\"],\r\n     " +
+                        "       monthNamesShort: [\"Oca\", \"Şub\", \"Mar\", \"Nis\", \"May\", \"Haz\", \"Tem\", \"Ağu\"," +
+                        " \"Eyl\", \"Eki\", \"Kas\", \"Ara\"],\r\n            dayNames: [\"Pazar\", \"Pazartesi\", \"Sal" +
+                        "ı\", \"Çarşamba\", \"Perşembe\", \"Cuma\", \"Cumartesi\"],\r\n            dayNamesMin: [\"Pz" +
+                        "\", \"Pt\", \"Sl\", \"Çr\", \"Pr\", \"Cu\", \"Ct\"],\r\n            showAnim: \"fold\",\r\n        " +
+                        "    changeMonth: true,\r\n            changeYear: true,\r\n            beforeShow: f" +
+                        "unction (input, inst) {\r\n                var mindate = $(\'.DateTimePickerV1\').da" +
+                        "tepicker(\'getDate\');\r\n                $(this).datepicker(\'option\', \'minDate\', mi" +
+                        "ndate);\r\n\r\n            },\r\n            beforeShowDay: function (date) {\r\n       " +
+                        "         $(\'#ui-datepicker-div\').css(\'clip\', \'auto\');\r\n                return [t" +
+                        "rue, \'\', \'\'];\r\n            }\r\n        });\r\n    }\r\n    //On UpdatePanel Refresh.\r" +
+                        "\n    var prm = Sys.WebForms.PageRequestManager.getInstance();\r\n    if (prm != nu" +
+                        "ll) {\r\n        prm.add_endRequest(function (sender, e) {\r\n            if (sender" +
+                        "._postBackSettings.panelsToUpdate != null) {\r\n                SetDatePicker();\r\n" +
+                        "            }\r\n        });\r\n    };\r\n    function readURL(personelFU, sender) {\r\n" +
+                        "        if (personelFU.files && personelFU.files[0]) {\r\n            var reader =" +
+                        " new FileReader();\r\n            reader.onload = function (e) {\r\n                " +
+                        "$(\'#\' + sender).attr(\'src\', e.target.result);\r\n\r\n            }\r\n            read" +
+                        "er.readAsDataURL(personelFU.files[0]);\r\n        }\r\n    }\r\n\r\n    //summernote edi" +
+                        "tor\r\n    $(document).ready(function () {\r\n        $(\'#MetinTxt\').summernote({\r\n " +
+                        "           //toolbar: [\r\n            //    // [groupName, [list of button]]\r\n   " +
+                        "         //    [\'style\', [\'bold\', \'italic\', \'underline\', \'clear\']],\r\n           " +
+                        " //    [\'fontsize\', [\'fontsize\']],\r\n            //    [\'color\', [\'color\']],\r\n   " +
+                        "         //    [\'para\', [\'ul\', \'ol\', \'paragraph\']],\r\n            //]\r\n          " +
+                        "  lang: \'tr-TR\', // default: \'en-US\'\r\n            height: 300,                 /" +
+                        "/ set editor height\r\n            minHeight: null,             // set minimum hei" +
+                        "ght of editor\r\n            maxHeight: null,             // set maximum height of" +
+                        " editor\r\n            focus: true                  // set focus to editable area " +
+                        "after initializing summe\r\n        });\r\n    });\r\n\r\n</script>\r\n\r\n\r\n<div class=\"con" +
+                        "tainer shadow\">\r\n    <div class=\"card\">\r\n        <div class=\"card-header\">\r\n    " +
+                        "        "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl1;
             @__ctrl1 = this.@__BuildControlCloseBtn();
             @__parser.AddParsedSubObject(@__ctrl1);
@@ -1188,8 +1189,8 @@ namespace Portal_WebParts.DuyuruGirisiWP {
             global::System.Web.UI.WebControls.LinkButton @__ctrl23;
             @__ctrl23 = this.@__BuildControlDeleteNowBtn();
             @__parser.AddParsedSubObject(@__ctrl23);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"mod" +
-                        "al\">Kapat</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                <button type=\"button\" class=\"btn btn-default\" data-bs-dismiss=\"" +
+                        "modal\">Kapat</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n"));
         }
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +

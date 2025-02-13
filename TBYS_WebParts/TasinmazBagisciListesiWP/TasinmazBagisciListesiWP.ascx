@@ -22,7 +22,9 @@
     function OpenModalTaahhut(id) {
         document.getElementById('<%= ParamBagisciIdLbl.ClientID%>').value = id;
         document.getElementById('<%= TaahhutModalDoldurBtn.ClientID%>').click();
-        $("#TaahhutModalUrlDiv").modal({ backdrop: "static" });
+
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('TaahhutModalUrlDiv'));
+        myModalInstance.show();
     }
 </script>
 
@@ -59,7 +61,7 @@
         </div>
         <div class="card-footer">
             <asp:LinkButton ID="YeniKayitBtn" CssClass="btn btn-outline-success" runat="server" Text="Yeni Bağışçı Girişi" OnClick="YeniKayitBtn_Click"></asp:LinkButton>
-            <asp:LinkButton CssClass="btn btn-outline-success float-right" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
+            <asp:LinkButton CssClass="btn btn-outline-success float-end" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
         </div>
 
     </div>
@@ -93,7 +95,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>

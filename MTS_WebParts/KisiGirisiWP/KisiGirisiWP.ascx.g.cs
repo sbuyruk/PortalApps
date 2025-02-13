@@ -1100,7 +1100,7 @@ namespace MTS_WebParts.KisiGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "FaaliyetTakvimiBtn";
-            @__ctrl.CssClass = "btn btn-outline-info float-right";
+            @__ctrl.CssClass = "btn btn-outline-info float-end";
             @__ctrl.Text = "Faaliyet Takvimi";
             @__ctrl.Click -= new System.EventHandler(this.FaaliyetTakvimiBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.FaaliyetTakvimiBtn_Click);
@@ -1117,7 +1117,7 @@ namespace MTS_WebParts.KisiGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "FaaliyetListesiBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Faaliyet Listesi";
             @__ctrl.Click -= new System.EventHandler(this.FaaliyetListesiBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.FaaliyetListesiBtn_Click);
@@ -1134,7 +1134,7 @@ namespace MTS_WebParts.KisiGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "KisiListesiBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Kişi Listesi";
             @__ctrl.Click -= new System.EventHandler(this.KisiListesiBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.KisiListesiBtn_Click);
@@ -1151,7 +1151,7 @@ namespace MTS_WebParts.KisiGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "AramaListesi";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Arama/Görüşme Listesi";
             @__ctrl.Click -= new System.EventHandler(this.AramaListesiBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.AramaListesiBtn_Click);
@@ -1639,8 +1639,8 @@ namespace MTS_WebParts.KisiGirisiWP {
             @__ctrl70 = this.@__BuildControlKisiSilNowBtn();
             @__parser.AddParsedSubObject(@__ctrl70);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            <button type=\"button\" class=\"btn btn-default\" data-" +
-                        "dismiss=\"modal\">Kapat</button>\r\n                        </div>\r\n                " +
-                        "    </div>\r\n                </div>\r\n            </div>\r\n\r\n        "));
+                        "bs-dismiss=\"modal\">Kapat</button>\r\n                        </div>\r\n             " +
+                        "       </div>\r\n                </div>\r\n            </div>\r\n\r\n        "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -1661,8 +1661,9 @@ namespace MTS_WebParts.KisiGirisiWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControlTree(global::MTS_WebParts.KisiGirisiWP.KisiGirisiWP @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n<script>\r\n    function OpenModalOnay() {\r\n        $(\"#ModalOnayDiv\").modal({ ba" +
-                        "ckdrop: true });\r\n    }\r\n</script>\r\n<div class=\"container \">\r\n    "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n<script>\r\n    function OpenModalOnay() {\r\n        var myModalInstance = bootstr" +
+                        "ap.Modal.getOrCreateInstance(document.getElementById(\'ModalOnayDiv\'));\n        m" +
+                        "yModalInstance.show();\r\n    }\r\n</script>\r\n<div class=\"container \">\r\n    "));
             global::System.Web.UI.UpdatePanel @__ctrl1;
             @__ctrl1 = this.@__BuildControlupdatePanel1();
             @__parser.AddParsedSubObject(@__ctrl1);

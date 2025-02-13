@@ -359,7 +359,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.ResimSil1Btn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-danger float-right mr-2";
+            @__ctrl.CssClass = "btn btn-outline-danger float-end mr-2";
             @__ctrl.ID = "ResimSil1Btn";
             @__ctrl.Text = "Resmi Sil";
             @__ctrl.CausesValidation = false;
@@ -410,7 +410,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.ResimSil2Btn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-danger float-right mr-2";
+            @__ctrl.CssClass = "btn btn-outline-danger float-end mr-2";
             @__ctrl.ID = "ResimSil2Btn";
             @__ctrl.Text = "Resmi Sil";
             @__ctrl.CausesValidation = false;
@@ -461,7 +461,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.ResimSil3Btn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-danger float-right mr-2";
+            @__ctrl.CssClass = "btn btn-outline-danger float-end mr-2";
             @__ctrl.ID = "ResimSil3Btn";
             @__ctrl.Text = "Resmi Sil";
             @__ctrl.CausesValidation = false;
@@ -512,7 +512,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.ResimSil4Btn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-danger float-right mr-2";
+            @__ctrl.CssClass = "btn btn-outline-danger float-end mr-2";
             @__ctrl.ID = "ResimSil4Btn";
             @__ctrl.Text = "Resmi Sil";
             @__ctrl.CausesValidation = false;
@@ -563,7 +563,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.ResimSil5Btn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-danger float-right mr-2";
+            @__ctrl.CssClass = "btn btn-outline-danger float-end mr-2";
             @__ctrl.ID = "ResimSil5Btn";
             @__ctrl.Text = "Resmi Sil";
             @__ctrl.CausesValidation = false;
@@ -614,7 +614,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.ResimSil6Btn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-danger float-right mr-2";
+            @__ctrl.CssClass = "btn btn-outline-danger float-end mr-2";
             @__ctrl.ID = "ResimSil6Btn";
             @__ctrl.Text = "Resmi Sil";
             @__ctrl.CausesValidation = false;
@@ -665,7 +665,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.ResimSil7Btn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-danger float-right mr-2";
+            @__ctrl.CssClass = "btn btn-outline-danger float-end mr-2";
             @__ctrl.ID = "ResimSil7Btn";
             @__ctrl.Text = "Resmi Sil";
             @__ctrl.CausesValidation = false;
@@ -716,7 +716,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.ResimSil8Btn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-danger float-right mr-2";
+            @__ctrl.CssClass = "btn btn-outline-danger float-end mr-2";
             @__ctrl.ID = "ResimSil8Btn";
             @__ctrl.Text = "Resmi Sil";
             @__ctrl.CausesValidation = false;
@@ -1281,7 +1281,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             this.BackBtn = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right mr-2";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end mr-2";
             @__ctrl.ID = "BackBtn";
             @__ctrl.Text = "Geri";
             @__ctrl.CausesValidation = false;
@@ -1387,7 +1387,9 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
     }
     function OpenModal(clickedImg) {
         $('#MaximizedImg').attr('src', clickedImg.src);
-        $(""#ResimAcModal"").modal({ backdrop: false });
+
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ResimAcModal'));
+        myModalInstance.show();
 
     }
 </script>
@@ -1407,12 +1409,12 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
         <!-- Modal content-->
         <div class=""modal-content"">
             <div class=""modal-header"">
-                <button type=""button"" class=""close"" data-dismiss=""modal"">&times</button>
+                <button type=""button"" class=""close"" data-bs-dismiss=""modal"">&times</button>
             </div>
             <img class=""img-responsive"" src=""../TasinmazResimleri/TasinmazFoto.jpg"" id=""MaximizedImg"" height=""1000"" width=""1000"" />
 
             <div class=""modal-footer"">
-                <button type=""button"" class=""btn btn-default"" data-dismiss=""modal"">Kapat</button>
+                <button type=""button"" class=""btn btn-default"" data-bs-dismiss=""modal"">Kapat</button>
             </div>
         </div>
     </div>

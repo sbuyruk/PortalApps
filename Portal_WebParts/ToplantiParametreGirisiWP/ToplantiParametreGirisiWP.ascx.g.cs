@@ -684,8 +684,8 @@ namespace Portal_WebParts.ToplantiParametreGirisiWP {
             @__ctrl5 = this.@__BuildControlSilNowBtn();
             @__parser.AddParsedSubObject(@__ctrl5);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                <button type=\"button\" class=\"btn btn-outline-se" +
-                        "condary\" data-dismiss=\"modal\">İptal</button>\r\n                            </div>" +
-                        "\r\n                        </div>\r\n                    "));
+                        "condary\" data-bs-dismiss=\"modal\">İptal</button>\r\n                            </d" +
+                        "iv>\r\n                        </div>\r\n                    "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -768,7 +768,8 @@ namespace Portal_WebParts.ToplantiParametreGirisiWP {
 
 <script>
     function OpenModalOnay() {
-        $(""#ModalOnay"").modal({ backdrop: ""static"" });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnay'));
+        myModalInstance.show();
     }
     function CloseModal() {
         $(""#ModalOnay"").modal('hide');

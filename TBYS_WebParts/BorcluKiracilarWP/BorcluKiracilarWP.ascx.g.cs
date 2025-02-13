@@ -196,7 +196,7 @@ namespace TBYS_WebParts.BorcluKiracilarWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.OdemePlanlariniGuncelleBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-primary float-right";
+            @__ctrl.CssClass = "btn btn-outline-primary float-end";
             @__ctrl.ID = "OdemePlanlariniGuncelleBtn";
             @__ctrl.Text = "Ödeme Planlarını Güncelle";
             @__ctrl.Click -= new System.EventHandler(this.OdemePlanlariniGuncelleBtn_Click);
@@ -444,7 +444,7 @@ namespace TBYS_WebParts.BorcluKiracilarWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.ExcelBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-success float-right";
+            @__ctrl.CssClass = "btn btn-outline-success float-end";
             @__ctrl.ID = "ExcelBtn";
             @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
             @__ctrl.Text = "Excele Aktar";
@@ -720,9 +720,15 @@ namespace TBYS_WebParts.BorcluKiracilarWP {
             @__w.Write("\').value = kiraSozlesmeId;\r\n        document.getElementById(\'");
                          @__w.Write( OdemePlaniGoruntuleBtn.ClientID);
 
-            @__w.Write("\').click();\r\n        $(\"#OdemePlaniModal\").modal({ backdrop: true });\r\n    }\r\n</s" +
-                    "cript>\r\n<div id=\"MainContainer\" class=\"container\">\r\n    <div class=\"card shadow\"" +
-                    ">\r\n        ");
+            @__w.Write(@"').click();
+
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('OdemePlaniModal'));
+        myModalInstance.show();
+    }
+</script>
+<div id=""MainContainer"" class=""container"">
+    <div class=""card shadow"">
+        ");
             parameterContainer.Controls[0].RenderControl(@__w);
             @__w.Write("\r\n        <div class=\"card-body\">\r\n            <div class=\"form-group\">\r\n        " +
                     "        ");
@@ -747,8 +753,8 @@ namespace TBYS_WebParts.BorcluKiracilarWP {
                 ");
             parameterContainer.Controls[6].RenderControl(@__w);
             @__w.Write("\r\n            </div>\r\n            <div class=\"modal-footer\">\r\n                <bu" +
-                    "tton type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Kapat</button>\r\n" +
-                    "            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n");
+                    "tton type=\"button\" class=\"btn btn-default\" data-bs-dismiss=\"modal\">Kapat</button" +
+                    ">\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n");
         }
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +

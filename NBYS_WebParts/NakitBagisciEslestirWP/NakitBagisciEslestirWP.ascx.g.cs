@@ -278,7 +278,7 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP {
             this.BackBtn = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right mr-2";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end mr-2";
             @__ctrl.ID = "BackBtn";
             @__ctrl.Text = "Geri";
             @__ctrl.CausesValidation = false;
@@ -296,7 +296,7 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP {
             this.EkstreListesiBtn = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.ID = "EkstreListesiBtn";
             @__ctrl.Text = "Ekstre Listesi";
             @__ctrl.CausesValidation = false;
@@ -596,7 +596,7 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP {
                         </div>
                     </div>
                     <div class=""modal-footer"">
-                        <button type=""button"" class=""btn btn-default"" data-dismiss=""modal"">Kapat</button>
+                        <button type=""button"" class=""btn btn-default"" data-bs-dismiss=""modal"">Kapat</button>
                     </div>
                 "));
         }
@@ -639,8 +639,9 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP {
                     "    document.getElementById(\'");
                          @__w.Write( paramNakitBagisciIdLbl.ClientID);
 
-            @__w.Write("\').value = nakitBagisciId;\r\n\r\n        $(\"#ModalUrlDiv\").modal({ backdrop: false }" +
-                    ");\r\n        document.getElementById(\'");
+            @__w.Write("\').value = nakitBagisciId;\r\n\r\n        var myModalInstance = bootstrap.Modal.getOr" +
+                    "CreateInstance(document.getElementById(\'ModalUrlDiv\'));\n        myModalInstance." +
+                    "show();\r\n        document.getElementById(\'");
                          @__w.Write( ModalDoldurBtn.ClientID);
 
             @__w.Write("\').click();\r\n    }\r\n</script>\r\n\r\n<div class=\"container shadow\">\r\n    ");

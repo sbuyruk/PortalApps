@@ -14,7 +14,7 @@
             <h3 class="mb-2">
                 <asp:Label CssClass="col-form-label  btn-outline-primary mb-1" ID="TitleLbl" runat="server" Text="Birim Düzenleme"></asp:Label>
                 <asp:Label CssClass="col-form-label text-white" ID="PersonelIdLbl" Visible="false" runat="server"></asp:Label>
-                <asp:Label CssClass="col-form-label text-secondary float-right" ID="EkranNo" Text="11" runat="server" ></asp:Label>
+                <asp:Label CssClass="col-form-label text-secondary float-end" ID="EkranNo" Text="11" runat="server" ></asp:Label>
             </h3>
         </div>
         <div class="card-body">
@@ -61,8 +61,8 @@
             </asp:UpdatePanel>
         </div>
         <div class="card-footer">
-            <asp:LinkButton CssClass="btn btn-outline-secondary float-right mr-2" ID="BirimListesiBtn" runat="server" Text="Birim Listesi" CausesValidation="false" OnClick="BirimListesiBtn_Click" />
-            <asp:LinkButton CssClass="btn btn-outline-secondary float-right mr-2" ID="BirimSemasiBtn" runat="server" Text="Birim-Şube Şeması" CausesValidation="false" OnClick="BirimSemasiBtn_Click" />
+            <asp:LinkButton CssClass="btn btn-outline-secondary float-end mr-2" ID="BirimListesiBtn" runat="server" Text="Birim Listesi" CausesValidation="false" OnClick="BirimListesiBtn_Click" />
+            <asp:LinkButton CssClass="btn btn-outline-secondary float-end mr-2" ID="BirimSemasiBtn" runat="server" Text="Birim-Şube Şeması" CausesValidation="false" OnClick="BirimSemasiBtn_Click" />
             <asp:LinkButton ID="SaveBtn" Visible="false" CssClass="btn btn-outline-success" runat="server" Text="Kaydet" OnClick="SaveBtn_Click" />
             <asp:LinkButton ID="UpdateBtn" CssClass="btn btn-outline-primary" runat="server" Text="Güncelle" OnClick="UpdateBtn_Click" />
             <asp:LinkButton ID="DeleteBtn" Visible="false" CssClass="btn btn-danger" runat="server" CausesValidation="false" Text="Sil" OnClick="DeleteBtn_Click"

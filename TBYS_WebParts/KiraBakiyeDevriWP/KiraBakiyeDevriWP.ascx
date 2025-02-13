@@ -105,14 +105,14 @@
 
                 </div>
                 <div class="card-footer">
-                    <asp:LinkButton ID="NextBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Sonraki=>" Visible="false" OnClick="NextBtn_Click" />
-                    <asp:LinkButton ID="PrevBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="<=Önceki" Visible="false" OnClick="PrevBtn_Click" />
+                    <asp:LinkButton ID="NextBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Sonraki=>" Visible="false" OnClick="NextBtn_Click" />
+                    <asp:LinkButton ID="PrevBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="<=Önceki" Visible="false" OnClick="PrevBtn_Click" />
 
-                    <asp:LinkButton ID="OdemePlaniGoruntuleBtn" runat="server" CssClass="btn btn-outline-secondary float-right" Text="Ödeme Planı" Visible="false" OnClick="OdemePlaniGoruntuleBtn_Click"></asp:LinkButton>
-                    <asp:LinkButton ID="OdemePlaniBtn" runat="server" CssClass="btn btn-outline-secondary float-right" Text="Ödeme Planı" Visible="false" OnClick="OdemePlaniBtn_Click"></asp:LinkButton>
-                    <asp:LinkButton ID="KiraKartiBtn" runat="server" CssClass="btn btn-outline-secondary float-right" Text="Kira Karti" Visible="false" OnClick="KiraKartiBtn_Click"></asp:LinkButton>
-                    <asp:LinkButton ID="KiraciListesiBtn" runat="server" CssClass="btn btn-outline-secondary float-right" Text="Kiracı Listesi" OnClick="KiraciListesiBtn_Click"></asp:LinkButton>
-                    <asp:LinkButton ID="KiraciAylikOdemeBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Aylık Ödemeler" OnClick="KiraciAylikOdemeBtn_Click" />
+                    <asp:LinkButton ID="OdemePlaniGoruntuleBtn" runat="server" CssClass="btn btn-outline-secondary float-end" Text="Ödm.Pln Görüntüle" Visible="false" OnClick="OdemePlaniGoruntuleBtn_Click"></asp:LinkButton>
+                    <asp:LinkButton ID="OdemePlaniBtn" runat="server" CssClass="btn btn-outline-secondary float-end" Text="Ödeme Planı" Visible="false" OnClick="OdemePlaniBtn_Click"></asp:LinkButton>
+                    <asp:LinkButton ID="KiraKartiBtn" runat="server" CssClass="btn btn-outline-secondary float-end" Text="Kira Karti" Visible="false" OnClick="KiraKartiBtn_Click"></asp:LinkButton>
+                    <asp:LinkButton ID="KiraciListesiBtn" runat="server" CssClass="btn btn-outline-secondary float-end" Text="Kiracı Listesi" OnClick="KiraciListesiBtn_Click"></asp:LinkButton>
+                    <asp:LinkButton ID="KiraciAylikOdemeBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Aylık Ödemeler" OnClick="KiraciAylikOdemeBtn_Click" />
                 </div>
             </div>
             <div style="display: none">
@@ -146,7 +146,7 @@
 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                            <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                         </div>
                     </div>
                 </div>

@@ -270,8 +270,8 @@ namespace NBYS_WebParts.FTKHaritasiWP {
             @__ctrl5 = this.@__BuildControlFTKUyeleriBtn();
             @__parser.AddParsedSubObject(@__ctrl5);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            <button type=\"button\" class=\"btn btn-default\" data-" +
-                        "dismiss=\"modal\">Kapat</button>\r\n                        </div>\r\n                " +
-                        "    "));
+                        "bs-dismiss=\"modal\">Kapat</button>\r\n                        </div>\r\n             " +
+                        "       "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -389,7 +389,8 @@ namespace NBYS_WebParts.FTKHaritasiWP {
     });
 
     function OpenIlInfoModal() {
-        $(""#ilInfoModal"").modal({ backdrop: false });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ilInfoModal'));
+        myModalInstance.show();
     }
 
 </script>

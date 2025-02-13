@@ -1378,7 +1378,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
             this.BackBtn = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right mr-2";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end mr-2";
             @__ctrl.ID = "BackBtn";
             @__ctrl.Text = "Geri";
             @__ctrl.CausesValidation = false;
@@ -1597,7 +1597,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "NextBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right mr-2";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end mr-2";
             @__ctrl.Text = "Sonraki=>";
             @__ctrl.Visible = false;
             @__ctrl.Click -= new System.EventHandler(this.NextBtn_Click);
@@ -1615,7 +1615,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "PrevBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right mr-2";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end mr-2";
             @__ctrl.Text = "<=Önceki";
             @__ctrl.Visible = false;
             @__ctrl.Click -= new System.EventHandler(this.PrevBtn_Click);
@@ -1787,8 +1787,8 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
             @__ctrl20 = this.@__BuildControlKopyalaNowBtn();
             @__parser.AddParsedSubObject(@__ctrl20);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            <button type=\"button\" class=\"btn btn-default\" data-" +
-                        "dismiss=\"modal\">Kapat</button>\r\n                        </div>\r\n\r\n              " +
-                        "      </div>\r\n                </div>\r\n            </div>\r\n        "));
+                        "bs-dismiss=\"modal\">Kapat</button>\r\n                        </div>\r\n\r\n           " +
+                        "         </div>\r\n                </div>\r\n            </div>\r\n        "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -1808,9 +1808,15 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControlTree(global::TBYS_WebParts.TasinmazGirisiWP.TasinmazGirisiWP @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n<script type=\"text/javascript\">\r\n    function OpenModal() {\r\n        $(\"#ModalO" +
-                        "nayDiv\").modal({ backdrop: false });\r\n    }\r\n</script>\r\n<div class=\"container co" +
-                        "l-xl\">\r\n    "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+<script type=""text/javascript"">
+    function OpenModal() {
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
+        myModalInstance.show();
+    }
+</script>
+<div class=""container col-xl"">
+    "));
             global::System.Web.UI.UpdatePanel @__ctrl1;
             @__ctrl1 = this.@__BuildControlTableUpdatePanel();
             @__parser.AddParsedSubObject(@__ctrl1);

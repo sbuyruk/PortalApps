@@ -24,10 +24,12 @@
 </style>
 <script type="text/javascript">
     function OpenSilModal() {
-        $("#SilModalDiv").modal({ backdrop: true });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('SilModalDiv'));
+        myModalInstance.show();
     }
     function ModalUyelikDurumuDegistirAc() {
-        $("#ModalUyelikDurumuDiv").modal({ backdrop: true });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalUyelikDurumuDiv'));
+        myModalInstance.show();
     }
 </script>
 
@@ -38,7 +40,7 @@
                 <div class="card-header">
                     <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
                     <h3 class="mb-1">
-                        <a class=" btn btn-outline-primary float-right mr-4" runat="server" id="YonergeLnk"
+                        <a class=" btn btn-outline-primary float-end mr-4" runat="server" id="YonergeLnk"
                             data-fancybox
                             data-type="pdf"
                             data-width="960"
@@ -145,9 +147,9 @@
                     <asp:LinkButton ID="GuncelleBtn" CssClass="btn btn-outline-primary" runat="server" Text="Güncelle" OnClick="GuncelleBtn_Click"></asp:LinkButton>
                     <asp:LinkButton ID="SilBtn" CssClass="btn btn-outline-danger ml-5" runat="server" Text="Sil" OnClick="SilBtn_Click"></asp:LinkButton>
                     <asp:LinkButton ID="YeniKayitBtn" CssClass="btn btn-outline-success ml-5" runat="server" Text="Yeni Kayıt" OnClick="YeniKayitBtn_Click"></asp:LinkButton>
-                    <asp:LinkButton ID="FtkKisiListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="FTK Kişi Listesi" OnClick="FtkKisiListesiBtn_Click" CausesValidation="False"></asp:LinkButton>
-                    <asp:LinkButton ID="FTKFahriBaskanListesiBtn" CssClass="btn btn-outline-secondary float-right mr-3" runat="server" Text="Fahri Başkan Listesi" OnClick="FTKFahriBaskanListesiBtn_Click"></asp:LinkButton>
-                    <asp:LinkButton ID="FTKIslemleriBtn" CssClass="btn btn-outline-secondary float-right mr-3" runat="server" Text="FTK İşlemleri" OnClick="FTKIslemleriBtn_Click" CausesValidation="False"></asp:LinkButton>
+                    <asp:LinkButton ID="FtkKisiListesiBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="FTK Kişi Listesi" OnClick="FtkKisiListesiBtn_Click" CausesValidation="False"></asp:LinkButton>
+                    <asp:LinkButton ID="FTKFahriBaskanListesiBtn" CssClass="btn btn-outline-secondary float-end mr-3" runat="server" Text="Fahri Başkan Listesi" OnClick="FTKFahriBaskanListesiBtn_Click"></asp:LinkButton>
+                    <asp:LinkButton ID="FTKIslemleriBtn" CssClass="btn btn-outline-secondary float-end mr-3" runat="server" Text="FTK İşlemleri" OnClick="FTKIslemleriBtn_Click" CausesValidation="False"></asp:LinkButton>
                 </div>
             </div>
             
@@ -181,7 +183,7 @@
                     </div>
                     <div class="modal-footer">
                         <asp:LinkButton ID="SilNowBtn" CssClass="btn btn-outline-danger" runat="server" Text="Kişiyi Sil" OnClick="SilNowBtn_Click"></asp:LinkButton>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                     </div>
                 </div>
             </div>

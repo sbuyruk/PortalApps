@@ -377,7 +377,7 @@ namespace Portal_WebParts.KutlamaMoveWP {
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
             this.GenelMudurDiv = @__ctrl;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-group float-right kutlamaGenelMudur");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-group float-end kutlamaGenelMudur");
             @__ctrl.ID = "GenelMudurDiv";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "display: none");
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));

@@ -29,10 +29,12 @@
         }
     }
     function OpenModalOnay() {
-        $("#ModalOnayDiv").modal({ backdrop: "static" });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
+        myModalInstance.show();
     }
     function OpenModalOdemePlani() {
-        $("#OdemePlaniModal").modal({ backdrop: "static" });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('OdemePlaniModal'));
+        myModalInstance.show();
     }
 </script>
 
@@ -42,7 +44,7 @@
             <div class="card">
                 <div class="card-header" id="CardHeader" runat="server">
                     <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
-                    <asp:Label CssClass="col-form-label text-danger float-right" ID="DosyaNoTxt" runat="server"></asp:Label>
+                    <asp:Label CssClass="col-form-label text-danger float-end" ID="DosyaNoTxt" runat="server"></asp:Label>
                     <h3 class="mb-2">
                         <asp:Label CssClass="col-form-label text-danger font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="Ödeme Planı"></asp:Label>
                         <asp:Label CssClass="col-form-label text-white" ID="IdLbl" runat="server"></asp:Label>
@@ -58,7 +60,7 @@
                             <asp:Label ID="GecikmeZammiTipiLbl" class="col-form-label" runat="server" Text="Gecikme Zammı Hesabı=" ></asp:Label>
                             <asp:LinkButton ID="GecikmeZammmiGunlukBtn" class="btn btn-outline-danger  " runat="server" Visible="false" Text="Günlük Yap" OnClick="GecikmeZammmiGunlukBtn_Click"></asp:LinkButton>
                             <asp:LinkButton ID="GecikmeZammmiAylikBtn" class="btn btn-outline-danger  " runat="server" Visible="false" Text="Aylık Yap" OnClick="GecikmeZammmiAylikBtn_Click"></asp:LinkButton>
-                            <asp:LinkButton ID="OdemePlaniSilBtn" class="btn btn-outline-danger  float-right " runat="server" Visible="false" Text="Ödeme Planı Sil" OnClick="OdemePlaniSilBtn_Click"></asp:LinkButton>
+                            <asp:LinkButton ID="OdemePlaniSilBtn" class="btn btn-outline-danger  float-end " runat="server" Visible="false" Text="Ödeme Planı Sil" OnClick="OdemePlaniSilBtn_Click"></asp:LinkButton>
                         </div>
                     </div>
                     <div id="PlanAyrintiDiv">
@@ -105,15 +107,15 @@
                 </div>
                 <div class="card-footer">
                     <asp:LinkButton CssClass="btn btn-success" ID="YeniOdemeGirisiBtn" runat="server" Text="Yeni Ödeme Girişi" OnClick="YeniOdemeGirisiBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
-                    <asp:LinkButton ID="NextBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Sonraki=>" OnClick="NextBtn_Click" />
-                    <asp:LinkButton ID="PrevBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="<=Önceki" OnClick="PrevBtn_Click" />
+                    <asp:LinkButton ID="NextBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Sonraki=>" OnClick="NextBtn_Click" />
+                    <asp:LinkButton ID="PrevBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="<=Önceki" OnClick="PrevBtn_Click" />
                     
-                    <asp:LinkButton ID="SozlesmeBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Sözleşme" OnClick="SozlesmeBtn_Click" />
-                    <asp:LinkButton ID="KiraciBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Kiracı" OnClick="KiraciBtn_Click" />
-                    <asp:LinkButton ID="KiraciKartiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Kira Kartı" OnClick="KiraciKartiBtn_Click" />
-                    <asp:LinkButton ID="OdemePlaniListBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Ödeme Planları" OnClick="OdemePlaniListBtn_Click" />
-                    <asp:LinkButton ID="KiraciAylikOdemeBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Aylık Ödemeler" OnClick="KiraciAylikOdemeBtn_Click" />
-                    <asp:LinkButton ID="BakiyeDevirBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Bakiye Devir İşlemleri" OnClick="BakiyeDevirBtn_Click" />
+                    <asp:LinkButton ID="SozlesmeBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Sözleşme" OnClick="SozlesmeBtn_Click" />
+                    <asp:LinkButton ID="KiraciBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Kiracı" OnClick="KiraciBtn_Click" />
+                    <asp:LinkButton ID="KiraciKartiBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Kira Kartı" OnClick="KiraciKartiBtn_Click" />
+                    <asp:LinkButton ID="OdemePlaniListBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Ödeme Planları" OnClick="OdemePlaniListBtn_Click" />
+                    <asp:LinkButton ID="KiraciAylikOdemeBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Aylık Ödemeler" OnClick="KiraciAylikOdemeBtn_Click" />
+                    <asp:LinkButton ID="BakiyeDevirBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Bakiye Devir İşlemleri" OnClick="BakiyeDevirBtn_Click" />
                 </div>
             </div>
             <%--Modal: Odemelerin Listesi--%>
@@ -145,7 +147,7 @@
 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                            <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                         </div>
                     </div>
                 </div>
@@ -209,7 +211,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                            <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                         </div>
 
                     </div>

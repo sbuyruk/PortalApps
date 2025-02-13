@@ -497,7 +497,7 @@ namespace TBYS_WebParts.OdemePlaniWP
             {
                 TitleLbl.CssClass = "col-form-label text-secondary font-weight-bold mb-1";
                 AdiLbl.CssClass = "col-form-label text-secondary";
-                DosyaNoTxt.CssClass = "col-form-label text-secondary float-right";
+                DosyaNoTxt.CssClass = "col-form-label text-secondary float-end";
                 OdemePlaniListBtn.Visible = false;
             }
         }
@@ -769,8 +769,11 @@ namespace TBYS_WebParts.OdemePlaniWP
                 OdemePlaniTable.Controls.Add(row);
             }
 
-            var jsString = " $('#OdemePlaniModal').modal({ backdrop: false });";
-            ScriptManager.RegisterStartupScript((Page)System.Web.HttpContext.Current.Handler, typeof(Page), System.Guid.NewGuid().ToString(), jsString, true);
+            var jsString = @"
+                var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('OdemePlaniModal'));
+                myModalInstance.show();
+            ";
+            UtilityHelper.ScriptCalistir(jsString);
         }
         private bool OdemePlaniniKontrolEtVeSil(KiraSozlesme kiraSozlesme)
         {

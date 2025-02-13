@@ -57,7 +57,7 @@
                     <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
                     <h3 class="mb-2">
                         <asp:Label CssClass="col-form-label  btn-outline-success mb-1" ID="TitleLbl" runat="server" Text="Tarih Bazlı Bağışçı Listesi (Eski-Yeni)"></asp:Label>
-                        <asp:Label CssClass="col-form-label text-secondary float-right" ID="EkranNo" Text="23" runat="server" ></asp:Label>
+                        <asp:Label CssClass="col-form-label text-secondary float-end" ID="EkranNo" Text="23" runat="server" ></asp:Label>
                     </h3>
                 </div>
                 <div class="card-body alert-secondary" id="MainCardDiv" runat="server">

@@ -562,7 +562,7 @@ namespace TBYS_WebParts.KiraciGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "BitenSozlesmeOlusturBtn";
-            @__ctrl.CssClass = "btn btn-outline-success float-right";
+            @__ctrl.CssClass = "btn btn-outline-success float-end";
             @__ctrl.Text = "Bitmiş Sözleşme Oluştur";
             @__ctrl.Visible = false;
             @__ctrl.Click -= new System.EventHandler(this.BitenSozlesmeOlusturBtn_Click);
@@ -652,7 +652,7 @@ namespace TBYS_WebParts.KiraciGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "NextBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Sonraki=>";
             @__ctrl.Visible = false;
             @__ctrl.Click -= new System.EventHandler(this.NextBtn_Click);
@@ -670,7 +670,7 @@ namespace TBYS_WebParts.KiraciGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "PrevBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "<=Önceki";
             @__ctrl.Visible = false;
             @__ctrl.Click -= new System.EventHandler(this.PrevBtn_Click);
@@ -688,7 +688,7 @@ namespace TBYS_WebParts.KiraciGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "OdemePlaniGoruntuleBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Ödeme Planı Görüntüle";
             @__ctrl.Visible = false;
             @__ctrl.Click -= new System.EventHandler(this.OdemePlaniGoruntuleBtn_Click);
@@ -706,7 +706,7 @@ namespace TBYS_WebParts.KiraciGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "OdemeYapBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Ödeme Planı";
             @__ctrl.Visible = false;
             @__ctrl.Click -= new System.EventHandler(this.OdemeYapBtn_Click);
@@ -724,7 +724,7 @@ namespace TBYS_WebParts.KiraciGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "KiraKartiBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Kira Karti";
             @__ctrl.Visible = false;
             @__ctrl.Click -= new System.EventHandler(this.KiraKartiBtn_Click);
@@ -742,7 +742,7 @@ namespace TBYS_WebParts.KiraciGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "KiraciListesiBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Kiracı Listesi";
             @__ctrl.Click -= new System.EventHandler(this.KiraciListesiBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.KiraciListesiBtn_Click);
@@ -759,7 +759,7 @@ namespace TBYS_WebParts.KiraciGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "BakiyeDevirBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Bakiye Devir İşlemleri";
             @__ctrl.Click -= new System.EventHandler(this.BakiyeDevirBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.BakiyeDevirBtn_Click);
@@ -1119,8 +1119,8 @@ namespace TBYS_WebParts.KiraciGirisiWP {
             @__ctrl4 = this.@__BuildControlDeleteNowBtn();
             @__parser.AddParsedSubObject(@__ctrl4);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                            <button type=\"button\" class=\"btn bt" +
-                        "n-default\" data-dismiss=\"modal\">İptal</button>\r\n                                " +
-                        "        </div>\r\n                                    "));
+                        "n-default\" data-bs-dismiss=\"modal\">İptal</button>\r\n                             " +
+                        "           </div>\r\n                                    "));
             return @__ctrl;
         }
         
@@ -1197,7 +1197,7 @@ namespace TBYS_WebParts.KiraciGirisiWP {
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                         </div>
                                         <div class=""card-footer"">
-                                            <button type=""button"" class=""btn btn-default float-right"" data-dismiss=""modal"">Kapat</button>
+                                            <button type=""button"" class=""btn btn-default float-end"" data-bs-dismiss=""modal"">Kapat</button>
                                         </div>
                                     "));
             return @__ctrl;
@@ -1484,7 +1484,7 @@ namespace TBYS_WebParts.KiraciGirisiWP {
 
                         </div>
                         <div class=""modal-footer"">
-                            <button type=""button"" class=""btn btn-default"" data-dismiss=""modal"">Kapat</button>
+                            <button type=""button"" class=""btn btn-default"" data-bs-dismiss=""modal"">Kapat</button>
                         </div>
                     </div>
                 </div>
@@ -1518,7 +1518,7 @@ namespace TBYS_WebParts.KiraciGirisiWP {
             @__ctrl38 = this.@__BuildControlYeniSozlesmeOnayBtn();
             @__parser.AddParsedSubObject(@__ctrl38);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-                            <button type=""button"" class=""btn btn-default"" data-dismiss=""modal"">İptal</button>
+                            <button type=""button"" class=""btn btn-default"" data-bs-dismiss=""modal"">İptal</button>
                         </div>
                     </div>
                 </div>
@@ -1547,7 +1547,7 @@ namespace TBYS_WebParts.KiraciGirisiWP {
             @__ctrl41 = this.@__BuildControlBitenSozlesmeOnayBtn();
             @__parser.AddParsedSubObject(@__ctrl41);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-                            <button type=""button"" class=""btn btn-default"" data-dismiss=""modal"">İptal</button>
+                            <button type=""button"" class=""btn btn-default"" data-bs-dismiss=""modal"">İptal</button>
                         </div>
                     </div>
                 </div>
@@ -1582,45 +1582,27 @@ namespace TBYS_WebParts.KiraciGirisiWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControlTree(global::TBYS_WebParts.KiraciGirisiWP.KiraciGirisiWP @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-<style>
-   .eski-sozlesme {
-        background-color: lightgrey !important;
-        color: black !important;
-    }
-  .ileri-tarihli-sozlesme {
-        background-color: yellow;
-    }
-</style>
-<script>
-    function OpenModalOnay() {
-        $(""#OdemePlaniModal"").modal({ backdrop: ""static"" });
-    }
-    function DeleteModalOnay() {
-        $(""#DeleteModalOnayDiv"").modal({ backdrop: ""static"" });
-    }
-    function YeniSozlesmeModalOnay() {
-        $(""#YeniSozlesmeModal"").modal({ backdrop: ""static"" });
-    }
-    function BitenSozlesmeModalOnay() {
-        $(""#BitenSozlesmeModal"").modal({ backdrop: ""static"" });
-    }
-    //eğer aktif=0 ise satırı gri yap
-    function contentFunc(rowData, prop, counter) {
-        if (rowData.Aktif == 'False') {
-            var trElement = document.getElementsByTagName(""table"")[0];
-            var rowx = trElement.rows[counter];
-            rowx.classList.add(""ui-widget-content-disabled"");
-        }
-        if (rowData.SozlesmeBasladi < 0) { //ileri tarhli
-            var trElement = document.getElementsByTagName(""table"")[0];
-            var rowx = trElement.rows[counter];
-            rowx.classList.add(""ileri-tarihli-sozlesme"");
-        }
-    }
-</script>
-<div class=""container shadow "">
-    "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n<style>\r\n   .eski-sozlesme {\r\n        background-color: lightgrey !important;\r\n" +
+                        "        color: black !important;\r\n    }\r\n  .ileri-tarihli-sozlesme {\r\n        ba" +
+                        "ckground-color: yellow;\r\n    }\r\n</style>\r\n<script>\r\n    function OpenModalOnay()" +
+                        " {\r\n        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.g" +
+                        "etElementById(\'OdemePlaniModal\'));\n        myModalInstance.show();\r\n    }\r\n    f" +
+                        "unction DeleteModalOnay() {\r\n        var myModalInstance = bootstrap.Modal.getOr" +
+                        "CreateInstance(document.getElementById(\'DeleteModalOnayDiv\'));\n        myModalIn" +
+                        "stance.show();\r\n    }\r\n    function YeniSozlesmeModalOnay() {\r\n        var myMod" +
+                        "alInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById(\'YeniSo" +
+                        "zlesmeModal\'));\n        myModalInstance.show();\r\n    }\r\n    function BitenSozles" +
+                        "meModalOnay() {\r\n        var myModalInstance = bootstrap.Modal.getOrCreateInstan" +
+                        "ce(document.getElementById(\'BitenSozlesmeModal\'));\n        myModalInstance.show(" +
+                        ");\r\n    }\r\n    //eğer aktif=0 ise satırı gri yap\r\n    function contentFunc(rowDa" +
+                        "ta, prop, counter) {\r\n        if (rowData.Aktif == \'False\') {\r\n            var t" +
+                        "rElement = document.getElementsByTagName(\"table\")[0];\r\n            var rowx = tr" +
+                        "Element.rows[counter];\r\n            rowx.classList.add(\"ui-widget-content-disabl" +
+                        "ed\");\r\n        }\r\n        if (rowData.SozlesmeBasladi < 0) { //ileri tarhli\r\n   " +
+                        "         var trElement = document.getElementsByTagName(\"table\")[0];\r\n           " +
+                        " var rowx = trElement.rows[counter];\r\n            rowx.classList.add(\"ileri-tari" +
+                        "hli-sozlesme\");\r\n        }\r\n    }\r\n</script>\r\n<div class=\"container shadow \">\r\n " +
+                        "   "));
             global::System.Web.UI.UpdatePanel @__ctrl1;
             @__ctrl1 = this.@__BuildControlUpdatePanel();
             @__parser.AddParsedSubObject(@__ctrl1);

@@ -2709,7 +2709,7 @@ namespace IKYS_WebParts.PersonelKartiWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.ExcelBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-success float-right";
+            @__ctrl.CssClass = "btn btn-outline-success float-end";
             @__ctrl.ID = "ExcelBtn";
             @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
             @__ctrl.Text = "Excele Aktar";
@@ -2727,7 +2727,7 @@ namespace IKYS_WebParts.PersonelKartiWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.PersonelListesiBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right mr-2";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end mr-2";
             @__ctrl.ID = "PersonelListesiBtn";
             @__ctrl.Text = "Personel Listesi";
             @__ctrl.CausesValidation = false;

@@ -74,7 +74,8 @@
 </style>
 <script type="text/javascript">
     function OpenToplantiModal() {
-        $("#ToplantiDetaylariModal").modal({ backdrop: true });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ToplantiDetaylariModal'));
+        myModalInstance.show();
     }
     function ToplantiDetaylariModal(toplantiId) {
         document.getElementById('<%= paramToplantiIdLbl.ClientID%>').value = toplantiId;
@@ -215,7 +216,7 @@
                     </div>
                     <div class="modal-footer">
                         
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                     </div>
                 </div>
 

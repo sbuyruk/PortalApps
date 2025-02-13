@@ -752,7 +752,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.ExcelBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-success float-right";
+            @__ctrl.CssClass = "btn btn-outline-success float-end";
             @__ctrl.ID = "ExcelBtn";
             @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
             @__ctrl.Text = "Excele Aktar";
@@ -1329,8 +1329,8 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP {
             @__ctrl16 = this.@__BuildControlTakipIslemiGuncelleNowBtn();
             @__parser.AddParsedSubObject(@__ctrl16);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                <button type=\"button\" class=\"btn btn-default\" d" +
-                        "ata-dismiss=\"modal\">Kapat</button>\r\n                            </div>\r\n        " +
-                        "                </div>\r\n                    </div>\r\n                "));
+                        "ata-bs-dismiss=\"modal\">Kapat</button>\r\n                            </div>\r\n     " +
+                        "                   </div>\r\n                    </div>\r\n                "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -1509,10 +1509,13 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP {
             @__w.Write("\').value = kiraSozlesmeId;\r\n        document.getElementById(\'");
                          @__w.Write( OdemePlaniGoruntuleBtn.ClientID);
 
-            @__w.Write("\').click();\r\n        $(\"#OdemePlaniModal\").modal({ backdrop: true });\r\n    }\r\n   " +
-                    " function OpenTakipIslemiModal(kiraciId, kiraSozlesmeId, odemePlaniId, kiraBedel" +
-                    "i, toplamBorcu, kiraBorcuAySayisi, bolge, takipIslemi) {\r\n        document.getEl" +
-                    "ementById(\'");
+            @__w.Write(@"').click();
+
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('OdemePlaniModal'));
+        myModalInstance.show();
+    }
+    function OpenTakipIslemiModal(kiraciId, kiraSozlesmeId, odemePlaniId, kiraBedeli, toplamBorcu, kiraBorcuAySayisi, bolge, takipIslemi) {
+        document.getElementById('");
                          @__w.Write( paramBolge.ClientID);
 
             @__w.Write("\').value = bolge.replace(\"#\", \" \");\r\n        document.getElementById(\'");
@@ -1539,16 +1542,22 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP {
             @__w.Write("\').value = kiraBorcuAySayisi;\r\n        document.getElementById(\'");
                          @__w.Write( TakipIslemiModalAcBtn.ClientID);
 
-            @__w.Write("\').click();\r\n        $(\"#KiraBocuTakibiModalDiv\").modal({ backdrop: true });\r\n   " +
-                    " }\r\n    function OpenTakipIslemiModalDuzenle(kiraBorcuTakipId) {\r\n        docume" +
-                    "nt.getElementById(\'");
+            @__w.Write(@"').click();
+
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('KiraBocuTakibiModalDiv'));
+        myModalInstance.show();
+    }
+    function OpenTakipIslemiModalDuzenle(kiraBorcuTakipId) {
+        document.getElementById('");
                          @__w.Write( paramKiraBorcuTakipIdLbl.ClientID);
 
             @__w.Write("\').value = kiraBorcuTakipId;\r\n        document.getElementById(\'");
                          @__w.Write( TakipIslemiModalDuzenleBtn.ClientID);
 
             @__w.Write(@"').click();
-        $(""#KiraBocuTakibiModalDiv"").modal({ backdrop: true });
+
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('KiraBocuTakibiModalDiv'));
+        myModalInstance.show();
     }
     function CloseKiraBocuTakibiModal() {
         $(""#KiraBocuTakibiModalDiv"").modal('hide');
@@ -1602,7 +1611,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP {
             @__w.Write(@"
             </div>
             <div class=""modal-footer"">
-                <button type=""button"" class=""btn btn-default"" data-dismiss=""modal"">Kapat</button>
+                <button type=""button"" class=""btn btn-default"" data-bs-dismiss=""modal"">Kapat</button>
             </div>
         </div>
     </div>

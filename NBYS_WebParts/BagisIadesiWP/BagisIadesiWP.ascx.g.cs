@@ -394,7 +394,7 @@ namespace NBYS_WebParts.BagisIadesiWP {
             this.BagisHareketListesiBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "BagisHareketListesiBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Bağış Hareketleri";
             @__ctrl.Click -= new System.EventHandler(this.BagisHareketListesiBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.BagisHareketListesiBtn_Click);
@@ -410,7 +410,7 @@ namespace NBYS_WebParts.BagisIadesiWP {
             this.ArmaganListesiBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "ArmaganListesiBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Armağan Listesi";
             @__ctrl.Click -= new System.EventHandler(this.ArmaganListesiBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.ArmaganListesiBtn_Click);
@@ -663,7 +663,7 @@ namespace NBYS_WebParts.BagisIadesiWP {
                         </div>
                     </div>
                     <div class=""modal-footer"">
-                        <button type=""button"" class=""btn btn-default"" data-dismiss=""modal"">Kapat</button>
+                        <button type=""button"" class=""btn btn-default"" data-bs-dismiss=""modal"">Kapat</button>
                     </div>
                 "));
         }
@@ -882,8 +882,8 @@ namespace NBYS_WebParts.BagisIadesiWP {
             @__ctrl8 = this.@__BuildControlBagisiIadeEtNowBtn();
             @__parser.AddParsedSubObject(@__ctrl8);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                <button type=\"button\" class=\"btn btn-default\" d" +
-                        "ata-dismiss=\"modal\">Kapat</button>\r\n                            </div>\r\n        " +
-                        "                "));
+                        "ata-bs-dismiss=\"modal\">Kapat</button>\r\n                            </div>\r\n     " +
+                        "                   "));
             return @__ctrl;
         }
         
@@ -1108,8 +1108,8 @@ namespace NBYS_WebParts.BagisIadesiWP {
             @__ctrl8 = this.@__BuildControlIadeDegistirNowBtn();
             @__parser.AddParsedSubObject(@__ctrl8);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                <button type=\"button\" class=\"btn btn-default\" d" +
-                        "ata-dismiss=\"modal\">Kapat</button>\r\n                            </div>\r\n        " +
-                        "                "));
+                        "ata-bs-dismiss=\"modal\">Kapat</button>\r\n                            </div>\r\n     " +
+                        "                   "));
             return @__ctrl;
         }
         
@@ -1256,8 +1256,9 @@ namespace NBYS_WebParts.BagisIadesiWP {
         document.getElementById('");
                          @__w.Write( paramNakitBagisciIdLbl.ClientID);
 
-            @__w.Write("\').value = armaganId;\r\n        $(\"#ModalUrlDiv\").modal({ backdrop: false });\r\n   " +
-                    "     document.getElementById(\'");
+            @__w.Write("\').value = armaganId;\r\n\r\n        var myModal = new bootstrap.Modal(document.getEl" +
+                    "ementById(\'ModalUrlDiv\'));\n        myModal.show();\r\n        document.getElementB" +
+                    "yId(\'");
                          @__w.Write( ModalDoldurBtn.ClientID);
 
             @__w.Write("\').click();\r\n\r\n    }\r\n    function CallButtonClick(bagisHareketId) {\r\n        doc" +
@@ -1277,10 +1278,12 @@ namespace NBYS_WebParts.BagisIadesiWP {
             @__w.Write(@"').click();
     }
     function ParaIadeModalOnay() {
-        $(""#ParaIadeModalOnayDiv"").modal({ backdrop: ""static"" });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ParaIadeModalOnayDiv'));
+        myModalInstance.show();
     }
     function ParaIadeDegistirModalOnay() {
-        $(""#ParaIadeDegistirModalOnayDiv"").modal({ backdrop: ""static"" });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ParaIadeDegistirModalOnayDiv'));
+        myModalInstance.show();
     }
 
 </script>

@@ -95,7 +95,7 @@
             </div>
         </div>
         <div class="card-footer">
-            <asp:LinkButton ID="FaaliyetViewerROBtn" CssClass="btn btn-outline-info float-right" runat="server" Text="Faaliyet Takvimi" OnClick="FaaliyetViewerROBtn_Click"></asp:LinkButton>
+            <asp:LinkButton ID="FaaliyetViewerROBtn" CssClass="btn btn-outline-info float-end" runat="server" Text="Faaliyet Takvimi" OnClick="FaaliyetViewerROBtn_Click"></asp:LinkButton>
         </div>
     </div>
 </div>

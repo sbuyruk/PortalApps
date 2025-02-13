@@ -10,11 +10,15 @@
     function OpenModalTaahhut(id) {
         document.getElementById('<%= ParamTaahhutIdLbl.ClientID%>').value = id;
         document.getElementById('<%= TaahhutModalDoldurBtn.ClientID%>').click();
-        $("#TaahhutModalUrlDiv").modal({ backdrop: "static" });
+
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('TaahhutModalUrlDiv'));
+        myModalInstance.show();
     }
     function OpenTaahhutSilModal(id) {
         document.getElementById('<%= ParamTaahhutIdLbl.ClientID%>').value = id;
-        $("#ModalTaahhutSilDiv").modal({ backdrop: "static" });
+
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalTaahhutSilDiv'));
+        myModalInstance.show();
     }
 </script>
 <div class="container">
@@ -34,14 +38,14 @@
                 </h4>
                 <div class="table">
                     <a href="#" onclick="OpenModalTaahhut(0);" class="btn btn-outline-success m-1">Taahhüt Ekle</a>
-                    <asp:LinkButton ID="BagisciyiTaahhutListesineEkleBtn" CssClass="btn btn-outline-success float-right" runat="server" Text="Bağışçıyı Taahhüt Listesine Ekle" OnClick="BagisciyiTaahhutListesineEkleBtn_Click" Visible="False" />
+                    <asp:LinkButton ID="BagisciyiTaahhutListesineEkleBtn" CssClass="btn btn-outline-success float-end" runat="server" Text="Bağışçıyı Taahhüt Listesine Ekle" OnClick="BagisciyiTaahhutListesineEkleBtn_Click" Visible="False" />
                     <asp:Table ID="TaahhutTable" runat="server" CssClass="table table-striped table-bordered table-hover">
                     </asp:Table>
                 </div>
             </div>
         </div>
         <div class="card-footer">
-            <asp:LinkButton ID="BagisciBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Bağışçıya Git" OnClick="BagisciBtn_Click" />
+            <asp:LinkButton ID="BagisciBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Bağışçıya Git" OnClick="BagisciBtn_Click" />
         </div>
     </div>
 </div>
@@ -135,7 +139,7 @@
                     <div class="modal-footer">
                         <asp:LinkButton ID="TaahhutKaydetBtn" runat="server" CssClass="btn btn-success" CausesValidation="false" Text="Taahhüt Kaydet" OnClick="TaahhutKaydetBtn_Click" />
                         <asp:LinkButton ID="TaahhutGuncelleBtn" runat="server" CssClass="btn btn-primary" CausesValidation="false" Text="Taahhüt Güncelle " OnClick="TaahhutGuncelle_Click" />
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>
@@ -164,7 +168,7 @@
                     </div>
                     <div class="modal-footer">
                         <asp:LinkButton ID="TaahhutSilNowBtn" CssClass="btn btn-outline-danger" runat="server" Text="Sil" OnClick="TaahhutSilNowBtn_Click"></asp:LinkButton>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                     </div>
                 </div>
             </div>

@@ -71,7 +71,8 @@
         button.click();
     }
     function OpenModalOnay() {
-        $("#ModalOnayDiv").modal({ backdrop: false });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
+        myModalInstance.show();
     }
     $(function () {
         $("#datepicker").datepicker({
@@ -155,8 +156,8 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <asp:LinkButton CssClass="btn btn-outline-secondary float-right mr-2" ID="KisiselSayfaBtn" runat="server" Text="Kişisel Sayfa" CausesValidation="false" OnClick="KisiselSayfaBtn_Click" />
-                    <asp:LinkButton CssClass="btn btn-outline-secondary float-right mr-2" ID="IzinHareketListesiBtn" runat="server" Text="Kullanılan İzinler" CausesValidation="false" OnClick="IzinHareketListesiBtn_Click" />
+                    <asp:LinkButton CssClass="btn btn-outline-secondary float-end mr-2" ID="KisiselSayfaBtn" runat="server" Text="Kişisel Sayfa" CausesValidation="false" OnClick="KisiselSayfaBtn_Click" />
+                    <asp:LinkButton CssClass="btn btn-outline-secondary float-end mr-2" ID="IzinHareketListesiBtn" runat="server" Text="Kullanılan İzinler" CausesValidation="false" OnClick="IzinHareketListesiBtn_Click" />
                     <asp:LinkButton ID="UpdateBtn" CssClass="btn btn-outline-primary float-left" runat="server" Text="Güncelle" OnClick="UpdateBtn_Click" />
                     <asp:LinkButton ID="DeleteBtn" CssClass="btn btn-outline-danger float-left ml-2" runat="server" Text="Sil" OnClick="DeleteBtn_Click" />
                     <asp:LinkButton CssClass="btn btn-outline-primary" ID="IzinDegisDilekceBtn" runat="server" Text="İzin Değişiklik Dilekçesi" CausesValidation="false" OnClick="IzinDegisDilekceBtn_Click" Visible="false" />
@@ -193,7 +194,7 @@
                         </div>
                         <div class="modal-footer">
                             <button ID="DeleteModalBtn" runat="server" class="btn btn-danger" onclick="CallButtonClick()" >Sil</button>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                            <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                         </div>
                     </ContentTemplate>
                 </asp:UpdatePanel>

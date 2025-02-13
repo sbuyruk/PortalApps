@@ -18,7 +18,9 @@
     }
     function OpenModal(clickedImg) {
         $('#MaximizedImg').attr('src', clickedImg.src);
-        $("#ResimAcModal").modal({ backdrop: false });
+
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ResimAcModal'));
+        myModalInstance.show();
 
     }
 </script>
@@ -42,7 +44,7 @@
                                     <asp:Image ID="Image1" ClientIDMode="Static" runat="server" ImageUrl="../TasinmazResimleri/_t/TasinmazFoto_jpg.jpg" CssClass="img-thumbnail" onclick="OpenModal(this)" onerror="this.src='../TasinmazResimleri/_t/TasinmazFoto_jpg.jpg';" Style="height: 150px" />
                                 </div>
                                  <div class="col-2">
-                                     <asp:LinkButton CssClass="btn btn-outline-danger float-right mr-2" ID="ResimSil1Btn" runat="server" Text="Resmi Sil" CausesValidation="false" OnClick="ResimSil1Btn_Click" />
+                                     <asp:LinkButton CssClass="btn btn-outline-danger float-end mr-2" ID="ResimSil1Btn" runat="server" Text="Resmi Sil" CausesValidation="false" OnClick="ResimSil1Btn_Click" />
                                  </div>
                             </div>
                             <asp:FileUpload ID="FileUpload0" class="btn btn-danger form-control" runat="server" ToolTip="Yüklenecek Resmi Seçiniz" type="text" onchange="readURL(this,'Image1')" />
@@ -53,7 +55,7 @@
                                     <asp:Image ID="Image2" ClientIDMode="Static" runat="server" ImageUrl="../TasinmazResimleri/_t/TasinmazFoto1_jpg.jpg" CssClass="img-thumbnail" onclick="OpenModal(this)" onerror="this.src='../TasinmazResimleri/_t/TasinmazFoto1_jpg.jpg';" Style="height: 150px" />
                                 </div>
                                 <div class="col-2">
-                                    <asp:LinkButton CssClass="btn btn-outline-danger float-right mr-2" ID="ResimSil2Btn" runat="server" Text="Resmi Sil" CausesValidation="false" OnClick="ResimSil2Btn_Click" />
+                                    <asp:LinkButton CssClass="btn btn-outline-danger float-end mr-2" ID="ResimSil2Btn" runat="server" Text="Resmi Sil" CausesValidation="false" OnClick="ResimSil2Btn_Click" />
                                 </div>
                             </div>
                             <asp:FileUpload ID="FileUpload1" class="btn btn-danger form-control" runat="server" ToolTip="Yüklenecek Resmi Seçiniz" type="text" onchange="readURL(this,'Image2')" />
@@ -64,7 +66,7 @@
                                     <asp:Image ID="Image3" ClientIDMode="Static" runat="server" ImageUrl="../TasinmazResimleri/_t/TasinmazFoto2_jpg.jpg" CssClass="img-thumbnail" onclick="OpenModal(this)" onerror="this.src='../TasinmazResimleri/_t/TasinmazFoto2_jpg.jpg';" Style="height: 150px" />
                                 </div>
                                 <div class="col-2">
-                                    <asp:LinkButton CssClass="btn btn-outline-danger float-right mr-2" ID="ResimSil3Btn" runat="server" Text="Resmi Sil" CausesValidation="false" OnClick="ResimSil3Btn_Click" />
+                                    <asp:LinkButton CssClass="btn btn-outline-danger float-end mr-2" ID="ResimSil3Btn" runat="server" Text="Resmi Sil" CausesValidation="false" OnClick="ResimSil3Btn_Click" />
                                 </div>
                             </div>
                             <asp:FileUpload ID="FileUpload2" class="btn btn-danger form-control" runat="server" ToolTip="Yüklenecek Resmi Seçiniz" type="text" onchange="readURL(this,'Image3')" />
@@ -75,7 +77,7 @@
                                     <asp:Image ID="Image4" ClientIDMode="Static" runat="server" ImageUrl="../TasinmazResimleri/_t/TahkikatFoto_jpg.jpg" CssClass="img-thumbnail" onclick="OpenModal(this)" onerror="this.src='../TasinmazResimleri/_t/TahkikatFoto_jpg.jpg';" Style="height: 150px" />
                                 </div>
                                 <div class="col-2">
-                                    <asp:LinkButton CssClass="btn btn-outline-danger float-right mr-2" ID="ResimSil4Btn" runat="server" Text="Resmi Sil" CausesValidation="false" OnClick="ResimSil4Btn_Click" />
+                                    <asp:LinkButton CssClass="btn btn-outline-danger float-end mr-2" ID="ResimSil4Btn" runat="server" Text="Resmi Sil" CausesValidation="false" OnClick="ResimSil4Btn_Click" />
                                 </div>
                             </div>
                             <asp:FileUpload ID="FileUpload3" class="btn btn-danger form-control" runat="server" ToolTip="Yüklenecek Resmi Seçiniz" type="text" onchange="readURL(this,'Image4')" />
@@ -90,7 +92,7 @@
                                     <asp:Image ID="Image5" ClientIDMode="Static" runat="server" ImageUrl="../TasinmazResimleri/_t/KrokiFoto_jpg.jpg" CssClass="img-thumbnail" onclick="OpenModal(this)" onerror="this.src='../TasinmazResimleri/_t/KrokiFoto_jpg.jpg';" Style="height: 150px" />
                                 </div>
                                 <div class="col-2">
-                                    <asp:LinkButton CssClass="btn btn-outline-danger float-right mr-2" ID="ResimSil5Btn" runat="server" Text="Resmi Sil" CausesValidation="false" OnClick="ResimSil5Btn_Click" />
+                                    <asp:LinkButton CssClass="btn btn-outline-danger float-end mr-2" ID="ResimSil5Btn" runat="server" Text="Resmi Sil" CausesValidation="false" OnClick="ResimSil5Btn_Click" />
                                 </div>
                             </div>
                             <asp:FileUpload ID="FileUpload4" class="btn btn-danger form-control" runat="server" ToolTip="Yüklenecek Resmi Seçiniz" type="text" onchange="readURL(this,'Image5')" />
@@ -101,7 +103,7 @@
                                     <asp:Image ID="Image6" ClientIDMode="Static" runat="server" ImageUrl="../TasinmazResimleri/_t/TapuFoto_jpg.jpg" CssClass="img-thumbnail" onclick="OpenModal(this)" onerror="this.src='../TasinmazResimleri/_t/TapuFoto_jpg.jpg';" Style="height: 150px" />
                                 </div>
                                 <div class="col-2">
-                                    <asp:LinkButton CssClass="btn btn-outline-danger float-right mr-2" ID="ResimSil6Btn" runat="server" Text="Resmi Sil" CausesValidation="false" OnClick="ResimSil6Btn_Click" />
+                                    <asp:LinkButton CssClass="btn btn-outline-danger float-end mr-2" ID="ResimSil6Btn" runat="server" Text="Resmi Sil" CausesValidation="false" OnClick="ResimSil6Btn_Click" />
                                 </div>
                             </div>
                             <asp:FileUpload ID="FileUpload5" class="btn btn-danger form-control" runat="server" ToolTip="Yüklenecek Resmi Seçiniz" type="text" onchange="readURL(this,'Image6')" />
@@ -112,7 +114,7 @@
                                     <asp:Image ID="Image7" ClientIDMode="Static" runat="server" ImageUrl="../TasinmazResimleri/_t/TasinmazFoto_jpg.jpg" CssClass="img-thumbnail" onclick="OpenModal(this)" onerror="this.src='../TasinmazResimleri/_t/TasinmazFoto_jpg.jpg';" Style="height: 150px" />
                                 </div>
                                 <div class="col-2">
-                                    <asp:LinkButton CssClass="btn btn-outline-danger float-right mr-2" ID="ResimSil7Btn" runat="server" Text="Resmi Sil" CausesValidation="false" OnClick="ResimSil7Btn_Click" />
+                                    <asp:LinkButton CssClass="btn btn-outline-danger float-end mr-2" ID="ResimSil7Btn" runat="server" Text="Resmi Sil" CausesValidation="false" OnClick="ResimSil7Btn_Click" />
                                 </div>
                             </div>
                             <asp:FileUpload ID="FileUpload6" class="btn btn-danger form-control" runat="server" ToolTip="Yüklenecek Resmi Seçiniz" type="text" onchange="readURL(this,'Image7')" />
@@ -123,7 +125,7 @@
                                     <asp:Image ID="Image8" ClientIDMode="Static" runat="server" ImageUrl="../TasinmazResimleri/_t/TasinmazFoto1_jpg.jpg" CssClass="img-thumbnail" onclick="OpenModal(this)" onerror="this.src='../TasinmazResimleri/_t/TasinmazFoto1_jpg.jpg';" Style="height: 150px" />
                                 </div>
                                 <div class="col-2">
-                                    <asp:LinkButton CssClass="btn btn-outline-danger float-right mr-2" ID="ResimSil8Btn" runat="server" Text="Resmi Sil" CausesValidation="false" OnClick="ResimSil8Btn_Click" />
+                                    <asp:LinkButton CssClass="btn btn-outline-danger float-end mr-2" ID="ResimSil8Btn" runat="server" Text="Resmi Sil" CausesValidation="false" OnClick="ResimSil8Btn_Click" />
                                 </div>
                             </div>
                             <asp:FileUpload ID="FileUpload7" class="btn btn-danger form-control" runat="server" ToolTip="Yüklenecek Resmi Seçiniz" type="text" onchange="readURL(this,'Image8')" />
@@ -193,7 +195,7 @@
 
                 <div class="card-footer">
                     <asp:LinkButton ID="SaveBtn" CssClass="btn btn-outline-success" runat="server" Text="Resimleri Kaydet" OnClick="SaveBtn_Click" />
-                    <asp:LinkButton CssClass="btn btn-outline-secondary float-right mr-2" ID="BackBtn" runat="server" Text="Geri" CausesValidation="false" OnClick="BackBtn_Click" />
+                    <asp:LinkButton CssClass="btn btn-outline-secondary float-end mr-2" ID="BackBtn" runat="server" Text="Geri" CausesValidation="false" OnClick="BackBtn_Click" />
                 </div>
             </div>
         </ContentTemplate>
@@ -217,12 +219,12 @@
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times</button>
+                <button type="button" class="close" data-bs-dismiss="modal">&times</button>
             </div>
             <img class="img-responsive" src="../TasinmazResimleri/TasinmazFoto.jpg" id="MaximizedImg" height="1000" width="1000" />
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
             </div>
         </div>
     </div>

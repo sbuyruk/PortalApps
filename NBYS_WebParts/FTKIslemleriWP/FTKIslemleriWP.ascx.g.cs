@@ -223,7 +223,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlAnchor();
             this.YonergeLnk = @__ctrl;
             @__ctrl.TemplateControl = this;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", " btn btn-outline-primary float-right mr-4");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", " btn btn-outline-primary float-end mr-4");
             @__ctrl.ID = "YonergeLnk";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-fancybox", "");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-type", "pdf");
@@ -922,7 +922,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
             this.AktifOlmayanlariGostermeDiv = @__ctrl;
             @__ctrl.ID = "AktifOlmayanlariGostermeDiv";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "checkbox pt-3 float-right");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "checkbox pt-3 float-end");
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                <label>\r\n                                    "));
             global::System.Web.UI.WebControls.CheckBox @__ctrl1;
@@ -1066,7 +1066,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "FTKListesiBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "FTK Listesi";
             @__ctrl.Click -= new System.EventHandler(this.FTKListesiBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.FTKListesiBtn_Click);
@@ -1083,7 +1083,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "BolgelereGoreFTKRaporuBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right mr-2";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end mr-2";
             @__ctrl.Text = "Bölgelere göre FTK Dağılımı";
             @__ctrl.CausesValidation = false;
             @__ctrl.Click -= new System.EventHandler(this.BolgelereGoreFTKRaporuBtn_Click);
@@ -1101,7 +1101,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "FTKYazilariBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right mr-2";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end mr-2";
             @__ctrl.Text = "FTK Yazisi";
             @__ctrl.CausesValidation = false;
             @__ctrl.Visible = false;
@@ -1415,9 +1415,9 @@ namespace NBYS_WebParts.FTKIslemleriWP {
             global::System.Web.UI.WebControls.LinkButton @__ctrl4;
             @__ctrl4 = this.@__BuildControlTumununGoreviniSonlandirNowBtn();
             @__parser.AddParsedSubObject(@__ctrl4);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        <button type=\"button\" class=\"btn btn-default\" data-dism" +
-                        "iss=\"modal\">Kapat</button>\r\n                    </div>\r\n                </div>\r\n" +
-                        "            </div>\r\n        </div>\r\n    "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        <button type=\"button\" class=\"btn btn-default\" data-bs-d" +
+                        "ismiss=\"modal\">Kapat</button>\r\n                    </div>\r\n                </div" +
+                        ">\r\n            </div>\r\n        </div>\r\n    "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -1541,10 +1541,12 @@ namespace NBYS_WebParts.FTKIslemleriWP {
 
 <script type=""text/javascript"">
     function ModalFTKListesiAc() {
-        $(""#ModalFTKListesiDiv"").modal({ backdrop: false });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalFTKListesiDiv'));
+        myModalInstance.show();
     }
     function ModalFTKListesiKapat() {
         $(""#ModalFTKListesiDiv"").modal('hide');
+
     }
     function FTKKisiDuzenleBtnClick(ftkkisiId) {
         document.getElementById('");

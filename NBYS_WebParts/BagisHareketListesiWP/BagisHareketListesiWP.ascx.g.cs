@@ -277,7 +277,7 @@ namespace NBYS_WebParts.BagisHareketListesiWP {
             @__ctrl3 = this.@__BuildControlIliDDL();
             @__parser.AddParsedSubObject(@__ctrl3);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"form-group " +
-                        "col\">\r\n                            <div class=\"float-right\">\r\n                  " +
+                        "col\">\r\n                            <div class=\"float-end\">\r\n                  " +
                         "              "));
             global::System.Web.UI.WebControls.Label @__ctrl4;
             @__ctrl4 = this.@__BuildControlRowCountLbl();
@@ -298,6 +298,7 @@ namespace NBYS_WebParts.BagisHareketListesiWP {
                                     <th>TC Kimlik No</th>
                                     <th>Telefon</th>
                                     <th>Banka</th>
+                                    <th>Açıklama</th>
                                 </tr>
                             </thead>
                         </table>
@@ -348,7 +349,7 @@ namespace NBYS_WebParts.BagisHareketListesiWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.ExcelBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-success float-right";
+            @__ctrl.CssClass = "btn btn-outline-success float-end";
             @__ctrl.ID = "ExcelBtn";
             @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
             @__ctrl.Text = "Excele Aktar";
@@ -380,8 +381,8 @@ namespace NBYS_WebParts.BagisHareketListesiWP {
         return true;
     }
 </script>
-<div class=""container shadow"">
-    <div class=""card "">
+<div class=""container col-xl"">
+    <div class=""card shadow"">
         "));
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl1;
             @__ctrl1 = this.@__BuildControlCardHeader();

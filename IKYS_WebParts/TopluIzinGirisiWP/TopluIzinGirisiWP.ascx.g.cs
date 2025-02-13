@@ -817,7 +817,7 @@ namespace IKYS_WebParts.TopluIzinGirisiWP {
             @__ctrl5 = this.@__BuildControlSaveNowBtn();
             @__parser.AddParsedSubObject(@__ctrl5);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-                                    <button type=""button"" class=""btn btn-default"" data-dismiss=""modal"">İptal</button>
+                                    <button type=""button"" class=""btn btn-default"" data-bs-dismiss=""modal"">İptal</button>
                                 </div>
                             </div>
                         </div>
@@ -842,31 +842,32 @@ namespace IKYS_WebParts.TopluIzinGirisiWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControlTree(global::IKYS_WebParts.TopluIzinGirisiWP.TopluIzinGirisiWP @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n<script type=\"text/javascript\">\r\n    function OpenModal() {\r\n        $(\"#ModalO" +
-                        "nayDiv\").modal({ backdrop: \"static\" });\r\n    }\r\n    //On Page Load.\r\n    $(funct" +
-                        "ion () {\r\n        SetDatePicker();\r\n    });\r\n    //ikinci tarih için\r\n    functi" +
-                        "on SetDatePicker() {\r\n\r\n\r\n        $(\"[id$=IzinBitTarTxt]\").datepicker({\r\n       " +
-                        "     dateFormat: \"dd.mm.yy\",\r\n            firstDay: 1,\r\n            monthNames: " +
-                        "[\"Ocak\", \"Şubat\", \"Mart\", \"Nisan\", \"Mayıs\", \"Haziran\", \"Temmuz\", \"Ağustos\", \"Eyl" +
-                        "ül\", \"Ekim\", \"Kasım\", \"Aralık\"],\r\n            monthNamesShort: [\"Oca\", \"Şub\", \"M" +
-                        "ar\", \"Nis\", \"May\", \"Haz\", \"Tem\", \"Ağu\", \"Eyl\", \"Eki\", \"Kas\", \"Ara\"],\r\n          " +
-                        "  dayNames: [\"Pazar\", \"Pazartesi\", \"Salı\", \"Çarşamba\", \"Perşembe\", \"Cuma\", \"Cuma" +
-                        "rtesi\"],\r\n            dayNamesMin: [\"Pz\", \"Pt\", \"Sl\", \"Çr\", \"Pr\", \"Cu\", \"Ct\"],\r\n" +
-                        "            showAnim: \"fold\",\r\n            changeMonth: true,\r\n            chang" +
-                        "eYear: true,\r\n            beforeShow: function (input, inst) {\r\n                " +
-                        "var mindate = $(\'.DateTimePickerV1\').datepicker(\'getDate\');\r\n                $(t" +
-                        "his).datepicker(\'option\', \'minDate\', mindate);\r\n                var maxSure = 3;" +
-                        "//en fazla 3 gn\r\n                var newDate = new Date($(\'.DateTimePickerV1\').d" +
-                        "atepicker(\'getDate\'));\r\n                newDate.setDate(newDate.getDate() + maxS" +
-                        "ure);\r\n                $(this).datepicker(\'option\', \'maxDate\', newDate);\r\n      " +
-                        "      },\r\n            beforeShowDay: function (date) {\r\n                $(\'#ui-d" +
-                        "atepicker-div\').css(\'clip\', \'auto\');\r\n                return [true, \'\', \'\'];\r\n  " +
-                        "          }\r\n        });\r\n    }\r\n    //On UpdatePanel Refresh.\r\n    var prm = Sy" +
-                        "s.WebForms.PageRequestManager.getInstance();\r\n    if (prm != null) {\r\n        pr" +
-                        "m.add_endRequest(function (sender, e) {\r\n            if (sender._postBackSetting" +
-                        "s.panelsToUpdate != null) {\r\n                SetDatePicker();\r\n            }\r\n  " +
-                        "      });\r\n    };\r\n\r\n</script>\r\n<div class=\"container shadow\">\r\n    <div class=\"" +
-                        "card\">\r\n        "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n<script type=\"text/javascript\">\r\n    function OpenModal() {\r\n        var myModa" +
+                        "lInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById(\'ModalOn" +
+                        "ayDiv\'));\n        myModalInstance.show();\r\n    }\r\n    //On Page Load.\r\n    $(fun" +
+                        "ction () {\r\n        SetDatePicker();\r\n    });\r\n    //ikinci tarih için\r\n    func" +
+                        "tion SetDatePicker() {\r\n\r\n\r\n        $(\"[id$=IzinBitTarTxt]\").datepicker({\r\n     " +
+                        "       dateFormat: \"dd.mm.yy\",\r\n            firstDay: 1,\r\n            monthNames" +
+                        ": [\"Ocak\", \"Şubat\", \"Mart\", \"Nisan\", \"Mayıs\", \"Haziran\", \"Temmuz\", \"Ağustos\", \"E" +
+                        "ylül\", \"Ekim\", \"Kasım\", \"Aralık\"],\r\n            monthNamesShort: [\"Oca\", \"Şub\", " +
+                        "\"Mar\", \"Nis\", \"May\", \"Haz\", \"Tem\", \"Ağu\", \"Eyl\", \"Eki\", \"Kas\", \"Ara\"],\r\n        " +
+                        "    dayNames: [\"Pazar\", \"Pazartesi\", \"Salı\", \"Çarşamba\", \"Perşembe\", \"Cuma\", \"Cu" +
+                        "martesi\"],\r\n            dayNamesMin: [\"Pz\", \"Pt\", \"Sl\", \"Çr\", \"Pr\", \"Cu\", \"Ct\"]," +
+                        "\r\n            showAnim: \"fold\",\r\n            changeMonth: true,\r\n            cha" +
+                        "ngeYear: true,\r\n            beforeShow: function (input, inst) {\r\n              " +
+                        "  var mindate = $(\'.DateTimePickerV1\').datepicker(\'getDate\');\r\n                $" +
+                        "(this).datepicker(\'option\', \'minDate\', mindate);\r\n                var maxSure = " +
+                        "3;//en fazla 3 gn\r\n                var newDate = new Date($(\'.DateTimePickerV1\')" +
+                        ".datepicker(\'getDate\'));\r\n                newDate.setDate(newDate.getDate() + ma" +
+                        "xSure);\r\n                $(this).datepicker(\'option\', \'maxDate\', newDate);\r\n    " +
+                        "        },\r\n            beforeShowDay: function (date) {\r\n                $(\'#ui" +
+                        "-datepicker-div\').css(\'clip\', \'auto\');\r\n                return [true, \'\', \'\'];\r\n" +
+                        "            }\r\n        });\r\n    }\r\n    //On UpdatePanel Refresh.\r\n    var prm = " +
+                        "Sys.WebForms.PageRequestManager.getInstance();\r\n    if (prm != null) {\r\n        " +
+                        "prm.add_endRequest(function (sender, e) {\r\n            if (sender._postBackSetti" +
+                        "ngs.panelsToUpdate != null) {\r\n                SetDatePicker();\r\n            }\r\n" +
+                        "        });\r\n    };\r\n\r\n</script>\r\n<div class=\"container shadow\">\r\n    <div class" +
+                        "=\"card\">\r\n        "));
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl1;
             @__ctrl1 = this.@__BuildControlCardHeader();
             @__parser.AddParsedSubObject(@__ctrl1);

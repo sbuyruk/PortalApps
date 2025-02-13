@@ -871,7 +871,7 @@ namespace TBYS_WebParts.VasiyetciGirisiWP {
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-type", "pdf");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-width", "960");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-height", "720");
-            @__ctrl.CssClass = "btn btn-outline-primary float-right";
+            @__ctrl.CssClass = "btn btn-outline-primary float-end";
             @__ctrl.Visible = false;
             @__ctrl.Font.Size = global::System.Web.UI.WebControls.FontUnit.Small;
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
@@ -1662,8 +1662,8 @@ namespace TBYS_WebParts.VasiyetciGirisiWP {
             @__ctrl54 = this.@__BuildControlNiteligiSilNowBtn();
             @__parser.AddParsedSubObject(@__ctrl54);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            <button type=\"button\" class=\"btn btn-default\" data-" +
-                        "dismiss=\"modal\">Kapat</button>\r\n                        </div>\r\n                " +
-                        "    </div>\r\n                </div>\r\n            </div>\r\n        "));
+                        "bs-dismiss=\"modal\">Kapat</button>\r\n                        </div>\r\n             " +
+                        "       </div>\r\n                </div>\r\n            </div>\r\n        "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -1961,8 +1961,8 @@ namespace TBYS_WebParts.VasiyetciGirisiWP {
             global::System.Web.UI.WebControls.LinkButton @__ctrl13;
             @__ctrl13 = this.@__BuildControlVarlikKaydetBtn();
             @__parser.AddParsedSubObject(@__ctrl13);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        <button type=\"button\" class=\"btn btn-default\" data-dism" +
-                        "iss=\"modal\">Kapat</button>\r\n                    </div>\r\n                "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        <button type=\"button\" class=\"btn btn-default\" data-bs-d" +
+                        "ismiss=\"modal\">Kapat</button>\r\n                    </div>\r\n                "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -1996,12 +1996,15 @@ namespace TBYS_WebParts.VasiyetciGirisiWP {
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
         private void @__Render__control1(System.Web.UI.HtmlTextWriter @__w, System.Web.UI.Control parameterContainer) {
-            @__w.Write("\r\n<script>\r\n    function OpenModal() {\r\n        $(\"#ModalUrlDiv\").modal({ backdro" +
-                    "p: true });\r\n        document.getElementById(\'");
+            @__w.Write("\r\n<script>\r\n    function OpenModal() {\r\n        var myModalInstance = bootstrap.M" +
+                    "odal.getOrCreateInstance(document.getElementById(\'ModalUrlDiv\'));\n        myModa" +
+                    "lInstance.show();\r\n        document.getElementById(\'");
                          @__w.Write( ModalDoldurBtn.ClientID);
 
-            @__w.Write("\').click();\r\n    }\r\n\r\n    function OpenSilModal() {\r\n        $(\"#ModalSilDiv\").mo" +
-                    "dal({ backdrop: true });\r\n    }\r\n</script>\r\n\r\n<div class=\"container\">\r\n    ");
+            @__w.Write("\').click();\r\n    }\r\n\r\n    function OpenSilModal() {\r\n        var myModalInstance " +
+                    "= bootstrap.Modal.getOrCreateInstance(document.getElementById(\'ModalSilDiv\'));\n " +
+                    "       myModalInstance.show();\r\n    }\r\n</script>\r\n\r\n<div class=\"container\">\r\n   " +
+                    " ");
             parameterContainer.Controls[0].RenderControl(@__w);
             @__w.Write("\r\n</div>\r\n<div class=\"modal\" id=\"ModalUrlDiv\" role=\"dialog\">\r\n    <div class=\"mod" +
                     "al-dialog modal-dialog-centered modal-lg\">\r\n        <!-- Modal content-->\r\n     " +

@@ -13,13 +13,16 @@
 </style>
 <script type="text/javascript">
     function TasinmazSecimiModal() {
-        $("#TasinmazSecimiModal").modal({ backdrop: false });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('TasinmazSecimiModal'));
+        myModalInstance.show();
     }
     function EnvanterdeOlmayanTasinmazSecimiModal() {
-        $("#EnvanterdeOlmayanTasinmazSecimiModal").modal({ backdrop: false });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('EnvanterdeOlmayanTasinmazSecimiModal'));
+        myModalInstance.show();
     }
     function KiraciSecimiModal() {
-        $("#KiraciSecimiModal").modal({ backdrop: false });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('KiraciSecDiv'));
+        myModalInstance.show();
     }
 </script>
 
@@ -94,7 +97,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
             </div>
         </div>
     </div>
@@ -130,7 +133,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
             </div>
         </div>
     </div>
@@ -166,7 +169,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
             </div>
         </div>
     </div>

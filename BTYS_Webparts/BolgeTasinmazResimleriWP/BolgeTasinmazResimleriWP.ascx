@@ -18,7 +18,8 @@
     }
     function OpenModal(clickedImg) {
         $('#MaximizedImg').attr('src', clickedImg.src);
-        $("#ResimAcModal").modal({ backdrop: false });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ResimAcModal'));
+        myModalInstance.show();
 
     }
 </script>
@@ -176,12 +177,12 @@
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times</button>
+                <button type="button" class="close" data-bs-dismiss="modal">&times</button>
             </div>
             <img class="img-responsive" src="../TasinmazResimleri/TasinmazFoto.jpg" id="MaximizedImg" height="1000" width="1000" />
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
             </div>
         </div>
     </div>

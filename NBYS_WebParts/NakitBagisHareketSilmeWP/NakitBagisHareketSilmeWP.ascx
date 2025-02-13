@@ -42,7 +42,8 @@
 <script>
     function OpenModal(nakitBagisciId) {
         document.getElementById('<%= paramNakitBagisciIdLbl.ClientID%>').value = nakitBagisciId;
-        $("#ModalUrlDiv").modal({ backdrop: false });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalUrlDiv'));
+        myModalInstance.show();
         document.getElementById('<%= ModalDoldurBtn.ClientID%>').click();
 
     }
@@ -54,7 +55,8 @@
         document.getElementById('<%= BagisSilBtn.ClientID%>').click();
     }
     function ModalOnay() {
-        $("#ModalOnayDiv").modal({ backdrop: "static" });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
+        myModalInstance.show();
     }
 </script>
 
@@ -103,8 +105,8 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <asp:LinkButton ID="BagisHareketListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Bağış Hareketleri" OnClick="BagisHareketListesiBtn_Click" />
-                    <asp:LinkButton ID="ArmaganListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Armağan Listesi" OnClick="ArmaganListesiBtn_Click" />
+                    <asp:LinkButton ID="BagisHareketListesiBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Bağış Hareketleri" OnClick="BagisHareketListesiBtn_Click" />
+                    <asp:LinkButton ID="ArmaganListesiBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Armağan Listesi" OnClick="ArmaganListesiBtn_Click" />
                 </div>
             </div>
         </ContentTemplate>
@@ -133,7 +135,7 @@
                             </div>
                             <div class="card-footer">
                                 <asp:LinkButton CssClass="btn btn-danger" ID="BagisSilNowBtn" runat="server" CausesValidation="false" Text="Bağışı Sil" OnClientClick="{return true;};" OnClick="BagisSilNowBtn_Click" />
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                                <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                             </div>
                         </div>
                         <div>
@@ -196,7 +198,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>

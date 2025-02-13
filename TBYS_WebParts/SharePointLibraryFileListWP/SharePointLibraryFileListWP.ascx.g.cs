@@ -303,9 +303,18 @@ namespace TBYS_WebParts.SharePointLibraryFileListWP {
             @__w.Write("\').value = fileName;\r\n        document.getElementById(\'");
                          @__w.Write( DosyayiSilBtn.ClientID);
 
-            @__w.Write("\').click();\r\n    }\r\n    function OpenModalOnay() {\r\n        $(\"#ModalOnayDiv\").mo" +
-                    "dal({ backdrop: true });\r\n    }\r\n</script>\r\n\r\n<div class=\"container \">\r\n    <div" +
-                    " class=\"card shadow\">\r\n        <div class=\"card-header\">\r\n            ");
+            @__w.Write(@"').click();
+    }
+    function OpenModalOnay() {
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
+        myModalInstance.show();
+    }
+</script>
+
+<div class=""container "">
+    <div class=""card shadow"">
+        <div class=""card-header"">
+            ");
             parameterContainer.Controls[0].RenderControl(@__w);
             @__w.Write("\r\n            <h3 class=\"mb-2\">\r\n                ");
             parameterContainer.Controls[1].RenderControl(@__w);
@@ -367,9 +376,9 @@ namespace TBYS_WebParts.SharePointLibraryFileListWP {
                     "iv>\r\n            </div>\r\n            <div class=\"modal-footer\">\r\n               " +
                     " ");
             parameterContainer.Controls[10].RenderControl(@__w);
-            @__w.Write("\r\n                <button type=\"button\" class=\"btn btn-default float-right\" data-" +
-                    "dismiss=\"modal\">Kapat</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n" +
-                    "</div>\r\n");
+            @__w.Write("\r\n                <button type=\"button\" class=\"btn btn-default float-end\" data-bs" +
+                    "-dismiss=\"modal\">Kapat</button>\r\n            </div>\r\n        </div>\r\n    </div>\r" +
+                    "\n</div>\r\n");
         }
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +

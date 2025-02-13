@@ -42,7 +42,8 @@
     function OpenModal(nakitBagisciId) {
         document.getElementById('<%= paramNakitBagisciIdLbl.ClientID%>').value = nakitBagisciId;
 
-        $("#ModalUrlDiv").modal({ backdrop: false });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalUrlDiv'));
+        myModalInstance.show();
         document.getElementById('<%= ModalDoldurBtn.ClientID%>').click();
     }
 
@@ -153,7 +154,7 @@
         </div>
         <div class="card-footer">
             <div>
-                <asp:LinkButton ID="BasadonBtn" CssClass="btn btn-secondary float-right" runat="server" CausesValidation="false" Text="Başa Dön" OnClick="BasadonBtn_Click" />
+                <asp:LinkButton ID="BasadonBtn" CssClass="btn btn-secondary float-end" runat="server" CausesValidation="false" Text="Başa Dön" OnClick="BasadonBtn_Click" />
             </div>
             <div id="FooterDiv" runat="server">
                 <asp:RadioButtonList ID="BirlestirRBL" runat="server" CssClass="form-check-label" OnSelectedIndexChanged="BirlestirRBL_SelectedIndexChanged" BorderStyle="Solid" RepeatDirection="Horizontal" AutoPostBack="true">
@@ -231,7 +232,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>

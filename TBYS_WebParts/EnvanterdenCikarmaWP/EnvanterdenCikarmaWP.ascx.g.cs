@@ -321,7 +321,7 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP {
             this.BackBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "BackBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Geri";
             @__ctrl.Click -= new System.EventHandler(this.BackBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.BackBtn_Click);
@@ -533,8 +533,8 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP {
             @__ctrl4 = this.@__BuildControlEnvanterdenCikarNowBtn();
             @__parser.AddParsedSubObject(@__ctrl4);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            <button type=\"button\" class=\"btn btn-default\" data-" +
-                        "dismiss=\"modal\">Kapat</button>\r\n                        </div>\r\n\r\n              " +
-                        "      </div>\r\n                </div>\r\n            </div>\r\n        "));
+                        "bs-dismiss=\"modal\">Kapat</button>\r\n                        </div>\r\n\r\n           " +
+                        "         </div>\r\n                </div>\r\n            </div>\r\n        "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -573,8 +573,9 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControlTree(global::TBYS_WebParts.EnvanterdenCikarmaWP.EnvanterdenCikarmaWP @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n<script type=\"text/javascript\">\r\n    function OpenModal() {\r\n        $(\"#ModalO" +
-                        "nayDiv\").modal({ backdrop: false });\r\n    }\r\n</script>\r\n"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n<script type=\"text/javascript\">\r\n    function OpenModal() {\r\n        var myModa" +
+                        "lInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById(\'ModalOn" +
+                        "ayDiv\'));\n        myModalInstance.show();\r\n    }\r\n</script>\r\n"));
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl1;
             @__ctrl1 = this.@__BuildControlMainPanel();
             @__parser.AddParsedSubObject(@__ctrl1);

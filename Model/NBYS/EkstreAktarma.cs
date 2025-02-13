@@ -935,6 +935,142 @@ namespace Model.NBYS
             return exceptionHelper;
 
         }
+        public static ExceptionHelper SaveYKBEkstreFile(Stream fileStream, DateTime processTime, string currentUser)
+        {
+            ExceptionHelper exceptionHelper = new ExceptionHelper();
+            CultureInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
+
+
+            var YKBEkstreData = ExcelHelper.ReadXLSXAsDataTable(fileStream, ProjeConstants.BANKA_YKBEKSTRE_ILKKACSATIRHARIC, ProjeConstants.BANKA_YKBEKSTRE_SONKACSATIRHARIC, false);
+
+
+            if (YKBEkstreData != null)
+            {
+
+                foreach (DataRow row in YKBEkstreData.Rows)
+                {
+                    EkstreAktarma ekstreAktarma = new EkstreAktarma();
+                    try
+                    {
+                        string saat = row[1].ReturnEmptyIfNull().ToString();
+                        string tutar = row[6].ReturnZeroIfNull().ToString().Replace(".", ",");
+                        string fisno = row[4].ReturnZeroIfNull().ToString().Replace(".", ",");
+                        if (tutar.ConvertToDecimal() > 0)
+                        {
+                            string tarih = row[0].ReturnEmptyIfNull().ToString();
+                            DateTime bagisTarihi = tarih.Substring(0, 10).ConvertToDatetime();
+
+                            var detay = row[5].ReturnEmptyIfNull().ToString();
+                            string adi = string.Empty;
+                            var adres = string.Empty;// adres bilgisi gelmiyor
+                            if (detay.Contains("/"))
+                            {
+                                char splitText = '/';
+                                var holder = detay.Split(splitText);
+                                adi = holder[1].ReturnEmptyIfNull().ToString().TrimEnd();
+                                int result;
+                                if (int.TryParse(adi, out result))
+                                {
+                                    adi = string.Empty;
+                                }
+                            }
+                            else if (detay.Contains("TSK Güçlendirme Vakfı - Genel Bağış / "))
+                            {
+                                adi = detay.Replace("TSK Güçlendirme Vakfı - Genel Bağış / ", "").Substring(0, (detay.IndexOf(" / "))).Trim();
+                            }
+                            else if (detay.Contains("GELEN HAVALE -"))
+                            {
+                                if (detay.Contains(" -"))
+                                {
+                                    char splitText = '-';
+                                    var holder = detay.Split(splitText);
+                                    adi = holder[1].ReturnEmptyIfNull().ToString().TrimEnd();
+                                    int result;
+                                    if (int.TryParse(adi, out result))
+                                    {
+                                        adi = string.Empty;
+                                    }
+                                }
+                            }
+                            else if (detay.Contains("GELEN FAST -"))
+                            {
+                                if (detay.Contains(" -"))
+                                {
+                                    char splitText = '-';
+                                    var holder = detay.Split(splitText);
+                                    adi = holder[1].ReturnEmptyIfNull().ToString().TrimEnd();
+                                    int result;
+                                    if (int.TryParse(adi, out result))
+                                    {
+                                        adi = string.Empty;
+                                    }
+                                }
+                            }
+                            else if (detay.Contains("GELEN EFT -"))
+                            {
+                                if (detay.Contains(" -"))
+                                {
+                                    char splitText = '-';
+                                    var holder = detay.Split(splitText);
+                                    adi = holder[1].ReturnEmptyIfNull().ToString().TrimEnd();
+                                    int result;
+                                    if (int.TryParse(adi, out result))
+                                    {
+                                        adi = string.Empty;
+                                    }
+                                }
+                            }
+                            else if (detay.Contains("-Bağış"))
+                            {
+                                adi = detay.Substring(0, detay.IndexOf("-Bağış")).Replace("-Bağış", "").Replace(" -", ""); ;
+                            }
+                            else if (detay.Contains("BAĞIŞ  GONDERICI:"))
+                            {
+                                adi = detay.Replace("BAĞIŞ  GONDERICI:","");
+                                
+                            }
+
+                            adi = adi.Replace(" bagis", "").Replace("/", "");
+
+                            ekstreAktarma.Adi = adi.Trim().ToUpper(culturInfo);
+                            ekstreAktarma.Tutar = tutar.ConvertToDecimal();
+                            ekstreAktarma.BagisTarihi = bagisTarihi.ConvertToDatetime();
+                            ekstreAktarma.Aciklama = detay;
+                            ekstreAktarma.Adres = adres.ReturnEmptyIfNull().ToString().Trim().ToUpper(culturInfo); ;
+                            ekstreAktarma.BelgeIstemiyor = ekstreAktarma.Aciklama.Contains(ProjeConstants.DURUM_BELGE_ISTEMIYOR) || ekstreAktarma.Adres.Contains(ProjeConstants.DURUM_BELGE_ISTEMIYOR) ? true : false;
+                            ekstreAktarma.BankaAdi = ProjeConstants.BANKA_YKBEKSTRE;
+                            ekstreAktarma.IslemTarihi = processTime;
+                            ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
+                            ekstreAktarma.Olusturan = currentUser;
+                            ekstreAktarma.FisNo = fisno;
+                            if (BuKayitDahaOnceGirilmisMiByFisNo(ProjeConstants.BANKA_YKBEKSTRE, fisno, detay, tarih.ReturnEmptyIfNull().ConvertToDatetime(), tutar.ConvertToDecimal())) //Referans numarasından kontrol et kayıt girilmemişse exception dondur değilse kaydet
+                            {
+                                Exception ex = new Exception(fisno + " Numaralı fiş daha önce girildiğinden tekrar aktarılmadı.");
+                                exceptionHelper.Exceptions.Add(ex);
+                            }
+                            else
+                            {
+                                ekstreAktarma.Save();
+
+                            }
+                        }
+                        else
+                        {
+                            continue;
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        Exception exceprion = new Exception(string.Format("HATA SATIRI {0}:{1} ->", ProjeConstants.BANKA_YKBEKSTRE, ""), ex);
+                        exceptionHelper.Exceptions.Add(exceprion);
+                    }
+                }
+            }
+
+            return exceptionHelper;
+
+        }
 
         public static ExceptionHelper SaveVakifBankFile(Stream fileStream, DateTime processTime, string currentUser)
         {
@@ -1699,26 +1835,10 @@ namespace Model.NBYS
             {
                 if (ekstreAktarma != null)
                 {
-                    string randomSayi = new Random().NextDouble().ToString();
-                    string tcKimlikNo = ekstreAktarma.TCKimlikNo.ToString().Equals("0") ? randomSayi : ekstreAktarma.TCKimlikNo.ToString();
-                    string adi = string.IsNullOrEmpty(ekstreAktarma.Adi) ? randomSayi : ekstreAktarma.Adi;
-                    string telefon1 = string.IsNullOrEmpty(ekstreAktarma.Telefon1) ? randomSayi : UtilityHelper.TelefonFormatla(ekstreAktarma.Telefon1.ReturnEmptyIfNull().ToString());
-                    string telefon2 = string.IsNullOrEmpty(ekstreAktarma.Telefon2) ? randomSayi : UtilityHelper.TelefonFormatla(ekstreAktarma.Telefon2.ReturnEmptyIfNull().ToString());
-
-                    //eğer bu kayıtın fisnosu daha önce girilmişse bir de islemtarihi, tutar, isim,tc ve telefondan kontrol et 
-                    if ((bagisTarihi == ekstreAktarma.BagisTarihi) && (tutar == ekstreAktarma.Tutar))
+                    //eğer bu kayıtın fisnosu daha önce girilmişse bir de bagistarihi ve tutardan kontrol et 
+                    if ((bagisTarihi == ekstreAktarma.BagisTarihi) && (Math.Round(tutar,2) == Math.Round(ekstreAktarma.Tutar,2)))
                     {
-                        if (aciklama.Equals(ekstreAktarma.Aciklama)
-                            || aciklama.Contains(adi)
-                            || (aciklama.Contains(tcKimlikNo))
-                            || (aciklama.Contains(telefon1))
-                            || (aciklama.Contains(telefon2)))
-                        {
-                            kaydedilmisMi = true;
-                            break;
-                        }
-                        else
-                            kaydedilmisMi = false;
+                        kaydedilmisMi = true;
                     }
                     else
                         kaydedilmisMi = false;

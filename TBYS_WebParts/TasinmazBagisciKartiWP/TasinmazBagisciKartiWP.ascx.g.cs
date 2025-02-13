@@ -406,7 +406,7 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.ExcelBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-success float-right";
+            @__ctrl.CssClass = "btn btn-outline-success float-end";
             @__ctrl.ID = "ExcelBtn";
             @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
             @__ctrl.Text = "Excele Aktar";
@@ -425,7 +425,7 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP {
             this.TasinmazBagisciListesiBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "TasinmazBagisciListesiBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right mr-2";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end mr-2";
             @__ctrl.Text = "Taşınmaz Bağışçı Listesi";
             @__ctrl.Click -= new System.EventHandler(this.TasinmazBagisciListesiBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.TasinmazBagisciListesiBtn_Click);

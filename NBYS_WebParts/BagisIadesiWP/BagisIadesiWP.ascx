@@ -42,7 +42,9 @@
 <script>
     function OpenModal(armaganId) {
         document.getElementById('<%= paramNakitBagisciIdLbl.ClientID%>').value = armaganId;
-        $("#ModalUrlDiv").modal({ backdrop: false });
+
+        var myModal = new bootstrap.Modal(document.getElementById('ModalUrlDiv'));
+        myModal.show();
         document.getElementById('<%= ModalDoldurBtn.ClientID%>').click();
 
     }
@@ -55,10 +57,12 @@
         document.getElementById('<%= IadeDegistirBtn.ClientID%>').click();
     }
     function ParaIadeModalOnay() {
-        $("#ParaIadeModalOnayDiv").modal({ backdrop: "static" });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ParaIadeModalOnayDiv'));
+        myModalInstance.show();
     }
     function ParaIadeDegistirModalOnay() {
-        $("#ParaIadeDegistirModalOnayDiv").modal({ backdrop: "static" });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ParaIadeDegistirModalOnayDiv'));
+        myModalInstance.show();
     }
 
 </script>
@@ -107,8 +111,8 @@
             </div>
         </div>
         <div class="card-footer">
-            <asp:LinkButton ID="BagisHareketListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Bağış Hareketleri" OnClick="BagisHareketListesiBtn_Click" />
-            <asp:LinkButton ID="ArmaganListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Armağan Listesi" OnClick="ArmaganListesiBtn_Click" />
+            <asp:LinkButton ID="BagisHareketListesiBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Bağış Hareketleri" OnClick="BagisHareketListesiBtn_Click" />
+            <asp:LinkButton ID="ArmaganListesiBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Armağan Listesi" OnClick="ArmaganListesiBtn_Click" />
         </div>
     </div>
     <asp:UpdateProgress ID="updateProgress" runat="server">
@@ -170,7 +174,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>
@@ -207,7 +211,7 @@
                             </div>
                             <div class="card-footer">
                                 <asp:LinkButton CssClass="btn btn-danger" ID="BagisiIadeEtNowBtn" runat="server" CausesValidation="false" Text="Parayı İade Et" OnClientClick="{return true;};" OnClick="BagisiIadeEtNowBtn_Click" />
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                                <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                             </div>
                         </div>
                         <div>
@@ -249,7 +253,7 @@
                             </div>
                             <div class="card-footer">
                                 <asp:LinkButton CssClass="btn btn-primary" ID="IadeDegistirNowBtn" runat="server" CausesValidation="false" Text="Güncelle" OnClientClick="{return true;};" OnClick="IadeDegistirNowBtn_Click" />
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                                <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                             </div>
                         </div>
                         <div>

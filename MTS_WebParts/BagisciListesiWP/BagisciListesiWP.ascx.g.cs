@@ -141,7 +141,7 @@ namespace MTS_WebParts.BagisciListesiWP {
             this.RandevuTakvimiBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "RandevuTakvimiBtn";
-            @__ctrl.CssClass = "btn btn-outline-info float-right";
+            @__ctrl.CssClass = "btn btn-outline-info float-end";
             @__ctrl.Text = "Faaliyet Takvimi";
             @__ctrl.Click -= new System.EventHandler(this.RandevuTakvimiBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.RandevuTakvimiBtn_Click);

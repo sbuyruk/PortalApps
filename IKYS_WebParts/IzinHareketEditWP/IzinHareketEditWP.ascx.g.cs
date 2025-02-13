@@ -706,7 +706,7 @@ namespace IKYS_WebParts.IzinHareketEditWP {
             this.KisiselSayfaBtn = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right mr-2";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end mr-2";
             @__ctrl.ID = "KisiselSayfaBtn";
             @__ctrl.Text = "Kişisel Sayfa";
             @__ctrl.CausesValidation = false;
@@ -724,7 +724,7 @@ namespace IKYS_WebParts.IzinHareketEditWP {
             this.IzinHareketListesiBtn = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right mr-2";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end mr-2";
             @__ctrl.ID = "IzinHareketListesiBtn";
             @__ctrl.Text = "Kullanılan İzinler";
             @__ctrl.CausesValidation = false;
@@ -992,8 +992,8 @@ namespace IKYS_WebParts.IzinHareketEditWP {
             @__ctrl5 = this.@__BuildControlDeleteModalBtn();
             @__parser.AddParsedSubObject(@__ctrl5);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            <button type=\"button\" class=\"btn btn-default\" data-" +
-                        "dismiss=\"modal\">Kapat</button>\r\n                        </div>\r\n                " +
-                        "    "));
+                        "bs-dismiss=\"modal\">Kapat</button>\r\n                        </div>\r\n             " +
+                        "       "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -1084,7 +1084,8 @@ namespace IKYS_WebParts.IzinHareketEditWP {
         button.click();
     }
     function OpenModalOnay() {
-        $(""#ModalOnayDiv"").modal({ backdrop: false });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
+        myModalInstance.show();
     }
     $(function () {
         $(""#datepicker"").datepicker({

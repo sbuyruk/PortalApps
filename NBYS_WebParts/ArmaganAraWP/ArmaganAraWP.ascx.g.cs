@@ -502,7 +502,7 @@ namespace NBYS_WebParts.ArmaganAraWP {
                         </div>
                     </div>
                     <div class=""modal-footer"">
-                        <button type=""button"" class=""btn btn-default"" data-dismiss=""modal"">Kapat</button>
+                        <button type=""button"" class=""btn btn-default"" data-bs-dismiss=""modal"">Kapat</button>
                     </div>
                 "));
         }
@@ -554,8 +554,9 @@ namespace NBYS_WebParts.ArmaganAraWP {
                     "      document.getElementById(\'");
                          @__w.Write( paramNakitBagisciIdLbl.ClientID);
 
-            @__w.Write("\').value = nakitBagisciId;\r\n\r\n        $(\"#ModalUrlDiv\").modal({ backdrop: false }" +
-                    ");\r\n        document.getElementById(\'");
+            @__w.Write("\').value = nakitBagisciId;\r\n\r\n        var myModal = new bootstrap.Modal(document." +
+                    "getElementById(\'ModalUrlDiv\'));\n        myModal.show();\r\n        document.getEle" +
+                    "mentById(\'");
                          @__w.Write( ModalDoldurBtn.ClientID);
 
             @__w.Write("\').click();\r\n    }\r\n    \r\n</script>\r\n\r\n<div class=\"container \">\r\n    <div style=\"" +

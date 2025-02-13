@@ -16,7 +16,8 @@
     function OpenModal(nakitBagisciId) {
         document.getElementById('<%= paramNakitBagisciIdLbl.ClientID%>').value = nakitBagisciId;
 
-        $("#ModalUrlDiv").modal({ backdrop: false });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalUrlDiv'));
+        myModalInstance.show();
         document.getElementById('<%= ModalDoldurBtn.ClientID%>').click();
     }
     function MadalyaOlustur(nakitBagisciId, hakedilenarmaganId,sonBagisTarihi) {
@@ -33,7 +34,7 @@
         <div class="card-header" id="CardHeader" runat="server">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-2">
-                <a class=" btn btn-outline-primary float-right mr-4" runat="server" id="YonergeLnk"
+                <a class=" btn btn-outline-primary float-end mr-4" runat="server" id="YonergeLnk"
                     data-fancybox
                     data-type="pdf"
                     data-width="960"
@@ -78,7 +79,7 @@
             </asp:UpdateProgress>
         </div>
         <div class="card-footer">
-            <asp:LinkButton CssClass="btn btn-outline-success float-right" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
+            <asp:LinkButton CssClass="btn btn-outline-success float-end" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
         </div>
     </div>
 </div>
@@ -132,7 +133,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>

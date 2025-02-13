@@ -8,7 +8,8 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="GorevOnayGirisiWP.ascx.cs" Inherits="IKYS_WebParts.GorevOnayGirisiWP.GorevOnayGirisiWP" %>
 <script type="text/javascript">
     function OpenModal() {
-        $("#ModalOnayDiv").modal({ backdrop: false });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
+        myModalInstance.show();
     }
     //On Page Load.
     $(function () {
@@ -195,8 +196,8 @@
                     <asp:LinkButton ID="UpdateBtn" CssClass="btn btn-outline-primary" runat="server" Text="Güncelle" OnClick="UpdateBtn_Click" Visible="false" />
                     <asp:LinkButton ID="DeleteBtn" CssClass="btn btn-outline-danger ml-2" runat="server" Text="Sil" OnClick="DeleteBtn_Click" />
 
-                    <asp:LinkButton ID="RaporAlBtn" CssClass="btn btn-outline-success float-right" runat="server" Text="Rapor Al" OnClick="RaporAlBtn_Click" Visible="false" />
-                    <asp:LinkButton CssClass="btn btn-outline-secondary float-right mr-2" ID="GorevOnayListesiBtn" runat="server" Text="Görev Onay Listesi" CausesValidation="false" OnClick="GorevOnayListesiBtn_Click" Visible="False" />
+                    <asp:LinkButton ID="RaporAlBtn" CssClass="btn btn-outline-success float-end" runat="server" Text="Rapor Al" OnClick="RaporAlBtn_Click" Visible="false" />
+                    <asp:LinkButton CssClass="btn btn-outline-secondary float-end mr-2" ID="GorevOnayListesiBtn" runat="server" Text="Görev Onay Listesi" CausesValidation="false" OnClick="GorevOnayListesiBtn_Click" Visible="False" />
                 </div>
             </div>
             <div class="card shadow">
@@ -239,7 +240,7 @@
                         </div>
                         <div class="modal-footer">
                             <asp:LinkButton CssClass="btn btn-danger" ID="DeleteNowBtn" runat="server" CausesValidation="false" Text="Görev Onayı Sil" OnClientClick="{return true;};" OnClick="DeleteNowBtn_Click" Visible="false" />
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                            <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                         </div>
                     </div>
                 </div>

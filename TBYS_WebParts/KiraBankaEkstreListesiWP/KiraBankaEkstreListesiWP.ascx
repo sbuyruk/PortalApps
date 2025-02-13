@@ -40,7 +40,8 @@
         return true;
     }
     function OpenModalOnay() {
-        $("#ModalOnayDiv").modal({ backdrop: true });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
+        myModalInstance.show();
     }
 
     function CloseModalOnay() {
@@ -176,7 +177,7 @@
                 </div>
                 <div class="card-body">
                     <div class="form-group">
-                        <asp:Label CssClass="col-2 col-form-label float-right" ID="RowCountLbl" runat="server" Text="" Font-Bold="True"></asp:Label>
+                        <asp:Label CssClass="col-2 col-form-label float-end" ID="RowCountLbl" runat="server" Text="" Font-Bold="True"></asp:Label>
                         <div class="checkbox pt-3">
                             <label>
                                 <asp:CheckBox ID="AktarilanlarHaricChk" runat="server" Checked="True" AutoPostBack="true" OnCheckedChanged="AktarilanlarHaricChk_CheckedChanged" ToolTip="Aktarilanları görmek için işareti kaldırınız." />
@@ -212,7 +213,7 @@
                     <div id="BtnDiv" style="display: none">
                         <input id="SecilenleriKaydetTriggerBtn" class="btn btn-success" type="button" value="Seçilenleri Kaydet" onclick="SecilenleriKaydetTriggerBtnClicked();" />
                     </div>
-                    <asp:LinkButton CssClass="btn btn-outline-success float-right" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
+                    <asp:LinkButton CssClass="btn btn-outline-success float-end" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
                 </div>
                 <div class="modal" id="ModalOnayDiv" role="dialog">
                     <div class="modal-dialog">
@@ -238,7 +239,7 @@
                                             </div>
                                             <div class="card-footer">
                                                 <asp:LinkButton CssClass="btn btn-success" ID="KaydetNowBtn" runat="server" CausesValidation="false" Text="Seçilenleri Kaydet" OnClientClick="{return true;};" OnClick="KaydetNowBtn_Click" Visible="false" />
-                                                <button type="button" class="btn btn-default float-right" data-dismiss="modal">Kapat</button>
+                                                <button type="button" class="btn btn-default float-end" data-bs-dismiss="modal">Kapat</button>
                                             </div>
                                         </div>
                                     </ContentTemplate>
@@ -293,7 +294,7 @@
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                                 </div>
                             </div>
                         </ContentTemplate>

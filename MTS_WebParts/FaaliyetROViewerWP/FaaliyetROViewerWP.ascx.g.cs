@@ -1181,7 +1181,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP {
                     </div>
                     <div class=""modal-footer"">
                         
-                        <button type=""button"" class=""btn btn-default"" data-dismiss=""modal"">Kapat</button>
+                        <button type=""button"" class=""btn btn-default"" data-bs-dismiss=""modal"">Kapat</button>
                     </div>
                 </div>
 
@@ -1849,7 +1849,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP {
                     </div>
                     <div class=""modal-footer"">
                         
-                        <button type=""button"" class=""btn btn-default"" data-dismiss=""modal"">Kapat</button>
+                        <button type=""button"" class=""btn btn-default"" data-bs-dismiss=""modal"">Kapat</button>
                     </div>
                 </div>
 
@@ -1934,10 +1934,13 @@ namespace MTS_WebParts.FaaliyetROViewerWP {
                     "bDEwLC0xMAogICAgICAgICAgIE05LDExIGwyLC0yJyBzdHJva2U9J2JsYWNrJyBzdHJva2Utd2lkdGg9" +
                     "JzEnLz4KPC9zdmc+Cg==\"); \r\n            background-repeat: repeat;    \r\n    }\r\n\r\n " +
                     " #globalWrapper * {\r\n    z-index: auto;\r\n  }\r\n</style>\r\n<script type=\"text/javas" +
-                    "cript\">\r\n    function OpenToplantiModal() {\r\n        $(\"#ToplantiDetaylariModal\"" +
-                    ").modal({ backdrop: true });\r\n    }\r\n    function OpenFaaliyetModal() {\r\n       " +
-                    " $(\"#FaaliyetDetaylariModal\").modal({ backdrop: true });\r\n    }\r\n    function To" +
-                    "plantiDetaylariModal(toplantiId) {\r\n        document.getElementById(\'");
+                    "cript\">\r\n    function OpenToplantiModal() {\r\n        var myModalInstance = boots" +
+                    "trap.Modal.getOrCreateInstance(document.getElementById(\'ToplantiDetaylariModal\')" +
+                    ");\n        myModalInstance.show();\r\n    }\r\n    function OpenFaaliyetModal() {\r\n " +
+                    "       var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getEle" +
+                    "mentById(\'FaaliyetDetaylariModal\'));\n        myModalInstance.show();\r\n    }\r\n   " +
+                    " function ToplantiDetaylariModal(toplantiId) {\r\n        document.getElementById(" +
+                    "\'");
                          @__w.Write( paramToplantiIdLbl.ClientID);
 
             @__w.Write("\').value = toplantiId;\r\n        document.getElementById(\'");

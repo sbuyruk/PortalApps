@@ -196,7 +196,7 @@
         </div>
         <div class="card-footer">
             <asp:LinkButton ID="SaveBtn" CssClass="btn btn-success float-left" runat="server" Text="İzin Talebini Gönder" OnClick="SaveBtn_Click" Visible="false" />
-            <asp:LinkButton CssClass="btn btn-secondary float-right mr-2" ID="BackBtn" runat="server" Text="Geri" CausesValidation="false" OnClick="BackBtn_Click" />
+            <asp:LinkButton CssClass="btn btn-secondary float-end mr-2" ID="BackBtn" runat="server" Text="Geri" CausesValidation="false" OnClick="BackBtn_Click" />
             <asp:LinkButton ID="UpdateBtn" CssClass="btn btn-primary float-left" runat="server" Text="Güncelle" OnClick="UpdateBtn_Click" Visible="false" />
         </div>
     </div>

@@ -1978,7 +1978,7 @@ namespace IKYS_WebParts.KisiselSayfaWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.PersonelListesiBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right mr-2";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end mr-2";
             @__ctrl.ID = "PersonelListesiBtn";
             @__ctrl.Text = "Personel Listesi";
             @__ctrl.CausesValidation = false;

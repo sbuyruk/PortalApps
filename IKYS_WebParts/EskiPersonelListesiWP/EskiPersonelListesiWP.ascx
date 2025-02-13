@@ -99,7 +99,7 @@
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-1">
                 <asp:Label CssClass="col-form-label  btn-outline-secondary" runat="server" Text="Eski Personel Listesi ( A Y R I L A N L A R )"></asp:Label>
-                <asp:Label CssClass="col-form-label text-secondary float-right" ID="EkranNo" Text="27" runat="server" ></asp:Label>
+                <asp:Label CssClass="col-form-label text-secondary float-end" ID="EkranNo" Text="27" runat="server" ></asp:Label>
             </h3>
 
         </div>
@@ -122,7 +122,7 @@
             </div>
         </div>
         <div class="card-footer">
-            <asp:LinkButton CssClass="btn btn-outline-success float-right" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
+            <asp:LinkButton CssClass="btn btn-outline-success float-end" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
         </div>
 
     </div>

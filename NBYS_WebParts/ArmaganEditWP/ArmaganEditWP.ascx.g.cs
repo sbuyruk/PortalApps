@@ -437,7 +437,7 @@ namespace NBYS_WebParts.ArmaganEditWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.Visible = false;
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right ";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end ";
             @__ctrl.ID = "SonrakiBtn";
             @__ctrl.Text = "Sonraki>>";
             return @__ctrl;
@@ -453,7 +453,7 @@ namespace NBYS_WebParts.ArmaganEditWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.Visible = false;
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right mr-2";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end mr-2";
             @__ctrl.ID = "OncekiBtn";
             @__ctrl.Text = "<<Önceki";
             return @__ctrl;
@@ -468,7 +468,7 @@ namespace NBYS_WebParts.ArmaganEditWP {
             this.ArmaganListesiBtn = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right mr-2";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end mr-2";
             @__ctrl.ID = "ArmaganListesiBtn";
             @__ctrl.Text = "Geri ";
             @__ctrl.Click -= new System.EventHandler(this.ArmaganListesiBtn_Click);

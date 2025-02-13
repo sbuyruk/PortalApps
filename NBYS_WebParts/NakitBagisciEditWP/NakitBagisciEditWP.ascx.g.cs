@@ -127,18 +127,6 @@ namespace NBYS_WebParts.NakitBagisciEditWP {
             "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton KaydetBtn;
         
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.LinkButton SonrakiBtn;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.LinkButton OncekiBtn;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.LinkButton NakitBagisciListesiBtn;
-        
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebPartCodeGenerator", "17.0.0.0")]
         public static implicit operator global::System.Web.UI.TemplateControl(NakitBagisciEditWP target) 
         {
@@ -515,52 +503,6 @@ namespace NBYS_WebParts.NakitBagisciEditWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.LinkButton @__BuildControlSonrakiBtn() {
-            global::System.Web.UI.WebControls.LinkButton @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
-            this.SonrakiBtn = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.Visible = false;
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right ";
-            @__ctrl.ID = "SonrakiBtn";
-            @__ctrl.Text = "Sonraki>>";
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.LinkButton @__BuildControlOncekiBtn() {
-            global::System.Web.UI.WebControls.LinkButton @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
-            this.OncekiBtn = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.Visible = false;
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right mr-2";
-            @__ctrl.ID = "OncekiBtn";
-            @__ctrl.Text = "<<Önceki";
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.LinkButton @__BuildControlNakitBagisciListesiBtn() {
-            global::System.Web.UI.WebControls.LinkButton @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
-            this.NakitBagisciListesiBtn = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right mr-2";
-            @__ctrl.ID = "NakitBagisciListesiBtn";
-            @__ctrl.Text = "Nakit Bağışçı Listesi";
-            @__ctrl.Click -= new System.EventHandler(this.NakitBagisciListesiBtn_Click);
-            @__ctrl.Click += new System.EventHandler(this.NakitBagisciListesiBtn_Click);
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControlTree(global::NBYS_WebParts.NakitBagisciEditWP.NakitBagisciEditWP @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n<div class=\"container w-50\">\r\n    <div class=\"card row shadow\">\r\n        "));
@@ -724,19 +666,7 @@ namespace NBYS_WebParts.NakitBagisciEditWP {
             global::System.Web.UI.WebControls.LinkButton @__ctrl17;
             @__ctrl17 = this.@__BuildControlKaydetBtn();
             @__parser.AddParsedSubObject(@__ctrl17);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl18;
-            @__ctrl18 = this.@__BuildControlSonrakiBtn();
-            @__parser.AddParsedSubObject(@__ctrl18);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl19;
-            @__ctrl19 = this.@__BuildControlOncekiBtn();
-            @__parser.AddParsedSubObject(@__ctrl19);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl20;
-            @__ctrl20 = this.@__BuildControlNakitBagisciListesiBtn();
-            @__parser.AddParsedSubObject(@__ctrl20);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n        </div>\r\n    </div>\r\n</div>\r\n"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            \r\n        </div>\r\n    </div>\r\n</div>\r\n"));
         }
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +

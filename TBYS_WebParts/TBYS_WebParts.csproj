@@ -302,6 +302,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>KiradaOlanTasinmazlarWP.ascx</DependentUpon>
     </Compile>
+    <Compile Include="KiraGeliriTahakkukTahsilWP\KiraGeliriTahakkukTahsilWP.ascx.cs">
+      <DependentUpon>KiraGeliriTahakkukTahsilWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="KiraGeliriTahakkukTahsilWP\KiraGeliriTahakkukTahsilWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>KiraGeliriTahakkukTahsilWP.ascx</DependentUpon>
+    </Compile>
     <Compile Include="KiraGelirleriAyDokumuWP\KiraGelirleriAyDokumuWP.ascx.cs">
       <DependentUpon>KiraGelirleriAyDokumuWP.ascx</DependentUpon>
     </Compile>
@@ -806,6 +814,10 @@
     <None Include="KiradaOlanTasinmazlarWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{4f991b91-a754-4a0c-a943-e786f921626f}</SharePointProjectItemId>
     </None>
+    <None Include="KiraGeliriTahakkukTahsilWP\KiraGeliriTahakkukTahsilWP.webpart" />
+    <None Include="KiraGeliriTahakkukTahsilWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{78038038-f58e-4ce3-9475-ca0a013e2d4d}</SharePointProjectItemId>
+    </None>
     <None Include="KiraGelirleriAyDokumuWP\KiraGelirleriAyDokumuWP.webpart" />
     <None Include="KiraGelirleriAyDokumuWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{dd4acf22-2603-4f31-a6d5-f4a6f6d9beb5}</SharePointProjectItemId>
@@ -1160,6 +1172,11 @@
     <Content Include="KiradaOlanTasinmazlarWP\KiradaOlanTasinmazlarWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>KiradaOlanTasinmazlarWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="KiraGeliriTahakkukTahsilWP\Elements.xml" />
+    <Content Include="KiraGeliriTahakkukTahsilWP\KiraGeliriTahakkukTahsilWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>KiraGeliriTahakkukTahsilWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="KiraGelirleriAyDokumuWP\Elements.xml" />
     <Content Include="KiraGelirleriAyDokumuWP\KiraGelirleriAyDokumuWP.ascx">

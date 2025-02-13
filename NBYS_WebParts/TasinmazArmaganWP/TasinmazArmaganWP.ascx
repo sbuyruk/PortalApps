@@ -100,7 +100,7 @@
                 </div>
                 <div class="card-footer">
                     
-                    <asp:LinkButton CssClass="btn btn-outline-success float-right" ID="KaydetBtn" runat="server" OnClick="KaydetBtn_Click">Kaydet</asp:LinkButton>
+                    <asp:LinkButton CssClass="btn btn-outline-success float-end" ID="KaydetBtn" runat="server" OnClick="KaydetBtn_Click">Kaydet</asp:LinkButton>
                     <asp:LinkButton CssClass="btn btn-outline-primary" ID="BelgeBasimiBtn" runat="server" OnClick="BelgeBasimiBtn_Click" CausesValidation="false">Belge Basımı</asp:LinkButton>
                     <asp:LinkButton CssClass="btn btn-outline-secondary" ID="ArmaganListBtn" runat="server" OnClick="ArmaganListBtn_Click" CausesValidation="false">Taşınmaz Armağan Listesi</asp:LinkButton>
                     

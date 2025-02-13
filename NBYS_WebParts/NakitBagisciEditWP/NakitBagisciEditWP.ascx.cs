@@ -126,20 +126,82 @@ namespace NBYS_WebParts.NakitBagisciEditWP
                 ViewState["PageIndex"] = value;
             }
         }
+        private string CurrentUserName
+        {
+            get
+            {
+
+                if (ViewState["CurrentUserName"] == null)
+                {
+                    ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUserLoginName();
+                }
+                return ViewState["CurrentUserName"].ToString();
+            }
+
+            set
+            {
+                ViewState["CurrentUserName"] = value;
+            }
+        }
+        private int BolgeIdQS
+        {
+            get
+            {
+
+                if (ViewState["BolgeId"] == null)
+                {
+                    if (Page.Request.QueryString["BolgeId"] != null)
+                    {
+                        ViewState["BolgeId"] = Page.Request.QueryString["BolgeId"];
+                    }
+                    else
+                    {
+                        ViewState["BolgeId"] = string.Empty;
+                    }
+                }
+                return ViewState["BolgeId"].ReturnZeroIfNull().ConvertToInt();
+            }
+
+            set
+            {
+                ViewState["BolgeId"] = value;
+            }
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
 
             try
             {
-                if (!Page.IsPostBack)
+                if (NakitBagisciIdQS.ConvertToInt()>0)
                 {
-                    FillIlData();
-                    FillIlceData();
-                    if (!string.IsNullOrEmpty(NakitBagisciIdQS))
+                    Bolge kullanicininBolgesi = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
+                    BolgeIdQS = kullanicininBolgesi == null ? 0 : kullanicininBolgesi.Id;
+                    bool kullaniciGenelMdluktenMi = (kullanicininBolgesi.Id == ProjeConstants.BOLGE_HEPSI_INT || kullanicininBolgesi.Id == ProjeConstants.BOLGE_GENELMUDURLUK_INT);
+                    bool kullaniciYetkiliMi = NBYSOrtak.YetkiKontrolu(kullanicininBolgesi, NakitBagisciIdQS.ConvertToInt());
+                    if (kullaniciGenelMdluktenMi || kullaniciYetkiliMi)
                     {
-                        NakitBagisciFormunuDoldur();
-                    }
+                        if (!Page.IsPostBack)
+                        {
+                            FillIlData();
+                            FillIlceData();
+                            if (!string.IsNullOrEmpty(NakitBagisciIdQS))
+                            {
 
+                                NakitBagisciFormunuDoldur();
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        KaydetBtn.Visible = false;
+                        MessageHelper.PublishMessage("Bağışçı bölgenizde olmadığından bilgilerine erişemezsiniz", ProjeConstants.MESAJ_HATA);
+                    }
+                }
+                else
+                {
+                    KaydetBtn.Visible = false;
+                    MessageHelper.PublishMessage("Bağışçı bulunamadı", ProjeConstants.MESAJ_HATA);
                 }
             }
             catch (Exception ex)
@@ -148,6 +210,9 @@ namespace NBYS_WebParts.NakitBagisciEditWP
                 exHelper.PublishException();
             }
         }
+
+        
+
         private void FillIlData()
         {
             if (IliDDL.SelectedItem == null)
@@ -225,7 +290,6 @@ namespace NBYS_WebParts.NakitBagisciEditWP
                     BelgeIstemiyorChk.Checked = nakitBagisci.BelgeIstemiyor.ConvertToBool();
                     DergiGonderilmesinChk.Checked = nakitBagisci.DergiGonderilmesin.ConvertToBool();
                 }
-
             }
 
         }
@@ -346,45 +410,45 @@ namespace NBYS_WebParts.NakitBagisciEditWP
             }
             return isSaved;
         }
-        protected void NakitBagisciListesiBtn_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
+        //protected void NakitBagisciListesiBtn_Click(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+        //        string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
 
-                if (string.IsNullOrEmpty(SenderAppQS))
-                {
-                    newUrl += "/" + ProjeConstants.PAGE_NAKITBAGISCI_LIST + "?NakitBagisciId=" + NakitBagisciIdQS + "&SecilenId=" + NakitBagisciIdQS;
-                }
-                else if (SenderAppQS.Equals("NBL"))
-                {
-                    newUrl += "/" + ProjeConstants.PAGE_NAKITBAGISCI_LIST + "?NakitBagisciId=" + NakitBagisciIdQS + "&SecilenId=" + NakitBagisciIdQS;
-                }
-                else if (SenderAppQS.Equals("BB"))
-                {
-                    newUrl += "/" + ProjeConstants.PAGE_BAGISCI_BIRLESTIRME + "?NakitBagisciId=" + NakitBagisciIdQS + "&Param=" + ParamQS + "&SecilenId=" + NakitBagisciIdQS;
-                }
-                else if (SenderAppQS.Equals("NBB"))
-                {
-                    newUrl += "/" + ProjeConstants.PAGE_NAKITBAGISCI_BULMA + "?NakitBagisciId=" + NakitBagisciIdQS + "&Param=" + ParamQS + "&SecilenId=" + NakitBagisciIdQS;
-                }
-                else if (SenderAppQS.Equals("NBAL"))
-                {
+        //        if (string.IsNullOrEmpty(SenderAppQS))
+        //        {
+        //            newUrl += "/" + ProjeConstants.PAGE_NAKITBAGISCI_LIST + "?NakitBagisciId=" + NakitBagisciIdQS + "&SecilenId=" + NakitBagisciIdQS;
+        //        }
+        //        else if (SenderAppQS.Equals("NBL"))
+        //        {
+        //            newUrl += "/" + ProjeConstants.PAGE_NAKITBAGISCI_LIST + "?NakitBagisciId=" + NakitBagisciIdQS + "&SecilenId=" + NakitBagisciIdQS;
+        //        }
+        //        else if (SenderAppQS.Equals("BB"))
+        //        {
+        //            newUrl += "/" + ProjeConstants.PAGE_BAGISCI_BIRLESTIRME + "?NakitBagisciId=" + NakitBagisciIdQS + "&Param=" + ParamQS + "&SecilenId=" + NakitBagisciIdQS;
+        //        }
+        //        else if (SenderAppQS.Equals("NBB"))
+        //        {
+        //            newUrl += "/" + ProjeConstants.PAGE_NAKITBAGISCI_BULMA + "?NakitBagisciId=" + NakitBagisciIdQS + "&Param=" + ParamQS + "&SecilenId=" + NakitBagisciIdQS;
+        //        }
+        //        else if (SenderAppQS.Equals("NBAL"))
+        //        {
 
-                    int index = currentUrl.LastIndexOf("?") < 0 ? currentUrl.Length : currentUrl.LastIndexOf("?");
-                    string queryString = currentUrl.Substring(index + 1, currentUrl.Length - index - 1);
-                    newUrl += "/" + ProjeConstants.PAGE_NAKITBAGISCI_ADRESLIST + "?Param=" + ParamQS + "&PageIndex=" + PageIndexQS + "&" + queryString;
-                }
+        //            int index = currentUrl.LastIndexOf("?") < 0 ? currentUrl.Length : currentUrl.LastIndexOf("?");
+        //            string queryString = currentUrl.Substring(index + 1, currentUrl.Length - index - 1);
+        //            newUrl += "/" + ProjeConstants.PAGE_NAKITBAGISCI_ADRESLIST + "?Param=" + ParamQS + "&PageIndex=" + PageIndexQS + "&" + queryString;
+        //        }
 
-                Page.Response.Redirect(newUrl, true);
-            }
-            catch (Exception ex)
-            {
-                ExceptionHelper exHelper = new ExceptionHelper(ex);
-                exHelper.PublishException();
-            }
-        }
+        //        Page.Response.Redirect(newUrl, true);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ExceptionHelper exHelper = new ExceptionHelper(ex);
+        //        exHelper.PublishException();
+        //    }
+        //}
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
             try

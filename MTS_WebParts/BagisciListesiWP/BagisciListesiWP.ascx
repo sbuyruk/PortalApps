@@ -99,7 +99,7 @@
             </div>
         </div>
         <div class="card-footer">
-            <asp:LinkButton ID="RandevuTakvimiBtn" CssClass="btn btn-outline-info float-right" runat="server" Text="Faaliyet Takvimi" OnClick="RandevuTakvimiBtn_Click"></asp:LinkButton>
+            <asp:LinkButton ID="RandevuTakvimiBtn" CssClass="btn btn-outline-info float-end" runat="server" Text="Faaliyet Takvimi" OnClick="RandevuTakvimiBtn_Click"></asp:LinkButton>
             <asp:Label ID="Label1" CssClass="col-form-label text-danger" runat="server" Text="Label">1. Taşınmaz Bağışçılardan Sağ olanlar,</asp:Label>
             <br />
             <asp:Label ID="Label2" CssClass="col-form-label text-danger" runat="server" Text="Label">2. Son 5 yılda 2.000 TL ve üzeri bağış yapan Nakit Bağışçılardan Sağ olanlar listelenmiştir.</asp:Label>

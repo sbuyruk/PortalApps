@@ -19,7 +19,8 @@
 </style>
 <script type="text/javascript">
     function OpenModal() {
-        $("#OnayModal").modal({ backdrop: "static" });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('OnayModal'));
+        myModalInstance.show();
     }
     function CloseModal() {
         $("#OnayModal").modal('hide');
@@ -49,7 +50,7 @@
     <div class="card shadow">
         <div class="card-header" id="CardHeader" runat="server">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
-            <asp:Image ID="AktifPasifImg" ClientIDMode="Static" runat="server" ImageUrl="../_layouts/19/images/TBYS_WebParts/belli-degil.png" CssClass="float-right" onerror="this.src='../TBYSResimleri/belli-degil.png';" />
+            <asp:Image ID="AktifPasifImg" ClientIDMode="Static" runat="server" ImageUrl="../_layouts/19/images/TBYS_WebParts/belli-degil.png" CssClass="float-end" onerror="this.src='../TBYSResimleri/belli-degil.png';" />
             <h3 class="mb-2">
                 <asp:Label CssClass="col-form-label text-danger font-weight-bold" ID="TitleLbl" runat="server" Text="Kira Sözleşmesi"></asp:Label>
                 <asp:Label CssClass="col-form-label" ID="IdLbl" runat="server"></asp:Label>
@@ -88,7 +89,7 @@
                             </div>
                             <div class="form-group table border border-dark " >
                                 <div class="form-group">
-                                    <asp:LinkButton ID="KiraciTasinmazDegistirBtn" runat="server" CssClass="btn btn-primary float-right" Text="Kiracı/Taşınmaz Değiştir" OnClick="KiraciTasinmazDegistirBtn_Click"></asp:LinkButton>
+                                    <asp:LinkButton ID="KiraciTasinmazDegistirBtn" runat="server" CssClass="btn btn-primary float-end" Text="Kiracı/Taşınmaz Değiştir" OnClick="KiraciTasinmazDegistirBtn_Click"></asp:LinkButton>
                                 </div>
                                 <div class="form-group">
                                     <asp:Table ID="KiralikTable" runat="server" CssClass="table table-bordered table-striped"></asp:Table>
@@ -199,7 +200,7 @@
                                         <asp:TextBox ID="TeminatAciklamaTxt" runat="server" TextMode="MultiLine" Rows="2" CssClass="form-control" ToolTip="Teminat Açıklama" ReadOnly="true"></asp:TextBox>
                                     </div>
                                     <div class="form-group pb-2">
-                                        <asp:LinkButton ID="TeminatIslemleriBtn" CssClass="btn btn-outline-primary float-right" runat="server" Text="Teminat İşlemleri" OnClick="TeminatIslemleriBtn_Click" />
+                                        <asp:LinkButton ID="TeminatIslemleriBtn" CssClass="btn btn-outline-primary float-end" runat="server" Text="Teminat İşlemleri" OnClick="TeminatIslemleriBtn_Click" />
                                     </div>
                                 </div>
 
@@ -235,12 +236,12 @@
             </asp:UpdatePanel>
         </div>
         <div class="card-footer">
-            <asp:LinkButton ID="NextBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Sonraki=>" OnClick="NextBtn_Click" />
-            <asp:LinkButton ID="PrevBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="<=Önceki" OnClick="PrevBtn_Click" />
+            <asp:LinkButton ID="NextBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Sonraki=>" OnClick="NextBtn_Click" />
+            <asp:LinkButton ID="PrevBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="<=Önceki" OnClick="PrevBtn_Click" />
 
-            <asp:LinkButton ID="KiraSozlesmeListBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Sözleşme Listesi" OnClick="KiraSozlesmeListBtn_Click" />
-            <asp:LinkButton ID="KiraciBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Kiracı" OnClick="KiraciBtn_Click" />
-            <asp:LinkButton ID="OdemePlaniGoruntuleBtn" runat="server" CssClass="btn btn-outline-secondary float-right" Text="Ödeme Planı" OnClick="OdemePlaniGoruntuleBtn_Click" Visible="false"></asp:LinkButton>
+            <asp:LinkButton ID="KiraSozlesmeListBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Sözleşme Listesi" OnClick="KiraSozlesmeListBtn_Click" />
+            <asp:LinkButton ID="KiraciBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Kiracı" OnClick="KiraciBtn_Click" />
+            <asp:LinkButton ID="OdemePlaniGoruntuleBtn" runat="server" CssClass="btn btn-outline-secondary float-end" Text="Ödeme Planı" OnClick="OdemePlaniGoruntuleBtn_Click" Visible="false"></asp:LinkButton>
 
             
             <asp:LinkButton ID="UpdateBtn" runat="server" CssClass="btn btn-primary" Text="Sözleşme Güncelle" OnClick="UpdateBtn_Click"></asp:LinkButton>
@@ -284,7 +285,7 @@
                         <div class="card-footer">
                             <asp:LinkButton ID="OnaylaBtn" Text="Onayla" runat="server" class="btn btn-outline-danger" OnClick="OnaylaBtn_Click"></asp:LinkButton>
                             <asp:LinkButton ID="OdemePlaniBtn" Text="Ödeme Planına Git" runat="server" class="btn btn-outline-primary" OnClick="OdemePlaniBtn_Click" Visible="false"></asp:LinkButton>
-                            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">İptal</button>
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">İptal</button>
                         </div>
                     </div>
                 </div>

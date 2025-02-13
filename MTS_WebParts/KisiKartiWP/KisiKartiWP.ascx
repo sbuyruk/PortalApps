@@ -86,11 +86,11 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <asp:LinkButton CssClass="btn btn-outline-success float-right" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
-                    <asp:LinkButton ID="FaaliyetTakvimiBtn" CssClass="btn btn-outline-info float-right" runat="server" Text="Faaliyet Takvimi" OnClick="FaaliyetTakvimiBtn_Click"></asp:LinkButton>
-                    <asp:LinkButton ID="FaaliyetListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Faaliyet Listesi" OnClick="FaaliyetListesiBtn_Click"></asp:LinkButton>
-                    <asp:LinkButton ID="KisiListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Kişi Listesi" OnClick="KisiListesiBtn_Click"></asp:LinkButton>
-                    <asp:LinkButton ID="AramaListesi" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Arama/Görüşme Listesi" OnClick="AramaListesiBtn_Click"></asp:LinkButton>
+                    <asp:LinkButton CssClass="btn btn-outline-success float-end" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
+                    <asp:LinkButton ID="FaaliyetTakvimiBtn" CssClass="btn btn-outline-info float-end" runat="server" Text="Faaliyet Takvimi" OnClick="FaaliyetTakvimiBtn_Click"></asp:LinkButton>
+                    <asp:LinkButton ID="FaaliyetListesiBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Faaliyet Listesi" OnClick="FaaliyetListesiBtn_Click"></asp:LinkButton>
+                    <asp:LinkButton ID="KisiListesiBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Kişi Listesi" OnClick="KisiListesiBtn_Click"></asp:LinkButton>
+                    <asp:LinkButton ID="AramaListesi" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Arama/Görüşme Listesi" OnClick="AramaListesiBtn_Click"></asp:LinkButton>
                 </div>
             </div>
         </ContentTemplate>

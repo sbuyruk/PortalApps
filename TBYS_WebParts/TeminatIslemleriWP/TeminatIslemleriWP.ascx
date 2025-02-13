@@ -14,7 +14,8 @@
         document.getElementById('<%= ModalSilBtn.ClientID%>').click();
     }
     function OpenDeleteModalOnay() {
-        $("#DeleteModalOnayDiv").modal({ backdrop: "static" });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('DeleteModalOnayDiv'));
+        myModalInstance.show();
     }
     function GuncelleModalDoldur(teminatId) {
 
@@ -22,7 +23,8 @@
         document.getElementById('<%= ModalGuncelleBtn.ClientID%>').click();
     }
     function OpenTeminatIslemiModal() {
-        $("#TeminatIslemiEkleModal").modal({ backdrop: "static" });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('TeminatIslemiEkleModal'));
+        myModalInstance.show();
     }
     function CloseModal() {
         $("#TeminatIslemiEkleModal").modal('hide');
@@ -145,13 +147,13 @@
             <asp:LinkButton ID="TeminatGuncelleBtn" runat="server" CssClass="btn btn-primary" Text="Güncelle" OnClick="TeminatGuncelleBtn_Click"></asp:LinkButton>
             <asp:LinkButton ID="ModalEkleBtn" runat="server" CssClass="btn btn-success" CausesValidation="false" Text="Teminat İşlemi Ekle" OnClientClick="{return true;};" OnClick="ModalEkleBtn_Click" />
             <asp:LinkButton ID="SozlesmeyeGitBtn" runat="server" CssClass="btn btn-outline-secondary " Text="Sözleşme" OnClick="SozlesmeyeGitBtn_Click"></asp:LinkButton>        
-            <asp:LinkButton ID="NextBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Sonraki Söz.=>" OnClick="NextBtn_Click" />
-            <asp:LinkButton ID="PrevBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="<=Önceki Söz." OnClick="PrevBtn_Click" />
-            <asp:LinkButton ID="KiraciListesiBtn" runat="server" CssClass="btn btn-outline-secondary float-right" Text="Kiracı Listesi" OnClick="KiraciListesiBtn_Click"></asp:LinkButton>
-            <asp:LinkButton ID="KiraKartiBtn" runat="server" CssClass="btn btn-outline-secondary float-right" Text="Kira Karti" OnClick="KiraKartiBtn_Click"></asp:LinkButton>
-            <asp:LinkButton ID="OdemePlaninaGitBtn" runat="server" CssClass="btn btn-outline-secondary float-right" Text="Ödeme Planı" OnClick="OdemePlaninaGitBtn_Click"></asp:LinkButton>
-            <asp:LinkButton ID="TeminatListesiBtn" runat="server" CssClass="btn btn-outline-secondary float-right" Text="Teminat Listesi" OnClick="TeminatListesiBtn_Click"></asp:LinkButton>
-            <asp:LinkButton ID="AylikOdemelerBtn" runat="server" CssClass="btn btn-outline-secondary float-right" Text="Aylık Ödemeler" OnClick="AylikOdemelerBtn_Click"></asp:LinkButton>
+            <asp:LinkButton ID="NextBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Sonraki Söz.=>" OnClick="NextBtn_Click" />
+            <asp:LinkButton ID="PrevBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="<=Önceki Söz." OnClick="PrevBtn_Click" />
+            <asp:LinkButton ID="KiraciListesiBtn" runat="server" CssClass="btn btn-outline-secondary float-end" Text="Kiracı Listesi" OnClick="KiraciListesiBtn_Click"></asp:LinkButton>
+            <asp:LinkButton ID="KiraKartiBtn" runat="server" CssClass="btn btn-outline-secondary float-end" Text="Kira Karti" OnClick="KiraKartiBtn_Click"></asp:LinkButton>
+            <asp:LinkButton ID="OdemePlaninaGitBtn" runat="server" CssClass="btn btn-outline-secondary float-end" Text="Ödeme Planı" OnClick="OdemePlaninaGitBtn_Click"></asp:LinkButton>
+            <asp:LinkButton ID="TeminatListesiBtn" runat="server" CssClass="btn btn-outline-secondary float-end" Text="Teminat Listesi" OnClick="TeminatListesiBtn_Click"></asp:LinkButton>
+            <asp:LinkButton ID="AylikOdemelerBtn" runat="server" CssClass="btn btn-outline-secondary float-end" Text="Aylık Ödemeler" OnClick="AylikOdemelerBtn_Click"></asp:LinkButton>
         </div>
     </div>
 </div>
@@ -193,7 +195,7 @@
                     <div class="card-footer">
                         <asp:LinkButton ID="ModalEkleNowBtn" Text="Kaydet" runat="server" CssClass="btn btn-success" OnClick="ModalEkleNowBtn_Click" Visible="false"></asp:LinkButton>
                         <asp:LinkButton ID="ModalGuncelleNowBtn" Text="Güncelle" runat="server" CssClass="btn btn-primary" OnClick="ModalGuncelleNowBtn_Click" Visible="false"></asp:LinkButton>
-                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">İptal</button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">İptal</button>
                     </div>
                 </div>
                 <div style="display: none">
@@ -226,7 +228,7 @@
                     </div>
                     <div class="card-footer">
                         <asp:LinkButton CssClass="btn btn-danger" ID="ModalSilNowBtn" runat="server" CausesValidation="false" Text="Teminat İşlemini Sil" OnClientClick="{return true;};" OnClick="ModalSilNowBtn_Click" />
-                        <button type="button" class="btn btn-default" data-dismiss="modal">İptal</button>
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">İptal</button>
                     </div>
                 </div>
             </div>

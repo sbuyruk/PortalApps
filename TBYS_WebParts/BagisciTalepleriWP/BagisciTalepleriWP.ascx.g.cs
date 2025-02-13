@@ -224,7 +224,7 @@ namespace TBYS_WebParts.BagisciTalepleriWP {
             this.BagisciBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "BagisciBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Bağışçıya Git";
             @__ctrl.Click -= new System.EventHandler(this.BagisciBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.BagisciBtn_Click);
@@ -436,8 +436,8 @@ namespace TBYS_WebParts.BagisciTalepleriWP {
             global::System.Web.UI.WebControls.LinkButton @__ctrl9;
             @__ctrl9 = this.@__BuildControlTalepGuncelleBtn();
             @__parser.AddParsedSubObject(@__ctrl9);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        <button type=\"button\" class=\"btn btn-default\" data-dism" +
-                        "iss=\"modal\">Kapat</button>\r\n                    </div>\r\n                "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        <button type=\"button\" class=\"btn btn-default\" data-bs-d" +
+                        "ismiss=\"modal\">Kapat</button>\r\n                    </div>\r\n                "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -532,9 +532,9 @@ namespace TBYS_WebParts.BagisciTalepleriWP {
             global::System.Web.UI.WebControls.LinkButton @__ctrl3;
             @__ctrl3 = this.@__BuildControlTalepSilNowBtn();
             @__parser.AddParsedSubObject(@__ctrl3);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        <button type=\"button\" class=\"btn btn-default\" data-dism" +
-                        "iss=\"modal\">Kapat</button>\r\n                    </div>\r\n                </div>\r\n" +
-                        "            </div>\r\n        </div>\r\n    "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        <button type=\"button\" class=\"btn btn-default\" data-bs-d" +
+                        "ismiss=\"modal\">Kapat</button>\r\n                    </div>\r\n                </div" +
+                        ">\r\n            </div>\r\n        </div>\r\n    "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -597,13 +597,22 @@ namespace TBYS_WebParts.BagisciTalepleriWP {
             @__w.Write("\').value = id;\r\n        document.getElementById(\'");
                          @__w.Write( TalepModalDoldurBtn.ClientID);
 
-            @__w.Write("\').click();\r\n        $(\"#TalepModalUrlDiv\").modal({ backdrop: \"static\" });\r\n    }" +
-                    "\r\n\r\n    function OpenTalepSilModal(id) {\r\n        document.getElementById(\'");
+            @__w.Write("\').click();\r\n\n        var myModalInstance = bootstrap.Modal.getOrCreateInstance(d" +
+                    "ocument.getElementById(\'TalepModalUrlDiv\'));\n        myModalInstance.show();\r\n  " +
+                    "  }\r\n\r\n    function OpenTalepSilModal(id) {\r\n        document.getElementById(\'");
                          @__w.Write( ParamTalepIdLbl.ClientID);
 
-            @__w.Write("\').value = id;\r\n        $(\"#ModalTalepSilDiv\").modal({ backdrop: \"static\" });\r\n  " +
-                    "  }\r\n\r\n</script>\r\n<div class=\"container\">\r\n    <div class=\"card shadow\">\r\n      " +
-                    "  <div class=\"card-header \">\r\n            ");
+            @__w.Write(@"').value = id;
+
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalTalepSilDiv'));
+        myModalInstance.show();
+    }
+
+</script>
+<div class=""container"">
+    <div class=""card shadow"">
+        <div class=""card-header "">
+            ");
             parameterContainer.Controls[0].RenderControl(@__w);
             @__w.Write("\r\n            <h3 class=\"mb-1\">\r\n                ");
             parameterContainer.Controls[1].RenderControl(@__w);

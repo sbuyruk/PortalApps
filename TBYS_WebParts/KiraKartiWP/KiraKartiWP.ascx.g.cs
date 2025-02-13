@@ -239,7 +239,7 @@ namespace TBYS_WebParts.KiraKartiWP {
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             this.KartNoHdrCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "font-weight-bold float-right";
+            @__ctrl.CssClass = "font-weight-bold float-end";
             @__ctrl.ID = "KartNoHdrCell";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("KART NO"));
@@ -1149,7 +1149,7 @@ namespace TBYS_WebParts.KiraKartiWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.ExcelBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-success float-right";
+            @__ctrl.CssClass = "btn btn-success float-end";
             @__ctrl.ID = "ExcelBtn";
             @__ctrl.Text = "Excel\'e Aktar";
             @__ctrl.OnClientClick = "javascript:setFormSubmitToFalse()";
@@ -1167,7 +1167,7 @@ namespace TBYS_WebParts.KiraKartiWP {
             this.KiraciListesiBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "KiraciListesiBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Kiracı Listesi";
             @__ctrl.Click -= new System.EventHandler(this.KiraciListesiBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.KiraciListesiBtn_Click);
@@ -1183,7 +1183,7 @@ namespace TBYS_WebParts.KiraKartiWP {
             this.TumunuSecChk = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "TumunuSecChk";
-            @__ctrl.CssClass = "float-right mr-4";
+            @__ctrl.CssClass = "float-end mr-4";
             @__ctrl.AutoPostBack = true;
             @__ctrl.Text = "Tüm Sözleşmeleri Göster";
             @__ctrl.Checked = false;

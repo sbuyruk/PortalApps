@@ -8,7 +8,8 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="IzinDonemListesiWP.ascx.cs" Inherits="IKYS_WebParts.IzinDonemListesiWP.IzinDonemListesiWP" %>
 <script>
     function OpenModal() {
-        $("#ModalOnayDiv").modal({ backdrop: false });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
+        myModalInstance.show();
     }
 </script>
 <script type="text/javascript">
@@ -63,7 +64,7 @@
             <asp:LinkButton ID="CloseBtn" CssClass="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3>
                 <asp:Label CssClass="col-form-label  btn-outline-primary" runat="server" Text="İzin Dönemleri Düzenleme"></asp:Label>
-                <asp:Label CssClass="col-form-label text-secondary float-right" ID="EkranNo" Text="22" runat="server" ></asp:Label>
+                <asp:Label CssClass="col-form-label text-secondary float-end" ID="EkranNo" Text="22" runat="server" ></asp:Label>
             </h3>
         </div>
         <div class="card-body">
@@ -76,7 +77,7 @@
                                 <asp:DropDownList ID="PersonelDDL" runat="server" CssClass="form-control" AutoPostBack="True" OnSelectedIndexChanged="PersonelDDL_SelectedIndexChanged" />
                             </div>
                         </div>
-                        <div class="form-group float-right">
+                        <div class="form-group float-end">
                             <asp:LinkButton CssClass="btn btn-success" ID="DonemEkleBtn" runat="server" CausesValidation="false" Text="Toplu Eski Dönem Ekle" OnClientClick="{return true;};" OnClick="DonemEkleBtn_Click" />
                         </div>
                         <div class="table loader">
@@ -141,7 +142,7 @@
                                 <div class="modal-footer">
                                     <asp:LinkButton CssClass="btn btn-primary" ID="UpdateNowBtn" runat="server" CausesValidation="false" Text="Güncelle" OnClientClick="{return true;};" OnClick="UpdateNowBtn_Click" />
                                     <asp:LinkButton CssClass="btn btn-success" ID="DonemEkleNowBtn" runat="server" CausesValidation="false" Text="Dönem Ekle" OnClientClick="{return true;};" OnClick="DonemEkleNowBtn_Click" />
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                                 </div>
                             </div>
                         </div>

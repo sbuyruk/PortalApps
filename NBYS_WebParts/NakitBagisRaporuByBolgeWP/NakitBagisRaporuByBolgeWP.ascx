@@ -20,7 +20,7 @@
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-1">
                 <asp:Label CssClass="col-form-label btn-outline-info" runat="server" Text="Bölgelere Göre Nakit Bağış Raporu"></asp:Label>
-                <asp:Label CssClass="col-form-label text-secondary float-right" ID="EkranNo" Text="21" runat="server" ></asp:Label>
+                <asp:Label CssClass="col-form-label text-secondary float-end" ID="EkranNo" Text="21" runat="server" ></asp:Label>
             </h3>
         </div>
         <div class="row mt-2 ">
@@ -75,7 +75,7 @@
             </Triggers>
         </asp:UpdatePanel>
         <div class="card-footer">
-            <asp:LinkButton CssClass="btn btn-outline-warning float-right" ID="ExcelBtn" runat="server" Text="Excel'e Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
+            <asp:LinkButton CssClass="btn btn-outline-warning float-end" ID="ExcelBtn" runat="server" Text="Excel'e Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
 
         </div>
     </div>

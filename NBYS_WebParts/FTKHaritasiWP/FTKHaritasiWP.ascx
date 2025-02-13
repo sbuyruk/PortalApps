@@ -43,7 +43,8 @@
     });
 
     function OpenIlInfoModal() {
-        $("#ilInfoModal").modal({ backdrop: false });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ilInfoModal'));
+        myModalInstance.show();
     }
 
 </script>
@@ -169,7 +170,7 @@
                         </div>
                         <div class="modal-footer">
                             <asp:Button ID="FTKUyeleriBtn" class="btn" runat="server" Text="FTK Üyeleri" OnClick="FTKUyeleriBtn_Click" Visible="false" />
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                            <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                         </div>
                     </ContentTemplate>
                     <Triggers>

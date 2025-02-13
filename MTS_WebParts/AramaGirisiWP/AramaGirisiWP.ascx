@@ -31,10 +31,12 @@
 </style>
 <script type="text/javascript">
     function OpenModalOnay() {
-        $("#ModalOnay").modal({ backdrop: "static" });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnay'));
+        myModalInstance.show();
     }
-    function KatilimciSecimiModal() {
-        $("#KatilimciSecimiModal").modal({ backdrop: false });
+    function KatilimciSecimiModal() {        
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('KatilimciSecimiModal'));
+        myModalInstance.show();
     }
     function KatilimciSecildiBtnClick(katilimciId) {
         document.getElementById('<%= paramFaaliyetKatilimciIdLbl.ClientID%>').value = katilimciId;
@@ -128,11 +130,11 @@
                     <asp:LinkButton ID="GuncelleBtn" CssClass="btn btn-outline-primary" runat="server" Text="Güncelle" OnClick="GuncelleBtn_Click" />
                     <asp:LinkButton ID="SilBtn" CssClass="btn btn-outline-danger" runat="server" Text="Sil" OnClick="SilBtn_Click" />
                     <asp:LinkButton ID="FaaliyetBtn" CssClass="btn btn-outline-secondary" runat="server" CausesValidation="false" Text="Faaliyet" OnClick="FaaliyetBtn_Click" Visible="False" />
-                    <asp:LinkButton ID="YeniKisiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Yeni Kişi Girişi" OnClick="YeniKisiBtn_Click"></asp:LinkButton>
-                    <asp:LinkButton ID="FaaliyetTakvimiBtn" CssClass="btn btn-outline-info float-right" runat="server" CausesValidation="false" Text="Faaliyet Takvimi" OnClick="FaaliyetTakvimiBtn_Click"></asp:LinkButton>
-                    <asp:LinkButton ID="FaaliyetListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" CausesValidation="false" Text="Faaliyet Listesi" OnClick="FaaliyetListesiBtn_Click"></asp:LinkButton>
-                    <asp:LinkButton ID="KisiListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" CausesValidation="false" Text="Kişi Listesi" OnClick="KisiListesiBtn_Click"></asp:LinkButton>
-                    <asp:LinkButton ID="AramaListesi" CssClass="btn btn-outline-secondary float-right" runat="server"  CausesValidation="false" Text="Arama/Görüşme Listesi" OnClick="AramaListesiBtn_Click"></asp:LinkButton>
+                    <asp:LinkButton ID="YeniKisiBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Yeni Kişi Girişi" OnClick="YeniKisiBtn_Click"></asp:LinkButton>
+                    <asp:LinkButton ID="FaaliyetTakvimiBtn" CssClass="btn btn-outline-info float-end" runat="server" CausesValidation="false" Text="Faaliyet Takvimi" OnClick="FaaliyetTakvimiBtn_Click"></asp:LinkButton>
+                    <asp:LinkButton ID="FaaliyetListesiBtn" CssClass="btn btn-outline-secondary float-end" runat="server" CausesValidation="false" Text="Faaliyet Listesi" OnClick="FaaliyetListesiBtn_Click"></asp:LinkButton>
+                    <asp:LinkButton ID="KisiListesiBtn" CssClass="btn btn-outline-secondary float-end" runat="server" CausesValidation="false" Text="Kişi Listesi" OnClick="KisiListesiBtn_Click"></asp:LinkButton>
+                    <asp:LinkButton ID="AramaListesi" CssClass="btn btn-outline-secondary float-end" runat="server"  CausesValidation="false" Text="Arama/Görüşme Listesi" OnClick="AramaListesiBtn_Click"></asp:LinkButton>
                 </ContentTemplate>
 
             </asp:UpdatePanel>
@@ -173,7 +175,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                            <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                         </div>
                     </div>
                 </div>
@@ -202,7 +204,7 @@
                             </div>
                             <div class="card-footer">
                                 <asp:LinkButton ID="OnaylaBtn" Text="Onayla" runat="server" class="btn btn-outline-primary" OnClick="OnaylaBtn_Click"></asp:LinkButton>
-                                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">İptal</button>
+                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">İptal</button>
                             </div>
                         </div>
                     </ContentTemplate>

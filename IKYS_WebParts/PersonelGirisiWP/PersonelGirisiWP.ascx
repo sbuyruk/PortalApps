@@ -95,7 +95,7 @@
         <div class="card-header">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-2">
-                <a class=" btn btn-outline-primary float-right mr-4" runat="server" id="YonergeLnk"
+                <a class=" btn btn-outline-primary float-end mr-4" runat="server" id="YonergeLnk"
                     data-fancybox
                     data-type="pdf"
                     data-width="960"
@@ -572,11 +572,11 @@
                                 </div>
                                 <div class="form-group">
                                     <asp:LinkButton ID="ResmiKaydetBtn" ClientIDMode="Static" CssClass="btn btn-outline-primary mt-2" runat="server" Text="Resmi Kaydet" OnClick="ResmiKaydetBtn_Click" Width="140px" />
-                                    <button id="cropButton" style="display: none;">Crop and Upload</button>
+                                    <%--<button id="cropButton" style="display: none;">Crop and Upload</button>--%>
                                 </div>
                                 <br />
                                 <hr />
-                                <div>
+<%--                                <div>
                                     <div>
 
                                         <input type="file" id="fileInput" accept="image/*" onchange="readPictureURL();">
@@ -590,7 +590,7 @@
                                     <div>
                                         <button id="cropButton" style="display: none;"  onclick="cropAndUpload();">Crop and Upload</button>
                                     </div>
-                                </div>
+                                </div>--%>
                                 <div class="form-group">
                                     <label for="PersonelTipiDDL" class="col-form-label">Personel Tipi</label>
                                     <div>
@@ -604,7 +604,7 @@
             </asp:UpdatePanel>
         </div>
         <div class="card-footer">
-            <asp:LinkButton CssClass="btn btn-outline-secondary float-right mr-2" ID="PersonelListesiBtn" runat="server" Text="Personel Listesi" CausesValidation="false" OnClick="PersonelListesiBtn_Click" />
+            <asp:LinkButton CssClass="btn btn-outline-secondary float-end mr-2" ID="PersonelListesiBtn" runat="server" Text="Personel Listesi" CausesValidation="false" OnClick="PersonelListesiBtn_Click" />
 
             <asp:LinkButton ID="SaveBtn" CssClass="btn btn-outline-success" runat="server" Text="Kaydet" OnClick="SaveBtn_Click" />
             <asp:LinkButton ID="DeleteBtn" Visible="false" CssClass="btn btn-danger" runat="server" CausesValidation="false" Text="Sil" OnClick="DeleteBtn_Click"

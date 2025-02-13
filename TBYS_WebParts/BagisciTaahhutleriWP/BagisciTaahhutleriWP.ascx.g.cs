@@ -263,7 +263,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP {
             this.BagisciyiTaahhutListesineEkleBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "BagisciyiTaahhutListesineEkleBtn";
-            @__ctrl.CssClass = "btn btn-outline-success float-right";
+            @__ctrl.CssClass = "btn btn-outline-success float-end";
             @__ctrl.Text = "Bağışçıyı Taahhüt Listesine Ekle";
             @__ctrl.Visible = false;
             @__ctrl.Click -= new System.EventHandler(this.BagisciyiTaahhutListesineEkleBtn_Click);
@@ -293,7 +293,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP {
             this.BagisciBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "BagisciBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Bağışçıya Git";
             @__ctrl.Click -= new System.EventHandler(this.BagisciBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.BagisciBtn_Click);
@@ -782,8 +782,8 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP {
             global::System.Web.UI.WebControls.LinkButton @__ctrl20;
             @__ctrl20 = this.@__BuildControlTaahhutGuncelleBtn();
             @__parser.AddParsedSubObject(@__ctrl20);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        <button type=\"button\" class=\"btn btn-default\" data-dism" +
-                        "iss=\"modal\">Kapat</button>\r\n                    </div>\r\n                "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        <button type=\"button\" class=\"btn btn-default\" data-bs-d" +
+                        "ismiss=\"modal\">Kapat</button>\r\n                    </div>\r\n                "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -874,9 +874,9 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP {
             global::System.Web.UI.WebControls.LinkButton @__ctrl3;
             @__ctrl3 = this.@__BuildControlTaahhutSilNowBtn();
             @__parser.AddParsedSubObject(@__ctrl3);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        <button type=\"button\" class=\"btn btn-default\" data-dism" +
-                        "iss=\"modal\">Kapat</button>\r\n                    </div>\r\n                </div>\r\n" +
-                        "            </div>\r\n        </div>\r\n    "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        <button type=\"button\" class=\"btn btn-default\" data-bs-d" +
+                        "ismiss=\"modal\">Kapat</button>\r\n                    </div>\r\n                </div" +
+                        ">\r\n            </div>\r\n        </div>\r\n    "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -942,13 +942,22 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP {
             @__w.Write("\').value = id;\r\n        document.getElementById(\'");
                          @__w.Write( TaahhutModalDoldurBtn.ClientID);
 
-            @__w.Write("\').click();\r\n        $(\"#TaahhutModalUrlDiv\").modal({ backdrop: \"static\" });\r\n   " +
-                    " }\r\n    function OpenTaahhutSilModal(id) {\r\n        document.getElementById(\'");
+            @__w.Write("\').click();\r\n\n        var myModalInstance = bootstrap.Modal.getOrCreateInstance(d" +
+                    "ocument.getElementById(\'TaahhutModalUrlDiv\'));\n        myModalInstance.show();\r\n" +
+                    "    }\r\n    function OpenTaahhutSilModal(id) {\r\n        document.getElementById(\'" +
+                    "");
                          @__w.Write( ParamTaahhutIdLbl.ClientID);
 
-            @__w.Write("\').value = id;\r\n        $(\"#ModalTaahhutSilDiv\").modal({ backdrop: \"static\" });\r\n" +
-                    "    }\r\n</script>\r\n<div class=\"container\">\r\n    <div class=\"card shadow\">\r\n      " +
-                    "  <div class=\"card-header \">\r\n            ");
+            @__w.Write(@"').value = id;
+
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalTaahhutSilDiv'));
+        myModalInstance.show();
+    }
+</script>
+<div class=""container"">
+    <div class=""card shadow"">
+        <div class=""card-header "">
+            ");
             parameterContainer.Controls[0].RenderControl(@__w);
             @__w.Write("\r\n            <h3 class=\"mb-1\">\r\n                ");
             parameterContainer.Controls[1].RenderControl(@__w);

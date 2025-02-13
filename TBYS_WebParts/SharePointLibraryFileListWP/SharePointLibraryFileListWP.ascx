@@ -12,7 +12,8 @@
         document.getElementById('<%= DosyayiSilBtn.ClientID%>').click();
     }
     function OpenModalOnay() {
-        $("#ModalOnayDiv").modal({ backdrop: true });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
+        myModalInstance.show();
     }
 </script>
 
@@ -77,7 +78,7 @@
             </div>
             <div class="modal-footer">
                 <asp:LinkButton CssClass="btn btn-danger" ID="DosyayiSilNowBtn" runat="server" CausesValidation="false" Text="Dosyayı Sil" OnClientClick="{return true;};" OnClick="DosyayiSilNowBtn_Click" Visible="false" />
-                <button type="button" class="btn btn-default float-right" data-dismiss="modal">Kapat</button>
+                <button type="button" class="btn btn-default float-end" data-bs-dismiss="modal">Kapat</button>
             </div>
         </div>
     </div>

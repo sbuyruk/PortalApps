@@ -1194,7 +1194,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
                                 </div>
                                 <div class=""col-4"">
                                     <div class=""checkbox pt-3"">
-                                        <label class=""float-right"">
+                                        <label class=""float-end"">
                                             "));
             global::System.Web.UI.WebControls.CheckBox @__ctrl28;
             @__ctrl28 = this.@__BuildControlOzelKalemTakvimiChk();
@@ -1280,7 +1280,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
             this.AramaGorusmeDiv = @__ctrl;
             @__ctrl.TemplateControl = this;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-group float-right");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-group float-end");
             @__ctrl.ID = "AramaGorusmeDiv";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "display: none");
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
@@ -1617,7 +1617,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "FaaliyetTakvimiBtn";
-            @__ctrl.CssClass = "btn btn-outline-info float-right";
+            @__ctrl.CssClass = "btn btn-outline-info float-end";
             @__ctrl.Text = "Faaliyet Takvimi";
             @__ctrl.CausesValidation = false;
             @__ctrl.Click -= new System.EventHandler(this.FaaliyetTakvimiBtn_Click);
@@ -1635,7 +1635,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "FaaliyetListesiBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Faaliyet Listesi";
             @__ctrl.CausesValidation = false;
             @__ctrl.Click -= new System.EventHandler(this.FaaliyetListesiBtn_Click);
@@ -1653,7 +1653,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "AcikTarihliFaaliyetListesiBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Açık Tarihli Faal. List.";
             @__ctrl.Click -= new System.EventHandler(this.AcikTarihliFaaliyetListesiBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.AcikTarihliFaaliyetListesiBtn_Click);
@@ -1670,7 +1670,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "KisiListesiBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Kişi Listesi";
             @__ctrl.CausesValidation = false;
             @__ctrl.Click -= new System.EventHandler(this.KisiListesiBtn_Click);
@@ -1988,9 +1988,9 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             global::System.Web.UI.WebControls.LinkButton @__ctrl4;
             @__ctrl4 = this.@__BuildControlFaaliyetSilNowBtn();
             @__parser.AddParsedSubObject(@__ctrl4);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        <button type=\"button\" class=\"btn btn-default\" data-dism" +
-                        "iss=\"modal\">Kapat</button>\r\n                    </div>\r\n                </div>\r\n" +
-                        "            </div>\r\n        </div>\r\n    "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        <button type=\"button\" class=\"btn btn-default\" data-bs-d" +
+                        "ismiss=\"modal\">Kapat</button>\r\n                    </div>\r\n                </div" +
+                        ">\r\n            </div>\r\n        </div>\r\n    "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -2097,7 +2097,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             @__ctrl1 = this.@__BuildControlKatiliciSecimiHeaderLbl();
             @__parser.AddParsedSubObject(@__ctrl1);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-                        <button type=""button"" class=""close"" data-dismiss=""modal"" aria-label=""Close"">
+                        <button type=""button"" class=""close"" data-bs-dismiss=""modal"" aria-label=""Close"">
                             <span aria-hidden=""true"">&times;</span>
                         </button>
                     </div>
@@ -2114,7 +2114,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
                         </div>
                     </div>
                     <div class=""modal-footer"">
-                        <button type=""button"" class=""btn btn-default"" data-dismiss=""modal"">Kapat</button>
+                        <button type=""button"" class=""btn btn-default"" data-bs-dismiss=""modal"">Kapat</button>
                     </div>
                 </div>
 
@@ -2302,7 +2302,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
 
                     </div>
                     <div class=""modal-footer"">
-                        <button type=""button"" class=""btn btn-secondary"" data-dismiss=""modal"">Kapat</button>
+                        <button type=""button"" class=""btn btn-secondary"" data-bs-dismiss=""modal"">Kapat</button>
                         <div id=""BtnDiv"" style=""display: block"">
                             <input id=""SecilenleriKaydetTriggerBtn"" class=""btn btn-success"" type=""button"" value=""Seçilenleri Kaydet"" onclick=""SecilenleriKaydetTriggerBtnClicked();"" />
                         </div>
@@ -2455,7 +2455,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
                         </div>
                     </div>
                     <div class=""modal-footer"">
-                        <button type=""button"" class=""btn btn-secondary"" data-dismiss=""modal"">Kapat</button>
+                        <button type=""button"" class=""btn btn-secondary"" data-bs-dismiss=""modal"">Kapat</button>
                         <div id=""GetirilenAniObjesiKaydetBtnDiv"" style=""display: block"">
                             <input id=""GetirilenAniObjesiKaydetTriggerBtn"" class=""btn btn-success"" type=""button"" value=""Kaydet"" onclick=""GetirilenAniObjesiKaydetTriggerBtnClicked();"" />
                         </div>
@@ -3067,7 +3067,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
                         </div>
                     </div>
                     <div class=""modal-footer"">
-                        <button type=""button"" class=""btn btn-secondary"" data-dismiss=""modal"">Kapat</button>
+                        <button type=""button"" class=""btn btn-secondary"" data-bs-dismiss=""modal"">Kapat</button>
                         <div id=""TakvimDavetiGonderBtnDiv"" style=""display: block"">
                             <input id=""TakvimDavetiGonderBtn"" class=""btn btn-success"" type=""button"" value=""Gönder"" onclick=""TakvimDavetiGonderBtnClicked();"" />
                         </div>
@@ -3250,11 +3250,13 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
                     " rMax);\r\n\r\n            var newDate = new Date($(\'#BaslangicTarihiTxt\').datepicke" +
                     "r(\'getDate\'));\r\n            newDate.setDate(newDate.getDate());\r\n\r\n        });\r\n" +
                     "\r\n\r\n    }\r\n</script>\r\n\r\n\r\n<script type=\"text/javascript\">\r\n    function OpenSilM" +
-                    "odal() {\r\n        $(\"#ModalSilDiv\").modal({ backdrop: true });\r\n    }\r\n    funct" +
-                    "ion KatilimciSecimiModal() {\r\n        $(\"#KatilimciSecimiModal\").modal({ backdro" +
-                    "p: false });\r\n    }\r\n    $(\"#KatilimciSecimiModal\").draggable({\r\n        handle:" +
-                    " \".modal-dialog\"\r\n    });\r\n    function KatilimciSecildiBtnClick(katilimciId, fa" +
-                    "aliyetId) {\r\n        document.getElementById(\'");
+                    "odal() {\r\n        var myModalInstance = bootstrap.Modal.getOrCreateInstance(docu" +
+                    "ment.getElementById(\'ModalSilDiv\'));\n        myModalInstance.show();\r\n    }\r\n   " +
+                    " function KatilimciSecimiModal() {\r\n        var myModalInstance = bootstrap.Moda" +
+                    "l.getOrCreateInstance(document.getElementById(\'KatilimciSecimiModal\'));\n        " +
+                    "myModalInstance.show();\r\n    }\r\n    $(\"#KatilimciSecimiModal\").draggable({\r\n    " +
+                    "    handle: \".modal-dialog\"\r\n    });\r\n    function KatilimciSecildiBtnClick(kati" +
+                    "limciId, faaliyetId) {\r\n        document.getElementById(\'");
                          @__w.Write( paramFaaliyetKatilimciIdLbl.ClientID);
 
             @__w.Write("\').value = katilimciId;\r\n        document.getElementById(\'");
@@ -3296,13 +3298,16 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
 
 <script type=""text/javascript""> 
     function AniObjesiModal() {
-        $(""#AniObjesiModal"").modal({ backdrop: true });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('AniObjesiModal'));
+        myModalInstance.show();
     }
     function StokluAniObjesiModal() {
-        $(""#StokluAniObjesiModal"").modal({ backdrop: false });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('StokluAniObjesiModal'));
+        myModalInstance.show();
     }
     function GetirilenAniObjesiModal() {
-        $(""#GetirilenAniObjesiModal"").modal({ backdrop: true });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('GetirilenAniObjesiModal'));
+        myModalInstance.show();
     }
     function CloseModals() {
         $(""#AniObjesiModal"").modal('hide');
@@ -3520,9 +3525,14 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             @__w.Write("\').value = faaliyetId;\r\n        document.getElementById(\'");
                          @__w.Write( EPostaAdresiTxt.ClientID);
 
-            @__w.Write("\').value = eposta;\r\n        \r\n        $(\"#TakvimDavetiModalDiv\").modal({ backdrop" +
-                    ": true });\r\n    }\r\n    function TakvimDavetiGonderBtnClicked() {\r\n        \r\n    " +
-                    "    document.getElementById(\'");
+            @__w.Write(@"').value = eposta;
+        
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('TakvimDavetiModalDiv'));
+        myModalInstance.show();
+    }
+    function TakvimDavetiGonderBtnClicked() {
+        
+        document.getElementById('");
                          @__w.Write( TakvimDavetiGonderNowBtn.ClientID);
 
             @__w.Write("\').click();        \r\n        CloseModals();\r\n    }\r\n</script>\r\n<div class=\"contai" +
@@ -3573,7 +3583,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             parameterContainer.Controls[18].RenderControl(@__w);
             @__w.Write(@"
             <div class=""modal-footer"">
-                <button type=""button"" class=""btn btn-secondary"" data-dismiss=""modal"">Kapat</button>
+                <button type=""button"" class=""btn btn-secondary"" data-bs-dismiss=""modal"">Kapat</button>
                 <div id=""StokluAniObjesiIadeEtBtnDiv"" style=""display: block"">
                     <input id=""StokluAniObjesiIadeEtTriggerBtn"" class=""btn btn-success"" type=""button"" value=""Depoya İade Et"" onclick=""StokluAniObjesiIadeEtTriggerBtnClicked();"" />
                 </div>

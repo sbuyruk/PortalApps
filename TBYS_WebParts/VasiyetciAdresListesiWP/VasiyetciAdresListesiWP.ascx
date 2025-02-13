@@ -86,7 +86,7 @@
                         </div>
 
                         <div class="table loader">
-                            <asp:Label ID="RowCountLbl" runat="server" Text="" CssClass="col-form-label float-right text-danger pr-2" Font-Bold="True"></asp:Label>
+                            <asp:Label ID="RowCountLbl" runat="server" Text="" CssClass="col-form-label float-end text-danger pr-2" Font-Bold="True"></asp:Label>
                             <input id="globalFilter" placeholder="Aranacak Kelime" size="30" />
                             <div id="tblfilter" class="table"></div>
                             <div id="messages"></div>
@@ -99,7 +99,7 @@
                 </div>
                 <div class="card-footer">
                     <asp:LinkButton CssClass="btn btn-outline-success" ID="AdresEtiketiBtn" runat="server" Text="Adres Etiketi Oluştur" OnClick="AdresEtiketiBtn_Click" />
-                    <asp:LinkButton CssClass="btn btn-outline-success float-right" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
+                    <asp:LinkButton CssClass="btn btn-outline-success float-end" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
                 </div>
             </div>
         </ContentTemplate>

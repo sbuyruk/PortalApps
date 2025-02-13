@@ -1028,7 +1028,7 @@ namespace MTS_WebParts.HaftalikGorunumWP {
                     </div>
                     <div class=""modal-footer"">
                         
-                        <button type=""button"" class=""btn btn-default"" data-dismiss=""modal"">Kapat</button>
+                        <button type=""button"" class=""btn btn-default"" data-bs-dismiss=""modal"">Kapat</button>
                     </div>
                 </div>
 
@@ -1103,16 +1103,17 @@ namespace MTS_WebParts.HaftalikGorunumWP {
                     "wLC0xMAogICAgICAgICAgIE05LDExIGwyLC0yJyBzdHJva2U9J2JsYWNrJyBzdHJva2Utd2lkdGg9JzE" +
                     "nLz4KPC9zdmc+Cg==\"); \r\n          background-repeat: repeat;    }\r\n\r\n  #globalWra" +
                     "pper * {\r\n    z-index: auto;\r\n  }\r\n</style>\r\n<script type=\"text/javascript\">\r\n  " +
-                    "  function OpenToplantiModal() {\r\n        $(\"#ToplantiDetaylariModal\").modal({ b" +
-                    "ackdrop: true });\r\n    }\r\n    function ToplantiDetaylariModal(toplantiId) {\r\n   " +
-                    "     document.getElementById(\'");
+                    "  function OpenToplantiModal() {\r\n        var myModalInstance = bootstrap.Modal." +
+                    "getOrCreateInstance(document.getElementById(\'ToplantiDetaylariModal\'));\n        " +
+                    "myModalInstance.show();\r\n    }\r\n    function ToplantiDetaylariModal(toplantiId) " +
+                    "{\r\n        document.getElementById(\'");
                          @__w.Write( paramToplantiIdLbl.ClientID);
 
             @__w.Write("\').value = toplantiId;\r\n        document.getElementById(\'");
                          @__w.Write( ToplantiDetaylariBtn.ClientID);
 
-            @__w.Write("\').click();\r\n    }\r\n    function FaaliyetKaydet(faaliyetId, basTar, endTar, newVie" +
-                    "w) {\r\n        document.getElementById(\'");
+            @__w.Write("\').click();\r\n    }\r\n    function FaaliyetKaydet(faaliyetId, basTar, endTar, newVi" +
+                    "ew) {\r\n        document.getElementById(\'");
                          @__w.Write( paramFaaliyetId.ClientID);
 
             @__w.Write("\').value = faaliyetId;\r\n        document.getElementById(\'");

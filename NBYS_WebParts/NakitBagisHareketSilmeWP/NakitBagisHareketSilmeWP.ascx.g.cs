@@ -284,7 +284,7 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "BagisHareketListesiBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Bağış Hareketleri";
             @__ctrl.Click -= new System.EventHandler(this.BagisHareketListesiBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.BagisHareketListesiBtn_Click);
@@ -301,7 +301,7 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "ArmaganListesiBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Armağan Listesi";
             @__ctrl.Click -= new System.EventHandler(this.ArmaganListesiBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.ArmaganListesiBtn_Click);
@@ -510,8 +510,8 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP {
             @__ctrl5 = this.@__BuildControlBagisSilNowBtn();
             @__parser.AddParsedSubObject(@__ctrl5);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                <button type=\"button\" class=\"btn btn-default\" d" +
-                        "ata-dismiss=\"modal\">Kapat</button>\r\n                            </div>\r\n        " +
-                        "                "));
+                        "ata-bs-dismiss=\"modal\">Kapat</button>\r\n                            </div>\r\n     " +
+                        "                   "));
             return @__ctrl;
         }
         
@@ -771,7 +771,7 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP {
                         </div>
                     </div>
                     <div class=""modal-footer"">
-                        <button type=""button"" class=""btn btn-default"" data-dismiss=""modal"">Kapat</button>
+                        <button type=""button"" class=""btn btn-default"" data-bs-dismiss=""modal"">Kapat</button>
                     </div>
                 "));
         }
@@ -849,8 +849,9 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP {
         document.getElementById('");
                          @__w.Write( paramNakitBagisciIdLbl.ClientID);
 
-            @__w.Write("\').value = nakitBagisciId;\r\n        $(\"#ModalUrlDiv\").modal({ backdrop: false });" +
-                    "\r\n        document.getElementById(\'");
+            @__w.Write("\').value = nakitBagisciId;\r\n        var myModalInstance = bootstrap.Modal.getOrCr" +
+                    "eateInstance(document.getElementById(\'ModalUrlDiv\'));\n        myModalInstance.sh" +
+                    "ow();\r\n        document.getElementById(\'");
                          @__w.Write( ModalDoldurBtn.ClientID);
 
             @__w.Write("\').click();\r\n\r\n    }\r\n    function CloseModal() {\r\n        $(\"#ModalOnayDiv\").mod" +
@@ -861,9 +862,10 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP {
             @__w.Write("\').value = bagisHareketId;\r\n        document.getElementById(\'");
                          @__w.Write( BagisSilBtn.ClientID);
 
-            @__w.Write("\').click();\r\n    }\r\n    function ModalOnay() {\r\n        $(\"#ModalOnayDiv\").modal(" +
-                    "{ backdrop: \"static\" });\r\n    }\r\n</script>\r\n\r\n\r\n<div class=\"container shadow\">\r\n" +
-                    "    ");
+            @__w.Write("\').click();\r\n    }\r\n    function ModalOnay() {\r\n        var myModalInstance = boo" +
+                    "tstrap.Modal.getOrCreateInstance(document.getElementById(\'ModalOnayDiv\'));\n     " +
+                    "   myModalInstance.show();\r\n    }\r\n</script>\r\n\r\n\r\n<div class=\"container shadow\">" +
+                    "\r\n    ");
             parameterContainer.Controls[0].RenderControl(@__w);
             @__w.Write("\r\n</div>\r\n\r\n<div class=\"modal\" id=\"ModalOnayDiv\" role=\"dialog\">\r\n    <div class=\"" +
                     "modal-dialog\">\r\n        <!-- Modal content-->\r\n        <div class=\"modal-content" +

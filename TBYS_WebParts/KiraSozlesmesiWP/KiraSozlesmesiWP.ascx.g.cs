@@ -341,7 +341,7 @@ namespace TBYS_WebParts.KiraSozlesmesiWP {
             @__ctrl.ID = "AktifPasifImg";
             @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
             @__ctrl.ImageUrl = "../_layouts/19/images/TBYS_WebParts/belli-degil.png";
-            @__ctrl.CssClass = "float-right";
+            @__ctrl.CssClass = "float-end";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onerror", "this.src=\'../TBYSResimleri/belli-degil.png\';");
             return @__ctrl;
         }
@@ -552,7 +552,7 @@ namespace TBYS_WebParts.KiraSozlesmesiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "KiraciTasinmazDegistirBtn";
-            @__ctrl.CssClass = "btn btn-primary float-right";
+            @__ctrl.CssClass = "btn btn-primary float-end";
             @__ctrl.Text = "Kiracı/Taşınmaz Değiştir";
             @__ctrl.Click -= new System.EventHandler(this.KiraciTasinmazDegistirBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.KiraciTasinmazDegistirBtn_Click);
@@ -956,7 +956,7 @@ namespace TBYS_WebParts.KiraSozlesmesiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "TeminatIslemleriBtn";
-            @__ctrl.CssClass = "btn btn-outline-primary float-right";
+            @__ctrl.CssClass = "btn btn-outline-primary float-end";
             @__ctrl.Text = "Teminat İşlemleri";
             @__ctrl.Click -= new System.EventHandler(this.TeminatIslemleriBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.TeminatIslemleriBtn_Click);
@@ -1311,7 +1311,7 @@ namespace TBYS_WebParts.KiraSozlesmesiWP {
             this.NextBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "NextBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Sonraki=>";
             @__ctrl.Click -= new System.EventHandler(this.NextBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.NextBtn_Click);
@@ -1327,7 +1327,7 @@ namespace TBYS_WebParts.KiraSozlesmesiWP {
             this.PrevBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "PrevBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "<=Önceki";
             @__ctrl.Click -= new System.EventHandler(this.PrevBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.PrevBtn_Click);
@@ -1343,7 +1343,7 @@ namespace TBYS_WebParts.KiraSozlesmesiWP {
             this.KiraSozlesmeListBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "KiraSozlesmeListBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Sözleşme Listesi";
             @__ctrl.Click -= new System.EventHandler(this.KiraSozlesmeListBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.KiraSozlesmeListBtn_Click);
@@ -1359,7 +1359,7 @@ namespace TBYS_WebParts.KiraSozlesmesiWP {
             this.KiraciBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "KiraciBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Kiracı";
             @__ctrl.Click -= new System.EventHandler(this.KiraciBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.KiraciBtn_Click);
@@ -1375,7 +1375,7 @@ namespace TBYS_WebParts.KiraSozlesmesiWP {
             this.OdemePlaniGoruntuleBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "OdemePlaniGoruntuleBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Ödeme Planı";
             @__ctrl.Visible = false;
             @__ctrl.Click -= new System.EventHandler(this.OdemePlaniGoruntuleBtn_Click);
@@ -1783,7 +1783,8 @@ namespace TBYS_WebParts.KiraSozlesmesiWP {
 </style>
 <script type=""text/javascript"">
     function OpenModal() {
-        $(""#OnayModal"").modal({ backdrop: ""static"" });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('OnayModal'));
+        myModalInstance.show();
     }
     function CloseModal() {
         $(""#OnayModal"").modal('hide');
@@ -1872,7 +1873,7 @@ namespace TBYS_WebParts.KiraSozlesmesiWP {
             @__w.Write("\r\n                            ");
             parameterContainer.Controls[20].RenderControl(@__w);
             @__w.Write(@"
-                            <button type=""button"" class=""btn btn-outline-secondary"" data-dismiss=""modal"">İptal</button>
+                            <button type=""button"" class=""btn btn-outline-secondary"" data-bs-dismiss=""modal"">İptal</button>
                         </div>
                     </div>
                 </div>

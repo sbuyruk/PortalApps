@@ -8,7 +8,8 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="MazereteMahsupWP.ascx.cs" Inherits="IKYS_WebParts.MazereteMahsupWP.MazereteMahsupWP" %>
 <script type="text/javascript">
     function OpenModalOnay() {
-        $("#ModalOnayDiv").modal({ backdrop: false });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
+        myModalInstance.show();
     }
     //ekrandan secilen onayla vb butonun serverside'da oncliclkini calistirsin
     function CallButtonClick(onay) {
@@ -35,7 +36,7 @@
                     <h3 class="mb-2">
                         <asp:Label CssClass="col-form-label  btn-outline-success mb-1" ID="TitleLbl" runat="server" Text="Ücretli izinden Mazerete İznine Mahsup"></asp:Label>
                         <asp:Label CssClass="col-form-label text-white" ID="IdLbl" runat="server"></asp:Label>
-                        <asp:Label CssClass="col-form-label text-secondary float-right" ID="EkranNo" Text="18" runat="server" ></asp:Label>
+                        <asp:Label CssClass="col-form-label text-secondary float-end" ID="EkranNo" Text="18" runat="server" ></asp:Label>
                     </h3>
                 </div>
                 <div class="card-body alert-secondary" id="MainCardDiv" runat="server">
@@ -49,7 +50,7 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <asp:LinkButton CssClass="btn btn-outline-warning float-right" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
+                    <asp:LinkButton CssClass="btn btn-outline-warning float-end" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
                 </div>
             </div>
         </ContentTemplate>
@@ -94,7 +95,7 @@
 
                         <div class="modal-footer">
                             <button ID="OnaylaModalBtn" runat="server" class="btn btn-danger" onclick="CallButtonClick('onay')" Visible="false">Mahsup Et</button>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                            <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                         </div>
                     </ContentTemplate>
                 </asp:UpdatePanel>

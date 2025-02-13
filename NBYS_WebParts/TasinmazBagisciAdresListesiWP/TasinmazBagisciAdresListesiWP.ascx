@@ -16,7 +16,8 @@
     function OpenModal(nakitBagisciId) {
         document.getElementById('<%= paramTasinmazBagisciIdLbl.ClientID%>').value = nakitBagisciId;
         document.getElementById('<%= ModalDoldurBtn.ClientID%>').click();
-        $("#ModalUrlDiv").modal({ backdrop: false });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalUrlDiv'));
+        myModalInstance.show();
 
     }
 </script>
@@ -95,7 +96,7 @@
         </div>
         <div class="card-footer">
             <asp:LinkButton CssClass="btn btn-outline-success" ID="AdresEtiketiBtn" runat="server" Text="Adres Etiketi Oluştur" OnClick="AdresEtiketiBtn_Click" />
-            <asp:LinkButton CssClass="btn btn-outline-success float-right" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
+            <asp:LinkButton CssClass="btn btn-outline-success float-end" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
         </div>
     </div>
 
@@ -142,7 +143,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                     </div>
                 </ContentTemplate>
                 <Triggers>

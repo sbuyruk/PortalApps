@@ -132,7 +132,7 @@ namespace NBYS_WebParts.NakitBagisciByTarihWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.EkranNo = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-secondary float-right";
+            @__ctrl.CssClass = "col-form-label text-secondary float-end";
             @__ctrl.ID = "EkranNo";
             @__ctrl.Text = "23";
             return @__ctrl;

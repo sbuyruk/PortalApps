@@ -114,7 +114,7 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.EkranNo = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-secondary float-right";
+            @__ctrl.CssClass = "col-form-label text-secondary float-end";
             @__ctrl.ID = "EkranNo";
             @__ctrl.Text = "21";
             return @__ctrl;
@@ -601,7 +601,7 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.ExcelBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-warning float-right";
+            @__ctrl.CssClass = "btn btn-outline-warning float-end";
             @__ctrl.ID = "ExcelBtn";
             @__ctrl.Text = "Excel\'e Aktar";
             @__ctrl.OnClientClick = "javascript:setFormSubmitToFalse()";

@@ -560,8 +560,8 @@ namespace TBYS_WebParts.OdemeListesiWP {
             @__ctrl6 = this.@__BuildControlSilNowBtn();
             @__parser.AddParsedSubObject(@__ctrl6);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                <button type=\"button\" class=\"btn btn-outline-se" +
-                        "condary\" data-dismiss=\"modal\">İptal</button>\r\n                            </div>" +
-                        "\r\n                        </div>\r\n                    "));
+                        "condary\" data-bs-dismiss=\"modal\">İptal</button>\r\n                            </d" +
+                        "iv>\r\n                        </div>\r\n                    "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -630,10 +630,12 @@ namespace TBYS_WebParts.OdemeListesiWP {
 
     
     function OpenKiraciSecModal() {
-        $(""#KiraciSecDiv"").modal({ backdrop: false });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('KiraciSecDiv'));
+        myModalInstance.show();
     }
     function OpenModalOnay() {
-        $(""#ModalOnay"").modal({ backdrop: ""static"" });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnay'));
+        myModalInstance.show();
     }
     function CallButtonClick(kiraciId) {
         document.getElementById('");
@@ -712,7 +714,7 @@ namespace TBYS_WebParts.OdemeListesiWP {
                     </div>
                 </div>
                 <div class=""modal-footer"">
-                    <button type=""button"" class=""btn btn-default"" data-dismiss=""modal"">Kapat</button>
+                    <button type=""button"" class=""btn btn-default"" data-bs-dismiss=""modal"">Kapat</button>
                 </div>
             </div>
         </div>

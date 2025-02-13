@@ -39,7 +39,9 @@
     function OpenModal(armaganId) {
         document.getElementById('<%= paramArmaganIdLbl.ClientID%>').value = armaganId;
         document.getElementById('<%= ModalDoldurBtn.ClientID%>').click();
-        $("#ModalUrlDiv").modal({ backdrop: true });
+
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalUrlDiv'));
+        myModalInstance.show();
     }
     function CallButtonClick(armaganId) {
         document.getElementById('<%= paramArmaganIdLbl.ClientID%>').value = armaganId;
@@ -104,7 +106,7 @@
                                     <th>Armağan</th>
                                     <th>Durumu</th>
                                     <th>Düzenle</th>
-                                    <th></th>
+                                    <th>İade</th>
                                 </tr>
                             </thead>
                         </table>
@@ -167,7 +169,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>

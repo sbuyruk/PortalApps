@@ -42,7 +42,7 @@
             <h3 class="mb-2">
                 <asp:Label CssClass="col-form-label btn-outline-info" runat="server" Text="Ekstre Kaydı Düzenleme"></asp:Label>
                 <asp:Label CssClass="col-form-label" ID="EksterAktarmaIdLbl" runat="server"></asp:Label>
-                <asp:Label CssClass="col-form-label text-secondary float-right" ID="EkranNo" Text="3" runat="server"></asp:Label>
+                <asp:Label CssClass="col-form-label text-secondary float-end" ID="EkranNo" Text="3" runat="server"></asp:Label>
             </h3>
         </div>
         <div class="card-body">
@@ -203,8 +203,8 @@
         <div class="card-footer">
             <asp:LinkButton CssClass="btn btn-outline-primary m-2" ID="KaydetBtn" runat="server" Text="Kaydet" OnClick="KaydetBtn_Click" />
             <asp:LinkButton CssClass="btn btn-outline-primary m-2" ID="EslestirBtn" runat="server" Text="Eşleştir" OnClick="EslestirBtn_Click" Visible="false" />
-            <asp:LinkButton CssClass="btn btn-outline-secondary float-right m-2" ID="BackBtn" runat="server" Text="Geri..." CausesValidation="false" OnClick="BackBtn_Click" />
-            <asp:LinkButton CssClass="btn btn-outline-secondary float-right m-2" ID="EkstreListesiBtn" runat="server" Text="Ekstre Listesi" CausesValidation="false" OnClick="EkstreListesiBtn_Click" />
+            <asp:LinkButton CssClass="btn btn-outline-secondary float-end m-2" ID="BackBtn" runat="server" Text="Geri..." CausesValidation="false" OnClick="BackBtn_Click" />
+            <asp:LinkButton CssClass="btn btn-outline-secondary float-end m-2" ID="EkstreListesiBtn" runat="server" Text="Ekstre Listesi" CausesValidation="false" OnClick="EkstreListesiBtn_Click" />
         </div>
     </div>
 </div>

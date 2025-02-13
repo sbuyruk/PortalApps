@@ -11,12 +11,16 @@
     function OpenModalTalep(id) {
         document.getElementById('<%= ParamTalepIdLbl.ClientID%>').value = id;
         document.getElementById('<%= TalepModalDoldurBtn.ClientID%>').click();
-        $("#TalepModalUrlDiv").modal({ backdrop: "static" });
+
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('TalepModalUrlDiv'));
+        myModalInstance.show();
     }
 
     function OpenTalepSilModal(id) {
         document.getElementById('<%= ParamTalepIdLbl.ClientID%>').value = id;
-        $("#ModalTalepSilDiv").modal({ backdrop: "static" });
+
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalTalepSilDiv'));
+        myModalInstance.show();
     }
 
 </script>
@@ -43,7 +47,7 @@
             </div>
         </div>
         <div class="card-footer">
-            <asp:LinkButton ID="BagisciBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Bağışçıya Git" OnClick="BagisciBtn_Click" />
+            <asp:LinkButton ID="BagisciBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Bağışçıya Git" OnClick="BagisciBtn_Click" />
         </div>
     </div>
 </div>
@@ -86,7 +90,7 @@
                     <div class="modal-footer">
                         <asp:LinkButton ID="TalepKaydetBtn" runat="server" CssClass="btn btn-success" CausesValidation="false" Text=" Talep Kaydet" OnClick="TalepKaydetBtn_Click" />
                         <asp:LinkButton ID="TalepGuncelleBtn" runat="server" CssClass="btn btn-primary" CausesValidation="false" Text=" Talep Güncelle" OnClick="TalepGuncelleBtn_Click" />
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>
@@ -115,7 +119,7 @@
                     </div>
                     <div class="modal-footer">
                         <asp:LinkButton ID="TalepSilNowBtn" CssClass="btn btn-outline-danger" runat="server" Text="Sil" OnClick="TalepSilNowBtn_Click"></asp:LinkButton>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                     </div>
                 </div>
             </div>

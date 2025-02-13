@@ -242,41 +242,12 @@ namespace Portal_WebParts.GunlukYemekListesiMoveWP {
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControlTree(global::Portal_WebParts.GunlukYemekListesiMoveWP.GunlukYemekListesiMoveWP @__ctrl) {
-            global::System.Web.UI.HtmlControls.HtmlImage @__ctrl1;
-            @__ctrl1 = this.@__BuildControlYemekImg();
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(@__ctrl1);
-            global::System.Web.UI.HtmlControls.HtmlImage @__ctrl2;
-            @__ctrl2 = this.@__BuildControlYemekImg1();
-            @__parser.AddParsedSubObject(@__ctrl2);
-            global::System.Web.UI.HtmlControls.HtmlImage @__ctrl3;
-            @__ctrl3 = this.@__BuildControlYemekImg2();
-            @__parser.AddParsedSubObject(@__ctrl3);
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl4;
-            @__ctrl4 = this.@__BuildControlYokDiv();
-            @__parser.AddParsedSubObject(@__ctrl4);
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl5;
-            @__ctrl5 = this.@__BuildControlTabloDiv();
-            @__parser.AddParsedSubObject(@__ctrl5);
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl6;
-            @__ctrl6 = this.@__BuildControlDiv1();
-            @__parser.AddParsedSubObject(@__ctrl6);
-            global::System.Web.UI.WebControls.Label @__ctrl7;
-            @__ctrl7 = this.@__BuildControlToplamLbl();
-            @__parser.AddParsedSubObject(@__ctrl7);
-            @__ctrl.SetRenderMethodDelegate(new System.Web.UI.RenderMethod(this.@__Render__control1));
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private void @__Render__control1(System.Web.UI.HtmlTextWriter @__w, System.Web.UI.Control parameterContainer) {
-            @__w.Write("\r\n<script type=\"text/javascript\">\r\n    function OpenYemekPopup(clicked) {\r\n      " +
-                    "  //document.getElementById(\'");
-                           @__w.Write( YemekListesiBtn.ClientID);
-
-            @__w.Write(@"').click();
-        $(""#YemekPopupDiv"").modal({ backdrop: true });
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+<script type=""text/javascript"">
+    function OpenYemekPopup(clicked) {
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('YemekPopupDiv'));
+        myModalInstance.show();
     }
 
 </script>
@@ -298,36 +269,50 @@ namespace Portal_WebParts.GunlukYemekListesiMoveWP {
                 <div class=""card"">
                     <div class=""card-header row"">
                         <div class=""col-4"">
-                            ");
-            parameterContainer.Controls[0].RenderControl(@__w);
-            @__w.Write("\r\n                        </div>\r\n                        <div class=\"col-4\">\r\n  " +
-                    "                          ");
-            parameterContainer.Controls[1].RenderControl(@__w);
-            @__w.Write("\r\n                        </div>\r\n                        <div class=\"col-4\">\r\n  " +
-                    "                          ");
-            parameterContainer.Controls[2].RenderControl(@__w);
-            @__w.Write("\r\n                        </div>\r\n                    </div>\r\n                   " +
-                    " <div class=\"card-body\">\r\n                        ");
-            parameterContainer.Controls[3].RenderControl(@__w);
-            @__w.Write("\r\n                        ");
-            parameterContainer.Controls[4].RenderControl(@__w);
-            @__w.Write("\r\n                        ");
-            parameterContainer.Controls[5].RenderControl(@__w);
-            @__w.Write("\r\n                    </div>\r\n                    <div class=\"card-footer\">\r\n    " +
-                    "                    ");
-            parameterContainer.Controls[6].RenderControl(@__w);
-            @__w.Write(@"
+                            "));
+            global::System.Web.UI.HtmlControls.HtmlImage @__ctrl1;
+            @__ctrl1 = this.@__BuildControlYemekImg();
+            @__parser.AddParsedSubObject(@__ctrl1);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"col-4\">\r\n  " +
+                        "                          "));
+            global::System.Web.UI.HtmlControls.HtmlImage @__ctrl2;
+            @__ctrl2 = this.@__BuildControlYemekImg1();
+            @__parser.AddParsedSubObject(@__ctrl2);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"col-4\">\r\n  " +
+                        "                          "));
+            global::System.Web.UI.HtmlControls.HtmlImage @__ctrl3;
+            @__ctrl3 = this.@__BuildControlYemekImg2();
+            @__parser.AddParsedSubObject(@__ctrl3);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n                   " +
+                        " <div class=\"card-body\">\r\n                        "));
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl4;
+            @__ctrl4 = this.@__BuildControlYokDiv();
+            @__parser.AddParsedSubObject(@__ctrl4);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        "));
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl5;
+            @__ctrl5 = this.@__BuildControlTabloDiv();
+            @__parser.AddParsedSubObject(@__ctrl5);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        "));
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl6;
+            @__ctrl6 = this.@__BuildControlDiv1();
+            @__parser.AddParsedSubObject(@__ctrl6);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                    <div class=\"card-footer\">\r\n    " +
+                        "                    "));
+            global::System.Web.UI.WebControls.Label @__ctrl7;
+            @__ctrl7 = this.@__BuildControlToplamLbl();
+            @__parser.AddParsedSubObject(@__ctrl7);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                     </div>
                 </div>
             </div>
             <div class=""modal-footer"">
-                <button type=""button"" class=""btn btn-default"" data-dismiss=""modal"">Kapat</button>
+                <button type=""button"" class=""btn btn-default"" data-bs-dismiss=""modal"">Kapat</button>
             </div>
         </div>
 
     </div>
 </div>
-");
+"));
         }
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +

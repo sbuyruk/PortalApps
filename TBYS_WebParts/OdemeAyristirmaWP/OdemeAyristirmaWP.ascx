@@ -18,7 +18,8 @@
         document.getElementById('<%= SatirSilBtn.ClientID%>').click();
     }
     function OpenOdemeEkleModal() {
-        $("#ListeyeEkleModalDiv").modal({ backdrop: "static" });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ListeyeEkleModalDiv'));
+        myModalInstance.show();
     }
     function CloseModal() {
         $("#ListeyeEkleModalDiv").modal('hide');
@@ -178,7 +179,7 @@
                     <asp:AsyncPostBackTrigger ControlID="SatirSilBtn" EventName="click" />
                 </Triggers>
             </asp:UpdatePanel>
-            <asp:LinkButton ID="KiraEkstreAktarmaBtn" runat="server" CssClass="btn btn-outline-secondary float-right" Text="Kira Ekstresine Dön" OnClick="KiraEkstreAktarmaBtn_Click"></asp:LinkButton>
+            <asp:LinkButton ID="KiraEkstreAktarmaBtn" runat="server" CssClass="btn btn-outline-secondary float-end" Text="Kira Ekstresine Dön" OnClick="KiraEkstreAktarmaBtn_Click"></asp:LinkButton>
         </div>
     </div>
 </div>
@@ -233,7 +234,7 @@
                                         <asp:LinkButton ID="ListeyiGuncelleNowBtn" Text="Güncelle" runat="server" CssClass="btn btn-primary" OnClick="ListeyiGuncelleNowBtn_Click"></asp:LinkButton>
                                     </div>
                                     <div class="col form-group">
-                                        <button type="button" class="btn btn-outline-secondary float-right" data-dismiss="modal">İptal</button>
+                                        <button type="button" class="btn btn-outline-secondary float-end" data-bs-dismiss="modal">İptal</button>
                                     </div>
                                 </div>
                             </div>

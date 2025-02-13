@@ -603,7 +603,7 @@ namespace TBYS_WebParts.OdemeGirisWP {
             this.OdemePlaniBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "OdemePlaniBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.CausesValidation = false;
             @__ctrl.Text = "Son Ödeme Plani";
             @__ctrl.Click -= new System.EventHandler(this.OdemePlaniBtn_Click);
@@ -620,7 +620,7 @@ namespace TBYS_WebParts.OdemeGirisWP {
             this.SozlesmeBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "SozlesmeBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.CausesValidation = false;
             @__ctrl.Text = "Sözleşme";
             @__ctrl.Click -= new System.EventHandler(this.SozlesmeBtn_Click);
@@ -637,7 +637,7 @@ namespace TBYS_WebParts.OdemeGirisWP {
             this.KiraciBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "KiraciBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.CausesValidation = false;
             @__ctrl.Text = "Kiraci";
             @__ctrl.Click -= new System.EventHandler(this.KiraciBtn_Click);
@@ -654,7 +654,7 @@ namespace TBYS_WebParts.OdemeGirisWP {
             this.KiraciListBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "KiraciListBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.CausesValidation = false;
             @__ctrl.Text = "Kiraci Listesi";
             @__ctrl.Click -= new System.EventHandler(this.KiraciListBtn_Click);
@@ -805,8 +805,8 @@ namespace TBYS_WebParts.OdemeGirisWP {
             @__ctrl4 = this.@__BuildControlOnaylaBtn();
             @__parser.AddParsedSubObject(@__ctrl4);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            <button type=\"button\" class=\"btn btn-outline-second" +
-                        "ary\" data-dismiss=\"modal\">İptal</button>\r\n                        </div>\r\n      " +
-                        "              </div>\r\n                "));
+                        "ary\" data-bs-dismiss=\"modal\">İptal</button>\r\n                        </div>\r\n   " +
+                        "                 </div>\r\n                "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -955,10 +955,12 @@ namespace TBYS_WebParts.OdemeGirisWP {
 
 <script type=""text/javascript"">
     function OpenModalOnay() {
-        $(""#ModalOnay"").modal({ backdrop: ""static"" });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnay'));
+        myModalInstance.show();
     }
     function OpenKiraciSecModal() {
-        $(""#KiraciSecDiv"").modal({ backdrop: false });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('KiraciSecDiv'));
+        myModalInstance.show();
     }
     function CloseModalOnay() {
         $(""#ModalOnay"").modal('hide');
@@ -1082,7 +1084,7 @@ namespace TBYS_WebParts.OdemeGirisWP {
                 </div>
             </div>
             <div class=""modal-footer"">
-                <button type=""button"" class=""btn btn-default"" data-dismiss=""modal"">Kapat</button>
+                <button type=""button"" class=""btn btn-default"" data-bs-dismiss=""modal"">Kapat</button>
             </div>
         </div>
     </div>

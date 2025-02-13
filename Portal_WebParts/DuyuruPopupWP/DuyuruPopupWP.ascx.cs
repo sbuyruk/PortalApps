@@ -298,7 +298,7 @@ namespace Portal_WebParts.DuyuruPopupWP
                 KapatBtn.ID = "KapatBtn" + duyuru.Id.ToString();
                 KapatBtn.InnerText = "Kapat";
 
-                KapatBtn.Attributes.Add("class", "btn btn-outline-secondary float-right");
+                KapatBtn.Attributes.Add("class", "btn btn-outline-secondary float-end");
                 KapatBtn.Attributes.Add("style", "background-color:transparent");
                 KapatBtn.Attributes.Add("data-dismiss", "modal");
                 KapatBtn.Attributes.Add("data-toggle", "tooltip");
@@ -326,7 +326,7 @@ namespace Portal_WebParts.DuyuruPopupWP
 
                 //LinkButton OkudumBtn = new LinkButton();
                 //OkudumBtn.Text = "Okudum";
-                //OkudumBtn.CssClass = "btn btn-secondary float-right";
+                //OkudumBtn.CssClass = "btn btn-secondary float-end";
                 //TableUpdatePanel.ContentTemplateContainer.Controls.Add(OkudumBtn);
                 //OkudumBtn.Click += delegate
                 //{

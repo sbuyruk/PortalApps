@@ -284,7 +284,7 @@ namespace IKYS_WebParts.AylikYoklamaRaporuWP {
             this.ExcelBtn = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-warning float-right";
+            @__ctrl.CssClass = "btn btn-outline-warning float-end";
             @__ctrl.ID = "ExcelBtn";
             @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
             @__ctrl.Text = "Excele Aktar";

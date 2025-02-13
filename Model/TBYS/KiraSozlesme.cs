@@ -670,6 +670,37 @@ namespace Model.TBYS
             }
             return dataTable;
         }
+        public DataTable SelectKiraciSayisiVeToplamKiraBedeli(int bolgeId, int ay, int yil)
+        {
+            DateTime ayinIlkGunu = new DateTime(yil, ay, 1);
+            DateTime ayinSonGunu = ayinIlkGunu.AddMonths(1).AddDays(-1);
+            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND C.BolgeId={0} ", bolgeId);
+
+            string sqlString = string.Format(@"
+				SELECT H.KisaAdi Bolge,B.KiralamaAmaci,
+                    SUM(D.KiraBedeli) + (SUM(D.FaizTutari)*-1) Tahakkuk, --FaizliTahakkuk, 
+                    --SUM(D.KiraBedeli) + (SUM(D.Anapara)*-1) + (SUM(D.FaizTutari)*-1) Tahakkuk, --FaizliTahakkuk, 
+                    --SUM(D.KiraBedeli) + (SUM(IIF(D.FaizTutari>0,0,D.FaizTutari))*-1)  + (SUM(IIF(D.AnaPara>0,0,D.Anapara))*-1) Tahakkuk, --FaizliTahakkuk, 
+                    SUM(A.OdenenTutar) Tahsil, 
+                    COUNT(DISTINCT(C.ID)) KiraciSayisi , 
+                    COUNT(DISTINCT(A.KiraciId)) OdeyenKiraci
+				FROM Odeme_Table A
+					INNER JOIN Kiraci_Table B ON B.Id=A.KiraciId 
+					INNER JOIN KiraSozlesme_Table C ON C.Id=A.SozlesmeId
+					INNER JOIN OdemePlani_Table D ON D.Id=A.OdemePlaniId
+					LEFT JOIN TeminatIslem_Table E ON E.OdemeId=A.Id
+					LEFT JOIN Bolge_Table H ON H.Id=C.BolgeId
+                WHERE  
+                    YEAR(A.OdemeTarihi) ={0}
+                    AND MONTH(A.OdemeTarihi) ={1}
+                    {4}
+                Group By H.KisaAdi,B.KiralamaAmaci
+            ", yil, ay, ayinIlkGunu.ReturnTRDateFormat(), ayinSonGunu.ReturnTRDateFormat(), bolgeStr);
+
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            return dataTable;
+
+        }
         public KiraSozlesme SelectNext()
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();

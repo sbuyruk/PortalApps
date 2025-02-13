@@ -11,7 +11,7 @@
         <div class="card-header">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-2">
-                <a class=" btn btn-outline-primary float-right mr-4" runat="server" id="YonergeLnk"
+                <a class=" btn btn-outline-primary float-end mr-4" runat="server" id="YonergeLnk"
                     data-fancybox
                     data-type="pdf"
                     data-width="960"

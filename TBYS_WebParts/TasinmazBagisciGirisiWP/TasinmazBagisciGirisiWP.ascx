@@ -195,15 +195,15 @@
                     </div>
 
                     <div class="card-footer">
-                        <asp:LinkButton ID="TasinmazBagisciListBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Taşınmaz Bağışçı Listesi" OnClick="TasinmazBagisciListBtn_Click" />
+                        <asp:LinkButton ID="TasinmazBagisciListBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Taşınmaz Bağışçı Listesi" OnClick="TasinmazBagisciListBtn_Click" />
                         <asp:LinkButton ID="SaveBtn" CssClass="btn btn-outline-success" runat="server" Text="Kaydet" OnClick="SaveBtn_Click" />
                         <asp:LinkButton ID="UpdateBtn" CssClass="btn btn-outline-primary" runat="server" Text="Güncelle" Visible="false" OnClick="UpdateBtn_Click" />
                         <asp:LinkButton ID="DeleteBtn" Visible="false" CssClass="btn btn-outline-danger" runat="server" CausesValidation="false" Text="Bağışçıyı Sil" OnClick="DeleteBtn_Click"
                             OnClientClick="if(confirm(' Silme İşlemini Onaylıyor musunuz?')){return true;} else{return false;};" />
-                        <asp:LinkButton ID="YakinlariBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Bağışçı Yakınları" Visible="false" OnClick="YakinlariBtn_Click" />
-                        <asp:LinkButton ID="TalepleriBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Bağışçı Talepleri" Visible="false" OnClick="TalepleriBtn_Click" />
-                        <asp:LinkButton ID="TaahhutleriBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Taahhütler" Visible="false" OnClick="TaahhutleriBtn_Click" />
-                        <asp:LinkButton ID="BagislariBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Yaptığı Bağışlar" Visible="false" OnClick="BagislariBtn_Click" />
+                        <asp:LinkButton ID="YakinlariBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Bağışçı Yakınları" Visible="false" OnClick="YakinlariBtn_Click" />
+                        <asp:LinkButton ID="TalepleriBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Bağışçı Talepleri" Visible="false" OnClick="TalepleriBtn_Click" />
+                        <asp:LinkButton ID="TaahhutleriBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Taahhütler" Visible="false" OnClick="TaahhutleriBtn_Click" />
+                        <asp:LinkButton ID="BagislariBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Yaptığı Bağışlar" Visible="false" OnClick="BagislariBtn_Click" />
                     </div>
                 </ContentTemplate>
                 <Triggers>

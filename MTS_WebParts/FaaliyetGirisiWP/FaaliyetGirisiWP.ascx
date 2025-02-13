@@ -109,10 +109,12 @@
 <%-- Katılımcı/itribat ekleme / çıkartma --%>
 <script type="text/javascript">
     function OpenSilModal() {
-        $("#ModalSilDiv").modal({ backdrop: true });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalSilDiv'));
+        myModalInstance.show();
     }
     function KatilimciSecimiModal() {
-        $("#KatilimciSecimiModal").modal({ backdrop: false });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('KatilimciSecimiModal'));
+        myModalInstance.show();
     }
     $("#KatilimciSecimiModal").draggable({
         handle: ".modal-dialog"
@@ -148,13 +150,16 @@
 --%>
 <script type="text/javascript"> 
     function AniObjesiModal() {
-        $("#AniObjesiModal").modal({ backdrop: true });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('AniObjesiModal'));
+        myModalInstance.show();
     }
     function StokluAniObjesiModal() {
-        $("#StokluAniObjesiModal").modal({ backdrop: false });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('StokluAniObjesiModal'));
+        myModalInstance.show();
     }
     function GetirilenAniObjesiModal() {
-        $("#GetirilenAniObjesiModal").modal({ backdrop: true });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('GetirilenAniObjesiModal'));
+        myModalInstance.show();
     }
     function CloseModals() {
         $("#AniObjesiModal").modal('hide');
@@ -323,7 +328,8 @@
         document.getElementById('<%= paramFaaliyetIdLbl.ClientID%>').value = faaliyetId;
         document.getElementById('<%= EPostaAdresiTxt.ClientID%>').value = eposta;
         
-        $("#TakvimDavetiModalDiv").modal({ backdrop: true });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('TakvimDavetiModalDiv'));
+        myModalInstance.show();
     }
     function TakvimDavetiGonderBtnClicked() {
         
@@ -438,7 +444,7 @@
                                 </div>
                                 <div class="col-4">
                                     <div class="checkbox pt-3">
-                                        <label class="float-right">
+                                        <label class="float-end">
                                             <asp:CheckBox ID="OzelKalemTakvimiChk" runat="server" Checked="true" ToolTip="Özel Kalemin İnternet Takvimine girecek faaliyetlar için işaretleyiniz." OnCheckedChanged="OzelKalemTakvimiChk_CheckedChanged" AutoPostBack="True" />
                                             Özel Kalem Takvimine İşlensin
                                         </label>
@@ -481,7 +487,7 @@
                                         </thead>
                                     </table>
                                 </div>
-                                <div class="form-group float-right" id="AramaGorusmeDiv" runat="server" style="display: none">
+                                <div class="form-group float-end" id="AramaGorusmeDiv" runat="server" style="display: none">
                                     <asp:Label ID="AramaGorusmeLbl" runat="server" Text=""></asp:Label>
                                     <asp:LinkButton ID="AramaGorusmeBtn" runat="server" CssClass="btn btn-warning" Text="Arama/Görüşmeye Git" OnClick="AramaGorusmeBtn_Click" CausesValidation="false" />
                                 </div>
@@ -521,10 +527,10 @@
                     <asp:LinkButton ID="GuncelleBtn" CssClass="btn btn-outline-primary" runat="server" Text="Güncelle" OnClick="GuncelleBtn_Click"></asp:LinkButton>
                     <asp:LinkButton ID="FaaliyetSilBtn" CssClass="btn btn-outline-danger" runat="server" Text="Faaliyeti Sil" OnClick="FaaliyetSilBtn_Click" Visible="False"></asp:LinkButton>
                     <asp:LinkButton ID="FaaliyetKartiBtn" CssClass="btn btn-outline-secondary" runat="server" Text="Faaliyet Kartı" OnClick="FaaliyetKartiBtn_Click" Visible="False"></asp:LinkButton>
-                    <asp:LinkButton ID="FaaliyetTakvimiBtn" CssClass="btn btn-outline-info float-right" runat="server" Text="Faaliyet Takvimi" OnClick="FaaliyetTakvimiBtn_Click" CausesValidation="false"></asp:LinkButton>
-                    <asp:LinkButton ID="FaaliyetListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Faaliyet Listesi" OnClick="FaaliyetListesiBtn_Click" CausesValidation="false"></asp:LinkButton>
-                     <asp:LinkButton ID="AcikTarihliFaaliyetListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Açık Tarihli Faal. List." OnClick="AcikTarihliFaaliyetListesiBtn_Click"></asp:LinkButton>
-                    <asp:LinkButton ID="KisiListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Kişi Listesi" OnClick="KisiListesiBtn_Click" CausesValidation="false"></asp:LinkButton>
+                    <asp:LinkButton ID="FaaliyetTakvimiBtn" CssClass="btn btn-outline-info float-end" runat="server" Text="Faaliyet Takvimi" OnClick="FaaliyetTakvimiBtn_Click" CausesValidation="false"></asp:LinkButton>
+                    <asp:LinkButton ID="FaaliyetListesiBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Faaliyet Listesi" OnClick="FaaliyetListesiBtn_Click" CausesValidation="false"></asp:LinkButton>
+                     <asp:LinkButton ID="AcikTarihliFaaliyetListesiBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Açık Tarihli Faal. List." OnClick="AcikTarihliFaaliyetListesiBtn_Click"></asp:LinkButton>
+                    <asp:LinkButton ID="KisiListesiBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Kişi Listesi" OnClick="KisiListesiBtn_Click" CausesValidation="false"></asp:LinkButton>
                 </ContentTemplate>
                 <Triggers>
                     <asp:AsyncPostBackTrigger ControlID="RefreshTimer" EventName="tick" />
@@ -568,7 +574,7 @@
                     </div>
                     <div class="modal-footer">
                         <asp:LinkButton ID="FaaliyetSilNowBtn" CssClass="btn btn-outline-danger" runat="server" Text="Faaliyeti Sil" OnClick="FaaliyetSilNowBtn_Click"></asp:LinkButton>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                     </div>
                 </div>
             </div>
@@ -588,7 +594,7 @@
                     <div class="modal-header">
                         <h3 class="col-form-label font-weight-bold" id="KatiliciSecimiHeaderLbl" runat="server">Katılımcı Seçimi
                         </h3>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
@@ -614,7 +620,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                     </div>
                 </div>
 
@@ -650,7 +656,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
                         <div id="BtnDiv" style="display: block">
                             <input id="SecilenleriKaydetTriggerBtn" class="btn btn-success" type="button" value="Seçilenleri Kaydet" onclick="SecilenleriKaydetTriggerBtnClicked();" />
                         </div>
@@ -685,7 +691,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
                         <div id="GetirilenAniObjesiKaydetBtnDiv" style="display: block">
                             <input id="GetirilenAniObjesiKaydetTriggerBtn" class="btn btn-success" type="button" value="Kaydet" onclick="GetirilenAniObjesiKaydetTriggerBtnClicked();" />
                         </div>
@@ -760,7 +766,7 @@
                 </Triggers>
             </asp:UpdatePanel>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
                 <div id="StokluAniObjesiIadeEtBtnDiv" style="display: block">
                     <input id="StokluAniObjesiIadeEtTriggerBtn" class="btn btn-success" type="button" value="Depoya İade Et" onclick="StokluAniObjesiIadeEtTriggerBtnClicked();" />
                 </div>
@@ -790,7 +796,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
                         <div id="TakvimDavetiGonderBtnDiv" style="display: block">
                             <input id="TakvimDavetiGonderBtn" class="btn btn-success" type="button" value="Gönder" onclick="TakvimDavetiGonderBtnClicked();" />
                         </div>

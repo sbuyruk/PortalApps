@@ -119,7 +119,7 @@ namespace NBYS_WebParts.FTKKuruluOlmayanIlIlceListesiWP {
             this.YonergeBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "YonergeBtn";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "btn btn-outline-primary float-right mr-4");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "btn btn-outline-primary float-end mr-4");
             @__ctrl.ToolTip = "Kullanım Yönergesi";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    <i class=\"fa fa-book\" aria-hidden=\"true\"></i>\r\n            " +
@@ -366,7 +366,7 @@ namespace NBYS_WebParts.FTKKuruluOlmayanIlIlceListesiWP {
             this.FTKIslemleriBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "FTKIslemleriBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right mr-3";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end mr-3";
             @__ctrl.Text = "FTK İşlemleri";
             @__ctrl.CausesValidation = false;
             @__ctrl.Click -= new System.EventHandler(this.FTKIslemleriBtn_Click);
@@ -383,7 +383,7 @@ namespace NBYS_WebParts.FTKKuruluOlmayanIlIlceListesiWP {
             this.BolgelereGoreFTKRaporuBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "BolgelereGoreFTKRaporuBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Bölgelere göre FTK Dağılımı";
             @__ctrl.CausesValidation = false;
             @__ctrl.Click -= new System.EventHandler(this.BolgelereGoreFTKRaporuBtn_Click);

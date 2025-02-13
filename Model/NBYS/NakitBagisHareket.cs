@@ -489,9 +489,9 @@ namespace Model.NBYS
         private string GetSQLSelectByTarih(string ay, string yil, int ilId)
         {
             string ilStr = string.Empty;
-            if (ilId < ProjeConstants.IL_HEPSI)
+            if (ilId > ProjeConstants.IL_HEPSI)
             {
-                ilStr = " AND Il_Table.Id =" + ilId;
+                ilStr = " AND E.Id =" + ilId;
             }
             string ayStr;
             if (ay.Equals(ProjeConstants.HEPSI_INT.ToString()))
@@ -514,7 +514,8 @@ namespace Model.NBYS
                         A.ArmaganId as ArmaganId,
 	                    ISNULL(E.IlAdi,'')  Ili,
                         D.Durum as Durum,
-	                    C.Banka Banka
+	                    C.Banka Banka,
+                        ISNULL(A.Aciklama,'') Aciklama
                 FROM NakitBagisHareket_Table A 
                 INNER JOIN NakitBagisci_Table B ON B.Id= A.BagisciId 
                 INNER JOIN BankaTanim_Table C ON C.Id= A.BankaId
@@ -546,20 +547,10 @@ namespace Model.NBYS
         {
             string sqlString = string.Empty;
             string ilStr = string.Empty;
-            if (ilId < ProjeConstants.IL_HEPSI)
+            if (ilId > ProjeConstants.IL_HEPSI)
             {
-                //ilStr = " AND Il_Table.Id =" + ilId;
                 ilStr = string.Format(" AND (D.Id={0})" , ilId);
             }
-
-            //sqlString = string.Format(@"
-            //            SELECT YEAR(BagisTarihi) Yil , SUM(BagisMiktari) BagisToplam, count(BagisMiktari) BagisSayisi , Il_Table.IlAdi IlAdi from NakitBagisHareket_Table
-            //            LEFT OUTER JOIN IL_Table on Il_Table.Id= NakitBagisHareket_Table.Ili
-            //            WHERE BagisTarihi > {0} 
-            //            {1}
-            //            GROUP BY YEAR(BagisTarihi), IlAdi
-            //            ORDER BY Yil DESC
-            //            ", tarih.ReturnQuotedValue(), ilStr);
             sqlString = string.Format(@"
                 SELECT YEAR(BagisTarihi) Yil , SUM(BagisMiktari) BagisToplam, count(BagisMiktari) BagisSayisi , D.IlAdi IlAdi 
                 FROM NakitBagisHareket_Table A
@@ -580,7 +571,6 @@ namespace Model.NBYS
                 Exception ex = new Exception("sql=" + sqlString, e);
                 throw ex;
             }
-            ///List<NakitBagisHareket> list = ToList<NakitBagisHareket>(dataTable);
             return dataTable;
         }
         public DataTable SelectCountByBagisTarihiBolge(int yil, int ay)

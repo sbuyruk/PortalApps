@@ -19,10 +19,12 @@
 
     
     function OpenKiraciSecModal() {
-        $("#KiraciSecDiv").modal({ backdrop: false });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('KiraciSecDiv'));
+        myModalInstance.show();
     }
     function OpenModalOnay() {
-        $("#ModalOnay").modal({ backdrop: "static" });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnay'));
+        myModalInstance.show();
     }
     function CallButtonClick(kiraciId) {
         document.getElementById('<%= paramKiraciIdLbl.ClientID%>').value = kiraciId;
@@ -183,7 +185,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                 </div>
             </div>
         </div>
@@ -209,7 +211,7 @@
                             </div>
                             <div class="card-footer">
                                 <asp:LinkButton ID="SilNowBtn" Text="Ödemeyi Sil" runat="server" class="btn btn-outline-danger" OnClick="SilNowBtn_Click"></asp:LinkButton>
-                                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">İptal</button>
+                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">İptal</button>
                             </div>
                         </div>
                     </ContentTemplate>

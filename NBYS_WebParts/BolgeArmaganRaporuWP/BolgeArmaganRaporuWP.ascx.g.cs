@@ -1325,7 +1325,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.ExcelBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-success float-right";
+            @__ctrl.CssClass = "btn btn-outline-success float-end";
             @__ctrl.ID = "ExcelBtn";
             @__ctrl.Text = "Excel\'e Aktar";
             @__ctrl.OnClientClick = "javascript:setFormSubmitToFalse()";

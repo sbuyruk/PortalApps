@@ -158,7 +158,7 @@ namespace IKYS_WebParts.UcretliMahsupWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.EkranNo = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-secondary float-right";
+            @__ctrl.CssClass = "col-form-label text-secondary float-end";
             @__ctrl.ID = "EkranNo";
             @__ctrl.Text = "19";
             return @__ctrl;
@@ -479,8 +479,8 @@ namespace IKYS_WebParts.UcretliMahsupWP {
             global::System.Web.UI.HtmlControls.HtmlButton @__ctrl7;
             @__ctrl7 = this.@__BuildControlMahsupEtModalBtn();
             @__parser.AddParsedSubObject(@__ctrl7);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        <button type=\"button\" class=\"btn btn-default\" data-dism" +
-                        "iss=\"modal\">Kapat</button>\r\n                    </div>\r\n                "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        <button type=\"button\" class=\"btn btn-default\" data-bs-d" +
+                        "ismiss=\"modal\">Kapat</button>\r\n                    </div>\r\n                "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -541,7 +541,8 @@ namespace IKYS_WebParts.UcretliMahsupWP {
             @__w.Write(@"
 <script>
     function OpenModalOnay() {
-        $(""#ModalOnayDiv"").modal({ backdrop: false });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
+        myModalInstance.show();
     }
     //ekrandan secilen onayla vb butonun serverside'da oncliclkini calistirsin
     function CallButtonClick(onay) {

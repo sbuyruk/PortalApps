@@ -10,7 +10,8 @@
     function OpenModal(nakitBagisciId) {
         document.getElementById('<%= paramNakitBagisciIdLbl.ClientID%>').value = nakitBagisciId;
 
-        $("#ModalUrlDiv").modal({ backdrop: false });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalUrlDiv'));
+        myModalInstance.show();
         document.getElementById('<%= ModalDoldurBtn.ClientID%>').click();
     }
 </script>
@@ -24,7 +25,7 @@
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-1">
                 <asp:Label CssClass="col-form-label btn-outline-info" runat="server" Text="Nakit Bağışçı Bulma"></asp:Label>
-                <asp:Label CssClass="col-form-label text-secondary float-right" ID="EkranNo" Text="24" runat="server"></asp:Label>
+                <asp:Label CssClass="col-form-label text-secondary float-end" ID="EkranNo" Text="24" runat="server"></asp:Label>
             </h3>
         </div>
         <div class="card-body border border-default" runat="server" id="PUTableDiv">
@@ -54,7 +55,7 @@
             </div>
         </div>
         <div class="card-footer">
-            <asp:LinkButton ID="YeniBagisGirisiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Yeni Bağışçı Girişine Git" OnClick="YeniBagisGirisiBtn_Click" />
+            <asp:LinkButton ID="YeniBagisGirisiBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Yeni Bağışçı Girişine Git" OnClick="YeniBagisGirisiBtn_Click" />
         </div>
     </div>
     <asp:UpdateProgress ID="updateProgress" runat="server">
@@ -117,7 +118,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>

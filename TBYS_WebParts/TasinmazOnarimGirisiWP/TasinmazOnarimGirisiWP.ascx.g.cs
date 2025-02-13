@@ -606,7 +606,7 @@ namespace TBYS_WebParts.TasinmazOnarimGirisiWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.BackBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right mr-2";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end mr-2";
             @__ctrl.ID = "BackBtn";
             @__ctrl.Text = "Geri";
             @__ctrl.CausesValidation = false;

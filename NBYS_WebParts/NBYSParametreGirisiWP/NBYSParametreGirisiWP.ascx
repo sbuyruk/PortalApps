@@ -8,7 +8,8 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="NBYSParametreGirisiWP.ascx.cs" Inherits="NBYS_WebParts.NBYSParametreGirisiWP.NBYSParametreGirisiWP" %>
 <script>
     function OpenModalOnay() {
-        $("#ModalOnay").modal({ backdrop: "static" });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnay'));
+        myModalInstance.show();
     }
     function CloseModal() {
         $("#ModalOnay").modal('hide');
@@ -125,7 +126,7 @@
                             <div class="card-footer">
                                 <asp:LinkButton ID="GuncelleNowBtn" Text="Güncelle" runat="server" class="btn btn-outline-primary" OnClick="GuncelleNowBtn_Click"></asp:LinkButton>
                                 <asp:LinkButton ID="SilNowBtn" Text="Sil" runat="server" class="btn btn-outline-danger" OnClick="SilNowBtn_Click"></asp:LinkButton>
-                                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">İptal</button>
+                                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">İptal</button>
                             </div>
                         </div>
                     </ContentTemplate>

@@ -580,7 +580,7 @@ namespace MTS_WebParts.AramaGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "YeniKisiBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Yeni Kişi Girişi";
             @__ctrl.Click -= new System.EventHandler(this.YeniKisiBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.YeniKisiBtn_Click);
@@ -597,7 +597,7 @@ namespace MTS_WebParts.AramaGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "FaaliyetTakvimiBtn";
-            @__ctrl.CssClass = "btn btn-outline-info float-right";
+            @__ctrl.CssClass = "btn btn-outline-info float-end";
             @__ctrl.CausesValidation = false;
             @__ctrl.Text = "Faaliyet Takvimi";
             @__ctrl.Click -= new System.EventHandler(this.FaaliyetTakvimiBtn_Click);
@@ -615,7 +615,7 @@ namespace MTS_WebParts.AramaGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "FaaliyetListesiBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.CausesValidation = false;
             @__ctrl.Text = "Faaliyet Listesi";
             @__ctrl.Click -= new System.EventHandler(this.FaaliyetListesiBtn_Click);
@@ -633,7 +633,7 @@ namespace MTS_WebParts.AramaGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "KisiListesiBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.CausesValidation = false;
             @__ctrl.Text = "Kişi Listesi";
             @__ctrl.Click -= new System.EventHandler(this.KisiListesiBtn_Click);
@@ -651,7 +651,7 @@ namespace MTS_WebParts.AramaGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "AramaListesi";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.CausesValidation = false;
             @__ctrl.Text = "Arama/Görüşme Listesi";
             @__ctrl.Click -= new System.EventHandler(this.AramaListesiBtn_Click);
@@ -815,7 +815,7 @@ namespace MTS_WebParts.AramaGirisiWP {
                             </div>
                         </div>
                         <div class=""modal-footer"">
-                            <button type=""button"" class=""btn btn-default"" data-dismiss=""modal"">Kapat</button>
+                            <button type=""button"" class=""btn btn-default"" data-bs-dismiss=""modal"">Kapat</button>
                         </div>
                     </div>
                 </div>
@@ -944,8 +944,8 @@ namespace MTS_WebParts.AramaGirisiWP {
             @__ctrl4 = this.@__BuildControlOnaylaBtn();
             @__parser.AddParsedSubObject(@__ctrl4);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                <button type=\"button\" class=\"btn btn-outline-se" +
-                        "condary\" data-dismiss=\"modal\">İptal</button>\r\n                            </div>" +
-                        "\r\n                        </div>\r\n                    "));
+                        "condary\" data-bs-dismiss=\"modal\">İptal</button>\r\n                            </d" +
+                        "iv>\r\n                        </div>\r\n                    "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -1132,10 +1132,12 @@ namespace MTS_WebParts.AramaGirisiWP {
 </style>
 <script type=""text/javascript"">
     function OpenModalOnay() {
-        $(""#ModalOnay"").modal({ backdrop: ""static"" });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnay'));
+        myModalInstance.show();
     }
-    function KatilimciSecimiModal() {
-        $(""#KatilimciSecimiModal"").modal({ backdrop: false });
+    function KatilimciSecimiModal() {        
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('KatilimciSecimiModal'));
+        myModalInstance.show();
     }
     function KatilimciSecildiBtnClick(katilimciId) {
         document.getElementById('");

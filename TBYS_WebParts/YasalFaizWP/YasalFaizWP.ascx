@@ -28,7 +28,7 @@
                     <asp:DropDownList ID="YilDDL" runat="server" CssClass="form-control" AutoPostBack="True" OnSelectedIndexChanged="YilDDL_SelectedIndexChanged" />
                 </div>
 <%--                <div class="form-group col">
-                    <label class="col-form-label float-right">Varsayılan Faiz Oranı: </label>
+                    <label class="col-form-label float-end">Varsayılan Faiz Oranı: </label>
 
                 </div>
                 <div class="form-group col-2">
@@ -296,7 +296,7 @@
         </div>
         <div class="card-footer">
             <asp:LinkButton ID="HepsiniKaydetBtn" runat="server" CssClass="btn btn-outline-success" Text="Hepsini Kaydet" OnClick="HepsiniKaydetBtn_Click" />
-            <asp:LinkButton ID="OdemePlaniListBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Ödeme Planları" OnClick="OdemePlaniListBtn_Click" />
+            <asp:LinkButton ID="OdemePlaniListBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Ödeme Planları" OnClick="OdemePlaniListBtn_Click" />
         </div>
     </div>
 </div>

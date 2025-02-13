@@ -95,10 +95,12 @@
 <%-- Katılımcı Seçimi Modal --%>
 <script type="text/javascript">
     function OpenSilModal() {
-        $("#ModalSilDiv").modal({ backdrop: true });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalSilDiv'));
+        myModalInstance.show();
     }
     function OpenOnayModal() {
-        $("#ModalOnayDiv").modal({ backdrop: true });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
+        myModalInstance.show();
     }
     function CloseOnayModal() {
         $("#ModalOnayDiv").modal('hide');
@@ -106,7 +108,8 @@
         $(document.body).removeClass("modal-open");
     }
     function KatilimciSecimiModal() {
-        $("#KatilimciSecimiModal").modal({ backdrop: false });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('KatilimciSecimiModal'));
+        myModalInstance.show();
     }
 
 
@@ -270,9 +273,9 @@
             <asp:LinkButton ID="KaydetBtn" CssClass="btn btn-outline-success" runat="server" Text="Toplantı Kaydet" OnClick="KaydetBtn_Click"></asp:LinkButton>
             <asp:LinkButton ID="GuncelleBtn" CssClass="btn btn-outline-primary" runat="server" Text="Güncelle" OnClick="GuncelleBtn_Click"></asp:LinkButton>
             <asp:LinkButton ID="ToplantiSilBtn" CssClass="btn btn-outline-danger ml-5" runat="server" Text="Toplantı Sil" OnClick="ToplantiSilBtn_Click"></asp:LinkButton>
-            <asp:LinkButton ID="ToplantiTakvimiBtn" CssClass="btn btn-outline-info float-right" runat="server" Text="Toplantı Takvimi" OnClick="ToplantiTakvimiBtn_Click" CausesValidation="False"></asp:LinkButton>
-            <asp:LinkButton ID="ToplantiListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Toplantı Listesi" OnClick="ToplantiListesiBtn_Click" CausesValidation="False"></asp:LinkButton>
-            <asp:LinkButton ID="ToplantiKatilimTutanagiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Toplantı Katılım Tutanagi" OnClick="ToplantiKatilimTutanagiBtn_Click" CausesValidation="False"></asp:LinkButton>
+            <asp:LinkButton ID="ToplantiTakvimiBtn" CssClass="btn btn-outline-info float-end" runat="server" Text="Toplantı Takvimi" OnClick="ToplantiTakvimiBtn_Click" CausesValidation="False"></asp:LinkButton>
+            <asp:LinkButton ID="ToplantiListesiBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Toplantı Listesi" OnClick="ToplantiListesiBtn_Click" CausesValidation="False"></asp:LinkButton>
+            <asp:LinkButton ID="ToplantiKatilimTutanagiBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Toplantı Katılım Tutanagi" OnClick="ToplantiKatilimTutanagiBtn_Click" CausesValidation="False"></asp:LinkButton>
         </div>
     </div>
     <div id="KatilimciHiddenDiv" style="display: none">
@@ -306,7 +309,7 @@
                     </div>
                     <div class="modal-footer">
                         <asp:LinkButton ID="ToplantiSilNowBtn" CssClass="btn btn-outline-danger" runat="server" Text="Toplantıyı Sil" OnClick="ToplantiSilNowBtn_Click"></asp:LinkButton>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                     </div>
                 </div>
             </div>
@@ -349,7 +352,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                     </div>
                 </div>
             </div>
@@ -414,7 +417,7 @@
                     <div class="modal-footer">
                         <asp:LinkButton ID="KaydetNowBtn" CssClass="btn btn-outline-success" runat="server" Text="Toplantıyı Kaydet" OnClick="KaydetNowBtn_Click" Visible="false"></asp:LinkButton>
                         <asp:LinkButton ID="GuncelleNowBtn" CssClass="btn btn-outline-primary" runat="server"  Text="Toplantıyı Güncelle" OnClick="GuncelleNowBtn_Click" Visible="false"></asp:LinkButton>
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                     </div>
                 </div>
             </div>

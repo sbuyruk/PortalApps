@@ -152,7 +152,7 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.NextBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-primary float-right";
+            @__ctrl.CssClass = "btn btn-outline-primary float-end";
             @__ctrl.ID = "NextBtn";
             @__ctrl.Text = "İleri >>";
             @__ctrl.Click -= new System.EventHandler(this.NextBtn_Click);
@@ -168,7 +168,7 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.KiraEkstreListesiBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-primary float-right";
+            @__ctrl.CssClass = "btn btn-outline-primary float-end";
             @__ctrl.ID = "KiraEkstreListesiBtn";
             @__ctrl.Text = "Kira Ekstre Listesi";
             @__ctrl.Click -= new System.EventHandler(this.NextBtn_Click);

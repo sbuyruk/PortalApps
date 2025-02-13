@@ -240,7 +240,7 @@ namespace Portal_WebParts.DuyuruListesiWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.ExcelBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-success float-right";
+            @__ctrl.CssClass = "btn btn-outline-success float-end";
             @__ctrl.ID = "ExcelBtn";
             @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
             @__ctrl.Text = "Excele Aktar";
@@ -329,7 +329,7 @@ namespace Portal_WebParts.DuyuruListesiWP {
                         </div>
                     </div>
                     <div class=""modal-footer"">
-                        <button type=""button"" class=""btn btn-default"" data-dismiss=""modal"">Kapat</button>
+                        <button type=""button"" class=""btn btn-default"" data-bs-dismiss=""modal"">Kapat</button>
                     </div>
                 "));
         }
@@ -415,9 +415,17 @@ namespace Portal_WebParts.DuyuruListesiWP {
                     "etElementById(\'");
                          @__w.Write( HiddenOkuyanlarBtn.ClientID);
 
-            @__w.Write("\').click();\r\n    }\r\n    function OpenOkuyanlarModal(duyuruId) {\r\n        $(\"#Okuy" +
-                    "anlarModalDiv\").modal({ backdrop: false });\r\n    }\r\n</script>\r\n<div class=\"conta" +
-                    "iner shadow\">\r\n\r\n    <div class=\"card\">\r\n        ");
+            @__w.Write(@"').click();
+    }
+    function OpenOkuyanlarModal(duyuruId) {
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('OkuyanlarModalDiv'));
+        myModalInstance.show();
+    }
+</script>
+<div class=""container shadow"">
+
+    <div class=""card"">
+        ");
             parameterContainer.Controls[0].RenderControl(@__w);
             @__w.Write("\r\n        ");
             parameterContainer.Controls[1].RenderControl(@__w);

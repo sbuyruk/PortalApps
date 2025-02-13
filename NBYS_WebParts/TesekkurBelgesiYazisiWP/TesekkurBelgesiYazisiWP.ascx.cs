@@ -157,6 +157,7 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
                 ViewState["SecilenBittar"] = value;
             }
         }
+        
         protected void Page_Load(object sender, EventArgs e)
         {
             //time out olmasın diye
@@ -186,6 +187,7 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
             GunDDLDoldur();
             AyDDLDoldur();
             YilDDLDoldur();
+            BolgeDDLDoldur();
         }
         private void GunDDLDoldur()
         {
@@ -229,6 +231,19 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
             {
                 YilDDL.Items.Add(new System.Web.UI.WebControls.ListItem(i.ToString(), i.ToString()));
             }
+        }
+        private void BolgeDDLDoldur()
+        {
+            BolgeDDL.Items.Clear();
+            Bolge bolgeDao = new Bolge();
+            List<Bolge> list = bolgeDao.SelectAktifBolgeler(ProjeConstants.BOLGE_HEPSI_INT);
+            foreach (Bolge item in list)
+            {
+                if (string.IsNullOrEmpty(item.Adi.Trim()))
+                    continue;
+                BolgeDDL.Items.Add(new System.Web.UI.WebControls.ListItem(item.Adi, item.Id.ToString()));
+            }
+
         }
         private void SetDDLValues()
         {
@@ -296,6 +311,11 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
         protected void GunDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
             SecilenGunQS = GunDDL.SelectedItem.Value.ToString();
+            SetSecilenBasTarBitTar();
+            FillDurumValues();
+        } 
+        protected void BolgeDDL_SelectedIndexChanged(object sender, EventArgs e)
+        {
             SetSecilenBasTarBitTar();
             FillDurumValues();
         }
@@ -378,7 +398,7 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
             DateTime bastar = GetBasTar();
             DateTime bittar = GetBitTar();
 
-            var json = armagan.SelectByDurumTarih(ProjeConstants.DURUM_KONTROLEDILDI, bastar, bittar, ProjeConstants.ARMAGAN_TESEKKURID.ToString(), ref rowCount, ProjeConstants.BOLGE_HEPSI_INT, ProjeConstants.HEPSI_INT);
+            var json = armagan.SelectByDurumTarih(ProjeConstants.DURUM_KONTROLEDILDI, bastar, bittar, ProjeConstants.ARMAGAN_TESEKKURID.ToString(), ref rowCount, BolgeDDL.SelectedItem.Value.ConvertToInt(), ProjeConstants.HEPSI_INT);
             TableDataLbl.Text = rowCount + " adet Teşekkür Belgesi mevcut";
             if (rowCount > 0)
             {
@@ -548,7 +568,7 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
 
             Armagan armagan = new Armagan();
             //DataTable tesekkur = armagan.SelectCountDurumByBolge(SecilenAyQS, SecilenYilQS, ProjeConstants.ARMAGAN_TESEKKURID, "");
-            DataTable dataTable = armagan.SelectCountDurumByBolgeTarih(ProjeConstants.ARMAGAN_TESEKKURID, ProjeConstants.HEPSI_INT, SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime());
+            DataTable dataTable = armagan.SelectCountDurumByBolgeTarih(ProjeConstants.ARMAGAN_TESEKKURID, BolgeDDL.SelectedItem.Value.ConvertToInt(), SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime());
             FillTable(dataTable);
 
         }
@@ -626,28 +646,22 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
             {
 
                 // Dosya adları 
+                string bolge = BolgeDDL.SelectedItem.Value;
                 string zaman = DateTime.Now.ToString("dd-MM-yyyy-HH-mm");
-                string yaziDosyaAdi = "TesekkurBelgesi(" + zaman + ").docx";
-                string etiketDosyaAdi = "Adres-EtiketiTES(" + zaman + ").docx";
+                string yaziDosyaAdi = "TesekkurBelgesi-" + bolge + "-(" + zaman + ").docx";
                 bool isYaziOlusturuldu = TesekkurBelgesiDosyasiOlustur(yaziDosyaAdi);
                 if (isYaziOlusturuldu)
                 {
-                    //bool etiketOlustuMu = YeniAdresEtiketDosyasiOlustur(etiketDosyaAdi);
-                    //if (etiketOlustuMu)
-                    //    MessageHelper.PublishMessage("Teşekkür belgeleri ve adres etiketleri hazırlandı, Dosya ismine basarak yazıyı indirebilirsiniz.", ProjeConstants.MESAJ_BASARILI, 2000);
-                    //else
-                    {
-                        MessageHelper.PublishMessage("Teşekkür belgeleri hazırlandı, Dosya ismine basarak yazıyı indirebilirsiniz.", ProjeConstants.MESAJ_BASARILI, 2000);
-                        MessageHelper.PublishMessage("Adres etiketleri oluşturulamadı.", ProjeConstants.MESAJ_BILGI, 3000);
-                    }
-
+                    MessageHelper.PublishMessage("Teşekkür belgeleri hazırlandı, Dosya ismine basarak yazıyı indirebilirsiniz.", ProjeConstants.MESAJ_BASARILI, 2000);
                 }
-                //else
-                //    MessageHelper.PublishMessage("Hata Oluştu", ProjeConstants.MESAJ_HATA);
+                else
+                {
+                    MessageHelper.PublishMessage("Teşekkür belgeleri oluşturulamadı.", ProjeConstants.MESAJ_HATA, 3000);
+                }
             }
             catch (Exception ex)
             {
-                Exception ex1 = new Exception("Yazı ve Adres oluşturmada hata");
+                Exception ex1 = new Exception("Belge oluşturmada hata");
                 ExceptionHelper exh = new ExceptionHelper(ex);
                 exh.PublishException();
             }
@@ -657,16 +671,16 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
             try
             {
                 // Dosya adları 
+                string bolge = BolgeDDL.SelectedItem.Value;
                 string zaman = DateTime.Now.ToString("dd-MM-yyyy-HH-mm");
-                string etiketDosyaAdi = "Adres-EtiketiTES(" + zaman + ").docx";
+                string etiketDosyaAdi = "Adres-EtiketiTES-"+bolge+"-(" + zaman + ").docx";
 
                 bool etiketOlustuMu = YeniAdresEtiketDosyasiOlustur(etiketDosyaAdi);
                 if (etiketOlustuMu)
-                    MessageHelper.PublishMessage("Teşekkür belgeleri ve adres etiketleri hazırlandı, Dosya ismine basarak yazıyı indirebilirsiniz.", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("TAdres etiketleri hazırlandı, Dosya ismine basarak yazıyı indirebilirsiniz.", ProjeConstants.MESAJ_BASARILI, 2000);
                 else
                 {
-                    MessageHelper.PublishMessage("Teşekkür belgeleri hazırlandı, Dosya ismine basarak yazıyı indirebilirsiniz.", ProjeConstants.MESAJ_BASARILI, 2000);
-                    MessageHelper.PublishMessage("Adres etiketleri oluşturulamadı.", ProjeConstants.MESAJ_BILGI, 3000);
+                    MessageHelper.PublishMessage("Adres etiketleri oluşturulamadı.", ProjeConstants.MESAJ_HATA, 3000);
                 }
             }
             catch (Exception ex)
@@ -803,7 +817,7 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
             DateTime bastar = GetBasTar();
             DateTime bittar = GetBitTar();
             Armagan armagan = new Armagan();
-            DataTable dataTable = armagan.SelectByDurumTarihReturnDT(ProjeConstants.DURUM_KONTROLEDILDI, bastar, bittar, ProjeConstants.ARMAGAN_TESEKKURID.ToString(), ProjeConstants.BOLGE_HEPSI_INT, ProjeConstants.HEPSI_INT);
+            DataTable dataTable = armagan.SelectByDurumTarihReturnDT(ProjeConstants.DURUM_KONTROLEDILDI, bastar, bittar, ProjeConstants.ARMAGAN_TESEKKURID.ToString(), BolgeDDL.SelectedItem.Value.ConvertToInt(), ProjeConstants.HEPSI_INT);
 
             if (dataTable != null)
             {
@@ -880,7 +894,7 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
             DateTime bastar = GetBasTar();
             DateTime bittar = GetBitTar();
             Armagan armagan = new Armagan();
-            DataTable dataTable = armagan.SelectByDurumTarihReturnDT(ProjeConstants.DURUM_KONTROLEDILDI, bastar, bittar, ProjeConstants.ARMAGAN_TESEKKURID.ToString(), ProjeConstants.BOLGE_HEPSI_INT, ProjeConstants.HEPSI_INT);
+            DataTable dataTable = armagan.SelectByDurumTarihReturnDT(ProjeConstants.DURUM_KONTROLEDILDI, bastar, bittar, ProjeConstants.ARMAGAN_TESEKKURID.ToString(), BolgeDDL.SelectedItem.Value.ConvertToInt(), ProjeConstants.HEPSI_INT);
             if (dataTable != null)
             {
                 int index = 1;

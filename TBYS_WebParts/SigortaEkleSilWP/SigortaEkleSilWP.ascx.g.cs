@@ -807,7 +807,7 @@ namespace TBYS_WebParts.SigortaEkleSilWP {
             @__parser.AddParsedSubObject(@__ctrl13);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                            </div>\r\n\r\n\r" +
                         "\n                        </div>\r\n                        <div class=\"form-group " +
-                        "float-right\">\r\n                            "));
+                        "float-end\">\r\n                            "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl14;
             @__ctrl14 = this.@__BuildControlSigortaEkleBtn();
             @__parser.AddParsedSubObject(@__ctrl14);
@@ -885,7 +885,7 @@ namespace TBYS_WebParts.SigortaEkleSilWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.BackBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right mr-2";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end mr-2";
             @__ctrl.ID = "BackBtn";
             @__ctrl.Text = "Geri";
             @__ctrl.CausesValidation = false;

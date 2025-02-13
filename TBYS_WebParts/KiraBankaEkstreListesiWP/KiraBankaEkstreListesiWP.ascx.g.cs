@@ -227,7 +227,7 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP {
             this.RowCountLbl = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-2 col-form-label float-right";
+            @__ctrl.CssClass = "col-2 col-form-label float-end";
             @__ctrl.ID = "RowCountLbl";
             @__ctrl.Text = "";
             @__ctrl.Font.Bold = true;
@@ -279,7 +279,7 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP {
             this.ExcelBtn = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-success float-right";
+            @__ctrl.CssClass = "btn btn-outline-success float-end";
             @__ctrl.ID = "ExcelBtn";
             @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
             @__ctrl.Text = "Excele Aktar";
@@ -406,7 +406,7 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP {
             @__ctrl5 = this.@__BuildControlKaydetNowBtn();
             @__parser.AddParsedSubObject(@__ctrl5);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-                                                <button type=""button"" class=""btn btn-default float-right"" data-dismiss=""modal"">Kapat</button>
+                                                <button type=""button"" class=""btn btn-default float-end"" data-bs-dismiss=""modal"">Kapat</button>
                                             </div>
                                         </div>
                                     "));
@@ -739,7 +739,7 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP {
                                     </div>
                                 </div>
                                 <div class=""card-footer"">
-                                    <button type=""button"" class=""btn btn-default"" data-dismiss=""modal"">Kapat</button>
+                                    <button type=""button"" class=""btn btn-default"" data-bs-dismiss=""modal"">Kapat</button>
                                 </div>
                             </div>
                         "));
@@ -963,7 +963,8 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP {
         return true;
     }
     function OpenModalOnay() {
-        $(""#ModalOnayDiv"").modal({ backdrop: true });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
+        myModalInstance.show();
     }
 
     function CloseModalOnay() {

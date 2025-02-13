@@ -591,7 +591,9 @@ namespace TBYS_WebParts.BorcluKiracilarWP
 
                 OdemePlaniTable.Controls.Add(row);
             }
-            var jsString = " $('#OdemePlaniModal').modal({ backdrop: false });";
+            var jsString = @"         
+                var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('OdemePlaniModal'));
+                myModalInstance.show();";
             UtilityHelper.ScriptCalistir(jsString);
         }
 

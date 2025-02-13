@@ -14,7 +14,7 @@
                 <div class="card-header">
                     <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
                     <h3 class="mb-2">
-                        <a class=" btn btn-outline-primary float-right mr-4" runat="server" id="YonergeLnk"
+                        <a class=" btn btn-outline-primary float-end mr-4" runat="server" id="YonergeLnk"
                             data-fancybox
                             data-type="pdf"
                             data-width="960"
@@ -106,8 +106,8 @@
                 <div class="card-footer">
                     <asp:LinkButton ID="KurulusYazisiOlusturBtn" runat="server" CssClass="btn btn-outline-success" OnClick="KurulusYazisiOlusturBtn_Click">Kuruluş Yazısı Oluştur</asp:LinkButton>
                     <asp:LinkButton ID="GuncellemeYazisiOlusturBtn" runat="server" CssClass="btn btn-outline-primary" OnClick="GuncellemeYazisiOlusturBtn_Click">Güncelleme Yazısı Oluştur</asp:LinkButton>
-                    <asp:LinkButton ID="FTKListesiBtn" runat="server" CssClass="btn btn-outline-secondary float-right" Text="FTK Listesi" OnClick="FTKListesiBtn_Click"></asp:LinkButton>
-                    <asp:LinkButton ID="FTKIslemleriBtn" CssClass="btn btn-outline-secondary float-right mr-3" runat="server" Text="FTK İşlemleri" OnClick="FTKIslemleriBtn_Click" CausesValidation="False"></asp:LinkButton>
+                    <asp:LinkButton ID="FTKListesiBtn" runat="server" CssClass="btn btn-outline-secondary float-end" Text="FTK Listesi" OnClick="FTKListesiBtn_Click"></asp:LinkButton>
+                    <asp:LinkButton ID="FTKIslemleriBtn" CssClass="btn btn-outline-secondary float-end mr-3" runat="server" Text="FTK İşlemleri" OnClick="FTKIslemleriBtn_Click" CausesValidation="False"></asp:LinkButton>
                 </div>
             </div>
         </ContentTemplate>

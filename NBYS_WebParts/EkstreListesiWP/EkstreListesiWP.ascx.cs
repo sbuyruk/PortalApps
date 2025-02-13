@@ -1,5 +1,8 @@
 ﻿using Model.NBYS;
 using Model.Ortak;
+using Model.TBYS;
+using NBYS_WebParts.EkstreAktarmaEditWP;
+using NBYS_WebParts.NakitBagisciEslestirWP;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -175,12 +178,7 @@ namespace NBYS_WebParts.EkstreListesiWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!SayfaGirisKontrolu())
-            {
-                RedirectToPage(ProjeConstants.PAGE_HOME + "?Mesaj=true&Text=Sayfada düzenleme yapılmaktadır.Lütfen daha sonra tekrar deneyiniz.");
-            }
-            else
-            {
+
                 try
                 {
                     if (!Page.IsPostBack)
@@ -222,9 +220,9 @@ namespace NBYS_WebParts.EkstreListesiWP
                         }
                         BankaEtiketleriniBaşlat();
                         AktarilanBankalariOkLe(IslemTarihiTxt.Text.ConvertToDatetime());
-                        KayitGetir();
-                        AktarilanlarHaricChk.Checked = AktarilanlarHaricQS.ConvertToBool();
 
+                        AktarilanlarHaricChk.Checked = AktarilanlarHaricQS.ConvertToBool();
+                        TabloOlustur();
                     }
 
                 }
@@ -233,215 +231,8 @@ namespace NBYS_WebParts.EkstreListesiWP
                     ExceptionHelper exHelper = new ExceptionHelper(ex);
                     exHelper.PublishException();
                 }
-            }
+            
 
-        }
-
-        private bool SayfaGirisKontrolu()
-        {
-            return true;
-        }
-
-        private void KayitGetir()
-        {
-            var jsonData = EkstreAktarmaJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateJsString(jsonData); //javascript kodu hazırlanıyor.
-            System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), jsString, true);
-        }
-        private string EkstreAktarmaJson()
-        {
-            //DateTime zaman1 = DateTime.Now;
-            string jSon = string.Empty;
-            List<EkstreAktarmaListItem> list = GetDataList();
-            //DateTime zaman2 = DateTime.Now;
-            var serializer = new JavaScriptSerializer();
-            serializer.MaxJsonLength = Int32.MaxValue;
-            jSon = serializer.Serialize(list);
-            //DateTime zaman3 = DateTime.Now;
-            //MessageHelper.PublishMessage(zaman1+" ---- "+zaman2+" ---- " + zaman3 + " ---- ", ProjeConstants.MESAJ_BILGI);
-            return jSon;
-        }
-        private string CreateJsString(string jsonData)
-        {
-
-            //return '<span class=bagis-iade-edildi>'+rowData.IadeMiktari+ ' '+rowData.DovizCinsi+ ' Parası İade edildi</span>';
-            string ekstretablestr = @" 
-                var counter=1;
-                //tabloda modal açılırken seçili olan pagination degerini pageIndex degiskeninde saklar ve modal açıldıktan sonra pageload sırasında sayfayı pageIndex degerine getirir
-                $(document).on('click','.ui-paginator-element',function(){
-                    pageIndex= currentPage;
-                });
-                          
-                $('#tblfilter').puidatatable({
-                caption: '',
-                editMode: 'cell',
-                paginator: {
-                            rows: 10
-                            },
-                columns: [
-                                {
-                field: 'EkstreAktarmaId', headerText: 'Seç', headerStyle: 'width: 5%',content: function(rowData)
-                        {
-                            if (rowData.AktarildiMi == 'True')
-                            {
-                               return '<input id=chk type=checkbox checked disabled class=ekstre-aktarildi />';
-                            }
-                            else
-                            {
-                                var isChecked='';
-                                if ('" + SelectAllQS.ConvertToBool() + @"'=='True')
-                                {
-                                    
-                                    isChecked='checked';
-                                    EkleCikar(rowData.EkstreAktarmaId,isChecked);
-                                }else
-                                {
-                                    isChecked='';
-                                    EkleCikar(rowData.EkstreAktarmaId,isChecked);
-                                }
-                                    
-                               return $('<input id=chk class=ekstre-aktarilmadi '+isChecked+' onchange=addRemoveEkstreIdToList('+rowData.EkstreAktarmaId+',this); type=checkbox />');
-                            }
-                        }
-                    },
-                    { field: 'EkstreAktarmaId', headerText: 'S.No', sortable:true, filter: true, headerStyle:'width: 6%',content: function (rowData)
-                        { 
-                            if (rowData.AktarildiMi=='True')
-                            {
-                                return '<span class=ekstre-aktarildi>'+rowData.EkstreAktarmaId+ '</span>';
-                            }else{
-                                if (rowData.CakismaVarMi == 'True'){
-                                    return '<span class=cakisma-var>'+rowData.EkstreAktarmaId+ '</span>';
-                                }else{
-                                    return '<span class=ekstre-aktarilmadi>'+rowData.EkstreAktarmaId+ '</span>';
-                                }                                
-                            }
-                        }
-                    },
-                    { field: 'BankaAdi', headerText: 'Banka Adı', sortable:true, filter: true,headerStyle:'width: 13%',content: function (rowData)
-                        {
-                            if (rowData.AktarildiMi=='True')
-                            {
-                                return '<span class=ekstre-aktarildi>'+rowData.BankaAdi+ '</span>';
-                            }else{
-                                if (rowData.CakismaVarMi == 'True'){                                    
-                                    return '<span class=cakisma-var>'+rowData.BankaAdi+ '</span>';
-                                }else{                                    
-                                     return '<span class=ekstre-aktarilmadi>'+rowData.BankaAdi+ '</span>';
-                                }  
-                            }
-                        }
-                    },
-                    { field: 'TCKimlikNo', headerText: 'TCKimlikNo', sortable:true, filter: true, headerStyle:'width: 11%',content: function (rowData)
-                        { 
-                            if (rowData.AktarildiMi=='True')
-                            {
-                                return '<span class=ekstre-aktarildi>'+rowData.TCKimlikNo+ '</span>';
-                            }else{
-                                if (rowData.CakismaVarMi == 'True'){
-                                    return '<span class=cakisma-var>'+rowData.TCKimlikNo+ '</span>';
-                                }else{                                    
-                                    return '<span class=ekstre-aktarilmadi>'+rowData.TCKimlikNo+ '</span>';
-                                }          
-                            }
-                        }
-                    },
-                    { field: 'AdiSoyadi', headerText: 'Adı Soyadı', sortable:true,filter: true,headerStyle:'width: 20%',content: function (rowData)
-                        { 
-                            if (rowData.AktarildiMi=='True')
-                            {
-                                return '<span class=ekstre-aktarildi>'+rowData.AdiSoyadi+ '</span>';
-                            }else{
-                                if (rowData.CakismaVarMi == 'True'){
-                                    return '<span class=cakisma-var>'+rowData.AdiSoyadi+ '</span>';
-                                    //return $('<a href=# onclick=OpenModal('+rowData.NakitBagisciId+'); class=cakisma-var>'+rowData.Adi+'</a>')
-                                }else{                                    
-                                    return '<span class=ekstre-aktarilmadi>'+rowData.AdiSoyadi+ '</span>';
-                                    //return $('<a href=# onclick=OpenModal('+rowData.NakitBagisciId+'); class=ekstre-aktarilmadi>'+rowData.Adi+'</a>')
-                                }          
-                            }
-                        }
-                    },
-                    { field: 'Telefon', headerText: 'Telefon', sortable:true,filter: true,headerStyle:'width: 10%',content: function (rowData)
-                        { 
-                            if (rowData.AktarildiMi=='True')
-                            {
-                                return '<span class=ekstre-aktarildi>'+rowData.Telefon+ '</span>';
-                            }else{
-                                if (rowData.CakismaVarMi == 'True'){
-                                    return '<span class=cakisma-var>'+rowData.Telefon+ '</span>';
-                                }else{                                    
-                                    return '<span class=ekstre-aktarilmadi>'+rowData.Telefon+ '</span>';
-                                }          
-                            }
-                        }
-                    },
-                    { field: 'BagisTarihi', headerText: 'Bağış Tarihi', sortable:true,headerStyle:'width: 9%',content: function (rowData)
-                        { 
-                            if (rowData.AktarildiMi=='True')
-                            {
-                                return '<span class=ekstre-aktarildi>'+rowData.BagisTarihi+ '</span>';
-                            }else{
-                                if (rowData.CakismaVarMi == 'True'){                                    
-                                    return '<span class=cakisma-var>'+rowData.BagisTarihi+ '</span>';
-                                }else{                                    
-                                        return '<span class=ekstre-aktarilmadi>'+rowData.BagisTarihi+ '</span>';
-                                }  
-                            }
-                        }
-                    },
-                    { field: 'Tutar', headerText: 'Tutar', sortable:true,bodyClass:'text-right',headerStyle:'width: 10%',content: function (rowData)
-                        { 
-                            if (rowData.AktarildiMi=='True')
-                            {
-                                return '<span class=ekstre-aktarildi>'+rowData.Tutar+ '</span>';
-                            }else{
-                                if (rowData.CakismaVarMi == 'True'){                                    
-                                    return '<span class=cakisma-var>'+rowData.Tutar+ '</span>';
-                                }else{                                    
-                                        return '<span class=ekstre-aktarilmadi>'+rowData.Tutar+ '</span>';
-                                }          
-                            }
-                        }
-                    },
-                    { field: 'Id',headerText: 'Düzenle',bodyClass:'text-center',headerStyle:'width: 8%',content: function (rowData)
-                        { 
-                            if (rowData.AktarildiMi=='True')
-                            {
-                                return '';
-                            }else{
-                                return $('<a target=\'\' href=EkstreAktarmaEdit.aspx?SenderApp=EkstreListesi&EkstreAktarmaId='+rowData.EkstreAktarmaId + ' class=\'btn btn-outline-primary \'>Düzenle</a>')  
-                            }
-                        }
-                    },
-                    { field: 'EkstreAktarmaId',headerText: 'Eşleştir',bodyClass:'text-center',headerStyle:'width: 8%',content: function (rowData)
-                        { 
-                            if (rowData.AktarildiMi=='True')
-                            {
-                                return '';
-                            }else{
-                                return $('<a target=\'\' href=NakitBagisciEslestir.aspx?EkstreAktarmaId='+rowData.EkstreAktarmaId + ' class=\'btn btn-outline-primary \'>Eşleştir</a>')  
-                            }
-                        }
-                    },
-                    //{ field: 'EkstreAktarmaId',headerText: 'Sil',bodyClass:'text-center',headerStyle:'width: 6%',content: function (rowData)
-                    //    { 
-                    //        if (rowData.AktarildiMi=='True')
-                    //        {
-                    //            return '';
-                    //        }else{
-                    //            return $('<a href=# onclick=CallButtonClick('+rowData.EkstreAktarmaId + '); class=\'btn btn-outline-danger \'>Sil</a>')                                           
-                    //        }
-                    //    }
-                    //},
-                    ],
-                    datasource:" + jsonData + @",
-                    resizableColumns: true,
-                    globalFilter:'#globalFilter'
-                });
-                $('#messages').puigrowl();
-            ";
-            return ekstretablestr;
         }
         private void BankaEtiketleriniBaşlat()
         {
@@ -452,6 +243,7 @@ namespace NBYS_WebParts.EkstreListesiWP
             HalkbankLbl.Text = ProjeConstants.BANKA_HALKBANK;
             Halkbank2Lbl.Text = ProjeConstants.BANKA_HALKBANK2;
             IsbankLbl.Text = ProjeConstants.BANKA_ISBANK;
+            YKBEkstreLbl.Text = ProjeConstants.BANKA_YKBEKSTRE_KISA;
             ZiraatBankLbl.Text = ProjeConstants.BANKA_ZIRAAT;
             ZiraatBankEkstreLbl.Text = ProjeConstants.BANKA_ZIRAATEKSTRE;
             ZiraatKatilimLbl.Text = ProjeConstants.BANKA_ZIRAAT_KATILIM;
@@ -466,6 +258,7 @@ namespace NBYS_WebParts.EkstreListesiWP
             HalkbankOkLbl.Text = string.Empty;
             Halkbank2OkLbl.Text = string.Empty;
             IsbankOkLbl.Text = string.Empty;
+            YKBEkstreOkLbl.Text = string.Empty;
             ZiraatBankOkLbl.Text = string.Empty;
             ZiraatBankEkstreOkLbl.Text = string.Empty;
             ZiraatKatilimOkLbl.Text = string.Empty;
@@ -576,6 +369,17 @@ namespace NBYS_WebParts.EkstreListesiWP
             {
                 IsbankEkstreOkLbl.ForeColor = System.Drawing.Color.Red;
                 IsbankEkstreOkLbl.Text = "X";
+            }
+            bool isYKBEkstreAktarildi = ekstreAktarma.CheckIsExistByBankaAdiAndIslemTarihi(ProjeConstants.BANKA_YKBEKSTRE, islemTarihi);
+            if (isYKBEkstreAktarildi)
+            {
+                YKBEkstreOkLbl.ForeColor = System.Drawing.Color.Green;
+                YKBEkstreOkLbl.Text = "  " + ((char)0x221A).ToString();
+            }
+            else
+            {
+                YKBEkstreOkLbl.ForeColor = System.Drawing.Color.Red;
+                YKBEkstreOkLbl.Text = "X";
             }
 
             bool isVakifBankAktarildi = ekstreAktarma.CheckIsExistByBankaAdiAndIslemTarihi(ProjeConstants.BANKA_VAKIF, islemTarihi);
@@ -690,7 +494,7 @@ namespace NBYS_WebParts.EkstreListesiWP
                     var exceptionHelper = EkstreAktarma.SaveAll(numbers, currentUser); //seçilenler diğer tablolara dağıtılıyor
                     if (exceptionHelper.Exceptions.Count > 0)
                     {
-                        ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "CloseModalOnay();", true);
+                        UtilityHelper.ScriptCalistir("CloseModalOnay();");
                         exceptionHelper.PublishException();
                     }
                     else
@@ -784,7 +588,7 @@ namespace NBYS_WebParts.EkstreListesiWP
             string banka = BankaDDL.SelectedItem.Text;
             DataTable dataTable = ea.SelectByIslemTarihi(islemTarihiDateTime, ref rowCount, AktarilanlarHaricQS.ConvertToBool(), banka);
 
-            RowCountLbl.Text = "Kayıt Sayısı : " + rowCount.ToString();
+            //RowCountLbl.Text = "Kayıt Sayısı : " + rowCount.ToString();
             List<EkstreAktarmaListItem> returnlist = new List<EkstreAktarmaListItem>();
             if (dataTable != null)
             {
@@ -800,6 +604,7 @@ namespace NBYS_WebParts.EkstreListesiWP
                     ekstreAktarmaListItem.Telefon = dataRow["Telefon"].ToString();
                     ekstreAktarmaListItem.Telefon1 = dataRow["Telefon1"].ToString();
                     ekstreAktarmaListItem.Telefon2 = dataRow["Telefon2"].ToString();
+                    ekstreAktarmaListItem.Aciklama = dataRow["Aciklama"].ToString();
                     ekstreAktarmaListItem.BagisTarihi = dataRow["BagisTarihi"].ToString().ConvertToDatetimeEmptyIfNull();
                     decimal tutar = dataRow["Tutar"].ConvertToDecimal();
                     ekstreAktarmaListItem.Tutar = tutar > 0 ? tutar.ToString("N", culturInfo) : "";
@@ -813,141 +618,59 @@ namespace NBYS_WebParts.EkstreListesiWP
                         ekstreAktarmaListItem.DovizKuru = dovizKuru > 0 ? dovizKuru.ToString("N", culturInfo) : "";
                         ekstreAktarmaListItem.KurTarihi = dataRow["KurTarihi"].ToString().ConvertToDatetimeEmptyIfNull();
                     }
-                    bool aktarildiMi = dataRow["AktarildiMi"].ConvertToBool();
+                    ekstreAktarmaListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_EKSTRE_AKTARMAEDIT + "?SenderApp=KD&SenderApp=KL&EkstreAktarmaId=" + ekstreAktarmaListItem.EkstreAktarmaId + " class='btn btn-outline-primary'>Düzenle</a>";
+                    ekstreAktarmaListItem.Eslestir = "<a href=" + ProjeConstants.PAGE_NAKITBAGISCI_ESLESTIR + "?SenderApp=KD&SenderApp=KL&EkstreAktarmaId=" + ekstreAktarmaListItem.EkstreAktarmaId + " class='btn btn-outline-primary'>Eşleştir</a>";
+
+                   bool aktarildiMi = dataRow["AktarildiMi"].ConvertToBool();
                     ekstreAktarmaListItem.AktarildiMi = aktarildiMi.ToString();
-                    //ekstreAktarmaListItem.CakismaVarMi = aktarildiMi ? "False" : CakismaKontrolu(ekstreAktarmaListItem.EkstreAktarmaId.ConvertToInt(),ekstreAktarmaListItem.AdiSoyadi, ekstreAktarmaListItem.Telefon1, ekstreAktarmaListItem.Telefon2).ToString();
+                    if (aktarildiMi)
+                    {
+                        ekstreAktarmaListItem.SecKaydet = string.Empty;
+                        ekstreAktarmaListItem.Duzenle = string.Empty;
+                        ekstreAktarmaListItem.Eslestir = string.Empty;
+                    }
+                    else
+                    {
+                        ekstreAktarmaListItem.SecKaydet = SecCheckBoxLinki(ProjeConstants.KAYDET,
+                            aktarildiMi, ekstreAktarmaListItem.EkstreAktarmaId.ConvertToInt());
+                    }
                     returnlist.Add(ekstreAktarmaListItem);
                 }
             }
             return returnlist;
         }
-        private bool CakismaKontrolu(int ekstreAktarmaId, string adiSoyadi, string telefon1, string telefon2)
+        private string SecCheckBoxLinki(string kaydetSil, bool aktarildiMi, int ekstreAktarmaId)
         {
-            bool isConflict = false;
-            EkstreAktarma ekstreAktarma = new EkstreAktarma();
-            ekstreAktarma = ekstreAktarma.Select<EkstreAktarma>(ekstreAktarmaId);
-            if (ekstreAktarma == null)
+            string retVal;
+            if (aktarildiMi)
             {
-                isConflict = true;
+                
+                if (kaydetSil.Equals(ProjeConstants.KAYDET))
+                {
+                    retVal = "<input id=chk type=checkbox checked disabled class='ekstre-aktarildi row-checkbox' />";
+                    
+                }
+                else
+                {
+                    retVal = string.Empty;
+                }
             }
             else
             {
+                string tumusecildi = TumunuSecChk.Checked ? " checked " : "";
 
-
-                if (ekstreAktarma.TCKimlikNo != 0) // TC Kimlik numarası var konflict yok.. // TCKİMLİKNO geçerli mi diye kontrol etmek gerekir mi?
+                if (kaydetSil.Equals(ProjeConstants.KAYDET))
                 {
-                    isConflict = false;
-                    return isConflict;
+                    retVal = @"<input id=chk class='ekstre-aktarilmadi row-checkbox' onchange=addRemoveEkstreIdToList(" + ekstreAktarmaId + ",this); type=checkbox "+ tumusecildi +" />";
                 }
-                else if (string.IsNullOrEmpty(telefon1.Trim()) &&
-                    string.IsNullOrEmpty(telefon2.Trim()) &&
-                    string.IsNullOrEmpty(adiSoyadi.Trim()))// Telefonu ve adı da boşsa konflict vardır.. 
+                else
                 {
-                    isConflict = true;
-                    return isConflict;
+                    retVal = @"<input id=chk class='ekstre-aktarilmadi row-checkbox' onchange=addRemoveEkstreIdToDeleteList(" + ekstreAktarmaId + ",this); type=checkbox  "+ tumusecildi +" />";
                 }
-                else // tc kimlikno yok conflict ihtimali var
-                {
-                    //NakitBagisci nakitBagisci = new NakitBagisci();
-                    //List<NakitBagisci> nakitBagisciList = nakitBagisci.SelectByAd(ekstreAktarma.Adi);
-                    //if (nakitBagisciList.Count > 0)//bu kişi bağışçı tablosunda var mı?
-                    //{
-                    //    //yok ise,  yeni bir bağışçıdır, conflict yok
-                    //    //var ise telefon numaraları tutuyor mu
-                    //    foreach (NakitBagisci eskiBagisci in nakitBagisciList)
-                    //    {
-                    //        //numaralardan biri boş sa conflict var değilse farklı kişi olma ihtimali yüksek
-                    //        if (string.IsNullOrEmpty(eskiBagisci.Telefon1) || string.IsNullOrEmpty(ekstreAktarma.Telefon1))
-                    //        {
-                    //            isConflict = true;//numaralardan biri boş
-                    //            break;  // yasin gökhan yüksel 03.02.2020 (isConflict true olunca döngü dursun)
-                    //        }
-                    //        else
-                    //        {
-                    //            //numaralar aynı ise conflict yok, bu aynı kişi
-                    //            //değilse
-                    //            if (!eskiBagisci.Telefon1.ReturnEmptyIfNull().Equals(ekstreAktarma.Telefon1.ReturnEmptyIfNull()))
-                    //            {
-                    //                isConflict = true;//numaralar farklı conflict var
-                    //                break;  // yasin gökhan yüksel 03.02.2020 (isConflict true olunca döngü dursun)
-                    //            }
-                    //        }
-                    //    }
-                    //}
-                }
+                
             }
-
-            return isConflict;
+            return retVal;
         }
-        //private bool CakismaKontrolu1(int kayitAdedi, int nbId, int ekstreAktarmaId, long extreTCKimlikNo, string telefon1, string telefon2, long bTCKimlikNo, string adiSoyadi, string bTelefon1, string bTelefon2)
-        //{
-        //    bool isConflict = false;
-        //    if (nbId == 0)
-        //    {
-        //        isConflict = false;
-        //        return isConflict;
-        //    }
-        //    else if (extreTCKimlikNo != 0) // TC Kimlik numarası var konflict yok.. // TCKİMLİKNO geçerli mi diye kontrol etmek gerekir mi?
-        //    {
-        //        isConflict = false;
-        //        return isConflict;
-        //    }
-        //    else if (
-        //        string.IsNullOrEmpty(adiSoyadi.Trim())&&
-        //        string.IsNullOrEmpty(telefon1.Trim()) &&
-        //        string.IsNullOrEmpty(telefon2.Trim()) 
-        //        )// Telefonu ve adı da boşsa konflict vardır.. 
-        //    {
-        //        isConflict = true;
-        //        return isConflict;
-        //    }
-        //    else if (
-        //        adiSoyadi.Equals(ProjeConstants.NAKITBAGISCI_BILINMEYEN) &&
-        //        string.IsNullOrEmpty(telefon1.Trim()) &&
-        //        string.IsNullOrEmpty(telefon2.Trim())
-        //        )// Telefonu ve adı da boşsa konflict vardır.. 
-        //    {
-        //        isConflict = true;
-        //        return isConflict;
-        //    }
-        //    else
-        //    {
-        //        if (kayitAdedi > 1)
-        //        {
-        //            isConflict = true;
-        //        }
-        //        else
-        //        {
-        //            if ((bTCKimlikNo > 0 && extreTCKimlikNo != bTCKimlikNo))
-        //                isConflict = true;
-        //            else if (!string.IsNullOrEmpty(telefon1) || !string.IsNullOrEmpty(telefon2) || !string.IsNullOrEmpty(bTelefon1) || !string.IsNullOrEmpty(bTelefon2))
-        //            {
-        //                if (!
-        //                        (string.IsNullOrEmpty(telefon1) ? "#$½%&" : telefon1).Equals(bTelefon1.ReturnEmptyIfNull().ToString()) ||
-        //                        (string.IsNullOrEmpty(telefon1) ? "#$½%&" : telefon1).Equals(bTelefon2.ReturnEmptyIfNull().ToString()) ||
-        //                        (string.IsNullOrEmpty(telefon2) ? "#$½%&" : telefon2).Equals(bTelefon1.ReturnEmptyIfNull().ToString()) ||
-        //                        (string.IsNullOrEmpty(telefon2) ? "#$½%&" : telefon2).Equals(bTelefon2.ReturnEmptyIfNull().ToString()))
-        //                {
-        //                    isConflict = true;
-        //                }
-        //            }
-        //            else if ((bTCKimlikNo != 0)
-        //                    && (string.IsNullOrEmpty(telefon1) && string.IsNullOrEmpty(telefon2) && string.IsNullOrEmpty(bTelefon1) && string.IsNullOrEmpty(bTelefon2))
-        //                    )
-        //            {
-        //                isConflict = true;
-        //            }
-        //            else if ((nbId != 0)
-        //                    && (string.IsNullOrEmpty(telefon1) && string.IsNullOrEmpty(telefon2) && string.IsNullOrEmpty(bTelefon1) && string.IsNullOrEmpty(bTelefon2))
-        //                    )
-        //            {
-        //                isConflict = true;
-        //            }
-        //        }
-
-        //    }
-        //    return isConflict;
-        //}
         private void RedirectToPage(string pageUrl)
         {
             try
@@ -1031,7 +754,9 @@ namespace NBYS_WebParts.EkstreListesiWP
             public string DovizTutari { get; set; }
             public string DovizKuru { get; set; }
             public string KurTarihi { get; set; }
-            public string CakismaVarMi { get; set; }
+            public string SecKaydet { get; set; }
+            public string Duzenle { get; set; }
+            public string Eslestir { get; set; }
 
         }
         protected void IslemTarihiTxt_TextChanged(object sender, EventArgs e)
@@ -1049,27 +774,27 @@ namespace NBYS_WebParts.EkstreListesiWP
             BankaQS = BankaDDL.SelectedItem.Value;
             RedirectToPage(ProjeConstants.PAGE_EKSTRE_LIST + "?IslemTarihi=" + IslemTarihiQS + "&AktarilanlarHaric=" + AktarilanlarHaricQS + "&Banka=" + BankaQS);
         }
-        protected void SecilenleriKaydetBtn_Click(object sender, EventArgs e)
-        {
+        //protected void SecilenleriKaydetBtn_Click(object sender, EventArgs e)
+        //{
 
-            string value = paramArray.Value;
-            string[] idList = value.Split(',');
+        //    string value = paramArray.Value;
+        //    string[] idList = value.Split(',');
 
-            if (idList.Length < 1)
-            {
-                MessageHelper.PublishMessage("Kaydetmek için kayıt seçiniz.", ProjeConstants.MESAJ_BILGI, 2000);
-            }
-            else
-            {
-                ModalTitleLbl.Text = "Seçilen Kayıtlar Aktarılacak";
-                ModalSubTitleLbl.Text = idList.Length + " Adet satırı kaydetmek için seçtiniz.";
-                UyariMesajiLbl.Text = "Lütfen kaydetmeden önce dikkatle inceleyiniz.";
-                SilNowBtn.Visible = false;
-                KaydetNowBtn.Visible = true;
-                var openPopup = "OpenModalOnay();";
-                UtilityHelper.ScriptCalistir( openPopup);
-            }
-        }
+        //    if (idList.Length < 1)
+        //    {
+        //        MessageHelper.PublishMessage("Kaydetmek için kayıt seçiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+        //    }
+        //    else
+        //    {
+        //        ModalTitleLbl.Text = "Seçilen Kayıtlar Aktarılacak";
+        //        ModalSubTitleLbl.Text = idList.Length + " Adet satırı kaydetmek için seçtiniz.";
+        //        UyariMesajiLbl.Text = "Lütfen kaydetmeden önce dikkatle inceleyiniz.";
+        //        SilNowBtn.Visible = false;
+        //        KaydetNowBtn.Visible = true;
+        //        var openPopup = "OpenModalOnay();";
+        //        UtilityHelper.ScriptCalistir( openPopup);
+        //    }
+        //}
         protected void SecilenleriSilBtn_Click(object sender, EventArgs e)
         {
 
@@ -1087,17 +812,177 @@ namespace NBYS_WebParts.EkstreListesiWP
                 SilNowBtn.Visible = true;
                 KaydetNowBtn.Visible = false;
                 var openPopup = "OpenModalOnay();";
-                System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), openPopup, true);
+                UtilityHelper.ScriptCalistir( openPopup);
             }
 
+        }
+        //protected void KaydetNowBtn_Click(object sender, EventArgs e)
+        //{
+        //    try
+        //    {
+        //        KaydetNowBtn.Visible = false;
+        //        var closepopup = "CloseModalOnay();";
+        //        UtilityHelper.ScriptCalistir(closepopup);
+        //        SecilenListeyiKaydet();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ExceptionHelper exHelper = new ExceptionHelper(ex);
+        //        exHelper.PublishException();
+        //    }
+        //}
+        protected void SilNowBtn_Click(object sender, EventArgs e)
+        {
+            SecilenListeyiSil();
+        }
+        protected void TumunuSecChk_CheckedChanged(object sender, EventArgs e)
+        {
+            SelectAllQS = TumunuSecChk.Checked.ToString();
+            //paramArray.Value = TumunuSecChk.Checked ? GetAllIds() : string.Empty;
+            TabloOlustur();
+        }
+        private void TabloOlustur()
+        {
+            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            UtilityHelper.ScriptCalistir(jsString);
+        }
+        private string TabloJson()
+        {
+            string jSon = string.Empty;
+
+            try
+            {
+                List<EkstreAktarmaListItem> list = GetDataList();
+                var serializer = new JavaScriptSerializer();
+                serializer.MaxJsonLength = Int32.MaxValue;
+                jSon = serializer.Serialize(list);
+            }
+            catch (Exception exception)
+            {
+                ExceptionHelper exceptionHelper = new ExceptionHelper();
+                exceptionHelper.Exceptions.Add(exception);
+                exceptionHelper.PublishException();
+            }
+            return jSon;
+        }
+        private string CreateDataTable(string jsonData)
+        {
+            string tableString = @"
+                if ( jQuery.fn.DataTable.isDataTable('#CustomDataTable') ) {
+                    jQuery('#CustomDataTable').DataTable().destroy();
+                }
+                jQuery('#CustomDataTable tbody').empty();
+
+                jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
+                jQuery(document).ready(function () {
+                    jQuery('#CustomDataTable').DataTable({
+                        'initComplete': function (settings, json) {//tablo yüklendiğinde
+                            var api = this.api();
+                            var row = api.row(function (idx, data, node) { //secilen toplantıya gider
+                                return data['Secildi'] == true;
+                            });
+                            if (row.length > 0) {
+                                row.select()
+                                    .show()
+                                    .draw(false);
+                            }
+                        },
+                        data: " + jsonData + @",
+                        columns: [
+                            { data: 'SecKaydet' },
+                            { data: 'EkstreAktarmaId' },
+                            { data: 'BankaAdi' },
+                            { data: 'TCKimlikNo' },
+                            { data: 'AdiSoyadi' },
+                            { data: 'Telefon' },
+                            { data: 'BagisTarihi' },
+                            { data: 'Tutar' },
+                            { data: 'Aciklama' },               
+                            { data: 'Duzenle' },               
+                            { data: 'Eslestir' },               
+                        ],
+                        'columnDefs': [
+                            { 'width': '20%', 'targets': 4 },
+                            { 'width': '25%', 'targets': 8 },
+                            { targets: 7, className: 'dt-body-right'},
+                            { targets: 0, render:function(data,type,row,data){
+                                
+                                if (row.AktarildiMi == 'True')
+                                {
+                                    return '<input id=chk type=checkbox checked disabled class=ekstre-aktarildi />';
+                                }
+                                else
+                                {
+                                    var isChecked='';
+                                    if ('" + SelectAllQS.ConvertToBool() + @"'=='True')
+                                    {
+                                    
+                                        isChecked='checked';
+                                        EkleCikar(row.EkstreAktarmaId,isChecked);
+                                    }else
+                                    {
+                                        isChecked='';
+                                        EkleCikar(row.EkstreAktarmaId,isChecked);
+                                    }
+                                    
+                                    return ('<input id=chk class=ekstre-aktarilmadi '+isChecked+' onchange=addRemoveEkstreIdToList('+row.EkstreAktarmaId+',this); type=checkbox />');
+                                }
+
+                                return moment(data).format('DD.MM.YYYY');
+                            }},
+                        ],
+                        'language': {
+                             'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
+                            'decimal': ',',
+                            'thousands': '.'
+                        },
+                        responsive: true,
+                        dom: 'frtip',
+                        pageLength: 10,
+                        'createdRow': function(row, data, dataIndex) {
+                            if (data.AktarildiMi=='True')
+                            {
+                                $(row).addClass('ekstre-aktarildi');
+
+                            }else{
+                                $(row).addClass('ekstre-aktarilmadi');
+                            }
+                        },//set row color
+
+
+                        });
+                    });
+
+            ";
+
+            return tableString;
+        }
+
+        protected void SecilenleriKaydetBtn_Click(object sender, EventArgs e)
+        {
+
+            string value = paramArray.Value;
+            string[] idList = value.Split(',');
+
+            if (idList.Length < 1)
+            {
+                MessageHelper.PublishMessage("Kaydetmek için kayıt seçiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+            }
+            else
+            {
+                ModalTitleLbl.Text = "Seçilen Kayıtlar Aktarılacak";
+                ModalSubTitleLbl.Text = idList.Length + " Adet satırı kaydetmek için seçtiniz.";
+                UyariMesajiLbl.Text = "Lütfen kaydetmeden önce dikkatle inceleyiniz.";
+                KaydetNowBtn.Visible = true;
+                var openPopup = "OpenModalOnay();";
+                UtilityHelper.ScriptCalistir(openPopup);
+            }
         }
         protected void KaydetNowBtn_Click(object sender, EventArgs e)
         {
             try
             {
-                KaydetNowBtn.Visible = false;
-                var closepopup = "CloseModalOnay();";
-                UtilityHelper.ScriptCalistir(closepopup);
                 SecilenListeyiKaydet();
             }
             catch (Exception ex)
@@ -1106,14 +991,6 @@ namespace NBYS_WebParts.EkstreListesiWP
                 exHelper.PublishException();
             }
         }
-        protected void SilNowBtn_Click(object sender, EventArgs e)
-        {
-            SecilenListeyiSil();
-        }
-        protected void TumunuSecChk_CheckedChanged(object sender, EventArgs e)
-        {
-            SelectAllQS = TumunuSecChk.Checked.ToString();
-            KayitGetir();
-        }
+
     }
 }

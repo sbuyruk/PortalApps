@@ -995,7 +995,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "TasinmazBagisciListBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Taşınmaz Bağışçı Listesi";
             @__ctrl.Click -= new System.EventHandler(this.TasinmazBagisciListBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.TasinmazBagisciListBtn_Click);
@@ -1068,7 +1068,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "YakinlariBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Bağışçı Yakınları";
             @__ctrl.Visible = false;
             @__ctrl.Click -= new System.EventHandler(this.YakinlariBtn_Click);
@@ -1086,7 +1086,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "TalepleriBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Bağışçı Talepleri";
             @__ctrl.Visible = false;
             @__ctrl.Click -= new System.EventHandler(this.TalepleriBtn_Click);
@@ -1104,7 +1104,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "TaahhutleriBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Taahhütler";
             @__ctrl.Visible = false;
             @__ctrl.Click -= new System.EventHandler(this.TaahhutleriBtn_Click);
@@ -1122,7 +1122,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "BagislariBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Yaptığı Bağışlar";
             @__ctrl.Visible = false;
             @__ctrl.Click -= new System.EventHandler(this.BagislariBtn_Click);

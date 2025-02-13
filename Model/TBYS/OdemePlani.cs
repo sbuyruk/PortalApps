@@ -268,35 +268,27 @@ namespace Model.TBYS
         }
         public DataTable SelectKiraGeliriByBolgeAyYil(int bolgeId, int ay, int yil)
         {
-            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND A.BolgeId={0} ", bolgeId);
+            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND C.BolgeId={0} ", bolgeId);
 
             string sqlString = string.Format(@"
-				SELECT H.KisaAdi Bolge,B.kiralamaAmaci, SUM(D.OdenenTutar) ToplamOdemeTutari, Count(A.Id) ToplamKiraciSayisi
-				FROM KiraSozlesme_Table A
-				    INNER JOIN Kiraci_Table B ON B.Id=A.KiraciId
-				    LEFT JOIN Odeme_Table D ON D.SozlesmeId=A.Id
-                    INNER JOIN OdemePlani_Table E ON E.Id=D.OdemePlaniId --odeme planında karşılığı olmayan ödemeleri dikkate almsasın diye SB 03.05.2021
-                    LEFT JOIN Bolge_Table H ON H.Id=A.BolgeId
-				    --INNER JOIN Tasinmaz_Table C ON C.Id=(SELECT TOP 1 TasinmazId FROM SozlesmeTasinmaz_Table WHERE SozlesmeId= A.Id)
-                WHERE 1>0 
-                    {0}
-                    AND YEAR(D.OdemeTarihi) ={1}
-                    AND MONTH(D.OdemeTarihi) ={2}
+				SELECT H.KisaAdi Bolge,B.kiralamaAmaci, SUM(A.OdenenTutar) ToplamOdemeTutari, COUNT(DISTINCT(C.Id)) ToplamKiraciSayisi
+				FROM Odeme_Table A
+					INNER JOIN Kiraci_Table B ON B.Id=A.KiraciId 
+					INNER JOIN KiraSozlesme_Table C ON C.Id=A.SozlesmeId
+					INNER JOIN OdemePlani_Table D ON D.Id=A.OdemePlaniId
+					LEFT JOIN TeminatIslem_Table E ON E.OdemeId=A.Id
+					LEFT JOIN Bolge_Table H ON H.Id=C.BolgeId
+                WHERE  
+                    YEAR(A.OdemeTarihi) ={0}
+                    AND MONTH(A.OdemeTarihi) ={1}
+                    {2}
                 GROUP BY H.KisaAdi, B.KiralamaAmaci
                 ORDER BY H.KisaAdi, B.KiralamaAmaci
                 
-            ", bolgeStr, yil, ay);
+            ", yil, ay, bolgeStr);
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return dataTable;
-            //SELECT E.Bolge, D.KullanimSekli, SUM(OdenenTutar) ToplamOdemeTutari, COUNT(DISTINCT(B.KiraciId)) ToplamKiraciSayisi
-            //    FROM Odeme_Table A
-            //        INNER JOIN KiraSozlesme_Table B ON B.Id = A.SozlesmeId
-            //        INNER JOIN Tasinmaz_Table D ON D.Id = (Select TOP 1 TasinmazId From SozlesmeTasinmaz_Table WHERE SozlesmeId = A.SozlesmeId) 
-            //        INNER JOIN Il_Table E ON E.IlAdi = D.Ili
-            //    WHERE E.Bolge ={ 0}
-            //AND YEAR(A.OdemeTarihi) ={ 1}
-            //AND MONTH(A.OdemeTarihi) ={ 2}
-            //GROUP BY E.Bolge, D.KullanimSekli
+
         }
         public OdemePlani SelectBySozlesmeIdOdemeTarihi(int sozlesmeId, DateTime odemeTarihi)
         {

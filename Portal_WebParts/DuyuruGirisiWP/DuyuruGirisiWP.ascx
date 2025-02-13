@@ -15,7 +15,8 @@
         });
     }
     function OpenModal() {
-        $("#ModalOnayDiv").modal({ backdrop: false });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
+        myModalInstance.show();
     }
     //On Page Load.
     $(function () {
@@ -221,7 +222,7 @@
                                             </div>
                                             <div class="form-group col-6 ">
                                                 <label class="col-form-label text-white" for="HepsiniEkleBtn">Hepsini Ekle</label>
-                                                <asp:LinkButton CssClass="btn btn-outline-primary float-right" ID="HepsiniEkleBtn" runat="server" OnClick="HepsiniEkleBtn_Click">Hepsini Ekle</asp:LinkButton>
+                                                <asp:LinkButton CssClass="btn btn-outline-primary float-end" ID="HepsiniEkleBtn" runat="server" OnClick="HepsiniEkleBtn_Click">Hepsini Ekle</asp:LinkButton>
                                             </div>
                                         </div>
 
@@ -234,7 +235,7 @@
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <asp:LinkButton CssClass="btn btn-outline-danger float-right" ID="HepsiniCikar" runat="server" OnClick="HepsiniCikarBtn_Click">Hepsini Çıkar</asp:LinkButton>
+                                            <asp:LinkButton CssClass="btn btn-outline-danger float-end" ID="HepsiniCikar" runat="server" OnClick="HepsiniCikarBtn_Click">Hepsini Çıkar</asp:LinkButton>
                                         </div>
                                     </div>
                                 </ContentTemplate>
@@ -274,7 +275,7 @@
             </div>
             <div class="modal-footer">
                 <asp:LinkButton CssClass="btn btn-danger" ID="DeleteNowBtn" runat="server" CausesValidation="false" Text="Duyuruyu Sil" OnClientClick="{return true;};" OnClick="DeleteNowBtn_Click" Visible="false" />
-                <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
             </div>
         </div>
     </div>

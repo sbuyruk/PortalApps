@@ -313,12 +313,10 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
             // BagisTarihiTxt.Value = DateTime.Today.ToString(ProjeConstants.DATE_TR);
             AciklamaTxt.Text = string.Empty;
             BagisTarihiTxt.Value = string.Empty;
-            if (BankaDDL.Items.FindByValue(ProjeConstants.BANKA_BOS_INT.ToString()) != null)
-                BankaDDL.SelectedValue = BankaDDL.Items.FindByValue(ProjeConstants.BANKA_BOS_INT.ToString()).Value;
-            if (IliDDL.Items.FindByValue(ProjeConstants.IL_BOS.ToString()) != null)
-                IliDDL.SelectedValue = IliDDL.Items.FindByValue(ProjeConstants.IL_BOS.ToString()).Value;
-            if (IlcesiDDL.Items.FindByValue(ProjeConstants.ILCE_BOS.ToString()) != null)
-                IlcesiDDL.SelectedValue = IlcesiDDL.Items.FindByValue(ProjeConstants.ILCE_BOS.ToString()).Value;
+            UtilityHelper.SetDDLValue(BankaDDL, ProjeConstants.BANKA_BOS_INT.ToString());
+            UtilityHelper.SetDDLValue(IliDDL, ProjeConstants.IL_BOS.ToString());
+            UtilityHelper.SetDDLValue(IlcesiDDL, ProjeConstants.ILCE_BOS.ToString());
+
             NakitBagisciIdLbl.Text = "0";
         }
         private void IlDDLoldur()
@@ -337,8 +335,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
                     IliDDL.Items.Add(new ListItem(UpperCaseIl, il.Id.ToString()));
                 }
             }
-            if (IliDDL.Items.FindByValue(ProjeConstants.IL_BOS.ToString()) != null)
-                IliDDL.SelectedValue = IliDDL.Items.FindByValue(ProjeConstants.IL_BOS.ToString()).Value;
+            UtilityHelper.SetDDLValue(IliDDL,ProjeConstants.IL_BOS.ToString());
         }
         private void IlceDDLDoldur()
         {
@@ -357,8 +354,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
                     IlcesiDDL.Items.Add(new ListItem(UpperCaseIlce, ilce.Id.ToString()));
                 }
             }
-            if (IlcesiDDL.Items.FindByValue(ProjeConstants.ILCE_BOS.ToString()) != null)
-                IlcesiDDL.SelectedValue = IlcesiDDL.Items.FindByValue(ProjeConstants.ILCE_BOS.ToString()).Value;
+            UtilityHelper.SetDDLValue(IlcesiDDL, ProjeConstants.ILCE_BOS.ToString());
 
         }
         private void BankaDDLDoldur()

@@ -97,7 +97,7 @@
         </div>
         <div class="card-footer">
             <asp:LinkButton ID="YeniKayitBtn" CssClass="btn btn-outline-success" runat="server" Text="Yeni Toplantı" OnClick="YeniKayitBtn_Click"></asp:LinkButton>
-            <asp:LinkButton ID="ToplantiTakvimiBtn" CssClass="btn btn-outline-info float-right" runat="server" Text="Toplantı Takvimi" OnClick="ToplantiTakvimiBtn_Click"></asp:LinkButton>
+            <asp:LinkButton ID="ToplantiTakvimiBtn" CssClass="btn btn-outline-info float-end" runat="server" Text="Toplantı Takvimi" OnClick="ToplantiTakvimiBtn_Click"></asp:LinkButton>
         </div>
     </div>
 </div>

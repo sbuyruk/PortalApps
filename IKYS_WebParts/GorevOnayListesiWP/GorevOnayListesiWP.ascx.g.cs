@@ -120,7 +120,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.EkranNo = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-secondary float-right";
+            @__ctrl.CssClass = "col-form-label text-secondary float-end";
             @__ctrl.ID = "EkranNo";
             @__ctrl.Text = "30";
             return @__ctrl;
@@ -255,7 +255,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP {
             this.RaporAlBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "RaporAlBtn";
-            @__ctrl.CssClass = "btn btn-outline-success float-right";
+            @__ctrl.CssClass = "btn btn-outline-success float-end";
             @__ctrl.Text = "Seçilen Görevler İçin Rapor Al";
             @__ctrl.Click -= new System.EventHandler(this.RaporAlBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.RaporAlBtn_Click);

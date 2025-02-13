@@ -141,7 +141,7 @@
                         </asp:Repeater>
                     </div>
                 </div>
-                <div class="form-group float-right kutlamaGenelMudur" id="GenelMudurDiv" runat="server" style="display: none">
+                <div class="form-group float-end kutlamaGenelMudur" id="GenelMudurDiv" runat="server" style="display: none">
                     <div class="form-group m-0">
                         <asp:Label class="form-control col-form-label font-weight-bold border-0" ID="pGenelMudur" runat="server"></asp:Label>
                     </div>
@@ -155,7 +155,7 @@
                     <asp:CheckBox ID="KutlamayiOkudumChk" runat="server" Text="Okudum, bir daha gösterme" ForeColor="Gray" Font-Size="Small" />
                 </div>
 
-                <button type="button" class="btn btn-outline-secondary " data-dismiss="modal" onclick="KutlamayiKapatClicked();">Kapat</button>
+                <button type="button" class="btn btn-outline-secondary " data-bs-dismiss="modal" onclick="KutlamayiKapatClicked();">Kapat</button>
             </div>
         </div>
     </div>

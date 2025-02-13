@@ -32,7 +32,8 @@
 <%-- Katılımcı/itribat  ekleme / çıkartma --%>
 <script type="text/javascript">
     function KatilimciSecimiModal() {
-        $("#KatilimciSecimiModal").modal({ backdrop: false });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('KatilimciSecimiModal'));
+        myModalInstance.show();
     }
     function KatilimciSecildiBtnClick(katilimciId) {
         document.getElementById('<%= paramFaaliyetKatilimciIdLbl.ClientID%>').value = katilimciId;
@@ -189,9 +190,9 @@
         <div class="card-footer">
             <asp:LinkButton ID="YeniAramaGirisiBtn" CssClass="btn btn-outline-success " runat="server" Text="Yeni Arama Girişi" OnClick="YeniAramaGirisiBtn_Click"></asp:LinkButton>
             <asp:LinkButton ID="YeniKisiBtn" CssClass="btn btn-outline-secondary " runat="server" Text="Yeni Kişi Girişi" OnClick="YeniKisiBtn_Click"></asp:LinkButton>
-            <asp:LinkButton ID="FaaliyetTakvimiBtn" CssClass="btn btn-outline-info float-right" runat="server" Text="Faaliyet Takvimi" OnClick="FaaliyetTakvimiBtn_Click"></asp:LinkButton>
-            <asp:LinkButton ID="FaaliyetListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Faaliyet Listesi" OnClick="FaaliyetListesiBtn_Click"></asp:LinkButton>
-            <asp:LinkButton ID="KisiListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Kişi Listesi" OnClick="KisiListesiBtn_Click"></asp:LinkButton>
+            <asp:LinkButton ID="FaaliyetTakvimiBtn" CssClass="btn btn-outline-info float-end" runat="server" Text="Faaliyet Takvimi" OnClick="FaaliyetTakvimiBtn_Click"></asp:LinkButton>
+            <asp:LinkButton ID="FaaliyetListesiBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Faaliyet Listesi" OnClick="FaaliyetListesiBtn_Click"></asp:LinkButton>
+            <asp:LinkButton ID="KisiListesiBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Kişi Listesi" OnClick="KisiListesiBtn_Click"></asp:LinkButton>
         </div>
     </div>
     <asp:UpdatePanel ID="UpdatePanel6" runat="server" UpdateMode="Conditional" ViewStateMode="Enabled">
@@ -223,7 +224,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                            <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                         </div>
                     </div>
 

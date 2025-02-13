@@ -478,7 +478,7 @@ namespace NBYS_WebParts.ArmaganListesiWP {
                                     <th>Armağan</th>
                                     <th>Durumu</th>
                                     <th>Düzenle</th>
-                                    <th></th>
+                                    <th>İade</th>
                                 </tr>
                             </thead>
                         </table>
@@ -759,7 +759,7 @@ namespace NBYS_WebParts.ArmaganListesiWP {
                         </div>
                     </div>
                     <div class=""modal-footer"">
-                        <button type=""button"" class=""btn btn-default"" data-dismiss=""modal"">Kapat</button>
+                        <button type=""button"" class=""btn btn-default"" data-bs-dismiss=""modal"">Kapat</button>
                     </div>
                 "));
         }
@@ -836,8 +836,9 @@ namespace NBYS_WebParts.ArmaganListesiWP {
             @__w.Write("\').value = armaganId;\r\n        document.getElementById(\'");
                          @__w.Write( ModalDoldurBtn.ClientID);
 
-            @__w.Write("\').click();\r\n        $(\"#ModalUrlDiv\").modal({ backdrop: true });\r\n    }\r\n    fun" +
-                    "ction CallButtonClick(armaganId) {\r\n        document.getElementById(\'");
+            @__w.Write("\').click();\r\n\n        var myModalInstance = bootstrap.Modal.getOrCreateInstance(d" +
+                    "ocument.getElementById(\'ModalUrlDiv\'));\n        myModalInstance.show();\r\n    }\r\n" +
+                    "    function CallButtonClick(armaganId) {\r\n        document.getElementById(\'");
                          @__w.Write( paramArmaganIdLbl.ClientID);
 
             @__w.Write("\').value = armaganId;\r\n        document.getElementById(\'");

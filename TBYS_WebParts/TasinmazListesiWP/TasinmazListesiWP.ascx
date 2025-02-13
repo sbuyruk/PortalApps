@@ -30,7 +30,9 @@
     function OpenModal(tasinmazId) {
         document.getElementById('<%= paramTasinmazIdLbl.ClientID%>').value = tasinmazId;
         document.getElementById('<%= ModalDoldurBtn.ClientID%>').click();
-        $("#ModalUrlDiv").modal({ backdrop: true });
+
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalUrlDiv'));
+        myModalInstance.show();
     }
 </script>
 <div class="col-xl">
@@ -85,7 +87,7 @@
         </div>
         <div class="card-footer">
             <asp:LinkButton ID="YeniKayitBtn" CssClass="btn btn-outline-success" runat="server" Text="Yeni Taşınmaz Girişi" OnClick="YeniKayitBtn_Click"></asp:LinkButton>
-            <asp:LinkButton CssClass="btn btn-outline-success float-right" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
+            <asp:LinkButton CssClass="btn btn-outline-success float-end" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
         </div>
     </div>
 </div>
@@ -122,7 +124,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                     </div>
                 </ContentTemplate>
                 <Triggers>

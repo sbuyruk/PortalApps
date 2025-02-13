@@ -54,7 +54,7 @@
                             </thead>
                         </table>
                         <div class="form-group">
-                            <asp:Label ID="ToplamLbl" CssClass="font-weight-bold float-right" runat="server" Text="Label"></asp:Label>
+                            <asp:Label ID="ToplamLbl" CssClass="font-weight-bold float-end" runat="server" Text="Label"></asp:Label>
                         </div>
 
                     </ContentTemplate>

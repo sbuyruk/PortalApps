@@ -187,7 +187,7 @@ namespace TBYS_WebParts.GenelSozlesmeListesiWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "RowCountLbl";
             @__ctrl.Text = "";
-            @__ctrl.CssClass = "float-right text-right";
+            @__ctrl.CssClass = "float-end text-right";
             return @__ctrl;
         }
         
@@ -239,7 +239,7 @@ namespace TBYS_WebParts.GenelSozlesmeListesiWP {
             this.ExcelBtn = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-success float-right";
+            @__ctrl.CssClass = "btn btn-outline-success float-end";
             @__ctrl.ID = "ExcelBtn";
             @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
             @__ctrl.Text = "Excele Aktar";

@@ -421,7 +421,7 @@ namespace MTS_WebParts.AramaGorusmeListesiWP {
             this.FaaliyetTakvimiBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "FaaliyetTakvimiBtn";
-            @__ctrl.CssClass = "btn btn-outline-info float-right";
+            @__ctrl.CssClass = "btn btn-outline-info float-end";
             @__ctrl.Text = "Faaliyet Takvimi";
             @__ctrl.Click -= new System.EventHandler(this.FaaliyetTakvimiBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.FaaliyetTakvimiBtn_Click);
@@ -437,7 +437,7 @@ namespace MTS_WebParts.AramaGorusmeListesiWP {
             this.FaaliyetListesiBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "FaaliyetListesiBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Faaliyet Listesi";
             @__ctrl.Click -= new System.EventHandler(this.FaaliyetListesiBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.FaaliyetListesiBtn_Click);
@@ -453,7 +453,7 @@ namespace MTS_WebParts.AramaGorusmeListesiWP {
             this.KisiListesiBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "KisiListesiBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Kişi Listesi";
             @__ctrl.Click -= new System.EventHandler(this.KisiListesiBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.KisiListesiBtn_Click);
@@ -528,7 +528,7 @@ namespace MTS_WebParts.AramaGorusmeListesiWP {
                             </div>
                         </div>
                         <div class=""modal-footer"">
-                            <button type=""button"" class=""btn btn-default"" data-dismiss=""modal"">Kapat</button>
+                            <button type=""button"" class=""btn btn-default"" data-bs-dismiss=""modal"">Kapat</button>
                         </div>
                     </div>
 
@@ -681,7 +681,8 @@ namespace MTS_WebParts.AramaGorusmeListesiWP {
 
 <script type=""text/javascript"">
     function KatilimciSecimiModal() {
-        $(""#KatilimciSecimiModal"").modal({ backdrop: false });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('KatilimciSecimiModal'));
+        myModalInstance.show();
     }
     function KatilimciSecildiBtnClick(katilimciId) {
         document.getElementById('");

@@ -721,7 +721,7 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.ResmiTatilListesiBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.ID = "ResmiTatilListesiBtn";
             @__ctrl.Text = "Resmi Tatiller";
             @__ctrl.CausesValidation = false;
@@ -855,83 +855,84 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n<style>\r\n    .ui-datepicker {\r\n        z-index: 9999 !important;\r\n        width" +
                         ": 18.5em;\r\n        font-size: small;\r\n    }\r\n</style>\r\n<script type=\"text/javasc" +
-                        "ript\">\r\n    function OpenModal() {\r\n        $(\"#ModalOnayDiv\").modal({ backdrop:" +
-                        " false });\r\n    }\r\n    function CloseModal() {\r\n        $(\"#ModalOnayDiv\").modal" +
-                        "(\'hide\');\r\n\r\n    }\r\n</script>\r\n<script type=\"text/javascript\">\r\n    //On UpdateP" +
-                        "anel Refresh.\r\n    var prm = Sys.WebForms.PageRequestManager.getInstance();\r\n   " +
-                        " if (prm != null) {\r\n        prm.add_endRequest(function (sender, e) {\r\n        " +
-                        "    if (sender._postBackSettings.panelsToUpdate != null) {\r\n                SetD" +
-                        "atePicker();\r\n            }\r\n        });\r\n    };\r\n\r\n</script>\r\n\r\n<script type=\"t" +
-                        "ext/javascript\">\r\n    //On Page Load.\r\n    $(function () {\r\n        SetDatePicke" +
-                        "r();\r\n    });\r\n    //ikinci tarih için\r\n    function SetDatePicker() {\r\n        " +
-                        "$(\"#BitisTarihiTxt\").datepicker({\r\n            dateFormat: \"dd.mm.yy\",\r\n        " +
-                        "    firstDay: 1,\r\n            monthNames: [\"Ocak\", \"Şubat\", \"Mart\", \"Nisan\", \"Ma" +
-                        "yıs\", \"Haziran\", \"Temmuz\", \"Ağustos\", \"Eylül\", \"Ekim\", \"Kasım\", \"Aralık\"],\r\n    " +
-                        "        monthNamesShort: [\"Oca\", \"Şub\", \"Mar\", \"Nis\", \"May\", \"Haz\", \"Tem\", \"Ağu\"" +
-                        ", \"Eyl\", \"Eki\", \"Kas\", \"Ara\"],\r\n            dayNames: [\"Pazar\", \"Pazartesi\", \"Sa" +
-                        "lı\", \"Çarşamba\", \"Perşembe\", \"Cuma\", \"Cumartesi\"],\r\n            dayNamesMin: [\"P" +
-                        "z\", \"Pt\", \"Sl\", \"Çr\", \"Pr\", \"Cu\", \"Ct\"],\r\n            changeMonth: true,\r\n      " +
-                        "      changeYear: true,\r\n            inline: true,\r\n            altField: \"#Biti" +
-                        "sTarihiTxt\",\r\n            beforeShow: function (input, inst) {\r\n                " +
-                        "var mindate = $(\'#BaslangicTarihiTxt\').datepicker(\'getDate\');\r\n                $" +
-                        "(this).datepicker(\'option\', \'minDate\', mindate);\r\n                var newDate = " +
-                        "new Date($(\'#BaslangicTarihiTxt\').datepicker(\'getDate\'));\r\n                newDa" +
-                        "te.setDate(newDate.getDate() + 365);\r\n                //$(this).datepicker(\'opti" +
-                        "on\', \'maxDate\', newDate);\r\n            },\r\n            beforeShowDay: function (" +
-                        "date) {\r\n                $(\'#ui-datepicker-div\').css(\'clip\', \'auto\');\r\n         " +
-                        "       return [true, \'\', \'\'];\r\n            }\r\n        });\r\n        $(\"#Baslangic" +
-                        "TarihiTxt\").datepicker({\r\n            dateFormat: \"dd.mm.yy\",\r\n            first" +
-                        "Day: 1,\r\n            monthNames: [\"Ocak\", \"Şubat\", \"Mart\", \"Nisan\", \"Mayıs\", \"Ha" +
-                        "ziran\", \"Temmuz\", \"Ağustos\", \"Eylül\", \"Ekim\", \"Kasım\", \"Aralık\"],\r\n            m" +
-                        "onthNamesShort: [\"Oca\", \"Şub\", \"Mar\", \"Nis\", \"May\", \"Haz\", \"Tem\", \"Ağu\", \"Eyl\", " +
-                        "\"Eki\", \"Kas\", \"Ara\"],\r\n            dayNames: [\"Pazar\", \"Pazartesi\", \"Salı\", \"Çar" +
-                        "şamba\", \"Perşembe\", \"Cuma\", \"Cumartesi\"],\r\n            dayNamesMin: [\"Pz\", \"Pt\"," +
-                        " \"Sl\", \"Çr\", \"Pr\", \"Cu\", \"Ct\"],\r\n            changeMonth: true,\r\n            cha" +
-                        "ngeYear: true,\r\n            inline: true,\r\n            altField: \"#BaslangicTari" +
-                        "hiTxt\",\r\n\r\n        }).on(\"change\", function () {\r\n\r\n            var dateMin = $(" +
-                        "\'[id$=BaslangicTarihiTxt]\').datepicker(\"getDate\");\r\n            var rMin = new D" +
-                        "ate(dateMin.getFullYear(), dateMin.getMonth(), dateMin.getDate());\r\n            " +
-                        "var rMax = new Date(dateMin.getFullYear(), dateMin.getMonth(), dateMin.getDate()" +
-                        " + 365);\r\n\r\n            $(\'[id$=BitisTarihiTxt]\').datepicker(\"option\", \"minDate\"" +
-                        ", rMin);\r\n            $(\'[id$=BitisTarihiTxt]\').datepicker(\"option\", \"maxDate\", " +
-                        "rMax);\r\n\r\n            var bitis = new Date($(\'#BitisTarihiTxt\').datepicker(\'getD" +
-                        "ate\'));\r\n            if (bitis < rMin)\r\n                bitis.setDate(rMin);\r\n  " +
-                        "          else if (bitis > rMax)\r\n                bitis.setDate(rMax);\r\n\r\n      " +
-                        "  });\r\n    \r\n\r\n        $(\"#IptalTarihiTxt\").datepicker({\r\n            dateFormat" +
-                        ": \"dd.mm.yy\",\r\n            firstDay: 1,\r\n            monthNames: [\"Ocak\", \"Şubat" +
-                        "\", \"Mart\", \"Nisan\", \"Mayıs\", \"Haziran\", \"Temmuz\", \"Ağustos\", \"Eylül\", \"Ekim\", \"K" +
-                        "asım\", \"Aralık\"],\r\n            monthNamesShort: [\"Oca\", \"Şub\", \"Mar\", \"Nis\", \"Ma" +
-                        "y\", \"Haz\", \"Tem\", \"Ağu\", \"Eyl\", \"Eki\", \"Kas\", \"Ara\"],\r\n            dayNames: [\"P" +
-                        "azar\", \"Pazartesi\", \"Salı\", \"Çarşamba\", \"Perşembe\", \"Cuma\", \"Cumartesi\"],\r\n     " +
-                        "       dayNamesMin: [\"Pz\", \"Pt\", \"Sl\", \"Çr\", \"Pr\", \"Cu\", \"Ct\"],\r\n            cha" +
-                        "ngeMonth: true,\r\n            changeYear: true,\r\n            inline: true,\r\n     " +
-                        "       altField: \"#IptalTarihiTxt\",\r\n            beforeShow: function (input, in" +
-                        "st) {\r\n                var mindate = $(\'#IlanTarihiTxt\').datepicker(\'getDate\');\r" +
-                        "\n                $(this).datepicker(\'option\', \'minDate\', mindate);\r\n            " +
-                        "    var newDate = new Date($(\'#IlanTarihiTxt\').datepicker(\'getDate\'));\r\n        " +
+                        "ript\">\r\n    function OpenModal() {        \r\n        var myModalInstance = bootst" +
+                        "rap.Modal.getOrCreateInstance(document.getElementById(\'ModalOnayDiv\'));\n        " +
+                        "myModalInstance.show();\r\n    }\r\n    function CloseModal() {\r\n        $(\"#ModalOn" +
+                        "ayDiv\").modal(\'hide\');\r\n\r\n    }\r\n</script>\r\n<script type=\"text/javascript\">\r\n   " +
+                        " //On UpdatePanel Refresh.\r\n    var prm = Sys.WebForms.PageRequestManager.getIns" +
+                        "tance();\r\n    if (prm != null) {\r\n        prm.add_endRequest(function (sender, e" +
+                        ") {\r\n            if (sender._postBackSettings.panelsToUpdate != null) {\r\n       " +
+                        "         SetDatePicker();\r\n            }\r\n        });\r\n    };\r\n\r\n</script>\r\n\r\n<s" +
+                        "cript type=\"text/javascript\">\r\n    //On Page Load.\r\n    $(function () {\r\n       " +
+                        " SetDatePicker();\r\n    });\r\n    //ikinci tarih için\r\n    function SetDatePicker(" +
+                        ") {\r\n        $(\"#BitisTarihiTxt\").datepicker({\r\n            dateFormat: \"dd.mm.y" +
+                        "y\",\r\n            firstDay: 1,\r\n            monthNames: [\"Ocak\", \"Şubat\", \"Mart\"," +
+                        " \"Nisan\", \"Mayıs\", \"Haziran\", \"Temmuz\", \"Ağustos\", \"Eylül\", \"Ekim\", \"Kasım\", \"Ar" +
+                        "alık\"],\r\n            monthNamesShort: [\"Oca\", \"Şub\", \"Mar\", \"Nis\", \"May\", \"Haz\"," +
+                        " \"Tem\", \"Ağu\", \"Eyl\", \"Eki\", \"Kas\", \"Ara\"],\r\n            dayNames: [\"Pazar\", \"Pa" +
+                        "zartesi\", \"Salı\", \"Çarşamba\", \"Perşembe\", \"Cuma\", \"Cumartesi\"],\r\n            day" +
+                        "NamesMin: [\"Pz\", \"Pt\", \"Sl\", \"Çr\", \"Pr\", \"Cu\", \"Ct\"],\r\n            changeMonth: " +
+                        "true,\r\n            changeYear: true,\r\n            inline: true,\r\n            alt" +
+                        "Field: \"#BitisTarihiTxt\",\r\n            beforeShow: function (input, inst) {\r\n   " +
+                        "             var mindate = $(\'#BaslangicTarihiTxt\').datepicker(\'getDate\');\r\n    " +
+                        "            $(this).datepicker(\'option\', \'minDate\', mindate);\r\n                v" +
+                        "ar newDate = new Date($(\'#BaslangicTarihiTxt\').datepicker(\'getDate\'));\r\n        " +
                         "        newDate.setDate(newDate.getDate() + 365);\r\n                //$(this).dat" +
                         "epicker(\'option\', \'maxDate\', newDate);\r\n            },\r\n            beforeShowDa" +
                         "y: function (date) {\r\n                $(\'#ui-datepicker-div\').css(\'clip\', \'auto\'" +
                         ");\r\n                return [true, \'\', \'\'];\r\n            }\r\n        });\r\n        " +
-                        "$(\"#IlanTarihiTxt\").datepicker({\r\n            dateFormat: \"dd.mm.yy\",\r\n         " +
-                        "   firstDay: 1,\r\n            monthNames: [\"Ocak\", \"Şubat\", \"Mart\", \"Nisan\", \"May" +
-                        "ıs\", \"Haziran\", \"Temmuz\", \"Ağustos\", \"Eylül\", \"Ekim\", \"Kasım\", \"Aralık\"],\r\n     " +
-                        "       monthNamesShort: [\"Oca\", \"Şub\", \"Mar\", \"Nis\", \"May\", \"Haz\", \"Tem\", \"Ağu\"," +
-                        " \"Eyl\", \"Eki\", \"Kas\", \"Ara\"],\r\n            dayNames: [\"Pazar\", \"Pazartesi\", \"Sal" +
-                        "ı\", \"Çarşamba\", \"Perşembe\", \"Cuma\", \"Cumartesi\"],\r\n            dayNamesMin: [\"Pz" +
-                        "\", \"Pt\", \"Sl\", \"Çr\", \"Pr\", \"Cu\", \"Ct\"],\r\n            changeMonth: true,\r\n       " +
-                        "     changeYear: true,\r\n            inline: true,\r\n            altField: \"#IlanT" +
-                        "arihiTxt\",\r\n\r\n        }).on(\"change\", function () {\r\n\r\n            var dateMin =" +
-                        " $(\'[id$=IlanTarihiTxt]\').datepicker(\"getDate\");\r\n            var rMin = new Dat" +
-                        "e(dateMin.getFullYear(), dateMin.getMonth(), dateMin.getDate());\r\n            va" +
-                        "r rMax = new Date(dateMin.getFullYear(), dateMin.getMonth(), dateMin.getDate() +" +
-                        " 365);\r\n\r\n            $(\'[id$=IptalTarihiTxt]\').datepicker(\"option\", \"minDate\", " +
-                        "rMin);\r\n            $(\'[id$=IptalTarihiTxt]\').datepicker(\"option\", \"maxDate\", rM" +
-                        "ax);\r\n\r\n            var bitis = new Date($(\'#IptalTarihiTxt\').datepicker(\'getDat" +
-                        "e\'));\r\n            if (bitis < rMin)\r\n                bitis.setDate(rMin);\r\n    " +
-                        "        else if (bitis > rMax)\r\n                bitis.setDate(rMax);\r\n\r\n        " +
-                        "});\r\n    }\r\n</script>\r\n<div class=\"container\">\r\n\r\n    <div class=\"card\">\r\n      " +
-                        "  "));
+                        "$(\"#BaslangicTarihiTxt\").datepicker({\r\n            dateFormat: \"dd.mm.yy\",\r\n    " +
+                        "        firstDay: 1,\r\n            monthNames: [\"Ocak\", \"Şubat\", \"Mart\", \"Nisan\"," +
+                        " \"Mayıs\", \"Haziran\", \"Temmuz\", \"Ağustos\", \"Eylül\", \"Ekim\", \"Kasım\", \"Aralık\"],\r\n" +
+                        "            monthNamesShort: [\"Oca\", \"Şub\", \"Mar\", \"Nis\", \"May\", \"Haz\", \"Tem\", \"" +
+                        "Ağu\", \"Eyl\", \"Eki\", \"Kas\", \"Ara\"],\r\n            dayNames: [\"Pazar\", \"Pazartesi\"," +
+                        " \"Salı\", \"Çarşamba\", \"Perşembe\", \"Cuma\", \"Cumartesi\"],\r\n            dayNamesMin:" +
+                        " [\"Pz\", \"Pt\", \"Sl\", \"Çr\", \"Pr\", \"Cu\", \"Ct\"],\r\n            changeMonth: true,\r\n  " +
+                        "          changeYear: true,\r\n            inline: true,\r\n            altField: \"#" +
+                        "BaslangicTarihiTxt\",\r\n\r\n        }).on(\"change\", function () {\r\n\r\n            var" +
+                        " dateMin = $(\'[id$=BaslangicTarihiTxt]\').datepicker(\"getDate\");\r\n            var" +
+                        " rMin = new Date(dateMin.getFullYear(), dateMin.getMonth(), dateMin.getDate());\r" +
+                        "\n            var rMax = new Date(dateMin.getFullYear(), dateMin.getMonth(), date" +
+                        "Min.getDate() + 365);\r\n\r\n            $(\'[id$=BitisTarihiTxt]\').datepicker(\"optio" +
+                        "n\", \"minDate\", rMin);\r\n            $(\'[id$=BitisTarihiTxt]\').datepicker(\"option\"" +
+                        ", \"maxDate\", rMax);\r\n\r\n            var bitis = new Date($(\'#BitisTarihiTxt\').dat" +
+                        "epicker(\'getDate\'));\r\n            if (bitis < rMin)\r\n                bitis.setDa" +
+                        "te(rMin);\r\n            else if (bitis > rMax)\r\n                bitis.setDate(rMa" +
+                        "x);\r\n\r\n        });\r\n    \r\n\r\n        $(\"#IptalTarihiTxt\").datepicker({\r\n         " +
+                        "   dateFormat: \"dd.mm.yy\",\r\n            firstDay: 1,\r\n            monthNames: [\"" +
+                        "Ocak\", \"Şubat\", \"Mart\", \"Nisan\", \"Mayıs\", \"Haziran\", \"Temmuz\", \"Ağustos\", \"Eylül" +
+                        "\", \"Ekim\", \"Kasım\", \"Aralık\"],\r\n            monthNamesShort: [\"Oca\", \"Şub\", \"Mar" +
+                        "\", \"Nis\", \"May\", \"Haz\", \"Tem\", \"Ağu\", \"Eyl\", \"Eki\", \"Kas\", \"Ara\"],\r\n            " +
+                        "dayNames: [\"Pazar\", \"Pazartesi\", \"Salı\", \"Çarşamba\", \"Perşembe\", \"Cuma\", \"Cumart" +
+                        "esi\"],\r\n            dayNamesMin: [\"Pz\", \"Pt\", \"Sl\", \"Çr\", \"Pr\", \"Cu\", \"Ct\"],\r\n  " +
+                        "          changeMonth: true,\r\n            changeYear: true,\r\n            inline:" +
+                        " true,\r\n            altField: \"#IptalTarihiTxt\",\r\n            beforeShow: functi" +
+                        "on (input, inst) {\r\n                var mindate = $(\'#IlanTarihiTxt\').datepicker" +
+                        "(\'getDate\');\r\n                $(this).datepicker(\'option\', \'minDate\', mindate);\r" +
+                        "\n                var newDate = new Date($(\'#IlanTarihiTxt\').datepicker(\'getDate\'" +
+                        "));\r\n                newDate.setDate(newDate.getDate() + 365);\r\n                " +
+                        "//$(this).datepicker(\'option\', \'maxDate\', newDate);\r\n            },\r\n           " +
+                        " beforeShowDay: function (date) {\r\n                $(\'#ui-datepicker-div\').css(\'" +
+                        "clip\', \'auto\');\r\n                return [true, \'\', \'\'];\r\n            }\r\n        " +
+                        "});\r\n        $(\"#IlanTarihiTxt\").datepicker({\r\n            dateFormat: \"dd.mm.yy" +
+                        "\",\r\n            firstDay: 1,\r\n            monthNames: [\"Ocak\", \"Şubat\", \"Mart\", " +
+                        "\"Nisan\", \"Mayıs\", \"Haziran\", \"Temmuz\", \"Ağustos\", \"Eylül\", \"Ekim\", \"Kasım\", \"Ara" +
+                        "lık\"],\r\n            monthNamesShort: [\"Oca\", \"Şub\", \"Mar\", \"Nis\", \"May\", \"Haz\", " +
+                        "\"Tem\", \"Ağu\", \"Eyl\", \"Eki\", \"Kas\", \"Ara\"],\r\n            dayNames: [\"Pazar\", \"Paz" +
+                        "artesi\", \"Salı\", \"Çarşamba\", \"Perşembe\", \"Cuma\", \"Cumartesi\"],\r\n            dayN" +
+                        "amesMin: [\"Pz\", \"Pt\", \"Sl\", \"Çr\", \"Pr\", \"Cu\", \"Ct\"],\r\n            changeMonth: t" +
+                        "rue,\r\n            changeYear: true,\r\n            inline: true,\r\n            altF" +
+                        "ield: \"#IlanTarihiTxt\",\r\n\r\n        }).on(\"change\", function () {\r\n\r\n            " +
+                        "var dateMin = $(\'[id$=IlanTarihiTxt]\').datepicker(\"getDate\");\r\n            var r" +
+                        "Min = new Date(dateMin.getFullYear(), dateMin.getMonth(), dateMin.getDate());\r\n " +
+                        "           var rMax = new Date(dateMin.getFullYear(), dateMin.getMonth(), dateMi" +
+                        "n.getDate() + 365);\r\n\r\n            $(\'[id$=IptalTarihiTxt]\').datepicker(\"option\"" +
+                        ", \"minDate\", rMin);\r\n            $(\'[id$=IptalTarihiTxt]\').datepicker(\"option\", " +
+                        "\"maxDate\", rMax);\r\n\r\n            var bitis = new Date($(\'#IptalTarihiTxt\').datep" +
+                        "icker(\'getDate\'));\r\n            if (bitis < rMin)\r\n                bitis.setDate" +
+                        "(rMin);\r\n            else if (bitis > rMax)\r\n                bitis.setDate(rMax)" +
+                        ";\r\n\r\n        });\r\n    }\r\n</script>\r\n<div class=\"container\">\r\n\r\n    <div class=\"c" +
+                        "ard\">\r\n        "));
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl1;
             @__ctrl1 = this.@__BuildControlCardHeader();
             @__parser.AddParsedSubObject(@__ctrl1);
@@ -988,8 +989,8 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP {
             global::System.Web.UI.WebControls.LinkButton @__ctrl10;
             @__ctrl10 = this.@__BuildControlGuncelleNowBtn();
             @__parser.AddParsedSubObject(@__ctrl10);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                <button type=\"button\" class=\"btn btn-default\" data-dismiss=\"mod" +
-                        "al\">Kapat</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                <button type=\"button\" class=\"btn btn-default\" data-bs-dismiss=\"" +
+                        "modal\">Kapat</button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n"));
         }
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +

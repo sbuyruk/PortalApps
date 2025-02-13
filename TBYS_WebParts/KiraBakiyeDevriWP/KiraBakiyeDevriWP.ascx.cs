@@ -379,7 +379,9 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
 
                 OdemePlaniTable.Controls.Add(row);
             }
-            var jsString = " $('#OdemePlaniModal').modal({ backdrop: false });";
+            var jsString = @"         
+                var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('OdemePlaniModal'));
+                myModalInstance.show();";
             ScriptManager.RegisterStartupScript((Page)System.Web.HttpContext.Current.Handler, typeof(Page), System.Guid.NewGuid().ToString(), jsString, true);
         }
         protected void DevirAlBtn_Click(object sender, EventArgs e)

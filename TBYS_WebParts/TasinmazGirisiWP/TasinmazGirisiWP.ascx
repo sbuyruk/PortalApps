@@ -8,7 +8,8 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="TasinmazGirisiWP.ascx.cs" Inherits="TBYS_WebParts.TasinmazGirisiWP.TasinmazGirisiWP" %>
 <script type="text/javascript">
     function OpenModal() {
-        $("#ModalOnayDiv").modal({ backdrop: false });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
+        myModalInstance.show();
     }
 </script>
 <div class="container col-xl">
@@ -231,7 +232,7 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <asp:LinkButton CssClass="btn btn-outline-secondary float-right mr-2" ID="BackBtn" runat="server" Text="Geri" CausesValidation="false" OnClick="BackBtn_Click" />
+                    <asp:LinkButton CssClass="btn btn-outline-secondary float-end mr-2" ID="BackBtn" runat="server" Text="Geri" CausesValidation="false" OnClick="BackBtn_Click" />
                     <asp:LinkButton ID="SaveBtn" CssClass="btn btn-outline-success" runat="server" Text="Kaydet" OnClick="SaveBtn_Click" />
                     <asp:LinkButton ID="UpdateBtn" CssClass="btn btn-outline-primary" runat="server" Text="Güncelle" Visible="false" OnClick="UpdateBtn_Click" />
                     <asp:LinkButton ID="DeleteBtn" Visible="false" CssClass="btn btn-outline-danger" runat="server" CausesValidation="false" Text="Sil"
@@ -244,8 +245,8 @@
                     <asp:LinkButton ID="ResimlerBtn" CssClass="btn btn-outline-secondary" runat="server" Text="Resimler" Visible="false" OnClick="ResimlerBtn_Click" />
                     <asp:LinkButton ID="EnvanterdenCikarBtn" CssClass="btn btn-outline-danger" runat="server" Text="Envanterden Çıkar" Visible="false" OnClick="EnvanterdenCikarBtn_Click" />
                     <asp:LinkButton ID="KopyalaBtn" CssClass="btn btn-outline-danger" runat="server" Text="Yeni Taşınmaz Olarak Kopyala" Visible="false" OnClick="KopyalaBtn_Click" />
-                    <asp:LinkButton ID="NextBtn" CssClass="btn btn-outline-secondary float-right mr-2" runat="server" Text="Sonraki=>" Visible="false" OnClick="NextBtn_Click" />
-                    <asp:LinkButton ID="PrevBtn" CssClass="btn btn-outline-secondary float-right mr-2" runat="server" Text="<=Önceki" Visible="false" OnClick="PrevBtn_Click" />
+                    <asp:LinkButton ID="NextBtn" CssClass="btn btn-outline-secondary float-end mr-2" runat="server" Text="Sonraki=>" Visible="false" OnClick="NextBtn_Click" />
+                    <asp:LinkButton ID="PrevBtn" CssClass="btn btn-outline-secondary float-end mr-2" runat="server" Text="<=Önceki" Visible="false" OnClick="PrevBtn_Click" />
                 </div>
             </div>
             <div class="modal" id="ModalOnayDiv" role="dialog">
@@ -268,7 +269,7 @@
                         </div>
                         <div class="modal-footer">
                             <asp:LinkButton CssClass="btn btn-danger" ID="KopyalaNowBtn" runat="server" Text="Kopyala ve Yeni Taşınmaz Oluştur" OnClick="KopyalaNowBtn_Click" Visible="false" />
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                            <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                         </div>
 
                     </div>

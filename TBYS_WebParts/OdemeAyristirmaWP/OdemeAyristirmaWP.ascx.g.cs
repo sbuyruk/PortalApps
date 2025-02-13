@@ -747,7 +747,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
             this.KiraEkstreAktarmaBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "KiraEkstreAktarmaBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Kira Ekstresine Dön";
             @__ctrl.Click -= new System.EventHandler(this.KiraEkstreAktarmaBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.KiraEkstreAktarmaBtn_Click);
@@ -1042,7 +1042,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                     </div>
                                     <div class=""col form-group"">
-                                        <button type=""button"" class=""btn btn-outline-secondary float-right"" data-dismiss=""modal"">İptal</button>
+                                        <button type=""button"" class=""btn btn-outline-secondary float-end"" data-bs-dismiss=""modal"">İptal</button>
                                     </div>
                                 </div>
                             </div>
@@ -1287,7 +1287,8 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
             @__w.Write(@"').click();
     }
     function OpenOdemeEkleModal() {
-        $(""#ListeyeEkleModalDiv"").modal({ backdrop: ""static"" });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ListeyeEkleModalDiv'));
+        myModalInstance.show();
     }
     function CloseModal() {
         $(""#ListeyeEkleModalDiv"").modal('hide');

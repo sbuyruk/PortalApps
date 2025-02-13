@@ -263,7 +263,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.EkranNo = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-secondary float-right";
+            @__ctrl.CssClass = "col-form-label text-secondary float-end";
             @__ctrl.ID = "EkranNo";
             @__ctrl.Text = "3";
             return @__ctrl;
@@ -1053,7 +1053,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.BackBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right m-2";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end m-2";
             @__ctrl.ID = "BackBtn";
             @__ctrl.Text = "Geri...";
             @__ctrl.CausesValidation = false;
@@ -1070,7 +1070,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.EkstreListesiBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right m-2";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end m-2";
             @__ctrl.ID = "EkstreListesiBtn";
             @__ctrl.Text = "Ekstre Listesi";
             @__ctrl.CausesValidation = false;

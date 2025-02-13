@@ -279,7 +279,7 @@ namespace MTS_WebParts.FaaliyetListesiWP {
             this.FaaliyetTakvimiBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "FaaliyetTakvimiBtn";
-            @__ctrl.CssClass = "btn btn-outline-info float-right";
+            @__ctrl.CssClass = "btn btn-outline-info float-end";
             @__ctrl.Text = "Faaliyet Takvimi";
             @__ctrl.Click -= new System.EventHandler(this.FaaliyetTakvimiBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.FaaliyetTakvimiBtn_Click);
@@ -295,7 +295,7 @@ namespace MTS_WebParts.FaaliyetListesiWP {
             this.FaaliyetListesiBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "FaaliyetListesiBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Faaliyet Listesi";
             @__ctrl.Click -= new System.EventHandler(this.FaaliyetListesiBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.FaaliyetListesiBtn_Click);
@@ -311,7 +311,7 @@ namespace MTS_WebParts.FaaliyetListesiWP {
             this.AcikTarihliFaaliyetListesiBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "AcikTarihliFaaliyetListesiBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Açık Tarihli Faal. List.";
             @__ctrl.Click -= new System.EventHandler(this.AcikTarihliFaaliyetListesiBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.AcikTarihliFaaliyetListesiBtn_Click);
@@ -327,7 +327,7 @@ namespace MTS_WebParts.FaaliyetListesiWP {
             this.KisiListesiBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "KisiListesiBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Kişi Listesi";
             @__ctrl.Click -= new System.EventHandler(this.KisiListesiBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.KisiListesiBtn_Click);

@@ -453,7 +453,7 @@ namespace IKYS_WebParts.PersonelGirisiWP {
             global::System.Web.UI.HtmlControls.HtmlAnchor @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlAnchor();
             this.YonergeLnk = @__ctrl;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", " btn btn-outline-primary float-right mr-4");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", " btn btn-outline-primary float-end mr-4");
             @__ctrl.ID = "YonergeLnk";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-fancybox", "");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-type", "pdf");
@@ -2620,25 +2620,11 @@ namespace IKYS_WebParts.PersonelGirisiWP {
             @__ctrl11 = this.@__BuildControlResmiKaydetBtn();
             @__parser.AddParsedSubObject(@__ctrl11);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-                                    <button id=""cropButton"" style=""display: none;"">Crop and Upload</button>
+                                    
                                 </div>
                                 <br />
                                 <hr />
-                                <div>
-                                    <div>
 
-                                        <input type=""file"" id=""fileInput"" accept=""image/*"" onchange=""readPictureURL();"">
-                                    </div>
-                                    <div>
-                                        <img id=""imagePreview""
-                                            src=""../PersonelResimleri/personel.jpg""
-                                            alt=""Placeholder Image""
-                                            style=""max-width: 200px; max-height: 300px;"" />
-                                    </div>
-                                    <div>
-                                        <button id=""cropButton"" style=""display: none;""  onclick=""cropAndUpload();"">Crop and Upload</button>
-                                    </div>
-                                </div>
                                 <div class=""form-group"">
                                     <label for=""PersonelTipiDDL"" class=""col-form-label"">Personel Tipi</label>
                                     <div>
@@ -2671,7 +2657,7 @@ namespace IKYS_WebParts.PersonelGirisiWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.PersonelListesiBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right mr-2";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end mr-2";
             @__ctrl.ID = "PersonelListesiBtn";
             @__ctrl.Text = "Personel Listesi";
             @__ctrl.CausesValidation = false;

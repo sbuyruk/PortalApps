@@ -266,7 +266,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.DosyaNoTxt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-danger float-right";
+            @__ctrl.CssClass = "col-form-label text-danger float-end";
             @__ctrl.ID = "DosyaNoTxt";
             return @__ctrl;
         }
@@ -420,7 +420,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
             this.OdemePlaniSilBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "OdemePlaniSilBtn";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "btn btn-outline-danger  float-right ");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "btn btn-outline-danger  float-end ");
             @__ctrl.Visible = false;
             @__ctrl.Text = "Ödeme Planı Sil";
             @__ctrl.Click -= new System.EventHandler(this.OdemePlaniSilBtn_Click);
@@ -881,7 +881,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "NextBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Sonraki=>";
             @__ctrl.Click -= new System.EventHandler(this.NextBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.NextBtn_Click);
@@ -898,7 +898,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "PrevBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "<=Önceki";
             @__ctrl.Click -= new System.EventHandler(this.PrevBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.PrevBtn_Click);
@@ -915,7 +915,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "SozlesmeBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Sözleşme";
             @__ctrl.Click -= new System.EventHandler(this.SozlesmeBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.SozlesmeBtn_Click);
@@ -932,7 +932,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "KiraciBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Kiracı";
             @__ctrl.Click -= new System.EventHandler(this.KiraciBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.KiraciBtn_Click);
@@ -949,7 +949,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "KiraciKartiBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Kira Kartı";
             @__ctrl.Click -= new System.EventHandler(this.KiraciKartiBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.KiraciKartiBtn_Click);
@@ -966,7 +966,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "OdemePlaniListBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Ödeme Planları";
             @__ctrl.Click -= new System.EventHandler(this.OdemePlaniListBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.OdemePlaniListBtn_Click);
@@ -983,7 +983,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "KiraciAylikOdemeBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Aylık Ödemeler";
             @__ctrl.Click -= new System.EventHandler(this.KiraciAylikOdemeBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.KiraciAylikOdemeBtn_Click);
@@ -1000,7 +1000,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "BakiyeDevirBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Bakiye Devir İşlemleri";
             @__ctrl.Click -= new System.EventHandler(this.BakiyeDevirBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.BakiyeDevirBtn_Click);
@@ -1650,7 +1650,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
 
                         </div>
                         <div class=""modal-footer"">
-                            <button type=""button"" class=""btn btn-default"" data-dismiss=""modal"">Kapat</button>
+                            <button type=""button"" class=""btn btn-default"" data-bs-dismiss=""modal"">Kapat</button>
                         </div>
                     </div>
                 </div>
@@ -1693,7 +1693,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
                             </div>
                         </div>
                         <div class=""modal-footer"">
-                            <button type=""button"" class=""btn btn-default"" data-dismiss=""modal"">Kapat</button>
+                            <button type=""button"" class=""btn btn-default"" data-bs-dismiss=""modal"">Kapat</button>
                         </div>
 
                     </div>
@@ -1778,10 +1778,12 @@ namespace TBYS_WebParts.OdemePlaniWP {
         }
     }
     function OpenModalOnay() {
-        $(""#ModalOnayDiv"").modal({ backdrop: ""static"" });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
+        myModalInstance.show();
     }
     function OpenModalOdemePlani() {
-        $(""#OdemePlaniModal"").modal({ backdrop: ""static"" });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('OdemePlaniModal'));
+        myModalInstance.show();
     }
 </script>
 

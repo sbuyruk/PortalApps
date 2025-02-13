@@ -54,8 +54,8 @@
             </div>
         </div>
         <div class="card-footer">
-            <asp:LinkButton CssClass="btn btn-outline-success float-right" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
-            <asp:LinkButton ID="TasinmazBagisciListesiBtn" CssClass="btn btn-outline-secondary float-right mr-2" runat="server" Text="Taşınmaz Bağışçı Listesi" OnClick="TasinmazBagisciListesiBtn_Click" />
+            <asp:LinkButton CssClass="btn btn-outline-success float-end" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
+            <asp:LinkButton ID="TasinmazBagisciListesiBtn" CssClass="btn btn-outline-secondary float-end mr-2" runat="server" Text="Taşınmaz Bağışçı Listesi" OnClick="TasinmazBagisciListesiBtn_Click" />
         </div>
 
     </div>

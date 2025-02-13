@@ -22,8 +22,8 @@
         return true;
     }
 </script>
-<div class="container shadow">
-    <div class="card ">
+<div class="container col-xl">
+    <div class="card shadow">
         <div class="card-header" id="CardHeader" runat="server">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-2">
@@ -50,7 +50,7 @@
                             <asp:DropDownList ID="IliDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="IliDDL_SelectedIndexChanged" AutoPostBack="true" style="height:auto"></asp:DropDownList>
                         </div>
                         <div class="form-group col">
-                            <div class="float-right">
+                            <div class="float-end">
                                 <asp:Label ID="RowCountLbl" runat="server" Text="" ForeColor="Blue"></asp:Label>
                             </div>
                         </div>
@@ -67,6 +67,7 @@
                                     <th>TC Kimlik No</th>
                                     <th>Telefon</th>
                                     <th>Banka</th>
+                                    <th>Açıklama</th>
                                 </tr>
                             </thead>
                         </table>
@@ -84,7 +85,7 @@
             </ProgressTemplate>
         </asp:UpdateProgress>
         <div class="card-footer">
-            <asp:LinkButton CssClass="btn btn-outline-success float-right" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
+            <asp:LinkButton CssClass="btn btn-outline-success float-end" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
         </div>
     </div>
 </div>

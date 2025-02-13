@@ -415,7 +415,7 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.ExcelBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-success float-right";
+            @__ctrl.CssClass = "btn btn-outline-success float-end";
             @__ctrl.ID = "ExcelBtn";
             @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
             @__ctrl.Text = "Excele Aktar";
@@ -606,7 +606,7 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP {
                         </div>
                     </div>
                     <div class=""modal-footer"">
-                        <button type=""button"" class=""btn btn-default"" data-dismiss=""modal"">Kapat</button>
+                        <button type=""button"" class=""btn btn-default"" data-bs-dismiss=""modal"">Kapat</button>
                     </div>
                 "));
         }
@@ -707,9 +707,18 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP {
             @__w.Write("\').value = nakitBagisciId;\r\n        document.getElementById(\'");
                          @__w.Write( ModalDoldurBtn.ClientID);
 
-            @__w.Write("\').click();\r\n        $(\"#ModalUrlDiv\").modal({ backdrop: false });\r\n\r\n    }\r\n</sc" +
-                    "ript>\r\n<script type=\"text/javascript\">\r\n\r\n</script>\r\n<div class=\"container\">\r\n  " +
-                    "  <div class=\"card p-3 shadow\">\r\n        ");
+            @__w.Write(@"').click();
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalUrlDiv'));
+        myModalInstance.show();
+
+    }
+</script>
+<script type=""text/javascript"">
+
+</script>
+<div class=""container"">
+    <div class=""card p-3 shadow"">
+        ");
             parameterContainer.Controls[0].RenderControl(@__w);
             @__w.Write("\r\n        <div class=\"card-body\">\r\n            ");
             parameterContainer.Controls[1].RenderControl(@__w);

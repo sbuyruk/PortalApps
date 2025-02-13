@@ -126,7 +126,7 @@ namespace NBYS_WebParts.SMSAylikCizelgeReadOnlyWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.DosyaNoTxt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-danger float-right";
+            @__ctrl.CssClass = "col-form-label text-danger float-end";
             @__ctrl.ID = "DosyaNoTxt";
             return @__ctrl;
         }
@@ -853,7 +853,7 @@ namespace NBYS_WebParts.SMSAylikCizelgeReadOnlyWP {
             this.ExcelBtn = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-success float-right";
+            @__ctrl.CssClass = "btn btn-outline-success float-end";
             @__ctrl.ID = "ExcelBtn";
             @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
             @__ctrl.Text = "Excele Aktar";
@@ -917,7 +917,8 @@ namespace NBYS_WebParts.SMSAylikCizelgeReadOnlyWP {
         return true;
     }
     function OpenModalOnay() {
-        $(""#ModalOnayDiv"").modal({ backdrop: ""static"" });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
+        myModalInstance.show();
     }
 
 </script>

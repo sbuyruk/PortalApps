@@ -186,10 +186,10 @@
         </div>
         <div class="card-footer">
             <asp:LinkButton ID="YeniKayitBtn" CssClass="btn btn-outline-success" runat="server" Text="Yeni Faaliyet" OnClick="YeniKayitBtn_Click"></asp:LinkButton>
-            <asp:LinkButton ID="FaaliyetTakvimiBtn" CssClass="btn btn-outline-info float-right" runat="server" Text="Faaliyet Takvimi" OnClick="FaaliyetTakvimiBtn_Click"></asp:LinkButton>
-            <asp:LinkButton ID="FaaliyetListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Faaliyet Listesi" OnClick="FaaliyetListesiBtn_Click"></asp:LinkButton>
-            <asp:LinkButton ID="AcikTarihliFaaliyetListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Açık Tarihli Faal. List." OnClick="AcikTarihliFaaliyetListesiBtn_Click"></asp:LinkButton>
-            <asp:LinkButton ID="KisiListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Kişi Listesi" OnClick="KisiListesiBtn_Click"></asp:LinkButton>
+            <asp:LinkButton ID="FaaliyetTakvimiBtn" CssClass="btn btn-outline-info float-end" runat="server" Text="Faaliyet Takvimi" OnClick="FaaliyetTakvimiBtn_Click"></asp:LinkButton>
+            <asp:LinkButton ID="FaaliyetListesiBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Faaliyet Listesi" OnClick="FaaliyetListesiBtn_Click"></asp:LinkButton>
+            <asp:LinkButton ID="AcikTarihliFaaliyetListesiBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Açık Tarihli Faal. List." OnClick="AcikTarihliFaaliyetListesiBtn_Click"></asp:LinkButton>
+            <asp:LinkButton ID="KisiListesiBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Kişi Listesi" OnClick="KisiListesiBtn_Click"></asp:LinkButton>
 
         </div>
 

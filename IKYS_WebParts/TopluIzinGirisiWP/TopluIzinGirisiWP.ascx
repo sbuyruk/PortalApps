@@ -8,7 +8,8 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="TopluIzinGirisiWP.ascx.cs" Inherits="IKYS_WebParts.TopluIzinGirisiWP.TopluIzinGirisiWP" %>
 <script type="text/javascript">
     function OpenModal() {
-        $("#ModalOnayDiv").modal({ backdrop: "static" });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
+        myModalInstance.show();
     }
     //On Page Load.
     $(function () {
@@ -167,7 +168,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <asp:LinkButton CssClass="btn btn-success" ID="SaveNowBtn" runat="server" CausesValidation="false" Text="Toplu İzini Kaydet" OnClientClick="{return true;};" OnClick="SaveNowBtn_Click" />
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">İptal</button>
+                                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">İptal</button>
                                 </div>
                             </div>
                         </div>

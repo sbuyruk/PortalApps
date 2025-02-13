@@ -325,7 +325,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "NextBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Sonraki=>";
             @__ctrl.Visible = false;
             @__ctrl.Click -= new System.EventHandler(this.NextBtn_Click);
@@ -343,7 +343,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "PrevBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "<=Önceki";
             @__ctrl.Visible = false;
             @__ctrl.Click -= new System.EventHandler(this.PrevBtn_Click);
@@ -361,8 +361,8 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "OdemePlaniGoruntuleBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
-            @__ctrl.Text = "Ödeme Planı";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
+            @__ctrl.Text = "Ödm.Pln Görüntüle";
             @__ctrl.Visible = false;
             @__ctrl.Click -= new System.EventHandler(this.OdemePlaniGoruntuleBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.OdemePlaniGoruntuleBtn_Click);
@@ -379,7 +379,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "OdemePlaniBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Ödeme Planı";
             @__ctrl.Visible = false;
             @__ctrl.Click -= new System.EventHandler(this.OdemePlaniBtn_Click);
@@ -397,7 +397,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "KiraKartiBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Kira Karti";
             @__ctrl.Visible = false;
             @__ctrl.Click -= new System.EventHandler(this.KiraKartiBtn_Click);
@@ -415,7 +415,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "KiraciListesiBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Kiracı Listesi";
             @__ctrl.Click -= new System.EventHandler(this.KiraciListesiBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.KiraciListesiBtn_Click);
@@ -432,7 +432,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "KiraciAylikOdemeBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Aylık Ödemeler";
             @__ctrl.Click -= new System.EventHandler(this.KiraciAylikOdemeBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.KiraciAylikOdemeBtn_Click);
@@ -783,7 +783,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP {
 
                         </div>
                         <div class=""modal-footer"">
-                            <button type=""button"" class=""btn btn-default"" data-dismiss=""modal"">Kapat</button>
+                            <button type=""button"" class=""btn btn-default"" data-bs-dismiss=""modal"">Kapat</button>
                         </div>
                     </div>
                 </div>

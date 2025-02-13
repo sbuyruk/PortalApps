@@ -40,7 +40,9 @@
     function OpenModal(kiraSozlesmeId) {
         document.getElementById('<%= paramKiraSozlesmeIdLbl.ClientID%>').value = kiraSozlesmeId;
         document.getElementById('<%= OdemePlaniGoruntuleBtn.ClientID%>').click();
-        $("#OdemePlaniModal").modal({ backdrop: true });
+
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('OdemePlaniModal'));
+        myModalInstance.show();
     }
     function OpenTakipIslemiModal(kiraciId, kiraSozlesmeId, odemePlaniId, kiraBedeli, toplamBorcu, kiraBorcuAySayisi, bolge, takipIslemi) {
         document.getElementById('<%= paramBolge.ClientID%>').value = bolge.replace("#", " ");
@@ -52,12 +54,16 @@
         document.getElementById('<%= paramToplamBorcuLbl.ClientID%>').value = toplamBorcu;
         document.getElementById('<%= paramKiraBorcuAySayisiLbl.ClientID%>').value = kiraBorcuAySayisi;
         document.getElementById('<%= TakipIslemiModalAcBtn.ClientID%>').click();
-        $("#KiraBocuTakibiModalDiv").modal({ backdrop: true });
+
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('KiraBocuTakibiModalDiv'));
+        myModalInstance.show();
     }
     function OpenTakipIslemiModalDuzenle(kiraBorcuTakipId) {
         document.getElementById('<%= paramKiraBorcuTakipIdLbl.ClientID%>').value = kiraBorcuTakipId;
         document.getElementById('<%= TakipIslemiModalDuzenleBtn.ClientID%>').click();
-        $("#KiraBocuTakibiModalDiv").modal({ backdrop: true });
+
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('KiraBocuTakibiModalDiv'));
+        myModalInstance.show();
     }
     function CloseKiraBocuTakibiModal() {
         $("#KiraBocuTakibiModalDiv").modal('hide');
@@ -113,7 +119,7 @@
             </asp:UpdatePanel>
         </div>
         <div class="card-footer">
-            <asp:LinkButton CssClass="btn btn-outline-success float-right" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
+            <asp:LinkButton CssClass="btn btn-outline-success float-end" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
         </div>
     </div>
 </div>
@@ -151,7 +157,7 @@
                 </asp:UpdatePanel>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
             </div>
         </div>
     </div>
@@ -215,7 +221,7 @@
                             <div class="modal-footer">
                                 <asp:LinkButton CssClass="btn btn-success" Visible="false" ID="TakipIslemiYapNowBtn" runat="server" CausesValidation="false" Text="Takip İşlemini Kaydet" OnClientClick="{return true;};" OnClick="TakipIslemiYapNowBtn_Click" />
                                 <asp:LinkButton CssClass="btn btn-primary" Visible="false" ID="TakipIslemiGuncelleNowBtn" runat="server" CausesValidation="false" Text="Takip İşlemini Güncelle" OnClientClick="{return true;};" OnClick="TakipIslemiGuncelleNowBtn_Click" />
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                                <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                             </div>
                         </div>
                     </div>

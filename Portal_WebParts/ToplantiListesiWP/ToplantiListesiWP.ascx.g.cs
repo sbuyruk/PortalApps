@@ -330,7 +330,7 @@ namespace Portal_WebParts.ToplantiListesiWP {
             this.ToplantiTakvimiBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "ToplantiTakvimiBtn";
-            @__ctrl.CssClass = "btn btn-outline-info float-right";
+            @__ctrl.CssClass = "btn btn-outline-info float-end";
             @__ctrl.Text = "Toplantı Takvimi";
             @__ctrl.Click -= new System.EventHandler(this.ToplantiTakvimiBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.ToplantiTakvimiBtn_Click);

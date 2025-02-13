@@ -8,7 +8,8 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="EnvanterdenCikarmaWP.ascx.cs" Inherits="TBYS_WebParts.EnvanterdenCikarmaWP.EnvanterdenCikarmaWP" %>
 <script type="text/javascript">
     function OpenModal() {
-        $("#ModalOnayDiv").modal({ backdrop: false });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
+        myModalInstance.show();
     }
 </script>
 <div id="MainPanel" class="container shadow w-75" runat="server">
@@ -65,7 +66,7 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <asp:LinkButton ID="BackBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Geri" OnClick="BackBtn_Click" />
+                    <asp:LinkButton ID="BackBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Geri" OnClick="BackBtn_Click" />
                     <asp:LinkButton ID="EnvanterdenCikarBtn" CssClass="btn btn-outline-danger" runat="server" Text="Envanterden Çıkar!" OnClick="EnvanterdenCikarBtn_Click" />
                     <asp:LinkButton ID="UpdateBtn" CssClass="btn btn-outline-primary" runat="server" Text="Güncelle" OnClick="UpdateBtn_Click" />
                 </div>
@@ -89,7 +90,7 @@
                         </div>
                         <div class="modal-footer">
                             <asp:LinkButton CssClass="btn btn-danger" ID="EnvanterdenCikarNowBtn" runat="server" Text="Envanterden Çıkar!" OnClick="EnvanterdenCikarNowBtn_Click" Visible="false" />
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                            <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                         </div>
 
                     </div>

@@ -166,7 +166,7 @@ namespace IKYS_WebParts.BirimTanimEditWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.EkranNo = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-secondary float-right";
+            @__ctrl.CssClass = "col-form-label text-secondary float-end";
             @__ctrl.ID = "EkranNo";
             @__ctrl.Text = "11";
             return @__ctrl;
@@ -431,7 +431,7 @@ namespace IKYS_WebParts.BirimTanimEditWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.BirimListesiBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right mr-2";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end mr-2";
             @__ctrl.ID = "BirimListesiBtn";
             @__ctrl.Text = "Birim Listesi";
             @__ctrl.CausesValidation = false;
@@ -448,7 +448,7 @@ namespace IKYS_WebParts.BirimTanimEditWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.BirimSemasiBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right mr-2";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end mr-2";
             @__ctrl.ID = "BirimSemasiBtn";
             @__ctrl.Text = "Birim-Şube Şeması";
             @__ctrl.CausesValidation = false;

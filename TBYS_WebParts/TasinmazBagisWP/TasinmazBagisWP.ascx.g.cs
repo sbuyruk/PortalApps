@@ -93,7 +93,7 @@ namespace TBYS_WebParts.TasinmazBagisWP {
             global::System.Web.UI.HtmlControls.HtmlAnchor @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlAnchor();
             this.YonergeLnk = @__ctrl;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", " btn btn-outline-primary float-right mr-4");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", " btn btn-outline-primary float-end mr-4");
             @__ctrl.ID = "YonergeLnk";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-fancybox", "");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-type", "pdf");

@@ -602,7 +602,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP {
             this.NextBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "NextBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Sonraki Söz.=>";
             @__ctrl.Click -= new System.EventHandler(this.NextBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.NextBtn_Click);
@@ -618,7 +618,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP {
             this.PrevBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "PrevBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "<=Önceki Söz.";
             @__ctrl.Click -= new System.EventHandler(this.PrevBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.PrevBtn_Click);
@@ -634,7 +634,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP {
             this.KiraciListesiBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "KiraciListesiBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Kiracı Listesi";
             @__ctrl.Click -= new System.EventHandler(this.KiraciListesiBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.KiraciListesiBtn_Click);
@@ -650,7 +650,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP {
             this.KiraKartiBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "KiraKartiBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Kira Karti";
             @__ctrl.Click -= new System.EventHandler(this.KiraKartiBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.KiraKartiBtn_Click);
@@ -666,7 +666,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP {
             this.OdemePlaninaGitBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "OdemePlaninaGitBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Ödeme Planı";
             @__ctrl.Click -= new System.EventHandler(this.OdemePlaninaGitBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.OdemePlaninaGitBtn_Click);
@@ -682,7 +682,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP {
             this.TeminatListesiBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "TeminatListesiBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Teminat Listesi";
             @__ctrl.Click -= new System.EventHandler(this.TeminatListesiBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.TeminatListesiBtn_Click);
@@ -698,7 +698,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP {
             this.AylikOdemelerBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "AylikOdemelerBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "Aylık Ödemeler";
             @__ctrl.Click -= new System.EventHandler(this.AylikOdemelerBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.AylikOdemelerBtn_Click);
@@ -898,8 +898,8 @@ namespace TBYS_WebParts.TeminatIslemleriWP {
             @__ctrl9 = this.@__BuildControlModalGuncelleNowBtn();
             @__parser.AddParsedSubObject(@__ctrl9);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        <button type=\"button\" class=\"btn btn-outline-secondary\"" +
-                        " data-dismiss=\"modal\">İptal</button>\r\n                    </div>\r\n              " +
-                        "  "));
+                        " data-bs-dismiss=\"modal\">İptal</button>\r\n                    </div>\r\n           " +
+                        "     "));
             return @__ctrl;
         }
         
@@ -1058,8 +1058,8 @@ namespace TBYS_WebParts.TeminatIslemleriWP {
             global::System.Web.UI.WebControls.LinkButton @__ctrl6;
             @__ctrl6 = this.@__BuildControlModalSilNowBtn();
             @__parser.AddParsedSubObject(@__ctrl6);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        <button type=\"button\" class=\"btn btn-default\" data-dism" +
-                        "iss=\"modal\">İptal</button>\r\n                    </div>\r\n                "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        <button type=\"button\" class=\"btn btn-default\" data-bs-d" +
+                        "ismiss=\"modal\">İptal</button>\r\n                    </div>\r\n                "));
             return @__ctrl;
         }
         
@@ -1136,62 +1136,39 @@ namespace TBYS_WebParts.TeminatIslemleriWP {
             @__w.Write("\').value = teminatId;\r\n        document.getElementById(\'");
                          @__w.Write( ModalSilBtn.ClientID);
 
-            @__w.Write("\').click();\r\n    }\r\n    function OpenDeleteModalOnay() {\r\n        $(\"#DeleteModal" +
-                    "OnayDiv\").modal({ backdrop: \"static\" });\r\n    }\r\n    function GuncelleModalDoldu" +
-                    "r(teminatId) {\r\n\r\n        document.getElementById(\'");
+            @__w.Write(@"').click();
+    }
+    function OpenDeleteModalOnay() {
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('DeleteModalOnayDiv'));
+        myModalInstance.show();
+    }
+    function GuncelleModalDoldur(teminatId) {
+
+        document.getElementById('");
                          @__w.Write( TeminatIslemIdGuncelleHdn.ClientID);
 
             @__w.Write("\').value = teminatId;\r\n        document.getElementById(\'");
                          @__w.Write( ModalGuncelleBtn.ClientID);
 
-            @__w.Write(@"').click();
-    }
-    function OpenTeminatIslemiModal() {
-        $(""#TeminatIslemiEkleModal"").modal({ backdrop: ""static"" });
-    }
-    function CloseModal() {
-        $(""#TeminatIslemiEkleModal"").modal('hide');
-
-    }
-    if ($('.input-money').toArray().forEach(function (field) {
-        new Cleave(field, {
-            numeral: true,
-            numeralDecimalMark: ',',
-            delimiter: '.'
-        });
-    }));
-</script>
-<script type=""text/javascript"">
-    function DoIt() {
-        var element = document.getElementById('CardDiv');
-
-        var opt = {
-            margin: [0, 0],
-            filename: 'teminat.pdf',
-            enableLinks: false,
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2 },
-            jsPDF: { unit: 'in', format: 'A4', orientation: 'portrait' }
-        };
-
-        // New Promise-based usage:
-        html2pdf().set(opt).from(element).save();
-
-        // Old monolithic-style usage:
-        //html2pdf(element, opt);
-    }
-
-
-</script>
-<script src=""/Style Library/tskgv/js/jspdf.js""></script>
-<script src=""/Style Library/tskgv/js/jspdf.plugin.addimage.js""></script>
-<script src=""/Style Library/tskgv/js/html2canvas.min.js""></script>
-<script src=""/Style Library/tskgv/js/html2pdf.bundle.min.js""></script>
-<div class=""container"">
-
-    <div class=""card shadow"">
-        <div class=""card-header "">
-            ");
+            @__w.Write("\').click();\r\n    }\r\n    function OpenTeminatIslemiModal() {\r\n        var myModalI" +
+                    "nstance = bootstrap.Modal.getOrCreateInstance(document.getElementById(\'TeminatIs" +
+                    "lemiEkleModal\'));\n        myModalInstance.show();\r\n    }\r\n    function CloseModa" +
+                    "l() {\r\n        $(\"#TeminatIslemiEkleModal\").modal(\'hide\');\r\n\r\n    }\r\n    if ($(\'" +
+                    ".input-money\').toArray().forEach(function (field) {\r\n        new Cleave(field, {" +
+                    "\r\n            numeral: true,\r\n            numeralDecimalMark: \',\',\r\n            " +
+                    "delimiter: \'.\'\r\n        });\r\n    }));\r\n</script>\r\n<script type=\"text/javascript\"" +
+                    ">\r\n    function DoIt() {\r\n        var element = document.getElementById(\'CardDiv" +
+                    "\');\r\n\r\n        var opt = {\r\n            margin: [0, 0],\r\n            filename: \'" +
+                    "teminat.pdf\',\r\n            enableLinks: false,\r\n            image: { type: \'jpeg" +
+                    "\', quality: 0.98 },\r\n            html2canvas: { scale: 2 },\r\n            jsPDF: " +
+                    "{ unit: \'in\', format: \'A4\', orientation: \'portrait\' }\r\n        };\r\n\r\n        // " +
+                    "New Promise-based usage:\r\n        html2pdf().set(opt).from(element).save();\r\n\r\n " +
+                    "       // Old monolithic-style usage:\r\n        //html2pdf(element, opt);\r\n    }\r" +
+                    "\n\r\n\r\n</script>\r\n<script src=\"/Style Library/tskgv/js/jspdf.js\"></script>\r\n<scrip" +
+                    "t src=\"/Style Library/tskgv/js/jspdf.plugin.addimage.js\"></script>\r\n<script src=" +
+                    "\"/Style Library/tskgv/js/html2canvas.min.js\"></script>\r\n<script src=\"/Style Libr" +
+                    "ary/tskgv/js/html2pdf.bundle.min.js\"></script>\r\n<div class=\"container\">\r\n\r\n    <" +
+                    "div class=\"card shadow\">\r\n        <div class=\"card-header \">\r\n            ");
             parameterContainer.Controls[0].RenderControl(@__w);
             @__w.Write("\r\n            <h3 class=\"mb-1\">\r\n                ");
             parameterContainer.Controls[1].RenderControl(@__w);

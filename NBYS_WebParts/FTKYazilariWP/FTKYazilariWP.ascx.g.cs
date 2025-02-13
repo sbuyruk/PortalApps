@@ -175,7 +175,7 @@ namespace NBYS_WebParts.FTKYazilariWP {
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlAnchor();
             this.YonergeLnk = @__ctrl;
             @__ctrl.TemplateControl = this;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", " btn btn-outline-primary float-right mr-4");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", " btn btn-outline-primary float-end mr-4");
             @__ctrl.ID = "YonergeLnk";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-fancybox", "");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-type", "pdf");
@@ -649,7 +649,7 @@ namespace NBYS_WebParts.FTKYazilariWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "FTKListesiBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end";
             @__ctrl.Text = "FTK Listesi";
             @__ctrl.Click -= new System.EventHandler(this.FTKListesiBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.FTKListesiBtn_Click);
@@ -666,7 +666,7 @@ namespace NBYS_WebParts.FTKYazilariWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "FTKIslemleriBtn";
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right mr-3";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end mr-3";
             @__ctrl.Text = "FTK İşlemleri";
             @__ctrl.CausesValidation = false;
             @__ctrl.Click -= new System.EventHandler(this.FTKIslemleriBtn_Click);

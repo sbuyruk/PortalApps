@@ -60,11 +60,15 @@ namespace Model.Ortak
 
             return list;
         }
-        public Bolge SelectByBolgeAdi(string bolgeAdi)
+        public Bolge SelectByBagisciId( int nakitBagisciId)
         {
-            string sqlString = string.Format(@"SELECT *
-                                                FROM Bolge_Table
-                                                WHERE LOWER(Adi)=LOWER('{0}')", bolgeAdi);
+            string sqlString = string.Format(@"
+                SELECT A.* 
+                FROM Bolge_Table A
+                Inner JOIN Il_Table C ON C.BolgeId=A.Id
+                Inner Join NakitBagisci_Table B On B.Ili=C.Id
+                WHERE B.Id={0}
+            ", nakitBagisciId);
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Bolge> list = ToList<Bolge>(dataTable);

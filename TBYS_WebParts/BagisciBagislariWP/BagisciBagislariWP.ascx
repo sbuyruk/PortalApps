@@ -8,10 +8,12 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="BagisciBagislariWP.ascx.cs" Inherits="TBYS_WebParts.BagisciBagislariWP.BagisciBagislariWP" %>
 <script type="text/javascript">
     function OpenModalOnay() {
-        $("#ModalOnayDiv").modal({ backdrop: false });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
+        myModalInstance.show();
     }
     function OpenModal() {
-        $("#ModalTasinmazListesiDiv").modal({ backdrop: false });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalTasinmazListesiDiv'));
+        myModalInstance.show();
     }
     function CallButtonClick(bagisciId, tasinmazId) {
         document.getElementById('<%= paramTasinmazIdLbl.ClientID%>').value = tasinmazId;
@@ -37,7 +39,7 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <asp:LinkButton CssClass="btn btn-outline-secondary float-right mr-2" ID="BackBtn" runat="server" Text="Geri" CausesValidation="false" OnClick="BackBtn_Click" />
+                    <asp:LinkButton CssClass="btn btn-outline-secondary float-end mr-2" ID="BackBtn" runat="server" Text="Geri" CausesValidation="false" OnClick="BackBtn_Click" />
                     <asp:LinkButton ID="TasinmazEkleBtn" CssClass="btn btn-outline-primary float-left" runat="server" Text="Taşınmaz Ekle" OnClick="TasinmazEkleBtn_Click" />
                 </div>
             </div>
@@ -60,7 +62,7 @@
                         </div>
                         <div class="modal-footer">
                             <asp:LinkButton CssClass="btn btn-danger" ID="CikarNowBtn" runat="server" CausesValidation="false" Text="Bağışlardan Çıkar" OnClientClick="{return true;};" OnClick="CikarNowBtn_Click" Visible="false" />
-                            <button type="button" class="btn btn-default float-right" data-dismiss="modal">Kapat</button>
+                            <button type="button" class="btn btn-default float-end" data-bs-dismiss="modal">Kapat</button>
                         </div>
                     </div>
                 </div>
@@ -100,7 +102,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                            <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                         </div>
                     </div>
                 </div>

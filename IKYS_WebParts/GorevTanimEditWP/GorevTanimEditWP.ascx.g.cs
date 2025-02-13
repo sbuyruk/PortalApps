@@ -162,7 +162,7 @@ namespace IKYS_WebParts.GorevTanimEditWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.EkranNo = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-secondary float-right";
+            @__ctrl.CssClass = "col-form-label text-secondary float-end";
             @__ctrl.ID = "EkranNo";
             @__ctrl.Text = "13";
             return @__ctrl;
@@ -426,7 +426,7 @@ namespace IKYS_WebParts.GorevTanimEditWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.GorevTanimListesiBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right mr-2";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end mr-2";
             @__ctrl.ID = "GorevTanimListesiBtn";
             @__ctrl.Text = "Görev Tanım Listesi";
             @__ctrl.CausesValidation = false;

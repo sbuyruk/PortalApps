@@ -73,12 +73,14 @@ namespace Model.Ortak
             return il;
         }
 
-        public int SelectCountIlByBolgeId(int bolgeId)
+        public int SelectCountIlByBolgeId(int bolgeId= ProjeConstants.BOLGE_HEPSI_INT)
         {
+            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND BolgeId={0} ", bolgeId);
             string sqlString = string.Format(@"
                 SELECT COUNT(Id) Adet
                 FROM Il_Table
-                WHERE Id BETWEEN 1 AND 81 AND BolgeId={0}", bolgeId);
+                WHERE Id BETWEEN 1 AND 81 
+                {0}", bolgeStr);
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)
@@ -89,9 +91,9 @@ namespace Model.Ortak
             }
             return 0;
         }
-        public List<Il> SelectByBolge(string bolge)
+        public List<Il> SelectByBolge(int bolgeId = ProjeConstants.BOLGE_HEPSI_INT)
         {
-            string bolgeStr = string.IsNullOrEmpty(bolge)||bolge.Equals(ProjeConstants.HEPSI)?string.Empty: string.Format(" AND Bolge={0} ",bolge.ReturnQuotedValue());
+            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND BolgeId={0} ", bolgeId);
             string sqlString = string.Format(@"
                 SELECT *
                 FROM Il_Table

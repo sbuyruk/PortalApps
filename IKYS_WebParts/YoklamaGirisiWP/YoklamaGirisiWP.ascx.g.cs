@@ -551,7 +551,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "RaporAlBtn";
-            @__ctrl.CssClass = "btn btn-outline-success float-right";
+            @__ctrl.CssClass = "btn btn-outline-success float-end";
             @__ctrl.Text = "Rapor Al";
             @__ctrl.Visible = false;
             @__ctrl.Click -= new System.EventHandler(this.RaporAlBtn_Click);
@@ -568,7 +568,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP {
             this.YoklamaListesiBtn = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-secondary float-right mr-2";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end mr-2";
             @__ctrl.ID = "YoklamaListesiBtn";
             @__ctrl.Text = "Yoklama Listesi";
             @__ctrl.CausesValidation = false;
@@ -738,8 +738,8 @@ namespace IKYS_WebParts.YoklamaGirisiWP {
             @__ctrl18 = this.@__BuildControlDeleteNowBtn();
             @__parser.AddParsedSubObject(@__ctrl18);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            <button type=\"button\" class=\"btn btn-default\" data-" +
-                        "dismiss=\"modal\">Kapat</button>\r\n                        </div>\r\n\r\n              " +
-                        "      </div>\r\n                </div>\r\n            </div>\r\n        "));
+                        "bs-dismiss=\"modal\">Kapat</button>\r\n                        </div>\r\n\r\n           " +
+                        "         </div>\r\n                </div>\r\n            </div>\r\n        "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -759,30 +759,31 @@ namespace IKYS_WebParts.YoklamaGirisiWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControlTree(global::IKYS_WebParts.YoklamaGirisiWP.YoklamaGirisiWP @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n<script type=\"text/javascript\">\r\n    function OpenModal() {\r\n        $(\"#ModalO" +
-                        "nayDiv\").modal({ backdrop: false });\r\n    }\r\n    //On Page Load.\r\n    $(function" +
-                        " () {\r\n        SetDatePicker();\r\n    });\r\n    //ikinci tarih için\r\n    function " +
-                        "SetDatePicker() {\r\n\r\n\r\n        $(\"[id$=BitTarTxt]\").datepicker({\r\n            da" +
-                        "teFormat: \"dd.mm.yy\",\r\n            firstDay: 1,\r\n            monthNames: [\"Ocak\"" +
-                        ", \"Şubat\", \"Mart\", \"Nisan\", \"Mayıs\", \"Haziran\", \"Temmuz\", \"Ağustos\", \"Eylül\", \"E" +
-                        "kim\", \"Kasım\", \"Aralık\"],\r\n            monthNamesShort: [\"Oca\", \"Şub\", \"Mar\", \"N" +
-                        "is\", \"May\", \"Haz\", \"Tem\", \"Ağu\", \"Eyl\", \"Eki\", \"Kas\", \"Ara\"],\r\n            dayNa" +
-                        "mes: [\"Pazar\", \"Pazartesi\", \"Salı\", \"Çarşamba\", \"Perşembe\", \"Cuma\", \"Cumartesi\"]" +
-                        ",\r\n            dayNamesMin: [\"Pz\", \"Pt\", \"Sl\", \"Çr\", \"Pr\", \"Cu\", \"Ct\"],\r\n       " +
-                        "     showAnim: \"fold\",\r\n            changeMonth: true,\r\n            changeYear: " +
-                        "true,\r\n            beforeShow: function (input, inst) {\r\n                var min" +
-                        "date = $(\'.DateTimePickerV1\').datepicker(\'getDate\');\r\n                $(this).da" +
-                        "tepicker(\'option\', \'minDate\', mindate);\r\n\r\n                var maxSure = 90;//en" +
-                        " fazla 3 ay\r\n                var newDate = new Date($(\'.DateTimePickerV1\').datep" +
-                        "icker(\'getDate\'));\r\n                newDate.setDate(newDate.getDate() + maxSure)" +
-                        ";\r\n                $(this).datepicker(\'option\', \'maxDate\', newDate);\r\n          " +
-                        "  },\r\n            beforeShowDay: function (date) {\r\n                $(\'#ui-datep" +
-                        "icker-div\').css(\'clip\', \'auto\');\r\n                return [true, \'\', \'\'];\r\n      " +
-                        "      }\r\n        });\r\n    }\r\n    //On UpdatePanel Refresh.\r\n    var prm = Sys.We" +
-                        "bForms.PageRequestManager.getInstance();\r\n    if (prm != null) {\r\n        prm.ad" +
-                        "d_endRequest(function (sender, e) {\r\n            if (sender._postBackSettings.pa" +
-                        "nelsToUpdate != null) {\r\n                SetDatePicker();\r\n            }\r\n      " +
-                        "  });\r\n    };\r\n\r\n</script>\r\n<div class=\"container shadow\">\r\n    "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n<script type=\"text/javascript\">\r\n    function OpenModal() {\r\n        var myModa" +
+                        "lInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById(\'ModalOn" +
+                        "ayDiv\'));\n        myModalInstance.show();\r\n    }\r\n    //On Page Load.\r\n    $(fun" +
+                        "ction () {\r\n        SetDatePicker();\r\n    });\r\n    //ikinci tarih için\r\n    func" +
+                        "tion SetDatePicker() {\r\n\r\n\r\n        $(\"[id$=BitTarTxt]\").datepicker({\r\n         " +
+                        "   dateFormat: \"dd.mm.yy\",\r\n            firstDay: 1,\r\n            monthNames: [\"" +
+                        "Ocak\", \"Şubat\", \"Mart\", \"Nisan\", \"Mayıs\", \"Haziran\", \"Temmuz\", \"Ağustos\", \"Eylül" +
+                        "\", \"Ekim\", \"Kasım\", \"Aralık\"],\r\n            monthNamesShort: [\"Oca\", \"Şub\", \"Mar" +
+                        "\", \"Nis\", \"May\", \"Haz\", \"Tem\", \"Ağu\", \"Eyl\", \"Eki\", \"Kas\", \"Ara\"],\r\n            " +
+                        "dayNames: [\"Pazar\", \"Pazartesi\", \"Salı\", \"Çarşamba\", \"Perşembe\", \"Cuma\", \"Cumart" +
+                        "esi\"],\r\n            dayNamesMin: [\"Pz\", \"Pt\", \"Sl\", \"Çr\", \"Pr\", \"Cu\", \"Ct\"],\r\n  " +
+                        "          showAnim: \"fold\",\r\n            changeMonth: true,\r\n            changeY" +
+                        "ear: true,\r\n            beforeShow: function (input, inst) {\r\n                va" +
+                        "r mindate = $(\'.DateTimePickerV1\').datepicker(\'getDate\');\r\n                $(thi" +
+                        "s).datepicker(\'option\', \'minDate\', mindate);\r\n\r\n                var maxSure = 90" +
+                        ";//en fazla 3 ay\r\n                var newDate = new Date($(\'.DateTimePickerV1\')." +
+                        "datepicker(\'getDate\'));\r\n                newDate.setDate(newDate.getDate() + max" +
+                        "Sure);\r\n                $(this).datepicker(\'option\', \'maxDate\', newDate);\r\n     " +
+                        "       },\r\n            beforeShowDay: function (date) {\r\n                $(\'#ui-" +
+                        "datepicker-div\').css(\'clip\', \'auto\');\r\n                return [true, \'\', \'\'];\r\n " +
+                        "           }\r\n        });\r\n    }\r\n    //On UpdatePanel Refresh.\r\n    var prm = S" +
+                        "ys.WebForms.PageRequestManager.getInstance();\r\n    if (prm != null) {\r\n        p" +
+                        "rm.add_endRequest(function (sender, e) {\r\n            if (sender._postBackSettin" +
+                        "gs.panelsToUpdate != null) {\r\n                SetDatePicker();\r\n            }\r\n " +
+                        "       });\r\n    };\r\n\r\n</script>\r\n<div class=\"container shadow\">\r\n    "));
             global::System.Web.UI.UpdatePanel @__ctrl1;
             @__ctrl1 = this.@__BuildControlTableUpdatePanel();
             @__parser.AddParsedSubObject(@__ctrl1);

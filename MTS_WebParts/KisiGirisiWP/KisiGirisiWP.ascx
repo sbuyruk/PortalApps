@@ -8,7 +8,8 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="KisiGirisiWP.ascx.cs" Inherits="MTS_WebParts.KisiGirisiWP.KisiGirisiWP" %>
 <script>
     function OpenModalOnay() {
-        $("#ModalOnayDiv").modal({ backdrop: true });
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
+        myModalInstance.show();
     }
 </script>
 <div class="container ">
@@ -155,10 +156,10 @@
                     <asp:LinkButton ID="GuncelleBtn" CssClass="btn btn-outline-primary" runat="server" Text="Güncelle" OnClick="GuncelleBtn_Click"></asp:LinkButton>
                     <asp:LinkButton ID="FaaliyetGirBtn" CssClass="btn btn-outline-success" runat="server" Text="Faaliyet Oluştur" OnClick="FaaliyetGirBtn_Click"></asp:LinkButton>
                     <asp:LinkButton ID="KisiyiSilBtn" CssClass="btn btn-danger" runat="server" Text="Kişiyi Sil" OnClick="KisiyiSilBtn_Click"></asp:LinkButton>
-                    <asp:LinkButton ID="FaaliyetTakvimiBtn" CssClass="btn btn-outline-info float-right" runat="server" Text="Faaliyet Takvimi" OnClick="FaaliyetTakvimiBtn_Click"></asp:LinkButton>
-                    <asp:LinkButton ID="FaaliyetListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Faaliyet Listesi" OnClick="FaaliyetListesiBtn_Click"></asp:LinkButton>
-                    <asp:LinkButton ID="KisiListesiBtn" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Kişi Listesi" OnClick="KisiListesiBtn_Click"></asp:LinkButton>
-                    <asp:LinkButton ID="AramaListesi" CssClass="btn btn-outline-secondary float-right" runat="server" Text="Arama/Görüşme Listesi" OnClick="AramaListesiBtn_Click"></asp:LinkButton>
+                    <asp:LinkButton ID="FaaliyetTakvimiBtn" CssClass="btn btn-outline-info float-end" runat="server" Text="Faaliyet Takvimi" OnClick="FaaliyetTakvimiBtn_Click"></asp:LinkButton>
+                    <asp:LinkButton ID="FaaliyetListesiBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Faaliyet Listesi" OnClick="FaaliyetListesiBtn_Click"></asp:LinkButton>
+                    <asp:LinkButton ID="KisiListesiBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Kişi Listesi" OnClick="KisiListesiBtn_Click"></asp:LinkButton>
+                    <asp:LinkButton ID="AramaListesi" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Arama/Görüşme Listesi" OnClick="AramaListesiBtn_Click"></asp:LinkButton>
                 </div>
             </div>
             <div class="modal" id="ModalOnayDiv" role="dialog">
@@ -184,7 +185,7 @@
                         <div class="modal-footer">
                             <asp:LinkButton ID="OnaylaBtn" Text="Onayla" runat="server" class="btn btn-outline-primary" OnClick="OnaylaBtn_Click" Visible="false"></asp:LinkButton>
                             <asp:LinkButton ID="KisiSilNowBtn" CssClass="btn btn-outline-danger" runat="server" Text="Kişiyi Sil" OnClick="KisiSilNowBtn_Click" Visible="false"></asp:LinkButton>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                            <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                         </div>
                     </div>
                 </div>

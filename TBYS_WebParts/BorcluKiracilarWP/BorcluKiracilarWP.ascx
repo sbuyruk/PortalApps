@@ -17,7 +17,9 @@
     function OpenModal(kiraSozlesmeId) {
         document.getElementById('<%= paramKiraSozlesmeIdLbl.ClientID%>').value = kiraSozlesmeId;
         document.getElementById('<%= OdemePlaniGoruntuleBtn.ClientID%>').click();
-        $("#OdemePlaniModal").modal({ backdrop: true });
+
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('OdemePlaniModal'));
+        myModalInstance.show();
     }
 </script>
 <div id="MainContainer" class="container">
@@ -32,7 +34,7 @@
         </div>
         <div class="card-body">
             <div class="form-group">
-                <asp:LinkButton CssClass="btn btn-outline-primary float-right" ID="OdemePlanlariniGuncelleBtn" runat="server" Text="Ödeme Planlarını Güncelle" OnClick="OdemePlanlariniGuncelleBtn_Click" />
+                <asp:LinkButton CssClass="btn btn-outline-primary float-end" ID="OdemePlanlariniGuncelleBtn" runat="server" Text="Ödeme Planlarını Güncelle" OnClick="OdemePlanlariniGuncelleBtn_Click" />
             </div>
             <div style="display: none">
                 <input id="paramKiraSozlesmeIdLbl" runat="server" text="Label" style="border-style: none;" text-align="center" />
@@ -69,7 +71,7 @@
             </div>--%>
         </div>
         <div class="card-footer">
-            <asp:LinkButton CssClass="btn btn-outline-success float-right" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
+            <asp:LinkButton CssClass="btn btn-outline-success float-end" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
         </div>
     </div>
 </div>
@@ -107,7 +109,7 @@
                 </asp:UpdatePanel>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
+                <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
             </div>
         </div>
     </div>
