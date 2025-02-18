@@ -30,7 +30,7 @@
             </div>
             <asp:Table ID="BorcluKiracilarTable" runat="server" CssClass="table table-bordered table-hover table-striped">
                  <asp:TableHeaderRow HorizontalAlign="Center">
-                     <asp:TableHeaderCell ColumnSpan="9" ID="TableTitleCell" BorderStyle="Solid" BorderWidth="2" BorderColor="Black"></asp:TableHeaderCell>
+                     <asp:TableHeaderCell ColumnSpan="12" ID="TableTitleCell" BorderStyle="Solid" BorderWidth="2" BorderColor="Black"></asp:TableHeaderCell>
                  </asp:TableHeaderRow>
                 <asp:TableHeaderRow HorizontalAlign="Center">
                     <asp:TableHeaderCell BorderStyle="Solid" BorderWidth="2" BorderColor="Black">S.NO</asp:TableHeaderCell>
@@ -38,7 +38,10 @@
                     <asp:TableHeaderCell BorderStyle="Solid" BorderWidth="2" BorderColor="Black">BÖLGE</asp:TableHeaderCell>
                     <asp:TableHeaderCell BorderStyle="Solid" BorderWidth="2" BorderColor="Black">KİRACININ ADI VE SOYADI</asp:TableHeaderCell>
                     <asp:TableHeaderCell BorderStyle="Solid" BorderWidth="2" BorderColor="Black">İLK SÖZLEŞME TARİHİ</asp:TableHeaderCell>
-                    <asp:TableHeaderCell BorderStyle="Solid" BorderWidth="2" BorderColor="Black">KİRA BEDELİ (TL/AY)</asp:TableHeaderCell>
+                    <asp:TableHeaderCell BorderStyle="Solid" BorderWidth="2" BorderColor="Black">KİRALAMA AMACI</asp:TableHeaderCell>
+                    <asp:TableHeaderCell BorderStyle="Solid" BorderWidth="2" BorderColor="Black">ÖDEME ŞEKLİ</asp:TableHeaderCell>
+                    <asp:TableHeaderCell BorderStyle="Solid" BorderWidth="2" BorderColor="Black">METREKARE</asp:TableHeaderCell>
+                    <asp:TableHeaderCell BorderStyle="Solid" BorderWidth="2" BorderColor="Black">KİRA BEDELİ (TL)</asp:TableHeaderCell>
                     <asp:TableHeaderCell BorderStyle="Solid" BorderWidth="2" BorderColor="Black">BORÇ MİKTARI (TL)</asp:TableHeaderCell>
                     <asp:TableHeaderCell BorderStyle="Solid" BorderWidth="2" BorderColor="Black">FAİZLİ BAKİYE (TL)</asp:TableHeaderCell>
                     <asp:TableHeaderCell BorderStyle="Solid" BorderWidth="2" BorderColor="Black">KİRA BORCU (AY)</asp:TableHeaderCell>

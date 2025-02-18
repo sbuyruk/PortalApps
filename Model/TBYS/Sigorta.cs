@@ -244,8 +244,7 @@ namespace Model.TBYS
             bool isJenerator, bool isAsansor, bool isKazan, int bolgeId, string auth)
         {
             
-            string bolgeStr = (!string.IsNullOrEmpty(auth) && auth.Equals(ProjeConstants.TBYS_YETKILI_BIRIM)) ||
-                (bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT) ? string.Empty : string.Format(" AND E.Id={0} ", bolgeId);
+            string bolgeStr = bolgeId == ProjeConstants.BOLGE_HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format("  AND E.Id={0} ", bolgeId);
 
 
             string sigortaCinsiStr = string.IsNullOrEmpty(sigortaCinsi) || sigortaCinsi.Equals(ProjeConstants.HEPSI) ? " AND SigortaCinsi is not null " : " AND SigortaCinsi = " + sigortaCinsi.ReturnQuotedValue();

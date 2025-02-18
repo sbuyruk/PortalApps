@@ -410,22 +410,6 @@
     <None Include="BirimTanimEditWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{5348aa0d-7372-4a5c-878c-b0458146a6d3}</SharePointProjectItemId>
     </None>
-    <None Include="Content\bootstrap-grid.css.map" />
-    <None Include="Content\bootstrap-grid.min.css.map" />
-    <None Include="Content\bootstrap-grid.rtl.css.map" />
-    <None Include="Content\bootstrap-grid.rtl.min.css.map" />
-    <None Include="Content\bootstrap-reboot.css.map" />
-    <None Include="Content\bootstrap-reboot.min.css.map" />
-    <None Include="Content\bootstrap-reboot.rtl.css.map" />
-    <None Include="Content\bootstrap-reboot.rtl.min.css.map" />
-    <None Include="Content\bootstrap-utilities.css.map" />
-    <None Include="Content\bootstrap-utilities.min.css.map" />
-    <None Include="Content\bootstrap-utilities.rtl.css.map" />
-    <None Include="Content\bootstrap-utilities.rtl.min.css.map" />
-    <None Include="Content\bootstrap.css.map" />
-    <None Include="Content\bootstrap.min.css.map" />
-    <None Include="Content\bootstrap.rtl.css.map" />
-    <None Include="Content\bootstrap.rtl.min.css.map" />
     <None Include="EgitimGirisiWP\EgitimGirisiWP.webpart" />
     <None Include="EgitimGirisiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{9afecdc2-6ff9-4b32-ab2a-f5d7a30d9ca8}</SharePointProjectItemId>
@@ -545,14 +529,6 @@
     <None Include="ResmiTatilListesiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{d59ca40b-0953-4cbb-b14d-9c21c329c16a}</SharePointProjectItemId>
     </None>
-    <None Include="Scripts\bootstrap.bundle.js.map" />
-    <None Include="Scripts\bootstrap.bundle.min.js.map" />
-    <None Include="Scripts\bootstrap.esm.js.map" />
-    <None Include="Scripts\bootstrap.esm.min.js.map" />
-    <None Include="Scripts\bootstrap.js.map" />
-    <None Include="Scripts\bootstrap.min.js.map" />
-    <None Include="Scripts\jquery-3.7.1.min.map" />
-    <None Include="Scripts\jquery-3.7.1.slim.min.map" />
     <None Include="SonIzinDurumuWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{170ae8be-9217-40ca-a5c1-2ce2866614f2}</SharePointProjectItemId>
     </None>
@@ -604,22 +580,6 @@
       <LastGenOutput>BirimTanimEditWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="BirimTanimEditWP\Elements.xml" />
-    <Content Include="Content\bootstrap-grid.css" />
-    <Content Include="Content\bootstrap-grid.min.css" />
-    <Content Include="Content\bootstrap-grid.rtl.css" />
-    <Content Include="Content\bootstrap-grid.rtl.min.css" />
-    <Content Include="Content\bootstrap-reboot.css" />
-    <Content Include="Content\bootstrap-reboot.min.css" />
-    <Content Include="Content\bootstrap-reboot.rtl.css" />
-    <Content Include="Content\bootstrap-reboot.rtl.min.css" />
-    <Content Include="Content\bootstrap-utilities.css" />
-    <Content Include="Content\bootstrap-utilities.min.css" />
-    <Content Include="Content\bootstrap-utilities.rtl.css" />
-    <Content Include="Content\bootstrap-utilities.rtl.min.css" />
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\bootstrap.rtl.css" />
-    <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="EgitimGirisiWP\EgitimGirisiWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>EgitimGirisiWP.ascx.g.cs</LastGenOutput>
@@ -758,17 +718,6 @@
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>ResmiTatilListesiWP.ascx.g.cs</LastGenOutput>
     </Content>
-    <Content Include="Scripts\bootstrap.bundle.js" />
-    <Content Include="Scripts\bootstrap.bundle.min.js" />
-    <Content Include="Scripts\bootstrap.esm.js" />
-    <Content Include="Scripts\bootstrap.esm.min.js" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\jquery-3.7.1.intellisense.js" />
-    <Content Include="Scripts\jquery-3.7.1.js" />
-    <Content Include="Scripts\jquery-3.7.1.min.js" />
-    <Content Include="Scripts\jquery-3.7.1.slim.js" />
-    <Content Include="Scripts\jquery-3.7.1.slim.min.js" />
     <Content Include="SonIzinDurumuWP\Elements.xml" />
     <Content Include="SonIzinDurumuWP\SonIzinDurumuWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>

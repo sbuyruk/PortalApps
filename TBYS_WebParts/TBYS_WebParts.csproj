@@ -726,22 +726,6 @@
     <None Include="BorcluKiraciTakibiByBolgeWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{25d9a615-ef88-4fa2-8576-dc5300081be5}</SharePointProjectItemId>
     </None>
-    <None Include="Content\bootstrap-grid.css.map" />
-    <None Include="Content\bootstrap-grid.min.css.map" />
-    <None Include="Content\bootstrap-grid.rtl.css.map" />
-    <None Include="Content\bootstrap-grid.rtl.min.css.map" />
-    <None Include="Content\bootstrap-reboot.css.map" />
-    <None Include="Content\bootstrap-reboot.min.css.map" />
-    <None Include="Content\bootstrap-reboot.rtl.css.map" />
-    <None Include="Content\bootstrap-reboot.rtl.min.css.map" />
-    <None Include="Content\bootstrap-utilities.css.map" />
-    <None Include="Content\bootstrap-utilities.min.css.map" />
-    <None Include="Content\bootstrap-utilities.rtl.css.map" />
-    <None Include="Content\bootstrap-utilities.rtl.min.css.map" />
-    <None Include="Content\bootstrap.css.map" />
-    <None Include="Content\bootstrap.min.css.map" />
-    <None Include="Content\bootstrap.rtl.css.map" />
-    <None Include="Content\bootstrap.rtl.min.css.map" />
     <None Include="EmptyWP\EmptyWP.webpart" />
     <None Include="EmptyWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{7985a8d7-b6d9-49e5-ad5e-375747307ffc}</SharePointProjectItemId>
@@ -894,14 +878,6 @@
       <DependentUpon>Package.package</DependentUpon>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Scripts\bootstrap.bundle.js.map" />
-    <None Include="Scripts\bootstrap.bundle.min.js.map" />
-    <None Include="Scripts\bootstrap.esm.js.map" />
-    <None Include="Scripts\bootstrap.esm.min.js.map" />
-    <None Include="Scripts\bootstrap.js.map" />
-    <None Include="Scripts\bootstrap.min.js.map" />
-    <None Include="Scripts\jquery-3.7.1.min.map" />
-    <None Include="Scripts\jquery-3.7.1.slim.min.map" />
     <None Include="SharePointLibraryFileListWP\SharePointLibraryFileListWP.webpart" />
     <None Include="SharePointLibraryFileListWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{7a0f0dda-decd-459b-88cd-0fee96990bac}</SharePointProjectItemId>
@@ -1069,22 +1045,6 @@
       <LastGenOutput>BorcluKiraciTakibiByBolgeWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="BorcluKiraciTakibiByBolgeWP\Elements.xml" />
-    <Content Include="Content\bootstrap-grid.css" />
-    <Content Include="Content\bootstrap-grid.min.css" />
-    <Content Include="Content\bootstrap-grid.rtl.css" />
-    <Content Include="Content\bootstrap-grid.rtl.min.css" />
-    <Content Include="Content\bootstrap-reboot.css" />
-    <Content Include="Content\bootstrap-reboot.min.css" />
-    <Content Include="Content\bootstrap-reboot.rtl.css" />
-    <Content Include="Content\bootstrap-reboot.rtl.min.css" />
-    <Content Include="Content\bootstrap-utilities.css" />
-    <Content Include="Content\bootstrap-utilities.min.css" />
-    <Content Include="Content\bootstrap-utilities.rtl.css" />
-    <Content Include="Content\bootstrap-utilities.rtl.min.css" />
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\bootstrap.rtl.css" />
-    <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="EmptyWP\Elements.xml" />
     <Content Include="EmptyWP\EmptyWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
@@ -1263,17 +1223,6 @@
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>OdemePlaniWP.ascx.g.cs</LastGenOutput>
     </Content>
-    <Content Include="Scripts\bootstrap.bundle.js" />
-    <Content Include="Scripts\bootstrap.bundle.min.js" />
-    <Content Include="Scripts\bootstrap.esm.js" />
-    <Content Include="Scripts\bootstrap.esm.min.js" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\jquery-3.7.1.intellisense.js" />
-    <Content Include="Scripts\jquery-3.7.1.js" />
-    <Content Include="Scripts\jquery-3.7.1.min.js" />
-    <Content Include="Scripts\jquery-3.7.1.slim.js" />
-    <Content Include="Scripts\jquery-3.7.1.slim.min.js" />
     <Content Include="SharePointLibraryFileListWP\Elements.xml" />
     <Content Include="SharePointLibraryFileListWP\SharePointLibraryFileListWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>

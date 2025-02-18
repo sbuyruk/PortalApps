@@ -188,6 +188,8 @@ namespace TBYS_WebParts.MevcutKiracilarWP
                     string dosyaNo = row == null ? "0" : row["DosyaNo"].ReturnEmptyIfNull().ToString();
                     string bolge = row == null ? "" : row["Bolge"].ReturnEmptyIfNull().ToString();
                     string kiraci = row == null ? "" : row["Kiraci"].ReturnEmptyIfNull().ToString();
+                    string odemeSekli = row == null ? "" : row["OdemeSekli"].ReturnEmptyIfNull().ToString();
+                    string kiralamaAmaci = row == null ? "" : row["KiralamaAmaci"].ReturnEmptyIfNull().ToString();
                     string ilkSozlesmeTar = row == null ? "" : row["IlkSozlesmeTar"].ConvertToDatetime().ConvertToDatetimeEmptyIfNull();
                     decimal kiraBedeliDec = row == null ? 1 : row["KiraBedeli"].ConvertToDecimal() == 0 ? 1 : row["KiraBedeli"].ConvertToDecimal();
                     string kiraBedeli = kiraBedeliDec.ToString("N", culturInfo);
@@ -215,6 +217,15 @@ namespace TBYS_WebParts.MevcutKiracilarWP
                     kiraciLnk.NavigateUrl = newUrl;
                     kiraciCell.Controls.Add(kiraciLnk);
 
+                    TableCell kiralamaAmaciCell = new TableCell();
+                    kiralamaAmaciCell.Text = kiralamaAmaci;
+                    
+                    TableCell odemeSekliCell = new TableCell();
+                    odemeSekliCell.Text = odemeSekli;
+
+                    TableCell metrekareCell = new TableCell();
+                    metrekareCell.Text = MetrekareToplami(kiraSozlesmeId).ToString("N", culturInfo); ;
+
                     TableCell ilkSozTarCell = new TableCell();
                     ilkSozTarCell.Text = ilkSozlesmeTar;
 
@@ -239,6 +250,9 @@ namespace TBYS_WebParts.MevcutKiracilarWP
                     tableRow.Controls.Add(bolgeCell);
                     tableRow.Controls.Add(kiraciCell);
                     tableRow.Controls.Add(ilkSozTarCell);
+                    tableRow.Controls.Add(kiralamaAmaciCell);
+                    tableRow.Controls.Add(odemeSekliCell);
+                    tableRow.Controls.Add(metrekareCell);
                     tableRow.Controls.Add(kiraBedeliCell);
                     tableRow.Controls.Add(anaParaCell);
                     tableRow.Controls.Add(faizliBakiyeCell);
@@ -253,6 +267,14 @@ namespace TBYS_WebParts.MevcutKiracilarWP
             }
 
         }
+
+        private decimal MetrekareToplami(int kiraSozlesmeId)
+        {
+            SozlesmeTasinmaz sozlesmeTasinmaz = new SozlesmeTasinmaz();
+            decimal metrekare = sozlesmeTasinmaz.SelectSumMetrekareBySozlesmeId(kiraSozlesmeId);
+            return metrekare;
+        }
+
         private void SetAyYilValues()
         {
             try

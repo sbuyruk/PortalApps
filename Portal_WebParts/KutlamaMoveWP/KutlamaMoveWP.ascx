@@ -28,11 +28,9 @@
                 kutlamaIconClicked = clicked;
                 document.getElementById('<%= KutlamayiOkudumDiv.ClientID%>').style.display = "none";
             }
-            $("#KutlamaPopupDiv").modal(
-                {
-                    backdrop: false,
-                    keyboard: true
-                });
+            var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('KutlamaPopupDiv'));
+            myModalInstance.show();
+
         }
 
     }

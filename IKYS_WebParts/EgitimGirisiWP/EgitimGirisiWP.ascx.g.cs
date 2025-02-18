@@ -57,10 +57,6 @@ namespace IKYS_WebParts.EgitimGirisiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.Label EkranNo;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl CardHeader;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -210,7 +206,7 @@ namespace IKYS_WebParts.EgitimGirisiWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label  btn-outline-success mb-1";
+            @__ctrl.CssClass = "text-success";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Eğitim Bilgileri Girişi";
             return @__ctrl;
@@ -224,7 +220,7 @@ namespace IKYS_WebParts.EgitimGirisiWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.PersonelIdLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-white";
+            @__ctrl.CssClass = "col-form-label text-secondary";
             @__ctrl.ID = "PersonelIdLbl";
             @__ctrl.Visible = false;
             return @__ctrl;
@@ -240,20 +236,6 @@ namespace IKYS_WebParts.EgitimGirisiWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.CssClass = "col-form-label ";
             @__ctrl.ID = "PersonelAdiLbl";
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControlEkranNo() {
-            global::System.Web.UI.WebControls.Label @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.Label();
-            this.EkranNo = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-secondary float-end";
-            @__ctrl.ID = "EkranNo";
-            @__ctrl.Text = "4";
             return @__ctrl;
         }
         
@@ -283,11 +265,7 @@ namespace IKYS_WebParts.EgitimGirisiWP {
             global::System.Web.UI.WebControls.Label @__ctrl4;
             @__ctrl4 = this.@__BuildControlPersonelAdiLbl();
             @__parser.AddParsedSubObject(@__ctrl4);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                "));
-            global::System.Web.UI.WebControls.Label @__ctrl5;
-            @__ctrl5 = this.@__BuildControlEkranNo();
-            @__parser.AddParsedSubObject(@__ctrl5);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            </h3>\r\n        "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n            </h3>\r\n        "));
             return @__ctrl;
         }
         
@@ -991,8 +969,8 @@ namespace IKYS_WebParts.EgitimGirisiWP {
             <div class=""card-body"">
 
                 <div class=""card"">
-                    <div class=""btn-secondary"">
-                        <a class=""btn-block text-center "" data-toggle=""collapse"" data-target=""#OkulDiv"" aria-expanded=""false"" aria-controls=""OkulDiv"" style=""font-weight: bold"">Mezun Olduğu Okullar</a>
+                    <div class=""bg-secondary"">
+                        <a class=""text-white  text-center "" data-bs-toggle=""collapse"" data-bs-target=""#OkulDiv"" aria-expanded=""false"" aria-controls=""OkulDiv"" style=""font-weight: bold"">Mezun Olduğu Okullar</a>
                     </div>
                 </div>
                 <div class=""card"">
@@ -1006,8 +984,8 @@ namespace IKYS_WebParts.EgitimGirisiWP {
 
                 </div>
                 <div class=""card"">
-                    <div class=""btn-secondary"">
-                        <a class=""btn-block text-center "" data-toggle=""collapse"" data-target=""#KursDiv"" aria-expanded=""false"" aria-controls=""KursDiv"" style=""font-weight: bold"">Gördüğü Kurslar</a>
+                    <div class=""bg-secondary"">
+                        <a class=""text-white  text-center "" data-bs-toggle=""collapse"" data-bs-target=""#KursDiv"" aria-expanded=""false"" aria-controls=""KursDiv"" style=""font-weight: bold"">Gördüğü Kurslar</a>
                     </div>
                 </div>
                 <div class=""card"">
@@ -1020,8 +998,8 @@ namespace IKYS_WebParts.EgitimGirisiWP {
                     </div>
                 </div>
                 <div class=""card"">
-                    <div class=""btn-secondary"">
-                        <a class=""btn-block text-center "" data-toggle=""collapse"" data-target=""#IsTecrubeDiv"" aria-expanded=""false"" aria-controls=""IsTecrubeDiv"" style=""font-weight: bold"">İş Tecrübesi</a>
+                    <div class=""bg-secondary"">
+                        <a class=""text-white  text-center "" data-bs-toggle=""collapse"" data-bs-target=""#IsTecrubeDiv"" aria-expanded=""false"" aria-controls=""IsTecrubeDiv"" style=""font-weight: bold"">İş Tecrübesi</a>
                     </div>
                 </div>
                 <div class=""card"">
@@ -1034,8 +1012,8 @@ namespace IKYS_WebParts.EgitimGirisiWP {
                     </div>
                 </div>
                 <div class=""card"">
-                    <div class=""btn-secondary"">
-                        <a class=""btn-block text-center "" data-toggle=""collapse"" data-target=""#YabanciDilDiv"" aria-expanded=""false"" aria-controls=""YabanciDilDiv"" style=""font-weight: bold"">Yabancı Dil Notları</a>
+                    <div class=""bg-secondary"">
+                        <a class=""text-white  text-center "" data-bs-toggle=""collapse"" data-bs-target=""#YabanciDilDiv"" aria-expanded=""false"" aria-controls=""YabanciDilDiv"" style=""font-weight: bold"">Yabancı Dil Notları</a>
                     </div>
                 </div>
                 <div class=""card"">

@@ -24,13 +24,14 @@
             if (clicked ) {
                 document.getElementById(chkDivId).style.display = "none";
             }
-            $('#' + divId.id).modal(
-                {
-                    
-                    backdrop: false,
-                    keyboard: false
-                });
-            if (IlkGosterilenDuyuruId==0)
+            
+            var myModal = new bootstrap.Modal(divId);
+            myModal.show();
+            // Açıldıktan sonra backdrop'ı kaldır
+            setTimeout(() => {
+                document.querySelectorAll(".modal-backdrop").forEach(el => el.remove());
+            }, 100);
+            if (IlkGosterilenDuyuruId == 0)
                 IlkGosterilenDuyuruId = duyuruGosterimId;
         }
 
@@ -46,14 +47,14 @@
     **/
     var okunanDuyuruListesi = '';
     var IlkGosterilenDuyuruId = 0;
-    function DuyuruyuKapatClicked(duyuruId, duyuruGosterimId, chkId, divId) {
+    function DuyuruyuKapatClicked(duyuruId, duyuruGosterimId, divId, chkId,  startup) {
         var okudumChk = document.getElementById(chkId).checked;
         
         var duyuruCookie = "DuyuruGosterildi" + duyuruGosterimId;
         var expiresInSec = 30;//saniye
         var date = new Date();
         setCookieInSec(duyuruCookie, date, expiresInSec);
-        if (chkId) {//Tıklayarak açıldıya kapanırken okudum işlemi yapmasın
+        if (startup) {//Tıklayarak açıldıya kapanırken okudum işlemi yapmasın
             if (okudumChk) {
                 if (duyuruGosterimId > 0) {
                     okunanDuyuruListesi += duyuruGosterimId + ',';

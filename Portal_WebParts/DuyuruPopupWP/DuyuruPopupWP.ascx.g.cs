@@ -222,30 +222,31 @@ namespace Portal_WebParts.DuyuruPopupWP {
                     "uruGosterildi\" + duyuruGosterimId;\r\n        var duyuruGosterildi = cookieGosteri" +
                     "ldiMi(duyuruCookie);\r\n        if (!duyuruGosterildi|| clicked) {\r\n            if" +
                     " (clicked ) {\r\n                document.getElementById(chkDivId).style.display =" +
-                    " \"none\";\r\n            }\r\n            $(\'#\' + divId.id).modal(\r\n                {" +
-                    "\r\n                    \r\n                    backdrop: false,\r\n                  " +
-                    "  keyboard: false\r\n                });\r\n            if (IlkGosterilenDuyuruId==0" +
-                    ")\r\n                IlkGosterilenDuyuruId = duyuruGosterimId;\r\n        }\r\n\r\n    }" +
-                    "\r\n    /**\r\n        Okudum olarak işaretlenen duyuruları code behind içinde veri " +
-                    "tabanında güncelleme ihtiyacı var, ama;\r\n        document.getElementById(Duyuruy" +
-                    "uOkudumBtn.ClientID).click(); satırı ilk popup gösteriminden sonra postback yara" +
-                    "tıyor \r\n        ve bu sıradaki duyuru modalların düzgün biçimde işlemesini engel" +
-                    "liyor.\r\n        Çözüm olarak; \r\n            1. Her okudum butonuna basıldığında " +
-                    "duyuruId\'yi bir listeye ekle,\r\n            2. En son görüntülenen modalda \"okudu" +
-                    "m\" veya \"kapat\" butonuna basıldığında, code behind içine bu listeyi gönderip, ve" +
-                    "ritabanında insert/update işlemi yapma yoluna gittim. \r\n            3. Çözüm işe" +
-                    " yaradı... :) 29/08/2019\r\n    **/\r\n    var okunanDuyuruListesi = \'\';\r\n    var Il" +
-                    "kGosterilenDuyuruId = 0;\r\n    function DuyuruyuKapatClicked(duyuruId, duyuruGost" +
-                    "erimId, chkId, divId) {\r\n        var okudumChk = document.getElementById(chkId)." +
-                    "checked;\r\n        \r\n        var duyuruCookie = \"DuyuruGosterildi\" + duyuruGoster" +
-                    "imId;\r\n        var expiresInSec = 30;//saniye\r\n        var date = new Date();\r\n " +
-                    "       setCookieInSec(duyuruCookie, date, expiresInSec);\r\n        if (chkId) {//" +
-                    "Tıklayarak açıldıya kapanırken okudum işlemi yapmasın\r\n            if (okudumChk" +
-                    ") {\r\n                if (duyuruGosterimId > 0) {\r\n                    okunanDuyu" +
-                    "ruListesi += duyuruGosterimId + \',\';\r\n                    setCookie(duyuruCookie" +
-                    ", new Date());\r\n                }\r\n            }\r\n        }\r\n        \r\n\r\n       " +
-                    " if (IlkGosterilenDuyuruId == duyuruGosterimId) {\r\n            document.getEleme" +
-                    "ntById(\'");
+                    " \"none\";\r\n            }\r\n            \r\n            var myModal = new bootstrap.M" +
+                    "odal(divId);\n            myModal.show();\r\n            // Açıldıktan sonra backdr" +
+                    "op\'ı kaldır\n            setTimeout(() => {\n                document.querySelecto" +
+                    "rAll(\".modal-backdrop\").forEach(el => el.remove());\n            }, 100);\r\n      " +
+                    "      if (IlkGosterilenDuyuruId == 0)\r\n                IlkGosterilenDuyuruId = d" +
+                    "uyuruGosterimId;\r\n        }\r\n\r\n    }\r\n    /**\r\n        Okudum olarak işaretlenen" +
+                    " duyuruları code behind içinde veri tabanında güncelleme ihtiyacı var, ama;\r\n   " +
+                    "     document.getElementById(DuyuruyuOkudumBtn.ClientID).click(); satırı ilk pop" +
+                    "up gösteriminden sonra postback yaratıyor \r\n        ve bu sıradaki duyuru modall" +
+                    "arın düzgün biçimde işlemesini engelliyor.\r\n        Çözüm olarak; \r\n            " +
+                    "1. Her okudum butonuna basıldığında duyuruId\'yi bir listeye ekle,\r\n            2" +
+                    ". En son görüntülenen modalda \"okudum\" veya \"kapat\" butonuna basıldığında, code " +
+                    "behind içine bu listeyi gönderip, veritabanında insert/update işlemi yapma yolun" +
+                    "a gittim. \r\n            3. Çözüm işe yaradı... :) 29/08/2019\r\n    **/\r\n    var o" +
+                    "kunanDuyuruListesi = \'\';\r\n    var IlkGosterilenDuyuruId = 0;\r\n    function Duyur" +
+                    "uyuKapatClicked(duyuruId, duyuruGosterimId, divId, chkId,  startup) {\r\n        v" +
+                    "ar okudumChk = document.getElementById(chkId).checked;\r\n        \r\n        var du" +
+                    "yuruCookie = \"DuyuruGosterildi\" + duyuruGosterimId;\r\n        var expiresInSec = " +
+                    "30;//saniye\r\n        var date = new Date();\r\n        setCookieInSec(duyuruCookie" +
+                    ", date, expiresInSec);\r\n        if (startup) {//Tıklayarak açıldıya kapanırken o" +
+                    "kudum işlemi yapmasın\r\n            if (okudumChk) {\r\n                if (duyuruG" +
+                    "osterimId > 0) {\r\n                    okunanDuyuruListesi += duyuruGosterimId + " +
+                    "\',\';\r\n                    setCookie(duyuruCookie, new Date());\r\n                " +
+                    "}\r\n            }\r\n        }\r\n        \r\n\r\n        if (IlkGosterilenDuyuruId == du" +
+                    "yuruGosterimId) {\r\n            document.getElementById(\'");
                              @__w.Write( paramOkunanDuyuruListesiLbl.ClientID);
 
             @__w.Write("\').value = okunanDuyuruListesi;\r\n            document.getElementById(\'");

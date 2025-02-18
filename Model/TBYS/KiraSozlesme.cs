@@ -211,7 +211,7 @@ namespace Model.TBYS
                     A.KiraBedeli, C.AnaPara AnaPara,C.FaizTutari, C.FaizliBakiye, C.VadeBasTar, C.VadeBitTar, 
                     E.KullanimSekli,E.Ili,E.Ilcesi,
                     A.TeminatOdemeTarihi, A.TeminatTutari, A.OdenenTeminatTutari, A.IadeTeminatTutari, A.KalanTeminatTutari,
-                    ABS(FaizliBakiye/(A.KiraBedeli/12))*C.Sira/(A.KiraBedeli/12) AySayisi, A.TaksitSayisi
+                    ABS(FaizliBakiye/(A.KiraBedeli/12))*C.Sira/(A.KiraBedeli/12) AySayisi, A.TaksitSayisi, A.OdemeSekli,B.KiralamaAmaci
                 FROM KiraSozlesme_Table A
                     INNER JOIN Kiraci_Table B ON B.Id=A.KiraciId
                     INNER JOIN Bolge_Table H ON H.Id=A.BolgeId

@@ -1,4 +1,5 @@
-﻿using DocumentFormat.OpenXml.Wordprocessing;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using DocumentFormat.OpenXml.Wordprocessing;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -196,6 +197,29 @@ namespace Model.TBYS
             List<SozlesmeTasinmaz> list = ToList<SozlesmeTasinmaz>(dataTable);
             return list;
         }
+
+        public decimal SelectSumMetrekareBySozlesmeId(int sozlesmeId)
+        {
+            string sqlString = string.Format(
+                @"SELECT SozlesmeId, SUM(Metrekare) Metrekare
+                    FROM SozlesmeTasinmaz_Table A
+                    INNER JOIN Tasinmaz_Table B ON B.Id = A.TasinmazId
+                WHERE SozlesmeId={0}
+                GROUP BY SozlesmeId ", sozlesmeId.ReturnQuotedValue());
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            decimal metrekare = 0;
+            if (dataTable != null)
+            {
+                if (dataTable.Rows.Count > 0)
+                {
+                    DataRow row = dataTable.Rows[0];
+                    metrekare = row["Metrekare"].ToString().ConvertToDecimal();
+                }
+            }
+            
+            return metrekare;
+        }
+
         public DataTable SelectBySozlesmeIdReturnDT(int sozlesmeId)
         {
             string sqlString = string.Format(@"

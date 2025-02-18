@@ -389,10 +389,6 @@ namespace IKYS_WebParts.PersonelGirisiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl IzinDiv;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.Image DisplayImage;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -505,8 +501,9 @@ namespace IKYS_WebParts.PersonelGirisiWP {
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "nav-item");
             @__ctrl.ID = "KimlikNav";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    <a class=\"nav-link active\" data-toggle=\"tab" +
-                        "\" id=\"KimlikLi\" href=\"#KimlikDiv\">Kimlik</a>\r\n                                "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    <a class=\"nav-link active\" data-bs-toggle=\"" +
+                        "tab\" id=\"KimlikLi\" href=\"#KimlikDiv\">Kimlik</a>\r\n                               " +
+                        " "));
             return @__ctrl;
         }
         
@@ -522,8 +519,8 @@ namespace IKYS_WebParts.PersonelGirisiWP {
             @__ctrl.ID = "IsBilgileriNav";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    <a class=\"nav-link\" id=\"IsBilgileriLi\" data" +
-                        "-toggle=\"tab\" href=\"#IsBilgileriDiv\">İş Bilgileri</a>\r\n                         " +
-                        "       "));
+                        "-bs-toggle=\"tab\" href=\"#IsBilgileriDiv\">İş Bilgileri</a>\r\n                      " +
+                        "          "));
             return @__ctrl;
         }
         
@@ -539,8 +536,8 @@ namespace IKYS_WebParts.PersonelGirisiWP {
             @__ctrl.ID = "KadrosuzIsBilgileriNav";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    <a class=\"nav-link\" id=\"KadrosuzIsBilgileri" +
-                        "Li\" data-toggle=\"tab\" href=\"#KadrosuzIsBilgileriDiv\">İş Bilgileri</a>\r\n         " +
-                        "                       "));
+                        "Li\" data-bs-toggle=\"tab\" href=\"#KadrosuzIsBilgileriDiv\">İş Bilgileri</a>\r\n      " +
+                        "                          "));
             return @__ctrl;
         }
         
@@ -555,9 +552,9 @@ namespace IKYS_WebParts.PersonelGirisiWP {
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "nav-item");
             @__ctrl.ID = "IletisimNav";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    <a class=\"nav-link\" id=\"IletisimLi\" data-to" +
-                        "ggle=\"tab\" href=\"#IletisimDiv\">İletişim Bilgileri</a>\r\n                         " +
-                        "       "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    <a class=\"nav-link\" id=\"IletisimLi\" data-bs" +
+                        "-toggle=\"tab\" href=\"#IletisimDiv\">İletişim Bilgileri</a>\r\n                      " +
+                        "          "));
             return @__ctrl;
         }
         
@@ -572,8 +569,8 @@ namespace IKYS_WebParts.PersonelGirisiWP {
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "nav-item");
             @__ctrl.ID = "AileNav";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    <a class=\"nav-link\" id=\"AileLi\" data-toggle" +
-                        "=\"tab\" href=\"#AileDiv\">Aile</a>\r\n                                "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    <a class=\"nav-link\" id=\"AileLi\" data-bs-tog" +
+                        "gle=\"tab\" href=\"#AileDiv\">Aile</a>\r\n                                "));
             return @__ctrl;
         }
         
@@ -588,9 +585,9 @@ namespace IKYS_WebParts.PersonelGirisiWP {
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "nav-item");
             @__ctrl.ID = "EgitimNav";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    <a class=\"nav-link\" id=\"EgitimLi\" data-togg" +
-                        "le=\"tab\" href=\"#EgitimDiv\">Eğitim/iş Tecrübesi</a>\r\n                            " +
-                        "    "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    <a class=\"nav-link\" id=\"EgitimLi\" data-bs-t" +
+                        "oggle=\"tab\" href=\"#EgitimDiv\">Eğitim/iş Tecrübesi</a>\r\n                         " +
+                        "       "));
             return @__ctrl;
         }
         
@@ -605,8 +602,8 @@ namespace IKYS_WebParts.PersonelGirisiWP {
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "nav-item");
             @__ctrl.ID = "IzinNav";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    <a class=\"nav-link\" id=\"IzinLi\" data-toggle" +
-                        "=\"tab\" href=\"#IzinDiv\">İzin</a>\r\n                                "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    <a class=\"nav-link\" id=\"IzinLi\" data-bs-tog" +
+                        "gle=\"tab\" href=\"#IzinDiv\">İzin</a>\r\n                                "));
             return @__ctrl;
         }
         
@@ -1823,104 +1820,6 @@ namespace IKYS_WebParts.PersonelGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControlIzinDiv() {
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
-            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
-            this.IzinDiv = @__ctrl;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "tab-pane");
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("role", "tabpanel");
-            @__ctrl.ID = "IzinDiv";
-            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-                                    <div class=""card-body"">
-                                        <div class=""card"">
-                                            <div class=""btn-secondary"">
-                                                <a class=""text-white  text-center "" data-toggle=""collapse"" data-target=""#IzinBilgileriDiv"" aria-expanded=""false"" aria-controls=""IzinBilgileriDiv"" style=""font-weight: bold"">İzin Bilgileri</a>
-                                            </div>
-                                        </div>
-                                        <div class=""card"">
-                                            <div class=""collapse"" id=""IzinBilgileriDiv"">
-                                                <div class=""table border-bottom"" style=""max-height: 200px; overflow: auto;"">
-                                                    "));
-            global::System.Web.UI.WebControls.Table @__ctrl1;
-            @__ctrl1 = this.@__BuildControlUcretliIzinDonemleriTable();
-            @__parser.AddParsedSubObject(@__ctrl1);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class=""card"">
-                                            <div class=""btn-secondary"">
-                                                <a class=""text-white  text-center "" data-toggle=""collapse"" data-target=""#KullanilanIzinlerDiv"" aria-expanded=""false"" aria-controls=""KullanilanIzinlerDiv"" style=""font-weight: bold"">Dönem İçinde Kullanılan İzinler</a>
-                                            </div>
-                                        </div>
-                                        <div class=""card"">
-                                            <div class=""collapse"" id=""KullanilanIzinlerDiv"">
-                                                <div class=""card"">
-                                                    <div class=""card-header"">
-                                                        <a style=""font-weight: bold"">Kullanılan Ücretli İzinler</a>
-                                                    </div>
-                                                    <div class=""card-body"">
-                                                        "));
-            global::System.Web.UI.WebControls.Table @__ctrl2;
-            @__ctrl2 = this.@__BuildControlUcretliIzinHareketTable();
-            @__parser.AddParsedSubObject(@__ctrl2);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-                                                    </div>
-                                                    <div class=""card-footer"">
-                                                    </div>
-                                                </div>
-                                                <div class=""card"">
-                                                    <div class=""card-header"">
-                                                        <a style=""font-weight: bold"">Kullanılan Mazeret İzinleri</a>
-                                                    </div>
-                                                    <div class=""card-body"">
-                                                        "));
-            global::System.Web.UI.WebControls.Table @__ctrl3;
-            @__ctrl3 = this.@__BuildControlMazeretIzinHareketTable();
-            @__parser.AddParsedSubObject(@__ctrl3);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-                                                    </div>
-                                                    <div class=""card-footer"">
-                                                    </div>
-                                                </div>
-                                                <div class=""card"">
-                                                    <div class=""card-header"">
-                                                        <a style=""font-weight: bold"">Kullanılan Diğer İzinler</a>
-                                                    </div>
-                                                    <div class=""card-body"">
-                                                        "));
-            global::System.Web.UI.WebControls.Table @__ctrl4;
-            @__ctrl4 = this.@__BuildControlDigerIzinlerTable();
-            @__parser.AddParsedSubObject(@__ctrl4);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-                                                    </div>
-                                                    <div class=""card-footer"">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class=""card"">
-                                            <div class=""btn-secondary"">
-                                                <a class=""text-white  text-center "" data-toggle=""collapse"" data-target=""#IzinTalepleriDiv"" aria-expanded=""false"" aria-controls=""IzinTalepleriDiv"" style=""font-weight: bold"">İzin Talepleri</a>
-                                            </div>
-                                        </div>
-                                        <div class=""card"">
-                                            <div class=""collapse"" id=""IzinTalepleriDiv"">
-                                                <div class=""table border-bottom"" style=""max-height: 200px; overflow: auto;"">
-                                                    "));
-            global::System.Web.UI.WebControls.Table @__ctrl5;
-            @__ctrl5 = this.@__BuildControlIzinTalepTable();
-            @__parser.AddParsedSubObject(@__ctrl5);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                                </div>\r\n                       " +
-                        "                     </div>\r\n                                        </div>\r\n   " +
-                        "                                 </div>\r\n                                "));
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControl__control3() {
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
@@ -2279,8 +2178,8 @@ namespace IKYS_WebParts.PersonelGirisiWP {
                                 </div>
                                 <div class=""tab-pane"" role=""tabpanel"" id=""AileDiv"">
                                     <div class=""card"">
-                                        <div class=""btn-secondary"">
-                                            <a class=""text-white  text-center "" data-toggle=""collapse"" data-target=""#AileMainPanel"" aria-expanded=""false"" aria-controls=""AileMainPanel"" style=""font-weight: bold"">Aile Bilgileri</a>
+                                        <div class=""bg-secondary"">
+                                            <a class=""text-white  text-center "" data-bs-toggle=""collapse"" data-bs-target=""#AileMainPanel"" aria-expanded=""false"" aria-controls=""AileMainPanel"" style=""font-weight: bold"">Aile Bilgileri</a>
                                         </div>
                                     </div>
                                     <div class=""card"">
@@ -2426,8 +2325,8 @@ namespace IKYS_WebParts.PersonelGirisiWP {
                                 <div class=""tab-pane"" role=""tabpanel"" id=""EgitimDiv"">
                                     <div class=""card-body"">
                                         <div class=""card"">
-                                            <div class=""btn-secondary"">
-                                                <a class=""text-white  text-center "" data-toggle=""collapse"" data-target=""#OkulDiv"" aria-expanded=""false"" aria-controls=""OkulDiv"" style=""font-weight: bold"">Mezun Olduğu Okullar</a>
+                                            <div class=""bg-secondary"">
+                                                <a class=""text-white  text-center "" data-bs-toggle=""collapse"" data-bs-target=""#OkulDiv"" aria-expanded=""false"" aria-controls=""OkulDiv"" style=""font-weight: bold"">Mezun Olduğu Okullar</a>
                                             </div>
                                         </div>
                                         <div class=""card"">
@@ -2442,8 +2341,8 @@ namespace IKYS_WebParts.PersonelGirisiWP {
                                             </div>
                                         </div>
                                         <div class=""card"">
-                                            <div class=""btn-secondary"">
-                                                <a class=""text-white  text-center "" data-toggle=""collapse"" data-target=""#KursDiv"" aria-expanded=""false"" aria-controls=""KursDiv"" style=""font-weight: bold"">Gördüğü Kurslar</a>
+                                            <div class=""bg-secondary"">
+                                                <a class=""text-white  text-center "" data-bs-toggle=""collapse"" data-bs-target=""#KursDiv"" aria-expanded=""false"" aria-controls=""KursDiv"" style=""font-weight: bold"">Gördüğü Kurslar</a>
                                             </div>
                                         </div>
                                         <div class=""card"">
@@ -2458,8 +2357,8 @@ namespace IKYS_WebParts.PersonelGirisiWP {
                                             </div>
                                         </div>
                                         <div class=""card"">
-                                            <div class=""btn-secondary"">
-                                                <a class=""text-white  text-center "" data-toggle=""collapse"" data-target=""#IsTecrubeDiv"" aria-expanded=""false"" aria-controls=""IsTecrubeDiv"" style=""font-weight: bold"">İş Tecrübesi</a>
+                                            <div class=""bg-secondary"">
+                                                <a class=""text-white  text-center "" data-bs-toggle=""collapse"" data-bs-target=""#IsTecrubeDiv"" aria-expanded=""false"" aria-controls=""IsTecrubeDiv"" style=""font-weight: bold"">İş Tecrübesi</a>
                                             </div>
                                         </div>
                                         <div class=""card"">
@@ -2479,12 +2378,98 @@ namespace IKYS_WebParts.PersonelGirisiWP {
             global::System.Web.UI.WebControls.LinkButton @__ctrl67;
             @__ctrl67 = this.@__BuildControlUpdateEgitimBtn();
             @__parser.AddParsedSubObject(@__ctrl67);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    </div>\r\n\r\n                                <" +
-                        "/div>\r\n                                "));
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl68;
-            @__ctrl68 = this.@__BuildControlIzinDiv();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                                    </div>
+
+                                </div>
+                                <div class=""tab-pane"" role=""tabpanel"" id=""IzinDiv"" >
+                                    <div class=""card-body"">
+                                        <div class=""card"">
+                                            <div class=""bg-secondary"">
+                                                <a class=""text-white  text-center "" data-bs-toggle=""collapse"" data-bs-target=""#IzinBilgileriDiv"" aria-expanded=""false"" aria-controls=""IzinBilgileriDiv"" style=""font-weight: bold"">İzin Bilgileri</a>
+                                            </div>
+                                        </div>
+                                        <div class=""card"">
+                                            <div class=""collapse"" id=""IzinBilgileriDiv"">
+                                                <div class=""table border-bottom"" style=""max-height: 200px; overflow: auto;"">
+                                                    "));
+            global::System.Web.UI.WebControls.Table @__ctrl68;
+            @__ctrl68 = this.@__BuildControlUcretliIzinDonemleriTable();
             @__parser.AddParsedSubObject(@__ctrl68);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class=""card"">
+                                            <div class=""bg-secondary"">
+                                                <a class=""text-white  text-center "" data-bs-toggle=""collapse"" data-bs-target=""#KullanilanIzinlerDiv"" aria-expanded=""false"" aria-controls=""KullanilanIzinlerDiv"" style=""font-weight: bold"">Dönem İçinde Kullanılan İzinler</a>
+                                            </div>
+                                        </div>
+                                        <div class=""card"">
+                                            <div class=""collapse"" id=""KullanilanIzinlerDiv"">
+                                                <div class=""card"">
+                                                    <div class=""card-header"">
+                                                        <a style=""font-weight: bold"">Kullanılan Ücretli İzinler</a>
+                                                    </div>
+                                                    <div class=""card-body"">
+                                                        "));
+            global::System.Web.UI.WebControls.Table @__ctrl69;
+            @__ctrl69 = this.@__BuildControlUcretliIzinHareketTable();
+            @__parser.AddParsedSubObject(@__ctrl69);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                                                    </div>
+                                                    <div class=""card-footer"">
+                                                    </div>
+                                                </div>
+                                                <div class=""card"">
+                                                    <div class=""card-header"">
+                                                        <a style=""font-weight: bold"">Kullanılan Mazeret İzinleri</a>
+                                                    </div>
+                                                    <div class=""card-body"">
+                                                        "));
+            global::System.Web.UI.WebControls.Table @__ctrl70;
+            @__ctrl70 = this.@__BuildControlMazeretIzinHareketTable();
+            @__parser.AddParsedSubObject(@__ctrl70);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                                                    </div>
+                                                    <div class=""card-footer"">
+                                                    </div>
+                                                </div>
+                                                <div class=""card"">
+                                                    <div class=""card-header"">
+                                                        <a style=""font-weight: bold"">Kullanılan Diğer İzinler</a>
+                                                    </div>
+                                                    <div class=""card-body"">
+                                                        "));
+            global::System.Web.UI.WebControls.Table @__ctrl71;
+            @__ctrl71 = this.@__BuildControlDigerIzinlerTable();
+            @__parser.AddParsedSubObject(@__ctrl71);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                                                    </div>
+                                                    <div class=""card-footer"">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class=""card"">
+                                            <div class=""bg-secondary"">
+                                                <a class=""text-white  text-center "" data-bs-toggle=""collapse"" data-bs-target=""#IzinTalepleriDiv"" aria-expanded=""false"" aria-controls=""IzinTalepleriDiv"" style=""font-weight: bold"">İzin Talepleri</a>
+                                            </div>
+                                        </div>
+                                        <div class=""card"">
+                                            <div class=""collapse"" id=""IzinTalepleriDiv"">
+                                                <div class=""table border-bottom"" style=""max-height: 200px; overflow: auto;"">
+                                                    "));
+            global::System.Web.UI.WebControls.Table @__ctrl72;
+            @__ctrl72 = this.@__BuildControlIzinTalepTable();
+            @__parser.AddParsedSubObject(@__ctrl72);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            "));
             return @__ctrl;
         }
         

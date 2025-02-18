@@ -116,25 +116,25 @@
                             <!-- Nav tabs -->
                             <ul class="nav nav-tabs" role="tablist">
                                 <li class="nav-item" runat="server" id="KimlikNav">
-                                    <a class="nav-link active" data-toggle="tab" id="KimlikLi" href="#KimlikDiv">Kimlik</a>
+                                    <a class="nav-link active" data-bs-toggle="tab" id="KimlikLi" href="#KimlikDiv">Kimlik</a>
                                 </li>
                                 <li class="nav-item" runat="server" id="IsBilgileriNav">
-                                    <a class="nav-link" id="IsBilgileriLi" data-toggle="tab" href="#IsBilgileriDiv">İş Bilgileri</a>
+                                    <a class="nav-link" id="IsBilgileriLi" data-bs-toggle="tab" href="#IsBilgileriDiv">İş Bilgileri</a>
                                 </li>
                                 <li class="nav-item" runat="server" id="KadrosuzIsBilgileriNav">
-                                    <a class="nav-link" id="KadrosuzIsBilgileriLi" data-toggle="tab" href="#KadrosuzIsBilgileriDiv">İş Bilgileri</a>
+                                    <a class="nav-link" id="KadrosuzIsBilgileriLi" data-bs-toggle="tab" href="#KadrosuzIsBilgileriDiv">İş Bilgileri</a>
                                 </li>
                                 <li runat="server" class="nav-item" id="IletisimNav">
-                                    <a class="nav-link" id="IletisimLi" data-toggle="tab" href="#IletisimDiv">İletişim Bilgileri</a>
+                                    <a class="nav-link" id="IletisimLi" data-bs-toggle="tab" href="#IletisimDiv">İletişim Bilgileri</a>
                                 </li>
                                 <li runat="server" class="nav-item" id="AileNav">
-                                    <a class="nav-link" id="AileLi" data-toggle="tab" href="#AileDiv">Aile</a>
+                                    <a class="nav-link" id="AileLi" data-bs-toggle="tab" href="#AileDiv">Aile</a>
                                 </li>
                                 <li runat="server" class="nav-item" id="EgitimNav">
-                                    <a class="nav-link" id="EgitimLi" data-toggle="tab" href="#EgitimDiv">Eğitim/iş Tecrübesi</a>
+                                    <a class="nav-link" id="EgitimLi" data-bs-toggle="tab" href="#EgitimDiv">Eğitim/iş Tecrübesi</a>
                                 </li>
                                 <li runat="server" class="nav-item" id="IzinNav">
-                                    <a class="nav-link" id="IzinLi" data-toggle="tab" href="#IzinDiv">İzin</a>
+                                    <a class="nav-link" id="IzinLi" data-bs-toggle="tab" href="#IzinDiv">İzin</a>
                                 </li>
 
                             </ul>
@@ -355,8 +355,8 @@
                                 </div>
                                 <div class="tab-pane" role="tabpanel" id="AileDiv">
                                     <div class="card">
-                                        <div class="btn-secondary">
-                                            <a class="text-white  text-center " data-toggle="collapse" data-target="#AileMainPanel" aria-expanded="false" aria-controls="AileMainPanel" style="font-weight: bold">Aile Bilgileri</a>
+                                        <div class="bg-secondary">
+                                            <a class="text-white  text-center " data-bs-toggle="collapse" data-bs-target="#AileMainPanel" aria-expanded="false" aria-controls="AileMainPanel" style="font-weight: bold">Aile Bilgileri</a>
                                         </div>
                                     </div>
                                     <div class="card">
@@ -444,8 +444,8 @@
                                 <div class="tab-pane" role="tabpanel" id="EgitimDiv">
                                     <div class="card-body">
                                         <div class="card">
-                                            <div class="btn-secondary">
-                                                <a class="text-white  text-center " data-toggle="collapse" data-target="#OkulDiv" aria-expanded="false" aria-controls="OkulDiv" style="font-weight: bold">Mezun Olduğu Okullar</a>
+                                            <div class="bg-secondary">
+                                                <a class="text-white  text-center " data-bs-toggle="collapse" data-bs-target="#OkulDiv" aria-expanded="false" aria-controls="OkulDiv" style="font-weight: bold">Mezun Olduğu Okullar</a>
                                             </div>
                                         </div>
                                         <div class="card">
@@ -457,8 +457,8 @@
                                             </div>
                                         </div>
                                         <div class="card">
-                                            <div class="btn-secondary">
-                                                <a class="text-white  text-center " data-toggle="collapse" data-target="#KursDiv" aria-expanded="false" aria-controls="KursDiv" style="font-weight: bold">Gördüğü Kurslar</a>
+                                            <div class="bg-secondary">
+                                                <a class="text-white  text-center " data-bs-toggle="collapse" data-bs-target="#KursDiv" aria-expanded="false" aria-controls="KursDiv" style="font-weight: bold">Gördüğü Kurslar</a>
                                             </div>
                                         </div>
                                         <div class="card">
@@ -470,8 +470,8 @@
                                             </div>
                                         </div>
                                         <div class="card">
-                                            <div class="btn-secondary">
-                                                <a class="text-white  text-center " data-toggle="collapse" data-target="#IsTecrubeDiv" aria-expanded="false" aria-controls="IsTecrubeDiv" style="font-weight: bold">İş Tecrübesi</a>
+                                            <div class="bg-secondary">
+                                                <a class="text-white  text-center " data-bs-toggle="collapse" data-bs-target="#IsTecrubeDiv" aria-expanded="false" aria-controls="IsTecrubeDiv" style="font-weight: bold">İş Tecrübesi</a>
                                             </div>
                                         </div>
                                         <div class="card">
@@ -488,11 +488,11 @@
                                     </div>
 
                                 </div>
-                                <div class="tab-pane" role="tabpanel" id="IzinDiv" runat="server">
+                                <div class="tab-pane" role="tabpanel" id="IzinDiv" >
                                     <div class="card-body">
                                         <div class="card">
-                                            <div class="btn-secondary">
-                                                <a class="text-white  text-center " data-toggle="collapse" data-target="#IzinBilgileriDiv" aria-expanded="false" aria-controls="IzinBilgileriDiv" style="font-weight: bold">İzin Bilgileri</a>
+                                            <div class="bg-secondary">
+                                                <a class="text-white  text-center " data-bs-toggle="collapse" data-bs-target="#IzinBilgileriDiv" aria-expanded="false" aria-controls="IzinBilgileriDiv" style="font-weight: bold">İzin Bilgileri</a>
                                             </div>
                                         </div>
                                         <div class="card">
@@ -504,8 +504,8 @@
                                             </div>
                                         </div>
                                         <div class="card">
-                                            <div class="btn-secondary">
-                                                <a class="text-white  text-center " data-toggle="collapse" data-target="#KullanilanIzinlerDiv" aria-expanded="false" aria-controls="KullanilanIzinlerDiv" style="font-weight: bold">Dönem İçinde Kullanılan İzinler</a>
+                                            <div class="bg-secondary">
+                                                <a class="text-white  text-center " data-bs-toggle="collapse" data-bs-target="#KullanilanIzinlerDiv" aria-expanded="false" aria-controls="KullanilanIzinlerDiv" style="font-weight: bold">Dönem İçinde Kullanılan İzinler</a>
                                             </div>
                                         </div>
                                         <div class="card">
@@ -546,8 +546,8 @@
                                             </div>
                                         </div>
                                         <div class="card">
-                                            <div class="btn-secondary">
-                                                <a class="text-white  text-center " data-toggle="collapse" data-target="#IzinTalepleriDiv" aria-expanded="false" aria-controls="IzinTalepleriDiv" style="font-weight: bold">İzin Talepleri</a>
+                                            <div class="bg-secondary">
+                                                <a class="text-white  text-center " data-bs-toggle="collapse" data-bs-target="#IzinTalepleriDiv" aria-expanded="false" aria-controls="IzinTalepleriDiv" style="font-weight: bold">İzin Talepleri</a>
                                             </div>
                                         </div>
                                         <div class="card">

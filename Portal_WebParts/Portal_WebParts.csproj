@@ -207,22 +207,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Content\bootstrap-grid.css.map" />
-    <None Include="Content\bootstrap-grid.min.css.map" />
-    <None Include="Content\bootstrap-grid.rtl.css.map" />
-    <None Include="Content\bootstrap-grid.rtl.min.css.map" />
-    <None Include="Content\bootstrap-reboot.css.map" />
-    <None Include="Content\bootstrap-reboot.min.css.map" />
-    <None Include="Content\bootstrap-reboot.rtl.css.map" />
-    <None Include="Content\bootstrap-reboot.rtl.min.css.map" />
-    <None Include="Content\bootstrap-utilities.css.map" />
-    <None Include="Content\bootstrap-utilities.min.css.map" />
-    <None Include="Content\bootstrap-utilities.rtl.css.map" />
-    <None Include="Content\bootstrap-utilities.rtl.min.css.map" />
-    <None Include="Content\bootstrap.css.map" />
-    <None Include="Content\bootstrap.min.css.map" />
-    <None Include="Content\bootstrap.rtl.css.map" />
-    <None Include="Content\bootstrap.rtl.min.css.map" />
     <None Include="DuyuruGirisiWP\DuyuruGirisiWP.webpart" />
     <None Include="DuyuruGirisiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{5893524f-49c6-4261-a22d-4653673626f3}</SharePointProjectItemId>
@@ -270,14 +254,6 @@
     <None Include="Package\Package.Template.xml">
       <DependentUpon>Package.package</DependentUpon>
     </None>
-    <None Include="Scripts\bootstrap.bundle.js.map" />
-    <None Include="Scripts\bootstrap.bundle.min.js.map" />
-    <None Include="Scripts\bootstrap.esm.js.map" />
-    <None Include="Scripts\bootstrap.esm.min.js.map" />
-    <None Include="Scripts\bootstrap.js.map" />
-    <None Include="Scripts\bootstrap.min.js.map" />
-    <None Include="Scripts\jquery-3.7.1.min.map" />
-    <None Include="Scripts\jquery-3.7.1.slim.min.map" />
     <None Include="ToplantiGirisiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{14d8dacd-e159-49f9-8fc0-e4f51af1dfe0}</SharePointProjectItemId>
     </None>
@@ -304,22 +280,6 @@
     <None Include="YoneticiOzetiWP\YoneticiOzetiWP.webpart" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\bootstrap-grid.css" />
-    <Content Include="Content\bootstrap-grid.min.css" />
-    <Content Include="Content\bootstrap-grid.rtl.css" />
-    <Content Include="Content\bootstrap-grid.rtl.min.css" />
-    <Content Include="Content\bootstrap-reboot.css" />
-    <Content Include="Content\bootstrap-reboot.min.css" />
-    <Content Include="Content\bootstrap-reboot.rtl.css" />
-    <Content Include="Content\bootstrap-reboot.rtl.min.css" />
-    <Content Include="Content\bootstrap-utilities.css" />
-    <Content Include="Content\bootstrap-utilities.min.css" />
-    <Content Include="Content\bootstrap-utilities.rtl.css" />
-    <Content Include="Content\bootstrap-utilities.rtl.min.css" />
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\bootstrap.rtl.css" />
-    <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="DuyuruGirisiWP\DuyuruGirisiWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>DuyuruGirisiWP.ascx.g.cs</LastGenOutput>
@@ -368,17 +328,6 @@
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>OlayListesiWP.ascx.g.cs</LastGenOutput>
     </Content>
-    <Content Include="Scripts\bootstrap.bundle.js" />
-    <Content Include="Scripts\bootstrap.bundle.min.js" />
-    <Content Include="Scripts\bootstrap.esm.js" />
-    <Content Include="Scripts\bootstrap.esm.min.js" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\jquery-3.7.1.intellisense.js" />
-    <Content Include="Scripts\jquery-3.7.1.js" />
-    <Content Include="Scripts\jquery-3.7.1.min.js" />
-    <Content Include="Scripts\jquery-3.7.1.slim.js" />
-    <Content Include="Scripts\jquery-3.7.1.slim.min.js" />
     <Content Include="ToplantiGirisiWP\Elements.xml" />
     <Content Include="ToplantiGirisiWP\ToplantiGirisiWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>

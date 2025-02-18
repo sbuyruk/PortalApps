@@ -62,25 +62,25 @@ namespace Portal_WebParts.KayanResimWP {
                         "2d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl\" crossorigin=\"anonymous\"></" +
                         "script>\r\n<div class=\"container\">\r\n<div id=\"carouselExampleIndicators\" class=\"car" +
                         "ousel slide\" data-ride=\"carousel\">\r\n    <ol class=\"carousel-indicators\">\r\n      " +
-                        "  <li data-target=\"#carouselExampleIndicators\" data-slide-to=\"0\" class=\"active\">" +
-                        "</li>\r\n        <li data-target=\"#carouselExampleIndicators\" data-slide-to=\"1\"></" +
-                        "li>\r\n        <li data-target=\"#carouselExampleIndicators\" data-slide-to=\"2\"></li" +
-                        ">\r\n    </ol>\r\n    <div class=\"carousel-inner\">\r\n        <div class=\"carousel-ite" +
-                        "m active\">\r\n            <img class=\"d-block w-100\" src=\"/KayanResimler/0.jpg\" al" +
-                        "t=\"First slide\">\r\n            <div class=\"carousel-caption d-none d-md-block\">\r\n" +
-                        "                <h5>My Caption Title (1st Image)</h5>\r\n                <p>The wh" +
-                        "ole caption will only show up if the screen is at least medium size.</p>\r\n      " +
-                        "      </div>\r\n        </div>\r\n        <div class=\"carousel-item\">\r\n            <" +
-                        "img class=\"d-block w-100\" src=\"/KayanResimler/1.jpg\" alt=\"Second slide\">\r\n      " +
-                        "  </div>\r\n        <div class=\"carousel-item\">\r\n            <img class=\"d-block w" +
-                        "-100\" src=\"/KayanResimler/2.jpg\" alt=\"Third slide\">\r\n        </div>\r\n    </div>\r" +
-                        "\n    <a class=\"carousel-control-prev\" href=\"#carouselExampleIndicators\" role=\"bu" +
-                        "tton\" data-slide=\"prev\">\r\n        <span class=\"carousel-control-prev-icon\" aria-" +
-                        "hidden=\"true\"></span>\r\n        <span class=\"sr-only\">Previous</span>\r\n    </a>\r\n" +
-                        "    <a class=\"carousel-control-next\" href=\"#carouselExampleIndicators\" role=\"but" +
-                        "ton\" data-slide=\"next\">\r\n        <span class=\"carousel-control-next-icon\" aria-h" +
-                        "idden=\"true\"></span>\r\n        <span class=\"sr-only\">Next</span>\r\n    </a>\r\n</div" +
-                        ">\r\n\r\n\r\n</div>\r\n"));
+                        "  <li data-bs-target=\"#carouselExampleIndicators\" data-slide-to=\"0\" class=\"activ" +
+                        "e\"></li>\r\n        <li data-bs-target=\"#carouselExampleIndicators\" data-slide-to=" +
+                        "\"1\"></li>\r\n        <li data-bs-target=\"#carouselExampleIndicators\" data-slide-to" +
+                        "=\"2\"></li>\r\n    </ol>\r\n    <div class=\"carousel-inner\">\r\n        <div class=\"car" +
+                        "ousel-item active\">\r\n            <img class=\"d-block w-100\" src=\"/KayanResimler/" +
+                        "0.jpg\" alt=\"First slide\">\r\n            <div class=\"carousel-caption d-none d-md-" +
+                        "block\">\r\n                <h5>My Caption Title (1st Image)</h5>\r\n                " +
+                        "<p>The whole caption will only show up if the screen is at least medium size.</p" +
+                        ">\r\n            </div>\r\n        </div>\r\n        <div class=\"carousel-item\">\r\n    " +
+                        "        <img class=\"d-block w-100\" src=\"/KayanResimler/1.jpg\" alt=\"Second slide\"" +
+                        ">\r\n        </div>\r\n        <div class=\"carousel-item\">\r\n            <img class=\"" +
+                        "d-block w-100\" src=\"/KayanResimler/2.jpg\" alt=\"Third slide\">\r\n        </div>\r\n  " +
+                        "  </div>\r\n    <a class=\"carousel-control-prev\" href=\"#carouselExampleIndicators\"" +
+                        " role=\"button\" data-slide=\"prev\">\r\n        <span class=\"carousel-control-prev-ic" +
+                        "on\" aria-hidden=\"true\"></span>\r\n        <span class=\"sr-only\">Previous</span>\r\n " +
+                        "   </a>\r\n    <a class=\"carousel-control-next\" href=\"#carouselExampleIndicators\" " +
+                        "role=\"button\" data-slide=\"next\">\r\n        <span class=\"carousel-control-next-ico" +
+                        "n\" aria-hidden=\"true\"></span>\r\n        <span class=\"sr-only\">Next</span>\r\n    </" +
+                        "a>\r\n</div>\r\n\r\n\r\n</div>\r\n"));
         }
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +

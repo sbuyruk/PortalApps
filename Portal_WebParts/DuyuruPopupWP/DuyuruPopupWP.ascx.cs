@@ -300,10 +300,10 @@ namespace Portal_WebParts.DuyuruPopupWP
 
                 KapatBtn.Attributes.Add("class", "btn btn-outline-secondary float-end");
                 KapatBtn.Attributes.Add("style", "background-color:transparent");
-                KapatBtn.Attributes.Add("data-dismiss", "modal");
-                KapatBtn.Attributes.Add("data-toggle", "tooltip");
-                string chkId = startup ? OkudumChk.ClientID : "false";//tıklanarak açıldıysa false dönsün, pageload sırasında açıldıysa chkId dönsün
-                KapatBtn.Attributes.Add("onclick", "DuyuruyuKapatClicked(" + duyuru.Id + "," + dgId + ",'" + chkId + "','" + okudumDiv + "');");
+                KapatBtn.Attributes.Add("data-bs-dismiss", "modal");
+                KapatBtn.Attributes.Add("data-bs-toggle", "tooltip");
+                string chkId = OkudumChk.ClientID;
+                KapatBtn.Attributes.Add("onclick", "DuyuruyuKapatClicked(" + duyuru.Id + "," + dgId + ",'" + okudumDiv + "','" + chkId + "','" + startup + "');");
 
                 modalFooterDiv.Controls.Add(KapatBtn);
 
@@ -318,7 +318,7 @@ namespace Portal_WebParts.DuyuruPopupWP
                 //KapatBtn.InnerText = "Kapat";
 
                 //KapatBtn.Attributes.Add("class", "btn btn-outline-secondary ");
-                //KapatBtn.Attributes.Add(" data-dismiss", "modal");
+                //KapatBtn.Attributes.Add(" data-bs-dismiss", "modal");
                 //KapatBtn.Attributes.Add("onclick", "KutlamayiKapatClicked(" + 0 + "," + sonDuyuru + ");");
                 //modalFooterDiv.Controls.Add(KapatBtn);
 
@@ -343,8 +343,7 @@ namespace Portal_WebParts.DuyuruPopupWP
                 if (!Page.IsPostBack || !startup) //kayan duyuruya tıklandıysa göster ama modal butona basıldığında olan postbackde göstermes
                 {
                     var openDuyuruPopupModal = "OpenDuyuruPopupModal(" + modalDiv.ClientID + "," + duyuru.Id + "," + dgId + "," + clickedx + ",'" + okudumDiv.ClientID + "');";
-                    //var openpopup = "$('#" + modalDiv.ClientID + "').modal({ backdrop: 'static' });";
-                    System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), openDuyuruPopupModal, true);
+                    UtilityHelper.ScriptCalistir(openDuyuruPopupModal);
                 }
             }
         }

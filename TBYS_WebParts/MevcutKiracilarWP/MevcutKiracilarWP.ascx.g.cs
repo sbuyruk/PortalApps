@@ -192,7 +192,7 @@ namespace TBYS_WebParts.MevcutKiracilarWP {
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             this.TableTitleCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ColumnSpan = 9;
+            @__ctrl.ColumnSpan = 12;
             @__ctrl.ID = "TableTitleCell";
             @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
             @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(2D, global::System.Web.UI.WebControls.UnitType.Pixel);
@@ -307,7 +307,7 @@ namespace TBYS_WebParts.MevcutKiracilarWP {
             @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(2D, global::System.Web.UI.WebControls.UnitType.Pixel);
             @__ctrl.BorderColor = global::System.Drawing.Color.Black;
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("KİRA BEDELİ (TL/AY)"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("KİRALAMA AMACI"));
             return @__ctrl;
         }
         
@@ -322,7 +322,7 @@ namespace TBYS_WebParts.MevcutKiracilarWP {
             @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(2D, global::System.Web.UI.WebControls.UnitType.Pixel);
             @__ctrl.BorderColor = global::System.Drawing.Color.Black;
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("BORÇ MİKTARI (TL)"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("ÖDEME ŞEKLİ"));
             return @__ctrl;
         }
         
@@ -337,7 +337,7 @@ namespace TBYS_WebParts.MevcutKiracilarWP {
             @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(2D, global::System.Web.UI.WebControls.UnitType.Pixel);
             @__ctrl.BorderColor = global::System.Drawing.Color.Black;
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("FAİZLİ BAKİYE (TL)"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("METREKARE"));
             return @__ctrl;
         }
         
@@ -345,6 +345,51 @@ namespace TBYS_WebParts.MevcutKiracilarWP {
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control15() {
+            global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
+            @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(2D, global::System.Web.UI.WebControls.UnitType.Pixel);
+            @__ctrl.BorderColor = global::System.Drawing.Color.Black;
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("KİRA BEDELİ (TL)"));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control16() {
+            global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
+            @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(2D, global::System.Web.UI.WebControls.UnitType.Pixel);
+            @__ctrl.BorderColor = global::System.Drawing.Color.Black;
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("BORÇ MİKTARI (TL)"));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control17() {
+            global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
+            @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(2D, global::System.Web.UI.WebControls.UnitType.Pixel);
+            @__ctrl.BorderColor = global::System.Drawing.Color.Black;
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("FAİZLİ BAKİYE (TL)"));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control18() {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -387,6 +432,15 @@ namespace TBYS_WebParts.MevcutKiracilarWP {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl9;
             @__ctrl9 = this.@__BuildControl__control15();
             @__ctrl.Add(@__ctrl9);
+            global::System.Web.UI.WebControls.TableHeaderCell @__ctrl10;
+            @__ctrl10 = this.@__BuildControl__control16();
+            @__ctrl.Add(@__ctrl10);
+            global::System.Web.UI.WebControls.TableHeaderCell @__ctrl11;
+            @__ctrl11 = this.@__BuildControl__control17();
+            @__ctrl.Add(@__ctrl11);
+            global::System.Web.UI.WebControls.TableHeaderCell @__ctrl12;
+            @__ctrl12 = this.@__BuildControl__control18();
+            @__ctrl.Add(@__ctrl12);
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]

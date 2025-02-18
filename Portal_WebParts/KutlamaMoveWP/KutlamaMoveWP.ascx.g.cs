@@ -490,11 +490,9 @@ namespace Portal_WebParts.KutlamaMoveWP {
 
             @__w.Write(@"').style.display = ""none"";
             }
-            $(""#KutlamaPopupDiv"").modal(
-                {
-                    backdrop: false,
-                    keyboard: true
-                });
+            var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('KutlamaPopupDiv'));
+            myModalInstance.show();
+
         }
 
     }
@@ -554,8 +552,8 @@ namespace Portal_WebParts.KutlamaMoveWP {
             @__w.Write("\r\n            </div>\r\n            <div class=\"modal-footer\">\r\n                ");
             parameterContainer.Controls[6].RenderControl(@__w);
             @__w.Write("\r\n\r\n                <button type=\"button\" class=\"btn btn-outline-secondary \" data" +
-                    "-dismiss=\"modal\" onclick=\"KutlamayiKapatClicked();\">Kapat</button>\r\n            " +
-                    "</div>\r\n        </div>\r\n    </div>\r\n</div>\r\n");
+                    "-bs-dismiss=\"modal\" onclick=\"KutlamayiKapatClicked();\">Kapat</button>\r\n         " +
+                    "   </div>\r\n        </div>\r\n    </div>\r\n</div>\r\n");
         }
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
