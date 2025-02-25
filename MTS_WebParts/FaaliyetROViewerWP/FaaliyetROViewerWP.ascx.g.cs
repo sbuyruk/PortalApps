@@ -403,7 +403,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP {
             this.ToplantiDetaylariHeaderLbl = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "font-weight-bold text-danger";
+            @__ctrl.CssClass = "fw-bold text-danger";
             @__ctrl.ID = "ToplantiDetaylariHeaderLbl";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Toplantı Detayları"));
@@ -430,7 +430,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "font-weight-bold";
+            @__ctrl.CssClass = "fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                                    Toplantı Konusu\r\n          " +
                         "                                      "));
@@ -479,7 +479,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "font-weight-bold";
+            @__ctrl.CssClass = "fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                                    Başlangıç Zamanı\r\n         " +
                         "                                       "));
@@ -528,7 +528,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "font-weight-bold";
+            @__ctrl.CssClass = "fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                                    Bitiş Zamanı\r\n             " +
                         "                                   "));
@@ -577,7 +577,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "font-weight-bold";
+            @__ctrl.CssClass = "fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                                    Toplantı Yeri\r\n            " +
                         "                                    "));
@@ -626,7 +626,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "font-weight-bold";
+            @__ctrl.CssClass = "fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                                    Toplantı Yetkilisi\r\n       " +
                         "                                         "));
@@ -675,7 +675,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "font-weight-bold";
+            @__ctrl.CssClass = "fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                                    Koordinatör\r\n              " +
                         "                                  "));
@@ -724,7 +724,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "font-weight-bold";
+            @__ctrl.CssClass = "fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                                    İç Katılımcılar\r\n          " +
                         "                                      "));
@@ -773,7 +773,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "font-weight-bold";
+            @__ctrl.CssClass = "fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                                    Dış Katılımcılar\r\n         " +
                         "                                       "));
@@ -822,7 +822,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "font-weight-bold";
+            @__ctrl.CssClass = "fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                                    Bilgi\r\n                    " +
                         "                            "));
@@ -871,7 +871,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "font-weight-bold";
+            @__ctrl.CssClass = "fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                                   Çevrim İçi\r\n                " +
                         "                                "));
@@ -920,7 +920,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "font-weight-bold";
+            @__ctrl.CssClass = "fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                                   İkram Onayı\r\n               " +
                         "                                 "));
@@ -969,7 +969,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "font-weight-bold";
+            @__ctrl.CssClass = "fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                                   İkram Malzemesi\r\n           " +
                         "                                     "));
@@ -1018,7 +1018,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "font-weight-bold";
+            @__ctrl.CssClass = "fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                                   Açıklama\r\n                  " +
                         "                              "));
@@ -1244,7 +1244,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP {
             this.Label1 = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "font-weight-bold text-danger";
+            @__ctrl.CssClass = "fw-bold text-danger";
             @__ctrl.ID = "Label1";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Faaliyet Detayları"));
@@ -1271,7 +1271,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "font-weight-bold";
+            @__ctrl.CssClass = "fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                                    Faaliyet Konusu\r\n          " +
                         "                                      "));
@@ -1320,7 +1320,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "font-weight-bold";
+            @__ctrl.CssClass = "fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                                    Başlangıç Zamanı\r\n         " +
                         "                                       "));
@@ -1369,7 +1369,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "font-weight-bold";
+            @__ctrl.CssClass = "fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                                    Bitiş Zamanı\r\n             " +
                         "                                   "));
@@ -1418,7 +1418,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "font-weight-bold";
+            @__ctrl.CssClass = "fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                                    Faaliyet Yeri\r\n            " +
                         "                                    "));
@@ -1467,7 +1467,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "font-weight-bold";
+            @__ctrl.CssClass = "fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                                    Faaliyet Tipi\r\n            " +
                         "                                    "));
@@ -1516,7 +1516,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "font-weight-bold";
+            @__ctrl.CssClass = "fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                                    Faaliyet Amacı\r\n           " +
                         "                                     "));
@@ -1565,7 +1565,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "font-weight-bold";
+            @__ctrl.CssClass = "fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                                    Katilimcilar\r\n             " +
                         "                                   "));
@@ -1649,7 +1649,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "font-weight-bold";
+            @__ctrl.CssClass = "fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                                    Faaliyet Durumu\r\n          " +
                         "                                      "));
@@ -1698,7 +1698,7 @@ namespace MTS_WebParts.FaaliyetROViewerWP {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "font-weight-bold";
+            @__ctrl.CssClass = "fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                                   Açıklama\r\n                  " +
                         "                              "));

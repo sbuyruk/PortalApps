@@ -284,10 +284,10 @@ namespace NBYS_WebParts.NakitBagisciBagislariWP
                 data: " + jsonData + @",
                 columns: [
                     { data: 'BagisTarihi' },
-                    { data: 'BagisMiktari', 'width': '10%', 'className': 'text-right' },
+                    { data: 'BagisMiktari', 'width': '10%', 'className': 'text-end' },
                     { data: 'Banka' },
                     { data: 'Armagan' },
-                    { data: 'ArmaganTutari', 'width': '10%', 'className': 'text-right'},
+                    { data: 'ArmaganTutari', 'width': '10%', 'className': 'text-end'},
                     { data: 'Durum' },
                 ],
                 'order': [[0, 'desc']],

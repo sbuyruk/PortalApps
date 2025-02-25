@@ -110,7 +110,7 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-danger font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-danger fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Kira Artış Çizelgesi";
             return @__ctrl;
@@ -350,9 +350,9 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP {
                         "           { data: \'TamAdres\', \'width\': \'20%\' },\r\n                { data: \'Kiral" +
                         "amaAmaci\' },\r\n                { data: \'SozlesmeTarihi\' },\r\n                { dat" +
                         "a: \'KiraSuresi\' },\r\n                { data: \'ArtisAyi\' },\r\n                { dat" +
-                        "a: \'KiraBedeli\', type: \'string\', class: \'text-right\' },\r\n                { data:" +
+                        "a: \'KiraBedeli\', type: \'string\', class: \'text-end\' },\r\n                { data:" +
                         " \'Tufe\', type: \'decimal\' },\r\n                { data: \'YeniKiraBedeli\', type: \'de" +
-                        "cimal\', class: \'text-right\' },\r\n                { data: \'YenilendiMi\' },\r\n\r\n    " +
+                        "cimal\', class: \'text-end\' },\r\n                { data: \'YenilendiMi\' },\r\n\r\n    " +
                         "        ],\r\n            \'order\': [[0, \'asc\']],//bolge Sıralı\r\n            \'langu" +
                         "age\': {\r\n                \"url\": \"http://tskgv-portal/OrtakBelgeler/Turkish.txt\"," +
                         "\r\n                \'decimal\': \',\',\r\n                \'thousands\': \'.\'\r\n           " +

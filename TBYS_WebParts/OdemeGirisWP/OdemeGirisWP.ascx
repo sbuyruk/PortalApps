@@ -30,7 +30,7 @@
         <div class="card-header">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-2">
-                <asp:Label CssClass="col-form-label text-danger font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="Ödeme Girişi"></asp:Label>
+                <asp:Label CssClass="col-form-label text-danger fw-bold mb-1" ID="TitleLbl" runat="server" Text="Ödeme Girişi"></asp:Label>
                 <asp:Label CssClass="col-form-label text-white" ID="IdLbl" runat="server"></asp:Label>
                 <asp:Label CssClass="col-form-label " ID="AdiLbl" runat="server"></asp:Label>
             </h3>
@@ -42,11 +42,11 @@
                     <asp:LinkButton ID="KiraciSecBtn" CssClass="btn btn-outline-primary form-control " CausesValidation="false" runat="server" Text="Kiracı Seç ..." OnClick="KiraciSecBtn_Click" />
                 </div>
                 <div class="col form-group">
-                    <asp:Label runat="server" CssClass="col-form-label font-weight-bold">Kiracı Adı </asp:Label>
+                    <asp:Label runat="server" CssClass="col-form-label fw-bold">Kiracı Adı </asp:Label>
                     <asp:Label ID="KiraciAdiLbl" runat="server" CssClass="form-control col-form-label" Enabled="True"></asp:Label>
                 </div>
                 <div class="col form-group">
-                    <asp:Label runat="server" CssClass="col-form-label font-weight-bold">Kiracı Adresi </asp:Label>
+                    <asp:Label runat="server" CssClass="col-form-label fw-bold">Kiracı Adresi </asp:Label>
                     <asp:Label ID="KiraciAdresiLbl" runat="server" CssClass="form-control col-form-label" Enabled="False"></asp:Label>
                 </div>
             </div>
@@ -54,33 +54,33 @@
                 <div class="form-group ">
                     <div class="row">
                         <div class="col-2 form-group">
-                            <asp:Label runat="server" CssClass="col-form-label font-weight-bold">Ödeme Tutarı </asp:Label>
-                            <asp:TextBox ID="OdemeTutariTxt" runat="server" CssClass="form-control input-money text-right"></asp:TextBox>
+                            <asp:Label runat="server" CssClass="col-form-label fw-bold">Ödeme Tutarı </asp:Label>
+                            <asp:TextBox ID="OdemeTutariTxt" runat="server" CssClass="form-control input-money text-end"></asp:TextBox>
                             <asp:RequiredFieldValidator runat="server" ControlToValidate="OdemeTutariTxt" ForeColor="Red" ErrorMessage="Ödeme Tutarı giriniz"> </asp:RequiredFieldValidator>
                         </div>
                         <div class="col-2 form-group">
-                            <asp:Label runat="server" CssClass="col-form-label font-weight-bold">Ödeme Tarihi </asp:Label>
+                            <asp:Label runat="server" CssClass="col-form-label fw-bold">Ödeme Tarihi </asp:Label>
                             <asp:TextBox ID="OdemeTarihiTxt" runat="server" CssClass="form-control DateTimePickerV1 input-date" AutoPostBack="True" OnTextChanged="OdemeTarihiTxt_TextChanged"></asp:TextBox>
                             <asp:RequiredFieldValidator runat="server" ControlToValidate="OdemeTarihiTxt" ForeColor="Red" ErrorMessage="Ödeme tarihi seçiniz"> </asp:RequiredFieldValidator>
                         </div>
                         <div class="col-1 form-group">
-                            <asp:Label runat="server" CssClass="col-form-label font-weight-bold">Saati </asp:Label>
+                            <asp:Label runat="server" CssClass="col-form-label fw-bold">Saati </asp:Label>
                             <asp:TextBox ID="OdemeSaatiTxt" runat="server" class="form-control input-time" placeholder="hh:mm" ></asp:TextBox>
                         </div>
                         <div class="col-4 form-group">
-                            <asp:Label runat="server" CssClass="col-form-label font-weight-bold">Sözleşme Yılı </asp:Label>
+                            <asp:Label runat="server" CssClass="col-form-label fw-bold">Sözleşme Yılı </asp:Label>
                             <asp:DropDownList ID="SozlesmeDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="SozlesmeDDL_SelectedIndexChanged" AutoPostBack="true" Height="34px"></asp:DropDownList>
                             <asp:RequiredFieldValidator runat="server" ControlToValidate="SozlesmeDDL" ForeColor="Red" ErrorMessage="Sözleşme seçiniz"> </asp:RequiredFieldValidator>
                         </div>
                         <div class="col-2 form-group">
-                            <asp:Label runat="server" CssClass="col-form-label font-weight-bold">Ödeme Plani Ayı</asp:Label>
+                            <asp:Label runat="server" CssClass="col-form-label fw-bold">Ödeme Plani Ayı</asp:Label>
                             <asp:DropDownList ID="OdemePlaniDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="OdemePlaniDDL_SelectedIndexChanged" AutoPostBack="true" Height="34px"></asp:DropDownList>
                             <asp:RequiredFieldValidator runat="server" ControlToValidate="OdemePlaniDDL" ForeColor="Red" ErrorMessage="Ödeme ayı seçiniz"> </asp:RequiredFieldValidator>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
-                    <asp:Label runat="server" CssClass="col-form-label font-weight-bold">Açıklama </asp:Label>
+                    <asp:Label runat="server" CssClass="col-form-label fw-bold">Açıklama </asp:Label>
                     <asp:TextBox ID="AciklamaTxt" runat="server" class="form-control" TextMode="MultiLine" Rows="3"></asp:TextBox>
                 </div>
             </div>
@@ -136,7 +136,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h3>
-                                <asp:Label ID="ModalLbl" class="col-form-label text-primary font-weight-bold" Text="Ödeme Güncellenecek" runat="server"></asp:Label></h3>
+                                <asp:Label ID="ModalLbl" class="col-form-label text-primary fw-bold" Text="Ödeme Güncellenecek" runat="server"></asp:Label></h3>
                         </div>
                         <div class="card-body">
                             <div class="form-group">

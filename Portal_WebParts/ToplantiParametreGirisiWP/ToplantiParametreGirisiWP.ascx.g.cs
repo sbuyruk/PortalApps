@@ -174,7 +174,7 @@ namespace Portal_WebParts.ToplantiParametreGirisiWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-danger font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-danger fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Toplantı Parametreleri";
             return @__ctrl;
@@ -490,7 +490,7 @@ namespace Portal_WebParts.ToplantiParametreGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "ModalLbl";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-form-label text-primary font-weight-bold");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-form-label text-primary fw-bold");
             @__ctrl.Text = "";
             return @__ctrl;
         }
@@ -771,9 +771,13 @@ namespace Portal_WebParts.ToplantiParametreGirisiWP {
         var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnay'));
         myModalInstance.show();
     }
-    function CloseModal() {
-        $(""#ModalOnay"").modal('hide');
 
+    function CloseModal() {
+        var myModalEl = document.getElementById('ModalOnay');
+        var modalInstance = bootstrap.Modal.getInstance(myModalEl);
+        if (modalInstance) {
+            modalInstance.hide();
+        }
     }
     function DuzenleSilModalAc(parametreId, islemTipi) {
         document.getElementById('");

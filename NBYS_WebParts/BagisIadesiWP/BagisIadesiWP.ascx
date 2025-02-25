@@ -241,11 +241,11 @@
                             </div>
                             <div class="card-body">
                                 <div class="form-group">
-                                    <asp:Label ID="Label6" class="col-form-label font-weight-bold" runat="server" Text="İade Sebebi"></asp:Label></h3>
+                                    <asp:Label ID="Label6" class="col-form-label fw-bold" runat="server" Text="İade Sebebi"></asp:Label></h3>
                                     <input id="IadeSebebiDegistirTxt" textmode="MultiLine" rows="3" runat="server" placeholder="Para iade sebebini giriniz" class="form-control" type="text" />
                                 </div>
                                 <div class="form-group">
-                                    <asp:Label ID="Label7" class="col-form-label font-weight-bold" runat="server" Text="İade Tarihi"></asp:Label>
+                                    <asp:Label ID="Label7" class="col-form-label fw-bold" runat="server" Text="İade Tarihi"></asp:Label>
                                     <asp:TextBox ID="IadeTarihiDegistirTxt" CssClass=" col-6 form-control DateTimePickerV1 input-date" placeholder="dd.mm.yyyy" runat="server" Text="" ClientIDMode="Static"></asp:TextBox>
                                 </div>
                                 <asp:Label ID="IadeMesajiDegistirLbl" CssClass="col-form-label" runat="server" Text=""></asp:Label>

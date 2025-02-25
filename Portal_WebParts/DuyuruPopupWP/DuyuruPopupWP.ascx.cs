@@ -234,7 +234,7 @@ namespace Portal_WebParts.DuyuruPopupWP
 
                 HtmlGenericControl headerLbl = new HtmlGenericControl("h2");
                 headerLbl.ID = "headerLbl" + duyuru.Id.ToString();
-                headerLbl.Attributes["class"] = "col-form-label text-success font-weight-bold";
+                headerLbl.Attributes["class"] = "col-form-label text-success fw-bold";
                 headerLbl.Attributes.Add("style", "margin: auto;");
 
                 headerLbl.InnerText = " D U Y U R U ";
@@ -242,7 +242,7 @@ namespace Portal_WebParts.DuyuruPopupWP
 
                 HtmlGenericControl baslikDiv = new HtmlGenericControl("div");
                 baslikDiv.ID = "baslikDiv" + duyuru.Id.ToString();
-                baslikDiv.Attributes["class"] = "form-group font-weight-bold";
+                baslikDiv.Attributes["class"] = "form-group fw-bold";
                 modalContentDiv.Controls.Add(baslikDiv);
 
                 HtmlGenericControl baslikLbl = new HtmlGenericControl("label");

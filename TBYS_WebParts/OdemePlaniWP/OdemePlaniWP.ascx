@@ -46,7 +46,7 @@
                     <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
                     <asp:Label CssClass="col-form-label text-danger float-end" ID="DosyaNoTxt" runat="server"></asp:Label>
                     <h3 class="mb-2">
-                        <asp:Label CssClass="col-form-label text-danger font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="Ödeme Planı"></asp:Label>
+                        <asp:Label CssClass="col-form-label text-danger fw-bold mb-1" ID="TitleLbl" runat="server" Text="Ödeme Planı"></asp:Label>
                         <asp:Label CssClass="col-form-label text-white" ID="IdLbl" runat="server"></asp:Label>
                         <asp:Label CssClass="col-form-label " ID="AdiLbl" runat="server"></asp:Label>
                     </h3>
@@ -69,12 +69,12 @@
                                 <asp:TableHeaderRow>
                                     <asp:TableHeaderCell>Sıra </asp:TableHeaderCell>
                                     <asp:TableHeaderCell>Vade Tar</asp:TableHeaderCell>
-                                    <asp:TableHeaderCell CssClass="text-right">Kira</asp:TableHeaderCell>
-                                    <asp:TableHeaderCell CssClass="text-right">Ödenen</asp:TableHeaderCell>
-                                    <asp:TableHeaderCell CssClass="text-right">Anapara</asp:TableHeaderCell>
-                                    <asp:TableHeaderCell CssClass="text-right">Faiz Oranı </asp:TableHeaderCell>
-                                    <asp:TableHeaderCell CssClass="text-right">Faiz Tutarı</asp:TableHeaderCell>
-                                    <asp:TableHeaderCell CssClass="text-right">Faizli Bakiye</asp:TableHeaderCell>
+                                    <asp:TableHeaderCell CssClass="text-end">Kira</asp:TableHeaderCell>
+                                    <asp:TableHeaderCell CssClass="text-end">Ödenen</asp:TableHeaderCell>
+                                    <asp:TableHeaderCell CssClass="text-end">Anapara</asp:TableHeaderCell>
+                                    <asp:TableHeaderCell CssClass="text-end">Faiz Oranı </asp:TableHeaderCell>
+                                    <asp:TableHeaderCell CssClass="text-end">Faiz Tutarı</asp:TableHeaderCell>
+                                    <asp:TableHeaderCell CssClass="text-end">Faizli Bakiye</asp:TableHeaderCell>
                                     <asp:TableHeaderCell>Ödeme</asp:TableHeaderCell>
                                 </asp:TableHeaderRow>
                             </asp:Table>
@@ -90,7 +90,7 @@
                             </div>
                             <div class="form-group col-2">
                                 <asp:Label CssClass="col-form-label" runat="server" Font-Bold="True">Ödenen Tutar</asp:Label>
-                                <input id="OdenenTutarTxt" runat="server" class="form-control input-money text-right" type="text"
+                                <input id="OdenenTutarTxt" runat="server" class="form-control input-money text-end" type="text"
                                     onchange="OdeBtnEnable()" onkeyup="OdeBtnEnable()" oncut="OdeBtnEnable()" onpaste="OdeBtnEnable()" oninput="OdeBtnEnable()" />
                             </div>
                             <div class="form-group col-6">
@@ -164,7 +164,7 @@
                             <div>
                                 <div class="text-center">
                                     <h4>
-                                        <asp:Label ID="PopupMesajLbl" class="col-form-label text-danger font-weight-bold" runat="server" Text=""></asp:Label></h4>
+                                        <asp:Label ID="PopupMesajLbl" class="col-form-label text-danger fw-bold" runat="server" Text=""></asp:Label></h4>
                                     <asp:Label ID="VadeBasTarLbl" CssClass="col-form-label col-3" runat="server" Text="Vade Bas. Tar."></asp:Label>
                                 </div>
                                 <div class="card-body p-0">
@@ -175,7 +175,7 @@
 
                                             <asp:Label ID="SiraLbl" CssClass="col-form-label col-2 m-1" runat="server" Text="Sıra"></asp:Label>
                                             <asp:Label ID="YeniKiraBedeliLbl" CssClass="col-form-label text-danger col-3 m-1" runat="server" Text="Kira Bedeli : "></asp:Label>
-                                            <asp:TextBox ID="YeniKiraBedeliTxt" CssClass="form-control input-money text-right col-3 m-1" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="YeniKiraBedeliTxt" CssClass="form-control input-money text-end col-3 m-1" runat="server"></asp:TextBox>
                                             <asp:LinkButton ID="KiraBedeliniDegistirBtn" ClientIDMode="Static" runat="server" CssClass="form-control btn btn-primary col-3 m-1" type="text" OnClientClick="{return true;};" OnClick="KiraBedeliniDegistirBtn_Click">Güncelle</asp:LinkButton>
                                         </div>
                                     </div>

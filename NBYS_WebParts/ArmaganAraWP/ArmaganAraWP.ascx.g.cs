@@ -206,7 +206,7 @@ namespace NBYS_WebParts.ArmaganAraWP {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "text-danger font-weight-bold";
+            @__ctrl.CssClass = "text-danger fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Armağan Belge Numaraları Nisan 2018 tarihinde NBYS yazılımının devreye girmesinde" +
                         "n itibaren düzenli olarak verilmektedir. \r\n                    Daha eski tarihli" +

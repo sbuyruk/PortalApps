@@ -138,7 +138,7 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-info font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-info fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Taşınmaz Bağışçı Adres Listesi";
             return @__ctrl;

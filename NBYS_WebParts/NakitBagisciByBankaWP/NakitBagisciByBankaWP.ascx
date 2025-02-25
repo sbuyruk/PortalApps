@@ -49,34 +49,38 @@
     };
 
 </script>
-<div class="container shadow">
+<div class="container ">
     <asp:UpdatePanel ID="TableUpdatePanel" runat="server">
         <ContentTemplate>
-            <div class="card">
+            <div class="card shadow">
                 <div class="card-header" id="CardHeader" runat="server">
                     <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
                     <h3 class="mb-2">
-                        <asp:Label CssClass="col-form-label  btn-outline-success mb-1" ID="TitleLbl" runat="server" Text="Banka Bazlı Bağışçı Listesi (Eski-Yeni)"></asp:Label>
+                        <asp:Label CssClass="col-form-label text-info fw-bold mb-1" ID="TitleLbl" runat="server" Text="Banka Bazlı Bağışçı Listesi (Eski-Yeni)"></asp:Label>
                     </h3>
                 </div>
                 <div class="card-body" id="MainCardDiv" runat="server">
                     <asp:UpdatePanel ID="upPanel" runat="server">
                         <ContentTemplate>
                             <div class="card-body p-0">
-                                <div class="row m-2">
-                                    <div class="input-group col-4 row">
-                                        <label for="AyDDL" class="col-form-label col-3">Ay</label>
-                                        <div class="col-8">
-                                            <asp:DropDownList ID="AyDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="AyDDL_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
-                                        </div>
-                                    </div>
-                                    <div class="input-group col-4 row">
-                                        <label for="YilDDL" class="col-form-label col-3">Yıl</label>
-                                        <div class="col-8">
-                                            <asp:DropDownList ID="YilDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="YilDDL_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
-                                        </div>
-                                    </div>
-                                </div>
+<div class="row m-2">
+    <!-- Ay Seçimi -->
+    <div class="col-2">
+        <label for="AyDDL" class="form-label fw-semibold">Ay</label>
+        <asp:DropDownList ID="AyDDL" runat="server" CssClass="form-select form-select-lg"
+            OnSelectedIndexChanged="AyDDL_SelectedIndexChanged" AutoPostBack="true">
+        </asp:DropDownList>
+    </div>
+
+    <!-- Yıl Seçimi -->
+    <div class="col-2">
+        <label for="YilDDL" class="form-label fw-semibold">Yıl</label>
+        <asp:DropDownList ID="YilDDL" runat="server" CssClass="form-select form-select-lg"
+            OnSelectedIndexChanged="YilDDL_SelectedIndexChanged" AutoPostBack="true">
+        </asp:DropDownList>
+    </div>
+</div>
+
                                 <div class="table loader">
                                     <asp:Table ID="NakitBagisciTable" runat="server" class="table table-bordered table-striped">
                                     </asp:Table>

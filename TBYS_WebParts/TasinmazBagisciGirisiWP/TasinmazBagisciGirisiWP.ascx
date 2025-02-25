@@ -25,7 +25,7 @@
         <div class="card-header" id="CardHeader" runat="server">
             <asp:LinkButton ID="CloseBtn" CssClass="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3>
-                <asp:Label CssClass="col-form-label text-danger font-weight-bold" ID="TitleLbl" runat="server" Text="Taşınmaz Bağışçı Düzenleme"></asp:Label>
+                <asp:Label CssClass="col-form-label text-danger fw-bold" ID="TitleLbl" runat="server" Text="Taşınmaz Bağışçı Düzenleme"></asp:Label>
                 <asp:Label CssClass="col-form-label text-white" ID="IdLbl" runat="server"></asp:Label>
                 <asp:Label CssClass="col-form-label " ID="AdiLbl" runat="server"></asp:Label>
             </h3>
@@ -160,7 +160,7 @@
                                 </div>
                                 <div class="form-group border border-dark p-2" style="background-color:aliceblue">
                                     <div class="form-group">
-                                        <asp:Label CssClass="col-form-label font-weight-bold" ID="Label1" runat="server">Bağışçı Bilgi ve Talep Formu</asp:Label>
+                                        <asp:Label CssClass="col-form-label fw-bold" ID="Label1" runat="server">Bağışçı Bilgi ve Talep Formu</asp:Label>
                                     </div>
                                     <div class="form-group text-center">
                                         <a id="DosyaLnk" runat="server" class="btn btn-outline-primary" data-fancybox data-type="pdf" data-width="960" data-height="720" href="#">
@@ -175,7 +175,7 @@
                                 </div>
                                 <div class="form-group border border-dark p-2" style="background-color:lightgrey">
                                     <div class="form-group">
-                                        <asp:Label CssClass="col-form-label font-weight-bold" ID="Label2" runat="server">Bağışçı Taahhüt Formu</asp:Label>
+                                        <asp:Label CssClass="col-form-label fw-bold" ID="Label2" runat="server">Bağışçı Taahhüt Formu</asp:Label>
                                     </div>
                                     <div class="form-group text-center">
                                         <a id="TaahhutDosyaLnk" runat="server" class="btn btn-outline-primary" data-fancybox data-type="pdf" data-width="960" data-height="720" href="#">

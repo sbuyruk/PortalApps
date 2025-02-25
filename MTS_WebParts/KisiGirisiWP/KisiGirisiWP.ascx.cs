@@ -77,7 +77,7 @@ namespace MTS_WebParts.KisiGirisiWP
                         //KisiyiSilBtn.Visible = true;
                         FaaliyetGirBtn.Visible = true;
                         TitleLbl.Text = "Kişi Düzenle";
-                        TitleLbl.CssClass = "col-form-label text-primary font-weight-bold mb-1";
+                        TitleLbl.CssClass = "col-form-label text-primary fw-bold mb-1";
                         FormuDoldur();
                     }
                     else
@@ -88,7 +88,7 @@ namespace MTS_WebParts.KisiGirisiWP
                 else
                 {
                     TitleLbl.Text = "Kişi Girişi";
-                    TitleLbl.CssClass = "col-form-label text-success font-weight-bold mb-1";
+                    TitleLbl.CssClass = "col-form-label text-success fw-bold mb-1";
                     IdLbl.Text = string.Empty;
                     KaydetBtn.Visible = true;
                     GuncelleBtn.Visible = false;
@@ -444,7 +444,7 @@ namespace MTS_WebParts.KisiGirisiWP
             KisiSilNowBtn.Visible = false;
             OnaylaBtn.Visible = false;
             KisiSilNowBtn.CssClass = "btn btn-outline-danger";
-            ModalBaslikLbl.CssClass = "col-form-label text-danger font-weight-bold";
+            ModalBaslikLbl.CssClass = "col-form-label text-danger fw-bold";
             FaaliyetKatilimciChk.Visible = false;
             IrtibatPersoneliChk.Visible = false;
             bool silinebilirMi = true;
@@ -576,7 +576,7 @@ namespace MTS_WebParts.KisiGirisiWP
             OnaylaBtn.CssClass = "btn btn-outline-success";
             FaaliyetKatilimciChk.Visible = true;
             IrtibatPersoneliChk.Visible = true;
-            ModalBaslikLbl.CssClass = "col-form-label text-success font-weight-bold";
+            ModalBaslikLbl.CssClass = "col-form-label text-success fw-bold";
 
             System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), openModal, true);
 

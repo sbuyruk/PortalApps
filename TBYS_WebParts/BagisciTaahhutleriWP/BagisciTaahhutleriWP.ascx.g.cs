@@ -206,7 +206,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-danger font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-danger fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Bağışçıya Verilen Taahhütler";
             return @__ctrl;
@@ -248,7 +248,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP {
             this.TaahhutTableLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "TaahhutTableLbl";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-form-label font-weight-bold");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-form-label fw-bold");
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Bağışçıya Verilen Taahhütler"));
             return @__ctrl;
@@ -663,7 +663,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP {
             @__ctrl4 = this.@__BuildControlBagiscciAdiLbl();
             @__parser.AddParsedSubObject(@__ctrl4);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"form-group " +
-                        "\">\r\n                            <label class=\"col-form-label font-weight-bold\" f" +
+                        "\">\r\n                            <label class=\"col-form-label fw-bold\" f" +
                         "or=\"TasinmazDDL\">Taahhüte Tabi Taşınmaz</label>\r\n                            "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl5;
             @__ctrl5 = this.@__BuildControlTasinmazDDL();
@@ -673,21 +673,21 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP {
                         <div class=""row"">
                             <div class=""form-group col"">
                                 <div class=""form-group"">
-                                    <label class=""col-form-label font-weight-bold"" for=""AdiTxt"">Adı</label>
+                                    <label class=""col-form-label fw-bold"" for=""AdiTxt"">Adı</label>
                                     "));
             global::System.Web.UI.WebControls.TextBox @__ctrl6;
             @__ctrl6 = this.@__BuildControlAdiTxt();
             @__parser.AddParsedSubObject(@__ctrl6);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                                <div cl" +
                         "ass=\"form-group\">\r\n                                    <label class=\"col-form-la" +
-                        "bel font-weight-bold\" for=\"SoyadiTxt\">Soyadı</label>\r\n                          " +
+                        "bel fw-bold\" for=\"SoyadiTxt\">Soyadı</label>\r\n                          " +
                         "          "));
             global::System.Web.UI.WebControls.TextBox @__ctrl7;
             @__ctrl7 = this.@__BuildControlSoyadiTxt();
             @__parser.AddParsedSubObject(@__ctrl7);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                                <div cl" +
                         "ass=\"form-group\">\r\n                                    <label class=\"col-form-la" +
-                        "bel font-weight-bold\" for=\"AdiTxt\">TC Kimlik No</label>\r\n                       " +
+                        "bel fw-bold\" for=\"AdiTxt\">TC Kimlik No</label>\r\n                       " +
                         "             "));
             global::System.Web.UI.WebControls.TextBox @__ctrl8;
             @__ctrl8 = this.@__BuildControlTCKimlikNoTxt();
@@ -695,7 +695,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP {
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                 </div>
                                 <div class=""form-group"">
-                                    <label class=""col-form-label font-weight-bold"" for=""DogumTarihiTxt"">Doğum Tarihi</label>
+                                    <label class=""col-form-label fw-bold"" for=""DogumTarihiTxt"">Doğum Tarihi</label>
                                     "));
             global::System.Web.UI.WebControls.TextBox @__ctrl9;
             @__ctrl9 = this.@__BuildControlDogumTarihiTxt();
@@ -706,14 +706,14 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP {
                             </div>
                             <div class=""form-group col"">
                                 <div class=""form-group "">
-                                    <label class=""col-form-label font-weight-bold"" for=""TelefonTxt"">Telefon</label>
+                                    <label class=""col-form-label fw-bold"" for=""TelefonTxt"">Telefon</label>
                                     "));
             global::System.Web.UI.WebControls.TextBox @__ctrl10;
             @__ctrl10 = this.@__BuildControlTelefonTxt();
             @__parser.AddParsedSubObject(@__ctrl10);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                                <div cl" +
                         "ass=\"form-group \">\r\n                                    <label class=\"col-form-l" +
-                        "abel font-weight-bold\" for=\"IliDDL\">İkamet İli</label>\r\n                        " +
+                        "abel fw-bold\" for=\"IliDDL\">İkamet İli</label>\r\n                        " +
                         "            "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl11;
             @__ctrl11 = this.@__BuildControlIliDDL();
@@ -721,7 +721,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP {
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                 </div>
                                 <div class=""form-group"">
-                                    <label class=""col-form-label font-weight-bold"" for=""IlcesiDDL"">İkamet İlçesi</label>
+                                    <label class=""col-form-label fw-bold"" for=""IlcesiDDL"">İkamet İlçesi</label>
                                     "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl12;
             @__ctrl12 = this.@__BuildControlIlcesiDDL();
@@ -729,7 +729,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP {
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                 </div>
                                 <div class=""form-group"">
-                                    <label class=""col-form-label font-weight-bold"" for=""AdresTxt"">İkamet Adresi</label>
+                                    <label class=""col-form-label fw-bold"" for=""AdresTxt"">İkamet Adresi</label>
                                     "));
             global::System.Web.UI.WebControls.TextBox @__ctrl13;
             @__ctrl13 = this.@__BuildControlAdresTxt();
@@ -739,7 +739,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP {
                             </div>
                             <div class=""form-group col"">
                                 <div class=""form-group"">
-                                    <label class=""col-form-label font-weight-bold"" for=""SagVefatDDL"">Sağ-Vefat</label>
+                                    <label class=""col-form-label fw-bold"" for=""SagVefatDDL"">Sağ-Vefat</label>
                                     "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl14;
             @__ctrl14 = this.@__BuildControlSagVefatDDL();
@@ -749,7 +749,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP {
             @__ctrl15 = this.@__BuildControlVefatTarihiDiv();
             @__parser.AddParsedSubObject(@__ctrl15);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                <div class=\"form-group\">\r\n                     " +
-                        "               <label class=\"col-form-label font-weight-bold\" for=\"EvrakTarihi\">" +
+                        "               <label class=\"col-form-label fw-bold\" for=\"EvrakTarihi\">" +
                         "Taahhüt Evrakının Tarihi</label>\r\n                                    "));
             global::System.Web.UI.WebControls.TextBox @__ctrl16;
             @__ctrl16 = this.@__BuildControlEvrakTarihiTxt();
@@ -757,7 +757,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP {
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                 </div>
                                 <div class=""form-group"">
-                                    <label class=""col-form-label font-weight-bold"" for=""EvrakTarihi"">Taahhüt Evrakının Sayısı</label>
+                                    <label class=""col-form-label fw-bold"" for=""EvrakTarihi"">Taahhüt Evrakının Sayısı</label>
                                     "));
             global::System.Web.UI.WebControls.TextBox @__ctrl17;
             @__ctrl17 = this.@__BuildControlEvrakSayisiTxt();
@@ -768,7 +768,7 @@ namespace TBYS_WebParts.BagisciTaahhutleriWP {
 
                         </div>
                         <div class=""form-group"">
-                            <label class=""col-form-label font-weight-bold"" for=""TaahhutAciklamaTxt"">Taahhüt Açıklaması</label>
+                            <label class=""col-form-label fw-bold"" for=""TaahhutAciklamaTxt"">Taahhüt Açıklaması</label>
                             "));
             global::System.Web.UI.WebControls.TextBox @__ctrl18;
             @__ctrl18 = this.@__BuildControlTaahhutAciklamaTxt();

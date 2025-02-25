@@ -34,7 +34,7 @@
                 { data: "Telefon" },
                 { data: "Talepleri" },
                 { data: "Bagislari" },
-                { data: "TahminiRayic", "className": "text-right" },
+                { data: "TahminiRayic", "className": "text-end" },
             
             ],
             columnDefs: [
@@ -83,7 +83,7 @@
         <div class="card-header ">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-1">
-                <asp:Label CssClass="col-form-label text-danger font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="Taşınmaz Bağışçılara Ait Bilgiler"></asp:Label>
+                <asp:Label CssClass="col-form-label text-danger fw-bold mb-1" ID="TitleLbl" runat="server" Text="Taşınmaz Bağışçılara Ait Bilgiler"></asp:Label>
                 <asp:Label ID="IdLbl" runat="server" CssClass="col-form-label text-white" Visible="false"></asp:Label>
                 <asp:Label ID="AdiLbl" runat="server" CssClass="col-form-label"></asp:Label>
             </h3>
@@ -101,7 +101,7 @@
 
                     <thead>
                         <tr>
-                            <th colspan="10" Id="BaslikTH" runat ="server" class="text-center font-weight-bold">Bağışçı Listesi</th>
+                            <th colspan="10" Id="BaslikTH" runat ="server" class="text-center fw-bold">Bağışçı Listesi</th>
                         </tr>
                         <tr>
                             <%--<th>Sıra</th>--%>

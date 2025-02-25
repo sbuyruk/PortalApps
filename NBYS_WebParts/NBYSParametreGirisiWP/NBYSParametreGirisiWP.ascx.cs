@@ -216,7 +216,7 @@ namespace NBYS_WebParts.NBYSParametreGirisiWP
                         ModalLbl.Text = "Parametre Düzenleme";
                         SilDiv.Attributes["style"] = "display:none";
                         DuzenleDiv.Attributes["style"] = "display:block";
-                        ModalLbl.CssClass = "col-form-label text-primary font-weight-bold";
+                        ModalLbl.CssClass = "col-form-label text-primary fw-bold";
                         GuncelleNowBtn.Visible = true;
                         SilNowBtn.Visible = false;
                         System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "OpenModalOnay();", true);
@@ -242,7 +242,7 @@ namespace NBYS_WebParts.NBYSParametreGirisiWP
                     ModalLbl.Text = "Parametre Silinecek";
                     SilDiv.Attributes["style"] = "display:block";
                     DuzenleDiv.Attributes["style"] = "display:none";
-                    ModalLbl.CssClass = "col-form-label text-danger font-weight-bold";
+                    ModalLbl.CssClass = "col-form-label text-danger fw-bold";
                     GuncelleNowBtn.Visible = false;
                     SilNowBtn.Visible = true;
                     System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "OpenModalOnay();", true);
@@ -253,7 +253,7 @@ namespace NBYS_WebParts.NBYSParametreGirisiWP
                     MessageLbl.Text = "Silmek istediğiniz parametreyi kullanan uygulamalar bulunmaktadır.";
                     SilDiv.Attributes["style"] = "display:block";
                     DuzenleDiv.Attributes["style"] = "display:none";
-                    ModalLbl.CssClass = "col-form-label text-info font-weight-bold";
+                    ModalLbl.CssClass = "col-form-label text-info fw-bold";
                     GuncelleNowBtn.Visible = false;
                     SilNowBtn.Visible = false;
                     System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "OpenModalOnay();", true);

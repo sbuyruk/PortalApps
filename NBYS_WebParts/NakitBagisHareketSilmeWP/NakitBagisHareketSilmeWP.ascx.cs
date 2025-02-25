@@ -179,7 +179,7 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
                         { data: 'TCKimlikNo' },
                         { data: 'BagisMiktari', 
                             'width': '10%', 
-                            'className': 'text-right' ,
+                            'className': 'text-end' ,
                             //render: $.fn.dataTable.render.number( '.', ',', 2 ) //format money as ###.###,00
                         },
                         { data: 'BagisTarihi' },
@@ -517,7 +517,7 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
                 data: " + jsonData + @",
                 columns: [
                     { data: 'BagisTarihi' },
-                    { data: 'BagisMiktari', 'width': '10%', 'className': 'text-right' },
+                    { data: 'BagisMiktari', 'width': '10%', 'className': 'text-end' },
                     { data: 'Banka' },
                     { data: 'Armagan' },
                     { data: 'ArmaganTutari' },

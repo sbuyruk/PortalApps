@@ -298,7 +298,7 @@ namespace NBYS_WebParts.BeratBasimiWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-info font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-info fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Berat Basımı";
             return @__ctrl;
@@ -1186,7 +1186,7 @@ namespace NBYS_WebParts.BeratBasimiWP {
             <div class=""row mt-2"">
                 <div class=""form-group col-4"">
                     <div class=""row"">
-                        <label for=""GunDDL"" class=""col-4 col-form-label text-right "">Gün</label>
+                        <label for=""GunDDL"" class=""col-4 col-form-label text-end "">Gün</label>
                         <div class=""col-8"">
                             "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl1;
@@ -1198,7 +1198,7 @@ namespace NBYS_WebParts.BeratBasimiWP {
                 </div>
                 <div class=""form-group col-2"">
                     <div class=""row"">
-                        <label for=""AyDDL"" class=""col-4 col-form-label text-right "">Ay</label>
+                        <label for=""AyDDL"" class=""col-4 col-form-label text-end "">Ay</label>
                         <div class=""col-8"">
                             "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl2;
@@ -1210,7 +1210,7 @@ namespace NBYS_WebParts.BeratBasimiWP {
                 </div>
                 <div class=""form-group col-2"">
                     <div class=""row"">
-                        <label for=""YilDDL"" class=""col-4 col-form-label text-right"">Yıl</label>
+                        <label for=""YilDDL"" class=""col-4 col-form-label text-end"">Yıl</label>
                         <div class=""col-8"">
                             "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl3;

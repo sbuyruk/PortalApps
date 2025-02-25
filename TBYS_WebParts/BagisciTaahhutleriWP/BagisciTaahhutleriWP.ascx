@@ -26,7 +26,7 @@
         <div class="card-header ">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-1">
-                <asp:Label CssClass="col-form-label text-danger font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="Bağışçıya Verilen Taahhütler"></asp:Label>
+                <asp:Label CssClass="col-form-label text-danger fw-bold mb-1" ID="TitleLbl" runat="server" Text="Bağışçıya Verilen Taahhütler"></asp:Label>
                 <asp:Label ID="BagisciIdLbl" runat="server" CssClass="col-form-label text-white" Visible="false"></asp:Label>
                 <asp:Label ID="AdiLbl" runat="server" CssClass="col-form-label"></asp:Label>
             </h3>
@@ -34,7 +34,7 @@
         <div class="card-body">
             <div class="card">
                 <h4>
-                    <asp:Label ID="TaahhutTableLbl" runat="server" class="col-form-label font-weight-bold">Bağışçıya Verilen Taahhütler</asp:Label>
+                    <asp:Label ID="TaahhutTableLbl" runat="server" class="col-form-label fw-bold">Bağışçıya Verilen Taahhütler</asp:Label>
                 </h4>
                 <div class="table">
                     <a href="#" onclick="OpenModalTaahhut(0);" class="btn btn-outline-success m-1">Taahhüt Ekle</a>
@@ -70,69 +70,69 @@
                             <asp:Label ID="BagiscciAdiLbl" runat="server" Text=""></asp:Label>
                         </div>
                         <div class="form-group ">
-                            <label class="col-form-label font-weight-bold" for="TasinmazDDL">Taahhüte Tabi Taşınmaz</label>
+                            <label class="col-form-label fw-bold" for="TasinmazDDL">Taahhüte Tabi Taşınmaz</label>
                             <asp:DropDownList ID="TasinmazDDL" runat="server" CssClass="form-control" Style="height: auto"></asp:DropDownList>
                         </div>
                         <div class="row">
                             <div class="form-group col">
                                 <div class="form-group">
-                                    <label class="col-form-label font-weight-bold" for="AdiTxt">Adı</label>
+                                    <label class="col-form-label fw-bold" for="AdiTxt">Adı</label>
                                     <asp:TextBox ID="AdiTxt" runat="server" class="form-control" ToolTip="Adı" type="text"></asp:TextBox>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-form-label font-weight-bold" for="SoyadiTxt">Soyadı</label>
+                                    <label class="col-form-label fw-bold" for="SoyadiTxt">Soyadı</label>
                                     <asp:TextBox ID="SoyadiTxt" runat="server" class="form-control " ToolTip="Soyadı" type="text"></asp:TextBox>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-form-label font-weight-bold" for="AdiTxt">TC Kimlik No</label>
+                                    <label class="col-form-label fw-bold" for="AdiTxt">TC Kimlik No</label>
                                     <asp:TextBox ID="TCKimlikNoTxt" runat="server" class="form-control" type="text"></asp:TextBox>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-form-label font-weight-bold" for="DogumTarihiTxt">Doğum Tarihi</label>
+                                    <label class="col-form-label fw-bold" for="DogumTarihiTxt">Doğum Tarihi</label>
                                     <asp:TextBox ID="DogumTarihiTxt" runat="server" CssClass="form-control DateTimePickerV1 input-date"></asp:TextBox>
                                 </div>
 
                             </div>
                             <div class="form-group col">
                                 <div class="form-group ">
-                                    <label class="col-form-label font-weight-bold" for="TelefonTxt">Telefon</label>
+                                    <label class="col-form-label fw-bold" for="TelefonTxt">Telefon</label>
                                     <asp:TextBox ID="TelefonTxt" runat="server" CssClass="form-control " ToolTip="Bağışçının telefonu"></asp:TextBox>
                                 </div>
                                 <div class="form-group ">
-                                    <label class="col-form-label font-weight-bold" for="IliDDL">İkamet İli</label>
+                                    <label class="col-form-label fw-bold" for="IliDDL">İkamet İli</label>
                                     <asp:DropDownList ID="IliDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="IliDDL_SelectedIndexChanged" AutoPostBack="true" Style="height: auto" />
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-form-label font-weight-bold" for="IlcesiDDL">İkamet İlçesi</label>
+                                    <label class="col-form-label fw-bold" for="IlcesiDDL">İkamet İlçesi</label>
                                     <asp:DropDownList ID="IlcesiDDL" runat="server" CssClass="form-control" Style="height: auto"></asp:DropDownList>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-form-label font-weight-bold" for="AdresTxt">İkamet Adresi</label>
+                                    <label class="col-form-label fw-bold" for="AdresTxt">İkamet Adresi</label>
                                     <asp:TextBox ID="AdresTxt" runat="server" CssClass="form-control " TextMode="MultiLine" Rows="4" ToolTip="İkamet Adresi"></asp:TextBox>
                                 </div>
                             </div>
                             <div class="form-group col">
                                 <div class="form-group">
-                                    <label class="col-form-label font-weight-bold" for="SagVefatDDL">Sağ-Vefat</label>
+                                    <label class="col-form-label fw-bold" for="SagVefatDDL">Sağ-Vefat</label>
                                     <asp:DropDownList ID="SagVefatDDL" CssClass="form-control" runat="server" AutoPostBack="true" OnSelectedIndexChanged="SagVefatDDL_SelectedIndexChanged" Style="height: auto"></asp:DropDownList>
                                 </div>
                                 <div class="form-group" id="VefatTarihiDiv" runat="server" style="display: none">
-                                    <label class="col-form-label font-weight-bold" for="VefatTarihiTxt">Vefat Tarihi</label>
+                                    <label class="col-form-label fw-bold" for="VefatTarihiTxt">Vefat Tarihi</label>
                                     <input id="VefatTarihiTxt" class="form-control DateTimePickerV1" runat="server" readonly="readonly">
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-form-label font-weight-bold" for="EvrakTarihi">Taahhüt Evrakının Tarihi</label>
+                                    <label class="col-form-label fw-bold" for="EvrakTarihi">Taahhüt Evrakının Tarihi</label>
                                     <asp:TextBox ID="EvrakTarihiTxt" runat="server" CssClass="form-control DateTimePickerV1 input-date" ToolTip="Taahhüt Evrakının Tarihi"></asp:TextBox>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-form-label font-weight-bold" for="EvrakTarihi">Taahhüt Evrakının Sayısı</label>
+                                    <label class="col-form-label fw-bold" for="EvrakTarihi">Taahhüt Evrakının Sayısı</label>
                                     <asp:TextBox ID="EvrakSayisiTxt" runat="server" CssClass="form-control" ToolTip="Taahhüt Evrakının Sayısı"></asp:TextBox>
                                 </div>
                             </div>
 
                         </div>
                         <div class="form-group">
-                            <label class="col-form-label font-weight-bold" for="TaahhutAciklamaTxt">Taahhüt Açıklaması</label>
+                            <label class="col-form-label fw-bold" for="TaahhutAciklamaTxt">Taahhüt Açıklaması</label>
                             <asp:TextBox ID="TaahhutAciklamaTxt" runat="server" CssClass="form-control " TextMode="MultiLine" Rows="8" ToolTip="Taahhüt Açıklaması"></asp:TextBox>
                         </div>
                     </div>

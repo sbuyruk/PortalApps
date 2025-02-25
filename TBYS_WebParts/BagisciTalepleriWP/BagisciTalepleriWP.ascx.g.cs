@@ -154,7 +154,7 @@ namespace TBYS_WebParts.BagisciTalepleriWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-danger font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-danger fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Bağışçi Talepleri";
             return @__ctrl;
@@ -196,7 +196,7 @@ namespace TBYS_WebParts.BagisciTalepleriWP {
             this.TalepTableLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "TalepTableLbl";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-form-label font-weight-bold");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-form-label fw-bold");
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Bağışçının Talepleri"));
             return @__ctrl;
@@ -402,7 +402,7 @@ namespace TBYS_WebParts.BagisciTalepleriWP {
                         </div>
                         <div class=""form-group"">
                             <div class=""form-group"">
-                                <label class=""col-form-label font-weight-bold"" for=""TalepTxt"">Talep</label>
+                                <label class=""col-form-label fw-bold"" for=""TalepTxt"">Talep</label>
                                 "));
             global::System.Web.UI.WebControls.TextBox @__ctrl4;
             @__ctrl4 = this.@__BuildControlTalepTxt();

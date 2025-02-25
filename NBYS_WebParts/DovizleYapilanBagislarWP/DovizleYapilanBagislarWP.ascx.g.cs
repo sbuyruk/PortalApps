@@ -111,7 +111,7 @@ namespace NBYS_WebParts.DovizleYapilanBagislarWP {
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "TitleLbl";
-            @__ctrl.CssClass = "col-form-label text-info font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-info fw-bold mb-1";
             @__ctrl.Text = "Banka Bazında Günlük Bağışlar";
             return @__ctrl;
         }
@@ -356,13 +356,13 @@ namespace NBYS_WebParts.DovizleYapilanBagislarWP {
             <div class=""form-group"">
                 <div class=""row"">
                     <div class=""col-2"">
-                        <label for=""AyDDL"" class=""col-form-label font-weight-bold"">Bağış Ayı: </label>
+                        <label for=""AyDDL"" class=""col-form-label fw-bold"">Bağış Ayı: </label>
                         "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl5;
             @__ctrl5 = this.@__BuildControlAyDDL();
             @__parser.AddParsedSubObject(@__ctrl5);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                    <div class=\"col-2\">\r\n          " +
-                        "              <label for=\"YilDDL\" class=\"col-form-label font-weight-bold\">Bağış " +
+                        "              <label for=\"YilDDL\" class=\"col-form-label fw-bold\">Bağış " +
                         "Yılı: </label>\r\n                        "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl6;
             @__ctrl6 = this.@__BuildControlYilDDL();

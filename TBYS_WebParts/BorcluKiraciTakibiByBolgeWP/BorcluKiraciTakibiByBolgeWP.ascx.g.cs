@@ -210,7 +210,7 @@ namespace TBYS_WebParts.BorcluKiraciTakibiByBolgeWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-danger font-weight-bold text-center";
+            @__ctrl.CssClass = "col-form-label text-danger fw-bold text-center";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Borçlu Kiracı Takip İşlemleri";
             return @__ctrl;

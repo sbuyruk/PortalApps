@@ -146,7 +146,7 @@ namespace NBYS_WebParts.ArmaganEditWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-info font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-info fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Armağan Kaydı Düzenleme";
             return @__ctrl;
@@ -246,7 +246,7 @@ namespace NBYS_WebParts.ArmaganEditWP {
             this.BagisMiktariTxt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "BagisMiktariTxt";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-right");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-end");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
             return @__ctrl;
         }

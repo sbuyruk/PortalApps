@@ -68,7 +68,7 @@
             </div>
             <div class="form-group border border-info" id="BagisTableDiv" runat="server" style="display: none">
                 <div class="form-group">
-                    <asp:Label ID="BagisciAdiLbl" CssClass="font-weight-bold" runat="server" Text="Label"></asp:Label>
+                    <asp:Label ID="BagisciAdiLbl" CssClass="fw-bold" runat="server" Text="Label"></asp:Label>
                     <asp:Label ID="BagisBilgileriLbl" runat="server" Text="Label"></asp:Label>
                     <table id="BagisDataTable" class="table table-bordered table-striped" width="100%">
                         <thead>

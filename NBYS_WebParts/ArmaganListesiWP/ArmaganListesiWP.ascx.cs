@@ -930,7 +930,7 @@ namespace NBYS_WebParts.ArmaganListesiWP
                                 return data;
                             }else
                             {
-                                return ('<a href=# onclick=OpenModal('+row.ArmaganId+'); type=button class=\'btn btn-link font-weight-bold\'>'+data+'</a>')
+                                return ('<a href=# onclick=OpenModal('+row.ArmaganId+'); type=button class=\'btn btn-link fw-bold\'>'+data+'</a>')
                             }
                         }},
                         {targets:4, render:function(data){
@@ -970,7 +970,7 @@ namespace NBYS_WebParts.ArmaganListesiWP
                         { data: 'NakitBagisciAdi'},
                         { data: 'BelgedeYazanIsim', 'width':'10%' },
                         { data: 'NakitBagisciTC' },
-                        { data: 'Tutar', 'width':'10%', 'className': 'text-right'},
+                        { data: 'Tutar', 'width':'10%', 'className': 'text-end'},
                         { data: 'Tarih' },
                         { data: 'ArmaganBaslik' , 'width':'20%'},
                         { data: 'Durum' },

@@ -81,7 +81,7 @@ namespace TBYS_WebParts.GecikmeZammiWP
                 TableCell ZamOraniCell = new TableCell();
                 TextBox ZamOraniTxt = new TextBox();
                 ZamOraniTxt.Text = item.ZamOrani.ToString();
-                ZamOraniTxt.CssClass = "form-control input-money text-right";
+                ZamOraniTxt.CssClass = "form-control input-money text-end";
                 ZamOraniCell.Controls.Add(ZamOraniTxt);
 
                 TableCell AciklamaCell = new TableCell();

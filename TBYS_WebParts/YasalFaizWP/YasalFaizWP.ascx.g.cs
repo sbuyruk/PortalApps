@@ -686,7 +686,7 @@ namespace TBYS_WebParts.YasalFaizWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-danger font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-danger fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Aylık Yasal Faiz Oranları";
             return @__ctrl;
@@ -949,7 +949,7 @@ namespace TBYS_WebParts.YasalFaizWP {
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
             this.FaizOrani1Txt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             @__ctrl.ID = "FaizOrani1Txt";
             return @__ctrl;
         }
@@ -978,7 +978,7 @@ namespace TBYS_WebParts.YasalFaizWP {
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
             this.Tufe1Txt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             @__ctrl.ID = "Tufe1Txt";
             return @__ctrl;
         }
@@ -1007,7 +1007,7 @@ namespace TBYS_WebParts.YasalFaizWP {
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
             this.Ufe1Txt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             @__ctrl.ID = "Ufe1Txt";
             return @__ctrl;
         }
@@ -1173,7 +1173,7 @@ namespace TBYS_WebParts.YasalFaizWP {
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
             this.FaizOrani2Txt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             @__ctrl.ID = "FaizOrani2Txt";
             return @__ctrl;
         }
@@ -1202,7 +1202,7 @@ namespace TBYS_WebParts.YasalFaizWP {
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
             this.Tufe2Txt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             @__ctrl.ID = "Tufe2Txt";
             return @__ctrl;
         }
@@ -1231,7 +1231,7 @@ namespace TBYS_WebParts.YasalFaizWP {
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
             this.Ufe2Txt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             @__ctrl.ID = "Ufe2Txt";
             return @__ctrl;
         }
@@ -1397,7 +1397,7 @@ namespace TBYS_WebParts.YasalFaizWP {
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
             this.FaizOrani3Txt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             @__ctrl.ID = "FaizOrani3Txt";
             return @__ctrl;
         }
@@ -1426,7 +1426,7 @@ namespace TBYS_WebParts.YasalFaizWP {
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
             this.Tufe3Txt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             @__ctrl.ID = "Tufe3Txt";
             return @__ctrl;
         }
@@ -1455,7 +1455,7 @@ namespace TBYS_WebParts.YasalFaizWP {
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
             this.Ufe3Txt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             @__ctrl.ID = "Ufe3Txt";
             return @__ctrl;
         }
@@ -1621,7 +1621,7 @@ namespace TBYS_WebParts.YasalFaizWP {
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
             this.FaizOrani4Txt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             @__ctrl.ID = "FaizOrani4Txt";
             return @__ctrl;
         }
@@ -1650,7 +1650,7 @@ namespace TBYS_WebParts.YasalFaizWP {
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
             this.Tufe4Txt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             @__ctrl.ID = "Tufe4Txt";
             return @__ctrl;
         }
@@ -1679,7 +1679,7 @@ namespace TBYS_WebParts.YasalFaizWP {
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
             this.Ufe4Txt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             @__ctrl.ID = "Ufe4Txt";
             return @__ctrl;
         }
@@ -1845,7 +1845,7 @@ namespace TBYS_WebParts.YasalFaizWP {
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
             this.FaizOrani5Txt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             @__ctrl.ID = "FaizOrani5Txt";
             return @__ctrl;
         }
@@ -1874,7 +1874,7 @@ namespace TBYS_WebParts.YasalFaizWP {
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
             this.Tufe5Txt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             @__ctrl.ID = "Tufe5Txt";
             return @__ctrl;
         }
@@ -1903,7 +1903,7 @@ namespace TBYS_WebParts.YasalFaizWP {
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
             this.Ufe5Txt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             @__ctrl.ID = "Ufe5Txt";
             return @__ctrl;
         }
@@ -2069,7 +2069,7 @@ namespace TBYS_WebParts.YasalFaizWP {
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
             this.FaizOrani6Txt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             @__ctrl.ID = "FaizOrani6Txt";
             return @__ctrl;
         }
@@ -2098,7 +2098,7 @@ namespace TBYS_WebParts.YasalFaizWP {
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
             this.Tufe6Txt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             @__ctrl.ID = "Tufe6Txt";
             return @__ctrl;
         }
@@ -2127,7 +2127,7 @@ namespace TBYS_WebParts.YasalFaizWP {
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
             this.Ufe6Txt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             @__ctrl.ID = "Ufe6Txt";
             return @__ctrl;
         }
@@ -2293,7 +2293,7 @@ namespace TBYS_WebParts.YasalFaizWP {
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
             this.FaizOrani7Txt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             @__ctrl.ID = "FaizOrani7Txt";
             return @__ctrl;
         }
@@ -2322,7 +2322,7 @@ namespace TBYS_WebParts.YasalFaizWP {
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
             this.Tufe7Txt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             @__ctrl.ID = "Tufe7Txt";
             return @__ctrl;
         }
@@ -2351,7 +2351,7 @@ namespace TBYS_WebParts.YasalFaizWP {
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
             this.Ufe7Txt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             @__ctrl.ID = "Ufe7Txt";
             return @__ctrl;
         }
@@ -2517,7 +2517,7 @@ namespace TBYS_WebParts.YasalFaizWP {
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
             this.FaizOrani8Txt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             @__ctrl.ID = "FaizOrani8Txt";
             return @__ctrl;
         }
@@ -2546,7 +2546,7 @@ namespace TBYS_WebParts.YasalFaizWP {
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
             this.Tufe8Txt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             @__ctrl.ID = "Tufe8Txt";
             return @__ctrl;
         }
@@ -2575,7 +2575,7 @@ namespace TBYS_WebParts.YasalFaizWP {
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
             this.Ufe8Txt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             @__ctrl.ID = "Ufe8Txt";
             return @__ctrl;
         }
@@ -2741,7 +2741,7 @@ namespace TBYS_WebParts.YasalFaizWP {
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
             this.FaizOrani9Txt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             @__ctrl.ID = "FaizOrani9Txt";
             return @__ctrl;
         }
@@ -2770,7 +2770,7 @@ namespace TBYS_WebParts.YasalFaizWP {
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
             this.Tufe9Txt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             @__ctrl.ID = "Tufe9Txt";
             return @__ctrl;
         }
@@ -2799,7 +2799,7 @@ namespace TBYS_WebParts.YasalFaizWP {
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
             this.Ufe9Txt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             @__ctrl.ID = "Ufe9Txt";
             return @__ctrl;
         }
@@ -2965,7 +2965,7 @@ namespace TBYS_WebParts.YasalFaizWP {
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
             this.FaizOrani10Txt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             @__ctrl.ID = "FaizOrani10Txt";
             return @__ctrl;
         }
@@ -2994,7 +2994,7 @@ namespace TBYS_WebParts.YasalFaizWP {
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
             this.Tufe10Txt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             @__ctrl.ID = "Tufe10Txt";
             return @__ctrl;
         }
@@ -3023,7 +3023,7 @@ namespace TBYS_WebParts.YasalFaizWP {
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
             this.Ufe10Txt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             @__ctrl.ID = "Ufe10Txt";
             return @__ctrl;
         }
@@ -3189,7 +3189,7 @@ namespace TBYS_WebParts.YasalFaizWP {
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
             this.FaizOrani11Txt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             @__ctrl.ID = "FaizOrani11Txt";
             return @__ctrl;
         }
@@ -3218,7 +3218,7 @@ namespace TBYS_WebParts.YasalFaizWP {
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
             this.Tufe11Txt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             @__ctrl.ID = "Tufe11Txt";
             return @__ctrl;
         }
@@ -3247,7 +3247,7 @@ namespace TBYS_WebParts.YasalFaizWP {
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
             this.Ufe11Txt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             @__ctrl.ID = "Ufe11Txt";
             return @__ctrl;
         }
@@ -3413,7 +3413,7 @@ namespace TBYS_WebParts.YasalFaizWP {
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
             this.FaizOrani12Txt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             @__ctrl.ID = "FaizOrani12Txt";
             return @__ctrl;
         }
@@ -3442,7 +3442,7 @@ namespace TBYS_WebParts.YasalFaizWP {
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
             this.Tufe12Txt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             @__ctrl.ID = "Tufe12Txt";
             return @__ctrl;
         }
@@ -3471,7 +3471,7 @@ namespace TBYS_WebParts.YasalFaizWP {
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
             this.Ufe12Txt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             @__ctrl.ID = "Ufe12Txt";
             return @__ctrl;
         }

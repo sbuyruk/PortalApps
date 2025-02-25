@@ -131,7 +131,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
             BagislariBtn.Visible = true;
 
             BagisciMainPanel.Attributes["Class"] = "card";
-            TitleLbl.CssClass = "col-form-label text-danger font-weight-bold mb-1";
+            TitleLbl.CssClass = "col-form-label text-danger fw-bold mb-1";
 
             TitleLbl.Text = "Bağışçı Bilgisi Güncelleme";
 
@@ -152,7 +152,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
         {
 
             DisplayImage.ImageUrl = UtilityHelper.GetImageUrl(ProjeConstants.RESIMLER_BAGISCI) + "/_t/bagisci_jpg.jpg";
-            TitleLbl.CssClass = "col-form-label text-success font-weight-bold mb-1";
+            TitleLbl.CssClass = "col-form-label text-success fw-bold mb-1";
             TitleLbl.Text = "Taşınmaz Bağışçısı Girişi";
             SaveBtn.Visible = true;
             UpdateBtn.Visible = false;

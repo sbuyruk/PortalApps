@@ -96,7 +96,7 @@ namespace TBYS_WebParts.KiraSozlesmeSiralamaWP {
             this.TitleLbl = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-danger font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-danger fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Kira Sözleşme Sıralama";
             return @__ctrl;

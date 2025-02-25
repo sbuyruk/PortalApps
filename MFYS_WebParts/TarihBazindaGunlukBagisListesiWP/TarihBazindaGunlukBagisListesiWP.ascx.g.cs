@@ -115,7 +115,7 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP {
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "TitleLbl";
-            @__ctrl.CssClass = "col-form-label text-primary font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-primary fw-bold mb-1";
             @__ctrl.Text = "Tarih Bazında Günlük Bağışlar";
             return @__ctrl;
         }
@@ -209,7 +209,7 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "ToplamLbl";
-            @__ctrl.CssClass = "font-weight-bold float-end";
+            @__ctrl.CssClass = "fw-bold float-end";
             @__ctrl.Text = "Label";
             return @__ctrl;
         }
@@ -365,7 +365,7 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP {
             <div class=""form-group"">
                 <div class=""row"">
                     <div class=""col-2 form-group"">
-                        <label for=""BagisTarihiTxt"" class=""col-form-label font-weight-bold"">Bağış Tarihi: </label>
+                        <label for=""BagisTarihiTxt"" class=""col-form-label fw-bold"">Bağış Tarihi: </label>
                         "));
             global::System.Web.UI.WebControls.TextBox @__ctrl5;
             @__ctrl5 = this.@__BuildControlBagisTarihiTxt();

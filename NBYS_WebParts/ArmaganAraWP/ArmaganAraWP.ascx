@@ -41,7 +41,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <asp:Label CssClass="text-danger font-weight-bold" runat="server">Armağan Belge Numaraları Nisan 2018 tarihinde NBYS yazılımının devreye girmesinden itibaren düzenli olarak verilmektedir. 
+                <asp:Label CssClass="text-danger fw-bold" runat="server">Armağan Belge Numaraları Nisan 2018 tarihinde NBYS yazılımının devreye girmesinden itibaren düzenli olarak verilmektedir. 
                     Daha eski tarihli belgelere ait numaralar manüel verilmiştir ve farklılık gösterebilir.
                 </asp:Label>
             </div>

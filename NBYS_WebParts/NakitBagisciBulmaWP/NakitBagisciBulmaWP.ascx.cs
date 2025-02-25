@@ -280,7 +280,7 @@ namespace NBYS_WebParts.NakitBagisciBulmaWP
                 data: " + jsonData + @",
                 columns: [
                     { data: 'BagisTarihi' },
-                    { data: 'BagisMiktari', 'width': '10%', 'className': 'text-right' },
+                    { data: 'BagisMiktari', 'width': '10%', 'className': 'text-end' },
                     { data: 'Banka' },
                     { data: 'Armagan' },
                     { data: 'ArmaganTutari' },

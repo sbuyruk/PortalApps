@@ -253,7 +253,7 @@ namespace NBYS_WebParts.NakitBagisciListesiByYilAyWP
                         'order': [[2, 'desc'],[1, 'desc'],[0, 'desc']],//sort
                         'columnDefs': [
                             { targets: 0, className: 'btn-link'},
-                            { targets: 2, className: 'bolded text-right'},
+                            { targets: 2, className: 'bolded text-end'},
                             //{ 'width': '15%', 'targets': 0 },
                             //{ 'width': '25%', 'targets': 4 }
                         ],

@@ -164,7 +164,7 @@ namespace NBYS_WebParts.ArmaganListesiWP {
             this.TitleLbl = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-info font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-info fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Armağan Listesi";
             return @__ctrl;
@@ -836,9 +836,9 @@ namespace NBYS_WebParts.ArmaganListesiWP {
             @__w.Write("\').value = armaganId;\r\n        document.getElementById(\'");
                          @__w.Write( ModalDoldurBtn.ClientID);
 
-            @__w.Write("\').click();\r\n\n        var myModalInstance = bootstrap.Modal.getOrCreateInstance(d" +
-                    "ocument.getElementById(\'ModalUrlDiv\'));\n        myModalInstance.show();\r\n    }\r\n" +
-                    "    function CallButtonClick(armaganId) {\r\n        document.getElementById(\'");
+            @__w.Write("\').click();\r\n\r\n        var myModalInstance = bootstrap.Modal.getOrCreateInstance(" +
+                    "document.getElementById(\'ModalUrlDiv\'));\r\n        myModalInstance.show();\r\n    }" +
+                    "\r\n    function CallButtonClick(armaganId) {\r\n        document.getElementById(\'");
                          @__w.Write( paramArmaganIdLbl.ClientID);
 
             @__w.Write("\').value = armaganId;\r\n        document.getElementById(\'");

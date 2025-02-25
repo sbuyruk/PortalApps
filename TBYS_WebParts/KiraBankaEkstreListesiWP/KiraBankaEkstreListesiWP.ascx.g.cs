@@ -184,7 +184,7 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP {
             this.TitleLbl = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-danger font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-danger fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Kira Ekstre Aktarma";
             return @__ctrl;
@@ -1024,7 +1024,7 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP {
                     "\r\n                }\r\n            },\r\n            data: myjsons,\r\n            col" +
                     "umns: [\r\n                { data: \"SecKaydet\" },\r\n                { data: \"AdiSoy" +
                     "adi\", \"width\": \"15%\" },\r\n                { data: \"OdemeTarihi\", \"width\": \"10%\" }" +
-                    ",\r\n                { data: \"Tutar\", \"width\": \"10%\", \"className\": \"text-right\" }," +
+                    ",\r\n                { data: \"Tutar\", \"width\": \"10%\", \"className\": \"text-end\" }," +
                     "\r\n                { data: \"KiraciAdi\", \"width\": \"20%\", \"font-size\":\"small\" },\r\n " +
                     "               { data: \"OdemeSebebi\", \"font-size\":\"small\" },\r\n                { " +
                     "data: \"Aciklama\", \"width\": \"20%\",\"font-size\":\"small\" },\r\n                { data:" +

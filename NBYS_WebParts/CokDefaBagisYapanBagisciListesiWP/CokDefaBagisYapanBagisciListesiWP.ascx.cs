@@ -241,6 +241,8 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
         }
         private string CreateDataTable(string jsonData)
         {
+            string buttonHtml = "<button type=\"button\" class=\"btn btn-success\" onclick=\"OpenArmaganModal();\">Armağan Oluştur</button>" ;
+
             string tableString = @"
             jQuery(document).ready(function () {
 
@@ -272,6 +274,11 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
                     {
                     targets: 1, render: function(data, type, row, meta) {
                     var link= '<a href=# onclick=OpenModal('+row.NakitBagisciId+'); class=\'btn btn-link \'>'+(row.AdiSoyadi).trim() + '</a>';
+                    return link;
+                    }},
+                    {
+                    targets: 0, render: function(data, type, row, meta) {
+                    var link= '<a href=# onclick=OpenArmaganModal('+row.NakitBagisciId+'); class=\'btn btn-link \'>Armağan Oluştur</a>';
                     return link;
                     }},
                     { 'width': '30%', targets: [1,5] }
@@ -334,7 +341,8 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
 
-        }
+        }        
+       
         private void TabloModalOlustur(string nakitBagisciId)
         {
             var jsonData = GetModalDataJson(nakitBagisciId); //veri çekilip json a çeviriliyor
@@ -355,7 +363,7 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
                 data: " + jsonData + @",
                 columns: [
                     { data: 'BagisTarihi' },
-                    { data: 'BagisMiktari', 'width': '10%', 'className': 'text-right' },
+                    { data: 'BagisMiktari', 'width': '10%', 'className': 'text-end' },
                     { data: 'Banka' },
                     { data: 'Armagan' },
                     { data: 'ArmaganTutari' },
@@ -437,13 +445,17 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
             Page.Response.End();
 
         }
+        protected void ArmaganOlusturModalDoldurBtn_Click(object sender, EventArgs e)
+        {
+            NakitBagisciFormunuDoldur(paramNakitBagisciIdLbl.Value, BagisciTable1);
+        }
         protected void ModalDoldurBtn_Click(object sender, EventArgs e)
         {
             try
             {
 
                 TabloModalOlustur(paramNakitBagisciIdLbl.Value);
-                NakitBagisciFormunuDoldur(paramNakitBagisciIdLbl.Value);
+                NakitBagisciFormunuDoldur(paramNakitBagisciIdLbl.Value, BagisciTable);
                 UtilityHelper.ScriptCalistir("SetPageIndex();");
             }
             catch (Exception exception)
@@ -481,7 +493,7 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
                 exHelper.PublishException();
             }
         }
-        private void NakitBagisciFormunuDoldur(string nakitBagisciIdStr)
+        private void NakitBagisciFormunuDoldur(string nakitBagisciIdStr, Table bagisciTable)
         {
             if (!string.IsNullOrEmpty(nakitBagisciIdStr))
             {
@@ -528,7 +540,7 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
                     row.Controls.Add(IlIlceCell);
                     row.Controls.Add(TelefonCell);
                     row.Controls.Add(TuzelKisiCell);
-                    BagisciTable.Controls.Add(row);
+                    bagisciTable.Controls.Add(row);
 
                 }
             }

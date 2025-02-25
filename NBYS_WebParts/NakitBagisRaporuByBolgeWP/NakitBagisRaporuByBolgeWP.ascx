@@ -13,42 +13,40 @@
     }
 
 </script>
-<div class="container shadow">
+<div class="container ">
 
-    <div class="card">
+    <div class="card shadow">
         <div class="card-header">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-1">
-                <asp:Label CssClass="col-form-label btn-outline-info" runat="server" Text="Bölgelere Göre Nakit Bağış Raporu"></asp:Label>
-                <asp:Label CssClass="col-form-label text-secondary float-end" ID="EkranNo" Text="21" runat="server" ></asp:Label>
+                <asp:Label CssClass="col-form-label text-info fw-bold mb-1" runat="server" Text="Bölgelere Göre Nakit Bağış Raporu"></asp:Label>
             </h3>
         </div>
-        <div class="row mt-2 ">
-            <div class="form-group form-group-sm col-sm-3">
-                <div class="row">
-                    <label for="YilDDL" class="col-6 col-form-label text-right">Yıl</label>
-                    <div class="col-6">
-                        <asp:DropDownList ID="YilDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="YilDDL_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
-                    </div>
-                </div>
+        <div class="row m-2">
+            <div class="col-md-2 col-2">
+                <label for="YilDDL" class="form-label fw-semibold">Yıl</label>
+                <asp:DropDownList ID="YilDDL" runat="server" CssClass="form-select form-select-lg"
+                    OnSelectedIndexChanged="YilDDL_SelectedIndexChanged" AutoPostBack="true">
+                </asp:DropDownList>
             </div>
-         </div>
+        </div>
+
 
         <asp:UpdatePanel ID="upPanel" runat="server">
             <ContentTemplate>
                 <div class="card-body">
                     <asp:Table ID="NBTable" runat="server" class="loader table table-bordered table-hover table-striped">
                         <asp:TableHeaderRow HorizontalAlign="Center">
-                            <asp:TableCell ID="TableHeaderCell" runat="server" CssClass="btn-light font-weight-bold" ColumnSpan="13"></asp:TableCell>
+                            <asp:TableCell ID="TableHeaderCell" runat="server" CssClass="btn-light fw-bold" ColumnSpan="13"></asp:TableCell>
                         </asp:TableHeaderRow>
                         <asp:TableHeaderRow HorizontalAlign="Center">
-                            <asp:TableCell CssClass="btn-light font-weight-bold" RowSpan="2">Bölge</asp:TableCell>
-                            <asp:TableCell CssClass="btn-light font-weight-bold" ColumnSpan="2">Ankara Bölge</asp:TableCell>
-                            <asp:TableCell CssClass="btn-light font-weight-bold" ColumnSpan="2">İstanbul Bölge</asp:TableCell>
-                            <asp:TableCell CssClass="btn-light font-weight-bold" ColumnSpan="2">İzmir Bölge</asp:TableCell>
-                            <asp:TableCell CssClass="btn-light font-weight-bold" ColumnSpan="2">Mersin Bölge</asp:TableCell>
-                            <asp:TableCell CssClass="btn-light font-weight-bold" ColumnSpan="2">Yurtdışı</asp:TableCell>
-                            <asp:TableCell CssClass="btn-light font-weight-bold" ColumnSpan="2">Toplam</asp:TableCell>
+                            <asp:TableCell CssClass="btn-light fw-bold" RowSpan="2">Bölge</asp:TableCell>
+                            <asp:TableCell CssClass="btn-light fw-bold" ColumnSpan="2">Ankara Bölge</asp:TableCell>
+                            <asp:TableCell CssClass="btn-light fw-bold" ColumnSpan="2">İstanbul Bölge</asp:TableCell>
+                            <asp:TableCell CssClass="btn-light fw-bold" ColumnSpan="2">İzmir Bölge</asp:TableCell>
+                            <asp:TableCell CssClass="btn-light fw-bold" ColumnSpan="2">Mersin Bölge</asp:TableCell>
+                            <asp:TableCell CssClass="btn-light fw-bold" ColumnSpan="2">Yurtdışı</asp:TableCell>
+                            <asp:TableCell CssClass="btn-light fw-bold" ColumnSpan="2">Toplam</asp:TableCell>
 
                         </asp:TableHeaderRow>
                         <asp:TableHeaderRow HorizontalAlign="Center">

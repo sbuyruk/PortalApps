@@ -312,7 +312,7 @@ namespace TBYS_WebParts.TasinmazKartiWP
             headerRow.Controls.Add(TabloBaslikCell);
 
             TableHeaderRow headerRow1 = new TableHeaderRow();
-            headerRow1.CssClass = "font-weight-bold";
+            headerRow1.CssClass = "fw-bold";
             TableHeaderCell TabloBaslikCell1 = new TableHeaderCell();
             TabloBaslikCell1.ColumnSpan = 4;
             TabloBaslikCell1.Text = "(" + tasinmaz.KullanimSekli + ") " + tasinmaz.Adres + " " + tasinmaz.Ili + " " + tasinmaz.Ilcesi;

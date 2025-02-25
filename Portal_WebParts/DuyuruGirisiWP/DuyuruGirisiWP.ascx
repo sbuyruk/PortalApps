@@ -93,7 +93,7 @@
         <div class="card-header">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-2">
-                <asp:Label CssClass="col-form-label text-primary font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="Duyuru Girişi"></asp:Label>
+                <asp:Label CssClass="col-form-label text-primary fw-bold mb-1" ID="TitleLbl" runat="server" Text="Duyuru Girişi"></asp:Label>
                 <asp:Label CssClass="col-form-label text-white" ID="IdLbl" runat="server"></asp:Label>
                 <asp:Label CssClass="col-form-label " ID="AdiLbl" runat="server"></asp:Label>
             </h3>
@@ -105,7 +105,7 @@
                     <div class="card">
                         <div class="card-header text-center p-0">
 
-                                <label class="col-form-label font-weight-bold">Duyuru Bilgileri</label>
+                                <label class="col-form-label fw-bold">Duyuru Bilgileri</label>
 
                         </div>
 
@@ -151,7 +151,7 @@
                 </div>
                 <div class="col-5">
                     <div class="card">
-                        <div class="card-header text-center font-weight-bold p-0">
+                        <div class="card-header text-center fw-bold p-0">
                             <div class="form-group m-0 p-0">
                                 <label class="col-form-label">Duyuru Ayarları</label>
                             </div>
@@ -206,7 +206,7 @@
                         </div>
                     </div>
                     <div class="card">
-                        <div class="card-header text-center font-weight-bold p-0">
+                        <div class="card-header text-center fw-bold p-0">
                             <div class="form-group m-0 p-0">
                                 <label class="col-form-label">Duyuru Yapılacak Personel</label>
                             </div>

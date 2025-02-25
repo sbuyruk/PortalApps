@@ -150,7 +150,7 @@ namespace TBYS_WebParts.BagimsizBolumWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-danger font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-danger fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Bağımsız Bölüm";
             return @__ctrl;
@@ -284,7 +284,7 @@ namespace TBYS_WebParts.BagimsizBolumWP {
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("h3");
             this.BagimsizBolumHeaderLbl = @__ctrl;
             @__ctrl.TemplateControl = this;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-form-label font-weight-bold");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-form-label fw-bold");
             @__ctrl.ID = "BagimsizBolumHeaderLbl";
             return @__ctrl;
         }
@@ -297,7 +297,7 @@ namespace TBYS_WebParts.BagimsizBolumWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label font-weight-bold";
+            @__ctrl.CssClass = "col-form-label fw-bold";
             @__ctrl.Text = "Adres";
             return @__ctrl;
         }
@@ -327,7 +327,7 @@ namespace TBYS_WebParts.BagimsizBolumWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label font-weight-bold";
+            @__ctrl.CssClass = "col-form-label fw-bold";
             @__ctrl.Text = "Bölüm No";
             return @__ctrl;
         }
@@ -354,7 +354,7 @@ namespace TBYS_WebParts.BagimsizBolumWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label font-weight-bold";
+            @__ctrl.CssClass = "col-form-label fw-bold";
             @__ctrl.Text = "Nitelik";
             return @__ctrl;
         }
@@ -381,7 +381,7 @@ namespace TBYS_WebParts.BagimsizBolumWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label font-weight-bold";
+            @__ctrl.CssClass = "col-form-label fw-bold";
             @__ctrl.Text = "Açıklama";
             return @__ctrl;
         }

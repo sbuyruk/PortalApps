@@ -227,7 +227,7 @@ namespace TBYS_WebParts.TasinmazOnarimGirisiWP
                 row.Controls.Add(OnayTarihiCell);
 
                 TableCell TutarCell = new TableCell();
-                //TutarCell.Attributes = "text-right";
+                //TutarCell.Attributes = "text-end";
                 TutarCell.Text = onarim.Tutar.ToString("N", culturInfo);
                 row.Controls.Add(TutarCell);
 

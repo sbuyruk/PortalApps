@@ -23,8 +23,11 @@
         myModalInstance.show();
     }
     function CloseModal() {
-        $("#OnayModal").modal('hide');
-
+        var myModalEl = document.getElementById('OnayModal');
+        var modalInstance = bootstrap.Modal.getInstance(myModalEl);
+        if (modalInstance) {
+            modalInstance.hide();
+        }
     }
 
     function FaizTutariHesapla() {
@@ -52,7 +55,7 @@
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <asp:Image ID="AktifPasifImg" ClientIDMode="Static" runat="server" ImageUrl="../_layouts/19/images/TBYS_WebParts/belli-degil.png" CssClass="float-end" onerror="this.src='../TBYSResimleri/belli-degil.png';" />
             <h3 class="mb-2">
-                <asp:Label CssClass="col-form-label text-danger font-weight-bold" ID="TitleLbl" runat="server" Text="Kira Sözleşmesi"></asp:Label>
+                <asp:Label CssClass="col-form-label text-danger fw-bold" ID="TitleLbl" runat="server" Text="Kira Sözleşmesi"></asp:Label>
                 <asp:Label CssClass="col-form-label" ID="IdLbl" runat="server"></asp:Label>
                 <asp:Label CssClass="col-form-label " ID="AdiLbl" runat="server" style="display: block;"></asp:Label>
             </h3>
@@ -64,21 +67,21 @@
                         <div id="TasinmazListDiv" class="form-group col-5">
                             <div id="DevirDiv" runat="server" class="form-group border border-dark p-2">
                                 <div class="form-group border-bottom text-center">
-                                    <label class="col-form-label font-weight-bold" for="DevirAnaParaTxt">Devir</label>
+                                    <label class="col-form-label fw-bold" for="DevirAnaParaTxt">Devir</label>
                                 </div>
                                 <div class="row ">
                                     <div class="form-group col-3">
                                         <label class="col-form-label" for="DevirAnaParaTxt">AnaPara</label>
-                                        <input type="text" id="DevirAnaParaTxt" runat="server" class="form-control input-money text-right" tooltip="Önceki Sözleşmeden devreden borç (ana para)"
+                                        <input type="text" id="DevirAnaParaTxt" runat="server" class="form-control input-money text-end" tooltip="Önceki Sözleşmeden devreden borç (ana para)"
                                             onchange="FaizTutariHesapla()" onkeyup="FaizTutariHesapla()" oncut="FaizTutariHesapla()" onpaste="FaizTutariHesapla()" oninput="FaizTutariHesapla()" />
                                     </div>
                                     <div class="form-group col-3">
                                         <label class="col-form-label " for="DevirFaizTutariTxt">Faiz </label>
-                                        <asp:TextBox type="text" ID="DevirFaizTutariTxt" runat="server" CssClass="form-control input-money text-right bg-secondary" ToolTip="Önceki Sözleşmeden devreden faiz tutarı" />
+                                        <asp:TextBox type="text" ID="DevirFaizTutariTxt" runat="server" CssClass="form-control input-money text-end bg-secondary" ToolTip="Önceki Sözleşmeden devreden faiz tutarı" />
                                     </div>
                                     <div class="form-group col-3">
                                         <label class="col-form-label " for="DevirFaizliBakiyeTxt">FaizliBakiye</label>
-                                        <input type="text" id="DevirFaizliBakiyeTxt" runat="server" class="form-control input-money text-right" tooltip="Önceki Sözleşmeden devreden faizli bakiye"
+                                        <input type="text" id="DevirFaizliBakiyeTxt" runat="server" class="form-control input-money text-end" tooltip="Önceki Sözleşmeden devreden faizli bakiye"
                                             onchange="FaizTutariHesapla()" onkeyup="FaizTutariHesapla()" oncut="FaizTutariHesapla()" onpaste="FaizTutariHesapla()" oninput="FaizTutariHesapla()" />
                                     </div>
                                     <div class="form-group col-3">
@@ -112,7 +115,7 @@
                             </div>
                             <div class="form-group border border-dark p-2" style="background-color: aliceblue">
                                 <div class="form-group">
-                                    <asp:Label CssClass="col-form-label font-weight-bold" ID="Label3" runat="server">Sözleşme Formu</asp:Label>
+                                    <asp:Label CssClass="col-form-label fw-bold" ID="Label3" runat="server">Sözleşme Formu</asp:Label>
                                 </div>
                                 <div class="form-group text-center">
                                     <a id="DosyaLnk" runat="server" class="btn btn-outline-primary" data-fancybox data-type="pdf" data-width="960" data-height="720" href="#">Sözleşmeyi Görüntüle
@@ -157,7 +160,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="col-form-label" for="KiraBedeliTxt">Kira Bedeli</label>
-                                        <input class="form-control input-money text-right " id="KiraBedeliTxt" runat="server" />
+                                        <input class="form-control input-money text-end " id="KiraBedeliTxt" runat="server" />
                                     </div>
                                     <div class="form-group">
                                         <label class="col-form-label" for="ArtisAyiTxt">Artış Ayı</label>
@@ -173,11 +176,11 @@
                                             </div>
                                             <div class="form-group">
                                                 <label class="col-form-label" for="TeminatTutariTxt">Belirlenen Teminat</label>
-                                                <input class="form-control input-money text-right" id="TeminatTutariTxt" runat="server" readonly="readonly" />
+                                                <input class="form-control input-money text-end" id="TeminatTutariTxt" runat="server" readonly="readonly" />
                                             </div>
                                             <div class="form-group">
                                                 <label class="col-form-label" for="IadeTeminatTutariTxt">İade-Mahsup</label>
-                                                <input class="form-control input-money text-right" id="IadeTeminatTutariTxt" runat="server" readonly="readonly" />
+                                                <input class="form-control input-money text-end" id="IadeTeminatTutariTxt" runat="server" readonly="readonly" />
                                             </div>
                                         </div>
                                         <div class="form-group col-6 ">
@@ -187,11 +190,11 @@
                                             </div>
                                             <div class="form-group">
                                                 <label class="col-form-label" for="OdenenTeminatTutariTxt">Ödenen Teminat</label>
-                                                <input class="form-control input-money text-right" id="OdenenTeminatTutariTxt" runat="server" readonly="readonly" />
+                                                <input class="form-control input-money text-end" id="OdenenTeminatTutariTxt" runat="server" readonly="readonly" />
                                             </div>
                                             <div class="form-group">
                                                 <label class="col-form-label" for="KalanTeminatTutariTxt">Kalan Teminat</label>
-                                                <input class="form-control input-money text-right" id="KalanTeminatTutariTxt" runat="server" readonly="readonly" />
+                                                <input class="form-control input-money text-end" id="KalanTeminatTutariTxt" runat="server" readonly="readonly" />
                                             </div>
 
                                         </div>

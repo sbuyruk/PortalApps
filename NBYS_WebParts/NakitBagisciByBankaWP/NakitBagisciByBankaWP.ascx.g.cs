@@ -110,7 +110,7 @@ namespace NBYS_WebParts.NakitBagisciByBankaWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label  btn-outline-success mb-1";
+            @__ctrl.CssClass = "col-form-label text-info fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Banka Bazlı Bağışçı Listesi (Eski-Yeni)";
             return @__ctrl;
@@ -149,7 +149,7 @@ namespace NBYS_WebParts.NakitBagisciByBankaWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "AyDDL";
-            @__ctrl.CssClass = "form-control";
+            @__ctrl.CssClass = "form-select form-select-lg";
             @__ctrl.AutoPostBack = true;
             @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.AyDDL_SelectedIndexChanged);
             @__ctrl.SelectedIndexChanged += new System.EventHandler(this.AyDDL_SelectedIndexChanged);
@@ -166,7 +166,7 @@ namespace NBYS_WebParts.NakitBagisciByBankaWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "YilDDL";
-            @__ctrl.CssClass = "form-control";
+            @__ctrl.CssClass = "form-select form-select-lg";
             @__ctrl.AutoPostBack = true;
             @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.YilDDL_SelectedIndexChanged);
             @__ctrl.SelectedIndexChanged += new System.EventHandler(this.YilDDL_SelectedIndexChanged);
@@ -192,29 +192,19 @@ namespace NBYS_WebParts.NakitBagisciByBankaWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControl__control3(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-                            <div class=""card-body p-0"">
-                                <div class=""row m-2"">
-                                    <div class=""input-group col-4 row"">
-                                        <label for=""AyDDL"" class=""col-form-label col-3"">Ay</label>
-                                        <div class=""col-8"">
-                                            "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            <div class=\"card-body p-0\">\r\n<div class=\"row m-2\">\r" +
+                        "\n    <!-- Ay Seçimi -->\r\n    <div class=\"col-2\">\r\n        <label for=\"AyDDL\" cla" +
+                        "ss=\"form-label fw-semibold\">Ay</label>\r\n        "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl1;
             @__ctrl1 = this.@__BuildControlAyDDL();
             @__parser.AddParsedSubObject(@__ctrl1);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-                                        </div>
-                                    </div>
-                                    <div class=""input-group col-4 row"">
-                                        <label for=""YilDDL"" class=""col-form-label col-3"">Yıl</label>
-                                        <div class=""col-8"">
-                                            "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n    </div>\r\n\r\n    <!-- Yıl Seçimi -->\r\n    <div class=\"col-2\">\r\n        <label " +
+                        "for=\"YilDDL\" class=\"form-label fw-semibold\">Yıl</label>\r\n        "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl2;
             @__ctrl2 = this.@__BuildControlYilDDL();
             @__parser.AddParsedSubObject(@__ctrl2);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                        </div>\r\n                               " +
-                        "     </div>\r\n                                </div>\r\n                           " +
-                        "     <div class=\"table loader\">\r\n                                    "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n    </div>\r\n</div>\r\n\r\n                                <div class=\"table loader\"" +
+                        ">\r\n                                    "));
             global::System.Web.UI.WebControls.Table @__ctrl3;
             @__ctrl3 = this.@__BuildControlNakitBagisciTable();
             @__parser.AddParsedSubObject(@__ctrl3);
@@ -258,7 +248,7 @@ namespace NBYS_WebParts.NakitBagisciByBankaWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControl__control2(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            <div class=\"card\">\r\n                "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            <div class=\"card shadow\">\r\n                "));
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl1;
             @__ctrl1 = this.@__BuildControlCardHeader();
             @__parser.AddParsedSubObject(@__ctrl1);
@@ -331,7 +321,7 @@ namespace NBYS_WebParts.NakitBagisciByBankaWP {
                         "equestManager.getInstance();\r\n    if (prm != null) {\r\n        prm.add_endRequest" +
                         "(function (sender, e) {\r\n            if (sender._postBackSettings.panelsToUpdate" +
                         " != null) {\r\n                SetDatePicker();\r\n            }\r\n        });\r\n    }" +
-                        ";\r\n\r\n</script>\r\n<div class=\"container shadow\">\r\n    "));
+                        ";\r\n\r\n</script>\r\n<div class=\"container \">\r\n    "));
             global::System.Web.UI.UpdatePanel @__ctrl1;
             @__ctrl1 = this.@__BuildControlTableUpdatePanel();
             @__parser.AddParsedSubObject(@__ctrl1);

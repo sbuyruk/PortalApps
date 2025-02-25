@@ -32,30 +32,6 @@ namespace TBYS_WebParts.TeminatListesiWP
             InitializeControl();
             this.ChromeType = PartChromeType.None;
         }
-        private string AuthQS
-        {
-            get
-            {
-
-                if (ViewState["Auth"]==null || string.IsNullOrEmpty(ViewState["Auth"].ToString()))
-                {
-                    if (Page.Request.QueryString["Auth"] != null)
-                    {
-                        ViewState["Auth"] = Page.Request.QueryString["Auth"];
-                    }
-                    else
-                    {
-                        ViewState["Auth"] = string.Empty;
-                    }
-                }
-                return ViewState["Auth"].ToString();
-            }
-
-            set
-            {
-                ViewState["Auth"] = value;
-            }
-        }
         private string KiraciIdQS
         {
             get
@@ -80,12 +56,62 @@ namespace TBYS_WebParts.TeminatListesiWP
                 ViewState["KiraciId"] = value;
             }
         }
+        private int BolgeIdQS
+        {
+            get
+            {
+
+                if (ViewState["BolgeId"] == null)
+                {
+                    if (Page.Request.QueryString["BolgeId"] != null)
+                    {
+                        ViewState["BolgeId"] = Page.Request.QueryString["BolgeId"];
+                    }
+                    else
+                    {
+                        ViewState["BolgeId"] = string.Empty;
+                    }
+                }
+                return ViewState["BolgeId"].ReturnZeroIfNull().ConvertToInt();
+            }
+
+            set
+            {
+                ViewState["BolgeId"] = value;
+            }
+        }
+        private string CurrentUserName
+        {
+            get
+            {
+
+                if (ViewState["CurrentUserName"] == null)
+                {
+                    ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUserLoginName();
+                }
+                return ViewState["CurrentUserName"].ToString();
+            }
+
+            set
+            {
+                ViewState["CurrentUserName"] = value;
+            }
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
                 if (!Page.IsPostBack)
                 {
+                    Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
+                    BolgeIdQS = bolge == null ? 0 : bolge.Id;
+                    TitleLbl.Text = "Taahhüt Listesi";
+                    if (BolgeIdQS != ProjeConstants.BOLGE_HEPSI_INT && BolgeIdQS != ProjeConstants.BOLGE_GENELMUDURLUK_INT)
+                    {
+                        Bolge bolgeDao = new Bolge();
+                        bolgeDao = bolgeDao.Select(bolge.Id);
+                        TitleLbl.Text = bolgeDao == null ? "Teminat Listesi" : "Teminat Listesi" + " (" + bolge.KisaAdi + " Bölgesi )";
+                    }
                     TabloOlustur();
                 }
             }
@@ -122,9 +148,6 @@ namespace TBYS_WebParts.TeminatListesiWP
         }
         private string CreateDataTable(string jsonData)
         {
-            string duzenleGorunsun = string.IsNullOrEmpty(AuthQS) || !AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM)
-                ? "{ targets:9, visible:false},{ targets:10, visible:false},"
-                : "{ targets:9, visible:true},{ targets:10, visible:true},";
 
             string tableString = @"
         jQuery(document).ready(function () {
@@ -146,10 +169,6 @@ namespace TBYS_WebParts.TeminatListesiWP
 
                 ],
                 'order': [[0, 'asc']],//AdiSoyadi Sıralı
-                columnDefs:
-                [
-                " + duzenleGorunsun + @"
-                ],
                 'language': {
                         'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                     'decimal': ',',
@@ -296,7 +315,7 @@ namespace TBYS_WebParts.TeminatListesiWP
         private DataTable GetData()
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
-            DataTable dataTable = kiraSozlesme.SelectKiraSozlesmeListReturnDT(KiraciIdQS.ConvertToInt(), ProjeConstants.KIRASOZLESME_AKTIF_INT,ProjeConstants.BOLGE_HEPSI_INT);
+            DataTable dataTable = kiraSozlesme.SelectKiraSozlesmeListReturnDT(KiraciIdQS.ConvertToInt(), ProjeConstants.KIRASOZLESME_AKTIF_INT,BolgeIdQS);
             return dataTable;
         }
 

@@ -29,7 +29,7 @@
         <div class="card-header ">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-1">
-                <asp:Label CssClass="col-form-label text-danger font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="Bağışçi Talepleri"></asp:Label>
+                <asp:Label CssClass="col-form-label text-danger fw-bold mb-1" ID="TitleLbl" runat="server" Text="Bağışçi Talepleri"></asp:Label>
                 <asp:Label ID="BagisciIdLbl" runat="server" CssClass="col-form-label text-white" Visible="false"></asp:Label>
                 <asp:Label ID="AdiLbl" runat="server" CssClass="col-form-label"></asp:Label>
             </h3>
@@ -37,7 +37,7 @@
         <div class="card-body">
             <div class="card">
                 <h4>
-                    <asp:Label ID="TalepTableLbl" runat="server" class="col-form-label font-weight-bold">Bağışçının Talepleri</asp:Label>
+                    <asp:Label ID="TalepTableLbl" runat="server" class="col-form-label fw-bold">Bağışçının Talepleri</asp:Label>
                 </h4>
                 <div class="table" >
                     <a href="#" onclick="OpenModalTalep(0);" class="btn btn-outline-success m-1">Talep Ekle</a>
@@ -69,19 +69,19 @@
                         </div>
                         <div class="form-group">
                             <div class="form-group">
-                                <label class="col-form-label font-weight-bold" for="TalepTxt">Talep</label>
+                                <label class="col-form-label fw-bold" for="TalepTxt">Talep</label>
                                 <asp:TextBox ID="TalepTxt" runat="server" class="form-control" ToolTip="Adı" type="text"></asp:TextBox>
                             </div>
                             <div class="form-group">
-                                <label class="col-form-label font-weight-bold" for="IrtibatTxt">İrtibat</label>
+                                <label class="col-form-label fw-bold" for="IrtibatTxt">İrtibat</label>
                                 <asp:TextBox ID="IrtibatTxt" runat="server" class="form-control " ToolTip="Soyadı" type="text"></asp:TextBox>
                             </div>
                             <div class="form-group">
-                                <label class="col-form-label font-weight-bold" for="AdiTxt">Zamanı</label>
+                                <label class="col-form-label fw-bold" for="AdiTxt">Zamanı</label>
                                 <asp:TextBox ID="TarihTxt" runat="server" class="form-control" type="text"></asp:TextBox>
                             </div>
                             <div class="form-group">
-                                <label class="col-form-label font-weight-bold" for="TalepAciklamaTxt">Açıklama</label>
+                                <label class="col-form-label fw-bold" for="TalepAciklamaTxt">Açıklama</label>
                                 <asp:TextBox ID="TalepAciklamaTxt" runat="server" class="form-control small" TextMode="MultiLine" Rows="3" ToolTip="Talep Açıklaması"></asp:TextBox>
                             </div>
                         </div>

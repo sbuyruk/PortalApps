@@ -526,7 +526,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "TutarTlTxt";
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
             return @__ctrl;
         }
@@ -574,7 +574,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP {
             this.DovizTutariTxt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "DovizTutariTxt";
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             @__ctrl.AutoPostBack = true;
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
             @__ctrl.TextChanged -= new System.EventHandler(this.HesaplaBtn_Click);
@@ -591,7 +591,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP {
             this.DovizKuruTxt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "DovizKuruTxt";
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             @__ctrl.AutoPostBack = true;
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
             @__ctrl.TextChanged -= new System.EventHandler(this.HesaplaBtn_Click);
@@ -622,7 +622,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP {
             this.HesaplananTlLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "HesaplananTlLbl";
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
             @__ctrl.Enabled = false;
             return @__ctrl;

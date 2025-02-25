@@ -67,7 +67,7 @@ namespace Model.TBYS
         public string HisseMiktariPay { get; set; }
         public string HisseMiktariPayda { get; set; }
         public string ToplamKatSayisi { get; set; }
-        public string Metrekare { get; set; }
+        public decimal Metrekare { get; set; }
         public string TapuTasinmazNo { get; set; }
         public string InsaYili { get; set; }
         public string KirayaUygunluk { get; set; }

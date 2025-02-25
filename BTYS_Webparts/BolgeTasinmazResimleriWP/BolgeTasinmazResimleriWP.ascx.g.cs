@@ -166,7 +166,7 @@ namespace BTYS_Webparts.BolgeTasinmazResimleriWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-danger font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-danger fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Taşınmaz Resimleri";
             return @__ctrl;
@@ -381,7 +381,7 @@ namespace BTYS_Webparts.BolgeTasinmazResimleriWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.Label2 = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label font-weight-bold";
+            @__ctrl.CssClass = "col-form-label fw-bold";
             @__ctrl.ID = "Label2";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Emlak Beyanı (pdf)"));
@@ -415,7 +415,7 @@ namespace BTYS_Webparts.BolgeTasinmazResimleriWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.Label1 = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label font-weight-bold";
+            @__ctrl.CssClass = "col-form-label fw-bold";
             @__ctrl.ID = "Label1";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Yapı Kayıt Belgesi (pdf)"));
@@ -449,7 +449,7 @@ namespace BTYS_Webparts.BolgeTasinmazResimleriWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.Label3 = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label font-weight-bold";
+            @__ctrl.CssClass = "col-form-label fw-bold";
             @__ctrl.ID = "Label3";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Tapu Kayıt Belgesi (pdf)"));
@@ -483,7 +483,7 @@ namespace BTYS_Webparts.BolgeTasinmazResimleriWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.Label4 = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label font-weight-bold";
+            @__ctrl.CssClass = "col-form-label fw-bold";
             @__ctrl.ID = "Label4";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("İmar Durumu Belgesi (pdf)"));

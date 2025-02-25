@@ -184,7 +184,7 @@ namespace NBYS_WebParts.BagisIadesiWP
                 data: " + jsonData + @",
                 columns: [
                     { data: 'BagisciAdi' },
-                    { data: 'BagisMiktari', 'width': '10%', 'className': 'text-right' },
+                    { data: 'BagisMiktari', 'width': '10%', 'className': 'text-end' },
                     { data: 'BagisTarihi' },
                     { data: 'Armagan' },
                     { data: 'Durum' },
@@ -308,7 +308,7 @@ namespace NBYS_WebParts.BagisIadesiWP
                 data: " + jsonData + @",
                 columns: [
                     { data: 'BagisTarihi' },
-                    { data: 'BagisMiktari', 'width': '10%', 'className': 'text-right' },
+                    { data: 'BagisMiktari', 'width': '10%', 'className': 'text-end' },
                     { data: 'Banka' },
                     { data: 'Armagan' },
                     { data: 'ArmaganTutari' },

@@ -279,7 +279,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-danger font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-danger fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Ödeme Planı";
             return @__ctrl;
@@ -459,7 +459,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "text-right";
+            @__ctrl.CssClass = "text-end";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Kira"));
             return @__ctrl;
@@ -472,7 +472,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "text-right";
+            @__ctrl.CssClass = "text-end";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Ödenen"));
             return @__ctrl;
@@ -485,7 +485,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "text-right";
+            @__ctrl.CssClass = "text-end";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Anapara"));
             return @__ctrl;
@@ -498,7 +498,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "text-right";
+            @__ctrl.CssClass = "text-end";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Faiz Oranı "));
             return @__ctrl;
@@ -511,7 +511,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "text-right";
+            @__ctrl.CssClass = "text-end";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Faiz Tutarı"));
             return @__ctrl;
@@ -524,7 +524,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "text-right";
+            @__ctrl.CssClass = "text-end";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Faizli Bakiye"));
             return @__ctrl;
@@ -665,7 +665,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
             this.OdenenTutarTxt = @__ctrl;
             @__ctrl.ID = "OdenenTutarTxt";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-right");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-end");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onchange", "OdeBtnEnable()");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onkeyup", "OdeBtnEnable()");
@@ -1147,7 +1147,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "PopupMesajLbl";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-form-label text-danger font-weight-bold");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-form-label text-danger fw-bold");
             @__ctrl.Text = "";
             return @__ctrl;
         }
@@ -1215,7 +1215,7 @@ namespace TBYS_WebParts.OdemePlaniWP {
             this.YeniKiraBedeliTxt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "YeniKiraBedeliTxt";
-            @__ctrl.CssClass = "form-control input-money text-right col-3 m-1";
+            @__ctrl.CssClass = "form-control input-money text-end col-3 m-1";
             return @__ctrl;
         }
         

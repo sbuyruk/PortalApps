@@ -245,7 +245,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
             this.TitleLbl = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-warning font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-warning fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "FTK İşlemleri";
             return @__ctrl;
@@ -699,7 +699,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
             @__ctrl.ID = "KayitDuzeltmeDiv";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "display: none");
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                <label class=\"col-form-label font-weight-bold\">" +
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                <label class=\"col-form-label fw-bold\">" +
                         "\r\n                                    "));
             global::System.Web.UI.WebControls.CheckBox @__ctrl1;
             @__ctrl1 = this.@__BuildControlKayitDuzeltmesiChk();
@@ -892,7 +892,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label font-weight-bold";
+            @__ctrl.CssClass = "col-form-label fw-bold";
             @__ctrl.Text = "Fahri Tanıtım Kurulu Listesi";
             return @__ctrl;
         }
@@ -1261,7 +1261,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-from-label font-weight-bold";
+            @__ctrl.CssClass = "col-from-label fw-bold";
             @__ctrl.Text = "FTK Kuruluş Tarihi";
             return @__ctrl;
         }
@@ -1286,7 +1286,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-from-label font-weight-bold";
+            @__ctrl.CssClass = "col-from-label fw-bold";
             @__ctrl.Text = "FTK Guncelleme Tarihi";
             return @__ctrl;
         }

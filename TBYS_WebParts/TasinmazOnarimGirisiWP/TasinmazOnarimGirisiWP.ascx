@@ -11,7 +11,7 @@
                 <div class="card-header" id="CardHeader" runat="server">
                     <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
                     <h3 class="mb-2">
-                        <asp:Label CssClass="col-form-label text-danger font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="Taşınmaz Onarımları"></asp:Label>
+                        <asp:Label CssClass="col-form-label text-danger fw-bold mb-1" ID="TitleLbl" runat="server" Text="Taşınmaz Onarımları"></asp:Label>
                         <asp:Label CssClass="col-form-label" ID="IdLbl" runat="server"></asp:Label>
                         <asp:Label CssClass="col-form-label " ID="AdiLbl" runat="server"></asp:Label>
                     </h3>
@@ -21,14 +21,14 @@
                 <ContentTemplate>
                     <asp:Table ID="OnarimTable" runat="server" class="table table-hover table-sm border-bottom">
                         <asp:TableHeaderRow>
-                            <asp:TableCell ID="HeaderCell0" CssClass="font-weight-bold">Sıra</asp:TableCell>
-                            <asp:TableCell ID="HeaderCell1" CssClass="font-weight-bold" Visible="false"></asp:TableCell>
-                            <asp:TableCell ID="HeaderCell2" CssClass="font-weight-bold" Visible="false"></asp:TableCell>
-                            <asp:TableCell ID="HeaderCell3" CssClass="font-weight-bold" Visible="false"></asp:TableCell>
-                            <asp:TableCell ID="HeaderCell4" CssClass="font-weight-bold" Visible="false"></asp:TableCell>
-                            <asp:TableCell ID="HeaderCell5" CssClass="font-weight-bold" Visible="false"></asp:TableCell>
-                            <asp:TableCell ID="HeaderCell6" CssClass="font-weight-bold" Visible="false"></asp:TableCell>
-                            <asp:TableCell ID="HeaderCell7" CssClass="font-weight-bold" Visible="false"></asp:TableCell>
+                            <asp:TableCell ID="HeaderCell0" CssClass="fw-bold">Sıra</asp:TableCell>
+                            <asp:TableCell ID="HeaderCell1" CssClass="fw-bold" Visible="false"></asp:TableCell>
+                            <asp:TableCell ID="HeaderCell2" CssClass="fw-bold" Visible="false"></asp:TableCell>
+                            <asp:TableCell ID="HeaderCell3" CssClass="fw-bold" Visible="false"></asp:TableCell>
+                            <asp:TableCell ID="HeaderCell4" CssClass="fw-bold" Visible="false"></asp:TableCell>
+                            <asp:TableCell ID="HeaderCell5" CssClass="fw-bold" Visible="false"></asp:TableCell>
+                            <asp:TableCell ID="HeaderCell6" CssClass="fw-bold" Visible="false"></asp:TableCell>
+                            <asp:TableCell ID="HeaderCell7" CssClass="fw-bold" Visible="false"></asp:TableCell>
                             <asp:TableCell ID="HeaderCell9" ></asp:TableCell>
                         </asp:TableHeaderRow>
                     </asp:Table>

@@ -466,7 +466,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-success font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-success fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "İzin Talebi Girişi";
             return @__ctrl;
@@ -1028,7 +1028,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.KalanIzinLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label font-weight-bold";
+            @__ctrl.CssClass = "col-form-label fw-bold";
             @__ctrl.ID = "KalanIzinLbl";
             @__ctrl.Text = "";
             return @__ctrl;

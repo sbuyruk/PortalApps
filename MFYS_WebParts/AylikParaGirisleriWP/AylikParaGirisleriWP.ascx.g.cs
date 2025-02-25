@@ -115,7 +115,7 @@ namespace MFYS_WebParts.AylikParaGirisleriWP {
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "TitleLbl";
-            @__ctrl.CssClass = "col-form-label text-primary font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-primary fw-bold mb-1";
             @__ctrl.Text = "Aylık Para Girişi (Vakıfbank 4845)";
             return @__ctrl;
         }
@@ -208,7 +208,7 @@ namespace MFYS_WebParts.AylikParaGirisleriWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "ToplamLbl";
-            @__ctrl.CssClass = "col-form-label font-weight-bold float-end";
+            @__ctrl.CssClass = "col-form-label fw-bold float-end";
             @__ctrl.Text = "";
             return @__ctrl;
         }
@@ -369,13 +369,13 @@ namespace MFYS_WebParts.AylikParaGirisleriWP {
             <div class=""form-group"">
                 <div class=""row"">
                     <div class=""col-2"">
-                        <label for=""AyDDL"" class=""col-form-label font-weight-bold"">Bağış Ayı: </label>
+                        <label for=""AyDDL"" class=""col-form-label fw-bold"">Bağış Ayı: </label>
                         "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl5;
             @__ctrl5 = this.@__BuildControlAyDDL();
             @__parser.AddParsedSubObject(@__ctrl5);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                    <div class=\"col-2\">\r\n          " +
-                        "              <label for=\"YilDDL\" class=\"col-form-label font-weight-bold\">Bağış " +
+                        "              <label for=\"YilDDL\" class=\"col-form-label fw-bold\">Bağış " +
                         "Yılı: </label>\r\n                        "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl6;
             @__ctrl6 = this.@__BuildControlYilDDL();

@@ -45,10 +45,6 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.Label EkranNo;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.DropDownList YilDDL;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -101,22 +97,8 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label btn-outline-info";
+            @__ctrl.CssClass = "col-form-label text-info fw-bold mb-1";
             @__ctrl.Text = "Bölgelere Göre Nakit Bağış Raporu";
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControlEkranNo() {
-            global::System.Web.UI.WebControls.Label @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.Label();
-            this.EkranNo = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-secondary float-end";
-            @__ctrl.ID = "EkranNo";
-            @__ctrl.Text = "21";
             return @__ctrl;
         }
         
@@ -129,7 +111,7 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP {
             this.YilDDL = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "YilDDL";
-            @__ctrl.CssClass = "form-control";
+            @__ctrl.CssClass = "form-select form-select-lg";
             @__ctrl.AutoPostBack = true;
             @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.YilDDL_SelectedIndexChanged);
             @__ctrl.SelectedIndexChanged += new System.EventHandler(this.YilDDL_SelectedIndexChanged);
@@ -145,7 +127,7 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP {
             this.TableHeaderCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "TableHeaderCell";
-            @__ctrl.CssClass = "btn-light font-weight-bold";
+            @__ctrl.CssClass = "btn-light fw-bold";
             @__ctrl.ColumnSpan = 13;
             return @__ctrl;
         }
@@ -178,7 +160,7 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn-light font-weight-bold";
+            @__ctrl.CssClass = "btn-light fw-bold";
             @__ctrl.RowSpan = 2;
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Bölge"));
@@ -192,7 +174,7 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn-light font-weight-bold";
+            @__ctrl.CssClass = "btn-light fw-bold";
             @__ctrl.ColumnSpan = 2;
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Ankara Bölge"));
@@ -206,7 +188,7 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn-light font-weight-bold";
+            @__ctrl.CssClass = "btn-light fw-bold";
             @__ctrl.ColumnSpan = 2;
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("İstanbul Bölge"));
@@ -220,7 +202,7 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn-light font-weight-bold";
+            @__ctrl.CssClass = "btn-light fw-bold";
             @__ctrl.ColumnSpan = 2;
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("İzmir Bölge"));
@@ -234,7 +216,7 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn-light font-weight-bold";
+            @__ctrl.CssClass = "btn-light fw-bold";
             @__ctrl.ColumnSpan = 2;
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Mersin Bölge"));
@@ -248,7 +230,7 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn-light font-weight-bold";
+            @__ctrl.CssClass = "btn-light fw-bold";
             @__ctrl.ColumnSpan = 2;
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Yurtdışı"));
@@ -262,7 +244,7 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn-light font-weight-bold";
+            @__ctrl.CssClass = "btn-light fw-bold";
             @__ctrl.ColumnSpan = 2;
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Toplam"));
@@ -645,9 +627,9 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP {
     }
 
 </script>
-<div class=""container shadow"">
+<div class=""container "">
 
-    <div class=""card"">
+    <div class=""card shadow"">
         <div class=""card-header"">
             "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl1;
@@ -657,35 +639,24 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP {
             global::System.Web.UI.WebControls.Label @__ctrl2;
             @__ctrl2 = this.@__BuildControl__control2();
             @__parser.AddParsedSubObject(@__ctrl2);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                "));
-            global::System.Web.UI.WebControls.Label @__ctrl3;
-            @__ctrl3 = this.@__BuildControlEkranNo();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            </h3>\r\n        </div>\r\n        <div class=\"row m-2\">\r\n            <" +
+                        "div class=\"col-md-2 col-2\">\r\n                <label for=\"YilDDL\" class=\"form-lab" +
+                        "el fw-semibold\">Yıl</label>\r\n                "));
+            global::System.Web.UI.WebControls.DropDownList @__ctrl3;
+            @__ctrl3 = this.@__BuildControlYilDDL();
             @__parser.AddParsedSubObject(@__ctrl3);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-            </h3>
-        </div>
-        <div class=""row mt-2 "">
-            <div class=""form-group form-group-sm col-sm-3"">
-                <div class=""row"">
-                    <label for=""YilDDL"" class=""col-6 col-form-label text-right"">Yıl</label>
-                    <div class=""col-6"">
-                        "));
-            global::System.Web.UI.WebControls.DropDownList @__ctrl4;
-            @__ctrl4 = this.@__BuildControlYilDDL();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            </div>\r\n        </div>\r\n\r\n\r\n        "));
+            global::System.Web.UI.UpdatePanel @__ctrl4;
+            @__ctrl4 = this.@__BuildControlupPanel();
             @__parser.AddParsedSubObject(@__ctrl4);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                </div>\r\n            </div>\r\n       " +
-                        "  </div>\r\n\r\n        "));
-            global::System.Web.UI.UpdatePanel @__ctrl5;
-            @__ctrl5 = this.@__BuildControlupPanel();
-            @__parser.AddParsedSubObject(@__ctrl5);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n        <div class=\"card-footer\">\r\n            "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl6;
-            @__ctrl6 = this.@__BuildControlExcelBtn();
-            @__parser.AddParsedSubObject(@__ctrl6);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl5;
+            @__ctrl5 = this.@__BuildControlExcelBtn();
+            @__parser.AddParsedSubObject(@__ctrl5);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n        </div>\r\n    </div>\r\n\r\n"));
-            global::System.Web.UI.UpdateProgress @__ctrl7;
-            @__ctrl7 = this.@__BuildControlupdateProgress();
-            @__parser.AddParsedSubObject(@__ctrl7);
+            global::System.Web.UI.UpdateProgress @__ctrl6;
+            @__ctrl6 = this.@__BuildControlupdateProgress();
+            @__parser.AddParsedSubObject(@__ctrl6);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n</div>\r\n"));
         }
         

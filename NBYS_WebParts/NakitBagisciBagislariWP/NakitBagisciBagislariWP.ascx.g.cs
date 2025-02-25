@@ -252,7 +252,7 @@ namespace NBYS_WebParts.NakitBagisciBagislariWP {
             this.BagisciAdiLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "BagisciAdiLbl";
-            @__ctrl.CssClass = "font-weight-bold";
+            @__ctrl.CssClass = "fw-bold";
             @__ctrl.Text = "Label";
             return @__ctrl;
         }

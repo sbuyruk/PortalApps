@@ -162,7 +162,7 @@ namespace NBYS_WebParts.NakitBagisciAdresListesiWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-info font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-info fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Nakit Bağışçı Adresleri (Belge Verilen)";
             return @__ctrl;
@@ -217,7 +217,7 @@ namespace NBYS_WebParts.NakitBagisciAdresListesiWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "BagisciSayisiTxt";
             @__ctrl.AutoPostBack = true;
-            @__ctrl.CssClass = "form-control input-integerOnly text-right";
+            @__ctrl.CssClass = "form-control input-integerOnly text-end";
             @__ctrl.TextChanged -= new System.EventHandler(this.BagisTarihiTxt_TextChanged);
             @__ctrl.TextChanged += new System.EventHandler(this.BagisTarihiTxt_TextChanged);
             return @__ctrl;
@@ -803,7 +803,7 @@ namespace NBYS_WebParts.NakitBagisciAdresListesiWP {
                     <div class=""row border border-dark pt-2 bg-light"">
                         <div class=""col-5 form-group row"">
                             <div class=""col form-group"">
-                                <label for=""BagisciSayisiTxt"" class=""col-form-label font-weight-bold"">Bağışçı Say.: </label>
+                                <label for=""BagisciSayisiTxt"" class=""col-form-label fw-bold"">Bağışçı Say.: </label>
                                 ");
             parameterContainer.Controls[1].RenderControl(@__w);
             @__w.Write("\r\n                            </div>\r\n                            <div class=\"col" +

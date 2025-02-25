@@ -70,14 +70,6 @@
         EkleCikar(ekstreAktarmaId, isChecked);
     }
 
-
-    //
-
-
-    //
-
-
-
     function SecilenleriKaydetTriggerBtnClicked() {
         document.getElementById('<%= paramArray.ClientID%>').value = tabledata;
         document.getElementById('<%= SecilenleriKaydetBtn.ClientID%>').click();
@@ -93,7 +85,7 @@
         <div class="card-header">
             <asp:LinkButton ID="CloseBtn" CssClass="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3>
-                <asp:Label CssClass="col-form-label text-info font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="Ekstre Aktarma Listesi"></asp:Label>
+                <asp:Label CssClass="col-form-label text-info fw-bold mb-1" ID="TitleLbl" runat="server" Text="Ekstre Aktarma Listesi"></asp:Label>
                 <asp:Label CssClass="col-form-label text-white" ID="IdLbl" runat="server"></asp:Label>
                 <asp:Label CssClass="col-form-label " ID="AdiLbl" runat="server"></asp:Label>
             </h3>
@@ -103,7 +95,7 @@
 
                 <div class="row">
                     <div class="form-group col" style="display: block">
-                        <label class="col-form-label mr-2 font-weight-bold" for="IslemTarihiTxt">İşlem Tarihi</label>
+                        <label class="col-form-label mr-2 fw-bold" for="IslemTarihiTxt">İşlem Tarihi</label>
                         <asp:TextBox ID="IslemTarihiTxt" runat="server" class="form-control DateTimePickerV1" type="text" AutoPostBack="true" OnTextChanged="IslemTarihiTxt_TextChanged" />
                     </div>
                     <div class="form-group col-2">
@@ -198,9 +190,6 @@
             </div>
             <div class="form-group">
                 <div class="row">
-
-
-
                     <div class="col-3">
                         <div class="checkbox">
                             <label>
@@ -216,14 +205,10 @@
                                 Sayfanın Tümünü Seç
                             </label>
                         </div>
-                        <%--<asp:Label class="col-form-label float-end" ID="RowCountLbl" runat="server" Text="" Font-Bold="True"></asp:Label>--%>
                     </div>
                 </div>
             </div>
             <div class="form-group">
-                <%--                            <asp:UpdatePanel ID="TableUpdatePanel" runat="server">
-                                <ContentTemplate>--%>
-
                 <div class="form-group">
                     <table id="CustomDataTable" class="table table-hover table-bordered table-striped" width="100%">
                         <thead>
@@ -243,18 +228,6 @@
                         </thead>
                     </table>
                 </div>
-
-                <%--                                </ContentTemplate>
-                            </asp:UpdatePanel>
-                            <asp:UpdateProgress ID="updateProgress" runat="server">
-                                <ProgressTemplate>
-                                    <div class='loaderMainContainer'>
-                                        <div class='loaderContainer'>
-                                            <div class='loaderCircle'></div>
-                                        </div>
-                                    </div>
-                                </ProgressTemplate>
-                            </asp:UpdateProgress>--%>
             </div>
                 
         </div>

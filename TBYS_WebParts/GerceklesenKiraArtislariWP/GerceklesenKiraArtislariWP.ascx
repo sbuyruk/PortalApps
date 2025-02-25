@@ -45,11 +45,11 @@
                 { data: "KiraSuresi" },
                 { data: "ArtisAyi" },
                 { data: "OdemeSekli" },
-                { data: "OncekiKiraBedeli", type: "decimal",class:"text-right" },
+                { data: "OncekiKiraBedeli", type: "decimal",class:"text-end" },
                 { data: "YasalArtisOrani", type: "decimal" },
-                { data: "YasalOranaGoreKiraBedeli", type: "decimal", class: "text-right" },
+                { data: "YasalOranaGoreKiraBedeli", type: "decimal", class: "text-end" },
                 { data: "UygulananArtisOrani", type: "decimal" },
-                { data: "KiraBedeli", type: "decimal",class:"text-right" },
+                { data: "KiraBedeli", type: "decimal",class:"text-end" },
 
             ],            
             'order': [[0, 'asc']],//AdiSoyadi Sıralı
@@ -137,7 +137,7 @@
         <div class="card-header" id="CardHeader" runat="server">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-2">
-                <asp:Label CssClass="col-form-label text-danger font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="Gerçekleşen Kira Artışları"></asp:Label>
+                <asp:Label CssClass="col-form-label text-danger fw-bold mb-1" ID="TitleLbl" runat="server" Text="Gerçekleşen Kira Artışları"></asp:Label>
                 <asp:Label CssClass="col-form-label text-white" ID="IdLbl" runat="server"></asp:Label>
                 <asp:Label CssClass="col-form-label " ID="AdiLbl" runat="server"></asp:Label>
             </h3>

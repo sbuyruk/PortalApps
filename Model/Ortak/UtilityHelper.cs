@@ -142,6 +142,22 @@ namespace Model.Ortak
 
 
         }
+
+        public static void SetControlState<T>(bool isVisible, bool isEnabled, params T[] controls) where T : WebControl
+        {
+            if (controls == null || controls.Length == 0)
+                return; // Eğer hiç kontrol yoksa metottan çık
+
+            foreach (var ctrl in controls)
+            {
+                if (ctrl != null)
+                {
+                    ctrl.Visible = isVisible;
+                    ctrl.Enabled = isEnabled;
+                }
+            }
+        }
+
         public static ImageCodecInfo GetImageCodeInfo(string mimeType)
         {
             ImageCodecInfo[] imageEncoders = ImageCodecInfo.GetImageEncoders();

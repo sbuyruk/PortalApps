@@ -105,7 +105,7 @@
                                         </div>
                                         <div class="col form-group ">
                                             <label class="col-form-label">Tutar (TL)</label>
-                                            <asp:TextBox ID="TutarTlTxt" runat="server" CssClass="form-control input-money text-right" type="text" />
+                                            <asp:TextBox ID="TutarTlTxt" runat="server" CssClass="form-control input-money text-end" type="text" />
                                             <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="TutarTlTxt" ForeColor="Red" ErrorMessage="Zorunlu Alan"> </asp:RequiredFieldValidator>
                                         </div>
                                     </div>
@@ -117,11 +117,11 @@
                                         <div class="row">
                                             <div class="col form-group ">
                                                 <label class="col-form-label">Dözviz Tutarı</label>
-                                                <asp:TextBox ID="DovizTutariTxt" runat="server" CssClass="form-control input-money text-right" AutoPostBack="true" OnTextChanged="HesaplaBtn_Click" type="text" />
+                                                <asp:TextBox ID="DovizTutariTxt" runat="server" CssClass="form-control input-money text-end" AutoPostBack="true" OnTextChanged="HesaplaBtn_Click" type="text" />
                                             </div>
                                             <div class="col form-group ">
                                                 <label class="col-form-label">Kur</label>
-                                                <asp:TextBox ID="DovizKuruTxt" runat="server" CssClass="form-control input-money text-right" AutoPostBack="true" OnTextChanged="HesaplaBtn_Click" type="text" />
+                                                <asp:TextBox ID="DovizKuruTxt" runat="server" CssClass="form-control input-money text-end" AutoPostBack="true" OnTextChanged="HesaplaBtn_Click" type="text" />
                                             </div>
 
                                         </div>
@@ -131,7 +131,7 @@
                                                 <asp:TextBox ID="KurTarihiTxt" runat="server" CssClass="form-control DateTimePickerV1 input-date" type="text" />
                                             </div>
                                             <div class="col form-group ">
-                                                <asp:TextBox ID="HesaplananTlLbl" runat="server" CssClass="form-control input-money text-right" type="text" Enabled="False" />
+                                                <asp:TextBox ID="HesaplananTlLbl" runat="server" CssClass="form-control input-money text-end" type="text" Enabled="False" />
                                                 <asp:LinkButton ID="TutaraYazBtn" runat="server" CssClass="form-control btn btn-secondary" OnClientClick="TutaraYaz();" CausesValidation="False">Tutara Yaz</asp:LinkButton>
                                             </div>
                                         </div>

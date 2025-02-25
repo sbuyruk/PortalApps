@@ -142,7 +142,7 @@ namespace BTYS_Webparts.BolgeBagisciKartiWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-danger font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-danger fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Taşınmaz Bağışçı Kartı";
             return @__ctrl;
@@ -213,7 +213,7 @@ namespace BTYS_Webparts.BolgeBagisciKartiWP {
             this.BagisciBilgileriTableLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "BagisciBilgileriTableLbl";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "font-weight-bold");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "fw-bold");
             return @__ctrl;
         }
         
@@ -239,7 +239,7 @@ namespace BTYS_Webparts.BolgeBagisciKartiWP {
             this.TasinmazTableLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "TasinmazTableLbl";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "font-weight-bold");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "fw-bold");
             return @__ctrl;
         }
         
@@ -265,7 +265,7 @@ namespace BTYS_Webparts.BolgeBagisciKartiWP {
             this.BagisciTalepleriTableLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "BagisciTalepleriTableLbl";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "font-weight-bold");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "fw-bold");
             return @__ctrl;
         }
         
@@ -291,7 +291,7 @@ namespace BTYS_Webparts.BolgeBagisciKartiWP {
             this.BagisciYakinlariTableLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "BagisciYakinlariTableLbl";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "font-weight-bold");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "fw-bold");
             return @__ctrl;
         }
         
@@ -317,7 +317,7 @@ namespace BTYS_Webparts.BolgeBagisciKartiWP {
             this.TaahhutTableLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "TaahhutTableLbl";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "font-weight-bold");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "fw-bold");
             return @__ctrl;
         }
         

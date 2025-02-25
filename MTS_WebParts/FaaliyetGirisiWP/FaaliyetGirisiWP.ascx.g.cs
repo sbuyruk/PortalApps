@@ -431,7 +431,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             this.TitleLbl = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-primary font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-primary fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Faaliyet Düzenleme";
             return @__ctrl;
@@ -501,7 +501,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
             this.TopBarDiv = @__ctrl;
             @__ctrl.TemplateControl = this;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-group text-right text-danger");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-group text-end text-danger");
             @__ctrl.ID = "TopBarDiv";
             return @__ctrl;
         }
@@ -996,7 +996,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label font-weight-bold text-danger";
+            @__ctrl.CssClass = "col-form-label fw-bold text-danger";
             @__ctrl.Text = "Yönetici Notu";
             return @__ctrl;
         }
@@ -1011,7 +1011,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "YoneticiNotuTxt";
-            @__ctrl.CssClass = "form-control font-weight-bold text-danger";
+            @__ctrl.CssClass = "form-control fw-bold text-danger";
             @__ctrl.Text = "";
             @__ctrl.TextMode = global::System.Web.UI.WebControls.TextBoxMode.MultiLine;
             @__ctrl.Rows = 5;
@@ -2050,7 +2050,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("h3");
             this.KatiliciSecimiHeaderLbl = @__ctrl;
             @__ctrl.TemplateControl = this;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-form-label font-weight-bold");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-form-label fw-bold");
             @__ctrl.ID = "KatiliciSecimiHeaderLbl";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Katılımcı Seçimi\r\n                        "));
@@ -2167,7 +2167,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("h3");
             this.AniObjesiHeaderLbl = @__ctrl;
             @__ctrl.TemplateControl = this;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-form-label font-weight-bold");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-form-label fw-bold");
             @__ctrl.ID = "AniObjesiHeaderLbl";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Stoksuz Anı Objesi"));
@@ -2226,7 +2226,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label font-weight-bold";
+            @__ctrl.CssClass = "col-form-label fw-bold";
             @__ctrl.Text = "Verilen Anı Objesi";
             return @__ctrl;
         }
@@ -2371,7 +2371,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("h3");
             this.GetirilenAniObjesiModalTitle = @__ctrl;
             @__ctrl.TemplateControl = this;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-form-label font-weight-bold");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-form-label fw-bold");
             @__ctrl.ID = "GetirilenAniObjesiModalTitle";
             return @__ctrl;
         }
@@ -2402,7 +2402,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label font-weight-bold";
+            @__ctrl.CssClass = "col-form-label fw-bold";
             @__ctrl.Text = "Getirilen Anı Objesi";
             return @__ctrl;
         }
@@ -2524,7 +2524,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("h3");
             this.StokluAniObjesiModalTitle = @__ctrl;
             @__ctrl.TemplateControl = this;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-form-label font-weight-bold");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-form-label fw-bold");
             @__ctrl.ID = "StokluAniObjesiModalTitle";
             return @__ctrl;
         }
@@ -2984,7 +2984,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("h3");
             this.H1 = @__ctrl;
             @__ctrl.TemplateControl = this;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-form-label font-weight-bold");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-form-label fw-bold");
             @__ctrl.ID = "H1";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Takvim Daveti"));
@@ -3017,7 +3017,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label font-weight-bold";
+            @__ctrl.CssClass = "col-form-label fw-bold";
             @__ctrl.Text = "EPosta Adresi";
             return @__ctrl;
         }
@@ -3450,7 +3450,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
         var divName = document.getElementById(div);
 
         if (chkbox.checked) {
-            divName.className = ""checkbox font-weight-bold text-danger"";
+            divName.className = ""checkbox fw-bold text-danger"";
         } else {
             divName.className = ""checkbox text-primary"";
         }
@@ -3597,6 +3597,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
 <!-- TakvimDaveti Modal -->
 ");
             parameterContainer.Controls[19].RenderControl(@__w);
+            @__w.Write("\r\n");
         }
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +

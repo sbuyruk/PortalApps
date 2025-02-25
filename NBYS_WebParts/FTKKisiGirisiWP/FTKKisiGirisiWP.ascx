@@ -48,7 +48,7 @@
                             href="">
                             <i class="fa fa-book" aria-hidden="true"></i>
                         </a>
-                        <asp:Label ID="TitleLbl" runat="server" CssClass="col-form-label text-danger font-weight-bold mb-1" Text="FTK Kişi Girişi"></asp:Label>
+                        <asp:Label ID="TitleLbl" runat="server" CssClass="col-form-label text-danger fw-bold mb-1" Text="FTK Kişi Girişi"></asp:Label>
                         <asp:Label ID="IdLbl" runat="server" CssClass="col-form-label"></asp:Label>
                     </h3>
                 </div>

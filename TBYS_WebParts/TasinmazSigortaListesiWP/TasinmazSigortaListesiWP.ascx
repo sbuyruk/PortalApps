@@ -33,7 +33,7 @@
                 <div class="card-header" id="CardHeader" runat="server">
                     <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
                     <h3 class="mb-2">
-                        <asp:Label CssClass="col-form-label text-danger font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="Taşınmaz Sigortaları"></asp:Label>
+                        <asp:Label CssClass="col-form-label text-danger fw-bold mb-1" ID="TitleLbl" runat="server" Text="Taşınmaz Sigortaları"></asp:Label>
                         <asp:Label CssClass="col-form-label text-white" ID="IdLbl" runat="server"></asp:Label>
                         <asp:Label CssClass="col-form-label " ID="AdiLbl" runat="server"></asp:Label>
                     </h3>
@@ -49,7 +49,7 @@
                                         <asp:DropDownList ID="SigortaCinsiDDL" runat="server" class="form-control " Height="34px" OnSelectedIndexChanged="SigortaCinsiDDL_SelectedIndexChanged" AutoPostBack="True" />
                                         <div class="checkbox pt-3">
                                             <label>
-                                                <asp:CheckBox ID="VadesiGelenlerChk" CssClass="font-weight-bold text-danger" runat="server" Checked="false" ToolTip="Bir Ay İçinde Sigortası Bitecek Olanlar" OnCheckedChanged="VadesiGelenlerChk_CheckedChanged" AutoPostBack="True" ForeColor="Red" TextAlign="Left" />
+                                                <asp:CheckBox ID="VadesiGelenlerChk" CssClass="fw-bold text-danger" runat="server" Checked="false" ToolTip="Bir Ay İçinde Sigortası Bitecek Olanlar" OnCheckedChanged="VadesiGelenlerChk_CheckedChanged" AutoPostBack="True" ForeColor="Red" TextAlign="Left" />
                                                 Sadece Vadesi Gelenleri Göster 
                                             </label>
                                         </div>

@@ -213,7 +213,7 @@ namespace TBYS_WebParts.OdemeGirisWP
         private void OdemeGirisiAc()
         {
             TitleLbl.Text = "Yeni Ödeme Girişi";
-            TitleLbl.CssClass = "col-form-label text-success font-weight-bold mb-1";
+            TitleLbl.CssClass = "col-form-label text-success fw-bold mb-1";
             KaydetBtn.Visible = false;
             GuncelleBtn.Visible = false;
             SilBtn.Visible = false;
@@ -269,7 +269,7 @@ namespace TBYS_WebParts.OdemeGirisWP
         private void OdemeDuzenleAc()
         {
             TitleLbl.Text = "Ödeme Düzenleme";
-            TitleLbl.CssClass = "col-form-label text-primary font-weight-bold mb-1";
+            TitleLbl.CssClass = "col-form-label text-primary fw-bold mb-1";
             KaydetBtn.Visible = false;
             GuncelleBtn.Visible = false;
             SilBtn.Visible = false;
@@ -447,7 +447,7 @@ namespace TBYS_WebParts.OdemeGirisWP
             if (kiraSozlesme != null)
             {
                 ModalLbl.Text = "Ödeme Silinecek";
-                ModalLbl.CssClass = "col-form-label text-primary font-weight-bold";
+                ModalLbl.CssClass = "col-form-label text-primary fw-bold";
                 string sozlesmeStr = SozlesmeDDL.SelectedItem.Text;
                 string odemePlaniStr = OdemePlaniDDL.SelectedItem.Text;
                 string odemeTarihiStr = OdemeTarihiTxt.Text.ConvertToDatetime().ConvertToDatetimeEmptyIfNull();
@@ -492,7 +492,7 @@ namespace TBYS_WebParts.OdemeGirisWP
                 else if (kaydetGuncelleSilHdn.Value.Equals(ProjeConstants.GUNCELLE))
                 {
                     ModalLbl.Text = "Ödeme Güncellenecek";
-                    ModalLbl.CssClass= "col-form-label text-primary font-weight-bold";
+                    ModalLbl.CssClass= "col-form-label text-primary fw-bold";
                     Odeme oncekiOdeme = new Odeme();
                     oncekiOdeme = oncekiOdeme.Select(OdemeIdQS.ConvertToInt());
                     if (oncekiOdeme != null)

@@ -60,7 +60,7 @@ namespace NBYS_WebParts.NakitBagisHaritasiWP
 
             TableCell bagisToplamiCell = new TableCell();
             bagisToplamiCell.CssClass = "btn-default";
-            bagisToplamiCell.CssClass = "text-right";
+            bagisToplamiCell.CssClass = "text-end";
             bagisToplamiCell.Text = "Bağış Miktarı";
             IlinfoTableHeader.Controls.Add(bagisToplamiCell);
 
@@ -100,13 +100,13 @@ namespace NBYS_WebParts.NakitBagisHaritasiWP
                     tableRow.Controls.Add(BagisSayisiCell);
 
                     TableCell BagisToplamiCell = new TableCell();
-                    //BagisToplamiCell.CssClass = "input-money text-right";
+                    //BagisToplamiCell.CssClass = "input-money text-end";
                     //TextBox tb = new TextBox();
-                    //tb.CssClass = "input-money text-right";
+                    //tb.CssClass = "input-money text-end";
                     ////tb.ReadOnly = true;
                     //tb.Text = bagisToplam;
                     //BagisToplamiCell.Controls.Add(tb);
-                    BagisToplamiCell.CssClass = "input-money text-right";
+                    BagisToplamiCell.CssClass = "input-money text-end";
                     BagisToplamiCell.Text = bagisToplam;
                     tableRow.Controls.Add(BagisToplamiCell);
 

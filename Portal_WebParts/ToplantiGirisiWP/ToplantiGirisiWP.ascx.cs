@@ -270,7 +270,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
             if (toplanti != null)
             {
                 TitleLbl.Text = "Toplantı Düzenleme";
-                TitleLbl.CssClass = "col-form-label text-primary font-weight-bold mb-1";
+                TitleLbl.CssClass = "col-form-label text-primary fw-bold mb-1";
                 IdLbl.Text = " ( Toplantı No: " + toplanti.Id.ToString() + " )";
                 KatilimciBilgileriDiv.Attributes["style"] = "display:block";
                 KaydetBtn.Visible = false;
@@ -323,7 +323,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
                 ToplantiKatilimTutanagiBtn.Visible = false;
                 ToplantiSilBtn.Visible = false;
                 TitleLbl.Text = "Yeni Toplantı";
-                TitleLbl.CssClass = "col-form-label text-success font-weight-bold mb-1";
+                TitleLbl.CssClass = "col-form-label text-success fw-bold mb-1";
                 BaslangicTarihiTxt.Text = DateTime.Today.ConvertToDatetimeEmptyIfNull();
                 BitisTarihiTxt.Text = DateTime.Today.ConvertToDatetimeEmptyIfNull();
                 BaslangicSaatiDDLDoldur();

@@ -354,7 +354,7 @@ namespace TBYS_WebParts.KiraSozlesmesiWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-danger font-weight-bold";
+            @__ctrl.CssClass = "col-form-label text-danger fw-bold";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Kira Sözleşmesi";
             return @__ctrl;
@@ -430,7 +430,7 @@ namespace TBYS_WebParts.KiraSozlesmesiWP {
             this.DevirAnaParaTxt = @__ctrl;
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
             @__ctrl.ID = "DevirAnaParaTxt";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-right");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-end");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("tooltip", "Önceki Sözleşmeden devreden borç (ana para)");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onchange", "FaizTutariHesapla()");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onkeyup", "FaizTutariHesapla()");
@@ -450,7 +450,7 @@ namespace TBYS_WebParts.KiraSozlesmesiWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
             @__ctrl.ID = "DevirFaizTutariTxt";
-            @__ctrl.CssClass = "form-control input-money text-right bg-secondary";
+            @__ctrl.CssClass = "form-control input-money text-end bg-secondary";
             @__ctrl.ToolTip = "Önceki Sözleşmeden devreden faiz tutarı";
             return @__ctrl;
         }
@@ -464,7 +464,7 @@ namespace TBYS_WebParts.KiraSozlesmesiWP {
             this.DevirFaizliBakiyeTxt = @__ctrl;
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
             @__ctrl.ID = "DevirFaizliBakiyeTxt";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-right");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-end");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("tooltip", "Önceki Sözleşmeden devreden faizli bakiye");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onchange", "FaizTutariHesapla()");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onkeyup", "FaizTutariHesapla()");
@@ -504,7 +504,7 @@ namespace TBYS_WebParts.KiraSozlesmesiWP {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                 <div class=""form-group border-bottom text-center"">
-                                    <label class=""col-form-label font-weight-bold"" for=""DevirAnaParaTxt"">Devir</label>
+                                    <label class=""col-form-label fw-bold"" for=""DevirAnaParaTxt"">Devir</label>
                                 </div>
                                 <div class=""row "">
                                     <div class=""form-group col-3"">
@@ -644,7 +644,7 @@ namespace TBYS_WebParts.KiraSozlesmesiWP {
             this.Label3 = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label font-weight-bold";
+            @__ctrl.CssClass = "col-form-label fw-bold";
             @__ctrl.ID = "Label3";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Sözleşme Formu"));
@@ -816,7 +816,7 @@ namespace TBYS_WebParts.KiraSozlesmesiWP {
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
             this.KiraBedeliTxt = @__ctrl;
             @__ctrl.TemplateControl = this;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-right ");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-end ");
             @__ctrl.ID = "KiraBedeliTxt";
             return @__ctrl;
         }
@@ -864,7 +864,7 @@ namespace TBYS_WebParts.KiraSozlesmesiWP {
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
             this.TeminatTutariTxt = @__ctrl;
             @__ctrl.TemplateControl = this;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-right");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-end");
             @__ctrl.ID = "TeminatTutariTxt";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("readonly", "readonly");
             return @__ctrl;
@@ -878,7 +878,7 @@ namespace TBYS_WebParts.KiraSozlesmesiWP {
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
             this.IadeTeminatTutariTxt = @__ctrl;
             @__ctrl.TemplateControl = this;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-right");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-end");
             @__ctrl.ID = "IadeTeminatTutariTxt";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("readonly", "readonly");
             return @__ctrl;
@@ -908,7 +908,7 @@ namespace TBYS_WebParts.KiraSozlesmesiWP {
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
             this.OdenenTeminatTutariTxt = @__ctrl;
             @__ctrl.TemplateControl = this;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-right");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-end");
             @__ctrl.ID = "OdenenTeminatTutariTxt";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("readonly", "readonly");
             return @__ctrl;
@@ -922,7 +922,7 @@ namespace TBYS_WebParts.KiraSozlesmesiWP {
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
             this.KalanTeminatTutariTxt = @__ctrl;
             @__ctrl.TemplateControl = this;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-right");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-end");
             @__ctrl.ID = "KalanTeminatTutariTxt";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("readonly", "readonly");
             return @__ctrl;
@@ -1787,8 +1787,11 @@ namespace TBYS_WebParts.KiraSozlesmesiWP {
         myModalInstance.show();
     }
     function CloseModal() {
-        $(""#OnayModal"").modal('hide');
-
+        var myModalEl = document.getElementById('OnayModal');
+        var modalInstance = bootstrap.Modal.getInstance(myModalEl);
+        if (modalInstance) {
+            modalInstance.hide();
+        }
     }
 
     function FaizTutariHesapla() {

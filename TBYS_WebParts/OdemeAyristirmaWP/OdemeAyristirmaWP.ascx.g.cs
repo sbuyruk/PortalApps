@@ -235,7 +235,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "TitleLbl";
-            @__ctrl.CssClass = "col-form-label text-danger font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-danger fw-bold mb-1";
             @__ctrl.Text = "Ödeme Ayrıştırma";
             return @__ctrl;
         }
@@ -249,7 +249,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
             this.AktarildiMiLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "AktarildiMiLbl";
-            @__ctrl.CssClass = "col-form-label text-danger font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-danger fw-bold mb-1";
             @__ctrl.Text = "";
             return @__ctrl;
         }
@@ -277,7 +277,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
             this.AdiLbl = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label font-weight-bold";
+            @__ctrl.CssClass = "col-form-label fw-bold";
             @__ctrl.ID = "AdiLbl";
             return @__ctrl;
         }
@@ -307,7 +307,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "OdenenTutarLbl";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control alert-secondary text-right");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control alert-secondary text-end");
             @__ctrl.Text = "";
             return @__ctrl;
         }
@@ -322,7 +322,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "KiraTutariLbl";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control alert-secondary text-right");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control alert-secondary text-end");
             @__ctrl.Text = "";
             return @__ctrl;
         }
@@ -337,7 +337,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "KesinTeminatLbl";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control alert-secondary text-right");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control alert-secondary text-end");
             @__ctrl.Text = "";
             return @__ctrl;
         }
@@ -352,7 +352,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "GeciciTeminatLbl";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control alert-secondary text-right");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control alert-secondary text-end");
             @__ctrl.Text = "";
             return @__ctrl;
         }
@@ -367,7 +367,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "KalanTutarLbl";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control alert-secondary text-right");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control alert-secondary text-end");
             @__ctrl.Text = "";
             return @__ctrl;
         }
@@ -763,7 +763,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
             this.ModalTitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "ModalTitleLbl";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-form-label font-weight-bold");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-form-label fw-bold");
             @__ctrl.Text = "Teminat İşlemi Eklenecek";
             return @__ctrl;
         }
@@ -867,7 +867,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
             this.IslemTutariTxt = @__ctrl;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-right ");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-end ");
             @__ctrl.ID = "IslemTutariTxt";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onkeyup", "ListeyeEkleNowBtnEnable(this.value)");
             return @__ctrl;
@@ -999,7 +999,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
                                 </div>
                                 <div class=""form-group row"">
                                     <div class=""form-group col-5"">
-                                        <label class=""col-form-label font-weight-bold"" for=""OdemeSebebiTxt"">Ödeme Sebebi</label>
+                                        <label class=""col-form-label fw-bold"" for=""OdemeSebebiTxt"">Ödeme Sebebi</label>
                                         "));
             global::System.Web.UI.WebControls.Label @__ctrl8;
             @__ctrl8 = this.@__BuildControlOdemeSebebiLbl();
@@ -1007,7 +1007,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                     </div>
                                     <div class=""form-group col"">
-                                        <label class=""col-form-label font-weight-bold"" for=""IslemTutariTxt"">Tutar</label>
+                                        <label class=""col-form-label fw-bold"" for=""IslemTutariTxt"">Tutar</label>
                                         "));
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl9;
             @__ctrl9 = this.@__BuildControlIslemTutariTxt();
@@ -1290,11 +1290,14 @@ namespace TBYS_WebParts.OdemeAyristirmaWP {
         var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ListeyeEkleModalDiv'));
         myModalInstance.show();
     }
+    
     function CloseModal() {
-        $(""#ListeyeEkleModalDiv"").modal('hide');
-
+        var myModalEl = document.getElementById('ListeyeEkleModalDiv');
+        var modalInstance = bootstrap.Modal.getInstance(myModalEl);
+        if (modalInstance) {
+            modalInstance.hide();
+        }
     }
-
     if ($('.input-money').toArray().forEach(function (field) {
         new Cleave(field, {
             numeral: true,

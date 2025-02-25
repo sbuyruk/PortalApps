@@ -199,7 +199,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
                 DeleteBtn.Visible = true;
                 BackBtn.Visible = true;
                 //CardHeader.Attributes["Class"] = "bg-info";
-                TitleLbl.CssClass = "col-form-label font-weight-bold mb-1 text-primary";
+                TitleLbl.CssClass = "col-form-label fw-bold mb-1 text-primary";
                 TitleLbl.Text = "Mülkiyeti Olmayan Taşınmaz Bilgi Güncelleme";
                 IdLbl.Visible = true;
             }
@@ -213,7 +213,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
                 BackBtn.Visible = false;
                 IdLbl.Visible = false;
                 //CardHeader.Attributes["Class"] = "bg-success";
-                TitleLbl.CssClass = "col-form-label font-weight-bold mb-1 text-danger";
+                TitleLbl.CssClass = "col-form-label fw-bold mb-1 text-danger";
                 TitleLbl.Text = "Mülkiyeti Olmayan Taşınmaz Girişi";
             }
 

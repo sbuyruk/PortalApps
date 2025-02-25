@@ -19,7 +19,7 @@
         <div class="card-header ">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-1">
-                <asp:Label ID="TitleLbl" runat="server" CssClass="col-form-label text-danger font-weight-bold mb-1" Text="Kiracı Kartı"></asp:Label>
+                <asp:Label ID="TitleLbl" runat="server" CssClass="col-form-label text-danger fw-bold mb-1" Text="Kiracı Kartı"></asp:Label>
                 <asp:Label ID="IdLbl" runat="server" CssClass="col-form-label text-white" Visible="false"></asp:Label>
                 <asp:Label ID="AdiLbl" runat="server" CssClass="col-form-label text-danger"></asp:Label>
             </h3>
@@ -28,71 +28,71 @@
 
             <asp:Table ID="KiraTable" runat="server" class="table ">
                 <asp:TableRow HorizontalAlign="Left">
-                    <asp:TableCell CssClass="font-weight-bold" ColumnSpan="7" Font-Bold="True" Font-Size="XX-Large">TSKGV KİRA KARTI</asp:TableCell>
-                    <asp:TableCell CssClass="font-weight-bold float-end" ID="KartNoHdrCell">KART NO</asp:TableCell>
+                    <asp:TableCell CssClass="fw-bold" ColumnSpan="7" Font-Bold="True" Font-Size="XX-Large">TSKGV KİRA KARTI</asp:TableCell>
+                    <asp:TableCell CssClass="fw-bold float-end" ID="KartNoHdrCell">KART NO</asp:TableCell>
                 </asp:TableRow>
                 <asp:TableRow HorizontalAlign="Left">
-                    <asp:TableCell BorderStyle="Solid" BorderWidth="1" CssClass="bg-light font-weight-bold" RowSpan="3" >KİRACININ</asp:TableCell>
-                    <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light font-weight-bold" >ADI SOYADI</asp:TableCell>
+                    <asp:TableCell BorderStyle="Solid" BorderWidth="1" CssClass="bg-light fw-bold" RowSpan="3" >KİRACININ</asp:TableCell>
+                    <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light fw-bold" >ADI SOYADI</asp:TableCell>
                     <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-white" ColumnSpan="6" ID="AdiCell" runat="server"></asp:TableCell>
                 </asp:TableRow>
                 <asp:TableRow HorizontalAlign="Left">
-                    <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light font-weight-bold">İLETİŞİM</asp:TableCell>
+                    <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light fw-bold">İLETİŞİM</asp:TableCell>
                     <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-white" ColumnSpan="4" ID="TelNoCell" runat="server"></asp:TableCell>
                     <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-white" ColumnSpan="2" ID="EpostaCell" runat="server"></asp:TableCell>
                 </asp:TableRow>
                 <asp:TableRow HorizontalAlign="Left">
-                    <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light font-weight-bold">KİMLİK NO</asp:TableCell>
+                    <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light fw-bold">KİMLİK NO</asp:TableCell>
                     <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-white" ColumnSpan="2" ID="TCKimlikNoCell" runat="server"></asp:TableCell>
-                    <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light font-weight-bold">VERGİ DAİ.</asp:TableCell>
+                    <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light fw-bold">VERGİ DAİ.</asp:TableCell>
                     <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-white" ID="VergiDairesiCell" runat="server"></asp:TableCell>
-                    <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light font-weight-bold">VERGİ No.</asp:TableCell>
+                    <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light fw-bold">VERGİ No.</asp:TableCell>
                     <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-white" ID="VergiNoCell" runat="server"></asp:TableCell>
                 </asp:TableRow>
                 <asp:TableRow HorizontalAlign="Left">
-                    <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light font-weight-bold">KONTRAT TARİHİ</asp:TableCell>
+                    <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light fw-bold">KONTRAT TARİHİ</asp:TableCell>
                     <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-white" ColumnSpan="7" ID="SozlesmeTarCell" runat="server"></asp:TableCell>
                 </asp:TableRow>
                 <asp:TableRow HorizontalAlign="Left">
-                    <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light font-weight-bold" RowSpan="3">KİRALANANIN</asp:TableCell>
-                    <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light font-weight-bold">İLİ</asp:TableCell>
+                    <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light fw-bold" RowSpan="3">KİRALANANIN</asp:TableCell>
+                    <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light fw-bold">İLİ</asp:TableCell>
                     <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-white" ColumnSpan="2" ID="IliCell" runat="server"></asp:TableCell>
-                    <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light font-weight-bold">İLÇESİ</asp:TableCell>
+                    <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light fw-bold">İLÇESİ</asp:TableCell>
                     <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-white" ColumnSpan="3" ID="IlcesiCell" runat="server"></asp:TableCell>
                 </asp:TableRow>
                 <asp:TableRow HorizontalAlign="Left">
-                    <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light font-weight-bold">SEMTİ</asp:TableCell>
+                    <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light fw-bold">SEMTİ</asp:TableCell>
                     <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-white" ColumnSpan="2" ID="SemtCell" runat="server"></asp:TableCell>
-                    <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light font-weight-bold">ADRESİ</asp:TableCell>
+                    <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light fw-bold">ADRESİ</asp:TableCell>
                     <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-white" ColumnSpan="3" ID="AdresCell" runat="server"></asp:TableCell>
                 </asp:TableRow>
                 <asp:TableRow HorizontalAlign="Left">
-                    <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light font-weight-bold">Kiralama Amacı</asp:TableCell>
+                    <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light fw-bold">Kiralama Amacı</asp:TableCell>
                     <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-white" ID="KiralamaAmaciCell" runat="server"></asp:TableCell>
-                    <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light font-weight-bold" >NİTELİĞİ</asp:TableCell>
+                    <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light fw-bold" >NİTELİĞİ</asp:TableCell>
                     <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-white" ID="NiteligiCell" runat="server"></asp:TableCell>
-                    <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light font-weight-bold">YÜZÖLÇÜMÜ</asp:TableCell>
+                    <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light fw-bold">YÜZÖLÇÜMÜ</asp:TableCell>
                     <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-white" ColumnSpan="2" ID="YuzolcumuCell" runat="server"></asp:TableCell>
                 </asp:TableRow>
                 <asp:TableRow HorizontalAlign="Left">
-                    <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light  font-weight-bold">KİRA TEMINAT TARİHİ</asp:TableCell>
+                    <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light  fw-bold">KİRA TEMINAT TARİHİ</asp:TableCell>
                     <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-white " ID="TeminatTarihiCell" runat="server"></asp:TableCell>
-                    <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light  font-weight-bold" ID="KiraTeminatiCell" runat="server">TEMİNAT</asp:TableCell>
+                    <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light  fw-bold" ID="KiraTeminatiCell" runat="server">TEMİNAT</asp:TableCell>
                     <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-white " ID="TeminatTutariCell" runat="server"></asp:TableCell>
-                    <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light  font-weight-bold">ÖDENEN TEMİNAT:</asp:TableCell>
+                    <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light  fw-bold">ÖDENEN TEMİNAT:</asp:TableCell>
                     <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-white" ID="OdenenTeminatTutariCell" runat="server"></asp:TableCell>
-                    <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light  font-weight-bold">KALAN TEMİNAT:</asp:TableCell>
+                    <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light  fw-bold">KALAN TEMİNAT:</asp:TableCell>
                     <asp:TableCell BorderStyle="Solid" BorderWidth="1"  CssClass="bg-white" ID="KalanTeminatTutariCell" runat="server"></asp:TableCell>
                 </asp:TableRow>
                 <%--                <asp:TableRow HorizontalAlign="Left">
-                    <asp:TableCell  BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light font-weight-bold">DÖNEM</asp:TableCell>
-                    <asp:TableCell  BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light font-weight-bold">KİRA TUTARI</asp:TableCell>
-                    <asp:TableCell  BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light font-weight-bold">ÖDENEN TARİH</asp:TableCell>
-                    <asp:TableCell  BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light font-weight-bold">ÖDENEN TUTAR</asp:TableCell>
-                    <asp:TableCell  BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light font-weight-bold">KALAN ANAPARA</asp:TableCell>
-                    <asp:TableCell  BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light font-weight-bold">GECİKME FAİZİ</asp:TableCell>
-                    <asp:TableCell  BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light font-weight-bold">FAİZLİ BAKİYE</asp:TableCell>
-                    <asp:TableCell  BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light font-weight-bold">AÇIKLAMA</asp:TableCell>
+                    <asp:TableCell  BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light fw-bold">DÖNEM</asp:TableCell>
+                    <asp:TableCell  BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light fw-bold">KİRA TUTARI</asp:TableCell>
+                    <asp:TableCell  BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light fw-bold">ÖDENEN TARİH</asp:TableCell>
+                    <asp:TableCell  BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light fw-bold">ÖDENEN TUTAR</asp:TableCell>
+                    <asp:TableCell  BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light fw-bold">KALAN ANAPARA</asp:TableCell>
+                    <asp:TableCell  BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light fw-bold">GECİKME FAİZİ</asp:TableCell>
+                    <asp:TableCell  BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light fw-bold">FAİZLİ BAKİYE</asp:TableCell>
+                    <asp:TableCell  BorderStyle="Solid" BorderWidth="1"  CssClass="bg-light fw-bold">AÇIKLAMA</asp:TableCell>
                 </asp:TableRow>--%>
             </asp:Table>
         </div>

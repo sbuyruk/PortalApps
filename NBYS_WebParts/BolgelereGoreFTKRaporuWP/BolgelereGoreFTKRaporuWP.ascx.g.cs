@@ -311,7 +311,7 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP {
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "TitleLbl";
-            @__ctrl.CssClass = "col-form-label text-danger font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-danger fw-bold mb-1";
             @__ctrl.Text = "Bölgelere Göre Kurulu FTK Raporu";
             return @__ctrl;
         }

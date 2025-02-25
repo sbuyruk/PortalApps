@@ -962,7 +962,7 @@ namespace NBYS_WebParts.BagisIadesiWP {
             this.Label6 = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "Label6";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-form-label font-weight-bold");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-form-label fw-bold");
             @__ctrl.Text = "İade Sebebi";
             return @__ctrl;
         }
@@ -992,7 +992,7 @@ namespace NBYS_WebParts.BagisIadesiWP {
             this.Label7 = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "Label7";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-form-label font-weight-bold");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-form-label fw-bold");
             @__ctrl.Text = "İade Tarihi";
             return @__ctrl;
         }

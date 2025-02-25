@@ -106,7 +106,7 @@ namespace TBYS_WebParts.GerceklesenKiraArtislariWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-danger font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-danger fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Gerçekleşen Kira Artışları";
             return @__ctrl;
@@ -297,11 +297,11 @@ namespace TBYS_WebParts.GerceklesenKiraArtislariWP {
                         "h\": \"20%\" },\r\n                { data: \"KiralamaAmaci\" },\r\n                { data" +
                         ": \"SozlesmeTarihi\" },\r\n                { data: \"KiraSuresi\" },\r\n                " +
                         "{ data: \"ArtisAyi\" },\r\n                { data: \"OdemeSekli\" },\r\n                " +
-                        "{ data: \"OncekiKiraBedeli\", type: \"decimal\",class:\"text-right\" },\r\n             " +
+                        "{ data: \"OncekiKiraBedeli\", type: \"decimal\",class:\"text-end\" },\r\n             " +
                         "   { data: \"YasalArtisOrani\", type: \"decimal\" },\r\n                { data: \"Yasal" +
-                        "OranaGoreKiraBedeli\", type: \"decimal\", class: \"text-right\" },\r\n                {" +
+                        "OranaGoreKiraBedeli\", type: \"decimal\", class: \"text-end\" },\r\n                {" +
                         " data: \"UygulananArtisOrani\", type: \"decimal\" },\r\n                { data: \"KiraB" +
-                        "edeli\", type: \"decimal\",class:\"text-right\" },\r\n\r\n            ],            \r\n   " +
+                        "edeli\", type: \"decimal\",class:\"text-end\" },\r\n\r\n            ],            \r\n   " +
                         "         \'order\': [[0, \'asc\']],//AdiSoyadi Sıralı\r\n            \"language\": {\r\n  " +
                         "              \"url\": \"http://tskgv-portal/OrtakBelgeler/Turkish.txt\",\r\n         " +
                         "       \"decimal\": \",\",\r\n                \"thousands\": \".\"\r\n            },\r\n      " +

@@ -298,7 +298,7 @@ namespace TBYS_WebParts.SigortaDurumuDaskWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-danger font-weight-bold text-center";
+            @__ctrl.CssClass = "col-form-label text-danger fw-bold text-center";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Sigorta Durumu (DASK)";
             return @__ctrl;
@@ -1406,7 +1406,7 @@ namespace TBYS_WebParts.SigortaDurumuDaskWP {
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
             this.EmlakBeyanTopTxt = @__ctrl;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "input-money text-right");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "input-money text-end");
             @__ctrl.ID = "EmlakBeyanTopTxt";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("readonly", "");
             return @__ctrl;
@@ -1419,7 +1419,7 @@ namespace TBYS_WebParts.SigortaDurumuDaskWP {
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
             this.TahminiRayicTopTxt = @__ctrl;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "input-money text-right");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "input-money text-end");
             @__ctrl.ID = "TahminiRayicTopTxt";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("readonly", "");
             return @__ctrl;
@@ -1432,7 +1432,7 @@ namespace TBYS_WebParts.SigortaDurumuDaskWP {
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
             this.SigortaBedeliTopTxt = @__ctrl;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "input-money text-right");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "input-money text-end");
             @__ctrl.ID = "SigortaBedeliTopTxt";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("readonly", "");
             return @__ctrl;
@@ -1445,7 +1445,7 @@ namespace TBYS_WebParts.SigortaDurumuDaskWP {
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
             this.PrimTopTxt = @__ctrl;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "input-money text-right");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "input-money text-end");
             @__ctrl.ID = "PrimTopTxt";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("readonly", "");
             return @__ctrl;

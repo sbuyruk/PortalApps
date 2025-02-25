@@ -161,7 +161,7 @@ namespace Model.TBYS
             string sqlString = string.Format(@"
                 SELECT ROW_NUMBER() OVER (ORDER BY CASE WHEN DosyaNo=0 THEN 2 ELSE 1 END,ISNULL(DosyaNo,999999), S.Id, A.Id) AS Sirano, 
                     S.DosyaNo, A.Id KiraciId, Adi,Soyadi,TCKimlikNo,VergiDairesi,VergiNo, A.Ilcesi +'-'+ A.Ili IlIlce, Semt,A.Adres,A.Telefon,A.Eposta, A.KiralamaAmaci,A.Aciklama,
-                    S.Id SozlesmeId
+                    S.Id SozlesmeId,S.Aktif
                 FROM Kiraci_Table A
                     LEFT JOIN KiraSozlesme_Table S On S.KiraciId=A.Id AND S.Aktif=1
                     LEFT JOIN SozlesmeTasinmaz_Table C On C.Id=(Select top 1 Id from SozlesmeTasinmaz_Table where SozlesmeId=S.ID) 

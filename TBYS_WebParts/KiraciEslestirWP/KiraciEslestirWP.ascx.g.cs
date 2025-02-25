@@ -215,7 +215,7 @@ namespace TBYS_WebParts.KiraciEslestirWP {
             this.GelenOdemeLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "GelenOdemeLbl";
-            @__ctrl.CssClass = "col-form-label font-weight-bold";
+            @__ctrl.CssClass = "col-form-label fw-bold";
             @__ctrl.Text = "Gelen Ödeme";
             return @__ctrl;
         }

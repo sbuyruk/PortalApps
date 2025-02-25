@@ -56,32 +56,41 @@
                 <div class="card-header" id="CardHeader" runat="server">
                     <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
                     <h3 class="mb-2">
-                        <asp:Label CssClass="col-form-label  btn-outline-success mb-1" ID="TitleLbl" runat="server" Text="Tarih Bazlı Bağışçı Listesi (Eski-Yeni)"></asp:Label>
-                        <asp:Label CssClass="col-form-label text-secondary float-end" ID="EkranNo" Text="23" runat="server" ></asp:Label>
+                        <asp:Label CssClass="col-form-label text-info fw-bold mb-1" ID="TitleLbl" runat="server" Text="Tarih Bazlı Bağışçı Listesi (Eski-Yeni)"></asp:Label>
                     </h3>
                 </div>
                 <div class="card-body alert-secondary" id="MainCardDiv" runat="server">
                     <asp:UpdatePanel ID="upPanel" runat="server">
                         <ContentTemplate>
-                            <div class="card-body p-0">
-                                <div class="input-group">
-                                    <div class="input-group">
-                                        <div class="form-group col-2">
-                                            <label class="col-form-label" for="BasTarTxt">Başlangıç Tarihi</label>
-                                            <input runat="server" type="text" id="BasTarTxt" name="BasTarTxt" class="form-control DateTimePickerV1" readonly="readonly" style="width:130px" />
-                                            <asp:RequiredFieldValidator runat="server" ControlToValidate="BasTarTxt" ForeColor="Red" ErrorMessage="Zorunlu Alan"> </asp:RequiredFieldValidator>
-                                        </div>
-                                        <div class="form-group col-3" id="BitTarDiv" runat="server" style="display: block;">
-                                            <label class="col-form-label" for="BitTarTxt">Bitiş Tarihi</label>
-                                            <asp:RequiredFieldValidator runat="server" ControlToValidate="BitTarTxt" ForeColor="Red" ErrorMessage="Zorunlu Alan"> </asp:RequiredFieldValidator>
-                                            <input runat="server" type="text" id="BitTarTxt" name="BitTarTxt" class="form-control DatePicker2" readonly="readonly" style="width:130px"/>
-                                        </div>
-                                        <div class="form-group col-3">
-                                            <label class="col-form-label col" for="ListeleBtn">.</label>
-                                            <asp:LinkButton ID="ListeleBtn" CssClass="btn btn-outline-primary" runat="server" class="form-control" Text="Listele" OnClick="ListeleBtn_Click" />
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="card-body">
+<div class="row">
+    <!-- Başlangıç Tarihi -->
+    <div class="col-md-2 col-2">
+        <label for="BasTarTxt" class="form-label fw-semibold">Başlangıç Tarihi</label>
+        <input runat="server" type="text" id="BasTarTxt" name="BasTarTxt" 
+               class="form-control DateTimePickerV1" readonly="readonly"/>
+        <asp:RequiredFieldValidator runat="server" ControlToValidate="BasTarTxt" 
+            ForeColor="Red" ErrorMessage="Zorunlu Alan"> 
+        </asp:RequiredFieldValidator>
+    </div>
+
+    <!-- Bitiş Tarihi -->
+    <div class="col-md-2 col-2" id="BitTarDiv" runat="server">
+        <label for="BitTarTxt" class="form-label fw-semibold">Bitiş Tarihi</label>
+        <input runat="server" type="text" id="BitTarTxt" name="BitTarTxt" 
+               class="form-control DatePicker2" readonly="readonly"/>
+        <asp:RequiredFieldValidator runat="server" ControlToValidate="BitTarTxt" 
+            ForeColor="Red" ErrorMessage="Zorunlu Alan"> 
+        </asp:RequiredFieldValidator>
+    </div>
+
+    <!-- Listele Butonu -->
+    <div class="col-md-2 col-2 d-flex align-items-center">
+        <asp:LinkButton ID="ListeleBtn" CssClass="btn btn-outline-primary w-100" 
+            runat="server" Text="Listele" OnClick="ListeleBtn_Click" />
+    </div>
+</div>
+
                                 <div class="table loader">
                                     <asp:Table ID="SonucTable" runat="server" CssClass="table table-bordered table-striped">
                                     </asp:Table>

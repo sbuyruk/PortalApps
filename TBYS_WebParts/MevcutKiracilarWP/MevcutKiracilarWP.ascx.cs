@@ -231,19 +231,19 @@ namespace TBYS_WebParts.MevcutKiracilarWP
 
                     TableCell kiraBedeliCell = new TableCell();
                     kiraBedeliCell.Text = kiraBedeli;
-                    kiraBedeliCell.CssClass = "text-right";
+                    kiraBedeliCell.CssClass = "text-end";
 
                     TableCell anaParaCell = new TableCell();
                     anaParaCell.Text = anaPara;
-                    anaParaCell.CssClass = "text-right";
+                    anaParaCell.CssClass = "text-end";
 
                     TableCell faizliBakiyeCell = new TableCell();
                     faizliBakiyeCell.Text = faizliBakiye;
-                    faizliBakiyeCell.CssClass = "text-right";
+                    faizliBakiyeCell.CssClass = "text-end";
 
                     TableCell kiraBorcuCell = new TableCell();
                     kiraBorcuCell.Text = borcluAyAdedi < 1 ? "-" : borcluAyAdedi.ToString();
-                    kiraBorcuCell.CssClass = "text-right";
+                    kiraBorcuCell.CssClass = "text-end";
 
                     tableRow.Controls.Add(SiraNoCell);
                     tableRow.Controls.Add(dosyaNoCell);

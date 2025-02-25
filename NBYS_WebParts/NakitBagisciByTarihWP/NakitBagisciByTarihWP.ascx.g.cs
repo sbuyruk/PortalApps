@@ -49,10 +49,6 @@ namespace NBYS_WebParts.NakitBagisciByTarihWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.Label EkranNo;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl CardHeader;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -118,23 +114,9 @@ namespace NBYS_WebParts.NakitBagisciByTarihWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label  btn-outline-success mb-1";
+            @__ctrl.CssClass = "col-form-label text-info fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Tarih Bazlı Bağışçı Listesi (Eski-Yeni)";
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControlEkranNo() {
-            global::System.Web.UI.WebControls.Label @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.Label();
-            this.EkranNo = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-secondary float-end";
-            @__ctrl.ID = "EkranNo";
-            @__ctrl.Text = "23";
             return @__ctrl;
         }
         
@@ -157,10 +139,6 @@ namespace NBYS_WebParts.NakitBagisciByTarihWP {
             global::System.Web.UI.WebControls.Label @__ctrl2;
             @__ctrl2 = this.@__BuildControlTitleLbl();
             @__parser.AddParsedSubObject(@__ctrl2);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        "));
-            global::System.Web.UI.WebControls.Label @__ctrl3;
-            @__ctrl3 = this.@__BuildControlEkranNo();
-            @__parser.AddParsedSubObject(@__ctrl3);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </h3>\r\n                "));
             return @__ctrl;
         }
@@ -178,7 +156,6 @@ namespace NBYS_WebParts.NakitBagisciByTarihWP {
             @__ctrl.Name = "BasTarTxt";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control DateTimePickerV1");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("readonly", "readonly");
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "width:130px");
             return @__ctrl;
         }
         
@@ -199,6 +176,21 @@ namespace NBYS_WebParts.NakitBagisciByTarihWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.HtmlControls.HtmlInputText @__BuildControlBitTarTxt() {
+            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl;
+            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
+            this.BitTarTxt = @__ctrl;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
+            @__ctrl.ID = "BitTarTxt";
+            @__ctrl.Name = "BitTarTxt";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control DatePicker2");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("readonly", "readonly");
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.WebControls.RequiredFieldValidator @__BuildControl__control5() {
             global::System.Web.UI.WebControls.RequiredFieldValidator @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.RequiredFieldValidator();
@@ -212,41 +204,24 @@ namespace NBYS_WebParts.NakitBagisciByTarihWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.HtmlControls.HtmlInputText @__BuildControlBitTarTxt() {
-            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl;
-            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
-            this.BitTarTxt = @__ctrl;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
-            @__ctrl.ID = "BitTarTxt";
-            @__ctrl.Name = "BitTarTxt";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control DatePicker2");
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("readonly", "readonly");
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "width:130px");
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControlBitTarDiv() {
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
             this.BitTarDiv = @__ctrl;
             @__ctrl.TemplateControl = this;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-group col-3");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-md-2 col-2");
             @__ctrl.ID = "BitTarDiv";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "display: block;");
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                            <label class=\"col-form-label\" for=\"" +
-                        "BitTarTxt\">Bitiş Tarihi</label>\r\n                                            "));
-            global::System.Web.UI.WebControls.RequiredFieldValidator @__ctrl1;
-            @__ctrl1 = this.@__BuildControl__control5();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n        <label for=\"BitTarTxt\" class=\"form-label fw-semibold\">Bitiş Tarihi</lab" +
+                        "el>\r\n        "));
+            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl1;
+            @__ctrl1 = this.@__BuildControlBitTarTxt();
             @__parser.AddParsedSubObject(@__ctrl1);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                            "));
-            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl2;
-            @__ctrl2 = this.@__BuildControlBitTarTxt();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n        "));
+            global::System.Web.UI.WebControls.RequiredFieldValidator @__ctrl2;
+            @__ctrl2 = this.@__BuildControl__control5();
             @__parser.AddParsedSubObject(@__ctrl2);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                        "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n    "));
             return @__ctrl;
         }
         
@@ -260,8 +235,7 @@ namespace NBYS_WebParts.NakitBagisciByTarihWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "ListeleBtn";
-            @__ctrl.CssClass = "btn btn-outline-primary";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control");
+            @__ctrl.CssClass = "btn btn-outline-primary w-100";
             @__ctrl.Text = "Listele";
             @__ctrl.Click -= new System.EventHandler(this.ListeleBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.ListeleBtn_Click);
@@ -287,34 +261,27 @@ namespace NBYS_WebParts.NakitBagisciByTarihWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControl__control3(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-                            <div class=""card-body p-0"">
-                                <div class=""input-group"">
-                                    <div class=""input-group"">
-                                        <div class=""form-group col-2"">
-                                            <label class=""col-form-label"" for=""BasTarTxt"">Başlangıç Tarihi</label>
-                                            "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            <div class=\"card-body\">\r\n<div class=\"row\">\r\n    <!-" +
+                        "- Başlangıç Tarihi -->\r\n    <div class=\"col-md-2 col-2\">\r\n        <label for=\"Ba" +
+                        "sTarTxt\" class=\"form-label fw-semibold\">Başlangıç Tarihi</label>\r\n        "));
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl1;
             @__ctrl1 = this.@__BuildControlBasTarTxt();
             @__parser.AddParsedSubObject(@__ctrl1);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                            "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n        "));
             global::System.Web.UI.WebControls.RequiredFieldValidator @__ctrl2;
             @__ctrl2 = this.@__BuildControl__control4();
             @__parser.AddParsedSubObject(@__ctrl2);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                        </div>\r\n                               " +
-                        "         "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n    </div>\r\n\r\n    <!-- Bitiş Tarihi -->\r\n    "));
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl3;
             @__ctrl3 = this.@__BuildControlBitTarDiv();
             @__parser.AddParsedSubObject(@__ctrl3);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                        <div class=\"form-group col-3\">\r\n       " +
-                        "                                     <label class=\"col-form-label col\" for=\"List" +
-                        "eleBtn\">.</label>\r\n                                            "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n    <!-- Listele Butonu -->\r\n    <div class=\"col-md-2 col-2 d-flex align-item" +
+                        "s-center\">\r\n        "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl4;
             @__ctrl4 = this.@__BuildControlListeleBtn();
             @__parser.AddParsedSubObject(@__ctrl4);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                        </div>\r\n                               " +
-                        "     </div>\r\n                                </div>\r\n                           " +
-                        "     <div class=\"table loader\">\r\n                                    "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n    </div>\r\n</div>\r\n\r\n                                <div class=\"table loader\"" +
+                        ">\r\n                                    "));
             global::System.Web.UI.WebControls.Table @__ctrl5;
             @__ctrl5 = this.@__BuildControlSonucTable();
             @__parser.AddParsedSubObject(@__ctrl5);

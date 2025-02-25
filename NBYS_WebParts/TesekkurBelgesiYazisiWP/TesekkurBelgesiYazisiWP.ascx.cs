@@ -432,7 +432,7 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
                         { data: 'BelgedeYazanIsim', 'width':'20%' },
                         { data: 'NakitBagisciTC' },
                         { data: 'ArmaganTarihi' },
-                        { data: 'ArmaganTutari', 'width':'10%', 'className': 'text-right'},
+                        { data: 'ArmaganTutari', 'width':'10%', 'className': 'text-end'},
 
                     ],
                     pageLength: 8,

@@ -158,7 +158,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3>
-                                    <asp:Label CssClass="font-weight-bold text-danger" ID="ToplantiDetaylariHeaderLbl" runat="server">Toplantı Detayları</asp:Label>
+                                    <asp:Label CssClass="fw-bold text-danger" ID="ToplantiDetaylariHeaderLbl" runat="server">Toplantı Detayları</asp:Label>
                                     <asp:Label ID="IdLbl" runat="server"></asp:Label>
                                 </h3>
                             </div>
@@ -167,79 +167,79 @@
                                     <div class="form-group">
                                         <asp:Table id="ToplantiDetaylariTable" runat="server" CssClass="table table-striped table-bordered" width="100%">
                                             <asp:TableRow>
-                                                <asp:TableCell CssClass="font-weight-bold">
+                                                <asp:TableCell CssClass="fw-bold">
                                                     Toplantı Konusu
                                                 </asp:TableCell>
                                                 <asp:TableCell  ID="ToplantiKonusuCell"></asp:TableCell>
                                             </asp:TableRow>
                                              <asp:TableRow>
-                                                <asp:TableCell CssClass="font-weight-bold">
+                                                <asp:TableCell CssClass="fw-bold">
                                                     Başlangıç Zamanı
                                                 </asp:TableCell>
                                                 <asp:TableCell ID="BaslangicZamaniCell"></asp:TableCell>
                                             </asp:TableRow>
                                             <asp:TableRow>
-                                                <asp:TableCell CssClass="font-weight-bold">
+                                                <asp:TableCell CssClass="fw-bold">
                                                     Bitiş Zamanı
                                                 </asp:TableCell>
                                                 <asp:TableCell ID="BitisZamaniCell"></asp:TableCell>
                                             </asp:TableRow>
                                             <asp:TableRow>
-                                                <asp:TableCell CssClass="font-weight-bold">
+                                                <asp:TableCell CssClass="fw-bold">
                                                     Toplantı Yeri
                                                 </asp:TableCell>
                                                 <asp:TableCell ID="ToplantiYeriCell"></asp:TableCell>
                                             </asp:TableRow>               
                                             <asp:TableRow>
-                                                <asp:TableCell CssClass="font-weight-bold">
+                                                <asp:TableCell CssClass="fw-bold">
                                                     Toplantı Yetkilisi
                                                 </asp:TableCell>
                                                 <asp:TableCell ID="ToplantiYetkilisiCell"></asp:TableCell>
                                             </asp:TableRow>
                                             <asp:TableRow>
-                                                <asp:TableCell CssClass="font-weight-bold">
+                                                <asp:TableCell CssClass="fw-bold">
                                                     Koordinatör
                                                 </asp:TableCell>
                                                 <asp:TableCell ID="KoordinatorCell"></asp:TableCell>
                                             </asp:TableRow>                       
                                             <asp:TableRow>
-                                                <asp:TableCell CssClass="font-weight-bold">
+                                                <asp:TableCell CssClass="fw-bold">
                                                     İç Katılımcılar
                                                 </asp:TableCell>
                                                 <asp:TableCell ID="IcKatilimcilarCell"></asp:TableCell>
                                             </asp:TableRow>
                                             <asp:TableRow>
-                                                <asp:TableCell CssClass="font-weight-bold">
+                                                <asp:TableCell CssClass="fw-bold">
                                                     Dış Katılımcılar
                                                 </asp:TableCell>
                                                 <asp:TableCell ID="DisKatilimcilarCell"></asp:TableCell>
                                             </asp:TableRow>
                                             <asp:TableRow>
-                                                <asp:TableCell CssClass="font-weight-bold">
+                                                <asp:TableCell CssClass="fw-bold">
                                                     Bilgi
                                                 </asp:TableCell>
                                                 <asp:TableCell ID="BilgiCell"></asp:TableCell>
                                             </asp:TableRow>
                                             <asp:TableRow>
-                                                <asp:TableCell CssClass="font-weight-bold">
+                                                <asp:TableCell CssClass="fw-bold">
                                                    Çevrim İçi
                                                 </asp:TableCell>
                                                 <asp:TableCell ID="CevrimIciCell"></asp:TableCell>
                                             </asp:TableRow>
                                             <asp:TableRow>
-                                                <asp:TableCell CssClass="font-weight-bold">
+                                                <asp:TableCell CssClass="fw-bold">
                                                    İkram Onayı
                                                 </asp:TableCell>
                                                 <asp:TableCell ID="IkramOnayiCell"></asp:TableCell>
                                             </asp:TableRow>
                                             <asp:TableRow>
-                                                <asp:TableCell CssClass="font-weight-bold">
+                                                <asp:TableCell CssClass="fw-bold">
                                                    İkram Malzemesi
                                                 </asp:TableCell>
                                                 <asp:TableCell ID="IkramMalzemesiCell"></asp:TableCell>
                                             </asp:TableRow>
                                             <asp:TableRow>
-                                                <asp:TableCell CssClass="font-weight-bold">
+                                                <asp:TableCell CssClass="fw-bold">
                                                    Açıklama
                                                 </asp:TableCell>
                                                 <asp:TableCell ID="AciklamaCell"></asp:TableCell>
@@ -273,7 +273,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3>
-                                    <asp:Label CssClass="font-weight-bold text-danger" ID="Label1" runat="server">Faaliyet Detayları</asp:Label>
+                                    <asp:Label CssClass="fw-bold text-danger" ID="Label1" runat="server">Faaliyet Detayları</asp:Label>
                                     <asp:Label ID="FaaliyetIdLbl" runat="server"></asp:Label>
                                 </h3>
                             </div>
@@ -282,43 +282,43 @@
                                     <div class="form-group">
                                         <asp:Table id="Table1" runat="server" CssClass="table table-striped table-bordered" width="100%">
                                             <asp:TableRow>
-                                                <asp:TableCell CssClass="font-weight-bold">
+                                                <asp:TableCell CssClass="fw-bold">
                                                     Faaliyet Konusu
                                                 </asp:TableCell>
                                                 <asp:TableCell  ID="FaaliyetKonusuCell"></asp:TableCell>
                                             </asp:TableRow>
                                              <asp:TableRow>
-                                                <asp:TableCell CssClass="font-weight-bold">
+                                                <asp:TableCell CssClass="fw-bold">
                                                     Başlangıç Zamanı
                                                 </asp:TableCell>
                                                 <asp:TableCell ID="FaaliyetBaslangicZamaniCell"></asp:TableCell>
                                             </asp:TableRow>
                                             <asp:TableRow>
-                                                <asp:TableCell CssClass="font-weight-bold">
+                                                <asp:TableCell CssClass="fw-bold">
                                                     Bitiş Zamanı
                                                 </asp:TableCell>
                                                 <asp:TableCell ID="FaaliyetBitisZamaniCell"></asp:TableCell>
                                             </asp:TableRow>
                                             <asp:TableRow>
-                                                <asp:TableCell CssClass="font-weight-bold">
+                                                <asp:TableCell CssClass="fw-bold">
                                                     Faaliyet Yeri
                                                 </asp:TableCell>
                                                 <asp:TableCell ID="FaaliyetYeriCell"></asp:TableCell>
                                             </asp:TableRow>               
                                             <asp:TableRow>
-                                                <asp:TableCell CssClass="font-weight-bold">
+                                                <asp:TableCell CssClass="fw-bold">
                                                     Faaliyet Tipi
                                                 </asp:TableCell>
                                                 <asp:TableCell ID="FaaliyetTipiCell"></asp:TableCell>
                                             </asp:TableRow>
                                             <asp:TableRow>
-                                                <asp:TableCell CssClass="font-weight-bold">
+                                                <asp:TableCell CssClass="fw-bold">
                                                     Faaliyet Amacı
                                                 </asp:TableCell>
                                                 <asp:TableCell ID="FaaliyetAmaciCell"></asp:TableCell>
                                             </asp:TableRow>                       
                                             <asp:TableRow>
-                                                <asp:TableCell CssClass="font-weight-bold">
+                                                <asp:TableCell CssClass="fw-bold">
                                                     Katilimcilar
                                                 </asp:TableCell>
                                                 <asp:TableCell ID="KatilimcilarCell">
@@ -342,13 +342,13 @@
                                                     </asp:TableCell>
                                             </asp:TableRow>
                                             <asp:TableRow>
-                                                <asp:TableCell CssClass="font-weight-bold">
+                                                <asp:TableCell CssClass="fw-bold">
                                                     Faaliyet Durumu
                                                 </asp:TableCell>
                                                 <asp:TableCell ID="FaaliyetDurumuCell"></asp:TableCell>
                                             </asp:TableRow>                                            
                                             <asp:TableRow>
-                                                <asp:TableCell CssClass="font-weight-bold">
+                                                <asp:TableCell CssClass="fw-bold">
                                                    Açıklama
                                                 </asp:TableCell>
                                                 <asp:TableCell ID="FaaliyetAciklamaCell"></asp:TableCell>

@@ -346,7 +346,7 @@ namespace TBYS_WebParts.BorcluKiracilarWP
                         else
                         {
                             //görüntüleyenler için
-                            kiraciCell.Text = "<a href=# onclick=OpenModal(" + kiraSozlesmeId + "); type=button class=\'btn btn-link font-weight-bold\'>" + kiraci + "</a>";
+                            kiraciCell.Text = "<a href=# onclick=OpenModal(" + kiraSozlesmeId + "); type=button class=\'btn btn-link fw-bold\'>" + kiraci + "</a>";
                         }
                             
 
@@ -355,19 +355,19 @@ namespace TBYS_WebParts.BorcluKiracilarWP
 
                         TableCell kiraBedeliCell = new TableCell();
                         kiraBedeliCell.Text = kiraBedeli;
-                        kiraBedeliCell.CssClass = "text-right";
+                        kiraBedeliCell.CssClass = "text-end";
 
                         TableCell anaParaCell = new TableCell();
                         anaParaCell.Text = anaPara;
-                        anaParaCell.CssClass = "text-right";
+                        anaParaCell.CssClass = "text-end";
 
                         TableCell faizliBakiyeCell = new TableCell();
                         faizliBakiyeCell.Text = faizliBakiye;
-                        faizliBakiyeCell.CssClass = "text-right";
+                        faizliBakiyeCell.CssClass = "text-end";
 
                         TableCell kiraBorcuCell = new TableCell();
                         kiraBorcuCell.Text = (borcluAyAdedi).ToString();
-                        kiraBorcuCell.CssClass = "text-right";
+                        kiraBorcuCell.CssClass = "text-end";
 
                         siraNoCell.BorderStyle = BorderStyle.Solid;
                         dosyaNoCell.BorderStyle = BorderStyle.Solid;
@@ -566,7 +566,7 @@ namespace TBYS_WebParts.BorcluKiracilarWP
                 row.Controls.Add(SiraNoCell);
 
                 TableCell YilCell = new TableCell();
-                YilCell.CssClass = "text-right";
+                YilCell.CssClass = "text-end";
                 YilCell.Text = odemePlani.Yil.ToString();
                 row.Controls.Add(YilCell);
 
@@ -575,17 +575,17 @@ namespace TBYS_WebParts.BorcluKiracilarWP
                 row.Controls.Add(AyCell);
 
                 TableCell KiraBedeliCell = new TableCell();
-                KiraBedeliCell.CssClass = "text-right";
+                KiraBedeliCell.CssClass = "text-end";
                 KiraBedeliCell.Text = odemePlani.KiraBedeli.ToString("N", culturInfo);
                 row.Controls.Add(KiraBedeliCell);
 
                 TableCell OdenenTutarCell = new TableCell();
-                OdenenTutarCell.CssClass = "text-right";
+                OdenenTutarCell.CssClass = "text-end";
                 OdenenTutarCell.Text = odemePlani.OdenenTutar.ToString("N", culturInfo);
                 row.Controls.Add(OdenenTutarCell);
                 
                 TableCell OdemeTarihiCell = new TableCell();
-                OdemeTarihiCell.CssClass = "text-right";
+                OdemeTarihiCell.CssClass = "text-end";
                 OdemeTarihiCell.Text = OdemeGetir(kiraSozlesme,odemePlani);
                 row.Controls.Add(OdemeTarihiCell);
 

@@ -118,7 +118,7 @@ namespace NBYS_WebParts.BagisHareketListesiWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-info font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-info fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Bağış Listesi (Bağış Hareketleri)";
             return @__ctrl;
@@ -259,7 +259,7 @@ namespace NBYS_WebParts.BagisHareketListesiWP {
                 <div class=""card-body mt-1"">
                     <div class=""row"">
                         <div class=""form-group col"">
-                            <label for=""AyDDL"" class=""col-form-label text-right "">Ay</label>
+                            <label for=""AyDDL"" class=""col-form-label text-end "">Ay</label>
                             "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl1;
             @__ctrl1 = this.@__BuildControlAyDDL();

@@ -19,7 +19,7 @@
                 <div class="card-header" id="CardHeader" runat="server">
                     <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
                     <h3 class="mb-2">
-                        <asp:Label CssClass="col-form-label text-success font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="Taşınmaz Girişi"></asp:Label>
+                        <asp:Label CssClass="col-form-label text-success fw-bold mb-1" ID="TitleLbl" runat="server" Text="Taşınmaz Girişi"></asp:Label>
                         <asp:Label CssClass="col-form-label " ID="IdLbl" runat="server"></asp:Label>
                         <asp:Label CssClass="col-form-label " ID="AdiLbl" runat="server"></asp:Label>
                     </h3>
@@ -104,11 +104,11 @@
                                 </div>
                                 <div class="form-group m-0 ">
                                     <label class="col-form-label" for="EmlakBeyanDegeriTxt">Eml.Bey.Değ.</label>
-                                    <input class="form-control input-money text-right" id="EmlakBeyanDegeriTxt" runat="server" />
+                                    <input class="form-control input-money text-end" id="EmlakBeyanDegeriTxt" runat="server" />
                                 </div>
                                 <div class="form-group m-0 ">
                                     <label class="col-form-label" for="TapuTasinmazNoTxt">Tapu Taşınmaz No</label>
-                                    <input class="form-control text-right" id="TapuTasinmazNoTxt" runat="server" />
+                                    <input class="form-control text-end" id="TapuTasinmazNoTxt" runat="server" />
                                 </div>
                             </div>
                             <div class="form-group col">
@@ -121,8 +121,8 @@
                                     <input runat="server" type="text" id="TapuTarihiTxt" name="TapuTarihiTxt" class="form-control DateTimePickerV1" readonly="readonly" />
                                 </div>
                                 <div class="form-group m-0 ">
-                                    <label class="col-form-label text-right" for="TahminiRayicDegeriTxt">Tah.Rayiç Değ.</label>
-                                    <input class="form-control input-money text-right" id="TahminiRayicDegeriTxt" runat="server" />
+                                    <label class="col-form-label text-end" for="TahminiRayicDegeriTxt">Tah.Rayiç Değ.</label>
+                                    <input class="form-control input-money text-end" id="TahminiRayicDegeriTxt" runat="server" />
                                 </div>
                                 <div class="form-group m-0 ">
                                     <label class="col-form-label" for="KatMulkiyetiDDL">Kat Mülk.</label>
@@ -130,7 +130,7 @@
                                 </div>
                                 <div class="form-group m-0 ">
                                     <label class="col-form-label" for="InsaYiliTxt">İnşa Yılı</label>
-                                    <input class="form-control text-right" id="InsaYiliTxt" runat="server" />
+                                    <input class="form-control text-end" id="InsaYiliTxt" runat="server" />
                                 </div>
                             </div>
 
@@ -226,7 +226,7 @@
                             </div>
                             <div class="form-group m-0 ">
                                 <label class="col-form-label" for="NitelikTxt">Metrekare</label>
-                                <asp:TextBox ID="MetrekareTxt" runat="server" class="form-control" ToolTip="Metrekaresi"></asp:TextBox>
+                                <asp:TextBox ID="MetrekareTxt" runat="server" class="form-control input-money" ToolTip="Metrekaresi"></asp:TextBox>
                             </div>
                         </div>
                     </div>

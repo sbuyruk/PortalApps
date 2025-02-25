@@ -150,7 +150,7 @@ namespace TBYS_WebParts.KiraArtisYazisiWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-danger font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-danger fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Kira Artış Yazısı Oluşturma";
             return @__ctrl;
@@ -444,8 +444,8 @@ namespace TBYS_WebParts.KiraArtisYazisiWP {
                         ": \"KiralamaAmaci\" },\r\n                { data: \"Bolge\" },\r\n                { data" +
                         ": \"SozlesmeTarihi\" },\r\n                { data: \"ArtisAyi\" },\r\n                { " +
                         "data: \"TamAdres\", \"width\": \"25%\" },\r\n                { data: \"KiraBedeli\", type:" +
-                        " \"decimal\", class: \"text-right\"},\r\n                { data: \"Tufe\" },\r\n          " +
-                        "      { data: \"YeniKiraBedeli\", type: \"decimal\", class: \"text-right\" },\r\n       " +
+                        " \"decimal\", class: \"text-end\"},\r\n                { data: \"Tufe\" },\r\n          " +
+                        "      { data: \"YeniKiraBedeli\", type: \"decimal\", class: \"text-end\" },\r\n       " +
                         "         { data: \"YenilendiMi\" },\r\n\r\n            ],\r\n            \'order\': [[1, \'" +
                         "asc\']],//AdiSoyadi Sıralı\r\n            \"language\": {\r\n                \"url\": \"ht" +
                         "tp://tskgv-portal/OrtakBelgeler/Turkish.txt\",\r\n                \"decimal\": \",\",\r\n" +

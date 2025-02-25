@@ -116,7 +116,7 @@ namespace NBYS_WebParts.SPDosyaListesiWP
                             continue;//template dosyasını listeye koyma
 
                         childRow = new Dictionary<string, object>();
-                        string fileUrl = "<a href=" + rootUrl + "/_layouts/15/download.aspx?SourceUrl=" + dosyaUrl + file.Name + @" class='btn-link font-weight-bold'>" + file.Name + "</a>";
+                        string fileUrl = "<a href=" + rootUrl + "/_layouts/15/download.aspx?SourceUrl=" + dosyaUrl + file.Name + @" class='btn-link fw-bold'>" + file.Name + "</a>";
                         childRow.Add("FileName", fileUrl);
                         childRow.Add("Author", file.Author.Name.ToString());
                         childRow.Add("ModifiedBy", file.ModifiedBy.Name.ToString());
@@ -136,7 +136,7 @@ namespace NBYS_WebParts.SPDosyaListesiWP
 
                         etiketDosyaAdi = isDosyaVarMi ? etiketDosyaAdi : string.Empty;
 
-                        string labelUrl = "<a href=" + rootUrl + "/_layouts/15/download.aspx?SourceUrl=" + dosyaUrl + etiketDosyaAdi + @" class='btn-link font-weight-bold'>" + etiketDosyaAdi + "</a>";
+                        string labelUrl = "<a href=" + rootUrl + "/_layouts/15/download.aspx?SourceUrl=" + dosyaUrl + etiketDosyaAdi + @" class='btn-link fw-bold'>" + etiketDosyaAdi + "</a>";
                         childRow.Add("LabelFileName", labelUrl);
                         
                         string deleteFile = "<a href=# onclick=CallButtonClick('"+file.Name + "','"+ etiketDosyaAdi+"'); class='btn btn-outline-danger'>Dosyayı Sil</a>";

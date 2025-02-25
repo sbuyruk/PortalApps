@@ -18,9 +18,13 @@
         var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
         myModalInstance.show();
     }
-    function CloseModal() {
-        $("#ModalOnayDiv").modal('hide');
 
+    function CloseModal() {
+        var myModalEl = document.getElementById('ModalOnayDiv');
+        var modalInstance = bootstrap.Modal.getInstance(myModalEl);
+        if (modalInstance) {
+            modalInstance.hide();
+        }
     }
 </script>
 <script type="text/javascript">

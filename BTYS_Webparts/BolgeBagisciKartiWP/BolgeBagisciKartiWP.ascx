@@ -11,7 +11,7 @@
         <div class="card-header" id="CardHeader" runat="server">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-2">
-                <asp:Label CssClass="col-form-label text-danger font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="Taşınmaz Bağışçı Kartı"></asp:Label>
+                <asp:Label CssClass="col-form-label text-danger fw-bold mb-1" ID="TitleLbl" runat="server" Text="Taşınmaz Bağışçı Kartı"></asp:Label>
                 <asp:Label CssClass="col-form-label text-white" ID="IdLbl" runat="server"></asp:Label>
                 <asp:Label CssClass="col-form-label " ID="AdiLbl" runat="server"></asp:Label>
             </h3>
@@ -19,7 +19,7 @@
         <div class="card-body" runat="server" id="BagisciCard">
             <div class="form-group">
                 <h4>
-                    <asp:Label ID="BagisciBilgileriTableLbl" runat="server" class="font-weight-bold"></asp:Label>
+                    <asp:Label ID="BagisciBilgileriTableLbl" runat="server" class="fw-bold"></asp:Label>
                 </h4>
                 <div class="table">
                     <asp:Table ID="BagisciBilgileriTable" runat="server" CssClass="table table-sm table-hover table-bordered">
@@ -28,7 +28,7 @@
             </div>
             <div class="form-group">
                 <h4>
-                    <asp:Label ID="TasinmazTableLbl" runat="server" class="font-weight-bold"></asp:Label>
+                    <asp:Label ID="TasinmazTableLbl" runat="server" class="fw-bold"></asp:Label>
                 </h4>
                 <div class="table">
                     <asp:Table ID="TasinmazTable" runat="server" CssClass="table table-sm table-hover table-bordered">
@@ -37,7 +37,7 @@
             </div>
             <div class="form-group">
                 <h4>
-                    <asp:Label ID="BagisciTalepleriTableLbl" runat="server" class="font-weight-bold"></asp:Label>
+                    <asp:Label ID="BagisciTalepleriTableLbl" runat="server" class="fw-bold"></asp:Label>
                 </h4>
                 <div class="table">
                     <asp:Table ID="BagisciTalepleriTable" runat="server" CssClass="table table-sm table-hover table-bordered">
@@ -46,7 +46,7 @@
             </div>
             <div class="form-group">
                 <h4>
-                    <asp:Label ID="BagisciYakinlariTableLbl" runat="server" class="font-weight-bold"></asp:Label>
+                    <asp:Label ID="BagisciYakinlariTableLbl" runat="server" class="fw-bold"></asp:Label>
                 </h4>
                 <div class="table">
                     <asp:Table ID="BagisciYakinlariTable" runat="server" CssClass="table table-sm table-hover table-bordered">
@@ -55,7 +55,7 @@
             </div>
             <div class="form-group">
                 <h4>
-                    <asp:Label ID="TaahhutTableLbl" runat="server" class="font-weight-bold"></asp:Label>
+                    <asp:Label ID="TaahhutTableLbl" runat="server" class="fw-bold"></asp:Label>
                 </h4>
                 <div class="table">
                     <asp:Table ID="TaahhutTable" runat="server" CssClass="table table-sm table-hover table-bordered">

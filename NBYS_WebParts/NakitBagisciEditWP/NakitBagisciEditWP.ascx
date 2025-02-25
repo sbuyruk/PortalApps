@@ -12,12 +12,12 @@
         <div class="card-header" id="CardHeader" runat="server">
             <asp:LinkButton ID="LinkButton1" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-2">
-                <asp:Label CssClass="col-form-label text-info font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="Bağışçı Bilgileri Değiştirme"></asp:Label>
+                <asp:Label CssClass="col-form-label text-info fw-bold mb-1" ID="TitleLbl" runat="server" Text="Bağışçı Bilgileri Değiştirme"></asp:Label>
                 <asp:Label CssClass="col-form-label text-white" ID="IdLbl" runat="server"></asp:Label>
                 <asp:Label CssClass="col-form-label " ID="AdiLbl" runat="server"></asp:Label>
             </h3>
         </div>
-        <div class="card-group mt-1 text-right">
+        <div class="card-group mt-1 text-end">
             <div class="col-6 mt-1">
                 <div class="form-group row ">
                     <label class="col-4 col-form-label form-control-label">Ad/Ünvan</label>

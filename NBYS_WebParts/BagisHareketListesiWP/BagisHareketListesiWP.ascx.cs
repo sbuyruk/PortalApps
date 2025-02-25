@@ -292,7 +292,7 @@ namespace NBYS_WebParts.BagisHareketListesiWP
                     { data: 'BagisId' },
                     { data: 'Adi' },
                     { data: 'BagisTarihi' },
-                    { data: 'BagisMiktari', 'width': '10%', 'className': 'text-right' },
+                    { data: 'BagisMiktari', 'width': '10%', 'className': 'text-end' },
                     { data: 'Ili', 'width': '14%' },
                     { data: 'TCKimlikNo' },
                     { data: 'Telefon' },

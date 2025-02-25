@@ -293,7 +293,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
             GuncelleBtn.Visible = false;
 
             MessageLbl.Text = "Bağımsız Bölüm silinecek. Onaylıyor musunuz?";
-            MessageLbl.CssClass = "col-form-label text-danger font-weight-bold";
+            MessageLbl.CssClass = "col-form-label text-danger fw-bold";
             MessageLbl.Visible = true;
 
             if (BagimsizBolumSilinebilirMi(bagimsizBolum))
@@ -305,7 +305,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
             else
             {
                 MessageLbl.Text = "Bu Bağımsız Bölüm ile ilişkilendirilmiş bir Sözleşme bulunmaktadır. Bağımsız Bölüm kaydı silinemez.";
-                MessageLbl.CssClass = "col-form-label text-danger font-weight-bold";
+                MessageLbl.CssClass = "col-form-label text-danger fw-bold";
                 MessageLbl.Visible = true;
                 SilBtn.Visible = false;
             }

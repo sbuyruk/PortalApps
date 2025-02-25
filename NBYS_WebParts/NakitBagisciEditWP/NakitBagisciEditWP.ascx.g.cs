@@ -158,7 +158,7 @@ namespace NBYS_WebParts.NakitBagisciEditWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-info font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-info fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Bağışçı Bilgileri Değiştirme";
             return @__ctrl;
@@ -510,7 +510,7 @@ namespace NBYS_WebParts.NakitBagisciEditWP {
             @__ctrl1 = this.@__BuildControlCardHeader();
             @__parser.AddParsedSubObject(@__ctrl1);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-        <div class=""card-group mt-1 text-right"">
+        <div class=""card-group mt-1 text-end"">
             <div class=""col-6 mt-1"">
                 <div class=""form-group row "">
                     <label class=""col-4 col-form-label form-control-label"">Ad/Ünvan</label>

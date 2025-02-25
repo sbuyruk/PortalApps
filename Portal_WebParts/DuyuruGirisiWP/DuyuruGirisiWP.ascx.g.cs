@@ -234,7 +234,7 @@ namespace Portal_WebParts.DuyuruGirisiWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-primary font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-primary fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Duyuru Girişi";
             return @__ctrl;
@@ -1047,7 +1047,7 @@ namespace Portal_WebParts.DuyuruGirisiWP {
                     <div class=""card"">
                         <div class=""card-header text-center p-0"">
 
-                                <label class=""col-form-label font-weight-bold"">Duyuru Bilgileri</label>
+                                <label class=""col-form-label fw-bold"">Duyuru Bilgileri</label>
 
                         </div>
 
@@ -1116,7 +1116,7 @@ namespace Portal_WebParts.DuyuruGirisiWP {
                 </div>
                 <div class=""col-5"">
                     <div class=""card"">
-                        <div class=""card-header text-center font-weight-bold p-0"">
+                        <div class=""card-header text-center fw-bold p-0"">
                             <div class=""form-group m-0 p-0"">
                                 <label class=""col-form-label"">Duyuru Ayarları</label>
                             </div>
@@ -1132,7 +1132,7 @@ namespace Portal_WebParts.DuyuruGirisiWP {
                         </div>
                     </div>
                     <div class=""card"">
-                        <div class=""card-header text-center font-weight-bold p-0"">
+                        <div class=""card-header text-center fw-bold p-0"">
                             <div class=""form-group m-0 p-0"">
                                 <label class=""col-form-label"">Duyuru Yapılacak Personel</label>
                             </div>

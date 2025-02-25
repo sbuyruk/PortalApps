@@ -119,7 +119,7 @@ namespace MFYS_WebParts.BankaBazindaGunlukDovizBagisListesiWP {
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "TitleLbl";
-            @__ctrl.CssClass = "col-form-label text-primary font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-primary fw-bold mb-1";
             @__ctrl.Text = "Banka Bazında Günlük Döviz Bağışlar";
             return @__ctrl;
         }
@@ -233,7 +233,7 @@ namespace MFYS_WebParts.BankaBazindaGunlukDovizBagisListesiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "ToplamLbl";
-            @__ctrl.CssClass = "col-form-label font-weight-bold float-end";
+            @__ctrl.CssClass = "col-form-label fw-bold float-end";
             @__ctrl.Text = "Toplam";
             return @__ctrl;
         }
@@ -247,20 +247,20 @@ namespace MFYS_WebParts.BankaBazindaGunlukDovizBagisListesiWP {
                     <div class=""form-group"">
                         <div class=""row"">
                             <div class=""col-2"">
-                                <label for=""AyDDL"" class=""col-form-label font-weight-bold"">Bağış Ayı: </label>
+                                <label for=""AyDDL"" class=""col-form-label fw-bold"">Bağış Ayı: </label>
                                 "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl1;
             @__ctrl1 = this.@__BuildControlAyDDL();
             @__parser.AddParsedSubObject(@__ctrl1);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <div class=\"col" +
                         "-2\">\r\n                                <label for=\"YilDDL\" class=\"col-form-label " +
-                        "font-weight-bold\">Bağış Yılı: </label>\r\n                                "));
+                        "fw-bold\">Bağış Yılı: </label>\r\n                                "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl2;
             @__ctrl2 = this.@__BuildControlYilDDL();
             @__parser.AddParsedSubObject(@__ctrl2);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <div class=\"col" +
                         "-4 form-group \">\r\n                                <label for=\"BankaDDL\" class=\"c" +
-                        "ol-form-label font-weight-bold\">Banka: </label>\r\n                               " +
+                        "ol-form-label fw-bold\">Banka: </label>\r\n                               " +
                         " "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl3;
             @__ctrl3 = this.@__BuildControlBankaDDL();

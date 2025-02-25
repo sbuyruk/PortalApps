@@ -57,7 +57,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h5>
-                            <asp:Label ID="Label1" CssClass="font-weight-bold" runat="server" Text="Bugün Görevli Personel" Font-Size="Large"></asp:Label>
+                            <asp:Label ID="Label1" CssClass="fw-bold" runat="server" Text="Bugün Görevli Personel" Font-Size="Large"></asp:Label>
                         </h5>
                     </div>
                     <div class="card-body">
@@ -71,10 +71,10 @@
                                                 <img height="100" class="rounded-circle border" src="<%#Eval("PersonelResimleri") %><%#Eval("KullaniciAdi") %>.jpg?RenditionID=5" alt="" onerror="this.src='/PersonelResimleri/personel.jpg';">
                                             </div>
                                             <div class="col">
-                                                <div class="font-weight-bold">
+                                                <div class="fw-bold">
                                                     <p><%#Eval("Isim") %></p>
                                                 </div>
-                                                <div class="font-weight-bold">
+                                                <div class="fw-bold">
                                                     <p><%#Eval("Bolum") %></p>
                                                 </div>
                                             </div>

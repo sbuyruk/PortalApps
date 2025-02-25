@@ -342,7 +342,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-success font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-success fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Taşınmaz Girişi";
             return @__ctrl;
@@ -645,7 +645,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
             this.EmlakBeyanDegeriTxt = @__ctrl;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-right");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-end");
             @__ctrl.ID = "EmlakBeyanDegeriTxt";
             return @__ctrl;
         }
@@ -657,7 +657,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
             this.TapuTasinmazNoTxt = @__ctrl;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control text-right");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control text-end");
             @__ctrl.ID = "TapuTasinmazNoTxt";
             return @__ctrl;
         }
@@ -699,7 +699,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
             this.TahminiRayicDegeriTxt = @__ctrl;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-right");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-end");
             @__ctrl.ID = "TahminiRayicDegeriTxt";
             return @__ctrl;
         }
@@ -728,7 +728,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
             this.InsaYiliTxt = @__ctrl;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control text-right");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control text-end");
             @__ctrl.ID = "InsaYiliTxt";
             return @__ctrl;
         }
@@ -1024,7 +1024,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
             this.MetrekareTxt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "MetrekareTxt";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money");
             @__ctrl.ToolTip = "Metrekaresi";
             return @__ctrl;
         }
@@ -1201,7 +1201,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                 </div>
                                 <div class=""form-group m-0 "">
-                                    <label class=""col-form-label text-right"" for=""TahminiRayicDegeriTxt"">Tah.Rayiç Değ.</label>
+                                    <label class=""col-form-label text-end"" for=""TahminiRayicDegeriTxt"">Tah.Rayiç Değ.</label>
                                     "));
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl21;
             @__ctrl21 = this.@__BuildControlTahminiRayicDegeriTxt();

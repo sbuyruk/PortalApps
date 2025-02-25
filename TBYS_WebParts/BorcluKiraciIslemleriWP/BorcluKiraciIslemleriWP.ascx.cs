@@ -356,7 +356,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                     else
                     {
                         //görüntüleyenler için
-                        kiraciCell.Text = "<a href=# onclick=OpenModal(" + kiraSozlesmeId + "); type=button class=\'btn btn-link font-weight-bold\'>" + kiraci + "</a>";
+                        kiraciCell.Text = "<a href=# onclick=OpenModal(" + kiraSozlesmeId + "); type=button class=\'btn btn-link fw-bold\'>" + kiraci + "</a>";
                     }
 
 
@@ -365,19 +365,19 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
 
                     TableCell kiraBedeliCell = new TableCell();
                     kiraBedeliCell.Text = kiraBedeli;
-                    kiraBedeliCell.CssClass = "text-right";
+                    kiraBedeliCell.CssClass = "text-end";
 
                     TableCell anaParaCell = new TableCell();
                     anaParaCell.Text = anaPara;
-                    anaParaCell.CssClass = "text-right";
+                    anaParaCell.CssClass = "text-end";
 
                     TableCell faizliBakiyeCell = new TableCell();
                     faizliBakiyeCell.Text = faizliBakiye;
-                    faizliBakiyeCell.CssClass = "text-right";
+                    faizliBakiyeCell.CssClass = "text-end";
 
                     TableCell kiraBorcuAySayisiCell = new TableCell();
                     kiraBorcuAySayisiCell.Text = (borcluAyAdedi).ToString();
-                    kiraBorcuAySayisiCell.CssClass = "text-right";
+                    kiraBorcuAySayisiCell.CssClass = "text-end";
 
                     TableCell takipIslemiCell = new TableCell();
                     takipIslemiCell.Text = TakipIslemiURLGetir(kiraciId, kiraSozlesmeId, odemePlaniId, kiraBedeli, faizliBakiye, borcluAyAdedi, bolge, birim);
@@ -476,7 +476,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
             {
                 string islemYapan = kiraBorcuTakip.IslemYapan;
                 string islemTarihi =takipIslemi.Equals(ProjeConstants.KIRABORCU_UYARI)? kiraBorcuTakip.IslemTarihi.ConvertToDDMMYYYHHmmFormat(): kiraBorcuTakip.IslemTarihi.ConvertToDatetimeEmptyIfNull();
-                string url = "<p class='text-success font-weight-bold'>" +islemYapan +" tarafından " + 
+                string url = "<p class='text-success fw-bold'>" +islemYapan +" tarafından " + 
                     takipIslemi+ (takipIslemi.Equals(ProjeConstants.KIRABORCU_ICRATAKIBI) ? " başlatıldı." : 
                     (takipIslemi.Equals(ProjeConstants.KIRABORCU_YAZILIIHTAR) ? " gönderildi." : " yapıldı.") )
                     +" (Tarih:"+islemTarihi+")</p>";
@@ -661,7 +661,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                 row.Controls.Add(SiraNoCell);
 
                 TableCell YilCell = new TableCell();
-                YilCell.CssClass = "text-right";
+                YilCell.CssClass = "text-end";
                 YilCell.Text = odemePlani.Yil.ToString();
                 row.Controls.Add(YilCell);
 
@@ -670,17 +670,17 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
                 row.Controls.Add(AyCell);
 
                 TableCell KiraBedeliCell = new TableCell();
-                KiraBedeliCell.CssClass = "text-right";
+                KiraBedeliCell.CssClass = "text-end";
                 KiraBedeliCell.Text = odemePlani.KiraBedeli.ToString("N", culturInfo);
                 row.Controls.Add(KiraBedeliCell);
 
                 TableCell OdenenTutarCell = new TableCell();
-                OdenenTutarCell.CssClass = "text-right";
+                OdenenTutarCell.CssClass = "text-end";
                 OdenenTutarCell.Text = odemePlani.OdenenTutar.ToString("N", culturInfo);
                 row.Controls.Add(OdenenTutarCell);
 
                 TableCell OdemeTarihiCell = new TableCell();
-                OdemeTarihiCell.CssClass = "text-right";
+                OdemeTarihiCell.CssClass = "text-end";
                 OdemeTarihiCell.Text = OdemeGetir(kiraSozlesme, odemePlani);
                 row.Controls.Add(OdemeTarihiCell);
 
@@ -743,7 +743,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
             kiraci = kiraci.Select(kiraciId);
             if (kiraci != null)
             {
-                BaslikLbl.CssClass = "col-form-label text-success font-weight-bold";
+                BaslikLbl.CssClass = "col-form-label text-success fw-bold";
                 MesajLbl.CssClass = "col-form-label text-success ";
                 IslemTarihiTxt.Text = DateTime.Today.ConvertToDatetimeEmptyIfNull();
                 TebligTarihiTxt.Text = string.Empty;
@@ -818,7 +818,7 @@ namespace TBYS_WebParts.BorcluKiraciIslemleriWP
             kiraBorcuTakip = kiraBorcuTakip.Select(kiraBorcuTakipId);
             if (kiraBorcuTakip != null)
             {
-                BaslikLbl.CssClass = "col-form-label text-primary font-weight-bold";
+                BaslikLbl.CssClass = "col-form-label text-primary fw-bold";
                 MesajLbl.CssClass = "col-form-label text-primary";
                 int kiraSozlesmeId = kiraBorcuTakip.KiraSozlesmeId;
                 string takipIslemi = kiraBorcuTakip.TakipIslemi;

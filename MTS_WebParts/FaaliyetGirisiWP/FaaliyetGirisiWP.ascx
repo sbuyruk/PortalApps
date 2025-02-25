@@ -266,7 +266,7 @@
         var divName = document.getElementById(div);
 
         if (chkbox.checked) {
-            divName.className = "checkbox font-weight-bold text-danger";
+            divName.className = "checkbox fw-bold text-danger";
         } else {
             divName.className = "checkbox text-primary";
         }
@@ -345,12 +345,12 @@
 
                 <asp:UpdatePanel ID="UpdatePanel5" runat="server" UpdateMode="Conditional" >
                     <ContentTemplate>
-                        <asp:Label CssClass="col-form-label text-primary font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="Faaliyet Düzenleme"></asp:Label>
+                        <asp:Label CssClass="col-form-label text-primary fw-bold mb-1" ID="TitleLbl" runat="server" Text="Faaliyet Düzenleme"></asp:Label>
                         <asp:Label CssClass="col-form-label" ID="IdLbl" runat="server"></asp:Label>
                         <asp:Label CssClass="col-form-label " ID="AdiLbl" runat="server"></asp:Label>
                         <asp:Label ID="lblTime" CssClass="col-form-label text-secondary" runat="server" />
                         <asp:Timer ID="RefreshTimer" runat="server" OnTick="RefreshTimer_Tick" />
-                        <div class="form-group text-right text-danger" id="TopBarDiv" runat="server"></div>
+                        <div class="form-group text-end text-danger" id="TopBarDiv" runat="server"></div>
                     </ContentTemplate>
                 </asp:UpdatePanel>
             </h3>
@@ -457,8 +457,8 @@
                                     <asp:TextBox ID="AciklamaTxt" CssClass="form-control" runat="server" Text="" TextMode="MultiLine" Rows="5"></asp:TextBox>
                                 </div>
                                 <div class="form-group col">
-                                    <asp:Label CssClass="col-form-label font-weight-bold text-danger" runat="server" Text="Yönetici Notu"></asp:Label>
-                                    <asp:TextBox ID="YoneticiNotuTxt" CssClass="form-control font-weight-bold text-danger" runat="server" Text="" TextMode="MultiLine" Rows="5"></asp:TextBox>
+                                    <asp:Label CssClass="col-form-label fw-bold text-danger" runat="server" Text="Yönetici Notu"></asp:Label>
+                                    <asp:TextBox ID="YoneticiNotuTxt" CssClass="form-control fw-bold text-danger" runat="server" Text="" TextMode="MultiLine" Rows="5"></asp:TextBox>
                                 </div>
                             </div>
                         </ContentTemplate>
@@ -592,7 +592,7 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h3 class="col-form-label font-weight-bold" id="KatiliciSecimiHeaderLbl" runat="server">Katılımcı Seçimi
+                        <h3 class="col-form-label fw-bold" id="KatiliciSecimiHeaderLbl" runat="server">Katılımcı Seçimi
                         </h3>
                         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
@@ -639,7 +639,7 @@
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header text-danger">
-                        <h3 class="col-form-label font-weight-bold" id="AniObjesiHeaderLbl" runat="server">Stoksuz Anı Objesi</h3>
+                        <h3 class="col-form-label fw-bold" id="AniObjesiHeaderLbl" runat="server">Stoksuz Anı Objesi</h3>
                     </div>
                     <div class="modal-body ">
                         
@@ -649,7 +649,7 @@
                             <asp:LinkButton ID="SecilenleriKaydetBtn" runat="server" CssClass="btn btn-success" CausesValidation="false" Text=" Kaydet " OnClick="SecilenleriKaydetBtn_Click" />
                         </div>
                         <div class="form-group">
-                            <asp:Label CssClass="col-form-label font-weight-bold" runat="server" Text="Verilen Anı Objesi"></asp:Label>
+                            <asp:Label CssClass="col-form-label fw-bold" runat="server" Text="Verilen Anı Objesi"></asp:Label>
                             <asp:Table ID="CustomAniObjesiModalDataTable" runat="server" class="table-striped table-bordered" Width="100%"></asp:Table>
                             <asp:PlaceHolder ID="ModalPlaceHolder" runat="server"></asp:PlaceHolder>
                         </div>
@@ -679,14 +679,14 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header text-danger">
-                        <h3 class="col-form-label font-weight-bold" id="GetirilenAniObjesiModalTitle" runat="server"></h3>
+                        <h3 class="col-form-label fw-bold" id="GetirilenAniObjesiModalTitle" runat="server"></h3>
                     </div>
                     <div class="modal-body ">
                         <div id="InvisibleDiv1" style="display: none">
                             <asp:LinkButton ID="GetirilenAniObjesiKaydetBtn" runat="server" CssClass="btn btn-success" CausesValidation="false" Text=" Kaydet " OnClick="GetirilenAniObjesiKaydetBtn_Click" />
                         </div>
                         <div class="form-group">
-                            <asp:Label CssClass="col-form-label font-weight-bold" runat="server" Text="Getirilen Anı Objesi"></asp:Label>
+                            <asp:Label CssClass="col-form-label fw-bold" runat="server" Text="Getirilen Anı Objesi"></asp:Label>
                             <asp:TextBox ID="GetirilenAniObjesiTxt" CssClass="form-control" runat="server" Text="" TextMode="MultiLine" Rows="4"></asp:TextBox>
                         </div>
                     </div>
@@ -714,7 +714,7 @@
             <asp:UpdatePanel ID="UpdatePanel10" runat="server" UpdateMode="Conditional" ViewStateMode="Enabled">
                 <ContentTemplate>
                     <div class="modal-header text-danger">
-                        <h3 class="col-form-label font-weight-bold" id="StokluAniObjesiModalTitle" runat="server"></h3>
+                        <h3 class="col-form-label fw-bold" id="StokluAniObjesiModalTitle" runat="server"></h3>
                     </div>
                     <div class="modal-body ">
                         <div id="InvisibleDiv2" style="display: none">
@@ -784,14 +784,14 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header text-danger">
-                        <h3 class="col-form-label font-weight-bold" id="H1" runat="server">Takvim Daveti</h3>
+                        <h3 class="col-form-label fw-bold" id="H1" runat="server">Takvim Daveti</h3>
                     </div>
                     <div class="modal-body ">
                         <div id="TakvimDavetiGonderNowDiv" style="display: none">
                             <asp:LinkButton ID="TakvimDavetiGonderNowBtn" runat="server" CssClass="btn btn-success" CausesValidation="false" Text=" Gönder " OnClick="TakvimDavetiGonderNowBtn_Click" />
                         </div>
                         <div class="form-group">
-                            <asp:Label CssClass="col-form-label font-weight-bold" runat="server" Text="EPosta Adresi"></asp:Label>
+                            <asp:Label CssClass="col-form-label fw-bold" runat="server" Text="EPosta Adresi"></asp:Label>
                             <asp:TextBox ID="EPostaAdresiTxt" CssClass="form-control" runat="server" Text="" ></asp:TextBox>
                         </div>
                     </div>

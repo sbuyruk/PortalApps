@@ -34,14 +34,14 @@
                 <div class="card-header" id="CardHeader" runat="server">
                     <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
                     <h3 class="mb-2">
-                        <asp:Label CssClass="col-form-label text-danger font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="Kira Sözleşme Listesi"></asp:Label>
+                        <asp:Label CssClass="col-form-label text-danger fw-bold mb-1" ID="TitleLbl" runat="server" Text="Kira Sözleşme Listesi"></asp:Label>
                         <asp:Label CssClass="col-form-label text-white" ID="IdLbl" runat="server"></asp:Label>
                         <asp:Label CssClass="col-form-label " ID="AdiLbl" runat="server"></asp:Label>
                     </h3>
                 </div>
                 <div class="card-body p-0" id="MainCardDiv" runat="server">
 
-                    <asp:Label ID="RowCountLbl" runat="server" Text="" CssClass="float-end text-right"></asp:Label>
+                    <asp:Label ID="RowCountLbl" runat="server" Text="" CssClass="float-end text-end"></asp:Label>
                     <div class="table loader" id="tbl" runat="server">
                         <input id="globalFilter" placeholder="Aranacak Kelime" size="30" />
                         <div id="tblfilter" class="table"></div>

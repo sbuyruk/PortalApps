@@ -73,7 +73,7 @@
             <div class="modal-header">
             </div>
             <div class="modal-body">
-                <div class="text-danger font-weight-bold text-center" id="YokDiv" runat="server" style="display: block">
+                <div class="text-danger fw-bold text-center" id="YokDiv" runat="server" style="display: block">
                     Bugün doğan veya evlilik yıldönümü olan personelimiz bulunmamaktadır.
                 </div>
                 <div class="card" id="DogumGunuDiv" runat="server" style="display: none">
@@ -81,7 +81,7 @@
                         <div class="row">
                             <div class="col-8">
                                 <h5>
-                                    <asp:Label CssClass="col-form-label text-success font-weight-bold" runat="server" Text="Bugün Doğanlar"></asp:Label>
+                                    <asp:Label CssClass="col-form-label text-success fw-bold" runat="server" Text="Bugün Doğanlar"></asp:Label>
                                 </h5>
                             </div>
                             <div class="col-4">
@@ -113,7 +113,7 @@
                         <div class="row">
                             <div class="col-8">
                                 <h5>
-                                    <asp:Label CssClass="col-form-label text-danger font-weight-bold" runat="server" Text="Bugün Evlenenler"></asp:Label>
+                                    <asp:Label CssClass="col-form-label text-danger fw-bold" runat="server" Text="Bugün Evlenenler"></asp:Label>
                                 </h5>
                             </div>
                             <div class="col-4">
@@ -141,10 +141,10 @@
                 </div>
                 <div class="form-group float-end kutlamaGenelMudur" id="GenelMudurDiv" runat="server" style="display: none">
                     <div class="form-group m-0">
-                        <asp:Label class="form-control col-form-label font-weight-bold border-0" ID="pGenelMudur" runat="server"></asp:Label>
+                        <asp:Label class="form-control col-form-label fw-bold border-0" ID="pGenelMudur" runat="server"></asp:Label>
                     </div>
                     <div class="form-group m-0">
-                        <asp:Label class="form-control col-form-label font-weight-bold border-0 pt-0" ID="pGenelMudurUnvan" runat="server"></asp:Label>
+                        <asp:Label class="form-control col-form-label fw-bold border-0 pt-0" ID="pGenelMudurUnvan" runat="server"></asp:Label>
                     </div>
                 </div>
             </div>

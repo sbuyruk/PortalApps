@@ -243,7 +243,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP {
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "TitleLbl";
-            @__ctrl.CssClass = "col-form-label text-danger font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-danger fw-bold mb-1";
             @__ctrl.Text = "Teminat İşlemleri";
             return @__ctrl;
         }
@@ -271,7 +271,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP {
             this.AdiLbl = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label font-weight-bold";
+            @__ctrl.CssClass = "col-form-label fw-bold";
             @__ctrl.ID = "AdiLbl";
             return @__ctrl;
         }
@@ -343,7 +343,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP {
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
             this.TeminatTutariTxt = @__ctrl;
             @__ctrl.TemplateControl = this;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-right ");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-end ");
             @__ctrl.ID = "TeminatTutariTxt";
             return @__ctrl;
         }
@@ -359,7 +359,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP {
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
             @__ctrl.ID = "OdenenTeminatTxt";
             @__ctrl.Name = "OdenenTeminatTxt";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-right ");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-end ");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("readonly", "readonly");
             return @__ctrl;
         }
@@ -374,7 +374,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP {
             @__ctrl.TemplateControl = this;
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
             @__ctrl.ID = "IadeTeminatTxt";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-right ");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-end ");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("readonly", "readonly");
             return @__ctrl;
         }
@@ -390,7 +390,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP {
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
             @__ctrl.ID = "KalanTeminatTxt";
             @__ctrl.Name = "KalanTeminatTxt";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-right ");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-end ");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("readonly", "readonly");
             return @__ctrl;
         }
@@ -714,7 +714,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP {
             this.ModalTitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "ModalTitleLbl";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-form-label font-weight-bold");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-form-label fw-bold");
             @__ctrl.Text = "Teminat İşlemi Eklenecek";
             return @__ctrl;
         }
@@ -780,7 +780,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP {
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
             this.IslemTutariTxt = @__ctrl;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-right ");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-end ");
             @__ctrl.ID = "IslemTutariTxt";
             return @__ctrl;
         }
@@ -941,7 +941,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP {
             this.Label3 = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "Label3";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-form-label font-weight-bold");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-form-label fw-bold");
             @__ctrl.Text = "Teminat İşlemi Silinecek";
             return @__ctrl;
         }
@@ -1152,23 +1152,26 @@ namespace TBYS_WebParts.TeminatIslemleriWP {
 
             @__w.Write("\').click();\r\n    }\r\n    function OpenTeminatIslemiModal() {\r\n        var myModalI" +
                     "nstance = bootstrap.Modal.getOrCreateInstance(document.getElementById(\'TeminatIs" +
-                    "lemiEkleModal\'));\n        myModalInstance.show();\r\n    }\r\n    function CloseModa" +
-                    "l() {\r\n        $(\"#TeminatIslemiEkleModal\").modal(\'hide\');\r\n\r\n    }\r\n    if ($(\'" +
-                    ".input-money\').toArray().forEach(function (field) {\r\n        new Cleave(field, {" +
-                    "\r\n            numeral: true,\r\n            numeralDecimalMark: \',\',\r\n            " +
-                    "delimiter: \'.\'\r\n        });\r\n    }));\r\n</script>\r\n<script type=\"text/javascript\"" +
-                    ">\r\n    function DoIt() {\r\n        var element = document.getElementById(\'CardDiv" +
-                    "\');\r\n\r\n        var opt = {\r\n            margin: [0, 0],\r\n            filename: \'" +
-                    "teminat.pdf\',\r\n            enableLinks: false,\r\n            image: { type: \'jpeg" +
-                    "\', quality: 0.98 },\r\n            html2canvas: { scale: 2 },\r\n            jsPDF: " +
-                    "{ unit: \'in\', format: \'A4\', orientation: \'portrait\' }\r\n        };\r\n\r\n        // " +
-                    "New Promise-based usage:\r\n        html2pdf().set(opt).from(element).save();\r\n\r\n " +
-                    "       // Old monolithic-style usage:\r\n        //html2pdf(element, opt);\r\n    }\r" +
-                    "\n\r\n\r\n</script>\r\n<script src=\"/Style Library/tskgv/js/jspdf.js\"></script>\r\n<scrip" +
-                    "t src=\"/Style Library/tskgv/js/jspdf.plugin.addimage.js\"></script>\r\n<script src=" +
-                    "\"/Style Library/tskgv/js/html2canvas.min.js\"></script>\r\n<script src=\"/Style Libr" +
-                    "ary/tskgv/js/html2pdf.bundle.min.js\"></script>\r\n<div class=\"container\">\r\n\r\n    <" +
-                    "div class=\"card shadow\">\r\n        <div class=\"card-header \">\r\n            ");
+                    "lemiEkleModal\'));\r\n        myModalInstance.show();\r\n    }\r\n\r\n    function CloseM" +
+                    "odal() {\r\n        var myModalEl = document.getElementById(\'TeminatIslemiEkleModa" +
+                    "l\');\r\n        var modalInstance = bootstrap.Modal.getInstance(myModalEl);\r\n     " +
+                    "   if (modalInstance) {\r\n            modalInstance.hide();\r\n        }\r\n    }\r\n  " +
+                    "  if ($(\'.input-money\').toArray().forEach(function (field) {\r\n        new Cleave" +
+                    "(field, {\r\n            numeral: true,\r\n            numeralDecimalMark: \',\',\r\n   " +
+                    "         delimiter: \'.\'\r\n        });\r\n    }));\r\n</script>\r\n<script type=\"text/ja" +
+                    "vascript\">\r\n    function DoIt() {\r\n        var element = document.getElementById" +
+                    "(\'CardDiv\');\r\n\r\n        var opt = {\r\n            margin: [0.5, 0.5],\r\n          " +
+                    "  filename: \'teminat.pdf\',\r\n            enableLinks: false,\r\n            image: " +
+                    "{ type: \'jpeg\', quality: 0.98 },\r\n            html2canvas: { scale: 2 },\r\n      " +
+                    "      jsPDF: { unit: \'in\', format: \'A4\', orientation: \'portrait\' }\r\n        };\r\n" +
+                    "\r\n        // New Promise-based usage:\r\n        html2pdf().set(opt).from(element)" +
+                    ".save();\r\n\r\n        // Old monolithic-style usage:\r\n        //html2pdf(element, " +
+                    "opt);\r\n    }\r\n\r\n\r\n</script>\r\n<script src=\"/Style Library/tskgv/js/jspdf.js\"></sc" +
+                    "ript>\r\n<script src=\"/Style Library/tskgv/js/jspdf.plugin.addimage.js\"></script>\r" +
+                    "\n<script src=\"/Style Library/tskgv/js/html2canvas.min.js\"></script>\r\n<script src" +
+                    "=\"/Style Library/tskgv/js/html2pdf.bundle.min.js\"></script>\r\n<div class=\"contain" +
+                    "er\">\r\n\r\n    <div class=\"card shadow\">\r\n        <div class=\"card-header \">\r\n     " +
+                    "       ");
             parameterContainer.Controls[0].RenderControl(@__w);
             @__w.Write("\r\n            <h3 class=\"mb-1\">\r\n                ");
             parameterContainer.Controls[1].RenderControl(@__w);

@@ -133,7 +133,7 @@ namespace MTS_WebParts.AramaGirisiWP
         private void GirisiAc()
         {
             TitleLbl.Text = "Yeni Arama/Görüşme Girişi";
-            TitleLbl.CssClass = "col-form-label text-success font-weight-bold mb-1";
+            TitleLbl.CssClass = "col-form-label text-success fw-bold mb-1";
             KaydetBtn.Visible = false;
             GuncelleBtn.Visible = false;
             SilBtn.Visible = false;
@@ -158,7 +158,7 @@ namespace MTS_WebParts.AramaGirisiWP
         private void DuzenleAc()
         {
             TitleLbl.Text = "Arama/Görüşme Düzenleme";
-            TitleLbl.CssClass = "col-form-label text-primary font-weight-bold mb-1";
+            TitleLbl.CssClass = "col-form-label text-primary fw-bold mb-1";
             IdLbl.Text = "( Arama/Görüşme No: " + AramaGorusmeIdQS + " )";
             KaydetBtn.Visible = false;
             GuncelleBtn.Visible = false;
@@ -272,7 +272,7 @@ namespace MTS_WebParts.AramaGirisiWP
             else
             {
                 ModalLbl.Text = "Yeni Faaliyet Oluşturulacak";
-                ModalLbl.CssClass = "col-form-label text-success font-weight-bold";
+                ModalLbl.CssClass = "col-form-label text-success fw-bold";
                 MessageLbl.Text = "Bu arama/görüşme ile ilişkilendirilmiş bir faaliyet bulunmamaktadır. Yeni faaliyet oluşturulmasını onaylıyor musunuz.";
                 OnaylaBtn.Text = "Yeni Faaliyet Oluştur";
                 OnaylaBtn.CssClass = "btn btn-outline-success";
@@ -363,7 +363,7 @@ namespace MTS_WebParts.AramaGirisiWP
             if (aramaGorusme != null)
             {
                 ModalLbl.Text = "Arama/Görüşme Kaydı Silinecek";
-                ModalLbl.CssClass = "col-form-label text-danger font-weight-bold";
+                ModalLbl.CssClass = "col-form-label text-danger fw-bold";
                 if (aramaGorusme.FaaliyetId > 0)
                 {
                     Faaliyet faaliyet = new Faaliyet();

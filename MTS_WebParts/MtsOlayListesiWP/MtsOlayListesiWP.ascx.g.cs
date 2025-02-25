@@ -90,7 +90,7 @@ namespace MTS_WebParts.MtsOlayListesiWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-primary font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-primary fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "MTS Gerçekleşen İşlemler";
             return @__ctrl;

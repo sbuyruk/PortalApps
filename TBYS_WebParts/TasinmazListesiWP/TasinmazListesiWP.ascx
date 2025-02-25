@@ -40,7 +40,7 @@
         <div class="card-header">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-1">
-                <asp:Label ID="TitleLbl" runat="server" CssClass="col-form-label text-danger font-weight-bold mb-1" Text="Taşınmaz Listesi"></asp:Label>
+                <asp:Label ID="TitleLbl" runat="server" CssClass="col-form-label text-danger fw-bold mb-1" Text="Taşınmaz Listesi"></asp:Label>
                 <asp:Label ID="IdLbl" runat="server" CssClass="col-form-label text-white" Visible="false"></asp:Label>
                 <asp:Label CssClass="col-form-label" ID="AdiLbl" runat="server"></asp:Label>
             </h3>
@@ -101,8 +101,8 @@
                     <div class="modal-body">
                         <div>
                             <h3>
-                                <asp:Label ID="BagisciLbl" CssClass="form-control font-weight-bold" runat="server" Text=""></asp:Label>
-                                <asp:Label ID="AdresLbl" CssClass="form-control font-weight-bold"  runat="server" Text=""></asp:Label>
+                                <asp:Label ID="BagisciLbl" CssClass="form-control fw-bold" runat="server" Text=""></asp:Label>
+                                <asp:Label ID="AdresLbl" CssClass="form-control fw-bold"  runat="server" Text=""></asp:Label>
                             </h3>
                         </div>
 

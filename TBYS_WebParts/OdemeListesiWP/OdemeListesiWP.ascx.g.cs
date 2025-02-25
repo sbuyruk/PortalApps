@@ -154,7 +154,7 @@ namespace TBYS_WebParts.OdemeListesiWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-danger font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-danger fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Aylık Ödemeler";
             return @__ctrl;
@@ -452,7 +452,7 @@ namespace TBYS_WebParts.OdemeListesiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "ModalLbl";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-form-label text-danger font-weight-bold");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-form-label text-danger fw-bold");
             @__ctrl.Text = "Ödeme Silinecek";
             return @__ctrl;
         }
@@ -657,7 +657,7 @@ namespace TBYS_WebParts.OdemeListesiWP {
                     "ata: \"KiraciAdiSoyadi\" },\r\n                { data: \"OdemeTarihi\" },\r\n           " +
                     "     { data: \"OdenenTutar\", type: \"decimal\" },\r\n                { data: \"OdemeSe" +
                     "bebi\" },\r\n                { data: \"Aciklama\" },\r\n            ],\r\n            \"co" +
-                    "lumnDefs\": [\r\n                { className: \"text-right\", \"targets\": [1] },\r\n    " +
+                    "lumnDefs\": [\r\n                { className: \"text-end\", \"targets\": [1] },\r\n    " +
                     "        ],\r\n            \"language\": {\r\n                \"url\": \"http://tskgv-port" +
                     "al/OrtakBelgeler/Turkish.txt\",\r\n                \"decimal\": \",\",\r\n               " +
                     " \"thousands\": \".\"\r\n            },\r\n            \"order\": [11, \"asc\"],\r\n          " +

@@ -743,7 +743,7 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP
                 row.Controls.Add(SiraNoCell);
 
                 TableCell YilCell = new TableCell();
-                YilCell.CssClass = "text-right";
+                YilCell.CssClass = "text-end";
                 YilCell.Text = odemePlani.Yil.ToString();
                 row.Controls.Add(YilCell);
 
@@ -752,12 +752,12 @@ namespace TBYS_WebParts.KiraBankaEkstreListesiWP
                 row.Controls.Add(AyCell);
 
                 TableCell KiraBedeliCell = new TableCell();
-                KiraBedeliCell.CssClass = "text-right";
+                KiraBedeliCell.CssClass = "text-end";
                 KiraBedeliCell.Text = odemePlani.KiraBedeli.ToString("N", culturInfo);
                 row.Controls.Add(KiraBedeliCell);
 
                 TableCell OdenenTutarCell = new TableCell();
-                OdenenTutarCell.CssClass = "text-right";
+                OdenenTutarCell.CssClass = "text-end";
                 OdenenTutarCell.Text = odemePlani.OdenenTutar.ToString("N", culturInfo);
                 row.Controls.Add(OdenenTutarCell);
 

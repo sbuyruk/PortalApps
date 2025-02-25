@@ -297,10 +297,6 @@
     <None Include="Package\Package.Template.xml">
       <DependentUpon>Package.package</DependentUpon>
     </None>
-    <None Include="Scripts\jquery-3.7.1.min.map" />
-    <None Include="Scripts\jquery-3.7.1.slim.min.map" />
-    <None Include="Scripts\moment-with-locales.min.js.map" />
-    <None Include="Scripts\moment.min.js.map" />
     <None Include="TestWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{95862460-30ac-49f0-aa54-c87f1c9a127d}</SharePointProjectItemId>
     </None>
@@ -393,15 +389,6 @@
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>MtsOlayListesiWP.ascx.g.cs</LastGenOutput>
     </Content>
-    <Content Include="Scripts\jquery-3.7.1.intellisense.js" />
-    <Content Include="Scripts\jquery-3.7.1.js" />
-    <Content Include="Scripts\jquery-3.7.1.min.js" />
-    <Content Include="Scripts\jquery-3.7.1.slim.js" />
-    <Content Include="Scripts\jquery-3.7.1.slim.min.js" />
-    <Content Include="Scripts\moment-with-locales.js" />
-    <Content Include="Scripts\moment-with-locales.min.js" />
-    <Content Include="Scripts\moment.js" />
-    <Content Include="Scripts\moment.min.js" />
     <Content Include="TestWP\Elements.xml" />
     <Content Include="TestWP\TestWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>

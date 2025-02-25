@@ -50,7 +50,7 @@
                 { data: "Aciklama" },
             ],
             "columnDefs": [
-                { className: "text-right", "targets": [1] },
+                { className: "text-end", "targets": [1] },
             ],
             "language": {
                 "url": "http://tskgv-portal/OrtakBelgeler/Turkish.txt",
@@ -112,7 +112,7 @@
         <div class="card-header" id="CardHeader" runat="server">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-2">
-                <asp:Label CssClass="col-form-label text-danger font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="Aylık Ödemeler"></asp:Label>
+                <asp:Label CssClass="col-form-label text-danger fw-bold mb-1" ID="TitleLbl" runat="server" Text="Aylık Ödemeler"></asp:Label>
                 <asp:Label CssClass="col-form-label text-white" ID="IdLbl" runat="server"></asp:Label>
                 <asp:Label CssClass="col-form-label " ID="AdiLbl" runat="server"></asp:Label>
             </h3>
@@ -199,7 +199,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3>
-                                    <asp:Label ID="ModalLbl" class="col-form-label text-danger font-weight-bold" Text="Ödeme Silinecek" runat="server"></asp:Label></h3>
+                                    <asp:Label ID="ModalLbl" class="col-form-label text-danger fw-bold" Text="Ödeme Silinecek" runat="server"></asp:Label></h3>
                             </div>
                             <div class="card-body">
                                 <div class="form-group">

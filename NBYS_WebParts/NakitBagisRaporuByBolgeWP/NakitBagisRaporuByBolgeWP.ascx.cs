@@ -110,38 +110,38 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP
                             TableCell AyCell = new TableCell();
                             DateTime tarih = new DateTime(DateTime.Now.Year, i, 1);
                             string aystr = tarih.ToString("MMMM");
-                            AyCell.CssClass = "font-weight-bold text-right";
+                            AyCell.CssClass = "fw-bold text-end";
                             AyCell.Text = aystr;
                             tableRow.Controls.Add(AyCell);
 
                             TableCell AnkAdetCell = new TableCell();
                             tableRow.Controls.Add(AnkAdetCell);
                             TableCell AnkTutarCell = new TableCell();
-                            AnkTutarCell.CssClass = "text-right";
+                            AnkTutarCell.CssClass = "text-end";
                             tableRow.Controls.Add(AnkTutarCell);
 
                             TableCell IstAdetCell = new TableCell();
                             tableRow.Controls.Add(IstAdetCell);
                             TableCell IstTutarCell = new TableCell();
-                            IstTutarCell.CssClass = "text-right";
+                            IstTutarCell.CssClass = "text-end";
                             tableRow.Controls.Add(IstTutarCell);
 
                             TableCell IzmAdetCell = new TableCell();
                             tableRow.Controls.Add(IzmAdetCell);
                             TableCell IzmTutarCell = new TableCell();
-                            IzmTutarCell.CssClass = "text-right";
+                            IzmTutarCell.CssClass = "text-end";
                             tableRow.Controls.Add(IzmTutarCell);
 
                             TableCell MerAdetCell = new TableCell();
                             tableRow.Controls.Add(MerAdetCell);
                             TableCell MerTutarCell = new TableCell();
-                            MerTutarCell.CssClass = "text-right";
+                            MerTutarCell.CssClass = "text-end";
                             tableRow.Controls.Add(MerTutarCell);
 
                             TableCell YurtdisiAdetCell = new TableCell();
                             tableRow.Controls.Add(YurtdisiAdetCell);
                             TableCell YurtdisiTutarCell = new TableCell();
-                            YurtdisiTutarCell.CssClass = "text-right";
+                            YurtdisiTutarCell.CssClass = "text-end";
                             tableRow.Controls.Add(YurtdisiTutarCell);
 
 
@@ -194,12 +194,12 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP
                             }//foreach
 
                             TableCell AyToplamAdetCell = new TableCell();
-                            AyToplamAdetCell.CssClass = "font-weight-bold text-right";
+                            AyToplamAdetCell.CssClass = "fw-bold text-end";
                             AyToplamAdetCell.Text = AyToplamAdet + "";
                             tableRow.Controls.Add(AyToplamAdetCell);
                             TableCell AyToplamTutarCell = new TableCell();
                             AyToplamTutarCell.Text = AyToplamTutar.ToString("N", culturInfo);
-                            AyToplamTutarCell.CssClass = "font-weight-bold text-right";
+                            AyToplamTutarCell.CssClass = "fw-bold text-end";
                             tableRow.Controls.Add(AyToplamTutarCell);
 
                             NBTable.Controls.Add(tableRow);
@@ -212,63 +212,63 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP
                 TableRow toplamRow = new TableRow();
 
                 TableCell ToplamBaslikCell = new TableCell();
-                ToplamBaslikCell.CssClass = "font-weight-bold text-right";
+                ToplamBaslikCell.CssClass = "fw-bold text-end";
                 ToplamBaslikCell.Text = "Toplam";
                 toplamRow.Controls.Add(ToplamBaslikCell);
 
                 TableCell AnkToplamAdetCell = new TableCell();
-                AnkToplamAdetCell.CssClass = "font-weight-bold text-right";
+                AnkToplamAdetCell.CssClass = "fw-bold text-end";
                 AnkToplamAdetCell.Text = AnkToplamAdet + "";
                 toplamRow.Controls.Add(AnkToplamAdetCell);
                 TableCell AnkToplamTutarCell = new TableCell();
                 AnkToplamTutarCell.Text = AnkToplamTutar.ToString("N", culturInfo);
-                AnkToplamTutarCell.CssClass = "font-weight-bold text-right";
+                AnkToplamTutarCell.CssClass = "fw-bold text-end";
                 toplamRow.Controls.Add(AnkToplamTutarCell);
 
                 TableCell IstToplamAdetCell = new TableCell();
-                IstToplamAdetCell.CssClass = "font-weight-bold text-right";
+                IstToplamAdetCell.CssClass = "fw-bold text-end";
                 IstToplamAdetCell.Text = IstToplamAdet + "";
                 toplamRow.Controls.Add(IstToplamAdetCell);
                 TableCell IstToplamTutarCell = new TableCell();
                 IstToplamTutarCell.Text = IstToplamTutar.ToString("N", culturInfo);
-                IstToplamTutarCell.CssClass = "font-weight-bold text-right";
+                IstToplamTutarCell.CssClass = "fw-bold text-end";
                 toplamRow.Controls.Add(IstToplamTutarCell);
 
                 TableCell IzmToplamAdetCell = new TableCell();
-                IzmToplamAdetCell.CssClass = "font-weight-bold text-right";
+                IzmToplamAdetCell.CssClass = "fw-bold text-end";
                 IzmToplamAdetCell.Text = IzmToplamAdet + "";
                 toplamRow.Controls.Add(IzmToplamAdetCell);
                 TableCell IzmToplamTutarCell = new TableCell();
                 IzmToplamTutarCell.Text = IzmToplamTutar.ToString("N", culturInfo);
-                IzmToplamTutarCell.CssClass = "font-weight-bold text-right";
+                IzmToplamTutarCell.CssClass = "fw-bold text-end";
                 toplamRow.Controls.Add(IzmToplamTutarCell);
 
                 TableCell MerToplamAdetCell = new TableCell();
-                MerToplamAdetCell.CssClass = "font-weight-bold text-right";
+                MerToplamAdetCell.CssClass = "fw-bold text-end";
                 MerToplamAdetCell.Text = MerToplamAdet + "";
                 toplamRow.Controls.Add(MerToplamAdetCell);
                 TableCell MerToplamTutarCell = new TableCell();
                 MerToplamTutarCell.Text = MerToplamTutar.ToString("N", culturInfo);
-                MerToplamTutarCell.CssClass = "font-weight-bold text-right";
+                MerToplamTutarCell.CssClass = "fw-bold text-end";
                 toplamRow.Controls.Add(MerToplamTutarCell);
 
 
                 TableCell YurtdisiToplamAdetCell = new TableCell();
-                YurtdisiToplamAdetCell.CssClass = "font-weight-bold text-right";
+                YurtdisiToplamAdetCell.CssClass = "fw-bold text-end";
                 YurtdisiToplamAdetCell.Text = YurtdisiToplamAdet + "";
                 toplamRow.Controls.Add(YurtdisiToplamAdetCell);
                 TableCell YurtdisiToplamTutarCell = new TableCell();
                 YurtdisiToplamTutarCell.Text = YurtdisiToplamTutar.ToString("N", culturInfo);
-                YurtdisiToplamTutarCell.CssClass = "font-weight-bold text-right";
+                YurtdisiToplamTutarCell.CssClass = "fw-bold text-end";
                 toplamRow.Controls.Add(YurtdisiToplamTutarCell);
 
                 TableCell EnToplamAdetCell = new TableCell();
-                EnToplamAdetCell.CssClass = "text-danger font-weight-bold text-right text-right";
+                EnToplamAdetCell.CssClass = "text-danger fw-bold text-end text-end";
                 EnToplamAdetCell.Text = AnkToplamAdet + IstToplamAdet + IzmToplamAdet + MerToplamAdet + YurtdisiToplamAdet + "";
                 toplamRow.Controls.Add(EnToplamAdetCell);
                 TableCell EnToplamTutarCell = new TableCell();
                 EnToplamTutarCell.Text = (AnkToplamTutar + IstToplamTutar + IzmToplamTutar + MerToplamTutar + YurtdisiToplamTutar).ToString("N", culturInfo);
-                EnToplamTutarCell.CssClass = "text-danger font-weight-bold text-right";
+                EnToplamTutarCell.CssClass = "text-danger fw-bold text-end";
                 toplamRow.Controls.Add(EnToplamTutarCell);
 
                 NBTable.Controls.Add(toplamRow);

@@ -278,7 +278,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-danger font-weight-bold";
+            @__ctrl.CssClass = "col-form-label text-danger fw-bold";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Taşınmaz Bağışçı Düzenleme";
             return @__ctrl;
@@ -846,7 +846,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP {
             this.Label1 = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label font-weight-bold";
+            @__ctrl.CssClass = "col-form-label fw-bold";
             @__ctrl.ID = "Label1";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Bağışçı Bilgi ve Talep Formu"));
@@ -920,7 +920,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP {
             this.Label2 = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label font-weight-bold";
+            @__ctrl.CssClass = "col-form-label fw-bold";
             @__ctrl.ID = "Label2";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Bağışçı Taahhüt Formu"));

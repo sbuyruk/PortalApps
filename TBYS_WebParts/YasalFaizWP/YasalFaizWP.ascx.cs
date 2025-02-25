@@ -429,7 +429,7 @@ namespace TBYS_WebParts.YasalFaizWP
         //        TableCell FaizOraniCell = new TableCell();
         //        TextBox faizOraniTxt = new TextBox();
         //        faizOraniTxt.Text= faizOrani.ToString();
-        //        faizOraniTxt.CssClass = "form-control input-money text-right";
+        //        faizOraniTxt.CssClass = "form-control input-money text-end";
         //        FaizOraniCell.Controls.Add(faizOraniTxt); 
 
         //        TableCell AciklamaCell = new TableCell();

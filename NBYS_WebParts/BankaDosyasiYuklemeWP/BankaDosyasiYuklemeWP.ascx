@@ -16,7 +16,7 @@
         </div>
         <div id="BankalarCard" class="card-body text-center">
             <div class="form-group row">
-                <label class="col-2 col-form-label font-weight-bold" for="IslemTarihiTxt">İşlem Tarihi</label>
+                <label class="col-2 col-form-label fw-bold" for="IslemTarihiTxt">İşlem Tarihi</label>
                 <asp:TextBox ID="IslemTarihiTxt" AutoPostBack="true" runat="server" class="form-control DateTimePickerV1 col-2" OnTextChanged="islemTarihiTxt_TextChanged"></asp:TextBox>
             </div>
             <h3 class="text-center text-white bg-info">Günlük Dosyalar</h3>
@@ -207,7 +207,7 @@
         </div>
         <div id="FooterCard" class="card-footer">
             <asp:LinkButton CssClass="btn btn-outline-success float-left" ID="KaydetBtn" runat="server" Text="Kaydet" OnClick="KaydetBtn_Click" />
-            <asp:LinkButton CssClass="btn btn-outline-primary float-right" ID="NextBtn" runat="server" Text="İleri >>" OnClick="NextBtn_Click" />
+            <asp:LinkButton CssClass="btn btn-outline-primary float-end" ID="NextBtn" runat="server" Text="İleri >>" OnClick="NextBtn_Click" />
         </div>
     </div>
 </div>

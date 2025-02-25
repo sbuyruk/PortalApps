@@ -79,7 +79,7 @@
         <div class="card-header" id="CardHeader" runat="server">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-2">
-                <asp:Label CssClass="col-form-label text-success font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="İzin Talebi Girişi"></asp:Label>
+                <asp:Label CssClass="col-form-label text-success fw-bold mb-1" ID="TitleLbl" runat="server" Text="İzin Talebi Girişi"></asp:Label>
                 <asp:Label CssClass="col-form-label text-white" ID="IzinTalepIdLbl" runat="server"></asp:Label>
                 <asp:Label CssClass="col-form-label " ID="PersonelAdiLbl" runat="server"></asp:Label>
             </h3>
@@ -176,7 +176,7 @@
                         </div>
                         <hr />
                         <div class="form-group">
-                            <asp:Label CssClass="col-form-label font-weight-bold" ID="KalanIzinLbl" runat="server" Text=""></asp:Label>
+                            <asp:Label CssClass="col-form-label fw-bold" ID="KalanIzinLbl" runat="server" Text=""></asp:Label>
                         </div>
                         <div class="form-group">
                             <asp:Label CssClass="col-form-label" ID="UyariLbl" runat="server" Text=""></asp:Label>

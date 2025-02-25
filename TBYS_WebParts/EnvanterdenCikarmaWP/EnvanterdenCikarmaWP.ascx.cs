@@ -294,6 +294,10 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
                 Exception guncellemeExc = new Exception("(Envanterde olmayan) Taşınmaz Güncellenemedi1");
                 exHelper.PublishException();
             }
+            finally {
+                var closePopup = "CloseModal();";
+                UtilityHelper.ScriptCalistir(closePopup);
+            }
         }
         protected void EnvanterdenCikarNowBtn_Click(object sender, EventArgs e)
         {

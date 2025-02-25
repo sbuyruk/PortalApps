@@ -135,7 +135,7 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
             if (string.IsNullOrEmpty(FTKKisiIdQS))
             {
                 TitleLbl.Text = "FTK Kişi Girişi";
-                TitleLbl.CssClass = "col-form-label text-success font-weight-bold mb-1";
+                TitleLbl.CssClass = "col-form-label text-success fw-bold mb-1";
                 IdLbl.Text = string.Empty;
                 KaydetBtn.Visible = true;
                 GuncelleBtn.Visible = false;
@@ -149,7 +149,7 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
             else
             {
                 TitleLbl.Text = "FTK Kişi Düzenle";
-                TitleLbl.CssClass = "col-form-label text-primary font-weight-bold mb-1";
+                TitleLbl.CssClass = "col-form-label text-primary fw-bold mb-1";
                 //IdLbl.Text = FTKKisiIdQS.ToString();
                 KaydetBtn.Visible = false;
                 GuncelleBtn.Visible = true;

@@ -282,12 +282,12 @@ namespace TBYS_WebParts.SigortaEkleSilWP
                 row.Controls.Add(PoliceNoCell);
 
                 TableCell SigortaBedeliCell = new TableCell();
-                SigortaBedeliCell.Attributes.Add("class", "text-right");
+                SigortaBedeliCell.Attributes.Add("class", "text-end");
                 SigortaBedeliCell.Text = sigorta.SigortaBedeli.ToString("N", culturInfo);
                 row.Controls.Add(SigortaBedeliCell);
 
                 TableCell PrimCell = new TableCell();
-                PrimCell.Attributes.Add("class", "text-right");
+                PrimCell.Attributes.Add("class", "text-end");
                 PrimCell.Text = sigorta.Prim.ToString("N", culturInfo);
                 row.Controls.Add(PrimCell);
 

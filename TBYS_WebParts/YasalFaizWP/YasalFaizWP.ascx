@@ -12,7 +12,7 @@
         <div class="card-header" id="CardHeader" runat="server">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-2">
-                <asp:Label CssClass="col-form-label text-danger font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="Aylık Yasal Faiz Oranları"></asp:Label>
+                <asp:Label CssClass="col-form-label text-danger fw-bold mb-1" ID="TitleLbl" runat="server" Text="Aylık Yasal Faiz Oranları"></asp:Label>
                 <asp:Label CssClass="col-form-label text-white" ID="IdLbl" runat="server"></asp:Label>
                 <asp:Label CssClass="col-form-label " ID="AdiLbl" runat="server"></asp:Label>
             </h3>
@@ -32,7 +32,7 @@
 
                 </div>
                 <div class="form-group col-2">
-                    <asp:TextBox ID="FaizOraniTxt" runat="server" CssClass="form-control input-money text-right" />
+                    <asp:TextBox ID="FaizOraniTxt" runat="server" CssClass="form-control input-money text-end" />
                 </div>
                 <div class="form-group col">
                     <asp:LinkButton ID="FaizOraniBtn" runat="server" CssClass="btn btn-outline-primary" Text="Faiz Oranlarını Doldur" OnClick="FaizOraniBtn_Click" />
@@ -56,13 +56,13 @@
                         <asp:TableCell ID="Ay1Cell"></asp:TableCell>
                         <asp:TableCell ID="Yil1Cell"></asp:TableCell>
                         <asp:TableCell ID="FaizOrani1Cell">
-                            <asp:TextBox CssClass="form-control input-money text-right" ID="FaizOrani1Txt" runat="server"></asp:TextBox>
+                            <asp:TextBox CssClass="form-control input-money text-end" ID="FaizOrani1Txt" runat="server"></asp:TextBox>
                         </asp:TableCell>
                         <asp:TableCell ID="Tufe1Cell">
-                            <asp:TextBox CssClass="form-control input-money text-right" ID="Tufe1Txt" runat="server"></asp:TextBox>
+                            <asp:TextBox CssClass="form-control input-money text-end" ID="Tufe1Txt" runat="server"></asp:TextBox>
                         </asp:TableCell>
                         <asp:TableCell ID="Ufe1Cell">
-                            <asp:TextBox CssClass="form-control input-money text-right" ID="Ufe1Txt" runat="server"></asp:TextBox>
+                            <asp:TextBox CssClass="form-control input-money text-end" ID="Ufe1Txt" runat="server"></asp:TextBox>
                         </asp:TableCell>
                         <asp:TableCell>
                             <asp:TextBox CssClass="form-control" ID="Aciklama1Txt" runat="server"></asp:TextBox>
@@ -76,13 +76,13 @@
                         <asp:TableCell ID="Ay2Cell"></asp:TableCell>
                         <asp:TableCell ID="Yil2Cell"></asp:TableCell>
                         <asp:TableCell ID="FaizOrani2Cell">
-                            <asp:TextBox CssClass="form-control input-money text-right" ID="FaizOrani2Txt" runat="server"></asp:TextBox>
+                            <asp:TextBox CssClass="form-control input-money text-end" ID="FaizOrani2Txt" runat="server"></asp:TextBox>
                         </asp:TableCell>
                         <asp:TableCell ID="Tufe2Cell">
-                            <asp:TextBox CssClass="form-control input-money text-right" ID="Tufe2Txt" runat="server"></asp:TextBox>
+                            <asp:TextBox CssClass="form-control input-money text-end" ID="Tufe2Txt" runat="server"></asp:TextBox>
                         </asp:TableCell>
                         <asp:TableCell ID="Ufe2Cell">
-                            <asp:TextBox CssClass="form-control input-money text-right" ID="Ufe2Txt" runat="server"></asp:TextBox>
+                            <asp:TextBox CssClass="form-control input-money text-end" ID="Ufe2Txt" runat="server"></asp:TextBox>
                         </asp:TableCell>
                         <asp:TableCell>
                             <asp:TextBox CssClass="form-control" ID="Aciklama2Txt" runat="server"></asp:TextBox>
@@ -96,13 +96,13 @@
                         <asp:TableCell ID="Ay3Cell"></asp:TableCell>
                         <asp:TableCell ID="Yil3Cell"></asp:TableCell>
                         <asp:TableCell ID="FaizOrani3Cell">
-                            <asp:TextBox CssClass="form-control input-money text-right" ID="FaizOrani3Txt" runat="server"></asp:TextBox>
+                            <asp:TextBox CssClass="form-control input-money text-end" ID="FaizOrani3Txt" runat="server"></asp:TextBox>
                         </asp:TableCell>
                         <asp:TableCell ID="Tufe3Cell">
-                            <asp:TextBox CssClass="form-control input-money text-right" ID="Tufe3Txt" runat="server"></asp:TextBox>
+                            <asp:TextBox CssClass="form-control input-money text-end" ID="Tufe3Txt" runat="server"></asp:TextBox>
                         </asp:TableCell>
                         <asp:TableCell ID="Ufe3Cell">
-                            <asp:TextBox CssClass="form-control input-money text-right" ID="Ufe3Txt" runat="server"></asp:TextBox>
+                            <asp:TextBox CssClass="form-control input-money text-end" ID="Ufe3Txt" runat="server"></asp:TextBox>
                         </asp:TableCell>
                         <asp:TableCell>
                             <asp:TextBox CssClass="form-control" ID="Aciklama3Txt" runat="server"></asp:TextBox>
@@ -116,13 +116,13 @@
                         <asp:TableCell ID="Ay4Cell"></asp:TableCell>
                         <asp:TableCell ID="Yil4Cell"></asp:TableCell>
                         <asp:TableCell ID="FaizOrani4Cell">
-                            <asp:TextBox CssClass="form-control input-money text-right" ID="FaizOrani4Txt" runat="server"></asp:TextBox>
+                            <asp:TextBox CssClass="form-control input-money text-end" ID="FaizOrani4Txt" runat="server"></asp:TextBox>
                         </asp:TableCell>
                         <asp:TableCell ID="Tufe4Cell">
-                            <asp:TextBox CssClass="form-control input-money text-right" ID="Tufe4Txt" runat="server"></asp:TextBox>
+                            <asp:TextBox CssClass="form-control input-money text-end" ID="Tufe4Txt" runat="server"></asp:TextBox>
                         </asp:TableCell>
                         <asp:TableCell ID="Ufe4Cell">
-                            <asp:TextBox CssClass="form-control input-money text-right" ID="Ufe4Txt" runat="server"></asp:TextBox>
+                            <asp:TextBox CssClass="form-control input-money text-end" ID="Ufe4Txt" runat="server"></asp:TextBox>
                         </asp:TableCell>
                         <asp:TableCell>
                             <asp:TextBox CssClass="form-control" ID="Aciklama4Txt" runat="server"></asp:TextBox>
@@ -136,13 +136,13 @@
                         <asp:TableCell ID="Ay5Cell"></asp:TableCell>
                         <asp:TableCell ID="Yil5Cell"></asp:TableCell>
                         <asp:TableCell ID="FaizOrani5Cell">
-                            <asp:TextBox CssClass="form-control input-money text-right" ID="FaizOrani5Txt" runat="server"></asp:TextBox>
+                            <asp:TextBox CssClass="form-control input-money text-end" ID="FaizOrani5Txt" runat="server"></asp:TextBox>
                         </asp:TableCell>
                         <asp:TableCell ID="Tufe5Cell">
-                            <asp:TextBox CssClass="form-control input-money text-right" ID="Tufe5Txt" runat="server"></asp:TextBox>
+                            <asp:TextBox CssClass="form-control input-money text-end" ID="Tufe5Txt" runat="server"></asp:TextBox>
                         </asp:TableCell>
                         <asp:TableCell ID="Ufe5Cell">
-                            <asp:TextBox CssClass="form-control input-money text-right" ID="Ufe5Txt" runat="server"></asp:TextBox>
+                            <asp:TextBox CssClass="form-control input-money text-end" ID="Ufe5Txt" runat="server"></asp:TextBox>
                         </asp:TableCell>
                         <asp:TableCell>
                             <asp:TextBox CssClass="form-control" ID="Aciklama5Txt" runat="server"></asp:TextBox>
@@ -156,13 +156,13 @@
                         <asp:TableCell ID="Ay6Cell"></asp:TableCell>
                         <asp:TableCell ID="Yil6Cell"></asp:TableCell>
                         <asp:TableCell ID="FaizOrani6Cell">
-                            <asp:TextBox CssClass="form-control input-money text-right" ID="FaizOrani6Txt" runat="server"></asp:TextBox>
+                            <asp:TextBox CssClass="form-control input-money text-end" ID="FaizOrani6Txt" runat="server"></asp:TextBox>
                         </asp:TableCell>
                         <asp:TableCell ID="Tufe6Cell">
-                            <asp:TextBox CssClass="form-control input-money text-right" ID="Tufe6Txt" runat="server"></asp:TextBox>
+                            <asp:TextBox CssClass="form-control input-money text-end" ID="Tufe6Txt" runat="server"></asp:TextBox>
                         </asp:TableCell>
                         <asp:TableCell ID="Ufe6Cell">
-                            <asp:TextBox CssClass="form-control input-money text-right" ID="Ufe6Txt" runat="server"></asp:TextBox>
+                            <asp:TextBox CssClass="form-control input-money text-end" ID="Ufe6Txt" runat="server"></asp:TextBox>
                         </asp:TableCell>
                         <asp:TableCell>
                             <asp:TextBox CssClass="form-control" ID="Aciklama6Txt" runat="server"></asp:TextBox>
@@ -176,13 +176,13 @@
                         <asp:TableCell ID="Ay7Cell"></asp:TableCell>
                         <asp:TableCell ID="Yil7Cell"></asp:TableCell>
                         <asp:TableCell ID="FaizOrani7Cell">
-                            <asp:TextBox CssClass="form-control input-money text-right" ID="FaizOrani7Txt" runat="server"></asp:TextBox>
+                            <asp:TextBox CssClass="form-control input-money text-end" ID="FaizOrani7Txt" runat="server"></asp:TextBox>
                         </asp:TableCell>
                         <asp:TableCell ID="Tufe7Cell">
-                            <asp:TextBox CssClass="form-control input-money text-right" ID="Tufe7Txt" runat="server"></asp:TextBox>
+                            <asp:TextBox CssClass="form-control input-money text-end" ID="Tufe7Txt" runat="server"></asp:TextBox>
                         </asp:TableCell>
                         <asp:TableCell ID="Ufe7Cell">
-                            <asp:TextBox CssClass="form-control input-money text-right" ID="Ufe7Txt" runat="server"></asp:TextBox>
+                            <asp:TextBox CssClass="form-control input-money text-end" ID="Ufe7Txt" runat="server"></asp:TextBox>
                         </asp:TableCell>
                         <asp:TableCell>
                             <asp:TextBox CssClass="form-control" ID="Aciklama7Txt" runat="server"></asp:TextBox>
@@ -196,13 +196,13 @@
                         <asp:TableCell ID="Ay8Cell"></asp:TableCell>
                         <asp:TableCell ID="Yil8Cell"></asp:TableCell>
                         <asp:TableCell ID="FaizOrani8Cell">
-                            <asp:TextBox CssClass="form-control input-money text-right" ID="FaizOrani8Txt" runat="server"></asp:TextBox>
+                            <asp:TextBox CssClass="form-control input-money text-end" ID="FaizOrani8Txt" runat="server"></asp:TextBox>
                         </asp:TableCell>
                         <asp:TableCell ID="Tufe8Cell">
-                            <asp:TextBox CssClass="form-control input-money text-right" ID="Tufe8Txt" runat="server"></asp:TextBox>
+                            <asp:TextBox CssClass="form-control input-money text-end" ID="Tufe8Txt" runat="server"></asp:TextBox>
                         </asp:TableCell>
                         <asp:TableCell ID="Ufe8Cell">
-                            <asp:TextBox CssClass="form-control input-money text-right" ID="Ufe8Txt" runat="server"></asp:TextBox>
+                            <asp:TextBox CssClass="form-control input-money text-end" ID="Ufe8Txt" runat="server"></asp:TextBox>
                         </asp:TableCell>
                         <asp:TableCell>
                             <asp:TextBox CssClass="form-control" ID="Aciklama8Txt" runat="server"></asp:TextBox>
@@ -216,13 +216,13 @@
                         <asp:TableCell ID="Ay9Cell"></asp:TableCell>
                         <asp:TableCell ID="Yil9Cell"></asp:TableCell>
                         <asp:TableCell ID="FaizOrani9Cell">
-                            <asp:TextBox CssClass="form-control input-money text-right" ID="FaizOrani9Txt" runat="server"></asp:TextBox>
+                            <asp:TextBox CssClass="form-control input-money text-end" ID="FaizOrani9Txt" runat="server"></asp:TextBox>
                         </asp:TableCell>
                         <asp:TableCell ID="Tufe9Cell">
-                            <asp:TextBox CssClass="form-control input-money text-right" ID="Tufe9Txt" runat="server"></asp:TextBox>
+                            <asp:TextBox CssClass="form-control input-money text-end" ID="Tufe9Txt" runat="server"></asp:TextBox>
                         </asp:TableCell>
                         <asp:TableCell ID="Ufe9Cell">
-                            <asp:TextBox CssClass="form-control input-money text-right" ID="Ufe9Txt" runat="server"></asp:TextBox>
+                            <asp:TextBox CssClass="form-control input-money text-end" ID="Ufe9Txt" runat="server"></asp:TextBox>
                         </asp:TableCell>
                         <asp:TableCell>
                             <asp:TextBox CssClass="form-control" ID="Aciklama9Txt" runat="server"></asp:TextBox>
@@ -236,13 +236,13 @@
                         <asp:TableCell ID="Ay10Cell"></asp:TableCell>
                         <asp:TableCell ID="Yil10Cell"></asp:TableCell>
                         <asp:TableCell ID="FaizOrani10Cell">
-                            <asp:TextBox CssClass="form-control input-money text-right" ID="FaizOrani10Txt" runat="server"></asp:TextBox>
+                            <asp:TextBox CssClass="form-control input-money text-end" ID="FaizOrani10Txt" runat="server"></asp:TextBox>
                         </asp:TableCell>
                         <asp:TableCell ID="Tufe10Cell">
-                            <asp:TextBox CssClass="form-control input-money text-right" ID="Tufe10Txt" runat="server"></asp:TextBox>
+                            <asp:TextBox CssClass="form-control input-money text-end" ID="Tufe10Txt" runat="server"></asp:TextBox>
                         </asp:TableCell>
                         <asp:TableCell ID="Ufe10Cell">
-                            <asp:TextBox CssClass="form-control input-money text-right" ID="Ufe10Txt" runat="server"></asp:TextBox>
+                            <asp:TextBox CssClass="form-control input-money text-end" ID="Ufe10Txt" runat="server"></asp:TextBox>
                         </asp:TableCell>
                         <asp:TableCell>
                             <asp:TextBox CssClass="form-control" ID="Aciklama10Txt" runat="server"></asp:TextBox>
@@ -256,13 +256,13 @@
                         <asp:TableCell ID="Ay11Cell"></asp:TableCell>
                         <asp:TableCell ID="Yil11Cell"></asp:TableCell>
                         <asp:TableCell ID="FaizOrani11Cell">
-                            <asp:TextBox CssClass="form-control input-money text-right" ID="FaizOrani11Txt" runat="server"></asp:TextBox>
+                            <asp:TextBox CssClass="form-control input-money text-end" ID="FaizOrani11Txt" runat="server"></asp:TextBox>
                         </asp:TableCell>
                         <asp:TableCell ID="Tufe11Cell">
-                            <asp:TextBox CssClass="form-control input-money text-right" ID="Tufe11Txt" runat="server"></asp:TextBox>
+                            <asp:TextBox CssClass="form-control input-money text-end" ID="Tufe11Txt" runat="server"></asp:TextBox>
                         </asp:TableCell>
                         <asp:TableCell ID="Ufe11Cell">
-                            <asp:TextBox CssClass="form-control input-money text-right" ID="Ufe11Txt" runat="server"></asp:TextBox>
+                            <asp:TextBox CssClass="form-control input-money text-end" ID="Ufe11Txt" runat="server"></asp:TextBox>
                         </asp:TableCell>
                         <asp:TableCell>
                             <asp:TextBox CssClass="form-control" ID="Aciklama11Txt" runat="server"></asp:TextBox>
@@ -276,13 +276,13 @@
                         <asp:TableCell ID="Ay12Cell"></asp:TableCell>
                         <asp:TableCell ID="Yil12Cell"></asp:TableCell>
                         <asp:TableCell ID="FaizOrani12Cell">
-                            <asp:TextBox CssClass="form-control input-money text-right" ID="FaizOrani12Txt" runat="server"></asp:TextBox>
+                            <asp:TextBox CssClass="form-control input-money text-end" ID="FaizOrani12Txt" runat="server"></asp:TextBox>
                         </asp:TableCell>
                         <asp:TableCell ID="Tufe12Cell">
-                            <asp:TextBox CssClass="form-control input-money text-right" ID="Tufe12Txt" runat="server"></asp:TextBox>
+                            <asp:TextBox CssClass="form-control input-money text-end" ID="Tufe12Txt" runat="server"></asp:TextBox>
                         </asp:TableCell>
                         <asp:TableCell ID="Ufe12Cell">
-                            <asp:TextBox CssClass="form-control input-money text-right" ID="Ufe12Txt" runat="server"></asp:TextBox>
+                            <asp:TextBox CssClass="form-control input-money text-end" ID="Ufe12Txt" runat="server"></asp:TextBox>
                         </asp:TableCell>
                         <asp:TableCell>
                             <asp:TextBox CssClass="form-control" ID="Aciklama12Txt" runat="server"></asp:TextBox>

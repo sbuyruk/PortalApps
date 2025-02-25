@@ -61,8 +61,8 @@
                 { data: "Duzenle" },
             ],
             "columnDefs": [
-                { className: "text-right", "targets": [10] },
-                { className: "text-right", "targets": [12] }
+                { className: "text-end", "targets": [10] },
+                { className: "text-end", "targets": [12] }
             ],
             "language": {
                 "url": "http://tskgv-portal/OrtakBelgeler/Turkish.txt",
@@ -129,7 +129,7 @@
         <div class="card-header" id="CardHeader" runat="server">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-2">
-                <asp:Label CssClass="col-form-label text-danger font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="Aylık Ödemeler"></asp:Label>
+                <asp:Label CssClass="col-form-label text-danger fw-bold mb-1" ID="TitleLbl" runat="server" Text="Aylık Ödemeler"></asp:Label>
                 <asp:Label CssClass="col-form-label text-white" ID="IdLbl" runat="server"></asp:Label>
                 <asp:Label CssClass="col-form-label " ID="AdiLbl" runat="server"></asp:Label>
             </h3>
@@ -225,11 +225,20 @@
                                 <asp:Label ID="Label1" class="col-form-label " runat="server" Text="Kiracı Listesi"></asp:Label></h3>
                         </div>
                         <div class="card-body">
-                            <div class="table loader" id="tbl" runat="server">
-                                <input id="globalFilter" placeholder="Aranacak Kelime" size="30" />
-                                <div id="tblfilter" class="table"></div>
-                                <div id="messages"></div>
-                            </div>
+                                <div class="form-group">
+                                    <table id="CustomModalDataTable" class="table table-striped table-bordered table-sm small" width="100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Kiracı No</th>
+                                                <th>Adı Soyadi</th>
+                                                <th>TCKimlikNo</th>
+                                                <th>İl/İlçe</th>
+                                                <th>Adres</th>
+                                                <th>Seç</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
                         </div>
                     </div>
                 </div>
@@ -248,7 +257,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <h3>
-                                    <asp:Label ID="ModalLbl" class="col-form-label text-danger font-weight-bold" Text="Ödeme Silinecek" runat="server"></asp:Label></h3>
+                                    <asp:Label ID="ModalLbl" class="col-form-label text-danger fw-bold" Text="Ödeme Silinecek" runat="server"></asp:Label></h3>
                             </div>
                             <div class="card-body">
                                 <div class="form-group">
@@ -268,4 +277,6 @@
             </div>
         </div>
     </div>
+    <!-- Kiracı Seçimi Modal -->
+   
 </div>

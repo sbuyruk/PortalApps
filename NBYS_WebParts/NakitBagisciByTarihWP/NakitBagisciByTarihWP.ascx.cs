@@ -239,9 +239,9 @@ namespace NBYS_WebParts.NakitBagisciByTarihWP
                     eskiTutarCell.Text = eskiTutar1.ToString("N", culturInfo);
                     yeniTutarCell.Text = yeniTutar1.ToString("N", culturInfo);
                     toplamTutarCell.Text = toplamTutar.ToString("N", culturInfo);
-                    eskiTutarCell.CssClass = "text-right";
-                    yeniTutarCell.CssClass = "text-right";
-                    toplamTutarCell.CssClass = "text-right";
+                    eskiTutarCell.CssClass = "text-end";
+                    yeniTutarCell.CssClass = "text-end";
+                    toplamTutarCell.CssClass = "text-end";
 
                     tableRow.Controls.Add(eskiTutarCell);
                     tableRow.Controls.Add(yeniTutarCell);
@@ -274,9 +274,9 @@ namespace NBYS_WebParts.NakitBagisciByTarihWP
                 eskiTutarToplamCell.Text = eskiTutarToplam1.ToString("N", culturInfo);
                 yeniTutarToplamCell.Text = yeniTutarToplam1.ToString("N", culturInfo);
                 toplamTutarToplamCell.Text = toplamTutarToplam.ToString("N", culturInfo);
-                eskiTutarToplamCell.CssClass = "text-right";
-                yeniTutarToplamCell.CssClass = "text-right";
-                toplamTutarToplamCell.CssClass = "text-right";
+                eskiTutarToplamCell.CssClass = "text-end";
+                yeniTutarToplamCell.CssClass = "text-end";
+                toplamTutarToplamCell.CssClass = "text-end";
 
                 toplamTableRow.Controls.Add(eskiTutarToplamCell);
                 toplamTableRow.Controls.Add(yeniTutarToplamCell);
@@ -315,7 +315,7 @@ namespace NBYS_WebParts.NakitBagisciByTarihWP
 
         //    TableHeaderCell tutarCell = new TableHeaderCell();
         //    tutarCell.Text = "Bağış Tutarı";
-        //    tutarCell.CssClass = "text-right";
+        //    tutarCell.CssClass = "text-end";
 
         //    th.Controls.Add(smsOperatorThCell);
         //    th.Controls.Add(bagisciCell);
@@ -360,7 +360,7 @@ namespace NBYS_WebParts.NakitBagisciByTarihWP
 
         //            TableCell toplamTutarCell = new TableCell();
         //            toplamTutarCell.Text = bagisTutari.ToString("N", culturInfo);
-        //            toplamTutarCell.CssClass = "text-right";
+        //            toplamTutarCell.CssClass = "text-end";
 
         //            tableRow.Controls.Add(toplamTutarCell);
         //            SMSTable.Controls.Add(tableRow);
@@ -384,7 +384,7 @@ namespace NBYS_WebParts.NakitBagisciByTarihWP
 
         //        labelToplamCell.CssClass = "text-center";
         //        toplamAdetFTCell.CssClass = "text-center";
-        //        toplamTutarFTCell.CssClass = "text-right";
+        //        toplamTutarFTCell.CssClass = "text-end";
 
         //        labelToplamCell.Font.Bold = true;
         //        toplamAdetFTCell.Font.Bold = true;

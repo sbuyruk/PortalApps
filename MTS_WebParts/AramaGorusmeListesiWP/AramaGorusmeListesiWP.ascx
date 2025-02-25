@@ -123,7 +123,7 @@
         <div class="card-header">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-2">
-                <asp:Label CssClass="col-form-label text-danger font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="Arama/Görüşme Listesi"></asp:Label>
+                <asp:Label CssClass="col-form-label text-danger fw-bold mb-1" ID="TitleLbl" runat="server" Text="Arama/Görüşme Listesi"></asp:Label>
                 <asp:Label CssClass="col-form-label text-white" ID="IdLbl" runat="server"></asp:Label>
                 <asp:Label CssClass="col-form-label " ID="AdiLbl" runat="server"></asp:Label>
             </h3>
@@ -138,26 +138,26 @@
                     <asp:LinkButton ID="HepsiBtn" runat="server" CssClass="btn btn-outline-primary" OnClick="HepsiBtn_Click">Hepsi</asp:LinkButton>
                 </div>
                 <div class="col form-group">
-                    <asp:HyperLink ID="AdiSoyadiLnk" runat="server" CssClass="col-form-label font-weight-bold" Enabled="True"></asp:HyperLink>
+                    <asp:HyperLink ID="AdiSoyadiLnk" runat="server" CssClass="col-form-label fw-bold" Enabled="True"></asp:HyperLink>
                 </div>
             </div>
             <div class="form-group alert-secondary p-2">
                 <div class="form-group ">
                     <div class="row">
                         <div class="col-3 form-group">
-                            <asp:Label runat="server" CssClass="col-form-label font-weight-bold">Arama/Görüşme Şekli</asp:Label>
+                            <asp:Label runat="server" CssClass="col-form-label fw-bold">Arama/Görüşme Şekli</asp:Label>
                             <asp:DropDownList ID="GorusmeSekliDDL" runat="server" CssClass="form-control" Height="34px" AutoPostBack="true" OnSelectedIndexChanged="GorusmeSekliDDL_SelectedIndexChanged"></asp:DropDownList>
                             <asp:RequiredFieldValidator runat="server" ControlToValidate="GorusmeSekliDDL" ForeColor="Red" ErrorMessage="Arama şeklini seçiniz"> </asp:RequiredFieldValidator>
                         </div>
                         <div class="col-2">
                             <div class="form-group">
-                                <asp:Label runat="server" CssClass="col-form-label font-weight-bold">Başlangıç</asp:Label>
+                                <asp:Label runat="server" CssClass="col-form-label fw-bold">Başlangıç</asp:Label>
                                 <asp:TextBox ID="BaslangicTarihiTxt" CssClass="form-control DateTimePickerV1 input-date" runat="server" ClientIDMode="Static" AutoPostBack="true" OnTextChanged="BaslangicTarihiTxt_TextChanged" placeholder="dd.mm.yyyy"></asp:TextBox>
                             </div>
                         </div>
                         <div class="col-2">
                             <div class="form-group">
-                                <asp:Label runat="server" CssClass="col-form-label font-weight-bold">Bitiş</asp:Label>
+                                <asp:Label runat="server" CssClass="col-form-label fw-bold">Bitiş</asp:Label>
                                 <asp:TextBox ID="BitisTarihiTxt" CssClass="form-control DateTimePickerV1 input-date" runat="server" ClientIDMode="Static" AutoPostBack="true" OnTextChanged="BitisTarihiTxt_TextChanged" placeholder="dd.mm.yyyy"></asp:TextBox>
                             </div>
                         </div>
@@ -165,7 +165,7 @@
                 </div>
             </div>
             <div class="form-group">
-                <h2 class="font-weight-bold text-center" id="BaslikLbl" runat="server"></h2>
+                <h2 class="fw-bold text-center" id="BaslikLbl" runat="server"></h2>
                 <div class="form-group">
                     <table id="CustomDataTable" class="table table-striped table-bordered table-hover table-sm" width="100%">
                         <thead>
@@ -203,7 +203,7 @@
                         <div class="modal-body ">
                             <div class="card">
                                 <div class="card-header text-danger">
-                                    <h3 class="col-form-label font-weight-bold" id="KatiliciSecimiHeaderLbl" runat="server">Katılımcı Seçimi
+                                    <h3 class="col-form-label fw-bold" id="KatiliciSecimiHeaderLbl" runat="server">Katılımcı Seçimi
                                     </h3>
                                 </div>
                                 <div class="card-body">

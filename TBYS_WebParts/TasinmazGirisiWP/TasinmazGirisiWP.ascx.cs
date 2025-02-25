@@ -178,7 +178,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 DeleteBtn.Visible = true;
                 BackBtn.Visible = true;
                 //CardHeader.Attributes["Class"] = "bg-info";
-                TitleLbl.CssClass = "col-form-label font-weight-bold mb-1 text-primary";
+                TitleLbl.CssClass = "col-form-label fw-bold mb-1 text-primary";
                 TitleLbl.Text = "Taşınmaz Bilgi Güncelleme";
                 IdLbl.Visible = true;
             }
@@ -197,7 +197,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 BackBtn.Visible = false;
                 IdLbl.Visible = false;
                 //CardHeader.Attributes["Class"] = "bg-success";
-                TitleLbl.CssClass = "col-form-label font-weight-bold mb-1 text-danger";
+                TitleLbl.CssClass = "col-form-label fw-bold mb-1 text-danger";
                 TitleLbl.Text = "Taşınmaz Girişi";
             }
             if (EnvanterdeMiQS.Equals(ProjeConstants.TASINMAZ_ENVANTERDEN_CIKTI.ToString()))
@@ -218,7 +218,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 DeleteBtn.Visible = true;
                 BackBtn.Visible = true;
                 IdLbl.Visible = true;
-                TitleLbl.CssClass = "col-form-label font-weight-bold mb-1 text-secondary";
+                TitleLbl.CssClass = "col-form-label fw-bold mb-1 text-secondary";
                 TitleLbl.Text = "Envanterden Çıkarılmış Taşınmaz";
             }
             if (KatMulkiyetiDDL.SelectedValue == ProjeConstants.KAT_MULKIYETI_VAR)
@@ -446,7 +446,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 NitelikTxt.Text = tasinmaz.Nitelik;
                 BulunduguKatTxt.Text = tasinmaz.BulunduguKat;
                 ToplamKatSayisiTxt.Text = tasinmaz.ToplamKatSayisi;
-                MetrekareTxt.Text = tasinmaz.Metrekare;
+                MetrekareTxt.Text = tasinmaz.Metrekare.ToString();
                 PaftaNoTxt.Text = tasinmaz.PaftaNo;
                 ParselNoTxt.Text = tasinmaz.ParselNo;
                 SahifeNoTxt.Text = tasinmaz.SahifeNo;
@@ -508,7 +508,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             tasinmaz.Nitelik = NitelikTxt.Text;
             tasinmaz.BulunduguKat = BulunduguKatTxt.Text;
             tasinmaz.ToplamKatSayisi = ToplamKatSayisiTxt.Text;
-            tasinmaz.Metrekare = MetrekareTxt.Text;
+            tasinmaz.Metrekare = MetrekareTxt.Text.ConvertToDecimal();
             tasinmaz.KullanimSekli = KullanimSekliDDL.SelectedValue;
             tasinmaz.SigortaDurumu = SigortaDDL.SelectedValue;
             tasinmaz.MulkiyetSekli = MukliyetSekliDDL.SelectedValue;
@@ -601,7 +601,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 tasinmaz.Nitelik = NitelikTxt.Text;
                 tasinmaz.BulunduguKat = BulunduguKatTxt.Text;
                 tasinmaz.ToplamKatSayisi = ToplamKatSayisiTxt.Text;
-                tasinmaz.Metrekare = MetrekareTxt.Text;
+                tasinmaz.Metrekare = MetrekareTxt.Text.ConvertToDecimal();
                 tasinmaz.KullanimSekli = KullanimSekliDDL.SelectedValue;
                 tasinmaz.SigortaDurumu = SigortaDDL.SelectedValue;
                 tasinmaz.MulkiyetSekli = MukliyetSekliDDL.SelectedValue;

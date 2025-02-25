@@ -47,8 +47,13 @@
         document.getElementById('<%= ModalDoldurBtn.ClientID%>').click();
 
     }
+
     function CloseModal() {
-        $("#ModalOnayDiv").modal('hide');
+        var myModalEl = document.getElementById('ModalOnayDiv');
+        var modalInstance = bootstrap.Modal.getInstance(myModalEl);
+        if (modalInstance) {
+            modalInstance.hide();
+        }
     }
     function CallButtonClick(bagisHareketId) {
         document.getElementById('<%= paramBagisHareketIdLbl.ClientID%>').value = bagisHareketId;
@@ -68,7 +73,7 @@
                 <div class="card-header ">
                     <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
                     <h3 class="mb-1">
-                        <asp:Label CssClass="col-form-label font-weight-bold text-info" runat="server" Text="Bağış Silme"></asp:Label>
+                        <asp:Label CssClass="col-form-label fw-bold text-info" runat="server" Text="Bağış Silme"></asp:Label>
                     </h3>
                 </div>
                 <div class="card-body">

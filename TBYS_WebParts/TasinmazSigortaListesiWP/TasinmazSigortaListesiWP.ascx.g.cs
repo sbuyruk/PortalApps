@@ -146,7 +146,7 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-danger font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-danger fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Taşınmaz Sigortaları";
             return @__ctrl;
@@ -237,7 +237,7 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "VadesiGelenlerChk";
-            @__ctrl.CssClass = "font-weight-bold text-danger";
+            @__ctrl.CssClass = "fw-bold text-danger";
             @__ctrl.Checked = false;
             @__ctrl.ToolTip = "Bir Ay İçinde Sigortası Bitecek Olanlar";
             @__ctrl.AutoPostBack = true;

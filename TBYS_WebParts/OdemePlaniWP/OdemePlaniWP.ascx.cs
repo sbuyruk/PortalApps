@@ -219,7 +219,7 @@ namespace TBYS_WebParts.OdemePlaniWP
 
                 TableCell KiraBedeliCell = new TableCell();
                 KiraBedeliCell.Text = op.KiraBedeli.ToString("N", culturInfo);
-                KiraBedeliCell.CssClass = "text-right";
+                KiraBedeliCell.CssClass = "text-end";
 
                 LinkButton kiraBedeliBtn = new LinkButton();
                 kiraBedeliBtn.Text = op.KiraBedeli.ToString("N", culturInfo);
@@ -240,15 +240,15 @@ namespace TBYS_WebParts.OdemePlaniWP
                 KiraBedeliCell.Controls.Add(kiraBedeliBtn);
 
                 TableCell OdenenCell = new TableCell();
-                OdenenCell.CssClass = "text-right";
+                OdenenCell.CssClass = "text-end";
                 OdenenCell.Text = op.OdenenTutar.ToString("N", culturInfo);
 
                 TableCell AnaParaCell = new TableCell();
                 AnaParaCell.Text = op.AnaPara.ToString("N", culturInfo);
-                AnaParaCell.CssClass = "text-right";
+                AnaParaCell.CssClass = "text-end";
 
                 TableCell GecikmeZammiOraniCell = new TableCell();
-                GecikmeZammiOraniCell.CssClass = "text-right";
+                GecikmeZammiOraniCell.CssClass = "text-end";
                 if (kiraSozlesme.GecikmeZammiTipi.Equals(ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_AYLIK) || op.FaizOrani == 0)
                 {
                     GecikmeZammiOraniCell.Text = op.FaizOrani.ToString("N", culturInfo);
@@ -257,7 +257,7 @@ namespace TBYS_WebParts.OdemePlaniWP
                 {
                     LinkButton GecikmeZammiOraniBtn = new LinkButton();
                     GecikmeZammiOraniBtn.Text = op.FaizOrani.ToString("N", culturInfo);
-                    GecikmeZammiOraniBtn.CssClass = "btn btn-link text-right";
+                    GecikmeZammiOraniBtn.CssClass = "btn btn-link text-end";
                     GecikmeZammiOraniBtn.Click += delegate
                     {
                         PopupMesajLbl.Text = "Gecikme Zammı Oranı";
@@ -274,7 +274,7 @@ namespace TBYS_WebParts.OdemePlaniWP
                 }
 
                 TableCell FaizTutariCell = new TableCell();
-                FaizTutariCell.CssClass = "text-right";
+                FaizTutariCell.CssClass = "text-end";
 
                 if (kiraSozlesme.GecikmeZammiTipi.Equals(ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_AYLIK) || op.FaizTutari == 0)
                 {
@@ -284,7 +284,7 @@ namespace TBYS_WebParts.OdemePlaniWP
                 {
                     LinkButton GecikmeZammiTutariBtn = new LinkButton();
                     GecikmeZammiTutariBtn.Text = op.FaizTutari.ToString("N", culturInfo);
-                    GecikmeZammiTutariBtn.CssClass = "btn btn-link text-right";
+                    GecikmeZammiTutariBtn.CssClass = "btn btn-link text-end";
                     GecikmeZammiTutariBtn.Click += delegate
                     {
                         PopupMesajLbl.Text = "Gecikme Zammı Tutari";
@@ -303,7 +303,7 @@ namespace TBYS_WebParts.OdemePlaniWP
 
                 TableCell FaizliBakiyeCell = new TableCell();
                 FaizliBakiyeCell.Text = op.FaizliBakiye.ToString("N", culturInfo);
-                FaizliBakiyeCell.CssClass = "text-right";
+                FaizliBakiyeCell.CssClass = "text-end";
 
                 if (op.Sira == 0)
                 {
@@ -495,7 +495,7 @@ namespace TBYS_WebParts.OdemePlaniWP
             }
             if (!kiraSozlesme.Aktif)//bitmiş bir kira sözleşmesi
             {
-                TitleLbl.CssClass = "col-form-label text-secondary font-weight-bold mb-1";
+                TitleLbl.CssClass = "col-form-label text-secondary fw-bold mb-1";
                 AdiLbl.CssClass = "col-form-label text-secondary";
                 DosyaNoTxt.CssClass = "col-form-label text-secondary float-end";
                 OdemePlaniListBtn.Visible = false;
@@ -563,17 +563,17 @@ namespace TBYS_WebParts.OdemePlaniWP
 
                     TableCell ZamOraniCell = new TableCell();
                     ZamOraniCell.Text = item.GecikmeZammiOrani.ToString("N", culturInfo);
-                    ZamOraniCell.CssClass = "text-right";
+                    ZamOraniCell.CssClass = "text-end";
 
                     TableCell ZamTutariCell = new TableCell();
                     ZamTutariCell.Text = item.GecikmeZammiTutari.ToString("N", culturInfo);
-                    ZamTutariCell.CssClass = "text-right";
+                    ZamTutariCell.CssClass = "text-end";
 
                     TableCell AnaParaCell = new TableCell();
                     AnaParaCell.Text = item.AnaPara.ToString("N", culturInfo);
 
                     TableCell OdenenTutarCell = new TableCell();
-                    OdenenTutarCell.CssClass = "text-right";
+                    OdenenTutarCell.CssClass = "text-end";
                     OdenenTutarCell.Text = (item.OdenenTutar).ToString("N", culturInfo);
 
                     TableCell KalanAnaParaCell = new TableCell();
@@ -759,7 +759,7 @@ namespace TBYS_WebParts.OdemePlaniWP
 
                 TableCell OdenenTutarCell = new TableCell();
                 OdenenTutarCell.Text = odeme.OdenenTutar.ToString("N", culturInfo);
-                OdenenTutarCell.CssClass = "text-right";
+                OdenenTutarCell.CssClass = "text-end";
                 row.Controls.Add(OdenenTutarCell);
 
                 TableCell AciklamaCell = new TableCell();

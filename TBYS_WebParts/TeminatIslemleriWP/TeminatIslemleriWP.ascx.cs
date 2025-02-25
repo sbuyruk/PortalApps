@@ -81,7 +81,47 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                 ViewState["KiraciId"] = value;
             }
         }
+        private int BolgeIdQS
+        {
+            get
+            {
 
+                if (ViewState["BolgeId"] == null)
+                {
+                    if (Page.Request.QueryString["BolgeId"] != null)
+                    {
+                        ViewState["BolgeId"] = Page.Request.QueryString["BolgeId"];
+                    }
+                    else
+                    {
+                        ViewState["BolgeId"] = string.Empty;
+                    }
+                }
+                return ViewState["BolgeId"].ReturnZeroIfNull().ConvertToInt();
+            }
+
+            set
+            {
+                ViewState["BolgeId"] = value;
+            }
+        }
+        private string CurrentUserName
+        {
+            get
+            {
+
+                if (ViewState["CurrentUserName"] == null)
+                {
+                    ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUserLoginName();
+                }
+                return ViewState["CurrentUserName"].ToString();
+            }
+
+            set
+            {
+                ViewState["CurrentUserName"] = value;
+            }
+        }
         private readonly IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -91,6 +131,8 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                 kiraSozlesme = kiraSozlesme.Select(KiraSozlesmeIdQS.ConvertToInt());
                 if (!Page.IsPostBack)
                 {
+                    Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
+                    BolgeIdQS = bolge == null ? 0 : bolge.Id;
                     if (KiraSozlesmeIdQS.ConvertToInt() > 0)
                     {
                         Kiraci kiraci = new Kiraci();
@@ -106,6 +148,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                         IslemTipiDDLDoldur();
                         TeminatCinsiDDLDoldur();
                         TeminatBilgileriniDoldur(kiraSozlesme);
+                        ButonlariGosterGizle();
                     }
                     else
                     {
@@ -119,6 +162,20 @@ namespace TBYS_WebParts.TeminatIslemleriWP
 
                 ExceptionHelper exhelper = new ExceptionHelper(exception);
                 exhelper.PublishException();
+            }
+        }
+
+        private void ButonlariGosterGizle()
+        {
+            bool isVisible = BolgeIdQS == ProjeConstants.HEPSI_INT || BolgeIdQS == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? true : false;
+            if (isVisible)
+            {
+                UtilityHelper.SetControlState(true, true, TeminatGuncelleBtn, ModalEkleBtn, SozlesmeyeGitBtn, NextBtn, PrevBtn,KiraciListesiBtn, KiraKartiBtn, OdemePlaninaGitBtn);
+
+            }
+            else
+            {
+                UtilityHelper.SetControlState(false, false, TeminatGuncelleBtn, ModalEkleBtn, SozlesmeyeGitBtn, NextBtn, PrevBtn, KiraciListesiBtn, KiraKartiBtn, OdemePlaninaGitBtn);
             }
         }
 
@@ -241,8 +298,18 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                 item2.IslemTarihi = item.IslemTarihi.ToString("dd.MM.yyyy HH:mm");
                 item2.IslemTipi = item.IslemTipi;
                 item2.IslemTutari = item.IslemTutari.ToString("N", culturInfo)+" TL";
-                item2.Duzenle = "<a href=# onclick=GuncelleModalDoldur('" + item.Id + "'); class=\'btn btn-outline-primary \'>Düzenle</a>";
-                item2.Sil = "<a href=# onclick=DeleteModalDoldur('" + item.Id + "'); class=\'btn btn-outline-danger \'>Sil</a>";
+                bool isVisible = BolgeIdQS == ProjeConstants.HEPSI_INT || BolgeIdQS == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? true : false;
+                if (isVisible)
+                {
+                    item2.Duzenle = "<a href=# onclick=GuncelleModalDoldur('" + item.Id + "'); class=\'btn btn-outline-primary \'>Düzenle</a>";
+                    item2.Sil = "<a href=# onclick=DeleteModalDoldur('" + item.Id + "'); class=\'btn btn-outline-danger \'>Sil</a>";
+                }
+                else 
+                {
+                    item2.Duzenle=string.Empty;
+                    item2.Sil = string.Empty;
+
+                }
                 item2.KiraciId = item.KiraciId.ToString();
                 list2.Add(item2);
             }
@@ -297,46 +364,8 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                         responsive: true,
                         destroy: true,
                         pageLength:10,
-                        dom: 'Brti',
-                        buttons: [
-                            {
-                                extend: 'print',
-                                exportOptions: {
-                                    columns: ':visible'
-                                }
-                            },
-                            {
-                                extend: 'excel',
-                                title: " + titleStr+  @",
-                                filename: function(){
-                                    var d = new Date();
-                                    var n = d.getTime();
-                                    return " + kiraciAdiStr+ @";
-                                },
-                                exportOptions: {
-                                    columns: ':visible'
-                                }
-                            },
-                            {
-                                extend: 'pdf',
-                                title: "+ titleStr+  @",
-                                filename: function(){
-                                    var d = new Date();
-                                    var n = d.getTime();
-                                    return " + kiraciAdiStr+ @";
-                                },
-                                exportOptions: {
-                                    columns: ':visible'
-                                }
-                            },
-                            {
-                                extend: 'copy',
-                                exportOptions: {
-                                    columns: ':visible'
-                                }
-                            },
-                            , 'pageLength', 'colvis'
-                        ],
+                        dom: 'rti',
+                        
                         });
                     });
 

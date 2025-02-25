@@ -183,7 +183,7 @@ namespace TBYS_WebParts.KiraKartiWP {
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "TitleLbl";
-            @__ctrl.CssClass = "col-form-label text-danger font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-danger fw-bold mb-1";
             @__ctrl.Text = "Kiracı Kartı";
             return @__ctrl;
         }
@@ -222,7 +222,7 @@ namespace TBYS_WebParts.KiraKartiWP {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "font-weight-bold";
+            @__ctrl.CssClass = "fw-bold";
             @__ctrl.ColumnSpan = 7;
             @__ctrl.Font.Bold = true;
             @__ctrl.Font.Size = global::System.Web.UI.WebControls.FontUnit.XXLarge;
@@ -239,7 +239,7 @@ namespace TBYS_WebParts.KiraKartiWP {
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             this.KartNoHdrCell = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "font-weight-bold float-end";
+            @__ctrl.CssClass = "fw-bold float-end";
             @__ctrl.ID = "KartNoHdrCell";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("KART NO"));
@@ -279,7 +279,7 @@ namespace TBYS_WebParts.KiraKartiWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
             @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
-            @__ctrl.CssClass = "bg-light font-weight-bold";
+            @__ctrl.CssClass = "bg-light fw-bold";
             @__ctrl.RowSpan = 3;
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("KİRACININ"));
@@ -295,7 +295,7 @@ namespace TBYS_WebParts.KiraKartiWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
             @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
-            @__ctrl.CssClass = "bg-light font-weight-bold";
+            @__ctrl.CssClass = "bg-light fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("ADI SOYADI"));
             return @__ctrl;
@@ -353,7 +353,7 @@ namespace TBYS_WebParts.KiraKartiWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
             @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
-            @__ctrl.CssClass = "bg-light font-weight-bold";
+            @__ctrl.CssClass = "bg-light fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("İLETİŞİM"));
             return @__ctrl;
@@ -427,7 +427,7 @@ namespace TBYS_WebParts.KiraKartiWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
             @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
-            @__ctrl.CssClass = "bg-light font-weight-bold";
+            @__ctrl.CssClass = "bg-light fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("KİMLİK NO"));
             return @__ctrl;
@@ -458,7 +458,7 @@ namespace TBYS_WebParts.KiraKartiWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
             @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
-            @__ctrl.CssClass = "bg-light font-weight-bold";
+            @__ctrl.CssClass = "bg-light fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("VERGİ DAİ."));
             return @__ctrl;
@@ -488,7 +488,7 @@ namespace TBYS_WebParts.KiraKartiWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
             @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
-            @__ctrl.CssClass = "bg-light font-weight-bold";
+            @__ctrl.CssClass = "bg-light fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("VERGİ No."));
             return @__ctrl;
@@ -554,7 +554,7 @@ namespace TBYS_WebParts.KiraKartiWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
             @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
-            @__ctrl.CssClass = "bg-light font-weight-bold";
+            @__ctrl.CssClass = "bg-light fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("KONTRAT TARİHİ"));
             return @__ctrl;
@@ -609,7 +609,7 @@ namespace TBYS_WebParts.KiraKartiWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
             @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
-            @__ctrl.CssClass = "bg-light font-weight-bold";
+            @__ctrl.CssClass = "bg-light fw-bold";
             @__ctrl.RowSpan = 3;
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("KİRALANANIN"));
@@ -625,7 +625,7 @@ namespace TBYS_WebParts.KiraKartiWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
             @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
-            @__ctrl.CssClass = "bg-light font-weight-bold";
+            @__ctrl.CssClass = "bg-light fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("İLİ"));
             return @__ctrl;
@@ -656,7 +656,7 @@ namespace TBYS_WebParts.KiraKartiWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
             @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
-            @__ctrl.CssClass = "bg-light font-weight-bold";
+            @__ctrl.CssClass = "bg-light fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("İLÇESİ"));
             return @__ctrl;
@@ -720,7 +720,7 @@ namespace TBYS_WebParts.KiraKartiWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
             @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
-            @__ctrl.CssClass = "bg-light font-weight-bold";
+            @__ctrl.CssClass = "bg-light fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("SEMTİ"));
             return @__ctrl;
@@ -751,7 +751,7 @@ namespace TBYS_WebParts.KiraKartiWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
             @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
-            @__ctrl.CssClass = "bg-light font-weight-bold";
+            @__ctrl.CssClass = "bg-light fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("ADRESİ"));
             return @__ctrl;
@@ -812,7 +812,7 @@ namespace TBYS_WebParts.KiraKartiWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
             @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
-            @__ctrl.CssClass = "bg-light font-weight-bold";
+            @__ctrl.CssClass = "bg-light fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Kiralama Amacı"));
             return @__ctrl;
@@ -842,7 +842,7 @@ namespace TBYS_WebParts.KiraKartiWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
             @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
-            @__ctrl.CssClass = "bg-light font-weight-bold";
+            @__ctrl.CssClass = "bg-light fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("NİTELİĞİ"));
             return @__ctrl;
@@ -872,7 +872,7 @@ namespace TBYS_WebParts.KiraKartiWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
             @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
-            @__ctrl.CssClass = "bg-light font-weight-bold";
+            @__ctrl.CssClass = "bg-light fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("YÜZÖLÇÜMÜ"));
             return @__ctrl;
@@ -939,7 +939,7 @@ namespace TBYS_WebParts.KiraKartiWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
             @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
-            @__ctrl.CssClass = "bg-light  font-weight-bold";
+            @__ctrl.CssClass = "bg-light  fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("KİRA TEMINAT TARİHİ"));
             return @__ctrl;
@@ -970,7 +970,7 @@ namespace TBYS_WebParts.KiraKartiWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
             @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
-            @__ctrl.CssClass = "bg-light  font-weight-bold";
+            @__ctrl.CssClass = "bg-light  fw-bold";
             @__ctrl.ID = "KiraTeminatiCell";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("TEMİNAT"));
@@ -1001,7 +1001,7 @@ namespace TBYS_WebParts.KiraKartiWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
             @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
-            @__ctrl.CssClass = "bg-light  font-weight-bold";
+            @__ctrl.CssClass = "bg-light  fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("ÖDENEN TEMİNAT:"));
             return @__ctrl;
@@ -1031,7 +1031,7 @@ namespace TBYS_WebParts.KiraKartiWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
             @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
-            @__ctrl.CssClass = "bg-light  font-weight-bold";
+            @__ctrl.CssClass = "bg-light  fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("KALAN TEMİNAT:"));
             return @__ctrl;

@@ -262,10 +262,10 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
                                 columns: [
                                     { field: 'DosyaNo', headerText: 'D.No', headerStyle:'width: 5%'},
                                     { field: 'TarihAraligi', headerText: 'Sözleşme Tarihi',headerStyle:'width: 15%' },        
-                                    { field: 'KiraBedeli', headerText: 'Kira Bedeli',bodyClass:'text-right',headerStyle:'width: 10%' },
-                                    { field: 'DevirAnapara', headerText: 'Devir AnaPara',bodyClass:'text-right',headerStyle:'width: 10%' },
-                                    { field: 'DevirFaiz', headerText: 'Devir Faiz',bodyClass:'text-right',headerStyle:'width: 10%' },
-                                    { field: 'DevirFaizliBakiye', headerText: 'Devir Faizli Bakiye',bodyClass:'text-right',headerStyle:'width: 10%' },
+                                    { field: 'KiraBedeli', headerText: 'Kira Bedeli',bodyClass:'text-end',headerStyle:'width: 10%' },
+                                    { field: 'DevirAnapara', headerText: 'Devir AnaPara',bodyClass:'text-end',headerStyle:'width: 10%' },
+                                    { field: 'DevirFaiz', headerText: 'Devir Faiz',bodyClass:'text-end',headerStyle:'width: 10%' },
+                                    { field: 'DevirFaizliBakiye', headerText: 'Devir Faizli Bakiye',bodyClass:'text-end',headerStyle:'width: 10%' },
                                     { field: 'SozlesmeId',bodyClass:'text-center',headerText: 'Devir Al', headerStyle:'width: 10%', content: function (rowData)
                                         { 
                                             if (rowData.FarkVarMi)
@@ -359,7 +359,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
                 row.Controls.Add(SiraNoCell);
 
                 TableCell YilCell = new TableCell();
-                YilCell.CssClass = "text-right";
+                YilCell.CssClass = "text-end";
                 YilCell.Text = odemePlani.Yil.ToString();
                 row.Controls.Add(YilCell);
 
@@ -368,12 +368,12 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
                 row.Controls.Add(AyCell);
 
                 TableCell KiraBedeliCell = new TableCell();
-                KiraBedeliCell.CssClass = "text-right";
+                KiraBedeliCell.CssClass = "text-end";
                 KiraBedeliCell.Text = odemePlani.KiraBedeli.ToString("N", culturInfo);
                 row.Controls.Add(KiraBedeliCell);
 
                 TableCell OdenenTutarCell = new TableCell();
-                OdenenTutarCell.CssClass = "text-right";
+                OdenenTutarCell.CssClass = "text-end";
                 OdenenTutarCell.Text = odemePlani.OdenenTutar.ToString("N", culturInfo);
                 row.Controls.Add(OdenenTutarCell);
 

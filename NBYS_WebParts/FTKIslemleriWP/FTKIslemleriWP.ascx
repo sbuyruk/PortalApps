@@ -58,7 +58,7 @@
                             href="">
                             <i class="fa fa-book" aria-hidden="true"></i>
                         </a>
-                        <asp:Label CssClass="col-form-label text-warning font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="FTK İşlemleri"></asp:Label>
+                        <asp:Label CssClass="col-form-label text-warning fw-bold mb-1" ID="TitleLbl" runat="server" Text="FTK İşlemleri"></asp:Label>
                         <asp:Label CssClass="col-form-label" ID="IdLbl" runat="server"></asp:Label>
                         <asp:Label CssClass="col-form-label " ID="AdiLbl" runat="server"></asp:Label>
                     </h3>
@@ -122,7 +122,7 @@
                                 <asp:TextBox ID="AciklamaTxt" CssClass="form-control" runat="server" Text="" TextMode="MultiLine" Rows="6"></asp:TextBox>
                             </div>
                             <div class="checkbox pt-3" id="KayitDuzeltmeDiv" runat="server" style="display: none">
-                                <label class="col-form-label font-weight-bold">
+                                <label class="col-form-label fw-bold">
                                     <asp:CheckBox ID="KayitDuzeltmesiChk" runat="server" Checked="false" />
                                     Bu bir Kayıt düzeltmesidir.
                                 </label>
@@ -146,7 +146,7 @@
                 <div class="col-8">
                     <div class="card">
                         <div class="card-header">
-                            <asp:Label CssClass="col-form-label font-weight-bold" runat="server" Text="Fahri Tanıtım Kurulu Listesi"></asp:Label>
+                            <asp:Label CssClass="col-form-label fw-bold" runat="server" Text="Fahri Tanıtım Kurulu Listesi"></asp:Label>
                             <div id="AktifOlmayanlariGostermeDiv" class="checkbox pt-3 float-end" runat="server">
                                 <label>
                                     <asp:CheckBox ID="AktifOlmayanlariGostermeChk" runat="server" Checked="True" ToolTip="Görevi Bitenleri Gösterme" OnCheckedChanged="AktifOlmayanlariGostermeChk_CheckedChanged" AutoPostBack="true" />
@@ -225,11 +225,11 @@
                     <div class="modal-body">
                         <div class="row" id="ModalTarihDiv" runat="server" style="display: block">
                             <div class="form-group col">
-                                <asp:Label CssClass="col-from-label font-weight-bold" runat="server" Text="FTK Kuruluş Tarihi"></asp:Label>
+                                <asp:Label CssClass="col-from-label fw-bold" runat="server" Text="FTK Kuruluş Tarihi"></asp:Label>
                                 <asp:Label ID="ModalKurulusTarihiLbl" CssClass="form-control" runat="server"></asp:Label>
                             </div>
                             <div class="form-group col">
-                                <asp:Label CssClass="col-from-label font-weight-bold" runat="server" Text="FTK Guncelleme Tarihi"></asp:Label>
+                                <asp:Label CssClass="col-from-label fw-bold" runat="server" Text="FTK Guncelleme Tarihi"></asp:Label>
                                 <asp:Label ID="ModalGuncellemeTarihiLbl" CssClass="form-control" runat="server"></asp:Label>
                             </div>
                         </div>

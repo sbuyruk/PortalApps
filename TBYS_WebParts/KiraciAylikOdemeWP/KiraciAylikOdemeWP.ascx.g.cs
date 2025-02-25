@@ -141,10 +141,6 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl tbl;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.Label ModalLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -202,7 +198,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-danger font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-danger fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Aylık Ödemeler";
             return @__ctrl;
@@ -748,24 +744,6 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControltbl() {
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
-            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
-            this.tbl = @__ctrl;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "table loader");
-            @__ctrl.ID = "tbl";
-            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-                                <input id=""globalFilter"" placeholder=""Aranacak Kelime"" size=""30"" />
-                                <div id=""tblfilter"" class=""table""></div>
-                                <div id=""messages""></div>
-                            "));
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlModalLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -773,7 +751,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "ModalLbl";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-form-label text-danger font-weight-bold");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-form-label text-danger fw-bold");
             @__ctrl.Text = "Ödeme Silinecek";
             return @__ctrl;
         }
@@ -951,12 +929,9 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
             global::System.Web.UI.WebControls.Label @__ctrl16;
             @__ctrl16 = this.@__BuildControlLabel1();
             @__parser.AddParsedSubObject(@__ctrl16);
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl17;
-            @__ctrl17 = this.@__BuildControltbl();
+            global::System.Web.UI.UpdatePanel @__ctrl17;
+            @__ctrl17 = this.@__BuildControlUpdatePanel2();
             @__parser.AddParsedSubObject(@__ctrl17);
-            global::System.Web.UI.UpdatePanel @__ctrl18;
-            @__ctrl18 = this.@__BuildControlUpdatePanel2();
-            @__parser.AddParsedSubObject(@__ctrl18);
             @__ctrl.SetRenderMethodDelegate(new System.Web.UI.RenderMethod(this.@__Render__control1));
         }
         
@@ -1011,8 +986,8 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
                     "           { data: \"KiraBedeli\", type: \"decimal\" },\r\n                { data: \"Od" +
                     "emeTarihi\" },\r\n                { data: \"OdenenTutar\", type: \"decimal\" },\r\n      " +
                     "          { data: \"Aciklama\" },\r\n                { data: \"Duzenle\" },\r\n         " +
-                    "   ],\r\n            \"columnDefs\": [\r\n                { className: \"text-right\", \"" +
-                    "targets\": [10] },\r\n                { className: \"text-right\", \"targets\": [12] }\r" +
+                    "   ],\r\n            \"columnDefs\": [\r\n                { className: \"text-end\", \"" +
+                    "targets\": [10] },\r\n                { className: \"text-end\", \"targets\": [12] }\r" +
                     "\n            ],\r\n            \"language\": {\r\n                \"url\": \"http://tskgv" +
                     "-portal/OrtakBelgeler/Turkish.txt\",\r\n                \"decimal\": \",\",\r\n          " +
                     "      \"thousands\": \".\"\r\n            },\r\n            \"order\": [[11, \"desc\"], [0, " +
@@ -1084,10 +1059,23 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
                     "<div class=\"text-center\">\r\n                            <h3>\r\n                   " +
                     "             ");
             parameterContainer.Controls[15].RenderControl(@__w);
-            @__w.Write("</h3>\r\n                        </div>\r\n                        <div class=\"card-b" +
-                    "ody\">\r\n                            ");
-            parameterContainer.Controls[16].RenderControl(@__w);
-            @__w.Write(@"
+            @__w.Write(@"</h3>
+                        </div>
+                        <div class=""card-body"">
+                                <div class=""form-group"">
+                                    <table id=""CustomModalDataTable"" class=""table table-striped table-bordered table-sm small"" width=""100%"">
+                                        <thead>
+                                            <tr>
+                                                <th>Kiracı No</th>
+                                                <th>Adı Soyadi</th>
+                                                <th>TCKimlikNo</th>
+                                                <th>İl/İlçe</th>
+                                                <th>Adres</th>
+                                                <th>Seç</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
                         </div>
                     </div>
                 </div>
@@ -1102,8 +1090,9 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
             <!-- Modal content-->
             <div class=""modal-content"">
                 ");
-            parameterContainer.Controls[17].RenderControl(@__w);
-            @__w.Write("\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>");
+            parameterContainer.Controls[16].RenderControl(@__w);
+            @__w.Write("\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <!-- Kiracı Seçimi Modal --" +
+                    ">\r\n   \r\n</div>\r\n");
         }
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +

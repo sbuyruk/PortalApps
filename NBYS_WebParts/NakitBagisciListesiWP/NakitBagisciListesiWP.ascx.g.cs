@@ -126,7 +126,7 @@ namespace NBYS_WebParts.NakitBagisciListesiWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-info font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-info fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Nakit Bağışçı Listesi";
             return @__ctrl;
@@ -557,10 +557,10 @@ namespace NBYS_WebParts.NakitBagisciListesiWP {
             parameterContainer.Controls[0].RenderControl(@__w);
             @__w.Write("\r\n        <div class=\"card-body mt-1\">\r\n            <div class=\"row\">\r\n          " +
                     "      <div class=\"form-group col-2\">\r\n                    <label for=\"IliDDL\" cl" +
-                    "ass=\"col-form-label text-right\">İl: </label>\r\n                    ");
+                    "ass=\"col-form-label text-end\">İl: </label>\r\n                    ");
             parameterContainer.Controls[1].RenderControl(@__w);
             @__w.Write("\r\n                </div>\r\n                <div class=\"form-group col-4\">\r\n       " +
-                    "             <label for=\"BagisZamaniDDL\" class=\"col-form-label text-right\">Bağış" +
+                    "             <label for=\"BagisZamaniDDL\" class=\"col-form-label text-end\">Bağış" +
                     " Zamanına Göre: </label>\r\n                    ");
             parameterContainer.Controls[2].RenderControl(@__w);
             @__w.Write("\r\n                </div>\r\n            </div>\r\n\r\n            <div style=\"display: " +

@@ -124,7 +124,7 @@ namespace Portal_WebParts.KutlamaMoveWP {
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
             this.YokDiv = @__ctrl;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "text-danger font-weight-bold text-center");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "text-danger fw-bold text-center");
             @__ctrl.ID = "YokDiv";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "display: block");
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
@@ -140,7 +140,7 @@ namespace Portal_WebParts.KutlamaMoveWP {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-success font-weight-bold";
+            @__ctrl.CssClass = "col-form-label text-success fw-bold";
             @__ctrl.Text = "Bugün Doğanlar";
             return @__ctrl;
         }
@@ -246,7 +246,7 @@ namespace Portal_WebParts.KutlamaMoveWP {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-danger font-weight-bold";
+            @__ctrl.CssClass = "col-form-label text-danger fw-bold";
             @__ctrl.Text = "Bugün Evlenenler";
             return @__ctrl;
         }
@@ -352,7 +352,7 @@ namespace Portal_WebParts.KutlamaMoveWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.pGenelMudur = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control col-form-label font-weight-bold border-0");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control col-form-label fw-bold border-0");
             @__ctrl.ID = "pGenelMudur";
             return @__ctrl;
         }
@@ -365,7 +365,7 @@ namespace Portal_WebParts.KutlamaMoveWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.pGenelMudurUnvan = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control col-form-label font-weight-bold border-0 pt-0");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control col-form-label fw-bold border-0 pt-0");
             @__ctrl.ID = "pGenelMudurUnvan";
             return @__ctrl;
         }

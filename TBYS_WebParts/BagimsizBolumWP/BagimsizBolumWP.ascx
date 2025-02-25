@@ -19,7 +19,7 @@
         <div class="card-header ">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-1">
-                <asp:Label CssClass="col-form-label text-danger font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="Bağımsız Bölüm"></asp:Label>
+                <asp:Label CssClass="col-form-label text-danger fw-bold mb-1" ID="TitleLbl" runat="server" Text="Bağımsız Bölüm"></asp:Label>
                 <asp:Label ID="AdiLbl" runat="server" CssClass="col-form-label"></asp:Label>
                 <asp:Label ID="IdLbl" runat="server" CssClass="col-form-label text-white" Visible="true"></asp:Label>
             </h3>
@@ -51,32 +51,32 @@
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header text-danger">
-                        <h3 class="col-form-label font-weight-bold" id="BagimsizBolumHeaderLbl" runat="server"></h3>
+                        <h3 class="col-form-label fw-bold" id="BagimsizBolumHeaderLbl" runat="server"></h3>
                     </div>
                     <div class="modal-body ">
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-4">
                                     <div class="form-group">
-                                        <asp:Label CssClass="col-form-label font-weight-bold" runat="server" Text="Adres"></asp:Label>
+                                        <asp:Label CssClass="col-form-label fw-bold" runat="server" Text="Adres"></asp:Label>
                                         <asp:TextBox ID="AdresTxt" runat="server" class="form-control" TextMode="MultiLine" Rows="3" ReadOnly="true"></asp:TextBox>
                                     </div>
                                 </div>
                                 <div class="col-2">
                                     <div class="form-group">
-                                        <asp:Label CssClass="col-form-label font-weight-bold" runat="server" Text="Bölüm No"></asp:Label>
+                                        <asp:Label CssClass="col-form-label fw-bold" runat="server" Text="Bölüm No"></asp:Label>
                                         <asp:TextBox ID="BolumNoTxt" runat="server" class="form-control"></asp:TextBox>
                                     </div>
                                 </div> 
                                 <div class="col-2">
                                     <div class="form-group">
-                                        <asp:Label CssClass="col-form-label font-weight-bold" runat="server" Text="Nitelik"></asp:Label>
+                                        <asp:Label CssClass="col-form-label fw-bold" runat="server" Text="Nitelik"></asp:Label>
                                         <asp:TextBox ID="NitelikTxt" runat="server" class="form-control"></asp:TextBox>
                                     </div>
                                 </div>
                                 <div class="col-4">
                                     <div class="form-group">
-                                        <asp:Label CssClass="col-form-label font-weight-bold" runat="server" Text="Açıklama"></asp:Label>
+                                        <asp:Label CssClass="col-form-label fw-bold" runat="server" Text="Açıklama"></asp:Label>
                                         <asp:TextBox ID="AciklamaTxt" CssClass="form-control" runat="server" Text="" TextMode="MultiLine" Rows="3"></asp:TextBox>
                                     </div>
                                 </div>

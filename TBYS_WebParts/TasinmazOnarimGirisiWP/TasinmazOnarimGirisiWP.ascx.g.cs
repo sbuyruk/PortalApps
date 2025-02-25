@@ -162,7 +162,7 @@ namespace TBYS_WebParts.TasinmazOnarimGirisiWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-danger font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-danger fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Taşınmaz Onarımları";
             return @__ctrl;
@@ -233,7 +233,7 @@ namespace TBYS_WebParts.TasinmazOnarimGirisiWP {
             this.HeaderCell0 = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "HeaderCell0";
-            @__ctrl.CssClass = "font-weight-bold";
+            @__ctrl.CssClass = "fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Sıra"));
             return @__ctrl;
@@ -248,7 +248,7 @@ namespace TBYS_WebParts.TasinmazOnarimGirisiWP {
             this.HeaderCell1 = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "HeaderCell1";
-            @__ctrl.CssClass = "font-weight-bold";
+            @__ctrl.CssClass = "fw-bold";
             @__ctrl.Visible = false;
             return @__ctrl;
         }
@@ -262,7 +262,7 @@ namespace TBYS_WebParts.TasinmazOnarimGirisiWP {
             this.HeaderCell2 = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "HeaderCell2";
-            @__ctrl.CssClass = "font-weight-bold";
+            @__ctrl.CssClass = "fw-bold";
             @__ctrl.Visible = false;
             return @__ctrl;
         }
@@ -276,7 +276,7 @@ namespace TBYS_WebParts.TasinmazOnarimGirisiWP {
             this.HeaderCell3 = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "HeaderCell3";
-            @__ctrl.CssClass = "font-weight-bold";
+            @__ctrl.CssClass = "fw-bold";
             @__ctrl.Visible = false;
             return @__ctrl;
         }
@@ -290,7 +290,7 @@ namespace TBYS_WebParts.TasinmazOnarimGirisiWP {
             this.HeaderCell4 = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "HeaderCell4";
-            @__ctrl.CssClass = "font-weight-bold";
+            @__ctrl.CssClass = "fw-bold";
             @__ctrl.Visible = false;
             return @__ctrl;
         }
@@ -304,7 +304,7 @@ namespace TBYS_WebParts.TasinmazOnarimGirisiWP {
             this.HeaderCell5 = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "HeaderCell5";
-            @__ctrl.CssClass = "font-weight-bold";
+            @__ctrl.CssClass = "fw-bold";
             @__ctrl.Visible = false;
             return @__ctrl;
         }
@@ -318,7 +318,7 @@ namespace TBYS_WebParts.TasinmazOnarimGirisiWP {
             this.HeaderCell6 = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "HeaderCell6";
-            @__ctrl.CssClass = "font-weight-bold";
+            @__ctrl.CssClass = "fw-bold";
             @__ctrl.Visible = false;
             return @__ctrl;
         }
@@ -332,7 +332,7 @@ namespace TBYS_WebParts.TasinmazOnarimGirisiWP {
             this.HeaderCell7 = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "HeaderCell7";
-            @__ctrl.CssClass = "font-weight-bold";
+            @__ctrl.CssClass = "fw-bold";
             @__ctrl.Visible = false;
             return @__ctrl;
         }

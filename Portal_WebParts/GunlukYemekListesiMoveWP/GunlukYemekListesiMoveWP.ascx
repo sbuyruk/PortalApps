@@ -41,7 +41,7 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="text-danger font-weight-bold" id="YokDiv" runat="server" style="display: none">
+                        <div class="text-danger fw-bold" id="YokDiv" runat="server" style="display: none">
                             <asp:Label ID="YokLbl" runat="server" Text="Yemek Listesi bulunmamaktadır."></asp:Label>
                         </div>
                         <div class="table loader" id="TabloDiv" runat="server" style="display: block">

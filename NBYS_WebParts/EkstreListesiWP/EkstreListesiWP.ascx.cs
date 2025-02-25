@@ -218,7 +218,7 @@ namespace NBYS_WebParts.EkstreListesiWP
                             if (BankaDDL.Items.FindByValue(BankaQS) != null)
                                 BankaDDL.SelectedValue = BankaDDL.Items.FindByValue(BankaQS).Value;
                         }
-                        BankaEtiketleriniBaşlat();
+                        BankaEtiketleriniBaslat();
                         AktarilanBankalariOkLe(IslemTarihiTxt.Text.ConvertToDatetime());
 
                         AktarilanlarHaricChk.Checked = AktarilanlarHaricQS.ConvertToBool();
@@ -234,7 +234,7 @@ namespace NBYS_WebParts.EkstreListesiWP
             
 
         }
-        private void BankaEtiketleriniBaşlat()
+        private void BankaEtiketleriniBaslat()
         {
             AkbankLbl.Text = ProjeConstants.BANKA_AKBANK;
             AkbankEkstreLbl.Text = ProjeConstants.BANKA_AKBANKEKSTRE;
@@ -774,27 +774,6 @@ namespace NBYS_WebParts.EkstreListesiWP
             BankaQS = BankaDDL.SelectedItem.Value;
             RedirectToPage(ProjeConstants.PAGE_EKSTRE_LIST + "?IslemTarihi=" + IslemTarihiQS + "&AktarilanlarHaric=" + AktarilanlarHaricQS + "&Banka=" + BankaQS);
         }
-        //protected void SecilenleriKaydetBtn_Click(object sender, EventArgs e)
-        //{
-
-        //    string value = paramArray.Value;
-        //    string[] idList = value.Split(',');
-
-        //    if (idList.Length < 1)
-        //    {
-        //        MessageHelper.PublishMessage("Kaydetmek için kayıt seçiniz.", ProjeConstants.MESAJ_BILGI, 2000);
-        //    }
-        //    else
-        //    {
-        //        ModalTitleLbl.Text = "Seçilen Kayıtlar Aktarılacak";
-        //        ModalSubTitleLbl.Text = idList.Length + " Adet satırı kaydetmek için seçtiniz.";
-        //        UyariMesajiLbl.Text = "Lütfen kaydetmeden önce dikkatle inceleyiniz.";
-        //        SilNowBtn.Visible = false;
-        //        KaydetNowBtn.Visible = true;
-        //        var openPopup = "OpenModalOnay();";
-        //        UtilityHelper.ScriptCalistir( openPopup);
-        //    }
-        //}
         protected void SecilenleriSilBtn_Click(object sender, EventArgs e)
         {
 
@@ -816,21 +795,6 @@ namespace NBYS_WebParts.EkstreListesiWP
             }
 
         }
-        //protected void KaydetNowBtn_Click(object sender, EventArgs e)
-        //{
-        //    try
-        //    {
-        //        KaydetNowBtn.Visible = false;
-        //        var closepopup = "CloseModalOnay();";
-        //        UtilityHelper.ScriptCalistir(closepopup);
-        //        SecilenListeyiKaydet();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        ExceptionHelper exHelper = new ExceptionHelper(ex);
-        //        exHelper.PublishException();
-        //    }
-        //}
         protected void SilNowBtn_Click(object sender, EventArgs e)
         {
             SecilenListeyiSil();

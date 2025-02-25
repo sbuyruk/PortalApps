@@ -26,9 +26,13 @@
         var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('TeminatIslemiEkleModal'));
         myModalInstance.show();
     }
-    function CloseModal() {
-        $("#TeminatIslemiEkleModal").modal('hide');
 
+    function CloseModal() {
+        var myModalEl = document.getElementById('TeminatIslemiEkleModal');
+        var modalInstance = bootstrap.Modal.getInstance(myModalEl);
+        if (modalInstance) {
+            modalInstance.hide();
+        }
     }
     if ($('.input-money').toArray().forEach(function (field) {
         new Cleave(field, {
@@ -43,7 +47,7 @@
         var element = document.getElementById('CardDiv');
 
         var opt = {
-            margin: [0, 0],
+            margin: [0.5, 0.5],
             filename: 'teminat.pdf',
             enableLinks: false,
             image: { type: 'jpeg', quality: 0.98 },
@@ -70,7 +74,7 @@
         <div class="card-header ">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-1">
-                <asp:Label ID="TitleLbl" runat="server" CssClass="col-form-label text-danger font-weight-bold mb-1" Text="Teminat İşlemleri"></asp:Label>
+                <asp:Label ID="TitleLbl" runat="server" CssClass="col-form-label text-danger fw-bold mb-1" Text="Teminat İşlemleri"></asp:Label>
                 <asp:Label ID="IdLbl" runat="server" CssClass="col-form-label text-white" Visible="false"></asp:Label>
             </h3>
         </div>
@@ -82,7 +86,7 @@
                 <ContentTemplate>
                     <div class="card">
                         <div id="CardDiv" class="card-body">
-                            <asp:Label CssClass="col-form-label font-weight-bold" ID="AdiLbl" runat="server"></asp:Label>
+                            <asp:Label CssClass="col-form-label fw-bold" ID="AdiLbl" runat="server"></asp:Label>
                             <div class="form-group">
                                     <asp:Table ID="TasinmazAdresTable" runat="server" CssClass="table table-bordered table-striped"></asp:Table>
                                 </div>
@@ -99,19 +103,19 @@
                                 </div>
                                 <div class="form-group col">
                                     <label class="col-form-label" for="TeminatTutariTxt">Belirlenen Teminat</label>
-                                    <input class="form-control input-money text-right " id="TeminatTutariTxt" runat="server" />
+                                    <input class="form-control input-money text-end " id="TeminatTutariTxt" runat="server" />
                                 </div>
                                 <div class="form-group col">
                                     <label class="col-form-label" for="OdenenTeminatTxt">Alınan Teminat</label>
-                                    <input type="text" id="OdenenTeminatTxt" name="OdenenTeminatTxt" class="form-control input-money text-right " runat="server" readonly="readonly" />
+                                    <input type="text" id="OdenenTeminatTxt" name="OdenenTeminatTxt" class="form-control input-money text-end " runat="server" readonly="readonly" />
                                 </div>
                                 <div class="form-group col">
                                     <label class="col-form-label" for="IadeTeminatTxt">İade/Mahsup Ed.</label>
-                                    <input type="text" id="IadeTeminatTxt" class="form-control input-money text-right " runat="server" readonly="readonly" />
+                                    <input type="text" id="IadeTeminatTxt" class="form-control input-money text-end " runat="server" readonly="readonly" />
                                 </div>
                                 <div class="form-group col">
                                     <label class="col-form-label" for="KalanTeminatTxt">Kalan Teminat</label>
-                                    <input type="text" id="KalanTeminatTxt" name="KalanTeminatTxt" class="form-control input-money text-right " runat="server" readonly="readonly" />
+                                    <input type="text" id="KalanTeminatTxt" name="KalanTeminatTxt" class="form-control input-money text-end " runat="server" readonly="readonly" />
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -165,7 +169,7 @@
             <div class="modal-body">
                 <div class="card" runat="server" id="Div1">
                     <div class="card-header">
-                        <asp:Label ID="ModalTitleLbl" class="col-form-label font-weight-bold" runat="server" Text="Teminat İşlemi Eklenecek"></asp:Label>
+                        <asp:Label ID="ModalTitleLbl" class="col-form-label fw-bold" runat="server" Text="Teminat İşlemi Eklenecek"></asp:Label>
                     </div>
                     <div class="card-body">
                         <div class="form-group row">
@@ -184,7 +188,7 @@
                             </div>
                             <div class="form-group col">
                                 <label class="col-form-label" for="IslemTutariTxt">İşlem Tutarı</label>
-                                <input class="form-control input-money text-right " id="IslemTutariTxt" runat="server" />
+                                <input class="form-control input-money text-end " id="IslemTutariTxt" runat="server" />
                             </div>
                         </div>
                         <div class="form-group ">
@@ -214,7 +218,7 @@
             <div class="modal-body">
                 <div class="card" runat="server" id="DeleteDiv">
                     <div class="card-header">
-                        <asp:Label ID="Label3" class="col-form-label font-weight-bold" runat="server" Text="Teminat İşlemi Silinecek"></asp:Label>
+                        <asp:Label ID="Label3" class="col-form-label fw-bold" runat="server" Text="Teminat İşlemi Silinecek"></asp:Label>
                     </div>
                     <div class="card-body">
                         <div style="display: none">

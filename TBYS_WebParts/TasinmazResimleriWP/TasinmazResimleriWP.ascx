@@ -31,7 +31,7 @@
                 <div class="card-header" id="CardHeader" runat="server">
                     <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
                     <h3 class="mb-2">
-                        <asp:Label CssClass="col-form-label text-danger font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="Taşınmaz Resimleri"></asp:Label>
+                        <asp:Label CssClass="col-form-label text-danger fw-bold mb-1" ID="TitleLbl" runat="server" Text="Taşınmaz Resimleri"></asp:Label>
                         <asp:Label CssClass="col-form-label text-white" ID="IdLbl" runat="server"></asp:Label>
                         <asp:Label CssClass="col-form-label " ID="AdiLbl" runat="server"></asp:Label>
                     </h3>
@@ -136,7 +136,7 @@
                     <div class="row">
                         <div class="col-3 border border-dark p-2">
                             <div class="form-group">
-                                <asp:Label CssClass="col-form-label font-weight-bold" ID="Label2" runat="server">Emlak Beyanı (pdf)</asp:Label>
+                                <asp:Label CssClass="col-form-label fw-bold" ID="Label2" runat="server">Emlak Beyanı (pdf)</asp:Label>
                             </div>
                             <div class="form-group text-center">
                                 <a id="EmlakBeyaniDosyaLnk" runat="server" class="btn btn-outline-primary" data-fancybox data-type="pdf" data-width="960" data-height="720" href="#">Emlak Beyanı 
@@ -150,7 +150,7 @@
                         </div>
                         <div class="col-3 border border-dark p-2">
                             <div class="form-group">
-                                <asp:Label CssClass="col-form-label font-weight-bold" ID="Label1" runat="server">Yapı Kayıt Belgesi (pdf)</asp:Label>
+                                <asp:Label CssClass="col-form-label fw-bold" ID="Label1" runat="server">Yapı Kayıt Belgesi (pdf)</asp:Label>
                             </div>
                             <div class="form-group text-center">
                                 <a id="YapiKayitDosyaLnk" runat="server" class="btn btn-outline-primary" data-fancybox data-type="pdf" data-width="960" data-height="720" href="#">Yapı Kayıt Belgesi 
@@ -164,7 +164,7 @@
                         </div>
                         <div class="col-3 border border-dark p-2">
                             <div class="form-group">
-                                <asp:Label CssClass="col-form-label font-weight-bold" ID="Label3" runat="server">Tapu Kayıt Belgesi (pdf)</asp:Label>
+                                <asp:Label CssClass="col-form-label fw-bold" ID="Label3" runat="server">Tapu Kayıt Belgesi (pdf)</asp:Label>
                             </div>
                             <div class="form-group text-center">
                                 <a id="TapuKayitDosyaLnk" runat="server" class="btn btn-outline-primary" data-fancybox data-type="pdf" data-width="960" data-height="720" href="#">Tapu Kayıt Belgesi 
@@ -178,7 +178,7 @@
                         </div>
                         <div class="col-3 border border-dark p-2">
                             <div class="form-group">
-                                <asp:Label CssClass="col-form-label font-weight-bold" ID="Label4" runat="server">İmar Durumu Belgesi (pdf)</asp:Label>
+                                <asp:Label CssClass="col-form-label fw-bold" ID="Label4" runat="server">İmar Durumu Belgesi (pdf)</asp:Label>
                             </div>
                             <div class="form-group text-center">
                                 <a id="ImarDurumuDosyaLnk" runat="server" class="btn btn-outline-primary" data-fancybox data-type="pdf" data-width="960" data-height="720" href="#">İmar Durumu Belgesi 

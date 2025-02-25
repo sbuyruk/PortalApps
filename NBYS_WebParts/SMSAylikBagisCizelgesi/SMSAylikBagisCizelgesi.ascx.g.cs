@@ -171,7 +171,7 @@ namespace NBYS_WebParts.SMSAylikBagisCizelgesi {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-danger font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-danger fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "SMS Aylik Bağış Çizelgesi";
             return @__ctrl;
@@ -374,7 +374,7 @@ namespace NBYS_WebParts.SMSAylikBagisCizelgesi {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "text-right";
+            @__ctrl.CssClass = "text-end";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Bağış Adedi"));
             return @__ctrl;
@@ -387,7 +387,7 @@ namespace NBYS_WebParts.SMSAylikBagisCizelgesi {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "text-right";
+            @__ctrl.CssClass = "text-end";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Bağış Tutarı"));
             return @__ctrl;
@@ -400,7 +400,7 @@ namespace NBYS_WebParts.SMSAylikBagisCizelgesi {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "text-right";
+            @__ctrl.CssClass = "text-end";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Bağış Adedi"));
             return @__ctrl;
@@ -413,7 +413,7 @@ namespace NBYS_WebParts.SMSAylikBagisCizelgesi {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "text-right";
+            @__ctrl.CssClass = "text-end";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Bağış Tutarı"));
             return @__ctrl;
@@ -426,7 +426,7 @@ namespace NBYS_WebParts.SMSAylikBagisCizelgesi {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "text-right";
+            @__ctrl.CssClass = "text-end";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Bağış Adedi"));
             return @__ctrl;
@@ -439,7 +439,7 @@ namespace NBYS_WebParts.SMSAylikBagisCizelgesi {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "text-right";
+            @__ctrl.CssClass = "text-end";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Bağış Tutarı"));
             return @__ctrl;
@@ -452,7 +452,7 @@ namespace NBYS_WebParts.SMSAylikBagisCizelgesi {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "text-right";
+            @__ctrl.CssClass = "text-end";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Bağış Adedi"));
             return @__ctrl;
@@ -465,7 +465,7 @@ namespace NBYS_WebParts.SMSAylikBagisCizelgesi {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "text-right";
+            @__ctrl.CssClass = "text-end";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Bağış Tutarı"));
             return @__ctrl;
@@ -661,7 +661,7 @@ namespace NBYS_WebParts.SMSAylikBagisCizelgesi {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "text-right";
+            @__ctrl.CssClass = "text-end";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Bağış Adedi"));
             return @__ctrl;
@@ -674,7 +674,7 @@ namespace NBYS_WebParts.SMSAylikBagisCizelgesi {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "text-right";
+            @__ctrl.CssClass = "text-end";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Bağış Tutarı"));
             return @__ctrl;
@@ -687,7 +687,7 @@ namespace NBYS_WebParts.SMSAylikBagisCizelgesi {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "text-right";
+            @__ctrl.CssClass = "text-end";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Bağış Adedi"));
             return @__ctrl;
@@ -700,7 +700,7 @@ namespace NBYS_WebParts.SMSAylikBagisCizelgesi {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "text-right";
+            @__ctrl.CssClass = "text-end";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Bağış Tutarı"));
             return @__ctrl;
@@ -713,7 +713,7 @@ namespace NBYS_WebParts.SMSAylikBagisCizelgesi {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "text-right";
+            @__ctrl.CssClass = "text-end";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Bağış Adedi"));
             return @__ctrl;
@@ -726,7 +726,7 @@ namespace NBYS_WebParts.SMSAylikBagisCizelgesi {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "text-right";
+            @__ctrl.CssClass = "text-end";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Bağış Tutarı"));
             return @__ctrl;
@@ -739,7 +739,7 @@ namespace NBYS_WebParts.SMSAylikBagisCizelgesi {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "text-right";
+            @__ctrl.CssClass = "text-end";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Bağış Adedi"));
             return @__ctrl;
@@ -752,7 +752,7 @@ namespace NBYS_WebParts.SMSAylikBagisCizelgesi {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "text-right";
+            @__ctrl.CssClass = "text-end";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Bağış Tutarı"));
             return @__ctrl;

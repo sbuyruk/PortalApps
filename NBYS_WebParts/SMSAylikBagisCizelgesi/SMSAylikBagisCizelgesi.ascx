@@ -34,7 +34,7 @@
                     <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
                     <asp:Label CssClass="col-form-label text-danger float-end" ID="DosyaNoTxt" runat="server"></asp:Label>
                     <h3 class="mb-2">
-                        <asp:Label CssClass="col-form-label text-danger font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="SMS Aylik Bağış Çizelgesi"></asp:Label>
+                        <asp:Label CssClass="col-form-label text-danger fw-bold mb-1" ID="TitleLbl" runat="server" Text="SMS Aylik Bağış Çizelgesi"></asp:Label>
                         <asp:Label CssClass="col-form-label text-white" ID="IdLbl" runat="server"></asp:Label>
                         <asp:Label CssClass="col-form-label " ID="AdiLbl" runat="server"></asp:Label>
                     </h3>
@@ -54,14 +54,14 @@
                                 <asp:TableHeaderCell ColumnSpan="2" >Toplam</asp:TableHeaderCell>
                             </asp:TableHeaderRow>
                             <asp:TableHeaderRow>
-                                <asp:TableHeaderCell CssClass="text-right">Bağış Adedi</asp:TableHeaderCell>
-                                <asp:TableHeaderCell CssClass="text-right">Bağış Tutarı</asp:TableHeaderCell>
-                                <asp:TableHeaderCell CssClass="text-right">Bağış Adedi</asp:TableHeaderCell>
-                                <asp:TableHeaderCell CssClass="text-right">Bağış Tutarı</asp:TableHeaderCell>
-                                <asp:TableHeaderCell CssClass="text-right">Bağış Adedi</asp:TableHeaderCell>
-                                <asp:TableHeaderCell CssClass="text-right">Bağış Tutarı</asp:TableHeaderCell>
-                                <asp:TableHeaderCell CssClass="text-right">Bağış Adedi</asp:TableHeaderCell>
-                                <asp:TableHeaderCell CssClass="text-right">Bağış Tutarı</asp:TableHeaderCell>
+                                <asp:TableHeaderCell CssClass="text-end">Bağış Adedi</asp:TableHeaderCell>
+                                <asp:TableHeaderCell CssClass="text-end">Bağış Tutarı</asp:TableHeaderCell>
+                                <asp:TableHeaderCell CssClass="text-end">Bağış Adedi</asp:TableHeaderCell>
+                                <asp:TableHeaderCell CssClass="text-end">Bağış Tutarı</asp:TableHeaderCell>
+                                <asp:TableHeaderCell CssClass="text-end">Bağış Adedi</asp:TableHeaderCell>
+                                <asp:TableHeaderCell CssClass="text-end">Bağış Tutarı</asp:TableHeaderCell>
+                                <asp:TableHeaderCell CssClass="text-end">Bağış Adedi</asp:TableHeaderCell>
+                                <asp:TableHeaderCell CssClass="text-end">Bağış Tutarı</asp:TableHeaderCell>
                             </asp:TableHeaderRow>
                         </asp:Table>
                     </div>
@@ -75,14 +75,14 @@
                                 <asp:TableHeaderCell ColumnSpan="2" >Toplam</asp:TableHeaderCell>
                             </asp:TableHeaderRow>
                             <asp:TableHeaderRow>
-                                <asp:TableHeaderCell CssClass="text-right">Bağış Adedi</asp:TableHeaderCell>
-                                <asp:TableHeaderCell CssClass="text-right">Bağış Tutarı</asp:TableHeaderCell>
-                                <asp:TableHeaderCell CssClass="text-right">Bağış Adedi</asp:TableHeaderCell>
-                                <asp:TableHeaderCell CssClass="text-right">Bağış Tutarı</asp:TableHeaderCell>
-                                <asp:TableHeaderCell CssClass="text-right">Bağış Adedi</asp:TableHeaderCell>
-                                <asp:TableHeaderCell CssClass="text-right">Bağış Tutarı</asp:TableHeaderCell>
-                                <asp:TableHeaderCell CssClass="text-right">Bağış Adedi</asp:TableHeaderCell>
-                                <asp:TableHeaderCell CssClass="text-right">Bağış Tutarı</asp:TableHeaderCell>
+                                <asp:TableHeaderCell CssClass="text-end">Bağış Adedi</asp:TableHeaderCell>
+                                <asp:TableHeaderCell CssClass="text-end">Bağış Tutarı</asp:TableHeaderCell>
+                                <asp:TableHeaderCell CssClass="text-end">Bağış Adedi</asp:TableHeaderCell>
+                                <asp:TableHeaderCell CssClass="text-end">Bağış Tutarı</asp:TableHeaderCell>
+                                <asp:TableHeaderCell CssClass="text-end">Bağış Adedi</asp:TableHeaderCell>
+                                <asp:TableHeaderCell CssClass="text-end">Bağış Tutarı</asp:TableHeaderCell>
+                                <asp:TableHeaderCell CssClass="text-end">Bağış Adedi</asp:TableHeaderCell>
+                                <asp:TableHeaderCell CssClass="text-end">Bağış Tutarı</asp:TableHeaderCell>
                             </asp:TableHeaderRow>
                         </asp:Table>
                     </div>

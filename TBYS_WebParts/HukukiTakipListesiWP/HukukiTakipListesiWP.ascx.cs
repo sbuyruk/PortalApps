@@ -83,7 +83,7 @@ namespace TBYS_WebParts.HukukiTakipListesiWP
                     { field: 'IlkSozlesmeTar', headerText: 'İlk Söz.Tar.',headerStyle:'width: 10%' },
                     { field: 'BorcAnaPara', headerText: 'Borç (Anapara)',headerStyle:'width: 10%' },                    
                     { field: 'BorcFaiz', headerText: 'Borç (Faiz)',sortable:true,headerStyle:'width: 10%' },
-                    { field: 'IslemTarihi', headerText: 'İşlem Tarihi',filter: true,bodyClass:'text-right',headerStyle:'width: 10%' },
+                    { field: 'IslemTarihi', headerText: 'İşlem Tarihi',filter: true,bodyClass:'text-end',headerStyle:'width: 10%' },
                     { field: 'Aciklama', headerText: 'Açıklama',headerStyle:'width: 20%' }
                 ],
                 datasource:" + jsonData + @",

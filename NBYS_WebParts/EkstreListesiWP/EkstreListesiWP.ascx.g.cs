@@ -294,7 +294,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-info font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-info fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Ekstre Aktarma Listesi";
             return @__ctrl;
@@ -1332,8 +1332,8 @@ namespace NBYS_WebParts.EkstreListesiWP {
                     "getElementById(\'BtnDiv\').style.display = \"none\";\r\n\r\n        }\r\n    }\r\n    functi" +
                     "on addRemoveEkstreIdToList(ekstreAktarmaId, chkbox) {\r\n        var isChecked = f" +
                     "alse;\r\n        if (chkbox.checked)\r\n            isChecked = true;\r\n        EkleC" +
-                    "ikar(ekstreAktarmaId, isChecked);\r\n    }\r\n\r\n\r\n    //\r\n\r\n\r\n    //\r\n\r\n\r\n\r\n    func" +
-                    "tion SecilenleriKaydetTriggerBtnClicked() {\r\n        document.getElementById(\'");
+                    "ikar(ekstreAktarmaId, isChecked);\r\n    }\r\n\r\n    function SecilenleriKaydetTrigge" +
+                    "rBtnClicked() {\r\n        document.getElementById(\'");
                          @__w.Write( paramArray.ClientID);
 
             @__w.Write("\').value = tabledata;\r\n        document.getElementById(\'");
@@ -1363,7 +1363,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
 
                 <div class=""row"">
                     <div class=""form-group col"" style=""display: block"">
-                        <label class=""col-form-label mr-2 font-weight-bold"" for=""IslemTarihiTxt"">İşlem Tarihi</label>
+                        <label class=""col-form-label mr-2 fw-bold"" for=""IslemTarihiTxt"">İşlem Tarihi</label>
                         ");
             parameterContainer.Controls[4].RenderControl(@__w);
             @__w.Write("\r\n                    </div>\r\n                    <div class=\"form-group col-2\">\r" +
@@ -1471,9 +1471,6 @@ namespace NBYS_WebParts.EkstreListesiWP {
             </div>
             <div class=""form-group"">
                 <div class=""row"">
-
-
-
                     <div class=""col-3"">
                         <div class=""checkbox"">
                             <label>
@@ -1490,28 +1487,27 @@ namespace NBYS_WebParts.EkstreListesiWP {
                                 ");
             parameterContainer.Controls[43].RenderControl(@__w);
             @__w.Write("\r\n                                Sayfanın Tümünü Seç\r\n                          " +
-                    "  </label>\r\n                        </div>\r\n                        \r\n          " +
-                    "          </div>\r\n                </div>\r\n            </div>\r\n            <div c" +
-                    "lass=\"form-group\">\r\n                \r\n\r\n                <div class=\"form-group\">" +
-                    "\r\n                    <table id=\"CustomDataTable\" class=\"table table-hover table" +
-                    "-bordered table-striped\" width=\"100%\">\r\n                        <thead>\r\n       " +
-                    "                     <tr>\r\n                                <th>SEÇ</th>\r\n       " +
-                    "                         <th>K.No</th>\r\n                                <th>Bank" +
-                    "a</th>\r\n                                <th>TC Kimlik</th>\r\n                    " +
-                    "            <th>Adı Soyadı</th>\r\n                                <th>Telefon</th" +
-                    ">\r\n                                <th>Bağış Tarihi</th>\r\n                      " +
-                    "          <th>Tutar</th>\r\n                                <th>Açıklama</th>\r\n   " +
-                    "                             <th>Düzenle</th>\r\n                                <" +
-                    "th>Eşleştir</th>\r\n                            </tr>\r\n                        </t" +
-                    "head>\r\n                    </table>\r\n                </div>\r\n\r\n                \r" +
-                    "\n            </div>\r\n                \r\n        </div>\r\n        <div class=\"card-" +
-                    "footer\">\r\n            <div id=\"BtnDiv\" style=\"display: none\">\r\n                <" +
-                    "input id=\"SecilenleriKaydetTriggerBtn\" class=\"btn btn-success\" type=\"button\" val" +
-                    "ue=\"Seçilenleri Kaydet\" onclick=\"SecilenleriKaydetTriggerBtnClicked();\" />\r\n    " +
-                    "            <input id=\"SecilenleriSilTriggerBtn\" class=\"btn btn-success\" type=\"b" +
-                    "utton\" value=\"Seçilenleri Sil\" onclick=\"SecilenleriSilTriggerBtnClicked();\" />\r\n" +
-                    "            </div>\r\n            <div id=\"InvisibleDiv\" style=\"display: none\">\r\n " +
-                    "               ");
+                    "  </label>\r\n                        </div>\r\n                    </div>\r\n        " +
+                    "        </div>\r\n            </div>\r\n            <div class=\"form-group\">\r\n      " +
+                    "          <div class=\"form-group\">\r\n                    <table id=\"CustomDataTab" +
+                    "le\" class=\"table table-hover table-bordered table-striped\" width=\"100%\">\r\n      " +
+                    "                  <thead>\r\n                            <tr>\r\n                   " +
+                    "             <th>SEÇ</th>\r\n                                <th>K.No</th>\r\n      " +
+                    "                          <th>Banka</th>\r\n                                <th>TC" +
+                    " Kimlik</th>\r\n                                <th>Adı Soyadı</th>\r\n             " +
+                    "                   <th>Telefon</th>\r\n                                <th>Bağış T" +
+                    "arihi</th>\r\n                                <th>Tutar</th>\r\n                    " +
+                    "            <th>Açıklama</th>\r\n                                <th>Düzenle</th>\r" +
+                    "\n                                <th>Eşleştir</th>\r\n                            " +
+                    "</tr>\r\n                        </thead>\r\n                    </table>\r\n         " +
+                    "       </div>\r\n            </div>\r\n                \r\n        </div>\r\n        <di" +
+                    "v class=\"card-footer\">\r\n            <div id=\"BtnDiv\" style=\"display: none\">\r\n   " +
+                    "             <input id=\"SecilenleriKaydetTriggerBtn\" class=\"btn btn-success\" typ" +
+                    "e=\"button\" value=\"Seçilenleri Kaydet\" onclick=\"SecilenleriKaydetTriggerBtnClicke" +
+                    "d();\" />\r\n                <input id=\"SecilenleriSilTriggerBtn\" class=\"btn btn-su" +
+                    "ccess\" type=\"button\" value=\"Seçilenleri Sil\" onclick=\"SecilenleriSilTriggerBtnCl" +
+                    "icked();\" />\r\n            </div>\r\n            <div id=\"InvisibleDiv\" style=\"disp" +
+                    "lay: none\">\r\n                ");
             parameterContainer.Controls[44].RenderControl(@__w);
             @__w.Write("\r\n                ");
             parameterContainer.Controls[45].RenderControl(@__w);
@@ -1534,8 +1530,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
             parameterContainer.Controls[48].RenderControl(@__w);
             @__w.Write("\r\n                    ");
             parameterContainer.Controls[49].RenderControl(@__w);
-            @__w.Write("\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r" +
-                    "\n");
+            @__w.Write("\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>");
         }
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +

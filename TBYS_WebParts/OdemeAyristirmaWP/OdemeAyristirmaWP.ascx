@@ -21,11 +21,14 @@
         var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ListeyeEkleModalDiv'));
         myModalInstance.show();
     }
+    
     function CloseModal() {
-        $("#ListeyeEkleModalDiv").modal('hide');
-
+        var myModalEl = document.getElementById('ListeyeEkleModalDiv');
+        var modalInstance = bootstrap.Modal.getInstance(myModalEl);
+        if (modalInstance) {
+            modalInstance.hide();
+        }
     }
-
     if ($('.input-money').toArray().forEach(function (field) {
         new Cleave(field, {
             numeral: true,
@@ -87,8 +90,8 @@
         <div class="card-header ">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-1">
-                <asp:Label ID="TitleLbl" runat="server" CssClass="col-form-label text-danger font-weight-bold mb-1" Text="Ödeme Ayrıştırma"></asp:Label>
-                <asp:Label ID="AktarildiMiLbl" runat="server" CssClass="col-form-label text-danger font-weight-bold mb-1" Text=""></asp:Label>
+                <asp:Label ID="TitleLbl" runat="server" CssClass="col-form-label text-danger fw-bold mb-1" Text="Ödeme Ayrıştırma"></asp:Label>
+                <asp:Label ID="AktarildiMiLbl" runat="server" CssClass="col-form-label text-danger fw-bold mb-1" Text=""></asp:Label>
                 <asp:Label ID="IdLbl" runat="server" CssClass="col-form-label text-white" Visible="false"></asp:Label>
                 
             </h3>
@@ -101,7 +104,7 @@
                 <ContentTemplate>
                     <div class="card">
                         <div id="CardDiv" class="card-body">
-                            <asp:Label CssClass="col-form-label font-weight-bold" ID="AdiLbl" runat="server"></asp:Label>
+                            <asp:Label CssClass="col-form-label fw-bold" ID="AdiLbl" runat="server"></asp:Label>
                             <div class="form-group row">
                                 <div class="form-group col">
                                     <label class="col-form-label" for="OdemeTarihiLbl">Ödeme Tarihi</label>
@@ -109,23 +112,23 @@
                                 </div>
                                 <div class="form-group col">
                                     <label class="col-form-label" for="OdemeTutariLbl">Ödenen Tutar</label>
-                                    <asp:Label ID="OdenenTutarLbl" class="form-control alert-secondary text-right" runat="server" Text=""></asp:Label>
+                                    <asp:Label ID="OdenenTutarLbl" class="form-control alert-secondary text-end" runat="server" Text=""></asp:Label>
                                 </div>                                
                                 <div class="form-group col">
                                     <label class="col-form-label" for="KiraTutariLbl">Kira Tutarı</label>
-                                    <asp:Label ID="KiraTutariLbl" class="form-control alert-secondary text-right" runat="server" Text=""></asp:Label>
+                                    <asp:Label ID="KiraTutariLbl" class="form-control alert-secondary text-end" runat="server" Text=""></asp:Label>
                                 </div>
                                 <div class="form-group col">
                                     <label class="col-form-label" for="KesinTeminatLbl">Kesin Teminat</label>
-                                    <asp:Label ID="KesinTeminatLbl" class="form-control alert-secondary text-right" runat="server" Text=""></asp:Label>
+                                    <asp:Label ID="KesinTeminatLbl" class="form-control alert-secondary text-end" runat="server" Text=""></asp:Label>
                                 </div>
                                 <div class="form-group col">
                                     <label class="col-form-label" for="GeciciTeminatLbl">Geçici Teminat</label>
-                                    <asp:Label ID="GeciciTeminatLbl" class="form-control alert-secondary text-right" runat="server" Text=""></asp:Label>
+                                    <asp:Label ID="GeciciTeminatLbl" class="form-control alert-secondary text-end" runat="server" Text=""></asp:Label>
                                 </div>
                                 <div class="form-group col">
                                     <label class="col-form-label" for="KalanTutarLbl">Kalan Tutar</label>
-                                     <asp:Label ID="KalanTutarLbl" class="form-control alert-secondary text-right" runat="server" Text=""></asp:Label>
+                                     <asp:Label ID="KalanTutarLbl" class="form-control alert-secondary text-end" runat="server" Text=""></asp:Label>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -193,7 +196,7 @@
                     <ContentTemplate>
                         <div class="card" runat="server" id="Div1">
                             <div class="card-header">
-                                <asp:Label ID="ModalTitleLbl" class="col-form-label font-weight-bold" runat="server" Text="Teminat İşlemi Eklenecek"></asp:Label>
+                                <asp:Label ID="ModalTitleLbl" class="col-form-label fw-bold" runat="server" Text="Teminat İşlemi Eklenecek"></asp:Label>
                             </div>
                             <div class="card-body">
                                 <div id="HiddenDiv" style="display: none">
@@ -206,12 +209,12 @@
                                 </div>
                                 <div class="form-group row">
                                     <div class="form-group col-5">
-                                        <label class="col-form-label font-weight-bold" for="OdemeSebebiTxt">Ödeme Sebebi</label>
+                                        <label class="col-form-label fw-bold" for="OdemeSebebiTxt">Ödeme Sebebi</label>
                                         <asp:Label ID="OdemeSebebiLbl" CssClass="form-control alert-secondary" runat="server" Text=""></asp:Label>
                                     </div>
                                     <div class="form-group col">
-                                        <label class="col-form-label font-weight-bold" for="IslemTutariTxt">Tutar</label>
-                                        <input class="form-control input-money text-right " id="IslemTutariTxt" runat="server" onkeyup="ListeyeEkleNowBtnEnable(this.value)" />
+                                        <label class="col-form-label fw-bold" for="IslemTutariTxt">Tutar</label>
+                                        <input class="form-control input-money text-end " id="IslemTutariTxt" runat="server" onkeyup="ListeyeEkleNowBtnEnable(this.value)" />
                                     </div>
                                 </div>
                                 <div class="form-group" id="KiraciDiv" runat="server" >

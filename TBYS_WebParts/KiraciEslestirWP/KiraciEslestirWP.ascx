@@ -43,7 +43,7 @@
                         </div>
                     </div>
                     <div class="form-group border border-info" id="KiraciSecTableDiv" runat="server">
-                        <asp:Label ID="GelenOdemeLbl" CssClass="col-form-label font-weight-bold" runat="server" Text="Gelen Ödeme"></asp:Label>
+                        <asp:Label ID="GelenOdemeLbl" CssClass="col-form-label fw-bold" runat="server" Text="Gelen Ödeme"></asp:Label>
                         <table id="CustomDataTable" class="table table-hover table-bordered" width="100%">
                             <thead>
                                 <tr>

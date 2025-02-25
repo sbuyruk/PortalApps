@@ -1155,7 +1155,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.NextBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-primary float-right";
+            @__ctrl.CssClass = "btn btn-outline-primary float-end";
             @__ctrl.ID = "NextBtn";
             @__ctrl.Text = "İleri >>";
             @__ctrl.Click -= new System.EventHandler(this.NextBtn_Click);
@@ -1182,7 +1182,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         </div>
         <div id=""BankalarCard"" class=""card-body text-center"">
             <div class=""form-group row"">
-                <label class=""col-2 col-form-label font-weight-bold"" for=""IslemTarihiTxt"">İşlem Tarihi</label>
+                <label class=""col-2 col-form-label fw-bold"" for=""IslemTarihiTxt"">İşlem Tarihi</label>
                 "));
             global::System.Web.UI.WebControls.TextBox @__ctrl3;
             @__ctrl3 = this.@__BuildControlIslemTarihiTxt();

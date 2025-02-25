@@ -7,8 +7,13 @@
 <%@ Register TagPrefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="TasinmazSigortaGirisWP.ascx.cs" Inherits="TBYS_WebParts.TasinmazSigortaGirisWP.TasinmazSigortaGirisWP" %>
 <script>
+
     function CloseModal() {
-        $("#ModalOnayDiv").modal('hide');
+        var myModalEl = document.getElementById('ModalOnayDiv');
+        var modalInstance = bootstrap.Modal.getInstance(myModalEl);
+        if (modalInstance) {
+            modalInstance.hide();
+        }
     }
     function ModalOnay() {
         var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
@@ -22,7 +27,7 @@
         <div class="card-header" id="CardHeader" runat="server">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-2">
-                <asp:Label CssClass="col-form-label text-danger font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="Sigorta Girişi"></asp:Label>
+                <asp:Label CssClass="col-form-label text-danger fw-bold mb-1" ID="TitleLbl" runat="server" Text="Sigorta Girişi"></asp:Label>
                 <asp:Label CssClass="col-form-label text-white" ID="IdLbl" runat="server"></asp:Label>
                 <asp:Label CssClass="col-form-label " ID="AdiLbl" runat="server"></asp:Label>
             </h3>
@@ -103,11 +108,11 @@
                     </div>
                     <div class="form-group">
                         <label class="col-form-label " for="SigortaBedeliTxt">Sigorta Bedeli</label>
-                        <asp:TextBox ID="SigortaBedeliTxt" runat="server" CssClass="form-control input-money text-right"></asp:TextBox>
+                        <asp:TextBox ID="SigortaBedeliTxt" runat="server" CssClass="form-control input-money text-end"></asp:TextBox>
                     </div>
                     <div class="form-group">
                         <label class="col-form-label " for="PrimTxt">Prim</label>
-                        <asp:TextBox ID="PrimTxt" runat="server" CssClass="form-control input-money text-right" type="text"></asp:TextBox>
+                        <asp:TextBox ID="PrimTxt" runat="server" CssClass="form-control input-money text-end" type="text"></asp:TextBox>
                     </div>                    
                     <div class="form-group">
                         <label class="col-form-label " for="PrimTxt">Tapu Taşınmaz No</label>
@@ -116,7 +121,7 @@
                 </div>
                 <div class="col border m-2">
                     <div class="form-group">
-                        <label class="col-form-label font-weight-bold ">Teminatlar</label>
+                        <label class="col-form-label fw-bold ">Teminatlar</label>
                     </div>
                     <div class="form-group">
                         <asp:CheckBox ID="DepremChk" CssClass="form-control mr-2 " runat="server" Text="Deprem " Checked="false" TextAlign="Right" ToolTip="Deprem" />
@@ -143,7 +148,7 @@
             </div>
             <div class="form-group border border-dark p-2 text-center" style="background-color: aliceblue">
                 <div class="form-group">
-                    <asp:Label CssClass="col-form-label font-weight-bold" ID="Label1" runat="server">Poliçe Formu</asp:Label>
+                    <asp:Label CssClass="col-form-label fw-bold" ID="Label1" runat="server">Poliçe Formu</asp:Label>
                 </div>
                 <div class="form-group text-center">
                     <a id="DosyaLnk" runat="server" class="btn btn-outline-primary" data-fancybox data-type="pdf" data-width="960" data-height="720" href="#">Poliçeyi Görüntüle

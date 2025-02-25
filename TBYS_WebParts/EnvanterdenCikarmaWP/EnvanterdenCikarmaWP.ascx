@@ -11,6 +11,10 @@
         var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
         myModalInstance.show();
     }
+    function CloseModal() {
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
+        myModalInstance.hide();
+    }
 </script>
 <div id="MainPanel" class="container shadow w-75" runat="server">
     <asp:UpdatePanel runat="server" ID="UpdatePanel" UpdateMode="Conditional">
@@ -19,7 +23,7 @@
                 <div class="card-header" id="CardHeader" runat="server">
                     <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
                     <h3 class="mb-2">
-                        <asp:Label CssClass="col-form-label text-danger font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="Envanterden Çıkarma"></asp:Label>
+                        <asp:Label CssClass="col-form-label text-danger fw-bold mb-1" ID="TitleLbl" runat="server" Text="Envanterden Çıkarma"></asp:Label>
                         <asp:Label CssClass="col-form-label text-white" ID="IdLbl" runat="server"></asp:Label>
                         <asp:Label CssClass="col-form-label " ID="AdiLbl" runat="server"></asp:Label>
                     </h3>
@@ -31,7 +35,7 @@
                                 <asp:Label ID="KullanimSekliLbl" runat="server" CssClass="form-control " ToolTip="Taşınmazın Kullanım Şekli"></asp:Label>
                             </div>
                             <div class="form-group">
-                                <asp:Label ID="AdresLbl" runat="server" CssClass="form-control font-weight-bold text-danger" ToolTip="Taşınmazın Adresi"></asp:Label>
+                                <asp:Label ID="AdresLbl" runat="server" CssClass="form-control fw-bold text-danger" ToolTip="Taşınmazın Adresi"></asp:Label>
                             </div>
                             <div class="form-group">
                                 <asp:Label ID="Il_IlceLbl" runat="server" CssClass="form-control " ToolTip="Taşınmazın Bulunduğu İl-İlçe"></asp:Label>
@@ -47,7 +51,7 @@
                             <div class="form-group col-2">
                                 <label for="BedelTxt" class="control-label">Bedel</label>
                                 <div>
-                                    <input runat="server" type="text" id="BedelTxt" name="BedelTxt" class="form-control input-money text-right" />
+                                    <input runat="server" type="text" id="BedelTxt" name="BedelTxt" class="form-control input-money text-end" />
                                 </div>
                             </div>
                             <div class="form-group col-2">

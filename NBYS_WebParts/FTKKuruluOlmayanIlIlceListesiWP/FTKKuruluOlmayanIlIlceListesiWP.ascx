@@ -23,7 +23,7 @@
                 <asp:LinkButton ID="YonergeBtn" class="btn btn-outline-primary float-end mr-4" runat="server" OnClick="YonergeBtn_Click" ToolTip="Kullanım Yönergesi">
                     <i class="fa fa-book" aria-hidden="true"></i>
                 </asp:LinkButton>
-                <asp:Label CssClass="col-form-label text-danger font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="FTK Kurulu Olmayan İl ve İlçeler "></asp:Label>
+                <asp:Label CssClass="col-form-label text-danger fw-bold mb-1" ID="TitleLbl" runat="server" Text="FTK Kurulu Olmayan İl ve İlçeler "></asp:Label>
                 <asp:Label CssClass="col-form-label text-white" ID="IdLbl" runat="server"></asp:Label>
                 <asp:Label CssClass="col-form-label " ID="AdiLbl" runat="server"></asp:Label>
             </h3>

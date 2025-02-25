@@ -53,7 +53,7 @@
                 <div class="card-header" id="CardHeader" runat="server">
                     <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
                     <h3 class="mb-2">
-                        <asp:Label CssClass="col-form-label text-info font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="Nakit Bağışçı Adresleri (Belge Verilen)"></asp:Label>
+                        <asp:Label CssClass="col-form-label text-info fw-bold mb-1" ID="TitleLbl" runat="server" Text="Nakit Bağışçı Adresleri (Belge Verilen)"></asp:Label>
                         <asp:Label CssClass="col-form-label text-white" ID="IdLbl" runat="server"></asp:Label>
                     </h3>
                 </div>
@@ -61,15 +61,15 @@
                     <div class="row border border-dark pt-2 bg-light">
                         <div class="col-5 form-group row">
                             <div class="col form-group">
-                                <label for="BagisciSayisiTxt" class="col-form-label font-weight-bold">Bağışçı Say.: </label>
-                                <asp:TextBox ID="BagisciSayisiTxt" AutoPostBack="true" runat="server" CssClass="form-control input-integerOnly text-right" OnTextChanged="BagisTarihiTxt_TextChanged" ></asp:TextBox>
+                                <label for="BagisciSayisiTxt" class="col-form-label fw-bold">Bağışçı Say.: </label>
+                                <asp:TextBox ID="BagisciSayisiTxt" AutoPostBack="true" runat="server" CssClass="form-control input-integerOnly text-end" OnTextChanged="BagisTarihiTxt_TextChanged" ></asp:TextBox>
                             </div>
                             <div class="col form-group">
-                                <label class="col-form-label font-weight-bold" for="BagisTarihiTxt">Baş.Tarihi</label>
+                                <label class="col-form-label fw-bold" for="BagisTarihiTxt">Baş.Tarihi</label>
                                 <asp:TextBox ID="BasTarTxt" AutoPostBack="true" runat="server" CssClass="form-control float-left mb-2 DateTimePickerV1" OnTextChanged="BagisTarihiTxt_TextChanged" ></asp:TextBox>
                             </div>
                             <div class="col form-group">
-                                <label class="col-form-label font-weight-bold" for="BagisTarihiTxt">Bit.Tarihi</label>
+                                <label class="col-form-label fw-bold" for="BagisTarihiTxt">Bit.Tarihi</label>
                                 <asp:TextBox ID="BitTarTxt" AutoPostBack="true" runat="server" CssClass="form-control float-left mb-2 DateTimePickerV1" OnTextChanged="BagisTarihiTxt_TextChanged"  ></asp:TextBox>
                             </div>
                         </div>

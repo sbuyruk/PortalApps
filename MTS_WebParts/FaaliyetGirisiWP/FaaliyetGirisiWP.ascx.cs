@@ -266,7 +266,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             FaaliyetSilBtn.Visible = false;
             FaaliyetKartiBtn.Visible = false;
             TitleLbl.Text = "Yeni Faaliyet";
-            TitleLbl.CssClass = "col-form-label text-success font-weight-bold mb-1";
+            TitleLbl.CssClass = "col-form-label text-success fw-bold mb-1";
             BaslangicTarihiTxt.Text = DateTime.Today.ConvertToDatetimeEmptyIfNull();
             BitisTarihiTxt.Text = DateTime.Today.ConvertToDatetimeEmptyIfNull();
             FaaliyetIdQS = string.Empty;
@@ -1466,7 +1466,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
                         {
                             aniObjesiIdStr += "," + aniObjesiId.ToString();
                             aniObjesiAdetStr += "," + adet.ToString();
-                            newdiv.Attributes.Add("class", "checkbox font-weight-bold text-danger");
+                            newdiv.Attributes.Add("class", "checkbox fw-bold text-danger");
                         }
                         else
                         {
@@ -2149,7 +2149,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             HyperLink hyperLink = new HyperLink
             {
                 Text = message,
-                CssClass = "form-control btn btn-warning font-weight-bold",
+                CssClass = "form-control btn btn-warning fw-bold",
             };
 
             if (faaliyetId > 0)

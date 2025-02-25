@@ -45,7 +45,7 @@
         <div class="card-header" id="CardHeader" runat="server">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-2">
-                <asp:Label CssClass="col-form-label text-danger font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="Taşınmaz Sigortaları"></asp:Label>
+                <asp:Label CssClass="col-form-label text-danger fw-bold mb-1" ID="TitleLbl" runat="server" Text="Taşınmaz Sigortaları"></asp:Label>
                 <asp:Label CssClass="col-form-label text-white" ID="IdLbl" runat="server"></asp:Label>
                 <asp:Label CssClass="col-form-label " ID="AdiLbl" runat="server"></asp:Label>
             </h3>
@@ -55,16 +55,16 @@
                 <ContentTemplate>
                     <asp:Table ID="SigortaTable" runat="server" class="table table-hover table-sm table-bordered">
                         <asp:TableHeaderRow>
-                            <asp:TableCell ID="HeaderCell0" CssClass="font-weight-bold">Sıra</asp:TableCell>
-                            <asp:TableCell ID="HeaderCell1" CssClass="font-weight-bold" Visible="false"></asp:TableCell>
-                            <asp:TableCell ID="HeaderCell2" CssClass="font-weight-bold" Visible="false"></asp:TableCell>
-                            <asp:TableCell ID="HeaderCell3" CssClass="font-weight-bold" Visible="false"></asp:TableCell>
-                            <asp:TableCell ID="HeaderCell4" CssClass="font-weight-bold" Visible="false"></asp:TableCell>
-                            <asp:TableCell ID="HeaderCell5" CssClass="font-weight-bold" Visible="false"></asp:TableCell>
-                            <asp:TableCell ID="HeaderCell6" CssClass="font-weight-bold" Visible="false"></asp:TableCell>
-                            <asp:TableCell ID="HeaderCell7" CssClass="font-weight-bold" Visible="false"></asp:TableCell>
-                            <asp:TableCell ID="HeaderCell8" CssClass="font-weight-bold" Visible="false"></asp:TableCell>
-                            <asp:TableCell ID="HeaderCell9" CssClass="font-weight-bold" Visible="false">></asp:TableCell>
+                            <asp:TableCell ID="HeaderCell0" CssClass="fw-bold">Sıra</asp:TableCell>
+                            <asp:TableCell ID="HeaderCell1" CssClass="fw-bold" Visible="false"></asp:TableCell>
+                            <asp:TableCell ID="HeaderCell2" CssClass="fw-bold" Visible="false"></asp:TableCell>
+                            <asp:TableCell ID="HeaderCell3" CssClass="fw-bold" Visible="false"></asp:TableCell>
+                            <asp:TableCell ID="HeaderCell4" CssClass="fw-bold" Visible="false"></asp:TableCell>
+                            <asp:TableCell ID="HeaderCell5" CssClass="fw-bold" Visible="false"></asp:TableCell>
+                            <asp:TableCell ID="HeaderCell6" CssClass="fw-bold" Visible="false"></asp:TableCell>
+                            <asp:TableCell ID="HeaderCell7" CssClass="fw-bold" Visible="false"></asp:TableCell>
+                            <asp:TableCell ID="HeaderCell8" CssClass="fw-bold" Visible="false"></asp:TableCell>
+                            <asp:TableCell ID="HeaderCell9" CssClass="fw-bold" Visible="false">></asp:TableCell>
                         </asp:TableHeaderRow>
                     </asp:Table>
                     <div class="alert-secondary float-bottom">
@@ -96,13 +96,13 @@
                             <div class="form-group col-2">
                                 <label for="SigortaBedeliTxt" class="col-form-label">Sigorta Bed.</label>
                                 <div>
-                                    <asp:TextBox ID="SigortaBedeliTxt" runat="server" class="form-control input-money text-right"></asp:TextBox>
+                                    <asp:TextBox ID="SigortaBedeliTxt" runat="server" class="form-control input-money text-end"></asp:TextBox>
                                 </div>
                             </div>
                             <div class="form-group col-2">
                                 <label for="PrimTxt" class="col-form-label">Prim</label>
                                 <div>
-                                    <asp:TextBox ID="PrimTxt" runat="server" class="form-control input-money text-right"></asp:TextBox>
+                                    <asp:TextBox ID="PrimTxt" runat="server" class="form-control input-money text-end"></asp:TextBox>
                                 </div>
                             </div>
                         </div>

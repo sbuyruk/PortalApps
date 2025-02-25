@@ -163,7 +163,7 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label font-weight-bold text-info";
+            @__ctrl.CssClass = "col-form-label fw-bold text-info";
             @__ctrl.Text = "Bağış Silme";
             return @__ctrl;
         }
@@ -854,9 +854,19 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP {
                     "ow();\r\n        document.getElementById(\'");
                          @__w.Write( ModalDoldurBtn.ClientID);
 
-            @__w.Write("\').click();\r\n\r\n    }\r\n    function CloseModal() {\r\n        $(\"#ModalOnayDiv\").mod" +
-                    "al(\'hide\');\r\n    }\r\n    function CallButtonClick(bagisHareketId) {\r\n        docu" +
-                    "ment.getElementById(\'");
+            @__w.Write(@"').click();
+
+    }
+
+    function CloseModal() {
+        var myModalEl = document.getElementById('ModalOnayDiv');
+        var modalInstance = bootstrap.Modal.getInstance(myModalEl);
+        if (modalInstance) {
+            modalInstance.hide();
+        }
+    }
+    function CallButtonClick(bagisHareketId) {
+        document.getElementById('");
                          @__w.Write( paramBagisHareketIdLbl.ClientID);
 
             @__w.Write("\').value = bagisHareketId;\r\n        document.getElementById(\'");

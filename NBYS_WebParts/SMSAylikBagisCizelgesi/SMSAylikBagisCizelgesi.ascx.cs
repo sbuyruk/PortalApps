@@ -160,43 +160,43 @@ namespace NBYS_WebParts.SMSAylikBagisCizelgesi
                 ToplamTurkcellSMSAdedi += item.TurkcellSMSAdedi;
                 TableCell TurkcellSMSAdediCell = new TableCell();
                 TurkcellSMSAdediCell.Text = item.TurkcellSMSAdedi.ToString();
-                TurkcellSMSAdediCell.CssClass = "text-right";
+                TurkcellSMSAdediCell.CssClass = "text-end";
 
                 ToplamTurkcellSMSTutari += item.TurkcellSMSAdedi * item.SMSTutari;
                 TableCell TurkcellSMSTutariCell = new TableCell();
                 TurkcellSMSTutariCell.Text = (item.TurkcellSMSAdedi * item.SMSTutari).ToString("N", culturInfo);
-                TurkcellSMSTutariCell.CssClass = "text-right";
+                TurkcellSMSTutariCell.CssClass = "text-end";
 
                 ToplamVodafoneSMSAdedi += item.VodafoneSMSAdedi;
                 TableCell VodafoneSMSAdediCell = new TableCell();
                 VodafoneSMSAdediCell.Text = item.VodafoneSMSAdedi.ToString();
-                VodafoneSMSAdediCell.CssClass = "text-right";
+                VodafoneSMSAdediCell.CssClass = "text-end";
 
                 ToplamVodafoneSMSTutari += item.VodafoneSMSAdedi * item.SMSTutari;
                 TableCell VodafoneSMSTutariCell = new TableCell();
                 VodafoneSMSTutariCell.Text = (item.VodafoneSMSAdedi * item.SMSTutari).ToString("N", culturInfo);
-                VodafoneSMSTutariCell.CssClass = "text-right";
+                VodafoneSMSTutariCell.CssClass = "text-end";
 
                 ToplamTurkTelekomSMSAdedi += item.TurkTelekomSMSAdedi;
                 TableCell TurkTelekomSMSAdediCell = new TableCell();
                 TurkTelekomSMSAdediCell.Text = item.TurkTelekomSMSAdedi.ToString();
-                TurkTelekomSMSAdediCell.CssClass = "text-right";
+                TurkTelekomSMSAdediCell.CssClass = "text-end";
 
                 ToplamTurkTelekomSMSTutari += item.TurkTelekomSMSAdedi * item.SMSTutari;
                 TableCell TurkTelekomSMSTutariCell = new TableCell();
                 TurkTelekomSMSTutariCell.Text = (item.TurkTelekomSMSAdedi * item.SMSTutari).ToString("N", culturInfo);
-                TurkTelekomSMSTutariCell.CssClass = "text-right";
+                TurkTelekomSMSTutariCell.CssClass = "text-end";
 
                 int ayToplamSMSAdedi = item.TurkcellSMSAdedi + item.VodafoneSMSAdedi + item.TurkTelekomSMSAdedi;
                 ToplamSMSAdedi += ayToplamSMSAdedi;
                 TableCell AyToplamSMSAdediCell = new TableCell();
                 AyToplamSMSAdediCell.Text = ayToplamSMSAdedi.ToString();
-                AyToplamSMSAdediCell.CssClass = "text-right";
+                AyToplamSMSAdediCell.CssClass = "text-end";
 
                 ToplamSMSTutari += (ayToplamSMSAdedi * item.SMSTutari);
                 TableCell AyToplamSMSTutariCell = new TableCell();
                 AyToplamSMSTutariCell.Text = (ayToplamSMSAdedi * item.SMSTutari).ToString("N", culturInfo);
-                AyToplamSMSTutariCell.CssClass = "text-right";
+                AyToplamSMSTutariCell.CssClass = "text-end";
 
                 TableCell DuzenleCell = new TableCell();
 
@@ -234,41 +234,41 @@ namespace NBYS_WebParts.SMSAylikBagisCizelgesi
             TableRow toplamRow = new TableRow();
             TableCell AyBaslikCell = new TableCell();
             AyBaslikCell.Text = "Toplam";
-            AyBaslikCell.CssClass = "text-right font-weight-bold";
+            AyBaslikCell.CssClass = "text-end fw-bold";
             
             TableCell ToplamTurkcellSMSAdediCell = new TableCell();
             ToplamTurkcellSMSAdediCell.Text = ToplamTurkcellSMSAdedi.ToString();
-            ToplamTurkcellSMSAdediCell.CssClass = "text-right font-weight-bold";
+            ToplamTurkcellSMSAdediCell.CssClass = "text-end fw-bold";
             
             TableCell ToplamTurkcellSMSTutariCell = new TableCell();
             ToplamTurkcellSMSTutariCell.Text = (ToplamTurkcellSMSTutari).ToString("N", culturInfo);
-            ToplamTurkcellSMSTutariCell.CssClass = "text-right font-weight-bold";
+            ToplamTurkcellSMSTutariCell.CssClass = "text-end fw-bold";
 
             TableCell ToplamVodafoneSMSAdediCell = new TableCell();
             ToplamVodafoneSMSAdediCell.Text = ToplamVodafoneSMSAdedi.ToString();
-            ToplamVodafoneSMSAdediCell.CssClass = "text-right font-weight-bold";
+            ToplamVodafoneSMSAdediCell.CssClass = "text-end fw-bold";
 
 
             TableCell ToplamVodafoneSMSTutariCell = new TableCell();
             ToplamVodafoneSMSTutariCell.Text = ToplamVodafoneSMSTutari.ToString("N", culturInfo);
-            ToplamVodafoneSMSTutariCell.CssClass = "text-right font-weight-bold";
+            ToplamVodafoneSMSTutariCell.CssClass = "text-end fw-bold";
 
             TableCell ToplamTurkTelekomSMSAdediCell = new TableCell();
             ToplamTurkTelekomSMSAdediCell.Text = ToplamTurkTelekomSMSAdedi.ToString();
-            ToplamTurkTelekomSMSAdediCell.CssClass = "text-right font-weight-bold";
+            ToplamTurkTelekomSMSAdediCell.CssClass = "text-end fw-bold";
 
             TableCell ToplamTurkTelekomSMSTutariCell = new TableCell();
             ToplamTurkTelekomSMSTutariCell.Text = ToplamTurkTelekomSMSTutari.ToString("N", culturInfo);
-            ToplamTurkTelekomSMSTutariCell.CssClass = "text-right font-weight-bold";
+            ToplamTurkTelekomSMSTutariCell.CssClass = "text-end fw-bold";
 
             TableCell ToplamSMSAdediCell = new TableCell();
             ToplamSMSAdediCell.Text = ToplamSMSAdedi.ToString();
-            ToplamSMSAdediCell.CssClass = "text-right font-weight-bold";
+            ToplamSMSAdediCell.CssClass = "text-end fw-bold";
 
 
             TableCell ToplamSMSTutariCell = new TableCell();
             ToplamSMSTutariCell.Text = ToplamSMSTutari.ToString("N", culturInfo);
-            ToplamSMSTutariCell.CssClass = "text-right font-weight-bold";
+            ToplamSMSTutariCell.CssClass = "text-end fw-bold";
 
             toplamRow.Controls.Add(AyBaslikCell);
             toplamRow.Controls.Add(ToplamTurkcellSMSAdediCell);
@@ -341,43 +341,43 @@ namespace NBYS_WebParts.SMSAylikBagisCizelgesi
                 ToplamTurkcellSMSAdedi += item.TurkcellSMSAdedi;
                 TableCell TurkcellSMSAdediCell = new TableCell();
                 TurkcellSMSAdediCell.Text = item.TurkcellSMSAdedi.ToString();
-                TurkcellSMSAdediCell.CssClass = "text-right";
+                TurkcellSMSAdediCell.CssClass = "text-end";
 
                 ToplamTurkcellSMSTutari += item.TurkcellSMSAdedi * item.SMSTutari;
                 TableCell TurkcellSMSTutariCell = new TableCell();
                 TurkcellSMSTutariCell.Text = (item.TurkcellSMSAdedi * item.SMSTutari).ToString("N", culturInfo);
-                TurkcellSMSTutariCell.CssClass = "text-right";
+                TurkcellSMSTutariCell.CssClass = "text-end";
 
                 ToplamVodafoneSMSAdedi += item.VodafoneSMSAdedi;
                 TableCell VodafoneSMSAdediCell = new TableCell();
                 VodafoneSMSAdediCell.Text = item.VodafoneSMSAdedi.ToString();
-                VodafoneSMSAdediCell.CssClass = "text-right";
+                VodafoneSMSAdediCell.CssClass = "text-end";
 
                 ToplamVodafoneSMSTutari += item.VodafoneSMSAdedi * item.SMSTutari;
                 TableCell VodafoneSMSTutariCell = new TableCell();
                 VodafoneSMSTutariCell.Text = (item.VodafoneSMSAdedi * item.SMSTutari).ToString("N", culturInfo);
-                VodafoneSMSTutariCell.CssClass = "text-right";
+                VodafoneSMSTutariCell.CssClass = "text-end";
 
                 ToplamTurkTelekomSMSAdedi += item.TurkcellSMSAdedi;
                 TableCell TurkTelekomSMSAdediCell = new TableCell();
                 TurkTelekomSMSAdediCell.Text = item.TurkTelekomSMSAdedi.ToString();
-                TurkTelekomSMSAdediCell.CssClass = "text-right";
+                TurkTelekomSMSAdediCell.CssClass = "text-end";
 
                 ToplamTurkTelekomSMSTutari += item.TurkcellSMSAdedi * item.SMSTutari;
                 TableCell TurkTelekomSMSTutariCell = new TableCell();
                 TurkTelekomSMSTutariCell.Text = (item.TurkTelekomSMSAdedi * item.SMSTutari).ToString("N", culturInfo);
-                TurkTelekomSMSTutariCell.CssClass = "text-right";
+                TurkTelekomSMSTutariCell.CssClass = "text-end";
 
                 int ayToplamSMSAdedi = item.TurkcellSMSAdedi + item.VodafoneSMSAdedi + item.TurkTelekomSMSAdedi;
                 ToplamSMSAdedi += ayToplamSMSAdedi;
                 TableCell AyToplamSMSAdediCell = new TableCell();
                 AyToplamSMSAdediCell.Text = ayToplamSMSAdedi.ToString();
-                AyToplamSMSAdediCell.CssClass = "text-right";
+                AyToplamSMSAdediCell.CssClass = "text-end";
 
                 ToplamSMSTutari += (ayToplamSMSAdedi * item.SMSTutari);
                 TableCell AyToplamSMSTutariCell = new TableCell();
                 AyToplamSMSTutariCell.Text = (ayToplamSMSAdedi * item.SMSTutari).ToString("N", culturInfo);
-                AyToplamSMSTutariCell.CssClass = "text-right";
+                AyToplamSMSTutariCell.CssClass = "text-end";
 
                 TableCell DuzenleCell = new TableCell();
 
@@ -415,41 +415,41 @@ namespace NBYS_WebParts.SMSAylikBagisCizelgesi
             TableRow toplamRow = new TableRow();
             TableCell AyBaslikCell = new TableCell();
             AyBaslikCell.Text = "Toplam";
-            AyBaslikCell.CssClass = "text-right font-weight-bold";
+            AyBaslikCell.CssClass = "text-end fw-bold";
 
             TableCell ToplamTurkcellSMSAdediCell = new TableCell();
             ToplamTurkcellSMSAdediCell.Text = ToplamTurkcellSMSAdedi.ToString();
-            ToplamTurkcellSMSAdediCell.CssClass = "text-right font-weight-bold";
+            ToplamTurkcellSMSAdediCell.CssClass = "text-end fw-bold";
 
             TableCell ToplamTurkcellSMSTutariCell = new TableCell();
             ToplamTurkcellSMSTutariCell.Text = (ToplamTurkcellSMSTutari).ToString("N", culturInfo);
-            ToplamTurkcellSMSTutariCell.CssClass = "text-right font-weight-bold";
+            ToplamTurkcellSMSTutariCell.CssClass = "text-end fw-bold";
 
             TableCell ToplamVodafoneSMSAdediCell = new TableCell();
             ToplamVodafoneSMSAdediCell.Text = ToplamVodafoneSMSAdedi.ToString();
-            ToplamVodafoneSMSAdediCell.CssClass = "text-right font-weight-bold";
+            ToplamVodafoneSMSAdediCell.CssClass = "text-end fw-bold";
 
 
             TableCell ToplamVodafoneSMSTutariCell = new TableCell();
             ToplamVodafoneSMSTutariCell.Text = ToplamVodafoneSMSTutari.ToString("N", culturInfo);
-            ToplamVodafoneSMSTutariCell.CssClass = "text-right font-weight-bold";
+            ToplamVodafoneSMSTutariCell.CssClass = "text-end fw-bold";
 
             TableCell ToplamTurkTelekomSMSAdediCell = new TableCell();
             ToplamTurkTelekomSMSAdediCell.Text = ToplamTurkTelekomSMSAdedi.ToString();
-            ToplamTurkTelekomSMSAdediCell.CssClass = "text-right font-weight-bold";
+            ToplamTurkTelekomSMSAdediCell.CssClass = "text-end fw-bold";
 
             TableCell ToplamTurkTelekomSMSTutariCell = new TableCell();
             ToplamTurkTelekomSMSTutariCell.Text = ToplamTurkTelekomSMSTutari.ToString("N", culturInfo);
-            ToplamTurkTelekomSMSTutariCell.CssClass = "text-right font-weight-bold";
+            ToplamTurkTelekomSMSTutariCell.CssClass = "text-end fw-bold";
 
             TableCell ToplamSMSAdediCell = new TableCell();
             ToplamSMSAdediCell.Text = ToplamSMSAdedi.ToString();
-            ToplamSMSAdediCell.CssClass = "text-right font-weight-bold";
+            ToplamSMSAdediCell.CssClass = "text-end fw-bold";
 
 
             TableCell ToplamSMSTutariCell = new TableCell();
             ToplamSMSTutariCell.Text = ToplamSMSTutari.ToString("N", culturInfo);
-            ToplamSMSTutariCell.CssClass = "text-right font-weight-bold";
+            ToplamSMSTutariCell.CssClass = "text-end fw-bold";
 
             toplamRow.Controls.Add(AyBaslikCell);
             toplamRow.Controls.Add(ToplamTurkcellSMSAdediCell);

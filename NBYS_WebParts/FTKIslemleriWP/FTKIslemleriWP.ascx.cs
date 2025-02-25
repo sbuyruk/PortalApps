@@ -806,50 +806,50 @@ namespace NBYS_WebParts.FTKIslemleriWP
             if (ftkVarmi)
             {
                 TitleLbl.Text = IliDDL.SelectedItem.Text + " " + IlcesiDDL.SelectedItem.Text + " FTK ";
-                TitleLbl.CssClass = "col-form-label text-primary font-weight-bold mb-1";
+                TitleLbl.CssClass = "col-form-label text-primary fw-bold mb-1";
                 KaydetBtn.Text = IliDDL.SelectedItem.Text + " " + IlcesiDDL.SelectedItem.Text + " FTK Güncelle";
-                KaydetBtn.CssClass = "btn btn-outline-primary font-weight-bold ";
+                KaydetBtn.CssClass = "btn btn-outline-primary fw-bold ";
                 FTKYazilariBtn.Visible = true;
                 KaydetBtn.Visible = true;
                 UyelerinGoreviniSonlandirBtn.Visible = true;
 
                 ModalFTKListesiBaslikLbl.Text = IliDDL.SelectedItem.Text + " " + IlcesiDDL.SelectedItem.Text + " FTK Listesi Güncellenecek";
-                ModalFTKListesiBaslikLbl.CssClass = "col-form-label text-primary font-weight-bold mb-1";
+                ModalFTKListesiBaslikLbl.CssClass = "col-form-label text-primary fw-bold mb-1";
                 KaydetNowBtn.Text = IliDDL.SelectedItem.Text + " " + IlcesiDDL.SelectedItem.Text + " FTK Güncelle";
-                KaydetNowBtn.CssClass = "btn btn-outline-primary font-weight-bold ";
+                KaydetNowBtn.CssClass = "btn btn-outline-primary fw-bold ";
                 KayitDuzeltmeDiv.Attributes["style"] = "display:block";
             }
             else if (uyeVarMi)
             {
                 TitleLbl.Text = IliDDL.SelectedItem.Text + " " + IlcesiDDL.SelectedItem.Text + " FTK ";
-                TitleLbl.CssClass = "col-form-label text-success font-weight-bold mb-1";
+                TitleLbl.CssClass = "col-form-label text-success fw-bold mb-1";
                 KaydetBtn.Text = IliDDL.SelectedItem.Text + " " + IlcesiDDL.SelectedItem.Text + " FTK Oluştur";
-                KaydetBtn.CssClass = "btn btn-outline-success font-weight-bold ";
+                KaydetBtn.CssClass = "btn btn-outline-success fw-bold ";
                 FTKYazilariBtn.Visible = false;
                 KaydetBtn.Visible = true;
                 UyelerinGoreviniSonlandirBtn.Visible = true;
 
                 ModalFTKListesiBaslikLbl.Text = IliDDL.SelectedItem.Text + " " + IlcesiDDL.SelectedItem.Text + " FTK Listesi Oluşturulacak";
-                ModalFTKListesiBaslikLbl.CssClass = "col-form-label text-success font-weight-bold mb-1";
+                ModalFTKListesiBaslikLbl.CssClass = "col-form-label text-success fw-bold mb-1";
                 KaydetNowBtn.Text = IliDDL.SelectedItem.Text + " " + IlcesiDDL.SelectedItem.Text + " FTK Oluştur";
-                KaydetNowBtn.CssClass = "btn btn-outline-success font-weight-bold ";
+                KaydetNowBtn.CssClass = "btn btn-outline-success fw-bold ";
 
                 KayitDuzeltmeDiv.Attributes["style"] = "display:none";
             }
             else
             {
                 TitleLbl.Text = IliDDL.SelectedItem.Text + " " + IlcesiDDL.SelectedItem.Text + " FTK ";
-                TitleLbl.CssClass = "col-form-label text-danger font-weight-bold mb-1";
+                TitleLbl.CssClass = "col-form-label text-danger fw-bold mb-1";
                 KaydetBtn.Text = IliDDL.SelectedItem.Text + " " + IlcesiDDL.SelectedItem.Text + " FTK Oluştur";
-                KaydetBtn.CssClass = "btn btn-outline-danger font-weight-bold ";
+                KaydetBtn.CssClass = "btn btn-outline-danger fw-bold ";
                 FTKYazilariBtn.Visible = false;
                 KaydetBtn.Visible = false;
                 UyelerinGoreviniSonlandirBtn.Visible = false;
 
                 ModalFTKListesiBaslikLbl.Text = IliDDL.SelectedItem.Text + " " + IlcesiDDL.SelectedItem.Text + " FTK Listesi Oluşturulacak";
-                ModalFTKListesiBaslikLbl.CssClass = "col-form-label text-danger font-weight-bold mb-1";
+                ModalFTKListesiBaslikLbl.CssClass = "col-form-label text-danger fw-bold mb-1";
                 KaydetNowBtn.Text = IliDDL.SelectedItem.Text + " " + IlcesiDDL.SelectedItem.Text + " FTK Oluştur";
-                KaydetNowBtn.CssClass = "btn btn-outline-danger font-weight-bold ";
+                KaydetNowBtn.CssClass = "btn btn-outline-danger fw-bold ";
 
                 KayitDuzeltmeDiv.Attributes["style"] = "display:none";
             }

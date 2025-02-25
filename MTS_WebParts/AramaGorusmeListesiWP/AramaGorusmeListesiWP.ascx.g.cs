@@ -154,7 +154,7 @@ namespace MTS_WebParts.AramaGorusmeListesiWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-danger font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-danger fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Arama/Görüşme Listesi";
             return @__ctrl;
@@ -229,7 +229,7 @@ namespace MTS_WebParts.AramaGorusmeListesiWP {
             this.AdiSoyadiLnk = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "AdiSoyadiLnk";
-            @__ctrl.CssClass = "col-form-label font-weight-bold";
+            @__ctrl.CssClass = "col-form-label fw-bold";
             @__ctrl.Enabled = true;
             return @__ctrl;
         }
@@ -241,7 +241,7 @@ namespace MTS_WebParts.AramaGorusmeListesiWP {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label font-weight-bold";
+            @__ctrl.CssClass = "col-form-label fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Arama/Görüşme Şekli"));
             return @__ctrl;
@@ -284,7 +284,7 @@ namespace MTS_WebParts.AramaGorusmeListesiWP {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label font-weight-bold";
+            @__ctrl.CssClass = "col-form-label fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Başlangıç"));
             return @__ctrl;
@@ -315,7 +315,7 @@ namespace MTS_WebParts.AramaGorusmeListesiWP {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label font-weight-bold";
+            @__ctrl.CssClass = "col-form-label fw-bold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Bitiş"));
             return @__ctrl;
@@ -346,7 +346,7 @@ namespace MTS_WebParts.AramaGorusmeListesiWP {
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("h2");
             this.BaslikLbl = @__ctrl;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "font-weight-bold text-center");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "fw-bold text-center");
             @__ctrl.ID = "BaslikLbl";
             return @__ctrl;
         }
@@ -468,7 +468,7 @@ namespace MTS_WebParts.AramaGorusmeListesiWP {
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("h3");
             this.KatiliciSecimiHeaderLbl = @__ctrl;
             @__ctrl.TemplateControl = this;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-form-label font-weight-bold");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-form-label fw-bold");
             @__ctrl.ID = "KatiliciSecimiHeaderLbl";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Katılımcı Seçimi\r\n                                    "));

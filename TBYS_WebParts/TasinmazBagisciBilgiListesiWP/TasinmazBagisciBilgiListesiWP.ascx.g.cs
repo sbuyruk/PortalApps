@@ -102,7 +102,7 @@ namespace TBYS_WebParts.TasinmazBagisciBilgiListesiWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-danger font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-danger fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Taşınmaz Bağışçılara Ait Bilgiler";
             return @__ctrl;
@@ -162,7 +162,7 @@ namespace TBYS_WebParts.TasinmazBagisciBilgiListesiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ColSpan = 10;
             @__ctrl.ID = "BaslikTH";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "text-center font-weight-bold");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "text-center fw-bold");
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Bağışçı Listesi"));
             return @__ctrl;
@@ -254,7 +254,7 @@ namespace TBYS_WebParts.TasinmazBagisciBilgiListesiWP {
                         "         { data: \"SagVefat\" },\r\n                { data: \"Adres\" },\r\n            " +
                         "    { data: \"IlceIl\" },\r\n                { data: \"Telefon\" },\r\n                {" +
                         " data: \"Talepleri\" },\r\n                { data: \"Bagislari\" },\r\n                {" +
-                        " data: \"TahminiRayic\", \"className\": \"text-right\" },\r\n            \r\n            ]" +
+                        " data: \"TahminiRayic\", \"className\": \"text-end\" },\r\n            \r\n            ]" +
                         ",\r\n            columnDefs: [\r\n                \r\n                { width: 15, tar" +
                         "gets: 1 }],\r\n            \'order\': [[1, \'asc\']],//sort Bolge\r\n            \"langua" +
                         "ge\": {\r\n                \"url\": \"http://tskgv-portal/OrtakBelgeler/Turkish.txt\",\r" +

@@ -150,7 +150,7 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-danger font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-danger fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Envanterden Çıkarma";
             return @__ctrl;
@@ -235,7 +235,7 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP {
             this.AdresLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "AdresLbl";
-            @__ctrl.CssClass = "form-control font-weight-bold text-danger";
+            @__ctrl.CssClass = "form-control fw-bold text-danger";
             @__ctrl.ToolTip = "Taşınmazın Adresi";
             return @__ctrl;
         }
@@ -277,7 +277,7 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP {
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
             @__ctrl.ID = "BedelTxt";
             @__ctrl.Name = "BedelTxt";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-right");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-end");
             return @__ctrl;
         }
         
@@ -573,9 +573,18 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControlTree(global::TBYS_WebParts.EnvanterdenCikarmaWP.EnvanterdenCikarmaWP @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n<script type=\"text/javascript\">\r\n    function OpenModal() {\r\n        var myModa" +
-                        "lInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById(\'ModalOn" +
-                        "ayDiv\'));\n        myModalInstance.show();\r\n    }\r\n</script>\r\n"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+<script type=""text/javascript"">
+    function OpenModal() {
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
+        myModalInstance.show();
+    }
+    function CloseModal() {
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
+        myModalInstance.hide();
+    }
+</script>
+"));
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl1;
             @__ctrl1 = this.@__BuildControlMainPanel();
             @__parser.AddParsedSubObject(@__ctrl1);

@@ -21,7 +21,7 @@
                 <div class="card-header" id="CardHeader" runat="server">
                     <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
                     <h3 class="mb-2">
-                        <asp:Label CssClass="col-form-label  text-primary font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="Gün İçinde Vakıf Dışında Bulunan Personel Aylık Dökümü"></asp:Label>
+                        <asp:Label CssClass="col-form-label  text-primary fw-bold mb-1" ID="TitleLbl" runat="server" Text="Gün İçinde Vakıf Dışında Bulunan Personel Aylık Dökümü"></asp:Label>
                         <asp:Label CssClass="col-form-label text-white" ID="IdLbl" runat="server"></asp:Label>
                     </h3>
                 </div>

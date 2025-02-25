@@ -212,7 +212,7 @@
                                                 <asp:TableCell ID="SiraNoCell" runat="server"></asp:TableCell>
                                                 <asp:TableCell ID="YilCell" runat="server"></asp:TableCell>
                                                 <asp:TableCell ID="BagisSayisiCell" runat="server"></asp:TableCell>
-                                                <asp:TableCell ID="BagisMiktariCell" CssClass="input-4 text-right" runat="server"></asp:TableCell>
+                                                <asp:TableCell ID="BagisMiktariCell" CssClass="input-4 text-end" runat="server"></asp:TableCell>
                                             </asp:TableRow>--%>
                                         </asp:Table>
                                     </div>

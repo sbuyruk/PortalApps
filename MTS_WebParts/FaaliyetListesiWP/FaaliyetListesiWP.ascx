@@ -125,7 +125,7 @@
         <div class="card-header">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-1">
-                <asp:Label ID="TitleLbl" runat="server" CssClass="col-form-label text-danger font-weight-bold mb-1" Text="Faaliyet Listesi"></asp:Label>
+                <asp:Label ID="TitleLbl" runat="server" CssClass="col-form-label text-danger fw-bold mb-1" Text="Faaliyet Listesi"></asp:Label>
                 <asp:Label ID="IdLbl" runat="server" CssClass="col-form-label text-white" Visible="false"></asp:Label>
                 <asp:Label CssClass="col-form-label" ID="AdiLbl" runat="server"></asp:Label>
             </h3>
@@ -136,13 +136,13 @@
                     <div class="row">
                         <div class="col-2">
                             <div class="form-group">
-                                <asp:Label runat="server" CssClass="col-form-label font-weight-bold">Başlangıç</asp:Label>
+                                <asp:Label runat="server" CssClass="col-form-label fw-bold">Başlangıç</asp:Label>
                                 <asp:TextBox ID="BaslangicTarihiTxt" CssClass="form-control DateTimePickerV1 input-date" runat="server" ClientIDMode="Static" AutoPostBack="true" OnTextChanged="BaslangicTarihiTxt_TextChanged" placeholder="dd.mm.yyyy"></asp:TextBox>
                             </div>
                         </div>
                         <div class="col-2">
                             <div class="form-group">
-                                <asp:Label runat="server" CssClass="col-form-label font-weight-bold">Bitiş</asp:Label>
+                                <asp:Label runat="server" CssClass="col-form-label fw-bold">Bitiş</asp:Label>
                                 <asp:TextBox ID="BitisTarihiTxt" CssClass="form-control DateTimePickerV1 input-date" runat="server" ClientIDMode="Static" AutoPostBack="true" OnTextChanged="BitisTarihiTxt_TextChanged" placeholder="dd.mm.yyyy"></asp:TextBox>
                             </div>
                         </div>

@@ -20,6 +20,12 @@
         myModalInstance.show();
         document.getElementById('<%= ModalDoldurBtn.ClientID%>').click();
     }
+    function OpenArmaganModal(nakitBagisciId) {
+        document.getElementById('<%= paramNakitBagisciIdLbl.ClientID%>').value = nakitBagisciId;
+
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ArmaganModal'));
+        myModalInstance.show();
+    }
     function MadalyaOlustur(nakitBagisciId, hakedilenarmaganId,sonBagisTarihi) {
         document.getElementById('<%= paramNakitBagisciIdLbl.ClientID%>').value = nakitBagisciId;
         document.getElementById('<%= paramhakedilenarmaganIdLbl.ClientID%>').value = hakedilenarmaganId;
@@ -42,7 +48,7 @@
                     href="">
                     <i class="fa fa-book" aria-hidden="true"></i>
                 </a>
-                <asp:Label CssClass="col-form-label text-info font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="Çok Defa Bağış Yapan Bağışçılar"></asp:Label>
+                <asp:Label CssClass="col-form-label text-info fw-bold mb-1" ID="TitleLbl" runat="server" Text="Çok Defa Bağış Yapan Bağışçılar"></asp:Label>
                 <asp:Label CssClass="col-form-label text-white" ID="IdLbl" runat="server"></asp:Label>
             </h3>
         </div>
@@ -130,6 +136,54 @@
                                     </tr>
                                 </thead>
                             </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
+                    </div>
+                </ContentTemplate>
+            </asp:UpdatePanel>
+        </div>
+    </div>
+</div>
+<!-- Modal Armagan Olustur -->
+
+<div class="modal" id="ArmaganModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <asp:UpdatePanel runat="server" ID="UpdatePanel2" UpdateMode="Conditional">
+                <ContentTemplate>
+                    <div class="modal-header">
+                        <h3>
+                            <asp:Label ID="Label1" runat="server" Text="Armağan Oluşturulacak" Font-Bold="True"></asp:Label>
+                        </h3>
+                    </div>
+                    <div class="modal-body">
+                        <div style="display: none">
+                            <asp:LinkButton ID="ArmaganOlusturModalDoldurBtn" runat="server" CausesValidation="false" Text="" OnClick="ArmaganOlusturModalDoldurBtn_Click" />
+                        </div>
+
+                        <div class="m-1 text-center" id="NakitBagisciDiv">
+                            <asp:Table CssClass="table text-center table-bordered table-striped" ID="BagisciTable1" runat="server">
+                                <asp:TableHeaderRow>
+                                    <asp:TableHeaderCell>Ad/Ünvan</asp:TableHeaderCell>
+                                    <asp:TableHeaderCell>TC Kimlik No</asp:TableHeaderCell>
+                                    <asp:TableHeaderCell>Adres</asp:TableHeaderCell>
+                                    <asp:TableHeaderCell>İli/İlçesi</asp:TableHeaderCell>
+                                    <asp:TableHeaderCell>Telefon</asp:TableHeaderCell>
+                                    <asp:TableHeaderCell>Tüzel Kişi</asp:TableHeaderCell>
+                                </asp:TableHeaderRow>
+                            </asp:Table>
+                        </div>
+                        <div>
+                            <h3>
+                                <br />
+                                <asp:Label ID="Label2" runat="server" Text="Bağışçının Yaptığı Nakit Bağışlar" Font-Bold="True"></asp:Label>
+                            </h3>
+                        </div>
+                        <div class="form-group">
+
                         </div>
                     </div>
                     <div class="modal-footer">

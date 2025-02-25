@@ -19,7 +19,7 @@
         <div class="card-header" id="CardHeader" runat="server">
             <asp:LinkButton ID="LinkButton1" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-2">
-                <asp:Label CssClass="col-form-label text-danger font-weight-bold text-center" ID="TitleLbl" runat="server" Text="Taşınmaz Durum Raporu"></asp:Label>
+                <asp:Label CssClass="col-form-label text-danger fw-bold text-center" ID="TitleLbl" runat="server" Text="Taşınmaz Durum Raporu"></asp:Label>
                 <asp:Label CssClass="col-form-label text-white" ID="IdLbl" runat="server"></asp:Label>
                 <asp:Label CssClass="col-form-label " ID="AdiLbl" runat="server"></asp:Label>
             </h3>
@@ -105,9 +105,9 @@
             </asp:Table>
             <div class="float">
                 <strong>Emlak Beyan Değeri : </strong>
-                <input class="input-money text-right" id="EmlakBeyanTopTxt" runat="server" readonly />
+                <input class="input-money text-end" id="EmlakBeyanTopTxt" runat="server" readonly />
                 <strong>Tahmini Rayiç Değeri : </strong>
-                <input class="input-money text-right" id="TahminiRayicTopTxt" runat="server" readonly />
+                <input class="input-money text-end" id="TahminiRayicTopTxt" runat="server" readonly />
             </div>
         </div>
         <div class="card-footer">

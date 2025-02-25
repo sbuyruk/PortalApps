@@ -1,4 +1,5 @@
-﻿using Model.Ortak;
+﻿using Model.MTS;
+using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -364,7 +365,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
         protected void KiraciSecBtn_Click(object sender, EventArgs e)
         {
 
-            KayitGetir();
+            KiraciModalAc();
         }
         protected void KiraciSecNowBtn_Click(object sender, EventArgs e)
         {
@@ -396,13 +397,61 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
         {
             RedirectToPage(ProjeConstants.PAGE_KIRACI_AYLIKODEME + "?SecilenAy=" + SecilenAyQS + "&SecilenYil=" + SecilenYilQS);
         }
-        private void KayitGetir()
+
+        private void KiraciModalAc()
+        {
+            TabloModalOlustur();
+            UtilityHelper.ScriptCalistir("OpenKiraciSecModal();");
+        }
+        private void TabloModalOlustur()
         {
             var jsonData = GetKiraciData(); //veri çekilip json a çeviriliyor
-            var jsString = CreateJsString(jsonData); //javascript kodu hazırlanıyor.
-            System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), jsString, true);
-            var openPopup = "OpenKiraciSecModal();";
-            System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), openPopup, true);
+            var jsString = CreateModalDataTable(jsonData); //javascript kodu hazırlanıyor.
+            UtilityHelper.ScriptCalistir(jsString);
+        }
+
+        private string CreateModalDataTable(string jsonData)
+        {
+            string tableString = @"
+            if ( $.fn.DataTable.isDataTable('#CustomModalDataTable') ) {
+              $('#CustomModalDataTable').DataTable().destroy();
+            }
+            $('#CustomModalDataTable tbody').empty();
+
+            jQuery('#CustomModalDataTable').DataTable({
+            data: " + jsonData + @",
+            'rowCallback': function(row, data, index) {
+                if (data.Aktif != 1) {
+                        $(row).addClass('table-danger');  // Bootstrap kırmızı tonu
+                    } else {
+                        $(row).addClass('table-success'); // Yeşil tonu
+                    }
+                },
+            columnDefs:[
+                {targets:5, render:function(data, type, row, meta){
+                    var link='<a href=# onclick=CallButtonClick('+row.KiraciId + '); class=\'btn btn-outline-primary \'>Seç</a>';
+    
+                    return link;
+                }}],   
+            columns: [
+                { data: 'KiraciId' },
+                { data: 'Adi' },
+                { data: 'TCKimlikNo' },
+                { data: 'IlIlce' },
+                { data: 'Adres' },
+                { data: 'KiraciId' }
+            ],
+            'order': [[1, 'asc']],//AdiSoyadi Sıralı
+            'language': {
+                'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
+            },
+            responsive: true,
+            dom: 'fpirt',
+
+        });
+            ";
+
+            return tableString;
         }
         private string GetKiraciData()
         {
@@ -410,34 +459,6 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
             string json = kiraci.SelectAllReturnJson();
 
             return json;
-        }
-        private string CreateJsString(string jsonData)
-        {
-            string ekstretablestr = @"   
-                                        $('#tblfilter').puidatatable({
-                                        caption: '',
-                                        editMode: 'cell',
-                                        paginator: {
-                                                    rows: 8
-                                                    },
-                                        columns: [
-                                            { field: 'DosyaNo', headerText: 'Dosya',filter: true, sortable:true,headerStyle:'width: 5%' },
-                                            { field: 'Adi', headerText: 'Adi', sortable:true,filter: true,headerStyle:'width: 25%'},
-                                            { field: 'TCKimlikNo', headerText: 'TCKimlikNo', sortable:true,filter: true,headerStyle:'width: 10%'},
-                                            { field: 'IlIlce', headerText: 'İl/İlçe', sortable:true,filter: true,headerStyle:'width: 15%'},
-                                            { field: 'Adres', headerText: 'Adres', sortable:true,filter: true, headerStyle:'width: 35%'},
-                                            { field: 'KiraciId',headerStyle:'width: 10%', content: function (rowData)
-                                    	        { 
-                                                    return $('<a href=# onclick=CallButtonClick('+rowData.KiraciId+'); class=\'btn btn-outline-primary \'>SEÇ</a>')
-                                    	        }
-                                            }
-                                                ],
-                                       datasource:" + jsonData + @",
-                                       resizableColumns: true,
-                                       globalFilter:'#globalFilter'
-                                       });
-                                    ";
-            return ekstretablestr;
         }
         protected void ExcelBtn_Click(object sender, EventArgs e)
         {

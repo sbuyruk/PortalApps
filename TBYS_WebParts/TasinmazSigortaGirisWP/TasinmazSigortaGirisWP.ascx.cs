@@ -196,6 +196,30 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                 ViewState["DestinationApp"] = value;
             }
         }
+        private int BolgeIdQS
+        {
+            get
+            {
+
+                if (ViewState["BolgeId"] == null)
+                {
+                    if (Page.Request.QueryString["BolgeId"] != null)
+                    {
+                        ViewState["BolgeId"] = Page.Request.QueryString["BolgeId"];
+                    }
+                    else
+                    {
+                        ViewState["BolgeId"] = string.Empty;
+                    }
+                }
+                return ViewState["BolgeId"].ReturnZeroIfNull().ConvertToInt();
+            }
+
+            set
+            {
+                ViewState["BolgeId"] = value;
+            }
+        }
         private string CurrentUserName
         {
             get
@@ -218,6 +242,8 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             //önceki sayfayı tut, geri tuşuna basıldığında gerekli
             if (!Page.IsPostBack)
             {
+                Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
+                BolgeIdQS = bolge == null ? 0 : bolge.Id;
                 if (String.IsNullOrEmpty(DestinationAppQS) || String.Equals(DestinationAppQS, ""))
                 {
                     SigortaGirisi();
@@ -226,7 +252,22 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                 {
                     SigortaDuzenle();
                 }
+                ButonlariGosterGizle();
+            }
+        }
+        private void ButonlariGosterGizle()
+        {
+            bool isVisible = BolgeIdQS == ProjeConstants.HEPSI_INT || BolgeIdQS == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? true : false;
+            if (isVisible)
+            {
+                UtilityHelper.SetControlState(true, true, TasinmazBtn, BelgeSilBtn,
+                    NextBtn, PrevBtn, SaveBtn, UpdateBtn, SilBtn);
 
+            }
+            else
+            {
+                UtilityHelper.SetControlState(false, false, TasinmazBtn, BelgeSilBtn,
+                    NextBtn, PrevBtn, SaveBtn, UpdateBtn, SilBtn);
             }
         }
         private void SigortaGirisi()
@@ -306,7 +347,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                     AdiLbl.Text = tasinmaz.KullanimSekli + " - " + tasinmaz.Adres + " - " + tasinmaz.Ilcesi + "/" + tasinmaz.Ili;
                     BrutYuzolcumuTxt.Text = string.IsNullOrEmpty(sigorta.BrutYuzolcumu) ? tasinmaz.Nitelik : sigorta.BrutYuzolcumu; //nitelik Bolumunde yuzolcumu bilgisi kayıtlı olduğından onun yüzolcumune yazması için
                     BulunduguKatTxt.Text = string.IsNullOrEmpty(tasinmaz.BulunduguKat) ? sigorta.BulunduguKat : tasinmaz.BulunduguKat;
-                    MetrekareTxt.Text = string.IsNullOrEmpty(tasinmaz.Metrekare) ? sigorta.Metrekare : tasinmaz.Metrekare;
+                    MetrekareTxt.Text = string.IsNullOrEmpty(tasinmaz.Metrekare.ToString()) ? sigorta.Metrekare : tasinmaz.Metrekare.ToString() ;
                     TapuTasinmazNoTxt.Text = tasinmaz.TapuTasinmazNo;
                 }
 

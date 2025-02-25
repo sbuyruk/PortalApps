@@ -141,9 +141,9 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP
                         { data: 'SozlesmeTarihi' },
                         { data: 'KiraSuresi' },
                         { data: 'ArtisAyi' },
-                        { data: 'KiraBedeli', type: 'decimal', class: 'text-right' },
+                        { data: 'KiraBedeli', type: 'decimal', class: 'text-end' },
                         { data: 'Tufe', type: 'decimal' },
-                        { data: 'YeniKiraBedeli', type: 'decimal', class: 'text-right' },
+                        { data: 'YeniKiraBedeli', type: 'decimal', class: 'text-end' },
                         { data: 'YenilendiMi' },
 
                     ],

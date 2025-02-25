@@ -286,7 +286,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-danger font-weight-bold mb-1";
+            @__ctrl.CssClass = "col-form-label text-danger fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Sigorta Girişi";
             return @__ctrl;
@@ -632,7 +632,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP {
             this.SigortaBedeliTxt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "SigortaBedeliTxt";
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             return @__ctrl;
         }
         
@@ -645,7 +645,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP {
             this.PrimTxt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "PrimTxt";
-            @__ctrl.CssClass = "form-control input-money text-right";
+            @__ctrl.CssClass = "form-control input-money text-end";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
             return @__ctrl;
         }
@@ -794,7 +794,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.Label1 = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label font-weight-bold";
+            @__ctrl.CssClass = "col-form-label fw-bold";
             @__ctrl.ID = "Label1";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Poliçe Formu"));
@@ -1124,7 +1124,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP {
                 </div>
                 <div class=""col border m-2"">
                     <div class=""form-group"">
-                        <label class=""col-form-label font-weight-bold "">Teminatlar</label>
+                        <label class=""col-form-label fw-bold "">Teminatlar</label>
                     </div>
                     <div class=""form-group"">
                         "));
@@ -1420,8 +1420,13 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
 <script>
+
     function CloseModal() {
-        $(""#ModalOnayDiv"").modal('hide');
+        var myModalEl = document.getElementById('ModalOnayDiv');
+        var modalInstance = bootstrap.Modal.getInstance(myModalEl);
+        if (modalInstance) {
+            modalInstance.hide();
+        }
     }
     function ModalOnay() {
         var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));

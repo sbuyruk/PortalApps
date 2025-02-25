@@ -202,7 +202,7 @@
             </div>
             <div class="card shadow">
                 <div class="card-header">
-                    <h2 class="col-form-label font-weight-bold">Görev/Onay Listesi</h2>
+                    <h2 class="col-form-label fw-bold">Görev/Onay Listesi</h2>
                 </div>
                 <div class="card-body">
                     <div class="form-group">

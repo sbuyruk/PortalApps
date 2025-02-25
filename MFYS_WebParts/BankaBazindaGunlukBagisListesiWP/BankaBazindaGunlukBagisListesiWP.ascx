@@ -19,7 +19,7 @@
         <div class="card-header">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-1">
-                <asp:Label ID="TitleLbl" runat="server" CssClass="col-form-label text-primary font-weight-bold mb-1" Text="Banka Bazında Günlük TL Bağışlar"></asp:Label>
+                <asp:Label ID="TitleLbl" runat="server" CssClass="col-form-label text-primary fw-bold mb-1" Text="Banka Bazında Günlük TL Bağışlar"></asp:Label>
                 <asp:Label ID="IdLbl" runat="server" CssClass="col-form-label text-white" Visible="false"></asp:Label>
                 <asp:Label CssClass="col-form-label" ID="AdiLbl" runat="server"></asp:Label>
             </h3>
@@ -28,15 +28,15 @@
             <div class="form-group">
                 <div class="row">
                     <div class="col-2">
-                        <label for="AyDDL" class="col-form-label font-weight-bold">Bağış Ayı: </label>
+                        <label for="AyDDL" class="col-form-label fw-bold">Bağış Ayı: </label>
                         <asp:DropDownList ID="AyDDL" runat="server" CssClass="form-control" Style="height: auto" OnSelectedIndexChanged="AyDDL_SelectedIndexChanged" AutoPostBack="True"></asp:DropDownList>
                     </div>
                     <div class="col-2">
-                        <label for="YilDDL" class="col-form-label font-weight-bold">Bağış Yılı: </label>
+                        <label for="YilDDL" class="col-form-label fw-bold">Bağış Yılı: </label>
                         <asp:DropDownList ID="YilDDL" runat="server" CssClass="form-control" Style="height: auto" OnSelectedIndexChanged="YilDDL_SelectedIndexChanged" AutoPostBack="True"></asp:DropDownList>
                     </div>
                     <div class="col-4 form-group ">
-                        <label for="BankaDDL" class="col-form-label font-weight-bold">Banka: </label>
+                        <label for="BankaDDL" class="col-form-label fw-bold">Banka: </label>
                         <asp:DropDownList ID="BankaDDL" runat="server" CssClass="form-control small" Style="height: auto" AutoPostBack="True" OnSelectedIndexChanged="BankaDDL_SelectedIndexChanged"></asp:DropDownList>
                     </div>
                 </div>
@@ -53,7 +53,7 @@
                             </thead>
                         </table>
                         <div class="form-group ">
-                            <asp:Label ID="ToplamLbl" CssClass="col-form-label font-weight-bold float-end" runat="server" Text="Toplam"></asp:Label>
+                            <asp:Label ID="ToplamLbl" CssClass="col-form-label fw-bold float-end" runat="server" Text="Toplam"></asp:Label>
                         </div>
                     </ContentTemplate>
                     <Triggers>

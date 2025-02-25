@@ -190,7 +190,7 @@ namespace Portal_WebParts.GunlukNobetcilerMoveWP {
             this.Label1 = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "Label1";
-            @__ctrl.CssClass = "font-weight-bold";
+            @__ctrl.CssClass = "fw-bold";
             @__ctrl.Text = "Bugün Görevli Personel";
             @__ctrl.Font.Size = global::System.Web.UI.WebControls.FontUnit.Large;
             return @__ctrl;
@@ -211,10 +211,10 @@ namespace Portal_WebParts.GunlukNobetcilerMoveWP {
             @__ctrl.SetStaticString(2, @".jpg?RenditionID=5"" alt="""" onerror=""this.src='/PersonelResimleri/personel.jpg';"">
                                             </div>
                                             <div class=""col"">
-                                                <div class=""font-weight-bold"">
+                                                <div class=""fw-bold"">
                                                     <p>");
             @__ctrl.SetStaticString(3, "</p>\r\n                                                </div>\r\n                   " +
-                    "                             <div class=\"font-weight-bold\">\r\n                   " +
+                    "                             <div class=\"fw-bold\">\r\n                   " +
                     "                                 <p>");
             @__ctrl.SetStaticString(4, "</p>\r\n                                                </div>\r\n                   " +
                     "                         </div>\r\n                                        </li>\r\n" +

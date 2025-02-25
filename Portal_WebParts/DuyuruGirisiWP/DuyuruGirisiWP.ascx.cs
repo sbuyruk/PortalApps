@@ -176,7 +176,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
         private void DuyuruDuzenlemeyiAc()
         {
             TitleLbl.Text = "Duyuru Düzenleme";
-            TitleLbl.CssClass = "col-form-label text-primary font-weight-bold mb-1";
+            TitleLbl.CssClass = "col-form-label text-primary fw-bold mb-1";
             BaslangicSaatiDDLDoldur();
             BitisSaatiDDLDoldur();
             TekrarlaDDLDoldur();
@@ -255,7 +255,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
             if (!Page.IsPostBack)
             {
                 TitleLbl.Text = "Yeni Duyuru";
-                TitleLbl.CssClass = "col-form-label text-success font-weight-bold mb-1";
+                TitleLbl.CssClass = "col-form-label text-success fw-bold mb-1";
                 YayinBasTarTxt.Value = DateTime.Today.ConvertToDatetimeEmptyIfNull();
                 YayinBitTarTxt.Value = DateTime.Today.ConvertToDatetimeEmptyIfNull();
                 BaslangicSaatiDDLDoldur();

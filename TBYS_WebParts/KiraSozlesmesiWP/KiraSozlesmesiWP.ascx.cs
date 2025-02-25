@@ -54,6 +54,30 @@ namespace TBYS_WebParts.KiraSozlesmesiWP
                 ViewState["SenderApp"] = value;
             }
         }
+        private int BolgeIdQS
+        {
+            get
+            {
+
+                if (ViewState["BolgeId"] == null)
+                {
+                    if (Page.Request.QueryString["BolgeId"] != null)
+                    {
+                        ViewState["BolgeId"] = Page.Request.QueryString["BolgeId"];
+                    }
+                    else
+                    {
+                        ViewState["BolgeId"] = string.Empty;
+                    }
+                }
+                return ViewState["BolgeId"].ReturnZeroIfNull().ConvertToInt();
+            }
+
+            set
+            {
+                ViewState["BolgeId"] = value;
+            }
+        }
         private string CurrentUserName
         {
             get
@@ -148,6 +172,8 @@ namespace TBYS_WebParts.KiraSozlesmesiWP
         {
             if (!Page.IsPostBack)
             {
+                Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
+                BolgeIdQS = bolge == null ? 0 : bolge.Id;
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
                 kiraSozlesme = kiraSozlesme.Select(KiraSozlesmeIdQS.ConvertToInt());
                 if (kiraSozlesme == null)
@@ -163,7 +189,7 @@ namespace TBYS_WebParts.KiraSozlesmesiWP
                     {
                         
                         AktifSozlesmeYukle(kiraSozlesme);
-                        TitleLbl.CssClass = "col-form-label text-danger font-weight-bold";
+                        TitleLbl.CssClass = "col-form-label text-danger fw-bold";
                         imgUrl = newUrl + "/../" + ProjeConstants.RESIMLER_TBYS + "/sozlesme-aktif.png";
                         SozlesmeDurumuDiv.Attributes["style"] = "display:none";
                     }
@@ -171,19 +197,35 @@ namespace TBYS_WebParts.KiraSozlesmesiWP
                     {
                         BitenSozlesmeYukle(kiraSozlesme);
                         imgUrl = newUrl + "/../" + ProjeConstants.RESIMLER_TBYS + "/sozlesme-aktif-degil.png";
-                        TitleLbl.CssClass = "col-form-label text-secondary font-weight-bold";
+                        TitleLbl.CssClass = "col-form-label text-secondary fw-bold";
                         SozlesmeDurumuDiv.Attributes["style"] = "display:block";
                     }
                     
                     AktifPasifImg.ImageUrl = imgUrl;
                     PDFGoster(kiraSozlesme);
-                    //TBYSOrtak.TeminatIslemleriniHesaplaVeKaydet(kiraSozlesme);
+                    ButonlariGosterGizle();
                 }
 
                 
             }
         }
+        private void ButonlariGosterGizle()
+        {
+            bool isVisible = BolgeIdQS == ProjeConstants.HEPSI_INT || BolgeIdQS == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? true : false;
+            if (isVisible)
+            {
+                UtilityHelper.SetControlState(true, true, DevirAlBtn, KiraciTasinmazDegistirBtn, BelgeSilBtn, 
+                    NextBtn, PrevBtn, UpdateBtn, DeleteBtn, SozlesmeYenileBtn, SozlesmeyiBitirBtn, SozlesmeyiFeshetBtn,
+                    OdemePlaniGoruntuleBtn, KiraciBtn, KiraSozlesmeListBtn);
 
+            }
+            else
+            {
+                UtilityHelper.SetControlState(false, false, DevirAlBtn, KiraciTasinmazDegistirBtn, BelgeSilBtn, 
+                    NextBtn, PrevBtn, UpdateBtn, DeleteBtn, SozlesmeYenileBtn, SozlesmeyiBitirBtn, SozlesmeyiFeshetBtn,
+                    OdemePlaniGoruntuleBtn,KiraciBtn,KiraSozlesmeListBtn);
+            }
+        }
         private void AktifSozlesmeYukle(KiraSozlesme kiraSozlesme)
         {
 

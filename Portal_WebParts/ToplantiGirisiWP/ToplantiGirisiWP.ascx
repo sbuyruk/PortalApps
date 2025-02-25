@@ -140,7 +140,7 @@
         <div class="card-header">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-2">
-                <asp:Label CssClass="col-form-label text-primary font-weight-bold mb-1" ID="TitleLbl" runat="server" Text="Toplantı Düzenleme"></asp:Label>
+                <asp:Label CssClass="col-form-label text-primary fw-bold mb-1" ID="TitleLbl" runat="server" Text="Toplantı Düzenleme"></asp:Label>
                 <asp:Label CssClass="col-form-label" ID="IdLbl" runat="server"></asp:Label>
                 <asp:Label CssClass="col-form-label " ID="AdiLbl" runat="server"></asp:Label>
             </h3>
@@ -232,7 +232,7 @@
 
                     <div class="card" id="KatilimciBilgileriDiv" runat="server" style="display: block">
                         <div class="card-header">
-                            <asp:Label CssClass="col-form-label font-weight-bold" runat="server" Text="İç Katılımcılar"></asp:Label>
+                            <asp:Label CssClass="col-form-label fw-bold" runat="server" Text="İç Katılımcılar"></asp:Label>
                             <asp:LinkButton ID="KatilimciModalAcBtn" runat="server" CssClass="btn btn-outline-success ml-5" Text="Katılımcı Ekle" OnClick="KatilimciModalAcBtn_Click" CausesValidation="false" />
                         </div>
                         <div class="card-body" style="min-height: 360px;">
@@ -261,7 +261,7 @@
                         </div>
                         <div class="card-footer">
                             <div class="form-group">
-                                <asp:Label CssClass="col-form-label font-weight-bold" runat="server" Text="Dış Katılımcılar"></asp:Label>
+                                <asp:Label CssClass="col-form-label fw-bold" runat="server" Text="Dış Katılımcılar"></asp:Label>
                                 <asp:TextBox ID="DisKatilimcilarTxt" CssClass="form-control" runat="server" Text="" TextMode="MultiLine" Rows="4" placeholder="Vakıf dışı katılımcıları yazınız..."></asp:TextBox>
                             </div>
                         </div>
@@ -329,7 +329,7 @@
 
                         <div class="card">
                             <div class="card-header text-danger">
-                                <h3 class="col-form-label font-weight-bold" id="KatilimciSecimiHeaderLbl" runat="server">Katılımcı Seçimi
+                                <h3 class="col-form-label fw-bold" id="KatilimciSecimiHeaderLbl" runat="server">Katılımcı Seçimi
                                 </h3>
                             </div>
                             <div class="card-body">

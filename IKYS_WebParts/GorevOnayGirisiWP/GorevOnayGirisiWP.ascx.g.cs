@@ -1064,7 +1064,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP {
             @__parser.AddParsedSubObject(@__ctrl29);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                </div>\r\n            </div>\r\n            <div class=\"card shadow" +
                         "\">\r\n                <div class=\"card-header\">\r\n                    <h2 class=\"co" +
-                        "l-form-label font-weight-bold\">Görev/Onay Listesi</h2>\r\n                </div>\r\n" +
+                        "l-form-label fw-bold\">Görev/Onay Listesi</h2>\r\n                </div>\r\n" +
                         "                <div class=\"card-body\">\r\n                    <div class=\"form-gr" +
                         "oup\">\r\n                        <table id=\"CustomDataTable\" class=\"table table-st" +
                         "riped row-border\" width=\"100%\">\r\n                            <thead>\r\n          " +
