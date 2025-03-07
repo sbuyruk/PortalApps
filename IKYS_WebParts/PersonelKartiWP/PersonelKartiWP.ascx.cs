@@ -134,7 +134,10 @@ namespace IKYS_WebParts.PersonelKartiWP
             {
                 GorevTanim gt = new GorevTanim();
                 gt = gt.Select<GorevTanim>(isBilgisi.GorevId);
-                UnvaniCell.Text = gt.Adi;
+                if (gt!=null)
+                {
+                    UnvaniCell.Text = gt.Adi; 
+                }
                 IseGirisTarihiCell.Text = isBilgisi.BaslamaTar.ConvertToDatetimeEmptyIfNull();
             }
             #endregion

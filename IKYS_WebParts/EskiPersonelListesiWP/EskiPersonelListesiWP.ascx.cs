@@ -119,9 +119,9 @@ namespace IKYS_WebParts.EskiPersonelListesiWP
 
                 TabloData.Secildi = SecilenIdQS.Equals(TabloData.PersonelId);
 
-                TabloData.PersonelKarti = "<a href=" + ProjeConstants.PAGE_PERSONEL_KARTI + "?PersonelId=" + TabloData.PersonelId + " class='btn btn-outline-primary'>Per.Kartı</a>";
-                TabloData.KisiselSayfa = "<a href=" + ProjeConstants.PAGE_KISISELSAYFA + "?PersonelId=" + TabloData.PersonelId + " class='btn btn-outline-primary'>Kişis.Say.</a>";
-                TabloData.Duzenle = "<a href=" + ProjeConstants.PAGE_PERSONEL_EDIT + "?DestinationApp=PerD&PersonelId=" + TabloData.PersonelId + " class='btn btn-outline-primary'>Düzenle</a>";
+                //TabloData.PersonelKarti = "<a href=" + ProjeConstants.PAGE_PERSONEL_KARTI + "?PersonelId=" + TabloData.PersonelId + " class='btn btn-outline-primary'>Per.Kartı</a>";
+                //TabloData.KisiselSayfa = "<a href=" + ProjeConstants.PAGE_KISISELSAYFA + "?PersonelId=" + TabloData.PersonelId + " class='btn btn-outline-primary'>Kişis.Say.</a>";
+                TabloData.Duzenle = "<a href=" + ProjeConstants.PAGE_ESKIPERSONEL_EDIT + "?DestinationApp=PerD&PersonelId=" + TabloData.PersonelId + " class='btn btn-outline-primary'>Düzenle</a>";
 
                 list.Add(TabloData);
             });

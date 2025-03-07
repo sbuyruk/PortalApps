@@ -470,7 +470,7 @@ namespace NBYS_WebParts.ArmaganEditWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.CssClass = "btn btn-outline-secondary float-end mr-2";
             @__ctrl.ID = "ArmaganListesiBtn";
-            @__ctrl.Text = "Geri ";
+            @__ctrl.Text = "Armağan Listesi ";
             @__ctrl.Click -= new System.EventHandler(this.ArmaganListesiBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.ArmaganListesiBtn_Click);
             return @__ctrl;

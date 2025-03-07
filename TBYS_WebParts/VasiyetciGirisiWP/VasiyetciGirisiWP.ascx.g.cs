@@ -1997,14 +1997,14 @@ namespace TBYS_WebParts.VasiyetciGirisiWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__Render__control1(System.Web.UI.HtmlTextWriter @__w, System.Web.UI.Control parameterContainer) {
             @__w.Write("\r\n<script>\r\n    function OpenModal() {\r\n        var myModalInstance = bootstrap.M" +
-                    "odal.getOrCreateInstance(document.getElementById(\'ModalUrlDiv\'));\n        myModa" +
-                    "lInstance.show();\r\n        document.getElementById(\'");
+                    "odal.getOrCreateInstance(document.getElementById(\'ModalUrlDiv\'));\r\n        myMod" +
+                    "alInstance.show();\r\n        document.getElementById(\'");
                          @__w.Write( ModalDoldurBtn.ClientID);
 
             @__w.Write("\').click();\r\n    }\r\n\r\n    function OpenSilModal() {\r\n        var myModalInstance " +
-                    "= bootstrap.Modal.getOrCreateInstance(document.getElementById(\'ModalSilDiv\'));\n " +
-                    "       myModalInstance.show();\r\n    }\r\n</script>\r\n\r\n<div class=\"container\">\r\n   " +
-                    " ");
+                    "= bootstrap.Modal.getOrCreateInstance(document.getElementById(\'ModalSilDiv\'));\r\n" +
+                    "        myModalInstance.show();\r\n    }\r\n</script>\r\n\r\n<div class=\"container\">\r\n  " +
+                    "  ");
             parameterContainer.Controls[0].RenderControl(@__w);
             @__w.Write("\r\n</div>\r\n<div class=\"modal\" id=\"ModalUrlDiv\" role=\"dialog\">\r\n    <div class=\"mod" +
                     "al-dialog modal-dialog-centered modal-lg\">\r\n        <!-- Modal content-->\r\n     " +

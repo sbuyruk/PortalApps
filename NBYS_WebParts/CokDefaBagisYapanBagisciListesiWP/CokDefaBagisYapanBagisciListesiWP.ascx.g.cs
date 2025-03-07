@@ -61,19 +61,15 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.HtmlControls.HtmlInputText paramNakitBagisciIdLbl;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText hiddenNakitBagisciId;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.HtmlControls.HtmlInputText paramhakedilenarmaganIdLbl;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText hiddenArmaganTanimId;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.HtmlControls.HtmlInputText paramSonBagisTarihiLbl;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.LinkButton MadalyaOlusturBtn;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText hiddenSonBagisTarihi;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -113,11 +109,11 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.Table BagisciTable1;
+        protected global::System.Web.UI.WebControls.Label ArmaganOlusturMessageTxt;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.Label Label2;
+        protected global::System.Web.UI.WebControls.LinkButton ArmaganOlusturNowBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -226,58 +222,36 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.HtmlControls.HtmlInputText @__BuildControlparamNakitBagisciIdLbl() {
+        private global::System.Web.UI.HtmlControls.HtmlInputText @__BuildControlhiddenNakitBagisciId() {
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
-            this.paramNakitBagisciIdLbl = @__ctrl;
-            @__ctrl.ID = "paramNakitBagisciIdLbl";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("text", "Label");
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "border-style: none;");
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("text-align", "center");
+            this.hiddenNakitBagisciId = @__ctrl;
+            @__ctrl.ID = "hiddenNakitBagisciId";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("text", "hiddenNakitBagisciId");
             return @__ctrl;
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.HtmlControls.HtmlInputText @__BuildControlparamhakedilenarmaganIdLbl() {
+        private global::System.Web.UI.HtmlControls.HtmlInputText @__BuildControlhiddenArmaganTanimId() {
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
-            this.paramhakedilenarmaganIdLbl = @__ctrl;
-            @__ctrl.ID = "paramhakedilenarmaganIdLbl";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("text", "Label");
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "border-style: none;");
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("text-align", "center");
+            this.hiddenArmaganTanimId = @__ctrl;
+            @__ctrl.ID = "hiddenArmaganTanimId";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("text", "hiddenArmaganTanimId");
             return @__ctrl;
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.HtmlControls.HtmlInputText @__BuildControlparamSonBagisTarihiLbl() {
+        private global::System.Web.UI.HtmlControls.HtmlInputText @__BuildControlhiddenSonBagisTarihi() {
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
-            this.paramSonBagisTarihiLbl = @__ctrl;
-            @__ctrl.ID = "paramSonBagisTarihiLbl";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("text", "Label");
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "border-style: none;");
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("text-align", "center");
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.LinkButton @__BuildControlMadalyaOlusturBtn() {
-            global::System.Web.UI.WebControls.LinkButton @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
-            this.MadalyaOlusturBtn = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "MadalyaOlusturBtn";
-            @__ctrl.CausesValidation = false;
-            @__ctrl.Text = "";
-            @__ctrl.Click -= new System.EventHandler(this.MadalyaOlusturBtn_Click);
-            @__ctrl.Click += new System.EventHandler(this.MadalyaOlusturBtn_Click);
+            this.hiddenSonBagisTarihi = @__ctrl;
+            @__ctrl.ID = "hiddenSonBagisTarihi";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("text", "hiddenSonBagisTarihi");
             return @__ctrl;
         }
         
@@ -599,146 +573,32 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control17() {
-            global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Ad/Ünvan"));
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control18() {
-            global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("TC Kimlik No"));
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control19() {
-            global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Adres"));
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control20() {
-            global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("İli/İlçesi"));
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control21() {
-            global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Telefon"));
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control22() {
-            global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Tüzel Kişi"));
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control16(System.Web.UI.WebControls.TableCellCollection @__ctrl) {
-            global::System.Web.UI.WebControls.TableHeaderCell @__ctrl1;
-            @__ctrl1 = this.@__BuildControl__control17();
-            @__ctrl.Add(@__ctrl1);
-            global::System.Web.UI.WebControls.TableHeaderCell @__ctrl2;
-            @__ctrl2 = this.@__BuildControl__control18();
-            @__ctrl.Add(@__ctrl2);
-            global::System.Web.UI.WebControls.TableHeaderCell @__ctrl3;
-            @__ctrl3 = this.@__BuildControl__control19();
-            @__ctrl.Add(@__ctrl3);
-            global::System.Web.UI.WebControls.TableHeaderCell @__ctrl4;
-            @__ctrl4 = this.@__BuildControl__control20();
-            @__ctrl.Add(@__ctrl4);
-            global::System.Web.UI.WebControls.TableHeaderCell @__ctrl5;
-            @__ctrl5 = this.@__BuildControl__control21();
-            @__ctrl.Add(@__ctrl5);
-            global::System.Web.UI.WebControls.TableHeaderCell @__ctrl6;
-            @__ctrl6 = this.@__BuildControl__control22();
-            @__ctrl.Add(@__ctrl6);
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderRow @__BuildControl__control15() {
-            global::System.Web.UI.WebControls.TableHeaderRow @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.TableHeaderRow();
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            this.@__BuildControl__control16(@__ctrl.Cells);
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control14(System.Web.UI.WebControls.TableRowCollection @__ctrl) {
-            global::System.Web.UI.WebControls.TableHeaderRow @__ctrl1;
-            @__ctrl1 = this.@__BuildControl__control15();
-            @__ctrl.Add(@__ctrl1);
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Table @__BuildControlBagisciTable1() {
-            global::System.Web.UI.WebControls.Table @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.Table();
-            this.BagisciTable1 = @__ctrl;
-            @__ctrl.TemplateControl = this;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "table text-center table-bordered table-striped";
-            @__ctrl.ID = "BagisciTable1";
-            this.@__BuildControl__control14(@__ctrl.Rows);
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControlLabel2() {
+        private global::System.Web.UI.WebControls.Label @__BuildControlArmaganOlusturMessageTxt() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
-            this.Label2 = @__ctrl;
+            this.ArmaganOlusturMessageTxt = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "Label2";
-            @__ctrl.Text = "Bağışçının Yaptığı Nakit Bağışlar";
-            @__ctrl.Font.Bold = true;
+            @__ctrl.ID = "ArmaganOlusturMessageTxt";
+            @__ctrl.CssClass = " text-danger fw-bold text-center";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlArmaganOlusturNowBtn() {
+            global::System.Web.UI.WebControls.LinkButton @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
+            this.ArmaganOlusturNowBtn = @__ctrl;
+            @__ctrl.TemplateControl = this;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "ArmaganOlusturNowBtn";
+            @__ctrl.CssClass = "btn btn-success";
+            @__ctrl.CausesValidation = false;
+            @__ctrl.Text = "Armağan Oluştur";
+            @__ctrl.Click -= new System.EventHandler(this.ArmaganOlusturNowBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.ArmaganOlusturNowBtn_Click);
             return @__ctrl;
         }
         
@@ -758,28 +618,18 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP {
             global::System.Web.UI.WebControls.LinkButton @__ctrl2;
             @__ctrl2 = this.@__BuildControlArmaganOlusturModalDoldurBtn();
             @__parser.AddParsedSubObject(@__ctrl2);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n\r\n                        <div class=\"m-1 text-" +
-                        "center\" id=\"NakitBagisciDiv\">\r\n                            "));
-            global::System.Web.UI.WebControls.Table @__ctrl3;
-            @__ctrl3 = this.@__BuildControlBagisciTable1();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n                        </div>\r\n\r\n                        <div class=\"m-1 tex" +
+                        "t-center\" >\r\n                            "));
+            global::System.Web.UI.WebControls.Label @__ctrl3;
+            @__ctrl3 = this.@__BuildControlArmaganOlusturMessageTxt();
             @__parser.AddParsedSubObject(@__ctrl3);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div>\r\n                " +
-                        "            <h3>\r\n                                <br />\r\n                      " +
-                        "          "));
-            global::System.Web.UI.WebControls.Label @__ctrl4;
-            @__ctrl4 = this.@__BuildControlLabel2();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n\r\n                    </div>\r\n                 " +
+                        "   <div class=\"modal-footer\">\r\n                        "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl4;
+            @__ctrl4 = this.@__BuildControlArmaganOlusturNowBtn();
             @__parser.AddParsedSubObject(@__ctrl4);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-                            </h3>
-                        </div>
-                        <div class=""form-group"">
-
-                        </div>
-                    </div>
-                    <div class=""modal-footer"">
-                        <button type=""button"" class=""btn btn-default"" data-bs-dismiss=""modal"">Kapat</button>
-                    </div>
-                "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        <button type=\"button\" class=\"btn btn-default\" data-bs-d" +
+                        "ismiss=\"modal\">Kapat</button>\r\n                    </div>\r\n                "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -804,29 +654,26 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(@__ctrl1);
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl2;
-            @__ctrl2 = this.@__BuildControlparamNakitBagisciIdLbl();
+            @__ctrl2 = this.@__BuildControlhiddenNakitBagisciId();
             @__parser.AddParsedSubObject(@__ctrl2);
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl3;
-            @__ctrl3 = this.@__BuildControlparamhakedilenarmaganIdLbl();
+            @__ctrl3 = this.@__BuildControlhiddenArmaganTanimId();
             @__parser.AddParsedSubObject(@__ctrl3);
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl4;
-            @__ctrl4 = this.@__BuildControlparamSonBagisTarihiLbl();
+            @__ctrl4 = this.@__BuildControlhiddenSonBagisTarihi();
             @__parser.AddParsedSubObject(@__ctrl4);
-            global::System.Web.UI.WebControls.LinkButton @__ctrl5;
-            @__ctrl5 = this.@__BuildControlMadalyaOlusturBtn();
+            global::System.Web.UI.UpdateProgress @__ctrl5;
+            @__ctrl5 = this.@__BuildControlupdateProgress();
             @__parser.AddParsedSubObject(@__ctrl5);
-            global::System.Web.UI.UpdateProgress @__ctrl6;
-            @__ctrl6 = this.@__BuildControlupdateProgress();
+            global::System.Web.UI.WebControls.LinkButton @__ctrl6;
+            @__ctrl6 = this.@__BuildControlExcelBtn();
             @__parser.AddParsedSubObject(@__ctrl6);
-            global::System.Web.UI.WebControls.LinkButton @__ctrl7;
-            @__ctrl7 = this.@__BuildControlExcelBtn();
+            global::System.Web.UI.UpdatePanel @__ctrl7;
+            @__ctrl7 = this.@__BuildControlUpdatePanel1();
             @__parser.AddParsedSubObject(@__ctrl7);
             global::System.Web.UI.UpdatePanel @__ctrl8;
-            @__ctrl8 = this.@__BuildControlUpdatePanel1();
+            @__ctrl8 = this.@__BuildControlUpdatePanel2();
             @__parser.AddParsedSubObject(@__ctrl8);
-            global::System.Web.UI.UpdatePanel @__ctrl9;
-            @__ctrl9 = this.@__BuildControlUpdatePanel2();
-            @__parser.AddParsedSubObject(@__ctrl9);
             @__ctrl.SetRenderMethodDelegate(new System.Web.UI.RenderMethod(this.@__Render__control1));
         }
         
@@ -844,37 +691,30 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP {
     }
     function OpenModal(nakitBagisciId) {
         document.getElementById('");
-                         @__w.Write( paramNakitBagisciIdLbl.ClientID);
+                         @__w.Write( hiddenNakitBagisciId.ClientID);
 
             @__w.Write("\').value = nakitBagisciId;\r\n\r\n        var myModalInstance = bootstrap.Modal.getOr" +
                     "CreateInstance(document.getElementById(\'ModalUrlDiv\'));\r\n        myModalInstance" +
                     ".show();\r\n        document.getElementById(\'");
                          @__w.Write( ModalDoldurBtn.ClientID);
 
-            @__w.Write("\').click();\r\n    }\r\n    function OpenArmaganModal(nakitBagisciId) {\r\n        docu" +
-                    "ment.getElementById(\'");
-                         @__w.Write( paramNakitBagisciIdLbl.ClientID);
-
-            @__w.Write(@"').value = nakitBagisciId;
-
-        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ArmaganModal'));
-        myModalInstance.show();
-    }
-    function MadalyaOlustur(nakitBagisciId, hakedilenarmaganId,sonBagisTarihi) {
-        document.getElementById('");
-                         @__w.Write( paramNakitBagisciIdLbl.ClientID);
+            @__w.Write("\').click();\r\n    }\r\n    function OpenArmaganModal(nakitBagisciId, hakedilenarmaga" +
+                    "nTanimId, sonBagisTarihi) {\r\n        document.getElementById(\'");
+                         @__w.Write( hiddenNakitBagisciId.ClientID);
 
             @__w.Write("\').value = nakitBagisciId;\r\n        document.getElementById(\'");
-                         @__w.Write( paramhakedilenarmaganIdLbl.ClientID);
+                         @__w.Write( hiddenArmaganTanimId.ClientID);
 
-            @__w.Write("\').value = hakedilenarmaganId;\r\n        document.getElementById(\'");
-                         @__w.Write( paramSonBagisTarihiLbl.ClientID);
+            @__w.Write("\').value = hakedilenarmaganTanimId;\r\n        document.getElementById(\'");
+                         @__w.Write( hiddenSonBagisTarihi.ClientID);
 
-            @__w.Write("\').value = sonBagisTarihi;\r\n\r\n        document.getElementById(\'");
-                         @__w.Write( MadalyaOlusturBtn.ClientID);
+            @__w.Write("\').value = sonBagisTarihi;\r\n\r\n        var myModalInstance = bootstrap.Modal.getOr" +
+                    "CreateInstance(document.getElementById(\'ArmaganModal\'));\r\n        myModalInstanc" +
+                    "e.show();\r\n        document.getElementById(\'");
+                         @__w.Write( ArmaganOlusturModalDoldurBtn.ClientID);
 
-            @__w.Write("\').click();\r\n    }\r\n</script>\r\n\r\n<div class=\"container col-xl\">\r\n    <div class=\"" +
-                    "card shadow\">\r\n        ");
+            @__w.Write("\').click();\r\n    }\r\n\r\n</script>\r\n\r\n<div class=\"container col-xl\">\r\n    <div class" +
+                    "=\"card shadow\">\r\n        ");
             parameterContainer.Controls[0].RenderControl(@__w);
             @__w.Write("\r\n        <div class=\"card-body\">\r\n\r\n            <div style=\"display: none\">\r\n   " +
                     "             ");
@@ -883,8 +723,6 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP {
             parameterContainer.Controls[2].RenderControl(@__w);
             @__w.Write("\r\n                ");
             parameterContainer.Controls[3].RenderControl(@__w);
-            @__w.Write("\r\n                ");
-            parameterContainer.Controls[4].RenderControl(@__w);
             @__w.Write(@"
             </div>
             <div class=""form-group"">
@@ -897,23 +735,31 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP {
                             <th>Toplam Bağış Tutarı</th>
                             <th>Son Bağış Tarihi</th>
                             <th>Madalya</th>
+                            <th>Öncelik</th>
                         </tr>
                     </thead>
                 </table>
             </div>
             ");
-            parameterContainer.Controls[5].RenderControl(@__w);
+            parameterContainer.Controls[4].RenderControl(@__w);
             @__w.Write("\r\n        </div>\r\n        <div class=\"card-footer\">\r\n            ");
-            parameterContainer.Controls[6].RenderControl(@__w);
+            parameterContainer.Controls[5].RenderControl(@__w);
             @__w.Write("\r\n        </div>\r\n    </div>\r\n</div>\r\n<div class=\"modal\" id=\"ModalUrlDiv\" role=\"d" +
                     "ialog\">\r\n    <div class=\"modal-dialog modal-lg\">\r\n        <!-- Modal content-->\r" +
                     "\n        <div class=\"modal-content\">\r\n            ");
+            parameterContainer.Controls[6].RenderControl(@__w);
+            @__w.Write(@"
+        </div>
+    </div>
+</div>
+<!-- Modal Armagan Olustur -->
+
+<div class=""modal"" id=""ArmaganModal"" role=""dialog"">
+    <div class=""modal-dialog  modal-dialog-centered"">
+        <!-- Modal content-->
+        <div class=""modal-content"">
+            ");
             parameterContainer.Controls[7].RenderControl(@__w);
-            @__w.Write("\r\n        </div>\r\n    </div>\r\n</div>\r\n<!-- Modal Armagan Olustur -->\r\n\r\n<div clas" +
-                    "s=\"modal\" id=\"ArmaganModal\" role=\"dialog\">\r\n    <div class=\"modal-dialog modal-l" +
-                    "g\">\r\n        <!-- Modal content-->\r\n        <div class=\"modal-content\">\r\n       " +
-                    "     ");
-            parameterContainer.Controls[8].RenderControl(@__w);
             @__w.Write("\r\n        </div>\r\n    </div>\r\n</div>");
         }
         

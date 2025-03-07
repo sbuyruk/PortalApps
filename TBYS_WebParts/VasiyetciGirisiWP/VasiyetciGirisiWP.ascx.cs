@@ -219,7 +219,8 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
                         IlceDDLDoldur();
                         if (IlcesiDDL.Items.FindByValue(vasiyetci.IkametIlcesi.ToString()) != null)
                             IlcesiDDL.SelectedValue = IlcesiDDL.Items.FindByValue(vasiyetci.IkametIlcesi.ToString()).Value;
-                        //SorumluBolgeTxt.Value = vasiyetci.SorumluBolge;
+                        string bolge = UtilityHelper.BolgeGetir(ilItem.Value.ConvertToInt());
+                        SorumluBolgeTxt.Value = !string.IsNullOrEmpty(bolge) ? bolge : "";
                     }
 
                     IkametAdresiTxt.Text = vasiyetci.IkametAdresi;
@@ -359,7 +360,6 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
 
                 yeniVasiyetci.IkametAdresi = IkametAdresiTxt.Text;
                 yeniVasiyetci.VasiyetTipi = VasiyetTipiTxt.Text;
-                //yeniVasiyetci.SorumluBolge = SorumluBolgeTxt.Value;
                 yeniVasiyetci.Noter = NoterTxt.Text;
                 yeniVasiyetci.VasiyetTarihi = VasiyetTarihiTxt.Value.ConvertToDatetime();
                 yeniVasiyetci.YevmiyeNumarasi = YevmiyeNumarasiTxt.Text;
@@ -479,13 +479,9 @@ namespace TBYS_WebParts.VasiyetciGirisiWP
         protected void IliDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
             IlceDDLDoldur();
-            string ilAdi = IliDDL.SelectedItem.Text;
-            Il secilenIl = new Il();
-            secilenIl = secilenIl.SelectByIlAdi(ilAdi);
-            if (secilenIl != null)
-            {
-                SorumluBolgeTxt.Value = secilenIl.Bolge;
-            }
+            int ilId = IliDDL.SelectedItem.Value.ConvertToInt();
+            string bolge = UtilityHelper.BolgeGetir(ilId);
+            SorumluBolgeTxt.Value = !string.IsNullOrEmpty(bolge) ? bolge : "";
         }
         protected void SagVefatDDL_SelectedIndexChanged(object sender, EventArgs e)
         {

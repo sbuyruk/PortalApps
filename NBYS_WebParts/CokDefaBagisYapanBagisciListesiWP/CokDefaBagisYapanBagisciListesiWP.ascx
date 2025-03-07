@@ -14,25 +14,22 @@
         return true;
     }
     function OpenModal(nakitBagisciId) {
-        document.getElementById('<%= paramNakitBagisciIdLbl.ClientID%>').value = nakitBagisciId;
+        document.getElementById('<%= hiddenNakitBagisciId.ClientID%>').value = nakitBagisciId;
 
         var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalUrlDiv'));
         myModalInstance.show();
         document.getElementById('<%= ModalDoldurBtn.ClientID%>').click();
     }
-    function OpenArmaganModal(nakitBagisciId) {
-        document.getElementById('<%= paramNakitBagisciIdLbl.ClientID%>').value = nakitBagisciId;
+    function OpenArmaganModal(nakitBagisciId, hakedilenarmaganTanimId, sonBagisTarihi) {
+        document.getElementById('<%= hiddenNakitBagisciId.ClientID%>').value = nakitBagisciId;
+        document.getElementById('<%= hiddenArmaganTanimId.ClientID%>').value = hakedilenarmaganTanimId;
+        document.getElementById('<%= hiddenSonBagisTarihi.ClientID%>').value = sonBagisTarihi;
 
         var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ArmaganModal'));
         myModalInstance.show();
+        document.getElementById('<%= ArmaganOlusturModalDoldurBtn.ClientID%>').click();
     }
-    function MadalyaOlustur(nakitBagisciId, hakedilenarmaganId,sonBagisTarihi) {
-        document.getElementById('<%= paramNakitBagisciIdLbl.ClientID%>').value = nakitBagisciId;
-        document.getElementById('<%= paramhakedilenarmaganIdLbl.ClientID%>').value = hakedilenarmaganId;
-        document.getElementById('<%= paramSonBagisTarihiLbl.ClientID%>').value = sonBagisTarihi;
 
-        document.getElementById('<%= MadalyaOlusturBtn.ClientID%>').click();
-    }
 </script>
 
 <div class="container col-xl">
@@ -55,10 +52,9 @@
         <div class="card-body">
 
             <div style="display: none">
-                <input id="paramNakitBagisciIdLbl" runat="server" text="Label" style="border-style: none;" text-align="center" />
-                <input id="paramhakedilenarmaganIdLbl" runat="server" text="Label" style="border-style: none;" text-align="center" />
-                <input id="paramSonBagisTarihiLbl" runat="server" text="Label" style="border-style: none;" text-align="center" />
-                <asp:LinkButton ID="MadalyaOlusturBtn" runat="server" CausesValidation="false" Text="" OnClick="MadalyaOlusturBtn_Click" />
+                <input id="hiddenNakitBagisciId" runat="server" text="hiddenNakitBagisciId"  />
+                <input id="hiddenArmaganTanimId" runat="server" text="hiddenArmaganTanimId"  />
+                <input id="hiddenSonBagisTarihi" runat="server" text="hiddenSonBagisTarihi"  />
             </div>
             <div class="form-group">
                 <table id="CustomDataTable" class="table table-striped row-border" width="100%">
@@ -70,6 +66,7 @@
                             <th>Toplam Bağış Tutarı</th>
                             <th>Son Bağış Tarihi</th>
                             <th>Madalya</th>
+                            <th>Öncelik</th>
                         </tr>
                     </thead>
                 </table>
@@ -149,7 +146,7 @@
 <!-- Modal Armagan Olustur -->
 
 <div class="modal" id="ArmaganModal" role="dialog">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog  modal-dialog-centered">
         <!-- Modal content-->
         <div class="modal-content">
             <asp:UpdatePanel runat="server" ID="UpdatePanel2" UpdateMode="Conditional">
@@ -162,31 +159,16 @@
                     <div class="modal-body">
                         <div style="display: none">
                             <asp:LinkButton ID="ArmaganOlusturModalDoldurBtn" runat="server" CausesValidation="false" Text="" OnClick="ArmaganOlusturModalDoldurBtn_Click" />
-                        </div>
-
-                        <div class="m-1 text-center" id="NakitBagisciDiv">
-                            <asp:Table CssClass="table text-center table-bordered table-striped" ID="BagisciTable1" runat="server">
-                                <asp:TableHeaderRow>
-                                    <asp:TableHeaderCell>Ad/Ünvan</asp:TableHeaderCell>
-                                    <asp:TableHeaderCell>TC Kimlik No</asp:TableHeaderCell>
-                                    <asp:TableHeaderCell>Adres</asp:TableHeaderCell>
-                                    <asp:TableHeaderCell>İli/İlçesi</asp:TableHeaderCell>
-                                    <asp:TableHeaderCell>Telefon</asp:TableHeaderCell>
-                                    <asp:TableHeaderCell>Tüzel Kişi</asp:TableHeaderCell>
-                                </asp:TableHeaderRow>
-                            </asp:Table>
-                        </div>
-                        <div>
-                            <h3>
-                                <br />
-                                <asp:Label ID="Label2" runat="server" Text="Bağışçının Yaptığı Nakit Bağışlar" Font-Bold="True"></asp:Label>
-                            </h3>
-                        </div>
-                        <div class="form-group">
 
                         </div>
+
+                        <div class="m-1 text-center" >
+                            <asp:Label ID="ArmaganOlusturMessageTxt" runat="server"  CssClass=" text-danger fw-bold text-center"></asp:Label>
+                        </div>
+
                     </div>
                     <div class="modal-footer">
+                        <asp:LinkButton ID="ArmaganOlusturNowBtn" CssClass="btn btn-success" runat="server" CausesValidation="false" Text="Armağan Oluştur" OnClick="ArmaganOlusturNowBtn_Click" />
                         <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                     </div>
                 </ContentTemplate>

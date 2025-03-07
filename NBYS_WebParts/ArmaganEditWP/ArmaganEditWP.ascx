@@ -69,7 +69,7 @@
                     <asp:LinkButton CssClass="btn btn-outline-success float-left" ID="KaydetBtn" runat="server" Text="Kaydet" OnClick="KaydetBtn_Click" />
                     <asp:LinkButton Visible="false" CssClass="btn btn-outline-secondary float-end " ID="SonrakiBtn" runat="server" Text="Sonraki>>" />
                     <asp:LinkButton Visible="false" CssClass="btn btn-outline-secondary float-end mr-2" ID="OncekiBtn" runat="server" Text="<<Önceki" />
-                    <asp:LinkButton CssClass="btn btn-outline-secondary float-end mr-2" ID="ArmaganListesiBtn" runat="server" Text="Geri " OnClick="ArmaganListesiBtn_Click" />
+                    <asp:LinkButton CssClass="btn btn-outline-secondary float-end mr-2" ID="ArmaganListesiBtn" runat="server" Text="Armağan Listesi " OnClick="ArmaganListesiBtn_Click" />
                 </div>
             </div>
         </ContentTemplate>

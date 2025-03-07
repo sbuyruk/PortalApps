@@ -197,8 +197,6 @@
                                 Aktarılanları Gösterme
                             </label>
                         </div>
-                    </div>
-                    <div class="col-3">
                         <div class="checkbox">
                             <label>
                                 <asp:CheckBox ID="TumunuSecChk" runat="server" Checked="True" AutoPostBack="true" OnCheckedChanged="TumunuSecChk_CheckedChanged" ToolTip="Bu sayfadakilerin tümünü seç" ClientIDMode="Static" />

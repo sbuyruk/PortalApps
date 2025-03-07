@@ -137,6 +137,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EskiPersonelListesiWP.ascx</DependentUpon>
     </Compile>
+    <Compile Include="EskiPersonelWP\EskiPersonelWP.ascx.cs">
+      <DependentUpon>EskiPersonelWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="EskiPersonelWP\EskiPersonelWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EskiPersonelWP.ascx</DependentUpon>
+    </Compile>
     <Compile Include="GorevliIzinliPersonelWP\GorevliIzinliPersonelWP.ascx.cs">
       <DependentUpon>GorevliIzinliPersonelWP.ascx</DependentUpon>
     </Compile>
@@ -418,6 +426,10 @@
     <None Include="EskiPersonelListesiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{93c26325-5d6b-4f39-b1b0-73f97923e190}</SharePointProjectItemId>
     </None>
+    <None Include="EskiPersonelWP\EskiPersonelWP.webpart" />
+    <None Include="EskiPersonelWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{5ad2ab85-8eb7-4cd6-89bf-0c4bc351fac4}</SharePointProjectItemId>
+    </None>
     <None Include="Features\Feature1\Feature1.feature">
       <FeatureId>{66f59b8e-b14d-42fc-83d3-23111f29a7f3}</FeatureId>
     </None>
@@ -589,6 +601,11 @@
     <Content Include="EskiPersonelListesiWP\EskiPersonelListesiWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>EskiPersonelListesiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="EskiPersonelWP\Elements.xml" />
+    <Content Include="EskiPersonelWP\EskiPersonelWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>EskiPersonelWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="Features\Feature1\Feature1.Template.xml">
       <DependentUpon>Feature1.feature</DependentUpon>

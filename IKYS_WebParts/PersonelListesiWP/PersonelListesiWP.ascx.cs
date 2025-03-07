@@ -271,7 +271,7 @@ namespace IKYS_WebParts.PersonelListesiWP
                                 var personelTipi = data['PersonelTipi']; 
 
                                 if (personelTipi == 'Kadrosuz') {
-                                    $(row).css('background-color', 'lightyellow'); // Green for Kadrosuz
+                                    $(row).css('background-color', 'lightyellow'); // lightyellow for Kadrosuz
                                 } 
                             },
                             data: " + jsonData + @",

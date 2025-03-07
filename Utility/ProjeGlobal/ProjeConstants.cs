@@ -41,6 +41,7 @@ namespace Utility.ProjeGlobal
         public const string IKYS_EGITIMSEVIYESI = "Eğitim Seviyesi";
         public const string IKYS_GOREVONAY = "Görev Onayı";
         public const string IKYS_GOREVTANIM = "Görev Tanım";
+        public const string IKYS_ESKIPERSONELGOREVTANIM = "Eski Görev Tanım";
         public const string IKYS_ILETISIMBILGILERI = "İletişim Bilgileri";
         public const string IKYS_ISBILGILERI = "İş Bilgileri";
         public const string IKYS_ISTECRUBE = "İş Tecrübesi";
@@ -255,6 +256,7 @@ namespace Utility.ProjeGlobal
         public const string PAGE_PERSONEL_LIST = "PersonelListesi.aspx";
         public const string PAGE_ESKIPERSONEL_LIST = "EskiPersonelListesi.aspx";
         public const string PAGE_PERSONEL_EDIT = "PersonelGirisi.aspx";
+        public const string PAGE_ESKIPERSONEL_EDIT = "EskiPersonel.aspx";
         public const string PAGE_KISISELSAYFA = "KisiselSayfa.aspx";
         public const string PAGE_KISISELSAYFA_LIST = "KisiselSayfaListesi.aspx";
         public const string PAGE_AILE_EDIT = "AileGirisi.aspx";

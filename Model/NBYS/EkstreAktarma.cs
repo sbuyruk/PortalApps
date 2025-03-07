@@ -657,10 +657,16 @@ namespace Model.NBYS
                                 {
                                     var splitText = new string[] { "OTURUM ÜCRETİ", "TC:" };
                                     var holder = detay.Split(splitText, StringSplitOptions.None);
-                                    var nameHolder = holder[1].ReturnEmptyIfNull().ToString().TrimEnd();
-                                    var TCHolder = holder[2].ReturnEmptyIfNull().ToString().TrimEnd();
-                                    ekstreAktarma.Adi = nameHolder.ReturnEmptyIfNull().ToString().Trim().ToUpper(culturInfo);
-                                    ekstreAktarma.TCKimlikNo = TCHolder.ReturnZeroIfNull().ToString().Trim().ConvertToLong();
+                                    if (holder.Length > 0)
+                                    {
+                                        var nameHolder = holder[1].ReturnEmptyIfNull().ToString().TrimEnd();
+                                        ekstreAktarma.Adi = nameHolder.ReturnEmptyIfNull().ToString().Trim().ToUpper(culturInfo);
+                                        if (holder.Length > 1)
+                                        {
+                                            var TCHolder = holder[2].ReturnEmptyIfNull().ToString().TrimEnd();
+                                            ekstreAktarma.TCKimlikNo = TCHolder.ReturnZeroIfNull().ToString().Trim().ConvertToLong();
+                                        }
+                                    }
                                 }
                                 ekstreAktarma.Tutar = tutar.ConvertToDecimal();
                                 ekstreAktarma.BagisTarihi = bagisTarihi.ConvertToDatetime();

@@ -144,7 +144,7 @@ namespace IKYS_WebParts.PersonelListesiWP {
             this.PersonelTipiDDL = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "PersonelTipiDDL";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control ");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-select form-select-lg ");
             @__ctrl.AutoPostBack = true;
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "Height:auto");
             @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.PersonelTipiDDL_SelectedIndexChanged);
@@ -287,10 +287,15 @@ namespace IKYS_WebParts.PersonelListesiWP {
             global::System.Web.UI.WebControls.Label @__ctrl4;
             @__ctrl4 = this.@__BuildControlAdiLbl();
             @__parser.AddParsedSubObject(@__ctrl4);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            </h3>\r\n\r\n        </div>\r\n        <div class=\"card-body\">\r\n         " +
-                        "   <div class=\"form-group col-3\">\r\n                <label for=\"PersonelTipiDDL\" " +
-                        "class=\"col-form-label\">Personel Tipi</label>\r\n                <div>\r\n           " +
-                        "         "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+            </h3>
+
+        </div>
+        <div class=""card-body"">
+            <div class=""form-group col-3"">
+                <label for=""PersonelTipiDDL"" class=""form-label fw-semibold"">Personel Tipi</label>
+                <div>
+                    "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl5;
             @__ctrl5 = this.@__BuildControlPersonelTipiDDL();
             @__parser.AddParsedSubObject(@__ctrl5);

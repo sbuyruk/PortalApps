@@ -70,6 +70,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IKYS\EskiPersonelGorevTanim.cs" />
     <Compile Include="IKYS\TahsilTanim.cs" />
     <Compile Include="IKYS\Aile.cs" />
     <Compile Include="IKYS\BirimTanim.cs" />

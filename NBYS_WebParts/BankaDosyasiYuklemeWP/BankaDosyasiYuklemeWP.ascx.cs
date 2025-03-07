@@ -544,16 +544,16 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
 
                 if (exceptionHelper.Exceptions.Count > 0)
                 {
-                    IsbankEkstrebankFU.Enabled = true;
-                    IsbankEkstreOkLbl.ForeColor = System.Drawing.Color.Red;
-                    IsbankEkstreOkLbl.Text = "X";
+                    YKBEkstreFU.Enabled = true;
+                    YKBEkstreOkLbl.ForeColor = System.Drawing.Color.Red;
+                    YKBEkstreOkLbl.Text = "X";
                     exceptionHelper.PublishException();
                 }
                 else
                 {
-                    IsbankEkstrebankFU.Enabled = false;
-                    IsbankEkstreOkLbl.ForeColor = System.Drawing.Color.Green;
-                    IsbankEkstreOkLbl.Text = "  " + ((char)0x221A).ToString();
+                    YKBEkstreFU.Enabled = false;
+                    YKBEkstreOkLbl.ForeColor = System.Drawing.Color.Green;
+                    YKBEkstreOkLbl.Text = "  " + ((char)0x221A).ToString();
                 }
             }
         }

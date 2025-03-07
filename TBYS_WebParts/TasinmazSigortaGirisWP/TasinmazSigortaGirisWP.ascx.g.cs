@@ -933,6 +933,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP {
             @__ctrl.CssClass = "btn btn-success";
             @__ctrl.Text = "Kaydet";
             @__ctrl.Width = new System.Web.UI.WebControls.Unit(150D, global::System.Web.UI.WebControls.UnitType.Pixel);
+            @__ctrl.Visible = false;
             @__ctrl.Click -= new System.EventHandler(this.SaveBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.SaveBtn_Click);
             return @__ctrl;

@@ -169,7 +169,7 @@
             <asp:LinkButton ID="NextBtn" CssClass="btn btn-outline-secondary float-end mr-2" runat="server" Text="Sonraki=>" Visible="false" OnClick="NextBtn_Click" />
             <asp:LinkButton ID="PrevBtn" CssClass="btn btn-outline-secondary float-end mr-2" runat="server" Text="<=Önceki" Visible="false" OnClick="PrevBtn_Click" />
             <asp:LinkButton ID="BackBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Geri" Visible="false" OnClick="BackBtn_Click" />
-            <asp:LinkButton ID="SaveBtn" CssClass="btn btn-success" runat="server" Text="Kaydet" OnClick="SaveBtn_Click" Width="150px" />
+            <asp:LinkButton ID="SaveBtn" CssClass="btn btn-success" runat="server" Text="Kaydet" OnClick="SaveBtn_Click" Width="150px" Visible="False" />
             <asp:LinkButton ID="UpdateBtn" CssClass="btn btn-primary" runat="server" Text="Güncelle" Visible="false" OnClick="UpdateBtn_Click" Width="150px" />
             <asp:LinkButton CssClass="btn btn-outline-secondary" ID="TasinmazBtn" runat="server" Text="Taşınmaza Git" CausesValidation="false" OnClick="TasinmazBtn_Click" />
             <asp:LinkButton CssClass="btn btn-outline-secondary" ID="TasinmazListesiBtn" runat="server" Text="Taşınmaz Listesi" CausesValidation="false" OnClick="TasinmazListesiBtn_Click" />

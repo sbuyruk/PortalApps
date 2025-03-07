@@ -20,9 +20,9 @@
         </div>
         <div class="card-body">
             <div class="form-group col-3">
-                <label for="PersonelTipiDDL" class="col-form-label">Personel Tipi</label>
+                <label for="PersonelTipiDDL" class="form-label fw-semibold">Personel Tipi</label>
                 <div>
-                    <asp:DropDownList ID="PersonelTipiDDL" runat="server" class="form-control " OnSelectedIndexChanged="PersonelTipiDDL_SelectedIndexChanged" AutoPostBack="true" style="Height:auto"></asp:DropDownList>
+                    <asp:DropDownList ID="PersonelTipiDDL" runat="server" class="form-select form-select-lg " OnSelectedIndexChanged="PersonelTipiDDL_SelectedIndexChanged" AutoPostBack="true" style="Height:auto"></asp:DropDownList>
                 </div>
             </div>
             <asp:UpdatePanel ID="upPanel" runat="server">

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace IKYS_WebParts.PersonelGirisiWP {
+namespace IKYS_WebParts.EskiPersonelWP {
     using System.Web.UI.WebControls.Expressions;
     using System.Web.UI.HtmlControls;
     using System.Collections;
@@ -37,7 +37,7 @@ namespace IKYS_WebParts.PersonelGirisiWP {
     using System.CodeDom.Compiler;
     
     
-    public partial class PersonelGirisiWP {
+    public partial class EskiPersonelWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -420,7 +420,7 @@ namespace IKYS_WebParts.PersonelGirisiWP {
         protected global::System.Web.UI.WebControls.LinkButton DeleteBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebPartCodeGenerator", "17.0.0.0")]
-        public static implicit operator global::System.Web.UI.TemplateControl(PersonelGirisiWP target) 
+        public static implicit operator global::System.Web.UI.TemplateControl(EskiPersonelWP target) 
         {
             return target == null ? null : target.TemplateControl;
         }
@@ -687,7 +687,7 @@ namespace IKYS_WebParts.PersonelGirisiWP {
             this.DogumGunuKutlamaChk = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "DogumGunuKutlamaChk";
-            @__ctrl.CssClass = "form-select form-select-lg";
+            @__ctrl.CssClass = "form-control";
             @__ctrl.Text = "    ";
             @__ctrl.Checked = true;
             return @__ctrl;
@@ -2644,7 +2644,7 @@ namespace IKYS_WebParts.PersonelGirisiWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.CssClass = "btn btn-outline-secondary float-end mr-2";
             @__ctrl.ID = "PersonelListesiBtn";
-            @__ctrl.Text = "Personel Listesi";
+            @__ctrl.Text = " Eski Personel Listesi";
             @__ctrl.CausesValidation = false;
             @__ctrl.Click -= new System.EventHandler(this.PersonelListesiBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.PersonelListesiBtn_Click);
@@ -2690,7 +2690,7 @@ namespace IKYS_WebParts.PersonelGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControlTree(global::IKYS_WebParts.PersonelGirisiWP.PersonelGirisiWP @__ctrl) {
+        private void @__BuildControlTree(global::IKYS_WebParts.EskiPersonelWP.EskiPersonelWP @__ctrl) {
             global::System.Web.UI.WebControls.LinkButton @__ctrl1;
             @__ctrl1 = this.@__BuildControlCloseBtn();
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));

@@ -346,7 +346,7 @@ namespace Model.IKYS
                 INNER JOIN IsBilgileri_Table C on A.Id=C.PersonelId
                 Left Outer Join UnvanTanim_Table D on C.UnvanId=D.Id
                 Left Outer Join BirimTanim_Table E on C.BirimId=E.Id
-                Left Outer Join GorevTanim_Table F on C.GorevId=F.Id
+                Left Outer Join EskiPersonelGorevTanim_Table F on C.GorevId=F.Id
                 Left Outer Join IletisimBilgileri_Table G on G.PersonelId=A.Id
                 WHERE CalismaDurumu=0
                 ORDER BY C.ProtokolSiraNo

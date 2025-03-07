@@ -886,14 +886,14 @@ namespace NBYS_WebParts.ArmaganListesiWP
                     if(row.Durum.toString().indexOf('Kontrol Edildi')>=0){
                         if(row.ArmaganBaslik.toString().indexOf('Teşekkür Belgesi')>=0)
                         {
-                            var url='"" + reportTesekkurUrl + @""'+row.ArmaganId;
+                            var url='" + reportTesekkurUrl + @"'+row.ArmaganId;
                             link='<a target=_blank href='+url+' class=btn-link >'+row.ArmaganBaslik+'</a>';
                         }
                         else if(row.ArmaganBaslik.toString().indexOf('Bronz Madalya ve Beratı')>=0 || 
                             row.ArmaganBaslik.toString().indexOf('Gümüş Madalya ve Beratı')>=0 || 
                             row.ArmaganBaslik.toString().indexOf('Altın Madalya ve Beratı')>=0)
                         {
-                            var url='"" + reportBeratUrl + @""'+row.ArmaganId;
+                            var url='" + reportBeratUrl + @"'+row.ArmaganId;
                             link='<a target=_blank href='+url+' class=btn-link >'+row.ArmaganBaslik+'</a>';
                         }
                     }
@@ -985,7 +985,7 @@ namespace NBYS_WebParts.ArmaganListesiWP
                     },
                     responsive: true,
                     dom: 'frtip',   
-                    stateSave: true,
+                    //stateSave: true,
                     'createdRow': function(row, data, dataIndex) {
                         var durum = data.Durum;
                         if (durum == 'Kontrol Edildi') {

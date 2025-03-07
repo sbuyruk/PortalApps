@@ -112,7 +112,9 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
                         listItem.ToplamBagisAdedi = toplamBagisAdedi;
                         listItem.ToplamBagisTutari = toplamBagisTutari.ToString("N", culturInfo);
                         listItem.SonBagisTarihi = sonBagisTarihi.ConvertToDatetimeEmptyIfNull();
-                        listItem.Madalya = MadalyaLinkiGetir(nakitBagisciId, toplamBagisAdedi, toplamBagisTutari, tuzelKisi, sonBagisTarihi);
+                        int oncelik = 9;
+                        listItem.Madalya = MadalyaLinkiGetir(nakitBagisciId, toplamBagisAdedi, toplamBagisTutari, tuzelKisi, sonBagisTarihi, out oncelik);
+                        listItem.Oncelik = oncelik;
                         list.Add(listItem);
                     }
                 }
@@ -124,9 +126,21 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
             return list;
         }
 
-        private string MadalyaLinkiGetir(int nakitBagisciId, string toplamBagisAdedi, decimal toplamBagisTutari, bool tuzelKisiMi, DateTime sonBagisTarihi)
+        private string MadalyaLinkiGetir(int nakitBagisciId, string toplamBagisAdedi, decimal toplamBagisTutari, bool tuzelKisiMi, DateTime sonBagisTarihi,  out int oncelik)
         {
+
             string retval = string.Empty;
+            oncelik = 9;
+            NakitBagisci nakitBagisci = new NakitBagisci();
+            nakitBagisci = nakitBagisci.Select<NakitBagisci>(nakitBagisciId);
+            if (nakitBagisci != null)
+            {
+                if (nakitBagisci.BelgeIstemiyor)
+                {
+                    return ProjeConstants.DURUM_BELGE_ISTEMIYOR;
+                }
+
+            }
 
 
             //madalya hakediyor mu ? hayır: return
@@ -141,6 +155,7 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
                 //Teşekkürse dikkate alma, zaten gönderilmiştir.
                 if (hakedilenArmaganTanim.Id == ProjeConstants.ARMAGAN_TESEKKURID)
                 {
+                    oncelik = 5;
                     retval = "-";
                 }
                 else if (hakedilenArmaganTanim.Id == ProjeConstants.ARMAGAN_ALTINID)
@@ -151,11 +166,13 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
 
                     if (aldigiAltin == null)
                     {
+                        oncelik = 1;
                         //Altın madalya almamış ama genel toplamda hak etmş
-                        retval = "<a href=# onclick=\"MadalyaOlustur(" + nakitBagisciId + "," + hakedilenArmaganTanim.Id + ",\'" + sonBagisTarihi + "\');\" class=\'btn btn-outline-warning \'>Altın Madalya Oluştur</a>";
+                        retval = "<a href=# onclick=\"OpenArmaganModal(" + nakitBagisciId + "," + hakedilenArmaganTanim.Id + ",\'" + sonBagisTarihi + "\');\" class=\'btn btn-outline-warning \'>Altın Madalya Oluştur</a>";
                     }
                     else
                     {
+                        oncelik = 6;
                         retval = aldigiAltin.Tarih.ConvertToDatetimeEmptyIfNull() + " Tarihinde " + " Altın Madalya Verilmiştir. ( Durumu :" + aldigiAltin.Durum + ")";
                     }
 
@@ -170,10 +187,12 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
                     {
                         //Gümüş madalya almamış ama genel toplamda hak etmş
                         //retval = "<a href=" + ProjeConstants.PAGE_SIRADISIARMAGAN_DUZENLE + @"?DestinationApp=BD&NakitBagisciId=" + nakitBagisciId + " class=\'btn btn-outline-secondary \'>Gümüş Madalya Oluştur</a>";
-                        retval = "<a href=# onclick=\"MadalyaOlustur(" + nakitBagisciId + "," + hakedilenArmaganTanim.Id + ",\'" + sonBagisTarihi + "\');\" class=\'btn btn-outline-secondary \'>Gümüş Madalya Oluştur</a>";
+                        oncelik = 2;
+                        retval = "<a href=# onclick=\"OpenArmaganModal(" + nakitBagisciId + "," + hakedilenArmaganTanim.Id + ",\'" + sonBagisTarihi + "\');\" class=\'btn btn-outline-secondary \'>Gümüş Madalya Oluştur</a>";
                     }
                     else
                     {
+                        oncelik = 7;
                         retval = aldigiMadalya.Tarih.ConvertToDatetimeEmptyIfNull() + " Tarihinde " + " Gümüş Madalya Verilmiştir. ( Durumu :" + aldigiMadalya.Durum + ")";
                     }
 
@@ -187,10 +206,12 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
                     if (aldigiMadalya == null)
                     {
                         //Bronz madalya almamış ama genel toplamda hak etmş
-                        retval = "<a href=# onclick=\"MadalyaOlustur(" + nakitBagisciId + "," + hakedilenArmaganTanim.Id + ",\'" + sonBagisTarihi + "\');\" class=\'btn btn-outline-info \'>Bronz Madalya Oluştur</a>";
+                        oncelik = 3;
+                        retval = "<a href=# onclick=\"OpenArmaganModal(" + nakitBagisciId + "," + hakedilenArmaganTanim.Id + ",\'" + sonBagisTarihi + "\');\" class=\'btn btn-outline-info \'>Bronz Madalya Oluştur</a>";
                     }
                     else
                     {
+                        oncelik = 8;
                         retval = aldigiMadalya.Tarih.ConvertToDatetimeEmptyIfNull() + " Tarihinde " + " Bronz Madalya Verilmiştir. ( Durumu :" + aldigiMadalya.Durum + ")";
                     }
 
@@ -198,7 +219,7 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
             }
             return retval;
         }
-        private bool MadalyaOlustur(int nakitBagisciId, int hakedilenArmaganTanimId, DateTime sonBagisTarihi)
+        private int MadalyaOlustur(int nakitBagisciId, int hakedilenArmaganTanimId, DateTime sonBagisTarihi)
         {
             //Bagisciyi bul
             //NakitBagisHareketten bagis listesini ve bagis toplamını al
@@ -237,11 +258,10 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
             {
                 MessageHelper.PublishMessage("Bağışçı Bulunamadı", ProjeConstants.MESAJ_HATA);
             }
-            return armaganId > 0;
+            return armaganId ;
         }
         private string CreateDataTable(string jsonData)
         {
-            string buttonHtml = "<button type=\"button\" class=\"btn btn-success\" onclick=\"OpenArmaganModal();\">Armağan Oluştur</button>" ;
 
             string tableString = @"
             jQuery(document).ready(function () {
@@ -267,8 +287,9 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
                     { data: 'ToplamBagisTutari' },
                     { data: 'SonBagisTarihi' },
                     { data: 'Madalya' },
+                    { data: 'Oncelik' },
                 ],
-                'order': [[2, 'desc']],
+                'order': [[6, 'asc'],[2, 'desc']],
                 columnDefs:
                 [
                     {
@@ -276,12 +297,9 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
                     var link= '<a href=# onclick=OpenModal('+row.NakitBagisciId+'); class=\'btn btn-link \'>'+(row.AdiSoyadi).trim() + '</a>';
                     return link;
                     }},
-                    {
-                    targets: 0, render: function(data, type, row, meta) {
-                    var link= '<a href=# onclick=OpenArmaganModal('+row.NakitBagisciId+'); class=\'btn btn-link \'>Armağan Oluştur</a>';
-                    return link;
-                    }},
-                    { 'width': '30%', targets: [1,5] }
+                    { 'width': '20%', targets: [1] },
+                    { 'width': '30%', targets: [5] },
+                    { 'width': '5%', targets: [6] }
                 ],
                 'language': {
                     'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
@@ -447,15 +465,55 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
         }
         protected void ArmaganOlusturModalDoldurBtn_Click(object sender, EventArgs e)
         {
-            NakitBagisciFormunuDoldur(paramNakitBagisciIdLbl.Value, BagisciTable1);
+            NakitBagisci nakitBagisci = new NakitBagisci();
+            nakitBagisci = nakitBagisci.Select<NakitBagisci>(hiddenNakitBagisciId.Value.ConvertToInt());
+            if (nakitBagisci != null)
+            {
+                ArmaganTanim armaganTanim = new ArmaganTanim();
+                armaganTanim = armaganTanim.Select<ArmaganTanim>(hiddenArmaganTanimId.Value.ConvertToInt());
+                if (armaganTanim != null)
+                {
+                    ArmaganOlusturNowBtn.Visible = true;
+                    ArmaganOlusturMessageTxt.Text = nakitBagisci.Adi + " " + nakitBagisci.Soyadi + " adlı bağışçı için " + armaganTanim.Armagan + " oluşturulmasını istiyor musunuz?";
+                }
+                else
+                {
+                    ArmaganOlusturNowBtn.Visible = false;
+                    ArmaganOlusturMessageTxt.Text = nakitBagisci.Adi + " " + nakitBagisci.Soyadi + " adlı bağışçı için Armagan tanımı bulunamadığından armağan beratı oluşturulamıyor";
+                }
+            }
+            else
+            {
+                ArmaganOlusturNowBtn.Visible = false;
+                ArmaganOlusturMessageTxt.Text = hiddenNakitBagisciId.Value + " numaralı bağışçı armağan beratı oluşturulamıyor";
+            }
+        }
+        protected void ArmaganOlusturNowBtn_Click(object sender, EventArgs e)
+        { 
+            int nakitBagisciId=hiddenNakitBagisciId.Value.ConvertToInt();
+            DateTime sonBagisTarihi=hiddenSonBagisTarihi.Value.ConvertToDatetime();
+            try
+            {
+                int armaganId = MadalyaOlustur(hiddenNakitBagisciId.Value.ConvertToInt(), hiddenArmaganTanimId.Value.ConvertToInt(), hiddenSonBagisTarihi.Value.ConvertToDatetime());
+                if (armaganId > 0)
+                    RedirectToPage(ProjeConstants.PAGE_ARMAGAN_EDIT + "?ArmaganId=" + armaganId + "&NakitBagisciId=" + hiddenNakitBagisciId.Value.ConvertToInt());
+                else
+                    MessageHelper.PublishMessage("Armağan Oluşturulamadı", ProjeConstants.MESAJ_HATA);
+            }
+            catch (Exception exception)
+            {
+                ExceptionHelper ex = new ExceptionHelper(exception);
+                ex.PublishException();
+
+            }
         }
         protected void ModalDoldurBtn_Click(object sender, EventArgs e)
         {
             try
             {
 
-                TabloModalOlustur(paramNakitBagisciIdLbl.Value);
-                NakitBagisciFormunuDoldur(paramNakitBagisciIdLbl.Value, BagisciTable);
+                TabloModalOlustur(hiddenNakitBagisciId.Value);
+                NakitBagisciFormunuDoldur(hiddenNakitBagisciId.Value, BagisciTable);
                 UtilityHelper.ScriptCalistir("SetPageIndex();");
             }
             catch (Exception exception)
@@ -465,20 +523,7 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
 
             }
         }
-        protected void MadalyaOlusturBtn_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                MadalyaOlustur(paramNakitBagisciIdLbl.Value.ConvertToInt(), paramhakedilenarmaganIdLbl.Value.ConvertToInt(), paramSonBagisTarihiLbl.Value.ConvertToDatetime());
-                RedirectToPage(ProjeConstants.PAGE_ARMAGAN_EDIT + "?ArmaganId=" + paramhakedilenarmaganIdLbl.Value.ConvertToInt() + "&NakitBagisciId=" + paramNakitBagisciIdLbl.Value.ConvertToInt());
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper ex = new ExceptionHelper(exception);
-                ex.PublishException();
 
-            }
-        }
         private void RedirectToPage(string pageUrl)
         {
             try
@@ -555,6 +600,7 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
             public string SonBagisTarihi { get; set; }
             public string Madalya { get; set; }
             public bool Secildi { get; set; }
+            public int Oncelik { get; set; }
         }
     }
 }

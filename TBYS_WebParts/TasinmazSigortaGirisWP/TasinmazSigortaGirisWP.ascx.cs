@@ -261,13 +261,13 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             if (isVisible)
             {
                 UtilityHelper.SetControlState(true, true, TasinmazBtn, BelgeSilBtn,
-                    NextBtn, PrevBtn, SaveBtn, UpdateBtn, SilBtn);
+                    NextBtn, PrevBtn, UpdateBtn, SilBtn);
 
             }
             else
             {
                 UtilityHelper.SetControlState(false, false, TasinmazBtn, BelgeSilBtn,
-                    NextBtn, PrevBtn, SaveBtn, UpdateBtn, SilBtn);
+                    NextBtn, PrevBtn,  UpdateBtn, SilBtn);
             }
         }
         private void SigortaGirisi()

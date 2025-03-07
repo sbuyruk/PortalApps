@@ -1321,19 +1321,19 @@ namespace NBYS_WebParts.EkstreListesiWP {
                     "mSubmitToFalse() {\r\n        setTimeout(function () { _spFormOnSubmitCalled = fal" +
                     "se; }, 3000);\r\n        return true;\r\n    }\r\n    function OpenModalOnay() {\r\n    " +
                     "    var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElemen" +
-                    "tById(\'ModalOnayDiv\'));\n        myModalInstance.show();\r\n    }\r\n\r\n    function C" +
-                    "loseModalOnay() {\r\n        $(\"#ModalOnayDiv\").modal(\'hide\');\r\n    }\r\n    var tab" +
-                    "ledata = [];\r\n    function EkleCikar(ekstreAktarmaId, isChecked) {\r\n        var " +
-                    "index = tabledata.indexOf(ekstreAktarmaId.toString());\r\n        if (isChecked &&" +
-                    " (index < 0)) {\r\n            tabledata.push(ekstreAktarmaId.toString());\r\n      " +
-                    "  } else if (!isChecked && (index > -1)) {\r\n            tabledata.splice(index, " +
-                    "1);\r\n        }\r\n        if (tabledata.length > 0)\r\n            document.getEleme" +
-                    "ntById(\'BtnDiv\').style.display = \"block\";\r\n        else {\r\n            document." +
-                    "getElementById(\'BtnDiv\').style.display = \"none\";\r\n\r\n        }\r\n    }\r\n    functi" +
-                    "on addRemoveEkstreIdToList(ekstreAktarmaId, chkbox) {\r\n        var isChecked = f" +
-                    "alse;\r\n        if (chkbox.checked)\r\n            isChecked = true;\r\n        EkleC" +
-                    "ikar(ekstreAktarmaId, isChecked);\r\n    }\r\n\r\n    function SecilenleriKaydetTrigge" +
-                    "rBtnClicked() {\r\n        document.getElementById(\'");
+                    "tById(\'ModalOnayDiv\'));\r\n        myModalInstance.show();\r\n    }\r\n\r\n    function " +
+                    "CloseModalOnay() {\r\n        $(\"#ModalOnayDiv\").modal(\'hide\');\r\n    }\r\n    var ta" +
+                    "bledata = [];\r\n    function EkleCikar(ekstreAktarmaId, isChecked) {\r\n        var" +
+                    " index = tabledata.indexOf(ekstreAktarmaId.toString());\r\n        if (isChecked &" +
+                    "& (index < 0)) {\r\n            tabledata.push(ekstreAktarmaId.toString());\r\n     " +
+                    "   } else if (!isChecked && (index > -1)) {\r\n            tabledata.splice(index," +
+                    " 1);\r\n        }\r\n        if (tabledata.length > 0)\r\n            document.getElem" +
+                    "entById(\'BtnDiv\').style.display = \"block\";\r\n        else {\r\n            document" +
+                    ".getElementById(\'BtnDiv\').style.display = \"none\";\r\n\r\n        }\r\n    }\r\n    funct" +
+                    "ion addRemoveEkstreIdToList(ekstreAktarmaId, chkbox) {\r\n        var isChecked = " +
+                    "false;\r\n        if (chkbox.checked)\r\n            isChecked = true;\r\n        Ekle" +
+                    "Cikar(ekstreAktarmaId, isChecked);\r\n    }\r\n\r\n    function SecilenleriKaydetTrigg" +
+                    "erBtnClicked() {\r\n        document.getElementById(\'");
                          @__w.Write( paramArray.ClientID);
 
             @__w.Write("\').value = tabledata;\r\n        document.getElementById(\'");
@@ -1476,15 +1476,10 @@ namespace NBYS_WebParts.EkstreListesiWP {
                             <label>
                                 ");
             parameterContainer.Controls[42].RenderControl(@__w);
-            @__w.Write(@"
-                                Aktarılanları Gösterme
-                            </label>
-                        </div>
-                    </div>
-                    <div class=""col-3"">
-                        <div class=""checkbox"">
-                            <label>
-                                ");
+            @__w.Write("\r\n                                Aktarılanları Gösterme\r\n                       " +
+                    "     </label>\r\n                        </div>\r\n                        <div clas" +
+                    "s=\"checkbox\">\r\n                            <label>\r\n                            " +
+                    "    ");
             parameterContainer.Controls[43].RenderControl(@__w);
             @__w.Write("\r\n                                Sayfanın Tümünü Seç\r\n                          " +
                     "  </label>\r\n                        </div>\r\n                    </div>\r\n        " +
