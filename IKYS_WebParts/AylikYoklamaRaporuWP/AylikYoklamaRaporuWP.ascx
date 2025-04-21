@@ -21,19 +21,19 @@
                 <div class="card-header" id="CardHeader" runat="server">
                     <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
                     <h3 class="mb-2">
-                        <asp:Label CssClass="col-form-label  text-primary fw-bold mb-1" ID="TitleLbl" runat="server" Text="Gün İçinde Vakıf Dışında Bulunan Personel Aylık Dökümü"></asp:Label>
-                        <asp:Label CssClass="col-form-label text-white" ID="IdLbl" runat="server"></asp:Label>
+                        <asp:Label CssClass="form-label text-primary fw-bold mb-1" ID="TitleLbl" runat="server" Text="Gün İçinde Vakıf Dışında Bulunan Personel Aylık Dökümü"></asp:Label>
+                        <asp:Label CssClass="form-label text-white" ID="IdLbl" runat="server"></asp:Label>
                     </h3>
                 </div>
                 <div class="card-body " id="MainCardDiv" runat="server">
                     <div class="form-group row">
                         <div class="form-group col-2">
-                            <asp:Label CssClass="col-form-label" runat="server" >Ay :</asp:Label>
-                            <asp:DropDownList ID="AyDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="AyDDL_SelectedIndexChanged" AutoPostBack="true" Height="34px"></asp:DropDownList>
+                            <asp:Label CssClass="form-label fw-semibold" runat="server" >Ay :</asp:Label>
+                            <asp:DropDownList ID="AyDDL" runat="server" CssClass="form-control form-select form-select-lg" OnSelectedIndexChanged="AyDDL_SelectedIndexChanged" AutoPostBack="true" ></asp:DropDownList>
                         </div>
                         <div class="form-group col-2">
-                            <asp:Label CssClass="col-form-label" runat="server">Yıl : </asp:label>
-                            <asp:DropDownList ID="YilDDL" runat="server" class="form-control" OnSelectedIndexChanged="YilDDL_SelectedIndexChanged" AutoPostBack="true" Height="34px"/>
+                            <asp:Label CssClass="form-label fw-semibold" runat="server">Yıl : </asp:label>
+                            <asp:DropDownList ID="YilDDL" runat="server" class="form-control form-select form-select-lg" OnSelectedIndexChanged="YilDDL_SelectedIndexChanged" AutoPostBack="true"/>
                         </div>
                     </div>
                     <div class="table loader">

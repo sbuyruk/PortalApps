@@ -137,7 +137,7 @@ namespace BTYS_Webparts.DavaDurusmaListesiWP {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label";
+            @__ctrl.CssClass = "form-label fw-semibold m-1";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("for", "DavaDurumuDDL");
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Dava Durumu"));
@@ -153,7 +153,7 @@ namespace BTYS_Webparts.DavaDurusmaListesiWP {
             this.DavaDurumuDDL = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "DavaDurumuDDL";
-            @__ctrl.CssClass = "form-control";
+            @__ctrl.CssClass = "form-select-lg";
             @__ctrl.AutoPostBack = true;
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: auto");
             @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.DavaDurumuDDL_SelectedIndexChanged);

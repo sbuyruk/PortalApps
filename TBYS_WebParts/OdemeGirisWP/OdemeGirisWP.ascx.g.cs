@@ -137,10 +137,6 @@ namespace TBYS_WebParts.OdemeGirisWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl tbl;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.Label ModalLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -707,23 +703,6 @@ namespace TBYS_WebParts.OdemeGirisWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControltbl() {
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
-            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
-            this.tbl = @__ctrl;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "table loader");
-            @__ctrl.ID = "tbl";
-            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            <input id=\"globalFilter\" placeholder=\"Aranacak Keli" +
-                        "me\" size=\"30\" />\r\n                            <div id=\"tblfilter\" class=\"table\">" +
-                        "</div>\r\n                            <div id=\"messages\"></div>\r\n                 " +
-                        "       "));
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlModalLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -938,12 +917,9 @@ namespace TBYS_WebParts.OdemeGirisWP {
             global::System.Web.UI.WebControls.Label @__ctrl37;
             @__ctrl37 = this.@__BuildControlLabel1();
             @__parser.AddParsedSubObject(@__ctrl37);
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl38;
-            @__ctrl38 = this.@__BuildControltbl();
+            global::System.Web.UI.UpdatePanel @__ctrl38;
+            @__ctrl38 = this.@__BuildControlUpdatePanel2();
             @__parser.AddParsedSubObject(@__ctrl38);
-            global::System.Web.UI.UpdatePanel @__ctrl39;
-            @__ctrl39 = this.@__BuildControlUpdatePanel2();
-            @__parser.AddParsedSubObject(@__ctrl39);
             @__ctrl.SetRenderMethodDelegate(new System.Web.UI.RenderMethod(this.@__Render__control1));
         }
         
@@ -970,11 +946,11 @@ namespace TBYS_WebParts.OdemeGirisWP {
         document.getElementById('");
                          @__w.Write( paramKiraciIdLbl.ClientID);
 
-            @__w.Write("\').value = kiraciId;\r\n            document.getElementById(\'");
-                             @__w.Write( KiraciSecNowBtn.ClientID);
+            @__w.Write("\').value = kiraciId;\r\n        document.getElementById(\'");
+                         @__w.Write( KiraciSecNowBtn.ClientID);
 
-            @__w.Write("\').click();\r\n        }\r\n</script>\r\n<div class=\"container \">\r\n    <div class=\"card" +
-                    " shadow\">\r\n        <div class=\"card-header\">\r\n            ");
+            @__w.Write("\').click();\r\n    }\r\n</script>\r\n<div class=\"container \">\r\n    <div class=\"card sha" +
+                    "dow\">\r\n        <div class=\"card-header\">\r\n            ");
             parameterContainer.Controls[0].RenderControl(@__w);
             @__w.Write("\r\n            <h3 class=\"mb-2\">\r\n                ");
             parameterContainer.Controls[1].RenderControl(@__w);
@@ -1076,10 +1052,23 @@ namespace TBYS_WebParts.OdemeGirisWP {
             @__w.Write("\r\n                </div>\r\n                <div>\r\n                    <div class=\"" +
                     "text-center\">\r\n                        <h3>\r\n                            ");
             parameterContainer.Controls[36].RenderControl(@__w);
-            @__w.Write("</h3>\r\n                    </div>\r\n                    <div class=\"card-body\">\r\n " +
-                    "                       ");
-            parameterContainer.Controls[37].RenderControl(@__w);
-            @__w.Write(@"
+            @__w.Write(@"</h3>
+                    </div>
+                    <div class=""card-body"">
+                        <div class=""form-group"">
+                            <table id=""CustomModalDataTable"" class=""table table-striped table-bordered table-sm small"" width=""100%"">
+                                <thead>
+                                    <tr>
+                                        <th>Kiracı No</th>
+                                        <th>Adı Soyadi</th>
+                                        <th>TCKimlikNo</th>
+                                        <th>İl/İlçe</th>
+                                        <th>Adres</th>
+                                        <th>Seç</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1094,7 +1083,7 @@ namespace TBYS_WebParts.OdemeGirisWP {
         <!-- Modal content-->
         <div class=""modal-content"">
             ");
-            parameterContainer.Controls[38].RenderControl(@__w);
+            parameterContainer.Controls[37].RenderControl(@__w);
             @__w.Write("\r\n        </div>\r\n    </div>\r\n</div>\r\n");
         }
         

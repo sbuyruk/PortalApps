@@ -293,6 +293,8 @@ namespace TBYS_WebParts.TasinmazListesiWP {
                                             <th>Adres</th>
                                             <th>Bölüm</th>
                                             <th>Nitelik</th>
+                                            <th>Metrekare</th>
+                                            <th>Kul. Amacı</th>
                                             <th>Açıklama</th>
                                         </tr>
                                     </thead>

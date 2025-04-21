@@ -61,14 +61,6 @@ namespace TBYS_WebParts.HukukiTakipListesiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.Label RowCountLbl;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl tbl;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.UpdatePanel upPanel;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -179,49 +171,26 @@ namespace TBYS_WebParts.HukukiTakipListesiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControlRowCountLbl() {
-            global::System.Web.UI.WebControls.Label @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.Label();
-            this.RowCountLbl = @__ctrl;
-            @__ctrl.TemplateControl = this;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "RowCountLbl";
-            @__ctrl.Text = "";
-            @__ctrl.CssClass = "float-end text-end";
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControltbl() {
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
-            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
-            this.tbl = @__ctrl;
-            @__ctrl.TemplateControl = this;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "table loader");
-            @__ctrl.ID = "tbl";
-            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        <input id=\"globalFilter\" placeholder=\"Aranacak Kelime\" " +
-                        "size=\"30\" />\r\n                        <div id=\"tblfilter\" class=\"table\"></div>\r\n" +
-                        "                        <div id=\"messages\"></div>\r\n                    "));
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControl__control2(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
-            global::System.Web.UI.WebControls.Label @__ctrl1;
-            @__ctrl1 = this.@__BuildControlRowCountLbl();
-            @__parser.AddParsedSubObject(@__ctrl1);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl2;
-            @__ctrl2 = this.@__BuildControltbl();
-            @__parser.AddParsedSubObject(@__ctrl2);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                    <div class=""form-group"">
+                        <table id=""CustomDataTable"" class=""table table-striped row-border"" width=""100%"">
+                            <thead>
+                                <tr>
+                                    <th>Dosya No</th>
+                                    <th>Sözleşme No</th>
+                                    <th>Kiracı</th>
+                                    <th>İlk Sözleşme</th>
+                                    <th>İşlem Tarihi</th>
+                                    <th>Borç (Ana Para)</th>
+                                    <th>Borç (Faiz) </th>
+                                    <th>Açıklama</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]

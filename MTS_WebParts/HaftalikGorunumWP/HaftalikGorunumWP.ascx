@@ -6,9 +6,10 @@
 <%@ Import Namespace="Microsoft.SharePoint" %> 
 <%@ Register Tagprefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="HaftalikGorunumWP.ascx.cs" Inherits="MTS_WebParts.HaftalikGorunumWP.HaftalikGorunumWP" %>
-<link rel="stylesheet" href="/Style%20Library/tskgv/js/fullcalendar/main.css">
-<script type="text/javascript" src="/Style%20Library/tskgv/js/fullcalendar/main.js"></script>
-<script type="text/javascript" src="/Style%20Library/tskgv/js/fullcalendar/locales/tr.js"></script>
+
+
+<script type="text/javascript" src="/Style%20Library/lib/fullcalendar/index.global.js"></script>
+<script type="text/javascript" src="/Style%20Library/lib/fullcalendar/locales/tr.global.min.js"></script>
 
 
 <style>

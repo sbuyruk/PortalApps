@@ -13,8 +13,10 @@ namespace Model.TBYS
     {
         public int TasinmazId { get; set; }
         public string BolumNo { get; set; }
-        public string Aciklama { get; set; }
         public string Nitelik{ get; set; }
+        public decimal Metrekare { get; set; }
+        public string KullanimAmaci { get; set; }
+        public string Aciklama { get; set; }
 
         public override T Select<T>(int id)
         {

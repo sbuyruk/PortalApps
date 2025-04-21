@@ -32,11 +32,21 @@
         <div class="card-body p-0" id="MainCardDiv" runat="server">
             <asp:UpdatePanel ID="upPanel" runat="server">
                 <ContentTemplate>
-                    <asp:Label ID="RowCountLbl" runat="server" Text="" CssClass="float-end text-end"></asp:Label>
-                    <div class="table loader" id="tbl" runat="server">
-                        <input id="globalFilter" placeholder="Aranacak Kelime" size="30" />
-                        <div id="tblfilter" class="table"></div>
-                        <div id="messages"></div>
+                    <div class="form-group">
+                        <table id="CustomDataTable" class="table table-striped row-border" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Dosya No</th>
+                                    <th>Sözleşme No</th>
+                                    <th>Kiracı</th>
+                                    <th>İlk Sözleşme</th>
+                                    <th>İşlem Tarihi</th>
+                                    <th>Borç (Ana Para)</th>
+                                    <th>Borç (Faiz) </th>
+                                    <th>Açıklama</th>
+                                </tr>
+                            </thead>
+                        </table>
                     </div>
                 </ContentTemplate>
             </asp:UpdatePanel>

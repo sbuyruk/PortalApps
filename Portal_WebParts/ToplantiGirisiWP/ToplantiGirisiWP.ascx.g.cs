@@ -2161,19 +2161,19 @@ namespace Portal_WebParts.ToplantiGirisiWP {
                     ".datepicker(\'getDate\'));\r\n            newDate.setDate(newDate.getDate());\r\n\r\n   " +
                     "     });\r\n\r\n\r\n    }\r\n</script>\r\n\r\n<script type=\"text/javascript\">\r\n    function " +
                     "OpenSilModal() {\r\n        var myModalInstance = bootstrap.Modal.getOrCreateInsta" +
-                    "nce(document.getElementById(\'ModalSilDiv\'));\n        myModalInstance.show();\r\n  " +
-                    "  }\r\n    function OpenOnayModal() {\r\n        var myModalInstance = bootstrap.Mod" +
-                    "al.getOrCreateInstance(document.getElementById(\'ModalOnayDiv\'));\n        myModal" +
-                    "Instance.show();\r\n    }\r\n    function CloseOnayModal() {\r\n        $(\"#ModalOnayD" +
-                    "iv\").modal(\'hide\');\r\n        $(\'.modal-backdrop\').remove()\r\n        $(document.b" +
-                    "ody).removeClass(\"modal-open\");\r\n    }\r\n    function KatilimciSecimiModal() {\r\n " +
-                    "       var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getEle" +
-                    "mentById(\'KatilimciSecimiModal\'));\n        myModalInstance.show();\r\n    }\r\n\r\n\r\n " +
-                    "   function KatilimciSecildiBtnClick(thisRow, katilimciId, bilgi) {\r\n\r\n\r\n       " +
-                    " var table = $(\'#CustomModalDataTable\').DataTable();\r\n        var pnum = table.p" +
-                    "age.info().page;\r\n\r\n        var indexes = table.row(thisRow).index();\r\n        t" +
-                    "able.rows(indexes).remove().draw();\r\n\r\n\r\n        table.page(pnum).draw(false);\r\n" +
-                    "\r\n        document.getElementById(\'");
+                    "nce(document.getElementById(\'ModalSilDiv\'));\r\n        myModalInstance.show();\r\n " +
+                    "   }\r\n    function OpenOnayModal() {\r\n        var myModalInstance = bootstrap.Mo" +
+                    "dal.getOrCreateInstance(document.getElementById(\'ModalOnayDiv\'));\r\n        myMod" +
+                    "alInstance.show();\r\n    }\r\n    function CloseOnayModal() {\r\n        $(\"#ModalOna" +
+                    "yDiv\").modal(\'hide\');\r\n        $(\'.modal-backdrop\').remove()\r\n        $(document" +
+                    ".body).removeClass(\"modal-open\");\r\n    }\r\n    function KatilimciSecimiModal() {\r" +
+                    "\n        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getE" +
+                    "lementById(\'KatilimciSecimiModal\'));\r\n        myModalInstance.show();\r\n    }\r\n\r\n" +
+                    "\r\n    function KatilimciSecildiBtnClick(thisRow, katilimciId, bilgi) {\r\n\r\n\r\n    " +
+                    "    var table = $(\'#CustomModalDataTable\').DataTable();\r\n        var pnum = tabl" +
+                    "e.page.info().page;\r\n\r\n        var indexes = table.row(thisRow).index();\r\n      " +
+                    "  table.rows(indexes).remove().draw();\r\n\r\n\r\n        table.page(pnum).draw(false)" +
+                    ";\r\n\r\n        document.getElementById(\'");
                          @__w.Write( paramToplantiKatilimciIdLbl.ClientID);
 
             @__w.Write("\').value = katilimciId;\r\n        document.getElementById(\'");

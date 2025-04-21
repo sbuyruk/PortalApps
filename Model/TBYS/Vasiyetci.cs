@@ -201,9 +201,10 @@ namespace Model.TBYS
                 VefatEdenVasiyetcilerHaricStr = string.Format(@" WHERE SAGVEFAT={0} ", ProjeConstants.BAGISCI_SAG_INT);
             }
             string sqlString = string.Format(@"
-                 SELECT A.*,A.Id VasiyetciId, B.IlAdi, C.IlceAdi FROM Vasiyetci_Table A
-                LEFT JOIN Il_Table B on A.IkametIli = B.Id
-                LEFT JOIN Ilce_Table C on A.IkametIlcesi = C.Id
+                SELECT A.*,A.Id VasiyetciId, B.IlAdi, C.IlceAdi, D.KisaAdi Bolge FROM Vasiyetci_Table A
+                    LEFT JOIN Il_Table B on A.IkametIli = B.Id
+                    LEFT JOIN Ilce_Table C on A.IkametIlcesi = C.Id
+                    LEFT JOIN Bolge_Table D on D.Id = B.BolgeId
                 {0}                                                    
                 ", VefatEdenVasiyetcilerHaricStr);
 

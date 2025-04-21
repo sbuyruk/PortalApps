@@ -1081,32 +1081,31 @@ namespace MTS_WebParts.HaftalikGorunumWP {
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
         private void @__Render__control1(System.Web.UI.HtmlTextWriter @__w, System.Web.UI.Control parameterContainer) {
-            @__w.Write("\r\n<link rel=\"stylesheet\" href=\"/Style%20Library/tskgv/js/fullcalendar/main.css\">\r" +
-                    "\n<script type=\"text/javascript\" src=\"/Style%20Library/tskgv/js/fullcalendar/main" +
-                    ".js\"></script>\r\n<script type=\"text/javascript\" src=\"/Style%20Library/tskgv/js/fu" +
-                    "llcalendar/locales/tr.js\"></script>\r\n\r\n\r\n<style>\r\n  body {\r\n    /*margin-top: 40" +
-                    "px;*/\r\n    font-size: 14px;\r\n    font-family: Arial, Helvetica Neue, Helvetica, " +
-                    "sans-serif;\r\n  }\r\n\r\n  #external-events {\r\n    position: fixed;\r\n/*    left: 20px" +
-                    ";\r\n    top: 20px;*/\r\n    width: 200px;\r\n    padding: 0 10px;\r\n    border: 1px so" +
-                    "lid #ccc;\r\n    background: #eee;\r\n    text-align: left;\r\n  }\r\n\r\n  #external-even" +
-                    "ts h4 {\r\n    font-size: 16px;\r\n    margin-top: 0;\r\n    padding-top: 1em;\r\n  }\r\n\r" +
-                    "\n  #external-events .fc-event {\r\n    margin: 3px 0;\r\n    cursor: move;\r\n  }\r\n\r\n " +
-                    " #external-events p {\r\n    margin: 1.5em 0;\r\n    font-size: 11px;\r\n    color: #6" +
-                    "66;\r\n  }\r\n\r\n  #external-events p input {\r\n    margin: 0;\r\n    vertical-align: mi" +
-                    "ddle;\r\n  }\r\n\r\n  #calendar-wrap {\r\n    /*margin-left: 200px;*/\r\n  }\r\n\r\n  #calenda" +
-                    "r {\r\n/*    max-width: 1100px;\r\n    margin: 0 auto;*/\r\n    margin-left:220px;\r\n  " +
-                    "}\r\n  .title-wrap {\r\n    white-space: normal !important;\r\n  }\r\n    .iptal-edildi " +
-                    "{\r\n        /*text-decoration: line-through !important;*/\r\n          background-i" +
-                    "mage: url(\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjA" +
-                    "wMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzE" +
-                    "wJyBmaWxsPSd3aGl0ZScvPgogIDxwYXRoIGQ9J00tMSwxIGwyLC0yCiAgICAgICAgICAgTTAsMTAgbDE" +
-                    "wLC0xMAogICAgICAgICAgIE05LDExIGwyLC0yJyBzdHJva2U9J2JsYWNrJyBzdHJva2Utd2lkdGg9JzE" +
-                    "nLz4KPC9zdmc+Cg==\"); \r\n          background-repeat: repeat;    }\r\n\r\n  #globalWra" +
-                    "pper * {\r\n    z-index: auto;\r\n  }\r\n</style>\r\n<script type=\"text/javascript\">\r\n  " +
-                    "  function OpenToplantiModal() {\r\n        var myModalInstance = bootstrap.Modal." +
-                    "getOrCreateInstance(document.getElementById(\'ToplantiDetaylariModal\'));\n        " +
-                    "myModalInstance.show();\r\n    }\r\n    function ToplantiDetaylariModal(toplantiId) " +
-                    "{\r\n        document.getElementById(\'");
+            @__w.Write("\r\n\r\n\r\n<script type=\"text/javascript\" src=\"/Style%20Library/lib/fullcalendar/index" +
+                    ".global.js\"></script>\r\n<script type=\"text/javascript\" src=\"/Style%20Library/lib/" +
+                    "fullcalendar/locales/tr.global.min.js\"></script>\r\n\r\n\r\n<style>\r\n  body {\r\n    /*m" +
+                    "argin-top: 40px;*/\r\n    font-size: 14px;\r\n    font-family: Arial, Helvetica Neue" +
+                    ", Helvetica, sans-serif;\r\n  }\r\n\r\n  #external-events {\r\n    position: fixed;\r\n/* " +
+                    "   left: 20px;\r\n    top: 20px;*/\r\n    width: 200px;\r\n    padding: 0 10px;\r\n    b" +
+                    "order: 1px solid #ccc;\r\n    background: #eee;\r\n    text-align: left;\r\n  }\r\n\r\n  #" +
+                    "external-events h4 {\r\n    font-size: 16px;\r\n    margin-top: 0;\r\n    padding-top:" +
+                    " 1em;\r\n  }\r\n\r\n  #external-events .fc-event {\r\n    margin: 3px 0;\r\n    cursor: mo" +
+                    "ve;\r\n  }\r\n\r\n  #external-events p {\r\n    margin: 1.5em 0;\r\n    font-size: 11px;\r\n" +
+                    "    color: #666;\r\n  }\r\n\r\n  #external-events p input {\r\n    margin: 0;\r\n    verti" +
+                    "cal-align: middle;\r\n  }\r\n\r\n  #calendar-wrap {\r\n    /*margin-left: 200px;*/\r\n  }\r" +
+                    "\n\r\n  #calendar {\r\n/*    max-width: 1100px;\r\n    margin: 0 auto;*/\r\n    margin-le" +
+                    "ft:220px;\r\n  }\r\n  .title-wrap {\r\n    white-space: normal !important;\r\n  }\r\n    ." +
+                    "iptal-edildi {\r\n        /*text-decoration: line-through !important;*/\r\n         " +
+                    " background-image: url(\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy" +
+                    "53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJy" +
+                    "BoZWlnaHQ9JzEwJyBmaWxsPSd3aGl0ZScvPgogIDxwYXRoIGQ9J00tMSwxIGwyLC0yCiAgICAgICAgIC" +
+                    "AgTTAsMTAgbDEwLC0xMAogICAgICAgICAgIE05LDExIGwyLC0yJyBzdHJva2U9J2JsYWNrJyBzdHJva2" +
+                    "Utd2lkdGg9JzEnLz4KPC9zdmc+Cg==\"); \r\n          background-repeat: repeat;    }\r\n\r" +
+                    "\n  #globalWrapper * {\r\n    z-index: auto;\r\n  }\r\n</style>\r\n<script type=\"text/jav" +
+                    "ascript\">\r\n    function OpenToplantiModal() {\r\n        var myModalInstance = boo" +
+                    "tstrap.Modal.getOrCreateInstance(document.getElementById(\'ToplantiDetaylariModal" +
+                    "\'));\n        myModalInstance.show();\r\n    }\r\n    function ToplantiDetaylariModal" +
+                    "(toplantiId) {\r\n        document.getElementById(\'");
                          @__w.Write( paramToplantiIdLbl.ClientID);
 
             @__w.Write("\').value = toplantiId;\r\n        document.getElementById(\'");

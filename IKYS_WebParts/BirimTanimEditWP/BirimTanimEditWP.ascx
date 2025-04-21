@@ -12,47 +12,44 @@
         <div class="card-header" id="CardHeader" runat="server">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-2">
-                <asp:Label CssClass="col-form-label  btn-outline-primary mb-1" ID="TitleLbl" runat="server" Text="Birim Düzenleme"></asp:Label>
-                <asp:Label CssClass="col-form-label text-white" ID="PersonelIdLbl" Visible="false" runat="server"></asp:Label>
-                <asp:Label CssClass="col-form-label text-secondary float-end" ID="EkranNo" Text="11" runat="server" ></asp:Label>
+                <asp:Label CssClass="form-label text-primary fw-bold" ID="TitleLbl" runat="server" Text="Birim Düzenleme"></asp:Label>
+                <asp:Label CssClass="form-label text-white" ID="PersonelIdLbl" Visible="false" runat="server"></asp:Label>
             </h3>
         </div>
         <div class="card-body">
             <asp:UpdatePanel ID="UpdatePanel" runat="server" >
                 <ContentTemplate>
                     <div class="form-group">
-                        <div class="card border-0">
-                            <div class="form-group m-0">
-                                <label class="col-form-label" for="AdiTxt">Birim Adı</label>
-                                <asp:RequiredFieldValidator runat="server" ControlToValidate="AdiTxt" ForeColor="Red" ErrorMessage="Zorunlu Alan"> </asp:RequiredFieldValidator>
-                                <asp:TextBox ID="AdiTxt" runat="server" class="form-control" ToolTip="Adı" type="text"></asp:TextBox>
-                            </div>
-                            <div class="form-group m-0">
-                                <label class="col-form-label" for="KisaAdiTxt">Birim Kısaltması</label>
-                                <asp:RequiredFieldValidator runat="server" ControlToValidate="KisaAdiTxt" ForeColor="Red" ErrorMessage="Zorunlu Alan"> </asp:RequiredFieldValidator>
-                                <asp:TextBox ID="KisaAdiTxt" runat="server" class="form-control" ToolTip="Soyadı" type="text"></asp:TextBox>
-                            </div>
-
-                            <div class="form-group m-0">
-                                <label class="col-form-label" for="AmirDDL">Birim Amiri</label>
-                                <asp:DropDownList ID="AmirDDL" runat="server" class="form-control " style="height:auto"></asp:DropDownList>
-                            </div>
-                            <div class="row">
-                                <div class="form-group col-8 m-0">
-                                    <label class="col-form-label" for="UstBirimDDL">Üst Birim</label>
-                                    <asp:DropDownList ID="UstBirimDDL" runat="server" class="form-control " style="height:auto"></asp:DropDownList>
-                                </div>
-                                <div class="form-group col-4 m-0">
-                                    <label class="col-form-label text-white" for="AktifChk">.... ... ...</label>
-                                    <asp:CheckBox ID="AktifChk" CssClass="form-control" runat="server" Text=". Aktif" Checked="true" TextAlign="Right"  />                                        
-                                </div>
-                                                                <div class="form-group col-4 m-0">
-                                    <label class="col-form-label text-white" for="AktifChk">.... ... ...</label>
-                                    <asp:CheckBox ID="BirimKaldirildiChk" CssClass="form-control" runat="server" Text=". Birim Kaldırıldı" Checked="true" TextAlign="Right"  />                                        
-                                </div>
-                            </div>
-                            
+                        <div class="form-group ">
+                            <label class="col-form-label" for="AdiTxt">Birim Adı</label>
+                            <asp:RequiredFieldValidator runat="server" ControlToValidate="AdiTxt" ForeColor="Red" ErrorMessage="Zorunlu Alan"> </asp:RequiredFieldValidator>
+                            <asp:TextBox ID="AdiTxt" runat="server" class="form-control" ToolTip="Adı" type="text"></asp:TextBox>
                         </div>
+                        <div class="form-group ">
+                            <label class="col-form-label" for="KisaAdiTxt">Birim Kısaltması</label>
+                            <asp:RequiredFieldValidator runat="server" ControlToValidate="KisaAdiTxt" ForeColor="Red" ErrorMessage="Zorunlu Alan"> </asp:RequiredFieldValidator>
+                            <asp:TextBox ID="KisaAdiTxt" runat="server" class="form-control" ToolTip="Soyadı" type="text"></asp:TextBox>
+                        </div>
+
+                        <div class="form-group ">
+                            <label class="form-label fw-semibold" for="AmirDDL">Birim Amiri</label>
+                            <asp:DropDownList ID="AmirDDL" runat="server" class="form-control form-select form-select-lg"></asp:DropDownList>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-8 ">
+                                <label class="form-label fw-semibold" for="UstBirimDDL">Üst Birim</label>
+                                <asp:DropDownList ID="UstBirimDDL" runat="server" class="form-control form-select form-select-lg" Style="height: auto"></asp:DropDownList>
+                            </div>
+                            <div class="form-group col-4 ">
+                                <label class="col-form-label text-white" for="AktifChk">.... ... ...</label>
+                                <asp:CheckBox ID="AktifChk" CssClass="form-control" runat="server" Text=". Aktif" Checked="true" TextAlign="Right" />
+                            </div>
+                            <div class="form-group col-4 ">
+                                <label class="col-form-label text-white" for="AktifChk">.... ... ...</label>
+                                <asp:CheckBox ID="BirimKaldirildiChk" CssClass="form-control" runat="server" Text=". Birim Kaldırıldı" Checked="true" TextAlign="Right" />
+                            </div>
+                        </div>
+
                     </div>
                 </ContentTemplate>
                 <Triggers>

@@ -822,7 +822,7 @@ namespace Model.TBYS
         {
             string sqlString = string.Format(@"
                 SELECT  A.KatMulkiyeti, A.KullanimSekli,A.Cinsi,A.MulkiyetSekli,D.Adi,D.Soyadi, A.Adres,A.Ilcesi,A.Ili, 
-                    A.AdaNo,A.ParselNo,A.Yuzolcumu,A.ArsaPayi ,A.EnvanterdeMi,
+                    A.AdaNo,A.ParselNo,A.Yuzolcumu,A.ArsaPayi ,A.EnvanterdeMi,A.Metrekare,A.KullanimSekli,
 					B.Id BolumId,B.BolumNo, B.Aciklama,B.Nitelik
                 FROM Tasinmaz_Table A
 	                Left Join BagimsizBolum_Table B ON B.TasinmazId=A.Id

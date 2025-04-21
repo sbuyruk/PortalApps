@@ -22,8 +22,8 @@
     }
     function CallButtonClick(kiraciId) {
         document.getElementById('<%= paramKiraciIdLbl.ClientID%>').value = kiraciId;
-            document.getElementById('<%= KiraciSecNowBtn.ClientID%>').click();
-        }
+        document.getElementById('<%= KiraciSecNowBtn.ClientID%>').click();
+    }
 </script>
 <div class="container ">
     <div class="card shadow">
@@ -105,7 +105,7 @@
             <div class="modal-body">
                 <div style="display: none">
                     <input id="paramKiraciIdLbl" runat="server" type="text" />
-                    <asp:LinkButton ID="KiraciSecNowBtn" runat="server"  CausesValidation="false" OnClientClick="{return true;};" OnClick="KiraciSecNowBtn_Click"></asp:LinkButton>
+                    <asp:LinkButton ID="KiraciSecNowBtn" runat="server" CausesValidation="false" OnClientClick="{return true;};" OnClick="KiraciSecNowBtn_Click"></asp:LinkButton>
                 </div>
                 <div>
                     <div class="text-center">
@@ -113,10 +113,19 @@
                             <asp:Label ID="Label1" class="col-form-label " runat="server" Text="Kiracı Listesi"></asp:Label></h3>
                     </div>
                     <div class="card-body">
-                        <div class="table loader" id="tbl" runat="server">
-                            <input id="globalFilter" placeholder="Aranacak Kelime" size="30" />
-                            <div id="tblfilter" class="table"></div>
-                            <div id="messages"></div>
+                        <div class="form-group">
+                            <table id="CustomModalDataTable" class="table table-striped table-bordered table-sm small" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Kiracı No</th>
+                                        <th>Adı Soyadi</th>
+                                        <th>TCKimlikNo</th>
+                                        <th>İl/İlçe</th>
+                                        <th>Adres</th>
+                                        <th>Seç</th>
+                                    </tr>
+                                </thead>
+                            </table>
                         </div>
                     </div>
                 </div>

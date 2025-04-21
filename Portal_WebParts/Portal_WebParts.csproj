@@ -131,14 +131,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GununSozuWP.ascx</DependentUpon>
     </Compile>
-    <Compile Include="KayanResimWP\KayanResimWP.ascx.cs">
-      <DependentUpon>KayanResimWP.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="KayanResimWP\KayanResimWP.ascx.g.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>KayanResimWP.ascx</DependentUpon>
-    </Compile>
     <Compile Include="KutlamaMoveWP\KutlamaMoveWP.ascx.cs">
       <DependentUpon>KutlamaMoveWP.ascx</DependentUpon>
     </Compile>
@@ -234,10 +226,6 @@
     <None Include="GununSozuWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{ad9499f5-023f-46f1-95a9-1d4921399b67}</SharePointProjectItemId>
     </None>
-    <None Include="KayanResimWP\KayanResimWP.webpart" />
-    <None Include="KayanResimWP\SharePointProjectItem.spdata">
-      <SharePointProjectItemId>{d3b3a983-6c56-4864-ac84-5e1dbe04c9df}</SharePointProjectItemId>
-    </None>
     <None Include="key.snk" />
     <None Include="KutlamaMoveWP\KutlamaMoveWP.webpart" />
     <None Include="KutlamaMoveWP\SharePointProjectItem.spdata">
@@ -312,11 +300,6 @@
     <Content Include="GununSozuWP\GununSozuWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>GununSozuWP.ascx.g.cs</LastGenOutput>
-    </Content>
-    <Content Include="KayanResimWP\Elements.xml" />
-    <Content Include="KayanResimWP\KayanResimWP.ascx">
-      <Generator>SharePointWebPartCodeGenerator</Generator>
-      <LastGenOutput>KayanResimWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="KutlamaMoveWP\Elements.xml" />
     <Content Include="KutlamaMoveWP\KutlamaMoveWP.ascx">

@@ -53,10 +53,6 @@ namespace IKYS_WebParts.AileGirisiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.Label EkranNo;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl CardHeader;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -174,7 +170,7 @@ namespace IKYS_WebParts.AileGirisiWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label  btn-outline-success mb-1";
+            @__ctrl.CssClass = "form-label text-success fw-bold";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Aile Bilgileri Girişi";
             return @__ctrl;
@@ -188,23 +184,9 @@ namespace IKYS_WebParts.AileGirisiWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.PersonelIdLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-white";
+            @__ctrl.CssClass = "form-label text-white";
             @__ctrl.ID = "PersonelIdLbl";
             @__ctrl.Visible = false;
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControlEkranNo() {
-            global::System.Web.UI.WebControls.Label @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.Label();
-            this.EkranNo = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-secondary float-end";
-            @__ctrl.ID = "EkranNo";
-            @__ctrl.Text = "3";
             return @__ctrl;
         }
         
@@ -230,10 +212,6 @@ namespace IKYS_WebParts.AileGirisiWP {
             global::System.Web.UI.WebControls.Label @__ctrl3;
             @__ctrl3 = this.@__BuildControlPersonelIdLbl();
             @__parser.AddParsedSubObject(@__ctrl3);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                "));
-            global::System.Web.UI.WebControls.Label @__ctrl4;
-            @__ctrl4 = this.@__BuildControlEkranNo();
-            @__parser.AddParsedSubObject(@__ctrl4);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            </h3>\r\n        "));
             return @__ctrl;
         }
@@ -484,7 +462,7 @@ namespace IKYS_WebParts.AileGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "YakDerecesiDDL";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control ");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control form-select form-select-lg");
             return @__ctrl;
         }
         
@@ -528,7 +506,7 @@ namespace IKYS_WebParts.AileGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "YakMeslekDDL";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control ");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control form-select form-select-lg");
             return @__ctrl;
         }
         
@@ -576,7 +554,7 @@ namespace IKYS_WebParts.AileGirisiWP {
                     <div>
                         <div id=""EkleDiv1"" class=""row alignCenter nopadding"">
                             <div class=""form-group col-sm-2 nopadding"">
-                                <label for=""YakAdiTxt"" class=""col-form-label"">Adi</label>
+                                <label for=""YakAdiTxt"" class=""form-label fw-semibold"">Adi</label>
                                 <div>
                                     "));
             global::System.Web.UI.WebControls.TextBox @__ctrl2;
@@ -586,7 +564,7 @@ namespace IKYS_WebParts.AileGirisiWP {
                                 </div>
                             </div>
                             <div class=""form-group col-sm-2 nopadding"">
-                                <label for=""YakSoyadiTxt"" class=""col-form-label"">Soyadı</label>
+                                <label for=""YakSoyadiTxt"" class=""form-label fw-semibold"">Soyadı</label>
                                 <div>
                                     "));
             global::System.Web.UI.WebControls.TextBox @__ctrl3;
@@ -596,7 +574,7 @@ namespace IKYS_WebParts.AileGirisiWP {
                                 </div>
                             </div>
                             <div class=""form-group col-sm-2 nopadding"">
-                                <label for=""YakTcKimlikNoTxt"" class=""col-form-label"">TC Kimlik No</label>
+                                <label for=""YakTcKimlikNoTxt"" class=""form-label fw-semibold"">TC Kimlik No</label>
                                 <div>
                                     "));
             global::System.Web.UI.WebControls.TextBox @__ctrl4;
@@ -606,7 +584,7 @@ namespace IKYS_WebParts.AileGirisiWP {
                                 </div>
                             </div>
                             <div class=""form-group col-sm-2 nopadding"">
-                                <label for=""YakDerecesiDDL"" class=""col-form-label"">Yakınlık</label>
+                                <label for=""YakDerecesiDDL"" class=""form-label fw-semibold"">Yakınlık</label>
                                 <div>
                                     "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl5;
@@ -616,7 +594,7 @@ namespace IKYS_WebParts.AileGirisiWP {
                                 </div>
                             </div>
                             <div class=""form-group col-sm-4 nopadding"">
-                                <label for=""OkulTxt"" class=""col-form-label"">Okul</label>
+                                <label for=""OkulTxt"" class=""form-label fw-semibold"">Okul</label>
                                 <div>
                                     "));
             global::System.Web.UI.WebControls.TextBox @__ctrl6;
@@ -629,7 +607,7 @@ namespace IKYS_WebParts.AileGirisiWP {
                         <hr />
                         <div id=""EkleDiv2"" class=""row alignCenter nopadding"">
                             <div class=""form-group col-sm-2 nopadding"">
-                                <label class=""col-form-label"">Dog.Tarihi</label>
+                                <label class=""form-label fw-semibold"">Dog.Tarihi</label>
                                 <div>
                                     "));
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl7;
@@ -639,7 +617,7 @@ namespace IKYS_WebParts.AileGirisiWP {
                                 </div>
                             </div>
                             <div class=""form-group col-sm-2 nopadding"">
-                                <label class=""col-form-label"" for=""YakMeslekDDL"">Meslek</label>
+                                <label class=""form-label fw-semibold"" for=""YakMeslekDDL"">Meslek</label>
                                 <div>
                                     "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl8;
@@ -649,7 +627,7 @@ namespace IKYS_WebParts.AileGirisiWP {
                                 </div>
                             </div>
                             <div class=""form-group col-sm-4 nopadding"">
-                                <label for=""YakTelefonTxt"" class=""col-form-label"">Telefon</label>
+                                <label for=""YakTelefonTxt"" class=""form-label fw-semibold"">Telefon</label>
                                 <div>
                                     "));
             global::System.Web.UI.WebControls.TextBox @__ctrl9;
@@ -659,7 +637,7 @@ namespace IKYS_WebParts.AileGirisiWP {
                                 </div>
                             </div>
                             <div class=""form-group col-sm-2"">
-                                <label class=""col-form-label""></label>
+                                <label class=""form-label fw-semibold""></label>
                                 <div>
                                     "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl10;

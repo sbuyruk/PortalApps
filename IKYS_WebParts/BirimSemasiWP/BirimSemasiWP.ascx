@@ -7,7 +7,7 @@
 <%@ Register Tagprefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="BirimSemasiWP.ascx.cs" Inherits="IKYS_WebParts.BirimSemasiWP.BirimSemasiWP" %>
 
-<link rel="stylesheet" href="/Style%20Library/tskgv/css/Treant.css">
+<link rel="stylesheet" href="/Style%20Library/treant/Treant.css">
 
 
 

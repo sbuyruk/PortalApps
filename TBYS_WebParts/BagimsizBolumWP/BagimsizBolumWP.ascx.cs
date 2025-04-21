@@ -3,6 +3,7 @@ using Model.TBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
@@ -100,6 +101,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
                 ViewState["EnvanterdeMi"] = value;
             }
         }
+        private IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
         protected void Page_Load(object sender, EventArgs e)
         {
             Tasinmaz tasinmaz = new Tasinmaz();
@@ -123,6 +125,10 @@ namespace TBYS_WebParts.BagimsizBolumWP
             BolumCell.Text = "Bölüm No";
             TableHeaderCell NitelikCell = new TableHeaderCell();
             NitelikCell.Text = "Nitelik";
+            TableHeaderCell MetrekareCell = new TableHeaderCell();
+            MetrekareCell.Text = "Metrekare";
+            TableHeaderCell KullanimAmaciCell = new TableHeaderCell();
+            KullanimAmaciCell.Text = "Kullanım Amacı";
             TableHeaderCell AciklamaCell = new TableHeaderCell();
             AciklamaCell.Text = "Açıklama";
             TableHeaderCell DuzenleCell = new TableHeaderCell();
@@ -135,6 +141,8 @@ namespace TBYS_WebParts.BagimsizBolumWP
             th.Controls.Add(AdresCell);
             th.Controls.Add(BolumCell);
             th.Controls.Add(NitelikCell);
+            th.Controls.Add(MetrekareCell);
+            th.Controls.Add(KullanimAmaciCell);
             th.Controls.Add(AciklamaCell);
             th.Controls.Add(DuzenleCell);
             th.Controls.Add(SilCell);
@@ -169,6 +177,14 @@ namespace TBYS_WebParts.BagimsizBolumWP
                 TableCell NitelikCell = new TableCell();
                 NitelikCell.Text = bagimsizBolum.Nitelik;
                 row.Controls.Add(NitelikCell);
+                
+                TableCell MetrekareCell = new TableCell();
+                MetrekareCell.Text = bagimsizBolum.Metrekare.ToString("N", culturInfo);
+                row.Controls.Add(MetrekareCell);
+
+                TableCell KullanimAmaciCell = new TableCell();
+                KullanimAmaciCell.Text = bagimsizBolum.KullanimAmaci;
+                row.Controls.Add(KullanimAmaciCell);
 
                 TableCell AciklamaCell = new TableCell();
                 AciklamaCell.Text = bagimsizBolum.Aciklama;
@@ -247,6 +263,8 @@ namespace TBYS_WebParts.BagimsizBolumWP
             BagimsizBolumHeaderLbl.InnerText = "Bağımsız Bölüm Ekleme";
             AdresTxt.Text = tasinmaz.Adres;
             BolumNoTxt.Text = string.Empty;
+            MetrekareTxt.Text = string.Empty;
+            UtilityHelper.SetDDLValue(KullanimAmaciDDL, "Mesken");
             AciklamaTxt.Text = string.Empty;
 
             AciklamaTxt.Enabled = true;
@@ -266,6 +284,8 @@ namespace TBYS_WebParts.BagimsizBolumWP
             AdresTxt.Text = tasinmaz.Adres;
             BolumNoTxt.Text = bagimsizBolum.BolumNo;
             NitelikTxt.Text = bagimsizBolum.Nitelik;
+            MetrekareTxt.Text = bagimsizBolum.Metrekare.ToString("N", culturInfo);
+            KullanimAmaciDDL.SelectedValue = bagimsizBolum.KullanimAmaci;
             AciklamaTxt.Text = bagimsizBolum.Aciklama;
 
             AciklamaTxt.Enabled = true;
@@ -275,8 +295,21 @@ namespace TBYS_WebParts.BagimsizBolumWP
             GuncelleBtn.Visible = true;
             SilBtn.Visible = false;
             MessageLbl.Visible = false;
+            KullanimAmaciDDLDoldur();
             UtilityHelper.ScriptCalistir("BagimsizBolumModal();");
         }
+
+        private void KullanimAmaciDDLDoldur()
+        {
+            KullanimAmaciDDL.Items.Clear();
+            KullanimAmaciDDL.Items.Add("Mesken");
+            KullanimAmaciDDL.Items.Add("İşyeri");
+            KullanimAmaciDDL.Items.Add("Arsa");
+            KullanimAmaciDDL.Items.Add("Tarla");
+            KullanimAmaciDDL.Items.Add("Bis");
+            KullanimAmaciDDL.Items.Add("Tesis");
+        }
+
         private void BagimsizBolumSilModalAc(Tasinmaz tasinmaz, BagimsizBolum bagimsizBolum)
         {
             BagimsizBolumHeaderLbl.InnerText = "Bağımsız Bölüm Silme";
@@ -284,6 +317,8 @@ namespace TBYS_WebParts.BagimsizBolumWP
             AdresTxt.Text = tasinmaz.Adres;
             BolumNoTxt.Text = bagimsizBolum.BolumNo;
             NitelikTxt.Text = bagimsizBolum.Nitelik;
+            MetrekareTxt.Text = bagimsizBolum.Metrekare.ToString("N", culturInfo) ;
+            KullanimAmaciDDL.SelectedValue = bagimsizBolum.KullanimAmaci;
             AciklamaTxt.Text = bagimsizBolum.Aciklama;
 
             AciklamaTxt.Enabled = false;
@@ -327,6 +362,8 @@ namespace TBYS_WebParts.BagimsizBolumWP
             BagimsizBolum bagimsizBolum = new BagimsizBolum();
             bagimsizBolum.BolumNo = BolumNoTxt.Text;
             bagimsizBolum.Nitelik = NitelikTxt.Text;
+            bagimsizBolum.Metrekare= MetrekareTxt.Text.ConvertToDecimal();
+            bagimsizBolum.KullanimAmaci=KullanimAmaciDDL.SelectedItem.Text ;
             bagimsizBolum.Aciklama = AciklamaTxt.Text;
             bagimsizBolum.TasinmazId = TasinmazIdQS.ConvertToInt();
             int bagimsizBolumId = bagimsizBolum.Save();
@@ -347,6 +384,8 @@ namespace TBYS_WebParts.BagimsizBolumWP
             {
                 bagimsizBolum.BolumNo = BolumNoTxt.Text;
                 bagimsizBolum.Nitelik = NitelikTxt.Text;
+                bagimsizBolum.Metrekare = MetrekareTxt.Text.ConvertToDecimal();
+                bagimsizBolum.KullanimAmaci = KullanimAmaciDDL.SelectedItem.Text;
                 bagimsizBolum.Aciklama = AciklamaTxt.Text;
                 bagimsizBolum.TasinmazId = TasinmazIdQS.ConvertToInt();
                 if (bagimsizBolum.Update())

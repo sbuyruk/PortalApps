@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Globalization;
+using System.Web.Script.Serialization;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
@@ -118,6 +120,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
                 ViewState["Auth"] = value;
             }
         }
+        private IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
         protected void Page_Load(object sender, EventArgs e)
         {
             Personel personel = PersonelGetir();
@@ -131,7 +134,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
                     FillIsyeriTable(personel);
                     FillIletisimTable(personel);
                     FillAileTable(personel);
-
+                    TabloOlustur(personel);
                 }
             }
             if (personel != null)
@@ -148,6 +151,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
                     FillMazeretIzinHareketleriTable(personel);
                     FillMazeretIzinDonemleriTable(personel);
                     FillDigerIzinlerTable(personel);
+
                 }
             }
         }
@@ -1230,5 +1234,143 @@ namespace IKYS_WebParts.KisiselSayfaWP
             string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
             Page.Response.Redirect(newUrl);
         }
+        #region GorevOnayListesi
+        private void TabloOlustur(Personel personel)
+        {
+            var jsonData = TabloJson(personel); //veri çekilip json a çeviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            UtilityHelper.ScriptCalistir(jsString);
+        }
+        private string TabloJson(Personel personel)
+        {
+            string jSon = string.Empty;
+
+            try
+            {
+                List<GorevOnayListItem> list = GetDataList(personel);
+                var serializer = new JavaScriptSerializer();
+                jSon = serializer.Serialize(list);
+            }
+            catch (Exception exception)
+            {
+                ExceptionHelper exceptionHelper = new ExceptionHelper();
+                exceptionHelper.Exceptions.Add(exception);
+                exceptionHelper.PublishException();
+            }
+            return jSon;
+        }
+        private string CreateDataTable(string jsonData)
+        {
+            string tableString = @"
+             jQuery(document).ready(function () {
+                if ( jQuery.fn.DataTable.isDataTable('#CustomDataTable') ) {
+                    jQuery('#CustomDataTable').DataTable().destroy();
+                }
+                jQuery('#CustomDataTable tbody').empty();
+
+                jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
+                jQuery('#CustomDataTable').DataTable({
+                    'initComplete': function (settings, json) {//tablo yüklendiğinde
+                        var api = this.api();
+                        var row = api.row(function (idx, data, node) { //secilen kayıta gider
+                            return data['Secildi'] == true;
+                        });
+                        if (row.length > 0) {
+                            row.select()
+                                .show()
+                                .draw(false);
+                        }
+                    },
+                    data: " + jsonData + @",
+                    pageLength: 5,
+                    columns: [
+                        { data: 'AdiSoyadi' },
+                        { data: 'GorevinSebebi' },
+                        { data: 'BaslangicTarihi' },
+                        { data: 'BitisTarihi' },
+                        { data: 'GorevinYeri' },
+                        { data: 'Sure' },
+                        { data: 'Yevmiye' },
+
+                    ],
+                    columnDefs: [
+                        { type: 'turkish', targets: [0, 1, 4] },
+                        { width: 300, targets: 1 }
+                    ],
+                    'order': [[3, 'desc']],//sort date desc
+                    'language': {
+                        'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
+                        'decimal': ',',
+                        'thousands': '.'
+                    },
+                    responsive: true,
+                    dom: 'frtip',               
+                });
+            });
+            ";
+            return tableString;
+        }
+        private List<GorevOnayListItem> GetDataList(Personel personel)
+        {
+
+            if (personel == null)
+            {
+                MessageHelper.PublishMessage("Personel bulunamadı", ProjeConstants.MESAJ_HATA);
+                return new List<GorevOnayListItem>();
+            }
+            else
+            {
+                string gorevOnayIdStr = string.Empty;
+                GorevOnay gorevOnay = new GorevOnay();
+                DataTable dataTable = gorevOnay.SelectAllReturnDT(personel.Id);// PersonelIdQS.ConvertToInt());
+
+                List<GorevOnayListItem> list = new List<GorevOnayListItem>();
+
+                DataView dataView = new DataView(dataTable);
+                foreach (DataRowView row in dataView)
+                {
+                    string gorevOnayId = row["GorevOnayId"].ToString();
+                    string secildi = row["Secildi"].ReturnEmptyIfNull().ToString().ToUpper().Equals("TRUE") ? "checked" : string.Empty;
+                    string adiSoyadi = row["AdiSoyadi"].ToString();
+                    string gorevinSebebi = row["GorevinSebebi"].ToString();
+                    string baslangicTarihi = row["BaslangicTarihi"].ReturnEmptyIfNull().ConvertToDatetime().ToString("dd.MM.yyyy HH:mm");
+                    string bitisTarihi = row["BitisTarihi"].ReturnEmptyIfNull().ConvertToDatetime().ToString("dd.MM.yyyy HH:mm");
+                    string gorevinYeri = row["GorevinYeri"].ToString();
+                    string yevmiye = row["Yevmiye"].ReturnZeroIfNull().ConvertToDecimal().ToString("N", culturInfo);
+                    string paraBirimi = row["ParaBirimi"].ReturnEmptyIfNull().ToString();
+                    string sure = row["Sure"].ReturnEmptyIfNull().ToString();
+
+                    GorevOnayListItem gorevOnayListItem = new GorevOnayListItem();
+                    gorevOnayListItem.GorevOnayId = gorevOnayId;
+                    gorevOnayListItem.AdiSoyadi = adiSoyadi;
+                    gorevOnayListItem.GorevinSebebi = gorevinSebebi;
+                    gorevOnayListItem.BaslangicTarihi = baslangicTarihi;
+                    gorevOnayListItem.BitisTarihi = bitisTarihi;
+                    gorevOnayListItem.GorevinYeri = gorevinYeri;
+                    gorevOnayListItem.Yevmiye = yevmiye + " " +paraBirimi;
+                    gorevOnayListItem.Sure = sure;
+
+                    gorevOnayListItem.BaslangicTarihiHidden = row["BaslangicTarihi"].ConvertToDatetime();
+
+                    list.Add(gorevOnayListItem);
+                }
+                return list;
+
+            }
+        }
+        private class GorevOnayListItem
+        {
+            public DateTime BaslangicTarihiHidden { get; set; }
+            public string GorevOnayId { get; set; }
+            public string AdiSoyadi { get; set; }
+            public string GorevinYeri { get; set; }
+            public string BaslangicTarihi { get; set; }
+            public string BitisTarihi { get; set; }
+            public string GorevinSebebi { get; set; }
+            public string Yevmiye { get; set; }
+            public string Sure { get; set; }
+
+        }
+        #endregion
     }
 }

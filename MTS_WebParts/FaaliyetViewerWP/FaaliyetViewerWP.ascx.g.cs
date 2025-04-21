@@ -1182,32 +1182,32 @@ namespace MTS_WebParts.FaaliyetViewerWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__Render__control1(System.Web.UI.HtmlTextWriter @__w, System.Web.UI.Control parameterContainer) {
             @__w.Write("\r\n\r\n<script type=\"text/javascript\" src=\"/Style%20Library/lib/fullcalendar/index.g" +
-                    "lobal.js\"></script>\r\n<script type=\"text/javascript\" src=\"/Style%20Library/tskgv/" +
-                    "js/fullcalendar/locales/tr.js\"></script>\r\n<style>\r\n   \r\n  body {\r\n    /*margin-t" +
-                    "op: 40px;*/\r\n    font-size: 14px;\r\n    font-family: Arial, Helvetica Neue, Helve" +
-                    "tica, sans-serif;\r\n  }\r\n\r\n  #external-events {\r\n    position: fixed;\r\n/*    left" +
-                    ": 20px;\r\n    top: 20px;*/\r\n    width: 200px;\r\n    padding: 0;\r\n    border: 1px s" +
-                    "olid #ccc;\r\n    background: #eee;\r\n    text-align: left;\r\n  }\r\n\r\n  #external-eve" +
-                    "nts h4 {\r\n    font-size: 16px;\r\n    margin-top: 0;\r\n    padding-top: 1em;\r\n  }\r\n" +
-                    "\r\n  #external-events .fc-event {\r\n    margin: 3px 0;\r\n    cursor: move;\r\n  }\r\n\r\n" +
-                    "  #external-events p {\r\n    margin: 1.5em 0;\r\n    font-size: 11px;\r\n    color: #" +
-                    "666;\r\n  }\r\n\r\n  #external-events p input {\r\n    margin: 0;\r\n    vertical-align: m" +
-                    "iddle;\r\n  }\r\n  #calendar {\r\n/*    max-width: 1100px;\r\n    margin: 0 auto;\r\n    m" +
-                    "argin-left:220px;*/\r\n  }\r\n  .title-wrap {\r\n    white-space: normal !important;\r\n" +
-                    "  }\r\n    .iptal-edildi {\r\n        /*text-decoration: line-through !important;*/\r" +
-                    "\n          background-image: url(\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0" +
-                    "cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lk" +
-                    "dGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSd3aGl0ZScvPgogIDxwYXRoIGQ9J00tMSwxIGwyLC0yCiAg" +
-                    "ICAgICAgICAgTTAsMTAgbDEwLC0xMAogICAgICAgICAgIE05LDExIGwyLC0yJyBzdHJva2U9J2JsYWNr" +
-                    "JyBzdHJva2Utd2lkdGg9JzEnLz4KPC9zdmc+Cg==\"); \r\n          background-repeat: repea" +
-                    "t;    }\r\n\r\n  #globalWrapper * {\r\n    z-index: auto;\r\n  }\r\n\r\n</style>\r\n<script ty" +
-                    "pe=\"text/javascript\">\r\n    //excele export ettikten donup sonra kalmasın diye\r\n " +
-                    "   function setFormSubmitToFalse() {\r\n        setTimeout(function () { _spFormOn" +
-                    "SubmitCalled = false; }, 3000);\r\n        return true;\r\n    }\r\n    function OpenT" +
-                    "oplantiModal() {\r\n        var myModalInstance = bootstrap.Modal.getOrCreateInsta" +
-                    "nce(document.getElementById(\'ToplantiDetaylariModal\'));\n        myModalInstance." +
-                    "show();\r\n    }\r\n    function ToplantiDetaylariModal(toplantiId) {\r\n        docum" +
-                    "ent.getElementById(\'");
+                    "lobal.js\"></script>\r\n<script type=\"text/javascript\" src=\"/Style%20Library/lib/fu" +
+                    "llcalendar/locales/tr.global.min.js\"></script>\r\n<style>\r\n   \r\n  body {\r\n    /*ma" +
+                    "rgin-top: 40px;*/\r\n    font-size: 14px;\r\n    font-family: Arial, Helvetica Neue," +
+                    " Helvetica, sans-serif;\r\n  }\r\n\r\n  #external-events {\r\n    position: fixed;\r\n/*  " +
+                    "  left: 20px;\r\n    top: 20px;*/\r\n    width: 200px;\r\n    padding: 0;\r\n    border:" +
+                    " 1px solid #ccc;\r\n    background: #eee;\r\n    text-align: left;\r\n  }\r\n\r\n  #extern" +
+                    "al-events h4 {\r\n    font-size: 16px;\r\n    margin-top: 0;\r\n    padding-top: 1em;\r" +
+                    "\n  }\r\n\r\n  #external-events .fc-event {\r\n    margin: 3px 0;\r\n    cursor: move;\r\n " +
+                    " }\r\n\r\n  #external-events p {\r\n    margin: 1.5em 0;\r\n    font-size: 11px;\r\n    co" +
+                    "lor: #666;\r\n  }\r\n\r\n  #external-events p input {\r\n    margin: 0;\r\n    vertical-al" +
+                    "ign: middle;\r\n  }\r\n  #calendar {\r\n/*    max-width: 1100px;\r\n    margin: 0 auto;\r" +
+                    "\n    margin-left:220px;*/\r\n  }\r\n  .title-wrap {\r\n    white-space: normal !import" +
+                    "ant;\r\n  }\r\n    .iptal-edildi {\r\n        /*text-decoration: line-through !importa" +
+                    "nt;*/\r\n          background-image: url(\"data:image/svg+xml;base64,PHN2ZyB4bWxucz" +
+                    "0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3" +
+                    "Qgd2lkdGg9JzEwJyBoZWlnaHQ9JzEwJyBmaWxsPSd3aGl0ZScvPgogIDxwYXRoIGQ9J00tMSwxIGwyLC" +
+                    "0yCiAgICAgICAgICAgTTAsMTAgbDEwLC0xMAogICAgICAgICAgIE05LDExIGwyLC0yJyBzdHJva2U9J2" +
+                    "JsYWNrJyBzdHJva2Utd2lkdGg9JzEnLz4KPC9zdmc+Cg==\"); \r\n          background-repeat:" +
+                    " repeat;    }\r\n\r\n  #globalWrapper * {\r\n    z-index: auto;\r\n  }\r\n\r\n</style>\r\n<scr" +
+                    "ipt type=\"text/javascript\">\r\n    //excele export ettikten donup sonra kalmasın d" +
+                    "iye\r\n    function setFormSubmitToFalse() {\r\n        setTimeout(function () { _sp" +
+                    "FormOnSubmitCalled = false; }, 3000);\r\n        return true;\r\n    }\r\n    function" +
+                    " OpenToplantiModal() {\r\n        var myModalInstance = bootstrap.Modal.getOrCreat" +
+                    "eInstance(document.getElementById(\'ToplantiDetaylariModal\'));\n        myModalIns" +
+                    "tance.show();\r\n    }\r\n    function ToplantiDetaylariModal(toplantiId) {\r\n       " +
+                    " document.getElementById(\'");
                          @__w.Write( paramToplantiIdLbl.ClientID);
 
             @__w.Write("\').value = toplantiId;\r\n        document.getElementById(\'");

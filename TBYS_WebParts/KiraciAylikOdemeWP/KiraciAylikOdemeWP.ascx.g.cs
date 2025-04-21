@@ -941,15 +941,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         private void @__Render__control1(System.Web.UI.HtmlTextWriter @__w, System.Web.UI.Control parameterContainer) {
             @__w.Write(@"
 
-<style>
-    .medium-font {
-        font-size: medium;
-    }
-    .custom-select{
-        margin-top:5px;
-        height:34px;
-    }
-</style>
+
 <script type=""text/javascript"">
 
     
@@ -986,38 +978,38 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
                     "           { data: \"KiraBedeli\", type: \"decimal\" },\r\n                { data: \"Od" +
                     "emeTarihi\" },\r\n                { data: \"OdenenTutar\", type: \"decimal\" },\r\n      " +
                     "          { data: \"Aciklama\" },\r\n                { data: \"Duzenle\" },\r\n         " +
-                    "   ],\r\n            \"columnDefs\": [\r\n                { className: \"text-end\", \"" +
-                    "targets\": [10] },\r\n                { className: \"text-end\", \"targets\": [12] }\r" +
-                    "\n            ],\r\n            \"language\": {\r\n                \"url\": \"http://tskgv" +
-                    "-portal/OrtakBelgeler/Turkish.txt\",\r\n                \"decimal\": \",\",\r\n          " +
-                    "      \"thousands\": \".\"\r\n            },\r\n            \"order\": [[11, \"desc\"], [0, " +
-                    "\"asc\"], [2, \"asc\"]],\r\n            responsive: true,\r\n            dom: \'Bfrtip\',\r" +
-                    "\n            buttons: [\r\n                {\r\n                    extend: \'print\'," +
-                    "\r\n                    exportOptions: {\r\n                        columns: \':visib" +
-                    "le\'\r\n                    }\r\n                },\r\n                {\r\n             " +
-                    "       extend: \'excel\',\r\n                    exportOptions: {\r\n                 " +
-                    "       columns: \':visible\',\r\n                        format: {\r\n                " +
-                    "            body: function (data, row, column, node) {\r\n                        " +
-                    "       \r\n                                if (column === 3) {\r\n                  " +
-                    "                  var kirabedeli = data.replace(\'.\', \'#\');\r\n                    " +
-                    "                kirabedeli = kirabedeli.replace(\',\', \'.\');\r\n                    " +
-                    "                kirabedeli = kirabedeli.replace(\'#\', \',\');\r\n                    " +
-                    "                return kirabedeli;\r\n                                } else if (c" +
-                    "olumn === 4) {\r\n                                    var odenenTutar = data.repla" +
-                    "ce(\'.\', \'#\');\r\n                                    odenenTutar = odenenTutar.rep" +
-                    "lace(\',\', \'.\');\r\n                                    odenenTutar = odenenTutar.r" +
-                    "eplace(\'#\', \',\');\r\n                                    return odenenTutar;\r\n    " +
-                    "                            }\r\n                                else {\r\n         " +
-                    "                           return data.replace(/(&nbsp;|<([^>]+)>)/ig, \"\");//htm" +
-                    "l\'i soy //regex to strip the HTML\r\n                                }\r\n\r\n        " +
-                    "                    }\r\n                        }\r\n                    }\r\n       " +
-                    "         },\r\n                {\r\n                    extend: \'pdf\',\r\n            " +
-                    "        exportOptions: {\r\n                        columns: \':visible\'\r\n         " +
-                    "           }\r\n                },\r\n                {\r\n                    extend:" +
-                    " \'copy\',\r\n                    exportOptions: {\r\n                        columns:" +
-                    " \':visible\'\r\n                    }\r\n                },\r\n                , \'pageL" +
-                    "ength\', \"colvis\"\r\n            ]\r\n\r\n        });\r\n    });\r\n\r\n</script>\r\n<div class" +
-                    "=\"container col-xl \">\r\n    <div class=\"card shadow\">\r\n        ");
+                    "   ],\r\n            \"columnDefs\": [\r\n                { className: \"text-end\", \"ta" +
+                    "rgets\": [10] },\r\n                { className: \"text-end\", \"targets\": [12] }\r\n   " +
+                    "         ],\r\n            \"language\": {\r\n                \"url\": \"http://tskgv-por" +
+                    "tal/OrtakBelgeler/Turkish.txt\",\r\n                \"decimal\": \",\",\r\n              " +
+                    "  \"thousands\": \".\"\r\n            },\r\n            \"order\": [[11, \"desc\"], [0, \"asc" +
+                    "\"], [2, \"asc\"]],\r\n            responsive: true,\r\n            dom: \'Bfrtip\',\r\n   " +
+                    "         buttons: [\r\n                {\r\n                    extend: \'print\',\r\n  " +
+                    "                  exportOptions: {\r\n                        columns: \':visible\'\r" +
+                    "\n                    }\r\n                },\r\n                {\r\n                 " +
+                    "   extend: \'excel\',\r\n                    exportOptions: {\r\n                     " +
+                    "   columns: \':visible\',\r\n                        format: {\r\n                    " +
+                    "        body: function (data, row, column, node) {\r\n                            " +
+                    "   \r\n                                if (column === 3) {\r\n                      " +
+                    "              var kirabedeli = data.replace(\'.\', \'#\');\r\n                        " +
+                    "            kirabedeli = kirabedeli.replace(\',\', \'.\');\r\n                        " +
+                    "            kirabedeli = kirabedeli.replace(\'#\', \',\');\r\n                        " +
+                    "            return kirabedeli;\r\n                                } else if (colum" +
+                    "n === 4) {\r\n                                    var odenenTutar = data.replace(\'" +
+                    ".\', \'#\');\r\n                                    odenenTutar = odenenTutar.replace" +
+                    "(\',\', \'.\');\r\n                                    odenenTutar = odenenTutar.repla" +
+                    "ce(\'#\', \',\');\r\n                                    return odenenTutar;\r\n        " +
+                    "                        }\r\n                                else {\r\n             " +
+                    "                       return data.replace(/(&nbsp;|<([^>]+)>)/ig, \"\");//html\'i " +
+                    "soy //regex to strip the HTML\r\n                                }\r\n\r\n            " +
+                    "                }\r\n                        }\r\n                    }\r\n           " +
+                    "     },\r\n                {\r\n                    extend: \'pdf\',\r\n                " +
+                    "    exportOptions: {\r\n                        columns: \':visible\'\r\n             " +
+                    "       }\r\n                },\r\n                {\r\n                    extend: \'co" +
+                    "py\',\r\n                    exportOptions: {\r\n                        columns: \':v" +
+                    "isible\'\r\n                    }\r\n                },\r\n                , \'pageLengt" +
+                    "h\', \"colvis\"\r\n            ]\r\n\r\n        });\r\n    });\r\n\r\n</script>\r\n<div class=\"co" +
+                    "ntainer col-xl \">\r\n    <div class=\"card shadow\">\r\n        ");
             parameterContainer.Controls[0].RenderControl(@__w);
             @__w.Write("\r\n        ");
             parameterContainer.Controls[1].RenderControl(@__w);

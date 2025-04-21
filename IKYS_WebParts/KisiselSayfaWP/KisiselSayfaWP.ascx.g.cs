@@ -1992,28 +1992,18 @@ namespace IKYS_WebParts.KisiselSayfaWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControlTree(global::IKYS_WebParts.KisiselSayfaWP.KisiselSayfaWP @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n<script type=\"text/javascript\">\r\n    //On Page Load.\r\n    $(function () {\r\n    " +
-                        "    SetDatePicker();\r\n    });\r\n    //ikinci tarih için\r\n    function SetDatePick" +
-                        "er() {\r\n        $(\"[id$=IzinBitTarTxt]\").datepicker({\r\n            dateFormat: \"" +
-                        "dd.mm.yy\",\r\n            firstDay: 1,\r\n            monthNames: [\"Ocak\", \"Şubat\", " +
-                        "\"Mart\", \"Nisan\", \"Mayıs\", \"Haziran\", \"Temmuz\", \"Ağustos\", \"Eylül\", \"Ekim\", \"Kası" +
-                        "m\", \"Aralık\"],\r\n            monthNamesShort: [\"Oca\", \"Şub\", \"Mar\", \"Nis\", \"May\"," +
-                        " \"Haz\", \"Tem\", \"Ağu\", \"Eyl\", \"Eki\", \"Kas\", \"Ara\"],\r\n            dayNames: [\"Paza" +
-                        "r\", \"Pazartesi\", \"Salı\", \"Çarşamba\", \"Perşembe\", \"Cuma\", \"Cumartesi\"],\r\n        " +
-                        "    dayNamesMin: [\"Pz\", \"Pt\", \"Sl\", \"Çr\", \"Pr\", \"Cu\", \"Ct\"],\r\n            showAn" +
-                        "im: \"fold\",\r\n            changeMonth: true,\r\n            changeYear: true,\r\n    " +
-                        "        beforeShow: function (input, inst) {\r\n                var mindate = $(\'." +
-                        "DateTimePickerV1\').datepicker(\'getDate\');\r\n                $(this).datepicker(\'o" +
-                        "ption\', \'minDate\', mindate);\r\n            },\r\n            beforeShowDay: functio" +
-                        "n (date) {\r\n                $(\'#ui-datepicker-div\').css(\'clip\', \'auto\');\r\n      " +
-                        "          return [true, \'\', \'\'];\r\n            }\r\n        });\r\n    }\r\n    //On Up" +
-                        "datePanel Refresh.\r\n    var prm = Sys.WebForms.PageRequestManager.getInstance();" +
-                        "\r\n    if (prm != null) {\r\n        prm.add_endRequest(function (sender, e) {\r\n   " +
-                        "         if (sender._postBackSettings.panelsToUpdate != null) {\r\n               " +
-                        " SetDatePicker();\r\n            }\r\n        });\r\n    };\r\n</script>\r\n\r\n<div class=\"" +
-                        "container-fluid\">\r\n    <div class=\"card shadow\">\r\n        <div class=\"card-heade" +
-                        "r\">\r\n            <div class=\"row\">\r\n                <div class=\"col\">\r\n         " +
-                        "           <h3>\r\n                        "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+<script type=""text/javascript"">
+
+</script>
+
+<div class=""container-fluid"">
+    <div class=""card shadow"">
+        <div class=""card-header"">
+            <div class=""row"">
+                <div class=""col"">
+                    <h3>
+                        "));
             global::System.Web.UI.WebControls.Label @__ctrl1;
             @__ctrl1 = this.@__BuildControlKisiselSayfaLbl();
             @__parser.AddParsedSubObject(@__ctrl1);
@@ -2103,9 +2093,38 @@ namespace IKYS_WebParts.KisiselSayfaWP {
             global::System.Web.UI.UpdatePanel @__ctrl8;
             @__ctrl8 = this.@__BuildControlTableUpdatePanel();
             @__parser.AddParsedSubObject(@__ctrl8);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n                </d" +
-                        "iv>\r\n            </div>\r\n        </div>\r\n        <div class=\"card-footer\">\r\n    " +
-                        "        "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class=""card"">
+                <div class=""bg-secondary text-center"">
+                    <a class=""text-white"" data-bs-toggle=""collapse"" data-bs-target=""#GorevOnayDiv"" aria-expanded=""false"" aria-controls=""AileDiv"" style=""font-weight: bold"">Yurt İçi/Yurt Dışı Görev Bilgileri</a>
+                </div>
+            </div>
+            <div class=""card"">
+                <div class=""collapse"" id=""GorevOnayDiv"">
+                    <div class=""form-group"">
+                        <table id=""CustomDataTable"" class=""table table-striped row-border"" width=""100%"">
+                            <thead>
+                                <tr>
+                                    <th>Adı Soyadı</th>
+                                    <th>Görevin Sebebi</th>
+                                    <th>Gidiş Tarihi</th>
+                                    <th>Dönüş Tarihi</th>
+                                    <th>Görevin Yeri</th>
+                                    <th>Süre</th>
+                                    <th>Net Yevmiye</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class=""card-footer"">
+            "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl9;
             @__ctrl9 = this.@__BuildControlPersonelListesiBtn();
             @__parser.AddParsedSubObject(@__ctrl9);

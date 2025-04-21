@@ -7,41 +7,7 @@
 <%@ Register Tagprefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="KisiselSayfaWP.ascx.cs" Inherits="IKYS_WebParts.KisiselSayfaWP.KisiselSayfaWP" %>
 <script type="text/javascript">
-    //On Page Load.
-    $(function () {
-        SetDatePicker();
-    });
-    //ikinci tarih için
-    function SetDatePicker() {
-        $("[id$=IzinBitTarTxt]").datepicker({
-            dateFormat: "dd.mm.yy",
-            firstDay: 1,
-            monthNames: ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"],
-            monthNamesShort: ["Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara"],
-            dayNames: ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"],
-            dayNamesMin: ["Pz", "Pt", "Sl", "Çr", "Pr", "Cu", "Ct"],
-            showAnim: "fold",
-            changeMonth: true,
-            changeYear: true,
-            beforeShow: function (input, inst) {
-                var mindate = $('.DateTimePickerV1').datepicker('getDate');
-                $(this).datepicker('option', 'minDate', mindate);
-            },
-            beforeShowDay: function (date) {
-                $('#ui-datepicker-div').css('clip', 'auto');
-                return [true, '', ''];
-            }
-        });
-    }
-    //On UpdatePanel Refresh.
-    var prm = Sys.WebForms.PageRequestManager.getInstance();
-    if (prm != null) {
-        prm.add_endRequest(function (sender, e) {
-            if (sender._postBackSettings.panelsToUpdate != null) {
-                SetDatePicker();
-            }
-        });
-    };
+
 </script>
 
 <div class="container-fluid">
@@ -283,6 +249,30 @@
                                 </ContentTemplate>
                             </asp:UpdatePanel>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="bg-secondary text-center">
+                    <a class="text-white" data-bs-toggle="collapse" data-bs-target="#GorevOnayDiv" aria-expanded="false" aria-controls="AileDiv" style="font-weight: bold">Yurt İçi/Yurt Dışı Görev Bilgileri</a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="collapse" id="GorevOnayDiv">
+                    <div class="form-group">
+                        <table id="CustomDataTable" class="table table-striped row-border" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Adı Soyadı</th>
+                                    <th>Görevin Sebebi</th>
+                                    <th>Gidiş Tarihi</th>
+                                    <th>Dönüş Tarihi</th>
+                                    <th>Görevin Yeri</th>
+                                    <th>Süre</th>
+                                    <th>Net Yevmiye</th>
+                                </tr>
+                            </thead>
+                        </table>
                     </div>
                 </div>
             </div>

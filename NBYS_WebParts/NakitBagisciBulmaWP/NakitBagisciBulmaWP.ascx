@@ -29,12 +29,12 @@
             </h3>
         </div>
         <div class="card-body border border-default" runat="server" id="PUTableDiv">
-            <div class="form-group border border-info" id="BagisciAraDiv" runat="server" style="display: block">
-                <div class="input-group col-6">
-                    <label class="col-form-label m-1" for="BagisciAraTxt">Bağışçı Ara :</label>
-                    <asp:TextBox ID="BagisciAraTxt" runat="server" CssClass="form-control m-1" AutoPostBack="true" OnTextChanged="BagisciAraTxt_TextChanged" ToolTip="Ad,TCKimlikNo,Telefon veya Adres yazarak arayabilirsiniz" />
-                    <asp:LinkButton CssClass="btn btn-info m-1" ID="AraBtn" runat="server" CausesValidation="false" Text="Ara" OnClientClick="{return true;};" OnClick="BagisciAraBtn_Click" />
-                </div>
+            <div class="row border border-info p-2" id="BagisciAraDiv" runat="server" style="display: block">
+
+                    <label class="col-1 form-label fw-semibold" for="BagisciAraTxt">Bağışçı :</label>
+                    <asp:TextBox ID="BagisciAraTxt" runat="server" CssClass="col-6" AutoPostBack="true" OnTextChanged="BagisciAraTxt_TextChanged" ToolTip="Ad,TCKimlikNo,Telefon veya Adres yazarak arayabilirsiniz" />
+                    <asp:LinkButton CssClass="col-1 btn btn-info ms-1" ID="AraBtn" runat="server" CausesValidation="false" Text="Ara" OnClientClick="{return true;};" OnClick="BagisciAraBtn_Click" />
+
             </div>
             <div class="form-group">
                 <table id="CustomDataTable" class="table table-striped row-border" width="100%">

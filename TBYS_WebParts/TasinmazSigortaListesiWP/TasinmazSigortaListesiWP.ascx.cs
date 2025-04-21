@@ -646,7 +646,7 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
                 string tasinmazId = row["TasinmazId"].ToString();
                 string katMulkiyeti = row["KatMulkiyeti"].ToString();
                 string kullanimAmaci = row["KullanimAmaci"].ToString();
-                string pDFDosyasi = row["PDFDosyasi"].ToString();
+                string pDFDosyasi = row["PDFDosyasi"].ToString().Trim();
 
                 SigortaListItem sigortaItem = new SigortaListItem();
                 sigortaItem.Sirano = SiraNo++.ToString();

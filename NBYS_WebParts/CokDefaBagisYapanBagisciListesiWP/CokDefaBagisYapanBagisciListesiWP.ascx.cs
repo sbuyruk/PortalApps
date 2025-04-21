@@ -104,7 +104,7 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
                         string toplamBagisAdedi = row["Adet"].ReturnZeroIfNull().ToString();
                         decimal toplamBagisTutari = row["Toplam"].ReturnZeroIfNull().ConvertToDecimal();
                         DateTime sonBagisTarihi = row["SonBagisTarihi"].ReturnEmptyIfNull().ConvertToDatetime();
-                        bool tuzelKisi = row["TuzelKisi"].ReturnZeroIfNull().ConvertToBool();
+                        bool tuzelKisi = false;
 
                         BagisciListItem listItem = new BagisciListItem();
                         listItem.NakitBagisciId = nakitBagisciId;

@@ -146,45 +146,49 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 ViewState["Auth"] = value;
             }
         }
+        private IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
         protected void Page_Load(object sender, EventArgs e)
         {
             try
             {
-                if (AuthQS.Equals("IKYS"))
+                if (!Page.IsPostBack)
                 {
-                    PersonelDiv.Attributes["style"] = "display:block";
-                    GorevOnayListesiBtn.Visible = true;
-                }
-                else if (AuthQS.Equals("BIRIM"))
-                {
-                    PersonelDiv.Attributes["style"] = "display:block";
-                    GorevOnayListesiBtn.Visible = false;
-                }
-                else
-                {
-                    //personelDiv display:none yap
-                    PersonelDiv.Attributes["style"] = "display:none";
-                    GorevOnayListesiBtn.Visible=false;
-                }
-                if (string.IsNullOrEmpty(GorevOnayIdQS))
-                {
-                    OpenGiris();
-                }
-                else
-                {
-                    GorevOnay gorevOnay = new GorevOnay();
-                    gorevOnay = gorevOnay.Select<GorevOnay>(GorevOnayIdQS.ConvertToInt());
-                    if (gorevOnay == null)
+                    if (AuthQS.Equals("IKYS"))
                     {
-                        MessageHelper.PublishMessage("Görev kaydı bulunamadı. Yeni görev girişi yapabilirsiniz.",ProjeConstants.MESAJ_HATA);
+                        PersonelDiv.Attributes["style"] = "display:block";
+                        GorevOnayListesiBtn.Visible = true;
+                    }
+                    else if (AuthQS.Equals("BIRIM"))
+                    {
+                        PersonelDiv.Attributes["style"] = "display:block";
+                        GorevOnayListesiBtn.Visible = false;
+                    }
+                    else
+                    {
+                        //personelDiv display:none yap
+                        PersonelDiv.Attributes["style"] = "display:none";
+                        GorevOnayListesiBtn.Visible = false;
+                    }
+                    if (string.IsNullOrEmpty(GorevOnayIdQS))
+                    {
                         OpenGiris();
                     }
                     else
                     {
-                        OpenDuzenle();
+                        GorevOnay gorevOnay = new GorevOnay();
+                        gorevOnay = gorevOnay.Select<GorevOnay>(GorevOnayIdQS.ConvertToInt());
+                        if (gorevOnay == null)
+                        {
+                            MessageHelper.PublishMessage("Görev kaydı bulunamadı. Yeni görev girişi yapabilirsiniz.", ProjeConstants.MESAJ_HATA);
+                            OpenGiris();
+                        }
+                        else
+                        {
+                            OpenDuzenle();
+                        }
                     }
+                    
                 }
-                TabloOlustur();
             }
             catch (Exception exception)
             {
@@ -200,23 +204,36 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             RaporAlBtn.Visible = true;
             TitleLbl.CssClass = "col-form-primary  btn-outline-primary mb-1";
             TitleLbl.Text = "Görev Onayı Düzenleme";
-            Personel personel = PersonelGetir();
-            if (!Page.IsPostBack)
+            
+            GorevOnay gorevOnay = new GorevOnay();
+            gorevOnay = gorevOnay.Select<GorevOnay>(GorevOnayIdQS.ConvertToInt());
+            if (gorevOnay != null)
             {
+                GorevOnayIdLbl.Text = gorevOnay.Id.ReturnEmptyIfNull().ToString();
+                Personel personel = PersonelGetir(gorevOnay.PersonelId);
+                if (personel != null)
+                {
+                    PersonelAdiLbl.Text = personel.Adi + " " + personel.Soyadi;
+
+                }
+                else
+                {
+                    PersonelAdiLbl.Text = "Personel bulunamadı";
+                }
+
                 if (personel != null)
                 {
                     PersonelAdiLbl.Text = personel.Adi + " " + personel.Soyadi;
                     FillBasSaat();
                     FillBitSaat();
-                    FillParaBirimiDDL();
+                    UlkeDDLDoldur(personel);
+                    YevmiyeGetir();
                     FillUlasimAraciDDL();
-                    FillPersonelDDL(personel);
-                    FillPerSubeImzaDDL();
-                    FillOnayImzaDDL();
-                    FillGMImzaDDL();
-                    FillOnayMakamDDL();
-                    FillGorevOnayForm();
-
+                    PersonelDDLDoldur(personel);
+                    PerSubeImzaDDLDoldur();
+                    OnayImzaDDLDoldur();
+                    FillGorevOnayForm(gorevOnay);
+                    //TabloOlustur(personel);
                 }
             }
         }
@@ -230,15 +247,13 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             {
                 FillBasSaat();
                 FillBitSaat();
-                FillParaBirimiDDL();
                 FillUlasimAraciDDL();
-                FillPerSubeImzaDDL();
-                FillOnayImzaDDL();
-                FillGMImzaDDL();
-                FillOnayMakamDDL();
+                PerSubeImzaDDLDoldur();
+                OnayImzaDDLDoldur();
                 Personel personel = PersonelGetir();
-                FillPersonelDDL(personel);
-
+                PersonelDDLDoldur(personel);
+                UlkeDDLDoldur(personel);
+                YevmiyeGetir();
                 if (personel != null)
                 {
                     PersonelAdiLbl.Text = personel.Adi + " " + personel.Soyadi;
@@ -247,18 +262,19 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                     TimeSpan mesaiBitSaati = ProjeConstants.MESAI_BITIS_SAATI;
                     DateTime bastar = today + mesaiBasSaati;
                     DateTime bittar = today + mesaiBitSaati;
-                    BasTarTxt.Value = bastar.ConvertToDatetimeEmptyIfNull();
-                    BitTarTxt.Value = bittar.ConvertToDatetimeEmptyIfNull();
+                    BaslangicTarihiTxt.Text = bastar.ConvertToDatetimeEmptyIfNull();
+                    BitisTarihiTxt.Text = bittar.ConvertToDatetimeEmptyIfNull();
                     string bassaat = bastar.ToString("HH:mm");
                     string bitsaat = bittar.ToString("HH:mm");
                     SelectDDLByText(BasSaatDDL, bassaat);
                     SelectDDLByText(BitSaatDDL, bitsaat);
+                    UtilityHelper.SetDDLValue(OnayImzaDDL, ProjeConstants.GOREV_IKUZMANI.ToString());
                 }
 
 
             }
         }
-        private void FillPersonelDDL(Personel personel)
+        private void PersonelDDLDoldur(Personel personel)
         {
             PersonelDDL.Items.Clear();
             
@@ -359,35 +375,6 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             }
             return list;
         }
-        //private List<Personel> BirimdekiPersoneliGetir(Personel personel)
-        //{
-        //    List<Personel> list = new List<Personel>();
-        //    if (personel != null)
-        //    {
-        //        IsBilgileri ib = new IsBilgileri();
-        //        ib = ib.SelectByPersonelId(personel.Id);
-        //        if (ib != null)
-        //        {
-        //            int birimId = ib.BirimId;
-        //            Personel perdao = new Personel();
-        //            list = perdao.SelectCalisanPersonelByBirimId(birimId);
-        //        }
-        //    }
-        //    return list;
-        //}
-        private void FillParaBirimiDDL()
-        {
-            ParaBirimiDDL.Items.Clear();
-
-            ListItem li = new ListItem("TL", "TL");
-            ParaBirimiDDL.Items.Add(li);
-            ListItem li1 = new ListItem("Avro", "Avro");
-            ParaBirimiDDL.Items.Add(li1);
-            ListItem li2 = new ListItem("Dolar", "Dolar");
-            ParaBirimiDDL.Items.Add(li2);
-            ListItem li3 = new ListItem("Sterlin", "Sterlin");
-            ParaBirimiDDL.Items.Add(li3);
-        }
         private void FillUlasimAraciDDL()
         {
             UlasimAraciDDL.Items.Clear();
@@ -442,26 +429,27 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             } while (nextTS < bittarTS);
             if (BitSaatDDL.Items.FindByText(bitsaatStr) != null)
             {
-                SelectDDLValue(BitSaatDDL, bitsaatStr);
+                UtilityHelper.SetDDLValue(BitSaatDDL, bitsaatStr);
             }
             else
             {
-                SelectDDLValue(BitSaatDDL, "17:00");
+                UtilityHelper.SetDDLValue(BitSaatDDL, "17:00");
             }
 
         }
-        private void FillPerSubeImzaDDL()
+        private void PerSubeImzaDDLDoldur()
         {
+
             PerSubeImzaDDL.Items.Clear();
             Personel personel = new Personel();
-            DataTable dataTable = personel.SelectCalisanPersonelReturnDataTable(PersonelTipi.Kadrolu);
+            DataTable dataTable = personel.SelectCalisanPersonelByBirimIdReturnDataTable(ProjeConstants.PER_SUBE_INT, PersonelTipi.Kadrolu);//SelectCalisanPersonelReturnDataTable(PersonelTipi.Kadrolu);
             foreach (DataRow dataRow in dataTable.Rows)
             {
                 int personelId = dataRow["PersonelId"].ConvertToInt();
                 string adiSoyadi = dataRow["Adi"].ToString() + " " + dataRow["Soyadi"].ToString();
                 string gorev = dataRow["Gorev"].ToString();
                 string birim = dataRow["BirimSube"].ToString();
-                if (birim.Contains(ProjeConstants.PER_SUBE))
+                if (gorev.Contains(ProjeConstants.UNVAN_DIREKTOR)|| gorev.Contains(ProjeConstants.UNVAN_BASUZMAN)|| gorev.Contains(ProjeConstants.UNVAN_KIDEMLIUZMAN))
                 {
                     ListItem li = new ListItem(adiSoyadi, personelId.ToString());
                     PerSubeImzaDDL.Items.Add(li);
@@ -469,74 +457,70 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
 
             }
         }
-        private void FillOnayImzaDDL()
+        private void OnayImzaDDLDoldur()
         {
             OnayImzaDDL.Items.Clear();
             Personel personel = new Personel();
-            DataTable dataTable = personel.SelectAmirReturnDataTable();
+            DataTable dataTable = personel.SelectCalisanPersonelByBirimIdReturnDataTable(ProjeConstants.PER_SUBE_INT, PersonelTipi.Kadrolu);//SelectCalisanPersonelReturnDataTable(PersonelTipi.Kadrolu);
             foreach (DataRow dataRow in dataTable.Rows)
             {
-
                 int personelId = dataRow["PersonelId"].ConvertToInt();
                 string adiSoyadi = dataRow["Adi"].ToString() + " " + dataRow["Soyadi"].ToString();
-                if (OnayImzaDDL.Items.FindByText(adiSoyadi) != null)
-                {
-                    continue;
-                }
-                else
-                {
+                string gorev = dataRow["Gorev"].ToString();
+                string birim = dataRow["BirimSube"].ToString();
+                if (gorev.Contains(ProjeConstants.UNVAN_UZMAN) || gorev.Contains(ProjeConstants.UNVAN_KIDEMLIUZMAN))
+                { 
                     ListItem li = new ListItem(adiSoyadi, personelId.ToString());
                     OnayImzaDDL.Items.Add(li);
                 }
-
             }
         }
-        private void FillGMImzaDDL()
+        private void UlkeDDLDoldur(Personel personel)
         {
-            GMImzaDDL.Items.Clear();
-            Personel personel = new Personel();
-            DataTable dataTable = personel.SelectAmirReturnDataTable();
+            UlkeDDL.Items.Clear();
+            
 
-            ListItem li0 = new ListItem("", "");
-            GMImzaDDL.Items.Add(li0);
-            foreach (DataRow dataRow in dataTable.Rows)
+            if (personel != null)
             {
-
-                int personelId = dataRow["PersonelId"].ConvertToInt();
-                string adiSoyadi = dataRow["Adi"].ToString() + " " + dataRow["Soyadi"].ToString();
-                if (GMImzaDDL.Items.FindByText(adiSoyadi) != null)
+                GorevTanim gorevTanim = new GorevTanim();
+                gorevTanim=gorevTanim.SelectByPersonelId(personel.Id);
+                if (gorevTanim != null)
                 {
-                    continue;
-                }
-                else
-                {
-                    ListItem li = new ListItem(adiSoyadi, personelId.ToString());
-                    GMImzaDDL.Items.Add(li);
-                }
+                    Harcirah harcirah = new Harcirah();
+                    List<Harcirah> list = harcirah.SelectByKadroGrupId(gorevTanim.HarcirahGrupId);
+                    if (list.Count>0)
+                    {
+                        GorevGrubuTxt.Text = list[0].KadroGrubu;
+                        foreach (Harcirah item in list)
+                        {
+                            string ulke = item.Ulke;
+                            if (UlkeDDL.Items.FindByText(ulke) != null)
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                ListItem li = new ListItem(item.Ulke, item.Id.ToString());
+                                UlkeDDL.Items.Add(li);
+                            }
+                        } 
+                    }
 
+                }
             }
+            
         }
-        private void FillOnayMakamDDL()
-        {
-            OnayMakamDDL.Items.Clear();
-            GorevTanim gorevDao = new GorevTanim();
-            List<GorevTanim> list = gorevDao.SelectAll<GorevTanim>();
-            foreach (GorevTanim gr in list)
-            {
-                ListItem li = new ListItem(gr.Adi.ReturnEmptyIfNull().ToString(), gr.Id.ReturnZeroIfNull().ToString());
-                OnayMakamDDL.Items.Add(li);
-            }
-        }
+
+
         /// <summary>
         /// QueryString'den gelen GorevOnayIdQS ile GorevOnay_Table'dan kayıt getir
         /// Bu bilgileri forma doldur
         /// Güncelle butonunu aç
         /// Kaydet butonunu sakla
         /// </summary>
-        private void FillGorevOnayForm()
+        private void FillGorevOnayForm(GorevOnay gorevOnay)
         {
-            GorevOnay gorevOnay = new GorevOnay();
-            gorevOnay = gorevOnay.Select<GorevOnay>(GorevOnayIdQS.ConvertToInt());
+            
             if (gorevOnay != null)
             {
                 GorevOnayIdLbl.Text = gorevOnay.Id.ReturnEmptyIfNull().ToString();
@@ -550,32 +534,28 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 {
                     PersonelAdiLbl.Text = "Personel bulunamadı";
                 }
-                
-                SelectDDLValue(ParaBirimiDDL, gorevOnay.ParaBirimi.ToString());
-                SelectDDLValue(PersonelDDL, gorevOnay.PersonelId.ToString());
-                SelectDDLValue(OnayMakamDDL, gorevOnay.OnayMakam.ToString());
-                SelectDDLValue(UlasimAraciDDL, gorevOnay.UlasimAraci.ToString());
+
+                ParaBirimiTxt.Text= gorevOnay.ParaBirimi.ToString();
+                YevmiyeParaBirimiTxt.Text= gorevOnay.ParaBirimi.ToString();
+                UtilityHelper.SetDDLValue(PersonelDDL, gorevOnay.PersonelId.ToString());
+                UtilityHelper.SetDDLValue(UlasimAraciDDL, gorevOnay.UlasimAraci.ToString());
                 string bassaat = gorevOnay.BaslangicTarihi.ToString("HH:mm");
                 SelectDDLByText(BasSaatDDL, bassaat);
                 string bitsaat = gorevOnay.BitisTarihi.ToString("HH:mm");
                 SelectDDLByText(BitSaatDDL, bitsaat);
-                BasTarTxt.Value = gorevOnay.BaslangicTarihi.ConvertToDatetimeEmptyIfNull();
-                BitTarTxt.Value = gorevOnay.BitisTarihi.ConvertToDatetimeEmptyIfNull();
+                BaslangicTarihiTxt.Text = gorevOnay.BaslangicTarihi.ConvertToDatetimeEmptyIfNull();
+                BitisTarihiTxt.Text = gorevOnay.BitisTarihi.ConvertToDatetimeEmptyIfNull();
 
                 GorevinYeriTxt.Text = gorevOnay.GorevinYeri.ReturnEmptyIfNull().ToString();
                 GorevinSebebiTxt.Text = gorevOnay.GorevinSebebi.ReturnEmptyIfNull().ToString();
                 AciklamaTxt.Text = gorevOnay.Aciklama.ReturnEmptyIfNull().ToString();
-                SelectDDLValue(PerSubeImzaDDL, gorevOnay.PerSubeImza.ToString());
-                SelectDDLValue(OnayImzaDDL, gorevOnay.OnayImza.ToString());
-                SelectDDLValue(OnayMakamDDL, gorevOnay.OnayMakam.ToString());
-                SelectDDLValue(GMImzaDDL, gorevOnay.GMImza.ToString());
+                UtilityHelper.SetDDLValue(PerSubeImzaDDL, gorevOnay.PerSubeImza.ToString());
+                
+                UtilityHelper.SetDDLValue(OnayImzaDDL, gorevOnay.OnayImza.ToString());
                 PersubeVekilChk.Checked = gorevOnay.PerSubeVekil.ConvertToBool();
-                OnayVekilChk.Checked = gorevOnay.OnayMakamVekil.ConvertToBool();
                 SureTxt.Text = gorevOnay.Sure.ReturnEmptyIfNull().ToString();
                 AvansTxt.Text = gorevOnay.Avans.ReturnEmptyIfNull().ToString();
                 YevmiyeTxt.Text = gorevOnay.Yevmiye.ReturnEmptyIfNull().ToString();
-                GMVekilChk.Checked = gorevOnay.GMVekil.ConvertToBool();
-                //AracTahsisiChk.Checked = gorevOnay.AracTahsisi.ConvertToBool();
                 UlasimAraciDDL.SelectedItem.Text = gorevOnay.UlasimAraci;
                 AracPlakasiTxt.Text = gorevOnay.AracPlakasi.ReturnEmptyIfNull().ToString();
             }
@@ -594,16 +574,6 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             return personel;
         }
 
-        private string SelectDDLValue(DropDownList ddlList, string value)
-        {
-            if (ddlList.Items.FindByValue(value) != null)
-            {
-                ListItem li = ddlList.Items.FindByValue(value);
-                ddlList.SelectedValue = li.Value;
-                return li.Value;
-            }
-            return string.Empty;
-        }
         private string SelectDDLByText(DropDownList ddlList, string value)
         {
             if (ddlList.Items.FindByText(value) != null)
@@ -653,19 +623,20 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                     bool isValid = validateInputValues();
                     if (isValid)
                     {
-                        GorevOnay gorevOnay = Kaydet();
-                        if (gorevOnay!=null)
-                        {
-                            if (AuthQS.Equals("IKYS"))
-                            {
+                        KaydetModalAc();
+                        //GorevOnay gorevOnay = Kaydet();
+                        //if (gorevOnay!=null)
+                        //{
+                        //    if (AuthQS.Equals("IKYS"))
+                        //    {
 
-                            }
-                            else
-                            {
-                                IKYSOrtak.GorevOnayEPostasiGonder(personel, gorevOnay.Id, "YurtIci/YurtDisi");
-                            }
-                            MessageHelper.PublishMessage("Kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
-                        }
+                        //    }
+                        //    else
+                        //    {
+                        //        IKYSOrtak.GorevOnayEPostasiGonder(personel, gorevOnay.Id, "YurtIci/YurtDisi");
+                        //    }
+                        //    MessageHelper.PublishMessage("Kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        //}
                     }
                     else
                     {
@@ -692,14 +663,13 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             Personel personel = PersonelGetir();
             if (personel != null)
             {
-                DateTime bastar = BasTarTxt.Value.ConvertToDatetime();
-                DateTime bittar = BitTarTxt.Value.ConvertToDatetime();
+                DateTime bastar = BaslangicTarihiTxt.Text.ConvertToDatetime();
+                DateTime bittar = BitisTarihiTxt.Text.ConvertToDatetime();
                 string basSaat = BasSaatDDL.SelectedItem.Text;
                 bastar = UtilityHelper.TariheSaatEkle(bastar, basSaat);
                 string bitSaat = BitSaatDDL.SelectedItem.Text;
                 bittar = UtilityHelper.TariheSaatEkle(bittar, bitSaat);
 
-                
                 gorevOnay.Aciklama = AciklamaTxt.Text;
                 gorevOnay.AracPlakasi = AracPlakasiTxt.Text;
                 //gorevOnay.AracTahsisi = AracTahsisiChk.Checked;
@@ -710,27 +680,39 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 gorevOnay.GorevinYeri = GorevinYeriTxt.Text;
                 gorevOnay.Olusturan = CurrentUserName;
                 gorevOnay.OnayImza = OnayImzaDDL.SelectedItem == null ? 0 : OnayImzaDDL.SelectedItem.Value.ConvertToInt();
-                gorevOnay.OnayMakam = OnayMakamDDL.SelectedItem == null ? 0 : OnayMakamDDL.SelectedItem.Value.ConvertToInt();
-                gorevOnay.OnayMakamVekil = OnayVekilChk.Checked;
-                gorevOnay.ParaBirimi = ParaBirimiDDL.SelectedItem == null ? "" : ParaBirimiDDL.SelectedItem.Value;
+                gorevOnay.ParaBirimi = ParaBirimiTxt.Text;
                 gorevOnay.UlasimAraci = UlasimAraciDDL.SelectedItem == null ? "" : UlasimAraciDDL.SelectedItem.Value;
                 gorevOnay.PersonelId = personel.Id;
                 gorevOnay.PerSubeImza = PerSubeImzaDDL.SelectedItem == null ? 0 : PerSubeImzaDDL.SelectedItem.Value.ConvertToInt();
                 gorevOnay.PerSubeVekil = PersubeVekilChk.Checked;
                 gorevOnay.GorevinSebebi = GorevinSebebiTxt.Text;
-                gorevOnay.GMImza = GMImzaDDL.SelectedItem == null ? 0 : GMImzaDDL.SelectedItem.Value.ConvertToInt();
-                gorevOnay.GMVekil = GMVekilChk.Checked;
                 gorevOnay.Sure = SureTxt.Text;
                 gorevOnay.Yevmiye = YevmiyeTxt.Text;
                 gorevOnay.Id = gorevOnay.Save();
+
             }
             return gorevOnay;
         }
-        
+
+        private void KaydetModalAc()
+        {
+
+            string basSaat = " saat " + (string.IsNullOrEmpty(BasSaatDDL.SelectedItem.Text.Trim())?string.Empty: BasSaatDDL.SelectedItem.Text.Trim());
+            string bitSaat = " saat " + (string.IsNullOrEmpty(BitSaatDDL.SelectedItem.Text.Trim())?string.Empty: BitSaatDDL.SelectedItem.Text.Trim());
+            string konustr = string.IsNullOrEmpty(GorevinSebebiTxt.Text.Trim()) ? string.Empty : " '" + GorevinSebebiTxt.Text.Trim() + "' konulu";
+
+            MessageTitleLbl.Text = "Görev kaydedilecek";
+            MessageTextLbl.Text = BaslangicTarihiTxt.Text + " günü," + basSaat + " ile " + BitisTarihiTxt.Text + " günü " +bitSaat +" arasına, " + konustr +" görev kaydedilsin mi?";
+            DeleteNowBtn.Visible = false;
+            KaydetNowBtn.Visible = true;    
+            var openPopup = "OpenModal();";
+            UtilityHelper.ScriptCalistir(openPopup);
+        }
+
         private bool validateInputValues()
         {
-            bool isEmpty = string.IsNullOrEmpty(BasTarTxt.Value.ConvertToDatetimeEmptyIfNull()) ||
-                string.IsNullOrEmpty(BitTarTxt.Value.ConvertToDatetimeEmptyIfNull()) ||
+            bool isEmpty = string.IsNullOrEmpty(BaslangicTarihiTxt.Text.ConvertToDatetimeEmptyIfNull()) ||
+                string.IsNullOrEmpty(BitisTarihiTxt.Text.ConvertToDatetimeEmptyIfNull()) ||
                 (BasSaatDDL.SelectedItem == null) ||
                 (BitSaatDDL.SelectedItem == null) ||
                 string.IsNullOrEmpty(BasSaatDDL.SelectedItem.Value) ||
@@ -782,8 +764,8 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             gorevOnay = gorevOnay.Select<GorevOnay>(GorevOnayIdQS.ConvertToInt());
             if (gorevOnay != null)
             {
-                DateTime bastar = BasTarTxt.Value.ConvertToDatetime();
-                DateTime bittar = BitTarTxt.Value.ConvertToDatetime();
+                DateTime bastar = BaslangicTarihiTxt.Text.ConvertToDatetime();
+                DateTime bittar = BitisTarihiTxt.Text.ConvertToDatetime();
                 string basSaat = BasSaatDDL.SelectedItem.Text;
                 bastar = UtilityHelper.TariheSaatEkle(bastar, basSaat);
                 string bitSaat = BitSaatDDL.SelectedItem.Text;
@@ -800,14 +782,10 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 gorevOnay.GorevinYeri = GorevinYeriTxt.Text;
 
                 gorevOnay.OnayImza = OnayImzaDDL.SelectedItem == null ? 0 : OnayImzaDDL.SelectedItem.Value.ConvertToInt();
-                gorevOnay.OnayMakam = OnayMakamDDL.SelectedItem == null ? 0 : OnayMakamDDL.SelectedItem.Value.ConvertToInt();
-                gorevOnay.OnayMakamVekil = OnayVekilChk.Checked;
-                gorevOnay.ParaBirimi = ParaBirimiDDL.SelectedItem == null ? "" : ParaBirimiDDL.SelectedItem.Value;
+                gorevOnay.ParaBirimi = ParaBirimiTxt.Text;
                 gorevOnay.UlasimAraci = UlasimAraciDDL.SelectedItem == null ? "" : UlasimAraciDDL.SelectedItem.Value;
                 gorevOnay.PerSubeImza = PerSubeImzaDDL.SelectedItem == null ? 0 : PerSubeImzaDDL.SelectedItem.Value.ConvertToInt();
                 gorevOnay.PerSubeVekil = PersubeVekilChk.Checked;
-                gorevOnay.GMImza = GMImzaDDL.SelectedItem == null ? 0 : GMImzaDDL.SelectedItem.Value.ConvertToInt();
-                gorevOnay.GMVekil = GMVekilChk.Checked;
                 gorevOnay.GorevinSebebi = GorevinSebebiTxt.Text;
                 gorevOnay.Sure = SureTxt.Text;
                 gorevOnay.Yevmiye = YevmiyeTxt.Text;
@@ -822,46 +800,36 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             if (personel != null)
             {
                 PersonelAdiLbl.Text = personel.Adi + " " + personel.Soyadi;
-
+                UlkeDDLDoldur(personel);
             }
-            TabloOlustur();
+            //TabloOlustur(personel);
+            YevmiyeGetir();
         }
+        protected void UlkeDDL_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            YevmiyeGetir();
+        }
+
+        private void YevmiyeGetir()
+        {
+
+            GunlukYevmiyeTxt.Text = "0";
+            Harcirah harcirah = new Harcirah();
+            harcirah = harcirah.Select(UlkeDDL.SelectedItem.Value.ConvertToInt());
+            if (harcirah != null)
+            {
+                GunlukYevmiyeTxt.Text = harcirah.Miktar.ToString("N", culturInfo);
+                ParaBirimiTxt.Text = harcirah.ParaBirimi.ToString();
+                YevmiyeParaBirimiTxt.Text = harcirah.ParaBirimi.ToString();
+                
+            }
+        }
+
         protected void RaporAlBtn_Click(object sender, EventArgs e)
         {
 
             string fullUrl = string.Format("{0}?GorevOnayId={1}", ProjeConstants.RAPOR_GOREVONAYBELGESI_URL, GorevOnayIdQS);
             RedirectToPage(fullUrl);
-        }
-        private string SureHesapla()
-        {
-            DateTime bastar = BasTarTxt.Value.ConvertToDatetime();
-            DateTime bittar = BitTarTxt.Value.ConvertToDatetime();
-            string basSaat = BasSaatDDL.SelectedItem.Text;
-            bastar = UtilityHelper.TariheSaatEkle(bastar, basSaat);
-            string bitSaat = BitSaatDDL.SelectedItem.Text;
-            bittar = UtilityHelper.TariheSaatEkle(bittar, bitSaat);
-
-            TimeSpan toplamSure = bittar - bastar;
-            string sureStr = string.Empty;
-            int gun = toplamSure.Days;
-            int saat = toplamSure.Hours;
-            if (gun < 1)
-            {
-                sureStr = toplamSure.Hours + " Saat";
-            }
-            else
-            {
-                if (saat >= 12)
-                {
-                    sureStr = (gun + 1) + " Gün";
-                }
-                else
-                {
-                    sureStr = gun + " Gün";
-                }
-            }
-
-            return sureStr;
         }
         private bool GorevOnayiSil(GorevOnay gorevOnay)
         {
@@ -882,10 +850,25 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
 
             return isSaved;
         }
-        protected void SureHesaplaBtn_Click(object sender, EventArgs e)
+        protected void HarcirahHesaplaBtn_Click(object sender, EventArgs e)
         {
-            SureTxt.Text = SureHesapla();
+            HarcirahHesapla();
         }
+
+        private void HarcirahHesapla()
+        {
+            string sonuc = string.Empty;
+            int dakika = SureDakikaTxt.Text.ConvertToInt();
+            int saat = SureSaatTxt.Text.ConvertToInt() + (dakika>0?1:0);
+            int gun= SureGunTxt.Text.ConvertToInt();
+
+            decimal yevmiye = GunlukYevmiyeTxt.Text.ConvertToDecimal();
+            decimal carpan= saat > 12 ? 1 : 0.5m;
+            SureTxt.Text=carpan + gun + " gün";
+            sonuc = ((carpan + gun) * yevmiye).ToString("N", culturInfo);
+            YevmiyeTxt.Text = sonuc;
+        }
+
         private void RedirectToPage(string pageUrl)
         {
             try
@@ -902,11 +885,12 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
         }
         protected void DeleteBtn_Click(object sender, EventArgs e)
         {
-            SilLbl.Text = "Lütfen Dikkat: Görev Onayı Silinecek";
-            SilmeMesajiLbl.Text = "Görev Onayını Silmek İstediğinizden Emin misiniz?";
+            MessageTitleLbl.Text = "Lütfen Dikkat: Görev Onayı Silinecek";
+            MessageTextLbl.Text = "Görev Onayını Silmek İstediğinizden Emin misiniz?";
             DeleteNowBtn.Visible = true;
+            KaydetNowBtn.Visible = false;
             var openPopup = "OpenModal();";
-            System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), openPopup, true);
+            UtilityHelper.ScriptCalistir(openPopup);
         }
         protected void DeleteNowBtn_Click(object sender, EventArgs e)
         {
@@ -932,125 +916,152 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 exceptionHelper.PublishException();
             }
         }
-        #region GorevOnayListesi
-        private void TabloOlustur()
+        protected void KaydetNowBtn_Click(object sender, EventArgs e)
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
-            UtilityHelper.ScriptCalistir(jsString);
-        }
-        private string TabloJson()
-        {
-            string jSon = string.Empty;
-
             try
             {
-                List<GorevOnayListItem> list = GetDataList();
-                var serializer = new JavaScriptSerializer();
-                jSon = serializer.Serialize(list);
+                GorevOnay gorevOnay = Kaydet();
+                if (gorevOnay != null)
+                {
+                    RedirectToPage(ProjeConstants.PAGE_GOREVONAY_LIST + "?Mesaj=true");
+                }
             }
             catch (Exception exception)
             {
-                ExceptionHelper exceptionHelper = new ExceptionHelper();
-                exceptionHelper.Exceptions.Add(exception);
+                ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
+                Exception exceptionInfo = new Exception("Görev Onayı Kaydedilemedi");
+                exceptionHelper.Exceptions.Add(exceptionInfo);
                 exceptionHelper.PublishException();
             }
-            return jSon;
         }
-        private string CreateDataTable(string jsonData)
-        {
-            string tableString = @"
-             jQuery(document).ready(function () {
-                if ( jQuery.fn.DataTable.isDataTable('#CustomDataTable') ) {
-                    jQuery('#CustomDataTable').DataTable().destroy();
-                }
-                jQuery('#CustomDataTable tbody').empty();
+        //#region GorevOnayListesi
+        //private void TabloOlustur(Personel personel)
+        //{
+        //    var jsonData = TabloJson(personel); //veri çekilip json a çeviriliyor
+        //    var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+        //    UtilityHelper.ScriptCalistir(jsString);
+        //}
+        //private string TabloJson(Personel personel)
+        //{
+        //    string jSon = string.Empty;
 
-                jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
-                jQuery('#CustomDataTable').DataTable({
-                    'initComplete': function (settings, json) {//tablo yüklendiğinde
-                        var api = this.api();
-                        var row = api.row(function (idx, data, node) { //secilen kayıta gider
-                            return data['Secildi'] == true;
-                        });
-                        if (row.length > 0) {
-                            row.select()
-                                .show()
-                                .draw(false);
-                        }
-                    },
-                    data: " + jsonData + @",
-                    pageLength: 5,
-                    columns: [
-                        { data: 'AdiSoyadi' },
-                        { data: 'GorevinSebebi' },
-                        { data: 'BaslangicTarihi' },
-                        { data: 'BitisTarihi' },
-                        { data: 'GorevinYeri' },
+        //    try
+        //    {
+        //        List<GorevOnayListItem> list = GetDataList(personel);
+        //        var serializer = new JavaScriptSerializer();
+        //        jSon = serializer.Serialize(list);
+        //    }
+        //    catch (Exception exception)
+        //    {
+        //        ExceptionHelper exceptionHelper = new ExceptionHelper();
+        //        exceptionHelper.Exceptions.Add(exception);
+        //        exceptionHelper.PublishException();
+        //    }
+        //    return jSon;
+        //}
+        //private string CreateDataTable(string jsonData)
+        //{
+        //    string tableString = @"
+        //     jQuery(document).ready(function () {
+        //        if ( jQuery.fn.DataTable.isDataTable('#CustomDataTable') ) {
+        //            jQuery('#CustomDataTable').DataTable().destroy();
+        //        }
+        //        jQuery('#CustomDataTable tbody').empty();
 
-                    ],
-                    columnDefs: [
-                        { type: 'turkish', targets: [0, 1, 4] },
-                        { width: 300, targets: 1 }
-                    ],
-                    'order': [[3, 'desc']],//sort date desc
-                    'language': {
-                        'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
-                        'decimal': ',',
-                        'thousands': '.'
-                    },
-                    responsive: true,
-                    dom: 'frtip',               
-                });
-            });
-            ";
-            return tableString;
-        }
-        private List<GorevOnayListItem> GetDataList()
-        {
-            int personelId=PersonelDDL.SelectedItem.Value.ConvertToInt();
-            string gorevOnayIdStr = string.Empty;
-            GorevOnay gorevOnay = new GorevOnay();
-            DataTable dataTable = gorevOnay.SelectAllReturnDT(personelId);// PersonelIdQS.ConvertToInt());
+        //        jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
+        //        jQuery('#CustomDataTable').DataTable({
+        //            'initComplete': function (settings, json) {//tablo yüklendiğinde
+        //                var api = this.api();
+        //                var row = api.row(function (idx, data, node) { //secilen kayıta gider
+        //                    return data['Secildi'] == true;
+        //                });
+        //                if (row.length > 0) {
+        //                    row.select()
+        //                        .show()
+        //                        .draw(false);
+        //                }
+        //            },
+        //            data: " + jsonData + @",
+        //            pageLength: 5,
+        //            columns: [
+        //                { data: 'AdiSoyadi' },
+        //                { data: 'GorevinSebebi' },
+        //                { data: 'BaslangicTarihi' },
+        //                { data: 'BitisTarihi' },
+        //                { data: 'GorevinYeri' },
 
-            List<GorevOnayListItem> list = new List<GorevOnayListItem>();
-            IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
-            DataView dataView = new DataView(dataTable);
-            foreach (DataRowView row in dataView)
-            {
-                string gorevOnayId = row["GorevOnayId"].ToString();
-                string secildi = row["Secildi"].ReturnEmptyIfNull().ToString().ToUpper().Equals("TRUE") ? "checked" : string.Empty;
-                string adiSoyadi = row["AdiSoyadi"].ToString();
-                string gorevinSebebi = row["GorevinSebebi"].ToString();
-                string baslangicTarihi = row["BaslangicTarihi"].ReturnEmptyIfNull().ConvertToDatetime().ToString("dd.MM.yyyy HH:mm");
-                string bitisTarihi = row["BitisTarihi"].ReturnEmptyIfNull().ConvertToDatetime().ToString("dd.MM.yyyy HH:mm");
-                string gorevinYeri = row["GorevinYeri"].ToString();
+        //            ],
+        //            columnDefs: [
+        //                { type: 'turkish', targets: [0, 1, 4] },
+        //                { width: 300, targets: 1 }
+        //            ],
+        //            'order': [[3, 'desc']],//sort date desc
+        //            'language': {
+        //                'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
+        //                'decimal': ',',
+        //                'thousands': '.'
+        //            },
+        //            responsive: true,
+        //            dom: 'frtip',               
+        //        });
+        //    });
+        //    ";
+        //    return tableString;
+        //}
+        //private List<GorevOnayListItem> GetDataList(Personel personel)
+        //{
+            
+        //    if (personel==null)
+        //    {
+        //        MessageHelper.PublishMessage("Personel bulunamadı", ProjeConstants.MESAJ_HATA);
+        //        return new List<GorevOnayListItem>();
+        //    }
+        //    else
+        //    {
+        //        string gorevOnayIdStr = string.Empty;
+        //        GorevOnay gorevOnay = new GorevOnay();
+        //        DataTable dataTable = gorevOnay.SelectAllReturnDT(personel.Id);// PersonelIdQS.ConvertToInt());
 
-                GorevOnayListItem gorevOnayListItem = new GorevOnayListItem();
-                gorevOnayListItem.GorevOnayId = gorevOnayId;
-                gorevOnayListItem.AdiSoyadi = adiSoyadi;
-                gorevOnayListItem.GorevinSebebi = gorevinSebebi;
-                gorevOnayListItem.BaslangicTarihi = baslangicTarihi;
-                gorevOnayListItem.BitisTarihi = bitisTarihi;
-                gorevOnayListItem.GorevinYeri = gorevinYeri;
+        //        List<GorevOnayListItem> list = new List<GorevOnayListItem>();
 
-                gorevOnayListItem.BaslangicTarihiHidden = row["BaslangicTarihi"].ConvertToDatetime();
+        //        DataView dataView = new DataView(dataTable);
+        //        foreach (DataRowView row in dataView)
+        //        {
+        //            string gorevOnayId = row["GorevOnayId"].ToString();
+        //            string secildi = row["Secildi"].ReturnEmptyIfNull().ToString().ToUpper().Equals("TRUE") ? "checked" : string.Empty;
+        //            string adiSoyadi = row["AdiSoyadi"].ToString();
+        //            string gorevinSebebi = row["GorevinSebebi"].ToString();
+        //            string baslangicTarihi = row["BaslangicTarihi"].ReturnEmptyIfNull().ConvertToDatetime().ToString("dd.MM.yyyy HH:mm");
+        //            string bitisTarihi = row["BitisTarihi"].ReturnEmptyIfNull().ConvertToDatetime().ToString("dd.MM.yyyy HH:mm");
+        //            string gorevinYeri = row["GorevinYeri"].ToString();
 
-                list.Add(gorevOnayListItem);
-            }
-            return list;
-        }
-        private class GorevOnayListItem
-        {
-            public DateTime BaslangicTarihiHidden { get; set; }
-            public string GorevOnayId { get; set; }
-            public string AdiSoyadi { get; set; }
-            public string GorevinYeri { get; set; }
-            public string BaslangicTarihi { get; set; }
-            public string BitisTarihi { get; set; }
-            public string GorevinSebebi { get; set; }
+        //            GorevOnayListItem gorevOnayListItem = new GorevOnayListItem();
+        //            gorevOnayListItem.GorevOnayId = gorevOnayId;
+        //            gorevOnayListItem.AdiSoyadi = adiSoyadi;
+        //            gorevOnayListItem.GorevinSebebi = gorevinSebebi;
+        //            gorevOnayListItem.BaslangicTarihi = baslangicTarihi;
+        //            gorevOnayListItem.BitisTarihi = bitisTarihi;
+        //            gorevOnayListItem.GorevinYeri = gorevinYeri;
 
-        }
-        #endregion
+        //            gorevOnayListItem.BaslangicTarihiHidden = row["BaslangicTarihi"].ConvertToDatetime();
+
+        //            list.Add(gorevOnayListItem);
+        //        }
+        //        return list;
+
+        //    }
+        //}
+        //private class GorevOnayListItem
+        //{
+        //    public DateTime BaslangicTarihiHidden { get; set; }
+        //    public string GorevOnayId { get; set; }
+        //    public string AdiSoyadi { get; set; }
+        //    public string GorevinYeri { get; set; }
+        //    public string BaslangicTarihi { get; set; }
+        //    public string BitisTarihi { get; set; }
+        //    public string GorevinSebebi { get; set; }
+
+        //}
+        //#endregion
     }
 }

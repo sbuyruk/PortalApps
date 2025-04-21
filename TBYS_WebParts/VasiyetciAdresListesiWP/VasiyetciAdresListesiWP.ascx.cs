@@ -67,7 +67,7 @@ namespace TBYS_WebParts.VasiyetciAdresListesiWP
                 {
                     EtiketAdediDDLDoldur();
                 }
-                KayitGetir();
+                TabloOlustur();
             }
             catch (Exception ex)
             {
@@ -86,39 +86,84 @@ namespace TBYS_WebParts.VasiyetciAdresListesiWP
             EtiketAdediDDL.Items.Add(li3);
         }
 
-        private string CreateJsString(string jsonData)
+        private string CreateDataTable(string jsonData)
         {
+            string tableString = @"
+                if ( jQuery.fn.DataTable.isDataTable('#CustomModalDataTable') ) {
+                    jQuery('#CustomModalDataTable').DataTable().destroy();
+                }
+                jQuery('#CustomModalDataTable tbody').empty();
 
+                jQuery.fn.dataTable.moment('DD.MM.YYYY');//sort date
+                jQuery(document).ready(function () {
+                    jQuery('#CustomDataTable').DataTable({
+                        'initComplete': function (settings, json) {//tablo yüklendiğinde
+                            var api = this.api();
+                            var row = api.row(function (idx, data, node) { //secilen kayda gider
+                                return data['Secildi'] == true;
+                            });
+                            if (row.length > 0) {
+                                row.select()
+                                    .show()
+                                    .draw(false);
+                            }
+                        },
+                        data: " + jsonData + @",
+                        columns: [
+                            { data: 'Bolge' },
+                            { data: 'Adi' },
+                            { data: 'Soyadi' },
+                            { data: 'IkametAdresi' },
+                            { data: 'IkametIli' },
+                            { data: 'IkametIlcesi' },
+                            { data: 'Telefon1' },
+                        ],
+                        'columnDefs': [
+                            { 'width': '20%', 'targets': 1 },
+                            { 'width': '25%', 'targets': 2 },
+                        ],
+                        'language': {
+                            'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
+                            'decimal': ',',
+                            'thousands': '.'
+                        },
+                        responsive: true,
+                        destroy: true,
+                        dom: 'Bfrtip',
+                        buttons: [
+                            {
+                                extend: 'print',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            {
+                                extend: 'excel',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            {
+                                extend: 'pdf',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            {
+                                extend: 'copy',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            , 'pageLength', 'colvis'
+                        ],
 
-            string ekstretablestr = @" 
-                                        //tabloda modal açılırken seçili olan pagination degerini pageIndex degiskeninde saklar ve modal açıldıktan sonra pageload sırasında sayfayı pageIndex degerine getirir
-                                        $(document).on('click','.ui-paginator-page',function(){
-                                            pageIndex= parseInt($(this).text());
-                                        });
-  
-                                        $('#tblfilter').puidatatable({
-                                        caption: '',
-                                        editMode: 'cell',
-                                        paginator: {
-                                                    rows: 8
-                                                    },
-                                        columns: [
-                                            { field: 'Adi', headerText: 'Adı', sortable:true,filter: true,headerStyle:'width: 20%'},
-                                            { field: 'Soyadi', headerText: 'Soyadı', sortable:true,filter: true,headerStyle:'width: 20%'},
-                                            { field: 'IkametAdresi', headerText: 'İkamet Adresi',filter: true,headerStyle:'width: 28%'},
-                                            { field: 'IkametIli', headerText: 'İkamet İli', sortable:true, sortable:true,filter: true,headerStyle:'width: 10%' },
-                                            { field: 'IkametIlcesi', headerText: 'İkamet İlçesi',filter: true,headerStyle:'width: 10%'  },
-                                            { field: 'Telefon1', headerText: 'Telefon',filter: true,headerStyle:'width: 12%'},
+                        });
+                    });
 
-                                        ],
-                                       datasource:" + jsonData + @",
-                                       resizableColumns: true,
-                                       globalFilter:'#globalFilter'
-                                       });
-                                    ";
+            ";
 
-
-            return ekstretablestr;
+            return tableString;
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
@@ -134,13 +179,13 @@ namespace TBYS_WebParts.VasiyetciAdresListesiWP
                 exHelper.PublishException();
             }
         }
-
-        private void KayitGetir()
+        private void TabloOlustur()
         {
             var jsonData = VasiyetciJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateJsString(jsonData); //javascript kodu hazırlanıyor.
-            System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), jsString, true);
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            UtilityHelper.ScriptCalistir(jsString);
         }
+
         private string VasiyetciJson()
         {
             string jSon = string.Empty;
@@ -375,7 +420,7 @@ namespace TBYS_WebParts.VasiyetciAdresListesiWP
         }
         protected void VefatEdenlerHaricChk_TextChanged(object sender, EventArgs e)
         {
-            KayitGetir();
+            TabloOlustur();
         }
         protected void ExcelBtn_Click(object sender, EventArgs e)
         {
@@ -396,13 +441,13 @@ namespace TBYS_WebParts.VasiyetciAdresListesiWP
             Vasiyetci vasiyetci = new Vasiyetci();
             DataTable dataTable = vasiyetci.SelectAllVasiyetciReturnDataTable(VefatEdenlerHaricChk.Checked, ref rowCount);
             int SiraNo = 0;
-            RowCountLbl.Text = "Kayıt Sayısı : " + rowCount.ToString();
             List<AdresListItem> list = new List<AdresListItem>();
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             DataView dataView = new DataView(dataTable);
             foreach (DataRowView row in dataView)
             {
                 int vasiyetciId = row["VasiyetciId"].ConvertToInt();
+                string bolge = row["Bolge"].ToString();
                 string adi = row["Adi"].ToString();
                 string soyadi = row["Soyadi"].ToString();
                 string telefon1 = row["Telefon1"].ToString();
@@ -419,6 +464,7 @@ namespace TBYS_WebParts.VasiyetciAdresListesiWP
                 adresItem.IkametAdresi = ikametAdresi;
                 adresItem.IkametIlcesi = ikametIlcesi;
                 adresItem.IkametIli = ikametIli;
+                adresItem.Bolge = bolge;
                 list.Add(adresItem);
             }
             return list;
@@ -467,6 +513,7 @@ namespace TBYS_WebParts.VasiyetciAdresListesiWP
             public string IkametIli { get; set; }
             public string IkametIlcesi { get; set; }
             public string IkametAdresi { get; set; }
+            public string Bolge { get; set; }
         }
     }
 }

@@ -69,10 +69,6 @@ namespace TBYS_WebParts.VasiyetciAdresListesiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.Label RowCountLbl;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.HyperLink DosyaLnk;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -223,21 +219,6 @@ namespace TBYS_WebParts.VasiyetciAdresListesiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControlRowCountLbl() {
-            global::System.Web.UI.WebControls.Label @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.Label();
-            this.RowCountLbl = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "RowCountLbl";
-            @__ctrl.Text = "";
-            @__ctrl.CssClass = "col-form-label float-end text-danger pr-2";
-            @__ctrl.Font.Bold = true;
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControl__control3() {
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
@@ -249,15 +230,22 @@ namespace TBYS_WebParts.VasiyetciAdresListesiWP {
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl1;
             @__ctrl1 = this.@__BuildControlparamVasiyetciIdLbl();
             @__parser.AddParsedSubObject(@__ctrl1);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n\r\n                        <div class=\"table loa" +
-                        "der\">\r\n                            "));
-            global::System.Web.UI.WebControls.Label @__ctrl2;
-            @__ctrl2 = this.@__BuildControlRowCountLbl();
-            @__parser.AddParsedSubObject(@__ctrl2);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-                            <input id=""globalFilter"" placeholder=""Aranacak Kelime"" size=""30"" />
-                            <div id=""tblfilter"" class=""table""></div>
-                            <div id=""messages""></div>
+                        </div>
+                        <div class=""form-group"">
+                            <table id=""CustomDataTable"" class=""table table-striped row-border"" width=""100%"">
+                                <thead>
+                                    <tr>
+                                        <th>Bölge</th>
+                                        <th>Adı</th>
+                                        <th>Soyadı</th>
+                                        <th>İkamet Adresi</th>
+                                        <th>İkamet İli</th>
+                                        <th>İkamet İlçesi</th>
+                                        <th>Telefon</th>
+                                    </tr>
+                                </thead>
+                            </table>
                         </div>
                     "));
             return @__ctrl;
@@ -353,7 +341,7 @@ namespace TBYS_WebParts.VasiyetciAdresListesiWP {
             @__parser.AddParsedSubObject(@__ctrl2);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"col-3 form-" +
                         "group\">\r\n                            <label for=\"IliDDL\" class=\"col-form-label f" +
-                        "ont-weight-bold\">Etiket Adedi: </label>\r\n                            "));
+                        "w-bold\">Etiket Adedi: </label>\r\n                            "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl3;
             @__ctrl3 = this.@__BuildControlEtiketAdediDDL();
             @__parser.AddParsedSubObject(@__ctrl3);
@@ -421,28 +409,40 @@ namespace TBYS_WebParts.VasiyetciAdresListesiWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControlTree(global::TBYS_WebParts.VasiyetciAdresListesiWP.VasiyetciAdresListesiWP @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n<style>\r\n    .ui-datatable tbody td {\r\n        white-space: normal;\r\n    }\r\n\r\n " +
-                        "   .ui-resizable-column {\r\n        white-space: normal;\r\n    }\r\n</style>\r\n<scrip" +
-                        "t>\r\n    window.onload = setStartupOptions;\r\n    function setStartupOptions() {\r\n" +
-                        "        pageIndex = getParameterByName(\"PageIndex\");\r\n        SetPageIndex();\r\n " +
-                        "   }\r\n    //tabloda modal açılırken seçili olan pagination degerini pageIndex de" +
-                        "giskeninde saklar ve modal açıldıktan sonra pageload sırasında sayfayı pageIndex" +
-                        " degerine getirir\r\n    function SetPageIndex() {\r\n        $(\'#tblfilter\').puidat" +
-                        "atable(\'getPaginator\').puipaginator(\'option\', \'page\', parseInt(pageIndex) - 1);\r" +
-                        "\n\r\n    }\r\n    var pageIndex = 0;\r\n    function getParameterByName(name) {\r\n     " +
-                        "   name = name.replace(/[\\[]/, \"\\\\\\[\").replace(/[\\]]/, \"\\\\\\]\");\r\n        var reg" +
-                        "exS = \"[\\\\?&]\" + name + \"=([^&#]*)\";\r\n        var regex = new RegExp(regexS);\r\n " +
-                        "       var results = regex.exec(window.location.href);\r\n        if (results == n" +
-                        "ull)\r\n            return \"\";\r\n        else\r\n            return decodeURIComponen" +
-                        "t(results[1].replace(/\\+/g, \" \"));\r\n    }\r\n    //excele export ettikten donup so" +
-                        "nra kalmasın diye\r\n    function setFormSubmitToFalse() {\r\n        setTimeout(fun" +
-                        "ction () { _spFormOnSubmitCalled = false; }, 3000);\r\n        return true;\r\n    }" +
-                        "\r\n\r\n    $(document).ready(function () {\r\n        $(function () {\r\n            if" +
-                        " ($(\'.input-integerOnly\').toArray().forEach(function (field) {\r\n                " +
-                        "new Cleave(\'.input-integerOnly\', {\r\n                numericOnly: true,\r\n        " +
-                        "        numeral: true,\r\n                numeralDecimalMark: \'none\',\r\n           " +
-                        "     delimiter: \'\'\r\n            });\r\n            }));\r\n        });\r\n    });\r\n</s" +
-                        "cript>\r\n\r\n<div class=\"container shadow\">\r\n    "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+<style>
+    .ui-datatable tbody td {
+        white-space: normal;
+    }
+
+    .ui-resizable-column {
+        white-space: normal;
+    }
+</style>
+<script>
+   
+    //excele export ettikten donup sonra kalmasın diye
+    function setFormSubmitToFalse() {
+        setTimeout(function () { _spFormOnSubmitCalled = false; }, 3000);
+        return true;
+    }
+
+    $(document).ready(function () {
+        $(function () {
+            if ($('.input-integerOnly').toArray().forEach(function (field) {
+                new Cleave('.input-integerOnly', {
+                numericOnly: true,
+                numeral: true,
+                numeralDecimalMark: 'none',
+                delimiter: ''
+            });
+            }));
+        });
+    });
+</script>
+
+<div class=""container shadow"">
+    "));
             global::System.Web.UI.UpdatePanel @__ctrl1;
             @__ctrl1 = this.@__BuildControlUpdatePanel();
             @__parser.AddParsedSubObject(@__ctrl1);

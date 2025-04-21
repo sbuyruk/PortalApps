@@ -8,7 +8,7 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="FaaliyetViewerWP.ascx.cs" Inherits="MTS_WebParts.FaaliyetViewerWP.FaaliyetViewerWP" %>
 
 <script type="text/javascript" src="/Style%20Library/lib/fullcalendar/index.global.js"></script>
-<script type="text/javascript" src="/Style%20Library/tskgv/js/fullcalendar/locales/tr.js"></script>
+<script type="text/javascript" src="/Style%20Library/lib/fullcalendar/locales/tr.global.min.js"></script>
 <style>
    
   body {

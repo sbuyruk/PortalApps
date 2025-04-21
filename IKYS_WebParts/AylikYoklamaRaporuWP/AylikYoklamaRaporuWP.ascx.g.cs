@@ -114,7 +114,7 @@ namespace IKYS_WebParts.AylikYoklamaRaporuWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label  text-primary fw-bold mb-1";
+            @__ctrl.CssClass = "form-label text-primary fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Gün İçinde Vakıf Dışında Bulunan Personel Aylık Dökümü";
             return @__ctrl;
@@ -128,7 +128,7 @@ namespace IKYS_WebParts.AylikYoklamaRaporuWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.IdLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-white";
+            @__ctrl.CssClass = "form-label text-white";
             @__ctrl.ID = "IdLbl";
             return @__ctrl;
         }
@@ -167,7 +167,7 @@ namespace IKYS_WebParts.AylikYoklamaRaporuWP {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label";
+            @__ctrl.CssClass = "form-label fw-semibold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Ay :"));
             return @__ctrl;
@@ -182,9 +182,8 @@ namespace IKYS_WebParts.AylikYoklamaRaporuWP {
             this.AyDDL = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "AyDDL";
-            @__ctrl.CssClass = "form-control";
+            @__ctrl.CssClass = "form-control form-select form-select-lg";
             @__ctrl.AutoPostBack = true;
-            @__ctrl.Height = new System.Web.UI.WebControls.Unit(34D, global::System.Web.UI.WebControls.UnitType.Pixel);
             @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.AyDDL_SelectedIndexChanged);
             @__ctrl.SelectedIndexChanged += new System.EventHandler(this.AyDDL_SelectedIndexChanged);
             return @__ctrl;
@@ -197,7 +196,7 @@ namespace IKYS_WebParts.AylikYoklamaRaporuWP {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label";
+            @__ctrl.CssClass = "form-label fw-semibold";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Yıl : "));
             return @__ctrl;
@@ -212,9 +211,8 @@ namespace IKYS_WebParts.AylikYoklamaRaporuWP {
             this.YilDDL = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "YilDDL";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control form-select form-select-lg");
             @__ctrl.AutoPostBack = true;
-            @__ctrl.Height = new System.Web.UI.WebControls.Unit(34D, global::System.Web.UI.WebControls.UnitType.Pixel);
             @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.YilDDL_SelectedIndexChanged);
             @__ctrl.SelectedIndexChanged += new System.EventHandler(this.YilDDL_SelectedIndexChanged);
             return @__ctrl;

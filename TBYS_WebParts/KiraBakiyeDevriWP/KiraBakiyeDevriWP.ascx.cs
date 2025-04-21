@@ -149,7 +149,7 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
 
                 IliLbl.Text = kiraci.Ili;
                 IlcesiLbl.Text = kiraci.Ilcesi;
-                SorumluBolgeLbl.Text = BolgeGetir(kiraci);
+                SorumluBolgeLbl.Text = UtilityHelper.BolgeGetir(kiraci.IlId);
                 KiralamaAmaciLbl.Text = kiraci.KiralamaAmaci;
                 AdresLbl.Text = kiraci.Adres;
                 TelefonLbl.Text = kiraci.Telefon;
@@ -237,8 +237,8 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
             var serializer = new JavaScriptSerializer();
             var jsonData = serializer.Serialize(kiraSozlesmeItemListesi);
 
-            var jsString = CreateJsString(jsonData); //javascript kodu hazırlanıyor.
-            System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), jsString, true);
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            UtilityHelper.ScriptCalistir(jsString);
         }
 
         private void OdemeleriHesaplaOdemePlaniniGuncelle(int kiraciId)
@@ -251,65 +251,86 @@ namespace TBYS_WebParts.KiraBakiyeDevriWP
                 TBYSOrtak.BakiyeBorcHesapla(kiraSozlesme);
             }
         }
-
-        private string CreateJsString(string jsonData)
+        private string CreateDataTable(string jsonData)
         {
-            string tablestr = @"
-                                var counter=1;   
-                                $('#tblfilter').puidatatable({
-                                caption: 'Kiracının Sözleşmeleri ',
-                                editMode: 'cell',
-                                columns: [
-                                    { field: 'DosyaNo', headerText: 'D.No', headerStyle:'width: 5%'},
-                                    { field: 'TarihAraligi', headerText: 'Sözleşme Tarihi',headerStyle:'width: 15%' },        
-                                    { field: 'KiraBedeli', headerText: 'Kira Bedeli',bodyClass:'text-end',headerStyle:'width: 10%' },
-                                    { field: 'DevirAnapara', headerText: 'Devir AnaPara',bodyClass:'text-end',headerStyle:'width: 10%' },
-                                    { field: 'DevirFaiz', headerText: 'Devir Faiz',bodyClass:'text-end',headerStyle:'width: 10%' },
-                                    { field: 'DevirFaizliBakiye', headerText: 'Devir Faizli Bakiye',bodyClass:'text-end',headerStyle:'width: 10%' },
-                                    { field: 'SozlesmeId',bodyClass:'text-center',headerText: 'Devir Al', headerStyle:'width: 10%', content: function (rowData)
-                                        { 
-                                            if (rowData.FarkVarMi)
-                                            {
-                                                return $('<a href=# onclick=DevirAl('+rowData.SozlesmeId+'); class=\'btn btn-outline-danger \'>Devir Al</a>')
-                                            }else
-                                            {
-                                                return('');
-                                            }
-                                        }
-                                    },
-                                    { field: 'SozlesmeId',headerText: 'Sözleşme', headerStyle:'width: 10%', content: function (rowData)
-                                        { 
-                                            contentFunc(rowData, 'Aktif',counter++);
-                                            if (rowData.Aktif=='False'){
-                                                return $('<a href=" + ProjeConstants.PAGE_BITENKIRASOZLESMESI + @"?DestinationApp=KS&SenderApp=KD&KiraSozlesmeId='+rowData.SozlesmeId +' class=\'btn btn-outline-secondary \'>Sözleşme</a>')
-                                            }else{
-                                                return $('<a href=" + ProjeConstants.PAGE_KIRASOZLESMESI + @"?DestinationApp=KS&SenderApp=KD&KiraSozlesmeId='+rowData.SozlesmeId +'&KiraciId='+rowData.KiraciId +' class=\'btn btn-outline-secondary \'>Sözleşme</a>')
-                                            }
-                                            
-                                        }
-                                    },
-                                    { field: 'SozlesmeId',headerText: 'Ödeme Planı', headerStyle:'width: 10%', content: function (rowData)
-                                        { 
-                                            return $('<a href=" + ProjeConstants.PAGE_ODEMEPLANI + @"?KiraSozlesmeId='+rowData.SozlesmeId +' class=\'btn btn-outline-secondary \'>Ödm.Planı</a>')
-                                        }
-                                    },
-                                ],
-                                datasource:" + jsonData + @",
-                                resizableColumns: true
-                            });
-                            $('#messages').puigrowl();
-                            ";
+            string tableString = @"
+                var counter=1;   
+                if ( jQuery.fn.DataTable.isDataTable('#CustomModalDataTable') ) {
+                    jQuery('#CustomDataTable').DataTable().destroy();
+                }
+                jQuery('#CustomDataTable tbody').empty();
 
-            return tablestr;
-        }
+                jQuery.fn.dataTable.moment('DD.MM.YYYY');//sort date
+                jQuery(document).ready(function () {
+                    jQuery('#CustomDataTable').DataTable({
+                        
+                        data: " + jsonData + @",
+                        columns: [
+                            { data: 'DosyaNo' },
+                            { data: 'TarihAraligi' },
+                            { data: 'KiraBedeli' },
+                            { data: 'DevirAnapara' },
+                            { data: 'DevirFaiz' },
+                            { data: 'DevirFaizliBakiye' },
+                            { data: 'SozlesmeId' },
+                            { data: 'DosyaNo' },
+                            { data: 'DosyaNo' },
+                        ],
+                        columnDefs: [
+                            {
+                                targets: [2,3,4,5], 
+                                render: function (data, type, row) {
+                                    return data; // Keep raw data for sorting
+                                },
+                                className: 'text-end' // Align text to the left
+                            },
+                            {
+                                targets: [6], 
+                                render: function (data, type, row) {
+                                    if (row.FarkVarMi)
+                                    {
+                                        return ('<a href=# onclick=DevirAl('+row.SozlesmeId+'); class=\'btn btn-outline-danger\'>Devir Al</a>');
+                                    }else
+                                    {
+                                        return('');
+                                    }
+                                },
+                                className: 'text-center' // Align text to the left
+                            },
+                            {
+                                targets: [7], 
+                                render: function (data, type, row) {
+                                    SetRowColor(row, 'Aktif',counter++);
+                                    if (row.Aktif=='False'){
+                                        return ('<a href=\'" + ProjeConstants.PAGE_BITENKIRASOZLESMESI + @"?DestinationApp=KS&SenderApp=KD&KiraSozlesmeId='+row.SozlesmeId +'\' class=\'btn btn-outline-secondary\'>Eski Sözleşme</a>')
+                                    }else{
+                                        return ('<a href=\'" + ProjeConstants.PAGE_KIRASOZLESMESI + @"?DestinationApp=KS&SenderApp=KD&KiraSozlesmeId='+row.SozlesmeId +'&KiraciId='+row.KiraciId +'\'class=\'btn btn-outline-primary\'>Sözleşme</a>')
+                                    }
+                                },
+                                className: 'text-center' // Align text to the left
+                            },
+                            {
+                                targets: [8], 
+                                render: function (data, type, row) {
+                                    return ('<a href=\'" + ProjeConstants.PAGE_ODEMEPLANI + @"?KiraSozlesmeId='+row.SozlesmeId +'\' class=\'btn btn-outline-secondary \'>Ödeme Planı</a>')
+                                },
+                                className: 'text-center' // Align text to the left
+                            }
+                        ],
+                        'language': {
+                            'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
+                            'decimal': ',',
+                            'thousands': '.'
+                        },
+                        responsive: true,
+                        destroy: true,
+                        dom: 'tr',
+                        });
+                    });
 
-        private string BolgeGetir(Kiraci kiraci)
-        {
-            string ili = kiraci == null ? "" : kiraci.Ili;
-            Il il = new Il();
-            il = il.SelectByIlAdi(kiraci.Ili);
-            string bolge = il == null ? "" : il.Bolge;
-            return bolge;
+            ";
+
+            return tableString;
         }
         protected void OdemePlaniGoruntuleBtn_Click(object sender, EventArgs e)
         {

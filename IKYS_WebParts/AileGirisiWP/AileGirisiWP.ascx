@@ -11,9 +11,8 @@
         <div class="card-header" id="CardHeader" runat="server">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-2">
-                <asp:Label CssClass="col-form-label  btn-outline-success mb-1" ID="TitleLbl" runat="server" Text="Aile Bilgileri Girişi"></asp:Label>
-                <asp:Label CssClass="col-form-label text-white" ID="PersonelIdLbl" Visible="false" runat="server"></asp:Label>
-                <asp:Label CssClass="col-form-label text-secondary float-end" ID="EkranNo" Text="3" runat="server" ></asp:Label>
+                <asp:Label CssClass="form-label text-success fw-bold" ID="TitleLbl" runat="server" Text="Aile Bilgileri Girişi"></asp:Label>
+                <asp:Label CssClass="form-label text-white" ID="PersonelIdLbl" Visible="false" runat="server"></asp:Label>
             </h3>
         </div>
         <div class="card-body">
@@ -35,31 +34,31 @@
                     <div>
                         <div id="EkleDiv1" class="row alignCenter nopadding">
                             <div class="form-group col-sm-2 nopadding">
-                                <label for="YakAdiTxt" class="col-form-label">Adi</label>
+                                <label for="YakAdiTxt" class="form-label fw-semibold">Adi</label>
                                 <div>
                                     <asp:TextBox ID="YakAdiTxt" runat="server" class="form-control"></asp:TextBox>
                                 </div>
                             </div>
                             <div class="form-group col-sm-2 nopadding">
-                                <label for="YakSoyadiTxt" class="col-form-label">Soyadı</label>
+                                <label for="YakSoyadiTxt" class="form-label fw-semibold">Soyadı</label>
                                 <div>
                                     <asp:TextBox ID="YakSoyadiTxt" runat="server" class="form-control"></asp:TextBox>
                                 </div>
                             </div>
                             <div class="form-group col-sm-2 nopadding">
-                                <label for="YakTcKimlikNoTxt" class="col-form-label">TC Kimlik No</label>
+                                <label for="YakTcKimlikNoTxt" class="form-label fw-semibold">TC Kimlik No</label>
                                 <div>
                                     <asp:TextBox ID="YakTcKimlikNoTxt" runat="server" class="form-control"></asp:TextBox>
                                 </div>
                             </div>
                             <div class="form-group col-sm-2 nopadding">
-                                <label for="YakDerecesiDDL" class="col-form-label">Yakınlık</label>
+                                <label for="YakDerecesiDDL" class="form-label fw-semibold">Yakınlık</label>
                                 <div>
-                                    <asp:DropDownList ID="YakDerecesiDDL" runat="server" class="form-control "></asp:DropDownList>
+                                    <asp:DropDownList ID="YakDerecesiDDL" runat="server" class="form-control form-select form-select-lg"></asp:DropDownList>
                                 </div>
                             </div>
                             <div class="form-group col-sm-4 nopadding">
-                                <label for="OkulTxt" class="col-form-label">Okul</label>
+                                <label for="OkulTxt" class="form-label fw-semibold">Okul</label>
                                 <div>
                                     <asp:TextBox ID="OkulTxt" runat="server" class="form-control"></asp:TextBox>
                                 </div>
@@ -68,25 +67,25 @@
                         <hr />
                         <div id="EkleDiv2" class="row alignCenter nopadding">
                             <div class="form-group col-sm-2 nopadding">
-                                <label class="col-form-label">Dog.Tarihi</label>
+                                <label class="form-label fw-semibold">Dog.Tarihi</label>
                                 <div>
                                     <input runat="server" type="text" id="YakDogumTarTxt" name="YakDogumTarTxt" class="form-control DateTimePickerV1" readonly="readonly" />
                                 </div>
                             </div>
                             <div class="form-group col-sm-2 nopadding">
-                                <label class="col-form-label" for="YakMeslekDDL">Meslek</label>
+                                <label class="form-label fw-semibold" for="YakMeslekDDL">Meslek</label>
                                 <div>
-                                    <asp:DropDownList ID="YakMeslekDDL" runat="server" class="form-control "></asp:DropDownList>
+                                    <asp:DropDownList ID="YakMeslekDDL" runat="server" class="form-control form-select form-select-lg"></asp:DropDownList>
                                 </div>
                             </div>
                             <div class="form-group col-sm-4 nopadding">
-                                <label for="YakTelefonTxt" class="col-form-label">Telefon</label>
+                                <label for="YakTelefonTxt" class="form-label fw-semibold">Telefon</label>
                                 <div>
                                     <asp:TextBox ID="YakTelefonTxt" runat="server" class="form-control"></asp:TextBox>
                                 </div>
                             </div>
                             <div class="form-group col-sm-2">
-                                <label class="col-form-label"></label>
+                                <label class="form-label fw-semibold"></label>
                                 <div>
                                     <asp:LinkButton ID="YakinEkleBtn" CssClass="btn btn-outline-success" runat="server" Text="Ekle" OnClick="YakinEkleBtn_Click" />
                                 </div>

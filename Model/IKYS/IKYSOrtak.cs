@@ -546,6 +546,7 @@ namespace Model.Ortak
             }
             return personel;
         }
+
         public static string PersonelinBolgesiniGetir_Deprecated(string currentUserName)
         {
             Personel personel = PersonelGetir(currentUserName);

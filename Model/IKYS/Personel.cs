@@ -196,7 +196,34 @@ namespace Model.IKYS
             _ = new Personel();
             Personel personel = list.FirstOrDefault();
             return personel;
-        }    
+        }
+        public DataTable SelectCalisanPersonelByBirimIdReturnDataTable(int birimId, PersonelTipi personelTipi = PersonelTipi.Kadrolu)
+        {
+            int personelTipiInt = (int)personelTipi;
+            string personelTipiStr = personelTipi == PersonelTipi.Tumu ? string.Empty : string.Format(" AND Tipi={0}", personelTipiInt);
+            string sqlString = string.Format(@"
+                                    SELECT P.Id PersonelId,P.Adi,Soyadi,P.PerId, P.SicilNo, P.Tahsili, P.KullaniciAdi, P.Asker_sivil,
+								        U.Adi Unvan, G.Adi Gorev, B.Adi BirimSube, B.Id BirimId, I.IzinDonemiBasTar,I.ProtokolSiraNo
+								    FROM Personel_Table P
+                                    INNER JOIN IsBilgileri_Table I on P.Id=I.PersonelId
+								    Left Outer Join  UnvanTanim_Table U on I.UnvanId=U.Id
+								    Left Outer Join  BirimTanim_Table B on I.BirimId=B.Id
+								    Left Outer Join  GorevTanim_Table G on I.GorevId=G.Id
+                                    WHERE CalismaDurumu=1 And I.BirimId={0}
+                                        {1}
+								    ORDER BY I.ProtokolSiraNo
+                                    ", birimId, personelTipiStr);
+            DataTable dataTable = null;
+            try
+            {
+                dataTable = dao.SelectFromDb(sqlString, "");
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            return dataTable;
+        }
         public List<Personel> SelectCalisanPersonelByBirimId(int birimId, PersonelTipi personelTipi = PersonelTipi.Kadrolu)
         {
             int personelTipiInt = (int)personelTipi;

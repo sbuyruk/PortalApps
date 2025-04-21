@@ -56,32 +56,48 @@
                     <div class="modal-body ">
                         <div class="form-group">
                             <div class="row">
-                                <div class="col-4">
-                                    <div class="form-group">
-                                        <asp:Label CssClass="col-form-label fw-bold" runat="server" Text="Adres"></asp:Label>
-                                        <asp:TextBox ID="AdresTxt" runat="server" class="form-control" TextMode="MultiLine" Rows="3" ReadOnly="true"></asp:TextBox>
-                                    </div>
-                                </div>
-                                <div class="col-2">
+                                
+                                <div class="col">
                                     <div class="form-group">
                                         <asp:Label CssClass="col-form-label fw-bold" runat="server" Text="Bölüm No"></asp:Label>
                                         <asp:TextBox ID="BolumNoTxt" runat="server" class="form-control"></asp:TextBox>
                                     </div>
                                 </div> 
-                                <div class="col-2">
+                                <div class="col">
                                     <div class="form-group">
                                         <asp:Label CssClass="col-form-label fw-bold" runat="server" Text="Nitelik"></asp:Label>
                                         <asp:TextBox ID="NitelikTxt" runat="server" class="form-control"></asp:TextBox>
                                     </div>
                                 </div>
-                                <div class="col-4">
+                                <div class="col">
                                     <div class="form-group">
-                                        <asp:Label CssClass="col-form-label fw-bold" runat="server" Text="Açıklama"></asp:Label>
-                                        <asp:TextBox ID="AciklamaTxt" CssClass="form-control" runat="server" Text="" TextMode="MultiLine" Rows="3"></asp:TextBox>
+                                        <asp:Label CssClass="col-form-label fw-bold" runat="server" Text="Metrekare"></asp:Label>
+                                        <asp:TextBox ID="MetrekareTxt" runat="server" class="form-control"></asp:TextBox>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <asp:Label CssClass="form-label fw-bold" runat="server" Text="KullanimAmaci"></asp:Label>
+                                        <asp:DropDownList ID="KullanimAmaciDDL" runat="server" CssClass="form-control form-select form-select-lg" ToolTip="Kullanım Amacı" Style="height: auto"></asp:DropDownList>
                                     </div>
                                 </div>
                                 <div style="display: none">
                                     <asp:Label ID="ParamBagimsizBolumIdLbl" runat="server" Text=""></asp:Label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <asp:Label CssClass="col-form-label fw-bold" runat="server" Text="Adres"></asp:Label>
+                                        <asp:TextBox ID="AdresTxt" runat="server" class="form-control" TextMode="MultiLine" Rows="3" ReadOnly="true"></asp:TextBox>
+                                    </div>
+                                </div>
+
+                                <div class="col">
+                                    <div class="form-group">
+                                        <asp:Label CssClass="col-form-label fw-bold" runat="server" Text="Açıklama"></asp:Label>
+                                        <asp:TextBox ID="AciklamaTxt" CssClass="form-control" runat="server" Text="" TextMode="MultiLine" Rows="3"></asp:TextBox>
+                                    </div>
                                 </div>
                             </div>
                             <div>

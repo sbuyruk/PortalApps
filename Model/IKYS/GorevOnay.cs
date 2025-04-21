@@ -280,7 +280,7 @@ namespace Model.IKYS
             string personelIdStr = personelId > 0 ? string.Format(" WHERE PersonelId={0}",personelId):string.Empty;
             string sqlstr = string.Format(@" 
                     SELECT A.Id GorevOnayId, P.Adi+' '+P.Soyadi AdiSoyadi, A.Secildi,A.UlasimAraci,
-                        A.PersonelId,A.GorevinSebebi,A.GorevinYeri,A.BaslangicTarihi,A.BitisTarihi,A.Sure,A.Avans,A.Yevmiye,A.ParaBirimi,
+                        A.PersonelId,A.GorevinSebebi,A.GorevinYeri,A.BaslangicTarihi,A.BitisTarihi,A.Sure,A.Avans,A.Yevmiye,A.ParaBirimi,A.Sure,
                         A.AracTahsisi,A.AracPlakasi,A.PerSubeImza,A.PerSubeVekil,A.OnayImza,A.OnayMakam,A.OnayMakamVekil,A.GMImza,A.GMVekil, A.Aciklama
                     FROM GorevOnay_Table A
                         INNER JOIN Personel_Table P On A.PersonelId=P.Id 

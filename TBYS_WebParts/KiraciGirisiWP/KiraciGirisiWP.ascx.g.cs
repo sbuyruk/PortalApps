@@ -1586,23 +1586,23 @@ namespace TBYS_WebParts.KiraciGirisiWP {
                         "        color: black !important;\r\n    }\r\n  .ileri-tarihli-sozlesme {\r\n        ba" +
                         "ckground-color: yellow;\r\n    }\r\n</style>\r\n<script>\r\n    function OpenModalOnay()" +
                         " {\r\n        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.g" +
-                        "etElementById(\'OdemePlaniModal\'));\n        myModalInstance.show();\r\n    }\r\n    f" +
-                        "unction DeleteModalOnay() {\r\n        var myModalInstance = bootstrap.Modal.getOr" +
-                        "CreateInstance(document.getElementById(\'DeleteModalOnayDiv\'));\n        myModalIn" +
-                        "stance.show();\r\n    }\r\n    function YeniSozlesmeModalOnay() {\r\n        var myMod" +
-                        "alInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById(\'YeniSo" +
-                        "zlesmeModal\'));\n        myModalInstance.show();\r\n    }\r\n    function BitenSozles" +
-                        "meModalOnay() {\r\n        var myModalInstance = bootstrap.Modal.getOrCreateInstan" +
-                        "ce(document.getElementById(\'BitenSozlesmeModal\'));\n        myModalInstance.show(" +
-                        ");\r\n    }\r\n    //eğer aktif=0 ise satırı gri yap\r\n    function contentFunc(rowDa" +
-                        "ta, prop, counter) {\r\n        if (rowData.Aktif == \'False\') {\r\n            var t" +
-                        "rElement = document.getElementsByTagName(\"table\")[0];\r\n            var rowx = tr" +
-                        "Element.rows[counter];\r\n            rowx.classList.add(\"ui-widget-content-disabl" +
-                        "ed\");\r\n        }\r\n        if (rowData.SozlesmeBasladi < 0) { //ileri tarhli\r\n   " +
-                        "         var trElement = document.getElementsByTagName(\"table\")[0];\r\n           " +
-                        " var rowx = trElement.rows[counter];\r\n            rowx.classList.add(\"ileri-tari" +
-                        "hli-sozlesme\");\r\n        }\r\n    }\r\n</script>\r\n<div class=\"container shadow \">\r\n " +
-                        "   "));
+                        "etElementById(\'OdemePlaniModal\'));\r\n        myModalInstance.show();\r\n    }\r\n    " +
+                        "function DeleteModalOnay() {\r\n        var myModalInstance = bootstrap.Modal.getO" +
+                        "rCreateInstance(document.getElementById(\'DeleteModalOnayDiv\'));\r\n        myModal" +
+                        "Instance.show();\r\n    }\r\n    function YeniSozlesmeModalOnay() {\r\n        var myM" +
+                        "odalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById(\'Yeni" +
+                        "SozlesmeModal\'));\r\n        myModalInstance.show();\r\n    }\r\n    function BitenSoz" +
+                        "lesmeModalOnay() {\r\n        var myModalInstance = bootstrap.Modal.getOrCreateIns" +
+                        "tance(document.getElementById(\'BitenSozlesmeModal\'));\r\n        myModalInstance.s" +
+                        "how();\r\n    }\r\n    //eğer aktif=0 ise satırı gri yap\r\n    function contentFunc(r" +
+                        "owData, prop, counter) {\r\n        if (rowData.Aktif == \'False\') {\r\n            v" +
+                        "ar trElement = document.getElementsByTagName(\"table\")[0];\r\n            var rowx " +
+                        "= trElement.rows[counter];\r\n            rowx.classList.add(\"ui-widget-content-di" +
+                        "sabled\");\r\n        }\r\n        if (rowData.SozlesmeBasladi < 0) { //ileri tarhli\r" +
+                        "\n            var trElement = document.getElementsByTagName(\"table\")[0];\r\n       " +
+                        "     var rowx = trElement.rows[counter];\r\n            rowx.classList.add(\"ileri-" +
+                        "tarihli-sozlesme\");\r\n        }\r\n    }\r\n</script>\r\n<div class=\"container shadow \"" +
+                        ">\r\n    "));
             global::System.Web.UI.UpdatePanel @__ctrl1;
             @__ctrl1 = this.@__BuildControlUpdatePanel();
             @__parser.AddParsedSubObject(@__ctrl1);

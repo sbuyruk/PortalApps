@@ -59,6 +59,7 @@ namespace Utility.ProjeGlobal
         public const string IKYS_UNVANTANIM = "Ünvan Tanım";
         public const string IKYS_YABANCIDIL = "Yabancı Dil";
         public const string IKYS_YOKLAMA = "Yoklama";
+        public const string IKYS_HARCIRAH= "Harcırah";
         //moduller  NBYS
         public const string NBYS_ARMAGAN = "Armağan";
         public const string NBYS_ARMAGANTANIM = "Armağan Tanım";
@@ -163,7 +164,7 @@ namespace Utility.ProjeGlobal
         public const string BILGI = "Bilgi";
 
         public const string GOREV_GENELMUDUR = "Genel Müdür";
-        public const int GOREV_GENELMUDUR_INT = 2;
+        public const int GOREV_GENELMUDUR_INT = 1;
         
         public const int GENELMUDUR_PERSONELID = 1184;
 
@@ -206,7 +207,7 @@ namespace Utility.ProjeGlobal
         public const char DELIMITER = ';';
 
         //Birimler
-        public const string BIRIM_INSAATEMLAK = "İnşaat ve Emlak Yönetim Direktörlüğü";
+        public const string BIRIM_INSAATEMLAK = "Emlak Direktörlüğü";
         public const string BIRIM_HUKUK = "Hukuk Müşavirliği";
         public const string BIRIM_BOLGETEMSILCILIGI = "Bölge Temsilciliği";
 
@@ -835,8 +836,14 @@ namespace Utility.ProjeGlobal
         public static string PER_CALISIYOR = "Çalışıyor";
         public static int PER_AYRILDI_INT = 0;
         public static string PER_AYRILDI = "Ayrıldı";
-        public static string PER_SUBE = "Personel Ve İdari İşler Şube";
+        public static string PER_SUBE = "Personel ve İdari İşler Direktörlüğü";
         public static int PER_SUBE_INT = 5;
+
+        public static string UNVAN_UZMAN = "Uzman";
+        public static string UNVAN_KIDEMLIUZMAN = "Kıdemli Uzman";
+        public static string UNVAN_BASUZMAN = "Başuzman";
+        public static string UNVAN_DIREKTOR = "Direktör";
+        public static int GOREV_IKUZMANI = 124;
 
         public static int BULUNMAMASEBEBI_RAPORLU_INT = 1;// "Raporlu";
         public static int BULUNMAMASEBEBI_HASTANE_INT = 2;//"Hastane";

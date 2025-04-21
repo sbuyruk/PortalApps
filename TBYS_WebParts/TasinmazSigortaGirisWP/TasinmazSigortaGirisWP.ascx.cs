@@ -786,11 +786,11 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             {
                 if (BelgeYukleFU.HasFile)
                 {
-                    string hedefDosyaAdi = ProjeConstants.DOSYA_SIGORTAPOLICESI_DASK + AdresKoduQS + ".pdf";
+                    string hedefDosyaAdi = (ProjeConstants.DOSYA_SIGORTAPOLICESI_DASK + AdresKoduQS).Trim() + ".pdf";
                     bool isOk = UtilityHelper.UploadFileToSharePoint(BelgeYukleFU, ProjeConstants.TBYSBELGELERI_LIB, hedefDosyaAdi);
                     if (isOk)
                     {
-                        sigorta.PDFDosyasi = hedefDosyaAdi;
+                        sigorta.PDFDosyasi = (hedefDosyaAdi).Trim();
                         sigorta.Update();
                         DosyaLnk.Visible = true;
                         BelgeSilBtn.Visible = true;
@@ -824,7 +824,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             {
                 if (sigorta != null)
                 {
-                    string dosyaAdi = sigorta.PDFDosyasi;
+                    string dosyaAdi = (sigorta.PDFDosyasi).Trim();
                     string dosyaUrl = UtilityHelper.TbysBelgelerURLGetir() + "/" + dosyaAdi;
                     bool dosyaVarMi = UtilityHelper.DosyaVarMi(UtilityHelper.TbysBelgelerURLGetir(), ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi);
                     if (dosyaVarMi)

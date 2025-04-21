@@ -17,6 +17,7 @@ namespace Model.IKYS
         public string KisaAdi { get; set; }
         public bool Vekil { get; set; }
         public bool Aktif { get; set; }
+        public int HarcirahGrupId { get; set; }
         public override T Select<T>(int id)
         {
             string sqlString = SelectSQL(id);

@@ -50,7 +50,7 @@ namespace Portal_WebParts.KutlamaMoveWP
         private void KullaniciKutlamalariniGetir()
         {
             bool isPopUp = false;
-            GenelMudurUnvani = "Genel Müdür";
+            GenelMudurUnvani = ProjeConstants.GOREV_GENELMUDUR;
 
             GorevTanim gt = new GorevTanim();
             gt = gt.SelectByGorevId(ProjeConstants.GOREV_GENELMUDUR_INT);

@@ -225,7 +225,7 @@ namespace NBYS_WebParts.BagisaVesileOlanArmaganBelgesiWP
             keyValues.Add("imzalayanUnvanVar", bagisaVesileOlanTesekkur.ImzalayanUnvan.ReturnEmptyIfNull().ToString().Trim());
             keyValues.Add("imzalayanMakamVar", bagisaVesileOlanTesekkur.ImzalayanMakam.ReturnEmptyIfNull().ToString().Trim());
 
-            keyValues.Add("belgeTarihiVar", bagisaVesileOlanTesekkur.BelgeTarihi.ReturnTRDateFormat());
+            keyValues.Add("belgeTarihiVar", bagisaVesileOlanTesekkur.BelgeTarihi.ToString("dd MMMM yyyy"));
             keyValues.Add("belgeNoVar", bagisaVesileOlanTesekkur.Id.ReturnZeroIfNull().ToString().Trim());
             keyValues.Add("soyadiVar", bagisaVesileOlanTesekkur.Soyadi.ReturnEmptyIfNull().ToString().Trim());
             keyValues.Add("adiVar", bagisaVesileOlanTesekkur.Adi.ReturnEmptyIfNull().ToString().Trim());

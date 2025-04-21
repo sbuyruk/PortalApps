@@ -1,9 +1,11 @@
-﻿using Model.TBYS;
+﻿using Model.Ortak;
+using Model.TBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.IO;
+using System.Web.Script.Serialization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
@@ -37,7 +39,7 @@ namespace TBYS_WebParts.HukukiTakipListesiWP
             {
                 if (!Page.IsPostBack)
                 {
-                    KayitGetir();
+                    TabloOlustur();
                 }
             }
             catch (Exception ex)
@@ -46,13 +48,97 @@ namespace TBYS_WebParts.HukukiTakipListesiWP
                 exHelper.PublishException();
             }
         }
-        private void KayitGetir()
+        private void TabloOlustur()
         {
-            List<Tasinmaz> list = new List<Tasinmaz>();
-            var jsonData = HukukiTakipJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateJsString(jsonData); //javascript kodu hazırlanıyor.
-            System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), jsString, true);
+            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            UtilityHelper.ScriptCalistir(jsString);
         }
+        private string CreateDataTable(string jsonData)
+        {
+            string tableString = @"
+                if ( jQuery.fn.DataTable.isDataTable('#CustomDataTable') ) {
+                    jQuery('#CustomDataTable').DataTable().destroy();
+                }
+                jQuery('#CustomDataTable tbody').empty();
+
+                jQuery.fn.dataTable.moment('DD.MM.YYYY');//sort date
+                jQuery(document).ready(function () {
+                    jQuery('#CustomDataTable').DataTable({
+                        'initComplete': function (settings, json) {//tablo yüklendiğinde
+                            var api = this.api();
+                            var row = api.row(function (idx, data, node) { //secilen kayda gider
+                                return data['Secildi'] == true;
+                            });
+                            if (row.length > 0) {
+                                row.select()
+                                    .show()
+                                    .draw(false);
+                            }
+                        },
+                        data: " + jsonData + @",
+                        columns: [
+                            { data: 'DosyaNo' },
+                            { data: 'SozlesmeId' },
+                            { data: 'KiraciAdiSoyadi' },
+                            { data: 'IlkSozlesmeTar' },
+                            { data: 'IslemTarihi' },
+                            { data: 'BorcAnaPara' },
+                            { data: 'BorcFaiz' },
+                            { data: 'Aciklama' },
+                        ],
+                        'columnDefs': [
+                            {targets:1, render:function(data, type, row, meta) {
+                                var link='<a href=\'" + ProjeConstants.PAGE_KIRASOZLESMESI + @"?DestinationApp=KS&SenderApp=KSL&KiraSozlesmeId='+row.SozlesmeId +'\'>'+row.SozlesmeId+'</a>';
+                                return link;
+                            },
+                        },   
+                            { 'width': '25%', 'targets': 2 },
+                        ],
+                        'language': {
+                            'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
+                            'decimal': ',',
+                            'thousands': '.'
+                        },
+                        responsive: true,
+                        dom: 'Bfrtip',
+                        buttons: [
+                            {
+                                extend: 'print',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            {
+                                extend: 'excel',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            {
+                                extend: 'pdf',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            {
+                                extend: 'copy',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            , 'pageLength', 'colvis'
+                        ],
+
+                        });
+                    });
+
+            ";
+
+            return tableString;
+        }
+
+        
         private string CreateJsString(string jsonData)
         {
             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
@@ -94,7 +180,7 @@ namespace TBYS_WebParts.HukukiTakipListesiWP
 
             return tableString;
         }
-        private string HukukiTakipJson()
+        private string TabloJson()
         {
             HukukiTakip hukukiTakip = new HukukiTakip();
             string json = hukukiTakip.SelectAllReturnJson();

@@ -7,15 +7,7 @@
 <%@ Register TagPrefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="KiraciAylikOdemeWP.ascx.cs" Inherits="TBYS_WebParts.KiraciAylikOdemeWP.KiraciAylikOdemeWP" %>
 
-<style>
-    .medium-font {
-        font-size: medium;
-    }
-    .custom-select{
-        margin-top:5px;
-        height:34px;
-    }
-</style>
+
 <script type="text/javascript">
 
     

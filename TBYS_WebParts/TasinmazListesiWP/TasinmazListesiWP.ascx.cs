@@ -488,6 +488,8 @@ namespace TBYS_WebParts.TasinmazListesiWP
                             { data: 'Adres' },
                             { data: 'BolumNo' },
                             { data: 'Nitelik' },
+                            { data: 'Metrekare' },
+                            { data: 'KullanimSekli' },
                             { data: 'Aciklama' },
                         ],
                         'order': [[0, 'desc']],//sort

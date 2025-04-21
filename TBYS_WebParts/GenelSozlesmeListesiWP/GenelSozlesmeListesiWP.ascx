@@ -6,18 +6,7 @@
 <%@ Import Namespace="Microsoft.SharePoint" %> 
 <%@ Register Tagprefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="GenelSozlesmeListesiWP.ascx.cs" Inherits="TBYS_WebParts.GenelSozlesmeListesiWP.GenelSozlesmeListesiWP" %>
-<style>
-     /*tblfilter hücre içine sığmazsa wordwrap yapsın*/ 
-    .ui-datatable tbody td {
-        white-space: normal;
-    }
-    .ui-column-title {
-        white-space: normal;
-    }
-    .small-font{
-        font-size:small;
-    }
-</style>
+
 <script type="text/javascript">
     //excele export ettikten donup sonra kalmasın diye
     function setFormSubmitToFalse() {
@@ -40,14 +29,26 @@
                     </h3>
                 </div>
                 <div class="card-body p-0" id="MainCardDiv" runat="server">
-
-                    <asp:Label ID="RowCountLbl" runat="server" Text="" CssClass="float-end text-end"></asp:Label>
-                    <div class="table loader" id="tbl" runat="server">
-                        <input id="globalFilter" placeholder="Aranacak Kelime" size="30" />
-                        <div id="tblfilter" class="table"></div>
-                        <div id="messages"></div>
+                    <div class="form-group">
+                        <table id="CustomDataTable" class="table table-striped row-border" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Sıra No</th>
+                                    <th>Kiracı</th>
+                                    <th>Adres</th>
+                                    <th>İlk Sözleşme</th>
+                                    <th>Sözleşme Baş.Tarihi</th>
+                                    <th>Sözleşme Bit.Tarihi</th>
+                                    <th>Kira Bedeli</th>
+                                    <th>Faizli Bakiye</th>
+                                    <th>Ana Para</th>
+                                    <th>Faiz Tutarı</th>
+                                    <th>Kira Borcu</th>
+                                    <th>Teminat Tutarı</th>
+                                </tr>
+                            </thead>
+                        </table>
                     </div>
-
                 </div>
                 <div class="card-footer">
                     <asp:LinkButton CssClass="btn btn-outline-success float-end" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />

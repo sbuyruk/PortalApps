@@ -50,34 +50,34 @@ namespace IKYS_WebParts.BirimSemasiWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControlTree(global::IKYS_WebParts.BirimSemasiWP.BirimSemasiWP @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n<link rel=\"stylesheet\" href=\"/Style%20Library/tskgv/css/Treant.css\">\r\n\r\n\r\n\r\n\r" +
-                        "\n<style>\r\n    body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, fo" +
-                        "rm, fieldset, input, textarea, p, blockquote, th, td {\r\n        margin: 0;\r\n    " +
-                        "    padding: 0;\r\n    }\r\n\r\n    table {\r\n        border-collapse: collapse;\r\n     " +
-                        "   border-spacing: 0;\r\n    }\r\n\r\n    fieldset, img {\r\n        border: 0;\r\n    }\r\n" +
-                        "\r\n    address, caption, cite, code, dfn, em, strong, th, var {\r\n        font-sty" +
-                        "le: normal;\r\n        font-weight: normal;\r\n    }\r\n\r\n    caption, th {\r\n        t" +
-                        "ext-align: left;\r\n    }\r\n\r\n    h1, h2, h3, h4, h5, h6 {\r\n        font-size: 100%" +
-                        ";\r\n        font-weight: normal;\r\n    }\r\n\r\n    q:before, q:after {\r\n        conte" +
-                        "nt: \'\';\r\n    }\r\n\r\n    abbr, acronym {\r\n        border: 0;\r\n    }\r\n\r\n    body {\r\n" +
-                        "        background: #fff;\r\n    }\r\n    /* optional Container STYLES */\r\n    .char" +
-                        "t {\r\n        min-height: 600px;\r\n        margin: 5px;\r\n        min-width: 1000px" +
-                        ";\r\n    }\r\n\r\n    .Treant > .node {\r\n    }\r\n\r\n    .Treant > p {\r\n        font-fami" +
-                        "ly: \"HelveticaNeue-Light\", \"Helvetica Neue Light\", \"Helvetica Neue\", Helvetica, " +
-                        "Arial, \"Lucida Grande\", sans-serif;\r\n        font-weight: bold;\r\n        font-si" +
-                        "ze: 12px;\r\n    }\r\n\r\n    .node-name {\r\n        font-weight: bold;\r\n    }\r\n\r\n    ." +
-                        "nodeExample1 {\r\n        padding: 2px;\r\n        -webkit-border-radius: 3px;\r\n    " +
-                        "    -moz-border-radius: 3px;\r\n        border-radius: 3px;\r\n        background-co" +
-                        "lor: #ffffff;\r\n        border: 1px solid #000;\r\n        width: 200px;\r\n        h" +
-                        "eight: 70px;\r\n        font-family: Tahoma;\r\n        font-size: 11px;\r\n    }\r\n   " +
-                        " .nodeExample2 {\r\n        padding: 2px;\r\n        -webkit-border-radius: 3px;\r\n  " +
-                        "      -moz-border-radius: 3px;\r\n        border-radius: 3px;\r\n        background-" +
-                        "color: #d3d3d3;\r\n\r\n        border: 2px dashed #808080;\r\n        width: 200px;\r\n " +
-                        "       height: 70px;\r\n        font-family: Tahoma;\r\n        font-size: 11px;\r\n  " +
-                        "  }\r\n    .nodeExample1 img {\r\n        margin-right: 10px;\r\n        max-height:65" +
-                        "px;\r\n        max-height:60px;\r\n    }\r\n\r\n</style>\r\n\r\n\r\n\r\n<script src=\"/Style%20Li" +
-                        "brary/tskgv/js/raphael.js\"></script>\r\n<script src=\"/Style%20Library/tskgv/js/Tre" +
-                        "ant.js\"></script>\r\n\r\n\r\n<div class=\"chart\" id=\"BirimSemasiDiv\"></div>\r\n\r\n"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n<link rel=\"stylesheet\" href=\"/Style%20Library/treant/Treant.css\">\r\n\r\n\r\n\r\n\r\n<s" +
+                        "tyle>\r\n    body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form," +
+                        " fieldset, input, textarea, p, blockquote, th, td {\r\n        margin: 0;\r\n       " +
+                        " padding: 0;\r\n    }\r\n\r\n    table {\r\n        border-collapse: collapse;\r\n        " +
+                        "border-spacing: 0;\r\n    }\r\n\r\n    fieldset, img {\r\n        border: 0;\r\n    }\r\n\r\n " +
+                        "   address, caption, cite, code, dfn, em, strong, th, var {\r\n        font-style:" +
+                        " normal;\r\n        font-weight: normal;\r\n    }\r\n\r\n    caption, th {\r\n        text" +
+                        "-align: left;\r\n    }\r\n\r\n    h1, h2, h3, h4, h5, h6 {\r\n        font-size: 100%;\r\n" +
+                        "        font-weight: normal;\r\n    }\r\n\r\n    q:before, q:after {\r\n        content:" +
+                        " \'\';\r\n    }\r\n\r\n    abbr, acronym {\r\n        border: 0;\r\n    }\r\n\r\n    body {\r\n   " +
+                        "     background: #fff;\r\n    }\r\n    /* optional Container STYLES */\r\n    .chart {" +
+                        "\r\n        min-height: 600px;\r\n        margin: 5px;\r\n        min-width: 1000px;\r\n" +
+                        "    }\r\n\r\n    .Treant > .node {\r\n    }\r\n\r\n    .Treant > p {\r\n        font-family:" +
+                        " \"HelveticaNeue-Light\", \"Helvetica Neue Light\", \"Helvetica Neue\", Helvetica, Ari" +
+                        "al, \"Lucida Grande\", sans-serif;\r\n        font-weight: bold;\r\n        font-size:" +
+                        " 12px;\r\n    }\r\n\r\n    .node-name {\r\n        font-weight: bold;\r\n    }\r\n\r\n    .nod" +
+                        "eExample1 {\r\n        padding: 2px;\r\n        -webkit-border-radius: 3px;\r\n       " +
+                        " -moz-border-radius: 3px;\r\n        border-radius: 3px;\r\n        background-color" +
+                        ": #ffffff;\r\n        border: 1px solid #000;\r\n        width: 200px;\r\n        heig" +
+                        "ht: 70px;\r\n        font-family: Tahoma;\r\n        font-size: 11px;\r\n    }\r\n    .n" +
+                        "odeExample2 {\r\n        padding: 2px;\r\n        -webkit-border-radius: 3px;\r\n     " +
+                        "   -moz-border-radius: 3px;\r\n        border-radius: 3px;\r\n        background-col" +
+                        "or: #d3d3d3;\r\n\r\n        border: 2px dashed #808080;\r\n        width: 200px;\r\n    " +
+                        "    height: 70px;\r\n        font-family: Tahoma;\r\n        font-size: 11px;\r\n    }" +
+                        "\r\n    .nodeExample1 img {\r\n        margin-right: 10px;\r\n        max-height:65px;" +
+                        "\r\n        max-height:60px;\r\n    }\r\n\r\n</style>\r\n\r\n\r\n\r\n<script src=\"/Style%20Libra" +
+                        "ry/tskgv/js/raphael.js\"></script>\r\n<script src=\"/Style%20Library/tskgv/js/Treant" +
+                        ".js\"></script>\r\n\r\n\r\n<div class=\"chart\" id=\"BirimSemasiDiv\"></div>\r\n\r\n"));
         }
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +

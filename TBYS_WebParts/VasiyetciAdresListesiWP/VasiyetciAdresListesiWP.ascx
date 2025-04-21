@@ -16,27 +16,7 @@
     }
 </style>
 <script>
-    window.onload = setStartupOptions;
-    function setStartupOptions() {
-        pageIndex = getParameterByName("PageIndex");
-        SetPageIndex();
-    }
-    //tabloda modal açılırken seçili olan pagination degerini pageIndex degiskeninde saklar ve modal açıldıktan sonra pageload sırasında sayfayı pageIndex degerine getirir
-    function SetPageIndex() {
-        $('#tblfilter').puidatatable('getPaginator').puipaginator('option', 'page', parseInt(pageIndex) - 1);
-
-    }
-    var pageIndex = 0;
-    function getParameterByName(name) {
-        name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
-        var regexS = "[\\?&]" + name + "=([^&#]*)";
-        var regex = new RegExp(regexS);
-        var results = regex.exec(window.location.href);
-        if (results == null)
-            return "";
-        else
-            return decodeURIComponent(results[1].replace(/\+/g, " "));
-    }
+   
     //excele export ettikten donup sonra kalmasın diye
     function setFormSubmitToFalse() {
         setTimeout(function () { _spFormOnSubmitCalled = false; }, 3000);
@@ -84,12 +64,20 @@
                         <div style="display: none">
                             <input id="paramVasiyetciIdLbl" runat="server" text="Label" style="border-style: none;" text-align="center" />
                         </div>
-
-                        <div class="table loader">
-                            <asp:Label ID="RowCountLbl" runat="server" Text="" CssClass="col-form-label float-end text-danger pr-2" Font-Bold="True"></asp:Label>
-                            <input id="globalFilter" placeholder="Aranacak Kelime" size="30" />
-                            <div id="tblfilter" class="table"></div>
-                            <div id="messages"></div>
+                        <div class="form-group">
+                            <table id="CustomDataTable" class="table table-striped row-border" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Bölge</th>
+                                        <th>Adı</th>
+                                        <th>Soyadı</th>
+                                        <th>İkamet Adresi</th>
+                                        <th>İkamet İli</th>
+                                        <th>İkamet İlçesi</th>
+                                        <th>Telefon</th>
+                                    </tr>
+                                </thead>
+                            </table>
                         </div>
                     </div>
                     <div class="form-group">

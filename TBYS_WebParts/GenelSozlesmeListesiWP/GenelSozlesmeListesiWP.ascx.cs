@@ -1,4 +1,5 @@
-﻿using Model.TBYS;
+﻿using Model.Ortak;
+using Model.TBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -110,7 +111,7 @@ namespace TBYS_WebParts.GenelSozlesmeListesiWP
             {
                 if (!Page.IsPostBack)
                 {
-                    KayitGetir();
+                    TabloOlustur();
                 }
             }
             catch (Exception ex)
@@ -118,63 +119,6 @@ namespace TBYS_WebParts.GenelSozlesmeListesiWP
                 ExceptionHelper exHelper = new ExceptionHelper(ex);
                 exHelper.PublishException();
             }
-        }
-        private void KayitGetir()
-        {
-            List<Tasinmaz> list = new List<Tasinmaz>();
-            var jsonData = KiraSozlesmeJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateJsString(jsonData); //javascript kodu hazırlanıyor.
-            System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), jsString, true);
-        }
-        private string CreateJsString(string jsonData)
-        {
-            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-            string rawUrl = System.Web.HttpContext.Current.Request.RawUrl.ToString();
-            int index = currentUrl.IndexOf(rawUrl);
-            string rootUrl = (index < 0) ? currentUrl : currentUrl.Remove(index, rawUrl.Length);
-            string imgUrl = rootUrl + "/" + ProjeConstants.RESIMLER_TASINMAZ + "/_t/";
-            string pageUrl = rootUrl + "/" + ProjeConstants.PAGE_TASINMAZ_GIRIS;
-
-            string queryStr = "&PageIndex='+currentPage+'";
-            string tableString = @"
-                // paginationa tıklandığında page degerini pageIndex degiskeninde saklar 
-                $(document).on('click', '.ui-paginator-page', function () {
-                    pageIndex = parseInt($(this).text());
-                });
-
-                $('#tblfilter').puidatatable({
-                caption: '',
-                editMode: 'cell',
-                paginator: {
-                            rows: 8
-                            },
-                columns: [
-                    { field: 'Sirano', headerText: 'S. No',bodyClass:'text-center',headerStyle:'width: 4%',bodyClass:'small-font'},
-                    { field: 'KiraciAdi', headerText: 'Kiracı',filter: true,sortable:true,headerStyle:'width: 13%',bodyClass:'small-font', content: function (rowData)
-                        { 
-                            var sirano=parseInt(rowData.Sirano);
-                            var currentPage=Math.ceil(sirano/8);
-                            return $('<a href=" + ProjeConstants.PAGE_KIRASOZLESMESI + @"?DestinationApp=KS&SenderApp=KSL&KiraSozlesmeId='+rowData.SozlesmeId +'" + queryStr + @" class=\'text-link \'>'+rowData.KiraciAdi+'</a>')
-                        }
-                    }, 
-                    { field: 'Adres', headerText: 'Adres',filter: true,sortable:true,headerStyle:'width: 20%',bodyClass:'small-font'},                   
-                    { field: 'SozlesmeTarihi', headerText: 'Söz. Tar.',headerStyle:'width: 8%',bodyClass:'text-end small-font' },
-                    { field: 'SozBasTar', headerText: 'Söz. Baş.',headerStyle:'width: 8%', bodyClass:'text-end small-font'}, 
-                    { field: 'SozBitTar', headerText: 'Söz. Bit.',headerStyle:'width: 8%', bodyClass:'text-end small-font'},                    
-                    { field: 'KiraBedeli', headerText: 'Kira Bedeli',bodyClass:'text-end small-font',headerStyle:'width: 7%' },
-                    { field: 'FaizliBakiye', headerText: 'Faizli Bakiye',bodyClass:'text-end small-font',headerStyle:'width: 7%' },
-{ field: 'AnaPara', headerText: 'Ana Para',bodyClass:'text-end small-font',headerStyle:'width: 7%' },
-{ field: 'FaizTutari', headerText: 'Faiz Tutarı',bodyClass:'text-end small-font',headerStyle:'width: 7%' },
-                    { field: 'KiraBorcu', headerText: 'Kira Bor.',bodyClass:'text-end small-font',headerStyle:'width: 4%' },
-                    { field: 'TeminatTutari', headerText: 'Tem. Tutarı',bodyClass:'text-end small-font',headerStyle:'width: 7%' },                    
-                ],
-                datasource:" + jsonData + @",
-                resizableColumns: true,
-                globalFilter:'#globalFilter'
-                });
-            ";
-
-            return tableString;
         }
         protected void ExcelBtn_Click(object sender, EventArgs e)
         {
@@ -235,16 +179,7 @@ namespace TBYS_WebParts.GenelSozlesmeListesiWP
                 exHelper.PublishException();
             }
         }
-        private string KiraSozlesmeJson()
-        {
-            string jSon = string.Empty;
-
-            List<KiraSozlesmeListItem> list = GetDataList();
-            var serializer = new JavaScriptSerializer();
-            serializer.MaxJsonLength = Int32.MaxValue;
-            jSon = serializer.Serialize(list);
-            return jSon;
-        }
+        
 
         private List<KiraSozlesmeListItem> GetDataList()
         {
@@ -340,6 +275,117 @@ namespace TBYS_WebParts.GenelSozlesmeListesiWP
             }
             return list;
         }
+
+        private void TabloOlustur()
+        {
+            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            UtilityHelper.ScriptCalistir(jsString);
+        }
+        private string CreateDataTable(string jsonData)
+        {
+            string tableString = @"
+                if ( jQuery.fn.DataTable.isDataTable('#CustomDataTable') ) {
+                    jQuery('#CustomDataTable').DataTable().destroy();
+                }
+                jQuery('#CustomDataTable tbody').empty();
+
+                jQuery.fn.dataTable.moment('DD.MM.YYYY');//sort date
+                jQuery(document).ready(function () {
+                    jQuery('#CustomDataTable').DataTable({
+                        'initComplete': function (settings, json) {//tablo yüklendiğinde
+                            var api = this.api();
+                            var row = api.row(function (idx, data, node) { //secilen kayda gider
+                                return data['Secildi'] == true;
+                            });
+                            if (row.length > 0) {
+                                row.select()
+                                    .show()
+                                    .draw(false);
+                            }
+                        },
+                        data: " + jsonData + @",
+                        columns: [
+                            { data: 'Sirano' },
+                            { data: 'KiraciAdi' },
+                            { data: 'Adres' },
+                            { data: 'SozlesmeTarihi' },
+                            { data: 'SozBasTar' },
+                            { data: 'SozBitTar' },
+                            { data: 'KiraBedeli' },
+                            { data: 'FaizliBakiye' },
+                            { data: 'AnaPara' },
+                            { data: 'FaizTutari' },
+                            { data: 'KiraBorcu' },
+                            { data: 'TeminatTutari' },
+                        ],
+                        'columnDefs': [
+                            { 'width': '20%', 'targets': 1 },
+                            { 'width': '25%', 'targets': 2 },
+                        ],
+                        'language': {
+                            'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
+                            'decimal': ',',
+                            'thousands': '.'
+                        },
+                        responsive: true,
+                        dom: 'Bfrtip',
+                        buttons: [
+                            {
+                                extend: 'print',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            {
+                                extend: 'excel',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            {
+                                extend: 'pdf',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            {
+                                extend: 'copy',
+                                exportOptions: {
+                                    columns: ':visible'
+                                }
+                            },
+                            , 'pageLength', 'colvis'
+                        ],
+
+                        });
+                    });
+
+            ";
+
+            return tableString;
+        }
+
+        private string TabloJson()
+        {
+            string jSon = string.Empty;
+
+            try
+            {
+                List<KiraSozlesmeListItem> list = GetDataList();
+                var serializer = new JavaScriptSerializer();
+                serializer.MaxJsonLength = Int32.MaxValue;
+                jSon = serializer.Serialize(list);
+            }
+            catch (Exception exception)
+            {
+                ExceptionHelper exceptionHelper = new ExceptionHelper();
+                exceptionHelper.Exceptions.Add(exception);
+                exceptionHelper.PublishException();
+            }
+            return jSon;
+        }
+
         private class KiraSozlesmeListItem
         {
             public string Sirano { get; set; }

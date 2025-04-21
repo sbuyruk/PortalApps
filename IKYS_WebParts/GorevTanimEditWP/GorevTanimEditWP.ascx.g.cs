@@ -77,6 +77,10 @@ namespace IKYS_WebParts.GorevTanimEditWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.DropDownList HarcirahDDL;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.CheckBox VekilChk;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -268,7 +272,7 @@ namespace IKYS_WebParts.GorevTanimEditWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "PersonelDDL";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control form-select form-select-lg");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "height:auto");
             @__ctrl.Enabled = false;
             @__ctrl.ToolTip = "Personel atamasını kişinin sayfasından yapınız";
@@ -285,8 +289,22 @@ namespace IKYS_WebParts.GorevTanimEditWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "BirimDDL";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control form-select form-select-lg");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "height:auto");
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.DropDownList @__BuildControlHarcirahDDL() {
+            global::System.Web.UI.WebControls.DropDownList @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.DropDownList();
+            this.HarcirahDDL = @__ctrl;
+            @__ctrl.TemplateControl = this;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "HarcirahDDL";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control form-select form-select-lg");
             return @__ctrl;
         }
         
@@ -354,7 +372,7 @@ namespace IKYS_WebParts.GorevTanimEditWP {
             @__parser.AddParsedSubObject(@__ctrl4);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n\r\n                            <div class=\"f" +
                         "orm-group m-0\">\r\n                                <label class=\"col-form-label\" f" +
-                        "or=\"PersonelDDL\">Personel</label>\r\n                                "));
+                        "or=\"PersonelDDL\">Personel</label> \r\n                                "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl5;
             @__ctrl5 = this.@__BuildControlPersonelDDL();
             @__parser.AddParsedSubObject(@__ctrl5);
@@ -364,23 +382,29 @@ namespace IKYS_WebParts.GorevTanimEditWP {
             global::System.Web.UI.WebControls.DropDownList @__ctrl6;
             @__ctrl6 = this.@__BuildControlBirimDDL();
             @__parser.AddParsedSubObject(@__ctrl6);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <div class=\"for" +
+                        "m-group m-0\">\r\n                                <label class=\"col-form-label\" for" +
+                        "=\"HarcirahDDL\">Birim/Şube</label>\r\n                                "));
+            global::System.Web.UI.WebControls.DropDownList @__ctrl7;
+            @__ctrl7 = this.@__BuildControlHarcirahDDL();
+            @__parser.AddParsedSubObject(@__ctrl7);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                             </div>
                             <div class=""row"">
                                 <div class=""form-group col m-0"">
                                     <label class=""col-form-label text-white"" for=""VekilChk"">.... ... ...</label>
                                     "));
-            global::System.Web.UI.WebControls.CheckBox @__ctrl7;
-            @__ctrl7 = this.@__BuildControlVekilChk();
-            @__parser.AddParsedSubObject(@__ctrl7);
+            global::System.Web.UI.WebControls.CheckBox @__ctrl8;
+            @__ctrl8 = this.@__BuildControlVekilChk();
+            @__parser.AddParsedSubObject(@__ctrl8);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"     
                                 </div>
                                 <div class=""form-group col m-0"">
                                     <label class=""col-form-label text-white"" for=""AktifChk"">.... ... ...</label>
                                     "));
-            global::System.Web.UI.WebControls.CheckBox @__ctrl8;
-            @__ctrl8 = this.@__BuildControlAktifChk();
-            @__parser.AddParsedSubObject(@__ctrl8);
+            global::System.Web.UI.WebControls.CheckBox @__ctrl9;
+            @__ctrl9 = this.@__BuildControlAktifChk();
+            @__parser.AddParsedSubObject(@__ctrl9);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("     \r\n                                </div>\r\n                            </div>" +
                         "\r\n                        </div>\r\n                    </div>\r\n                "));
         }

@@ -167,7 +167,7 @@ namespace NBYS_WebParts.NakitBagisciBulmaWP {
             this.BagisciAraTxt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "BagisciAraTxt";
-            @__ctrl.CssClass = "form-control m-1";
+            @__ctrl.CssClass = "col-6";
             @__ctrl.AutoPostBack = true;
             @__ctrl.ToolTip = "Ad,TCKimlikNo,Telefon veya Adres yazarak arayabilirsiniz";
             @__ctrl.TextChanged -= new System.EventHandler(this.BagisciAraTxt_TextChanged);
@@ -183,7 +183,7 @@ namespace NBYS_WebParts.NakitBagisciBulmaWP {
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.AraBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-info m-1";
+            @__ctrl.CssClass = "col-1 btn btn-info ms-1";
             @__ctrl.ID = "AraBtn";
             @__ctrl.CausesValidation = false;
             @__ctrl.Text = "Ara";
@@ -200,13 +200,12 @@ namespace NBYS_WebParts.NakitBagisciBulmaWP {
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
             this.BagisciAraDiv = @__ctrl;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-group border border-info");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "row border border-info p-2");
             @__ctrl.ID = "BagisciAraDiv";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "display: block");
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                <div class=\"input-group col-6\">\r\n                    <label cla" +
-                        "ss=\"col-form-label m-1\" for=\"BagisciAraTxt\">Bağışçı Ara :</label>\r\n             " +
-                        "       "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n                    <label class=\"col-1 form-label fw-semibold\" for=\"BagisciA" +
+                        "raTxt\">Bağışçı :</label>\r\n                    "));
             global::System.Web.UI.WebControls.TextBox @__ctrl1;
             @__ctrl1 = this.@__BuildControlBagisciAraTxt();
             @__parser.AddParsedSubObject(@__ctrl1);
@@ -214,7 +213,7 @@ namespace NBYS_WebParts.NakitBagisciBulmaWP {
             global::System.Web.UI.WebControls.LinkButton @__ctrl2;
             @__ctrl2 = this.@__BuildControlAraBtn();
             @__parser.AddParsedSubObject(@__ctrl2);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                </div>\r\n            "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n            "));
             return @__ctrl;
         }
         
@@ -575,8 +574,8 @@ namespace NBYS_WebParts.NakitBagisciBulmaWP {
                          @__w.Write( paramNakitBagisciIdLbl.ClientID);
 
             @__w.Write("\').value = nakitBagisciId;\r\n\r\n        var myModalInstance = bootstrap.Modal.getOr" +
-                    "CreateInstance(document.getElementById(\'ModalUrlDiv\'));\n        myModalInstance." +
-                    "show();\r\n        document.getElementById(\'");
+                    "CreateInstance(document.getElementById(\'ModalUrlDiv\'));\r\n        myModalInstance" +
+                    ".show();\r\n        document.getElementById(\'");
                          @__w.Write( ModalDoldurBtn.ClientID);
 
             @__w.Write("\').click();\r\n    }\r\n</script>\r\n\r\n<div class=\"container \">\r\n    <div style=\"displa" +

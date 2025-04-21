@@ -1917,30 +1917,29 @@ namespace MTS_WebParts.FaaliyetROViewerWP {
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
         private void @__Render__control1(System.Web.UI.HtmlTextWriter @__w, System.Web.UI.Control parameterContainer) {
-            @__w.Write("\r\n\r\n<link rel=\"stylesheet\" href=\"/Style%20Library/tskgv/js/fullcalendar/main.css\"" +
-                    ">\r\n<script type=\"text/javascript\" src=\"/Style%20Library/tskgv/js/fullcalendar/ma" +
-                    "in.js\"></script>\r\n<script type=\"text/javascript\" src=\"/Style%20Library/tskgv/js/" +
-                    "fullcalendar/locales/tr.js\"></script>\r\n\r\n\r\n\r\n<style>\r\n  body {\r\n    /*margin-top" +
-                    ": 40px;*/\r\n    font-size: 14px;\r\n    font-family: Arial, Helvetica Neue, Helveti" +
-                    "ca, sans-serif;\r\n  }\r\n\r\n  .fc-daygrid-dot-event .fc-event-title {\r\n    white-spa" +
-                    "ce: break-spaces;\r\n    word-break: break-word;\r\n    font-weight:normal;\r\n    bor" +
-                    "der:solid;\r\n    border-width:thin;\r\n  }\r\n\r\n  #calendar-wrap {\r\n    /*margin-left" +
-                    ": 200px;*/\r\n  }\r\n\r\n  #calendar {\r\n      height:1116px;\r\n      width:1600px;\r\n  }" +
-                    "\r\n  .title-wrap {\r\n    white-space: normal !important;\r\n    }\r\n    .iptal-edildi" +
-                    " {\r\n        /*text-decoration: line-through !important;*/\r\n            backgroun" +
-                    "d-image: url(\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcv" +
-                    "MjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJyBoZWlnaHQ9" +
-                    "JzEwJyBmaWxsPSd3aGl0ZScvPgogIDxwYXRoIGQ9J00tMSwxIGwyLC0yCiAgICAgICAgICAgTTAsMTAg" +
-                    "bDEwLC0xMAogICAgICAgICAgIE05LDExIGwyLC0yJyBzdHJva2U9J2JsYWNrJyBzdHJva2Utd2lkdGg9" +
-                    "JzEnLz4KPC9zdmc+Cg==\"); \r\n            background-repeat: repeat;    \r\n    }\r\n\r\n " +
-                    " #globalWrapper * {\r\n    z-index: auto;\r\n  }\r\n</style>\r\n<script type=\"text/javas" +
-                    "cript\">\r\n    function OpenToplantiModal() {\r\n        var myModalInstance = boots" +
-                    "trap.Modal.getOrCreateInstance(document.getElementById(\'ToplantiDetaylariModal\')" +
-                    ");\n        myModalInstance.show();\r\n    }\r\n    function OpenFaaliyetModal() {\r\n " +
-                    "       var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getEle" +
-                    "mentById(\'FaaliyetDetaylariModal\'));\n        myModalInstance.show();\r\n    }\r\n   " +
-                    " function ToplantiDetaylariModal(toplantiId) {\r\n        document.getElementById(" +
-                    "\'");
+            @__w.Write("\r\n\r\n\r\n<script type=\"text/javascript\" src=\"/Style%20Library/lib/fullcalendar/index" +
+                    ".global.js\"></script>\r\n<script type=\"text/javascript\" src=\"/Style%20Library/lib/" +
+                    "fullcalendar/locales/tr.global.min.js\"></script>\r\n\r\n\r\n\r\n<style>\r\n  body {\r\n    /" +
+                    "*margin-top: 40px;*/\r\n    font-size: 14px;\r\n    font-family: Arial, Helvetica Ne" +
+                    "ue, Helvetica, sans-serif;\r\n  }\r\n\r\n  .fc-daygrid-dot-event .fc-event-title {\r\n  " +
+                    "  white-space: break-spaces;\r\n    word-break: break-word;\r\n    font-weight:norma" +
+                    "l;\r\n    border:solid;\r\n    border-width:thin;\r\n  }\r\n\r\n  #calendar-wrap {\r\n    /*" +
+                    "margin-left: 200px;*/\r\n  }\r\n\r\n  #calendar {\r\n      height:1116px;\r\n      width:1" +
+                    "600px;\r\n  }\r\n  .title-wrap {\r\n    white-space: normal !important;\r\n    }\r\n    .i" +
+                    "ptal-edildi {\r\n        /*text-decoration: line-through !important;*/\r\n          " +
+                    "  background-image: url(\"data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3d" +
+                    "y53My5vcmcvMjAwMC9zdmcnIHdpZHRoPScxMCcgaGVpZ2h0PScxMCc+CiAgPHJlY3Qgd2lkdGg9JzEwJ" +
+                    "yBoZWlnaHQ9JzEwJyBmaWxsPSd3aGl0ZScvPgogIDxwYXRoIGQ9J00tMSwxIGwyLC0yCiAgICAgICAgI" +
+                    "CAgTTAsMTAgbDEwLC0xMAogICAgICAgICAgIE05LDExIGwyLC0yJyBzdHJva2U9J2JsYWNrJyBzdHJva" +
+                    "2Utd2lkdGg9JzEnLz4KPC9zdmc+Cg==\"); \r\n            background-repeat: repeat;    \r" +
+                    "\n    }\r\n\r\n  #globalWrapper * {\r\n    z-index: auto;\r\n  }\r\n</style>\r\n<script type=" +
+                    "\"text/javascript\">\r\n    function OpenToplantiModal() {\r\n        var myModalInsta" +
+                    "nce = bootstrap.Modal.getOrCreateInstance(document.getElementById(\'ToplantiDetay" +
+                    "lariModal\'));\r\n        myModalInstance.show();\r\n    }\r\n    function OpenFaaliyet" +
+                    "Modal() {\r\n        var myModalInstance = bootstrap.Modal.getOrCreateInstance(doc" +
+                    "ument.getElementById(\'FaaliyetDetaylariModal\'));\r\n        myModalInstance.show()" +
+                    ";\r\n    }\r\n    function ToplantiDetaylariModal(toplantiId) {\r\n        document.ge" +
+                    "tElementById(\'");
                          @__w.Write( paramToplantiIdLbl.ClientID);
 
             @__w.Write("\').value = toplantiId;\r\n        document.getElementById(\'");

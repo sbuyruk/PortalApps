@@ -7,36 +7,23 @@
 <%@ Register TagPrefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="KiraBakiyeDevriWP.ascx.cs" Inherits="TBYS_WebParts.KiraBakiyeDevriWP.KiraBakiyeDevriWP" %>
 
-<style>
-    /*tblfilter hücre içine sığmazsa wordwrap yapsın*/
-    .ui-datatable tbody td {
-        white-space: normal;
-    }
 
-    .ui-datatable thead th {
-        white-space: normal;
-    }
-
-    .ileri-tarihli-sozlesme {
-        background-color: yellow;
-    }
-</style>
 <script>
     function DevirAl(sozlesmeId) {
         document.getElementById('<%= paramSozlesmeIdLbl.ClientID%>').value = sozlesmeId;
         document.getElementById('<%= DevirAlBtn.ClientID%>').click();
     }
     //eğer aktif=0 ise satırı gri yap
-    function contentFunc(rowData, prop, counter) {
+    function SetRowColor(rowData, prop, counter) {
         if (rowData.Aktif == 'False') {
             var trElement = document.getElementsByTagName("table")[0];
-            var rowx = trElement.rows[counter];
-            rowx.classList.add("ui-widget-content-disabled");
+            var row = trElement.rows[counter];
+            $(row).addClass('table-secondary'); 
         }
         if (rowData.SozlesmeBasladi < 0) { //ileri tarhli
             var trElement = document.getElementsByTagName("table")[0];
-            var rowx = trElement.rows[counter];
-            rowx.classList.add("ileri-tarihli-sozlesme");
+            var row = trElement.rows[counter];
+            $(row).addClass('table-warning'); 
         }
     }
 </script>
@@ -99,8 +86,27 @@
                         </div>
 
                     </div>
-                    <div class="table form-group">
-                        <div id="tblfilter"></div>
+                    <div class="form-group">
+                        <table id="CustomDataTable" class="table table-striped row-border" width="100%">
+                            <thead>
+                                <tr>
+                                    <th colspan="9">
+                                        <h3 class="text-center">Kiracının Sözleşmeleri</h3> 
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>Dosya No</th>
+                                    <th>Tarih Aralığı</th>
+                                    <th>Kira Bedeli</th>
+                                    <th>Devir Anapara</th>
+                                    <th>Devir Faiz</th>
+                                    <th>Devir Faizli Bakiye</th>
+                                    <th>Devir Al</th>
+                                    <th>Sözleşme</th>
+                                    <th>Ödeme Planı</th>
+                                </tr>
+                            </thead>
+                        </table>
                     </div>
 
                 </div>

@@ -199,19 +199,34 @@ namespace Model.NBYS
         public DataTable SelectBagisciGroupByBagisAdediReturnDataTable(decimal bronzMadalyaMiktari)
         {
             string sqlString = string.Format(@"
-                SELECT A.BagisciId NakitBagisciId
+                SELECT  A.BagisciId NakitBagisciId,A.ArmaganId
                     ,COUNT(A.Id) Adet, SUM(A.BagisMiktari) Toplam, MAX(A.BagisTarihi) SonBagisTarihi
-                    ,B.Adi, B.Soyadi, B.TuzelKisi
-	            FROM NakitBagisHareket_Table A
+                    ,B.Adi, B.Soyadi
+                FROM NakitBagisHareket_Table A
 	                LEFT JOIN NakitBagisci_Table B ON B.Id=A.BagisciId
-                    LEFT JOIN Armagan_Table C ON C.Id=A.ArmaganId AND C.ArmaganTanimId IN ({0})
-                WHERE B.Id IS NOT NULL AND C.Id is NULL AND B.Adi!={1}
-                    AND A.BagisTarihi > {2}
-                GROUP BY A.BagisciId,B.Adi, B.Soyadi, B.TuzelKisi
-                HAVING SUM(A.BagisMiktari) >= {3} AND COUNT(A.Id) >= 5 AND MAX(A.BagisTarihi) > DATEADD(MONTH, -6, GETDATE())
-                ORDER BY COUNT(A.Id) Desc, SUM(A.BagisMiktari)", ProjeConstants.ARMAGAN_ALTINID +","+ ProjeConstants.ARMAGAN_GUMUSID + "," + ProjeConstants.ARMAGAN_BRONZID, 
-                ProjeConstants.NAKITBAGISCI_BILINMEYEN.ReturnQuotedValue(),
-                ProjeConstants.COKBAGISYAPAN_BASLAMATARIHI.ReturnQuotedValue(), bronzMadalyaMiktari.ToString().Replace(",",".").ReturnQuotedValue());
+                WHERE B.Adi NOT Like '%{0}%' AND A.BagisTarihi > {1}
+                Group By A.BagisciId,A.ArmaganId,B.Adi, B.Soyadi 
+                HAVING  SUM(A.BagisMiktari) >= {2} AND (A.ArmaganId=0 OR COUNT(A.Id) > 1 )
+	                AND MAX(A.BagisTarihi) > DATEADD(MONTH, -6, GETDATE())
+	                Order By SUM(A.BagisMiktari),COUNT(A.Id) Desc,A.BagisciId,B.Adi
+
+            ", ProjeConstants.NAKITBAGISCI_BILINMEYEN,
+                ProjeConstants.COKBAGISYAPAN_BASLAMATARIHI.ReturnQuotedValue(), 
+                bronzMadalyaMiktari.ToString().Replace(",", ".").ReturnQuotedValue());
+            //string sqlString1 = string.Format(@"
+            //    SELECT A.BagisciId NakitBagisciId
+            //        ,COUNT(A.Id) Adet, SUM(A.BagisMiktari) Toplam, MAX(A.BagisTarihi) SonBagisTarihi
+            //        ,B.Adi, B.Soyadi, B.TuzelKisi
+	           // FROM NakitBagisHareket_Table A
+	           //     LEFT JOIN NakitBagisci_Table B ON B.Id=A.BagisciId
+            //        LEFT JOIN Armagan_Table C ON C.Id=A.ArmaganId AND C.ArmaganTanimId IN ({0})
+            //    WHERE B.Id IS NOT NULL AND C.Id is NULL AND B.Adi!={1}
+            //        AND A.BagisTarihi > {2}
+            //    GROUP BY A.BagisciId,B.Adi, B.Soyadi, B.TuzelKisi
+            //    HAVING SUM(A.BagisMiktari) >= {3} AND COUNT(A.Id) >= 5 AND MAX(A.BagisTarihi) > DATEADD(MONTH, -6, GETDATE())
+            //    ORDER BY COUNT(A.Id) Desc, SUM(A.BagisMiktari)", ProjeConstants.ARMAGAN_ALTINID +","+ ProjeConstants.ARMAGAN_GUMUSID + "," + ProjeConstants.ARMAGAN_BRONZID, 
+            //    ProjeConstants.NAKITBAGISCI_BILINMEYEN.ReturnQuotedValue(),
+            //    ProjeConstants.COKBAGISYAPAN_BASLAMATARIHI.ReturnQuotedValue(), bronzMadalyaMiktari.ToString().Replace(",",".").ReturnQuotedValue());
             DataTable dataTable;
             try
             {

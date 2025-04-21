@@ -983,9 +983,9 @@ namespace Portal_WebParts.ToplantiViewerWP {
         private void @__Render__control1(System.Web.UI.HtmlTextWriter @__w, System.Web.UI.Control parameterContainer) {
             @__w.Write(@"
 
-<link rel=""stylesheet"" href=""/Style%20Library/tskgv/js/fullcalendar/main.css"">
-<script type=""text/javascript"" src=""/Style%20Library/tskgv/js/fullcalendar/main.js""></script>
-<script type=""text/javascript"" src=""/Style%20Library/tskgv/js/fullcalendar/locales/tr.js""></script>
+
+<script type=""text/javascript"" src=""/Style%20Library/lib/fullcalendar/index.global.js""></script>
+<script type=""text/javascript"" src=""/Style%20Library/lib/fullcalendar/locales/tr.global.min.js""></script>
 
 
 <style>
