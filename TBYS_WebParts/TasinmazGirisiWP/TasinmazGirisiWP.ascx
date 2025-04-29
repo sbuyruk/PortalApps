@@ -30,7 +30,7 @@
                             <div class="form-group col">
                                 <div class="form-group m-0 ">
                                     <label class="col-form-label" for="KullanimSekliDDL">Kullanım Şekli</label>
-                                    <asp:DropDownList ID="KullanimSekliDDL" runat="server" CssClass="form-control" ToolTip="Kullanim Şekli" Style="height: auto"></asp:DropDownList>
+                                    <asp:DropDownList ID="KullanimSekliDDL" runat="server" CssClass="form-control form-select form-select-lg" ToolTip="Kullanim Şekli" Style="height: auto"></asp:DropDownList>
                                 </div>
                                 <div class="form-group m-0 ">
                                     <label class="col-form-label" for="SorumluBolgeTxt">Sor.Bölge</label>
@@ -43,18 +43,18 @@
                                 </div>
                                 <div class="form-group m-0 ">
                                     <label class="col-form-label" for="IliDDL">Bulunduğu İl</label>
-                                    <asp:DropDownList ID="IliDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="IliDDL_SelectedIndexChanged" AutoPostBack="true" Style="height: auto" />
+                                    <asp:DropDownList ID="IliDDL" runat="server" CssClass="form-control form-select form-select-lg" OnSelectedIndexChanged="IliDDL_SelectedIndexChanged" AutoPostBack="true" Style="height: auto" />
                                 </div>
                                 <div class="form-group m-0 ">
                                     <label class="col-form-label" for="IlcesiDDL">Bulunduğu İlçe</label>
-                                    <asp:DropDownList ID="IlcesiDDL" runat="server" class="form-control" Style="height: auto"></asp:DropDownList>
+                                    <asp:DropDownList ID="IlcesiDDL" runat="server" class="form-control form-select form-select-lg" Style="height: auto"></asp:DropDownList>
                                 </div>
 
                             </div>
                             <div class="form-group col">
                                 <div class="form-group m-0 ">
                                     <label class="col-form-label" for="MukliyetSekliDDL">Mülkiyet Şekli</label>
-                                    <asp:DropDownList ID="MukliyetSekliDDL" runat="server" class="form-control" Style="height: auto"></asp:DropDownList>
+                                    <asp:DropDownList ID="MukliyetSekliDDL" runat="server" class="form-control form-select form-select-lg" Style="height: auto"></asp:DropDownList>
                                 </div>
                                 <div class="form-group m-0 ">
                                     <label class="col-form-label" for="CinsiTxt">Cinsi</label>
@@ -62,7 +62,7 @@
                                 </div>
                                 <div class="form-group m-0 ">
                                     <label class="col-form-label" for="EdinmeSekliDDL">Edinme Şekli</label>
-                                    <asp:DropDownList ID="EdinmeSekliDDL" runat="server" class="form-control" Style="height: auto"></asp:DropDownList>
+                                    <asp:DropDownList ID="EdinmeSekliDDL" runat="server" class="form-control form-select form-select-lg" Style="height: auto"></asp:DropDownList>
                                 </div>
                                 <div class="form-group m-0 ">
                                     <label class="col-form-label" for="BagisYiliTxt">Bağış Yılı</label>
@@ -92,11 +92,11 @@
                             <div class="form-group col">
                                 <div class="form-group m-0 ">
                                     <label class="col-form-label" for="KirayaUygunlukDDL">Kiraya Uygunluk</label>
-                                    <asp:DropDownList ID="KirayaUygunlukDDL" runat="server" class="form-control" Style="height: auto"></asp:DropDownList>
+                                    <asp:DropDownList ID="KirayaUygunlukDDL" runat="server" class="form-control form-select form-select-lg" Style="height: auto"></asp:DropDownList>
                                 </div>
                                 <div class="form-group m-0 ">
                                     <label class="col-form-label" for="KiraDurumuDDL">Kira Durumu</label>
-                                    <asp:DropDownList ID="KiraDurumuDDL" runat="server" class="form-control" Style="height: auto"></asp:DropDownList>
+                                    <asp:DropDownList ID="KiraDurumuDDL" runat="server" class="form-control form-select form-select-lg" Style="height: auto"></asp:DropDownList>
                                 </div>
                                 <div class="form-group m-0 ">
                                     <label class="col-form-label" for="EnvantereGirisTarihiTxt">Env.Gir.Tarihi</label>
@@ -114,7 +114,7 @@
                             <div class="form-group col">
                                 <div class="form-group m-0 ">
                                     <label class="col-form-label" for="SigortaDDL">Sigorta Dur.</label>
-                                    <asp:DropDownList ID="SigortaDDL" runat="server" CssClass="form-control" ToolTip="Sigorta Durumu" Style="height: auto"></asp:DropDownList>
+                                    <asp:DropDownList ID="SigortaDDL" runat="server" CssClass="form-control form-select form-select-lg" ToolTip="Sigorta Durumu" Style="height: auto"></asp:DropDownList>
                                 </div>
                                 <div class="form-group m-0 ">
                                     <label class="col-form-label" for="TapuTarihiTxt">Tapu Tarihi</label>
@@ -126,7 +126,7 @@
                                 </div>
                                 <div class="form-group m-0 ">
                                     <label class="col-form-label" for="KatMulkiyetiDDL">Kat Mülk.</label>
-                                    <asp:DropDownList ID="KatMulkiyetiDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="KatMulkiyetiDDL_SelectedIndexChanged" AutoPostBack="true" Style="height: auto" />
+                                    <asp:DropDownList ID="KatMulkiyetiDDL" runat="server" CssClass="form-control form-select form-select-lg" OnSelectedIndexChanged="KatMulkiyetiDDL_SelectedIndexChanged" AutoPostBack="true" Style="height: auto" />
                                 </div>
                                 <div class="form-group m-0 ">
                                     <label class="col-form-label" for="InsaYiliTxt">İnşa Yılı</label>
@@ -225,7 +225,7 @@
                                 <asp:TextBox ID="NitelikTxt" runat="server" class="form-control" ToolTip="Oda+salon sayısı vb. özellikleri"></asp:TextBox>
                             </div>
                             <div class="form-group m-0 ">
-                                <label class="col-form-label" for="NitelikTxt">Metrekare</label>
+                                <label class="col-form-label" for="MetrekareTxt">Metrekare</label>
                                 <asp:TextBox ID="MetrekareTxt" runat="server" class="form-control input-money" ToolTip="Metrekaresi"></asp:TextBox>
                             </div>
                         </div>

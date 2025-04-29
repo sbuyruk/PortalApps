@@ -88,9 +88,15 @@
                         <label class="col-form-label " for="MetrekareTxt">Metrekare</label>
                         <asp:TextBox ID="MetrekareTxt" runat="server" CssClass="form-control" ToolTip="Dairenin metrekaresi"></asp:TextBox>
                     </div>                    
-                    <div class="form-group">
-                        <label class="col-form-label " for="MetrekareTxt">Kullanım Amacı</label>
-                        <asp:TextBox ID="KullanimAmaciTxt" runat="server" CssClass="form-control" ToolTip="Dairenin metrekaresi"></asp:TextBox>
+                    <div class="row">
+                        <div class="col form-group">
+                            <label class="col-form-label " for="MetrekareTxt">Kullanım Amacı</label>
+                            <asp:TextBox ID="KullanimAmaciTxt" runat="server" CssClass="form-control" ToolTip="Kullanım Amacı"></asp:TextBox>
+                        </div>
+                        <div class="col form-group">
+                            <label class="col-form-label " for="KullanimAmaciBtn">Kullanım Amacı</label>
+                            <asp:LinkButton ID="KullanimAmaciGetirBtn" CssClass="btn btn-outline-danger" runat="server" CausesValidation="false" Text="Getir" OnClick="KullanimAmaciGetirBtn_Click"/>
+                        </div>
                     </div>
                 </div>
                 <div class="col border m-2">

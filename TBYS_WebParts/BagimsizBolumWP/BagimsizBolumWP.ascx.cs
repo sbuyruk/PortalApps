@@ -260,11 +260,12 @@ namespace TBYS_WebParts.BagimsizBolumWP
         }
         private void BagimsizBolumEkleModalAc(Tasinmaz tasinmaz)
         {
+            KullanimAmaciDDLDoldur();
             BagimsizBolumHeaderLbl.InnerText = "Bağımsız Bölüm Ekleme";
             AdresTxt.Text = tasinmaz.Adres;
             BolumNoTxt.Text = string.Empty;
             MetrekareTxt.Text = string.Empty;
-            UtilityHelper.SetDDLValue(KullanimAmaciDDL, "Mesken");
+            UtilityHelper.SetDDLValue(KullanimAmaciDDL, ProjeConstants.KIRALAMAAMACI_MESKEN);
             AciklamaTxt.Text = string.Empty;
 
             AciklamaTxt.Enabled = true;
@@ -302,12 +303,12 @@ namespace TBYS_WebParts.BagimsizBolumWP
         private void KullanimAmaciDDLDoldur()
         {
             KullanimAmaciDDL.Items.Clear();
-            KullanimAmaciDDL.Items.Add("Mesken");
-            KullanimAmaciDDL.Items.Add("İşyeri");
-            KullanimAmaciDDL.Items.Add("Arsa");
-            KullanimAmaciDDL.Items.Add("Tarla");
-            KullanimAmaciDDL.Items.Add("Bis");
-            KullanimAmaciDDL.Items.Add("Tesis");
+            KullanimAmaciDDL.Items.Add(ProjeConstants.KIRALAMAAMACI_MESKEN);
+            KullanimAmaciDDL.Items.Add(ProjeConstants.KIRALAMAAMACI_ISYERI);
+            KullanimAmaciDDL.Items.Add(ProjeConstants.KIRALAMAAMACI_ARSA);
+            KullanimAmaciDDL.Items.Add(ProjeConstants.KIRALAMAAMACI_TARLA);
+            KullanimAmaciDDL.Items.Add(ProjeConstants.KIRALAMAAMACI_BAZISTASYONU);
+            KullanimAmaciDDL.Items.Add(ProjeConstants.KIRALAMAAMACI_TESIS);
         }
 
         private void BagimsizBolumSilModalAc(Tasinmaz tasinmaz, BagimsizBolum bagimsizBolum)

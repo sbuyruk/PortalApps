@@ -178,7 +178,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
         private void SecilenleriKaydet()
         {
             SecildiFalseYap();
-            string idler = paramAniObjesiIdArray.Value.Equals(",")?string.Empty: paramAniObjesiIdArray.Value;
+            string idler = paramidArray.Value.Equals(",")?string.Empty: paramidArray.Value;
             if (idler.Length > 1)
             {
                 idler = idler.IndexOf(",") == 0 ? idler.Substring(1, idler.Length - 1) : idler;
@@ -227,7 +227,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
         }
         protected void SecilenleriKaydetBtn_Click(object sender, EventArgs e)
         {
-            string aa = paramAniObjesiIdArray.Value;
+            string aa = paramidArray.Value;
         }
 
         protected void YeniGorevOnayiBtn_Click(object sender, EventArgs e)

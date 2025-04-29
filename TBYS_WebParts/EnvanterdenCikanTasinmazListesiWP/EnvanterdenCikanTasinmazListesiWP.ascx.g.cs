@@ -146,35 +146,20 @@ namespace TBYS_WebParts.EnvanterdenCikanTasinmazListesiWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControlTree(global::TBYS_WebParts.EnvanterdenCikanTasinmazListesiWP.EnvanterdenCikanTasinmazListesiWP @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n<script type=\"text/javascript\">\r\n    //excele export ettikten donup sonra kal" +
-                        "masın diye\r\n    function setFormSubmitToFalse() {\r\n        setTimeout(function (" +
-                        ") { _spFormOnSubmitCalled = false; }, 3000);\r\n        return true;\r\n    }\r\n    f" +
-                        "unction setDataSet(myset) {\r\n        myjsons = myset;\r\n    }\r\n    var myjsons = " +
-                        "[{\r\n        \"TasinmazId\": \"\",\"KullanimSekli\": \"\", \"EnvanterdenCikmaSebebi\": \"\", " +
-                        "\"EnvanterdenCikmaYili\": \"\", \"AdresIlIlce\": \"\", \"Aciklama\": \"\", \"Tasinmaz\": \"\", \"" +
-                        "Duzenle\": \"\"\r\n    }];\r\n    jQuery(document).ready(function () {\r\n        jQuery(" +
-                        "\'#CustomDataTable\').DataTable({\r\n            data: myjsons,\r\n            columns" +
-                        ": [\r\n                { data: \"TasinmazId\" },\r\n                { data: \"KullanimS" +
-                        "ekli\" },\r\n                { data: \"EnvanterdenCikmaSebebi\" },\r\n                {" +
-                        " data: \"EnvanterdenCikmaYili\" },\r\n                { data: \"AdresIlIlce\" },\r\n    " +
-                        "            { data: \"Aciklama\" },\r\n                { data: \"Tasinmaz\" },\r\n      " +
-                        "          { data: \"Duzenle\" },\r\n            ],\r\n            \'order\': [[2, \'desc\'" +
-                        "]],//AdiSoyadi Sıralı\r\n            \"language\": {\r\n                \"url\": \"http:/" +
-                        "/tskgv-portal/OrtakBelgeler/Turkish.txt\",\r\n                \"decimal\": \",\",\r\n    " +
-                        "            \"thousands\": \".\"\r\n            },\r\n            responsive: true,\r\n   " +
-                        "         dom: \'Bfrtip\',\r\n            buttons: [\r\n                {\r\n            " +
-                        "        extend: \'print\',\r\n                    exportOptions: {\r\n                " +
-                        "        columns: \':visible\'\r\n                    }\r\n                },\r\n        " +
-                        "        {\r\n                    extend: \'excel\',\r\n                    exportOptio" +
-                        "ns: {\r\n                        columns: \':visible\'\r\n                    }\r\n     " +
-                        "           },\r\n                {\r\n                    extend: \'pdf\',\r\n          " +
-                        "          exportOptions: {\r\n                        columns: \':visible\'\r\n       " +
-                        "             }\r\n                },\r\n                {\r\n                    exten" +
-                        "d: \'copy\',\r\n                    exportOptions: {\r\n                        column" +
-                        "s: \':visible\'\r\n                    }\r\n                },\r\n                , \'pag" +
-                        "eLength\', \"colvis\"\r\n            ]\r\n        });\r\n    });\r\n</script>\r\n<div class=\"" +
-                        "container \">\r\n    <div class=\"card shadow\">\r\n        <div class=\"card-header\">\r\n" +
-                        "            "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+
+<script type=""text/javascript"">
+    //excele export ettikten donup sonra kalmasın diye
+    function setFormSubmitToFalse() {
+        setTimeout(function () { _spFormOnSubmitCalled = false; }, 3000);
+        return true;
+    }
+
+</script>
+<div class=""container "">
+    <div class=""card shadow"">
+        <div class=""card-header"">
+            "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl1;
             @__ctrl1 = this.@__BuildControlCloseBtn();
             @__parser.AddParsedSubObject(@__ctrl1);

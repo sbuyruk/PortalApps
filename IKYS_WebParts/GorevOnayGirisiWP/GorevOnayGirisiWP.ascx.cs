@@ -233,7 +233,6 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                     PerSubeImzaDDLDoldur();
                     OnayImzaDDLDoldur();
                     FillGorevOnayForm(gorevOnay);
-                    //TabloOlustur(personel);
                 }
             }
         }
@@ -624,19 +623,6 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                     if (isValid)
                     {
                         KaydetModalAc();
-                        //GorevOnay gorevOnay = Kaydet();
-                        //if (gorevOnay!=null)
-                        //{
-                        //    if (AuthQS.Equals("IKYS"))
-                        //    {
-
-                        //    }
-                        //    else
-                        //    {
-                        //        IKYSOrtak.GorevOnayEPostasiGonder(personel, gorevOnay.Id, "YurtIci/YurtDisi");
-                        //    }
-                        //    MessageHelper.PublishMessage("Kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
-                        //}
                     }
                     else
                     {
@@ -802,7 +788,6 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 PersonelAdiLbl.Text = personel.Adi + " " + personel.Soyadi;
                 UlkeDDLDoldur(personel);
             }
-            //TabloOlustur(personel);
             YevmiyeGetir();
         }
         protected void UlkeDDL_SelectedIndexChanged(object sender, EventArgs e)
@@ -857,18 +842,25 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
 
         private void HarcirahHesapla()
         {
-            string sonuc = string.Empty;
-            int dakika = SureDakikaTxt.Text.ConvertToInt();
-            int saat = SureSaatTxt.Text.ConvertToInt() + (dakika>0?1:0);
-            int gun= SureGunTxt.Text.ConvertToInt();
+            string sonuc = "0";
+            if (HarcirahHesaplansinChk.Checked)
+            {
+                int dakika = SureDakikaTxt.Text.ConvertToInt();
+                int saat = SureSaatTxt.Text.ConvertToInt() + (dakika > 0 ? 1 : 0);
+                int gun = SureGunTxt.Text.ConvertToInt();
 
-            decimal yevmiye = GunlukYevmiyeTxt.Text.ConvertToDecimal();
-            decimal carpan= saat > 12 ? 1 : 0.5m;
-            SureTxt.Text=carpan + gun + " gün";
-            sonuc = ((carpan + gun) * yevmiye).ToString("N", culturInfo);
+                decimal yevmiye = GunlukYevmiyeTxt.Text.ConvertToDecimal();
+                decimal carpan = saat > 12 ? 1 : 0.5m;
+                SureTxt.Text = carpan + gun + " gün";
+                sonuc = ((carpan + gun) * yevmiye).ToString("N", culturInfo); 
+            }
             YevmiyeTxt.Text = sonuc;
         }
+        protected void THarcirahHesaplansinChk_CheckedChanged(object sender, EventArgs e)
+        {
+            HarcirahHesapla();
 
+        }
         private void RedirectToPage(string pageUrl)
         {
             try
@@ -923,6 +915,23 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 GorevOnay gorevOnay = Kaydet();
                 if (gorevOnay != null)
                 {
+                    if (AuthQS.Equals("IKYS"))
+                    {
+
+                    }
+                    else
+                    {
+                        Personel personel = new Personel();
+                        personel = personel.Select<Personel>(PersonelIdQS.ConvertToInt());
+                        if (personel != null)
+                        {
+                            IKYSOrtak.GorevOnayEPostasiGonder(personel, gorevOnay.Id, "YurtIci/YurtDisi");
+                        }
+                        else
+                        {
+                            MessageHelper.PublishMessage("Personel bulunamadı", ProjeConstants.MESAJ_HATA);
+                        }
+                    }
                     RedirectToPage(ProjeConstants.PAGE_GOREVONAY_LIST + "?Mesaj=true");
                 }
             }
@@ -934,134 +943,5 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 exceptionHelper.PublishException();
             }
         }
-        //#region GorevOnayListesi
-        //private void TabloOlustur(Personel personel)
-        //{
-        //    var jsonData = TabloJson(personel); //veri çekilip json a çeviriliyor
-        //    var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
-        //    UtilityHelper.ScriptCalistir(jsString);
-        //}
-        //private string TabloJson(Personel personel)
-        //{
-        //    string jSon = string.Empty;
-
-        //    try
-        //    {
-        //        List<GorevOnayListItem> list = GetDataList(personel);
-        //        var serializer = new JavaScriptSerializer();
-        //        jSon = serializer.Serialize(list);
-        //    }
-        //    catch (Exception exception)
-        //    {
-        //        ExceptionHelper exceptionHelper = new ExceptionHelper();
-        //        exceptionHelper.Exceptions.Add(exception);
-        //        exceptionHelper.PublishException();
-        //    }
-        //    return jSon;
-        //}
-        //private string CreateDataTable(string jsonData)
-        //{
-        //    string tableString = @"
-        //     jQuery(document).ready(function () {
-        //        if ( jQuery.fn.DataTable.isDataTable('#CustomDataTable') ) {
-        //            jQuery('#CustomDataTable').DataTable().destroy();
-        //        }
-        //        jQuery('#CustomDataTable tbody').empty();
-
-        //        jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
-        //        jQuery('#CustomDataTable').DataTable({
-        //            'initComplete': function (settings, json) {//tablo yüklendiğinde
-        //                var api = this.api();
-        //                var row = api.row(function (idx, data, node) { //secilen kayıta gider
-        //                    return data['Secildi'] == true;
-        //                });
-        //                if (row.length > 0) {
-        //                    row.select()
-        //                        .show()
-        //                        .draw(false);
-        //                }
-        //            },
-        //            data: " + jsonData + @",
-        //            pageLength: 5,
-        //            columns: [
-        //                { data: 'AdiSoyadi' },
-        //                { data: 'GorevinSebebi' },
-        //                { data: 'BaslangicTarihi' },
-        //                { data: 'BitisTarihi' },
-        //                { data: 'GorevinYeri' },
-
-        //            ],
-        //            columnDefs: [
-        //                { type: 'turkish', targets: [0, 1, 4] },
-        //                { width: 300, targets: 1 }
-        //            ],
-        //            'order': [[3, 'desc']],//sort date desc
-        //            'language': {
-        //                'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
-        //                'decimal': ',',
-        //                'thousands': '.'
-        //            },
-        //            responsive: true,
-        //            dom: 'frtip',               
-        //        });
-        //    });
-        //    ";
-        //    return tableString;
-        //}
-        //private List<GorevOnayListItem> GetDataList(Personel personel)
-        //{
-            
-        //    if (personel==null)
-        //    {
-        //        MessageHelper.PublishMessage("Personel bulunamadı", ProjeConstants.MESAJ_HATA);
-        //        return new List<GorevOnayListItem>();
-        //    }
-        //    else
-        //    {
-        //        string gorevOnayIdStr = string.Empty;
-        //        GorevOnay gorevOnay = new GorevOnay();
-        //        DataTable dataTable = gorevOnay.SelectAllReturnDT(personel.Id);// PersonelIdQS.ConvertToInt());
-
-        //        List<GorevOnayListItem> list = new List<GorevOnayListItem>();
-
-        //        DataView dataView = new DataView(dataTable);
-        //        foreach (DataRowView row in dataView)
-        //        {
-        //            string gorevOnayId = row["GorevOnayId"].ToString();
-        //            string secildi = row["Secildi"].ReturnEmptyIfNull().ToString().ToUpper().Equals("TRUE") ? "checked" : string.Empty;
-        //            string adiSoyadi = row["AdiSoyadi"].ToString();
-        //            string gorevinSebebi = row["GorevinSebebi"].ToString();
-        //            string baslangicTarihi = row["BaslangicTarihi"].ReturnEmptyIfNull().ConvertToDatetime().ToString("dd.MM.yyyy HH:mm");
-        //            string bitisTarihi = row["BitisTarihi"].ReturnEmptyIfNull().ConvertToDatetime().ToString("dd.MM.yyyy HH:mm");
-        //            string gorevinYeri = row["GorevinYeri"].ToString();
-
-        //            GorevOnayListItem gorevOnayListItem = new GorevOnayListItem();
-        //            gorevOnayListItem.GorevOnayId = gorevOnayId;
-        //            gorevOnayListItem.AdiSoyadi = adiSoyadi;
-        //            gorevOnayListItem.GorevinSebebi = gorevinSebebi;
-        //            gorevOnayListItem.BaslangicTarihi = baslangicTarihi;
-        //            gorevOnayListItem.BitisTarihi = bitisTarihi;
-        //            gorevOnayListItem.GorevinYeri = gorevinYeri;
-
-        //            gorevOnayListItem.BaslangicTarihiHidden = row["BaslangicTarihi"].ConvertToDatetime();
-
-        //            list.Add(gorevOnayListItem);
-        //        }
-        //        return list;
-
-        //    }
-        //}
-        //private class GorevOnayListItem
-        //{
-        //    public DateTime BaslangicTarihiHidden { get; set; }
-        //    public string GorevOnayId { get; set; }
-        //    public string AdiSoyadi { get; set; }
-        //    public string GorevinYeri { get; set; }
-        //    public string BaslangicTarihi { get; set; }
-        //    public string BitisTarihi { get; set; }
-        //    public string GorevinSebebi { get; set; }
-
-        //}
-        //#endregion
     }
 }

@@ -45,7 +45,7 @@
                             <div class="form-group col-2">
                                 <label for="CikarmaSebebiDDL" class="control-label">Çıkarma Sebebi</label>
                                 <div>
-                                    <asp:DropDownList ID="CikarmaSebebiDDL" runat="server" class="form-control "></asp:DropDownList>
+                                    <asp:DropDownList ID="CikarmaSebebiDDL" runat="server" class="form-control form-select form-select-lg"></asp:DropDownList>
                                 </div>
                             </div>
                             <div class="form-group col-2">

@@ -63,6 +63,12 @@
             dateFormat: 'dd.mm.yy',
             changeMonth: true,
             changeYear: true,
+            firstDay: 1, // Haftayı Pazartesi başlat
+            dayNamesMin: ['Paz', 'Pts', 'Sal', 'Çar', 'Per', 'Cum', 'Cts'],
+            monthNames: ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
+                'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'],
+            monthNamesShort: ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz',
+                'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'],
             onSelect: function () {
                 CalculateFullDateTimeDiff();
             }
@@ -72,6 +78,12 @@
             dateFormat: 'dd.mm.yy',
             changeMonth: true,
             changeYear: true,
+            firstDay: 1, // Haftayı Pazartesi başlat
+            dayNamesMin: ['Paz', 'Pts', 'Sal', 'Çar', 'Per', 'Cum', 'Cts'],
+            monthNames: ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
+                'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'],
+            monthNamesShort: ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz',
+                'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'],
             onSelect: function () {
                 CalculateFullDateTimeDiff();
             }
@@ -115,11 +127,7 @@
     //        }
     //    });
     //};
-    function toggleHarcirahBtn(checkbox) {
-        var btn = document.getElementById('<%= HarcirahHesaplaBtn.ClientID %>');
-        if (!checkbox.checked)
-            $('#YevmiyeTxt').val("0");
-    }
+
 </script>
 <div class="container w-75 ">
     <asp:UpdatePanel ID="TableUpdatePanel" runat="server">
@@ -142,7 +150,7 @@
 
                         <div class="col checkbox">
                             <label>
-                                <asp:CheckBox ID="HarcirahHesaplansinChk" runat="server" Checked="True" AutoPostBack="True" onclick="toggleHarcirahBtn(this)" ToolTip="Harcırah hesaplanmaması için işareti kaldırınız." />
+                                <asp:CheckBox ID="HarcirahHesaplansinChk" runat="server" Checked="True" ToolTip="Harcırah hesaplanmaması için işareti kaldırınız." OnCheckedChanged="THarcirahHesaplansinChk_CheckedChanged" AutoPostBack="true" />
                                 Harcırah Hesaplansın
                             </label>
                         </div>

@@ -8,39 +8,46 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="GorevOnayListesiWP.ascx.cs" Inherits="IKYS_WebParts.GorevOnayListesiWP.GorevOnayListesiWP" %>
 <%-- Görev sçimi işlemleri --%>
 <script type="text/javascript">
-    var aniObjesiIdArray = [];
+    var idArray = [];
 
     function AddRemoveSecimListesi(aniObjesiId, chkbox) {
 
         var isChecked = chkbox.checked;
         ArrayDoldur();
-        var index = aniObjesiIdArray.indexOf(aniObjesiId.toString());
+        var index = idArray.indexOf(aniObjesiId.toString());
         if (isChecked) {
             if (index > -1) {
-                aniObjesiIdArray.splice(index, 1);
+                idArray.splice(index, 1);
             }
-            aniObjesiIdArray.push(aniObjesiId.toString());
+            idArray.push(aniObjesiId.toString());
         } else if (!isChecked && (index > -1)) {
-            aniObjesiIdArray.splice(index, 1);
+            idArray.splice(index, 1);
         }
-        document.getElementById('<%= paramAniObjesiIdArray.ClientID%>').value = aniObjesiIdArray;
+        document.getElementById('<%= paramidArray.ClientID%>').value = idArray;
     }
     function SecilenleriKaydetTriggerBtnClicked() {
-        document.getElementById('<%= paramAniObjesiIdArray.ClientID%>').value = aniObjesiIdArray;
+        document.getElementById('<%= paramidArray.ClientID%>').value = idArray;
         document.getElementById('<%= SecilenleriKaydetBtn.ClientID%>').click();
     }
     function ArrayDoldur() {
-        var idString = document.getElementById('<%= paramAniObjesiIdArray.ClientID%>').value;
+        var idString = document.getElementById('<%= paramidArray.ClientID%>').value;
         var idList = idString.split(',');
-        aniObjesiIdArray = [];
+        idArray = [];
         for (var i = 0; i < idList.length; i++) {
-            aniObjesiIdArray.push(idList[i]);
+            idArray.push(idList[i]);
         }
     }
 </script>
 
 <script type="text/javascript">
-  
+    var table = $('#CustomDataTable').DataTable();
+    $(document).on('change', '#CustomDataTable input[type="checkbox"]', function () {
+        var checkboxes = table.rows({ page: 'current' }).nodes().to$().find('input[type="checkbox"]');
+        var allChecked = checkboxes.length > 0 && checkboxes.filter(':checked').length === checkboxes.length;
+
+        $('#checkAll').prop('checked', allChecked);
+    });
+
     
 
     //excele export ettikten donup sonra kalmasın diye
@@ -54,6 +61,7 @@
     var myjsons = [{
         "SecChk": "","AdiSoyadi": "", "GorevinSebebi": "","BaslangicTarihi": "", "BitisTarihi": "", "GorevinYeri": "", "RaporAl": "", "Duzenle": ""
     }];
+
     jQuery(document).ready(function () {
         jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
         jQuery('#CustomDataTable').DataTable({
@@ -125,9 +133,41 @@
 
         });
 
-        <%--jQuery('#' + '<%: VisibleChk.ClientID %>').addClass("custom-control-input");--%>
         ArrayDoldur();
+        // Check All butonuna tıklanınca
+        table = $('#CustomDataTable').DataTable();
+        $('#checkAll').on('click', function () {
+            var isChecked = $(this).is(':checked');
+            
+            // Sadece aktif sayfadaki checkbox'ları seç
+            table.rows({ page: 'current' }).nodes().to$().find('input[type="checkbox"]').each(function () {
+                if ($(this).prop('checked') !== isChecked) {
+                    $(this).click();
+                }
+            });
+        });
+        //tabloda sayfalar arası geçişte açılan sayfadaki tüm checkbox'lar checkli ise checkAll'ı checkli yap
+        table.on('draw', function () {
+            var checkboxes = table.rows({ page: 'current' }).nodes().to$().find('input[type="checkbox"]');
+
+            if (checkboxes.length === 0) {
+                $('#checkAll').prop('checked', false);
+                return;
+            }
+
+            var allChecked = true;
+            checkboxes.each(function () {
+                if (!$(this).prop('checked')) {
+                    allChecked = false;
+                    return false; // break loop
+                }
+            });
+
+            $('#checkAll').prop('checked', allChecked);
+        });
     });
+
+
  
 </script>
 <div class="container">
@@ -141,6 +181,9 @@
 
         </div>
         <div class="card-body">
+            <div class="form-group mb-3">
+                <label><input type="checkbox" id="checkAll"> Bu Sayfadakileri Seç</label>
+            </div>
             <asp:UpdatePanel ID="UpdatePanel7" runat="server" UpdateMode="Conditional" ViewStateMode="Enabled">
                 <ContentTemplate>
                     <div class="form-group">
@@ -168,7 +211,7 @@
 
             </asp:UpdatePanel>
             <div id="InvisibleDiv" style="display: none">
-                <input id="paramAniObjesiIdArray" runat="server" type="text" />
+                <input id="paramidArray" runat="server" type="text" />
                 <asp:LinkButton ID="SecilenleriKaydetBtn" runat="server" CssClass="btn btn-success" CausesValidation="false" Text=" Kaydet " OnClick="SecilenleriKaydetBtn_Click" />
             </div>
         </div>

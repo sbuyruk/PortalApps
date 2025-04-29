@@ -304,7 +304,8 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
             //tasinmaz.EnvanterdeMi=0 yap
             //EnvanterdenCikarmaWP'ı reload et SenderApp
             //envanterden çıkarıldı mesajı ver
-            bool guncellendiMi = false;
+            bool envanterdenCikarildiMi = false;
+            bool bagisGuncellendiMi = false;
             try
             {
                 Tasinmaz tasinmaz = new Tasinmaz();
@@ -321,24 +322,29 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
                     tasinmaz.BagisciId = bagis.BagisciId;
                     bagis.Envanterde = ProjeConstants.ENVANTERDEN_CIKTI;
                     bagis.Degistiren = UtilityHelper.GetCurrentUserLoginName();
-                    guncellendiMi = bagis.Update();
+                    
                 }
                 tasinmaz.Aciklama = AciklamaTxt.Text;
-                guncellendiMi = tasinmaz.Update();
+                envanterdenCikarildiMi = tasinmaz.Update();
 
-                if (guncellendiMi)
+                if (envanterdenCikarildiMi)
                 {
-                    string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                    UpdateBtn.Visible = true;
-                    EnvanterdenCikarBtn.Visible = false;
-                    SenderAppQS = "STL";
-                    MessageHelper.PublishMessage("Taşınmaz Envanterden Çıkarıldı", ProjeConstants.MESAJ_BASARILI);
+                    if (bagis != null)
+                    {
+                        bagisGuncellendiMi = bagis.Update();
+                    }
+                    RedirectToPage(ProjeConstants.PAGE_ENVANTERDENCIKANTASINMAZ_LIST + "?SecilenId=" + TasinmazIdQS);
+                }
+                else
+                {
+                    MessageHelper.PublishMessage("Envanterden çıkarma işlemi başarısız oldu", ProjeConstants.MESAJ_HATA, 2000);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                ExceptionHelper eh= new ExceptionHelper(ex);
+                eh.PublishException();
             }
 
 

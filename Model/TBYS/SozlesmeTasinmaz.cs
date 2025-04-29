@@ -200,12 +200,27 @@ namespace Model.TBYS
 
         public decimal SelectSumMetrekareBySozlesmeId(int sozlesmeId)
         {
-            string sqlString = string.Format(
-                @"SELECT SozlesmeId, SUM(Metrekare) Metrekare
-                    FROM SozlesmeTasinmaz_Table A
-                    INNER JOIN Tasinmaz_Table B ON B.Id = A.TasinmazId
-                WHERE SozlesmeId={0}
-                GROUP BY SozlesmeId ", sozlesmeId.ReturnQuotedValue());
+            string sqlString = string.Format(@"
+                SELECT 
+                    A.SozlesmeId, 
+                    SUM(
+                        CASE 
+                            WHEN B.KatMulkiyeti = 'Yok' THEN C.Metrekare
+                            WHEN B.KatMulkiyeti = 'Var' THEN B.Metrekare
+                            ELSE 0
+                        END
+                    ) AS Metrekare
+                FROM SozlesmeTasinmaz_Table A
+                INNER JOIN Tasinmaz_Table B ON B.Id = A.TasinmazId
+                LEFT JOIN BagimsizBolum_Table C ON C.Id = A.BolumId
+                WHERE A.SozlesmeId = {0}
+                GROUP BY A.SozlesmeId", sozlesmeId.ReturnQuotedValue());
+            //string sqlString = string.Format(
+            //    @"SELECT SozlesmeId, SUM(Metrekare) Metrekare
+            //        FROM SozlesmeTasinmaz_Table A
+            //        INNER JOIN Tasinmaz_Table B ON B.Id = A.TasinmazId
+            //    WHERE SozlesmeId={0}
+            //    GROUP BY SozlesmeId ", sozlesmeId.ReturnQuotedValue());
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             decimal metrekare = 0;
             if (dataTable != null)

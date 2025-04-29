@@ -57,7 +57,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.HtmlControls.HtmlInputText paramAniObjesiIdArray;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText paramidArray;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -204,11 +204,11 @@ namespace IKYS_WebParts.GorevOnayListesiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.HtmlControls.HtmlInputText @__BuildControlparamAniObjesiIdArray() {
+        private global::System.Web.UI.HtmlControls.HtmlInputText @__BuildControlparamidArray() {
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
-            this.paramAniObjesiIdArray = @__ctrl;
-            @__ctrl.ID = "paramAniObjesiIdArray";
+            this.paramidArray = @__ctrl;
+            @__ctrl.ID = "paramidArray";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
             return @__ctrl;
         }
@@ -302,7 +302,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP {
             @__ctrl4 = this.@__BuildControlUpdatePanel7();
             @__parser.AddParsedSubObject(@__ctrl4);
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl5;
-            @__ctrl5 = this.@__BuildControlparamAniObjesiIdArray();
+            @__ctrl5 = this.@__BuildControlparamidArray();
             @__parser.AddParsedSubObject(@__ctrl5);
             global::System.Web.UI.WebControls.LinkButton @__ctrl6;
             @__ctrl6 = this.@__BuildControlSecilenleriKaydetBtn();
@@ -326,44 +326,49 @@ namespace IKYS_WebParts.GorevOnayListesiWP {
             @__w.Write(@"
 
 <script type=""text/javascript"">
-    var aniObjesiIdArray = [];
+    var idArray = [];
 
     function AddRemoveSecimListesi(aniObjesiId, chkbox) {
 
         var isChecked = chkbox.checked;
         ArrayDoldur();
-        var index = aniObjesiIdArray.indexOf(aniObjesiId.toString());
+        var index = idArray.indexOf(aniObjesiId.toString());
         if (isChecked) {
             if (index > -1) {
-                aniObjesiIdArray.splice(index, 1);
+                idArray.splice(index, 1);
             }
-            aniObjesiIdArray.push(aniObjesiId.toString());
+            idArray.push(aniObjesiId.toString());
         } else if (!isChecked && (index > -1)) {
-            aniObjesiIdArray.splice(index, 1);
+            idArray.splice(index, 1);
         }
         document.getElementById('");
-                         @__w.Write( paramAniObjesiIdArray.ClientID);
+                         @__w.Write( paramidArray.ClientID);
 
-            @__w.Write("\').value = aniObjesiIdArray;\r\n    }\r\n    function SecilenleriKaydetTriggerBtnClic" +
-                    "ked() {\r\n        document.getElementById(\'");
-                         @__w.Write( paramAniObjesiIdArray.ClientID);
+            @__w.Write("\').value = idArray;\r\n    }\r\n    function SecilenleriKaydetTriggerBtnClicked() {\r\n" +
+                    "        document.getElementById(\'");
+                         @__w.Write( paramidArray.ClientID);
 
-            @__w.Write("\').value = aniObjesiIdArray;\r\n        document.getElementById(\'");
+            @__w.Write("\').value = idArray;\r\n        document.getElementById(\'");
                          @__w.Write( SecilenleriKaydetBtn.ClientID);
 
             @__w.Write("\').click();\r\n    }\r\n    function ArrayDoldur() {\r\n        var idString = document" +
                     ".getElementById(\'");
-                                        @__w.Write( paramAniObjesiIdArray.ClientID);
+                                        @__w.Write( paramidArray.ClientID);
 
-            @__w.Write("\').value;\r\n        var idList = idString.split(\',\');\r\n        aniObjesiIdArray = " +
-                    "[];\r\n        for (var i = 0; i < idList.length; i++) {\r\n            aniObjesiIdA" +
-                    "rray.push(idList[i]);\r\n        }\r\n    }\r\n</script>\r\n\r\n<script type=\"text/javascr" +
-                    "ipt\">\r\n  \r\n    \r\n\r\n    //excele export ettikten donup sonra kalmasın diye\r\n    f" +
-                    "unction setFormSubmitToFalse() {\r\n        setTimeout(function () { _spFormOnSubm" +
-                    "itCalled = false; }, 3000);\r\n        return true;\r\n    }\r\n    function setDataSe" +
-                    "t(myset) {\r\n        myjsons = myset;\r\n    }\r\n    var myjsons = [{\r\n        \"SecC" +
-                    "hk\": \"\",\"AdiSoyadi\": \"\", \"GorevinSebebi\": \"\",\"BaslangicTarihi\": \"\", \"BitisTarihi" +
-                    "\": \"\", \"GorevinYeri\": \"\", \"RaporAl\": \"\", \"Duzenle\": \"\"\r\n    }];\r\n    jQuery(docu" +
+            @__w.Write("\').value;\r\n        var idList = idString.split(\',\');\r\n        idArray = [];\r\n    " +
+                    "    for (var i = 0; i < idList.length; i++) {\r\n            idArray.push(idList[i" +
+                    "]);\r\n        }\r\n    }\r\n</script>\r\n\r\n<script type=\"text/javascript\">\r\n    var tab" +
+                    "le = $(\'#CustomDataTable\').DataTable();\r\n    $(document).on(\'change\', \'#CustomDa" +
+                    "taTable input[type=\"checkbox\"]\', function () {\r\n        var checkboxes = table.r" +
+                    "ows({ page: \'current\' }).nodes().to$().find(\'input[type=\"checkbox\"]\');\r\n        " +
+                    "var allChecked = checkboxes.length > 0 && checkboxes.filter(\':checked\').length =" +
+                    "== checkboxes.length;\r\n\r\n        $(\'#checkAll\').prop(\'checked\', allChecked);\r\n  " +
+                    "  });\r\n\r\n    \r\n\r\n    //excele export ettikten donup sonra kalmasın diye\r\n    fun" +
+                    "ction setFormSubmitToFalse() {\r\n        setTimeout(function () { _spFormOnSubmit" +
+                    "Called = false; }, 3000);\r\n        return true;\r\n    }\r\n    function setDataSet(" +
+                    "myset) {\r\n        myjsons = myset;\r\n    }\r\n    var myjsons = [{\r\n        \"SecChk" +
+                    "\": \"\",\"AdiSoyadi\": \"\", \"GorevinSebebi\": \"\",\"BaslangicTarihi\": \"\", \"BitisTarihi\":" +
+                    " \"\", \"GorevinYeri\": \"\", \"RaporAl\": \"\", \"Duzenle\": \"\"\r\n    }];\r\n\r\n    jQuery(docu" +
                     "ment).ready(function () {\r\n        jQuery.fn.dataTable.moment(\'DD.MM.YYYY HH:mm\'" +
                     ");//sort date\r\n        jQuery(\'#CustomDataTable\').DataTable({\r\n            \'init" +
                     "Complete\': function (settings, json) {//tablo yüklendiğinde\r\n                var" +
@@ -394,15 +399,32 @@ namespace IKYS_WebParts.GorevOnayListesiWP {
                     "                    extend: \'copy\',\r\n                    exportOptions: {\r\n     " +
                     "                   columns: \':visible\'\r\n                    }\r\n                }" +
                     ",\r\n                , \'pageLength\', \"colvis\"\r\n            ],\r\n\r\n        });\r\n\r\n  " +
-                    "      \r\n        ArrayDoldur();\r\n    });\r\n \r\n</script>\r\n<div class=\"container\">\r\n" +
-                    "    <div class=\"card shadow\">\r\n        <div class=\"card-header \">\r\n            ");
+                    "      ArrayDoldur();\r\n        // Check All butonuna tıklanınca\r\n        table = " +
+                    "$(\'#CustomDataTable\').DataTable();\r\n        $(\'#checkAll\').on(\'click\', function " +
+                    "() {\r\n            var isChecked = $(this).is(\':checked\');\r\n            \r\n       " +
+                    "     // Sadece aktif sayfadaki checkbox\'ları seç\r\n            table.rows({ page:" +
+                    " \'current\' }).nodes().to$().find(\'input[type=\"checkbox\"]\').each(function () {\r\n " +
+                    "               if ($(this).prop(\'checked\') !== isChecked) {\r\n                   " +
+                    " $(this).click();\r\n                }\r\n            });\r\n        });\r\n        //ta" +
+                    "bloda sayfalar arası geçişte açılan sayfadaki tüm checkbox\'lar checkli ise check" +
+                    "All\'ı checkli yap\r\n        table.on(\'draw\', function () {\r\n            var check" +
+                    "boxes = table.rows({ page: \'current\' }).nodes().to$().find(\'input[type=\"checkbox" +
+                    "\"]\');\r\n\r\n            if (checkboxes.length === 0) {\r\n                $(\'#checkAl" +
+                    "l\').prop(\'checked\', false);\r\n                return;\r\n            }\r\n\r\n         " +
+                    "   var allChecked = true;\r\n            checkboxes.each(function () {\r\n          " +
+                    "      if (!$(this).prop(\'checked\')) {\r\n                    allChecked = false;\r\n" +
+                    "                    return false; // break loop\r\n                }\r\n            " +
+                    "});\r\n\r\n            $(\'#checkAll\').prop(\'checked\', allChecked);\r\n        });\r\n   " +
+                    " });\r\n\r\n\r\n \r\n</script>\r\n<div class=\"container\">\r\n    <div class=\"card shadow\">\r\n" +
+                    "        <div class=\"card-header \">\r\n            ");
             parameterContainer.Controls[0].RenderControl(@__w);
             @__w.Write("\r\n            <h3 class=\"mb-1\">\r\n                ");
             parameterContainer.Controls[1].RenderControl(@__w);
             @__w.Write("\r\n                ");
             parameterContainer.Controls[2].RenderControl(@__w);
             @__w.Write("\r\n            </h3>\r\n\r\n        </div>\r\n        <div class=\"card-body\">\r\n         " +
-                    "   ");
+                    "   <div class=\"form-group mb-3\">\r\n                <label><input type=\"checkbox\" " +
+                    "id=\"checkAll\"> Bu Sayfadakileri Seç</label>\r\n            </div>\r\n            ");
             parameterContainer.Controls[3].RenderControl(@__w);
             @__w.Write("\r\n            <div id=\"InvisibleDiv\" style=\"display: none\">\r\n                ");
             parameterContainer.Controls[4].RenderControl(@__w);

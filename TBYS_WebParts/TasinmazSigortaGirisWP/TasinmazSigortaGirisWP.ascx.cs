@@ -684,6 +684,16 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             else
                 RedirectToPage(ProjeConstants.PAGE_TASINMAZ_GIRIS + "?DestinationApp=TD&SenderApp=TL&TasinmazId=" + TasinmazIdQS);
         }
+        protected void KullanimAmaciGetirBtn_Click(object sender, EventArgs e)
+        {
+            Tasinmaz tasinmaz = new Tasinmaz();
+            tasinmaz = tasinmaz.Select<Tasinmaz>(TasinmazIdQS.ConvertToInt());
+            if (tasinmaz != null)
+            {
+                KullanimAmaciTxt.Text = tasinmaz.KullanimSekli;
+                
+            }
+        }
         protected void TasinmazListesiBtn_Click(object sender, EventArgs e)
         {
             if (EnvanterdeMiQS.Equals("2"))

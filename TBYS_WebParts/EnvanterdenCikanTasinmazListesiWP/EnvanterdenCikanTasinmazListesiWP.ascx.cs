@@ -1,10 +1,12 @@
-﻿using Model.TBYS;
+﻿using Model.Ortak;
+using Model.TBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Web.Script.Serialization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -57,6 +59,30 @@ namespace TBYS_WebParts.EnvanterdenCikanTasinmazListesiWP
                 ViewState["PageIndex"] = value;
             }
         }
+        private string SecilenIdQS
+        {
+            get
+            {
+
+                if (ViewState["SecilenId"] == null)
+                {
+                    if (Page.Request.QueryString["SecilenId"] != null)
+                    {
+                        ViewState["SecilenId"] = Page.Request.QueryString["SecilenId"];
+                    }
+                    else
+                    {
+                        ViewState["SecilenId"] = "0";
+                    }
+                }
+                return ViewState["SecilenId"].ToString();
+            }
+
+            set
+            {
+                ViewState["SecilenId"] = value;
+            }
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -74,11 +100,9 @@ namespace TBYS_WebParts.EnvanterdenCikanTasinmazListesiWP
         }
         private void TabloOlustur()
         {
-            List<TasinmazBagisci> list = new List<TasinmazBagisci>();
             var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            //var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
-            System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler,
-                typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "setDataSet(" + jsonData + ");", true);
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            UtilityHelper.ScriptCalistir(jsString);
         }
         private string TabloJson()
         {
@@ -87,7 +111,10 @@ namespace TBYS_WebParts.EnvanterdenCikanTasinmazListesiWP
             try
             {
                 List<EnvanterdenCikanListesiListItem> list = GetDataList();
+
+
                 var serializer = new JavaScriptSerializer();
+                serializer.MaxJsonLength = Int32.MaxValue;
                 jSon = serializer.Serialize(list);
             }
             catch (Exception exception)
@@ -137,7 +164,81 @@ namespace TBYS_WebParts.EnvanterdenCikanTasinmazListesiWP
             DataTable dataTable = tasinmaz.SelectAllEnvanterdenCikanReturnDataTable();
             return dataTable;
         }
+        private string CreateDataTable(string jsonData)
+        {
+           
+            string tableString = @"
+            jQuery(document).ready(function () {
 
+                    jQuery('#CustomDataTable').DataTable({
+            'initComplete': function (settings, json) {//tablo yüklendiğinde
+                var api = this.api();
+                var row = api.row(function (idx, data, node) { //secilen satıra gider
+                    return data['TasinmazId'] == " + SecilenIdQS + @";
+                });
+                if (row.length > 0) {
+                    row.select()
+                        .show()
+                        .draw(false);
+                }
+            },
+
+             data: " + jsonData + @",
+            columns: [
+                { data: 'TasinmazId' },
+                { data: 'KullanimSekli' },
+                { data: 'EnvanterdenCikmaSebebi' },
+                { data: 'EnvanterdenCikmaYili' },
+                { data: 'AdresIlIlce' , 'width':'20%'},
+                { data: 'Aciklama' , 'width':'20%'},
+                { data: 'Tasinmaz' },
+                { data: 'Duzenle' },
+            ],
+            'order': [[2, 'desc']],//AdiSoyadi Sıralı
+            'language': {
+                'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
+                'decimal': ',',
+                'thousands': '.'
+            },
+            responsive: true,
+            dom: 'Bfrtip',
+            buttons:
+            [
+                {
+            extend: 'print',
+                    exportOptions:
+                {
+                columns: ':visible'
+                    }
+            },
+                {
+            extend: 'excel',
+                    exportOptions:
+                {
+                columns: ':visible'
+                    }
+            },
+                {
+            extend: 'pdf',
+                    exportOptions:
+                {
+                columns: ':visible'
+                    }
+            },
+                {
+            extend: 'copy',
+                    exportOptions:
+                {
+                columns: ':visible'
+                    }
+            },
+                , 'pageLength', 'colvis'
+            ]
+        });
+        });
+        ";
+            return tableString;
+        }
         protected void ExcelBtn_Click(object sender, EventArgs e)
         {
             try

@@ -330,7 +330,7 @@ namespace TBYS_WebParts.KiraKartiWP
                             List<Odeme> odemeList = odemeDao.SelectBySozlesmeIdOdemePlaniId(op.SozlesmeId, op.Id);
                             foreach (Odeme item in odemeList)
                             {
-                                odenenler += item.OdemeTarihi.ConvertToDatetimeEmptyIfNull() + " (" + item.OdenenTutar.ToString("N", culturInfo) + ")" + System.Environment.NewLine;
+                                odenenler += item.OdemeTarihi.ReturnTRDateFormat() + " (" + item.OdenenTutar.ToString("N", culturInfo) + ")" + System.Environment.NewLine;
                                 aciklama += item.Aciklama + System.Environment.NewLine;
                             }
                         }

@@ -125,6 +125,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
                 ViewState["SecilenId"] = value;
             }
         }
+        private IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -331,7 +332,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
             DataTable dataTable = tasinmaz.SelectByBolgeReturnJson(BolgeIdQS);
 
             List<TasinmazListesiListItem> list = new List<TasinmazListesiListItem>();
-            IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
+            
 
             foreach (DataRow row in dataTable.Rows)
             {
@@ -489,7 +490,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
                             { data: 'BolumNo' },
                             { data: 'Nitelik' },
                             { data: 'Metrekare' },
-                            { data: 'KullanimSekli' },
+                            { data: 'KullanimAmaci' },
                             { data: 'Aciklama' },
                         ],
                         'order': [[0, 'desc']],//sort
@@ -512,7 +513,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
         {
             Tasinmaz tasinmaz = new Tasinmaz();
 
-            DataTable dataTable = tasinmaz.SelectByTasinmazId(paramTasinmazIdLbl.Value.ConvertToInt());
+            DataTable dataTable = tasinmaz.SelectBolumByTasinmazId(paramTasinmazIdLbl.Value.ConvertToInt());
 
             List<BagimsizBolumListItem> list = new List<BagimsizBolumListItem>();
 
@@ -533,6 +534,8 @@ namespace TBYS_WebParts.TasinmazListesiWP
                     string bolumNo = row["BolumNo"].ToString();
                     string aciklama = row["Aciklama"].ToString();
                     string nitelik = row["Nitelik"].ToString();
+                    string metrekare = row["Metrekare"].ReturnZeroIfNull().ConvertToDecimal().ToString("N", culturInfo);
+                    string kullanimAmaci = row["KullanimAmaci"].ToString();
 
                     BagimsizBolumListItem bagimsizBolum = new BagimsizBolumListItem();
                     bagimsizBolum.Bagisci =(adi0 + " " + soyadi0).Trim() ;
@@ -543,6 +546,8 @@ namespace TBYS_WebParts.TasinmazListesiWP
                     bagimsizBolum.BolumNo = bolumNo;
                     bagimsizBolum.BagisizBolumId = bolumId;
                     bagimsizBolum.Nitelik = nitelik;
+                    bagimsizBolum.Metrekare = metrekare;
+                    bagimsizBolum.KullanimAmaci = kullanimAmaci;
                     bagimsizBolum.Aciklama = aciklama;
 
                     bagimsizBolum.Secildi = SecilenIdQS.Equals(bolumId);
@@ -658,6 +663,8 @@ namespace TBYS_WebParts.TasinmazListesiWP
             public string Yuzolcumu { get; set; }
             public string ArsaPayi { get; set; }
             public string Nitelik { get; set; }
+            public string Metrekare { get; set; }
+            public string KullanimAmaci { get; set; }
             public string Aciklama { get; set; }
             public bool Secildi { get; set; }
         }

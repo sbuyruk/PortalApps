@@ -393,6 +393,8 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
                 KoyTxt.Text = tasinmaz.Koy;
                 CaddeTxt.Text = tasinmaz.Cadde;
                 SokakTxt.Text = tasinmaz.Sokak;
+                MetrekareTxt.Text = tasinmaz.Metrekare.ToString();
+                NitelikTxt.Text = tasinmaz.Nitelik;
 
 
                 MahalleTxt.Text = tasinmaz.Mahalle;
@@ -431,6 +433,8 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
             tasinmaz.Koy = KoyTxt.Text;
             tasinmaz.Cadde = CaddeTxt.Text;
             tasinmaz.Sokak = SokakTxt.Text;
+            tasinmaz.Metrekare = MetrekareTxt.Text.ConvertToDecimal();
+            tasinmaz.Nitelik = NitelikTxt.Text;
             tasinmaz.EnvanterdeMi = ProjeConstants.MULKIYETTE_OLMAYAN_TASINMAZ;
             int id = tasinmaz.Save();
             tasinmaz.Id = id;
@@ -487,6 +491,8 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
                 tasinmaz.Koy = KoyTxt.Text;
                 tasinmaz.Cadde = CaddeTxt.Text;
                 tasinmaz.Sokak = SokakTxt.Text;
+                tasinmaz.Metrekare = MetrekareTxt.Text.ConvertToDecimal();
+                tasinmaz.Nitelik = NitelikTxt.Text;
                 tasinmaz.EnvanterdeMi = ProjeConstants.MULKIYETTE_OLMAYAN_TASINMAZ;
                 isSaved = tasinmaz.Update();
                 Sigorta sigorta = new Sigorta();

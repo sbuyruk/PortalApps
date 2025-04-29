@@ -13,62 +13,7 @@
         setTimeout(function () { _spFormOnSubmitCalled = false; }, 3000);
         return true;
     }
-    function setDataSet(myset) {
-        myjsons = myset;
-    }
-    var myjsons = [{
-        "TasinmazId": "","KullanimSekli": "", "EnvanterdenCikmaSebebi": "", "EnvanterdenCikmaYili": "", "AdresIlIlce": "", "Aciklama": "", "Tasinmaz": "", "Duzenle": ""
-    }];
-    jQuery(document).ready(function () {
-        jQuery('#CustomDataTable').DataTable({
-            data: myjsons,
-            columns: [
-                { data: "TasinmazId" },
-                { data: "KullanimSekli" },
-                { data: "EnvanterdenCikmaSebebi" },
-                { data: "EnvanterdenCikmaYili" },
-                { data: "AdresIlIlce" },
-                { data: "Aciklama" },
-                { data: "Tasinmaz" },
-                { data: "Duzenle" },
-            ],
-            'order': [[2, 'desc']],//AdiSoyadi Sıralı
-            "language": {
-                "url": "http://tskgv-portal/OrtakBelgeler/Turkish.txt",
-                "decimal": ",",
-                "thousands": "."
-            },
-            responsive: true,
-            dom: 'Bfrtip',
-            buttons: [
-                {
-                    extend: 'print',
-                    exportOptions: {
-                        columns: ':visible'
-                    }
-                },
-                {
-                    extend: 'excel',
-                    exportOptions: {
-                        columns: ':visible'
-                    }
-                },
-                {
-                    extend: 'pdf',
-                    exportOptions: {
-                        columns: ':visible'
-                    }
-                },
-                {
-                    extend: 'copy',
-                    exportOptions: {
-                        columns: ':visible'
-                    }
-                },
-                , 'pageLength', "colvis"
-            ]
-        });
-    });
+
 </script>
 <div class="container ">
     <div class="card shadow">
