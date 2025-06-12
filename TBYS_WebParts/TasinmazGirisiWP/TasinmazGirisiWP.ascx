@@ -25,7 +25,7 @@
                     </h3>
                 </div>
                 <div class="card-body row" id="MainCardDiv" runat="server">
-                    <div class="col-4">
+                    <div class="col">
                         <div class="row">
                             <div class="form-group col">
                                 <div class="form-group m-0 ">
@@ -53,8 +53,8 @@
                             </div>
                             <div class="form-group col">
                                 <div class="form-group m-0 ">
-                                    <label class="col-form-label" for="MukliyetSekliDDL">Mülkiyet Şekli</label>
-                                    <asp:DropDownList ID="MukliyetSekliDDL" runat="server" class="form-control form-select form-select-lg" Style="height: auto"></asp:DropDownList>
+                                    <label class="col-form-label" for="MulkiyetSekliDDL">Mülkiyet Şekli</label>
+                                    <asp:DropDownList ID="MulkiyetSekliDDL" runat="server" class="form-control form-select form-select-lg" Style="height: auto"></asp:DropDownList>
                                 </div>
                                 <div class="form-group m-0 ">
                                     <label class="col-form-label" for="CinsiTxt">Cinsi</label>
@@ -87,7 +87,7 @@
 
                         </div>
                     </div>
-                    <div class="col-4">
+                    <div class="col">
                         <div class="row">
                             <div class="form-group col">
                                 <div class="form-group m-0 ">
@@ -148,7 +148,7 @@
                             <asp:TextBox ID="AciklamaTxt" runat="server" class="form-control" TextMode="MultiLine" Rows="4" ToolTip="Açıklama"></asp:TextBox>
                         </div>
                     </div>
-                    <div class="col-4 row">
+                    <div class="col row">
                         <div class="form-group col">
 
                             <div class="form-group m-0 ">
@@ -182,7 +182,7 @@
                             </div>
                             <div class="form-group m-0 ">
                                 <label class="col-form-label" for="ToplamKatSayisiTxt">Toplam Kat</label>
-                                <asp:TextBox ID="ToplamKatSayisiTxt" runat="server" class="form-control" ToolTip="Oda+salon sayısı vb. özellikleri"></asp:TextBox>
+                                <asp:TextBox ID="ToplamKatSayisiTxt" runat="server" class="form-control" ToolTip="Toplam kat sayısı"></asp:TextBox>
                             </div>
                             <div class="form-group m-0 ">
                                 <label class="col-form-label" for="BulunduguKatTxt">Bulunduğu Kat</label>
@@ -227,6 +227,24 @@
                             <div class="form-group m-0 ">
                                 <label class="col-form-label" for="MetrekareTxt">Metrekare</label>
                                 <asp:TextBox ID="MetrekareTxt" runat="server" class="form-control input-money" ToolTip="Metrekaresi"></asp:TextBox>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="form-group col">
+                                <div class="form-group m-0 ">
+                                    <label class="col-form-label" for="ProjeM2Txt">ProjeM2</label>
+                                    <asp:TextBox ID="ProjeM2Txt" runat="server" class="form-control" ToolTip="ProjeM2"></asp:TextBox>
+                                </div>                                
+                                <div class="form-group m-0 ">
+                                    <label class="col-form-label" for="BlokTxt">Blok</label>
+                                    <asp:TextBox ID="BlokTxt" runat="server" class="form-control" ToolTip="Blok"></asp:TextBox>
+                                </div>                                
+                                <div class="form-group m-0 ">
+                                    <label class="col-form-label" for="GirisTxt">Giriş</label>
+                                    <asp:TextBox ID="GirisTxt" runat="server" class="form-control" ToolTip="Giriş"></asp:TextBox>
+                                </div>
                             </div>
                         </div>
                     </div>

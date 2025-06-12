@@ -9,11 +9,10 @@
 
 <style>
     .disabled-look {
-  background-color: #e9ecef !important; /* Bootstrap'ın disabled rengi */
-  color: #6c757d !important;            /* Gri yazı rengi */
-  pointer-events: auto;      /* Kullanıcı etkileşimi aktif */
-}
-
+        background-color: #e9ecef !important; /* Bootstrap'ın disabled rengi */
+        color: #6c757d !important; /* Gri yazı rengi */
+        pointer-events: auto; /* Kullanıcı etkileşimi aktif */
+    }
 </style>
 <script type="text/javascript">
     function OpenModal() {
@@ -55,6 +54,10 @@
         $('#SureDakikaTxt').val(minutes);
         $('#SureSaatDakikaTxt').val(hours + ' Saat ' + minutes + ' Dakika');
         $('#SureGunStrTxt').val(days + " Gün ");
+        __doPostBack('BaslangicTarihiTxt', '');
+        __doPostBack('BitisTarihiTxt', '');
+        __doPostBack('BasSaatDDL', '');
+        __doPostBack('BitSaatDDL', '');
     }
 
     // Sayfa yüklendiğinde VEYA UpdatePanel sonrası çalışır
@@ -108,14 +111,14 @@
                 RegisterDDLChangeHandlers(); // UpdatePanel sonrası yeniden bağlanır
             });
         }
-        //tarih saat doluysa Harcırah butonunu görünür olsun
-        if ($('#BaslangicTarihiTxt').val() != "" && $('#BitisTarihiTxt').val() != "" && $('#BasSaatDDL').val() != "" && $('#BitSaatDDL').val() != "") {
-            /*$('#HarcirahHesaplaDiv').show();*/
-            document.getElementById('HarcirahHesaplaDiv').style.display = "block";
-        } else {
-            /*$('#HarcirahHesaplaDiv').hide();*/
-            document.getElementById('HarcirahHesaplaDiv').style.display = "block";
-        }
+        ////tarih saat doluysa Harcırah butonunu görünür olsun
+        //if ($('#BaslangicTarihiTxt').val() != "" && $('#BitisTarihiTxt').val() != "" && $('#BasSaatDDL').val() != "" && $('#BitSaatDDL').val() != "") {
+        //    /*$('#HarcirahHesaplaDiv').show();*/
+        //    document.getElementById('HarcirahHesaplaDiv').style.display = "block";
+        //} else {
+        //    /*$('#HarcirahHesaplaDiv').hide();*/
+        //    document.getElementById('HarcirahHesaplaDiv').style.display = "none";
+        //}
     });
 
     //var prm = Sys.WebForms.PageRequestManager.getInstance();
@@ -150,7 +153,7 @@
 
                         <div class="col checkbox">
                             <label>
-                                <asp:CheckBox ID="HarcirahHesaplansinChk" runat="server" Checked="True" ToolTip="Harcırah hesaplanmaması için işareti kaldırınız." OnCheckedChanged="THarcirahHesaplansinChk_CheckedChanged" AutoPostBack="true" />
+                                <asp:CheckBox ID="HarcirahHesaplansinChk" runat="server" Checked="True" ToolTip="Harcırah hesaplanmaması için işareti kaldırınız." OnCheckedChanged="HarcirahHesaplansinChk_CheckedChanged" AutoPostBack="true" />
                                 Harcırah Hesaplansın
                             </label>
                         </div>
@@ -163,19 +166,19 @@
                                         <div class="form-group form-label">
                                             <label class="form-label fw-semibold w-sem" for="BaslangicTarihi">Başlangıç Tarihi</label>
                                             <asp:TextBox ID="BaslangicTarihiTxt" runat="server" CssClass="form-control disabled-look"
-                                                ClientIDMode="Static"  placeholder="Başlangıç Tarihi"></asp:TextBox>
+                                                ClientIDMode="Static" OnTextChanged="BaslangicTarihiTxt_TextChanged" AutoPostBack="True" placeholder="gg.aa.yyyy"></asp:TextBox>
                                         </div>
                                         <div class="form-group form-label" id="BitTarDiv" runat="server">
                                             <label class="form-label fw-semibold" for="BitisTarihiTxt">Bitiş Tarihi</label>
                                             <asp:TextBox ID="BitisTarihiTxt" runat="server" CssClass="form-control disabled-look"
-                                                ClientIDMode="Static" placeholder="Bitiş Tarihi"></asp:TextBox>
+                                                ClientIDMode="Static" OnTextChanged="BitisTarihiTxt_TextChanged" AutoPostBack="True" placeholder="gg.aa.yyyy"></asp:TextBox>
                                         </div>
                                         <div class="form-group form-label">
                                             <label class="form-label fw-semibold" for="SureGunTxt">Süre Gün</label>
                                             <asp:TextBox ID="SureGunStrTxt" runat="server" CssClass="form-control disabled-look"
                                                 ClientIDMode="Static" placeholder="Süre (gün)"></asp:TextBox>
                                         </div>
-                                        <div class="form-group form-label" style="display:none">
+                                        <div class="form-group form-label" style="display: none">
                                             <label class="form-label" for="SureGunTxt">Süre Gün</label>
                                             <asp:TextBox ID="SureGunTxt" runat="server" CssClass="form-control"
                                                 ClientIDMode="Static" placeholder="Süre (gün)"></asp:TextBox>
@@ -191,16 +194,18 @@
                                     <div class="col-4">
                                         <div class="form-group form-label" id="BasSaatDiv">
                                             <label class="form-label fw-semibold" for="BasSaatDDL">Baş.Saat</label>
-                                            <asp:DropDownList ID="BasSaatDDL" runat="server" CssClass="form-control form-select form-select-lg" ClientIDMode="Static" />
+                                            <asp:DropDownList ID="BasSaatDDL" runat="server" CssClass="form-control form-select form-select-lg" ClientIDMode="Static"
+                                                OnSelectedIndexChanged="BasSaatDDL_SelectedIndexChanged" AutoPostBack="true" />
                                         </div>
                                         <div class="form-group form-label" id="BitSaatDiv" runat="server">
                                             <label class="form-label fw-semibold" for="BitSaatDDL">Bit.Saat</label>
-                                            <asp:DropDownList ID="BitSaatDDL" runat="server" CssClass="form-control form-select form-select-lg" ClientIDMode="Static" />
+                                            <asp:DropDownList ID="BitSaatDDL" runat="server" CssClass="form-control form-select form-select-lg" ClientIDMode="Static"
+                                                OnSelectedIndexChanged="BitSaatDDL_SelectedIndexChanged" AutoPostBack="true" />
                                         </div>
 
-                                        <div class="form-group form-label fw-semibold" style="display:none">
+                                        <div class="form-group form-label fw-semibold" style="display: none">
                                             <label class="form-label fw-semibold" for="SureSaatTxt">Süre Saat</label>
-                                            <asp:TextBox ID="SureSaatTxt" runat="server" CssClass="form-control" ClientIDMode="Static"  />
+                                            <asp:TextBox ID="SureSaatTxt" runat="server" CssClass="form-control" ClientIDMode="Static" />
 
                                         </div>
                                     </div>
@@ -226,7 +231,7 @@
                                     <label class="form-label fw-semibold" for="ParaBirimiTxt">Para Birimi</label>
                                     <asp:TextBox ID="ParaBirimiTxt" runat="server" CssClass="form-control" ReadOnly="True" />
                                 </div>
-                                
+
                             </div>
 
                             <div class="col-2 border p-2 me-2">
@@ -237,7 +242,7 @@
 
                                 <div class="form-group form-label col">
                                     <label class="form-label fw-semibold" for="UlasimAraciDDL">Ulaşım Aracı</label>
-                                    <asp:DropDownList ID="UlasimAraciDDL" runat="server" CssClass="form-control form-select form-group-select-lg"  />
+                                    <asp:DropDownList ID="UlasimAraciDDL" runat="server" CssClass="form-control form-select form-group-select-lg" />
                                 </div>
                                 <div class="form-group form-label col">
                                     <label class="form-label fw-semibold" for="AracPlakasiTxt">Araç Plakasi</label>
@@ -249,7 +254,7 @@
                                 <div class="row">
                                     <div class="col">
                                         <div class="form-group form-label">
-                                            <label class="form-label fw-semibold" for="PerSubeImzaDDL">Per.Ş.Md</label>
+                                            <label class="form-label fw-semibold" for="PerSubeImzaDDL">Per.Dir.</label>
                                             <asp:DropDownList ID="PerSubeImzaDDL" runat="server" CssClass="form-control form-select form-select-lg" />
                                         </div>
                                         <div class="form-group form-label">
@@ -285,25 +290,27 @@
                     <!-- Harcırah Hesaplanan bölüm-->
                     <div class="border p-2 text-center">
                         <!-- Ortalamak için text-center -->
-                        <div class="col form-group m-2" id="HarcirahHesaplaDiv">
-                            <br />
-                            <asp:LinkButton ID="HarcirahHesaplaBtn" CssClass="btn btn-success" runat="server" Text="Harcırah Hesapla" OnClick="HarcirahHesaplaBtn_Click" />
+                        <div class="col form-group m-2">
+                            <label class="form-label fw-semibold text-danger d-block" for="YevmiyeTxt">Hesaplanan Harcırah</label>
                         </div>
 
                         <div class="row justify-content-center">
                             <!-- Ortalamak için justify-content-center -->
                             <div class="col-2 form-group">
                                 <label class="form-label fw-semibold" for="YevmiyeTxt">Hakedilen Yevmiye</label>
-                                <asp:TextBox ID="YevmiyeTxt" runat="server" CssClass="form-control text-center" ReadOnly="True" />
+                                <asp:TextBox ID="YevmiyeTxt" runat="server" CssClass="form-control text-center fw-bold text-danger" ReadOnly="True" />
                             </div>
                             <div class="col-2 form-group">
                                 <label class="form-label fw-semibold" for="YevmiyeParaBirimiTxt">Para Birimi</label>
-                                <asp:TextBox ID="YevmiyeParaBirimiTxt" runat="server" CssClass="form-control text-center" ReadOnly="True" />
+                                <asp:TextBox ID="YevmiyeParaBirimiTxt" runat="server" CssClass="form-control text-center fw-bold text-danger" ReadOnly="True" />
                             </div>
                             <div class="col-2 form-group">
                                 <label class="form-label fw-semibold" for="SureTxt">Hakedilen Gün</label>
-                                <asp:TextBox ID="SureTxt" runat="server" CssClass="form-control text-center" ReadOnly="True" />
+                                <asp:TextBox ID="SureTxt" runat="server" CssClass="form-control text-center fw-bold text-danger" ReadOnly="True" />
                             </div>
+                        </div>
+                        <div class="col form-group m-2">
+                            <label class="form-label fw-semibold text-success d-block" for="YevmiyeTxt">(Yaptığınız değişiklerin geçerli olması için lütfen Kaydet veya Güncelle düğmesine basınız.)</label>
                         </div>
                     </div>
 
@@ -315,41 +322,19 @@
                     <asp:LinkButton ID="DeleteBtn" CssClass="btn btn-danger col-2 me-5" runat="server" Text="Sil" OnClick="DeleteBtn_Click" />
 
                     <asp:LinkButton ID="RaporAlBtn" CssClass="btn btn-secondary col-2 float-end" runat="server" Text="Rapor Al" OnClick="RaporAlBtn_Click" Visible="false" />
-                    <asp:LinkButton CssClass="btn btn-info float-end me-5" ID="GorevOnayListesiBtn" runat="server" Text="Görev Onay Listesi" CausesValidation="false" OnClick="GorevOnayListesiBtn_Click" Visible="False" />
+                    <asp:LinkButton CssClass="btn btn-secondary col-2 float-end me-5" ID="GorevOnayListesiBtn" runat="server" Text="Görev Onay Listesi" CausesValidation="false" OnClick="GorevOnayListesiBtn_Click" />
                 </div>
             </div>
-<%--            <div class="card shadow">
-                <div class="card-header">
-                    <h2 class="form-label fw-semibold">Görev/Onay Listesi</h2>
-                </div>
-                <div class="card-body">
-                    <div class="form-group">
-                        <table id="CustomDataTable" class="table table-striped row-border" width="100%">
-                            <thead>
-                                <tr>
-                                    <th>Adı Soyadı</th>
-                                    <th>Görevin Sebebi</th>
-                                    <th>Gidiş Tarihi</th>
-                                    <th>Dönüş Tarihi</th>
-                                    <th>Görevin Yeri</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                </div>
-            </div>--%>
             <div class="modal" id="ModalOnayDiv" role="dialog">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-dialog-centered">
                     <!-- Modal content-->
                     <div class="modal-content" style="width: 550px;">
 
                         <div class="modal-body">
-                            <div style="display: none">
-                            </div>
                             <div>
                                 <div class="text-center">
                                     <h3>
-                                        <asp:Label ID="MessageTitleLbl" class="form-label fw-semibold " runat="server" Text="Lütfen Dikkat: Görev Onayı Silinecek"></asp:Label></h3>
+                                        <asp:Label ID="MessageTitleLbl" class="form-label fw-semibold text-primary" runat="server" Text="Lütfen Dikkat: Görev Onayı Silinecek"></asp:Label></h3>
                                 </div>
                                 <div class="card-body">
                                     <asp:Label ID="MessageTextLbl" CssClass="form-label fw-semibold " runat="server" Text="Geçerli Görev Onayını Silmek İstiyor musunuz?"></asp:Label>
@@ -358,7 +343,7 @@
                         </div>
                         <div class="modal-footer">
                             <asp:LinkButton CssClass="btn btn-danger" ID="DeleteNowBtn" runat="server" CausesValidation="false" Text="Görev Onayı Sil" OnClientClick="{return true;};" OnClick="DeleteNowBtn_Click" Visible="false" />
-                            <asp:LinkButton CssClass="btn btn-success" ID="KaydetNowBtn" runat="server" CausesValidation="false" Text="Görevi kaydet" OnClientClick="{return true;};" OnClick="KaydetNowBtn_Click" Visible="false" />
+                            <asp:LinkButton CssClass="btn btn-success" ID="KaydetNowBtn" runat="server" CausesValidation="false" Text="Görevi kaydet" OnClientClick="{return true;};" OnClick="KaydetNowBtn_Click" />
                             <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                         </div>
                     </div>

@@ -261,6 +261,10 @@ namespace IKYS_WebParts.KisiselSayfaWP
                 IsR2H8.Text = isBilgileri.ProtokolSiraNo.ToString();
                 IsR2H9.Text = "Çalışma Durumu";
                 IsR2H10.Text = isBilgileri.CalismaDurumu == ProjeConstants.PER_CALISIYOR_INT ? ProjeConstants.PER_CALISIYOR : ProjeConstants.PER_AYRILDI;
+                IsR2H11.Text = "Derece/Kademe";
+                IsR2H12.Text = isBilgileri.Derece.ToString() +"/" +isBilgileri.Kademe.ToString();
+                IsR2H13.Text = "Derece/Kademe İlerleme Tarihi";
+                IsR2H14.Text = isBilgileri.DereceKademeIlerlemeTarihi.ConvertToDatetimeEmptyIfNull();
             }
         }
         private void FillIletisimTable(Personel personel)

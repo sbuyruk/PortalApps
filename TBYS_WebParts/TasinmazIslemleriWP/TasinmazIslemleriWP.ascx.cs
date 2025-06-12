@@ -8,66 +8,26 @@ using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
 
-namespace TBYS_WebParts.TasinmazGirisiWP
+namespace TBYS_WebParts.TasinmazIslemleriWP
 {
     [ToolboxItemAttribute(false)]
-    public partial class TasinmazGirisiWP : WebPart
+    public partial class TasinmazIslemleriWP : WebPart
     {
         // Uncomment the following SecurityPermission attribute only when doing Performance Profiling on a farm solution
         // using the Instrumentation method, and then remove the SecurityPermission attribute when the code is ready
         // for production. Because the SecurityPermission attribute bypasses the security check for callers of
         // your constructor, it's not recommended for production purposes.
         // [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Assert, UnmanagedCode = true)]
-        public TasinmazGirisiWP()
+        public TasinmazIslemleriWP()
         {
         }
+
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
             InitializeControl();
-            this.ChromeType = PartChromeType.None;
         }
-        private string DestinationAppQS
-        {
-            get
-            {
-
-                if (ViewState["DestinationApp"] == null)
-                {
-                    if (Page.Request.QueryString["DestinationApp"] != null)
-                    {
-                        ViewState["DestinationApp"] = Page.Request.QueryString["DestinationApp"];
-                    }
-                    else
-                    {
-                        ViewState["DestinationApp"] = string.Empty;
-                    }
-                }
-                return ViewState["DestinationApp"].ToString();
-            }
-
-            set
-            {
-                ViewState["DestinationApp"] = value;
-            }
-        }
-        private string CurrentUserName
-        {
-            get
-            {
-
-                if (ViewState["CurrentUserName"] == null)
-                {
-                    ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUserLoginName();
-                }
-                return ViewState["CurrentUserName"].ToString();
-            }
-
-            set
-            {
-                ViewState["CurrentUserName"] = value;
-            }
-        }
+        #region global variables
         private string TasinmazIdQS
         {
             get
@@ -116,42 +76,35 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 ViewState["EnvanterdeMi"] = value;
             }
         }
-        private string PageIndexQS
+        private string CurrentUserName
         {
             get
             {
 
-                if (ViewState["PageIndex"] == null)
+                if (ViewState["CurrentUserName"] == null)
                 {
-                    if (Page.Request.QueryString["PageIndex"] != null)
-                    {
-                        ViewState["PageIndex"] = Page.Request.QueryString["PageIndex"];
-                    }
-                    else
-                    {
-                        ViewState["PageIndex"] = string.Empty;
-                    }
+                    ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUserLoginName();
                 }
-                return ViewState["PageIndex"].ToString();
+                return ViewState["CurrentUserName"].ToString();
             }
 
             set
             {
-                ViewState["PageIndex"] = value;
+                ViewState["CurrentUserName"] = value;
             }
         }
+        #endregion 
         protected void Page_Load(object sender, EventArgs e)
         {
-
             if (!Page.IsPostBack)
             {
                 DDLleriDoldur();
-                if (String.IsNullOrEmpty(DestinationAppQS) || String.Equals(DestinationAppQS, ""))
+                if (TasinmazIdQS.ConvertToInt()<1 )
                 {
                     //TasinmazGirisi açılacak TG
                     TasinmazGirisi();
                 }
-                else if (String.Equals(DestinationAppQS, "TD"))
+                else 
                 {
                     //TasinmazDuzenle açılacak
                     TasinmazDuzenle();
@@ -159,10 +112,61 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 GorunumAyarlariniYap();
 
             }
+
+            IlDDLDoldur();
+            IlceDDLDoldur();
+            BolgeTxtDoldur();
+        }
+        //protected void Page_PreRender(object sender, EventArgs e)
+        //{
+        //    if (!Page.IsPostBack)
+        //    {
+        //        IlDDLDoldur();
+        //        IlceDDLDoldur();
+        //        BolgeTxtDoldur();
+        //    }
+        //}
+        #region methods
+        private void TasinmazGirisi()
+        {
+
+        }
+        private void TasinmazDuzenle()
+        {
+            bool tasinmazBulunamadi = true;
+            int tasinmazId = (TasinmazIdQS.ConvertToInt());
+            if (EnvanterdeMiQS.Equals(ProjeConstants.TASINMAZ_ENVANTERDEN_CIKTI.ToString()))
+            {
+                Tasinmaz envanterdenCikanTasinmaz = new Tasinmaz();
+                envanterdenCikanTasinmaz = envanterdenCikanTasinmaz.SelectEnvanterdenCikanTasinmaz(tasinmazId);
+                if (envanterdenCikanTasinmaz != null)
+                {
+                    tasinmazBulunamadi = false;
+                    IdLbl.Text = "Tasinmaz Id: " + tasinmazId.ToString() ;
+                    TasinmazFormunuDoldur(envanterdenCikanTasinmaz);
+
+                }
+            }
+            else
+            {
+
+                Tasinmaz tasinmaz = new Tasinmaz();
+                tasinmaz = tasinmaz.Select<Tasinmaz>(tasinmazId);
+                if (tasinmaz != null)
+                {
+                    tasinmazBulunamadi = false;
+                    IdLbl.Text = "Tasinmaz Id: " + tasinmazId.ToString();
+                    TasinmazFormunuDoldur(tasinmaz);
+                }
+            }
+            if (tasinmazBulunamadi)
+                MessageHelper.PublishMessage("Taşınmaz Bulunamadı!", ProjeConstants.MESAJ_HATA);
+
+
         }
         private void GorunumAyarlariniYap()
         {
-            if (DestinationAppQS.Equals("TD"))
+            if (TasinmazIdQS.ConvertToInt()>0)
             {
                 SaveBtn.Visible = false;
                 UpdateBtn.Visible = true;
@@ -240,43 +244,6 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             }
 
         }
-        private void TasinmazGirisi()
-        {
-
-        }
-        private void TasinmazDuzenle()
-        {
-            bool tasinmazBulunamadi = true;
-            int tasinmazId = (TasinmazIdQS.ConvertToInt());
-            if (EnvanterdeMiQS.Equals(ProjeConstants.TASINMAZ_ENVANTERDEN_CIKTI.ToString()))
-            {
-                Tasinmaz envanterdenCikanTasinmaz = new Tasinmaz();
-                envanterdenCikanTasinmaz = envanterdenCikanTasinmaz.SelectEnvanterdenCikanTasinmaz(tasinmazId);
-                if (envanterdenCikanTasinmaz != null)
-                {
-                    tasinmazBulunamadi = false;
-                    IdLbl.Text = "(Taşınmaz No: "+tasinmazId.ToString()+")";
-                    TasinmazFormunuDoldur(envanterdenCikanTasinmaz);
-
-                }
-            }
-            else
-            {
-
-                Tasinmaz tasinmaz = new Tasinmaz();
-                tasinmaz = tasinmaz.Select<Tasinmaz>(tasinmazId);
-                if (tasinmaz != null)
-                {
-                    tasinmazBulunamadi = false;
-                    IdLbl.Text = "(Taşınmaz No: " + tasinmazId.ToString() + ")";
-                    TasinmazFormunuDoldur(tasinmaz);
-                }
-            }
-            if (tasinmazBulunamadi)
-                MessageHelper.PublishMessage("Taşınmaz Bulunamadı!", ProjeConstants.MESAJ_HATA);
-
-
-        }
         private void DDLleriDoldur()
         {
             IlDDLDoldur();
@@ -319,9 +286,9 @@ namespace TBYS_WebParts.TasinmazGirisiWP
         {
             int ilId = IliDDL.SelectedItem != null ? IliDDL.SelectedItem.Value.ConvertToInt() : 0;
             string bolge = UtilityHelper.BolgeGetir(ilId);
-            SorumluBolgeTxt.Text = !string.IsNullOrEmpty(bolge) ? bolge : "";
+            SorumluBolgeTxt.Text = !string.IsNullOrEmpty(bolge) ? "Bölge: " + bolge : "";
         }
-        
+
         private void EdinmeSekliDDLDoldur()
         {
             EdinmeSekliDDL.Items.Clear();
@@ -390,8 +357,12 @@ namespace TBYS_WebParts.TasinmazGirisiWP
         private void KatMulkiyetiDDLDoldur()
         {
             KatMulkiyetiDDL.Items.Clear();
-            KatMulkiyetiDDL.Items.Add(ProjeConstants.KAT_MULKIYETI_VAR);
-            KatMulkiyetiDDL.Items.Add(ProjeConstants.KAT_MULKIYETI_YOK);
+            //KatMulkiyetiDDL.Items.Add(ProjeConstants.KAT_MULKIYETI_VAR);
+            //KatMulkiyetiDDL.Items.Add(ProjeConstants.KAT_MULKIYETI_YOK);
+            KatMulkiyetiDDL.Items.Add(ProjeConstants.TAPUTIPI_KATMULKIYETI);
+            KatMulkiyetiDDL.Items.Add(ProjeConstants.TAPUTIPI_KATIRTIFAKI);
+            KatMulkiyetiDDL.Items.Add(ProjeConstants.TAPUTIPI_YOK);
+            KatMulkiyetiDDL.Items.Add(ProjeConstants.TAPUTIPI_DIGER);
 
         }
         private void SigortaDurumuDDLDoldur()
@@ -468,10 +439,10 @@ namespace TBYS_WebParts.TasinmazGirisiWP
 
                 MahalleTxt.Text = tasinmaz.Mahalle;
 
+
                 ProjeM2Txt.Text = tasinmaz.ProjeM2.ToString();
                 BlokTxt.Text = tasinmaz.Blok.ToString();
                 GirisTxt.Text = tasinmaz.Giris.ToString();
-
                 formDolduMu = true;
             }
             catch (Exception ex)
@@ -539,6 +510,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             tasinmaz.ProjeM2 = ProjeM2Txt.Text;
             tasinmaz.Blok = BlokTxt.Text;
             tasinmaz.Giris = GirisTxt.Text;
+
             int id = tasinmaz.Save();
             tasinmaz.Id = id;
             //tasınmaz tablosundaki Bagisci alanı her kaydedildiğinde Ad+soyad olarak güncellesin
@@ -550,7 +522,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 bagisci = bagisci.Select<TasinmazBagisci>(bagis.BagisciId);
                 if (bagisci != null)
                 {
-                    tasinmaz.BagisciId = bagisci.Id ;
+                    tasinmaz.BagisciId = bagisci.Id;
                     tasinmaz.Bagisci = bagisci.Adi + ' ' + bagisci.Soyadi;
                     tasinmaz.Update();
                 }
@@ -633,7 +605,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 tasinmaz.TamHisse = TamHisseTxt.Text;
                 tasinmaz.HisseMiktariPay = HisseMiktariPayTxt.Text;
                 tasinmaz.HisseMiktariPayda = HisseMiktariPaydaTxt.Text;
-
+                
                 tasinmaz.ProjeM2 = ProjeM2Txt.Text;
                 tasinmaz.Blok = BlokTxt.Text;
                 tasinmaz.Giris = GirisTxt.Text;
@@ -670,11 +642,48 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                     {
                         sigorta.SigortaCinsi = tasinmaz.SigortaDurumu;
                         sigorta.Update();
-                    } 
+                    }
                 }
             }
 
             return isSaved;
+        }
+        private bool SozlesmesiVarMi(Tasinmaz tasinmaz)
+        {
+            SozlesmeTasinmaz sozlesmeTasinmaz = new SozlesmeTasinmaz();
+            List<SozlesmeTasinmaz> liste = sozlesmeTasinmaz.SelectByTasinmazId(tasinmaz.Id);
+            return (liste.Count > 1);
+        }
+        #endregion
+        #region events
+        protected void CloseBtn_Click(object sender, EventArgs e)
+        {
+            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
+            Page.Response.Redirect(newUrl);
+        }
+        protected void IliDDL_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            IlceDDLDoldur();
+            BolgeTxtDoldur();
+        }
+        protected void KatMulkiyetiDDL_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (KatMulkiyetiDDL.SelectedValue == ProjeConstants.KAT_MULKIYETI_VAR)
+            {
+                BagimsizBolumBtn.Visible = false;
+            }
+            else if (KatMulkiyetiDDL.SelectedValue == ProjeConstants.KAT_MULKIYETI_YOK)
+            {
+                BagimsizBolumBtn.Visible = true;
+            }
+        }
+        protected void BagimsizBolumBtn_Click(object sender, EventArgs e)
+        {
+            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
+            newUrl += "/" + ProjeConstants.PAGE_TASINMAZ_BAGIMSIZBOLUM + "?SenderApp=TD&TasinmazId=" + TasinmazIdQS + "&EnvanterdeMi=" + EnvanterdeMiQS;
+            Page.Response.Redirect(newUrl, true);
         }
 
         protected void SaveBtn_Click(object sender, EventArgs e)
@@ -711,19 +720,10 @@ namespace TBYS_WebParts.TasinmazGirisiWP
         {
             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
             string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
-            newUrl += "/" + ProjeConstants.PAGE_TASINMAZ_KARTI + "?SenderApp=TD&TasinmazId=" + TasinmazIdQS + "&PageIndex=" + PageIndexQS + "&EnvanterdeMi=" + EnvanterdeMiQS;
+            newUrl += "/" + ProjeConstants.PAGE_TASINMAZ_KARTI + "?SenderApp=TD&TasinmazId=" + TasinmazIdQS +"&EnvanterdeMi=" + EnvanterdeMiQS;
             Page.Response.Redirect(newUrl, true);
         }
-        protected void BagimsizBolumBtn_Click(object sender, EventArgs e)
-        {
-            //Tasinmaz tasinmaz = new Tasinmaz();
-            //tasinmaz = tasinmaz.selectById(Utility.getInt(TasinmazIdLbl.Text));
-            //string newUrl = "/pages/BagimsizBolum.aspx?SenderApp=TD&tId=" + TasinmazIdLbl.Text;
-            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
-            newUrl += "/" + ProjeConstants.PAGE_TASINMAZ_BAGIMSIZBOLUM + "?SenderApp=TD&TasinmazId=" + TasinmazIdQS + "&PageIndex=" + PageIndexQS + "&EnvanterdeMi=" + EnvanterdeMiQS;
-            Page.Response.Redirect(newUrl, true);
-        }
+        
         protected void SigortaBtn_Click(object sender, EventArgs e)
         {
 
@@ -731,7 +731,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             {
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
-                newUrl += "/" + ProjeConstants.PAGE_TASINMAZSIGORTA_EKLESIL + "?SenderApp=TD&TasinmazId=" + TasinmazIdQS + "&PageIndex=" + PageIndexQS + "&EnvanterdeMi=" + EnvanterdeMiQS;
+                newUrl += "/" + ProjeConstants.PAGE_TASINMAZSIGORTA_EKLESIL + "?SenderApp=TD&TasinmazId=" + TasinmazIdQS + "&EnvanterdeMi=" + EnvanterdeMiQS;
                 Page.Response.Redirect(newUrl, true);
             }
         }
@@ -739,7 +739,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
         {
             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
             string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
-            newUrl += "/" + ProjeConstants.PAGE_TASINMAZONARIM_GIRIS + "?SenderApp=TD&TasinmazId=" + TasinmazIdQS + "&PageIndex=" + PageIndexQS + "&EnvanterdeMi=" + EnvanterdeMiQS;
+            newUrl += "/" + ProjeConstants.PAGE_TASINMAZONARIM_GIRIS + "?SenderApp=TD&TasinmazId=" + TasinmazIdQS + "&EnvanterdeMi=" + EnvanterdeMiQS;
             Page.Response.Redirect(newUrl, true);
         }
         protected void EnvanterdenCikarBtn_Click(object sender, EventArgs e)
@@ -750,63 +750,6 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             newUrl += "/" + ProjeConstants.PAGE_TASINMAZ_ENVANTERDEN_CIKARMA + "?SenderApp=TD&TasinmazId=" + TasinmazIdQS;
             Page.Response.Redirect(newUrl, true);
         }
-        protected void BackBtn_Click(object sender, EventArgs e)
-        {
-            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-            string rootUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
-            string newUrl = rootUrl + "/" + ProjeConstants.PAGE_TASINMAZ_LIST + "?PageIndex=" + PageIndexQS;
-            if (EnvanterdeMiQS.Equals(ProjeConstants.TASINMAZ_ENVANTERDEN_CIKTI.ToString()))
-            {
-                newUrl = rootUrl + "/" + ProjeConstants.PAGE_ENVANTERDENCIKANTASINMAZ_LIST + "?PageIndex=" + PageIndexQS;
-            }
-            Page.Response.Redirect(newUrl, true);
-        }
-        protected void DeleteBtn_Click(object sender, EventArgs e)
-        {
-            ///Taşınmazın siinmesi bir dizi konrol ile yapılabilir. Şu an silme yetkisi kaldırıldı SB 24.06.2021
-            if (true)
-            {
-                MessageHelper.PublishMessage("Taşınmaz silme yetkiniz bulunmamaktadır. Taşınmaz silinemez.", ProjeConstants.MESAJ_HATA);
-            }
-            else {
-#pragma warning disable CS0162 // Unreachable code detected
-                Tasinmaz tasinmaz = new Tasinmaz();
-#pragma warning restore CS0162 // Unreachable code detected
-                tasinmaz = tasinmaz.Select<Tasinmaz>(TasinmazIdQS.ConvertToInt());
-                if (tasinmaz != null) //sildikten sonra önceki sayfaya dön
-                {
-
-                    if (!SozlesmesiVarMi(tasinmaz))
-                    {
-                        if (tasinmaz.Delete())
-                        {
-
-                            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
-                            newUrl += "/" + ProjeConstants.PAGE_TASINMAZ_LIST;
-                            Page.Response.Redirect(newUrl, true);
-
-                        }
-                        else
-                            MessageHelper.PublishMessage("Taşınmaz silinemedi", ProjeConstants.MESAJ_HATA);
-                    }
-                    else
-                    {
-                        MessageHelper.PublishMessage("Taşınmaza ait sözleşme bulunmaktadır. Taşınmaz silinemez.", ProjeConstants.MESAJ_HATA);
-                    }
-                }
-                else
-                    MessageHelper.PublishMessage("Taşınmaz bulunamadı", ProjeConstants.MESAJ_HATA); 
-            }
-        }
-
-        private bool SozlesmesiVarMi(Tasinmaz tasinmaz)
-        {
-            SozlesmeTasinmaz sozlesmeTasinmaz = new SozlesmeTasinmaz();
-            List<SozlesmeTasinmaz> liste = sozlesmeTasinmaz.SelectByTasinmazId(tasinmaz.Id);
-            return (liste.Count > 1);
-        }
-
         protected void ResimlerBtn_Click(object sender, EventArgs e)
         {
             Tasinmaz tasinmaz = new Tasinmaz();
@@ -815,7 +758,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             {
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
-                newUrl += "/" + ProjeConstants.PAGE_TASINMAZ_RESIMLER + "?TasinmazId=" + TasinmazIdQS + "&PageIndex=" + PageIndexQS + "&EnvanterdeMi=" + EnvanterdeMiQS;
+                newUrl += "/" + ProjeConstants.PAGE_TASINMAZ_RESIMLER + "?TasinmazId=" + TasinmazIdQS + "&EnvanterdeMi=" + EnvanterdeMiQS;
                 //"&tasinmazFoto=" + tasinmaz.TasinmazFoto
                 //+ "&tasinmazFoto1=" + tasinmaz.TasinmazFoto1 + "&tasinmazFoto2=" + tasinmaz.TasinmazFoto2
                 //+ "&tapuFoto=" + tasinmaz.TapuFoto + "&krokiFoto=" + tasinmaz.KrokiFoto + "&tahkikatFoto=" + tasinmaz.TahkikatFoto;
@@ -845,7 +788,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 {
                     string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                     string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
-                    newUrl += "/" + ProjeConstants.PAGE_TASINMAZBAGISCI_KARTI + "?SenderApp=TD&TasinmazId=" + TasinmazIdQS + "&BagisciId=" + bagisci.Id + "&PageIndex=" + PageIndexQS + "&EnvanterdeMi=" + EnvanterdeMiQS;
+                    newUrl += "/" + ProjeConstants.PAGE_TASINMAZBAGISCI_KARTI + "?SenderApp=TD&TasinmazId=" + TasinmazIdQS + "&BagisciId=" + bagisci.Id +  "&EnvanterdeMi=" + EnvanterdeMiQS;
                     Page.Response.Redirect(newUrl, true);
                 }
 
@@ -853,11 +796,55 @@ namespace TBYS_WebParts.TasinmazGirisiWP
 
 
         }
-        protected void CloseBtn_Click(object sender, EventArgs e)
+        protected void BackBtn_Click(object sender, EventArgs e)
         {
             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
-            Page.Response.Redirect(newUrl);
+            string rootUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
+            string newUrl = rootUrl + "/" + ProjeConstants.PAGE_TASINMAZ_LIST + "?TasinmazId=" + TasinmazIdQS;
+            if (EnvanterdeMiQS.Equals(ProjeConstants.TASINMAZ_ENVANTERDEN_CIKTI.ToString()))
+            {
+                newUrl = rootUrl + "/" + ProjeConstants.PAGE_ENVANTERDENCIKANTASINMAZ_LIST + "?TasinmazId=" + TasinmazIdQS;
+            }
+            Page.Response.Redirect(newUrl, true);
+        }
+        protected void DeleteBtn_Click(object sender, EventArgs e)
+        {
+            ///Taşınmazın siinmesi bir dizi konrol ile yapılabilir. Şu an silme yetkisi kaldırıldı SB 24.06.2021
+            if (true)
+            {
+                MessageHelper.PublishMessage("Taşınmaz silme yetkiniz bulunmamaktadır. Taşınmaz silinemez.", ProjeConstants.MESAJ_HATA);
+            }
+            else
+            {
+#pragma warning disable CS0162 // Unreachable code detected
+                Tasinmaz tasinmaz = new Tasinmaz();
+#pragma warning restore CS0162 // Unreachable code detected
+                tasinmaz = tasinmaz.Select<Tasinmaz>(TasinmazIdQS.ConvertToInt());
+                if (tasinmaz != null) //sildikten sonra önceki sayfaya dön
+                {
+
+                    if (!SozlesmesiVarMi(tasinmaz))
+                    {
+                        if (tasinmaz.Delete())
+                        {
+
+                            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+                            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
+                            newUrl += "/" + ProjeConstants.PAGE_TASINMAZ_LIST;
+                            Page.Response.Redirect(newUrl, true);
+
+                        }
+                        else
+                            MessageHelper.PublishMessage("Taşınmaz silinemedi", ProjeConstants.MESAJ_HATA);
+                    }
+                    else
+                    {
+                        MessageHelper.PublishMessage("Taşınmaza ait sözleşme bulunmaktadır. Taşınmaz silinemez.", ProjeConstants.MESAJ_HATA);
+                    }
+                }
+                else
+                    MessageHelper.PublishMessage("Taşınmaz bulunamadı", ProjeConstants.MESAJ_HATA);
+            }
         }
         protected void NextBtn_Click(object sender, EventArgs e)
         {
@@ -868,7 +855,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             int queryIndex = newUrl.IndexOf("?");
             if (queryIndex > 0)
                 newUrl = newUrl.Substring(0, queryIndex);
-            newUrl = newUrl + "?DestinationApp=TD&TasinmazId=" + sonrakiTasinmaz.Id + "&PageIndex=" + PageIndexQS + "&EnvanterdeMi=" + EnvanterdeMiQS;
+            newUrl = newUrl + "?DestinationApp=TD&TasinmazId=" + sonrakiTasinmaz.Id + "&EnvanterdeMi=" + EnvanterdeMiQS;
             Page.Response.Redirect(newUrl, true);
         }
         protected void PrevBtn_Click(object sender, EventArgs e)
@@ -880,24 +867,8 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             int queryIndex = newUrl.IndexOf("?");
             if (queryIndex > 0)
                 newUrl = newUrl.Substring(0, queryIndex);
-            newUrl = newUrl + "?DestinationApp=TD&TasinmazId=" + oncekiTasinmaz.Id + "&PageIndex=" + PageIndexQS + "&EnvanterdeMi=" + EnvanterdeMiQS;
+            newUrl = newUrl + "?DestinationApp=TD&TasinmazId=" + oncekiTasinmaz.Id + "&EnvanterdeMi=" + EnvanterdeMiQS;
             Page.Response.Redirect(newUrl, true);
-        }
-        protected void KatMulkiyetiDDL_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (KatMulkiyetiDDL.SelectedValue == ProjeConstants.KAT_MULKIYETI_VAR)
-            {
-                BagimsizBolumBtn.Visible = false;
-            }
-            else if (KatMulkiyetiDDL.SelectedValue == ProjeConstants.KAT_MULKIYETI_YOK)
-            {
-                BagimsizBolumBtn.Visible = true;
-            }
-        }
-        protected void IliDDL_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            IlceDDLDoldur();
-            BolgeTxtDoldur();
         }
         protected void KopyalaBtn_Click(object sender, EventArgs e)
         {
@@ -1012,5 +983,6 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             else
                 MessageHelper.PublishMessage("Taşınmaz Kaydı başarısız oldu.-TS001", ProjeConstants.MESAJ_HATA);
         }
+        #endregion
     }
 }

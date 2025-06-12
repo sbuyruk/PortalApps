@@ -175,15 +175,12 @@
         <div class="card-header ">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-1">
-                <asp:Label CssClass="col-form-label  btn-outline-primary" Id="TitleLbl" runat="server" Text="Görev Onay Listesi"></asp:Label>
-                <asp:Label CssClass="col-form-label text-secondary float-end" ID="EkranNo" Text="30" runat="server" ></asp:Label>
+                <asp:Label CssClass="form-label fw-semibold  btn-outline-primary" Id="TitleLbl" runat="server" Text="Görev Onay Listesi"></asp:Label>
+                <asp:Label CssClass="form-label fw-semibold text-secondary float-end" ID="EkranNo" Text="30" runat="server" ></asp:Label>
             </h3>
 
         </div>
         <div class="card-body">
-            <div class="form-group mb-3">
-                <label><input type="checkbox" id="checkAll"> Bu Sayfadakileri Seç</label>
-            </div>
             <asp:UpdatePanel ID="UpdatePanel7" runat="server" UpdateMode="Conditional" ViewStateMode="Enabled">
                 <ContentTemplate>
                     <div class="form-group">
@@ -210,6 +207,12 @@
                 </Triggers>
 
             </asp:UpdatePanel>
+            <div class="form-group m-3">
+                <label class="fw-semibold float-end">
+                    <input type="checkbox" id="checkAll">
+                    Bu Sayfadakileri Seç</label>
+            </div>
+
             <div id="InvisibleDiv" style="display: none">
                 <input id="paramidArray" runat="server" type="text" />
                 <asp:LinkButton ID="SecilenleriKaydetBtn" runat="server" CssClass="btn btn-success" CausesValidation="false" Text=" Kaydet " OnClick="SecilenleriKaydetBtn_Click" />

@@ -233,6 +233,22 @@ namespace IKYS_WebParts.KisiselSayfaWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.TableCell IsR2H11;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.TableCell IsR2H12;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.TableCell IsR2H13;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.TableCell IsR2H14;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.Table IsTable;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -1353,6 +1369,89 @@ namespace IKYS_WebParts.KisiselSayfaWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlIsR2H11() {
+            global::System.Web.UI.WebControls.TableCell @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.TableCell();
+            this.IsR2H11 = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "IsR2H11";
+            @__ctrl.CssClass = "";
+            @__ctrl.Font.Bold = true;
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlIsR2H12() {
+            global::System.Web.UI.WebControls.TableCell @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.TableCell();
+            this.IsR2H12 = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "IsR2H12";
+            @__ctrl.CssClass = "";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlIsR2H13() {
+            global::System.Web.UI.WebControls.TableCell @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.TableCell();
+            this.IsR2H13 = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "IsR2H13";
+            @__ctrl.CssClass = "";
+            @__ctrl.Font.Bold = true;
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlIsR2H14() {
+            global::System.Web.UI.WebControls.TableCell @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.TableCell();
+            this.IsR2H14 = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "IsR2H14";
+            @__ctrl.CssClass = "";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private void @__BuildControl__control27(System.Web.UI.WebControls.TableCellCollection @__ctrl) {
+            global::System.Web.UI.WebControls.TableCell @__ctrl1;
+            @__ctrl1 = this.@__BuildControlIsR2H11();
+            @__ctrl.Add(@__ctrl1);
+            global::System.Web.UI.WebControls.TableCell @__ctrl2;
+            @__ctrl2 = this.@__BuildControlIsR2H12();
+            @__ctrl.Add(@__ctrl2);
+            global::System.Web.UI.WebControls.TableCell @__ctrl3;
+            @__ctrl3 = this.@__BuildControlIsR2H13();
+            @__ctrl.Add(@__ctrl3);
+            global::System.Web.UI.WebControls.TableCell @__ctrl4;
+            @__ctrl4 = this.@__BuildControlIsR2H14();
+            @__ctrl.Add(@__ctrl4);
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.TableRow @__BuildControl__control26() {
+            global::System.Web.UI.WebControls.TableRow @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.TableRow();
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            this.@__BuildControl__control27(@__ctrl.Cells);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControl__control15(System.Web.UI.WebControls.TableRowCollection @__ctrl) {
             global::System.Web.UI.WebControls.TableRow @__ctrl1;
             @__ctrl1 = this.@__BuildControl__control16();
@@ -1369,6 +1468,9 @@ namespace IKYS_WebParts.KisiselSayfaWP {
             global::System.Web.UI.WebControls.TableRow @__ctrl5;
             @__ctrl5 = this.@__BuildControl__control24();
             @__ctrl.Add(@__ctrl5);
+            global::System.Web.UI.WebControls.TableRow @__ctrl6;
+            @__ctrl6 = this.@__BuildControl__control26();
+            @__ctrl.Add(@__ctrl6);
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -1507,7 +1609,7 @@ namespace IKYS_WebParts.KisiselSayfaWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control28(System.Web.UI.WebControls.TableCellCollection @__ctrl) {
+        private void @__BuildControl__control30(System.Web.UI.WebControls.TableCellCollection @__ctrl) {
             global::System.Web.UI.WebControls.TableCell @__ctrl1;
             @__ctrl1 = this.@__BuildControlHeaderCell0();
             @__ctrl.Add(@__ctrl1);
@@ -1537,20 +1639,20 @@ namespace IKYS_WebParts.KisiselSayfaWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderRow @__BuildControl__control27() {
+        private global::System.Web.UI.WebControls.TableHeaderRow @__BuildControl__control29() {
             global::System.Web.UI.WebControls.TableHeaderRow @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderRow();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            this.@__BuildControl__control28(@__ctrl.Cells);
+            this.@__BuildControl__control30(@__ctrl.Cells);
             return @__ctrl;
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control26(System.Web.UI.WebControls.TableRowCollection @__ctrl) {
+        private void @__BuildControl__control28(System.Web.UI.WebControls.TableRowCollection @__ctrl) {
             global::System.Web.UI.WebControls.TableHeaderRow @__ctrl1;
-            @__ctrl1 = this.@__BuildControl__control27();
+            @__ctrl1 = this.@__BuildControl__control29();
             @__ctrl.Add(@__ctrl1);
         }
         
@@ -1564,7 +1666,7 @@ namespace IKYS_WebParts.KisiselSayfaWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "AileTable";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "table table-bordered");
-            this.@__BuildControl__control26(@__ctrl.Rows);
+            this.@__BuildControl__control28(@__ctrl.Rows);
             return @__ctrl;
         }
         
@@ -1791,7 +1893,7 @@ namespace IKYS_WebParts.KisiselSayfaWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control32(System.Web.UI.WebControls.TableCellCollection @__ctrl) {
+        private void @__BuildControl__control34(System.Web.UI.WebControls.TableCellCollection @__ctrl) {
             global::System.Web.UI.WebControls.TableCell @__ctrl1;
             @__ctrl1 = this.@__BuildControlIzinTalepH0();
             @__ctrl.Add(@__ctrl1);
@@ -1827,20 +1929,20 @@ namespace IKYS_WebParts.KisiselSayfaWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderRow @__BuildControl__control31() {
+        private global::System.Web.UI.WebControls.TableHeaderRow @__BuildControl__control33() {
             global::System.Web.UI.WebControls.TableHeaderRow @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderRow();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            this.@__BuildControl__control32(@__ctrl.Cells);
+            this.@__BuildControl__control34(@__ctrl.Cells);
             return @__ctrl;
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control30(System.Web.UI.WebControls.TableRowCollection @__ctrl) {
+        private void @__BuildControl__control32(System.Web.UI.WebControls.TableRowCollection @__ctrl) {
             global::System.Web.UI.WebControls.TableHeaderRow @__ctrl1;
-            @__ctrl1 = this.@__BuildControl__control31();
+            @__ctrl1 = this.@__BuildControl__control33();
             @__ctrl.Add(@__ctrl1);
         }
         
@@ -1855,14 +1957,14 @@ namespace IKYS_WebParts.KisiselSayfaWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "IzinTalepTable";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "table ");
-            this.@__BuildControl__control30(@__ctrl.Rows);
+            this.@__BuildControl__control32(@__ctrl.Rows);
             return @__ctrl;
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control29(System.Web.UI.Control @__ctrl) {
+        private void @__BuildControl__control31(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                     <div class=""row"">
@@ -1965,7 +2067,7 @@ namespace IKYS_WebParts.KisiselSayfaWP {
             global::System.Web.UI.UpdatePanel @__ctrl;
             @__ctrl = new global::System.Web.UI.UpdatePanel();
             this.TableUpdatePanel = @__ctrl;
-            @__ctrl.ContentTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control29));
+            @__ctrl.ContentTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control31));
             @__ctrl.ID = "TableUpdatePanel";
             return @__ctrl;
         }

@@ -114,7 +114,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
                     }
                     else
                     {
-                        ViewState["SecilenId"] = string.Empty;
+                        ViewState["SecilenId"] = "0";
                     }
                 }
                 return ViewState["SecilenId"].ToString();
@@ -203,6 +203,17 @@ namespace TBYS_WebParts.TasinmazListesiWP
                         .appendTo('#CustomDataTable thead');
 
                       var table =  $('#CustomDataTable').DataTable({
+                        'initComplete': function (settings, json) {//tablo yüklendiğinde
+                                var api = this.api();
+                                var row = api.row(function (idx, data, node) { //secilen satıra gider
+                                    return data['Id'] == " + SecilenIdQS + @";
+                                });
+                                if (row.length > 0) {
+                                    row.select()
+                                        .show()
+                                        .draw(false);
+                                }
+                            },
                         data: " + jsonData + @",
                         columns: [
                             { data: 'Id'},
@@ -550,7 +561,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
                     bagimsizBolum.KullanimAmaci = kullanimAmaci;
                     bagimsizBolum.Aciklama = aciklama;
 
-                    bagimsizBolum.Secildi = SecilenIdQS.Equals(bolumId);
+                    //bagimsizBolum.Secildi = SecilenIdQS.Equals(bolumId);
                     list.Add(bagimsizBolum);
                 }
             }

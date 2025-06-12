@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Web.Script.Serialization;
@@ -54,6 +55,47 @@ namespace IKYS_WebParts.GorevOnayListesiWP
             set
             {
                 ViewState["SecilenId"] = value;
+            }
+        }
+        private string AuthQS
+        {
+            get
+            {
+
+                if (ViewState["Auth"] == null || string.IsNullOrEmpty(ViewState["Auth"].ToString()))
+                {
+                    if (Page.Request.QueryString["Auth"] != null)
+                    {
+                        ViewState["Auth"] = Page.Request.QueryString["Auth"];
+                    }
+                    else
+                    {
+                        ViewState["Auth"] = string.Empty;
+                    }
+                }
+                return ViewState["Auth"].ToString();
+            }
+
+            set
+            {
+                ViewState["Auth"] = value;
+            }
+        }
+        private string CurrentUserName
+        {
+            get
+            {
+
+                if (ViewState["CurrentUserName"] == null)
+                {
+                    ViewState["CurrentUserName"] = UtilityHelper.GetCurrentUserLoginName();
+                }
+                return ViewState["CurrentUserName"].ToString();
+            }
+
+            set
+            {
+                ViewState["CurrentUserName"] = value;
             }
         }
         protected void Page_Load(object sender, EventArgs e)
@@ -125,6 +167,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
 
             List<GorevOnayListItem> list = new List<GorevOnayListItem>();
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
+            Personel personel = IKYSOrtak.PersonelGetir(CurrentUserName);
             DataView dataView = new DataView(dataTable);
             foreach (DataRowView row in dataView)
             {
@@ -135,6 +178,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
                 string baslangicTarihi = row["BaslangicTarihi"].ReturnEmptyIfNull().ConvertToDatetime().ToString("dd.MM.yyyy HH:mm");
                 string bitisTarihi = row["BitisTarihi"].ReturnEmptyIfNull().ConvertToDatetime().ToString("dd.MM.yyyy HH:mm");
                 string gorevinYeri = row["GorevinYeri"].ToString();
+                int personelId = row["PersonelId"].ConvertToInt();
 
                 GorevOnayListItem gorevOnayListItem = new GorevOnayListItem();
                 gorevOnayListItem.GorevOnayId = gorevOnayId;
@@ -145,12 +189,26 @@ namespace IKYS_WebParts.GorevOnayListesiWP
                 gorevOnayListItem.BitisTarihi = bitisTarihi;
                 gorevOnayListItem.GorevinYeri = gorevinYeri;
                 gorevOnayListItem.Secildi = SecilenIdQS.Equals(gorevOnayId);
-                gorevOnayListItem.RaporAl = "<a href=" + ProjeConstants.RAPOR_GOREVONAYBELGESI_URL +"?GorevOnayId=" + gorevOnayId + " class='btn btn-outline-primary'>Rapor Al</a>";
-                gorevOnayListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_GOREVONAY_GIRIS + "?GorevOnayId=" + gorevOnayId + " class='btn btn-outline-primary'>Düzenle</a>";
-
                 gorevOnayListItem.BaslangicTarihiHidden = row["BaslangicTarihi"].ConvertToDatetime();
 
-                list.Add(gorevOnayListItem);
+                if (AuthQS.Equals(ProjeConstants.IKYS_YETKILI_BIRIM))
+                {
+                    gorevOnayListItem.RaporAl = "<a href=" + ProjeConstants.RAPOR_GOREVONAYBELGESI_URL + "?Auth="+AuthQS+"&GorevOnayId=" + gorevOnayId + " class='btn btn-outline-primary'>Rapor Al</a>";
+                    gorevOnayListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_GOREVONAY_GIRIS + "?Auth="+AuthQS+"&GorevOnayId=" + gorevOnayId + " class='btn btn-outline-primary'>Düzenle</a>";
+                    list.Add(gorevOnayListItem);
+                }else if (personel.Id == personelId)
+                {
+                    DateTime today = DateTime.Today;
+                    int fark = (today - baslangicTarihi.ConvertToDatetime()).Days;
+                    if (!string.IsNullOrEmpty(baslangicTarihi) && fark<4)
+                    {
+                        gorevOnayListItem.RaporAl = "<a href=" + ProjeConstants.RAPOR_GOREVONAYBELGESI_URL + "?GorevOnayId=" + gorevOnayId + " class='btn btn-outline-primary'>Rapor Al</a>";
+                        gorevOnayListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_GOREVONAY_GIRIS + "?GorevOnayId=" + gorevOnayId + " class='btn btn-outline-primary'>Düzenle</a>"; 
+                    }
+                    list.Add(gorevOnayListItem);
+                }
+
+
             }
             return list;
         }

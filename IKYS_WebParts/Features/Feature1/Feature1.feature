@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<feature xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="8ced6fde-9f20-4a46-ac4c-6d3f0721b827" alwaysForceInstall="true" featureId="8ced6fde-9f20-4a46-ac4c-6d3f0721b827" imageUrl="" scope="Site" solutionId="00000000-0000-0000-0000-000000000000" title="IKYS_WebParts Feature1" version="" deploymentPath="$SharePoint.Project.FileNameWithoutExtension$_$SharePoint.Feature.FileNameWithoutExtension$" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/FeatureModel">
+<feature xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="8ced6fde-9f20-4a46-ac4c-6d3f0721b827" alwaysForceInstall="true" featureId="8ced6fde-9f20-4a46-ac4c-6d3f0721b827" imageUrl="" scope="Site" solutionId="00000000-0000-0000-0000-000000000000" title="IKYS_WebParts Feature1" deploymentPath="$SharePoint.Project.FileNameWithoutExtension$_$SharePoint.Feature.FileNameWithoutExtension$" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/FeatureModel">
   <projectItems>
     <projectItemReference itemId="373a1fc5-1f97-4c22-bd0d-1d3e996526ae" />
     <projectItemReference itemId="69d5c92f-cf3f-4181-b3da-09806fd73975" />
@@ -40,5 +40,8 @@
     <projectItemReference itemId="774e3c1e-72f5-4140-bec3-07d28009b356" />
     <projectItemReference itemId="170ae8be-9217-40ca-a5c1-2ce2866614f2" />
     <projectItemReference itemId="5ad2ab85-8eb7-4cd6-89bf-0c4bc351fac4" />
+    <projectItemReference itemId="7fc53c2d-5fed-4e5f-8635-6a4f9e30ad59" />
+    <projectItemReference itemId="0020ef3c-f945-4e27-8882-aa1f8ac54da3" />
+    <projectItemReference itemId="a99e44da-713d-4d0e-80b5-75614985e72a" />
   </projectItems>
 </feature>

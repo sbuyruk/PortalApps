@@ -397,6 +397,10 @@ namespace Utility.ProjeGlobal
         public const string SIGORTA_DEPREM_IHTIYARI = "Deprem+İhtiyari";
         public const string KAT_MULKIYETI_VAR = "Var";
         public const string KAT_MULKIYETI_YOK = "Yok";
+        public const string TAPUTIPI_KATMULKIYETI = "Kat Mülkiyeti";
+        public const string TAPUTIPI_KATIRTIFAKI = "Kat İrtifakı";
+        public const string TAPUTIPI_YOK = "Yok";
+        public const string TAPUTIPI_DIGER= "Diğer";
         //Kira Sözleşme Ödeme planı
         public const string KIRA_ODMSEKLI_AYLIK = "Aylık";
         public const string KIRA_ODMSEKLI_YILLIK = "Yıllık";

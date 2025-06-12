@@ -213,6 +213,8 @@ namespace Model.NBYS
             ", ProjeConstants.NAKITBAGISCI_BILINMEYEN,
                 ProjeConstants.COKBAGISYAPAN_BASLAMATARIHI.ReturnQuotedValue(), 
                 bronzMadalyaMiktari.ToString().Replace(",", ".").ReturnQuotedValue());
+
+
             //string sqlString1 = string.Format(@"
             //    SELECT A.BagisciId NakitBagisciId
             //        ,COUNT(A.Id) Adet, SUM(A.BagisMiktari) Toplam, MAX(A.BagisTarihi) SonBagisTarihi

@@ -153,22 +153,22 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             {
                 if (!Page.IsPostBack)
                 {
-                    if (AuthQS.Equals("IKYS"))
-                    {
-                        PersonelDiv.Attributes["style"] = "display:block";
-                        GorevOnayListesiBtn.Visible = true;
-                    }
-                    else if (AuthQS.Equals("BIRIM"))
-                    {
-                        PersonelDiv.Attributes["style"] = "display:block";
-                        GorevOnayListesiBtn.Visible = false;
-                    }
-                    else
-                    {
-                        //personelDiv display:none yap
-                        PersonelDiv.Attributes["style"] = "display:none";
-                        GorevOnayListesiBtn.Visible = false;
-                    }
+                    //if (AuthQS.Equals("IKYS"))
+                    //{
+                    //    PersonelDiv.Attributes["style"] = "display:block";
+                    //    //GorevOnayListesiBtn.Visible = true;
+                    //}
+                    //else if (AuthQS.Equals("BIRIM"))
+                    //{
+                    //    PersonelDiv.Attributes["style"] = "display:block";
+                    //    //GorevOnayListesiBtn.Visible = false;
+                    //}
+                    //else
+                    //{
+                    //    //personelDiv display:none yap
+                    //    PersonelDiv.Attributes["style"] = "display:none";
+                    //    //GorevOnayListesiBtn.Visible = false;
+                    //}
                     if (string.IsNullOrEmpty(GorevOnayIdQS))
                     {
                         OpenGiris();
@@ -228,6 +228,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                     FillBitSaat();
                     UlkeDDLDoldur(personel);
                     YevmiyeGetir();
+                    HarcirahHesapla();
                     FillUlasimAraciDDL();
                     PersonelDDLDoldur(personel);
                     PerSubeImzaDDLDoldur();
@@ -253,6 +254,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 PersonelDDLDoldur(personel);
                 UlkeDDLDoldur(personel);
                 YevmiyeGetir();
+                HarcirahHesapla();
                 if (personel != null)
                 {
                     PersonelAdiLbl.Text = personel.Adi + " " + personel.Soyadi;
@@ -601,48 +603,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
 
             return personel;
         }
-        protected void CloseBtn_Click(object sender, EventArgs e)
-        {
-            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
-            Page.Response.Redirect(newUrl);
-        }
-        protected void GorevOnayListesiBtn_Click(object sender, EventArgs e)
-        {
-            RedirectToPage(ProjeConstants.PAGE_GOREVONAY_LIST + "?SecilenId=" + GorevOnayIdQS);
-        }
-        protected void SaveBtn_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                Personel personel = new Personel();
-                personel = PersonelGetir();
-                if (personel != null)
-                {
-                    bool isValid = validateInputValues();
-                    if (isValid)
-                    {
-                        KaydetModalAc();
-                    }
-                    else
-                    {
-                        MessageHelper.PublishMessage("Lütfen bilgileri tamamlayınız.", ProjeConstants.MESAJ_HATA);
-                    }
-                }
-                else
-                {
-                    MessageHelper.PublishMessage("Personel Bulunamadı!", ProjeConstants.MESAJ_HATA);
-                }
 
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
-                Exception exceptionInfo = new Exception("Görev kaydedilemedi");
-                exceptionHelper.Exceptions.Add(exceptionInfo);
-                exceptionHelper.PublishException();
-            }
-        }
         private GorevOnay Kaydet()
         {
             GorevOnay gorevOnay = new GorevOnay();
@@ -688,7 +649,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             string konustr = string.IsNullOrEmpty(GorevinSebebiTxt.Text.Trim()) ? string.Empty : " '" + GorevinSebebiTxt.Text.Trim() + "' konulu";
 
             MessageTitleLbl.Text = "Görev kaydedilecek";
-            MessageTextLbl.Text = BaslangicTarihiTxt.Text + " günü," + basSaat + " ile " + BitisTarihiTxt.Text + " günü " +bitSaat +" arasına, " + konustr +" görev kaydedilsin mi?";
+            MessageTextLbl.Text = BaslangicTarihiTxt.Text + " günü," + basSaat + " ile " + BitisTarihiTxt.Text + " günü " +bitSaat +" arasına " + konustr +" görev kaydedilsin mi?";
             DeleteNowBtn.Visible = false;
             KaydetNowBtn.Visible = true;    
             var openPopup = "OpenModal();";
@@ -705,43 +666,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 string.IsNullOrEmpty(BitSaatDDL.SelectedItem.Value);
             return !isEmpty;
         }
-        protected void UpdateBtn_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                Personel personel = new Personel();
-                personel = PersonelGetir();
-                if (personel != null)
-                {
-                    bool isValid = validateInputValues();
-                    if (isValid)
-                    {
-                        bool isUpdated = Guncelle();
-                        if (isUpdated)
-                        {
-                            MessageHelper.PublishMessage("Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
-                        }
-                    }
-                    else
-                    {
-                        MessageHelper.PublishMessage("Lütfen bilgileri tamamlayınız.", ProjeConstants.MESAJ_HATA);
-                    }
-                }
-                else
-                {
-                    MessageHelper.PublishMessage("Personel Bulunamadı!", ProjeConstants.MESAJ_HATA);
-                }
-
-            }
-            catch (Exception exception)
-            {
-                ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
-                Exception exceptionInfo = new Exception("Güncellenemedi");
-                exceptionHelper.Exceptions.Add(exceptionInfo);
-                exceptionHelper.PublishException();
-            }
-
-        }
+        
         private bool Guncelle()
         {
             bool isUpdated = false;
@@ -779,21 +704,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             }
             return isUpdated;
         }
-        protected void PersonelDDL_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            PersonelIdQS = PersonelDDL.SelectedItem.Value;
-            Personel personel = PersonelGetir();
-            if (personel != null)
-            {
-                PersonelAdiLbl.Text = personel.Adi + " " + personel.Soyadi;
-                UlkeDDLDoldur(personel);
-            }
-            YevmiyeGetir();
-        }
-        protected void UlkeDDL_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            YevmiyeGetir();
-        }
+
 
         private void YevmiyeGetir()
         {
@@ -810,12 +721,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             }
         }
 
-        protected void RaporAlBtn_Click(object sender, EventArgs e)
-        {
-
-            string fullUrl = string.Format("{0}?GorevOnayId={1}", ProjeConstants.RAPOR_GOREVONAYBELGESI_URL, GorevOnayIdQS);
-            RedirectToPage(fullUrl);
-        }
+        
         private bool GorevOnayiSil(GorevOnay gorevOnay)
         {
             bool isSaved = false;
@@ -835,11 +741,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
 
             return isSaved;
         }
-        protected void HarcirahHesaplaBtn_Click(object sender, EventArgs e)
-        {
-            HarcirahHesapla();
-        }
-
+        
         private void HarcirahHesapla()
         {
             string sonuc = "0";
@@ -850,17 +752,13 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 int gun = SureGunTxt.Text.ConvertToInt();
 
                 decimal yevmiye = GunlukYevmiyeTxt.Text.ConvertToDecimal();
-                decimal carpan = saat > 12 ? 1 : 0.5m;
-                SureTxt.Text = carpan + gun + " gün";
-                sonuc = ((carpan + gun) * yevmiye).ToString("N", culturInfo); 
+                decimal artan = saat == 0 ? 0 : (saat > 12 ? 1 : 0.5m);
+                SureTxt.Text = artan + gun + " gün";
+                sonuc = ((artan + gun) * yevmiye).ToString("N", culturInfo); 
             }
             YevmiyeTxt.Text = sonuc;
         }
-        protected void THarcirahHesaplansinChk_CheckedChanged(object sender, EventArgs e)
-        {
-            HarcirahHesapla();
-
-        }
+        
         private void RedirectToPage(string pageUrl)
         {
             try
@@ -874,6 +772,76 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 ExceptionHelper exHelper = new ExceptionHelper(ex);
                 exHelper.PublishException();
             }
+        }
+        #region Events
+        protected void SaveBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Personel personel = new Personel();
+                personel = PersonelGetir();
+                if (personel != null)
+                {
+                    bool isValid = validateInputValues();
+                    if (isValid)
+                    {
+                        KaydetModalAc();
+                    }
+                    else
+                    {
+                        MessageHelper.PublishMessage("Lütfen bilgileri tamamlayınız.", ProjeConstants.MESAJ_HATA);
+                    }
+                }
+                else
+                {
+                    MessageHelper.PublishMessage("Personel Bulunamadı!", ProjeConstants.MESAJ_HATA);
+                }
+
+            }
+            catch (Exception exception)
+            {
+                ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
+                Exception exceptionInfo = new Exception("Görev kaydedilemedi");
+                exceptionHelper.Exceptions.Add(exceptionInfo);
+                exceptionHelper.PublishException();
+            }
+        }
+        protected void UpdateBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Personel personel = new Personel();
+                personel = PersonelGetir();
+                if (personel != null)
+                {
+                    bool isValid = validateInputValues();
+                    if (isValid)
+                    {
+                        bool isUpdated = Guncelle();
+                        if (isUpdated)
+                        {
+                            MessageHelper.PublishMessage("Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        }
+                    }
+                    else
+                    {
+                        MessageHelper.PublishMessage("Lütfen bilgileri tamamlayınız.", ProjeConstants.MESAJ_HATA);
+                    }
+                }
+                else
+                {
+                    MessageHelper.PublishMessage("Personel Bulunamadı!", ProjeConstants.MESAJ_HATA);
+                }
+
+            }
+            catch (Exception exception)
+            {
+                ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
+                Exception exceptionInfo = new Exception("Güncellenemedi");
+                exceptionHelper.Exceptions.Add(exceptionInfo);
+                exceptionHelper.PublishException();
+            }
+
         }
         protected void DeleteBtn_Click(object sender, EventArgs e)
         {
@@ -915,11 +883,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 GorevOnay gorevOnay = Kaydet();
                 if (gorevOnay != null)
                 {
-                    if (AuthQS.Equals("IKYS"))
-                    {
-
-                    }
-                    else
+                    if (!AuthQS.Equals("IKYS"))
                     {
                         Personel personel = new Personel();
                         personel = personel.Select<Personel>(PersonelIdQS.ConvertToInt());
@@ -927,12 +891,8 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                         {
                             IKYSOrtak.GorevOnayEPostasiGonder(personel, gorevOnay.Id, "YurtIci/YurtDisi");
                         }
-                        else
-                        {
-                            MessageHelper.PublishMessage("Personel bulunamadı", ProjeConstants.MESAJ_HATA);
-                        }
                     }
-                    RedirectToPage(ProjeConstants.PAGE_GOREVONAY_LIST + "?Mesaj=true");
+                    RedirectToPage(ProjeConstants.PAGE_GOREVONAY_LIST + "?Mesaj=true"+ "&SecilenId="+gorevOnay.Id + (string.IsNullOrEmpty(AuthQS) ? string.Empty : "&Auth=" + ProjeConstants.IKYS_YETKILI_BIRIM));
                 }
             }
             catch (Exception exception)
@@ -943,5 +903,68 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 exceptionHelper.PublishException();
             }
         }
+        protected void HarcirahHesaplansinChk_CheckedChanged(object sender, EventArgs e)
+        {
+            HarcirahHesapla();
+
+        } 
+        protected void BaslangicTarihiTxt_TextChanged(object sender, EventArgs e)
+        {
+            HarcirahHesapla();
+
+        }
+        protected void BitisTarihiTxt_TextChanged(object sender, EventArgs e)
+        {
+            HarcirahHesapla();
+
+        }
+        protected void HarcirahHesaplaBtn_Click(object sender, EventArgs e)
+        {
+            HarcirahHesapla();
+        }
+        protected void PersonelDDL_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            PersonelIdQS = PersonelDDL.SelectedItem.Value;
+            Personel personel = PersonelGetir();
+            if (personel != null)
+            {
+                PersonelAdiLbl.Text = personel.Adi + " " + personel.Soyadi;
+                UlkeDDLDoldur(personel);
+            }
+            YevmiyeGetir();
+            HarcirahHesapla();
+        }        
+        protected void BasSaatDDL_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            YevmiyeGetir();
+            HarcirahHesapla();
+        }
+        protected void BitSaatDDL_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            YevmiyeGetir();
+            HarcirahHesapla();
+        }
+        protected void UlkeDDL_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            YevmiyeGetir();
+            HarcirahHesapla();
+        }
+        protected void GorevOnayListesiBtn_Click(object sender, EventArgs e)
+        {
+            RedirectToPage(ProjeConstants.PAGE_GOREVONAY_LIST + "?SecilenId=" + GorevOnayIdQS + (string.IsNullOrEmpty(AuthQS) ? string.Empty : "&Auth=" + ProjeConstants.IKYS_YETKILI_BIRIM));
+        }
+        protected void RaporAlBtn_Click(object sender, EventArgs e)
+        {
+
+            string fullUrl = string.Format("{0}?GorevOnayId={1}", ProjeConstants.RAPOR_GOREVONAYBELGESI_URL, GorevOnayIdQS);
+            RedirectToPage(fullUrl);
+        }
+        protected void CloseBtn_Click(object sender, EventArgs e)
+        {
+            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
+            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
+            Page.Response.Redirect(newUrl);
+        }
+        #endregion
     }
 }

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<feature xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="338e5592-5df2-48eb-ba78-c22533af00a9" alwaysForceInstall="true" featureId="338e5592-5df2-48eb-ba78-c22533af00a9" imageUrl="" scope="Site" solutionId="00000000-0000-0000-0000-000000000000" title="TBYS_WebParts Feature1" version="" deploymentPath="$SharePoint.Project.FileNameWithoutExtension$_$SharePoint.Feature.FileNameWithoutExtension$" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/FeatureModel">
+<feature xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="338e5592-5df2-48eb-ba78-c22533af00a9" alwaysForceInstall="true" featureId="338e5592-5df2-48eb-ba78-c22533af00a9" imageUrl="" scope="Site" solutionId="00000000-0000-0000-0000-000000000000" title="TBYS_WebParts Feature1" deploymentPath="$SharePoint.Project.FileNameWithoutExtension$_$SharePoint.Feature.FileNameWithoutExtension$" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/FeatureModel">
   <projectItems>
     <projectItemReference itemId="212c6a0c-0733-4b40-a3ff-b1c198418be3" />
     <projectItemReference itemId="73da3d97-0382-48e4-9567-d29d188a46d0" />
@@ -74,5 +74,6 @@
     <projectItemReference itemId="15de2192-91a5-477e-a3a5-16380d991355" />
     <projectItemReference itemId="25d9a615-ef88-4fa2-8576-dc5300081be5" />
     <projectItemReference itemId="78038038-f58e-4ce3-9475-ca0a013e2d4d" />
+    <projectItemReference itemId="bfbfad8c-d52d-44f8-baad-3fee09195471" />
   </projectItems>
 </feature>

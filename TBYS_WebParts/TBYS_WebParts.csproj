@@ -551,6 +551,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>TasinmazGirisiWP.ascx</DependentUpon>
     </Compile>
+    <Compile Include="TasinmazIslemleriWP\TasinmazIslemleriWP.ascx.cs">
+      <DependentUpon>TasinmazIslemleriWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="TasinmazIslemleriWP\TasinmazIslemleriWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>TasinmazIslemleriWP.ascx</DependentUpon>
+    </Compile>
     <Compile Include="TasinmazKartiWP\TasinmazKartiWP.ascx.cs">
       <DependentUpon>TasinmazKartiWP.ascx</DependentUpon>
     </Compile>
@@ -922,6 +930,10 @@
       <SharePointProjectItemId>{891a3794-3bad-453b-95c1-4b57dc20db96}</SharePointProjectItemId>
     </None>
     <None Include="TasinmazGirisiWP\TasinmazGirisiWP.webpart" />
+    <None Include="TasinmazIslemleriWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{bfbfad8c-d52d-44f8-baad-3fee09195471}</SharePointProjectItemId>
+    </None>
+    <None Include="TasinmazIslemleriWP\TasinmazIslemleriWP.webpart" />
     <None Include="TasinmazKartiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{499f1df0-1a45-4226-af03-3b899876f590}</SharePointProjectItemId>
     </None>
@@ -1275,6 +1287,11 @@
     <Content Include="TasinmazGirisiWP\TasinmazGirisiWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>TasinmazGirisiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="TasinmazIslemleriWP\Elements.xml" />
+    <Content Include="TasinmazIslemleriWP\TasinmazIslemleriWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>TasinmazIslemleriWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="TasinmazKartiWP\Elements.xml" />
     <Content Include="TasinmazKartiWP\TasinmazKartiWP.ascx">

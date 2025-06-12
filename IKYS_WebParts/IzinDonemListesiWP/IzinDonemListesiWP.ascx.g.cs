@@ -642,32 +642,32 @@ namespace IKYS_WebParts.IzinDonemListesiWP {
         private void @__BuildControlTree(global::IKYS_WebParts.IzinDonemListesiWP.IzinDonemListesiWP @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n<script>\r\n    function OpenModal() {\r\n        var myModalInstance = bootstrap.M" +
-                        "odal.getOrCreateInstance(document.getElementById(\'ModalOnayDiv\'));\n        myMod" +
-                        "alInstance.show();\r\n    }\r\n</script>\r\n<script type=\"text/javascript\">\r\n\r\n    //O" +
-                        "n Page Load.\r\n    $(function () {\r\n        SetDatePicker();\r\n    });\r\n    //ikin" +
-                        "ci tarih için\r\n    function SetDatePicker() {\r\n\r\n\r\n        $(\"[id$=BitTarTxt]\")." +
-                        "datepicker({\r\n            dateFormat: \"dd.mm.yy\",\r\n            firstDay: 1,\r\n   " +
-                        "         monthNames: [\"Ocak\", \"Şubat\", \"Mart\", \"Nisan\", \"Mayıs\", \"Haziran\", \"Tem" +
-                        "muz\", \"Ağustos\", \"Eylül\", \"Ekim\", \"Kasım\", \"Aralık\"],\r\n            monthNamesSho" +
-                        "rt: [\"Oca\", \"Şub\", \"Mar\", \"Nis\", \"May\", \"Haz\", \"Tem\", \"Ağu\", \"Eyl\", \"Eki\", \"Kas\"" +
-                        ", \"Ara\"],\r\n            dayNames: [\"Pazar\", \"Pazartesi\", \"Salı\", \"Çarşamba\", \"Per" +
-                        "şembe\", \"Cuma\", \"Cumartesi\"],\r\n            dayNamesMin: [\"Pz\", \"Pt\", \"Sl\", \"Çr\"," +
-                        " \"Pr\", \"Cu\", \"Ct\"],\r\n            showAnim: \"fold\",\r\n            changeMonth: tru" +
-                        "e,\r\n            changeYear: true,\r\n            beforeShow: function (input, inst" +
-                        ") {\r\n                var mindate = $(\'.DateTimePickerV1\').datepicker(\'getDate\');" +
-                        "\r\n                $(this).datepicker(\'option\', \'minDate\', mindate);\r\n           " +
-                        "     //var maxSure = 10;//en fazla 10 gün\r\n\r\n                //var newDate = new" +
-                        " Date($(\'.DateTimePickerV1\').datepicker(\'getDate\'));\r\n                //newDate." +
-                        "setDate(newDate.getDate() + maxSure);\r\n                //$(this).datepicker(\'opt" +
-                        "ion\', \'maxDate\', newDate);\r\n            },\r\n            beforeShowDay: function " +
-                        "(date) {\r\n                $(\'#ui-datepicker-div\').css(\'clip\', \'auto\');\r\n        " +
-                        "        return [true, \'\', \'\'];\r\n            }\r\n        });\r\n    }\r\n    //On Upda" +
-                        "tePanel Refresh.\r\n    var prm = Sys.WebForms.PageRequestManager.getInstance();\r\n" +
-                        "    if (prm != null) {\r\n        prm.add_endRequest(function (sender, e) {\r\n     " +
-                        "       if (sender._postBackSettings.panelsToUpdate != null) {\r\n                S" +
-                        "etDatePicker();\r\n            }\r\n        });\r\n    };\r\n\r\n</script>\r\n<div class=\"co" +
-                        "ntainer\">\r\n    <div class=\"card shadow\">\r\n        <div class=\"card-header\">\r\n   " +
-                        "         "));
+                        "odal.getOrCreateInstance(document.getElementById(\'ModalOnayDiv\'));\r\n        myMo" +
+                        "dalInstance.show();\r\n    }\r\n</script>\r\n<script type=\"text/javascript\">\r\n\r\n    //" +
+                        "On Page Load.\r\n    $(function () {\r\n        SetDatePicker();\r\n    });\r\n    //iki" +
+                        "nci tarih için\r\n    function SetDatePicker() {\r\n\r\n\r\n        $(\"[id$=BitTarTxt]\")" +
+                        ".datepicker({\r\n            dateFormat: \"dd.mm.yy\",\r\n            firstDay: 1,\r\n  " +
+                        "          monthNames: [\"Ocak\", \"Şubat\", \"Mart\", \"Nisan\", \"Mayıs\", \"Haziran\", \"Te" +
+                        "mmuz\", \"Ağustos\", \"Eylül\", \"Ekim\", \"Kasım\", \"Aralık\"],\r\n            monthNamesSh" +
+                        "ort: [\"Oca\", \"Şub\", \"Mar\", \"Nis\", \"May\", \"Haz\", \"Tem\", \"Ağu\", \"Eyl\", \"Eki\", \"Kas" +
+                        "\", \"Ara\"],\r\n            dayNames: [\"Pazar\", \"Pazartesi\", \"Salı\", \"Çarşamba\", \"Pe" +
+                        "rşembe\", \"Cuma\", \"Cumartesi\"],\r\n            dayNamesMin: [\"Pz\", \"Pt\", \"Sl\", \"Çr\"" +
+                        ", \"Pr\", \"Cu\", \"Ct\"],\r\n            showAnim: \"fold\",\r\n            changeMonth: tr" +
+                        "ue,\r\n            changeYear: true,\r\n            beforeShow: function (input, ins" +
+                        "t) {\r\n                var mindate = $(\'.DateTimePickerV1\').datepicker(\'getDate\')" +
+                        ";\r\n                $(this).datepicker(\'option\', \'minDate\', mindate);\r\n          " +
+                        "      //var maxSure = 10;//en fazla 10 gün\r\n\r\n                //var newDate = ne" +
+                        "w Date($(\'.DateTimePickerV1\').datepicker(\'getDate\'));\r\n                //newDate" +
+                        ".setDate(newDate.getDate() + maxSure);\r\n                //$(this).datepicker(\'op" +
+                        "tion\', \'maxDate\', newDate);\r\n            },\r\n            beforeShowDay: function" +
+                        " (date) {\r\n                $(\'#ui-datepicker-div\').css(\'clip\', \'auto\');\r\n       " +
+                        "         return [true, \'\', \'\'];\r\n            }\r\n        });\r\n    }\r\n    //On Upd" +
+                        "atePanel Refresh.\r\n    var prm = Sys.WebForms.PageRequestManager.getInstance();\r" +
+                        "\n    if (prm != null) {\r\n        prm.add_endRequest(function (sender, e) {\r\n    " +
+                        "        if (sender._postBackSettings.panelsToUpdate != null) {\r\n                " +
+                        "SetDatePicker();\r\n            }\r\n        });\r\n    };\r\n\r\n</script>\r\n<div class=\"c" +
+                        "ontainer\">\r\n    <div class=\"card shadow\">\r\n        <div class=\"card-header\">\r\n  " +
+                        "          "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl1;
             @__ctrl1 = this.@__BuildControlCloseBtn();
             @__parser.AddParsedSubObject(@__ctrl1);

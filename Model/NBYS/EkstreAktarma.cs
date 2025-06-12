@@ -1798,7 +1798,9 @@ namespace Model.NBYS
                                 ekstreAktarma.Eposta = eposta;
                                 ekstreAktarma.AktarildiMi = false;
                                 ekstreAktarma.Tutar = tutar.ConvertToDecimal();
-                                ekstreAktarma.BagisTarihi = bagisTarihi.AddDays(1);//burada bağış tarihine bir gün eklenmesinin sebebi, bankanın gün içindeki bağışları vakıf hesabına ertesi gün kaydetmesi nedeniyle oluşan tutarsızlığı gidermektir. 15.06.2020 SB
+                                //Alt satır kapatıldı 08.05.2025 SB
+                                //ekstreAktarma.BagisTarihi = bagisTarihi.AddDays(1);//burada bağış tarihine bir gün eklenmesinin sebebi, bankanın gün içindeki bağışları vakıf hesabına ertesi gün kaydetmesi nedeniyle oluşan tutarsızlığı gidermektir. 15.06.2020 SB
+                                ekstreAktarma.BagisTarihi = bagisTarihi; // Bankadan ayrıca gelen bilgi olmadığından gün eklemesi kaldırıldı
                                 ekstreAktarma.Aciklama = aciklama;
                                 ekstreAktarma.FisNo = odemeId;
                                 ekstreAktarma.BankaAdi = bagisKanali.ReturnEmptyIfNull().Equals("E-Devlet") ? ProjeConstants.BANKA_EDEVLETBAGIS: ProjeConstants.BANKA_KARTILEBAGIS;

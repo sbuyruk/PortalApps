@@ -169,10 +169,6 @@ namespace IKYS_WebParts.GorevOnayGirisiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.LinkButton HarcirahHesaplaBtn;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.TextBox YevmiyeTxt;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -366,8 +362,8 @@ namespace IKYS_WebParts.GorevOnayGirisiWP {
             @__ctrl.Checked = true;
             @__ctrl.ToolTip = "Harcırah hesaplanmaması için işareti kaldırınız.";
             @__ctrl.AutoPostBack = true;
-            @__ctrl.CheckedChanged -= new System.EventHandler(this.THarcirahHesaplansinChk_CheckedChanged);
-            @__ctrl.CheckedChanged += new System.EventHandler(this.THarcirahHesaplansinChk_CheckedChanged);
+            @__ctrl.CheckedChanged -= new System.EventHandler(this.HarcirahHesaplansinChk_CheckedChanged);
+            @__ctrl.CheckedChanged += new System.EventHandler(this.HarcirahHesaplansinChk_CheckedChanged);
             return @__ctrl;
         }
         
@@ -383,7 +379,10 @@ namespace IKYS_WebParts.GorevOnayGirisiWP {
             @__ctrl.ID = "BaslangicTarihiTxt";
             @__ctrl.CssClass = "form-control disabled-look";
             @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("placeholder", "Başlangıç Tarihi");
+            @__ctrl.AutoPostBack = true;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("placeholder", "gg.aa.yyyy");
+            @__ctrl.TextChanged -= new System.EventHandler(this.BaslangicTarihiTxt_TextChanged);
+            @__ctrl.TextChanged += new System.EventHandler(this.BaslangicTarihiTxt_TextChanged);
             return @__ctrl;
         }
         
@@ -398,7 +397,10 @@ namespace IKYS_WebParts.GorevOnayGirisiWP {
             @__ctrl.ID = "BitisTarihiTxt";
             @__ctrl.CssClass = "form-control disabled-look";
             @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("placeholder", "Bitiş Tarihi");
+            @__ctrl.AutoPostBack = true;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("placeholder", "gg.aa.yyyy");
+            @__ctrl.TextChanged -= new System.EventHandler(this.BitisTarihiTxt_TextChanged);
+            @__ctrl.TextChanged += new System.EventHandler(this.BitisTarihiTxt_TextChanged);
             return @__ctrl;
         }
         
@@ -498,6 +500,9 @@ namespace IKYS_WebParts.GorevOnayGirisiWP {
             @__ctrl.ID = "BasSaatDDL";
             @__ctrl.CssClass = "form-control form-select form-select-lg";
             @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
+            @__ctrl.AutoPostBack = true;
+            @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.BasSaatDDL_SelectedIndexChanged);
+            @__ctrl.SelectedIndexChanged += new System.EventHandler(this.BasSaatDDL_SelectedIndexChanged);
             return @__ctrl;
         }
         
@@ -512,6 +517,9 @@ namespace IKYS_WebParts.GorevOnayGirisiWP {
             @__ctrl.ID = "BitSaatDDL";
             @__ctrl.CssClass = "form-control form-select form-select-lg";
             @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
+            @__ctrl.AutoPostBack = true;
+            @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.BitSaatDDL_SelectedIndexChanged);
+            @__ctrl.SelectedIndexChanged += new System.EventHandler(this.BitSaatDDL_SelectedIndexChanged);
             return @__ctrl;
         }
         
@@ -750,23 +758,6 @@ namespace IKYS_WebParts.GorevOnayGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.LinkButton @__BuildControlHarcirahHesaplaBtn() {
-            global::System.Web.UI.WebControls.LinkButton @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
-            this.HarcirahHesaplaBtn = @__ctrl;
-            @__ctrl.TemplateControl = this;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "HarcirahHesaplaBtn";
-            @__ctrl.CssClass = "btn btn-success";
-            @__ctrl.Text = "Harcırah Hesapla";
-            @__ctrl.Click -= new System.EventHandler(this.HarcirahHesaplaBtn_Click);
-            @__ctrl.Click += new System.EventHandler(this.HarcirahHesaplaBtn_Click);
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.WebControls.TextBox @__BuildControlYevmiyeTxt() {
             global::System.Web.UI.WebControls.TextBox @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
@@ -774,7 +765,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "YevmiyeTxt";
-            @__ctrl.CssClass = "form-control text-center";
+            @__ctrl.CssClass = "form-control text-center fw-bold text-danger";
             @__ctrl.ReadOnly = true;
             return @__ctrl;
         }
@@ -789,7 +780,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "YevmiyeParaBirimiTxt";
-            @__ctrl.CssClass = "form-control text-center";
+            @__ctrl.CssClass = "form-control text-center fw-bold text-danger";
             @__ctrl.ReadOnly = true;
             return @__ctrl;
         }
@@ -804,7 +795,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "SureTxt";
-            @__ctrl.CssClass = "form-control text-center";
+            @__ctrl.CssClass = "form-control text-center fw-bold text-danger";
             @__ctrl.ReadOnly = true;
             return @__ctrl;
         }
@@ -889,11 +880,10 @@ namespace IKYS_WebParts.GorevOnayGirisiWP {
             this.GorevOnayListesiBtn = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-info float-end me-5";
+            @__ctrl.CssClass = "btn btn-secondary col-2 float-end me-5";
             @__ctrl.ID = "GorevOnayListesiBtn";
             @__ctrl.Text = "Görev Onay Listesi";
             @__ctrl.CausesValidation = false;
-            @__ctrl.Visible = false;
             @__ctrl.Click -= new System.EventHandler(this.GorevOnayListesiBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.GorevOnayListesiBtn_Click);
             return @__ctrl;
@@ -909,7 +899,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "MessageTitleLbl";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-label fw-semibold ");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-label fw-semibold text-primary");
             @__ctrl.Text = "Lütfen Dikkat: Görev Onayı Silinecek";
             return @__ctrl;
         }
@@ -963,7 +953,6 @@ namespace IKYS_WebParts.GorevOnayGirisiWP {
             @__ctrl.CausesValidation = false;
             @__ctrl.Text = "Görevi kaydet";
             @__ctrl.OnClientClick = "{return true;};";
-            @__ctrl.Visible = false;
             @__ctrl.Click -= new System.EventHandler(this.KaydetNowBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.KaydetNowBtn_Click);
             return @__ctrl;
@@ -1017,7 +1006,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP {
             @__parser.AddParsedSubObject(@__ctrl6);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                         </div>
-                                        <div class=""form-group form-label"" style=""display:none"">
+                                        <div class=""form-group form-label"" style=""display: none"">
                                             <label class=""form-label"" for=""SureGunTxt"">Süre Gün</label>
                                             "));
             global::System.Web.UI.WebControls.TextBox @__ctrl7;
@@ -1053,7 +1042,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP {
             @__parser.AddParsedSubObject(@__ctrl11);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
 
-                                        <div class=""form-group form-label fw-semibold"" style=""display:none"">
+                                        <div class=""form-group form-label fw-semibold"" style=""display: none"">
                                             <label class=""form-label fw-semibold"" for=""SureSaatTxt"">Süre Saat</label>
                                             "));
             global::System.Web.UI.WebControls.TextBox @__ctrl12;
@@ -1100,7 +1089,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP {
             @__parser.AddParsedSubObject(@__ctrl16);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                 </div>
-                                
+
                             </div>
 
                             <div class=""col-2 border p-2 me-2"">
@@ -1135,7 +1124,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP {
                                 <div class=""row"">
                                     <div class=""col"">
                                         <div class=""form-group form-label"">
-                                            <label class=""form-label fw-semibold"" for=""PerSubeImzaDDL"">Per.Ş.Md</label>
+                                            <label class=""form-label fw-semibold"" for=""PerSubeImzaDDL"">Per.Dir.</label>
                                             "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl20;
             @__ctrl20 = this.@__BuildControlPerSubeImzaDDL();
@@ -1191,13 +1180,8 @@ namespace IKYS_WebParts.GorevOnayGirisiWP {
                     <!-- Harcırah Hesaplanan bölüm-->
                     <div class=""border p-2 text-center"">
                         <!-- Ortalamak için text-center -->
-                        <div class=""col form-group m-2"" id=""HarcirahHesaplaDiv"">
-                            <br />
-                            "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl26;
-            @__ctrl26 = this.@__BuildControlHarcirahHesaplaBtn();
-            @__parser.AddParsedSubObject(@__ctrl26);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                        <div class=""col form-group m-2"">
+                            <label class=""form-label fw-semibold text-danger d-block"" for=""YevmiyeTxt"">Hesaplanan Harcırah</label>
                         </div>
 
                         <div class=""row justify-content-center"">
@@ -1205,78 +1189,83 @@ namespace IKYS_WebParts.GorevOnayGirisiWP {
                             <div class=""col-2 form-group"">
                                 <label class=""form-label fw-semibold"" for=""YevmiyeTxt"">Hakedilen Yevmiye</label>
                                 "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl27;
-            @__ctrl27 = this.@__BuildControlYevmiyeTxt();
-            @__parser.AddParsedSubObject(@__ctrl27);
+            global::System.Web.UI.WebControls.TextBox @__ctrl26;
+            @__ctrl26 = this.@__BuildControlYevmiyeTxt();
+            @__parser.AddParsedSubObject(@__ctrl26);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <div class=\"col" +
                         "-2 form-group\">\r\n                                <label class=\"form-label fw-sem" +
                         "ibold\" for=\"YevmiyeParaBirimiTxt\">Para Birimi</label>\r\n                         " +
                         "       "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl28;
-            @__ctrl28 = this.@__BuildControlYevmiyeParaBirimiTxt();
-            @__parser.AddParsedSubObject(@__ctrl28);
+            global::System.Web.UI.WebControls.TextBox @__ctrl27;
+            @__ctrl27 = this.@__BuildControlYevmiyeParaBirimiTxt();
+            @__parser.AddParsedSubObject(@__ctrl27);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <div class=\"col" +
                         "-2 form-group\">\r\n                                <label class=\"form-label fw-sem" +
                         "ibold\" for=\"SureTxt\">Hakedilen Gün</label>\r\n                                "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl29;
-            @__ctrl29 = this.@__BuildControlSureTxt();
+            global::System.Web.UI.WebControls.TextBox @__ctrl28;
+            @__ctrl28 = this.@__BuildControlSureTxt();
+            @__parser.AddParsedSubObject(@__ctrl28);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                            </div>
+                        </div>
+                        <div class=""col form-group m-2"">
+                            <label class=""form-label fw-semibold text-success d-block"" for=""YevmiyeTxt"">(Yaptığınız değişiklerin geçerli olması için lütfen Kaydet veya Güncelle düğmesine basınız.)</label>
+                        </div>
+                    </div>
+
+                </div>
+                <div class=""card-footer"">
+                    "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl29;
+            @__ctrl29 = this.@__BuildControlSaveBtn();
             @__parser.AddParsedSubObject(@__ctrl29);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                        </div>\r\n           " +
-                        "         </div>\r\n\r\n                </div>\r\n                <div class=\"card-foot" +
-                        "er\">\r\n                    "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n                    "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl30;
-            @__ctrl30 = this.@__BuildControlSaveBtn();
+            @__ctrl30 = this.@__BuildControlUpdateBtn();
             @__parser.AddParsedSubObject(@__ctrl30);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n                    "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl31;
-            @__ctrl31 = this.@__BuildControlUpdateBtn();
+            @__ctrl31 = this.@__BuildControlDeleteBtn();
             @__parser.AddParsedSubObject(@__ctrl31);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl32;
-            @__ctrl32 = this.@__BuildControlDeleteBtn();
-            @__parser.AddParsedSubObject(@__ctrl32);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n                    "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl33;
-            @__ctrl33 = this.@__BuildControlRaporAlBtn();
-            @__parser.AddParsedSubObject(@__ctrl33);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl32;
+            @__ctrl32 = this.@__BuildControlRaporAlBtn();
+            @__parser.AddParsedSubObject(@__ctrl32);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl34;
-            @__ctrl34 = this.@__BuildControlGorevOnayListesiBtn();
-            @__parser.AddParsedSubObject(@__ctrl34);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl33;
+            @__ctrl33 = this.@__BuildControlGorevOnayListesiBtn();
+            @__parser.AddParsedSubObject(@__ctrl33);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                 </div>
             </div>
-
             <div class=""modal"" id=""ModalOnayDiv"" role=""dialog"">
-                <div class=""modal-dialog"">
+                <div class=""modal-dialog modal-dialog-centered"">
                     <!-- Modal content-->
                     <div class=""modal-content"" style=""width: 550px;"">
 
                         <div class=""modal-body"">
-                            <div style=""display: none"">
-                            </div>
                             <div>
                                 <div class=""text-center"">
                                     <h3>
                                         "));
-            global::System.Web.UI.WebControls.Label @__ctrl35;
-            @__ctrl35 = this.@__BuildControlMessageTitleLbl();
-            @__parser.AddParsedSubObject(@__ctrl35);
+            global::System.Web.UI.WebControls.Label @__ctrl34;
+            @__ctrl34 = this.@__BuildControlMessageTitleLbl();
+            @__parser.AddParsedSubObject(@__ctrl34);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("</h3>\r\n                                </div>\r\n                                <d" +
                         "iv class=\"card-body\">\r\n                                    "));
-            global::System.Web.UI.WebControls.Label @__ctrl36;
-            @__ctrl36 = this.@__BuildControlMessageTextLbl();
-            @__parser.AddParsedSubObject(@__ctrl36);
+            global::System.Web.UI.WebControls.Label @__ctrl35;
+            @__ctrl35 = this.@__BuildControlMessageTextLbl();
+            @__parser.AddParsedSubObject(@__ctrl35);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                </div>\r\n                            </div>\r\n   " +
                         "                     </div>\r\n                        <div class=\"modal-footer\">\r" +
                         "\n                            "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl37;
-            @__ctrl37 = this.@__BuildControlDeleteNowBtn();
-            @__parser.AddParsedSubObject(@__ctrl37);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl36;
+            @__ctrl36 = this.@__BuildControlDeleteNowBtn();
+            @__parser.AddParsedSubObject(@__ctrl36);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl38;
-            @__ctrl38 = this.@__BuildControlKaydetNowBtn();
-            @__parser.AddParsedSubObject(@__ctrl38);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl37;
+            @__ctrl37 = this.@__BuildControlKaydetNowBtn();
+            @__parser.AddParsedSubObject(@__ctrl37);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            <button type=\"button\" class=\"btn btn-default\" data-" +
                         "bs-dismiss=\"modal\">Kapat</button>\r\n                        </div>\r\n             " +
                         "       </div>\r\n                </div>\r\n            </div>\r\n        "));
@@ -1299,68 +1288,70 @@ namespace IKYS_WebParts.GorevOnayGirisiWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControlTree(global::IKYS_WebParts.GorevOnayGirisiWP.GorevOnayGirisiWP @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n<style>\r\n    .disabled-look {\r\n  background-color: #e9ecef !important; /* Boo" +
-                        "tstrap\'ın disabled rengi */\r\n  color: #6c757d !important;            /* Gri yazı" +
-                        " rengi */\r\n  pointer-events: auto;      /* Kullanıcı etkileşimi aktif */\r\n}\r\n\r\n<" +
-                        "/style>\r\n<script type=\"text/javascript\">\r\n    function OpenModal() {\r\n        va" +
-                        "r myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById(" +
-                        "\'ModalOnayDiv\'));\r\n        myModalInstance.show();\r\n    }\r\n\r\n    function Calcul" +
-                        "ateFullDateTimeDiff() {\r\n        var startDateStr = $(\'#BaslangicTarihiTxt\').val" +
-                        "();\r\n        var endDateStr = $(\'#BitisTarihiTxt\').val();\r\n        var startTime" +
-                        "Str = $(\'#BasSaatDDL\').val();\r\n        var endTimeStr = $(\'#BitSaatDDL\').val();\r" +
-                        "\n\r\n        if (!startDateStr || !endDateStr || !startTimeStr || !endTimeStr) {\r\n" +
-                        "            return;\r\n        }\r\n\r\n        // \"dd.mm.yyyy\" + \"hh:mm\" -> \"yyyy-mm-" +
-                        "ddThh:mm\"\r\n        var startParts = startDateStr.split(\'.\');\r\n        var endPar" +
-                        "ts = endDateStr.split(\'.\');\r\n        var startDateTime = new Date(`${startParts[" +
-                        "2]}-${startParts[1]}-${startParts[0]}T${startTimeStr}`);\r\n        var endDateTim" +
-                        "e = new Date(`${endParts[2]}-${endParts[1]}-${endParts[0]}T${endTimeStr}`);\r\n\r\n " +
-                        "       var diffMs = endDateTime - startDateTime;\r\n        if (diffMs < 0) {\r\n   " +
-                        "         $(\'#SureGunTxt\').val(\"0\");\r\n            $(\'#SureSaatTxt\').val(\"0\");\r\n  " +
-                        "          $(\'#SureDakikaTxt\').val(\"0\");\r\n            return;\r\n        }\r\n\r\n     " +
-                        "   var diffMins = Math.floor(diffMs / (1000 * 60));\r\n        var days = Math.flo" +
-                        "or(diffMins / (60 * 24));\r\n        var hours = Math.floor((diffMins % (60 * 24))" +
-                        " / 60);\r\n        var minutes = diffMins % 60;\r\n\r\n        $(\'#SureGunTxt\').val(da" +
-                        "ys);\r\n        $(\'#SureSaatTxt\').val(hours);\r\n        $(\'#SureDakikaTxt\').val(min" +
-                        "utes);\r\n        $(\'#SureSaatDakikaTxt\').val(hours + \' Saat \' + minutes + \' Dakik" +
-                        "a\');\r\n        $(\'#SureGunStrTxt\').val(days + \" Gün \");\r\n    }\r\n\r\n    // Sayfa yü" +
-                        "klendiğinde VEYA UpdatePanel sonrası çalışır\r\n    Sys.Application.add_load(funct" +
-                        "ion () {\r\n        $(\'#BaslangicTarihiTxt\').datepicker({\r\n            dateFormat:" +
-                        " \'dd.mm.yy\',\r\n            changeMonth: true,\r\n            changeYear: true,\r\n   " +
-                        "         firstDay: 1, // Haftayı Pazartesi başlat\r\n            dayNamesMin: [\'Pa" +
-                        "z\', \'Pts\', \'Sal\', \'Çar\', \'Per\', \'Cum\', \'Cts\'],\r\n            monthNames: [\'Ocak\'," +
-                        " \'Şubat\', \'Mart\', \'Nisan\', \'Mayıs\', \'Haziran\',\r\n                \'Temmuz\', \'Ağust" +
-                        "os\', \'Eylül\', \'Ekim\', \'Kasım\', \'Aralık\'],\r\n            monthNamesShort: [\'Oca\', " +
-                        "\'Şub\', \'Mar\', \'Nis\', \'May\', \'Haz\',\r\n                \'Tem\', \'Ağu\', \'Eyl\', \'Eki\', " +
-                        "\'Kas\', \'Ara\'],\r\n            onSelect: function () {\r\n                CalculateFu" +
-                        "llDateTimeDiff();\r\n            }\r\n        });\r\n\r\n        $(\'#BitisTarihiTxt\').da" +
-                        "tepicker({\r\n            dateFormat: \'dd.mm.yy\',\r\n            changeMonth: true,\r" +
-                        "\n            changeYear: true,\r\n            firstDay: 1, // Haftayı Pazartesi ba" +
-                        "şlat\r\n            dayNamesMin: [\'Paz\', \'Pts\', \'Sal\', \'Çar\', \'Per\', \'Cum\', \'Cts\']" +
-                        ",\r\n            monthNames: [\'Ocak\', \'Şubat\', \'Mart\', \'Nisan\', \'Mayıs\', \'Haziran\'" +
-                        ",\r\n                \'Temmuz\', \'Ağustos\', \'Eylül\', \'Ekim\', \'Kasım\', \'Aralık\'],\r\n  " +
-                        "          monthNamesShort: [\'Oca\', \'Şub\', \'Mar\', \'Nis\', \'May\', \'Haz\',\r\n         " +
-                        "       \'Tem\', \'Ağu\', \'Eyl\', \'Eki\', \'Kas\', \'Ara\'],\r\n            onSelect: functio" +
-                        "n () {\r\n                CalculateFullDateTimeDiff();\r\n            }\r\n        });" +
-                        "\r\n    });\r\n    function RegisterDDLChangeHandlers() {\r\n        $(\'#BasSaatDDL, #" +
-                        "BitSaatDDL, #BaslangicTarihiTxt, #BitisTarihiTxt\').off(\'change\').on(\'change\', fu" +
-                        "nction () {\r\n            CalculateFullDateTimeDiff();\r\n        });\r\n    }\r\n    $" +
-                        "(document).ready(function () {\r\n\r\n        // Sayfa yüklendiğinde tarih ve saat f" +
-                        "arkını hesapla\r\n\r\n        CalculateFullDateTimeDiff();\r\n\r\n\r\n        RegisterDDLC" +
-                        "hangeHandlers();\r\n\r\n        if (typeof Sys !== \'undefined\') {\r\n            Sys.W" +
-                        "ebForms.PageRequestManager.getInstance().add_endRequest(function () {\r\n         " +
-                        "       RegisterDDLChangeHandlers(); // UpdatePanel sonrası yeniden bağlanır\r\n   " +
-                        "         });\r\n        }\r\n        //tarih saat doluysa Harcırah butonunu görünür " +
-                        "olsun\r\n        if ($(\'#BaslangicTarihiTxt\').val() != \"\" && $(\'#BitisTarihiTxt\')." +
-                        "val() != \"\" && $(\'#BasSaatDDL\').val() != \"\" && $(\'#BitSaatDDL\').val() != \"\") {\r\n" +
-                        "            /*$(\'#HarcirahHesaplaDiv\').show();*/\r\n            document.getElemen" +
-                        "tById(\'HarcirahHesaplaDiv\').style.display = \"block\";\r\n        } else {\r\n        " +
-                        "    /*$(\'#HarcirahHesaplaDiv\').hide();*/\r\n            document.getElementById(\'H" +
-                        "arcirahHesaplaDiv\').style.display = \"block\";\r\n        }\r\n    });\r\n\r\n    //var pr" +
-                        "m = Sys.WebForms.PageRequestManager.getInstance();\r\n    //if (prm != null) {\r\n  " +
-                        "  //    prm.add_endRequest(function (sender, e) {\r\n    //        if (sender._pos" +
-                        "tBackSettings.panelsToUpdate != null) {\r\n\r\n    //            CalculateFullDateTi" +
-                        "meDiff()\r\n    //        }\r\n    //    });\r\n    //};\r\n\r\n</script>\r\n<div class=\"con" +
-                        "tainer w-75 \">\r\n    "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n<style>\r\n    .disabled-look {\r\n        background-color: #e9ecef !important; " +
+                        "/* Bootstrap\'ın disabled rengi */\r\n        color: #6c757d !important; /* Gri yaz" +
+                        "ı rengi */\r\n        pointer-events: auto; /* Kullanıcı etkileşimi aktif */\r\n    " +
+                        "}\r\n</style>\r\n<script type=\"text/javascript\">\r\n    function OpenModal() {\r\n      " +
+                        "  var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementB" +
+                        "yId(\'ModalOnayDiv\'));\r\n        myModalInstance.show();\r\n    }\r\n\r\n    function Ca" +
+                        "lculateFullDateTimeDiff() {\r\n        var startDateStr = $(\'#BaslangicTarihiTxt\')" +
+                        ".val();\r\n        var endDateStr = $(\'#BitisTarihiTxt\').val();\r\n        var start" +
+                        "TimeStr = $(\'#BasSaatDDL\').val();\r\n        var endTimeStr = $(\'#BitSaatDDL\').val" +
+                        "();\r\n\r\n        if (!startDateStr || !endDateStr || !startTimeStr || !endTimeStr)" +
+                        " {\r\n            return;\r\n        }\r\n\r\n        // \"dd.mm.yyyy\" + \"hh:mm\" -> \"yyyy" +
+                        "-mm-ddThh:mm\"\r\n        var startParts = startDateStr.split(\'.\');\r\n        var en" +
+                        "dParts = endDateStr.split(\'.\');\r\n        var startDateTime = new Date(`${startPa" +
+                        "rts[2]}-${startParts[1]}-${startParts[0]}T${startTimeStr}`);\r\n        var endDat" +
+                        "eTime = new Date(`${endParts[2]}-${endParts[1]}-${endParts[0]}T${endTimeStr}`);\r" +
+                        "\n\r\n        var diffMs = endDateTime - startDateTime;\r\n        if (diffMs < 0) {\r" +
+                        "\n            $(\'#SureGunTxt\').val(\"0\");\r\n            $(\'#SureSaatTxt\').val(\"0\");" +
+                        "\r\n            $(\'#SureDakikaTxt\').val(\"0\");\r\n            return;\r\n        }\r\n\r\n " +
+                        "       var diffMins = Math.floor(diffMs / (1000 * 60));\r\n        var days = Math" +
+                        ".floor(diffMins / (60 * 24));\r\n        var hours = Math.floor((diffMins % (60 * " +
+                        "24)) / 60);\r\n        var minutes = diffMins % 60;\r\n\r\n        $(\'#SureGunTxt\').va" +
+                        "l(days);\r\n        $(\'#SureSaatTxt\').val(hours);\r\n        $(\'#SureDakikaTxt\').val" +
+                        "(minutes);\r\n        $(\'#SureSaatDakikaTxt\').val(hours + \' Saat \' + minutes + \' D" +
+                        "akika\');\r\n        $(\'#SureGunStrTxt\').val(days + \" Gün \");\r\n        __doPostBack" +
+                        "(\'BaslangicTarihiTxt\', \'\');\r\n        __doPostBack(\'BitisTarihiTxt\', \'\');\r\n      " +
+                        "  __doPostBack(\'BasSaatDDL\', \'\');\r\n        __doPostBack(\'BitSaatDDL\', \'\');\r\n    " +
+                        "}\r\n\r\n    // Sayfa yüklendiğinde VEYA UpdatePanel sonrası çalışır\r\n    Sys.Applic" +
+                        "ation.add_load(function () {\r\n        $(\'#BaslangicTarihiTxt\').datepicker({\r\n   " +
+                        "         dateFormat: \'dd.mm.yy\',\r\n            changeMonth: true,\r\n            ch" +
+                        "angeYear: true,\r\n            firstDay: 1, // Haftayı Pazartesi başlat\r\n         " +
+                        "   dayNamesMin: [\'Paz\', \'Pts\', \'Sal\', \'Çar\', \'Per\', \'Cum\', \'Cts\'],\r\n            " +
+                        "monthNames: [\'Ocak\', \'Şubat\', \'Mart\', \'Nisan\', \'Mayıs\', \'Haziran\',\r\n            " +
+                        "    \'Temmuz\', \'Ağustos\', \'Eylül\', \'Ekim\', \'Kasım\', \'Aralık\'],\r\n            month" +
+                        "NamesShort: [\'Oca\', \'Şub\', \'Mar\', \'Nis\', \'May\', \'Haz\',\r\n                \'Tem\', \'" +
+                        "Ağu\', \'Eyl\', \'Eki\', \'Kas\', \'Ara\'],\r\n            onSelect: function () {\r\n       " +
+                        "         CalculateFullDateTimeDiff();\r\n            }\r\n        });\r\n\r\n        $(\'" +
+                        "#BitisTarihiTxt\').datepicker({\r\n            dateFormat: \'dd.mm.yy\',\r\n           " +
+                        " changeMonth: true,\r\n            changeYear: true,\r\n            firstDay: 1, // " +
+                        "Haftayı Pazartesi başlat\r\n            dayNamesMin: [\'Paz\', \'Pts\', \'Sal\', \'Çar\', " +
+                        "\'Per\', \'Cum\', \'Cts\'],\r\n            monthNames: [\'Ocak\', \'Şubat\', \'Mart\', \'Nisan\'" +
+                        ", \'Mayıs\', \'Haziran\',\r\n                \'Temmuz\', \'Ağustos\', \'Eylül\', \'Ekim\', \'Ka" +
+                        "sım\', \'Aralık\'],\r\n            monthNamesShort: [\'Oca\', \'Şub\', \'Mar\', \'Nis\', \'May" +
+                        "\', \'Haz\',\r\n                \'Tem\', \'Ağu\', \'Eyl\', \'Eki\', \'Kas\', \'Ara\'],\r\n         " +
+                        "   onSelect: function () {\r\n                CalculateFullDateTimeDiff();\r\n      " +
+                        "      }\r\n        });\r\n    });\r\n    function RegisterDDLChangeHandlers() {\r\n     " +
+                        "   $(\'#BasSaatDDL, #BitSaatDDL, #BaslangicTarihiTxt, #BitisTarihiTxt\').off(\'chan" +
+                        "ge\').on(\'change\', function () {\r\n            CalculateFullDateTimeDiff();\r\n     " +
+                        "   });\r\n    }\r\n    $(document).ready(function () {\r\n\r\n        // Sayfa yüklendiğ" +
+                        "inde tarih ve saat farkını hesapla\r\n\r\n        CalculateFullDateTimeDiff();\r\n\r\n\r\n" +
+                        "        RegisterDDLChangeHandlers();\r\n\r\n        if (typeof Sys !== \'undefined\') " +
+                        "{\r\n            Sys.WebForms.PageRequestManager.getInstance().add_endRequest(func" +
+                        "tion () {\r\n                RegisterDDLChangeHandlers(); // UpdatePanel sonrası y" +
+                        "eniden bağlanır\r\n            });\r\n        }\r\n        ////tarih saat doluysa Harc" +
+                        "ırah butonunu görünür olsun\r\n        //if ($(\'#BaslangicTarihiTxt\').val() != \"\" " +
+                        "&& $(\'#BitisTarihiTxt\').val() != \"\" && $(\'#BasSaatDDL\').val() != \"\" && $(\'#BitSa" +
+                        "atDDL\').val() != \"\") {\r\n        //    /*$(\'#HarcirahHesaplaDiv\').show();*/\r\n    " +
+                        "    //    document.getElementById(\'HarcirahHesaplaDiv\').style.display = \"block\";" +
+                        "\r\n        //} else {\r\n        //    /*$(\'#HarcirahHesaplaDiv\').hide();*/\r\n      " +
+                        "  //    document.getElementById(\'HarcirahHesaplaDiv\').style.display = \"none\";\r\n " +
+                        "       //}\r\n    });\r\n\r\n    //var prm = Sys.WebForms.PageRequestManager.getInstan" +
+                        "ce();\r\n    //if (prm != null) {\r\n    //    prm.add_endRequest(function (sender, " +
+                        "e) {\r\n    //        if (sender._postBackSettings.panelsToUpdate != null) {\r\n\r\n  " +
+                        "  //            CalculateFullDateTimeDiff()\r\n    //        }\r\n    //    });\r\n   " +
+                        " //};\r\n\r\n</script>\r\n<div class=\"container w-75 \">\r\n    "));
             global::System.Web.UI.UpdatePanel @__ctrl1;
             @__ctrl1 = this.@__BuildControlTableUpdatePanel();
             @__parser.AddParsedSubObject(@__ctrl1);

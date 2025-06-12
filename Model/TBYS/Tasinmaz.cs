@@ -12,6 +12,7 @@ namespace Model.TBYS
     public class Tasinmaz : ParentClass
     {
         public string Cinsi { get; set; }
+        public string Nitelik { get; set; }
         //public string Ili { get { return IliStr(); } set { Ili = value; } }
         public string Ilcesi { get; set;}
         public string Ili { get; set;}
@@ -48,7 +49,6 @@ namespace Model.TBYS
         public string TahkikatFoto { get; set; }
         public string Bagisci { get; set; }
         public string KatMulkiyeti { get; set; }
-        public string Nitelik { get; set; }
         public string BulunduguKat { get; set; }
         public string Aciklama { get; set; }
         public int EnvanterdeMi { get; set; }
@@ -71,6 +71,10 @@ namespace Model.TBYS
         public string TapuTasinmazNo { get; set; }
         public string InsaYili { get; set; }
         public string KirayaUygunluk { get; set; }
+        public string ProjeM2 { get; set; }
+        public string Blok { get; set; }
+        public string Giris { get; set; }
+
         private string IliStr() 
         {
             Il il = new Il();

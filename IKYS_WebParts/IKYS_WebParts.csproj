@@ -59,8 +59,19 @@
     <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.IO.RecyclableMemoryStream, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IO.RecyclableMemoryStream.3.0.1\lib\netstandard2.0\Microsoft.IO.RecyclableMemoryStream.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Annotations.5.0.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -68,8 +79,22 @@
       <HintPath>..\packages\System.IO.FileSystem.Primitives.4.3.0\lib\net46\System.IO.FileSystem.Primitives.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.IO.Packaging, Version=8.0.0.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.IO.Packaging.8.0.1\lib\net462\System.IO.Packaging.dll</HintPath>
+    <Reference Include="System.IO.Packaging, Version=9.0.0.5, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Packaging.9.0.5\lib\net462\System.IO.Packaging.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security" />
+    <Reference Include="System.Security.Cryptography.Xml, Version=8.0.0.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Security.Cryptography.Xml.8.0.2\lib\net462\System.Security.Cryptography.Xml.dll</HintPath>
     </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.DynamicData" />
@@ -272,6 +297,30 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>KullanilmayanIzinListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MaasArtisiWP\MaasArtisiWP.ascx.cs">
+      <DependentUpon>MaasArtisiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MaasArtisiWP\MaasArtisiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MaasArtisiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MaasOlusturmaWP\MaasOlusturmaWP.ascx.cs">
+      <DependentUpon>MaasOlusturmaWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MaasOlusturmaWP\MaasOlusturmaWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MaasOlusturmaWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MaasTablolariWP\MaasTablolariWP.ascx.cs">
+      <DependentUpon>MaasTablolariWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="MaasTablolariWP\MaasTablolariWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MaasTablolariWP.ascx</DependentUpon>
     </Compile>
     <Compile Include="MazereteMahsupWP\MazereteMahsupWP.ascx.cs">
       <DependentUpon>MazereteMahsupWP.ascx</DependentUpon>
@@ -498,6 +547,18 @@
     <None Include="KullanilmayanIzinListesiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{960def74-c3a4-4130-b1ae-d7e1d774cdf7}</SharePointProjectItemId>
     </None>
+    <None Include="MaasArtisiWP\MaasArtisiWP.webpart" />
+    <None Include="MaasArtisiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{a99e44da-713d-4d0e-80b5-75614985e72a}</SharePointProjectItemId>
+    </None>
+    <None Include="MaasOlusturmaWP\MaasOlusturmaWP.webpart" />
+    <None Include="MaasOlusturmaWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{7fc53c2d-5fed-4e5f-8635-6a4f9e30ad59}</SharePointProjectItemId>
+    </None>
+    <None Include="MaasTablolariWP\MaasTablolariWP.webpart" />
+    <None Include="MaasTablolariWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{0020ef3c-f945-4e27-8882-aa1f8ac54da3}</SharePointProjectItemId>
+    </None>
     <None Include="MazereteMahsupWP\MazereteMahsupWP.webpart" />
     <None Include="MazereteMahsupWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{4906f014-91cd-4293-bea0-365227e0a660}</SharePointProjectItemId>
@@ -689,6 +750,21 @@
     <Content Include="KullanilmayanIzinListesiWP\KullanilmayanIzinListesiWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>KullanilmayanIzinListesiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="MaasArtisiWP\Elements.xml" />
+    <Content Include="MaasArtisiWP\MaasArtisiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>MaasArtisiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="MaasOlusturmaWP\Elements.xml" />
+    <Content Include="MaasOlusturmaWP\MaasOlusturmaWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>MaasOlusturmaWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="MaasTablolariWP\Elements.xml" />
+    <Content Include="MaasTablolariWP\MaasTablolariWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>MaasTablolariWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="MazereteMahsupWP\Elements.xml" />
     <Content Include="MazereteMahsupWP\MazereteMahsupWP.ascx">

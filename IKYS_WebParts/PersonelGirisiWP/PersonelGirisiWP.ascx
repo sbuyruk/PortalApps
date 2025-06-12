@@ -7,6 +7,17 @@
 <%@ Register TagPrefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="PersonelGirisiWP.ascx.cs" Inherits="IKYS_WebParts.PersonelGirisiWP.PersonelGirisiWP" %>
 
+<style>
+    .custom-file-upload {
+        padding: 6px 10px;
+        border: 2px solid #0078d7;
+        background-color: #f3f3f3;
+        color: #333;
+        border-radius: 6px;
+        font-size: 14px;
+        font-family: Segoe UI, sans-serif;
+    }
+</style>
 <script type="text/javascript">
 
     function setActiveTab(activeTab) {
@@ -30,64 +41,64 @@
             var reader = new FileReader();
             reader.onload = function (e) {
                 $('#' + sender).attr('src', e.target.result);
-                
+
             }
             reader.readAsDataURL(personelFU.files[0]);
         }
     }
 </script>
-    <script>
-        let cropper;
+<script>
+    let cropper;
 
-        function readPictureURL() {
+    function readPictureURL() {
 
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    const image = document.getElementById('imagePreview');
-                    image.src = e.target.result;
-                    image.style.display = 'block';
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const image = document.getElementById('imagePreview');
+                image.src = e.target.result;
+                image.style.display = 'block';
 
-                    // Initialize Cropper.js
-                    if (cropper) {
-                        cropper.destroy(); // Destroy previous instance
-                    }
-                    cropper = new Cropper(image, {
-                        aspectRatio: 1, // Example: Square crop
-                        viewMode: 2,
-                    });
+                // Initialize Cropper.js
+                if (cropper) {
+                    cropper.destroy(); // Destroy previous instance
+                }
+                cropper = new Cropper(image, {
+                    aspectRatio: 1, // Example: Square crop
+                    viewMode: 2,
+                });
 
-                    document.getElementById('cropButton').style.display = 'inline-block';
-                };
-                reader.readAsDataURL(file);
-            }
+                document.getElementById('cropButton').style.display = 'inline-block';
+            };
+            reader.readAsDataURL(file);
         }
+    }
 
 
-        // Crop and upload button click event
-        function cropAndUpload() {
-            if (cropper) {
-                // Get cropped image as a blob
-                cropper.getCroppedCanvas().toBlob(async function (blob) {
-                    const formData = new FormData();
-                    formData.append('croppedImage', blob, 'cropped-image.jpg');
+    // Crop and upload button click event
+    function cropAndUpload() {
+        if (cropper) {
+            // Get cropped image as a blob
+            cropper.getCroppedCanvas().toBlob(async function (blob) {
+                const formData = new FormData();
+                formData.append('croppedImage', blob, 'cropped-image.jpg');
 
-                    // Send cropped image to the server
-                    const response = await fetch('/Admin/TasinmazBagisci/UploadCroppedImage', {
-                        method: 'POST',
-                        body: formData,
-                    });
+                // Send cropped image to the server
+                const response = await fetch('/Admin/TasinmazBagisci/UploadCroppedImage', {
+                    method: 'POST',
+                    body: formData,
+                });
 
-                    if (response.ok) {
-                        alert('Image uploaded successfully!');
-                    } else {
-                        alert('Error uploading image.XX');
-                    }
-                }, 'image/jpeg');
-            }
+                if (response.ok) {
+                    alert('Image uploaded successfully!');
+                } else {
+                    alert('Error uploading image.XX');
+                }
+            }, 'image/jpeg');
         }
-    </script>
+    }
+</script>
 <div class="container">
 
     <div class="card shadow">
@@ -103,8 +114,8 @@
                     href="">
                     <i class="fa fa-book" aria-hidden="true"></i>
                 </a>
-                <asp:Label CssClass="col-form-label  btn-outline-success mb-1" ID="TitleLbl" runat="server" Text="Personel Girişi"></asp:Label>
-                <asp:Label CssClass="col-form-label text-white" ID="PersonelIdLbl" Visible="false" runat="server"></asp:Label>
+                <asp:Label CssClass="form-label fw-semibold  btn-outline-success mb-1" ID="TitleLbl" runat="server" Text="Personel Girişi"></asp:Label>
+                <asp:Label CssClass="form-label fw-semibold text-white" ID="PersonelIdLbl" Visible="false" runat="server"></asp:Label>
             </h3>
         </div>
         <div class="card-body">
@@ -145,90 +156,90 @@
                                     <div class="form-group row">
                                         <div class="col">
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="AdiTxt">Adı</label>
+                                                <label class="form-label fw-semibold" for="AdiTxt">Adı</label>
                                                 <asp:RequiredFieldValidator runat="server" ControlToValidate="AdiTxt" ForeColor="Red" ErrorMessage="Zorunlu Alan"> </asp:RequiredFieldValidator>
                                                 <asp:TextBox ID="AdiTxt" runat="server" CssClass="form-control" ToolTip="Adı" type="text"></asp:TextBox>
                                             </div>
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="SoyadiTxt">Soyadı</label>
+                                                <label class="form-label fw-semibold" for="SoyadiTxt">Soyadı</label>
                                                 <asp:RequiredFieldValidator runat="server" ControlToValidate="SoyadiTxt" ForeColor="Red" ErrorMessage="Zorunlu Alan"> </asp:RequiredFieldValidator>
                                                 <asp:TextBox ID="SoyadiTxt" runat="server" CssClass="form-control" ToolTip="Soyadı" type="text"></asp:TextBox>
                                             </div>
                                             <div class="row">
                                                 <div class="col">
-                                                    <label class="col-form-label" for="DogumTarihiTxt">Doğum Tarihi</label>
+                                                    <label class="form-label fw-semibold" for="DogumTarihiTxt">Doğum Tarihi</label>
                                                     <input runat="server" type="text" id="DogumTarihiTxt" name="DogumTarihiTxt" class="form-control DateTimePickerV1" readonly="readonly" />
                                                 </div>
                                                 <div class="col">
-                                                    <label class="col-form-label" for="DogumGunuKutlamaChk">Kutlama</label>
+                                                    <label class="form-label fw-semibold" for="DogumGunuKutlamaChk">Kutlama</label>
                                                     <asp:CheckBox ID="DogumGunuKutlamaChk" runat="server" CssClass="form-select form-select-lg" Text="    " Checked="True" />
                                                 </div>
                                             </div>
 
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="DogumIliDDL">Doğ.Yeri İl</label>
-                                                <asp:DropDownList ID="DogumIliDDL" runat="server" CssClass="form-control" Style="height: auto" OnSelectedIndexChanged="DogumIliDDL_SelectedIndexChanged" AutoPostBack="true" />
+                                                <label class="form-label fw-semibold" for="DogumIliDDL">Doğ.Yeri İl</label>
+                                                <asp:DropDownList ID="DogumIliDDL" runat="server" CssClass="form-control form-select form-select-lg" OnSelectedIndexChanged="DogumIliDDL_SelectedIndexChanged" AutoPostBack="true" />
                                             </div>
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="DogumIlceDDL">Doğ.Yeri İlçe</label>
-                                                <asp:DropDownList ID="DogumIlceDDL" runat="server" CssClass="form-control" Style="height: auto"></asp:DropDownList>
+                                                <label class="form-label fw-semibold" for="DogumIlceDDL">Doğ.Yeri İlçe</label>
+                                                <asp:DropDownList ID="DogumIlceDDL" runat="server" CssClass="form-control form-select form-select-lg"></asp:DropDownList>
                                             </div>
                                         </div>
                                         <div class="col">
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="TCKimlikNoTxt">TC Kimlik No</label>
+                                                <label class="form-label fw-semibold" for="TCKimlikNoTxt">TC Kimlik No</label>
                                                 <asp:RequiredFieldValidator runat="server" ControlToValidate="TCKimlikNoTxt" ForeColor="Red" ErrorMessage="Zorunlu Alan"> </asp:RequiredFieldValidator>
                                                 <asp:TextBox ID="TCKimlikNoTxt" runat="server" CssClass="form-control" ToolTip="TC Kimlik Numarası" type="text"></asp:TextBox>
                                             </div>
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="AnneAdiTxt">Anne Adı</label>
+                                                <label class="form-label fw-semibold" for="AnneAdiTxt">Anne Adı</label>
                                                 <asp:TextBox ID="AnneAdiTxt" runat="server" CssClass="form-control" ToolTip="Anne Adı" type="text"></asp:TextBox>
                                             </div>
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="BabaAdiTxt">Baba Adı</label>
+                                                <label class="form-label fw-semibold" for="BabaAdiTxt">Baba Adı</label>
                                                 <asp:TextBox ID="BabaAdiTxt" runat="server" CssClass="form-control" ToolTip="Baba Adı" type="text"></asp:TextBox>
                                             </div>
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="MedeniHaliDDL">Medeni Hali</label>
-                                                <asp:DropDownList ID="MedeniHaliDDL" runat="server" CssClass="form-control" Style="height: auto" OnSelectedIndexChanged="MedeniHaliDDL_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
+                                                <label class="form-label fw-semibold" for="MedeniHaliDDL">Medeni Hali</label>
+                                                <asp:DropDownList ID="MedeniHaliDDL" runat="server" CssClass="form-control form-select form-select-lg" OnSelectedIndexChanged="MedeniHaliDDL_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
                                             </div>
                                             <div class="row">
                                                 <div class="col-8" id="EvlilikTarihiDiv" runat="server">
-                                                    <label class="col-form-label" for="EvlilikTarihiTxt">Evlilik Tarihi</label>
+                                                    <label class="form-label fw-semibold" for="EvlilikTarihiTxt">Evlilik Tarihi</label>
                                                     <div class="input-group">
                                                         <input runat="server" type="text" id="EvlilikTarihiTxt" name="EvlilikTarihiTxt" class="form-control DateTimePickerV1" readonly="readonly" />
                                                         <input type="button" id="clear-evlilikTar" value="Sil" onclick="clearEvlilikTar()" />
                                                     </div>
                                                 </div>
                                                 <div class="col">
-                                                    <label class="col-form-label" for="EvlilikKutlamaChk">Kutlama</label>
+                                                    <label class="form-label fw-semibold" for="EvlilikKutlamaChk">Kutlama</label>
                                                     <asp:CheckBox ID="EvlilikKutlamaChk" runat="server" CssClass="form-control" Text="    " Checked="True" />
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col">
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="SicilNoTxt">Sicil No</label>
+                                                <label class="form-label fw-semibold" for="SicilNoTxt">Sicil No</label>
                                                 <asp:TextBox ID="SicilNoTxt" runat="server" CssClass="form-control" ToolTip="Sicil No" type="text"></asp:TextBox>
                                             </div>
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="CinsiyetDDL">Cinsiyet</label>
-                                                <asp:DropDownList ID="CinsiyetDDL" runat="server" CssClass="form-control" Style="height: auto"></asp:DropDownList>
+                                                <label class="form-label fw-semibold" for="CinsiyetDDL">Cinsiyet</label>
+                                                <asp:DropDownList ID="CinsiyetDDL" runat="server" CssClass="form-control form-select form-select-lg"></asp:DropDownList>
                                             </div>
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="KanGrubuDDL">Kan Grubu</label>
-                                                <asp:DropDownList ID="KanGrubuDDL" runat="server" CssClass="form-control" Style="height: auto"></asp:DropDownList>
+                                                <label class="form-label fw-semibold" for="KanGrubuDDL">Kan Grubu</label>
+                                                <asp:DropDownList ID="KanGrubuDDL" runat="server" CssClass="form-control form-select form-select-lg"></asp:DropDownList>
                                             </div>
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="AskerSivilDDL">Asker/Sivil</label>
-                                                <asp:DropDownList ID="AskerSivilDDL" runat="server" CssClass="form-control" Style="height: auto"></asp:DropDownList>
+                                                <label class="form-label fw-semibold" for="AskerSivilDDL">Asker/Sivil</label>
+                                                <asp:DropDownList ID="AskerSivilDDL" runat="server" CssClass="form-control form-select form-select-lg"></asp:DropDownList>
                                             </div>
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="TahsiliDDL">Tahsili</label>
-                                                <asp:DropDownList ID="TahsiliDDL" runat="server" CssClass="form-control" Style="height: auto"></asp:DropDownList>
+                                                <label class="form-label fw-semibold" for="TahsiliDDL">Tahsili</label>
+                                                <asp:DropDownList ID="TahsiliDDL" runat="server" CssClass="form-control form-select form-select-lg"></asp:DropDownList>
                                             </div>
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="KullaniciAdiTxt">Kullanıcı Adı</label>
+                                                <label class="form-label fw-semibold" for="KullaniciAdiTxt">Kullanıcı Adı</label>
                                                 <asp:TextBox ID="KullaniciAdiTxt" runat="server" CssClass="form-control" ToolTip="Bilgisayar Kullanıcı Adı" type="text"></asp:TextBox>
                                                 <asp:RequiredFieldValidator runat="server" ControlToValidate="KullaniciAdiTxt" ForeColor="Red" ErrorMessage="Zorunlu Alan"> </asp:RequiredFieldValidator>
                                             </div>
@@ -243,68 +254,83 @@
                                     <div class="form-group row">
                                         <div class="col">
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="UnvanTanimDDL">Ünvanı</label>
-                                                <asp:DropDownList ID="UnvanTanimDDL" runat="server" CssClass="form-control" Style="height: auto"></asp:DropDownList>
+                                                <label class="form-label fw-semibold" for="UnvanTanimDDL">Ünvanı</label>
+                                                <asp:DropDownList ID="UnvanTanimDDL" runat="server" CssClass="form-control form-select form-select-lg"></asp:DropDownList>
                                             </div>
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="GorevTanimDDL">Görevi</label>
-                                                <asp:DropDownList ID="GorevTanimDDL" runat="server" CssClass="form-control" Style="height: auto" OnSelectedIndexChanged="GorevTanimDDL_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
+                                                <label class="form-label fw-semibold" for="GorevTanimDDL">Görevi</label>
+                                                <asp:DropDownList ID="GorevTanimDDL" runat="server" CssClass="form-control form-select form-select-lg" OnSelectedIndexChanged="GorevTanimDDL_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
                                             </div>
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="SubeTxt">Şubesi/Birimi</label>
+                                                <label class="form-label fw-semibold" for="SubeTxt">Şubesi/Birimi</label>
                                                 <asp:TextBox ID="BirimAdiTxt" runat="server" CssClass="form-control" ToolTip="Şubesi/Birimi" type="text" ReadOnly="true"></asp:TextBox>
                                                 <div style="display: none">
-                                                    <asp:TextBox ID="BirimIdTxt" runat="server" CssClass="form-control" type="text" ReadOnly="true"></asp:TextBox>
+                                                    <asp:TextBox ID="BirimIdTxt" runat="server" CssClass="form-control form-select form-select-lg" type="text" ReadOnly="true"></asp:TextBox>
                                                 </div>
                                             </div>
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="IsbasTarTxt">İşe Baş.Tar.</label>
+                                                <label class="form-label fw-semibold" for="IsbasTarTxt">İşe Baş.Tar.</label>
                                                 <input runat="server" type="text" id="IsbasTarTxt" name="IsbasTarTxt" class="form-control DateTimePickerV1" readonly="readonly" />
                                             </div>
                                         </div>
                                         <div class="col">
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="SGKSicilNoTxt">SGK Sic.No</label>
+                                                <label class="form-label fw-semibold" for="SGKSicilNoTxt">SGK Sic.No</label>
                                                 <asp:TextBox ID="SGKSicilNoTxt" runat="server" CssClass="form-control" type="text"></asp:TextBox>
                                             </div>
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="SGKBasTarTxt">SGK Baş.Tar.</label>
+                                                <label class="form-label fw-semibold" for="SGKBasTarTxt">SGK Baş.Tar.</label>
                                                 <input runat="server" type="text" id="SGKBasTarTxt" name="SGKBasTarTxt" class="form-control DateTimePickerV1" readonly="readonly" tooltip="SGK Başlangıç Tarihi" />
                                             </div>
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="VakifOncesiPrimGunSayisiTxt">Önceki Prim Gün</label>
+                                                <label class="form-label fw-semibold" for="VakifOncesiPrimGunSayisiTxt">Önceki Prim Gün</label>
                                                 <asp:TextBox ID="VakifOncesiPrimGunSayisiTxt" runat="server" CssClass="form-control" ToolTip="Vakıf Öncesi SGK Prim Gün Sayısı" type="text"></asp:TextBox>
                                             </div>
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="ProtokolSirasiTxt">Prot.Sırası</label>
+                                                <label class="form-label fw-semibold" for="ProtokolSirasiTxt">Prot.Sırası</label>
                                                 <asp:TextBox ID="ProtokolSirasiTxt" runat="server" CssClass="form-control" type="text" ReadOnly="true"></asp:TextBox>
                                             </div>
                                         </div>
                                         <div class="col">
                                             <div id="IzinDonemiBasTarDiv" class="form-group m-0" runat="server">
-                                                <label class="col-form-label" for="IzinDonemiBasTarTxt">izin Dönemi Baş.Tar.</label>
+                                                <label class="form-label fw-semibold" for="IzinDonemiBasTarTxt">izin Dönemi Baş.Tar.</label>
                                                 <input runat="server" type="text" id="IzinDonemiBasTarTxt" name="IzinDonemiBasTarTxt" class="form-control DateTimePickerV1" readonly="readonly" />
                                             </div>
                                             <div id="EmeklilikTarDiv" class="form-group m-0" runat="server">
-                                                <label class="col-form-label" for="EmeklilikTarTxt">Emeklilik Tarihi</label>
+                                                <label class="form-label fw-semibold" for="EmeklilikTarTxt">Emeklilik Tarihi</label>
                                                 <input runat="server" type="text" id="EmeklilikTarTxt" name="EmeklilikTarTxt" class="form-control DateTimePickerV1" readonly="readonly" />
                                             </div>
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="CalismaDurumuDDL">Çalışma Dur.</label>
-                                                <asp:DropDownList ID="CalismaDurumuDDL" runat="server" CssClass="form-control" Style="height: auto" OnSelectedIndexChanged="CalismaDurumuDDL_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
+                                                <label class="form-label fw-semibold" for="CalismaDurumuDDL">Çalışma Dur.</label>
+                                                <asp:DropDownList ID="CalismaDurumuDDL" runat="server" CssClass="form-control form-select form-select-lg" OnSelectedIndexChanged="CalismaDurumuDDL_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
                                             </div>
                                             <div id="AyrilmaTarDiv" class="form-group m-0" runat="server">
-                                                <label class="col-form-label" for="AyrilmaTarTxt">Ayrılma Tar.</label>
+                                                <label class="form-label fw-semibold" for="AyrilmaTarTxt">Ayrılma Tar.</label>
                                                 <input runat="server" type="text" id="AyrilmaTarTxt" name="AyrilmaTarTxt" class="form-control DateTimePickerV1" readonly="readonly" />
                                             </div>
                                             <div id="AyrilmaSebebiDiv" class="form-group m-0" runat="server">
-                                                <label class="col-form-label" for="AyrilmaSebebiDDL">Ayrılma Seb.</label>
-                                                <asp:DropDownList ID="AyrilmaSebebiDDL" runat="server" CssClass="form-control" Style="height: auto"></asp:DropDownList>
+                                                <label class="form-label fw-semibold" for="AyrilmaSebebiDDL">Ayrılma Seb.</label>
+                                                <asp:DropDownList ID="AyrilmaSebebiDDL" runat="server" CssClass="form-control form-select form-select-lg"></asp:DropDownList>
                                             </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-group m-0" runat="server">
+                                                <label class="form-label fw-semibold" for="DereceDDL">Derece</label>
+                                                <asp:DropDownList ID="DereceDDL" runat="server" CssClass="form-control form-select form-select-lg"></asp:DropDownList>
+                                            </div>
+                                            <div class="form-group m-0" runat="server">
+                                                <label class="form-label fw-semibold" for="KademeDDL">Kademe</label>
+                                                <asp:DropDownList ID="KademeDDL" runat="server" CssClass="form-control form-select form-select-lg"></asp:DropDownList>
+                                            </div>
+                                            <div class="form-group m-0" runat="server">
+                                                <label class="form-label fw-semibold" for="DereceKademeIlerlemeTarihiTxt">Der/Kad. İlerleme Tar.</label>
+                                                <input runat="server" type="text" id="DereceKademeIlerlemeTarihiTxt" name="DereceKademeIlerlemeTarihiTxt" class="form-control DateTimePickerV1" readonly="readonly" />
+                                            </div>
+
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-form-label" for="IsBilgileriAciklamaTxt">Açıklama</label>
+                                        <label class="form-label fw-semibold" for="IsBilgileriAciklamaTxt">Açıklama</label>
                                         <asp:TextBox ID="IsBilgileriAciklamaTxt" runat="server" TextMode="MultiLine" Rows="3" CssClass="form-control" type="text" />
                                     </div>
                                     <div class="card-footer">
@@ -315,38 +341,38 @@
                                     <div class="form-group row">
                                         <div class="col">
                                             <div class="form-group">
-                                                <label class="col-form-label" for="BirimDDL">Birim/Şube</label>
-                                                <asp:DropDownList ID="BirimDDL" runat="server" class="form-control" Style="height: auto"></asp:DropDownList>
+                                                <label class="form-label fw-semibold" for="BirimDDL">Birim/Şube</label>
+                                                <asp:DropDownList ID="BirimDDL" runat="server" class="form-control form-select form-select-lg"></asp:DropDownList>
                                             </div>
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="KadrosuzIsbasTarihiTxt">İşe Baş.Tar.</label>
+                                                <label class="form-label fw-semibold" for="KadrosuzIsbasTarihiTxt">İşe Baş.Tar.</label>
                                                 <input runat="server" type="text" id="KadrosuzIsbasTarihiTxt" name="KadrosuzIsbasTarihiTxt" class="form-control DateTimePickerV1" readonly="readonly" />
                                             </div>
                                         </div>
                                         <div class="col" id="Div1" runat="server">
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="KadrosuzKurumuTxt">Kurumu</label>
+                                                <label class="form-label fw-semibold" for="KadrosuzKurumuTxt">Kurumu</label>
                                                 <asp:TextBox ID="KadrosuzKurumuTxt" runat="server" CssClass="form-control" type="text"></asp:TextBox>
                                             </div>
 
                                         </div>
                                         <div class="col">
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="KadrosuzCalismaDurumuDDL">Çalışma Dur.</label>
-                                                <asp:DropDownList ID="KadrosuzCalismaDurumuDDL" runat="server" CssClass="form-control" Style="height: auto" OnSelectedIndexChanged="KadrosuzCalismaDurumuDDL_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
+                                                <label class="form-label fw-semibold" for="KadrosuzCalismaDurumuDDL">Çalışma Dur.</label>
+                                                <asp:DropDownList ID="KadrosuzCalismaDurumuDDL" runat="server" CssClass="form-control form-select form-select-lg" OnSelectedIndexChanged="KadrosuzCalismaDurumuDDL_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
                                             </div>
                                             <div id="KadrosuzAyrilmaTarihiDiv" class="form-group m-0" runat="server">
-                                                <label class="col-form-label" for="KadrosuzAyrilmaTarihiTxt">Ayrılma Tar.</label>
+                                                <label class="form-label fw-semibold" for="KadrosuzAyrilmaTarihiTxt">Ayrılma Tar.</label>
                                                 <input runat="server" type="text" id="KadrosuzAyrilmaTarihiTxt" name="KadrosuzAyrilmaTarihiTxt" class="form-control DateTimePickerV1" readonly="readonly" />
                                             </div>
                                             <div id="KadrosuzAyrilmaSebebiDiv" class="form-group m-0" runat="server">
-                                                <label class="col-form-label" for="KadrosuzAyrilmaSebebiDDL">Ayrılma Sebebi</label>
-                                                <asp:DropDownList ID="KadrosuzAyrilmaSebebiDDL" runat="server" CssClass="form-control" Style="height: auto"></asp:DropDownList>
+                                                <label class="form-label fw-semibold" for="KadrosuzAyrilmaSebebiDDL">Ayrılma Sebebi</label>
+                                                <asp:DropDownList ID="KadrosuzAyrilmaSebebiDDL" runat="server" CssClass="form-control form-select form-select-lg"></asp:DropDownList>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-form-label" for="KadrosuzIsBilgileriAciklamaTxt">Açıklama</label>
+                                        <label class="form-label fw-semibold" for="KadrosuzIsBilgileriAciklamaTxt">Açıklama</label>
                                         <asp:TextBox ID="KadrosuzIsBilgileriAciklamaTxt" runat="server" TextMode="MultiLine" Rows="3" CssClass="form-control" type="text" />
                                     </div>
                                     <div class="card-footer">
@@ -375,63 +401,63 @@
                                     <div class="row p-1">
                                         <div class="col-4 ">
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="IkametIliDDL">İkamet İli</label>
-                                                <asp:DropDownList ID="IkametIliDDL" runat="server" CssClass="form-control" Style="height: auto" OnSelectedIndexChanged="IkametIliDDL_SelectedIndexChanged" AutoPostBack="true" />
+                                                <label class="form-label fw-semibold" for="IkametIliDDL">İkamet İli</label>
+                                                <asp:DropDownList ID="IkametIliDDL" runat="server" CssClass="form-control form-select form-select-lg" OnSelectedIndexChanged="IkametIliDDL_SelectedIndexChanged" AutoPostBack="true" />
                                             </div>
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="IkametIlcesiDDL">İkamet İlçe</label>
-                                                <asp:DropDownList ID="IkametIlcesiDDL" runat="server" CssClass="form-control" Style="height: auto"></asp:DropDownList>
+                                                <label class="form-label fw-semibold" for="IkametIlcesiDDL">İkamet İlçe</label>
+                                                <asp:DropDownList ID="IkametIlcesiDDL" runat="server" CssClass="form-control form-select form-select-lg"></asp:DropDownList>
                                             </div>
 
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="AdresTxt">Adres</label>
+                                                <label class="form-label fw-semibold" for="AdresTxt">Adres</label>
                                                 <asp:TextBox ID="AdresTxt" runat="server" CssClass="form-control" TextMode="MultiLine" Rows="6"></asp:TextBox>
                                             </div>
                                         </div>
                                         <div class="col-4 ">
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="SemtTxt">Semt</label>
+                                                <label class="form-label fw-semibold" for="SemtTxt">Semt</label>
                                                 <asp:TextBox ID="SemtTxt" runat="server" class="form-control"></asp:TextBox>
                                             </div>
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="PostaKoduTxt">Posta Kodu</label>
+                                                <label class="form-label fw-semibold" for="PostaKoduTxt">Posta Kodu</label>
                                                 <asp:TextBox ID="PostaKoduTxt" runat="server" CssClass="form-control"></asp:TextBox>
                                             </div>
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="CepTelefonuTxt">Cep Telefonu</label>
+                                                <label class="form-label fw-semibold" for="CepTelefonuTxt">Cep Telefonu</label>
                                                 <asp:TextBox ID="CepTelefonuTxt" runat="server" CssClass="form-control"></asp:TextBox>
                                             </div>
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="CepTelefonu2Txt">Cep Telefonu 2</label>
+                                                <label class="form-label fw-semibold" for="CepTelefonu2Txt">Cep Telefonu 2</label>
                                                 <asp:TextBox ID="CepTelefonu2Txt" runat="server" CssClass="form-control"></asp:TextBox>
                                             </div>
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="EvTelefonuTxt">Ev Telefonu</label>
+                                                <label class="form-label fw-semibold" for="EvTelefonuTxt">Ev Telefonu</label>
                                                 <asp:TextBox ID="EvTelefonuTxt" runat="server" CssClass="form-control"> </asp:TextBox>
                                             </div>
 
                                         </div>
                                         <div class="col-4 ">
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="DahiliTelefonuTxt">Dahili Telefonu</label>
+                                                <label class="form-label fw-semibold" for="DahiliTelefonuTxt">Dahili Telefonu</label>
                                                 <asp:TextBox ID="DahiliTelefonuTxt" runat="server" CssClass="form-control"></asp:TextBox>
                                             </div>
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="IntranetEPostaTxt">EPosta (Intarnet)</label>
+                                                <label class="form-label fw-semibold" for="IntranetEPostaTxt">EPosta (Intarnet)</label>
                                                 <asp:TextBox ID="IntranetEPostaTxt" runat="server" CssClass="form-control"></asp:TextBox>
                                                 <%--<asp:RequiredFieldValidator runat="server" ControlToValidate="IntranetEPostaTxt" ForeColor="Red" ErrorMessage="Zorunlu Alan"> </asp:RequiredFieldValidator>--%>
                                             </div>
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="InternetEPostaTxt">EPosta (Internet)</label>
+                                                <label class="form-label fw-semibold" for="InternetEPostaTxt">EPosta (Internet)</label>
                                                 <asp:TextBox ID="InternetEPostaTxt" runat="server" CssClass="form-control"></asp:TextBox>
                                                 <%--<asp:RequiredFieldValidator runat="server" ControlToValidate="InternetEPostaTxt" ForeColor="Red" ErrorMessage="Zorunlu Alan"> </asp:RequiredFieldValidator>--%>
                                             </div>
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="OzelEPostaTxt">EPosta (Özel)</label>
+                                                <label class="form-label fw-semibold" for="OzelEPostaTxt">EPosta (Özel)</label>
                                                 <asp:TextBox ID="OzelEPostaTxt" runat="server" CssClass="form-control"></asp:TextBox>
                                             </div>
                                             <div class="form-group m-0">
-                                                <label class="col-form-label" for="PlakaTxt">Plaka</label>
+                                                <label class="form-label fw-semibold" for="PlakaTxt">Plaka</label>
                                                 <asp:TextBox ID="PlakaTxt" runat="server" CssClass="form-control"></asp:TextBox>
                                             </div>
                                         </div>
@@ -568,7 +594,7 @@
                                     <asp:Image ID="DisplayImage" ClientIDMode="Static" runat="server" ImageUrl="../PersonelResimleri/_t/personel_jpg.jpg" CssClass="img-thumbnail" Height="170" Width="132" onerror="this.src='../PersonelResimleri/_t/personel_jpg.jpg';" />
                                 </div>
                                 <div class="form-group">
-                                    <asp:FileUpload ID="xFileUpload" class="btn form-control" runat="server" ToolTip="Yüklenecek Resmi Seçiniz" type="text" onchange="readURL(this,'DisplayImage')" />
+                                    <asp:FileUpload ID="xFileUpload" CssClass="custom-file-upload" runat="server" ToolTip="Yüklenecek Resmi Seçiniz" type="text" onchange="readURL(this,'DisplayImage')" />
                                 </div>
                                 <div class="form-group">
                                     <asp:LinkButton ID="ResmiKaydetBtn" ClientIDMode="Static" CssClass="btn btn-outline-primary mt-2" runat="server" Text="Resmi Kaydet" OnClick="ResmiKaydetBtn_Click" Width="140px" />
@@ -592,9 +618,9 @@
                                     </div>
                                 </div>--%>
                                 <div class="form-group">
-                                    <label for="PersonelTipiDDL" class="col-form-label">Personel Tipi</label>
+                                    <label for="PersonelTipiDDL" class="form-label fw-semibold">Personel Tipi</label>
                                     <div>
-                                        <asp:DropDownList ID="PersonelTipiDDL" runat="server" class="form-control" OnSelectedIndexChanged="PersonelTipiDDL_SelectedIndexChanged" AutoPostBack="true" Style="height: auto"></asp:DropDownList>
+                                        <asp:DropDownList ID="PersonelTipiDDL" runat="server" class="form-control form-select form-select-lg" OnSelectedIndexChanged="PersonelTipiDDL_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
                                     </div>
                                 </div>
                             </div>

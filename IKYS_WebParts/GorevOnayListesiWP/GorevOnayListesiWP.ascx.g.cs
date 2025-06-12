@@ -106,7 +106,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label  btn-outline-primary";
+            @__ctrl.CssClass = "form-label fw-semibold  btn-outline-primary";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Görev Onay Listesi";
             return @__ctrl;
@@ -120,7 +120,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.EkranNo = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-secondary float-end";
+            @__ctrl.CssClass = "form-label fw-semibold text-secondary float-end";
             @__ctrl.ID = "EkranNo";
             @__ctrl.Text = "30";
             return @__ctrl;
@@ -423,10 +423,17 @@ namespace IKYS_WebParts.GorevOnayListesiWP {
             @__w.Write("\r\n                ");
             parameterContainer.Controls[2].RenderControl(@__w);
             @__w.Write("\r\n            </h3>\r\n\r\n        </div>\r\n        <div class=\"card-body\">\r\n         " +
-                    "   <div class=\"form-group mb-3\">\r\n                <label><input type=\"checkbox\" " +
-                    "id=\"checkAll\"> Bu Sayfadakileri Seç</label>\r\n            </div>\r\n            ");
+                    "   ");
             parameterContainer.Controls[3].RenderControl(@__w);
-            @__w.Write("\r\n            <div id=\"InvisibleDiv\" style=\"display: none\">\r\n                ");
+            @__w.Write(@"
+            <div class=""form-group m-3"">
+                <label class=""fw-semibold float-end"">
+                    <input type=""checkbox"" id=""checkAll"">
+                    Bu Sayfadakileri Seç</label>
+            </div>
+
+            <div id=""InvisibleDiv"" style=""display: none"">
+                ");
             parameterContainer.Controls[4].RenderControl(@__w);
             @__w.Write("\r\n                ");
             parameterContainer.Controls[5].RenderControl(@__w);
