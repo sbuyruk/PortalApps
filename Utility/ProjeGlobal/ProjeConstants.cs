@@ -282,6 +282,9 @@ namespace Utility.ProjeGlobal
         public const string PAGE_YOKLAMA_LIST = "YoklamaListesi.aspx";
         public const string PAGE_GOREVONAY_GIRIS = "GorevOnayGirisi.aspx";
         public const string PAGE_GOREVONAY_LIST = "GorevOnayListesi.aspx";
+        public const string PAGE_MAAS_TABLOLARI = "MaasTablolari.aspx";
+        public const string PAGE_MAAS_ARTISI = "MaasArtisi.aspx";
+        public const string PAGE_MAAS_OLUSTURMA = "MaasOlusturma.aspx";
         //Bolge
         public const string PAGE_BOLGETASINMAZ_LIST = "BolgeTasinmazListesi.aspx";
         public const string PAGE_BOLGETASINMAZ_KARTI = "BolgeTasinmazKarti.aspx";
@@ -1128,6 +1131,7 @@ namespace Utility.ProjeGlobal
 
 
         public static string COKBAGISYAPAN_BASLAMATARIHI = "01.01.2018";
+        public static int COKBAGISYAPAN_SONBAGISI_KAC_AY_ONCE_YAPTI = -12;
 
         public static string YABANCIDIL_INGILIZCE = "İngilizce";
         public static string YABANCIDIL_ALMANCA = "Almanca";

@@ -53,7 +53,7 @@ namespace IKYS_WebParts.MaasTablolariWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.Table ButonTable;
+        protected global::System.Web.UI.WebControls.DropDownList TarihDDL;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -61,7 +61,15 @@ namespace IKYS_WebParts.MaasTablolariWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.TableHeaderCell Table1Title;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.Table UcretTanimTable1;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.TableHeaderCell Table2Title;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -133,13 +141,29 @@ namespace IKYS_WebParts.MaasTablolariWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Table @__BuildControlButonTable() {
-            global::System.Web.UI.WebControls.Table @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.Table();
-            this.ButonTable = @__ctrl;
+        private global::System.Web.UI.WebControls.Label @__BuildControl__control2() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "ButonTable";
-            @__ctrl.CssClass = "table table-bordered";
+            @__ctrl.CssClass = "form-label fw-semibold";
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Geçerlilik Tarihi : "));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.DropDownList @__BuildControlTarihDDL() {
+            global::System.Web.UI.WebControls.DropDownList @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.DropDownList();
+            this.TarihDDL = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "TarihDDL";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control form-select form-select-lg fw-bold text-success");
+            @__ctrl.AutoPostBack = true;
+            @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.TarihDDL_SelectedIndexChanged);
+            @__ctrl.SelectedIndexChanged += new System.EventHandler(this.TarihDDL_SelectedIndexChanged);
             return @__ctrl;
         }
         
@@ -162,12 +186,14 @@ namespace IKYS_WebParts.MaasTablolariWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control5() {
+        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControlTable1Title() {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
+            this.Table1Title = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ColumnSpan = 12;
             @__ctrl.CssClass = "header-center";
+            @__ctrl.ID = "Table1Title";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("TSKGV ÜCRET TABLOSU-1"));
             return @__ctrl;
@@ -176,20 +202,20 @@ namespace IKYS_WebParts.MaasTablolariWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control4(System.Web.UI.WebControls.TableCellCollection @__ctrl) {
+        private void @__BuildControl__control5(System.Web.UI.WebControls.TableCellCollection @__ctrl) {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl1;
-            @__ctrl1 = this.@__BuildControl__control5();
+            @__ctrl1 = this.@__BuildControlTable1Title();
             @__ctrl.Add(@__ctrl1);
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderRow @__BuildControl__control3() {
+        private global::System.Web.UI.WebControls.TableHeaderRow @__BuildControl__control4() {
             global::System.Web.UI.WebControls.TableHeaderRow @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderRow();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            this.@__BuildControl__control4(@__ctrl.Cells);
+            this.@__BuildControl__control5(@__ctrl.Cells);
             return @__ctrl;
         }
         
@@ -394,9 +420,9 @@ namespace IKYS_WebParts.MaasTablolariWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control2(System.Web.UI.WebControls.TableRowCollection @__ctrl) {
+        private void @__BuildControl__control3(System.Web.UI.WebControls.TableRowCollection @__ctrl) {
             global::System.Web.UI.WebControls.TableHeaderRow @__ctrl1;
-            @__ctrl1 = this.@__BuildControl__control3();
+            @__ctrl1 = this.@__BuildControl__control4();
             @__ctrl.Add(@__ctrl1);
             global::System.Web.UI.WebControls.TableHeaderRow @__ctrl2;
             @__ctrl2 = this.@__BuildControl__control6();
@@ -416,19 +442,21 @@ namespace IKYS_WebParts.MaasTablolariWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "UcretTanimTable1";
             @__ctrl.CssClass = "table table-bordered";
-            this.@__BuildControl__control2(@__ctrl.Rows);
+            this.@__BuildControl__control3(@__ctrl.Rows);
             return @__ctrl;
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control23() {
+        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControlTable2Title() {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
+            this.Table2Title = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ColumnSpan = 9;
             @__ctrl.CssClass = "header-center";
+            @__ctrl.ID = "Table2Title";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("TSKGV ÜCRET TABLOSU-2 (TSK\'DAN EMEKLİ PERSONEL İÇİN GEÇERLİDİR)"));
             return @__ctrl;
@@ -439,7 +467,7 @@ namespace IKYS_WebParts.MaasTablolariWP {
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControl__control22(System.Web.UI.WebControls.TableCellCollection @__ctrl) {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl1;
-            @__ctrl1 = this.@__BuildControl__control23();
+            @__ctrl1 = this.@__BuildControlTable2Title();
             @__ctrl.Add(@__ctrl1);
         }
         
@@ -457,7 +485,7 @@ namespace IKYS_WebParts.MaasTablolariWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control26() {
+        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control25() {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -471,27 +499,27 @@ namespace IKYS_WebParts.MaasTablolariWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control25(System.Web.UI.WebControls.TableCellCollection @__ctrl) {
+        private void @__BuildControl__control24(System.Web.UI.WebControls.TableCellCollection @__ctrl) {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl1;
-            @__ctrl1 = this.@__BuildControl__control26();
+            @__ctrl1 = this.@__BuildControl__control25();
             @__ctrl.Add(@__ctrl1);
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderRow @__BuildControl__control24() {
+        private global::System.Web.UI.WebControls.TableHeaderRow @__BuildControl__control23() {
             global::System.Web.UI.WebControls.TableHeaderRow @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderRow();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            this.@__BuildControl__control25(@__ctrl.Cells);
+            this.@__BuildControl__control24(@__ctrl.Cells);
             return @__ctrl;
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control29() {
+        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control28() {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -504,7 +532,7 @@ namespace IKYS_WebParts.MaasTablolariWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control30() {
+        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control29() {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -517,7 +545,7 @@ namespace IKYS_WebParts.MaasTablolariWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control31() {
+        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control30() {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -530,7 +558,7 @@ namespace IKYS_WebParts.MaasTablolariWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control32() {
+        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control31() {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -543,7 +571,7 @@ namespace IKYS_WebParts.MaasTablolariWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control33() {
+        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control32() {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -556,7 +584,7 @@ namespace IKYS_WebParts.MaasTablolariWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control34() {
+        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control33() {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -569,7 +597,7 @@ namespace IKYS_WebParts.MaasTablolariWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control35() {
+        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control34() {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -582,7 +610,7 @@ namespace IKYS_WebParts.MaasTablolariWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control36() {
+        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control35() {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -595,7 +623,7 @@ namespace IKYS_WebParts.MaasTablolariWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control37() {
+        private global::System.Web.UI.WebControls.TableHeaderCell @__BuildControl__control36() {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -608,44 +636,44 @@ namespace IKYS_WebParts.MaasTablolariWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control28(System.Web.UI.WebControls.TableCellCollection @__ctrl) {
+        private void @__BuildControl__control27(System.Web.UI.WebControls.TableCellCollection @__ctrl) {
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl1;
-            @__ctrl1 = this.@__BuildControl__control29();
+            @__ctrl1 = this.@__BuildControl__control28();
             @__ctrl.Add(@__ctrl1);
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl2;
-            @__ctrl2 = this.@__BuildControl__control30();
+            @__ctrl2 = this.@__BuildControl__control29();
             @__ctrl.Add(@__ctrl2);
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl3;
-            @__ctrl3 = this.@__BuildControl__control31();
+            @__ctrl3 = this.@__BuildControl__control30();
             @__ctrl.Add(@__ctrl3);
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl4;
-            @__ctrl4 = this.@__BuildControl__control32();
+            @__ctrl4 = this.@__BuildControl__control31();
             @__ctrl.Add(@__ctrl4);
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl5;
-            @__ctrl5 = this.@__BuildControl__control33();
+            @__ctrl5 = this.@__BuildControl__control32();
             @__ctrl.Add(@__ctrl5);
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl6;
-            @__ctrl6 = this.@__BuildControl__control34();
+            @__ctrl6 = this.@__BuildControl__control33();
             @__ctrl.Add(@__ctrl6);
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl7;
-            @__ctrl7 = this.@__BuildControl__control35();
+            @__ctrl7 = this.@__BuildControl__control34();
             @__ctrl.Add(@__ctrl7);
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl8;
-            @__ctrl8 = this.@__BuildControl__control36();
+            @__ctrl8 = this.@__BuildControl__control35();
             @__ctrl.Add(@__ctrl8);
             global::System.Web.UI.WebControls.TableHeaderCell @__ctrl9;
-            @__ctrl9 = this.@__BuildControl__control37();
+            @__ctrl9 = this.@__BuildControl__control36();
             @__ctrl.Add(@__ctrl9);
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderRow @__BuildControl__control27() {
+        private global::System.Web.UI.WebControls.TableHeaderRow @__BuildControl__control26() {
             global::System.Web.UI.WebControls.TableHeaderRow @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderRow();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            this.@__BuildControl__control28(@__ctrl.Cells);
+            this.@__BuildControl__control27(@__ctrl.Cells);
             return @__ctrl;
         }
         
@@ -657,10 +685,10 @@ namespace IKYS_WebParts.MaasTablolariWP {
             @__ctrl1 = this.@__BuildControl__control21();
             @__ctrl.Add(@__ctrl1);
             global::System.Web.UI.WebControls.TableHeaderRow @__ctrl2;
-            @__ctrl2 = this.@__BuildControl__control24();
+            @__ctrl2 = this.@__BuildControl__control23();
             @__ctrl.Add(@__ctrl2);
             global::System.Web.UI.WebControls.TableHeaderRow @__ctrl3;
-            @__ctrl3 = this.@__BuildControl__control27();
+            @__ctrl3 = this.@__BuildControl__control26();
             @__ctrl.Add(@__ctrl3);
         }
         
@@ -729,19 +757,24 @@ namespace IKYS_WebParts.MaasTablolariWP {
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl1;
             @__ctrl1 = this.@__BuildControlCardHeader();
             @__parser.AddParsedSubObject(@__ctrl1);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n        <div class=\"card-body\">\r\n           "));
-            global::System.Web.UI.WebControls.Table @__ctrl2;
-            @__ctrl2 = this.@__BuildControlButonTable();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n        <div class=\"card-body\">\r\n\r\n            <div class=\"form-group row\">\r\n  " +
+                        "              <div class=\"form-group col-3\">\r\n                    "));
+            global::System.Web.UI.WebControls.Label @__ctrl2;
+            @__ctrl2 = this.@__BuildControl__control2();
             @__parser.AddParsedSubObject(@__ctrl2);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            <div class=\"form-group\">\r\n                <div class=\"float-end\">\r\n" +
-                        "                    "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl3;
-            @__ctrl3 = this.@__BuildControlExportTablo1ToExcelBtn();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
+            global::System.Web.UI.WebControls.DropDownList @__ctrl3;
+            @__ctrl3 = this.@__BuildControlTarihDDL();
             @__parser.AddParsedSubObject(@__ctrl3);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                </div>\r\n                "));
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl4;
-            @__ctrl4 = this.@__BuildControlTablesDiv();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                </div>\r\n            </div>\r\n\r\n            <div class=\"form-grou" +
+                        "p\">\r\n                <div class=\"float-end\">\r\n                    "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl4;
+            @__ctrl4 = this.@__BuildControlExportTablo1ToExcelBtn();
             @__parser.AddParsedSubObject(@__ctrl4);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                </div>\r\n                "));
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl5;
+            @__ctrl5 = this.@__BuildControlTablesDiv();
+            @__parser.AddParsedSubObject(@__ctrl5);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            </div>\r\n           \r\n        </div>\r\n    </div>\r\n</div>\r\n"));
         }
         

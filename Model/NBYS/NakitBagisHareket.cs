@@ -711,14 +711,24 @@ namespace Model.NBYS
             string dovizCinsiStr = string.IsNullOrEmpty(dovizCinsi)? string.Empty : string.Format(" AND DovizCinsi={0}", dovizCinsi.ReturnQuotedValue());
             string sqlString = string.Format(@"
                 
-                SELECT BagisTarihi, SUM(BagisMiktari) ToplamBagis, B.BankaGrup Banka 
+                SELECT BagisTarihi, SUM(BagisMiktari) ToplamBagis,B.HesapKodu,B.HesapAdi, B.BankaGrup Banka 
                 FROM NakitBagisHareket_Table A
 	                LEFT JOIN BankaTanim_Table B ON B.Id=A.BankaId
                 WHERE BagisTarihi={0} 
                 {1} {2}
-                GROUP BY BagisTarihi, B.BankaGrup
+                GROUP BY BagisTarihi, B.HesapKodu,B.HesapAdi, B.BankaGrup
                 ORDER BY BagisTarihi 
             ", bagisTarihi.ReturnTRDateFormat(), bankaStr,dovizCinsiStr);
+            //string sqlString = string.Format(@"
+                
+            //    SELECT BagisTarihi, SUM(BagisMiktari) ToplamBagis, B.BankaGrup Banka 
+            //    FROM NakitBagisHareket_Table A
+	           //     LEFT JOIN BankaTanim_Table B ON B.Id=A.BankaId
+            //    WHERE BagisTarihi={0} 
+            //    {1} {2}
+            //    GROUP BY BagisTarihi, B.BankaGrup
+            //    ORDER BY BagisTarihi 
+            //", bagisTarihi.ReturnTRDateFormat(), bankaStr,dovizCinsiStr);
             DataTable dataTable;
             try
             {

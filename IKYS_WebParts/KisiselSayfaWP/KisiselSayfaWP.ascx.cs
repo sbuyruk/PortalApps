@@ -132,9 +132,11 @@ namespace IKYS_WebParts.KisiselSayfaWP
                     FillHeader(personel);
                     FillKimlikTable(personel);
                     FillIsyeriTable(personel);
+                    DereceKademeBilgileriniDoldur(personel);
                     FillIletisimTable(personel);
                     FillAileTable(personel);
                     TabloOlustur(personel);
+                    DereceKademeTabloOlustur(personel);
                 }
             }
             if (personel != null)
@@ -261,10 +263,20 @@ namespace IKYS_WebParts.KisiselSayfaWP
                 IsR2H8.Text = isBilgileri.ProtokolSiraNo.ToString();
                 IsR2H9.Text = "Çalışma Durumu";
                 IsR2H10.Text = isBilgileri.CalismaDurumu == ProjeConstants.PER_CALISIYOR_INT ? ProjeConstants.PER_CALISIYOR : ProjeConstants.PER_AYRILDI;
+
+            }
+        }
+        private void DereceKademeBilgileriniDoldur(Personel personel)
+        {
+            DereceKademeDegisim dereceKademeDegisim = new DereceKademeDegisim();
+            dereceKademeDegisim = dereceKademeDegisim.SelectByPersonelId(personel.Id);
+            if (dereceKademeDegisim != null)
+            {
+
                 IsR2H11.Text = "Derece/Kademe";
-                IsR2H12.Text = isBilgileri.Derece.ToString() +"/" +isBilgileri.Kademe.ToString();
+                IsR2H12.Text = dereceKademeDegisim.Derece.ToString() + "/" + dereceKademeDegisim.Kademe.ToString();
                 IsR2H13.Text = "Derece/Kademe İlerleme Tarihi";
-                IsR2H14.Text = isBilgileri.DereceKademeIlerlemeTarihi.ConvertToDatetimeEmptyIfNull();
+                IsR2H14.Text = dereceKademeDegisim.DegisimTarihi.ConvertToDatetimeEmptyIfNull();
             }
         }
         private void FillIletisimTable(Personel personel)
@@ -1373,6 +1385,107 @@ namespace IKYS_WebParts.KisiselSayfaWP
             public string GorevinSebebi { get; set; }
             public string Yevmiye { get; set; }
             public string Sure { get; set; }
+
+        }
+        #endregion
+        #region DereceKademe Listesi
+        private void DereceKademeTabloOlustur(Personel personel)
+        {
+            var jsonData = DereceKademeTabloJson(personel); //veri çekilip json a çeviriliyor
+            var jsString = CreateDereceKademeDataTable(jsonData); //javascript kodu hazırlanıyor.
+            UtilityHelper.ScriptCalistir(jsString);
+        }
+        private string DereceKademeTabloJson(Personel personel)
+        {
+            string jSon = string.Empty;
+            try
+            {
+                List<DereceKademeListItem> list = GetDereceKademeDataList(personel);
+                var serializer = new JavaScriptSerializer();
+                jSon = serializer.Serialize(list);
+            }
+            catch (Exception exception)
+            {
+                ExceptionHelper exceptionHelper = new ExceptionHelper();
+                exceptionHelper.Exceptions.Add(exception);
+                exceptionHelper.PublishException();
+            }
+            return jSon;
+        }
+        private string CreateDereceKademeDataTable(string jsonData)
+        {
+            string tableString = @"
+             jQuery(document).ready(function () {
+                if ( jQuery.fn.DataTable.isDataTable('#DereceKademeDataTable') ) {
+                    jQuery('#DereceKademeDataTable').DataTable().destroy();
+                }
+                jQuery('#DereceKademeDataTable tbody').empty();
+                jQuery.fn.dataTable.moment('DD.MM.YYYY');//sort date
+                jQuery('#DereceKademeDataTable').DataTable({
+                    data: " + jsonData + @",
+                    pageLength: 5,
+                    columns: [
+                        { data: 'DegisimTarihi' },
+                        { data: 'Degisim' },
+                        { data: 'Derece' },
+                        { data: 'Kademe' },
+                        { data: 'Aciklama' }
+                    ],
+                    columnDefs: [
+                        { type: 'turkish', targets: [0, 1] }
+                    ],
+                    'order': [[4, 'desc']],//sort date desc
+                    'language': {
+                        'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
+                        'decimal': ',',
+                        'thousands': '.'
+                    },
+                    responsive: true,
+                    dom: 'frtip',               
+                });
+            });
+            ";
+            return tableString;
+        }
+        private List<DereceKademeListItem> GetDereceKademeDataList(Personel personel)
+        {
+            if (personel == null)
+            {
+                MessageHelper.PublishMessage("Personel bulunamadı", ProjeConstants.MESAJ_HATA);
+                return new List<DereceKademeListItem>();
+            }
+            else
+            {
+                List<DereceKademeListItem> list = new List<DereceKademeListItem>();
+                DereceKademeDegisim dereceKademe = new DereceKademeDegisim();
+                DataTable dataTable = dereceKademe.SelectAllByPersonelIdReturnDT(personel.Id);
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    string derece = row["Derece"].ReturnEmptyIfNull().ToString();
+                    string kademe = row["Kademe"].ReturnEmptyIfNull().ToString();
+                    string aciklama = row["Aciklama"].ReturnEmptyIfNull().ToString();
+                    DateTime degisimTarihi = row["DegisimTarihi"].ConvertToDatetime();
+                    DereceKademeListItem item = new DereceKademeListItem
+                    {
+                        DegisimTarihi = degisimTarihi.ConvertToDatetimeEmptyIfNull(),
+                        Degisim = row["Degisim"].ReturnEmptyIfNull().ToString(),
+                        Derece = derece,
+                        Kademe = kademe,
+                        Aciklama = aciklama
+                    };
+                    list.Add(item);
+                }
+
+                return list;
+            }
+        }
+        private class DereceKademeListItem
+        {
+            public string DegisimTarihi{ get; set; }
+            public string Degisim { get; set; }
+            public string Derece { get; set; }
+            public string Kademe { get; set; }
+            public string Aciklama { get; set; }
 
         }
         #endregion

@@ -2195,38 +2195,38 @@ namespace IKYS_WebParts.KisiselSayfaWP {
             global::System.Web.UI.UpdatePanel @__ctrl8;
             @__ctrl8 = this.@__BuildControlTableUpdatePanel();
             @__parser.AddParsedSubObject(@__ctrl8);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class=""card"">
-                <div class=""bg-secondary text-center"">
-                    <a class=""text-white"" data-bs-toggle=""collapse"" data-bs-target=""#GorevOnayDiv"" aria-expanded=""false"" aria-controls=""AileDiv"" style=""font-weight: bold"">Yurt İçi/Yurt Dışı Görev Bilgileri</a>
-                </div>
-            </div>
-            <div class=""card"">
-                <div class=""collapse"" id=""GorevOnayDiv"">
-                    <div class=""form-group"">
-                        <table id=""CustomDataTable"" class=""table table-striped row-border"" width=""100%"">
-                            <thead>
-                                <tr>
-                                    <th>Adı Soyadı</th>
-                                    <th>Görevin Sebebi</th>
-                                    <th>Gidiş Tarihi</th>
-                                    <th>Dönüş Tarihi</th>
-                                    <th>Görevin Yeri</th>
-                                    <th>Süre</th>
-                                    <th>Net Yevmiye</th>
-                                </tr>
-                            </thead>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class=""card-footer"">
-            "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n                </d" +
+                        "iv>\r\n            </div>\r\n            <div class=\"card\">\r\n                <div cl" +
+                        "ass=\"bg-secondary text-center\">\r\n                    <a class=\"text-white\" data-" +
+                        "bs-toggle=\"collapse\" data-bs-target=\"#GorevOnayDiv\" aria-expanded=\"false\" aria-c" +
+                        "ontrols=\"AileDiv\" style=\"font-weight: bold\">Yurt İçi/Yurt Dışı Görev Bilgileri</" +
+                        "a>\r\n                </div>\r\n            </div>\r\n            <div class=\"card\">\r\n" +
+                        "                <div class=\"collapse\" id=\"GorevOnayDiv\">\r\n                    <d" +
+                        "iv class=\"form-group\">\r\n                        <table id=\"CustomDataTable\" clas" +
+                        "s=\"table table-striped row-border\" width=\"100%\">\r\n                            <t" +
+                        "head>\r\n                                <tr>\r\n                                   " +
+                        " <th>Adı Soyadı</th>\r\n                                    <th>Görevin Sebebi</th" +
+                        ">\r\n                                    <th>Gidiş Tarihi</th>\r\n                  " +
+                        "                  <th>Dönüş Tarihi</th>\r\n                                    <th" +
+                        ">Görevin Yeri</th>\r\n                                    <th>Süre</th>\r\n         " +
+                        "                           <th>Net Yevmiye</th>\r\n                               " +
+                        " </tr>\r\n                            </thead>\r\n                        </table>\r\n" +
+                        "                    </div>\r\n                </div>\r\n            </div>\r\n        " +
+                        "    <div class=\"card\">\r\n                <div class=\"bg-secondary text-center\">\r\n" +
+                        "                    <a class=\"text-white\" data-bs-toggle=\"collapse\" data-bs-targ" +
+                        "et=\"#DereceKademeDiv\" aria-expanded=\"false\" aria-controls=\"DereceKademeDiv\" styl" +
+                        "e=\"font-weight: bold\">Derece/Kademe Değişim Bilgileri</a>\r\n                </div" +
+                        ">\r\n            </div>\r\n            <div class=\"card\">\r\n                <div clas" +
+                        "s=\"collapse\" id=\"DereceKademeDiv\">\r\n                    <div class=\"form-group\">" +
+                        "\r\n                        <table id=\"DereceKademeDataTable\" class=\"table table-s" +
+                        "triped row-border\" width=\"100%\">\r\n                            <thead>\r\n         " +
+                        "                       <tr>\r\n                                    <th>Değişiklik<" +
+                        "/th>\r\n                                    <th>Değişim Tarihi</th>\r\n             " +
+                        "                       <th>Derece</th>\r\n                                    <th>" +
+                        "Kademe</th>\r\n                                    <th>Açıklama</th>\r\n            " +
+                        "                    </tr>\r\n                            </thead>\r\n               " +
+                        "         </table>\r\n                    </div>\r\n                </div>\r\n         " +
+                        "   </div>\r\n        </div>\r\n        <div class=\"card-footer\">\r\n            "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl9;
             @__ctrl9 = this.@__BuildControlPersonelListesiBtn();
             @__parser.AddParsedSubObject(@__ctrl9);

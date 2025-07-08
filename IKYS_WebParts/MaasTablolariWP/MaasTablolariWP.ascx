@@ -32,9 +32,14 @@
             </h3>
         </div>
         <div class="card-body">
-           <asp:Table ID="ButonTable" runat="server" CssClass="table table-bordered">
 
-           </asp:Table>
+            <div class="form-group row">
+                <div class="form-group col-3">
+                    <asp:Label CssClass="form-label fw-semibold" runat="server">Geçerlilik Tarihi : </asp:Label>
+                    <asp:DropDownList ID="TarihDDL" runat="server" class="form-control form-select form-select-lg fw-bold text-success" OnSelectedIndexChanged="TarihDDL_SelectedIndexChanged" AutoPostBack="true" />
+                </div>
+            </div>
+
             <div class="form-group">
                 <div class="float-end">
                     <asp:LinkButton ID="ExportTablo1ToExcelBtn" runat="server" Text="Excel'e Aktar" OnClick="ExportTablo1ToExcelBtn_Click" CssClass="btn btn-success" />
@@ -42,7 +47,7 @@
                 <div class="table mb-5" id="TablesDiv" runat="server" >
                     <asp:Table ID="UcretTanimTable1" runat="server" CssClass="table table-bordered">
                         <asp:TableHeaderRow>
-                            <asp:TableHeaderCell ColumnSpan="12" CssClass="header-center">TSKGV ÜCRET TABLOSU-1</asp:TableHeaderCell>
+                            <asp:TableHeaderCell ColumnSpan="12" CssClass="header-center" runat="server" ID="Table1Title">TSKGV ÜCRET TABLOSU-1</asp:TableHeaderCell>
                         </asp:TableHeaderRow>
                         <asp:TableHeaderRow>
                             <asp:TableHeaderCell ColumnSpan="12" CssClass="header-center">DERECE</asp:TableHeaderCell>
@@ -62,7 +67,7 @@
                     <br />
                     <asp:Table ID="UcretTanimTable2" runat="server" CssClass="table table-bordered">
                         <asp:TableHeaderRow>
-                            <asp:TableHeaderCell ColumnSpan="9" CssClass="header-center">TSKGV ÜCRET TABLOSU-2 (TSK'DAN EMEKLİ PERSONEL İÇİN GEÇERLİDİR)</asp:TableHeaderCell>
+                            <asp:TableHeaderCell ColumnSpan="9" CssClass="header-center" ID="Table2Title" runat="server">TSKGV ÜCRET TABLOSU-2 (TSK'DAN EMEKLİ PERSONEL İÇİN GEÇERLİDİR)</asp:TableHeaderCell>
                         </asp:TableHeaderRow>
                         <asp:TableHeaderRow>
                             <asp:TableHeaderCell ColumnSpan="9" CssClass="header-center">DERECE</asp:TableHeaderCell>

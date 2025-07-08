@@ -70,6 +70,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IKYS\MaasHareket.cs" />
+    <Compile Include="IKYS\DereceKademeDegisim.cs" />
     <Compile Include="IKYS\UcretTanim.cs" />
     <Compile Include="IKYS\Harcirah.cs" />
     <Compile Include="IKYS\EskiPersonelGorevTanim.cs" />

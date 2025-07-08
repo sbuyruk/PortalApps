@@ -174,8 +174,7 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP {
             this.BankaDDL = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "BankaDDL";
-            @__ctrl.CssClass = "form-control small";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: auto");
+            @__ctrl.CssClass = "form-control form-select form-select-lg";
             @__ctrl.AutoPostBack = true;
             @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.BankaDDL_SelectedIndexChanged);
             @__ctrl.SelectedIndexChanged += new System.EventHandler(this.BankaDDL_SelectedIndexChanged);
@@ -191,8 +190,7 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP {
             this.DovizCinsiDDL = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "DovizCinsiDDL";
-            @__ctrl.CssClass = "form-control small";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: auto");
+            @__ctrl.CssClass = "form-control form-select form-select-lg";
             @__ctrl.AutoPostBack = true;
             @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.DovizCinsiDDLIli_SelectedIndexChanged);
             @__ctrl.SelectedIndexChanged += new System.EventHandler(this.DovizCinsiDDLIli_SelectedIndexChanged);
@@ -223,9 +221,14 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP {
                         <table id=""CustomDataTable"" class=""table table-striped table-bordered"" width=""100%"">
                             <thead>
                                 <tr>
-                                    <th>Banka</th>
+                                    <th>Hesap Kodu</th>
+                                    <th>Hesap Adı</th>
+                                    <th>Fatura No</th>
+                                    <th>Açıklama</th>
+                                    <th>Para Birimi</th>
                                     <th>Bağış Tutarı</th>
-                                    <th>Bağış Tarihi</th>
+                                    <th></th>
+                                    <th>Bağış Tutarı(Doviz)</th>
                                 </tr>
                             </thead>
                         </table>
@@ -371,8 +374,8 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP {
             @__ctrl5 = this.@__BuildControlBagisTarihiTxt();
             @__parser.AddParsedSubObject(@__ctrl5);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                    <div class=\"col-2 form-group \">" +
-                        "\r\n                        <label for=\"BankaDDL\" class=\"col-form-label font-weigh" +
-                        "t-bold\">Banka: </label>\r\n                        "));
+                        "\r\n                        <label for=\"BankaDDL\" class=\"col-form-label fw-bold\">B" +
+                        "anka: </label>\r\n                        "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl6;
             @__ctrl6 = this.@__BuildControlBankaDDL();
             @__parser.AddParsedSubObject(@__ctrl6);

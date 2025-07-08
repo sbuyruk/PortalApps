@@ -337,10 +337,24 @@ namespace IKYS_WebParts.PersonelGirisiWP
                     FillIzinTalepleri(personel);
                     FillDigerIzinlerTable(personel);
                 }
+                DereceKademeBilgileriniDoldur(personel);
             }
 
 
         }
+
+        private void DereceKademeBilgileriniDoldur(Personel personel)
+        {
+            DereceKademeDegisim dereceKademeDegisim = new DereceKademeDegisim();
+            dereceKademeDegisim=dereceKademeDegisim.SelectByPersonelId(personel.Id);
+            if (dereceKademeDegisim != null)
+            {
+                DereceTxt.Text = dereceKademeDegisim.Derece.ToString();
+                KademeTxt.Text = dereceKademeDegisim.Kademe.ToString();
+                DereceKademeIlerlemeTarihiTxt.Value = dereceKademeDegisim.DegisimTarihi.ConvertToDatetimeEmptyIfNull();
+            }
+        }
+
         private void FillIsBilgileri(Personel personel, IsBilgileri isb)
         {
             //IsBilgileri isb = new IsBilgileri();
@@ -386,9 +400,6 @@ namespace IKYS_WebParts.PersonelGirisiWP
             VakifOncesiPrimGunSayisiTxt.Text = isb.VakifOncesiPrimGunSayisi.ReturnEmptyIfNull().ToString();
             //VakifOncesiPrimGunSayisiTxt.Enabled = !(personel.Asker_sivil == ProjeConstants.PER_ASKER_INT);
 
-            UtilityHelper.SetDDLValue(DereceDDL,isb.Derece.ToString());
-            UtilityHelper.SetDDLValue(KademeDDL,isb.Kademe.ToString());
-            DereceKademeIlerlemeTarihiTxt.Value = isb.DereceKademeIlerlemeTarihi.ConvertToDatetimeEmptyIfNull();
         }
         private void FillKadrosuzIsBilgileri(Personel personel, IsBilgileri isb)
         {
@@ -1283,8 +1294,6 @@ namespace IKYS_WebParts.PersonelGirisiWP
             FillIlData();
             TahsiliDDLDoldur();
             PersonelTipiDDLDoldur();
-            DereceDDLDoldur();
-            KademeDDLDoldur();
         }
         private void FillGorevTanimDDL()
         {
@@ -1482,36 +1491,6 @@ namespace IKYS_WebParts.PersonelGirisiWP
                 int tipiInt = (int)item;
                 string displayName = UtilityHelper.GetEnumDisplayName(item);
                 PersonelTipiDDL.Items.Add(new ListItem(displayName, tipiInt.ToString()));
-            }
-        }
-        private void DereceDDLDoldur()
-        {
-            DereceDDL.Items.Clear();
-            UcretTanim ucretTanim = new UcretTanim();
-            DataTable dataTable = ucretTanim.SelectDerece();
-            if (dataTable != null)
-            {
-                foreach (DataRow row in dataTable.Rows)
-                {
-                    string derece = row["Derece"].ReturnZeroIfNull().ToString();
-                    string unvan = row["Unvan"].ReturnZeroIfNull().ToString();
-                    DereceDDL.Items.Add(new ListItem(derece + " - " + unvan , derece));
-                }
-            }
-        }
-        private void KademeDDLDoldur()
-        {
-            KademeDDL.Items.Clear();
-            UcretTanim ucretTanim = new UcretTanim();
-            int derece= DereceDDL.SelectedItem.Value.ConvertToInt();
-            DataTable dataTable = ucretTanim.SelectKademe(derece);
-            if (dataTable != null)
-            {
-                foreach (DataRow row in dataTable.Rows)
-                {
-                    string kademe = row["Kademe"].ReturnZeroIfNull().ToString();
-                    KademeDDL.Items.Add(new ListItem(" - " + kademe + " -",kademe));
-                }
             }
         }
         protected void UpdateKimlikBtn_Click(object sender, EventArgs e)
@@ -1741,11 +1720,6 @@ namespace IKYS_WebParts.PersonelGirisiWP
                     isBilgileri.VakifOncesiPrimGunSayisi = VakifOncesiPrimGunSayisiTxt.Text.ConvertToInt();
                     isBilgileri.EmeklilikTarihi = EmeklilikTarTxt.Value.ConvertToDatetime();
                     isBilgileri.IzinDonemiBasTar = IzinDonemiBasTarTxt.Value.ConvertToDatetime();
-                    if (DereceDDL.SelectedItem != null)
-                        isBilgileri.Derece=DereceDDL.SelectedItem.Value.ConvertToInt();
-                    if(KademeDDL.SelectedItem != null)
-                        isBilgileri.Kademe=KademeDDL.SelectedItem.Value.ConvertToInt();
-                    isBilgileri.DereceKademeIlerlemeTarihi = DereceKademeIlerlemeTarihiTxt.Value.ConvertToDatetime();
                     isBilgileri.Aciklama = IsBilgileriAciklamaTxt.Text;
                     isBilgileri.Degistiren = CurrentUserName;
                     isSaved = isBilgileri.Update();

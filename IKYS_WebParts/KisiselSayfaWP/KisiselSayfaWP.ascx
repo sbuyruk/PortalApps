@@ -282,6 +282,28 @@
                     </div>
                 </div>
             </div>
+            <div class="card">
+                <div class="bg-secondary text-center">
+                    <a class="text-white" data-bs-toggle="collapse" data-bs-target="#DereceKademeDiv" aria-expanded="false" aria-controls="DereceKademeDiv" style="font-weight: bold">Derece/Kademe Değişim Bilgileri</a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="collapse" id="DereceKademeDiv">
+                    <div class="form-group">
+                        <table id="DereceKademeDataTable" class="table table-striped row-border" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Değişiklik</th>
+                                    <th>Değişim Tarihi</th>
+                                    <th>Derece</th>
+                                    <th>Kademe</th>
+                                    <th>Açıklama</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="card-footer">
             <asp:LinkButton CssClass="btn btn-outline-secondary float-end mr-2" ID="PersonelListesiBtn" runat="server" Text="Personel Listesi" CausesValidation="false" OnClick="PersonelListesiBtn_Click" />

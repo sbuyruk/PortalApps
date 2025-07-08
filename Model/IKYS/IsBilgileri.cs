@@ -25,9 +25,6 @@ namespace Model.IKYS
         public DateTime SGKBasTar { get; set; }
         public int VakifOncesiPrimGunSayisi { get; set; }
         public DateTime EmeklilikTarihi { get; set; }
-        public int Derece { get; set; }
-        public int Kademe { get; set; }
-        public DateTime DereceKademeIlerlemeTarihi { get; set; }
         public string Aciklama { get; set; }
 
         public override T Select<T>(int id)

@@ -3251,12 +3251,12 @@ namespace MTS_WebParts.FaaliyetGirisiWP {
                     "r(\'getDate\'));\r\n            newDate.setDate(newDate.getDate());\r\n\r\n        });\r\n" +
                     "\r\n\r\n    }\r\n</script>\r\n\r\n\r\n<script type=\"text/javascript\">\r\n    function OpenSilM" +
                     "odal() {\r\n        var myModalInstance = bootstrap.Modal.getOrCreateInstance(docu" +
-                    "ment.getElementById(\'ModalSilDiv\'));\n        myModalInstance.show();\r\n    }\r\n   " +
-                    " function KatilimciSecimiModal() {\r\n        var myModalInstance = bootstrap.Moda" +
-                    "l.getOrCreateInstance(document.getElementById(\'KatilimciSecimiModal\'));\n        " +
-                    "myModalInstance.show();\r\n    }\r\n    $(\"#KatilimciSecimiModal\").draggable({\r\n    " +
-                    "    handle: \".modal-dialog\"\r\n    });\r\n    function KatilimciSecildiBtnClick(kati" +
-                    "limciId, faaliyetId) {\r\n        document.getElementById(\'");
+                    "ment.getElementById(\'ModalSilDiv\'));\r\n        myModalInstance.show();\r\n    }\r\n  " +
+                    "  function KatilimciSecimiModal() {\r\n        var myModalInstance = bootstrap.Mod" +
+                    "al.getOrCreateInstance(document.getElementById(\'KatilimciSecimiModal\'));\r\n      " +
+                    "  myModalInstance.show();\r\n    }\r\n    $(\"#KatilimciSecimiModal\").draggable({\r\n  " +
+                    "      handle: \".modal-dialog\"\r\n    });\r\n    function KatilimciSecildiBtnClick(ka" +
+                    "tilimciId, faaliyetId) {\r\n        document.getElementById(\'");
                          @__w.Write( paramFaaliyetKatilimciIdLbl.ClientID);
 
             @__w.Write("\').value = katilimciId;\r\n        document.getElementById(\'");

@@ -198,29 +198,71 @@ namespace Model.NBYS
         }
         public DataTable SelectBagisciGroupByBagisAdediReturnDataTable(decimal bronzMadalyaMiktari)
         {
-            string sqlString = string.Format(@"
-                SELECT  A.BagisciId NakitBagisciId,A.ArmaganId
-                    ,COUNT(A.Id) Adet, SUM(A.BagisMiktari) Toplam, MAX(A.BagisTarihi) SonBagisTarihi
-                    ,B.Adi, B.Soyadi
-                FROM NakitBagisHareket_Table A
-	                LEFT JOIN NakitBagisci_Table B ON B.Id=A.BagisciId
-                WHERE B.Adi NOT Like '%{0}%' AND A.BagisTarihi > {1}
-                Group By A.BagisciId,A.ArmaganId,B.Adi, B.Soyadi 
-                HAVING  SUM(A.BagisMiktari) >= {2} AND (A.ArmaganId=0 OR COUNT(A.Id) > 1 )
-	                AND MAX(A.BagisTarihi) > DATEADD(MONTH, -6, GETDATE())
-	                Order By SUM(A.BagisMiktari),COUNT(A.Id) Desc,A.BagisciId,B.Adi
+            string sqlString = string.Format(
+                @"
+                SELECT  
+                    A.BagisciId AS NakitBagisciId,
+                    COUNT(A.Id) AS Adet,
+                    SUM(A.BagisMiktari) AS Toplam,
+                    MAX(A.BagisTarihi) AS SonBagisTarihi,
+                    B.Adi,
+                    B.Soyadi
+                FROM 
+                    NakitBagisHareket_Table A
+                    LEFT JOIN NakitBagisci_Table B ON B.Id = A.BagisciId
+                    
+                WHERE 
+                    B.Adi NOT Like '%{0}%' 
+                    AND A.BagisTarihi > {1}
+                    
+                GROUP BY 
+                    A.BagisciId,
+                    B.Adi,
+                    B.Soyadi
+                HAVING  
+                    SUM(A.BagisMiktari) >= {2}
+                    AND COUNT(A.Id) > 1
+                    AND MAX(A.BagisTarihi) BETWEEN DATEADD(MONTH, {3}, GETDATE()) 
+                            AND EOMONTH(GETDATE(), -1)
+                    AND NOT EXISTS (
+                        SELECT 1
+                        FROM Armagan_Table C
+                        WHERE C.BagisciId = A.BagisciId
+                            AND C.ArmaganTanimId IN (2, 3, 4)
+                            AND C.BagisciId IS NOT NULL
+                    )
+                ORDER BY 
+                    Toplam DESC,
+                    Adet DESC,
+                    B.Adi
 
-            ", ProjeConstants.NAKITBAGISCI_BILINMEYEN,
-                ProjeConstants.COKBAGISYAPAN_BASLAMATARIHI.ReturnQuotedValue(), 
-                bronzMadalyaMiktari.ToString().Replace(",", ".").ReturnQuotedValue());
+                ", ProjeConstants.NAKITBAGISCI_BILINMEYEN,
+                ProjeConstants.COKBAGISYAPAN_BASLAMATARIHI.ReturnQuotedValue(),
+                bronzMadalyaMiktari.ToString().Replace(",", "."),ProjeConstants.COKBAGISYAPAN_SONBAGISI_KAC_AY_ONCE_YAPTI
+                );
+            //string sqlString = string.Format(@"
+            //    SELECT  A.BagisciId NakitBagisciId,A.ArmaganId
+            //        ,COUNT(A.Id) Adet, SUM(A.BagisMiktari) Toplam, MAX(A.BagisTarihi) SonBagisTarihi
+            //        ,B.Adi, B.Soyadi
+            //    FROM NakitBagisHareket_Table A
+            //     LEFT JOIN NakitBagisci_Table B ON B.Id=A.BagisciId
+            //    WHERE B.Adi NOT Like '%{0}%' AND A.BagisTarihi > {1}
+            //    Group By A.BagisciId,A.ArmaganId,B.Adi, B.Soyadi 
+            //    HAVING  SUM(A.BagisMiktari) >= {2} AND (A.ArmaganId=0 OR COUNT(A.Id) > 1 )
+            //     AND MAX(A.BagisTarihi) > DATEADD(MONTH, -6, GETDATE())
+            //     Order By SUM(A.BagisMiktari),COUNT(A.Id) Desc,A.BagisciId,B.Adi
+
+            //", ProjeConstants.NAKITBAGISCI_BILINMEYEN,
+            //    ProjeConstants.COKBAGISYAPAN_BASLAMATARIHI.ReturnQuotedValue(), 
+            //    bronzMadalyaMiktari.ToString().Replace(",", ".").ReturnQuotedValue());
 
 
             //string sqlString1 = string.Format(@"
             //    SELECT A.BagisciId NakitBagisciId
             //        ,COUNT(A.Id) Adet, SUM(A.BagisMiktari) Toplam, MAX(A.BagisTarihi) SonBagisTarihi
             //        ,B.Adi, B.Soyadi, B.TuzelKisi
-	           // FROM NakitBagisHareket_Table A
-	           //     LEFT JOIN NakitBagisci_Table B ON B.Id=A.BagisciId
+            // FROM NakitBagisHareket_Table A
+            //     LEFT JOIN NakitBagisci_Table B ON B.Id=A.BagisciId
             //        LEFT JOIN Armagan_Table C ON C.Id=A.ArmaganId AND C.ArmaganTanimId IN ({0})
             //    WHERE B.Id IS NOT NULL AND C.Id is NULL AND B.Adi!={1}
             //        AND A.BagisTarihi > {2}

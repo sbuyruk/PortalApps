@@ -237,11 +237,11 @@ namespace IKYS_WebParts.PersonelGirisiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.DropDownList DereceDDL;
+        protected global::System.Web.UI.WebControls.TextBox DereceTxt;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.DropDownList KademeDDL;
+        protected global::System.Web.UI.WebControls.TextBox KademeTxt;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -1265,13 +1265,15 @@ namespace IKYS_WebParts.PersonelGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.DropDownList @__BuildControlDereceDDL() {
-            global::System.Web.UI.WebControls.DropDownList @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.DropDownList();
-            this.DereceDDL = @__ctrl;
+        private global::System.Web.UI.WebControls.TextBox @__BuildControlDereceTxt() {
+            global::System.Web.UI.WebControls.TextBox @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.TextBox();
+            this.DereceTxt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "DereceDDL";
-            @__ctrl.CssClass = "form-control form-select form-select-lg";
+            @__ctrl.ID = "DereceTxt";
+            @__ctrl.CssClass = "form-control";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
+            @__ctrl.ReadOnly = true;
             return @__ctrl;
         }
         
@@ -1284,10 +1286,10 @@ namespace IKYS_WebParts.PersonelGirisiWP {
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-group m-0");
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                                <label class=\"form-label fw-sem" +
-                        "ibold\" for=\"DereceDDL\">Derece</label>\r\n                                         " +
+                        "ibold\" for=\"DereceTxt\">Derece</label>\r\n                                         " +
                         "       "));
-            global::System.Web.UI.WebControls.DropDownList @__ctrl1;
-            @__ctrl1 = this.@__BuildControlDereceDDL();
+            global::System.Web.UI.WebControls.TextBox @__ctrl1;
+            @__ctrl1 = this.@__BuildControlDereceTxt();
             @__parser.AddParsedSubObject(@__ctrl1);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                            "));
             return @__ctrl;
@@ -1296,13 +1298,15 @@ namespace IKYS_WebParts.PersonelGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.DropDownList @__BuildControlKademeDDL() {
-            global::System.Web.UI.WebControls.DropDownList @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.DropDownList();
-            this.KademeDDL = @__ctrl;
+        private global::System.Web.UI.WebControls.TextBox @__BuildControlKademeTxt() {
+            global::System.Web.UI.WebControls.TextBox @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.TextBox();
+            this.KademeTxt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "KademeDDL";
-            @__ctrl.CssClass = "form-control form-select form-select-lg";
+            @__ctrl.ID = "KademeTxt";
+            @__ctrl.CssClass = "form-control";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
+            @__ctrl.ReadOnly = true;
             return @__ctrl;
         }
         
@@ -1315,10 +1319,10 @@ namespace IKYS_WebParts.PersonelGirisiWP {
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-group m-0");
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                                <label class=\"form-label fw-sem" +
-                        "ibold\" for=\"KademeDDL\">Kademe</label>\r\n                                         " +
+                        "ibold\" for=\"KademeTxt\">Kademe</label>\r\n                                         " +
                         "       "));
-            global::System.Web.UI.WebControls.DropDownList @__ctrl1;
-            @__ctrl1 = this.@__BuildControlKademeDDL();
+            global::System.Web.UI.WebControls.TextBox @__ctrl1;
+            @__ctrl1 = this.@__BuildControlKademeTxt();
             @__parser.AddParsedSubObject(@__ctrl1);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                            "));
             return @__ctrl;
@@ -1348,8 +1352,8 @@ namespace IKYS_WebParts.PersonelGirisiWP {
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-group m-0");
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                                <label class=\"form-label fw-sem" +
-                        "ibold\" for=\"DereceKademeIlerlemeTarihiTxt\">Der/Kad. İlerleme Tar.</label>\r\n     " +
-                        "                                           "));
+                        "ibold\" for=\"DereceKademeIlerlemeTarihiTxt\">Der/Kad. Baş. Tar.</label>\r\n         " +
+                        "                                       "));
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl1;
             @__ctrl1 = this.@__BuildControlDereceKademeIlerlemeTarihiTxt();
             @__parser.AddParsedSubObject(@__ctrl1);

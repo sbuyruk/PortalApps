@@ -36,22 +36,21 @@ namespace IKYS_WebParts.MaasArtisiWP
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            ButtonTableDoldur();
-            UcretTanim ucretTanim = new UcretTanim();
-            DateTime maxBitisTarihi = ucretTanim.SelectMaxBitisTarihi();
-            decimal agi = ucretTanim.SelectAgi(maxBitisTarihi);
-            AgiTxt.Text = agi.ToString();
-            ArtisYuzdesiTxt.Text = "10,00";
-            BaslangicTarihiTxt.Text = maxBitisTarihi.AddDays(1).ConvertToDatetimeEmptyIfNull();
-            BitisTarihiTxt.Text = maxBitisTarihi.AddMonths(6).ConvertToDatetimeEmptyIfNull();
+            if (!Page.IsPostBack)
+            {
+                UcretTanim ucretTanim = new UcretTanim();
+                DateTime maxBitisTarihi = ucretTanim.SelectMaxBitisTarihi();
+                decimal agi = ucretTanim.SelectAgi(maxBitisTarihi);
+                AgiTxt.Text = agi.ToString();
+                ArtisYuzdesiTxt.Text = "10,00";
+                DateTime baslangicTarihi = maxBitisTarihi.AddDays(1);
+                BaslangicTarihiTxt.Text = baslangicTarihi.ConvertToDatetimeEmptyIfNull();
+                BitisTarihiTxt.Text = baslangicTarihi.AddMonths(6).AddDays(-1).ConvertToDatetimeEmptyIfNull(); 
+            }
         }
 
         #region Methods
-        private void ButtonTableDoldur()
-        {
-            UcretTanim ucretTanim = new UcretTanim();
-            List<Array> list = ucretTanim.SelectArtisTarihleri();
-        }
+
         private void KaydetModalAc()
         {
 
@@ -89,30 +88,33 @@ namespace IKYS_WebParts.MaasArtisiWP
             try
             {
                 UcretTanim ucretTanim = new UcretTanim();
-                DateTime maxBaslangicTarihi = ucretTanim.SelectMaxBaslangicTarihi();
-                DateTime maxBitisTarihi = ucretTanim.SelectMaxBitisTarihi();
+
                 DateTime yeniBaslangicTarihi = BaslangicTarihiTxt.Text.ConvertToDatetime();
                 DateTime yeniBitisTarihi = BitisTarihiTxt.Text.ConvertToDatetime();
 
-                List<UcretTanim> list = ucretTanim.SelectByBaslangicTarihiBitistarihi(maxBaslangicTarihi, maxBitisTarihi);
+                List<UcretTanim> list = ucretTanim.SelectByMaxGrupId();
                 decimal artis = ArtisYuzdesiTxt.Text.ConvertToDecimal();
                 foreach (UcretTanim t in list)
                 {
                     decimal zamliAltUcret = t.AltUcret + t.AltUcret * artis / 100;
-                    decimal zamliUstUcret = t.UstUcret + t.UstUcret + artis / 100;
+                    decimal zamliUstUcret = t.UstUcret + t.UstUcret * artis / 100;
                     decimal zamliAskerUcret = t.AskerUcret + t.AskerUcret * artis / 100;
 
                     UcretTanim yeniUcretTanim = new UcretTanim();
                     yeniUcretTanim.AltUcret = zamliAltUcret;
+                    yeniUcretTanim.UstUcret = zamliUstUcret;
                     yeniUcretTanim.AskerUcret = zamliAskerUcret;
+                    yeniUcretTanim.Agi = AgiTxt.Text.ConvertToDecimal();
                     yeniUcretTanim.Derece = t.Derece;
                     yeniUcretTanim.Kademe = t.Kademe;
                     yeniUcretTanim.Unvan = t.Unvan;
                     yeniUcretTanim.BaslangicTarihi = yeniBaslangicTarihi;
                     yeniUcretTanim.BitisTarihi = yeniBitisTarihi;
+                    yeniUcretTanim.GrupId = t.GrupId + 1;
                     int id = yeniUcretTanim.Save();
                 }
                 MessageHelper.PublishMessage("Tablolar oluşturuldu", ProjeConstants.MESAJ_BASARILI, 2000);
+                RedirectToPage(ProjeConstants.PAGE_MAAS_TABLOLARI );
             }
             catch (Exception ex)
             {

@@ -12,6 +12,7 @@ namespace Model.IKYS
     public class UcretTanim : ParentClass
     {
 
+        public int GrupId { get; set; }
         public int Derece { get; set; }
         public int Kademe { get; set; }
         public string Unvan { get; set; }
@@ -20,6 +21,7 @@ namespace Model.IKYS
         public decimal AskerUcret { get; set; }
         public DateTime BaslangicTarihi{ get; set; }
         public DateTime BitisTarihi{ get; set; }
+        public decimal Agi{ get; set; }
         public override T Select<T>(int id)
         {
             GenericEntity<UcretTanim> genericEntity = new GenericEntity<UcretTanim>(ProjeConstants.SQL_SELECT);
@@ -144,31 +146,53 @@ namespace Model.IKYS
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
         } 
-        public List<UcretTanim> SelectByKademe(DateTime tarih, int kademe)
+        public List<UcretTanim> SelectByKademe(int grupId, int kademe)
         {
+            
             string sqlString = string.Format(@"
                 SELECT *
                 FROM UcretTanim_Table
-                WHERE BaslangicTarihi<={0} AND BitisTarihi>={0} AND Kademe={1} 
-                ORDER BY Derece,Kademe", tarih.ReturnTRDateFormat(), kademe);
+                WHERE GrupId={0} AND Kademe={1} 
+                ORDER BY Derece,Kademe", grupId, kademe);
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<UcretTanim> list = ToList<UcretTanim>(dataTable);
 
             return (list);
         } 
-        public List<UcretTanim> SelectByBaslangicTarihiBitistarihi(DateTime baslangicTarihi,DateTime bitisTarihi)
+        public List<UcretTanim> SelectByMaxGrupId()
         {
             string sqlString = string.Format(@"
                 SELECT *
                 FROM UcretTanim_Table
-                WHERE  BaslangicTarihi>={0} AND BitisTarihi<={1} 
-                ORDER BY Derece,Kademe", baslangicTarihi.ReturnTRDateFormat(),bitisTarihi.ReturnTRDateFormat());
+                WHERE GrupId = (
+                    SELECT MAX(GrupId) FROM UcretTanim_Table
+                )
+                ORDER BY Derece,Kademe");
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<UcretTanim> list = ToList<UcretTanim>(dataTable);
 
             return (list);
+        } 
+        public DataTable SelectByGrup()
+        {
+            string sqlString = string.Format(@"
+                SELECT GrupId, 
+                    MAX(BaslangicTarihi) AS BaslangicTarihi,
+                    MAX(BitisTarihi) AS BitisTarihi
+                FROM 
+                    UcretTanim_Table
+                WHERE 
+                    BaslangicTarihi IS NOT NULL
+                GROUP BY GrupId
+                ORDER BY GrupId DESC
+
+                ");
+
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+
+            return (dataTable);
         }
         public DataTable SelectDerece()
         {
@@ -182,30 +206,33 @@ namespace Model.IKYS
             return dataTable;
         }
 
-        public DataTable SelectKademe(int derece)
+        public DataTable SelectKademe(int derece,int grupId)
         {
             string sqlString = string.Format(@"
                 SELECT DISTINCT Kademe
                 FROM UcretTanim_Table
-                WHERE Derece={0}
-                ORDER BY Kademe",derece);
+                WHERE Derece={0} AND GrupId={1}
+                ORDER BY Kademe",derece,grupId);
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
 
             return dataTable;
         }
 
-        public DataTable SelectMaasListesi()
+        public DataTable SelectMaasListesi(int grupId, DateTime tarih)
         {
             string sqlString = string.Format(@"
-                SELECT 
+                SELECT
+                    A.Id AS PersonelId,
                     A.Adi,
                     A.Soyadi,
                     B.KisaAdi Unvan,
-                    C.Derece,
+                    E.Derece,
+                    E.Kademe,
                     C.ProtokolSiraNo,
-                    C.Kademe,
                     C.DereceKademeIlerlemeTarihi,
+                    {0} GrupId,   
+                    D.Agi,
                     CASE 
                         WHEN A.Asker_Sivil = 1 THEN D.AskerUcret
                         ELSE D.UstUcret
@@ -213,24 +240,18 @@ namespace Model.IKYS
                 FROM Personel_Table A
                 LEFT JOIN GorevTanim_Table B ON B.PersonelId = A.Id
                 LEFT JOIN IsBilgileri_Table C ON C.PersonelId = A.Id
-                LEFT JOIN UcretTanim_Table D ON D.Derece = C.Derece AND D.Kademe = C.Kademe
+                LEFT JOIN UcretTanim_Table D ON D.Derece = C.Derece AND D.Kademe = C.Kademe AND D.GrupId={0}
+				LEFT JOIN DereceKademeDegisim_Table E ON E.PersonelId=A.Id AND E.DegisimTarihi = (SELECT Max(DegisimTarihi) 
+					FROM DereceKademeDegisim_Table
+					WHERE PersonelId=A.Id AND DegisimTarihi <= {1})
                 WHERE C.CalismaDurumu = 1 AND Tipi=1 
                 ORDER BY C.ProtokolSiraNo;
 
-            ");
+            ", grupId,tarih.ReturnTRDateFormat());
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return dataTable;
         }
-
-        public DateTime SelectMaxBaslangicTarihi()
-        {
-            string sqlString = string.Format(@"
-                SELECT MAX(BaslangicTarihi) from UcretTanim_Table
-            ");
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            DateTime maxTarih = dataTable.Rows[0][0].ConvertToDatetime();
-            return maxTarih;
-        }        
+        
         public DateTime SelectMaxBitisTarihi()
         {
             string sqlString = string.Format(@"
@@ -250,9 +271,16 @@ namespace Model.IKYS
             return agi;
         }
 
-        public List<Array> SelectArtisTarihleri()
+        public int SelectGrupIdByTarih(DateTime tarih)
         {
-            throw new NotImplementedException();
+            string sqlString = string.Format(@"
+                SELECT MAX(GrupId) GrupId from UcretTanim_Table 
+                WHERE BaslangicTarihi <={0} AND BitisTarihi>={0}
+            ", tarih.ReturnTRDateFormat());
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            int grupId = dataTable.Rows[0][0].ConvertToInt();
+            return grupId;
         }
+
     }
 }

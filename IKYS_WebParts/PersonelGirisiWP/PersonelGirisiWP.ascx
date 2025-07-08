@@ -315,15 +315,15 @@
                                         </div>
                                         <div class="col">
                                             <div class="form-group m-0" runat="server">
-                                                <label class="form-label fw-semibold" for="DereceDDL">Derece</label>
-                                                <asp:DropDownList ID="DereceDDL" runat="server" CssClass="form-control form-select form-select-lg"></asp:DropDownList>
+                                                <label class="form-label fw-semibold" for="DereceTxt">Derece</label>
+                                                <asp:TextBox ID="DereceTxt" runat="server" CssClass="form-control" type="text" ReadOnly="true"></asp:TextBox>
                                             </div>
                                             <div class="form-group m-0" runat="server">
-                                                <label class="form-label fw-semibold" for="KademeDDL">Kademe</label>
-                                                <asp:DropDownList ID="KademeDDL" runat="server" CssClass="form-control form-select form-select-lg"></asp:DropDownList>
+                                                <label class="form-label fw-semibold" for="KademeTxt">Kademe</label>
+                                                <asp:TextBox ID="KademeTxt" runat="server" CssClass="form-control" type="text" ReadOnly="true"></asp:TextBox>
                                             </div>
                                             <div class="form-group m-0" runat="server">
-                                                <label class="form-label fw-semibold" for="DereceKademeIlerlemeTarihiTxt">Der/Kad. İlerleme Tar.</label>
+                                                <label class="form-label fw-semibold" for="DereceKademeIlerlemeTarihiTxt">Der/Kad. Baş. Tar.</label>
                                                 <input runat="server" type="text" id="DereceKademeIlerlemeTarihiTxt" name="DereceKademeIlerlemeTarihiTxt" class="form-control DateTimePickerV1" readonly="readonly" />
                                             </div>
 

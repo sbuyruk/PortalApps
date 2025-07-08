@@ -33,11 +33,11 @@
                     </div>
                     <div class="col-2 form-group ">
                         <label for="BankaDDL" class="col-form-label fw-bold">Banka: </label>
-                        <asp:DropDownList ID="BankaDDL" runat="server" CssClass="form-control small" Style="height: auto" AutoPostBack="True" OnSelectedIndexChanged="BankaDDL_SelectedIndexChanged"></asp:DropDownList>
+                        <asp:DropDownList ID="BankaDDL" runat="server" CssClass="form-control form-select form-select-lg" AutoPostBack="True" OnSelectedIndexChanged="BankaDDL_SelectedIndexChanged"></asp:DropDownList>
                     </div>
                     <div class="col-2 form-group ">
                         <label class="col-form-label">Para Birimi</label>
-                        <asp:DropDownList ID="DovizCinsiDDL" runat="server" CssClass="form-control small" Style="height: auto" AutoPostBack="True" OnSelectedIndexChanged="DovizCinsiDDLIli_SelectedIndexChanged"></asp:DropDownList>
+                        <asp:DropDownList ID="DovizCinsiDDL" runat="server" CssClass="form-control form-select form-select-lg" AutoPostBack="True" OnSelectedIndexChanged="DovizCinsiDDLIli_SelectedIndexChanged"></asp:DropDownList>
                     </div>
                 </div>
             </div>
@@ -47,9 +47,14 @@
                         <table id="CustomDataTable" class="table table-striped table-bordered" width="100%">
                             <thead>
                                 <tr>
-                                    <th>Banka</th>
+                                    <th>Hesap Kodu</th>
+                                    <th>Hesap Adı</th>
+                                    <th>Fatura No</th>
+                                    <th>Açıklama</th>
+                                    <th>Para Birimi</th>
                                     <th>Bağış Tutarı</th>
-                                    <th>Bağış Tarihi</th>
+                                    <th></th>
+                                    <th>Bağış Tutarı(Doviz)</th>
                                 </tr>
                             </thead>
                         </table>

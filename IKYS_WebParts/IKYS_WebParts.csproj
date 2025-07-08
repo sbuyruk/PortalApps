@@ -146,6 +146,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>BirimTanimEditWP.ascx</DependentUpon>
     </Compile>
+    <Compile Include="DereceKademeListesiWP\DereceKademeListesiWP.ascx.cs">
+      <DependentUpon>DereceKademeListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DereceKademeListesiWP\DereceKademeListesiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DereceKademeListesiWP.ascx</DependentUpon>
+    </Compile>
     <Compile Include="EgitimGirisiWP\EgitimGirisiWP.ascx.cs">
       <DependentUpon>EgitimGirisiWP.ascx</DependentUpon>
     </Compile>
@@ -467,6 +475,10 @@
     <None Include="BirimTanimEditWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{5348aa0d-7372-4a5c-878c-b0458146a6d3}</SharePointProjectItemId>
     </None>
+    <None Include="DereceKademeListesiWP\DereceKademeListesiWP.webpart" />
+    <None Include="DereceKademeListesiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{331e635d-2af0-4415-8c29-06b157af1df0}</SharePointProjectItemId>
+    </None>
     <None Include="EgitimGirisiWP\EgitimGirisiWP.webpart" />
     <None Include="EgitimGirisiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{9afecdc2-6ff9-4b32-ab2a-f5d7a30d9ca8}</SharePointProjectItemId>
@@ -653,6 +665,11 @@
       <LastGenOutput>BirimTanimEditWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="BirimTanimEditWP\Elements.xml" />
+    <Content Include="DereceKademeListesiWP\DereceKademeListesiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>DereceKademeListesiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="DereceKademeListesiWP\Elements.xml" />
     <Content Include="EgitimGirisiWP\EgitimGirisiWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>EgitimGirisiWP.ascx.g.cs</LastGenOutput>

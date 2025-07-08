@@ -97,13 +97,18 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP
                         'pageLength': 50,
                         data: " + jsonData + @",
                         columns: [
-                            { data: 'Banka' },
+                            { data: 'HesapKodu' },
+                            { data: 'HesapAdi' },
+                            { data: 'FaturaNo' },
+                            { data: 'Aciklama' },
+                            { data: 'ParaBirimi' },
                             { data: 'ToplamBagis'},
-                            { data: 'BagisTarihi' },
+                            { data: 'Alacak'},
+                            { data: 'DovizliTutar' },
                         ],
                         columnDefs: [
                             {
-                                targets: 1,
+                                targets: [5,7],
                                 className: 'dt-body-right'
                             }
                           ],
@@ -165,6 +170,7 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP
             DateTime bagisTarihi = BagisTarihiTxt.Text.ConvertToDatetime();
             string bankaGrup = BankaDDL.SelectedItem.Value;
             string dovizCinsi = DovizCinsiDDL.SelectedItem.Value;
+            string dovizCinsiText = DovizCinsiDDL.SelectedItem.Text;
             NakitBagisHareket nakitBagisHareket = new NakitBagisHareket();
             DataTable dataTable = nakitBagisHareket.SelectByBagisTarihiBankaId(bagisTarihi, bankaGrup,dovizCinsi);
 
@@ -172,21 +178,20 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP
             
             if (dataTable != null)
             {
-                decimal vakifToplam = 0;
                 foreach (DataRow row in dataTable.Rows)
                 {
-                    string bagisTarihiStr = row["BagisTarihi"].ReturnEmptyIfNull().ConvertToDatetime().ConvertToDatetimeEmptyIfNull();
+                    string hesapKodu = row["HesapKodu"].ReturnEmptyIfNull().ToString();
+                    string hesapAdi = row["HesapAdi"].ReturnEmptyIfNull().ToString();
                     decimal toplamBagis = row["ToplamBagis"].ReturnZeroIfNull().ConvertToDecimal();
-                    string banka = row["Banka"].ToString();
+                    //string banka = row["Banka"].ToString();
 
                     BagisListItem bagisListItem = new BagisListItem();
-                    bagisListItem.BagisTarihi = bagisTarihiStr;
-                    bagisListItem.ToplamBagis = toplamBagis.ToString("N",culturInfo) + " TL";
-                    bagisListItem.Banka = banka;
-                    if (banka.Equals(ProjeConstants.BANKA_VAKIF))
-                    {
-                        vakifToplam += toplamBagis;
-                    }
+                    bagisListItem.HesapKodu = hesapKodu;
+                    bagisListItem.HesapAdi = hesapAdi;
+                    bagisListItem.ToplamBagis = toplamBagis.ToString("N",culturInfo);
+                    bagisListItem.ParaBirimi = dovizCinsiText;
+                    bagisListItem.DovizliTutar = dovizCinsiText + " "+ toplamBagis.ToString("N",culturInfo);
+
                     list.Add(bagisListItem);
                 }
             }
@@ -244,10 +249,14 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP
         }
         private class BagisListItem
         {
-            public string Sirano { get; set; }
-            public string BagisTarihi { get; set; }
+            public string HesapKodu { get; set; }
+            public string HesapAdi { get; set; }
+            public string FaturaNo { get; set; } = "";
+            public string Aciklama { get; set; } = "";
+            public string ParaBirimi { get; set; }
             public string ToplamBagis { get; set; }
-            public string Banka { get; set; }
+            public string Alacak { get; set; } = "";
+            public string DovizliTutar { get; set; }
         }
     }
 }

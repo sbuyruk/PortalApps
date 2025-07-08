@@ -53,7 +53,31 @@ namespace IKYS_WebParts.MaasOlusturmaWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TextBox UygulamaTarihiTxt;
+        protected global::System.Web.UI.WebControls.DropDownList TarihDDL;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.CheckBox IkramiyeChk;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl TablesDiv;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.LinkButton MaasOlusturBtn;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.Label MessageTitleLbl;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.Label MessageTextLbl;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.LinkButton KaydetNowBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebPartCodeGenerator", "17.0.0.0")]
         public static implicit operator global::System.Web.UI.TemplateControl(MaasOlusturmaWP target) 
@@ -110,66 +134,85 @@ namespace IKYS_WebParts.MaasOlusturmaWP {
             global::System.Web.UI.WebControls.Label @__ctrl2;
             @__ctrl2 = this.@__BuildControlTitleLbl();
             @__parser.AddParsedSubObject(@__ctrl2);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                <asp:Label CssClass=\"form-label fw-light\">Seçilen ay sonu itiba" +
-                        "rı ile, kesintisiz maaş listesi</asp:Label>\r\n            </h3>\r\n        "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                <asp:Label CssClass=\"form-label fw-light\">Seçilen Tarih itibarı" +
+                        " ile, Kesintisiz Maaş Listesi</asp:Label>\r\n            </h3>\r\n        "));
             return @__ctrl;
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TextBox @__BuildControlUygulamaTarihiTxt() {
-            global::System.Web.UI.WebControls.TextBox @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.TextBox();
-            this.UygulamaTarihiTxt = @__ctrl;
+        private global::System.Web.UI.WebControls.Label @__BuildControl__control2() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "UygulamaTarihiTxt";
-            @__ctrl.CssClass = "form-control input-date";
-            @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
+            @__ctrl.CssClass = "form-label fw-semibold";
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Maaş Tarihi : "));
             return @__ctrl;
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControlTree(global::IKYS_WebParts.MaasOlusturmaWP.MaasOlusturmaWP @__ctrl) {
+        private global::System.Web.UI.WebControls.DropDownList @__BuildControlTarihDDL() {
+            global::System.Web.UI.WebControls.DropDownList @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.DropDownList();
+            this.TarihDDL = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "TarihDDL";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control form-select form-select-lg fw-bold text-success");
+            @__ctrl.AutoPostBack = true;
+            @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.TarihDDL_SelectedIndexChanged);
+            @__ctrl.SelectedIndexChanged += new System.EventHandler(this.TarihDDL_SelectedIndexChanged);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.CheckBox @__BuildControlIkramiyeChk() {
+            global::System.Web.UI.WebControls.CheckBox @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.CheckBox();
+            this.IkramiyeChk = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "IkramiyeChk";
+            @__ctrl.Checked = true;
+            @__ctrl.AutoPostBack = true;
+            @__ctrl.ToolTip = "İkramiye alınan aylarda kutucuğu seçiniz.";
+            @__ctrl.CheckedChanged -= new System.EventHandler(this.IkramiyeChk_CheckedChanged);
+            @__ctrl.CheckedChanged += new System.EventHandler(this.IkramiyeChk_CheckedChanged);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControlTablesDiv() {
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
+            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
+            this.TablesDiv = @__ctrl;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "card-body");
+            @__ctrl.ID = "TablesDiv";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n<style>\r\n    .header-center {\r\n        text-align: center;\r\n        vertical-" +
-                        "align: middle!important;\r\n    }\r\n</style>\r\n\r\n<script type=\"text/javascript\">\r\n  " +
-                        "  //On Page Load.\r\n    $(function () {\r\n        SetDatePicker();\r\n    });\r\n    /" +
-                        "/ikinci tarih için\r\n    function SetDatePicker() {\r\n        $(\"#UygulamaTarihiTx" +
-                        "t\").datepicker({\r\n            dateFormat: \"dd.mm.yy\",\r\n            firstDay: 1,\r" +
-                        "\n            monthNames: [\"Ocak\", \"Şubat\", \"Mart\", \"Nisan\", \"Mayıs\", \"Haziran\", " +
-                        "\"Temmuz\", \"Ağustos\", \"Eylül\", \"Ekim\", \"Kasım\", \"Aralık\"],\r\n            monthName" +
-                        "sShort: [\"Oca\", \"Şub\", \"Mar\", \"Nis\", \"May\", \"Haz\", \"Tem\", \"Ağu\", \"Eyl\", \"Eki\", \"" +
-                        "Kas\", \"Ara\"],\r\n            dayNames: [\"Pazar\", \"Pazartesi\", \"Salı\", \"Çarşamba\", " +
-                        "\"Perşembe\", \"Cuma\", \"Cumartesi\"],\r\n            dayNamesMin: [\"Pz\", \"Pt\", \"Sl\", \"" +
-                        "Çr\", \"Pr\", \"Cu\", \"Ct\"],\r\n            changeMonth: true,\r\n            changeYear:" +
-                        " true,\r\n            inline: true,\r\n            altField: \"#UygulamaTarihiTxt\",\r\n" +
-                        "            beforeShow: function (input, inst) {\r\n                var mindate = " +
-                        "new Date(2025, 4, 1);\r\n                $(this).datepicker(\'option\', \'minDate\', m" +
-                        "indate);\r\n                var newDate = new Date($(\'#BaslangicTarihiTxt\').datepi" +
-                        "cker(\'getDate\'));\r\n                newDate.setDate(newDate.getDate() + 15);\r\n   " +
-                        "             $(this).datepicker(\'option\', \'maxDate\', newDate);\r\n            },\r\n" +
-                        "            beforeShowDay: function (date) {\r\n                $(\'#ui-datepicker-" +
-                        "div\').css(\'clip\', \'auto\');\r\n                return [true, \'\', \'\'];\r\n            " +
-                        "}\r\n        });\r\n        \r\n    }\r\n</script>\r\n\r\n<div class=\"container\">\r\n    <div " +
-                        "class=\"card shadow\">\r\n        "));
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl1;
-            @__ctrl1 = this.@__BuildControlCardHeader();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            <div class=\"form-group mb-3\">\r\n                <div class=\"form-gro" +
+                        "up row\">\r\n                    <div class=\"form-group col-3\">\r\n                  " +
+                        "      "));
+            global::System.Web.UI.WebControls.Label @__ctrl1;
+            @__ctrl1 = this.@__BuildControl__control2();
             @__parser.AddParsedSubObject(@__ctrl1);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-        <div class=""card-body"" id=""TablesDiv"">
-            <div class=""form-group mb-3"">
-                <div class=""row mb-3"">
-                    <div class=""col-1"">
-                        <label class=""form-label fw-semibold"" for=""UygulamaTarihiTxt"">Tarih</label>
-                        "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl2;
-            @__ctrl2 = this.@__BuildControlUygulamaTarihiTxt();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        "));
+            global::System.Web.UI.WebControls.DropDownList @__ctrl2;
+            @__ctrl2 = this.@__BuildControlTarihDDL();
             @__parser.AddParsedSubObject(@__ctrl2);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n\r\n                    <div class=\"checkbox col-3\">\r" +
+                        "\n                        <label>\r\n                            "));
+            global::System.Web.UI.WebControls.CheckBox @__ctrl3;
+            @__ctrl3 = this.@__BuildControlIkramiyeChk();
+            @__parser.AddParsedSubObject(@__ctrl3);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-                        
+                            İkramiye Ödensin
+                        </label>
                     </div>
                 </div>
                 <div class=""form-group"">
@@ -182,19 +225,166 @@ namespace IKYS_WebParts.MaasOlusturmaWP {
                                 <th>Kademe İlerleme Tarihi</th>
                                 <th>Derece/Kademe</th>
                                 <th>Ücret</th>
+                                <th>İkramiye</th>
                                 <th>AGİ Yerine İlave Ödeme</th>
                                 <th>Toplam Ücret</th>
                             </tr>
                         </thead>
                     </table>
                 </div>
-            </div>         
+            </div>
+        "));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlMaasOlusturBtn() {
+            global::System.Web.UI.WebControls.LinkButton @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
+            this.MaasOlusturBtn = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "MaasOlusturBtn";
+            @__ctrl.CssClass = "col-2 btn btn-success";
+            @__ctrl.Text = "Maaşı Kaydet";
+            @__ctrl.Visible = true;
+            @__ctrl.Click -= new System.EventHandler(this.MaasOlusturBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.MaasOlusturBtn_Click);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlMessageTitleLbl() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.MessageTitleLbl = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "MessageTitleLbl";
+            @__ctrl.CssClass = "form-label fw-semibold";
+            @__ctrl.Text = "Lütfen Dikkat: Maaş Artışı Yapılacak";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlMessageTextLbl() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.MessageTextLbl = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "MessageTextLbl";
+            @__ctrl.CssClass = "form-label fw-semibold";
+            @__ctrl.Text = "Maaş Artışını Uygulamak İstiyor musunuz?";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlKaydetNowBtn() {
+            global::System.Web.UI.WebControls.LinkButton @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
+            this.KaydetNowBtn = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.CssClass = "btn btn-success";
+            @__ctrl.ID = "KaydetNowBtn";
+            @__ctrl.CausesValidation = false;
+            @__ctrl.Text = "Maaş Oluştur ve Kaydet";
+            @__ctrl.OnClientClick = "{return true;};";
+            @__ctrl.Click -= new System.EventHandler(this.KaydetNowBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.KaydetNowBtn_Click);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private void @__BuildControlTree(global::IKYS_WebParts.MaasOlusturmaWP.MaasOlusturmaWP @__ctrl) {
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+
+<style>
+    .header-center {
+        text-align: center;
+        vertical-align: middle !important;
+    }
+
+    .modal {
+        z-index: 1050 !important;
+    }
+
+    .modal-backdrop {
+        z-index: 1040 !important;
+    }
+
+    .modal-content {
+        z-index: 1060 !important;
+    }
+</style>
+
+<script type=""text/javascript"">
+    function OpenModal() {
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
+        myModalInstance.show();
+    }
+
+</script>
+
+<div class=""container"">
+    <div class=""card shadow"">
+        "));
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl1;
+            @__ctrl1 = this.@__BuildControlCardHeader();
+            @__parser.AddParsedSubObject(@__ctrl1);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n        "));
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl2;
+            @__ctrl2 = this.@__BuildControlTablesDiv();
+            @__parser.AddParsedSubObject(@__ctrl2);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n        <div class=\"card-footer\">\r\n            "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl3;
+            @__ctrl3 = this.@__BuildControlMaasOlusturBtn();
+            @__parser.AddParsedSubObject(@__ctrl3);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
         </div>
     </div>
-</div>
+        <!-- Modal -->
+    <div class=""modal"" id=""ModalOnayDiv"" role=""dialog"">
+        <div class=""modal-dialog modal-dialog-centered"">
+            <div class=""modal-content"" style=""width: 550px;"">
+                <div class=""modal-body"">
+                    <div class=""text-center"">
+                        <h3>
+                            "));
+            global::System.Web.UI.WebControls.Label @__ctrl4;
+            @__ctrl4 = this.@__BuildControlMessageTitleLbl();
+            @__parser.AddParsedSubObject(@__ctrl4);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </h3>\r\n                    </div>\r\n                    " +
+                        "<div class=\"card-body\">\r\n                        "));
+            global::System.Web.UI.WebControls.Label @__ctrl5;
+            @__ctrl5 = this.@__BuildControlMessageTextLbl();
+            @__parser.AddParsedSubObject(@__ctrl5);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                    </div>
+                </div>
 
+                <div class=""text-center"">
+                    <label class=""form-label text-danger"">
+                        Tablolar oluşturulduktan sonra bu işlem geri alınamaz.
+                    </label>
+                </div>
 
-"));
+                <div class=""modal-footer text-center"">
+                    "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl6;
+            @__ctrl6 = this.@__BuildControlKaydetNowBtn();
+            @__parser.AddParsedSubObject(@__ctrl6);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n                    <button type=\"button\" class=\"btn btn-default\" data-bs-dis" +
+                        "miss=\"modal\">Kapat</button>\r\n                </div>\r\n            </div>\r\n       " +
+                        " </div>\r\n    </div>\r\n</div>\r\n\r\n\r\n"));
         }
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +

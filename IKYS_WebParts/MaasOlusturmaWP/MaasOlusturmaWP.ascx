@@ -10,42 +10,28 @@
 <style>
     .header-center {
         text-align: center;
-        vertical-align: middle!important;
+        vertical-align: middle !important;
+    }
+
+    .modal {
+        z-index: 1050 !important;
+    }
+
+    .modal-backdrop {
+        z-index: 1040 !important;
+    }
+
+    .modal-content {
+        z-index: 1060 !important;
     }
 </style>
 
 <script type="text/javascript">
-    //On Page Load.
-    $(function () {
-        SetDatePicker();
-    });
-    //ikinci tarih için
-    function SetDatePicker() {
-        $("#UygulamaTarihiTxt").datepicker({
-            dateFormat: "dd.mm.yy",
-            firstDay: 1,
-            monthNames: ["Ocak", "Şubat", "Mart", "Nisan", "Mayıs", "Haziran", "Temmuz", "Ağustos", "Eylül", "Ekim", "Kasım", "Aralık"],
-            monthNamesShort: ["Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara"],
-            dayNames: ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"],
-            dayNamesMin: ["Pz", "Pt", "Sl", "Çr", "Pr", "Cu", "Ct"],
-            changeMonth: true,
-            changeYear: true,
-            inline: true,
-            altField: "#UygulamaTarihiTxt",
-            beforeShow: function (input, inst) {
-                var mindate = new Date(2025, 4, 1);
-                $(this).datepicker('option', 'minDate', mindate);
-                var newDate = new Date($('#BaslangicTarihiTxt').datepicker('getDate'));
-                newDate.setDate(newDate.getDate() + 15);
-                $(this).datepicker('option', 'maxDate', newDate);
-            },
-            beforeShowDay: function (date) {
-                $('#ui-datepicker-div').css('clip', 'auto');
-                return [true, '', ''];
-            }
-        });
-        
+    function OpenModal() {
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
+        myModalInstance.show();
     }
+
 </script>
 
 <div class="container">
@@ -54,16 +40,22 @@
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-2">
                 <asp:Label CssClass="form-label fw-semibold text-success" ID="TitleLbl" runat="server" Text="Maaş Oluşturma | "></asp:Label>
-                <asp:Label CssClass="form-label fw-light">Seçilen ay sonu itibarı ile, kesintisiz maaş listesi</asp:Label>
+                <asp:Label CssClass="form-label fw-light">Seçilen Tarih itibarı ile, Kesintisiz Maaş Listesi</asp:Label>
             </h3>
         </div>
-        <div class="card-body" id="TablesDiv">
+        <div class="card-body" id="TablesDiv" runat="server">
             <div class="form-group mb-3">
-                <div class="row mb-3">
-                    <div class="col-1">
-                        <label class="form-label fw-semibold" for="UygulamaTarihiTxt">Tarih</label>
-                        <asp:TextBox ID="UygulamaTarihiTxt" CssClass="form-control input-date" runat="server" ClientIDMode="Static"> </asp:TextBox>
-                        
+                <div class="form-group row">
+                    <div class="form-group col-3">
+                        <asp:Label CssClass="form-label fw-semibold" runat="server">Maaş Tarihi : </asp:Label>
+                        <asp:DropDownList ID="TarihDDL" runat="server" class="form-control form-select form-select-lg fw-bold text-success" OnSelectedIndexChanged="TarihDDL_SelectedIndexChanged" AutoPostBack="true" />
+                    </div>
+
+                    <div class="checkbox col-3">
+                        <label>
+                            <asp:CheckBox ID="IkramiyeChk" runat="server" Checked="True" AutoPostBack="true" OnCheckedChanged="IkramiyeChk_CheckedChanged" ToolTip="İkramiye alınan aylarda kutucuğu seçiniz." />
+                            İkramiye Ödensin
+                        </label>
                     </div>
                 </div>
                 <div class="form-group">
@@ -76,13 +68,62 @@
                                 <th>Kademe İlerleme Tarihi</th>
                                 <th>Derece/Kademe</th>
                                 <th>Ücret</th>
+                                <th>İkramiye</th>
                                 <th>AGİ Yerine İlave Ödeme</th>
                                 <th>Toplam Ücret</th>
                             </tr>
                         </thead>
                     </table>
                 </div>
-            </div>         
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <asp:LinkButton ID="MaasOlusturBtn" CssClass="col-2 btn btn-success" runat="server" Text="Maaşı Kaydet" OnClick="MaasOlusturBtn_Click" Visible="true" />
+        </div>
+    </div>
+        <!-- Modal -->
+    <div class="modal" id="ModalOnayDiv" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="width: 550px;">
+                <div class="modal-body">
+                    <div class="text-center">
+                        <h3>
+                            <asp:Label
+                                ID="MessageTitleLbl"
+                                CssClass="form-label fw-semibold"
+                                runat="server"
+                                Text="Lütfen Dikkat: Maaş Artışı Yapılacak" />
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <asp:Label
+                            ID="MessageTextLbl"
+                            CssClass="form-label fw-semibold"
+                            runat="server"
+                            Text="Maaş Artışını Uygulamak İstiyor musunuz?" />
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <label class="form-label text-danger">
+                        Tablolar oluşturulduktan sonra bu işlem geri alınamaz.
+                    </label>
+                </div>
+
+                <div class="modal-footer text-center">
+                    <asp:LinkButton
+                        CssClass="btn btn-success"
+                        ID="KaydetNowBtn"
+                        runat="server"
+                        CausesValidation="false"
+                        Text="Maaş Oluştur ve Kaydet"
+                        OnClientClick="{return true;};"
+                        OnClick="KaydetNowBtn_Click" />
+
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>

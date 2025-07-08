@@ -42,23 +42,34 @@ namespace IKYS_WebParts.MaasTablolariWP
         #endregion
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!Page.IsPostBack)
+            {
+                TarihDDLDoldur();
+                TablolariDoldur();
+            }
+        }
+
+        private void TablolariDoldur()
+        {
+            Table1Title.Text = TarihDDL.SelectedItem.Text + " TARİHLERİ ARASI GEÇERLİ TSKGV ÜCRET TABLOSU-1";
+            Table2Title.Text = TarihDDL.SelectedItem.Text + " TARİHLERİ ARASI GEÇERLİ TSKGV ÜCRET TABLOSU-2 (TSK'DAN EMEKLİ PERSONEL İÇİN GEÇERLİDİR)";
+            int grupId = TarihDDL.SelectedItem.Value.ConvertToInt();
             UcretTanim ucretTanim = new UcretTanim();
             int derece = 1;
-            DataTable dataTable = ucretTanim.SelectKademe(derece);
+            DataTable dataTable = ucretTanim.SelectKademe(derece, grupId);
             for (int i = 1; i <= dataTable.Rows.Count; i++)
             {
 
-                UcretTanimTablosunuDoldur(i, UcretTanimTable1);
-                UcretTanimTablosunuDoldur(i, UcretTanimTable2);
+                UcretTanimTablosunuDoldur(grupId, i, UcretTanimTable1);
+                UcretTanimTablosunuDoldur(grupId, i, UcretTanimTable2);
             }
         }
         #region Methods
-        private void UcretTanimTablosunuDoldur(int kademe, Table table)
+        private void UcretTanimTablosunuDoldur(int grupId,int kademe, Table table)
         {
             int sira = 1;
             UcretTanim ucretTanim = new UcretTanim();
-            DateTime tarih = new DateTime();
-            List<UcretTanim> list = ucretTanim.SelectByKademe(tarih, kademe);
+            List<UcretTanim> list = ucretTanim.SelectByKademe(grupId, kademe);
             TableRow row = new TableRow();
             TableCell kademeCell = new TableCell();
             kademeCell.Text = kademe.ToString();
@@ -167,7 +178,21 @@ namespace IKYS_WebParts.MaasTablolariWP
 
             }
         }
+        private void TarihDDLDoldur()
+        {
+            TarihDDL.Items.Clear();
+            UcretTanim ucretTanim = new UcretTanim();
+            DataTable dataTable = ucretTanim.SelectByGrup();
+            foreach (DataRow row in dataTable.Rows)
+            {
+                DateTime bastar = row["BaslangicTarihi"].ConvertToDatetime();
+                DateTime bittar = row["BitisTarihi"].ConvertToDatetime();
+                int grupId = row["GrupId"].ConvertToInt();
+                ListItem li = new ListItem(bastar.ConvertToDatetimeEmptyIfNull() + " - " +bittar.ConvertToDatetimeEmptyIfNull(), grupId.ToString());
+                TarihDDL.Items.Add(li);
+            }
 
+        }
         #endregion
         #region Events
         protected void ExportTablo1ToExcelBtn_Click(object sender, EventArgs e)
@@ -242,7 +267,10 @@ namespace IKYS_WebParts.MaasTablolariWP
             HttpContext.Current.Response.End();
 
         }
-
+        protected void TarihDDL_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            TablolariDoldur();
+        }
 
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
