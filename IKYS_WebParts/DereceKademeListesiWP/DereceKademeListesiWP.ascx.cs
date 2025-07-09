@@ -340,10 +340,10 @@ namespace IKYS_WebParts.DereceKademeListesiWP
                 foreach (DataRow row in dataTable.Rows)
                 {
                     int derece = row["Derece"].ReturnZeroIfNull().ConvertToInt();
-                    if ( derece > gecerliDerece)
-                    {
-                        continue;
-                    }
+                    //if ( derece > gecerliDerece)
+                    //{
+                    //    continue;
+                    //}
                     string unvan = row["Unvan"].ReturnZeroIfNull().ToString();
                     DereceDDL.Items.Add(new ListItem(derece + " - " + unvan, derece.ToString()));
                 }
@@ -361,10 +361,10 @@ namespace IKYS_WebParts.DereceKademeListesiWP
                 foreach (DataRow row in dataTable.Rows)
                 {
                     int kademe = row["Kademe"].ReturnZeroIfNull().ConvertToInt();
-                    if (kademe < gecerlikademe)
-                    {
-                        continue;
-                    }
+                    //if (kademe < gecerlikademe)
+                    //{
+                    //    continue;
+                    //}
                     KademeDDL.Items.Add(new ListItem(" - " + kademe + " -", kademe.ToString()));
                 }
             }

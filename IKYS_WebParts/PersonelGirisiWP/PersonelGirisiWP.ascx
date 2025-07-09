@@ -323,7 +323,7 @@
                                                 <asp:TextBox ID="KademeTxt" runat="server" CssClass="form-control" type="text" ReadOnly="true"></asp:TextBox>
                                             </div>
                                             <div class="form-group m-0" runat="server">
-                                                <label class="form-label fw-semibold" for="DereceKademeIlerlemeTarihiTxt">Der/Kad. Baş. Tar.</label>
+                                                <label class="form-label fw-semibold" for="DereceKademeIlerlemeTarihiTxt">Der/Kad. Değ. Tar.</label>
                                                 <input runat="server" type="text" id="DereceKademeIlerlemeTarihiTxt" name="DereceKademeIlerlemeTarihiTxt" class="form-control DateTimePickerV1" readonly="readonly" />
                                             </div>
 

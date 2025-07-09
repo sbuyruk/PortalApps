@@ -1352,7 +1352,7 @@ namespace IKYS_WebParts.PersonelGirisiWP {
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-group m-0");
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                                <label class=\"form-label fw-sem" +
-                        "ibold\" for=\"DereceKademeIlerlemeTarihiTxt\">Der/Kad. Baş. Tar.</label>\r\n         " +
+                        "ibold\" for=\"DereceKademeIlerlemeTarihiTxt\">Der/Kad. Değ. Tar.</label>\r\n         " +
                         "                                       "));
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl1;
             @__ctrl1 = this.@__BuildControlDereceKademeIlerlemeTarihiTxt();

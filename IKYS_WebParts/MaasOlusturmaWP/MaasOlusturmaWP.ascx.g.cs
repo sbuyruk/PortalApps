@@ -180,6 +180,7 @@ namespace IKYS_WebParts.MaasOlusturmaWP {
             @__ctrl.Checked = true;
             @__ctrl.AutoPostBack = true;
             @__ctrl.ToolTip = "İkramiye alınan aylarda kutucuğu seçiniz.";
+            @__ctrl.Enabled = false;
             @__ctrl.CheckedChanged -= new System.EventHandler(this.IkramiyeChk_CheckedChanged);
             @__ctrl.CheckedChanged += new System.EventHandler(this.IkramiyeChk_CheckedChanged);
             return @__ctrl;

@@ -46,9 +46,20 @@ namespace IKYS_WebParts.MaasOlusturmaWP
             if (!Page.IsPostBack)
             {
                 DateTime tarih = DateTime.Today;
+                int ay = tarih.Month;
+                // ay eğer Ocak, Nisan, Temmuz ve Ekim aylarından birine eşitse IkramiyeChk.Checked=true; yap
+                IkramiyeChk.Checked = false; // başlangıçta ikramiye seçeneği kapalı olacak
+                if (ay == 12 || ay == 3 || ay == 6 || ay == 9)
+                {
+                    IkramiyeChk.Checked = true; //ikramiye ödenecek    
+                }
+                else
+                {
+                    IkramiyeChk.Checked = false; // Diğer aylarda ikramiye ödenmeyecek
+                }
+
                 TarihDDLDoldur();
                 UtilityHelper.SetDDLValue(TarihDDL, tarih.ToString("dd.MM.yyyy"));
-               
                 
                 TabloOlustur();
             }
@@ -212,7 +223,7 @@ namespace IKYS_WebParts.MaasOlusturmaWP
 
             // TarihDDL.SelectedItem.Value C# tarafında, bunu JS'ye geçir
             string selectedTarih = TarihDDL.SelectedItem != null ? TarihDDL.SelectedItem.Value : DateTime.Today.ToString("dd.MM.yyyy");
-            string ikramiyeGorunsun = IkramiyeChk.Checked ? "{ targets:6, visible:true}," : "{ targets:9, visible:false},";
+            string ikramiyeGorunsun = IkramiyeChk.Checked ? "{ targets:6, visible:true}," : "{ targets:6, visible:false},";
             string tableString = @"
                 if ( jQuery.fn.DataTable.isDataTable('#CustomDataTable') ) {
                     jQuery('#CustomDataTable').DataTable().destroy();
@@ -230,14 +241,15 @@ namespace IKYS_WebParts.MaasOlusturmaWP
                             { data: 'Unvan' },
                             { data: 'DereceKademeIlerlemeTarihi' },
                             { data: 'DereceKademe' },
-                            { data: 'Ucret' },
-                            " + ikramiyeGorunsun + @"
-                            { data: 'Agi' },
-                            { data: 'Toplam'},
+                            { data: 'Ucret',className: 'dt-body-right dt-head-right'},
+                            { data: 'Ikramiye',className: 'dt-body-right dt-head-right'},
+                            { data: 'Agi',className: 'dt-body-right dt-head-right'},
+                            { data: 'Toplam', className: 'dt-body-right dt-head-right'},
                         ],
                         columnDefs: [
                             { type: 'turkish', targets:[1,2] },
-                            { type: 'num', targets: [5,6,7] },
+                            { type: 'num', targets: [5,6,7,8] },
+                            " + ikramiyeGorunsun + @"
                         ],
                         'order': [[0, 'asc']],// Sıralı
                         'language': {
@@ -425,12 +437,36 @@ jQuery(row).find('td').css({'color':'red','font-weight':'bold'});
         }
         protected void TarihDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
+            DateTime tarih =TarihDDL.SelectedItem.Value.ConvertToDatetime();
+            int ay = tarih.Month;
+            // ay eğer Ocak, Nisan, Temmuz ve Ekim aylarından birine eşitse IkramiyeChk.Checked=true; yap
+            IkramiyeChk.Checked = false; // başlangıçta ikramiye seçeneği kapalı olacak
+            if (ay == 12 || ay == 3 || ay == 6 || ay == 9)
+            {
+                IkramiyeChk.Checked = true; //ikramiye ödenecek    
+            }
+            else
+            {
+                IkramiyeChk.Checked = false; // Diğer aylarda ikramiye ödenmeyecek
+            }
             TabloOlustur();
             GorunumuAyarla();
         }
 
         protected void IkramiyeChk_CheckedChanged(object sender, EventArgs e)
         {
+            DateTime tarih = TarihDDL.SelectedItem.Value.ConvertToDatetime();
+            int ay = tarih.Month;
+            // ay eğer Ocak, Nisan, Temmuz ve Ekim aylarından birine eşitse IkramiyeChk.Checked=true; yap
+            IkramiyeChk.Checked = false; // başlangıçta ikramiye seçeneği kapalı olacak
+            if (ay == 12 || ay == 3 || ay == 6 || ay == 9)
+            {
+                IkramiyeChk.Checked = true; //ikramiye ödenecek    
+            }
+            else
+            {
+                IkramiyeChk.Checked = false; // Diğer aylarda ikramiye ödenmeyecek
+            }
             TabloOlustur();
             GorunumuAyarla();
         }

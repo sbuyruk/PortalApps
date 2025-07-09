@@ -53,7 +53,7 @@
 
                     <div class="checkbox col-3">
                         <label>
-                            <asp:CheckBox ID="IkramiyeChk" runat="server" Checked="True" AutoPostBack="true" OnCheckedChanged="IkramiyeChk_CheckedChanged" ToolTip="İkramiye alınan aylarda kutucuğu seçiniz." />
+                            <asp:CheckBox ID="IkramiyeChk" runat="server" Checked="True" AutoPostBack="true" OnCheckedChanged="IkramiyeChk_CheckedChanged" ToolTip="İkramiye alınan aylarda kutucuğu seçiniz." Enabled="False" />
                             İkramiye Ödensin
                         </label>
                     </div>
