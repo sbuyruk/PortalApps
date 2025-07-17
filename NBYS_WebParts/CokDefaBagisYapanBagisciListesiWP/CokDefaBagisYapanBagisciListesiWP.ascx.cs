@@ -514,7 +514,6 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
 
                 TabloModalOlustur(hiddenNakitBagisciId.Value);
                 NakitBagisciFormunuDoldur(hiddenNakitBagisciId.Value, BagisciTable);
-                UtilityHelper.ScriptCalistir("SetPageIndex();");
             }
             catch (Exception exception)
             {

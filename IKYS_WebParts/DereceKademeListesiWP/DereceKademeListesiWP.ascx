@@ -220,44 +220,4 @@
     </div>
 </div>
 
-<%--bu çalışıyor--%>
-<%--<div class="modal" id="ModalOnayDiv" role="dialog">
-    <div class="modal-dialog modal-dialog-centered">
-        <!-- Modal content-->
-        <div class="modal-content" style="width: 550px;">
-
-            <div class="modal-body">
-                <asp:HiddenField ID="editId" runat="server" />
-                <div class="mb-3">
-                    <label for="editDegisim" class="form-label">Değişim</label>
-                    <asp:DropDownList ID="editDegisim" runat="server" CssClass="form-control">
-                        <asp:ListItem Text="Derece" Value="Derece Yükseltme" />
-                        <asp:ListItem Text="Kademe" Value="Kademe Yükseltme" />
-                        <asp:ListItem Text="Kademe/Derece" Value="Göreve Başlama" />
-                    </asp:DropDownList>
-                </div>
-                <div class="mb-3">
-                    <label for="editTarih" class="form-label">Değişim Tarihi</label>
-                    <asp:TextBox ID="editTarih" runat="server" CssClass="form-control" TextMode="Date" />
-                </div>
-                <div class="mb-3">
-                    <label for="editDerece" class="form-label">Derece</label>
-                    <asp:TextBox ID="editDerece" runat="server" CssClass="form-control" TextMode="Number" />
-                </div>
-                <div class="mb-3">
-                    <label for="editKademe" class="form-label">Kademe</label>
-                    <asp:TextBox ID="editKademe" runat="server" CssClass="form-control" TextMode="Number" />
-                </div>
-                <div class="mb-3">
-                    <label for="editAciklama" class="form-label">Açıklama</label>
-                    <asp:TextBox ID="editAciklama" runat="server" CssClass="form-control" TextMode="MultiLine" Rows="3" />
-                </div>
-            </div>
-            <div class="modal-footer">
-                <asp:Button ID="GuncelleBtn" runat="server" Text="Güncelle" CssClass="btn btn-primary" OnClick="GuncelleBtn_Click" />
-                <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
-            </div>
-        </div>
-    </div>
-</div>--%>
 

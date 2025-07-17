@@ -305,8 +305,8 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP {
         private void @__BuildControl__control2(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    <div class=\"row\">\r\n                        <div class=\"col-" +
-                        "3 form-group\">\r\n                            <label class=\"col-form-label font-we" +
-                        "ight-bold\">Etiket Adedi: </label>\r\n                            "));
+                        "3 form-group\">\r\n                            <label class=\"col-form-label fw-bold" +
+                        "\">Etiket Adedi: </label>\r\n                            "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl1;
             @__ctrl1 = this.@__BuildControlEtiketAdediDDL();
             @__parser.AddParsedSubObject(@__ctrl1);

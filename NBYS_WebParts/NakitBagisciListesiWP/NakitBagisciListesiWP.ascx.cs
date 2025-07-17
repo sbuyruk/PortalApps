@@ -422,7 +422,6 @@ namespace NBYS_WebParts.NakitBagisciListesiWP
 
                 TabloModalOlustur(paramNakitBagisciIdLbl.Value);
                 NakitBagisciFormunuDoldur(paramNakitBagisciIdLbl.Value);
-                UtilityHelper.ScriptCalistir("SetPageIndex();");
             }
             catch (Exception exception)
             {

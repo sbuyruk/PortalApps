@@ -535,8 +535,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
         }
         protected void DuyuruListBtn_Click(object sender, EventArgs e)
         {
-            //RedirectToPage(ProjeConstants.PAGE_DUYURU_LIST + "?PageIndex=" + PageIndexQS+"&DestinationApp=" + SenderAppQS);
-            RedirectToPage(ProjeConstants.PAGE_DUYURU_LIST);
+            RedirectToPage(ProjeConstants.PAGE_DUYURU_LIST+"?DuyuruId="+DuyuruIdQS);
         }
         private void ResmiKaydet(Duyuru duyuru)
         {

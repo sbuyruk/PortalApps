@@ -372,8 +372,6 @@ namespace TBYS_WebParts.KiraciEslestirWP
                         RedirectToPage(ProjeConstants.PAGE_KIRAEKSTRE_LIST+ "?SecilenId="+ KiraEkstreAktarmaIdQS);
                     }
                 }
-                //tabloda modal açılırken seçili olan pagination degerini pageIndex degiskeninde saklar ve modal açıldıktan sonra pageload sırasında sayfayı pageIndex degerine getirir
-                UtilityHelper.ScriptCalistir( "SetPageIndex();");
             }
             catch (Exception exception)
             {

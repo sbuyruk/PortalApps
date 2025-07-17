@@ -122,30 +122,6 @@ namespace TBYS_WebParts.TasinmazKartiWP
                 ViewState["CurrentUserName"] = value;
             }
         }
-        private string PageIndexQS
-        {
-            get
-            {
-
-                if (ViewState["PageIndex"] == null)
-                {
-                    if (Page.Request.QueryString["PageIndex"] != null)
-                    {
-                        ViewState["PageIndex"] = Page.Request.QueryString["PageIndex"];
-                    }
-                    else
-                    {
-                        ViewState["PageIndex"] = string.Empty;
-                    }
-                }
-                return ViewState["PageIndex"].ToString();
-            }
-
-            set
-            {
-                ViewState["PageIndex"] = value;
-            }
-        }
         private string EnvanterdeMiQS
         {
             get
@@ -796,11 +772,11 @@ namespace TBYS_WebParts.TasinmazKartiWP
 
         protected void TasinmazListesiBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_TASINMAZ_LIST + "?PageIndex=" + PageIndexQS + "&EnvanterdeMi=" + EnvanterdeMiQS);
+            RedirectToPage(ProjeConstants.PAGE_TASINMAZ_LIST + "?TasinmazId=" + TasinmazIdQS + "&EnvanterdeMi=" + EnvanterdeMiQS);
         }
         protected void TasinmazaGitBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_TASINMAZ_GIRIS + "?TasinmazId=" + TasinmazIdQS + "&DestinationApp=TD" + "&PageIndex=" + PageIndexQS + "&EnvanterdeMi=" + EnvanterdeMiQS);
+            RedirectToPage(ProjeConstants.PAGE_TASINMAZ_GIRIS + "?TasinmazId=" + TasinmazIdQS + "&DestinationApp=TD" + "&EnvanterdeMi=" + EnvanterdeMiQS);
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {

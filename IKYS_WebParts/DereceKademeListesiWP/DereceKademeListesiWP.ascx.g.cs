@@ -655,7 +655,7 @@ namespace IKYS_WebParts.DereceKademeListesiWP {
             @__parser.AddParsedSubObject(@__ctrl19);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                <button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss" +
                         "=\"modal\">Kapat</button>\r\n            </div>\r\n\r\n        </div>\r\n    </div>\r\n</div" +
-                        ">\r\n\r\n\r\n\r\n\r\n"));
+                        ">\r\n\r\n\r\n"));
         }
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +

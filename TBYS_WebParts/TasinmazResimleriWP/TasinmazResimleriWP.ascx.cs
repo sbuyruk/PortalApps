@@ -102,30 +102,6 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                 ViewState["EnvanterdeMi"] = value;
             }
         }
-        private string PageIndexQS
-        {
-            get
-            {
-
-                if (ViewState["PageIndex"] == null)
-                {
-                    if (Page.Request.QueryString["PageIndex"] != null)
-                    {
-                        ViewState["PageIndex"] = Page.Request.QueryString["PageIndex"];
-                    }
-                    else
-                    {
-                        ViewState["PageIndex"] = string.Empty;
-                    }
-                }
-                return ViewState["PageIndex"].ToString();
-            }
-
-            set
-            {
-                ViewState["PageIndex"] = value;
-            }
-        }
         protected void Page_Load(object sender, EventArgs e)
         {
             //if (!string.IsNullOrEmpty(MesajQS))
@@ -189,9 +165,9 @@ namespace TBYS_WebParts.TasinmazResimleriWP
         {
             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
             string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
-            newUrl += "/" + ProjeConstants.PAGE_TASINMAZ_GIRIS + "?DestinationApp=TD&TasinmazId=" + TasinmazIdQS + "&EnvanterdeMi=" + EnvanterdeMiQS + "&PageIndex=" + PageIndexQS;
+            newUrl += "/" + ProjeConstants.PAGE_TASINMAZ_GIRIS + "?DestinationApp=TD&TasinmazId=" + TasinmazIdQS + "&EnvanterdeMi=" + EnvanterdeMiQS ;
             if (EnvanterdeMiQS.Equals(ProjeConstants.MULKIYETTE_OLMAYAN_TASINMAZ.ToString()))
-                newUrl += "/" + ProjeConstants.PAGE_MULKIYETIOLMAYANTASINMAZ_GIRIS + "?DestinationApp=TD&TasinmazId=" + TasinmazIdQS + "&EnvanterdeMi=" + EnvanterdeMiQS + "&PageIndex=" + PageIndexQS;
+                newUrl += "/" + ProjeConstants.PAGE_MULKIYETIOLMAYANTASINMAZ_GIRIS + "?DestinationApp=TD&TasinmazId=" + TasinmazIdQS + "&EnvanterdeMi=" + EnvanterdeMiQS;
             Page.Response.Redirect(newUrl, true);
         }
 
@@ -212,7 +188,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP
                 }
                 else
                 {
-                    RedirectToPage(ProjeConstants.PAGE_TASINMAZ_RESIMLER + "?Mesaj=true&DestinationApp=TD&TasinmazId=" + TasinmazIdQS + "&EnvanterdeMi=" + EnvanterdeMiQS + "&PageIndex=" + PageIndexQS);
+                    RedirectToPage(ProjeConstants.PAGE_TASINMAZ_RESIMLER + "?Mesaj=true&DestinationApp=TD&TasinmazId=" + TasinmazIdQS + "&EnvanterdeMi=" + EnvanterdeMiQS);
                 }
             }
         }

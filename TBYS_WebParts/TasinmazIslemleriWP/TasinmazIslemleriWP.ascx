@@ -33,8 +33,11 @@
 
                     <!-- Nav tabs -->
                     <ul class="nav nav-tabs" role="tablist">
-                        <li class="nav-item" runat="server" id="TapuNav">
-                            <a class="nav-link active" data-bs-toggle="tab" id="TapuLi" href="#TapuDiv">Tapu Senedi</a>
+                        <li class="nav-item" runat="server" id="TapuSenedi1Nav">
+                            <a class="nav-link active" id="TapuSenedi1Li" data-bs-toggle="tab" href="#TapuSenedi1Div">Tapu Senedi -1-</a>
+                        </li>
+                        <li class="nav-item" runat="server" id="TapuSenedi2Nav">
+                            <a class="nav-link" id="TapuSenedi2Li"  data-bs-toggle="tab"href="#TapuSenedi2Div">Tapu Senedi -2-</a>
                         </li>
                         <li class="nav-item" runat="server" id="TasinmazBilgileriNav">
                             <a class="nav-link" id="TasinmazBilgileriLi" data-bs-toggle="tab" href="#TasinmazBilgileriDiv">Taşınmaz Bilgileri</a>
@@ -47,12 +50,12 @@
 
                     <!-- Tab panes -->
                     <div class="tab-content" runat="server">
-                        <!-- 1.Tab Tapu Senedi  -->
-                        <div class="tab-pane active" role="tabpanel" id="TapuDiv">
+                        <!-- 1.Tab Tapu Senedi 1 -->
+                        <div class="tab-pane active" role="tabpanel" id="TapuSenedi1Div">
                             <div class="row">
                                 <!-- Panel - 1. sütun Tapu Tescil  -->
-                                <div class="col">
-                                    <div class="card d-flex flex-row" style="height: 300px">
+                                <div class="col-5">
+                                    <div class="card d-flex flex-row" style="height: 500px">
                                         <!-- Dikey Label -->
                                         <div class="bg-primary text-white d-flex justify-content-center align-items-center px-2"
                                             style="writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg);">
@@ -70,29 +73,12 @@
                                                                 <label class="form-label fw-semibold" for="IliDDL">İl</label>
                                                                 <asp:DropDownList ID="IliDDL" runat="server" CssClass="form-control form-select form-select-lg" OnSelectedIndexChanged="IliDDL_SelectedIndexChanged" AutoPostBack="true" />
                                                             </div>
+
+                                                        </div>
+                                                        <div class="col">
                                                             <div class="form-group m-0 ">
                                                                 <label class="form-label fw-semibold" for="IlcesiDDL">İlçe</label>
                                                                 <asp:DropDownList ID="IlcesiDDL" runat="server" class="form-control form-select form-select-lg"></asp:DropDownList>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col">
-                                                            <div class="form-group m-0 ">
-                                                                <label class="form-label fw-semibold" for="CaddeTxt">Cadde</label>
-                                                                <asp:TextBox ID="CaddeTxt" runat="server" class="form-control" ToolTip="Cadde"></asp:TextBox>
-                                                            </div>
-                                                            <div class="form-group m-0 ">
-                                                                <label class="form-label fw-semibold" for="SokakTxt">Sokak</label>
-                                                                <asp:TextBox ID="SokakTxt" runat="server" class="form-control" ToolTip="Sokak"></asp:TextBox>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col">
-                                                            <div class="form-group m-0 ">
-                                                                <label class="form-label fw-semibold" for="MahalleTxt">Mahalle</label>
-                                                                <asp:TextBox ID="MahalleTxt" runat="server" class="form-control" ToolTip="Mahalle"></asp:TextBox>
-                                                            </div>
-                                                            <div class="form-group m-0 ">
-                                                                <label class="form-label fw-semibold" for="KoyTxt">Köy</label>
-                                                                <asp:TextBox ID="KoyTxt" runat="server" class="form-control" ToolTip="Köy"></asp:TextBox>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -100,13 +86,30 @@
                                                         <label class="form-label fw-semibold" for="CinsiTxt">Niteliği (Cinsi)</label>
                                                         <asp:TextBox ID="CinsiTxt" runat="server" class="form-control" ToolTip="Taşınmazın cinsi/niteliği"></asp:TextBox>
                                                     </div>
+                                                    <div class="form-group m-0 ">
+                                                        <label class="form-label fw-semibold" for="CaddeTxt">Cadde</label>
+                                                        <asp:TextBox ID="CaddeTxt" runat="server" class="form-control" ToolTip="Cadde"></asp:TextBox>
+                                                    </div>
+                                                    <div class="form-group m-0 ">
+                                                        <label class="form-label fw-semibold" for="SokakTxt">Sokak</label>
+                                                        <asp:TextBox ID="SokakTxt" runat="server" class="form-control" ToolTip="Sokak"></asp:TextBox>
+                                                    </div>
+                                                    <div class="form-group m-0 ">
+                                                        <label class="form-label fw-semibold" for="MahalleTxt">Mahalle</label>
+                                                        <asp:TextBox ID="MahalleTxt" runat="server" class="form-control" ToolTip="Mahalle"></asp:TextBox>
+                                                    </div>
+                                                    <div class="form-group m-0 ">
+                                                        <label class="form-label fw-semibold" for="KoyTxt">Köy</label>
+                                                        <asp:TextBox ID="KoyTxt" runat="server" class="form-control" ToolTip="Köy"></asp:TextBox>
+                                                    </div>
+
 
                                                     <div class="form-group m-0 ">
                                                         <label class="form-label fw-semibold" for="AdresTxt">Adres</label>
                                                         <asp:TextBox ID="AdresTxt" runat="server" class="form-control" TextMode="MultiLine" Rows="3" ToolTip="Taşınmaz adresi"></asp:TextBox>
                                                     </div>
                                                 </div>
-                                                <div class="col-4">
+                                                <div class="col">
                                                     <div class="row">
                                                         <div class="col">
                                                             <div class="form-group m-0 ">
@@ -151,7 +154,7 @@
                                 </div>
                                 <%--Bağımsız Bölüm--%>
                                 <div class="col">
-                                    <div class="card d-flex flex-row" style="height: 300px">
+                                    <div class="card d-flex flex-row" style="height: 500px">
                                         <!-- Dikey Label -->
                                         <div class="bg-primary text-white d-flex justify-content-center align-items-center px-2"
                                             style="writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg);">
@@ -206,16 +209,13 @@
                                                         <asp:TextBox ID="GirisTxt" runat="server" class="form-control" ToolTip="Giriş"></asp:TextBox>
                                                     </div>
                                                 </div>
-                                                <div class="col">
-
-                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <%--Tescil Bilgileri--%>
                                 <div class="col">
-                                    <div class="card d-flex flex-row" style="height: 300px">
+                                    <div class="card d-flex flex-row" style="height: 500px">
                                         <!-- Dikey Label -->
                                         <div class="bg-primary text-white d-flex justify-content-center align-items-center px-2"
                                             style="writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg);">
@@ -267,6 +267,14 @@
 
 
                             </div>
+
+                            <div class="card">
+                                <div class="card-header">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 2.Tab Tapu Senedi 2 -->
+                        <div class="tab-pane" role="tabpanel" id="TapuSenedi2Div">
                             <%-- Şerh Şerh Beyan İrtifak ve --%>
                             <div class="row">
                                 <div class="col">
@@ -341,12 +349,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card">
-                                <div class="card-header">
-                                </div>
-                            </div>
                         </div>
-                        <!-- 2.Tab Taşınmaz Bilgileri -->
+                        <!-- 3.Tab Taşınmaz Bilgileri -->
                         <div class="tab-pane" role="tabpanel" id="TasinmazBilgileriDiv">
                             <div class="row">
 
@@ -406,7 +410,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- 3.Tab Değerleme Bilgileri -->
+                        <!-- 4.Tab Değerleme Bilgileri -->
                         <div class="tab-pane" role="tabpanel" id="DegerlemeDiv">
                             <div class="row p-1">
                                 <div class="col-4 ">

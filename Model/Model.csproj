@@ -163,6 +163,7 @@
     <Compile Include="TBYS\KiraEkstreAktarma.cs" />
     <Compile Include="TBYS\KiraSozlesme.cs" />
     <Compile Include="TBYS\HukukiTakip.cs" />
+    <Compile Include="TBYS\SerhBeyanIrtifak.cs" />
     <Compile Include="TBYS\TasinmazTaahhut.cs" />
     <Compile Include="TBYS\OdemeAyristirma.cs" />
     <Compile Include="TBYS\TeminatIslem.cs" />

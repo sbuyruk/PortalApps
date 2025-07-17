@@ -28,30 +28,6 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             InitializeControl();
             this.ChromeType = PartChromeType.None;
         }
-        private string PageIndexQS
-        {
-            get
-            {
-
-                if (ViewState["PageIndex"] == null)
-                {
-                    if (Page.Request.QueryString["PageIndex"] != null)
-                    {
-                        ViewState["PageIndex"] = Page.Request.QueryString["PageIndex"];
-                    }
-                    else
-                    {
-                        ViewState["PageIndex"] = string.Empty;
-                    }
-                }
-                return ViewState["PageIndex"].ToString();
-            }
-
-            set
-            {
-                ViewState["PageIndex"] = value;
-            }
-        }
         private string SigortaIdQS
         {
             get
@@ -570,10 +546,10 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
         protected void BackBtn_Click(object sender, EventArgs e)
         {
             if (SenderAppQS.Equals("SigortaL"))
-                RedirectToPage(ProjeConstants.PAGE_TASINMAZSIGORTA_LIST + "?PageIndex=" + PageIndexQS);
+                RedirectToPage(ProjeConstants.PAGE_TASINMAZSIGORTA_LIST + "?SigortaId=" + SigortaIdQS);
             else
                 if (SenderAppQS.Equals("SigortaES"))
-                RedirectToPage(ProjeConstants.PAGE_TASINMAZSIGORTA_EKLESIL + "?TasinmazId=" + TasinmazIdQS + "&PageIndex=" + PageIndexQS + "&EnvanterdeMi=" + EnvanterdeMiQS);
+                RedirectToPage(ProjeConstants.PAGE_TASINMAZSIGORTA_EKLESIL + "?TasinmazId=" + TasinmazIdQS + "&EnvanterdeMi=" + EnvanterdeMiQS);
             else if (EnvanterdeMiQS.Equals("2"))
                 RedirectToPage(ProjeConstants.PAGE_MULKIYETIOLMAYANTASINMAZ_GIRIS + "?TasinmazId=" + TasinmazIdQS + "&DestinationApp=TD" + "&EnvanterdeMi=" + EnvanterdeMiQS);
             else if (SenderAppQS.Equals("TD"))
@@ -659,7 +635,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                 ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "CloseModal();", true);
                 if (silindi)
                 {
-                    RedirectToPage(ProjeConstants.PAGE_TASINMAZSIGORTA_LIST + "?Mesaj=true&PageIndex=" + PageIndexQS);
+                    RedirectToPage(ProjeConstants.PAGE_TASINMAZSIGORTA_LIST + "?Mesaj=true" );
                 }
                 else
                 {
@@ -714,7 +690,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             int queryIndex = newUrl.IndexOf("?");
             if (queryIndex > 0)
                 newUrl = newUrl.Substring(0, queryIndex);
-            newUrl = newUrl + "?DestinationApp=SigortaD&SenderApp=SigortaL&SigortaId=" + sonrakiSigorta.Id + "&TasinmazId=" + sonrakiSigorta.TasinmazId + "&PageIndex=" + PageIndexQS;
+            newUrl = newUrl + "?DestinationApp=SigortaD&SenderApp=SigortaL&SigortaId=" + sonrakiSigorta.Id + "&TasinmazId=" + sonrakiSigorta.TasinmazId ;
 
             Page.Response.Redirect(newUrl, true);
         }
@@ -727,7 +703,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             int queryIndex = newUrl.IndexOf("?");
             if (queryIndex > 0)
                 newUrl = newUrl.Substring(0, queryIndex);
-            newUrl = newUrl + "?DestinationApp=SigortaD&SenderApp=SigortaL&SigortaId=" + oncekiSigorta.Id + "&TasinmazId=" + oncekiSigorta.TasinmazId + "&PageIndex=" + PageIndexQS;
+            newUrl = newUrl + "?DestinationApp=SigortaD&SenderApp=SigortaL&SigortaId=" + oncekiSigorta.Id + "&TasinmazId=" + oncekiSigorta.TasinmazId;
             Page.Response.Redirect(newUrl, true);
         }
 

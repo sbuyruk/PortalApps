@@ -143,30 +143,6 @@ namespace TBYS_WebParts.KiraSozlesmesiWP
                 ViewState["KiraSozlesmeId"] = value;
             }
         }
-        private string PageIndexQS
-        {
-            get
-            {
-
-                if (ViewState["PageIndex"] == null)
-                {
-                    if (Page.Request.QueryString["PageIndex"] != null)
-                    {
-                        ViewState["PageIndex"] = Page.Request.QueryString["PageIndex"];
-                    }
-                    else
-                    {
-                        ViewState["PageIndex"] = string.Empty;
-                    }
-                }
-                return ViewState["PageIndex"].ToString();
-            }
-
-            set
-            {
-                ViewState["PageIndex"] = value;
-            }
-        }
         private IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -895,7 +871,7 @@ Bu kiracı ve taşınmazlar için yeniden sözleşme yapmak için SÖZLEŞMEYİ 
             if (kiraSozlesme != null)
             {
                 kiraSozlesme.UpdateAktifDurum(ProjeConstants.KIRASOZLESME_DURUMU_BITTI, ModalDurumDegismeTarTxt.Text, ProjeConstants.KIRASOZLESME_AKTIFDEGILBOOL);
-                RedirectToPage(ProjeConstants.PAGE_KIRASOZLESME_LIST + "?PageIndex=" + PageIndexQS);
+                RedirectToPage(ProjeConstants.PAGE_KIRASOZLESME_LIST + "?SozlesmeId=" + KiraSozlesmeIdQS);
             }
         }
         private void SOzlesmeyiYenile()
@@ -1326,7 +1302,7 @@ Bu durumda daha önce yapılan ödeme var ise silinmesi bilgi kaybına yolaçabi
 
                     HukukiIslemlereEkle(kiraSozlesme);
                     kiraSozlesme.UpdateAktifDurum(ProjeConstants.KIRASOZLESME_DURUMU_TAKIP, ModalDurumDegismeTarTxt.Text, ProjeConstants.KIRASOZLESME_AKTIFDEGILBOOL);
-                    RedirectToPage(ProjeConstants.PAGE_KIRASOZLESME_LIST + "?PageIndex=" + PageIndexQS);
+                    RedirectToPage(ProjeConstants.PAGE_KIRASOZLESME_LIST + "?SozlesmeId=" + KiraSozlesmeIdQS);
                 }
                 else if (SenderHF.Value.Equals("SozlesmeyiFeshet"))
                 {
@@ -1336,7 +1312,7 @@ Bu durumda daha önce yapılan ödeme var ise silinmesi bilgi kaybına yolaçabi
                     kiraSozlesme.Update();
                     //kiraSozlesme.UpdateAktifDurum(ProjeConstants.KIRASOZLESME_DURUMU_FESIH, ModalDurumDegismeTarTxt.Value);
                     OdemePlanindaVadesiGelmeyenleriSifirYap(kiraSozlesme, ModalDurumDegismeTarTxt.Text);
-                    RedirectToPage(ProjeConstants.PAGE_KIRASOZLESME_LIST + "?PageIndex=" + PageIndexQS);
+                    RedirectToPage(ProjeConstants.PAGE_KIRASOZLESME_LIST + "?SozlesmeId=" + KiraSozlesmeIdQS);
                 }
                 else if (SenderHF.Value.Equals("FesihHukukiIslem"))
                 {
@@ -1347,7 +1323,7 @@ Bu durumda daha önce yapılan ödeme var ise silinmesi bilgi kaybına yolaçabi
                     //kiraSozlesme.UpdateAktifDurum(ProjeConstants.KIRASOZLESME_DURUMU_TAKIP, ModalDurumDegismeTarTxt.Value);
                     OdemePlanindaVadesiGelmeyenleriSifirYap(kiraSozlesme, ModalDurumDegismeTarTxt.Text);
                     HukukiIslemlereEkle(kiraSozlesme);
-                    RedirectToPage(ProjeConstants.PAGE_KIRASOZLESME_LIST + "?PageIndex=" + PageIndexQS);
+                    RedirectToPage(ProjeConstants.PAGE_KIRASOZLESME_LIST + "?SozlesmeId=" + KiraSozlesmeIdQS);
                 }
             }
 

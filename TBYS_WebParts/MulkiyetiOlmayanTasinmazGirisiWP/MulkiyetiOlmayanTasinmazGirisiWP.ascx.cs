@@ -141,30 +141,6 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
                 ViewState["EnvanterdeMi"] = value;
             }
         }
-        private string PageIndexQS
-        {
-            get
-            {
-
-                if (ViewState["PageIndex"] == null)
-                {
-                    if (Page.Request.QueryString["PageIndex"] != null)
-                    {
-                        ViewState["PageIndex"] = Page.Request.QueryString["PageIndex"];
-                    }
-                    else
-                    {
-                        ViewState["PageIndex"] = string.Empty;
-                    }
-                }
-                return ViewState["PageIndex"].ToString();
-            }
-
-            set
-            {
-                ViewState["PageIndex"] = value;
-            }
-        }
         protected void Page_Load(object sender, EventArgs e)
         {
 
@@ -548,7 +524,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
         {
             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
             string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
-            newUrl += "/" + ProjeConstants.PAGE_TASINMAZ_KARTI + "?SenderApp=TD&TasinmazId=" + TasinmazIdQS + "&PageIndex=" + PageIndexQS + "&EnvanterdeMi=" + EnvanterdeMiQS;
+            newUrl += "/" + ProjeConstants.PAGE_TASINMAZ_KARTI + "?SenderApp=TD&TasinmazId=" + TasinmazIdQS  + "&EnvanterdeMi=" + EnvanterdeMiQS;
             Page.Response.Redirect(newUrl, true);
         }
         protected void BagimsizBolumBtn_Click(object sender, EventArgs e)
@@ -558,7 +534,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
             //string newUrl = "/pages/BagimsizBolum.aspx?SenderApp=TD&tId=" + TasinmazIdLbl.Text;
             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
             string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
-            newUrl += "/" + ProjeConstants.PAGE_TASINMAZ_BAGIMSIZBOLUM + "?SenderApp=TD&TasinmazId=" + TasinmazIdQS + "&PageIndex=" + PageIndexQS + "&EnvanterdeMi=" + EnvanterdeMiQS;
+            newUrl += "/" + ProjeConstants.PAGE_TASINMAZ_BAGIMSIZBOLUM + "?SenderApp=TD&TasinmazId=" + TasinmazIdQS  + "&EnvanterdeMi=" + EnvanterdeMiQS;
             Page.Response.Redirect(newUrl, true);
         }
         protected void SigortaBtn_Click(object sender, EventArgs e)
@@ -568,7 +544,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
             {
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
-                newUrl += "/" + ProjeConstants.PAGE_TASINMAZSIGORTA_EKLESIL + "?SenderApp=TD&TasinmazId=" + TasinmazIdQS + "&PageIndex=" + PageIndexQS + "&EnvanterdeMi=" + EnvanterdeMiQS;
+                newUrl += "/" + ProjeConstants.PAGE_TASINMAZSIGORTA_EKLESIL + "?SenderApp=TD&TasinmazId=" + TasinmazIdQS  + "&EnvanterdeMi=" + EnvanterdeMiQS;
                 Page.Response.Redirect(newUrl, true);
             }
             //else
@@ -584,7 +560,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
             //string newUrl = "/pages/TasinmazOnarim.aspx?SenderApp=TD&tId=" + TasinmazIdLbl.Text;
             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
             string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
-            newUrl += "/" + ProjeConstants.PAGE_TASINMAZONARIM_GIRIS + "?SenderApp=TD&TasinmazId=" + TasinmazIdQS + "&PageIndex=" + PageIndexQS + "&EnvanterdeMi=" + EnvanterdeMiQS;
+            newUrl += "/" + ProjeConstants.PAGE_TASINMAZONARIM_GIRIS + "?SenderApp=TD&TasinmazId=" + TasinmazIdQS  + "&EnvanterdeMi=" + EnvanterdeMiQS;
             Page.Response.Redirect(newUrl, true);
         }
         protected void EnvanterdenCikarBtn_Click(object sender, EventArgs e)
@@ -599,7 +575,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
         {
             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
             string rootUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
-            string newUrl = rootUrl + "/" + ProjeConstants.PAGE_PAGE_MULKIYETIOLMAYANTASINMAZ_LIST + "?PageIndex=" + PageIndexQS;
+            string newUrl = rootUrl + "/" + ProjeConstants.PAGE_PAGE_MULKIYETIOLMAYANTASINMAZ_LIST + "TasinmazId=" + TasinmazIdQS;
 
             Page.Response.Redirect(newUrl, true);
         }
@@ -630,7 +606,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
             {
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
-                newUrl += "/" + ProjeConstants.PAGE_TASINMAZ_RESIMLER + "?TasinmazId=" + TasinmazIdQS + "&PageIndex=" + PageIndexQS + "&EnvanterdeMi=" + EnvanterdeMiQS;
+                newUrl += "/" + ProjeConstants.PAGE_TASINMAZ_RESIMLER + "?TasinmazId=" + TasinmazIdQS  + "&EnvanterdeMi=" + EnvanterdeMiQS;
                 //"&tasinmazFoto=" + tasinmaz.TasinmazFoto
                 //+ "&tasinmazFoto1=" + tasinmaz.TasinmazFoto1 + "&tasinmazFoto2=" + tasinmaz.TasinmazFoto2
                 //+ "&tapuFoto=" + tasinmaz.TapuFoto + "&krokiFoto=" + tasinmaz.KrokiFoto + "&tahkikatFoto=" + tasinmaz.TahkikatFoto;
@@ -660,7 +636,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
                 {
                     string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                     string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
-                    newUrl += "/" + ProjeConstants.PAGE_TASINMAZBAGISCI_KARTI + "?SenderApp=TD&TasinmazId=" + TasinmazIdQS + "&BagisciId=" + bagisci.Id + "&PageIndex=" + PageIndexQS + "&EnvanterdeMi=" + EnvanterdeMiQS;
+                    newUrl += "/" + ProjeConstants.PAGE_TASINMAZBAGISCI_KARTI + "?SenderApp=TD&TasinmazId=" + TasinmazIdQS + "&BagisciId=" + bagisci.Id  + "&EnvanterdeMi=" + EnvanterdeMiQS;
                     Page.Response.Redirect(newUrl, true);
                 }
 
@@ -683,7 +659,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
             int queryIndex = newUrl.IndexOf("?");
             if (queryIndex > 0)
                 newUrl = newUrl.Substring(0, queryIndex);
-            newUrl = newUrl + "?DestinationApp=TD&TasinmazId=" + sonrakiTasinmaz.Id + "&PageIndex=" + PageIndexQS + "&EnvanterdeMi=" + EnvanterdeMiQS;
+            newUrl = newUrl + "?DestinationApp=TD&TasinmazId=" + sonrakiTasinmaz.Id  + "&EnvanterdeMi=" + EnvanterdeMiQS;
             Page.Response.Redirect(newUrl, true);
         }
         protected void PrevBtn_Click(object sender, EventArgs e)
@@ -695,7 +671,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
             int queryIndex = newUrl.IndexOf("?");
             if (queryIndex > 0)
                 newUrl = newUrl.Substring(0, queryIndex);
-            newUrl = newUrl + "?DestinationApp=TD&TasinmazId=" + oncekiTasinmaz.Id + "&PageIndex=" + PageIndexQS + "&EnvanterdeMi=" + EnvanterdeMiQS;
+            newUrl = newUrl + "?DestinationApp=TD&TasinmazId=" + oncekiTasinmaz.Id  + "&EnvanterdeMi=" + EnvanterdeMiQS;
             Page.Response.Redirect(newUrl, true);
         }
         protected void KatMulkiyetiDDL_SelectedIndexChanged(object sender, EventArgs e)

@@ -404,6 +404,11 @@ namespace Utility.ProjeGlobal
         public const string TAPUTIPI_KATIRTIFAKI = "Kat İrtifakı";
         public const string TAPUTIPI_YOK = "Yok";
         public const string TAPUTIPI_DIGER= "Diğer";
+
+        public static string SERH = "Şerh";
+        public static string BEYAN = "Beyan";
+        public static string IRTIFAK = "İrtifak";
+
         //Kira Sözleşme Ödeme planı
         public const string KIRA_ODMSEKLI_AYLIK = "Aylık";
         public const string KIRA_ODMSEKLI_YILLIK = "Yıllık";
@@ -1142,5 +1147,6 @@ namespace Utility.ProjeGlobal
         public static string YABANCIDIL_ITALYANCA = "İtalyanca";
         public static string YABANCIDIL_YUNANCA = "Yunanca";
         public static string YABANCIDIL_ARAPCA = "Arapça";
+
     }
 }

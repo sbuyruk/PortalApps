@@ -573,10 +573,7 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP
             try
             {
                 TabloModalOlustur(paramTasinmazBagisciIdLbl.Value.ConvertToInt());
-
                 TasinmazBagisciFormunuDoldur(paramTasinmazBagisciIdLbl.Value);
-                //tabloda modal açılırken seçili olan pagination degerini pageIndex degiskeninde saklar ve modal açıldıktan sonra pageload sırasında sayfayı pageIndex degerine getirir
-                UtilityHelper.ScriptCalistir("SetPageIndex();");
             }
             catch (Exception exception)
             {

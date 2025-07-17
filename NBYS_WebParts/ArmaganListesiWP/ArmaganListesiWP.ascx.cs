@@ -309,7 +309,6 @@ namespace NBYS_WebParts.ArmaganListesiWP
             {
                 ModalNakitBagisTablosunuDoldur(paramArmaganIdLbl.Value);
                 ModalNakitBagisciFormunuDoldur(paramArmaganIdLbl.Value);
-                UtilityHelper.ScriptCalistir("SetPageIndex();");
             }
             catch (Exception exception)
             {
@@ -747,8 +746,6 @@ namespace NBYS_WebParts.ArmaganListesiWP
                         TabloOlustur();
                         MessageHelper.PublishMessage(" Armağan Durumu " + ProjeConstants.DURUM_IADE
                             + " Olarak Değiştirildi", ProjeConstants.MESAJ_BASARILI, 2000);
-                        //RedirectToPage(ProjeConstants.PAGE_ARMAGAN_LIST + "?Mesaj=true&SecilenAy=" + SecilenAyQS + "&SecilenYıl=" + SecilenYilQS + "&SecilenGun=" + SecilenGunQS +
-                        //    "&PageIndex=" + PageIndexLbl.Value + "&SecilenArmaganTanimId=" + SecilenArmaganTanimIdQS + "&SecilenDurum=" + SecilenDurumQS);
                     }
                     else
                     {

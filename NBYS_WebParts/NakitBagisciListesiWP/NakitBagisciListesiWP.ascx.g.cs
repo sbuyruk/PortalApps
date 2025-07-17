@@ -548,8 +548,8 @@ namespace NBYS_WebParts.NakitBagisciListesiWP {
                          @__w.Write( paramNakitBagisciIdLbl.ClientID);
 
             @__w.Write("\').value = nakitBagisciId;\r\n\r\n        var myModalInstance = bootstrap.Modal.getOr" +
-                    "CreateInstance(document.getElementById(\'ModalUrlDiv\'));\n        myModalInstance." +
-                    "show();\r\n        document.getElementById(\'");
+                    "CreateInstance(document.getElementById(\'ModalUrlDiv\'));\r\n        myModalInstance" +
+                    ".show();\r\n        document.getElementById(\'");
                          @__w.Write( ModalDoldurBtn.ClientID);
 
             @__w.Write("\').click();\r\n    }\r\n</script>\r\n\r\n<div class=\"container col-xl\">\r\n    <div class=\"" +
@@ -560,8 +560,8 @@ namespace NBYS_WebParts.NakitBagisciListesiWP {
                     "ass=\"col-form-label text-end\">İl: </label>\r\n                    ");
             parameterContainer.Controls[1].RenderControl(@__w);
             @__w.Write("\r\n                </div>\r\n                <div class=\"form-group col-4\">\r\n       " +
-                    "             <label for=\"BagisZamaniDDL\" class=\"col-form-label text-end\">Bağış" +
-                    " Zamanına Göre: </label>\r\n                    ");
+                    "             <label for=\"BagisZamaniDDL\" class=\"col-form-label text-end\">Bağış Z" +
+                    "amanına Göre: </label>\r\n                    ");
             parameterContainer.Controls[2].RenderControl(@__w);
             @__w.Write("\r\n                </div>\r\n            </div>\r\n\r\n            <div style=\"display: " +
                     "none\">\r\n                ");

@@ -74,6 +74,15 @@ namespace Model.TBYS
         public string ProjeM2 { get; set; }
         public string Blok { get; set; }
         public string Giris { get; set; }
+        public bool KatMulkiyetiChk { get; set; }
+        public bool KatIrtifaki { get; set; }
+        public bool AltBolum { get; set; }
+        public decimal ToplamMetrekare { get; set; }
+        public string ZeminTipi { get; set; }
+        public decimal ZeminHisse { get; set; }
+        public decimal BBBrutAlan { get; set; }
+        public decimal BBNetAlan { get; set; }
+        public DateTime TapuIslemTarihi { get; set; }
 
         private string IliStr() 
         {

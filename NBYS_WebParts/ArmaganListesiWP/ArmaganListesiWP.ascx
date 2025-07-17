@@ -64,7 +64,6 @@
                 <div class="card-body">
                     <div style="display: none">
                         <input id="paramArmaganIdLbl" runat="server" text="Label" style="border-style: none;" text-align="center" />
-                        <input id="PageIndexLbl" runat="server" text="Label" style="border-style: none;" text-align="center" />
                         <asp:LinkButton ID="IadeEdildiYapBtn" runat="server" OnClientClick="{return true;};" OnClick="IadeEdildiYapBtn_Click"></asp:LinkButton>
                     </div>
                     <div class="row m-2 ">

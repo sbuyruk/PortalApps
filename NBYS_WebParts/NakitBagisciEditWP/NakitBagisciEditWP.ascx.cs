@@ -102,30 +102,6 @@ namespace NBYS_WebParts.NakitBagisciEditWP
                 ViewState["Param"] = value;
             }
         }
-        private string PageIndexQS
-        {
-            get
-            {
-
-                if (ViewState["PageIndex"] == null)
-                {
-                    if (Page.Request.QueryString["PageIndex"] != null)
-                    {
-                        ViewState["PageIndex"] = Page.Request.QueryString["PageIndex"];
-                    }
-                    else
-                    {
-                        ViewState["PageIndex"] = string.Empty;
-                    }
-                }
-                return ViewState["PageIndex"].ToString();
-            }
-
-            set
-            {
-                ViewState["PageIndex"] = value;
-            }
-        }
         private string CurrentUserName
         {
             get
@@ -410,45 +386,7 @@ namespace NBYS_WebParts.NakitBagisciEditWP
             }
             return isSaved;
         }
-        //protected void NakitBagisciListesiBtn_Click(object sender, EventArgs e)
-        //{
-        //    try
-        //    {
-        //        string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-        //        string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
-
-        //        if (string.IsNullOrEmpty(SenderAppQS))
-        //        {
-        //            newUrl += "/" + ProjeConstants.PAGE_NAKITBAGISCI_LIST + "?NakitBagisciId=" + NakitBagisciIdQS + "&SecilenId=" + NakitBagisciIdQS;
-        //        }
-        //        else if (SenderAppQS.Equals("NBL"))
-        //        {
-        //            newUrl += "/" + ProjeConstants.PAGE_NAKITBAGISCI_LIST + "?NakitBagisciId=" + NakitBagisciIdQS + "&SecilenId=" + NakitBagisciIdQS;
-        //        }
-        //        else if (SenderAppQS.Equals("BB"))
-        //        {
-        //            newUrl += "/" + ProjeConstants.PAGE_BAGISCI_BIRLESTIRME + "?NakitBagisciId=" + NakitBagisciIdQS + "&Param=" + ParamQS + "&SecilenId=" + NakitBagisciIdQS;
-        //        }
-        //        else if (SenderAppQS.Equals("NBB"))
-        //        {
-        //            newUrl += "/" + ProjeConstants.PAGE_NAKITBAGISCI_BULMA + "?NakitBagisciId=" + NakitBagisciIdQS + "&Param=" + ParamQS + "&SecilenId=" + NakitBagisciIdQS;
-        //        }
-        //        else if (SenderAppQS.Equals("NBAL"))
-        //        {
-
-        //            int index = currentUrl.LastIndexOf("?") < 0 ? currentUrl.Length : currentUrl.LastIndexOf("?");
-        //            string queryString = currentUrl.Substring(index + 1, currentUrl.Length - index - 1);
-        //            newUrl += "/" + ProjeConstants.PAGE_NAKITBAGISCI_ADRESLIST + "?Param=" + ParamQS + "&PageIndex=" + PageIndexQS + "&" + queryString;
-        //        }
-
-        //        Page.Response.Redirect(newUrl, true);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        ExceptionHelper exHelper = new ExceptionHelper(ex);
-        //        exHelper.PublishException();
-        //    }
-        //}
+      
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
             try
