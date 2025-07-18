@@ -193,15 +193,6 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
                 TitleLbl.Text = "Mülkiyeti Olmayan Taşınmaz Girişi";
             }
 
-            if (KatMulkiyetiDDL.SelectedValue == ProjeConstants.KAT_MULKIYETI_VAR)
-            {
-                BagimsizBolumBtn.Visible = false;
-            }
-            else if (KatMulkiyetiDDL.SelectedValue == ProjeConstants.KAT_MULKIYETI_YOK)
-            {
-                BagimsizBolumBtn.Visible = true;
-            }
-
             if (SigortaDDL.SelectedValue == ProjeConstants.SIGORTA_YOK)
             {
                 SigortaBtn.Visible = false;
@@ -238,7 +229,6 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
             KirayaUygunlukDDLDoldur();
             KiraDurumuDDLDoldur();
             KullanimSekliDDLDoldur();
-            KatMulkiyetiDDLDoldur();
             SigortaDurumuDDLDoldur();
         }
         private void IlDDLDoldur()
@@ -312,13 +302,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
             KullanimSekliDDL.Items.Add(ProjeConstants.KULLANIMSEKLI_TARLA);
             KullanimSekliDDL.Items.Add(ProjeConstants.KULLANIMSEKLI_TESIS);
         }
-        private void KatMulkiyetiDDLDoldur()
-        {
-            KatMulkiyetiDDL.Items.Clear();
-            KatMulkiyetiDDL.Items.Add(ProjeConstants.KAT_MULKIYETI_VAR);
-            KatMulkiyetiDDL.Items.Add(ProjeConstants.KAT_MULKIYETI_YOK);
 
-        }
         private void SigortaDurumuDDLDoldur()
         {
             SigortaDDL.Items.Clear();
@@ -342,24 +326,9 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
                 SigortaDurumuDDLDoldur();
                 UtilityHelper.SetDDLValue(IlcesiDDL, tasinmaz.IlceId.ToString());
                 UtilityHelper.SetDDLValue(KiraDurumuDDL, tasinmaz.KiraDurumu);
-                UtilityHelper.SetDDLValue(KatMulkiyetiDDL, tasinmaz.KatMulkiyeti);
                 UtilityHelper.SetDDLValue(KullanimSekliDDL, tasinmaz.KullanimSekli);
                 UtilityHelper.SetDDLValue(SigortaDDL, tasinmaz.SigortaDurumu);
                
-                //if (KiraDurumuDDL.Items.FindByText(tasinmaz.KiraDurumu) != null)
-                //    KiraDurumuDDL.SelectedValue = KiraDurumuDDL.Items.FindByText(tasinmaz.KiraDurumu).Value;
-                //if (KatMulkiyetiDDL.Items.FindByText(tasinmaz.KatMulkiyeti) != null)
-                //    KatMulkiyetiDDL.SelectedValue = KatMulkiyetiDDL.Items.FindByText(tasinmaz.KatMulkiyeti).Value;
-                //if (KullanimSekliDDL.Items.FindByText(tasinmaz.KullanimSekli) != null)
-                //    KullanimSekliDDL.SelectedValue = KullanimSekliDDL.Items.FindByText(tasinmaz.KullanimSekli).Value;
-                //if (SigortaDDL.Items.FindByText(tasinmaz.SigortaDurumu) != null)
-                //    SigortaDDL.SelectedValue = SigortaDDL.Items.FindByText(tasinmaz.SigortaDurumu).Value;
-
-                //UtilityHelper.SetDDLValue(IlcesiDDL, tasinmaz.Ilcesi);
-                //UtilityHelper.SetDDLValue(KiraDurumuDDL, tasinmaz.KiraDurumu);
-                //UtilityHelper.SetDDLValue(KatMulkiyetiDDL, tasinmaz.KatMulkiyeti);
-                //UtilityHelper.SetDDLValue(KullanimSekliDDL, tasinmaz.KullanimSekli);
-                //UtilityHelper.SetDDLValue(SigortaDDL, tasinmaz.SigortaDurumu);
                 UtilityHelper.SetDDLValue(KirayaUygunlukDDL, tasinmaz.KirayaUygunluk);
                 AdresTxt.Text = tasinmaz.Adres;
 
@@ -400,7 +369,6 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
             tasinmaz.SorumluBolge = SorumluBolgeTxt.Text;
             tasinmaz.KiraDurumu = KiraDurumuDDL.SelectedValue;
             tasinmaz.KirayaUygunluk = KirayaUygunlukDDL.SelectedValue;
-            tasinmaz.KatMulkiyeti = KatMulkiyetiDDL.SelectedValue;
             tasinmaz.KullanimSekli = KullanimSekliDDL.SelectedValue;
             tasinmaz.SigortaDurumu = SigortaDDL.SelectedValue;
             tasinmaz.Aciklama = AciklamaTxt.Text;
@@ -457,7 +425,6 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
                 tasinmaz.SorumluBolge = SorumluBolgeTxt.Text;
                 tasinmaz.KiraDurumu = KiraDurumuDDL.SelectedValue;
                 tasinmaz.KirayaUygunluk = KirayaUygunlukDDL.SelectedValue;
-                tasinmaz.KatMulkiyeti = KatMulkiyetiDDL.SelectedValue;
 
                 tasinmaz.KullanimSekli = KullanimSekliDDL.SelectedValue;
                 tasinmaz.SigortaDurumu = SigortaDDL.SelectedValue;
@@ -674,17 +641,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
             newUrl = newUrl + "?DestinationApp=TD&TasinmazId=" + oncekiTasinmaz.Id  + "&EnvanterdeMi=" + EnvanterdeMiQS;
             Page.Response.Redirect(newUrl, true);
         }
-        protected void KatMulkiyetiDDL_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (KatMulkiyetiDDL.SelectedValue == ProjeConstants.KAT_MULKIYETI_VAR)
-            {
-                BagimsizBolumBtn.Visible = false;
-            }
-            else if (KatMulkiyetiDDL.SelectedValue == ProjeConstants.KAT_MULKIYETI_YOK)
-            {
-                BagimsizBolumBtn.Visible = true;
-            }
-        }
+        
         protected void IliDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
             IlceDDLDoldur();

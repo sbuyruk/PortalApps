@@ -84,10 +84,6 @@
                                     <label class="form-label fw-semibold" for="SigortaDDL">Sigorta Dur.</label>
                                     <asp:DropDownList ID="SigortaDDL" runat="server" CssClass="form-control form-select form-select-lg" ToolTip="Sigorta Durumu" ></asp:DropDownList>
                                 </div>
-                                <div class="form-group m-0 ">
-                                    <label class="form-label fw-semibold" for="KatMulkiyetiDDL">Kat Mülk.</label>
-                                    <asp:DropDownList ID="KatMulkiyetiDDL" runat="server" CssClass="form-control form-select form-select-lg" OnSelectedIndexChanged="KatMulkiyetiDDL_SelectedIndexChanged" AutoPostBack="true"  />
-                                </div>
                             </div>
 
                         </div>

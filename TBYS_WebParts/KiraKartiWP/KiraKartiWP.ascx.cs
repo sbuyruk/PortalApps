@@ -228,7 +228,7 @@ namespace TBYS_WebParts.KiraKartiWP
                     }
                     YuzolcumuCell.Text = tasinmaz.Yuzolcumu;
                     //KiralamaAmaciCell.Text = tasinmaz.KullanimSekli;
-                    if (tasinmaz.KatMulkiyeti.Equals(ProjeConstants.KAT_MULKIYETI_VAR))
+                    if (tasinmaz.KatMulkiyeti)
                     {
                         NiteligiCell.Text = tasinmaz.Nitelik;
                     }

@@ -2827,12 +2827,13 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
             @__w.Write("\').value = islemTipi;\r\n        document.getElementById(\'");
                          @__w.Write(DuzenleSilBtn.ClientID);
 
-            @__w.Write("\').click();\r\n    }\n    function clearSBITarihi() {\r\n        $(\'#clear-SBITarihi\')" +
-                    ".on(\'click\', function () {\r\n            $(\"#TarihTxt\").val(\"\");\r\n            doc" +
-                    "ument.getElementById(\'");
+            @__w.Write("\').click();\r\n    }\r\n    function clearSBITarihi() {\r\n        $(\'#clear-SBITarihi\'" +
+                    ").on(\'click\', function () {\r\n            $(\"#TarihTxt\").val(\"\");\r\n            do" +
+                    "cument.getElementById(\'");
                              @__w.Write( TarihTxt.ClientID);
 
-            @__w.Write("\').value = \"\";\r\n    });\r\n    }\n    </script>\n<div class=\"container-fluid\">\r\n    ");
+            @__w.Write("\').value = \"\";\r\n    });\r\n    }\r\n    </script>\r\n<div class=\"container-fluid\">\r\n   " +
+                    " ");
             parameterContainer.Controls[0].RenderControl(@__w);
             @__w.Write("\r\n</div>\r\n\r\n");
         }

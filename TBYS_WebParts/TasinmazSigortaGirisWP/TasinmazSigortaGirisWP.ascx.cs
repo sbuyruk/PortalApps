@@ -355,7 +355,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             tasinmaz = tasinmaz.Select(sigorta.TasinmazId);
             if (tasinmaz != null)
             {
-                if (tasinmaz.KatMulkiyeti== ProjeConstants.KAT_MULKIYETI_VAR)
+                if (tasinmaz.AltBolum == ProjeConstants.ALTBOLUM_YOK)
                 {
                     ListItem li = new ListItem(tasinmaz.BagimsizBolumNo, tasinmaz.BagimsizBolumNo);
                     BagimsizBolumDDL.Items.Add(li);
@@ -383,7 +383,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                        
                     else {
                         BagimsizBolumNoTxt.Text = string.Empty;
-                        MessageHelper.PublishMessage("Taşınmazın kat mülkiyeti bulunmamasına rağmen taşınmaza ait bağımsız bölüm bulunmamaktadır.", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Taşınmazın ALTBÖLÜMÜ VAR seçilmesine rağmen taşınmaza ait bölüm tanımlanmamıştır.", ProjeConstants.MESAJ_HATA);
                     }
                     
                 }

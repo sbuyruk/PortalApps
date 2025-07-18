@@ -48,7 +48,7 @@ namespace Model.TBYS
         public string KrokiFoto { get; set; }
         public string TahkikatFoto { get; set; }
         public string Bagisci { get; set; }
-        public string KatMulkiyeti { get; set; }
+        //public string KatMulkiyeti { get; set; }
         public string BulunduguKat { get; set; }
         public string Aciklama { get; set; }
         public int EnvanterdeMi { get; set; }
@@ -74,7 +74,7 @@ namespace Model.TBYS
         public string ProjeM2 { get; set; }
         public string Blok { get; set; }
         public string Giris { get; set; }
-        public bool KatMulkiyetiChk { get; set; }
+        public bool KatMulkiyeti { get; set; }
         public bool KatIrtifaki { get; set; }
         public bool AltBolum { get; set; }
         public decimal ToplamMetrekare { get; set; }

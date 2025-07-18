@@ -644,7 +644,7 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
                 string tamAdres = row["TamAdres"].ToString();
                 string teminatListesi = row["TeminatListesi"].ToString();
                 string tasinmazId = row["TasinmazId"].ToString();
-                string katMulkiyeti = row["KatMulkiyeti"].ToString();
+                bool katMulkiyeti = row["KatMulkiyeti"].ReturnFalseIfNull().ConvertToBool();
                 string kullanimAmaci = row["KullanimAmaci"].ToString();
                 string pDFDosyasi = row["PDFDosyasi"].ToString().Trim();
 
