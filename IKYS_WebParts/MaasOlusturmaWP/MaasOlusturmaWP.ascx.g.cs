@@ -69,6 +69,10 @@ namespace IKYS_WebParts.MaasOlusturmaWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.LinkButton MaasSilBtn;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.Label MessageTitleLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -78,6 +82,10 @@ namespace IKYS_WebParts.MaasOlusturmaWP {
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton KaydetNowBtn;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.LinkButton SilNowBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebPartCodeGenerator", "17.0.0.0")]
         public static implicit operator global::System.Web.UI.TemplateControl(MaasOlusturmaWP target) 
@@ -258,6 +266,23 @@ namespace IKYS_WebParts.MaasOlusturmaWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlMaasSilBtn() {
+            global::System.Web.UI.WebControls.LinkButton @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
+            this.MaasSilBtn = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "MaasSilBtn";
+            @__ctrl.CssClass = "col-2 btn btn-danger float-end";
+            @__ctrl.Text = "Maaşı Sil";
+            @__ctrl.Visible = true;
+            @__ctrl.Click -= new System.EventHandler(this.MaasSilBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.MaasSilBtn_Click);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlMessageTitleLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -298,6 +323,24 @@ namespace IKYS_WebParts.MaasOlusturmaWP {
             @__ctrl.OnClientClick = "{return true;};";
             @__ctrl.Click -= new System.EventHandler(this.KaydetNowBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.KaydetNowBtn_Click);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlSilNowBtn() {
+            global::System.Web.UI.WebControls.LinkButton @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
+            this.SilNowBtn = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.CssClass = "btn btn-danger";
+            @__ctrl.ID = "SilNowBtn";
+            @__ctrl.CausesValidation = false;
+            @__ctrl.Text = "Maaş Sil";
+            @__ctrl.OnClientClick = "{return true;};";
+            @__ctrl.Click -= new System.EventHandler(this.SilNowBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.SilNowBtn_Click);
             return @__ctrl;
         }
         
@@ -349,6 +392,10 @@ namespace IKYS_WebParts.MaasOlusturmaWP {
             global::System.Web.UI.WebControls.LinkButton @__ctrl3;
             @__ctrl3 = this.@__BuildControlMaasOlusturBtn();
             @__parser.AddParsedSubObject(@__ctrl3);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl4;
+            @__ctrl4 = this.@__BuildControlMaasSilBtn();
+            @__parser.AddParsedSubObject(@__ctrl4);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
         </div>
     </div>
@@ -360,29 +407,23 @@ namespace IKYS_WebParts.MaasOlusturmaWP {
                     <div class=""text-center"">
                         <h3>
                             "));
-            global::System.Web.UI.WebControls.Label @__ctrl4;
-            @__ctrl4 = this.@__BuildControlMessageTitleLbl();
-            @__parser.AddParsedSubObject(@__ctrl4);
+            global::System.Web.UI.WebControls.Label @__ctrl5;
+            @__ctrl5 = this.@__BuildControlMessageTitleLbl();
+            @__parser.AddParsedSubObject(@__ctrl5);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </h3>\r\n                    </div>\r\n                    " +
                         "<div class=\"card-body\">\r\n                        "));
-            global::System.Web.UI.WebControls.Label @__ctrl5;
-            @__ctrl5 = this.@__BuildControlMessageTextLbl();
-            @__parser.AddParsedSubObject(@__ctrl5);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-                    </div>
-                </div>
-
-                <div class=""text-center"">
-                    <label class=""form-label text-danger"">
-                        Tablolar oluşturulduktan sonra bu işlem geri alınamaz.
-                    </label>
-                </div>
-
-                <div class=""modal-footer text-center"">
-                    "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl6;
-            @__ctrl6 = this.@__BuildControlKaydetNowBtn();
+            global::System.Web.UI.WebControls.Label @__ctrl6;
+            @__ctrl6 = this.@__BuildControlMessageTextLbl();
             @__parser.AddParsedSubObject(@__ctrl6);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                </div>\r\n\r\n                <div clas" +
+                        "s=\"modal-footer text-center\">\r\n                    "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl7;
+            @__ctrl7 = this.@__BuildControlKaydetNowBtn();
+            @__parser.AddParsedSubObject(@__ctrl7);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl8;
+            @__ctrl8 = this.@__BuildControlSilNowBtn();
+            @__parser.AddParsedSubObject(@__ctrl8);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n                    <button type=\"button\" class=\"btn btn-default\" data-bs-dis" +
                         "miss=\"modal\">Kapat</button>\r\n                </div>\r\n            </div>\r\n       " +
                         " </div>\r\n    </div>\r\n</div>\r\n\r\n\r\n"));

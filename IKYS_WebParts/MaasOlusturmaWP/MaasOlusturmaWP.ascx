@@ -80,6 +80,7 @@
 
         <div class="card-footer">
             <asp:LinkButton ID="MaasOlusturBtn" CssClass="col-2 btn btn-success" runat="server" Text="Maaşı Kaydet" OnClick="MaasOlusturBtn_Click" Visible="true" />
+            <asp:LinkButton ID="MaasSilBtn" CssClass="col-2 btn btn-danger float-end" runat="server" Text="Maaşı Sil" OnClick="MaasSilBtn_Click" Visible="true" />
         </div>
     </div>
         <!-- Modal -->
@@ -105,12 +106,6 @@
                     </div>
                 </div>
 
-                <div class="text-center">
-                    <label class="form-label text-danger">
-                        Tablolar oluşturulduktan sonra bu işlem geri alınamaz.
-                    </label>
-                </div>
-
                 <div class="modal-footer text-center">
                     <asp:LinkButton
                         CssClass="btn btn-success"
@@ -120,6 +115,14 @@
                         Text="Maaş Oluştur ve Kaydet"
                         OnClientClick="{return true;};"
                         OnClick="KaydetNowBtn_Click" />
+                    <asp:LinkButton
+                        CssClass="btn btn-danger"
+                        ID="SilNowBtn"
+                        runat="server"
+                        CausesValidation="false"
+                        Text="Maaş Sil"
+                        OnClientClick="{return true;};"
+                        OnClick="SilNowBtn_Click" />
 
                     <button type="button" class="btn btn-default" data-bs-dismiss="modal">Kapat</button>
                 </div>

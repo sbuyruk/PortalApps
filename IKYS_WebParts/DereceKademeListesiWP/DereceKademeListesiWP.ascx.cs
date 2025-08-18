@@ -189,7 +189,8 @@ namespace IKYS_WebParts.DereceKademeListesiWP
                         { data: 'Derece' },
                         { data: 'Kademe' },
                         { data: 'Aciklama' },
-                        { data: 'Duzenle' }
+                        { data: 'Duzenle' },
+                        { data: 'Sil' }
                     ],
                     'order': [[0, 'desc']],//sort date desc
                     'language': {
@@ -217,39 +218,46 @@ namespace IKYS_WebParts.DereceKademeListesiWP
                 DereceKademeDegisim dereceKademe = new DereceKademeDegisim();
                 DataTable dataTable = dereceKademe.SelectAllByPersonelIdReturnDT(personel.Id);
                 string adSoyad = (personel.Adi + " " + personel.Soyadi).Trim();
-                foreach (DataRow row in dataTable.Rows)
+                if (dataTable!=null)
                 {
-                    string dereceKademeId = row["Id"].ToString();
-                    string degisim = row["Degisim"].ToString();
-                    string derece = row["Derece"].ToString();
-                    string kademe = row["Kademe"].ToString();
-                    string aciklama = row["Aciklama"].ToString();
-                    string degisimTarihi = ((DateTime)row["DegisimTarihi"]).ToString("yyyy-MM-dd"); // JS için uygun tarih formatı
-
-                    // JS parametrelerini güvenli hale getir (tırnak içine al)
-                    string jsDegisim = "\"" + HttpUtility.JavaScriptStringEncode(degisim) + "\"";
-                    string jsDerece = "\"" + HttpUtility.JavaScriptStringEncode(derece) + "\"";
-                    string jsKademe = "\"" + HttpUtility.JavaScriptStringEncode(kademe) + "\"";
-                    string jsAciklama = "\"" + HttpUtility.JavaScriptStringEncode(aciklama) + "\"";
-                    string jsTarih = "\"" + degisimTarihi + "\"";
-
-                    string jsAdSoyad = "\"" + HttpUtility.JavaScriptStringEncode(personel.Adi + " " + personel.Soyadi) + "\"";
-
-                    string js = $"OpenModal({dereceKademeId},{personel.Id}, {jsDegisim}, {jsTarih}, {jsDerece}, {jsKademe}, {jsAciklama}, {jsAdSoyad})";
-
-
-
-                    DereceKademeListItem item = new DereceKademeListItem
+                    foreach (DataRow row in dataTable.Rows)
                     {
-                        DegisimTarihi = degisimTarihi,
-                        Degisim = degisim,
-                        Derece = derece,
-                        Kademe = kademe,
-                        Aciklama = aciklama,
-                        Duzenle = $"<a href=\"javascript:void(0);\" onclick='{js}' class=\"btn btn-primary\">Düzenle</a>"
-                    };
+                        string dereceKademeId = row["Id"].ToString();
+                        string degisim = row["Degisim"].ToString();
+                        string derece = row["Derece"].ToString();
+                        string kademe = row["Kademe"].ToString();
+                        string aciklama = row["Aciklama"].ToString();
+                        string degisimTarihi = ((DateTime)row["DegisimTarihi"]).ToString("yyyy-MM-dd"); // JS için uygun tarih formatı
 
-                    list.Add(item);
+                        // JS parametrelerini güvenli hale getir (tırnak içine al)
+                        string jsDegisim = "\"" + HttpUtility.JavaScriptStringEncode(degisim) + "\"";
+                        string jsDerece = "\"" + HttpUtility.JavaScriptStringEncode(derece) + "\"";
+                        string jsKademe = "\"" + HttpUtility.JavaScriptStringEncode(kademe) + "\"";
+                        string jsAciklama = "\"" + HttpUtility.JavaScriptStringEncode(aciklama) + "\"";
+                        string jsTarih = "\"" + degisimTarihi + "\"";
+                        string jsDuzenleBtn = "\"Duzenle\"";
+                        string jsSilBtn = "\"Sil\"";
+
+                        string jsAdSoyad = "\"" + HttpUtility.JavaScriptStringEncode(personel.Adi + " " + personel.Soyadi) + "\"";
+
+                        string jsDuzenle = $"OpenModal({dereceKademeId},{personel.Id}, {jsDegisim}, {jsTarih}, {jsDerece}, {jsKademe}, {jsAciklama}, {jsAdSoyad}, {jsDuzenleBtn})";
+                        string jsSil = $"OpenModal({dereceKademeId},{personel.Id}, {jsDegisim}, {jsTarih}, {jsDerece}, {jsKademe}, {jsAciklama}, {jsAdSoyad}, {jsSilBtn})";
+
+
+
+                        DereceKademeListItem item = new DereceKademeListItem
+                        {
+                            DegisimTarihi = degisimTarihi,
+                            Degisim = degisim,
+                            Derece = derece,
+                            Kademe = kademe,
+                            Aciklama = aciklama,
+                            Duzenle = $"<a href=\"javascript:void(0);\" onclick='{jsDuzenle}' class=\"btn btn-primary\">Düzenle</a>",
+                            Sil = $"<a href=\"javascript:void(0);\" onclick='{jsSil}' class=\"btn btn-danger\">Sil</a>"
+                        };
+
+                        list.Add(item);
+                    } 
                 }
 
                 return list;
@@ -277,10 +285,33 @@ namespace IKYS_WebParts.DereceKademeListesiWP
             public string Kademe { get; set; }
             public string Aciklama { get; set; }
             public string Duzenle { get; set; }
+            public string Sil { get; set; }
 
 
         }
 
+        private void SaveDereceKademeDegisim(int id, string degisim, DateTime degisimTarihi, int derece, int kademe, string aciklama)
+        {
+            try
+            {
+                DereceKademeDegisim dereceKademeDegisim = new DereceKademeDegisim
+                {
+                    PersonelId = PersonelDDL.SelectedItem.Value.ConvertToInt(),
+                    Degisim = degisim,
+                    DegisimTarihi = degisimTarihi,
+                    Derece = derece,
+                    Kademe = kademe,
+                    Aciklama = aciklama,
+                };
+
+                dereceKademeDegisim.Save();
+                MessageHelper.PublishMessage("Derece ve Kademe Değişikliği Kaydedildi.", ProjeConstants.MESAJ_BASARILI);
+            }
+            catch (Exception)
+            {
+                MessageHelper.PublishMessage("Derece ve Kademe Değişikliği Kaydedilemedi.", ProjeConstants.MESAJ_HATA);
+            }
+        }
         private void UpdateDereceKademeDegisim(int id, string degisim, DateTime degisimTarihi, int derece, int kademe, string aciklama)
         {
 
@@ -307,26 +338,26 @@ namespace IKYS_WebParts.DereceKademeListesiWP
                 MessageHelper.PublishMessage("Derece ve Kademe Değişikliği Güncellenemedi.", ProjeConstants.MESAJ_HATA);
             }
         }
-        private void SaveDereceKademeDegisim(int id, string degisim, DateTime degisimTarihi, int derece, int kademe, string aciklama)
+        private void SilDereceKademeDegisim(int id, string degisim, DateTime degisimTarihi, int derece, int kademe, string aciklama)
         {
+
             try
             {
-                DereceKademeDegisim dereceKademeDegisim = new DereceKademeDegisim
+                // Bu kısmı kendi veritabanı ya da SharePoint listesi güncelleme kodu ile tamamlayın
+                DereceKademeDegisim dereceKademeDegisim = new DereceKademeDegisim();
+                dereceKademeDegisim = dereceKademeDegisim.Select(id);
+                if (dereceKademeDegisim == null)
                 {
-                    PersonelId = PersonelDDL.SelectedItem.Value.ConvertToInt(),
-                    Degisim = degisim,
-                    DegisimTarihi = degisimTarihi,
-                    Derece = derece,
-                    Kademe = kademe,
-                    Aciklama = aciklama,
-                };
+                    MessageHelper.PublishMessage("Derece ve Kademe Değişikliği Bulunamadı.", ProjeConstants.MESAJ_HATA);
+                    return;
+                }
 
-                dereceKademeDegisim.Save();
-                MessageHelper.PublishMessage("Derece ve Kademe Değişikliği Kaydedildi.", ProjeConstants.MESAJ_BASARILI);
+                dereceKademeDegisim.Delete();
+                MessageHelper.PublishMessage("Derece ve Kademe Silindi.", ProjeConstants.MESAJ_BASARILI);
             }
             catch (Exception)
             {
-                MessageHelper.PublishMessage("Derece ve Kademe Değişikliği Kaydedilemedi.", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Derece ve Kademe Silinemedi.", ProjeConstants.MESAJ_HATA);
             }
         }
         private void DereceDDLDoldur()
@@ -406,6 +437,22 @@ namespace IKYS_WebParts.DereceKademeListesiWP
             // Veriyi güncelleme işlemi yapılacak
             // Örnek: Veritabanına veya SharePoint listesine veri güncelleme
             UpdateDereceKademeDegisim(id, degisim, degisimTarihi, derece, kademe, aciklama);
+            BilgileriDoldur();
+
+        }
+        protected void SilBtn_Click(object sender, EventArgs e)
+        {
+            // Modal'dan gelen veriler
+            int id = int.Parse(editId.Value);
+            string degisim = editDegisim.SelectedValue;
+            DateTime degisimTarihi = DateTime.Parse(editTarih.Text);
+            int derece = int.Parse(DereceDDL.SelectedItem.Value);
+            int kademe = int.Parse(KademeDDL.SelectedItem.Value);
+            string aciklama = editAciklama.Text;
+
+            // Veriyi güncelleme işlemi yapılacak
+            // Örnek: Veritabanına veya SharePoint listesine veri güncelleme
+            SilDereceKademeDegisim(id, degisim, degisimTarihi, derece, kademe, aciklama);
             BilgileriDoldur();
 
         }

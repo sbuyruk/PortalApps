@@ -95,8 +95,14 @@
                 CssClass="btn btn-success"
                 runat="server"
                 Text="Artış Yap Ve Tabloları Kaydet"
-                OnClick="KaydetBtn_Click"
-                />
+                OnClick="KaydetBtn_Click" />
+        </div>
+            <asp:LinkButton
+                ID="SilBtn"
+                CssClass="btn btn-danger"
+                runat="server"
+                Text="Son yapılan Artışı Sil"
+                OnClick="SilBtn_Click" />
         </div>
     </div>
 
@@ -135,7 +141,7 @@
                         ID="DeleteNowBtn"
                         runat="server"
                         CausesValidation="false"
-                        Text="Görev Onayı Sil"
+                        Text="Son Maaş Artışını Sil"
                         OnClientClick="{return true;};"
                         OnClick="DeleteNowBtn_Click"
                         Visible="false" />

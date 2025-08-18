@@ -191,8 +191,8 @@ namespace TBYS_WebParts.TasinmazListesiWP
         {
             string duzenleGorunsun = string.IsNullOrEmpty(AuthQS) || !AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM) || 
                 (BolgeIdQS != ProjeConstants.HEPSI_INT && BolgeIdQS != ProjeConstants.BOLGE_GENELMUDURLUK_INT )
-                ? "{ targets:10, visible:false},"
-                : "{ targets:10, visible:true},";
+                ? "{ targets:11, visible:false},"
+                : "{ targets:11, visible:true},";
             string tableString = @"
 
                 $(document).ready(function () {
@@ -217,13 +217,14 @@ namespace TBYS_WebParts.TasinmazListesiWP
                         data: " + jsonData + @",
                         columns: [
                             { data: 'Id'},
-                            { data: 'KullanimSekli'},
-                            { data: 'MulkiyetSekli'},
-                            { data: 'IliIlcesi',},
-                            { data: 'Adres',},
-                            { data: 'Bagisci' },
-                            { data: 'BagisYili',},
                             { data: 'Bolge'},                            
+                            { data: 'Bagisci' },
+                            { data: 'Adres',},
+                            { data: 'Ili',},
+                            { data: 'Ilcesi',},
+                            { data: 'MulkiyetSekli'},
+                            { data: 'KullanimSekli'},
+                            { data: 'BagisYili',},
                             { data: 'TasinmazKarti'},
                             { data: 'Resimler'},
                             { data: 'Duzenle' },
@@ -240,11 +241,10 @@ namespace TBYS_WebParts.TasinmazListesiWP
                         columnDefs:
                             [
                             " + duzenleGorunsun + @"
-                            { 'visible': false, targets: [11,12,13,14,15,16,17,18]},
-                            {  targets : [11,12],className: 'dt-body-right'},
-                        { width: '20%', targets: 4 },
-                            { width: '20%', targets: 4 },
-                            { width: '15%', targets: 5 }
+                            { 'visible': false, targets: [12,13,14,15,16,17,18,19]},
+                            {  targets : [12,13],className: 'dt-body-right'},
+                            { width: '15%', targets: 2 },
+                            { width: '20%', targets: 3 }
                             ],
                         'language': {
                             'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
@@ -286,7 +286,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
 
                             // For each column
                             api
-                                .columns([6])
+                                .columns([8])
                                 .eq(0)
                                 .each(function (colIdx) {
                                     // Set the header cell to contain the input element
@@ -350,7 +350,8 @@ namespace TBYS_WebParts.TasinmazListesiWP
                 string tasinmazId = row["Id"].ToString();
                 string kullanimSekli = row["KullanimSekli"].ToString();
                 string mulkiyetSekli = row["MulkiyetSekli"].ToString();
-                string iliIlcesi = row["IliIlcesi"].ToString();
+                string ili = row["Ili"].ToString();
+                string ilcesi = row["Ilcesi"].ToString();
                 string adres = row["Adres"].ToString();
                 string katMulkiyeti = row["KatMulkiyeti"].ToString();
                 string bagisci = row["Bagisci"].ToString();
@@ -378,7 +379,8 @@ namespace TBYS_WebParts.TasinmazListesiWP
                 tasinmazListesiListItem.Id = tasinmazId;
                 tasinmazListesiListItem.KullanimSekli = kullanimSekli;
                 tasinmazListesiListItem.MulkiyetSekli = mulkiyetSekli;
-                tasinmazListesiListItem.IliIlcesi = iliIlcesi;
+                tasinmazListesiListItem.Ili = ili;
+                tasinmazListesiListItem.Ilcesi = ilcesi;
 
                 if (katMulkiyeti.Equals(ProjeConstants.KAT_MULKIYETI_YOK))
                 {
@@ -636,7 +638,8 @@ namespace TBYS_WebParts.TasinmazListesiWP
             public string Id { get; set; }
             public string KullanimSekli { get; set; }
             public string MulkiyetSekli { get; set; }
-            public string IliIlcesi { get; set; }
+            public string Ili { get; set; }
+            public string Ilcesi { get; set; }
             public string Adres { get; set; }
             public string Bagisci { get; set; }
             public string BagisYili { get; set; }

@@ -115,6 +115,10 @@ namespace IKYS_WebParts.DereceKademeListesiWP {
             "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton GuncelleBtn;
         
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.LinkButton SilBtn;
+        
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebPartCodeGenerator", "17.0.0.0")]
         public static implicit operator global::System.Web.UI.TemplateControl(DereceKademeListesiWP target) 
         {
@@ -275,7 +279,7 @@ namespace IKYS_WebParts.DereceKademeListesiWP {
             this.ModalBaslikLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "ModalBaslikLbl";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-label fw-semibold");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-label fw-semibold text-danger");
             @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
             @__ctrl.Text = "Başlık";
             return @__ctrl;
@@ -465,58 +469,80 @@ namespace IKYS_WebParts.DereceKademeListesiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlSilBtn() {
+            global::System.Web.UI.WebControls.LinkButton @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
+            this.SilBtn = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "SilBtn";
+            @__ctrl.Text = "Sil";
+            @__ctrl.CssClass = "btn btn-danger";
+            @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "display: none;");
+            @__ctrl.Click -= new System.EventHandler(this.SilBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.SilBtn_Click);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControlTree(global::IKYS_WebParts.DereceKademeListesiWP.DereceKademeListesiWP @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n\r\n<script type=\"text/javascript\">\r\n    function OpenModal(id,personelId, degi" +
-                        "sim, tarih, derece, kademe, aciklama, adSoyad) {\r\n        $(\'#editId\').val(id);\r" +
-                        "\n        $(\'#editDegisim\').val(degisim);\r\n        $(\'#editTarih\').val(tarih);\r\n " +
-                        "       $(\'#DereceDDL\').val(derece);\r\n        $(\'#KademeDDL\').val(kademe);\r\n     " +
-                        "   $(\'#editAciklama\').val(aciklama);\r\n        $(\'#editPersonelId\').val(personelI" +
-                        "d);\r\n\r\n        var ek = turkceEkGetir(adSoyad); // ← burada ek bulunuyor\r\n      " +
-                        "  $(\'#ModalBaslikLbl\').text(adSoyad + ek + \" Ait Derece/Kademe Değişikliği\");\r\n " +
-                        "       $(\'#KaydetBtn\').hide();\r\n        $(\'#GuncelleBtn\').show();\r\n        var m" +
-                        "odal = new bootstrap.Modal(document.getElementById(\'ModalOnayDiv\'));\r\n        mo" +
-                        "dal.show();\r\n    }\r\n    \r\n    function OpenAddModal(personelId, ad, soyad, derec" +
-                        "eKademe) {\r\n        // inputları temizle\r\n        $(\'#editId\').val(\'\');\r\n       " +
-                        " $(\'#editDegisim\').val(\'Kademe Yükseltme\'); // varsayılan olarak Kademe Yükseltm" +
-                        "e\r\n        // Tarih alanını bugünün tarihi olarak ayarla\r\n        $(\'#editTarih\'" +
-                        ").val(new Date().toISOString().split(\'T\')[0]); // ISO formatında tarih\r\n\r\n      " +
-                        "  // Derece dropdownına GecerliDereceTxt değerini koy\r\n        const dereceTxt =" +
-                        " document.getElementById(\'GecerliDereceTxt\').value;\r\n        const kademeTxt = d" +
-                        "ocument.getElementById(\'GecerliKademeTxt\').value;\r\n        $(\'#DereceDDL\').val(d" +
-                        "ereceTxt);\r\n        $(\'#KademeDDL\').val(kademeTxt);\r\n        if (dereceKademe ==" +
-                        "= \'Derece\') {\r\n            $(\'#editDegisim\').val(\'Derece Yükseltme\');\r\n         " +
-                        "   $(\'#DereceDDL\').show();\r\n            $(\'#KademeDDL\').hide();\r\n        } else " +
-                        "if (dereceKademe === \'Kademe\') {\r\n            $(\'#editDegisim\').val(\'Kademe Yüks" +
-                        "eltme\');\r\n            $(\'#DereceDDL\').hide();\r\n            $(\'#KademeDDL\').show(" +
-                        ");\r\n        } else {\r\n            $(\'#editDegisim\').val(\'Göreve Başlama\'); // va" +
-                        "rsayılan olarak Göreve Başlama\r\n            $(\'#DereceDDL\').hide();\r\n           " +
-                        " $(\'#KademeDDL\').show();\r\n        }\r\n        $(\'#editAciklama\').val(\'\');\r\n      " +
-                        "  // personelId\'yi ayarla\r\n        $(\'#editPersonelId\').val(personelId);\r\n\r\n    " +
-                        "    const adSoyad = `${ad} ${soyad}`;\r\n        const ek = turkceEkGetir(adSoyad)" +
-                        ";\r\n\r\n\r\n        $(\'#ModalBaslikLbl\').text(`${adSoyad}${ek} Ait Derece/Kademe Ekle" +
-                        "me`);\r\n        $(\'#KaydetBtn\').show();\r\n        $(\'#GuncelleBtn\').hide();\r\n     " +
-                        "   const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById(\'Mo" +
-                        "dalOnayDiv\'));\r\n        modal.show();\r\n    }\r\n\r\n    function handleAddClick(dere" +
-                        "ceKademe) {\r\n        const personelDDL = document.getElementById(\'PersonelDDL\');" +
-                        "\r\n        const selectedPersonel = personelDDL.options[personelDDL.selectedIndex" +
-                        "];\r\n\r\n        const personelId = personelDDL.value;\r\n        const adSoyad = sel" +
-                        "ectedPersonel.text || \'\';\r\n        const parts = adSoyad.trim().split(\' \');\r\n   " +
-                        "     const ad = parts.slice(0, -1).join(\' \'); // Ad (birden fazla olabilir)\r\n   " +
-                        "     const soyad = parts.slice(-1)[0];        // Son kelime soyad\r\n\r\n\r\n\r\n       " +
-                        " OpenAddModal(personelId, ad, soyad, dereceKademe);\r\n    }\r\n\r\n    function turkc" +
-                        "eEkGetir(isim) {\r\n        if (!isim) return \"\'a\";\r\n\r\n        // Son harfi al\r\n  " +
-                        "      var sonHarf = isim.slice(-1).toLowerCase();\r\n\r\n        // Ünlüye göre a/e " +
-                        "ekini seç\r\n        var aGrubu = [\'a\', \'ı\', \'o\', \'u\'];\r\n        var eGrubu = [\'e\'" +
-                        ", \'i\', \'ö\', \'ü\'];\r\n        var aMi = aGrubu.includes(sonHarf);\r\n        var eMi " +
-                        "= eGrubu.includes(sonHarf);\r\n\r\n        var ek = aMi ? \"\'ya\" : \"\'ye\"; // varsayıl" +
-                        "an olarak ünsüz sonrası \'ya / \'ye\r\n        // Son harf ünsüzse ondan önceki harf" +
-                        "i kontrol et\r\n        if (!aMi && !eMi && isim.length > 1) {\r\n            var on" +
-                        "ceki = isim.slice(-2, -1).toLowerCase();\r\n            aMi = aGrubu.includes(once" +
-                        "ki);\r\n            eMi = eGrubu.includes(onceki);\r\n            ek = aMi ? \"\'a\" : " +
-                        "\"\'e\"; // varsayılan olarak ünsüz sonrası \'ya / \'ye\r\n        }\r\n        return ek" +
-                        ";\r\n    }\r\n\r\n</script>\r\n\r\n<div class=\"container\">\r\n    <div class=\"card shadow\">\r" +
-                        "\n        <div class=\"card-header \">\r\n            "));
+                        "sim, tarih, derece, kademe, aciklama, adSoyad,duzenleSil) {\r\n        $(\'#editId\'" +
+                        ").val(id);\r\n        $(\'#editDegisim\').val(degisim);\r\n        $(\'#editTarih\').val" +
+                        "(tarih);\r\n        $(\'#DereceDDL\').val(derece);\r\n        $(\'#KademeDDL\').val(kade" +
+                        "me);\r\n        $(\'#editAciklama\').val(aciklama);\r\n        $(\'#editPersonelId\').va" +
+                        "l(personelId);\r\n\r\n        var ek = turkceEkGetir(adSoyad); // ← burada ek bulunu" +
+                        "yor\r\n        \r\n        $(\'#KaydetBtn\').hide();\r\n        if (duzenleSil === \'Duze" +
+                        "nle\') {\r\n            $(\'#ModalBaslikLbl\').text(adSoyad + ek + \" Ait Derece/Kadem" +
+                        "e Değişikliği\");\r\n            $(\'#GuncelleBtn\').show();\r\n            $(\'#SilBtn\'" +
+                        ").hide();\r\n        } else {\r\n            $(\'#ModalBaslikLbl\').text(adSoyad + ek " +
+                        "+ \" Ait Derece/Kademe Silinecek\");\r\n            $(\'#GuncelleBtn\').hide();\r\n     " +
+                        "       $(\'#SilBtn\').show();\r\n        }\r\n        var modal = new bootstrap.Modal(" +
+                        "document.getElementById(\'ModalOnayDiv\'));\r\n        modal.show();\r\n    }\r\n    \r\n " +
+                        "   function OpenAddModal(personelId, ad, soyad, dereceKademe) {\r\n        // inpu" +
+                        "tları temizle\r\n        $(\'#editId\').val(\'\');\r\n        $(\'#editDegisim\').val(\'Kad" +
+                        "eme Yükseltme\'); // varsayılan olarak Kademe Yükseltme\r\n        // Tarih alanını" +
+                        " bugünün tarihi olarak ayarla\r\n        $(\'#editTarih\').val(new Date().toISOStrin" +
+                        "g().split(\'T\')[0]); // ISO formatında tarih\r\n\r\n        // Derece dropdownına Gec" +
+                        "erliDereceTxt değerini koy\r\n        const dereceTxt = document.getElementById(\'G" +
+                        "ecerliDereceTxt\').value;\r\n        const kademeTxt = document.getElementById(\'Gec" +
+                        "erliKademeTxt\').value;\r\n        $(\'#DereceDDL\').val(dereceTxt);\r\n        $(\'#Kad" +
+                        "emeDDL\').val(kademeTxt);\r\n        if (dereceKademe === \'Derece\') {\r\n            " +
+                        "$(\'#editDegisim\').val(\'Derece Yükseltme\');\r\n            $(\'#DereceDDL\').show();\r" +
+                        "\n            $(\'#KademeDDL\').hide();\r\n        } else if (dereceKademe === \'Kadem" +
+                        "e\') {\r\n            $(\'#editDegisim\').val(\'Kademe Yükseltme\');\r\n            $(\'#D" +
+                        "ereceDDL\').hide();\r\n            $(\'#KademeDDL\').show();\r\n        } else {\r\n     " +
+                        "       $(\'#editDegisim\').val(\'Göreve Başlama\'); // varsayılan olarak Göreve Başl" +
+                        "ama\r\n            $(\'#DereceDDL\').hide();\r\n            $(\'#KademeDDL\').show();\r\n " +
+                        "       }\r\n        $(\'#editAciklama\').val(\'\');\r\n        // personelId\'yi ayarla\r\n" +
+                        "        $(\'#editPersonelId\').val(personelId);\r\n\r\n        const adSoyad = `${ad} " +
+                        "${soyad}`;\r\n        const ek = turkceEkGetir(adSoyad);\r\n\r\n\r\n        $(\'#ModalBas" +
+                        "likLbl\').text(`${adSoyad}${ek} Ait Derece/Kademe Ekleme`);\r\n        $(\'#KaydetBt" +
+                        "n\').show();\r\n        $(\'#GuncelleBtn\').hide();\r\n        $(\'#SilBtn\').hide();\r\n  " +
+                        "      const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById(" +
+                        "\'ModalOnayDiv\'));\r\n        modal.show();\r\n    }\r\n\r\n    function handleAddClick(d" +
+                        "ereceKademe) {\r\n        const personelDDL = document.getElementById(\'PersonelDDL" +
+                        "\');\r\n        const selectedPersonel = personelDDL.options[personelDDL.selectedIn" +
+                        "dex];\r\n\r\n        const personelId = personelDDL.value;\r\n        const adSoyad = " +
+                        "selectedPersonel.text || \'\';\r\n        const parts = adSoyad.trim().split(\' \');\r\n" +
+                        "        const ad = parts.slice(0, -1).join(\' \'); // Ad (birden fazla olabilir)\r\n" +
+                        "        const soyad = parts.slice(-1)[0];        // Son kelime soyad\r\n\r\n\r\n\r\n    " +
+                        "    OpenAddModal(personelId, ad, soyad, dereceKademe);\r\n    }\r\n\r\n    function tu" +
+                        "rkceEkGetir(isim) {\r\n        if (!isim) return \"\'a\";\r\n\r\n        // Son harfi al\r" +
+                        "\n        var sonHarf = isim.slice(-1).toLowerCase();\r\n\r\n        // Ünlüye göre a" +
+                        "/e ekini seç\r\n        var aGrubu = [\'a\', \'ı\', \'o\', \'u\'];\r\n        var eGrubu = [" +
+                        "\'e\', \'i\', \'ö\', \'ü\'];\r\n        var aMi = aGrubu.includes(sonHarf);\r\n        var e" +
+                        "Mi = eGrubu.includes(sonHarf);\r\n\r\n        var ek = aMi ? \"\'ya\" : \"\'ye\"; // varsa" +
+                        "yılan olarak ünsüz sonrası \'ya / \'ye\r\n        // Son harf ünsüzse ondan önceki h" +
+                        "arfi kontrol et\r\n        if (!aMi && !eMi && isim.length > 1) {\r\n            var" +
+                        " onceki = isim.slice(-2, -1).toLowerCase();\r\n            aMi = aGrubu.includes(o" +
+                        "nceki);\r\n            eMi = eGrubu.includes(onceki);\r\n            ek = aMi ? \"\'a\"" +
+                        " : \"\'e\"; // varsayılan olarak ünsüz sonrası \'ya / \'ye\r\n        }\r\n        return" +
+                        " ek;\r\n    }\r\n\r\n</script>\r\n\r\n<div class=\"container\">\r\n    <div class=\"card shadow" +
+                        "\">\r\n        <div class=\"card-header \">\r\n            "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl1;
             @__ctrl1 = this.@__BuildControlCloseBtn();
             @__parser.AddParsedSubObject(@__ctrl1);
@@ -579,6 +605,7 @@ namespace IKYS_WebParts.DereceKademeListesiWP {
                             <th>Kademe</th>
                             <th>Açıklama</th>
                             <th>Düzenle</th>
+                            <th>Sil</th>
                         </tr>
                     </thead>
                 </table>
@@ -653,6 +680,10 @@ namespace IKYS_WebParts.DereceKademeListesiWP {
             global::System.Web.UI.WebControls.LinkButton @__ctrl19;
             @__ctrl19 = this.@__BuildControlGuncelleBtn();
             @__parser.AddParsedSubObject(@__ctrl19);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl20;
+            @__ctrl20 = this.@__BuildControlSilBtn();
+            @__parser.AddParsedSubObject(@__ctrl20);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                <button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss" +
                         "=\"modal\">Kapat</button>\r\n            </div>\r\n\r\n        </div>\r\n    </div>\r\n</div" +
                         ">\r\n\r\n\r\n"));

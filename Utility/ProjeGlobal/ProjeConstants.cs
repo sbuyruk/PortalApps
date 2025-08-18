@@ -60,6 +60,7 @@ namespace Utility.ProjeGlobal
         public const string IKYS_YABANCIDIL = "Yabancı Dil";
         public const string IKYS_YOKLAMA = "Yoklama";
         public const string IKYS_HARCIRAH= "Harcırah";
+        public const string IKYS_MAASARTISI= "Maaş Artışı";
         //moduller  NBYS
         public const string NBYS_ARMAGAN = "Armağan";
         public const string NBYS_ARMAGANTANIM = "Armağan Tanım";

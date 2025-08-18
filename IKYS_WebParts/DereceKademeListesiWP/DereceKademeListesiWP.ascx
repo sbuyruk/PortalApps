@@ -9,7 +9,7 @@
 
 
 <script type="text/javascript">
-    function OpenModal(id,personelId, degisim, tarih, derece, kademe, aciklama, adSoyad) {
+    function OpenModal(id,personelId, degisim, tarih, derece, kademe, aciklama, adSoyad,duzenleSil) {
         $('#editId').val(id);
         $('#editDegisim').val(degisim);
         $('#editTarih').val(tarih);
@@ -19,9 +19,17 @@
         $('#editPersonelId').val(personelId);
 
         var ek = turkceEkGetir(adSoyad); // ← burada ek bulunuyor
-        $('#ModalBaslikLbl').text(adSoyad + ek + " Ait Derece/Kademe Değişikliği");
+        
         $('#KaydetBtn').hide();
-        $('#GuncelleBtn').show();
+        if (duzenleSil === 'Duzenle') {
+            $('#ModalBaslikLbl').text(adSoyad + ek + " Ait Derece/Kademe Değişikliği");
+            $('#GuncelleBtn').show();
+            $('#SilBtn').hide();
+        } else {
+            $('#ModalBaslikLbl').text(adSoyad + ek + " Ait Derece/Kademe Silinecek");
+            $('#GuncelleBtn').hide();
+            $('#SilBtn').show();
+        }
         var modal = new bootstrap.Modal(document.getElementById('ModalOnayDiv'));
         modal.show();
     }
@@ -62,6 +70,7 @@
         $('#ModalBaslikLbl').text(`${adSoyad}${ek} Ait Derece/Kademe Ekleme`);
         $('#KaydetBtn').show();
         $('#GuncelleBtn').hide();
+        $('#SilBtn').hide();
         const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
         modal.show();
     }
@@ -154,6 +163,7 @@
                             <th>Kademe</th>
                             <th>Açıklama</th>
                             <th>Düzenle</th>
+                            <th>Sil</th>
                         </tr>
                     </thead>
                 </table>
@@ -170,7 +180,7 @@
             <!-- Modal Başlık -->
             <div class="modal-header ">
                 <h4 class="modal-title mb-0">
-                    <asp:Label ID="ModalBaslikLbl" class="form-label fw-semibold" runat="server" ClientIDMode="Static" Text="Başlık" />
+                    <asp:Label ID="ModalBaslikLbl" class="form-label fw-semibold text-danger" runat="server" ClientIDMode="Static" Text="Başlık" />
                 </h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
             </div>
@@ -213,6 +223,7 @@
             <div class="modal-footer">
                 <asp:LinkButton ID="KaydetBtn" runat="server" Text="Kaydet" CssClass="btn btn-success" OnClick="KaydetBtn_Click" ClientIDMode="Static" style="display: none;"/>
                 <asp:LinkButton ID="GuncelleBtn" runat="server" Text="Güncelle" CssClass="btn btn-primary" OnClick="GuncelleBtn_Click" ClientIDMode="Static" style="display: none;"/>
+                <asp:LinkButton ID="SilBtn" runat="server" Text="Sil" CssClass="btn btn-danger" OnClick="SilBtn_Click" ClientIDMode="Static" style="display: none;"/>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
             </div>
 

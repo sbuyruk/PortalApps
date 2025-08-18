@@ -230,7 +230,7 @@ namespace Model.IKYS
                     E.Derece,
                     E.Kademe,
                     C.ProtokolSiraNo,
-                    C.DereceKademeIlerlemeTarihi,
+                    E.DegisimTarihi DereceKademeIlerlemeTarihi,
                     {0} GrupId,   
                     D.Agi,
                     CASE 
@@ -240,10 +240,11 @@ namespace Model.IKYS
                 FROM Personel_Table A
                 LEFT JOIN GorevTanim_Table B ON B.PersonelId = A.Id
                 LEFT JOIN IsBilgileri_Table C ON C.PersonelId = A.Id
-                LEFT JOIN UcretTanim_Table D ON D.Derece = C.Derece AND D.Kademe = C.Kademe AND D.GrupId={0}
+                
 				LEFT JOIN DereceKademeDegisim_Table E ON E.PersonelId=A.Id AND E.DegisimTarihi = (SELECT Max(DegisimTarihi) 
 					FROM DereceKademeDegisim_Table
 					WHERE PersonelId=A.Id AND DegisimTarihi <= {1})
+                LEFT JOIN UcretTanim_Table D ON D.Derece = E.Derece AND D.Kademe = E.Kademe AND D.GrupId={0}
                 WHERE C.CalismaDurumu = 1 AND Tipi=1 
                 ORDER BY C.ProtokolSiraNo;
 
@@ -282,5 +283,37 @@ namespace Model.IKYS
             return grupId;
         }
 
+        public bool DeleteByGrupId(int grupId)
+        {
+            //GrupId ile eşleşen tüm kayıtları siler
+            string sqlString = string.Format(@"
+                DELETE FROM UcretTanim_Table
+                WHERE GrupId={0}", grupId);
+            bool isDeleted = dao.DeleteFromDb(sqlString, "");
+            if (isDeleted && ProjeConstants.IKYS_DELETE_LOG)
+            {
+                OlayKayit olayKayit = new OlayKayit();
+                olayKayit.SilmeOlayKaydet(this, ProjeConstants.IKYS, ProjeConstants.IKYS_MAASARTISI);
+            }
+            return isDeleted;
+        }
+
+        public decimal SelectUcretByGrupDereceKademe(int grupId, int derece, int kademe)
+        {
+            //GrupId, Derece ve Kademe ile eşleşen Ucret değerini döner
+            string sqlString = string.Format(@"
+                SELECT UstUcret FROM UcretTanim_Table
+                WHERE GrupId={0} AND Derece={1} AND Kademe={2}", grupId, derece, kademe);
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            if (dataTable.Rows.Count > 0)
+            {
+                decimal ucret = dataTable.Rows[0][0].ConvertToDecimal();
+                return ucret;
+            }
+            else
+            {
+                return SqlDecimal.Null.Value;
+            }
+        }
     }
 }

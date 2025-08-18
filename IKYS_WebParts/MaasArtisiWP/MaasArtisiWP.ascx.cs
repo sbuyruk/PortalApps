@@ -61,6 +61,24 @@ namespace IKYS_WebParts.MaasArtisiWP
             var openPopup = "OpenModal();";
             UtilityHelper.ScriptCalistir(openPopup);
         }
+        private void SilModalAc()
+        {
+            UcretTanim ucretTanim = new UcretTanim();
+
+            List<UcretTanim> list = ucretTanim.SelectByMaxGrupId();
+            if (list.Count <= 1)
+            {
+                MessageHelper.PublishMessage("Silinecek bir maaş artışı bulunamadı.", ProjeConstants.MESAJ_BILGI);
+                return;
+            }
+            ucretTanim = list[0];
+            MessageTitleLbl.Text = "Son Maaş Artışı Ve Bu artışa göre yapılan Maaş Listesi Silinecek";
+            MessageTextLbl.Text = ucretTanim.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + " ile " + ucretTanim.BitisTarihi.ConvertToDatetimeEmptyIfNull() + " arasında geçerli olan artış silinsin mi?";
+            DeleteNowBtn.Visible = true;
+            KaydetNowBtn.Visible = false;
+            var openPopup = "OpenModal();";
+            UtilityHelper.ScriptCalistir(openPopup);
+        }
         private void RedirectToPage(string pageUrl)
         {
             try
@@ -82,6 +100,11 @@ namespace IKYS_WebParts.MaasArtisiWP
         {
 
             KaydetModalAc();
+        }
+        protected void SilBtn_Click(object sender, EventArgs e)
+        {
+
+            SilModalAc();
         }
         protected void KaydetNowBtn_Click(object sender, EventArgs e)
         {
@@ -123,22 +146,35 @@ namespace IKYS_WebParts.MaasArtisiWP
             }
 
         }
-        protected void DeleteBtn_Click(object sender, EventArgs e)
-        {
-
-        }
+      
         protected void DeleteNowBtn_Click(object sender, EventArgs e)
         {
+            UcretTanim ucretTanim = new UcretTanim();
+
+            List<UcretTanim> list = ucretTanim.SelectByMaxGrupId();
+            if (list.Count <= 1)
+            {
+                MessageHelper.PublishMessage("Silinecek bir maaş artışı bulunamadı.", ProjeConstants.MESAJ_BILGI);
+                return;
+            }
+            ucretTanim = list[0];
+            int grupId = ucretTanim.GrupId;
             try
             {
+                bool isDeleted = ucretTanim.DeleteByGrupId(grupId);
+                if (isDeleted)
+                {
+                    //MessageHelper.PublishMessage("Son maaş artışı silindi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MaasHareket hareket = new MaasHareket();
+                    hareket.DeleteByGrupId(grupId);
+                    RedirectToPage(ProjeConstants.PAGE_MAAS_TABLOLARI);
+                }
 
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
-                Exception exceptionInfo = new Exception("Artış Silinemedi");
-                exceptionHelper.Exceptions.Add(exceptionInfo);
-                exceptionHelper.PublishException();
+                ExceptionHelper exHelper = new ExceptionHelper(ex);
+                exHelper.PublishException();
             }
         }
 

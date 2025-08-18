@@ -77,6 +77,10 @@ namespace IKYS_WebParts.MaasArtisiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.LinkButton SilBtn;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.Label MessageTitleLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -245,6 +249,22 @@ namespace IKYS_WebParts.MaasArtisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlSilBtn() {
+            global::System.Web.UI.WebControls.LinkButton @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
+            this.SilBtn = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "SilBtn";
+            @__ctrl.CssClass = "btn btn-danger";
+            @__ctrl.Text = "Son yapılan Artışı Sil";
+            @__ctrl.Click -= new System.EventHandler(this.SilBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.SilBtn_Click);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlMessageTitleLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -281,7 +301,7 @@ namespace IKYS_WebParts.MaasArtisiWP {
             @__ctrl.CssClass = "btn btn-danger";
             @__ctrl.ID = "DeleteNowBtn";
             @__ctrl.CausesValidation = false;
-            @__ctrl.Text = "Görev Onayı Sil";
+            @__ctrl.Text = "Son Maaş Artışını Sil";
             @__ctrl.OnClientClick = "{return true;};";
             @__ctrl.Visible = false;
             @__ctrl.Click -= new System.EventHandler(this.DeleteNowBtn_Click);
@@ -385,6 +405,10 @@ namespace IKYS_WebParts.MaasArtisiWP {
             global::System.Web.UI.WebControls.LinkButton @__ctrl6;
             @__ctrl6 = this.@__BuildControlKaydetBtn();
             @__parser.AddParsedSubObject(@__ctrl6);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n        </div>\r\n            "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl7;
+            @__ctrl7 = this.@__BuildControlSilBtn();
+            @__parser.AddParsedSubObject(@__ctrl7);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
         </div>
     </div>
@@ -397,14 +421,14 @@ namespace IKYS_WebParts.MaasArtisiWP {
                     <div class=""text-center"">
                         <h3>
                             "));
-            global::System.Web.UI.WebControls.Label @__ctrl7;
-            @__ctrl7 = this.@__BuildControlMessageTitleLbl();
-            @__parser.AddParsedSubObject(@__ctrl7);
+            global::System.Web.UI.WebControls.Label @__ctrl8;
+            @__ctrl8 = this.@__BuildControlMessageTitleLbl();
+            @__parser.AddParsedSubObject(@__ctrl8);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </h3>\r\n                    </div>\r\n                    " +
                         "<div class=\"card-body\">\r\n                        "));
-            global::System.Web.UI.WebControls.Label @__ctrl8;
-            @__ctrl8 = this.@__BuildControlMessageTextLbl();
-            @__parser.AddParsedSubObject(@__ctrl8);
+            global::System.Web.UI.WebControls.Label @__ctrl9;
+            @__ctrl9 = this.@__BuildControlMessageTextLbl();
+            @__parser.AddParsedSubObject(@__ctrl9);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                     </div>
                 </div>
@@ -417,13 +441,13 @@ namespace IKYS_WebParts.MaasArtisiWP {
 
                 <div class=""modal-footer text-center"">
                     "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl9;
-            @__ctrl9 = this.@__BuildControlDeleteNowBtn();
-            @__parser.AddParsedSubObject(@__ctrl9);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n                    "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl10;
-            @__ctrl10 = this.@__BuildControlKaydetNowBtn();
+            @__ctrl10 = this.@__BuildControlDeleteNowBtn();
             @__parser.AddParsedSubObject(@__ctrl10);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n                    "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl11;
+            @__ctrl11 = this.@__BuildControlKaydetNowBtn();
+            @__parser.AddParsedSubObject(@__ctrl11);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n                    <button type=\"button\" class=\"btn btn-default\" data-bs-dis" +
                         "miss=\"modal\">Kapat</button>\r\n                </div>\r\n            </div>\r\n       " +
                         " </div>\r\n    </div>\r\n</div>\r\n"));

@@ -473,13 +473,14 @@ namespace TBYS_WebParts.TasinmazListesiWP {
                     <tfoot> 
                         <tr >
                             <th>No</th>
-                            <th>K. Şekli</th>
-                            <th>M. Şekli</th>
-                            <th>İl/İlçe</th>
-                            <th>Adres</th>
+                            <th>Sorumlu Bölge</th>
                             <th>Bagışçı</th>
+                            <th>Adres</th>
+                            <th>İl</th>
+                            <th>İlçe</th>
+                            <th>M. Şekli</th>
+                            <th>K. Şekli</th>
                             <th>""Bagış Yılı""</th>
-                            <th>Bölge</th>
                             <th>Taşınmaz Kartı</th>
                             <th>Resimler</th>
                             <th>Düzenle</th>

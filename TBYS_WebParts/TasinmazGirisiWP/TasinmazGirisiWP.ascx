@@ -30,9 +30,9 @@
         $('#clear-SBITarihi').on('click', function () {
             $("#TarihTxt").val("");
             document.getElementById('<%= TarihTxt.ClientID%>').value = "";
-    });
+        });
     }
-    </script>
+</script>
 <div class="container-fluid">
     <asp:UpdatePanel ID="TableUpdatePanel" runat="server">
         <ContentTemplate>
@@ -79,7 +79,7 @@
                             <div class="row">
                                 <!-- Panel - 1. sütun Tapu Tescil  -->
                                 <div class="col-5">
-                                    <div class="card d-flex flex-row" style="height: 500px">
+                                    <div class="card d-flex flex-row" style="height: 510px">
                                         <!-- Dikey Label -->
                                         <div class="bg-primary text-white d-flex justify-content-center align-items-center px-2"
                                             style="writing-mode: vertical-rl; text-orientation: mixed; transform: rotate(180deg);">
@@ -226,6 +226,7 @@
                                                         <label class="form-label fw-semibold" for="BBNetAlanTxt">BB Net Alan</label>
                                                         <asp:TextBox ID="BBNetAlanTxt" runat="server" class="form-control input-money" ToolTip="Bağımsız Bölüm Net Alan "></asp:TextBox>
                                                     </div>
+
                                                 </div>
                                                 <div class="col">
 
@@ -249,6 +250,14 @@
                                                     <div class="form-group m-0 ">
                                                         <label class="form-label fw-semibold" for="VakifHissesiTxt">Vakıf His.</label>
                                                         <asp:TextBox ID="VakifHissesiTxt" runat="server" class="form-control" ToolTip="Vakif Hissesi"></asp:TextBox>
+                                                    </div>
+                                                    <div class="form-group m-0 ">
+                                                        <label class="form-label fw-semibold" for="BBNitelikTxt">BB Nitelik</label>
+                                                        <asp:TextBox ID="BBNitelikTxt" runat="server" class="form-control" ToolTip="Bağımsız bölüm Niteliği"></asp:TextBox>
+                                                    </div>
+                                                    <div class="form-group m-0 ">
+                                                        <label class="form-label fw-semibold" for="AnaTasinmazNitelikTxt">Ana Taş.Nitelik</label>
+                                                        <asp:TextBox ID="AnaTasinmazNitelikTxt" runat="server" class="form-control" ToolTip="Ana Taşınmaz Nitelik"></asp:TextBox>
                                                     </div>
                                                 </div>
 

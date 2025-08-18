@@ -78,6 +78,7 @@ namespace IKYS_WebParts.MaasOlusturmaWP
                 //o yüzden bu tarihe ait maaş listesi tekrar oluşturulmayacak.  
                 // oluşturulan kayıtlar MaasHareket_Table'dan çekilecek.  
                 MaasOlusturBtn.Visible = false;
+                MaasSilBtn.Visible = true;
                 //set background color of TablesDiv to Grey
                 TablesDiv.Style["background-color"] = "lightgrey";
                 //set background color of TablesDiv to Grey
@@ -89,6 +90,7 @@ namespace IKYS_WebParts.MaasOlusturmaWP
                 TablesDiv.Style["background-color"] = "white";
                 //set background color of TablesDiv to White
                 MaasOlusturBtn.Visible = true;
+                MaasSilBtn.Visible = false;
             }
         }
         #region Methods
@@ -190,6 +192,7 @@ namespace IKYS_WebParts.MaasOlusturmaWP
                         listItem.DereceKademeIlerlemeTarihi = dereceKademeIlerlemeTarihi.ToString("dd.MM.yyyy");
                         listItem.Derece = derece;
                         listItem.Kademe = kademe;
+                        listItem.Ucret = ucret.ToString("N", culturInfo);
                         //DereceKademeIlerlemeTarihi'nin ay'ı TarihDDLDen seçilen tarihin ay'ı ile aynıysa
                         //Kademeyi bir artır, kademe 10'dan büyük vey aeşitse artırma
                         if (kademe < 10)
@@ -198,13 +201,17 @@ namespace IKYS_WebParts.MaasOlusturmaWP
                             {
                                 listItem.DereceKademeIlerlemeTarihi = new DateTime(tarih.Year, tarih.Month, dereceKademeIlerlemeTarihi.Day).ToString("dd.MM.yyyy"); // DereceKademeDegisim'in tarihi, maaşın oluşturulduğu tarih olacak
                                 listItem.Kademe = kademe + 1; // Kademe'yi 1 artır
+                                //maaşı yeni kademeye göre bul
+                                UcretTanim ucretTanim = new UcretTanim();
+                                ucret = ucretTanim.SelectUcretByGrupDereceKademe(grupId, derece, listItem.Kademe);
+                                listItem.Ucret = ucret.ToString("N", culturInfo); // Ucret'i güncelle
                             }
                         }
 
                         listItem.DereceKademe = listItem.Derece + "/" + listItem.Kademe;
                         listItem.ProtokolSiraNo = protokolSiraNo;
                         listItem.GrupId = grupId;
-                        listItem.Ucret = ucret.ToString("N", culturInfo);
+                        
                         listItem.Ikramiye = ikramiye.ToString("N", culturInfo);
                         listItem.Agi = agi.ToString("N", culturInfo);
                         listItem.Toplam = (ucret + ikramiye + agi).ToString("N", culturInfo);
@@ -352,7 +359,7 @@ jQuery(row).find('td').css({'color':'red','font-weight':'bold'});
                 maasHareket.Soyadi = item.AdiSoyadi.Split(' ')[1];
                 maasHareket.Unvan = item.Unvan;
                 maasHareket.DereceKademeIlerlemeTarihi = item.DereceKademeIlerlemeTarihi.ConvertToDatetime();
-                if (maasHareket.DereceKademeIlerlemeTarihi.Month == tarih.Month)
+                if (maasHareket.DereceKademeIlerlemeTarihi.Month == tarih.Month && maasHareket.DereceKademeIlerlemeTarihi.Year < tarih.Year)
                 {
                     
                     //Kademeyi bir artır, kademe 10'dan büyük vey aeşitse artırma
@@ -396,12 +403,42 @@ jQuery(row).find('td').css({'color':'red','font-weight':'bold'});
                 maasHareket.Save();
             }
         }
+
+        private void TabloyuSil()
+        {
+            MaasHareket maasHareket = new MaasHareket();
+            // ilk olarak bu tarihe ait kayıt MaasHareket_Table'da var mı kontrol et
+            maasHareket = maasHareket.SelectByTarih(TarihDDL.SelectedItem.Value.ConvertToDatetime());
+            if (maasHareket == null)
+            {
+                MessageHelper.PublishMessage("Silinecek bir maaş kaydı bulunamadı.", ProjeConstants.MESAJ_BILGI);
+                return;
+            }
+            // Eğer varsa, grupId'sini belirle
+            int grupId = maasHareket.GrupId;
+            // MaasHareket_Table'dan grupId'ye göre sil
+            bool isDeleted = maasHareket.DeleteByGrupId(grupId);
+
+        }
         private void KaydetModalAc()
         {
 
             MessageTitleLbl.Text = "Maaş Oluşturma";
-            MessageTextLbl.Text = TarihDDL.SelectedItem.Text + " Maaşı kaydedilsin ve sabilensin mi?";
+            MessageTextLbl.Text = TarihDDL.SelectedItem.Text + " Maaşı kaydedilsin ve sabitlensin mi?";
             KaydetNowBtn.Visible = true;
+            SilNowBtn.Visible = true;
+            var openPopup = "OpenModal();";
+            UtilityHelper.ScriptCalistir(openPopup);
+            TabloOlustur();
+        }
+        
+        private void SilModalAc()
+        {
+
+            MessageTitleLbl.Text = "Maaş Silme";
+            MessageTextLbl.Text = TarihDDL.SelectedItem.Text + " Maaşı silinsin mi?";
+            KaydetNowBtn.Visible = false;
+            SilNowBtn.Visible = true;
             var openPopup = "OpenModal();";
             UtilityHelper.ScriptCalistir(openPopup);
             TabloOlustur();
@@ -411,6 +448,10 @@ jQuery(row).find('td').css({'color':'red','font-weight':'bold'});
         protected void MaasOlusturBtn_Click(object sender, EventArgs e)
         {
             KaydetModalAc();
+        }
+        protected void MaasSilBtn_Click(object sender, EventArgs e)
+        {
+            SilModalAc();
         }
         protected void KaydetNowBtn_Click(object sender, EventArgs e)
         {
@@ -423,6 +464,29 @@ jQuery(row).find('td').css({'color':'red','font-weight':'bold'});
                 if (maasHareket == null)
                 {
                     TabloyuKaydet();
+                    TabloOlustur();
+                }
+                GorunumuAyarla();
+            }
+            catch (Exception exception)
+            {
+                ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
+                Exception exceptionInfo = new Exception("Maaş kaydedilemedi");
+                exceptionHelper.Exceptions.Add(exceptionInfo);
+                exceptionHelper.PublishException();
+            }
+        }
+        protected void SilNowBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DateTime tarih = TarihDDL.SelectedItem.Value.ConvertToDatetime();
+
+                MaasHareket maasHareket = new MaasHareket();
+                maasHareket = maasHareket.SelectByTarih(tarih);
+                if (maasHareket != null)
+                {
+                    TabloyuSil();
                     TabloOlustur();
                 }
                 GorunumuAyarla();

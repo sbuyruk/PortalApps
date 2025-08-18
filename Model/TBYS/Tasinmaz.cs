@@ -83,6 +83,8 @@ namespace Model.TBYS
         public decimal BBBrutAlan { get; set; }
         public decimal BBNetAlan { get; set; }
         public DateTime TapuIslemTarihi { get; set; }
+        public string BBNitelik { get; set; }
+        public string AnaTasinmazNitelik { get; set; }
 
         private string IliStr() 
         {
@@ -404,19 +406,63 @@ namespace Model.TBYS
         public DataTable SelectAllReturnDataTable()
         {
             string sqlString = string.Format(@"
-                SELECT ROW_NUMBER() OVER(ORDER BY T.Id) AS Sirano, T.Id, T.Id TasinmazId, D.IlceAdi+'/'+C.IlAdi IliIlcesi,E.Adi Bolge,
-                    T.*,
-                    B.Adi+' '+B.Soyadi Bagisci, B.Id BagisciId, B.Sag_vefat                    
+                SELECT 
+                    ROW_NUMBER() OVER(ORDER BY T.Id) AS Sirano,
+                    E.KisaAdi AS SorumluBolge,
+                    B.Adi + ' ' + B.Soyadi AS Bagisci,
+                    B.Sag_vefat,
+                    T.Adres,
+                    D.IlceAdi AS Ilcesi,
+                    C.IlAdi AS Ili,
+                    T.Mahalle, T.Koy, T.Cadde, T.Sokak, T.Mevki, T.Giris, T.Blok, 
+                    T.AdaNo, T.ParselNo, T.PaftaNo, T.Yuzolcumu, T.ArsaPayi, T.VakifHissesi, T.YevmiyeNo, T.CiltNo, T.SahifeNo,
+                    T.KullanimSekli, T.AnaTasinmazNitelik, T.BBNitelik,
+                    T.TapuTasinmazNo, T.Cinsi, T.MulkiyetSekli, T.KirayaUygunluk,T.KiraDurumu, T.EdinmeSekli, T.BagisYili, T.Nitelik,
+                    T.BulunduguKat, T.BagimsizBolumNo, T.TamHisse, T.HisseMiktariPay, T.HisseMiktariPayda, T.ToplamKatSayisi, T.InsaYili,
+                    T.Metrekare, T.ToplamMetrekare, T.ProjeM2, T.ZeminTipi, T.ZeminHisse, T.BBBrutAlan, T.BBNetAlan, T.EnvantereGirisTarihi,
+                    IIF(T.KatMulkiyeti = 1, 'Kat Mülkiyeti Var', 'Kat Mülkiyeti Yok') AS KatMulkiyeti,
+                    IIF(T.KatIrtifaki = 1, 'Kat İrtifakı Var', 'Kat İrtifakı Yok') AS KatIrtifaki,
+                    IIF(T.AltBolum = 1, 'Kat Alt Bölüm Var', 'Kat Alt Bölüm Yok') AS AltBolum,
+                    T.TapuTarihi, T.TapuIslemTarihi, T.EmlakSicilNo, T.EmlakBeyanDegeri, T.TahminiRayicDegeri, T.SigortaDurumu, T.Aciklama,
+	                T.Id TasinmazId, G.Id SozlesmeId,H.Adi,G.IlkSozlesmeTar, G.SozBasTar BaslamaTarihi,H.KiralamaAmaci,H.Adres KiraciAdresi,
+	                H.Ili,H.Ilcesi,G.OdemeSekli, G.KiraBedeli, G.ArtisAyi,YEAR(G.SozBasTar)-YEAR(G.IlkSozlesmeTar) KiraSuresi
                 FROM Tasinmaz_Table T
-	                LEFT OUTER JOIN Bagis_Table A ON A.TasinmazId=T.Id
-	                LEFT OUTER JOIN TasinmazBagisci_Table B ON B.Id=A.BagisciId
-                
-					LEFT JOIN IL_Table C ON C.Id=T.IlId
-					LEFT JOIN ILCE_Table D ON D.Id=T.IlceId
-					LEFT JOIN Bolge_Table E ON E.Id=C.BolgeId
-				WHERE T.EnvanterdeMi=1 
-
+                    LEFT OUTER JOIN Bagis_Table A ON A.TasinmazId = T.Id
+                    LEFT OUTER JOIN TasinmazBagisci_Table B ON B.Id = A.BagisciId
+                    LEFT JOIN IL_Table C ON C.Id = T.IlId
+                    LEFT JOIN ILCE_Table D ON D.Id = T.IlceId
+                    LEFT JOIN Bolge_Table E ON E.Id = C.BolgeId
+                    OUTER APPLY (
+                        SELECT TOP 1 * 
+                        FROM SozlesmeTasinmaz_Table F 
+                        WHERE F.TasinmazId = T.Id 
+                        ORDER BY F.SozlesmeId DESC
+                    ) F
+	                LEFT JOIN KiraSozlesme_Table G ON G.Id=F.SozlesmeId --AND G.SozlesmeDurumu='Devam Ediyor'
+	                LEFT JOIN Kiraci_Table H ON H.Id=G.KiraciId 
+                WHERE T.EnvanterdeMi = 1
                 ");
+
+            //string sqlString = string.Format(@"
+            //    SELECT ROW_NUMBER() OVER(ORDER BY T.Id) AS Sirano,E.KisaAdi SorumluBolge,B.Adi+' '+B.Soyadi Bagisci, B.Sag_vefat,
+            //     T.Adres,D.IlceAdi Ilcesi, C.IlAdi Ili, T.Mahalle,T.Koy,T.Cadde,T.Sokak,T.Mevki,T.Giris,T.Blok, 
+            //     T.AdaNo,T.ParselNo,T.PaftaNo,T.Yuzolcumu,T.ArsaPayi,T.VakifHissesi,T.YevmiyeNo,T.CiltNo,T.SahifeNo,T.KullanimSekli,T.AnaTasinmazNitelik,T.BBNitelik,
+            //     T.TapuTasinmazNo,T.Cinsi, T.MulkiyetSekli,T.KirayaUygunluk,T.EdinmeSekli,T.BagisYili,T.Nitelik,
+            //     T.BulunduguKat, T.BagimsizBolumNo,T.TamHisse,T.HisseMiktariPay,T.HisseMiktariPayda,T.ToplamKatSayisi,T.InsaYili,
+            //     T.Metrekare,T.ToplamMetrekare,T.ProjeM2,T.ZeminTipi,T.ZeminHisse, T.BBBrutAlan,T.BBNetAlan,T.EnvantereGirisTarihi,
+            //        IIF(T.KatMulkiyeti=1,'Kat Mülkiyeti Var','Kat Mülkiyeti Yok') KatMulkiyeti,
+            //     IIF(T.KatIrtifaki=1,'Kat İrtifakı Var','Kat İrtifakı Yok') KatIrtifaki,
+            //        IIF(T.AltBolum=1,'Kat Alt Bölüm Var','Kat Alt Bölüm Yok') AltBolum,
+            //     T.TapuTarihi,T.TapuIslemTarihi,T.EmlakSicilNo, T.EmlakBeyanDegeri,T.TahminiRayicDegeri,T.SigortaDurumu,T.Aciklama
+            //    FROM Tasinmaz_Table T
+            //        LEFT OUTER JOIN Bagis_Table A ON A.TasinmazId=T.Id
+            //        LEFT OUTER JOIN TasinmazBagisci_Table B ON B.Id=A.BagisciId
+            //        LEFT JOIN IL_Table C ON C.Id=T.IlId
+            //        LEFT JOIN ILCE_Table D ON D.Id=T.IlceId
+            //        LEFT JOIN Bolge_Table E ON E.Id=C.BolgeId
+            //    WHERE T.EnvanterdeMi=1 
+
+            //    ");
             DataTable dataTable = null;
             try
             {

@@ -181,5 +181,21 @@ namespace Model.IKYS
             List<MaasHareket> list = ToList<MaasHareket>(dataTable);
             return list;
         }
+
+        public bool DeleteByGrupId(int grupId)
+        {
+            // MaasHareket_Table'dan GrupId'ye göre silen SQL sorgusu
+            string sqlString = string.Format(@"
+                DELETE FROM MaasHareket_Table 
+                WHERE GrupId={0}
+                ", grupId);
+            bool isDeleted = dao.DeleteFromDb(sqlString, "");
+            if (isDeleted && ProjeConstants.IKYS_DELETE_LOG)
+            {
+                OlayKayit olayKayit = new OlayKayit();
+                olayKayit.SilmeOlayKaydet(this, ProjeConstants.IKYS, ProjeConstants.IKYS_GOREVONAY);
+            }
+            return isDeleted;
+        }
     }
 }
