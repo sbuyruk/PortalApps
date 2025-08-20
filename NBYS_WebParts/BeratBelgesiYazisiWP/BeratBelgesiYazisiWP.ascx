@@ -34,25 +34,25 @@
                             <div class="row">
                                 <div class="form-group col-4" style="display: block">
                                     <label class="col-form-label" for="GunDDL">Gün </label>
-                                    <asp:DropDownList ID="GunDDL" runat="server" CssClass="form-control" AutoPostBack="True" OnSelectedIndexChanged="GunDDL_SelectedIndexChanged" Style="height: auto" />
+                                    <asp:DropDownList ID="GunDDL" runat="server" CssClass="form-control form-select form-select-lg fw-bold" AutoPostBack="True" OnSelectedIndexChanged="GunDDL_SelectedIndexChanged" Style="height: auto" />
                                 </div>
                                 <div class="form-group col-4">
                                     <label class="col-form-label" for="AyDDL">Ay </label>
-                                    <asp:DropDownList ID="AyDDL" runat="server" CssClass="form-control" AutoPostBack="True" OnSelectedIndexChanged="AyDDL_SelectedIndexChanged" Style="height: auto" />
+                                    <asp:DropDownList ID="AyDDL" runat="server" CssClass="form-control form-select form-select-lg fw-bold" AutoPostBack="True" OnSelectedIndexChanged="AyDDL_SelectedIndexChanged" Style="height: auto" />
                                 </div>
                                 <div class="form-group col-4">
                                     <label class="col-form-label" for="YilDDL">Yıl </label>
-                                    <asp:DropDownList ID="YilDDL" runat="server" CssClass="form-control" AutoPostBack="True" OnSelectedIndexChanged="YilDDL_SelectedIndexChanged" Style="height: auto" />
+                                    <asp:DropDownList ID="YilDDL" runat="server" CssClass="form-control form-select form-select-lg fw-bold" AutoPostBack="True" OnSelectedIndexChanged="YilDDL_SelectedIndexChanged" Style="height: auto" />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="form-group col-8">
                                     <label class="col-form-label" for="BolgeDDL">Bölge </label>
-                                    <asp:DropDownList ID="BolgeDDL" runat="server" CssClass="form-control" AutoPostBack="True" OnSelectedIndexChanged="BolgeDDL_SelectedIndexChanged" Style="height: auto" />
+                                    <asp:DropDownList ID="BolgeDDL" runat="server" CssClass="form-control form-select form-select-lg fw-bold" AutoPostBack="True" OnSelectedIndexChanged="BolgeDDL_SelectedIndexChanged" Style="height: auto" />
                                 </div>
                                 <div class="form-group col-4">
                                     <label class="col-form-label" for="MadalyaDDL">Madalya </label>
-                                    <asp:DropDownList ID="MadalyaDDL" runat="server" CssClass="form-control" AutoPostBack="True" OnSelectedIndexChanged="MadalyaDDL_SelectedIndexChanged" Style="height: auto" />
+                                    <asp:DropDownList ID="MadalyaDDL" runat="server" CssClass="form-control form-select form-select-lg fw-bold" AutoPostBack="True" OnSelectedIndexChanged="MadalyaDDL_SelectedIndexChanged" Style="height: auto" />
                                 </div>
                             </div>
                         </div>

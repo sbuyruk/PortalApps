@@ -178,12 +178,17 @@ namespace NBYS_WebParts.EkstreListesiWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-
-                try
+            ScriptManager sm = ScriptManager.GetCurrent(this.Page);
+            if (sm != null)
+            {
+                sm.AsyncPostBackTimeout = 600; // saniye cinsinden (örnek: 5 dakika)
+            }
+            try
                 {
                     if (!Page.IsPostBack)
                     {
-                        if (!string.IsNullOrEmpty(MesajQS))
+
+                    if (!string.IsNullOrEmpty(MesajQS))
                         {
                             if (IslemQS.ToLower().Equals("silme"))
                             {
@@ -250,6 +255,8 @@ namespace NBYS_WebParts.EkstreListesiWP
             VakifbankLbl.Text = ProjeConstants.BANKA_VAKIF;
             Vakifbank2Lbl.Text = ProjeConstants.BANKA_VAKIF2;
             KartIleLbl.Text = ProjeConstants.BANKA_KARTILEBAGIS;
+            SMSVakifLbl.Text = ProjeConstants.BANKA_SMSVAKIF;
+            KioskLbl.Text = ProjeConstants.BANKA_KIOSK;
 
             AkbankOkLbl.Text = string.Empty;
             AkbankEkstreOkLbl.Text = string.Empty;
@@ -263,6 +270,8 @@ namespace NBYS_WebParts.EkstreListesiWP
             ZiraatBankEkstreOkLbl.Text = string.Empty;
             ZiraatKatilimOkLbl.Text = string.Empty;
             KartIleOkLbl.Text = string.Empty;
+            SMSVakifOkLbl.Text = string.Empty;
+            KioskOkLbl.Text = string.Empty;
 
         }
         private void AktarilanBankalariOkLe(DateTime islemTarihi)
@@ -472,15 +481,34 @@ namespace NBYS_WebParts.EkstreListesiWP
                 KartIleOkLbl.ForeColor = System.Drawing.Color.Red;
                 KartIleOkLbl.Text = "X";
             }
+
+            bool isSMSVakifAktarildi = ekstreAktarma.CheckIsExistByBankaAdiAndIslemTarihi(ProjeConstants.BANKA_SMSVAKIF, islemTarihi);
+            if (isSMSVakifAktarildi)
+            {
+                SMSVakifOkLbl.ForeColor = System.Drawing.Color.Green;
+                SMSVakifOkLbl.Text = "  " + ((char)0x221A).ToString();
+            }
+            else
+            {
+                SMSVakifOkLbl.ForeColor = System.Drawing.Color.Red;
+                SMSVakifOkLbl.Text = "X";
+            }
+
+            bool isKioskAktarildi = ekstreAktarma.CheckIsExistByBankaAdiAndIslemTarihi(ProjeConstants.BANKA_KIOSK, islemTarihi);
+            if (isKioskAktarildi)
+            {
+                KioskOkLbl.ForeColor = System.Drawing.Color.Green;
+                KioskOkLbl.Text = "  " + ((char)0x221A).ToString();
+            }
+            else
+            {
+                KioskOkLbl.ForeColor = System.Drawing.Color.Red;
+                KioskOkLbl.Text = "X";
+            }
         }
         protected void SecilenListeyiKaydet()
         {
             string value = paramArray.Value;
-            //string[] idList = value.Split(',');
-            //foreach (string item in idList)
-            //{
-
-            //}
 
             string currentUser = UtilityHelper.GetCurrentUserLoginName();
             if (!string.IsNullOrEmpty(value))
@@ -490,17 +518,21 @@ namespace NBYS_WebParts.EkstreListesiWP
                 List<EkstreAktarma> aktarilmayanlar = eaDao.selectByEkstreIdList(value, ref rowCount);
                 if (aktarilmayanlar.Count > 0)
                 {
-                    var numbers = value?.Split(',')?.Select(Int32.Parse)?.ToList();
-                    var exceptionHelper = EkstreAktarma.SaveAll(numbers, currentUser); //seçilenler diğer tablolara dağıtılıyor
+                    //var numbers = value?.Split(',')?.Select(Int32.Parse)?.ToList();
+                    var exceptionHelper = EkstreAktarma.SaveAll(aktarilmayanlar, currentUser); //seçilenler diğer tablolara dağıtılıyor
+                   
                     if (exceptionHelper.Exceptions.Count > 0)
                     {
-                        UtilityHelper.ScriptCalistir("CloseModalOnay();");
+                       
                         exceptionHelper.PublishException();
                     }
                     else
                     {
-                        RedirectToPage(ProjeConstants.PAGE_EKSTRE_LIST + "?Mesaj=true&Islem=kaydet&basarili=true&IslemTarihi=" + IslemTarihiQS + "&AktarilanlarHaric=" + AktarilanlarHaricQS + "&Banka=" + BankaQS);
+                        UtilityHelper.ScriptCalistir("CloseModalOnay();");
+                        ScriptManager.RegisterStartupScript(this, this.GetType(), "HideLoader", "$('#customLoader').hide();", true);
+                        //RedirectToPage(ProjeConstants.PAGE_EKSTRE_LIST + "?Mesaj=true&Islem=kaydet&basarili=true&IslemTarihi=" + IslemTarihiQS + "&AktarilanlarHaric=" + AktarilanlarHaricQS + "&Banka=" + BankaQS);
                     }
+                    RedirectToPage(ProjeConstants.PAGE_EKSTRE_LIST);
                 }
             }
             else
@@ -947,7 +979,10 @@ namespace NBYS_WebParts.EkstreListesiWP
         {
             try
             {
+                
                 SecilenListeyiKaydet();
+
+
             }
             catch (Exception ex)
             {

@@ -145,6 +145,22 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.Label KioskLbl;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.Label KioskOkLbl;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.Label SMSVakifLbl;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.Label SMSVakifOkLbl;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.Label TebLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -623,6 +639,58 @@ namespace NBYS_WebParts.EkstreListesiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlKioskLbl() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.KioskLbl = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "KioskLbl";
+            @__ctrl.Text = "Kiosk";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlKioskOkLbl() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.KioskOkLbl = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "KioskOkLbl";
+            @__ctrl.Text = "";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlSMSVakifLbl() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.SMSVakifLbl = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "SMSVakifLbl";
+            @__ctrl.Text = "SMS Vakıf";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlSMSVakifOkLbl() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.SMSVakifOkLbl = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "SMSVakifOkLbl";
+            @__ctrl.Text = "";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlTebLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -785,7 +853,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
             this.ZiraatBankEkstreLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "ZiraatBankEkstreLbl";
-            @__ctrl.Text = "Ziraat Bankası (Ekstre)";
+            @__ctrl.Text = "Ziraat B. (Ekstre)";
             return @__ctrl;
         }
         
@@ -1000,7 +1068,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
             @__ctrl.ID = "KaydetNowBtn";
             @__ctrl.CausesValidation = false;
             @__ctrl.Text = "Seçilenleri Kaydet";
-            @__ctrl.OnClientClick = "{return true;};";
+            @__ctrl.OnClientClick = "this.disabled=true; this.innerHTML=\'Kaydediliyor...\';";
             @__ctrl.Visible = false;
             @__ctrl.Click -= new System.EventHandler(this.KaydetNowBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.KaydetNowBtn_Click);
@@ -1067,12 +1135,9 @@ namespace NBYS_WebParts.EkstreListesiWP {
             global::System.Web.UI.WebControls.LinkButton @__ctrl6;
             @__ctrl6 = this.@__BuildControlSilNowBtn();
             @__parser.AddParsedSubObject(@__ctrl6);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-                                    <button type=""button"" class=""btn btn-default float-end"" data-bs-dismiss=""modal"">Kapat</button>
-                                    <button type=""button"" class=""btn btn-default float-end"" data-bs-dismiss=""modal"">Kapat</button>
-                                </div>
-                            </div>
-                        "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    <button type=\"button\" class=\"btn btn-defaul" +
+                        "t float-end\" data-bs-dismiss=\"modal\">Kapat</button>\r\n                           " +
+                        "     </div>\r\n                            </div>\r\n                        "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -1234,77 +1299,89 @@ namespace NBYS_WebParts.EkstreListesiWP {
             @__ctrl26 = this.@__BuildControlKartIleOkLbl();
             @__parser.AddParsedSubObject(@__ctrl26);
             global::System.Web.UI.WebControls.Label @__ctrl27;
-            @__ctrl27 = this.@__BuildControlTebLbl();
+            @__ctrl27 = this.@__BuildControlKioskLbl();
             @__parser.AddParsedSubObject(@__ctrl27);
             global::System.Web.UI.WebControls.Label @__ctrl28;
-            @__ctrl28 = this.@__BuildControlTebOkLbl();
+            @__ctrl28 = this.@__BuildControlKioskOkLbl();
             @__parser.AddParsedSubObject(@__ctrl28);
             global::System.Web.UI.WebControls.Label @__ctrl29;
-            @__ctrl29 = this.@__BuildControlVakifbankLbl();
+            @__ctrl29 = this.@__BuildControlSMSVakifLbl();
             @__parser.AddParsedSubObject(@__ctrl29);
             global::System.Web.UI.WebControls.Label @__ctrl30;
-            @__ctrl30 = this.@__BuildControlVakifbankOkLbl();
+            @__ctrl30 = this.@__BuildControlSMSVakifOkLbl();
             @__parser.AddParsedSubObject(@__ctrl30);
             global::System.Web.UI.WebControls.Label @__ctrl31;
-            @__ctrl31 = this.@__BuildControlVakifbank2Lbl();
+            @__ctrl31 = this.@__BuildControlTebLbl();
             @__parser.AddParsedSubObject(@__ctrl31);
             global::System.Web.UI.WebControls.Label @__ctrl32;
-            @__ctrl32 = this.@__BuildControlVakifbank2OkLbl();
+            @__ctrl32 = this.@__BuildControlTebOkLbl();
             @__parser.AddParsedSubObject(@__ctrl32);
             global::System.Web.UI.WebControls.Label @__ctrl33;
-            @__ctrl33 = this.@__BuildControlVakifKatilimLbl();
+            @__ctrl33 = this.@__BuildControlVakifbankLbl();
             @__parser.AddParsedSubObject(@__ctrl33);
             global::System.Web.UI.WebControls.Label @__ctrl34;
-            @__ctrl34 = this.@__BuildControlVakifKatilimOkLbl();
+            @__ctrl34 = this.@__BuildControlVakifbankOkLbl();
             @__parser.AddParsedSubObject(@__ctrl34);
             global::System.Web.UI.WebControls.Label @__ctrl35;
-            @__ctrl35 = this.@__BuildControlYKBEkstreLbl();
+            @__ctrl35 = this.@__BuildControlVakifbank2Lbl();
             @__parser.AddParsedSubObject(@__ctrl35);
             global::System.Web.UI.WebControls.Label @__ctrl36;
-            @__ctrl36 = this.@__BuildControlYKBEkstreOkLbl();
+            @__ctrl36 = this.@__BuildControlVakifbank2OkLbl();
             @__parser.AddParsedSubObject(@__ctrl36);
             global::System.Web.UI.WebControls.Label @__ctrl37;
-            @__ctrl37 = this.@__BuildControlZiraatBankLbl();
+            @__ctrl37 = this.@__BuildControlVakifKatilimLbl();
             @__parser.AddParsedSubObject(@__ctrl37);
             global::System.Web.UI.WebControls.Label @__ctrl38;
-            @__ctrl38 = this.@__BuildControlZiraatBankOkLbl();
+            @__ctrl38 = this.@__BuildControlVakifKatilimOkLbl();
             @__parser.AddParsedSubObject(@__ctrl38);
             global::System.Web.UI.WebControls.Label @__ctrl39;
-            @__ctrl39 = this.@__BuildControlZiraatBankEkstreLbl();
+            @__ctrl39 = this.@__BuildControlYKBEkstreLbl();
             @__parser.AddParsedSubObject(@__ctrl39);
             global::System.Web.UI.WebControls.Label @__ctrl40;
-            @__ctrl40 = this.@__BuildControlZiraatBankEkstreOkLbl();
+            @__ctrl40 = this.@__BuildControlYKBEkstreOkLbl();
             @__parser.AddParsedSubObject(@__ctrl40);
             global::System.Web.UI.WebControls.Label @__ctrl41;
-            @__ctrl41 = this.@__BuildControlZiraatKatilimLbl();
+            @__ctrl41 = this.@__BuildControlZiraatBankLbl();
             @__parser.AddParsedSubObject(@__ctrl41);
             global::System.Web.UI.WebControls.Label @__ctrl42;
-            @__ctrl42 = this.@__BuildControlZiraatKatilimOkLbl();
+            @__ctrl42 = this.@__BuildControlZiraatBankOkLbl();
             @__parser.AddParsedSubObject(@__ctrl42);
-            global::System.Web.UI.WebControls.CheckBox @__ctrl43;
-            @__ctrl43 = this.@__BuildControlAktarilanlarHaricChk();
+            global::System.Web.UI.WebControls.Label @__ctrl43;
+            @__ctrl43 = this.@__BuildControlZiraatBankEkstreLbl();
             @__parser.AddParsedSubObject(@__ctrl43);
-            global::System.Web.UI.WebControls.CheckBox @__ctrl44;
-            @__ctrl44 = this.@__BuildControlTumunuSecChk();
+            global::System.Web.UI.WebControls.Label @__ctrl44;
+            @__ctrl44 = this.@__BuildControlZiraatBankEkstreOkLbl();
             @__parser.AddParsedSubObject(@__ctrl44);
-            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl45;
-            @__ctrl45 = this.@__BuildControlparamArray();
+            global::System.Web.UI.WebControls.Label @__ctrl45;
+            @__ctrl45 = this.@__BuildControlZiraatKatilimLbl();
             @__parser.AddParsedSubObject(@__ctrl45);
-            global::System.Web.UI.WebControls.LinkButton @__ctrl46;
-            @__ctrl46 = this.@__BuildControlSecilenleriKaydetBtn();
+            global::System.Web.UI.WebControls.Label @__ctrl46;
+            @__ctrl46 = this.@__BuildControlZiraatKatilimOkLbl();
             @__parser.AddParsedSubObject(@__ctrl46);
-            global::System.Web.UI.WebControls.LinkButton @__ctrl47;
-            @__ctrl47 = this.@__BuildControlSecilenleriSilBtn();
+            global::System.Web.UI.WebControls.CheckBox @__ctrl47;
+            @__ctrl47 = this.@__BuildControlAktarilanlarHaricChk();
             @__parser.AddParsedSubObject(@__ctrl47);
-            global::System.Web.UI.WebControls.LinkButton @__ctrl48;
-            @__ctrl48 = this.@__BuildControlExcelBtn();
+            global::System.Web.UI.WebControls.CheckBox @__ctrl48;
+            @__ctrl48 = this.@__BuildControlTumunuSecChk();
             @__parser.AddParsedSubObject(@__ctrl48);
-            global::System.Web.UI.UpdatePanel @__ctrl49;
-            @__ctrl49 = this.@__BuildControlUpdatePanel1();
+            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl49;
+            @__ctrl49 = this.@__BuildControlparamArray();
             @__parser.AddParsedSubObject(@__ctrl49);
-            global::System.Web.UI.UpdateProgress @__ctrl50;
-            @__ctrl50 = this.@__BuildControlupdateProgress();
+            global::System.Web.UI.WebControls.LinkButton @__ctrl50;
+            @__ctrl50 = this.@__BuildControlSecilenleriKaydetBtn();
             @__parser.AddParsedSubObject(@__ctrl50);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl51;
+            @__ctrl51 = this.@__BuildControlSecilenleriSilBtn();
+            @__parser.AddParsedSubObject(@__ctrl51);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl52;
+            @__ctrl52 = this.@__BuildControlExcelBtn();
+            @__parser.AddParsedSubObject(@__ctrl52);
+            global::System.Web.UI.UpdatePanel @__ctrl53;
+            @__ctrl53 = this.@__BuildControlUpdatePanel1();
+            @__parser.AddParsedSubObject(@__ctrl53);
+            global::System.Web.UI.UpdateProgress @__ctrl54;
+            @__ctrl54 = this.@__BuildControlupdateProgress();
+            @__parser.AddParsedSubObject(@__ctrl54);
             @__ctrl.SetRenderMethodDelegate(new System.Web.UI.RenderMethod(this.@__Render__control1));
         }
         
@@ -1366,9 +1443,9 @@ namespace NBYS_WebParts.EkstreListesiWP {
                         <label class=""col-form-label mr-2 fw-bold"" for=""IslemTarihiTxt"">İşlem Tarihi</label>
                         ");
             parameterContainer.Controls[4].RenderControl(@__w);
-            @__w.Write("\r\n                    </div>\r\n                    <div class=\"form-group col-2\">\r" +
-                    "\n                        <label class=\"col-form-label\" for=\"BankaDDL\">Banka</lab" +
-                    "el>\r\n                        ");
+            @__w.Write("\r\n                    </div>\r\n                    <div class=\"form-group col\">\r\n " +
+                    "                       <label class=\"col-form-label\" for=\"BankaDDL\">Banka</label" +
+                    ">\r\n                        ");
             parameterContainer.Controls[5].RenderControl(@__w);
             @__w.Write("\r\n                    </div>\r\n                    <div class=\"col\">\r\n            " +
                     "            <div class=\"form-group m-0\">\r\n                            ");
@@ -1428,8 +1505,8 @@ namespace NBYS_WebParts.EkstreListesiWP {
             @__w.Write("\r\n                            ");
             parameterContainer.Controls[27].RenderControl(@__w);
             @__w.Write("\r\n                        </div>\r\n                    </div>\r\n                   " +
-                    " <div class=\"col\">\r\n\r\n                        <div class=\"form-group m-0\">\r\n    " +
-                    "                        ");
+                    " <div class=\"col\">\r\n                        <div class=\"form-group m-0\">\r\n      " +
+                    "                      ");
             parameterContainer.Controls[28].RenderControl(@__w);
             @__w.Write("\r\n                            ");
             parameterContainer.Controls[29].RenderControl(@__w);
@@ -1438,19 +1515,19 @@ namespace NBYS_WebParts.EkstreListesiWP {
             parameterContainer.Controls[30].RenderControl(@__w);
             @__w.Write("\r\n                            ");
             parameterContainer.Controls[31].RenderControl(@__w);
-            @__w.Write("\r\n                        </div>\r\n                        <div class=\"form-group " +
-                    "m-0\">\r\n                            ");
+            @__w.Write("\r\n                        </div>\r\n\r\n                        <div class=\"form-grou" +
+                    "p m-0\">\r\n                            ");
             parameterContainer.Controls[32].RenderControl(@__w);
             @__w.Write("\r\n                            ");
             parameterContainer.Controls[33].RenderControl(@__w);
-            @__w.Write("\r\n                        </div>\r\n                        <div class=\"form-group " +
-                    "m-0\">\r\n                            ");
-            parameterContainer.Controls[34].RenderControl(@__w);
-            @__w.Write("\r\n                            ");
-            parameterContainer.Controls[35].RenderControl(@__w);
             @__w.Write("\r\n                        </div>\r\n                    </div>\r\n                   " +
                     " <div class=\"col\">\r\n                        <div class=\"form-group m-0\">\r\n      " +
                     "                      ");
+            parameterContainer.Controls[34].RenderControl(@__w);
+            @__w.Write("\r\n                            ");
+            parameterContainer.Controls[35].RenderControl(@__w);
+            @__w.Write("\r\n                        </div>\r\n\r\n                        <div class=\"form-grou" +
+                    "p m-0\">\r\n                            ");
             parameterContainer.Controls[36].RenderControl(@__w);
             @__w.Write("\r\n                            ");
             parameterContainer.Controls[37].RenderControl(@__w);
@@ -1459,11 +1536,22 @@ namespace NBYS_WebParts.EkstreListesiWP {
             parameterContainer.Controls[38].RenderControl(@__w);
             @__w.Write("\r\n                            ");
             parameterContainer.Controls[39].RenderControl(@__w);
-            @__w.Write("\r\n                        </div>\r\n                        <div class=\"form-group " +
-                    "m-0\">\r\n                            ");
+            @__w.Write("\r\n                        </div>\r\n                    </div>\r\n                   " +
+                    " <div class=\"col\">\r\n                        <div class=\"form-group m-0\">\r\n      " +
+                    "                      ");
             parameterContainer.Controls[40].RenderControl(@__w);
             @__w.Write("\r\n                            ");
             parameterContainer.Controls[41].RenderControl(@__w);
+            @__w.Write("\r\n                        </div>\r\n                        <div class=\"form-group " +
+                    "m-0\">\r\n                            ");
+            parameterContainer.Controls[42].RenderControl(@__w);
+            @__w.Write("\r\n                            ");
+            parameterContainer.Controls[43].RenderControl(@__w);
+            @__w.Write("\r\n                        </div>\r\n                        <div class=\"form-group " +
+                    "m-0\">\r\n                            ");
+            parameterContainer.Controls[44].RenderControl(@__w);
+            @__w.Write("\r\n                            ");
+            parameterContainer.Controls[45].RenderControl(@__w);
             @__w.Write(@"
                         </div>
                     </div>
@@ -1475,12 +1563,12 @@ namespace NBYS_WebParts.EkstreListesiWP {
                         <div class=""checkbox"">
                             <label>
                                 ");
-            parameterContainer.Controls[42].RenderControl(@__w);
+            parameterContainer.Controls[46].RenderControl(@__w);
             @__w.Write("\r\n                                Aktarılanları Gösterme\r\n                       " +
                     "     </label>\r\n                        </div>\r\n                        <div clas" +
                     "s=\"checkbox\">\r\n                            <label>\r\n                            " +
                     "    ");
-            parameterContainer.Controls[43].RenderControl(@__w);
+            parameterContainer.Controls[47].RenderControl(@__w);
             @__w.Write("\r\n                                Sayfanın Tümünü Seç\r\n                          " +
                     "  </label>\r\n                        </div>\r\n                    </div>\r\n        " +
                     "        </div>\r\n            </div>\r\n            <div class=\"form-group\">\r\n      " +
@@ -1503,17 +1591,18 @@ namespace NBYS_WebParts.EkstreListesiWP {
                     "ccess\" type=\"button\" value=\"Seçilenleri Sil\" onclick=\"SecilenleriSilTriggerBtnCl" +
                     "icked();\" />\r\n            </div>\r\n            <div id=\"InvisibleDiv\" style=\"disp" +
                     "lay: none\">\r\n                ");
-            parameterContainer.Controls[44].RenderControl(@__w);
+            parameterContainer.Controls[48].RenderControl(@__w);
             @__w.Write("\r\n                ");
-            parameterContainer.Controls[45].RenderControl(@__w);
+            parameterContainer.Controls[49].RenderControl(@__w);
             @__w.Write("\r\n                ");
-            parameterContainer.Controls[46].RenderControl(@__w);
+            parameterContainer.Controls[50].RenderControl(@__w);
             @__w.Write("\r\n            </div>\r\n            ");
-            parameterContainer.Controls[47].RenderControl(@__w);
+            parameterContainer.Controls[51].RenderControl(@__w);
             @__w.Write(@"
         </div>
 
     </div>
+    
 
 
     <div class=""modal"" id=""ModalOnayDiv"" role=""dialog"">
@@ -1522,9 +1611,9 @@ namespace NBYS_WebParts.EkstreListesiWP {
             <div class=""modal-content"">
                 <div class=""modal-body"">
                     ");
-            parameterContainer.Controls[48].RenderControl(@__w);
+            parameterContainer.Controls[52].RenderControl(@__w);
             @__w.Write("\r\n                    ");
-            parameterContainer.Controls[49].RenderControl(@__w);
+            parameterContainer.Controls[53].RenderControl(@__w);
             @__w.Write("\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>");
         }
         

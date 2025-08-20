@@ -193,16 +193,16 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
         {
             //ARMAGAN PERIODU
             //10 Günde bir
-            GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Tüm Ay", "0"));
-            GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("1-7", "1"));
-            GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("8-14", "2"));
-            GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("15-22", "3"));
-            GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("23-Ay Sonu", "4"));
+            //GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Tüm Ay", "0"));
+            //GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("1-7", "1"));
+            //GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("8-14", "2"));
+            //GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("15-22", "3"));
+            //GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("23-Ay Sonu", "4"));
 
             //15 Günde bir
-            //GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Tüm Ay", "0"));
-            //GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("1-15", "1"));
-            //GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("16-Ay Sonu", "2"));
+            GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Tüm Ay", "0"));
+            GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("1-15", "1"));
+            GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("16-Ay Sonu", "2"));
 
             //Ayda bir
             //GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Tüm Ay", "0"));
@@ -253,16 +253,16 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
                 //gün
                 int gunBolumu = DateTime.Today.Day < 15 ? 1 : 2;
                 // Periyod 15 ise
-                //string gun = !string.IsNullOrEmpty(SecilenGunQS) ? SecilenGunQS : gunBolumu.ToString();
-                //System.Web.UI.WebControls.ListItem gunItem = new System.Web.UI.WebControls.ListItem();
-                //if (!string.IsNullOrEmpty(gun))
-                //    gunItem = GunDDL.Items.FindByValue(gun);
+                string gun = !string.IsNullOrEmpty(SecilenGunQS) ? SecilenGunQS : gunBolumu.ToString();
+                System.Web.UI.WebControls.ListItem gunItem = new System.Web.UI.WebControls.ListItem();
+                if (!string.IsNullOrEmpty(gun))
+                    gunItem = GunDDL.Items.FindByValue(gun);
 
-                //if (gunItem != null)
-                //{
-                //    GunDDL.SelectedValue = gunItem.Value;
-                //    SecilenGunQS = gunItem.Value;
-                //}
+                if (gunItem != null)
+                {
+                    GunDDL.SelectedValue = gunItem.Value;
+                    SecilenGunQS = gunItem.Value;
+                }
                 //ay
                 string ay = !string.IsNullOrEmpty(SecilenAyQS) ? SecilenAyQS : (gunBolumu == 1 ? DateTime.Today.AddMonths(-1).Month.ToString() : DateTime.Today.Month.ToString());
                 System.Web.UI.WebControls.ListItem AyItem = new System.Web.UI.WebControls.ListItem();

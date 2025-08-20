@@ -223,7 +223,7 @@ namespace NBYS_WebParts.BeratBelgesiYazisiWP {
             this.GunDDL = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "GunDDL";
-            @__ctrl.CssClass = "form-control";
+            @__ctrl.CssClass = "form-control form-select form-select-lg fw-bold";
             @__ctrl.AutoPostBack = true;
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: auto");
             @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.GunDDL_SelectedIndexChanged);
@@ -240,7 +240,7 @@ namespace NBYS_WebParts.BeratBelgesiYazisiWP {
             this.AyDDL = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "AyDDL";
-            @__ctrl.CssClass = "form-control";
+            @__ctrl.CssClass = "form-control form-select form-select-lg fw-bold";
             @__ctrl.AutoPostBack = true;
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: auto");
             @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.AyDDL_SelectedIndexChanged);
@@ -257,7 +257,7 @@ namespace NBYS_WebParts.BeratBelgesiYazisiWP {
             this.YilDDL = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "YilDDL";
-            @__ctrl.CssClass = "form-control";
+            @__ctrl.CssClass = "form-control form-select form-select-lg fw-bold";
             @__ctrl.AutoPostBack = true;
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: auto");
             @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.YilDDL_SelectedIndexChanged);
@@ -274,7 +274,7 @@ namespace NBYS_WebParts.BeratBelgesiYazisiWP {
             this.BolgeDDL = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "BolgeDDL";
-            @__ctrl.CssClass = "form-control";
+            @__ctrl.CssClass = "form-control form-select form-select-lg fw-bold";
             @__ctrl.AutoPostBack = true;
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: auto");
             @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.BolgeDDL_SelectedIndexChanged);
@@ -291,7 +291,7 @@ namespace NBYS_WebParts.BeratBelgesiYazisiWP {
             this.MadalyaDDL = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "MadalyaDDL";
-            @__ctrl.CssClass = "form-control";
+            @__ctrl.CssClass = "form-control form-select form-select-lg fw-bold";
             @__ctrl.AutoPostBack = true;
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: auto");
             @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.MadalyaDDL_SelectedIndexChanged);

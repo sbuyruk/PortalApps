@@ -98,7 +98,7 @@
                         <label class="col-form-label mr-2 fw-bold" for="IslemTarihiTxt">İşlem Tarihi</label>
                         <asp:TextBox ID="IslemTarihiTxt" runat="server" class="form-control DateTimePickerV1" type="text" AutoPostBack="true" OnTextChanged="IslemTarihiTxt_TextChanged" />
                     </div>
-                    <div class="form-group col-2">
+                    <div class="form-group col">
                         <label class="col-form-label" for="BankaDDL">Banka</label>
                         <asp:DropDownList ID="BankaDDL" runat="server" CssClass="form-control" AutoPostBack="True" OnSelectedIndexChanged="BankaDDL_SelectedIndexChanged" Height="34px"></asp:DropDownList>
                     </div>
@@ -149,20 +149,31 @@
                             <asp:Label ID="KartIleOkLbl" runat="server" Text=""></asp:Label>
                         </div>
                         <div class="form-group m-0">
-                            <asp:Label ID="TebLbl" runat="server" Text="TEB"></asp:Label>
-                            <asp:Label ID="TebOkLbl" runat="server" Text=""></asp:Label>
+                            <asp:Label ID="KioskLbl" runat="server" Text="Kiosk"></asp:Label>
+                            <asp:Label ID="KioskOkLbl" runat="server" Text=""></asp:Label>
                         </div>
                     </div>
                     <div class="col">
+                        <div class="form-group m-0">
+                            <asp:Label ID="SMSVakifLbl" runat="server" Text="SMS Vakıf"></asp:Label>
+                            <asp:Label ID="SMSVakifOkLbl" runat="server" Text=""></asp:Label>
+                        </div>
+                        <div class="form-group m-0">
+                            <asp:Label ID="TebLbl" runat="server" Text="TEB"></asp:Label>
+                            <asp:Label ID="TebOkLbl" runat="server" Text=""></asp:Label>
+                        </div>
 
                         <div class="form-group m-0">
                             <asp:Label ID="VakifbankLbl" runat="server" Text="Vakıfbank"></asp:Label>
                             <asp:Label ID="VakifbankOkLbl" runat="server" Text=""></asp:Label>
                         </div>
+                    </div>
+                    <div class="col">
                         <div class="form-group m-0">
                             <asp:Label ID="Vakifbank2Lbl" runat="server" Text="Vakıfbank2"></asp:Label>
                             <asp:Label ID="Vakifbank2OkLbl" runat="server" Text=""></asp:Label>
                         </div>
+
                         <div class="form-group m-0">
                             <asp:Label ID="VakifKatilimLbl" runat="server" Text="Vakıf Katılım"></asp:Label>
                             <asp:Label ID="VakifKatilimOkLbl" runat="server" Text=""></asp:Label>
@@ -178,7 +189,7 @@
                             <asp:Label ID="ZiraatBankOkLbl" runat="server" Text=""></asp:Label>
                         </div>
                         <div class="form-group m-0">
-                            <asp:Label ID="ZiraatBankEkstreLbl" runat="server" Text="Ziraat Bankası (Ekstre)"></asp:Label>
+                            <asp:Label ID="ZiraatBankEkstreLbl" runat="server" Text="Ziraat B. (Ekstre)"></asp:Label>
                             <asp:Label ID="ZiraatBankEkstreOkLbl" runat="server" Text=""></asp:Label>
                         </div>
                         <div class="form-group m-0">
@@ -243,6 +254,68 @@
         </div>
 
     </div>
+    <%--<div class="modal" id="ModalOnayDiv" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-body">
+
+                    <asp:UpdatePanel runat="server" ID="UpdatePanel1" UpdateMode="Conditional">
+                        <ContentTemplate>
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3>
+                                        <asp:Label ID="ModalTitleLbl" CssClass="col-form-label" runat="server" Text="" />
+                                    </h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <h4>
+                                            <asp:Label ID="ModalSubTitleLbl" CssClass="col-form-label" runat="server" Text="" />
+                                        </h4>
+                                        <h4>
+                                            <asp:Label ID="UyariMesajiLbl" CssClass="col-form-label" runat="server" Text="" />
+                                        </h4>
+                                        <h4>
+                                            <asp:Label ID="OnayMesajiLbl" CssClass="col-form-label text-danger" runat="server" Text="İşlemi onaylıyor musunuz?" />
+                                        </h4>
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                   <asp:LinkButton CssClass="btn btn-success" ID="KaydetNowBtn" runat="server"
+                                        CausesValidation="false"
+                                        Text="Seçilenleri Kaydet"
+                                        OnClientClick="$('#customLoader').show(); this.disabled=true; this.innerHTML='Kaydediliyor...';"
+                                        OnClick="KaydetNowBtn_Click"
+                                        Visible="true" />
+
+                                    <asp:LinkButton CssClass="btn btn-danger" ID="SilNowBtn" runat="server"
+                                        CausesValidation="false"
+                                        Text="Seçilenleri Sil"
+                                        OnClick="SilNowBtn_Click"
+                                        Visible="false" />
+
+                                    <button type="button" class="btn btn-default float-end" data-bs-dismiss="modal">Kapat</button>
+                                </div>
+                            </div>
+                        </ContentTemplate>
+                        <Triggers>
+                            <asp:AsyncPostBackTrigger ControlID="KaydetNowBtn" EventName="Click" />
+                            <asp:AsyncPostBackTrigger ControlID="SilNowBtn" EventName="Click" />
+                        </Triggers>
+                    </asp:UpdatePanel>
+                </div>
+            </div>
+        </div>
+        <div id="customLoader" style="display: none;">
+            <div class='loaderMainContainer'>
+                <div class='loaderContainer'>
+                    <div class='loaderCircle'></div>
+                </div>
+            </div>
+        </div>
+
+    </div>--%>
 
 
     <div class="modal" id="ModalOnayDiv" role="dialog">
@@ -268,9 +341,11 @@
                                     </div>
                                 </div>
                                 <div class="card-footer">
-                                    <asp:LinkButton CssClass="btn btn-success" ID="KaydetNowBtn" runat="server" CausesValidation="false" Text="Seçilenleri Kaydet" OnClientClick="{return true;};" OnClick="KaydetNowBtn_Click" Visible="false" />
-                                    <asp:LinkButton CssClass="btn btn-danger" ID="SilNowBtn" runat="server" CausesValidation="false" Text="Seçilenleri Sil" OnClientClick="{return true;};" OnClick="SilNowBtn_Click" Visible="false" />
-                                    <button type="button" class="btn btn-default float-end" data-bs-dismiss="modal">Kapat</button>
+                                    <asp:LinkButton CssClass="btn btn-success" ID="KaydetNowBtn" runat="server" CausesValidation="false" Text="Seçilenleri Kaydet" 
+                                        OnClientClick="this.disabled=true; this.innerHTML='Kaydediliyor...';"
+                                        OnClick="KaydetNowBtn_Click" Visible="false" />
+                                    <asp:LinkButton CssClass="btn btn-danger" ID="SilNowBtn" runat="server" CausesValidation="false" 
+                                        Text="Seçilenleri Sil" OnClientClick="{return true;};" OnClick="SilNowBtn_Click" Visible="false" />
                                     <button type="button" class="btn btn-default float-end" data-bs-dismiss="modal">Kapat</button>
                                 </div>
                             </div>

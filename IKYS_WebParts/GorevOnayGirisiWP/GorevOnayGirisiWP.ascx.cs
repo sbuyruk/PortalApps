@@ -664,7 +664,39 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 (BitSaatDDL.SelectedItem == null) ||
                 string.IsNullOrEmpty(BasSaatDDL.SelectedItem.Value) ||
                 string.IsNullOrEmpty(BitSaatDDL.SelectedItem.Value);
-            return !isEmpty;
+            bool isDateUsed = false;
+            // Girilen tarihlerin geçerli olup olmadığını kontrol et
+            if (!isEmpty)
+            {
+                DateTime basTarih = BaslangicTarihiTxt.Text.ConvertToDatetime();
+                DateTime bitTarih = BitisTarihiTxt.Text.ConvertToDatetime();
+                if (basTarih > bitTarih)
+                {
+                    MessageHelper.PublishMessage("Başlangıç tarihi bitiş tarihinden sonra olamaz.", ProjeConstants.MESAJ_HATA);
+                    isEmpty = true;
+                }
+            }
+            // Girilen tarihler içinde başka bir görev olup olmadığını kontrol et
+            if (!isEmpty)
+            {
+                GorevOnay gorevOnay = new GorevOnay();
+                int personelId = PersonelDDL.SelectedItem == null ? 0 : PersonelDDL.SelectedItem.Value.ConvertToInt();
+                if (personelId > 0)
+                {
+                    DateTime basTarih = BaslangicTarihiTxt.Text.ConvertToDatetime();
+                    DateTime bitTarih = BitisTarihiTxt.Text.ConvertToDatetime();
+                    string basSaat = BasSaatDDL.SelectedItem.Text;
+                    basTarih = UtilityHelper.TariheSaatEkle(basTarih, basSaat);
+                    string bitSaat = BitSaatDDL.SelectedItem.Text;
+                    bitTarih = UtilityHelper.TariheSaatEkle(bitTarih, bitSaat);
+                    isDateUsed = gorevOnay.GorevOnayVarMi(personelId, basTarih, bitTarih);
+                    if (isDateUsed)
+                    {
+                        MessageHelper.PublishMessage("Bu tarihlerde başka bir görev kaydı bulunmaktadır.", ProjeConstants.MESAJ_HATA);
+                    }
+                }
+            }
+            return (!isEmpty && !isDateUsed);
         }
         
         private bool Guncelle()
@@ -786,10 +818,6 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                     if (isValid)
                     {
                         KaydetModalAc();
-                    }
-                    else
-                    {
-                        MessageHelper.PublishMessage("Lütfen bilgileri tamamlayınız.", ProjeConstants.MESAJ_HATA);
                     }
                 }
                 else

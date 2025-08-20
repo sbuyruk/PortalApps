@@ -278,12 +278,12 @@ namespace NBYS_WebParts.BeratBelgesiYazisiWP
             //GunDDL.Items.Add(new ListItem("20-Ay Sonu", "3"));
 
             //15 Günde bir
-            //GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Tüm Ay", "0"));
-            //GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("1-15", "1"));
-            //GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("16-Ay Sonu", "2"));
+            GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Tüm Ay", "0"));
+            GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("1-15", "1"));
+            GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("16-Ay Sonu", "2"));
 
             //Ayda bir
-            GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Tüm Ay", "0"));
+            //GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Tüm Ay", "0"));
 
         }
         private void AyDDLDoldur()

@@ -281,7 +281,7 @@ namespace Utility.ProjeGlobal
         public const string PAGE_RESMITATIL_GIRIS = "ResmiTatilGirisi.aspx";
         public const string PAGE_YOKLAMA_GIRIS = "YoklamaGirisi.aspx";
         public const string PAGE_YOKLAMA_LIST = "YoklamaListesi.aspx";
-        public const string PAGE_GOREVONAY_GIRIS = "GorevOnayGirisi.aspx";
+        public const string PAGE_GOREVONAY_GIRIS = "GorevOnayiGirisi.aspx";
         public const string PAGE_GOREVONAY_LIST = "GorevOnayListesi.aspx";
         public const string PAGE_MAAS_TABLOLARI = "MaasTablolari.aspx";
         public const string PAGE_MAAS_ARTISI = "MaasArtisi.aspx";
@@ -643,7 +643,7 @@ namespace Utility.ProjeGlobal
         public const string BANKA_HALKBANK2 = "HalkBank2";
         public const string BANKA_BANKA_HALKBANK2_BASLIKILKHUCRE = "İşlem Tarihi";
         public const int BANKA_HALKBANK2_ILKKACSATIRHARIC = 24;
-        public const int BANKA_HALKBANK2_SONKACSATIRHARIC = 1;
+        public const int BANKA_HALKBANK2_SONKACSATIRHARIC = 2;
 
         //İşbank
         public const string BANKA_ISBANK = "İş Bankası";
@@ -670,6 +670,18 @@ namespace Utility.ProjeGlobal
         public const int BANKA_VAKIF2_ILKKACSATIRHARIC = 5;
         public const int BANKA_VAKIF2_SONKACSATIRHARIC = 4;
         public const string IMAGE_PATH_VAKIF2 = "/" + IMAGE_PATH + "/vakifbank.png";
+        //SMS Vakıf
+        public const string BANKA_SMSVAKIF = "SMS Vakıfbank";
+        public const string BANKA_SMSVAKIF_BASLIKILKHUCRE = "HESAP NO";
+        public const int BANKA_SMSVAKIF_ILKKACSATIRHARIC = 5;
+        public const int BANKA_SMSVAKIF_SONKACSATIRHARIC = 4;
+        public const string IMAGE_PATH_BANKA_SMSVAKIF = "/" + IMAGE_PATH + "/vakifbank.png";
+        //Kiosk
+        public const string BANKA_KIOSK = "Kiosk";
+        public const string BANKA_KIOSK_BASLIKILKHUCRE = "HESAP NO";
+        public const int BANKA_KIOSK_ILKKACSATIRHARIC = 7;
+        public const int BANKA_KIOSK_SONKACSATIRHARIC = 6;
+        public const string IMAGE_PATH_BANKA_KIOSK = "/" + IMAGE_PATH + "/vakifbank.png";
         //Ziraat
         public const string BANKA_ZIRAAT = "Ziraat Bankası";
         public const string IMAGE_PATH_ZIRAAT = "/" + IMAGE_PATH + "/ziraat.png";

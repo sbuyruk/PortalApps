@@ -1287,75 +1287,110 @@ namespace IKYS_WebParts.GorevOnayGirisiWP {
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControlTree(global::IKYS_WebParts.GorevOnayGirisiWP.GorevOnayGirisiWP @__ctrl) {
-            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n<style>\r\n    .disabled-look {\r\n        background-color: #e9ecef !important; " +
-                        "/* Bootstrap\'ın disabled rengi */\r\n        color: #6c757d !important; /* Gri yaz" +
-                        "ı rengi */\r\n        pointer-events: auto; /* Kullanıcı etkileşimi aktif */\r\n    " +
-                        "}\r\n</style>\r\n<script type=\"text/javascript\">\r\n    function OpenModal() {\r\n      " +
-                        "  var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementB" +
-                        "yId(\'ModalOnayDiv\'));\r\n        myModalInstance.show();\r\n    }\r\n\r\n    function Ca" +
-                        "lculateFullDateTimeDiff() {\r\n        var startDateStr = $(\'#BaslangicTarihiTxt\')" +
-                        ".val();\r\n        var endDateStr = $(\'#BitisTarihiTxt\').val();\r\n        var start" +
-                        "TimeStr = $(\'#BasSaatDDL\').val();\r\n        var endTimeStr = $(\'#BitSaatDDL\').val" +
-                        "();\r\n\r\n        if (!startDateStr || !endDateStr || !startTimeStr || !endTimeStr)" +
-                        " {\r\n            return;\r\n        }\r\n\r\n        // \"dd.mm.yyyy\" + \"hh:mm\" -> \"yyyy" +
-                        "-mm-ddThh:mm\"\r\n        var startParts = startDateStr.split(\'.\');\r\n        var en" +
-                        "dParts = endDateStr.split(\'.\');\r\n        var startDateTime = new Date(`${startPa" +
-                        "rts[2]}-${startParts[1]}-${startParts[0]}T${startTimeStr}`);\r\n        var endDat" +
-                        "eTime = new Date(`${endParts[2]}-${endParts[1]}-${endParts[0]}T${endTimeStr}`);\r" +
-                        "\n\r\n        var diffMs = endDateTime - startDateTime;\r\n        if (diffMs < 0) {\r" +
-                        "\n            $(\'#SureGunTxt\').val(\"0\");\r\n            $(\'#SureSaatTxt\').val(\"0\");" +
-                        "\r\n            $(\'#SureDakikaTxt\').val(\"0\");\r\n            return;\r\n        }\r\n\r\n " +
-                        "       var diffMins = Math.floor(diffMs / (1000 * 60));\r\n        var days = Math" +
-                        ".floor(diffMins / (60 * 24));\r\n        var hours = Math.floor((diffMins % (60 * " +
-                        "24)) / 60);\r\n        var minutes = diffMins % 60;\r\n\r\n        $(\'#SureGunTxt\').va" +
-                        "l(days);\r\n        $(\'#SureSaatTxt\').val(hours);\r\n        $(\'#SureDakikaTxt\').val" +
-                        "(minutes);\r\n        $(\'#SureSaatDakikaTxt\').val(hours + \' Saat \' + minutes + \' D" +
-                        "akika\');\r\n        $(\'#SureGunStrTxt\').val(days + \" Gün \");\r\n        __doPostBack" +
-                        "(\'BaslangicTarihiTxt\', \'\');\r\n        __doPostBack(\'BitisTarihiTxt\', \'\');\r\n      " +
-                        "  __doPostBack(\'BasSaatDDL\', \'\');\r\n        __doPostBack(\'BitSaatDDL\', \'\');\r\n    " +
-                        "}\r\n\r\n    // Sayfa yüklendiğinde VEYA UpdatePanel sonrası çalışır\r\n    Sys.Applic" +
-                        "ation.add_load(function () {\r\n        $(\'#BaslangicTarihiTxt\').datepicker({\r\n   " +
-                        "         dateFormat: \'dd.mm.yy\',\r\n            changeMonth: true,\r\n            ch" +
-                        "angeYear: true,\r\n            firstDay: 1, // Haftayı Pazartesi başlat\r\n         " +
-                        "   dayNamesMin: [\'Paz\', \'Pts\', \'Sal\', \'Çar\', \'Per\', \'Cum\', \'Cts\'],\r\n            " +
-                        "monthNames: [\'Ocak\', \'Şubat\', \'Mart\', \'Nisan\', \'Mayıs\', \'Haziran\',\r\n            " +
-                        "    \'Temmuz\', \'Ağustos\', \'Eylül\', \'Ekim\', \'Kasım\', \'Aralık\'],\r\n            month" +
-                        "NamesShort: [\'Oca\', \'Şub\', \'Mar\', \'Nis\', \'May\', \'Haz\',\r\n                \'Tem\', \'" +
-                        "Ağu\', \'Eyl\', \'Eki\', \'Kas\', \'Ara\'],\r\n            onSelect: function () {\r\n       " +
-                        "         CalculateFullDateTimeDiff();\r\n            }\r\n        });\r\n\r\n        $(\'" +
-                        "#BitisTarihiTxt\').datepicker({\r\n            dateFormat: \'dd.mm.yy\',\r\n           " +
-                        " changeMonth: true,\r\n            changeYear: true,\r\n            firstDay: 1, // " +
-                        "Haftayı Pazartesi başlat\r\n            dayNamesMin: [\'Paz\', \'Pts\', \'Sal\', \'Çar\', " +
-                        "\'Per\', \'Cum\', \'Cts\'],\r\n            monthNames: [\'Ocak\', \'Şubat\', \'Mart\', \'Nisan\'" +
-                        ", \'Mayıs\', \'Haziran\',\r\n                \'Temmuz\', \'Ağustos\', \'Eylül\', \'Ekim\', \'Ka" +
-                        "sım\', \'Aralık\'],\r\n            monthNamesShort: [\'Oca\', \'Şub\', \'Mar\', \'Nis\', \'May" +
-                        "\', \'Haz\',\r\n                \'Tem\', \'Ağu\', \'Eyl\', \'Eki\', \'Kas\', \'Ara\'],\r\n         " +
-                        "   onSelect: function () {\r\n                CalculateFullDateTimeDiff();\r\n      " +
-                        "      }\r\n        });\r\n    });\r\n    function RegisterDDLChangeHandlers() {\r\n     " +
-                        "   $(\'#BasSaatDDL, #BitSaatDDL, #BaslangicTarihiTxt, #BitisTarihiTxt\').off(\'chan" +
-                        "ge\').on(\'change\', function () {\r\n            CalculateFullDateTimeDiff();\r\n     " +
-                        "   });\r\n    }\r\n    $(document).ready(function () {\r\n\r\n        // Sayfa yüklendiğ" +
-                        "inde tarih ve saat farkını hesapla\r\n\r\n        CalculateFullDateTimeDiff();\r\n\r\n\r\n" +
-                        "        RegisterDDLChangeHandlers();\r\n\r\n        if (typeof Sys !== \'undefined\') " +
-                        "{\r\n            Sys.WebForms.PageRequestManager.getInstance().add_endRequest(func" +
-                        "tion () {\r\n                RegisterDDLChangeHandlers(); // UpdatePanel sonrası y" +
-                        "eniden bağlanır\r\n            });\r\n        }\r\n        ////tarih saat doluysa Harc" +
-                        "ırah butonunu görünür olsun\r\n        //if ($(\'#BaslangicTarihiTxt\').val() != \"\" " +
-                        "&& $(\'#BitisTarihiTxt\').val() != \"\" && $(\'#BasSaatDDL\').val() != \"\" && $(\'#BitSa" +
-                        "atDDL\').val() != \"\") {\r\n        //    /*$(\'#HarcirahHesaplaDiv\').show();*/\r\n    " +
-                        "    //    document.getElementById(\'HarcirahHesaplaDiv\').style.display = \"block\";" +
-                        "\r\n        //} else {\r\n        //    /*$(\'#HarcirahHesaplaDiv\').hide();*/\r\n      " +
-                        "  //    document.getElementById(\'HarcirahHesaplaDiv\').style.display = \"none\";\r\n " +
-                        "       //}\r\n    });\r\n\r\n    //var prm = Sys.WebForms.PageRequestManager.getInstan" +
-                        "ce();\r\n    //if (prm != null) {\r\n    //    prm.add_endRequest(function (sender, " +
-                        "e) {\r\n    //        if (sender._postBackSettings.panelsToUpdate != null) {\r\n\r\n  " +
-                        "  //            CalculateFullDateTimeDiff()\r\n    //        }\r\n    //    });\r\n   " +
-                        " //};\r\n\r\n</script>\r\n<div class=\"container w-75 \">\r\n    "));
             global::System.Web.UI.UpdatePanel @__ctrl1;
             @__ctrl1 = this.@__BuildControlTableUpdatePanel();
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(@__ctrl1);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n</div>\r\n"));
+            @__ctrl.SetRenderMethodDelegate(new System.Web.UI.RenderMethod(this.@__Render__control1));
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private void @__Render__control1(System.Web.UI.HtmlTextWriter @__w, System.Web.UI.Control parameterContainer) {
+            @__w.Write(@"
+
+<style>
+    .disabled-look {
+        background-color: #e9ecef !important; /* Bootstrap'ın disabled rengi */
+        color: #6c757d !important; /* Gri yazı rengi */
+        pointer-events: auto; /* Kullanıcı etkileşimi aktif */
+    }
+</style>
+<script type=""text/javascript"">
+    function OpenModal() {
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
+        myModalInstance.show();
+    }
+
+    function CalculateFullDateTimeDiff() {
+        var startDateStr = $('#BaslangicTarihiTxt').val();
+        var endDateStr = $('#BitisTarihiTxt').val();
+        var startTimeStr = $('#BasSaatDDL').val();
+        var endTimeStr = $('#BitSaatDDL').val();
+
+        if (!startDateStr || !endDateStr || !startTimeStr || !endTimeStr) {
+            return;
+        }
+
+        // ""dd.mm.yyyy"" + ""hh:mm"" -> ""yyyy-mm-ddThh:mm""
+        var startParts = startDateStr.split('.');
+        var endParts = endDateStr.split('.');
+        var startDateTime = new Date(`${startParts[2]}-${startParts[1]}-${startParts[0]}T${startTimeStr}`);
+        var endDateTime = new Date(`${endParts[2]}-${endParts[1]}-${endParts[0]}T${endTimeStr}`);
+
+        var diffMs = endDateTime - startDateTime;
+        if (diffMs < 0) {
+            $('#SureGunTxt').val(""0"");
+            $('#SureSaatTxt').val(""0"");
+            $('#SureDakikaTxt').val(""0"");
+            // SaveBtn görünmez olsun
+            var saveBtnId = '");
+                     @__w.Write( SaveBtn.ClientID );
+
+            @__w.Write("\';\n            $(\'#\' + saveBtnId).hide();\r\n            return;\r\n        }\r\n      " +
+                    "  // SaveBtn görünür olsun\r\n        var saveBtnId = \'");
+                 @__w.Write( SaveBtn.ClientID );
+
+            @__w.Write("\';\n        $(\'#\' + saveBtnId).show();\r\n        var diffMins = Math.floor(diffMs /" +
+                    " (1000 * 60));\r\n        var days = Math.floor(diffMins / (60 * 24));\r\n        va" +
+                    "r hours = Math.floor((diffMins % (60 * 24)) / 60);\r\n        var minutes = diffMi" +
+                    "ns % 60;\r\n\r\n        $(\'#SureGunTxt\').val(days);\r\n        $(\'#SureSaatTxt\').val(h" +
+                    "ours);\r\n        $(\'#SureDakikaTxt\').val(minutes);\r\n        $(\'#SureSaatDakikaTxt" +
+                    "\').val(hours + \' Saat \' + minutes + \' Dakika\');\r\n        $(\'#SureGunStrTxt\').val" +
+                    "(days + \" Gün \");\r\n        __doPostBack(\'BaslangicTarihiTxt\', \'\');\r\n        __do" +
+                    "PostBack(\'BitisTarihiTxt\', \'\');\r\n        __doPostBack(\'BasSaatDDL\', \'\');\r\n      " +
+                    "  __doPostBack(\'BitSaatDDL\', \'\');\r\n    }\r\n\r\n    // Sayfa yüklendiğinde VEYA Upda" +
+                    "tePanel sonrası çalışır\r\n    Sys.Application.add_load(function () {\r\n        $(\'" +
+                    "#BaslangicTarihiTxt\').datepicker({\r\n            dateFormat: \'dd.mm.yy\',\r\n       " +
+                    "     changeMonth: true,\r\n            changeYear: true,\r\n            firstDay: 1," +
+                    " // Haftayı Pazartesi başlat\r\n            dayNamesMin: [\'Paz\', \'Pts\', \'Sal\', \'Ça" +
+                    "r\', \'Per\', \'Cum\', \'Cts\'],\r\n            monthNames: [\'Ocak\', \'Şubat\', \'Mart\', \'Ni" +
+                    "san\', \'Mayıs\', \'Haziran\',\r\n                \'Temmuz\', \'Ağustos\', \'Eylül\', \'Ekim\'," +
+                    " \'Kasım\', \'Aralık\'],\r\n            monthNamesShort: [\'Oca\', \'Şub\', \'Mar\', \'Nis\', " +
+                    "\'May\', \'Haz\',\r\n                \'Tem\', \'Ağu\', \'Eyl\', \'Eki\', \'Kas\', \'Ara\'],\r\n     " +
+                    "       onSelect: function () {\r\n                CalculateFullDateTimeDiff();\r\n  " +
+                    "          }\r\n        });\r\n\r\n        $(\'#BitisTarihiTxt\').datepicker({\r\n         " +
+                    "   dateFormat: \'dd.mm.yy\',\r\n            changeMonth: true,\r\n            changeYe" +
+                    "ar: true,\r\n            firstDay: 1, // Haftayı Pazartesi başlat\r\n            day" +
+                    "NamesMin: [\'Paz\', \'Pts\', \'Sal\', \'Çar\', \'Per\', \'Cum\', \'Cts\'],\r\n            monthN" +
+                    "ames: [\'Ocak\', \'Şubat\', \'Mart\', \'Nisan\', \'Mayıs\', \'Haziran\',\r\n                \'T" +
+                    "emmuz\', \'Ağustos\', \'Eylül\', \'Ekim\', \'Kasım\', \'Aralık\'],\r\n            monthNamesS" +
+                    "hort: [\'Oca\', \'Şub\', \'Mar\', \'Nis\', \'May\', \'Haz\',\r\n                \'Tem\', \'Ağu\', " +
+                    "\'Eyl\', \'Eki\', \'Kas\', \'Ara\'],\r\n            onSelect: function () {\r\n             " +
+                    "   CalculateFullDateTimeDiff();\r\n            }\r\n        });\r\n    });\r\n    functi" +
+                    "on RegisterDDLChangeHandlers() {\r\n        $(\'#BasSaatDDL, #BitSaatDDL, #Baslangi" +
+                    "cTarihiTxt, #BitisTarihiTxt\').off(\'change\').on(\'change\', function () {\r\n        " +
+                    "    CalculateFullDateTimeDiff();\r\n        });\r\n    }\r\n    $(document).ready(func" +
+                    "tion () {\r\n\r\n        // Sayfa yüklendiğinde tarih ve saat farkını hesapla\r\n\r\n   " +
+                    "     CalculateFullDateTimeDiff();\r\n\r\n\r\n        RegisterDDLChangeHandlers();\r\n\r\n " +
+                    "       if (typeof Sys !== \'undefined\') {\r\n            Sys.WebForms.PageRequestMa" +
+                    "nager.getInstance().add_endRequest(function () {\r\n                RegisterDDLCha" +
+                    "ngeHandlers(); // UpdatePanel sonrası yeniden bağlanır\r\n            });\r\n       " +
+                    " }\r\n        ////tarih saat doluysa Harcırah butonunu görünür olsun\r\n        //if" +
+                    " ($(\'#BaslangicTarihiTxt\').val() != \"\" && $(\'#BitisTarihiTxt\').val() != \"\" && $(" +
+                    "\'#BasSaatDDL\').val() != \"\" && $(\'#BitSaatDDL\').val() != \"\") {\r\n        //    /*$" +
+                    "(\'#HarcirahHesaplaDiv\').show();*/\r\n        //    document.getElementById(\'Harcir" +
+                    "ahHesaplaDiv\').style.display = \"block\";\r\n        //} else {\r\n        //    /*$(\'" +
+                    "#HarcirahHesaplaDiv\').hide();*/\r\n        //    document.getElementById(\'Harcirah" +
+                    "HesaplaDiv\').style.display = \"none\";\r\n        //}\r\n    });\r\n\r\n    //var prm = Sy" +
+                    "s.WebForms.PageRequestManager.getInstance();\r\n    //if (prm != null) {\r\n    //  " +
+                    "  prm.add_endRequest(function (sender, e) {\r\n    //        if (sender._postBackS" +
+                    "ettings.panelsToUpdate != null) {\r\n\r\n    //            CalculateFullDateTimeDiff" +
+                    "()\r\n    //        }\r\n    //    });\r\n    //};\r\n\r\n</script>\r\n<div class=\"container" +
+                    " w-75 \">\r\n    ");
+            parameterContainer.Controls[0].RenderControl(@__w);
+            @__w.Write("\r\n</div>\r\n");
         }
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +

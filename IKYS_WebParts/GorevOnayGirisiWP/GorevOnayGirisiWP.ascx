@@ -41,9 +41,14 @@
             $('#SureGunTxt').val("0");
             $('#SureSaatTxt').val("0");
             $('#SureDakikaTxt').val("0");
+            // SaveBtn görünmez olsun
+            var saveBtnId = '<%= SaveBtn.ClientID %>';
+            $('#' + saveBtnId).hide();
             return;
         }
-
+        // SaveBtn görünür olsun
+        var saveBtnId = '<%= SaveBtn.ClientID %>';
+        $('#' + saveBtnId).show();
         var diffMins = Math.floor(diffMs / (1000 * 60));
         var days = Math.floor(diffMins / (60 * 24));
         var hours = Math.floor((diffMins % (60 * 24)) / 60);

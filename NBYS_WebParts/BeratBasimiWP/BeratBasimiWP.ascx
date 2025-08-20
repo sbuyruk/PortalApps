@@ -41,7 +41,7 @@
                     <div class="row">
                         <label for="GunDDL" class="col-4 col-form-label text-end ">Gün</label>
                         <div class="col-8">
-                            <asp:DropDownList ID="GunDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="GunDDL_SelectedIndexChanged" AutoPostBack="true" Style="height: auto"></asp:DropDownList>
+                            <asp:DropDownList ID="GunDDL" runat="server" CssClass="form-control form-select form-select-lg fw-bold" OnSelectedIndexChanged="GunDDL_SelectedIndexChanged" AutoPostBack="true" Style="height: auto"></asp:DropDownList>
                         </div>
                     </div>
                 </div>
@@ -49,7 +49,7 @@
                     <div class="row">
                         <label for="AyDDL" class="col-4 col-form-label text-end ">Ay</label>
                         <div class="col-8">
-                            <asp:DropDownList ID="AyDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="AyDDL_SelectedIndexChanged" AutoPostBack="true" Style="height: auto"></asp:DropDownList>
+                            <asp:DropDownList ID="AyDDL" runat="server" CssClass="form-control form-select form-select-lg fw-bold" OnSelectedIndexChanged="AyDDL_SelectedIndexChanged" AutoPostBack="true" Style="height: auto"></asp:DropDownList>
                         </div>
                     </div>
                 </div>
@@ -57,7 +57,7 @@
                     <div class="row">
                         <label for="YilDDL" class="col-4 col-form-label text-end">Yıl</label>
                         <div class="col-8">
-                            <asp:DropDownList ID="YilDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="YilDDL_SelectedIndexChanged" AutoPostBack="true" Style="height: auto"></asp:DropDownList>
+                            <asp:DropDownList ID="YilDDL" runat="server" CssClass="form-control form-select form-select-lg fw-bold" OnSelectedIndexChanged="YilDDL_SelectedIndexChanged" AutoPostBack="true" Style="height: auto"></asp:DropDownList>
                         </div>
                     </div>
                 </div>

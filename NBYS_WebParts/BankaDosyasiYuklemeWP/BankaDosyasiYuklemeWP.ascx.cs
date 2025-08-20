@@ -39,6 +39,8 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
         bool isVakifBankGunlukAktarildi = false;
         bool isVakifBank2Aktarildi = false;
         bool isZiraatAktarildi = false;
+        bool isSMSVakifAktarildi = false;
+        bool isKioskAktarildi = false;
         //bool isZiraatMT940Aktarildi = false;
         bool isZiraatEkstreAktarildi = false;
         bool isTEBAktarildi = false;
@@ -107,7 +109,8 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
                     checkSavedFiles(IslemTarihiTxt.Text.ConvertToDatetime());
                     NextBtn.Visible = (isAkbankAktarildi || isAkbankEkstreAktarildi || isGarantiAktarildi || isGarantiEkstreAktarildi || isHalkBankAktarildi || isHalkbank2Aktarildi || isIsbankAktarildi || isIsbankEkstreAktarildi
                         || isVakifBankAktarildi || isVakifBankGunlukAktarildi || isVakifBank2Aktarildi
-                        || isVakifKatilimAktarildi || isZiraatAktarildi || isZiraatEkstreAktarildi || isZiraatKatilimAktarildi) || isYKBEkstreAktarildi || isEDevletAktarildi; //isZiraatMT940Aktarildi || 
+                        || isVakifKatilimAktarildi || isZiraatAktarildi || isZiraatEkstreAktarildi || isZiraatKatilimAktarildi) || isYKBEkstreAktarildi || isEDevletAktarildi
+                        || isSMSVakifAktarildi || isKioskAktarildi; //isZiraatMT940Aktarildi || 
                 }
 
             }
@@ -132,7 +135,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
             ZiraatLbl.Text = ProjeConstants.BANKA_ZIRAAT;
             //ZiraatMT940Lbl.Text = ProjeConstants.BANKA_ZIRAATMT940;
             ZiraatEkstreLbl.Text = ProjeConstants.BANKA_ZIRAATEKSTRE;
-            VakifbankLbl.Text = ProjeConstants.BANKA_VAKIF;
+            //VakifbankLbl.Text = ProjeConstants.BANKA_VAKIF;
             VakifbankGunlukLbl.Text = ProjeConstants.BANKA_VAKIF;// GUNLUK;
             Vakifbank2Lbl.Text = ProjeConstants.BANKA_VAKIF2;
 
@@ -152,7 +155,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
             EDevletOkLbl.Text = string.Empty;
             ZiraatOkLbl.Text = string.Empty;
             ZiraatEkstreOkLbl.Text = string.Empty;
-            VakifbankOkLbl.Text = string.Empty;
+            //VakifbankOkLbl.Text = string.Empty;
             VakifbankGunlukOkLbl.Text = string.Empty;
             Vakifbank2OkLbl.Text = string.Empty;
             Halkbank2OkLbl.Text = string.Empty;
@@ -209,7 +212,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
             isIsbankEkstreAktarildi = ekstreAktarma.CheckIsExistByBankaAdiAndIslemTarihi(ProjeConstants.BANKA_ISBANKEKSTRE, islemTarihi);
             if (isIsbankEkstreAktarildi)
             {
-                IsbankEkstrebankFU.Enabled = false;
+                IsbankEkstreFU.Enabled = false;
                 IsbankEkstreOkLbl.Text = "  " + ((char)0x221A).ToString();
             }
             isYKBEkstreAktarildi = ekstreAktarma.CheckIsExistByBankaAdiAndIslemTarihi(ProjeConstants.BANKA_YKBEKSTRE, islemTarihi);
@@ -218,12 +221,12 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
                 YKBEkstreFU.Enabled = false;
                 YKBEkstreOkLbl.Text = "  " + ((char)0x221A).ToString();
             }
-            isVakifBankAktarildi = ekstreAktarma.CheckIsExistByBankaAdiAndIslemTarihi(ProjeConstants.BANKA_VAKIF, islemTarihi);
-            if (isVakifBankAktarildi)
-            {
-                VakifbankFU.Enabled = false;
-                VakifbankOkLbl.Text = "  " + ((char)0x221A).ToString();
-            }
+            //isVakifBankAktarildi = ekstreAktarma.CheckIsExistByBankaAdiAndIslemTarihi(ProjeConstants.BANKA_VAKIF, islemTarihi);
+            //if (isVakifBankAktarildi)
+            //{
+            //    VakifbankFU.Enabled = false;
+            //    VakifbankOkLbl.Text = "  " + ((char)0x221A).ToString();
+            //}
             isVakifBankGunlukAktarildi = ekstreAktarma.CheckIsExistByBankaAdiAndIslemTarihi(ProjeConstants.BANKA_VAKIF, islemTarihi);//GUNLUK
             if (isVakifBankGunlukAktarildi)
             {
@@ -281,6 +284,19 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
                 EDevletFU.Enabled = false;
                 EDevletOkLbl.Text = "  " + ((char)0x221A).ToString();
             }
+            isSMSVakifAktarildi = ekstreAktarma.CheckIsExistByBankaAdiAndIslemTarihi(ProjeConstants.BANKA_SMSVAKIF, islemTarihi);
+            if (isSMSVakifAktarildi)
+            {
+                SMSVakifFU.Enabled = false;
+                SMSVakifOkLbl.Text = "  " + ((char)0x221A).ToString();
+            }
+            isKioskAktarildi = ekstreAktarma.CheckIsExistByBankaAdiAndIslemTarihi(ProjeConstants.BANKA_KIOSK, islemTarihi);
+            if (isEDevletAktarildi)
+            {
+                KioskFU.Enabled = false;
+                KioskOkLbl.Text = "  " + ((char)0x221A).ToString();
+            }
+           
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
@@ -315,15 +331,18 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
                 ZiraatEkstreSave();
                 TEBSave();
                 ZiraatKatilimSave();
-                VakifbankSave();
+                //VakifbankSave();
                 VakifbankGunlukSaveTxt();
                 Vakifbank2Save();
                 VakifKatilimSave();
                 EDevletSave();
+                KioskSave();
+                SMSVakifSave();
                 checkSavedFiles(IslemTarihiTxt.Text.ConvertToDatetime());
                 NextBtn.Visible = (isAkbankAktarildi || isGarantiAktarildi || isGarantiEkstreAktarildi || isHalkBankAktarildi || isIsbankAktarildi || isIsbankEkstreAktarildi | isYKBEkstreAktarildi
                     || isVakifBankAktarildi || isVakifBankGunlukAktarildi || isVakifBank2Aktarildi || isTEBAktarildi
-                    || isHalkbank2Aktarildi || isVakifKatilimAktarildi || isZiraatAktarildi || isZiraatEkstreAktarildi || isZiraatKatilimAktarildi || isEDevletAktarildi);
+                    || isHalkbank2Aktarildi || isVakifKatilimAktarildi || isZiraatAktarildi || isZiraatEkstreAktarildi || isZiraatKatilimAktarildi || isEDevletAktarildi
+                    || isSMSVakifAktarildi || isKioskAktarildi);
 
             }
             catch (Exception ex)
@@ -517,20 +536,20 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
         }
         private void IsbankEkstreSave()
         {
-            if (!isIsbankEkstreAktarildi && IsbankEkstrebankFU.HasFile)
+            if (!isIsbankEkstreAktarildi && IsbankEkstreFU.HasFile)
             {
-                var exceptionHelper = EkstreAktarma.SaveIsBankEkstreFile(IsbankEkstrebankFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
+                var exceptionHelper = EkstreAktarma.SaveIsBankEkstreFile(IsbankEkstreFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
 
                 if (exceptionHelper.Exceptions.Count > 0)
                 {
-                    IsbankEkstrebankFU.Enabled = true;
+                    IsbankEkstreFU.Enabled = true;
                     IsbankEkstreOkLbl.ForeColor = System.Drawing.Color.Red;
                     IsbankEkstreOkLbl.Text = "X";
                     exceptionHelper.PublishException();
                 }
                 else
                 {
-                    IsbankEkstrebankFU.Enabled = false;
+                    IsbankEkstreFU.Enabled = false;
                     IsbankEkstreOkLbl.ForeColor = System.Drawing.Color.Green;
                     IsbankEkstreOkLbl.Text = "  " + ((char)0x221A).ToString();
                 }
@@ -557,26 +576,26 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
                 }
             }
         }
-        private void VakifbankSave()
-        {
-            if (!isVakifBankAktarildi && VakifbankFU.HasFile)
-            {
-                var exceptionHelper = EkstreAktarma.SaveVakifBankFile(VakifbankFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
-                if (exceptionHelper.Exceptions.Count > 0)
-                {
-                    VakifbankFU.Enabled = true;
-                    VakifbankOkLbl.ForeColor = System.Drawing.Color.Red;
-                    VakifbankOkLbl.Text = "X";
-                    exceptionHelper.PublishException();
-                }
-                else
-                {
-                    VakifbankFU.Enabled = false;
-                    VakifbankOkLbl.ForeColor = System.Drawing.Color.Green;
-                    VakifbankOkLbl.Text = "  " + ((char)0x221A).ToString();
-                }
-            }
-        }
+        //private void VakifbankSave()
+        //{
+        //    if (!isVakifBankAktarildi && VakifbankFU.HasFile)
+        //    {
+        //        var exceptionHelper = EkstreAktarma.SaveVakifBankFile(VakifbankFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
+        //        if (exceptionHelper.Exceptions.Count > 0)
+        //        {
+        //            VakifbankFU.Enabled = true;
+        //            VakifbankOkLbl.ForeColor = System.Drawing.Color.Red;
+        //            VakifbankOkLbl.Text = "X";
+        //            exceptionHelper.PublishException();
+        //        }
+        //        else
+        //        {
+        //            VakifbankFU.Enabled = false;
+        //            VakifbankOkLbl.ForeColor = System.Drawing.Color.Green;
+        //            VakifbankOkLbl.Text = "  " + ((char)0x221A).ToString();
+        //        }
+        //    }
+        //}
         private void VakifbankGunlukSaveTxt()
         {
             if (!isVakifBankGunlukAktarildi && VakifbankGunlukFU.HasFile)
@@ -737,6 +756,48 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
                     EDevletFU.Enabled = false;
                     EDevletOkLbl.ForeColor = System.Drawing.Color.Green;
                     EDevletOkLbl.Text = "  " + ((char)0x221A).ToString();
+                }
+            }
+        }
+        private void KioskSave()
+        {
+            if (!isKioskAktarildi && KioskFU.HasFile)
+            {
+                var exceptionHelper = EkstreAktarma.SaveKioskFile(KioskFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
+
+                if (exceptionHelper.Exceptions.Count > 0)
+                {
+                    KioskFU.Enabled = true;
+                    KioskOkLbl.ForeColor = System.Drawing.Color.Red;
+                    KioskOkLbl.Text = "X";
+                    exceptionHelper.PublishException();
+                }
+                else
+                {
+                    KioskFU.Enabled = false;
+                    KioskOkLbl.ForeColor = System.Drawing.Color.Green;
+                    KioskOkLbl.Text = "  " + ((char)0x221A).ToString();
+                }
+            }
+        }
+        private void SMSVakifSave()
+        {
+            if (!isSMSVakifAktarildi && SMSVakifFU.HasFile)
+            {
+                var exceptionHelper = EkstreAktarma.SaveSMSVakifFile(SMSVakifFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
+
+                if (exceptionHelper.Exceptions.Count > 0)
+                {
+                    SMSVakifFU.Enabled = true;
+                    SMSVakifOkLbl.ForeColor = System.Drawing.Color.Red;
+                    SMSVakifOkLbl.Text = "X";
+                    exceptionHelper.PublishException();
+                }
+                else
+                {
+                    SMSVakifFU.Enabled = false;
+                    SMSVakifOkLbl.ForeColor = System.Drawing.Color.Green;
+                    SMSVakifOkLbl.Text = "  " + ((char)0x221A).ToString();
                 }
             }
         }
