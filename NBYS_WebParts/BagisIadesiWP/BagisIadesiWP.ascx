@@ -73,6 +73,14 @@
         <div class="card-header ">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-1">
+                <a class=" btn btn-outline-primary float-end me-4" runat="server" id="YonergeLnk"
+                    data-fancybox
+                    data-type="pdf"
+                    data-width="960"
+                    data-height="720"
+                    href="">
+                    <i class="fa fa-book" aria-hidden="true"></i>
+                </a>
                 <asp:Label CssClass="col-form-label bagis-text-color" runat="server" Text="Bağış İadesi"></asp:Label>
             </h3>
         </div>
@@ -88,7 +96,7 @@
                     <label class="col-form-label m-1" for="BagisAraTxt">Aranacak sözcük :</label>
                     <asp:TextBox ID="BagisAraTxt" runat="server" CssClass="form-control m-1" AutoPostBack="true" OnTextChanged="BagisAraTxt_TextChanged" ToolTip="Ad,TCKimlikNo,Telefon veya Adres yazarak arayabilirsiniz" />
                     <asp:LinkButton CssClass="btn bagis-color m-1" ID="AraBtn" runat="server" CausesValidation="false" Text="Ara" OnClientClick="{return true;};" OnClick="AraBtn_Click" />
-                    <asp:Label CssClass="btn text-danger m-1" ID="UyariLbl" runat="server" Text=" * Yalnızca son 5 yıl içinde yapılan bağışlar iade edilebilir." />
+                    <asp:Label CssClass="btn text-danger m-1" ID="UyariLbl" runat="server" Text=" * Yalnızca son 1 ay içinde yapılan bağışlar iade edilebilir." />
                 </div>
             </div>
             <div class="form-group border bagis-border-color" id="BagisciSecTableDiv" runat="server">

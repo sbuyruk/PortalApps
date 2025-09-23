@@ -293,8 +293,8 @@
                         <table id="DereceKademeDataTable" class="table table-striped row-border" width="100%">
                             <thead>
                                 <tr>
-                                    <th>Değişiklik</th>
                                     <th>Değişim Tarihi</th>
+                                    <th>Değişiklik</th>
                                     <th>Derece</th>
                                     <th>Kademe</th>
                                     <th>Açıklama</th>

@@ -49,16 +49,24 @@
     }
 </script>
 
-<div class="container col-xl">
+<div class="col-xl">
     <asp:UpdatePanel runat="server" ID="UpdatePanel2" UpdateMode="Conditional">
         <ContentTemplate>
             <div class="card shadow">
                 <div class="card-header ">
                     <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
                     <h3 class="mb-1">
-                        <asp:Label CssClass="col-form-label text-info fw-bold mb-1" ID="TitleLbl" runat="server" Text="Armağan Listesi"></asp:Label>
-                        <asp:Label ID="IdLbl" runat="server" CssClass="col-form-label text-white" Visible="false"></asp:Label>
-                        <asp:Label ID="AdiLbl" runat="server" CssClass="col-form-label"></asp:Label>
+                        <a class=" btn btn-outline-primary float-end me-4" runat="server" id="YonergeLnk"
+                            data-fancybox
+                            data-type="pdf"
+                            data-width="960"
+                            data-height="720"
+                            href="">
+                            <i class="fa fa-book" aria-hidden="true"></i>
+                        </a>
+                        <asp:Label CssClass="form-label text-info fw-bold mb-1" ID="TitleLbl" runat="server" Text="Armağan Listesi"></asp:Label>
+                        <asp:Label ID="IdLbl" runat="server" CssClass="form-label text-white" Visible="false"></asp:Label>
+                        <asp:Label ID="AdiLbl" runat="server" CssClass="form-label"></asp:Label>
                     </h3>
                 </div>
                 <div class="card-body">
@@ -67,29 +75,25 @@
                         <asp:LinkButton ID="IadeEdildiYapBtn" runat="server" OnClientClick="{return true;};" OnClick="IadeEdildiYapBtn_Click"></asp:LinkButton>
                     </div>
                     <div class="row m-2 ">
-                        <div class="form-group col" style="display: block">
-                            <label class="col-form-label" for="GunDDL">Gün </label>
-                            <asp:DropDownList ID="GunDDL" runat="server" CssClass="form-control" AutoPostBack="True" OnSelectedIndexChanged="GunDDL_SelectedIndexChanged" Style="height: auto" />
+                        <div class="form-group col">
+                            <label class="form-label" for="AyDDL">Ay </label>
+                            <asp:DropDownList ID="AyDDL" runat="server" CssClass="form-control form-select form-select-lg fw-bold" AutoPostBack="True" OnSelectedIndexChanged="AyDDL_SelectedIndexChanged" Style="height: auto" />
                         </div>
                         <div class="form-group col">
-                            <label class="col-form-label" for="AyDDL">Ay </label>
-                            <asp:DropDownList ID="AyDDL" runat="server" CssClass="form-control" AutoPostBack="True" OnSelectedIndexChanged="AyDDL_SelectedIndexChanged" Style="height: auto" />
+                            <label class="form-label" for="YilDDL">Yıl </label>
+                            <asp:DropDownList ID="YilDDL" runat="server" CssClass="form-control form-select form-select-lg fw-bold" AutoPostBack="True" OnSelectedIndexChanged="YilDDL_SelectedIndexChanged" Style="height: auto" />
                         </div>
                         <div class="form-group col">
-                            <label class="col-form-label" for="YilDDL">Yıl </label>
-                            <asp:DropDownList ID="YilDDL" runat="server" CssClass="form-control" AutoPostBack="True" OnSelectedIndexChanged="YilDDL_SelectedIndexChanged" Style="height: auto" />
+                            <label class="form-label" for="ArmaganDDL">Armağan </label>
+                            <asp:DropDownList ID="ArmaganDDL" runat="server" CssClass="form-control form-select form-select-lg fw-bold" AutoPostBack="True" OnSelectedIndexChanged="ArmaganDDL_SelectedIndexChanged" Style="height: auto" />
                         </div>
                         <div class="form-group col">
-                            <label class="col-form-label" for="ArmaganDDL">Armağan </label>
-                            <asp:DropDownList ID="ArmaganDDL" runat="server" CssClass="form-control" AutoPostBack="True" OnSelectedIndexChanged="ArmaganDDL_SelectedIndexChanged" Style="height: auto" />
+                            <label class="form-label" for="DurumDDL">Durum </label>
+                            <asp:DropDownList ID="DurumDDL" runat="server" CssClass="form-control form-select form-select-lg fw-bold" AutoPostBack="True" OnSelectedIndexChanged="DurumDDL_SelectedIndexChanged" Style="height: auto" />
                         </div>
                         <div class="form-group col">
-                            <label class="col-form-label" for="DurumDDL">Durum </label>
-                            <asp:DropDownList ID="DurumDDL" runat="server" CssClass="form-control" AutoPostBack="True" OnSelectedIndexChanged="DurumDDL_SelectedIndexChanged" Style="height: auto" />
-                        </div>
-                        <div class="form-group col">
-                            <label class="col-form-label" for="IliDDL">İl </label>
-                            <asp:DropDownList ID="IliDDL" runat="server" CssClass="form-control" AutoPostBack="True" OnSelectedIndexChanged="IliDDL_SelectedIndexChanged" Style="height: auto" />
+                            <label class="form-label" for="IliDDL">İl </label>
+                            <asp:DropDownList ID="IliDDL" runat="server" CssClass="form-control form-select form-select-lg fw-bold" AutoPostBack="True" OnSelectedIndexChanged="IliDDL_SelectedIndexChanged" Style="height: auto" />
                         </div>
 
                     </div>
@@ -104,6 +108,7 @@
                                     <th>Tarih</th>
                                     <th>Armağan</th>
                                     <th>Durumu</th>
+                                    <th>Çoklu Bağış</th>
                                     <th>Düzenle</th>
                                     <th>İade</th>
                                 </tr>
@@ -159,12 +164,21 @@
                         <div>
                             <h3>
                                 <br />
-                                <asp:Label ID="ArmaganLbl" runat="server" Text="Armağana Ait Bağışlar" Font-Bold="True"></asp:Label>
+                                <asp:Label ID="BagisBilgileriLbl" runat="server" Text="Bağışçının Yaptığı Nakit Bağışlar" Font-Bold="True"></asp:Label>
                             </h3>
                         </div>
-                        <div class="text-center">
-                            <asp:Table CssClass="table text-center table-bordered table-striped" ID="ModalArmaganTable" runat="server">
-                            </asp:Table>
+                        <div class="form-group">
+                            <table id="CustomModalDataTable" class="table table-bordered table-striped" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>Bağış Tarihi</th>
+                                        <th>Bağış Miktarı</th>
+                                        <th>Armağan</th>
+                                        <th>Armağan Tutarı</th>
+                                        <th>Açıklama</th>
+                                    </tr>
+                                </thead>
+                            </table>
                         </div>
                     </div>
                     <div class="modal-footer">

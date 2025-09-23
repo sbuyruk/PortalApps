@@ -1432,9 +1432,10 @@ namespace IKYS_WebParts.KisiselSayfaWP
                         { data: 'Aciklama' }
                     ],
                     columnDefs: [
-                        { type: 'turkish', targets: [0, 1] }
+                        { type: 'date', targets: 0 }, // DegisimTarihi kolonunu tarih olarak tanımla
+                        { type: 'turkish', targets: [1] }
                     ],
-                    'order': [[4, 'desc']],//sort date desc
+                    'order': [[0, 'desc']], // DegisimTarihi'ne göre azalan sıralama
                     'language': {
                         'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                         'decimal': ',',

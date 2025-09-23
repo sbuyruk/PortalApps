@@ -190,7 +190,7 @@ namespace NBYS_WebParts.BagisHareketListesiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "AyDDL";
-            @__ctrl.CssClass = "form-control";
+            @__ctrl.CssClass = "form-control form-select form-select-lg fw-bold";
             @__ctrl.AutoPostBack = true;
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "height:auto");
             @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.AyDDL_SelectedIndexChanged);
@@ -208,7 +208,7 @@ namespace NBYS_WebParts.BagisHareketListesiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "YilDDL";
-            @__ctrl.CssClass = "form-control";
+            @__ctrl.CssClass = "form-control form-select form-select-lg fw-bold";
             @__ctrl.AutoPostBack = true;
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "height:auto");
             @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.YilDDL_SelectedIndexChanged);
@@ -226,7 +226,7 @@ namespace NBYS_WebParts.BagisHareketListesiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "IliDDL";
-            @__ctrl.CssClass = "form-control";
+            @__ctrl.CssClass = "form-control form-select form-select-lg fw-bold";
             @__ctrl.AutoPostBack = true;
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "height:auto");
             @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.IliDDL_SelectedIndexChanged);
@@ -266,19 +266,19 @@ namespace NBYS_WebParts.BagisHareketListesiWP {
             @__parser.AddParsedSubObject(@__ctrl1);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"form-group " +
                         "col\">\r\n                            <label for=\"YilDDL\" class=\"col-form-label tex" +
-                        "t-right\">Yıl</label>\r\n                            "));
+                        "t-end\">Yıl</label>\r\n                            "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl2;
             @__ctrl2 = this.@__BuildControlYilDDL();
             @__parser.AddParsedSubObject(@__ctrl2);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"form-group " +
                         "col\">\r\n                            <label for=\"IlilDDL\" class=\"col-form-label te" +
-                        "xt-right\">İl</label>\r\n                            "));
+                        "xt-end\">İl</label>\r\n                            "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl3;
             @__ctrl3 = this.@__BuildControlIliDDL();
             @__parser.AddParsedSubObject(@__ctrl3);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"form-group " +
-                        "col\">\r\n                            <div class=\"float-end\">\r\n                  " +
-                        "              "));
+                        "col\">\r\n                            <div class=\"float-end\">\r\n                    " +
+                        "            "));
             global::System.Web.UI.WebControls.Label @__ctrl4;
             @__ctrl4 = this.@__BuildControlRowCountLbl();
             @__parser.AddParsedSubObject(@__ctrl4);

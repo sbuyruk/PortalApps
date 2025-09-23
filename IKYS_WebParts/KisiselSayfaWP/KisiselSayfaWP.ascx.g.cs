@@ -2220,8 +2220,8 @@ namespace IKYS_WebParts.KisiselSayfaWP {
                         "s=\"collapse\" id=\"DereceKademeDiv\">\r\n                    <div class=\"form-group\">" +
                         "\r\n                        <table id=\"DereceKademeDataTable\" class=\"table table-s" +
                         "triped row-border\" width=\"100%\">\r\n                            <thead>\r\n         " +
-                        "                       <tr>\r\n                                    <th>Değişiklik<" +
-                        "/th>\r\n                                    <th>Değişim Tarihi</th>\r\n             " +
+                        "                       <tr>\r\n                                    <th>Değişim Tar" +
+                        "ihi</th>\r\n                                    <th>Değişiklik</th>\r\n             " +
                         "                       <th>Derece</th>\r\n                                    <th>" +
                         "Kademe</th>\r\n                                    <th>Açıklama</th>\r\n            " +
                         "                    </tr>\r\n                            </thead>\r\n               " +

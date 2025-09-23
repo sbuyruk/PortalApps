@@ -254,6 +254,7 @@ namespace Utility.ProjeGlobal
         public const string PAGE_KIRACI_ESLESTIR = "KiraciEslestir.aspx";
         public const string PAGE_ODEMEYI_KIRA_TEMINAT_AYRISTIR = "OdemeAyristirma.aspx";
         public const string PAGE_COKDEFABAGISYAPAN_LIST = "CokDefaBagisYapanBagisciListesi.aspx";
+        public const string PAGE_ARMAGANOLUSTURMA = "ArmaganOlusturma.aspx";
         //IKYS
         public const string PAGE_PERSONEL_LIST = "PersonelListesi.aspx";
         public const string PAGE_ESKIPERSONEL_LIST = "EskiPersonelListesi.aspx";
@@ -629,6 +630,13 @@ namespace Utility.ProjeGlobal
         public const string IMAGE_PATH_AKBANKOK = "/" + IMAGE_PATH + "/akbankok.png";
         public const string IMAGE_PATH_AKBANKNOTOK = "/" + IMAGE_PATH + "/akbanknotok.png";
 
+        //Finansbank
+        public const string BANKA_FINANSBANK = "Finansbank";
+        public const string BANKA_FINANSBANKEKSTRE = "Finansbank (Ekstre)";
+
+        public const int BANKA_FINANSBANKEKSTRE_ILKKACSATIRHARIC = 12;
+        public const int BANKA_FINANSBANKEKSTRE_SONKACSATIRHARIC = 4;
+        public const string IMAGE_PATH_FINANSBANK = "/" + IMAGE_PATH + "/finansbank.png";
         //Garanti
         public const string BANKA_GARANTI = "Garanti Bankası";
         public const string BANKA_GARANTIEKSTRE = "Garanti Bankası (Ekstre)";

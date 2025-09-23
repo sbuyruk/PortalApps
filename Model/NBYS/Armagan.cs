@@ -26,6 +26,7 @@ namespace Model.NBYS
         public decimal ArmaganBagisMiktari { get; set; }
         public decimal IadeMiktari { get; set; }
         public bool BagisMiktariYazmasin { get; set; }
+        public bool CokluBagis { get; set; }
         public override T Select<T>(int id)
         {
             string sqlString = string.Format(@"SELECT *
@@ -415,7 +416,7 @@ namespace Model.NBYS
                     ,FORMAT(A.BagisMiktari, 'N2', 'tr-TR') ArmaganTutari
                     ,A.Durum
                     ,ISNULL(BelgedeYazanIsim, '') BelgedeYazanIsim
-                    ,A.BelgeGecersizMi, A.IadeMiktari, A.DovizCinsi,A.BagisMiktariYazmasin
+                    ,A.BelgeGecersizMi, A.IadeMiktari, A.DovizCinsi,A.BagisMiktariYazmasin, IIF(A.CokluBagis=1,'Çoklu Bağış','Bağış') CokluBagis
                 FROM Armagan_Table A
                     INNER JOIN NakitBagisci_Table B ON B.Id=A.BagisciId
                     LEFT OUTER JOIN ArmaganTanim_Table D ON D.Id=A.ArmaganTanimId
@@ -523,5 +524,35 @@ namespace Model.NBYS
             return json;
         }
 
+        public DataTable SelectVerilenArmaganlarGroupByBagisciReturnList()
+        {
+            //Armagan_Table'dan CoklıNagis=true olan kayıtları seç
+            string sqlString = string.Format(@"
+                SELECT A.BagisciId,B.Adi, B.Soyadi, D.Armagan, COUNT(C.Id) BagisAdedi, SUM(C.BagisMiktari) ToplamBagis,A.Tarih
+                FROM Armagan_Table A
+                INNER JOIN NakitBagisci_Table B ON A.BagisciId = B.Id
+                INNER JOIN NakitBagisHareket_Table C ON C.ArmaganId = A.Id
+                INNER JOIN ArmaganTanim_Table D ON D.Id = A.ArmaganTanimId
+
+                WHERE A.BelgeGecersizMi!=1 AND A.CokluBagis=1
+                GROUP BY A.BagisciId, B.Adi, B.Soyadi, C.ArmaganId,A.Tarih,D.Armagan
+                ORDER BY Tarih DESC");
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            return dataTable;
+
+        }
+
+        public Armagan SelectByBagisciIdAndArmaganTanimId(int nakitBagisciId, int armaganTanimId)
+        {
+
+            string sqlString = string.Format(@"SELECT * from Armagan_Table
+                              WHERE BelgeGecersizMi!=1 AND BagisciId={0} AND ArmaganTanimId={1} ",
+                           nakitBagisciId.ReturnQuotedValue(), armaganTanimId.ReturnQuotedValue());
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            List<Armagan> list = ToList<Armagan>(dataTable);
+            Armagan armagan = new Armagan();
+            armagan = list.FirstOrDefault();
+            return armagan;
+        }
     }
 }

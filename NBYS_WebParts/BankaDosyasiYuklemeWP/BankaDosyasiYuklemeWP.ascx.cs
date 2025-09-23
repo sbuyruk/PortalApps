@@ -28,6 +28,8 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
         }
         bool isAkbankAktarildi = false;
         bool isAkbankEkstreAktarildi = false;
+        bool isFinansbankAktarildi = false;
+        bool isFinansbankEkstreAktarildi = false;
         bool isGarantiAktarildi = false;
         bool isGarantiEkstreAktarildi = false;
         bool isHalkBankAktarildi = false;
@@ -107,9 +109,12 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
                         IslemTarihiTxt.Text = today.ToString(ProjeConstants.DATE_TR);
                     }
                     checkSavedFiles(IslemTarihiTxt.Text.ConvertToDatetime());
-                    NextBtn.Visible = (isAkbankAktarildi || isAkbankEkstreAktarildi || isGarantiAktarildi || isGarantiEkstreAktarildi || isHalkBankAktarildi || isHalkbank2Aktarildi || isIsbankAktarildi || isIsbankEkstreAktarildi
+                    NextBtn.Visible = (isAkbankAktarildi || isAkbankEkstreAktarildi ||isFinansbankAktarildi || isFinansbankEkstreAktarildi
+                        || isGarantiAktarildi || isGarantiEkstreAktarildi || isHalkBankAktarildi || isHalkbank2Aktarildi 
+                        || isIsbankAktarildi || isIsbankEkstreAktarildi
                         || isVakifBankAktarildi || isVakifBankGunlukAktarildi || isVakifBank2Aktarildi
-                        || isVakifKatilimAktarildi || isZiraatAktarildi || isZiraatEkstreAktarildi || isZiraatKatilimAktarildi) || isYKBEkstreAktarildi || isEDevletAktarildi
+                        || isVakifKatilimAktarildi || isTEBAktarildi 
+                        || isZiraatAktarildi || isZiraatEkstreAktarildi || isZiraatKatilimAktarildi) || isYKBEkstreAktarildi || isEDevletAktarildi
                         || isSMSVakifAktarildi || isKioskAktarildi; //isZiraatMT940Aktarildi || 
                 }
 
@@ -125,6 +130,8 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
         {
             AkbankLbl.Text = ProjeConstants.BANKA_AKBANK;
             AkbankEkstreLbl.Text = ProjeConstants.BANKA_AKBANKEKSTRE;
+            FinansbankLbl.Text = ProjeConstants.BANKA_FINANSBANK;
+            FinansbankEkstreLbl.Text = ProjeConstants.BANKA_FINANSBANKEKSTRE;
             GarantiLbl.Text = ProjeConstants.BANKA_GARANTI;
             GarantiEkstreLbl.Text = ProjeConstants.BANKA_GARANTIEKSTRE;
             HalkbankLbl.Text = ProjeConstants.BANKA_HALKBANK;
@@ -146,6 +153,8 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
 
             AkbankOkLbl.Text = string.Empty;
             AkbankEkstreOkLbl.Text = string.Empty;
+            FinansbankOkLbl.Text = string.Empty;
+            FinansbankEkstreOkLbl.Text = string.Empty;
             GarantiOkLbl.Text = string.Empty;
             GarantiEkstreOkLbl.Text = string.Empty;
             HalkbankOkLbl.Text = string.Empty;
@@ -171,6 +180,12 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
             {
                 AkbankFU.Enabled = false;
                 AkbankOkLbl.Text = "  " + ((char)0x221A).ToString();
+            }
+            isFinansbankAktarildi = ekstreAktarma.CheckIsExistByBankaAdiAndIslemTarihi(ProjeConstants.BANKA_FINANSBANK, islemTarihi);
+            if (isFinansbankAktarildi)
+            {
+                FinansbankFU.Enabled = false;
+                FinansbankOkLbl.Text = "  " + ((char)0x221A).ToString();
             }
             isAkbankEkstreAktarildi = ekstreAktarma.CheckIsExistByBankaAdiAndIslemTarihi(ProjeConstants.BANKA_AKBANKEKSTRE, islemTarihi);
             if (isAkbankEkstreAktarildi)
@@ -291,7 +306,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
                 SMSVakifOkLbl.Text = "  " + ((char)0x221A).ToString();
             }
             isKioskAktarildi = ekstreAktarma.CheckIsExistByBankaAdiAndIslemTarihi(ProjeConstants.BANKA_KIOSK, islemTarihi);
-            if (isEDevletAktarildi)
+            if (isKioskAktarildi)
             {
                 KioskFU.Enabled = false;
                 KioskOkLbl.Text = "  " + ((char)0x221A).ToString();
@@ -319,6 +334,8 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
             {
                 AkbankSave();
                 AkbankEkstreSave();
+                FinansbankSave();
+                FinansbankEkstreSave();
                 GarantiSave();
                 GarantiEkstreSave();
                 HalkbankSave();
@@ -339,9 +356,11 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
                 KioskSave();
                 SMSVakifSave();
                 checkSavedFiles(IslemTarihiTxt.Text.ConvertToDatetime());
-                NextBtn.Visible = (isAkbankAktarildi || isGarantiAktarildi || isGarantiEkstreAktarildi || isHalkBankAktarildi || isIsbankAktarildi || isIsbankEkstreAktarildi | isYKBEkstreAktarildi
+                NextBtn.Visible = (isAkbankAktarildi || isFinansbankAktarildi || isGarantiAktarildi || isGarantiEkstreAktarildi 
+                    || isHalkBankAktarildi || isIsbankAktarildi || isIsbankEkstreAktarildi | isYKBEkstreAktarildi
                     || isVakifBankAktarildi || isVakifBankGunlukAktarildi || isVakifBank2Aktarildi || isTEBAktarildi
-                    || isHalkbank2Aktarildi || isVakifKatilimAktarildi || isZiraatAktarildi || isZiraatEkstreAktarildi || isZiraatKatilimAktarildi || isEDevletAktarildi
+                    || isHalkbank2Aktarildi || isVakifKatilimAktarildi || isZiraatAktarildi || isZiraatEkstreAktarildi 
+                    || isZiraatKatilimAktarildi || isEDevletAktarildi
                     || isSMSVakifAktarildi || isKioskAktarildi);
 
             }
@@ -395,6 +414,50 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
                     AkbankEkstreOkLbl.Text = "  " + ((char)0x221A).ToString();
                 }
 
+            }
+        }
+        private void FinansbankSave()
+        {
+            if (!isFinansbankAktarildi && FinansbankFU.HasFile)
+            {
+
+                var exceptionHelper = EkstreAktarma.SaveFinansbankFile(FinansbankFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
+                if (exceptionHelper.Exceptions.Count > 0)
+                {
+                    FinansbankFU.Enabled = true;
+                    FinansbankOkLbl.ForeColor = System.Drawing.Color.Red;
+                    FinansbankOkLbl.Text = "X";
+                    exceptionHelper.PublishException();
+                }
+
+                else
+                {
+                    FinansbankFU.Enabled = false;
+                    FinansbankOkLbl.ForeColor = System.Drawing.Color.Green;
+                    FinansbankOkLbl.Text = "  " + ((char)0x221A).ToString();
+                }
+
+            }
+        }
+        private void FinansbankEkstreSave()
+        {
+            if (!isFinansbankEkstreAktarildi && FinansbankEkstreFU.HasFile)
+            {
+                var exceptionHelper = EkstreAktarma.SaveFinansbankEkstreFile(FinansbankEkstreFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
+
+                if (exceptionHelper.Exceptions.Count > 0)
+                {
+                    FinansbankEkstreFU.Enabled = true;
+                    FinansbankEkstreOkLbl.ForeColor = System.Drawing.Color.Red;
+                    FinansbankEkstreOkLbl.Text = "X";
+                    exceptionHelper.PublishException();
+                }
+                else
+                {
+                    FinansbankEkstreFU.Enabled = false;
+                    FinansbankEkstreOkLbl.ForeColor = System.Drawing.Color.Green;
+                    FinansbankEkstreOkLbl.Text = "  " + ((char)0x221A).ToString();
+                }
             }
         }
         private void GarantiSave()

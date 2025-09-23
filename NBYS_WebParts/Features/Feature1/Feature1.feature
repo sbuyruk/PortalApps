@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<feature xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="8a1cd1fd-80e7-4e00-9033-5afefcbaa9a7" alwaysForceInstall="true" featureId="8a1cd1fd-80e7-4e00-9033-5afefcbaa9a7" imageUrl="" scope="Site" solutionId="00000000-0000-0000-0000-000000000000" title="NBYS_WebParts Feature1" version="" deploymentPath="$SharePoint.Project.FileNameWithoutExtension$_$SharePoint.Feature.FileNameWithoutExtension$" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/FeatureModel">
+<feature xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="8a1cd1fd-80e7-4e00-9033-5afefcbaa9a7" alwaysForceInstall="true" featureId="8a1cd1fd-80e7-4e00-9033-5afefcbaa9a7" imageUrl="" scope="Site" solutionId="00000000-0000-0000-0000-000000000000" title="NBYS_WebParts Feature1" deploymentPath="$SharePoint.Project.FileNameWithoutExtension$_$SharePoint.Feature.FileNameWithoutExtension$" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/FeatureModel">
   <projectItems>
     <projectItemReference itemId="7c0a05f8-ed06-4853-999e-1f65a20bdd89" />
     <projectItemReference itemId="3f894e56-1bbc-414c-b7ff-1b400792a385" />

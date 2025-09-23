@@ -40,7 +40,7 @@ namespace NBYS_WebParts.ArmaganEditWP
                     }
                     else
                     {
-                        ViewState["SecilenAy"] = string.Empty;
+                        ViewState["SecilenAy"] = BagisTarihiTxt.Value.ConvertToDatetime().ToString("MM");
                     }
                 }
                 return ViewState["SecilenAy"].ToString();

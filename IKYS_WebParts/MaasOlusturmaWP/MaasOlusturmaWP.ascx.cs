@@ -147,7 +147,10 @@ namespace IKYS_WebParts.MaasOlusturmaWP
                 {
                     MaasListItem listItem = new MaasListItem();
                     listItem.PersonelId = item.PersonelId;
+                    listItem.Adi = item.Adi.Trim();
+                    listItem.Soyadi = item.Soyadi.Trim();
                     listItem.AdiSoyadi = item.Adi + " " + item.Soyadi;
+
                     listItem.Unvan = item.Unvan;
                     listItem.Derece = item.Derece;
                     listItem.Kademe = item.Kademe;
@@ -187,9 +190,12 @@ namespace IKYS_WebParts.MaasOlusturmaWP
 
                         MaasListItem listItem = new MaasListItem();
                         listItem.PersonelId = personelId;
-                        listItem.AdiSoyadi = adi + " " + soyadi;
+                        listItem.Adi = adi.Trim();
+                        listItem.Soyadi = soyadi.Trim();
+                        listItem.AdiSoyadi = adi.Trim() + " " + soyadi.Trim();
                         listItem.Unvan = unvan;
                         listItem.DereceKademeIlerlemeTarihi = dereceKademeIlerlemeTarihi.ToString("dd.MM.yyyy");
+                        listItem.DereceKademeIlerlemeTarihiOrj = dereceKademeIlerlemeTarihi.ToString("dd.MM.yyyy");
                         listItem.Derece = derece;
                         listItem.Kademe = kademe;
                         listItem.Ucret = ucret.ToString("N", culturInfo);
@@ -355,10 +361,10 @@ jQuery(row).find('td').css({'color':'red','font-weight':'bold'});
             foreach (MaasListItem item in list)
             {
                 MaasHareket maasHareket = new MaasHareket();
-                maasHareket.Adi = item.AdiSoyadi.Split(' ')[0];
-                maasHareket.Soyadi = item.AdiSoyadi.Split(' ')[1];
+                maasHareket.Adi = item.Adi;
+                maasHareket.Soyadi = item.Soyadi;
                 maasHareket.Unvan = item.Unvan;
-                maasHareket.DereceKademeIlerlemeTarihi = item.DereceKademeIlerlemeTarihi.ConvertToDatetime();
+                maasHareket.DereceKademeIlerlemeTarihi = item.DereceKademeIlerlemeTarihiOrj.ConvertToDatetime();
                 if (maasHareket.DereceKademeIlerlemeTarihi.Month == tarih.Month && maasHareket.DereceKademeIlerlemeTarihi.Year < tarih.Year)
                 {
                     
@@ -544,10 +550,13 @@ jQuery(row).find('td').css({'color':'red','font-weight':'bold'});
         #region class
         private class MaasListItem
         {
+            public string Adi { get; set; }
+            public string Soyadi { get; set; }
             public string AdiSoyadi { get; set; }
             public string Unvan { get; set; }
             public int ProtokolSiraNo { get; set; }
             public string DereceKademeIlerlemeTarihi { get; set; }
+            public string DereceKademeIlerlemeTarihiOrj { get; set; }
             public int Derece{ get; set; }
             public int Kademe { get; set; }
             public string DereceKademe { get; set; }

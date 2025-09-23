@@ -73,6 +73,14 @@
                 <div class="card-header ">
                     <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
                     <h3 class="mb-1">
+                                        <a class=" btn btn-outline-primary float-end me-4" runat="server" id="YonergeLnk"
+                    data-fancybox
+                    data-type="pdf"
+                    data-width="960"
+                    data-height="720"
+                    href="">
+                    <i class="fa fa-book" aria-hidden="true"></i>
+                </a>
                         <asp:Label CssClass="col-form-label fw-bold text-info" runat="server" Text="Bağış Silme"></asp:Label>
                     </h3>
                 </div>
@@ -85,11 +93,11 @@
                     <div class="form-group row" id="FilterDiv" runat="server">
                         <div class="form-group col-2">
                             <label for="YilDDL" class=" col-form-label">Yıl</label>
-                            <asp:DropDownList ID="YilDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="YilDDL_SelectedIndexChanged" AutoPostBack="true" Style="height: auto"></asp:DropDownList>
+                            <asp:DropDownList ID="YilDDL" runat="server" CssClass="form-control form-select form-select-lg fw-bold" OnSelectedIndexChanged="YilDDL_SelectedIndexChanged" AutoPostBack="true" Style="height: auto"></asp:DropDownList>
                         </div>
                         <div class="form-group col-2">
                             <label for="AyDDL" class="col-form-label">Ay</label>
-                            <asp:DropDownList ID="AyDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="AyDDL_SelectedIndexChanged" AutoPostBack="true" Style="height: auto"></asp:DropDownList>
+                            <asp:DropDownList ID="AyDDL" runat="server" CssClass="form-control form-select form-select-lg fw-bold" OnSelectedIndexChanged="AyDDL_SelectedIndexChanged" AutoPostBack="true" Style="height: auto"></asp:DropDownList>
                         </div>
                     </div>
                     <div class="form-group">

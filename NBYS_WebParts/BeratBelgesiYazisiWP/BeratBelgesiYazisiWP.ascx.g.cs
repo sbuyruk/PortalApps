@@ -57,10 +57,6 @@ namespace NBYS_WebParts.BeratBelgesiYazisiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.DropDownList GunDDL;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.DropDownList AyDDL;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -211,23 +207,6 @@ namespace NBYS_WebParts.BeratBelgesiYazisiWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.CssClass = "col-form-label ";
             @__ctrl.ID = "AdiLbl";
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.DropDownList @__BuildControlGunDDL() {
-            global::System.Web.UI.WebControls.DropDownList @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.DropDownList();
-            this.GunDDL = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GunDDL";
-            @__ctrl.CssClass = "form-control form-select form-select-lg fw-bold";
-            @__ctrl.AutoPostBack = true;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: auto");
-            @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.GunDDL_SelectedIndexChanged);
-            @__ctrl.SelectedIndexChanged += new System.EventHandler(this.GunDDL_SelectedIndexChanged);
             return @__ctrl;
         }
         
@@ -689,50 +668,47 @@ namespace NBYS_WebParts.BeratBelgesiYazisiWP {
             @__ctrl4 = this.@__BuildControlAdiLbl();
             @__parser.AddParsedSubObject(@__ctrl4);
             global::System.Web.UI.WebControls.DropDownList @__ctrl5;
-            @__ctrl5 = this.@__BuildControlGunDDL();
+            @__ctrl5 = this.@__BuildControlAyDDL();
             @__parser.AddParsedSubObject(@__ctrl5);
             global::System.Web.UI.WebControls.DropDownList @__ctrl6;
-            @__ctrl6 = this.@__BuildControlAyDDL();
+            @__ctrl6 = this.@__BuildControlYilDDL();
             @__parser.AddParsedSubObject(@__ctrl6);
             global::System.Web.UI.WebControls.DropDownList @__ctrl7;
-            @__ctrl7 = this.@__BuildControlYilDDL();
+            @__ctrl7 = this.@__BuildControlBolgeDDL();
             @__parser.AddParsedSubObject(@__ctrl7);
             global::System.Web.UI.WebControls.DropDownList @__ctrl8;
-            @__ctrl8 = this.@__BuildControlBolgeDDL();
+            @__ctrl8 = this.@__BuildControlMadalyaDDL();
             @__parser.AddParsedSubObject(@__ctrl8);
-            global::System.Web.UI.WebControls.DropDownList @__ctrl9;
-            @__ctrl9 = this.@__BuildControlMadalyaDDL();
+            global::System.Web.UI.WebControls.Table @__ctrl9;
+            @__ctrl9 = this.@__BuildControlDurumTable();
             @__parser.AddParsedSubObject(@__ctrl9);
-            global::System.Web.UI.WebControls.Table @__ctrl10;
-            @__ctrl10 = this.@__BuildControlDurumTable();
+            global::System.Web.UI.WebControls.TextBox @__ctrl10;
+            @__ctrl10 = this.@__BuildControlImzalayanTxt();
             @__parser.AddParsedSubObject(@__ctrl10);
             global::System.Web.UI.WebControls.TextBox @__ctrl11;
-            @__ctrl11 = this.@__BuildControlImzalayanTxt();
+            @__ctrl11 = this.@__BuildControlImzalayanUnvanTxt();
             @__parser.AddParsedSubObject(@__ctrl11);
             global::System.Web.UI.WebControls.TextBox @__ctrl12;
-            @__ctrl12 = this.@__BuildControlImzalayanUnvanTxt();
+            @__ctrl12 = this.@__BuildControlImzalayanMakamTxt();
             @__parser.AddParsedSubObject(@__ctrl12);
             global::System.Web.UI.WebControls.TextBox @__ctrl13;
-            @__ctrl13 = this.@__BuildControlImzalayanMakamTxt();
+            @__ctrl13 = this.@__BuildControlEvrakTarihiTxt();
             @__parser.AddParsedSubObject(@__ctrl13);
-            global::System.Web.UI.WebControls.TextBox @__ctrl14;
-            @__ctrl14 = this.@__BuildControlEvrakTarihiTxt();
+            global::System.Web.UI.WebControls.Label @__ctrl14;
+            @__ctrl14 = this.@__BuildControlTableDataLbl();
             @__parser.AddParsedSubObject(@__ctrl14);
-            global::System.Web.UI.WebControls.Label @__ctrl15;
-            @__ctrl15 = this.@__BuildControlTableDataLbl();
+            global::System.Web.UI.WebControls.CheckBox @__ctrl15;
+            @__ctrl15 = this.@__BuildControlBeratDurumChk();
             @__parser.AddParsedSubObject(@__ctrl15);
-            global::System.Web.UI.WebControls.CheckBox @__ctrl16;
-            @__ctrl16 = this.@__BuildControlBeratDurumChk();
+            global::System.Web.UI.WebControls.LinkButton @__ctrl16;
+            @__ctrl16 = this.@__BuildControlDosyaOlusturBtn();
             @__parser.AddParsedSubObject(@__ctrl16);
-            global::System.Web.UI.WebControls.LinkButton @__ctrl17;
-            @__ctrl17 = this.@__BuildControlDosyaOlusturBtn();
+            global::System.Web.UI.UpdatePanel @__ctrl17;
+            @__ctrl17 = this.@__BuildControlUpdatePanel();
             @__parser.AddParsedSubObject(@__ctrl17);
-            global::System.Web.UI.UpdatePanel @__ctrl18;
-            @__ctrl18 = this.@__BuildControlUpdatePanel();
+            global::System.Web.UI.UpdateProgress @__ctrl18;
+            @__ctrl18 = this.@__BuildControlupdateProgress();
             @__parser.AddParsedSubObject(@__ctrl18);
-            global::System.Web.UI.UpdateProgress @__ctrl19;
-            @__ctrl19 = this.@__BuildControlupdateProgress();
-            @__parser.AddParsedSubObject(@__ctrl19);
             @__ctrl.SetRenderMethodDelegate(new System.Web.UI.RenderMethod(this.@__Render__control1));
         }
         
@@ -776,18 +752,15 @@ namespace NBYS_WebParts.BeratBelgesiYazisiWP {
                     <div class=""form-group row p-2"">
                         <div class=""form-group col-4 border border-dark border-right-0"">
                             <div class=""row"">
-                                <div class=""form-group col-4"" style=""display: block"">
-                                    <label class=""col-form-label"" for=""GunDDL"">Gün </label>
+
+                                <div class=""form-group col-4"">
+                                    <label class=""col-form-label"" for=""AyDDL"">Ay </label>
                                     ");
             parameterContainer.Controls[4].RenderControl(@__w);
             @__w.Write("\r\n                                </div>\r\n                                <div cl" +
                     "ass=\"form-group col-4\">\r\n                                    <label class=\"col-f" +
-                    "orm-label\" for=\"AyDDL\">Ay </label>\r\n                                    ");
-            parameterContainer.Controls[5].RenderControl(@__w);
-            @__w.Write("\r\n                                </div>\r\n                                <div cl" +
-                    "ass=\"form-group col-4\">\r\n                                    <label class=\"col-f" +
                     "orm-label\" for=\"YilDDL\">Yıl </label>\r\n                                    ");
-            parameterContainer.Controls[6].RenderControl(@__w);
+            parameterContainer.Controls[5].RenderControl(@__w);
             @__w.Write(@"
                                 </div>
                             </div>
@@ -795,12 +768,12 @@ namespace NBYS_WebParts.BeratBelgesiYazisiWP {
                                 <div class=""form-group col-8"">
                                     <label class=""col-form-label"" for=""BolgeDDL"">Bölge </label>
                                     ");
-            parameterContainer.Controls[7].RenderControl(@__w);
+            parameterContainer.Controls[6].RenderControl(@__w);
             @__w.Write("\r\n                                </div>\r\n                                <div cl" +
                     "ass=\"form-group col-4\">\r\n                                    <label class=\"col-f" +
                     "orm-label\" for=\"MadalyaDDL\">Madalya </label>\r\n                                  " +
                     "  ");
-            parameterContainer.Controls[8].RenderControl(@__w);
+            parameterContainer.Controls[7].RenderControl(@__w);
             @__w.Write(@"
                                 </div>
                             </div>
@@ -809,7 +782,7 @@ namespace NBYS_WebParts.BeratBelgesiYazisiWP {
                         <div class=""form-group col-4 border border-dark border-right-0"">
                             <div class=""form-group "">
                                 ");
-            parameterContainer.Controls[9].RenderControl(@__w);
+            parameterContainer.Controls[8].RenderControl(@__w);
             @__w.Write(@"
                             </div>
                         </div>
@@ -818,12 +791,12 @@ namespace NBYS_WebParts.BeratBelgesiYazisiWP {
                                 <div class=""form-group col"">
                                     <label for=""ImzalayanTxt"" class=""col-form-label"">İmza (Adi Soyadı)</label>
                                     ");
-            parameterContainer.Controls[10].RenderControl(@__w);
+            parameterContainer.Controls[9].RenderControl(@__w);
             @__w.Write("\r\n                                </div>\r\n                                <div cl" +
                     "ass=\"form-group col\">\r\n                                    <label for=\"Imzalayan" +
                     "UnvanTxt\" class=\"col-form-label\">İmza (Ünvan)</label>\r\n                         " +
                     "           ");
-            parameterContainer.Controls[11].RenderControl(@__w);
+            parameterContainer.Controls[10].RenderControl(@__w);
             @__w.Write(@"
                                 </div>
                             </div>
@@ -831,25 +804,25 @@ namespace NBYS_WebParts.BeratBelgesiYazisiWP {
                                 <div class=""form-group col"">
                                     <label for=""ImzalayanMakamTxt"" class=""col-form-label"">İmza (Makam)</label>
                                     ");
-            parameterContainer.Controls[12].RenderControl(@__w);
+            parameterContainer.Controls[11].RenderControl(@__w);
             @__w.Write("\r\n                                </div>\r\n                                <div cl" +
                     "ass=\"form-group col\">\r\n                                    <label for=\"EvrakTari" +
                     "hiTxt\" class=\"col-form-label\">Evrak Tarihi</label>\r\n                            " +
                     "        ");
-            parameterContainer.Controls[13].RenderControl(@__w);
+            parameterContainer.Controls[12].RenderControl(@__w);
             @__w.Write("\r\n                                </div>\r\n                            </div>\r\n\r\n " +
                     "                       </div>\r\n                    </div>\r\n                    <" +
                     "div class=\"form-group\">\r\n                        ");
-            parameterContainer.Controls[14].RenderControl(@__w);
+            parameterContainer.Controls[13].RenderControl(@__w);
             @__w.Write("\r\n                    </div>\r\n                </div>\r\n\r\n                <div clas" +
                     "s=\"card-footer\">\r\n                    ");
-            parameterContainer.Controls[15].RenderControl(@__w);
+            parameterContainer.Controls[14].RenderControl(@__w);
             @__w.Write("\r\n                    ");
-            parameterContainer.Controls[16].RenderControl(@__w);
+            parameterContainer.Controls[15].RenderControl(@__w);
             @__w.Write("\r\n                </div>\r\n            </div>\r\n        ");
-            parameterContainer.Controls[17].RenderControl(@__w);
+            parameterContainer.Controls[16].RenderControl(@__w);
             @__w.Write("\r\n    ");
-            parameterContainer.Controls[18].RenderControl(@__w);
+            parameterContainer.Controls[17].RenderControl(@__w);
             @__w.Write("\r\n</div>\r\n");
         }
         

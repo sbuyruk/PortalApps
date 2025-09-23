@@ -302,14 +302,14 @@ namespace Model.IKYS
             return list;
         }
 
-        public bool GorevOnayVarMi(int personelId, DateTime basTarih, DateTime bitTarih)
+        public bool GorevOnayVarMi(int personelId, DateTime basTarih, DateTime bitTarih, int gorevOnayId)
         {
            // bu personelId için bu tarihler arasında onay var mı?
             string sqlString = string.Format(@"
                 SELECT TOP 1 *
                 FROM GorevOnay_Table
-                WHERE PersonelId={0} AND BitisTarihi>={1} AND BaslangicTarihi<={2}",
-                personelId, basTarih.ReturnTRDateFormat(), bitTarih.ReturnTRDateFormat());
+                WHERE PersonelId={0} AND BitisTarihi>={1} AND BaslangicTarihi<={2} AND Id <> {3}",
+                personelId, basTarih.ReturnTRDateFormat(), bitTarih.ReturnTRDateFormat(), gorevOnayId);
             DataTable dataTable = dao.SelectFromDb(sqlString,"");
 
             return dataTable!=null;

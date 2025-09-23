@@ -29,35 +29,27 @@
     <div class="card-header ">
         <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
         <h3 class="mb-1">
-            <asp:Label CssClass="col-form-label text-info fw-bold mb-1" ID="TitleLbl" runat="server" Text="Berat Basımı"></asp:Label>
-            <asp:Label ID="IdLbl" runat="server" CssClass="col-form-label text-white" Visible="false"></asp:Label>
-            <asp:Label ID="AdiLbl" runat="server" CssClass="col-form-label"></asp:Label>
+            <asp:Label CssClass="form-label text-info fw-bold mb-1" ID="TitleLbl" runat="server" Text="Berat Basımı"></asp:Label>
+            <asp:Label ID="IdLbl" runat="server" CssClass="form-label text-white" Visible="false"></asp:Label>
+            <asp:Label ID="AdiLbl" runat="server" CssClass="form-label"></asp:Label>
         </h3>
     </div>
     <asp:UpdatePanel ID="upPanel" runat="server">
         <ContentTemplate>
             <div class="row mt-2">
-                <div class="form-group col-4">
+                <div class="form-group col-2">
                     <div class="row">
-                        <label for="GunDDL" class="col-4 col-form-label text-end ">Gün</label>
+                        <label for="AyDDL" class="col-4 form-label text-end ">Ay</label>
                         <div class="col-8">
-                            <asp:DropDownList ID="GunDDL" runat="server" CssClass="form-control form-select form-select-lg fw-bold" OnSelectedIndexChanged="GunDDL_SelectedIndexChanged" AutoPostBack="true" Style="height: auto"></asp:DropDownList>
+                            <asp:DropDownList ID="AyDDL" runat="server" CssClass="form-control form-select form-select-lg fw-bold form-select form-select-lg fw-bold" OnSelectedIndexChanged="AyDDL_SelectedIndexChanged" AutoPostBack="true" Style="height: auto"></asp:DropDownList>
                         </div>
                     </div>
                 </div>
                 <div class="form-group col-2">
                     <div class="row">
-                        <label for="AyDDL" class="col-4 col-form-label text-end ">Ay</label>
+                        <label for="YilDDL" class="col-4 form-label text-end">Yıl</label>
                         <div class="col-8">
-                            <asp:DropDownList ID="AyDDL" runat="server" CssClass="form-control form-select form-select-lg fw-bold" OnSelectedIndexChanged="AyDDL_SelectedIndexChanged" AutoPostBack="true" Style="height: auto"></asp:DropDownList>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group col-2">
-                    <div class="row">
-                        <label for="YilDDL" class="col-4 col-form-label text-end">Yıl</label>
-                        <div class="col-8">
-                            <asp:DropDownList ID="YilDDL" runat="server" CssClass="form-control form-select form-select-lg fw-bold" OnSelectedIndexChanged="YilDDL_SelectedIndexChanged" AutoPostBack="true" Style="height: auto"></asp:DropDownList>
+                            <asp:DropDownList ID="YilDDL" runat="server" CssClass="form-control form-select form-select-lg fw-bold form-select form-select-lg fw-bold" OnSelectedIndexChanged="YilDDL_SelectedIndexChanged" AutoPostBack="true" Style="height: auto"></asp:DropDownList>
                         </div>
                     </div>
                 </div>

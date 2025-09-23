@@ -94,30 +94,7 @@ namespace NBYS_WebParts.ArmaganListesiWP
                 ViewState["SecilenId"] = value;
             }
         }
-        private string SecilenGunQS
-        {
-            get
-            {
 
-                if (ViewState["SecilenGun"] == null)
-                {
-                    if (Page.Request.QueryString["SecilenGun"] != null)
-                    {
-                        ViewState["SecilenGun"] = Page.Request.QueryString["SecilenGun"];
-                    }
-                    else
-                    {
-                        ViewState["SecilenGun"] = string.Empty;
-                    }
-                }
-                return ViewState["SecilenGun"].ToString();
-            }
-
-            set
-            {
-                ViewState["SecilenGun"] = value;
-            }
-        }
         private string SecilenAyQS
         {
             get
@@ -290,6 +267,8 @@ namespace NBYS_WebParts.ArmaganListesiWP
         {
             if (!Page.IsPostBack)
             {
+                YonergeLnk.HRef = UtilityHelper.YonergeURLGetir(ProjeConstants.PARAM_NBYSYONERGE, ProjeConstants.NBYSBELGELERI_LIB, ProjeConstants.PAGE_ARMAGANOLUSTURMA);
+
                 Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
                 BolgeIdQS = bolge == null ? 0 : bolge.Id;
                 SecilenIdQS = string.IsNullOrEmpty(SecilenIdQS) ? "0" : SecilenIdQS;
@@ -307,8 +286,15 @@ namespace NBYS_WebParts.ArmaganListesiWP
         {
             try
             {
-                ModalNakitBagisTablosunuDoldur(paramArmaganIdLbl.Value);
-                ModalNakitBagisciFormunuDoldur(paramArmaganIdLbl.Value);
+                int armaganId = paramArmaganIdLbl.Value.ConvertToInt();
+
+                Armagan armagan = new Armagan();
+                armagan = armagan.Select<Armagan>(armaganId);
+                if (armagan == null || armagan.Id < 1)
+                    return;
+                ModalNakitBagisciFormunuDoldur(armagan);
+                //ModalNakitBagisTablosunuDoldur(paramArmaganIdLbl.Value);
+                TabloModalOlustur(armagan.BagisciId.ToString());
             }
             catch (Exception exception)
             {
@@ -317,71 +303,130 @@ namespace NBYS_WebParts.ArmaganListesiWP
 
             }
         }
-        private void ModalNakitBagisTablosunuDoldur(string armaganId)
+        private void TabloModalOlustur(string nakitBagisciId)
+        {
+            var jsonData = GetModalDataJson(nakitBagisciId); //veri çekilip json a çeviriliyor
+            var jsString = CreateModalDataTable(jsonData, nakitBagisciId.ConvertToInt()); //javascript kodu hazırlanıyor.
+            UtilityHelper.ScriptCalistir(jsString);
+        }
+        private string CreateModalDataTable(string jsonData, int nakitBagisciId)
+        {
+            NakitBagisci nb = new NakitBagisci();
+            nb = nb.Select<NakitBagisci>(nakitBagisciId);
+            string bagisciAdi = nb != null ? (nb.Adi + nb.Soyadi).ReplaceTrChars() : "Bagisci";
+            string filename = bagisciAdi + "-" + DateTime.Today.Day + "-" + DateTime.Today.Month + "-" + DateTime.Today.Year;
+            string tableString = @"
+        jQuery(document).ready(function () {
+            if ( jQuery.fn.DataTable.isDataTable('#CustomModalDataTable') ) {
+                jQuery('#CustomModalDataTable').DataTable().destroy();
+            }
+            jQuery('#CustomModalDataTable tbody').empty();
+
+            jQuery.fn.dataTable.moment('DD.MM.YYYY');//sort date
+            jQuery('#CustomModalDataTable').DataTable({
+                data: " + jsonData + @",
+                columns: [
+                    { data: 'BagisTarihi' },
+                    { data: 'BagisMiktari', 'width': '10%', 'className': 'text-end' },
+                    { data: 'Armagan' },
+                    { data: 'ArmaganTutari' },
+                    { data: 'NBHAciklama' },
+                ],
+                'order': [[0, 'desc']],
+
+                'language': {
+                    'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
+                    'decimal': ',',
+                    'thousands': '.'
+                },
+                columnDefs:[
+                    {targets:0, render:function(data){
+                        return moment(data).format('DD.MM.YYYY');
+                    }},
+                ],
+                responsive: true,
+                dom: 'frtip',
+                
+
+            });
+        });
+        ";
+            return tableString;
+        }
+        private string GetModalDataJson(string nakitBagisciId)
         {
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
-
-            ModalArmaganTableHeaders();
             NakitBagisHareket nbh = new NakitBagisHareket();
-            DataTable dataTable = nbh.SelectByArmaganIdReturnDataTable(armaganId.ConvertToInt());
-            if (dataTable != null)
-            {
-                DataRow baslikRow = dataTable.Rows[0];
-                string armagan = baslikRow["Armagan"].ReturnEmptyIfNull().ToString();
-                string dovizCinsi = baslikRow["DovizCinsi"].ReturnEmptyIfNull().ToString();
-                decimal armaganTutari = baslikRow["ArmaganTutari"].ConvertToDecimal();
-                string armaganTutariStr = armaganTutari > 0 ? armaganTutari.ToString("N", culturInfo) + " " + dovizCinsi : string.Empty;
-                ArmaganLbl.Text = armagan + " (" + armaganTutariStr + ")";
-                foreach (DataRow row in dataTable.Rows)
-                {
-                    string bagisTarihi = row["BagisTarihi"].ConvertToDatetime().ConvertToDatetimeEmptyIfNull();
-                    string bagisTutari = row["BagisTutari"].ConvertToDecimal().ToString("N", culturInfo);
-                    string banka = row["Banka"].ReturnEmptyIfNull().ToString();
-                    //string armaganTutari = row["ArmaganTutari"].ConvertToDecimal().ToString("N", culturInfo);
-                    string durum = row["Durum"].ReturnEmptyIfNull().ToString();
-                    string aciklama = row["Aciklama"].ReturnEmptyIfNull().ToString();
-                    SatirEkle(bagisTarihi, bagisTutari, banka, durum, aciklama);
-                }
-            }
+            int rowCount = 0;
+            var json = nbh.SelectByBagisciIdReturnJSon(nakitBagisciId, ref rowCount);
+            decimal toplamTutar = nbh.GetSumBagisMiktariByNakitBagisciIdBetweenBasTarBitTar(
+                ProjeConstants.BAGIS_SORGU_BASTAR.ConvertToDatetime(), DateTime.Today, nakitBagisciId.ConvertToInt());
+            BagisBilgileriLbl.Text = rowCount < 1 ? "Bağış bulunmamaktadır" :
+                "Bağışçının " + ProjeConstants.BAGIS_SORGU_BASTAR.ConvertToDatetime()+ " tarihinden itibaren "+ rowCount + " defada yaptığı toplam " + toplamTutar.ToString("N", culturInfo) + "TL bağışı bulunmaktadır";
+            return json;
         }
-        private void SatirEkle(string bagisTarihi, string bagisTutari, string banka, string durum, string aciklama)
-        {
-            TableRow row = new TableRow();
-            TableCell bagisTarihiCell = new TableCell
-            {
-                Text = bagisTarihi
-            };
-            TableCell bagisTutariCell = new TableCell
-            {
-                Text = bagisTutari
-            };
-            TableCell bankaCell = new TableCell
-            {
-                Text = banka
-            };
-            TableCell durumCell = new TableCell
-            {
-                Text = durum
-            };
-            TableCell aciklamaCell = new TableCell
-            {
-                Text = aciklama
-            };
-            row.Controls.Add(bagisTarihiCell);
-            row.Controls.Add(bagisTutariCell);
-            row.Controls.Add(bankaCell);
-            row.Controls.Add(durumCell);
-            row.Controls.Add(aciklamaCell);
-            ModalArmaganTable.Rows.Add(row);
-        }
-        private void ModalNakitBagisciFormunuDoldur(string nakitBagisciIdStr)
-        {
-            if (!string.IsNullOrEmpty(nakitBagisciIdStr))
-            {
-                int armaganId = nakitBagisciIdStr.ConvertToInt();
+        //private void ModalNakitBagisTablosunuDoldur(string armaganId)
+        //{
+        //    IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
 
-                Armagan armagan = new Armagan();
-                armagan = armagan.Select<Armagan>(armaganId);
+        //    ModalArmaganTableHeaders();
+        //    NakitBagisHareket nbh = new NakitBagisHareket();
+        //    DataTable dataTable = nbh.SelectByArmaganIdReturnDataTable(armaganId.ConvertToInt());
+        //    if (dataTable != null)
+        //    {
+        //        DataRow baslikRow = dataTable.Rows[0];
+        //        string armagan = baslikRow["Armagan"].ReturnEmptyIfNull().ToString();
+        //        string dovizCinsi = baslikRow["DovizCinsi"].ReturnEmptyIfNull().ToString();
+        //        decimal armaganTutari = baslikRow["ArmaganTutari"].ConvertToDecimal();
+        //        string armaganTutariStr = armaganTutari > 0 ? armaganTutari.ToString("N", culturInfo) + " " + dovizCinsi : string.Empty;
+        //        ArmaganLbl.Text = armagan + " (" + armaganTutariStr + ")";
+        //        foreach (DataRow row in dataTable.Rows)
+        //        {
+        //            string bagisTarihi = row["BagisTarihi"].ConvertToDatetime().ConvertToDatetimeEmptyIfNull();
+        //            string bagisTutari = row["BagisTutari"].ConvertToDecimal().ToString("N", culturInfo);
+        //            string banka = row["Banka"].ReturnEmptyIfNull().ToString();
+        //            //string armaganTutari = row["ArmaganTutari"].ConvertToDecimal().ToString("N", culturInfo);
+        //            string durum = row["Durum"].ReturnEmptyIfNull().ToString();
+        //            string aciklama = row["Aciklama"].ReturnEmptyIfNull().ToString();
+        //            SatirEkle(bagisTarihi, bagisTutari, banka, durum, aciklama);
+        //        }
+        //    }
+        //}
+        //private void SatirEkle(string bagisTarihi, string bagisTutari, string banka, string durum, string aciklama)
+        //{
+        //    TableRow row = new TableRow();
+        //    TableCell bagisTarihiCell = new TableCell
+        //    {
+        //        Text = bagisTarihi
+        //    };
+        //    TableCell bagisTutariCell = new TableCell
+        //    {
+        //        Text = bagisTutari
+        //    };
+        //    TableCell bankaCell = new TableCell
+        //    {
+        //        Text = banka
+        //    };
+        //    TableCell durumCell = new TableCell
+        //    {
+        //        Text = durum
+        //    };
+        //    TableCell aciklamaCell = new TableCell
+        //    {
+        //        Text = aciklama
+        //    };
+        //    row.Controls.Add(bagisTarihiCell);
+        //    row.Controls.Add(bagisTutariCell);
+        //    row.Controls.Add(bankaCell);
+        //    row.Controls.Add(durumCell);
+        //    row.Controls.Add(aciklamaCell);
+        //    ModalArmaganTable.Rows.Add(row);
+        //}
+        private void ModalNakitBagisciFormunuDoldur(Armagan armagan)
+        {
+            if (armagan!=null)
+            {
+                
                 if (armagan != null)
                 {
                     NakitBagisci nakitBagisci = new NakitBagisci();
@@ -437,27 +482,13 @@ namespace NBYS_WebParts.ArmaganListesiWP
 
         private void DDLleriDoldur()
         {
-            GunDDLDoldur();
             AyDDLDoldur();
             YilDDLDoldur();
             DurumDDLDoldur();
             IlDDLDoldur();
-            ArmaganTanimDDLDOoldur();
+            ArmaganTanimDDLDoldur();
         }
-        private void GunDDLDoldur()
-        {
-            //ARMAGAN PERIODU
-            //10 Günde bir
-            //GunDDL.Items.Add(new ListItem("Tüm Ay", "0"));
-            //GunDDL.Items.Add(new ListItem("1-10", "1"));
-            //GunDDL.Items.Add(new ListItem("11-20", "2"));
-            //GunDDL.Items.Add(new ListItem("20-Ay Sonu", "3"));
-
-            //15 Günde bir
-            GunDDL.Items.Add(new ListItem("Tüm Ay", "0"));
-            GunDDL.Items.Add(new ListItem("1-15", "1"));
-            GunDDL.Items.Add(new ListItem("16-Ay Sonu", "2"));
-        }
+        
         private void AyDDLDoldur()
         {
             AyDDL.Items.Add(new ListItem(ProjeConstants.HEPSI, ProjeConstants.HEPSI_INT.ToString()));
@@ -527,19 +558,7 @@ namespace NBYS_WebParts.ArmaganListesiWP
         {
             try
             {
-                //acilista ay ve yili querystring ile gelen ay ve yıla eşitle boş geldiyse gecen aya/yila eşitle
-                //gün
-                int gunBolumu = DateTime.Today.Day < 16 ? 1 : 2;
-                string gun = !string.IsNullOrEmpty(SecilenGunQS) ? SecilenGunQS : gunBolumu.ToString();
-                ListItem gunItem = new ListItem();
-                if (!string.IsNullOrEmpty(gun))
-                    gunItem = GunDDL.Items.FindByValue(gun);
 
-                if (gunItem != null)
-                {
-                    GunDDL.SelectedValue = gunItem.Value;
-                    SecilenGunQS = gunItem.Value;
-                }
                 //ay
                 string ay = !string.IsNullOrEmpty(SecilenAyQS) ? SecilenAyQS : DateTime.Today.Month.ReturnEmptyIfNull().ToString();
                 ListItem ayItem = new ListItem();
@@ -608,7 +627,7 @@ namespace NBYS_WebParts.ArmaganListesiWP
 
 
         }
-        private void ArmaganTanimDDLDOoldur()
+        private void ArmaganTanimDDLDoldur()
         {
             if (ArmaganDDL.SelectedItem == null)
             {
@@ -636,7 +655,6 @@ namespace NBYS_WebParts.ArmaganListesiWP
         }
         private void SetSecilenBasTarBitTar()
         {
-            string gunStr = GunDDL.SelectedItem.Value;
             int ay = AyDDL.SelectedItem.Value.ConvertToInt();
             int yil = YilDDL.SelectedItem.Value.ConvertToInt();
 
@@ -651,60 +669,14 @@ namespace NBYS_WebParts.ArmaganListesiWP
 
             else
             {
-                //ARMAGAN PERIODU
-
-                //15 Günde bir
-                if (gunStr.Equals("0"))
-                {
-                    bastar = new DateTime(yil, ay, 1);
-                    int songun = bastar.AddMonths(1).AddDays(-1).Day;
-                    bittar = new DateTime(yil, ay, songun);
-                }
-                else if (gunStr.Equals("1"))
-                {
-                    bastar = new DateTime(yil, ay, 1);
-                    bittar = new DateTime(yil, ay, 15);
-                }
-                else
-                {
-                    bastar = new DateTime(yil, ay, 16);
-                    DateTime sonGun = new DateTime(yil, ay, 1).AddMonths(1).AddDays(-1);
-                    bittar = new DateTime(yil, ay, sonGun.Day);
-                }
-
-                //10 Günde bir
-                //if (gunStr.Equals("0"))
-                //{
-                //    basTar = new DateTime(yil, ay, 1);
-                //    int songun = basTar.AddMonths(1).AddDays(-1).Day;
-                //    bitTar = new DateTime(yil, ay, songun);
-                //}
-                //else if (gunStr.Equals("1"))
-                //{
-                //    basTar = new DateTime(yil, ay, 1);
-                //    bitTar = new DateTime(yil, ay, 10);
-                //}
-                //else if (gunStr.Equals("2"))
-                //{
-                //    basTar = new DateTime(yil, ay, 11);
-                //    bitTar = new DateTime(yil, ay, 20);
-                //}
-                //else if (gunStr.Equals("3"))
-                //{
-                //    basTar = new DateTime(yil, ay, 21);
-                //    DateTime basGun = new DateTime(yil, ay, 1).AddMonths(1).AddDays(-1);
-                //    bitTar = new DateTime(yil, ay, basGun.Day);
-                //}
+                bastar = new DateTime(yil, ay, 1);
+                DateTime sonGun = new DateTime(yil, ay, 1).AddMonths(1).AddDays(-1);
+                bittar = new DateTime(yil, ay, sonGun.Day);
             }
             SecilenBastarQS = bastar.ConvertToDatetimeEmptyIfNull();
             SecilenBittarQS = bittar.ConvertToDatetimeEmptyIfNull();
         }
-        protected void GunDDL_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            SecilenGunQS = GunDDL.SelectedItem.Value.ToString();
-            SetSecilenBasTarBitTar();
-            TabloOlustur();
-        }
+
         protected void AyDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
             SecilenAyQS = AyDDL.SelectedItem.Value.ToString();
@@ -808,7 +780,6 @@ namespace NBYS_WebParts.ArmaganListesiWP
 
             int rowCount = 0;
 
-            string gunStr = GunDDL.SelectedItem.Value;
             int ay = AyDDL.SelectedItem.Value.ConvertToInt();
             int yil = YilDDL.SelectedItem.Value.ConvertToInt();
 
@@ -822,48 +793,10 @@ namespace NBYS_WebParts.ArmaganListesiWP
             }
             else
             {
-                //ARMAGAN PERIODU
-                //15 Günde bir
-                if (gunStr.Equals("0"))
-                {
-                    bastar = new DateTime(yil, ay, 1);
-                    int songun = bastar.AddMonths(1).AddDays(-1).Day;
-                    bittar = new DateTime(yil, ay, songun);
-                }
-                else if (gunStr.Equals("1"))
-                {
-                    bastar = new DateTime(yil, ay, 1);
-                    bittar = new DateTime(yil, ay, 15);
-                }
-                else
-                {
-                    bastar = new DateTime(yil, ay, 16);
-                    DateTime sonGun = new DateTime(yil, ay, 1).AddMonths(1).AddDays(-1);
-                    bittar = new DateTime(yil, ay, sonGun.Day);
-                }
 
-                // 10 Günde bir
-                //if (gunStr.Equals("0"))
-                //{
-                //    bastar = new DateTime(yil, ay, 1);
-                //    int songun = bastar.AddMonths(1).AddDays(-1).Day;
-                //    bittar = new DateTime(yil, ay, songun);
-                //}
-                //else if (gunStr.Equals("1"))
-                //{
-                //    bastar = new DateTime(yil, ay, 1);
-                //    bittar = new DateTime(yil, ay, 11);
-                //}
-                //else if (gunStr.Equals("2"))
-                //{
-                //    bastar = new DateTime(yil, ay, 11);
-                //    bittar = new DateTime(yil, ay, 20);
-                //}
-                //else if (gunStr.Equals("3"))
-                //{
-                //    bastar = new DateTime(yil, ay, 21);
-                //    DateTime basGun = new DateTime(yil, ay, 1).AddMonths(1).AddDays(-1);
-                //    bittar = new DateTime(yil, ay, basGun.Day);
+                bastar = new DateTime(yil, ay, 1);
+                DateTime basGun = new DateTime(yil, ay, 1).AddMonths(1).AddDays(-1);
+                bittar = new DateTime(yil, ay, basGun.Day);
 
             }
             int ili = SecilenIlQS.ConvertToInt();
@@ -897,7 +830,7 @@ namespace NBYS_WebParts.ArmaganListesiWP
                 ";
             }
 
-            string queryStr = "&SecilenGun=" + SecilenGunQS + "&SecilenAy=" + SecilenAyQS + "&SecilenYil="
+            string queryStr = "&SecilenAy=" + SecilenAyQS + "&SecilenYil="
                 + SecilenYilQS + "&SecilenArmaganTanimId=" + SecilenArmaganTanimIdQS + "&SecilenDurum=" + SecilenDurumQS + "&SecilenIl=" + SecilenIlQS;
 
             string tableString = @"
@@ -940,7 +873,7 @@ namespace NBYS_WebParts.ArmaganListesiWP
                             +@"
                             return link;
                         }},
-                        {targets:7, render:function(data, type, row, meta){
+                        {targets:8, render:function(data, type, row, meta){
                             var link= '';
                             if (row.Durum == 'Parası İade Edildi'){
                                 return 'Belge Geçersiz';
@@ -951,7 +884,7 @@ namespace NBYS_WebParts.ArmaganListesiWP
 
                             return link;
                         }},
-                        {targets:8, render:function(data, type, row, meta){
+                        {targets:9, render:function(data, type, row, meta){
                             var link='';
                             if (row.Durum==='Gönderildi')
                             {
@@ -971,10 +904,11 @@ namespace NBYS_WebParts.ArmaganListesiWP
                         { data: 'Tarih' },
                         { data: 'ArmaganBaslik' , 'width':'20%'},
                         { data: 'Durum' },
+                        { data: 'CokluBagis' },
                         { data: 'ArmaganId' },
                         { data: 'ArmaganId' },
                     ],
-                    'order': [[7, 'asc']],//sort date desc
+                    'order': [[4, 'asc']],//sort date desc
                     'language': {
                     'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                         'decimal': ',',
@@ -1018,42 +952,42 @@ namespace NBYS_WebParts.ArmaganListesiWP
             return tableString;
         }
         #endregion
-        private void ModalArmaganTableHeaders()
-        {
-            ModalArmaganTable.Rows.Clear();
-            TableHeaderRow headerRow = new TableHeaderRow();
+        //private void ModalArmaganTableHeaders()
+        //{
+        //    ModalArmaganTable.Rows.Clear();
+        //    TableHeaderRow headerRow = new TableHeaderRow();
 
-            TableHeaderCell bagisTarihiCell = new TableHeaderCell
-            {
-                Text = "Bağış Tarihi"
-            };
+        //    TableHeaderCell bagisTarihiCell = new TableHeaderCell
+        //    {
+        //        Text = "Bağış Tarihi"
+        //    };
 
-            TableHeaderCell BagisMiktariCell = new TableHeaderCell
-            {
-                Text = "Bağış Miktarı"
-            };
+        //    TableHeaderCell BagisMiktariCell = new TableHeaderCell
+        //    {
+        //        Text = "Bağış Miktarı"
+        //    };
 
-            TableHeaderCell bankaCell = new TableHeaderCell
-            {
-                Text = "Banka"
-            };
+        //    TableHeaderCell bankaCell = new TableHeaderCell
+        //    {
+        //        Text = "Banka"
+        //    };
 
-            TableHeaderCell durumCell = new TableHeaderCell
-            {
-                Text = "Durum"
-            };
-            TableHeaderCell aciklamaCell = new TableHeaderCell
-            {
-                Text = "Açıklama"
-            };
-            headerRow.Controls.Add(bagisTarihiCell);
-            headerRow.Controls.Add(BagisMiktariCell);
-            headerRow.Controls.Add(bankaCell);
-            headerRow.Controls.Add(durumCell);
-            headerRow.Controls.Add(aciklamaCell);
+        //    TableHeaderCell durumCell = new TableHeaderCell
+        //    {
+        //        Text = "Durum"
+        //    };
+        //    TableHeaderCell aciklamaCell = new TableHeaderCell
+        //    {
+        //        Text = "Açıklama"
+        //    };
+        //    headerRow.Controls.Add(bagisTarihiCell);
+        //    headerRow.Controls.Add(BagisMiktariCell);
+        //    headerRow.Controls.Add(bankaCell);
+        //    headerRow.Controls.Add(durumCell);
+        //    headerRow.Controls.Add(aciklamaCell);
 
-            ModalArmaganTable.Controls.Add(headerRow);
+        //    ModalArmaganTable.Controls.Add(headerRow);
 
-        }
+        //}
     }
 }

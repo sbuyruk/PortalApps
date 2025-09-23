@@ -45,6 +45,10 @@ namespace NBYS_WebParts.BagisIadesiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor YonergeLnk;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.HtmlControls.HtmlInputText paramNakitBagisciIdLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -225,6 +229,26 @@ namespace NBYS_WebParts.BagisIadesiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.HtmlControls.HtmlAnchor @__BuildControlYonergeLnk() {
+            global::System.Web.UI.HtmlControls.HtmlAnchor @__ctrl;
+            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlAnchor();
+            this.YonergeLnk = @__ctrl;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", " btn btn-outline-primary float-end me-4");
+            @__ctrl.ID = "YonergeLnk";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-fancybox", "");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-type", "pdf");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-width", "960");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-height", "720");
+            @__ctrl.HRef = "";
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    <i class=\"fa fa-book\" aria-hidden=\"true\"></i>\r\n            " +
+                        "    "));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControl__control2() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -321,7 +345,7 @@ namespace NBYS_WebParts.BagisIadesiWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.CssClass = "btn text-danger m-1";
             @__ctrl.ID = "UyariLbl";
-            @__ctrl.Text = " * Yalnızca son 5 yıl içinde yapılan bağışlar iade edilebilir.";
+            @__ctrl.Text = " * Yalnızca son 1 ay içinde yapılan bağışlar iade edilebilir.";
             return @__ctrl;
         }
         
@@ -1174,42 +1198,45 @@ namespace NBYS_WebParts.BagisIadesiWP {
             @__ctrl1 = this.@__BuildControlCloseBtn();
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(@__ctrl1);
-            global::System.Web.UI.WebControls.Label @__ctrl2;
-            @__ctrl2 = this.@__BuildControl__control2();
+            global::System.Web.UI.HtmlControls.HtmlAnchor @__ctrl2;
+            @__ctrl2 = this.@__BuildControlYonergeLnk();
             @__parser.AddParsedSubObject(@__ctrl2);
-            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl3;
-            @__ctrl3 = this.@__BuildControlparamNakitBagisciIdLbl();
+            global::System.Web.UI.WebControls.Label @__ctrl3;
+            @__ctrl3 = this.@__BuildControl__control2();
             @__parser.AddParsedSubObject(@__ctrl3);
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl4;
-            @__ctrl4 = this.@__BuildControlparamBagisHareketIdLbl();
+            @__ctrl4 = this.@__BuildControlparamNakitBagisciIdLbl();
             @__parser.AddParsedSubObject(@__ctrl4);
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl5;
-            @__ctrl5 = this.@__BuildControlparamArmaganIdLbl();
+            @__ctrl5 = this.@__BuildControlparamBagisHareketIdLbl();
             @__parser.AddParsedSubObject(@__ctrl5);
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl6;
-            @__ctrl6 = this.@__BuildControlAraDiv();
+            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl6;
+            @__ctrl6 = this.@__BuildControlparamArmaganIdLbl();
             @__parser.AddParsedSubObject(@__ctrl6);
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl7;
-            @__ctrl7 = this.@__BuildControlBagisciSecTableDiv();
+            @__ctrl7 = this.@__BuildControlAraDiv();
             @__parser.AddParsedSubObject(@__ctrl7);
-            global::System.Web.UI.WebControls.LinkButton @__ctrl8;
-            @__ctrl8 = this.@__BuildControlBagisHareketListesiBtn();
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl8;
+            @__ctrl8 = this.@__BuildControlBagisciSecTableDiv();
             @__parser.AddParsedSubObject(@__ctrl8);
             global::System.Web.UI.WebControls.LinkButton @__ctrl9;
-            @__ctrl9 = this.@__BuildControlArmaganListesiBtn();
+            @__ctrl9 = this.@__BuildControlBagisHareketListesiBtn();
             @__parser.AddParsedSubObject(@__ctrl9);
-            global::System.Web.UI.UpdateProgress @__ctrl10;
-            @__ctrl10 = this.@__BuildControlupdateProgress();
+            global::System.Web.UI.WebControls.LinkButton @__ctrl10;
+            @__ctrl10 = this.@__BuildControlArmaganListesiBtn();
             @__parser.AddParsedSubObject(@__ctrl10);
-            global::System.Web.UI.UpdatePanel @__ctrl11;
-            @__ctrl11 = this.@__BuildControlUpdatePanel1();
+            global::System.Web.UI.UpdateProgress @__ctrl11;
+            @__ctrl11 = this.@__BuildControlupdateProgress();
             @__parser.AddParsedSubObject(@__ctrl11);
             global::System.Web.UI.UpdatePanel @__ctrl12;
-            @__ctrl12 = this.@__BuildControlUpdatePanel3();
+            @__ctrl12 = this.@__BuildControlUpdatePanel1();
             @__parser.AddParsedSubObject(@__ctrl12);
             global::System.Web.UI.UpdatePanel @__ctrl13;
-            @__ctrl13 = this.@__BuildControlUpdatePanel2();
+            @__ctrl13 = this.@__BuildControlUpdatePanel3();
             @__parser.AddParsedSubObject(@__ctrl13);
+            global::System.Web.UI.UpdatePanel @__ctrl14;
+            @__ctrl14 = this.@__BuildControlUpdatePanel2();
+            @__parser.AddParsedSubObject(@__ctrl14);
             @__ctrl.SetRenderMethodDelegate(new System.Web.UI.RenderMethod(this.@__Render__control1));
         }
         
@@ -1257,8 +1284,8 @@ namespace NBYS_WebParts.BagisIadesiWP {
                          @__w.Write( paramNakitBagisciIdLbl.ClientID);
 
             @__w.Write("\').value = armaganId;\r\n\r\n        var myModal = new bootstrap.Modal(document.getEl" +
-                    "ementById(\'ModalUrlDiv\'));\n        myModal.show();\r\n        document.getElementB" +
-                    "yId(\'");
+                    "ementById(\'ModalUrlDiv\'));\r\n        myModal.show();\r\n        document.getElement" +
+                    "ById(\'");
                          @__w.Write( ModalDoldurBtn.ClientID);
 
             @__w.Write("\').click();\r\n\r\n    }\r\n    function CallButtonClick(bagisHareketId) {\r\n        doc" +
@@ -1296,36 +1323,38 @@ namespace NBYS_WebParts.BagisIadesiWP {
             parameterContainer.Controls[0].RenderControl(@__w);
             @__w.Write("\r\n            <h3 class=\"mb-1\">\r\n                ");
             parameterContainer.Controls[1].RenderControl(@__w);
+            @__w.Write("\r\n                ");
+            parameterContainer.Controls[2].RenderControl(@__w);
             @__w.Write("\r\n            </h3>\r\n        </div>\r\n        <div class=\"card-body\">\r\n           " +
                     " <div style=\"display: none\">\r\n                ");
-            parameterContainer.Controls[2].RenderControl(@__w);
-            @__w.Write("\r\n                ");
             parameterContainer.Controls[3].RenderControl(@__w);
             @__w.Write("\r\n                ");
             parameterContainer.Controls[4].RenderControl(@__w);
-            @__w.Write("\r\n\r\n            </div>\r\n            ");
+            @__w.Write("\r\n                ");
             parameterContainer.Controls[5].RenderControl(@__w);
-            @__w.Write("\r\n            ");
+            @__w.Write("\r\n\r\n            </div>\r\n            ");
             parameterContainer.Controls[6].RenderControl(@__w);
-            @__w.Write("\r\n        </div>\r\n        <div class=\"card-footer\">\r\n            ");
-            parameterContainer.Controls[7].RenderControl(@__w);
             @__w.Write("\r\n            ");
+            parameterContainer.Controls[7].RenderControl(@__w);
+            @__w.Write("\r\n        </div>\r\n        <div class=\"card-footer\">\r\n            ");
             parameterContainer.Controls[8].RenderControl(@__w);
-            @__w.Write("\r\n        </div>\r\n    </div>\r\n    ");
+            @__w.Write("\r\n            ");
             parameterContainer.Controls[9].RenderControl(@__w);
+            @__w.Write("\r\n        </div>\r\n    </div>\r\n    ");
+            parameterContainer.Controls[10].RenderControl(@__w);
             @__w.Write("\r\n</div>\r\n<div class=\"modal\" id=\"ModalUrlDiv\" role=\"dialog\">\r\n    <div class=\"mod" +
                     "al-dialog modal-lg\">\r\n        <!-- Modal content-->\r\n        <div class=\"modal-c" +
                     "ontent\">\r\n            ");
-            parameterContainer.Controls[10].RenderControl(@__w);
+            parameterContainer.Controls[11].RenderControl(@__w);
             @__w.Write("\r\n        </div>\r\n    </div>\r\n</div>\r\n<div class=\"modal\" id=\"ParaIadeModalOnayDiv" +
                     "\" role=\"dialog\">\r\n    <div class=\"modal-dialog\">\r\n        <!-- Modal content-->\r" +
                     "\n        <div class=\"modal-content\" style=\"width: 550px;\">\r\n            ");
-            parameterContainer.Controls[11].RenderControl(@__w);
+            parameterContainer.Controls[12].RenderControl(@__w);
             @__w.Write("\r\n        </div>\r\n    </div>\r\n</div>\r\n<div class=\"modal\" id=\"ParaIadeDegistirModa" +
                     "lOnayDiv\" role=\"dialog\">\r\n    <div class=\"modal-dialog\">\r\n        <!-- Modal con" +
                     "tent-->\r\n        <div class=\"modal-content\" style=\"width: 550px;\">\r\n            " +
                     "");
-            parameterContainer.Controls[12].RenderControl(@__w);
+            parameterContainer.Controls[13].RenderControl(@__w);
             @__w.Write("\r\n        </div>\r\n    </div>\r\n</div>\r\n");
         }
         

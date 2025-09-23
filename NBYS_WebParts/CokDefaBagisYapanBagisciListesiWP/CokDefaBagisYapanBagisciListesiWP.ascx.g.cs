@@ -149,7 +149,7 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP {
             global::System.Web.UI.HtmlControls.HtmlAnchor @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlAnchor();
             this.YonergeLnk = @__ctrl;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", " btn btn-outline-primary float-end mr-4");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", " btn btn-outline-primary float-end me-4");
             @__ctrl.ID = "YonergeLnk";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-fancybox", "");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-type", "pdf");
@@ -512,7 +512,6 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP {
                                         <th>Bağış Miktarı</th>
                                         <th>Banka</th>
                                         <th>Armağan</th>
-                                        <th>Armağan Tutarı</th>
                                         <th>Armağan Durumu</th>
                                     </tr>
                                 </thead>
@@ -683,6 +682,17 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP {
         private void @__Render__control1(System.Web.UI.HtmlTextWriter @__w, System.Web.UI.Control parameterContainer) {
             @__w.Write(@"
 
+<style>
+    .table-muted-bg {
+        background-color: #f5f6fa !important; /* Soluk bir arka plan */
+        color: #6c757d !important;           /* Gri yazı */
+    }
+    .table-muted-bg th,
+    .table-muted-bg td {
+        background-color: #f5f6fa !important;
+        color: #6c757d !important;
+    }
+</style>
 <script>    
     //excele export ettikten donup sonra kalmasın diye
     function setFormSubmitToFalse() {
@@ -723,24 +733,26 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP {
             parameterContainer.Controls[2].RenderControl(@__w);
             @__w.Write("\r\n                ");
             parameterContainer.Controls[3].RenderControl(@__w);
-            @__w.Write(@"
-            </div>
-            <div class=""form-group"">
-                <table id=""CustomDataTable"" class=""table table-striped row-border"" width=""100%"">
-                    <thead>
-                        <tr>
-                            <th>Bağışçı No</th>
-                            <th>Adı Soyadı</th>
-                            <th>Toplam Bağış Adedi</th>
-                            <th>Toplam Bağış Tutarı</th>
-                            <th>Son Bağış Tarihi</th>
-                            <th>Madalya</th>
-                            <th>Öncelik</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-            ");
+            @__w.Write("\r\n            </div>\r\n            <div class=\"form-group\">\r\n                <tabl" +
+                    "e id=\"CustomDataTable\" class=\"table table-striped row-border\" width=\"100%\">\r\n   " +
+                    "                 <thead>\r\n                        <tr>\r\n                        " +
+                    "    <th>Bağışçı No</th>\r\n                            <th>Adı Soyadı</th>\r\n      " +
+                    "                      <th>Toplam Bağış Adedi</th>\r\n                            <" +
+                    "th>Toplam Bağış Tutarı</th>\r\n                            <th>Son Bağış Tarihi</t" +
+                    "h>\r\n                            <th>Armağan</th>\r\n                            <t" +
+                    "h>Öncelik</th>\r\n                        </tr>\r\n                    </thead>\r\n   " +
+                    "             </table>\r\n                <hr />\r\n                <hr />\r\n         " +
+                    "       <table id=\"CustomDataTableVerilen\" class=\"table table-striped row-border " +
+                    "table-muted-bg\" width=\"100%\">\r\n\r\n                    <thead>\r\n                  " +
+                    "      <tr>\r\n                            <th colspan=\"6\" class=\"text-center text-" +
+                    "white bg-secondary\">DAHA ÖNCE VERİLEN ARMAĞANLAR\r\n                            </" +
+                    "th>\r\n                        </tr>\r\n                        <tr>\r\n              " +
+                    "              <th>Bağışçı No</th>\r\n                            <th>Adı Soyadı</t" +
+                    "h>\r\n                            <th>Armağan</th>\r\n                            <t" +
+                    "h>Bağış Adedi</th>\r\n                            <th>Bağış Toplamı</th>\r\n        " +
+                    "                    <th>Armağan Tarihi</th>\r\n                        </tr>\r\n    " +
+                    "                </thead>\r\n                </table>\r\n            </div>\r\n        " +
+                    "    ");
             parameterContainer.Controls[4].RenderControl(@__w);
             @__w.Write("\r\n        </div>\r\n        <div class=\"card-footer\">\r\n            ");
             parameterContainer.Controls[5].RenderControl(@__w);

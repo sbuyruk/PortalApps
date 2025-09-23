@@ -7,6 +7,17 @@
 <%@ Register Tagprefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="CokDefaBagisYapanBagisciListesiWP.ascx.cs" Inherits="NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP.CokDefaBagisYapanBagisciListesiWP" %>
 
+<style>
+    .table-muted-bg {
+        background-color: #f5f6fa !important; /* Soluk bir arka plan */
+        color: #6c757d !important;           /* Gri yazı */
+    }
+    .table-muted-bg th,
+    .table-muted-bg td {
+        background-color: #f5f6fa !important;
+        color: #6c757d !important;
+    }
+</style>
 <script>    
     //excele export ettikten donup sonra kalmasın diye
     function setFormSubmitToFalse() {
@@ -37,7 +48,7 @@
         <div class="card-header" id="CardHeader" runat="server">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-2">
-                <a class=" btn btn-outline-primary float-end mr-4" runat="server" id="YonergeLnk"
+                <a class=" btn btn-outline-primary float-end me-4" runat="server" id="YonergeLnk"
                     data-fancybox
                     data-type="pdf"
                     data-width="960"
@@ -65,8 +76,27 @@
                             <th>Toplam Bağış Adedi</th>
                             <th>Toplam Bağış Tutarı</th>
                             <th>Son Bağış Tarihi</th>
-                            <th>Madalya</th>
+                            <th>Armağan</th>
                             <th>Öncelik</th>
+                        </tr>
+                    </thead>
+                </table>
+                <hr />
+                <hr />
+                <table id="CustomDataTableVerilen" class="table table-striped row-border table-muted-bg" width="100%">
+
+                    <thead>
+                        <tr>
+                            <th colspan="6" class="text-center text-white bg-secondary">DAHA ÖNCE VERİLEN ARMAĞANLAR
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>Bağışçı No</th>
+                            <th>Adı Soyadı</th>
+                            <th>Armağan</th>
+                            <th>Bağış Adedi</th>
+                            <th>Bağış Toplamı</th>
+                            <th>Armağan Tarihi</th>
                         </tr>
                     </thead>
                 </table>
@@ -128,7 +158,6 @@
                                         <th>Bağış Miktarı</th>
                                         <th>Banka</th>
                                         <th>Armağan</th>
-                                        <th>Armağan Tutarı</th>
                                         <th>Armağan Durumu</th>
                                     </tr>
                                 </thead>

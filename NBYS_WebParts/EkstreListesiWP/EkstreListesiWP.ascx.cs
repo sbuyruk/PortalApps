@@ -187,7 +187,7 @@ namespace NBYS_WebParts.EkstreListesiWP
                 {
                     if (!Page.IsPostBack)
                     {
-
+                    YonergeLnk.HRef = UtilityHelper.YonergeURLGetir(ProjeConstants.PARAM_NBYSYONERGE, ProjeConstants.NBYSBELGELERI_LIB, ProjeConstants.PAGE_ARMAGANOLUSTURMA);
                     if (!string.IsNullOrEmpty(MesajQS))
                         {
                             if (IslemQS.ToLower().Equals("silme"))
@@ -243,6 +243,8 @@ namespace NBYS_WebParts.EkstreListesiWP
         {
             AkbankLbl.Text = ProjeConstants.BANKA_AKBANK;
             AkbankEkstreLbl.Text = ProjeConstants.BANKA_AKBANKEKSTRE;
+            FinansbankLbl.Text = ProjeConstants.BANKA_FINANSBANK;
+            FinansbankEkstreLbl.Text = ProjeConstants.BANKA_FINANSBANKEKSTRE;
             EDevletLbl.Text = ProjeConstants.BANKA_EDEVLETBAGIS;
             GarantiLbl.Text = ProjeConstants.BANKA_GARANTI;
             HalkbankLbl.Text = ProjeConstants.BANKA_HALKBANK;
@@ -260,6 +262,8 @@ namespace NBYS_WebParts.EkstreListesiWP
 
             AkbankOkLbl.Text = string.Empty;
             AkbankEkstreOkLbl.Text = string.Empty;
+            FinansbankOkLbl.Text = string.Empty;
+            FinansbankEkstreOkLbl.Text = string.Empty;
             EDevletOkLbl.Text = string.Empty;
             GarantiOkLbl.Text = string.Empty;
             HalkbankOkLbl.Text = string.Empty;
@@ -289,16 +293,27 @@ namespace NBYS_WebParts.EkstreListesiWP
                 AkbankOkLbl.ForeColor = System.Drawing.Color.Red;
                 AkbankOkLbl.Text = "X";
             }
-            bool isAkbankEkstreAktarildi = ekstreAktarma.CheckIsExistByBankaAdiAndIslemTarihi(ProjeConstants.BANKA_AKBANKEKSTRE, islemTarihi);
-            if (isAkbankEkstreAktarildi)
+            bool isFinansbankAktarildi = ekstreAktarma.CheckIsExistByBankaAdiAndIslemTarihi(ProjeConstants.BANKA_FINANSBANK, islemTarihi);
+            if (isFinansbankAktarildi)
             {
-                AkbankEkstreOkLbl.ForeColor = System.Drawing.Color.Green;
-                AkbankEkstreOkLbl.Text = "  " + ((char)0x221A).ToString();
+                FinansbankOkLbl.ForeColor = System.Drawing.Color.Green;
+                FinansbankOkLbl.Text = "  " + ((char)0x221A).ToString();
             }
             else
             {
-                AkbankEkstreOkLbl.ForeColor = System.Drawing.Color.Red;
-                AkbankEkstreOkLbl.Text = "X";
+                FinansbankOkLbl.ForeColor = System.Drawing.Color.Red;
+                FinansbankOkLbl.Text = "X";
+            }
+            bool isFinansbankEkstreAktarildi = ekstreAktarma.CheckIsExistByBankaAdiAndIslemTarihi(ProjeConstants.BANKA_FINANSBANKEKSTRE, islemTarihi);
+            if (isFinansbankEkstreAktarildi)
+            {
+                FinansbankEkstreOkLbl.ForeColor = System.Drawing.Color.Green;
+                FinansbankEkstreOkLbl.Text = "  " + ((char)0x221A).ToString();
+            }
+            else
+            {
+                FinansbankEkstreOkLbl.ForeColor = System.Drawing.Color.Red;
+                FinansbankEkstreOkLbl.Text = "X";
             }
             bool isEDevletAktarildi = ekstreAktarma.CheckIsExistByBankaAdiAndIslemTarihi(ProjeConstants.BANKA_EDEVLETBAGIS, islemTarihi);
             if (isEDevletAktarildi)
@@ -569,6 +584,10 @@ namespace NBYS_WebParts.EkstreListesiWP
                     sk.SilinmeSebebi = counter + " adet kayıt silindi";
                     sk.TabloAdi = "EkstreAktarma_Table";
                     sk.SilinmeTarihi = DateTime.Now.ReturnTRDateFormat();
+                    if (mesaj.Length > 2000)
+                    {
+                        mesaj = mesaj.Substring(0, 1990);
+                    }
                     sk.SilinenKayitBilgisi = mesaj;
                     sk.Save();
 
@@ -604,8 +623,8 @@ namespace NBYS_WebParts.EkstreListesiWP
                     BankaDDL.Items.Add(new ListItem(banka.Banka, banka.Id.ToString()));
                 }
             }
-            if (BankaDDL.Items.FindByValue(ProjeConstants.HEPSI_INT.ToString()) != null)
-                BankaDDL.SelectedValue = BankaDDL.Items.FindByValue(ProjeConstants.HEPSI_INT.ToString()).Value;
+            UtilityHelper.SetDDLValue(BankaDDL, ProjeConstants.HEPSI_INT.ToString());
+
         }
         private List<EkstreAktarmaListItem> GetDataList()
         {

@@ -66,6 +66,7 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
                 {
                     YonergeLnk.HRef = UtilityHelper.YonergeURLGetir(ProjeConstants.PARAM_NBYSYONERGE, ProjeConstants.NBYSBELGELERI_LIB, ProjeConstants.PAGE_COKDEFABAGISYAPAN_LIST);
                     TabloOlustur();
+                    TabloOlusturVerilenArmagan();
                 }
             }
             catch (Exception ex)
@@ -246,7 +247,8 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
                     {
                         DateTime bastar = ProjeConstants.COKBAGISYAPAN_BASLAMATARIHI.ConvertToDatetime();
                         DateTime bittar = DateTime.Today;
-                        armaganId = EkstreAktarma.ArmaganiKaydetVeyaGuncelle(bastar, bittar, nakitBagisciId, sonBagisTarihi, toplamBagis, hakedilenArmaganTanim.Id, UtilityHelper.GetCurrentUserLoginName(), nakitBagisci, nakitBagisHareketListesi);
+                        bool cokluBagis = true;
+                        armaganId = EkstreAktarma.ArmaganiKaydetVeyaGuncelle(bastar, bittar, nakitBagisciId, sonBagisTarihi, toplamBagis, hakedilenArmaganTanim.Id, UtilityHelper.GetCurrentUserLoginName(), nakitBagisci, nakitBagisHareketListesi, cokluBagis);
                     }
                     else
                     {
@@ -298,8 +300,6 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
                     return link;
                     }},
                     { 'width': '20%', targets: [1] },
-                    { 'width': '30%', targets: [5] },
-                    { 'width': '5%', targets: [6] }
                 ],
                 'language': {
                     'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
@@ -356,6 +356,145 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
         ";
             return tableString;
         }
+        #region Verilen Armağanlar
+        private void TabloOlusturVerilenArmagan()
+        {
+            List<BagisciListItem> list = GetVerilenArmaganData();
+            var serializer = new JavaScriptSerializer();
+            var jsonData = serializer.Serialize(list);
+            var jsString = CreateDataTableVerilen(jsonData); //javascript kodu hazırlanıyor.
+            UtilityHelper.ScriptCalistir(jsString);
+        }
+        private List<BagisciListItem> GetVerilenArmaganData()
+        {
+            IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
+            List<BagisciListItem> list = new List<BagisciListItem>();
+            Armagan armagan = new Armagan();
+
+            DataTable dataTable = armagan.SelectVerilenArmaganlarGroupByBagisciReturnList();
+            if (dataTable != null)
+            {
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    int nakitBagisciId = row["BagisciId"].ReturnZeroIfNull().ConvertToInt();
+                    string adi = row["Adi"].ReturnEmptyIfNull().ToString();
+                    string soyadi = row["Soyadi"].ReturnEmptyIfNull().ToString();
+                    string verilenArmagan = row["Armagan"].ReturnEmptyIfNull().ToString();
+                    string bagisAdedi = row["BagisAdedi"].ReturnZeroIfNull().ToString();
+                    decimal toplamBagisTutari = row["ToplamBagis"].ReturnZeroIfNull().ConvertToDecimal();
+                    DateTime armaganTarihi = row["Tarih"].ReturnEmptyIfNull().ConvertToDatetime();
+
+                    BagisciListItem listItem = new BagisciListItem();
+                    listItem.NakitBagisciId = nakitBagisciId;
+                    listItem.AdiSoyadi = (adi + " " + soyadi).Trim();
+                    listItem.ToplamBagisAdedi = bagisAdedi;
+                    listItem.ToplamBagisTutari = toplamBagisTutari.ToString("N", culturInfo);
+                    listItem.VerilenArmagan = verilenArmagan;
+                    listItem.Tarih = armaganTarihi.ConvertToDatetimeEmptyIfNull();
+                    list.Add(listItem);
+                }
+            }
+            
+
+
+
+            //string json = nakitBagisci.ToJSON(dataTable);
+            return list;
+        }
+        private string CreateDataTableVerilen(string jsonData)
+        {
+
+            string tableString = @"
+            jQuery(document).ready(function () {
+
+            jQuery('#CustomDataTableVerilen').DataTable({
+                'initComplete': function (settings, json) {//tablo yüklendiğinde
+                    var api = this.api();
+                    var row = api.row(function(idx, data, node) { //secilen satıra gider
+                        return data['NakitBagisciId'] ==" + SecilenIdQS + @";
+                    });
+                    if (row.length > 0)
+                    {
+                        row.select()
+                            .show()
+                            .draw(false);
+                    }
+                },
+                data: " + jsonData + @",
+                columns: [
+                    { data: 'NakitBagisciId'},
+                    { data: 'AdiSoyadi'},
+                    { data: 'VerilenArmagan' },
+                    { data: 'ToplamBagisAdedi' },
+                    { data: 'ToplamBagisTutari' },
+                    { data: 'Tarih' },
+                ],
+                'order': [5, 'asc'],
+                columnDefs:
+                [
+                    {
+                    targets: 1, render: function(data, type, row, meta) {
+                    var link= '<a href=# onclick=OpenModal('+row.NakitBagisciId+'); class=\'btn btn-link \'>'+(row.AdiSoyadi).trim() + '</a>';
+                    return link;
+                    }},
+                    { 'width': '20%', targets: [1] },
+                ],
+                'language': {
+                    'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
+                    'decimal': ',',
+                    'thousands': '.'
+                },
+                responsive: true,
+                destroy: true,
+                autoWidth: false,
+                fixedColumns: true,
+                dom: 'Bfrtip',
+                buttons:
+                [
+                    {
+                extend: 'print',
+                        exportOptions:
+                    {
+                    columns: ':visible'
+                        }
+                },
+                    {
+                      extend: 'excel',
+                      exportOptions: {
+                          columns: ':visible',
+                          format: {
+                              body: function(data, row, column, node) {
+                                  data = $('<p>' + data + '</p>').text();
+                                  return $.isNumeric(data.replace(',', '.')) ? data.replace(',', '.') : data;
+                              }
+                          }
+                      },
+                },
+                    {
+                extend: 'pdf',
+                        exportOptions:
+                    {
+                    columns: ':visible'
+                        }
+                },
+                    {
+                extend: 'copy',
+                        exportOptions:
+                    {
+                    columns: ':visible'
+                        }
+                },
+                    , 'pageLength', 'colvis'
+                ]
+
+
+
+            });
+        });
+        ";
+            return tableString;
+        }
+        #endregion
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
 
@@ -384,7 +523,6 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
                     { data: 'BagisMiktari', 'width': '10%', 'className': 'text-end' },
                     { data: 'Banka' },
                     { data: 'Armagan' },
-                    { data: 'ArmaganTutari' },
                     { data: 'Durum' },
                 ],
                 'order': [[0, 'desc']],
@@ -600,6 +738,8 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
             public string Madalya { get; set; }
             public bool Secildi { get; set; }
             public int Oncelik { get; set; }
+            public string VerilenArmagan { get; set; }
+            public string Tarih { get; set; }
         }
     }
 }

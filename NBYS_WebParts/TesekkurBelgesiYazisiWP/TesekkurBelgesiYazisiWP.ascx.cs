@@ -184,28 +184,9 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
         }
         private void FillDropDownList()
         {
-            GunDDLDoldur();
             AyDDLDoldur();
             YilDDLDoldur();
             BolgeDDLDoldur();
-        }
-        private void GunDDLDoldur()
-        {
-            //ARMAGAN PERIODU
-            //10 Günde bir
-            //GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Tüm Ay", "0"));
-            //GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("1-7", "1"));
-            //GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("8-14", "2"));
-            //GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("15-22", "3"));
-            //GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("23-Ay Sonu", "4"));
-
-            //15 Günde bir
-            GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Tüm Ay", "0"));
-            GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("1-15", "1"));
-            GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("16-Ay Sonu", "2"));
-
-            //Ayda bir
-            //GunDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Tüm Ay", "0"));
         }
         private void AyDDLDoldur()
         {
@@ -249,43 +230,14 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
         {
             try
             {
-                //acilista ay ve yili querystring ile gelen ay ve yıla eşitle boş geldiyse gecen aya/yila eşitle
-                //gün
-                int gunBolumu = DateTime.Today.Day < 15 ? 1 : 2;
-                // Periyod 15 ise
-                string gun = !string.IsNullOrEmpty(SecilenGunQS) ? SecilenGunQS : gunBolumu.ToString();
-                System.Web.UI.WebControls.ListItem gunItem = new System.Web.UI.WebControls.ListItem();
-                if (!string.IsNullOrEmpty(gun))
-                    gunItem = GunDDL.Items.FindByValue(gun);
 
-                if (gunItem != null)
-                {
-                    GunDDL.SelectedValue = gunItem.Value;
-                    SecilenGunQS = gunItem.Value;
-                }
-                //ay
-                string ay = !string.IsNullOrEmpty(SecilenAyQS) ? SecilenAyQS : (gunBolumu == 1 ? DateTime.Today.AddMonths(-1).Month.ToString() : DateTime.Today.Month.ToString());
-                System.Web.UI.WebControls.ListItem AyItem = new System.Web.UI.WebControls.ListItem();
-                if (!string.IsNullOrEmpty(ay))
-                    AyItem = AyDDL.Items.FindByValue(ay);
-
-                if (AyItem != null)
-                {
-                    AyDDL.SelectedValue = AyItem.Value;
-                    SecilenAyQS = AyItem.Value;
-                }
-
+                string ay = !string.IsNullOrEmpty(SecilenAyQS) ? SecilenAyQS : DateTime.Today.Month.ToString();
+                UtilityHelper.SetDDLValue(AyDDL, ay);
+                SecilenAyQS = ay;
                 //yil
                 string yil = !string.IsNullOrEmpty(SecilenYilQS) ? SecilenYilQS : DateTime.Today.Year.ReturnEmptyIfNull().ToString();
-                System.Web.UI.WebControls.ListItem YilItem = new System.Web.UI.WebControls.ListItem();
-                if (!string.IsNullOrEmpty(yil))
-                    YilItem = YilDDL.Items.FindByValue(yil);
-
-                if (YilItem != null)
-                {
-                    YilDDL.SelectedValue = YilItem.Value;
-                    SecilenYilQS = YilItem.Value;
-                }
+                UtilityHelper.SetDDLValue(YilDDL, yil);
+                SecilenYilQS = yil;
 
             }
             catch (Exception)
@@ -310,7 +262,6 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
         }
         protected void GunDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SecilenGunQS = GunDDL.SelectedItem.Value.ToString();
             SetSecilenBasTarBitTar();
             FillDurumValues();
         } 
@@ -321,57 +272,27 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
         }
         private void SetSecilenBasTarBitTar()
         {
-            string gunStr = GunDDL.SelectedItem.Value;
             int ay = AyDDL.SelectedItem.Value.ConvertToInt();
             int yil = YilDDL.SelectedItem.Value.ConvertToInt();
 
-            DateTime basTar = DateTime.Today;
-            DateTime bitTar = DateTime.Today;
-            //ARMAGAN PERIODU
-            //15 Günde bir
-            //if (gunStr.Equals("0"))
-            //{
-            //    basTar = new DateTime(yil, ay, 1);
-            //    int songun = basTar.AddMonths(1).AddDays(-1).Day;
-            //    bitTar = new DateTime(yil, ay, songun);
-            //}
-            //else if (gunStr.Equals("1"))
-            //{
-            //    basTar = new DateTime(yil, ay, 1);
-            //    bitTar = new DateTime(yil, ay, 10);
-            //}
-            //else if (gunStr.Equals("2"))
-            //{
-            //    basTar = new DateTime(yil, ay, 11);
-            //    bitTar = new DateTime(yil, ay, 20);
-            //}
-            //else if (gunStr.Equals("3"))
-            //{
-            //    basTar = new DateTime(yil, ay, 21);
-            //    DateTime basGun = new DateTime(yil, ay, 1).AddMonths(1).AddDays(-1);
-            //    bitTar = new DateTime(yil, ay, basGun.Day);
-            //}
+            DateTime bastar = DateTime.Today;
+            DateTime bittar = DateTime.Today;
 
-            //15 Günde bir
-            if (gunStr.Equals("0"))
+            if (ay == 0)
             {
-                basTar = new DateTime(yil, ay, 1);
-                int songun = basTar.AddMonths(1).AddDays(-1).Day;
-                bitTar = new DateTime(yil, ay, songun);
+                bastar = new DateTime(yil, 1, 1);
+                bittar = bastar.AddYears(1).AddDays(-1);
             }
-            else if (gunStr.Equals("1"))
+            else
             {
-                basTar = new DateTime(yil, ay, 1);
-                bitTar = new DateTime(yil, ay, 15);
-            }
-            else if (gunStr.Equals("2"))
-            {
-                basTar = new DateTime(yil, ay, 16);
+
+                bastar = new DateTime(yil, ay, 1);
                 DateTime basGun = new DateTime(yil, ay, 1).AddMonths(1).AddDays(-1);
-                bitTar = new DateTime(yil, ay, basGun.Day);
+                bittar = new DateTime(yil, ay, basGun.Day);
+
             }
-            SecilenBastarQS = basTar.ConvertToDatetimeEmptyIfNull();
-            SecilenBittarQS = bitTar.ConvertToDatetimeEmptyIfNull();
+            SecilenBastarQS = bastar.ConvertToDatetimeEmptyIfNull();
+            SecilenBittarQS = bittar.ConvertToDatetimeEmptyIfNull();
         }
         private void TabloOlustur()
         {
@@ -456,7 +377,6 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
         private DateTime GetBasTar()
         {
 
-            string gunStr = GunDDL.SelectedItem.Value;
             int ay = AyDDL.SelectedItem.Value.ConvertToInt();
             int yil = YilDDL.SelectedItem.Value.ConvertToInt();
 
@@ -468,97 +388,30 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
             }
             else
             {
-                //ARMAGAN PERIODU
-                //15 Günde bir
-                //if (gunStr.Equals("0"))
-                //{
-                //    bastar = new DateTime(yil, ay, 1);
-                //}
-                //else if (gunStr.Equals("1"))
-                //{
-                //    bastar = new DateTime(yil, ay, 1);
-                //}
-                //else
-                //{
-                //    bastar = new DateTime(yil, ay, 16);
-                //}
+                bastar = new DateTime(yil, ay, 1);
 
-                // 10 Günde bir
-                if (gunStr.Equals("0"))
-                {
-                    bastar = new DateTime(yil, ay, 1);//hepsi
-                }
-                else if (gunStr.Equals("1"))
-                {
-                    bastar = new DateTime(yil, ay, 1);
-                }
-                else if (gunStr.Equals("2"))
-                {
-                    bastar = new DateTime(yil, ay, 8);
-                }
-                else if (gunStr.Equals("3"))
-                {
-                    bastar = new DateTime(yil, ay, 15);
-                } 
-                else if (gunStr.Equals("4"))
-                {
-                    bastar = new DateTime(yil, ay, 23);
-                }
             }
             return bastar;
         }
         private DateTime GetBitTar()
         {
-            string gunStr = GunDDL.SelectedItem.Value;
             int ay = AyDDL.SelectedItem.Value.ConvertToInt();
             int yil = YilDDL.SelectedItem.Value.ConvertToInt();
 
+            DateTime bastar = DateTime.Today;
             DateTime bittar = DateTime.Today;
 
             if (ay == 0)
             {
-                bittar = (new DateTime(yil, 1, 1)).AddYears(1).AddDays(-1);
+                bastar = new DateTime(yil, 1, 1);
+                bittar = bastar.AddYears(1).AddDays(-1);
             }
             else
             {
-                //ARMAGAN PERIODU
-                //15 Günde bir
-                //if (gunStr.Equals("0"))
-                //{
-                //    int songun = (new DateTime(yil, ay, 1)).AddMonths(1).AddDays(-1).Day;
-                //    bittar = new DateTime(yil, ay, songun);
-                //}
-                //else if (gunStr.Equals("1"))
-                //{
-                //    bittar = new DateTime(yil, ay, 15);
-                //}
-                //else
-                //{
-                //    DateTime sonGun = new DateTime(yil, ay, 1).AddMonths(1).AddDays(-1);
-                //    bittar = new DateTime(yil, ay, sonGun.Day);
-                //}
 
-                // 10 Günde bir
-                if (gunStr.Equals("0"))
-                {
-                    bittar = new DateTime(yil, ay, 1).AddMonths(1).AddDays(-1);
-                }
-                else if (gunStr.Equals("1"))
-                {
-                    bittar = new DateTime(yil, ay, 7);
-                }
-                else if (gunStr.Equals("2"))
-                {
-                    bittar = new DateTime(yil, ay, 14);
-                }
-                else if (gunStr.Equals("3"))
-                {
-                    bittar = new DateTime(yil, ay, 22);
-                }
-                else if (gunStr.Equals("4"))
-                {
-                    bittar = new DateTime(yil, ay, 1).AddMonths(1).AddDays(-1);
-                }
+                bastar = new DateTime(yil, ay, 1);
+                DateTime basGun = new DateTime(yil, ay, 1).AddMonths(1).AddDays(-1);
+                bittar = new DateTime(yil, ay, basGun.Day);
 
             }
             return bittar;

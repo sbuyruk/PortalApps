@@ -20,23 +20,19 @@
     <div class="card-header ">
         <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
         <h3 class="mb-1">
-            <asp:Label CssClass="col-form-label btn-outline-info" runat="server" Text="Teşekkür Belgesi Basımı"></asp:Label>
+            <asp:Label CssClass="form-label btn-outline-info" runat="server" Text="Teşekkür Belgesi Basımı"></asp:Label>
         </h3>
     </div>
     <asp:UpdatePanel ID="upPanel" runat="server" class="text-center p-2">
         <ContentTemplate>
             <div class="row mt-2">
-                <div class="form-group col" style="display: block">
-                    <label class="col-form-label" for="GunDDL">Gün </label>
-                    <asp:DropDownList ID="GunDDL" runat="server" CssClass="form-control" AutoPostBack="True" OnSelectedIndexChanged="GunDDL_SelectedIndexChanged" Style="height: auto" />
+                <div class="form-group col">
+                    <label class="form-label" for="AyDDL">Ay </label>
+                    <asp:DropDownList ID="AyDDL" runat="server" CssClass="form-control form-select form-select-lg fw-bold" AutoPostBack="True" OnSelectedIndexChanged="AyDDL_SelectedIndexChanged" Style="height: auto" />
                 </div>
                 <div class="form-group col">
-                    <label class="col-form-label" for="AyDDL">Ay </label>
-                    <asp:DropDownList ID="AyDDL" runat="server" CssClass="form-control" AutoPostBack="True" OnSelectedIndexChanged="AyDDL_SelectedIndexChanged" Style="height: auto" />
-                </div>
-                <div class="form-group col">
-                    <label class="col-form-label" for="YilDDL">Yıl </label>
-                    <asp:DropDownList ID="YilDDL" runat="server" CssClass="form-control" AutoPostBack="True" OnSelectedIndexChanged="YilDDL_SelectedIndexChanged" Style="height: auto"/>
+                    <label class="form-label" for="YilDDL">Yıl </label>
+                    <asp:DropDownList ID="YilDDL" runat="server" CssClass="form-control form-select form-select-lg fw-bold" AutoPostBack="True" OnSelectedIndexChanged="YilDDL_SelectedIndexChanged" Style="height: auto"/>
                 </div>
             </div>
             <div class="card bg-info mb-2">

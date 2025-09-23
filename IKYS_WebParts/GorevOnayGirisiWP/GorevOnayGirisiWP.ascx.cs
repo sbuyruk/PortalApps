@@ -656,7 +656,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             UtilityHelper.ScriptCalistir(openPopup);
         }
 
-        private bool validateInputValues()
+        private bool ValidateInputValues(int gorevOnayId)
         {
             bool isEmpty = string.IsNullOrEmpty(BaslangicTarihiTxt.Text.ConvertToDatetimeEmptyIfNull()) ||
                 string.IsNullOrEmpty(BitisTarihiTxt.Text.ConvertToDatetimeEmptyIfNull()) ||
@@ -689,7 +689,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                     basTarih = UtilityHelper.TariheSaatEkle(basTarih, basSaat);
                     string bitSaat = BitSaatDDL.SelectedItem.Text;
                     bitTarih = UtilityHelper.TariheSaatEkle(bitTarih, bitSaat);
-                    isDateUsed = gorevOnay.GorevOnayVarMi(personelId, basTarih, bitTarih);
+                    isDateUsed = gorevOnay.GorevOnayVarMi(personelId, basTarih, bitTarih, gorevOnayId);
                     if (isDateUsed)
                     {
                         MessageHelper.PublishMessage("Bu tarihlerde başka bir görev kaydı bulunmaktadır.", ProjeConstants.MESAJ_HATA);
@@ -814,7 +814,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 personel = PersonelGetir();
                 if (personel != null)
                 {
-                    bool isValid = validateInputValues();
+                    bool isValid = ValidateInputValues(0);
                     if (isValid)
                     {
                         KaydetModalAc();
@@ -842,7 +842,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 personel = PersonelGetir();
                 if (personel != null)
                 {
-                    bool isValid = validateInputValues();
+                    bool isValid = ValidateInputValues(GorevOnayIdQS.ConvertToInt());
                     if (isValid)
                     {
                         bool isUpdated = Guncelle();
@@ -850,10 +850,6 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                         {
                             MessageHelper.PublishMessage("Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                         }
-                    }
-                    else
-                    {
-                        MessageHelper.PublishMessage("Lütfen bilgileri tamamlayınız.", ProjeConstants.MESAJ_HATA);
                     }
                 }
                 else

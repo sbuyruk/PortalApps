@@ -372,8 +372,8 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
                     BankaDDL.Items.Add(new ListItem(banka.Banka, banka.Id.ToString()));
                 }
             }
-            if (BankaDDL.Items.FindByValue(ProjeConstants.BANKA_BOS_INT.ToString()) != null)
-                BankaDDL.SelectedValue = BankaDDL.Items.FindByValue(ProjeConstants.BANKA_BOS_INT.ToString()).Value;
+            UtilityHelper.SetDDLValue(BankaDDL, ProjeConstants.BANKA_BOS_INT.ToString());
+
         }
         private void DovizCinsiDDLDoldur()
         {

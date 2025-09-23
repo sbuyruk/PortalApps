@@ -32,10 +32,7 @@
                     <div class="form-group row p-2">
                         <div class="form-group col-4 border border-dark border-right-0">
                             <div class="row">
-                                <div class="form-group col-4" style="display: block">
-                                    <label class="col-form-label" for="GunDDL">Gün </label>
-                                    <asp:DropDownList ID="GunDDL" runat="server" CssClass="form-control form-select form-select-lg fw-bold" AutoPostBack="True" OnSelectedIndexChanged="GunDDL_SelectedIndexChanged" Style="height: auto" />
-                                </div>
+
                                 <div class="form-group col-4">
                                     <label class="col-form-label" for="AyDDL">Ay </label>
                                     <asp:DropDownList ID="AyDDL" runat="server" CssClass="form-control form-select form-select-lg fw-bold" AutoPostBack="True" OnSelectedIndexChanged="AyDDL_SelectedIndexChanged" Style="height: auto" />

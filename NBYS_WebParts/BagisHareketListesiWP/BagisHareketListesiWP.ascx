@@ -39,15 +39,15 @@
                     <div class="row">
                         <div class="form-group col">
                             <label for="AyDDL" class="col-form-label text-end ">Ay</label>
-                            <asp:DropDownList ID="AyDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="AyDDL_SelectedIndexChanged" AutoPostBack="true" style="height:auto"></asp:DropDownList>
+                            <asp:DropDownList ID="AyDDL" runat="server" CssClass="form-control form-select form-select-lg fw-bold" OnSelectedIndexChanged="AyDDL_SelectedIndexChanged" AutoPostBack="true" style="height:auto"></asp:DropDownList>
                         </div>
                         <div class="form-group col">
                             <label for="YilDDL" class="col-form-label text-end">Yıl</label>
-                            <asp:DropDownList ID="YilDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="YilDDL_SelectedIndexChanged" AutoPostBack="true" style="height:auto"></asp:DropDownList>
+                            <asp:DropDownList ID="YilDDL" runat="server" CssClass="form-control form-select form-select-lg fw-bold" OnSelectedIndexChanged="YilDDL_SelectedIndexChanged" AutoPostBack="true" style="height:auto"></asp:DropDownList>
                         </div>
                         <div class="form-group col">
                             <label for="IlilDDL" class="col-form-label text-end">İl</label>
-                            <asp:DropDownList ID="IliDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="IliDDL_SelectedIndexChanged" AutoPostBack="true" style="height:auto"></asp:DropDownList>
+                            <asp:DropDownList ID="IliDDL" runat="server" CssClass="form-control form-select form-select-lg fw-bold" OnSelectedIndexChanged="IliDDL_SelectedIndexChanged" AutoPostBack="true" style="height:auto"></asp:DropDownList>
                         </div>
                         <div class="form-group col">
                             <div class="float-end">

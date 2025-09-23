@@ -45,6 +45,10 @@ namespace NBYS_WebParts.ArmaganListesiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor YonergeLnk;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.Label TitleLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -62,10 +66,6 @@ namespace NBYS_WebParts.ArmaganListesiWP {
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton IadeEdildiYapBtn;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.DropDownList GunDDL;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -117,11 +117,7 @@ namespace NBYS_WebParts.ArmaganListesiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.Label ArmaganLbl;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.Table ModalArmaganTable;
+        protected global::System.Web.UI.WebControls.Label BagisBilgileriLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -154,13 +150,34 @@ namespace NBYS_WebParts.ArmaganListesiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.HtmlControls.HtmlAnchor @__BuildControlYonergeLnk() {
+            global::System.Web.UI.HtmlControls.HtmlAnchor @__ctrl;
+            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlAnchor();
+            this.YonergeLnk = @__ctrl;
+            @__ctrl.TemplateControl = this;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", " btn btn-outline-primary float-end me-4");
+            @__ctrl.ID = "YonergeLnk";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-fancybox", "");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-type", "pdf");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-width", "960");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-height", "720");
+            @__ctrl.HRef = "";
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            <i class=\"fa fa-book\" aria-hidden=\"true\"></i>\r\n    " +
+                        "                    "));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlTitleLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-info fw-bold mb-1";
+            @__ctrl.CssClass = "form-label text-info fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Armağan Listesi";
             return @__ctrl;
@@ -176,7 +193,7 @@ namespace NBYS_WebParts.ArmaganListesiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "IdLbl";
-            @__ctrl.CssClass = "col-form-label text-white";
+            @__ctrl.CssClass = "form-label text-white";
             @__ctrl.Visible = false;
             return @__ctrl;
         }
@@ -191,7 +208,7 @@ namespace NBYS_WebParts.ArmaganListesiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "AdiLbl";
-            @__ctrl.CssClass = "col-form-label";
+            @__ctrl.CssClass = "form-label";
             return @__ctrl;
         }
         
@@ -229,24 +246,6 @@ namespace NBYS_WebParts.ArmaganListesiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.DropDownList @__BuildControlGunDDL() {
-            global::System.Web.UI.WebControls.DropDownList @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.DropDownList();
-            this.GunDDL = @__ctrl;
-            @__ctrl.TemplateControl = this;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "GunDDL";
-            @__ctrl.CssClass = "form-control";
-            @__ctrl.AutoPostBack = true;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: auto");
-            @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.GunDDL_SelectedIndexChanged);
-            @__ctrl.SelectedIndexChanged += new System.EventHandler(this.GunDDL_SelectedIndexChanged);
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.WebControls.DropDownList @__BuildControlAyDDL() {
             global::System.Web.UI.WebControls.DropDownList @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.DropDownList();
@@ -254,7 +253,7 @@ namespace NBYS_WebParts.ArmaganListesiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "AyDDL";
-            @__ctrl.CssClass = "form-control";
+            @__ctrl.CssClass = "form-control form-select form-select-lg fw-bold";
             @__ctrl.AutoPostBack = true;
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: auto");
             @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.AyDDL_SelectedIndexChanged);
@@ -272,7 +271,7 @@ namespace NBYS_WebParts.ArmaganListesiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "YilDDL";
-            @__ctrl.CssClass = "form-control";
+            @__ctrl.CssClass = "form-control form-select form-select-lg fw-bold";
             @__ctrl.AutoPostBack = true;
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: auto");
             @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.YilDDL_SelectedIndexChanged);
@@ -290,7 +289,7 @@ namespace NBYS_WebParts.ArmaganListesiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "ArmaganDDL";
-            @__ctrl.CssClass = "form-control";
+            @__ctrl.CssClass = "form-control form-select form-select-lg fw-bold";
             @__ctrl.AutoPostBack = true;
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: auto");
             @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.ArmaganDDL_SelectedIndexChanged);
@@ -308,7 +307,7 @@ namespace NBYS_WebParts.ArmaganListesiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "DurumDDL";
-            @__ctrl.CssClass = "form-control";
+            @__ctrl.CssClass = "form-control form-select form-select-lg fw-bold";
             @__ctrl.AutoPostBack = true;
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: auto");
             @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.DurumDDL_SelectedIndexChanged);
@@ -326,7 +325,7 @@ namespace NBYS_WebParts.ArmaganListesiWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "IliDDL";
-            @__ctrl.CssClass = "form-control";
+            @__ctrl.CssClass = "form-control form-select form-select-lg fw-bold";
             @__ctrl.AutoPostBack = true;
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: auto");
             @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.IliDDL_SelectedIndexChanged);
@@ -379,63 +378,58 @@ namespace NBYS_WebParts.ArmaganListesiWP {
             @__ctrl1 = this.@__BuildControlCloseBtn();
             @__parser.AddParsedSubObject(@__ctrl1);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    <h3 class=\"mb-1\">\r\n                        "));
-            global::System.Web.UI.WebControls.Label @__ctrl2;
-            @__ctrl2 = this.@__BuildControlTitleLbl();
+            global::System.Web.UI.HtmlControls.HtmlAnchor @__ctrl2;
+            @__ctrl2 = this.@__BuildControlYonergeLnk();
             @__parser.AddParsedSubObject(@__ctrl2);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        "));
             global::System.Web.UI.WebControls.Label @__ctrl3;
-            @__ctrl3 = this.@__BuildControlIdLbl();
+            @__ctrl3 = this.@__BuildControlTitleLbl();
             @__parser.AddParsedSubObject(@__ctrl3);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        "));
             global::System.Web.UI.WebControls.Label @__ctrl4;
-            @__ctrl4 = this.@__BuildControlAdiLbl();
+            @__ctrl4 = this.@__BuildControlIdLbl();
             @__parser.AddParsedSubObject(@__ctrl4);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        "));
+            global::System.Web.UI.WebControls.Label @__ctrl5;
+            @__ctrl5 = this.@__BuildControlAdiLbl();
+            @__parser.AddParsedSubObject(@__ctrl5);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </h3>\r\n                </div>\r\n                <div class=\"" +
                         "card-body\">\r\n                    <div style=\"display: none\">\r\n                  " +
                         "      "));
-            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl5;
-            @__ctrl5 = this.@__BuildControlparamArmaganIdLbl();
-            @__parser.AddParsedSubObject(@__ctrl5);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl6;
-            @__ctrl6 = this.@__BuildControlIadeEdildiYapBtn();
+            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl6;
+            @__ctrl6 = this.@__BuildControlparamArmaganIdLbl();
             @__parser.AddParsedSubObject(@__ctrl6);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-                    </div>
-                    <div class=""row m-2 "">
-                        <div class=""form-group col"" style=""display: block"">
-                            <label class=""col-form-label"" for=""GunDDL"">Gün </label>
-                            "));
-            global::System.Web.UI.WebControls.DropDownList @__ctrl7;
-            @__ctrl7 = this.@__BuildControlGunDDL();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl7;
+            @__ctrl7 = this.@__BuildControlIadeEdildiYapBtn();
             @__parser.AddParsedSubObject(@__ctrl7);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"form-group " +
-                        "col\">\r\n                            <label class=\"col-form-label\" for=\"AyDDL\">Ay " +
-                        "</label>\r\n                            "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                    <div class=\"row m-2 \">\r\n       " +
+                        "                 <div class=\"form-group col\">\r\n                            <labe" +
+                        "l class=\"form-label\" for=\"AyDDL\">Ay </label>\r\n                            "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl8;
             @__ctrl8 = this.@__BuildControlAyDDL();
             @__parser.AddParsedSubObject(@__ctrl8);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"form-group " +
-                        "col\">\r\n                            <label class=\"col-form-label\" for=\"YilDDL\">Yı" +
-                        "l </label>\r\n                            "));
+                        "col\">\r\n                            <label class=\"form-label\" for=\"YilDDL\">Yıl </" +
+                        "label>\r\n                            "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl9;
             @__ctrl9 = this.@__BuildControlYilDDL();
             @__parser.AddParsedSubObject(@__ctrl9);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"form-group " +
-                        "col\">\r\n                            <label class=\"col-form-label\" for=\"ArmaganDDL" +
-                        "\">Armağan </label>\r\n                            "));
+                        "col\">\r\n                            <label class=\"form-label\" for=\"ArmaganDDL\">Ar" +
+                        "mağan </label>\r\n                            "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl10;
             @__ctrl10 = this.@__BuildControlArmaganDDL();
             @__parser.AddParsedSubObject(@__ctrl10);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"form-group " +
-                        "col\">\r\n                            <label class=\"col-form-label\" for=\"DurumDDL\">" +
-                        "Durum </label>\r\n                            "));
+                        "col\">\r\n                            <label class=\"form-label\" for=\"DurumDDL\">Duru" +
+                        "m </label>\r\n                            "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl11;
             @__ctrl11 = this.@__BuildControlDurumDDL();
             @__parser.AddParsedSubObject(@__ctrl11);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"form-group " +
-                        "col\">\r\n                            <label class=\"col-form-label\" for=\"IliDDL\">İl" +
-                        " </label>\r\n                            "));
+                        "col\">\r\n                            <label class=\"form-label\" for=\"IliDDL\">İl </l" +
+                        "abel>\r\n                            "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl12;
             @__ctrl12 = this.@__BuildControlIliDDL();
             @__parser.AddParsedSubObject(@__ctrl12);
@@ -454,6 +448,7 @@ namespace NBYS_WebParts.ArmaganListesiWP {
                                     <th>Tarih</th>
                                     <th>Armağan</th>
                                     <th>Durumu</th>
+                                    <th>Çoklu Bağış</th>
                                     <th>Düzenle</th>
                                     <th>İade</th>
                                 </tr>
@@ -674,29 +669,15 @@ namespace NBYS_WebParts.ArmaganListesiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControlArmaganLbl() {
+        private global::System.Web.UI.WebControls.Label @__BuildControlBagisBilgileriLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
-            this.ArmaganLbl = @__ctrl;
+            this.BagisBilgileriLbl = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "ArmaganLbl";
-            @__ctrl.Text = "Armağana Ait Bağışlar";
+            @__ctrl.ID = "BagisBilgileriLbl";
+            @__ctrl.Text = "Bağışçının Yaptığı Nakit Bağışlar";
             @__ctrl.Font.Bold = true;
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Table @__BuildControlModalArmaganTable() {
-            global::System.Web.UI.WebControls.Table @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.Table();
-            this.ModalArmaganTable = @__ctrl;
-            @__ctrl.TemplateControl = this;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "table text-center table-bordered table-striped";
-            @__ctrl.ID = "ModalArmaganTable";
             return @__ctrl;
         }
         
@@ -725,14 +706,23 @@ namespace NBYS_WebParts.ArmaganListesiWP {
                         "            <h3>\r\n                                <br />\r\n                      " +
                         "          "));
             global::System.Web.UI.WebControls.Label @__ctrl4;
-            @__ctrl4 = this.@__BuildControlArmaganLbl();
+            @__ctrl4 = this.@__BuildControlBagisBilgileriLbl();
             @__parser.AddParsedSubObject(@__ctrl4);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </h3>\r\n                        </div>\r\n            " +
-                        "            <div class=\"text-center\">\r\n                            "));
-            global::System.Web.UI.WebControls.Table @__ctrl5;
-            @__ctrl5 = this.@__BuildControlModalArmaganTable();
-            @__parser.AddParsedSubObject(@__ctrl5);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                            </h3>
+                        </div>
+                        <div class=""form-group"">
+                            <table id=""CustomModalDataTable"" class=""table table-bordered table-striped"" width=""100%"">
+                                <thead>
+                                    <tr>
+                                        <th>Bağış Tarihi</th>
+                                        <th>Bağış Miktarı</th>
+                                        <th>Armağan</th>
+                                        <th>Armağan Tutarı</th>
+                                        <th>Açıklama</th>
+                                    </tr>
+                                </thead>
+                            </table>
                         </div>
                     </div>
                     <div class=""modal-footer"">
@@ -821,7 +811,7 @@ namespace NBYS_WebParts.ArmaganListesiWP {
             @__w.Write("\').value = armaganId;\r\n        document.getElementById(\'");
                          @__w.Write( IadeEdildiYapBtn.ClientID);
 
-            @__w.Write("\').click();\r\n    }\r\n</script>\r\n\r\n<div class=\"container col-xl\">\r\n    ");
+            @__w.Write("\').click();\r\n    }\r\n</script>\r\n\r\n<div class=\"col-xl\">\r\n    ");
             parameterContainer.Controls[0].RenderControl(@__w);
             @__w.Write("\r\n    ");
             parameterContainer.Controls[1].RenderControl(@__w);

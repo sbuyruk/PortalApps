@@ -85,9 +85,17 @@
         <div class="card-header">
             <asp:LinkButton ID="CloseBtn" CssClass="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3>
-                <asp:Label CssClass="col-form-label text-info fw-bold mb-1" ID="TitleLbl" runat="server" Text="Ekstre Aktarma Listesi"></asp:Label>
-                <asp:Label CssClass="col-form-label text-white" ID="IdLbl" runat="server"></asp:Label>
-                <asp:Label CssClass="col-form-label " ID="AdiLbl" runat="server"></asp:Label>
+                <a class=" btn btn-outline-primary float-end me-4" runat="server" id="YonergeLnk"
+                    data-fancybox
+                    data-type="pdf"
+                    data-width="960"
+                    data-height="720"
+                    href="">
+                    <i class="fa fa-book" aria-hidden="true"></i>
+                </a>
+                <asp:Label CssClass="form-label text-info fw-bold mb-1" ID="TitleLbl" runat="server" Text="Ekstre Aktarma Listesi"></asp:Label>
+                <asp:Label CssClass="form-label text-white" ID="IdLbl" runat="server"></asp:Label>
+                <asp:Label CssClass="form-label " ID="AdiLbl" runat="server"></asp:Label>
             </h3>
         </div>
         <div class="card-body">
@@ -100,101 +108,109 @@
                     </div>
                     <div class="form-group col">
                         <label class="col-form-label" for="BankaDDL">Banka</label>
-                        <asp:DropDownList ID="BankaDDL" runat="server" CssClass="form-control" AutoPostBack="True" OnSelectedIndexChanged="BankaDDL_SelectedIndexChanged" Height="34px"></asp:DropDownList>
+                        <asp:DropDownList ID="BankaDDL" runat="server" CssClass="form-control form-select form-select-lg fw-bold" AutoPostBack="True" OnSelectedIndexChanged="BankaDDL_SelectedIndexChanged" Height="34px"></asp:DropDownList>
                     </div>
                     <div class="col">
                         <div class="form-group m-0">
-                            <asp:Label ID="AkbankLbl" runat="server" Text="Akbank"></asp:Label>
-                            <asp:Label ID="AkbankOkLbl" runat="server" Text=""></asp:Label>
+                            <asp:Label CssClass="form-label" ID="AkbankLbl" runat="server" Text="Akbank"></asp:Label>
+                            <asp:Label CssClass="form-label fw-bold" ID="AkbankOkLbl" runat="server" Text=""></asp:Label>
                         </div>
                         <div class="form-group m-0">
-                            <asp:Label ID="AkbankEkstreLbl" runat="server" Text="Akbank (Ekstre)"></asp:Label>
-                            <asp:Label ID="AkbankEkstreOkLbl" runat="server" Text=""></asp:Label>
+                            <asp:Label CssClass="form-label" ID="AkbankEkstreLbl" runat="server" Text="Akbank (Ekstre)"></asp:Label>
+                            <asp:Label CssClass="form-label fw-bold" ID="AkbankEkstreOkLbl" runat="server" Text=""></asp:Label>
                         </div>
                         <div class="form-group m-0">
-                            <asp:Label ID="EDevletLbl" runat="server" Text="EDevlet"></asp:Label>
-                            <asp:Label ID="EDevletOkLbl" runat="server" Text=""></asp:Label>
+                            <asp:Label CssClass="form-label" ID="FinansbankLbl" runat="server" Text="Finansbank"></asp:Label>
+                            <asp:Label CssClass="form-label fw-bold" ID="FinansbankOkLbl" runat="server" Text=""></asp:Label>
+                        </div>
+                        <div class="form-group m-0">
+                            <asp:Label CssClass="form-label" ID="FinansbankEkstreLbl" runat="server" Text="Finansbank (Ekstre)"></asp:Label>
+                            <asp:Label CssClass="form-label fw-bold" ID="FinansbankEkstreOkLbl" runat="server" Text=""></asp:Label>
+                        </div>
+                        <div class="form-group m-0">
+                            <asp:Label CssClass="form-label" ID="EDevletLbl" runat="server" Text="EDevlet"></asp:Label>
+                            <asp:Label CssClass="form-label fw-bold" ID="EDevletOkLbl" runat="server" Text=""></asp:Label>
                         </div>
 
                     </div>
                     <div class="col">
                         <div class="form-group m-0">
-                            <asp:Label ID="GarantiLbl" runat="server" Text="Garanti"></asp:Label>
-                            <asp:Label ID="GarantiOkLbl" runat="server" Text=""></asp:Label>
+                            <asp:Label CssClass="form-label" ID="GarantiLbl" runat="server" Text="Garanti"></asp:Label>
+                            <asp:Label CssClass="form-label fw-bold" ID="GarantiOkLbl" runat="server" Text=""></asp:Label>
                         </div>
                         <div class="form-group m-0">
-                            <asp:Label ID="GarantiEkstreLbl" runat="server" Text="Garanti (Ekstre)"></asp:Label>
-                            <asp:Label ID="GarantiEkstreOkLbl" runat="server" Text=""></asp:Label>
+                            <asp:Label CssClass="form-label" ID="GarantiEkstreLbl" runat="server" Text="Garanti (Ekstre)"></asp:Label>
+                            <asp:Label CssClass="form-label fw-bold" ID="GarantiEkstreOkLbl" runat="server" Text=""></asp:Label>
                         </div>
                         <div class="form-group m-0">
-                            <asp:Label ID="HalkbankLbl" runat="server" Text="Halkbank"></asp:Label>
-                            <asp:Label ID="HalkbankOkLbl" runat="server" Text=""></asp:Label>
+                            <asp:Label CssClass="form-label" ID="HalkbankLbl" runat="server" Text="Halkbank"></asp:Label>
+                            <asp:Label CssClass="form-label fw-bold" ID="HalkbankOkLbl" runat="server" Text=""></asp:Label>
                         </div>
                         <div class="form-group m-0">
-                            <asp:Label ID="Halkbank2Lbl" runat="server" Text="Halkbank 2"></asp:Label>
-                            <asp:Label ID="Halkbank2OkLbl" runat="server" Text=""></asp:Label>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-group m-0">
-                            <asp:Label ID="IsbankLbl" runat="server" Text="İşbank"></asp:Label>
-                            <asp:Label ID="IsbankOkLbl" runat="server" Text=""></asp:Label>
-                        </div>
-                        <div class="form-group m-0">
-                            <asp:Label ID="IsbankEkstreLbl" runat="server" Text="İşbank (Ekstre)"></asp:Label>
-                            <asp:Label ID="IsbankEkstreOkLbl" runat="server" Text=""></asp:Label>
-                        </div>
-                        <div class="form-group m-0">
-                            <asp:Label ID="KartIleLbl" runat="server" Text="Kart ile Bağış"></asp:Label>
-                            <asp:Label ID="KartIleOkLbl" runat="server" Text=""></asp:Label>
-                        </div>
-                        <div class="form-group m-0">
-                            <asp:Label ID="KioskLbl" runat="server" Text="Kiosk"></asp:Label>
-                            <asp:Label ID="KioskOkLbl" runat="server" Text=""></asp:Label>
+                            <asp:Label CssClass="form-label" ID="Halkbank2Lbl" runat="server" Text="Halkbank 2"></asp:Label>
+                            <asp:Label CssClass="form-label fw-bold" ID="Halkbank2OkLbl" runat="server" Text=""></asp:Label>
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group m-0">
-                            <asp:Label ID="SMSVakifLbl" runat="server" Text="SMS Vakıf"></asp:Label>
-                            <asp:Label ID="SMSVakifOkLbl" runat="server" Text=""></asp:Label>
+                            <asp:Label CssClass="form-label" ID="IsbankLbl" runat="server" Text="İşbank"></asp:Label>
+                            <asp:Label CssClass="form-label fw-bold" ID="IsbankOkLbl" runat="server" Text=""></asp:Label>
                         </div>
                         <div class="form-group m-0">
-                            <asp:Label ID="TebLbl" runat="server" Text="TEB"></asp:Label>
-                            <asp:Label ID="TebOkLbl" runat="server" Text=""></asp:Label>
+                            <asp:Label CssClass="form-label" ID="IsbankEkstreLbl" runat="server" Text="İşbank (Ekstre)"></asp:Label>
+                            <asp:Label CssClass="form-label fw-bold" ID="IsbankEkstreOkLbl" runat="server" Text=""></asp:Label>
+                        </div>
+                        <div class="form-group m-0">
+                            <asp:Label CssClass="form-label" ID="KartIleLbl" runat="server" Text="Kart ile Bağış"></asp:Label>
+                            <asp:Label CssClass="form-label fw-bold" ID="KartIleOkLbl" runat="server" Text=""></asp:Label>
+                        </div>
+                        <div class="form-group m-0">
+                            <asp:Label CssClass="form-label" ID="KioskLbl" runat="server" Text="Kiosk"></asp:Label>
+                            <asp:Label CssClass="form-label fw-bold" ID="KioskOkLbl" runat="server" Text=""></asp:Label>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group m-0">
+                            <asp:Label CssClass="form-label" ID="SMSVakifLbl" runat="server" Text="SMS Vakıf"></asp:Label>
+                            <asp:Label CssClass="form-label fw-bold" ID="SMSVakifOkLbl" runat="server" Text=""></asp:Label>
+                        </div>
+                        <div class="form-group m-0">
+                            <asp:Label CssClass="form-label" ID="TebLbl" runat="server" Text="TEB"></asp:Label>
+                            <asp:Label CssClass="form-label fw-bold" ID="TebOkLbl" runat="server" Text=""></asp:Label>
                         </div>
 
                         <div class="form-group m-0">
-                            <asp:Label ID="VakifbankLbl" runat="server" Text="Vakıfbank"></asp:Label>
-                            <asp:Label ID="VakifbankOkLbl" runat="server" Text=""></asp:Label>
+                            <asp:Label CssClass="form-label" ID="VakifbankLbl" runat="server" Text="Vakıfbank"></asp:Label>
+                            <asp:Label CssClass="form-label fw-bold" ID="VakifbankOkLbl" runat="server" Text=""></asp:Label>
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group m-0">
-                            <asp:Label ID="Vakifbank2Lbl" runat="server" Text="Vakıfbank2"></asp:Label>
-                            <asp:Label ID="Vakifbank2OkLbl" runat="server" Text=""></asp:Label>
+                            <asp:Label CssClass="form-label" ID="Vakifbank2Lbl" runat="server" Text="Vakıfbank2"></asp:Label>
+                            <asp:Label CssClass="form-label fw-bold" ID="Vakifbank2OkLbl" runat="server" Text=""></asp:Label>
                         </div>
 
                         <div class="form-group m-0">
-                            <asp:Label ID="VakifKatilimLbl" runat="server" Text="Vakıf Katılım"></asp:Label>
-                            <asp:Label ID="VakifKatilimOkLbl" runat="server" Text=""></asp:Label>
+                            <asp:Label CssClass="form-label" ID="VakifKatilimLbl" runat="server" Text="Vakıf Katılım"></asp:Label>
+                            <asp:Label CssClass="form-label fw-bold" ID="VakifKatilimOkLbl" runat="server" Text=""></asp:Label>
                         </div>
                         <div class="form-group m-0">
-                            <asp:Label ID="YKBEkstreLbl" runat="server" Text="Yapı Kredi (Ekstre)"></asp:Label>
-                            <asp:Label ID="YKBEkstreOkLbl" runat="server" Text=""></asp:Label>
+                            <asp:Label CssClass="form-label" ID="YKBEkstreLbl" runat="server" Text="Yapı Kredi (Ekstre)"></asp:Label>
+                            <asp:Label CssClass="form-label fw-bold" ID="YKBEkstreOkLbl" runat="server" Text=""></asp:Label>
                         </div>
                     </div>
                     <div class="col">
                         <div class="form-group m-0">
-                            <asp:Label ID="ZiraatBankLbl" runat="server" Text="Ziraat Bankası"></asp:Label>
-                            <asp:Label ID="ZiraatBankOkLbl" runat="server" Text=""></asp:Label>
+                            <asp:Label CssClass="form-label" ID="ZiraatBankLbl" runat="server" Text="Ziraat Bankası"></asp:Label>
+                            <asp:Label CssClass="form-label fw-bold" ID="ZiraatBankOkLbl" runat="server" Text=""></asp:Label>
                         </div>
                         <div class="form-group m-0">
-                            <asp:Label ID="ZiraatBankEkstreLbl" runat="server" Text="Ziraat B. (Ekstre)"></asp:Label>
-                            <asp:Label ID="ZiraatBankEkstreOkLbl" runat="server" Text=""></asp:Label>
+                            <asp:Label CssClass="form-label" ID="ZiraatBankEkstreLbl" runat="server" Text="Ziraat B. (Ekstre)"></asp:Label>
+                            <asp:Label CssClass="form-label fw-bold" ID="ZiraatBankEkstreOkLbl" runat="server" Text=""></asp:Label>
                         </div>
                         <div class="form-group m-0">
-                            <asp:Label ID="ZiraatKatilimLbl" runat="server" Text="Ziraat Katılım"></asp:Label>
-                            <asp:Label ID="ZiraatKatilimOkLbl" runat="server" Text=""></asp:Label>
+                            <asp:Label CssClass="form-label" ID="ZiraatKatilimLbl" runat="server" Text="Ziraat Katılım"></asp:Label>
+                            <asp:Label CssClass="form-label fw-bold" ID="ZiraatKatilimOkLbl" runat="server" Text=""></asp:Label>
                         </div>
                     </div>
                 </div>
@@ -254,70 +270,6 @@
         </div>
 
     </div>
-    <%--<div class="modal" id="ModalOnayDiv" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-body">
-
-                    <asp:UpdatePanel runat="server" ID="UpdatePanel1" UpdateMode="Conditional">
-                        <ContentTemplate>
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3>
-                                        <asp:Label ID="ModalTitleLbl" CssClass="col-form-label" runat="server" Text="" />
-                                    </h3>
-                                </div>
-                                <div class="card-body">
-                                    <div class="form-group">
-                                        <h4>
-                                            <asp:Label ID="ModalSubTitleLbl" CssClass="col-form-label" runat="server" Text="" />
-                                        </h4>
-                                        <h4>
-                                            <asp:Label ID="UyariMesajiLbl" CssClass="col-form-label" runat="server" Text="" />
-                                        </h4>
-                                        <h4>
-                                            <asp:Label ID="OnayMesajiLbl" CssClass="col-form-label text-danger" runat="server" Text="İşlemi onaylıyor musunuz?" />
-                                        </h4>
-                                    </div>
-                                </div>
-                                <div class="card-footer">
-                                   <asp:LinkButton CssClass="btn btn-success" ID="KaydetNowBtn" runat="server"
-                                        CausesValidation="false"
-                                        Text="Seçilenleri Kaydet"
-                                        OnClientClick="$('#customLoader').show(); this.disabled=true; this.innerHTML='Kaydediliyor...';"
-                                        OnClick="KaydetNowBtn_Click"
-                                        Visible="true" />
-
-                                    <asp:LinkButton CssClass="btn btn-danger" ID="SilNowBtn" runat="server"
-                                        CausesValidation="false"
-                                        Text="Seçilenleri Sil"
-                                        OnClick="SilNowBtn_Click"
-                                        Visible="false" />
-
-                                    <button type="button" class="btn btn-default float-end" data-bs-dismiss="modal">Kapat</button>
-                                </div>
-                            </div>
-                        </ContentTemplate>
-                        <Triggers>
-                            <asp:AsyncPostBackTrigger ControlID="KaydetNowBtn" EventName="Click" />
-                            <asp:AsyncPostBackTrigger ControlID="SilNowBtn" EventName="Click" />
-                        </Triggers>
-                    </asp:UpdatePanel>
-                </div>
-            </div>
-        </div>
-        <div id="customLoader" style="display: none;">
-            <div class='loaderMainContainer'>
-                <div class='loaderContainer'>
-                    <div class='loaderCircle'></div>
-                </div>
-            </div>
-        </div>
-
-    </div>--%>
-
-
     <div class="modal" id="ModalOnayDiv" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->

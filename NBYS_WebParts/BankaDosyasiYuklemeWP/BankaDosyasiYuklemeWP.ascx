@@ -34,6 +34,15 @@
                         <div class="card-body">
                             <asp:FileUpload ID="AkbankFU" runat="server" CssClass="form-control" />
                         </div>
+                    </div>
+                    <div class="card  mt-3">
+                        <div class="card-header">
+                            <asp:Label ID="FinansbankLbl" runat="server" Text="FİNANSBANK" Font-Size="X-Large" Font-Bold="True" ForeColor="#660066"></asp:Label>
+                            <asp:Label ID="FinansbankOkLbl" runat="server" Text="" Font-Size="X-Large" Font-Bold="True" ForeColor="#33CC33"></asp:Label>
+                        </div>
+                        <div class="card-body">
+                            <asp:FileUpload ID="FinansbankFU" runat="server" CssClass="form-control" />
+                        </div>
 
                     </div>
                     <div class="card  mt-3">
@@ -45,6 +54,10 @@
                             <asp:FileUpload ID="GarantiFU" runat="server" CssClass="form-control" />
                         </div>
                     </div>
+
+
+                </div>
+                <div class="col">
                     <div class="card  mt-3">
                         <div class="card-header">
                             <asp:Label ID="HalkbankLbl" runat="server" Text="HALKBANK" Font-Size="X-Large" Font-Bold="True" ForeColor="DeepSkyBlue"></asp:Label>
@@ -54,9 +67,6 @@
                             <asp:FileUpload ID="HalkbankFU" runat="server" CssClass="form-control" />
                         </div>
                     </div>
-
-                </div>
-                <div class="col">
                     <div class="card  mt-3">
                         <div class="card-header">
                             <asp:Label ID="IsbankLbl" runat="server" Text="İŞBANK" Font-Size="X-Large" Font-Bold="True" ForeColor="blue"></asp:Label>
@@ -76,8 +86,6 @@
                         </div>
 
                     </div>
-
-
                 </div>
                 <div class="col">
                     <div class="card  mt-3">
@@ -119,6 +127,15 @@
                         </div>
                         <div class="card-body">
                             <asp:FileUpload ID="EDevletFU" runat="server" CssClass="form-control" />
+                        </div>
+                    </div>
+                    <div class="card  mt-3">
+                        <div class="card-header">
+                            <asp:Label ID="FinansbankEkstreLbl" runat="server" Text="Finansbank (Ekstre)" Font-Size="X-Large" Font-Bold="True" ForeColor="#660066"></asp:Label>
+                            <asp:Label ID="FinansbankEkstreOkLbl" runat="server" Font-Size="X-Large" Font-Bold="True" ForeColor="#33CC33"></asp:Label>
+                        </div>
+                        <div class="card-body">
+                            <asp:FileUpload ID="FinansbankEkstreFU" runat="server" CssClass="form-control" />
                         </div>
                     </div>
                     <div class="card  mt-3">
@@ -170,7 +187,7 @@
                             <asp:FileUpload ID="SMSVakifFU" runat="server" CssClass="form-control" />
                         </div>
                     </div>
-<%--                    <div class="card  mt-3" style="display: none">
+                    <%--                    <div class="card  mt-3" style="display: none">
                         <div class="card-header">
                             <asp:Label ID="VakifbankLbl" runat="server" Text="VakıfBank" Font-Size="X-Large" Font-Bold="True" ForeColor="orange"></asp:Label>
                             <asp:Label ID="VakifbankOkLbl" runat="server" Text="" Font-Size="X-Large" Font-Bold="True" ForeColor="#33CC33"></asp:Label>

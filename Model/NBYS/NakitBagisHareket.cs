@@ -31,6 +31,7 @@ namespace Model.NBYS
         public decimal DovizKuru { get; set; }
         public DateTime KurTarihi { get; set; }
         public int EkstreAktarmaId { get; set; }
+        public string BagisTipi { get; set; }
         //Methods
         public override int Save()
         {
@@ -224,7 +225,8 @@ namespace Model.NBYS
 		                ,ISNULL(C.Armagan,'') Armagan
 		                ,ISNULL(B.Durum,'') Durum
 		                ,ISNULL(B.Aciklama,'') Aciklama
-						,D.Banka
+						,D.Banka,
+                        A.Aciklama NBHAciklama
                 FROM NakitBagisHareket_Table A
                 LEFT JOIN Armagan_Table B ON B.Id= A.ArmaganId 
                 LEFT JOIN ArmaganTanim_Table C ON C.Id= B.ArmaganTanimId
@@ -373,6 +375,21 @@ namespace Model.NBYS
 
             return toplam;
         }
+        public List<NakitBagisHareket> SelectNakitBagisHareketByNakitBagisciIdBetweenBasTarBitTar(DateTime basTar, DateTime bitTar, int nakitBagisciId)
+        {
+            List<NakitBagisHareket> result = new List<NakitBagisHareket>();
+            DateTime ilkTarih = new DateTime(basTar.Year, basTar.Month, basTar.Day);
+            DateTime sonTarih = new DateTime(bitTar.Year, bitTar.Month, bitTar.Day);
+            string sqlString = string.Format(@"
+                SELECT *
+                FROM NakitBagisHareket_Table
+                WHERE BagisciId={0} and  BagisTarihi between {1} and {2}", nakitBagisciId, ilkTarih.ReturnTRDateFormat(), sonTarih.ReturnTRDateFormat());
+
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            List<NakitBagisHareket> list = ToList<NakitBagisHareket>(dataTable);
+
+            return list;
+        }
         public decimal SelectSumBagisMiktariByBagisTarihiBolge(DateTime basTar, DateTime bitTar, int bolgeId, ref int adet)
         {
             decimal toplam = 0;
@@ -397,10 +414,10 @@ namespace Model.NBYS
 
             return toplam;
         }
-        public DataTable SelectByFilter(string filter, DateTime bagisTarihi)
+        public DataTable SelectByFilter(string filter, DateTime? bagisTarihi)
         {
             string ilStr = string.Empty;
-
+            string bagisTarihiStr = string.Format(bagisTarihi.HasValue ? " AND A.BagisTarihi>{0} " + bagisTarihi.Value.ReturnTRDateFormat() : string.Empty);
             string sqlString = string.Format(@"
                 SELECT A.Id BagisHareketId, B.Id ArmaganId, C.Armagan, B.Durum, A.BagisciId, D.Adi BagisciAdi
 				        , A.BagisTarihi ,Convert(nvarchar,replace (A.BagisMiktari,'.',',')) as BagisMiktari, A.DovizCinsi
@@ -413,12 +430,11 @@ namespace Model.NBYS
 					INNER JOIN NakitBagisci_Table D ON D.Id= A.BagisciId 
 					LEFT JOIN Il_Table E ON E.Id= D.Ili 
                     LEFT JOIN Ilce_Table F ON F.Id= D.Ilcesi AND F.IlId=E.Id
-                WHERE A.BagisTarihi>{0} 
-					AND D.Adi like '%{1}%'
+                WHERE D.Adi like '%{1}%'
 	                OR D.TCKimlikNo like '%{1}%'
 	                OR D.Telefon1 like '%{1}%'
 	                OR D.Adres like '%{1}%'
-                ORDER BY A.BagisTarihi DESC  ", bagisTarihi.ReturnTRDateFormat(), filter);
+                ORDER BY A.BagisTarihi DESC  ", bagisTarihiStr, filter);
             DataTable dataTable = null;
             try
             {

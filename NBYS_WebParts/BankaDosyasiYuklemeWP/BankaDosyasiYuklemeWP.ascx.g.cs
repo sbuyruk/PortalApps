@@ -61,6 +61,18 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.Label FinansbankLbl;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.Label FinansbankOkLbl;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.FileUpload FinansbankFU;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.Label GarantiLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -154,6 +166,18 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.FileUpload EDevletFU;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.Label FinansbankEkstreLbl;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.Label FinansbankEkstreOkLbl;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.FileUpload FinansbankEkstreFU;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -375,6 +399,51 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
             this.AkbankFU = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "AkbankFU";
+            @__ctrl.CssClass = "form-control";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlFinansbankLbl() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.FinansbankLbl = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "FinansbankLbl";
+            @__ctrl.Text = "FİNANSBANK";
+            @__ctrl.Font.Size = global::System.Web.UI.WebControls.FontUnit.XLarge;
+            @__ctrl.Font.Bold = true;
+            @__ctrl.ForeColor = ((System.Drawing.Color)(global::System.Drawing.Color.FromArgb(102, 0, 102)));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlFinansbankOkLbl() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.FinansbankOkLbl = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "FinansbankOkLbl";
+            @__ctrl.Text = "";
+            @__ctrl.Font.Size = global::System.Web.UI.WebControls.FontUnit.XLarge;
+            @__ctrl.Font.Bold = true;
+            @__ctrl.ForeColor = ((System.Drawing.Color)(global::System.Drawing.Color.FromArgb(51, 204, 51)));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.FileUpload @__BuildControlFinansbankFU() {
+            global::System.Web.UI.WebControls.FileUpload @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.FileUpload();
+            this.FinansbankFU = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "FinansbankFU";
             @__ctrl.CssClass = "form-control";
             return @__ctrl;
         }
@@ -732,6 +801,50 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
             this.EDevletFU = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "EDevletFU";
+            @__ctrl.CssClass = "form-control";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlFinansbankEkstreLbl() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.FinansbankEkstreLbl = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "FinansbankEkstreLbl";
+            @__ctrl.Text = "Finansbank (Ekstre)";
+            @__ctrl.Font.Size = global::System.Web.UI.WebControls.FontUnit.XLarge;
+            @__ctrl.Font.Bold = true;
+            @__ctrl.ForeColor = ((System.Drawing.Color)(global::System.Drawing.Color.FromArgb(102, 0, 102)));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlFinansbankEkstreOkLbl() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.FinansbankEkstreOkLbl = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "FinansbankEkstreOkLbl";
+            @__ctrl.Font.Size = global::System.Web.UI.WebControls.FontUnit.XLarge;
+            @__ctrl.Font.Bold = true;
+            @__ctrl.ForeColor = ((System.Drawing.Color)(global::System.Drawing.Color.FromArgb(51, 204, 51)));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.FileUpload @__BuildControlFinansbankEkstreFU() {
+            global::System.Web.UI.WebControls.FileUpload @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.FileUpload();
+            this.FinansbankEkstreFU = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "FinansbankEkstreFU";
             @__ctrl.CssClass = "form-control";
             return @__ctrl;
         }
@@ -1260,98 +1373,113 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
             global::System.Web.UI.WebControls.FileUpload @__ctrl6;
             @__ctrl6 = this.@__BuildControlAkbankFU();
             @__parser.AddParsedSubObject(@__ctrl6);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n\r\n                    </div>\r\n                 " +
-                        "   <div class=\"card  mt-3\">\r\n                        <div class=\"card-header\">\r\n" +
-                        "                            "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n                   " +
+                        " <div class=\"card  mt-3\">\r\n                        <div class=\"card-header\">\r\n  " +
+                        "                          "));
             global::System.Web.UI.WebControls.Label @__ctrl7;
-            @__ctrl7 = this.@__BuildControlGarantiLbl();
+            @__ctrl7 = this.@__BuildControlFinansbankLbl();
             @__parser.AddParsedSubObject(@__ctrl7);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
             global::System.Web.UI.WebControls.Label @__ctrl8;
-            @__ctrl8 = this.@__BuildControlGarantiOkLbl();
+            @__ctrl8 = this.@__BuildControlFinansbankOkLbl();
             @__parser.AddParsedSubObject(@__ctrl8);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"card-body\">" +
                         "\r\n                            "));
             global::System.Web.UI.WebControls.FileUpload @__ctrl9;
-            @__ctrl9 = this.@__BuildControlGarantiFU();
+            @__ctrl9 = this.@__BuildControlFinansbankFU();
             @__parser.AddParsedSubObject(@__ctrl9);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n                   " +
-                        " <div class=\"card  mt-3\">\r\n                        <div class=\"card-header\">\r\n  " +
-                        "                          "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n\r\n                    </div>\r\n                 " +
+                        "   <div class=\"card  mt-3\">\r\n                        <div class=\"card-header\">\r\n" +
+                        "                            "));
             global::System.Web.UI.WebControls.Label @__ctrl10;
-            @__ctrl10 = this.@__BuildControlHalkbankLbl();
+            @__ctrl10 = this.@__BuildControlGarantiLbl();
             @__parser.AddParsedSubObject(@__ctrl10);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
             global::System.Web.UI.WebControls.Label @__ctrl11;
-            @__ctrl11 = this.@__BuildControlHalkbankOkLbl();
+            @__ctrl11 = this.@__BuildControlGarantiOkLbl();
             @__parser.AddParsedSubObject(@__ctrl11);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"card-body\">" +
                         "\r\n                            "));
             global::System.Web.UI.WebControls.FileUpload @__ctrl12;
-            @__ctrl12 = this.@__BuildControlHalkbankFU();
+            @__ctrl12 = this.@__BuildControlGarantiFU();
             @__parser.AddParsedSubObject(@__ctrl12);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n\r\n                <" +
-                        "/div>\r\n                <div class=\"col\">\r\n                    <div class=\"card  " +
-                        "mt-3\">\r\n                        <div class=\"card-header\">\r\n                     " +
-                        "       "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n\r\n\r\n               " +
+                        " </div>\r\n                <div class=\"col\">\r\n                    <div class=\"card" +
+                        "  mt-3\">\r\n                        <div class=\"card-header\">\r\n                   " +
+                        "         "));
             global::System.Web.UI.WebControls.Label @__ctrl13;
-            @__ctrl13 = this.@__BuildControlIsbankLbl();
+            @__ctrl13 = this.@__BuildControlHalkbankLbl();
             @__parser.AddParsedSubObject(@__ctrl13);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
             global::System.Web.UI.WebControls.Label @__ctrl14;
-            @__ctrl14 = this.@__BuildControlIsbankOkLbl();
+            @__ctrl14 = this.@__BuildControlHalkbankOkLbl();
             @__parser.AddParsedSubObject(@__ctrl14);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"card-body\">" +
                         "\r\n                            "));
             global::System.Web.UI.WebControls.FileUpload @__ctrl15;
-            @__ctrl15 = this.@__BuildControlIsbankFU();
+            @__ctrl15 = this.@__BuildControlHalkbankFU();
             @__parser.AddParsedSubObject(@__ctrl15);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n                   " +
                         " <div class=\"card  mt-3\">\r\n                        <div class=\"card-header\">\r\n  " +
                         "                          "));
             global::System.Web.UI.WebControls.Label @__ctrl16;
-            @__ctrl16 = this.@__BuildControlTebLbl();
+            @__ctrl16 = this.@__BuildControlIsbankLbl();
             @__parser.AddParsedSubObject(@__ctrl16);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
             global::System.Web.UI.WebControls.Label @__ctrl17;
-            @__ctrl17 = this.@__BuildControlTebOkLbl();
+            @__ctrl17 = this.@__BuildControlIsbankOkLbl();
             @__parser.AddParsedSubObject(@__ctrl17);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"card-body\">" +
                         "\r\n                            "));
             global::System.Web.UI.WebControls.FileUpload @__ctrl18;
-            @__ctrl18 = this.@__BuildControlTebFU();
+            @__ctrl18 = this.@__BuildControlIsbankFU();
             @__parser.AddParsedSubObject(@__ctrl18);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n\r\n                    </div>\r\n\r\n\r\n             " +
-                        "   </div>\r\n                <div class=\"col\">\r\n                    <div class=\"ca" +
-                        "rd  mt-3\">\r\n                        <div class=\"card-header\">\r\n                 " +
-                        "           "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n                   " +
+                        " <div class=\"card  mt-3\">\r\n                        <div class=\"card-header\">\r\n  " +
+                        "                          "));
             global::System.Web.UI.WebControls.Label @__ctrl19;
-            @__ctrl19 = this.@__BuildControlVakifbankGunlukLbl();
+            @__ctrl19 = this.@__BuildControlTebLbl();
             @__parser.AddParsedSubObject(@__ctrl19);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
             global::System.Web.UI.WebControls.Label @__ctrl20;
-            @__ctrl20 = this.@__BuildControlVakifbankGunlukOkLbl();
+            @__ctrl20 = this.@__BuildControlTebOkLbl();
             @__parser.AddParsedSubObject(@__ctrl20);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"card-body\">" +
                         "\r\n                            "));
             global::System.Web.UI.WebControls.FileUpload @__ctrl21;
-            @__ctrl21 = this.@__BuildControlVakifbankGunlukFU();
+            @__ctrl21 = this.@__BuildControlTebFU();
             @__parser.AddParsedSubObject(@__ctrl21);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n                   " +
-                        " <div class=\"card  mt-3\">\r\n                        <div class=\"card-header\">\r\n  " +
-                        "                          "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n\r\n                    </div>\r\n                <" +
+                        "/div>\r\n                <div class=\"col\">\r\n                    <div class=\"card  " +
+                        "mt-3\">\r\n                        <div class=\"card-header\">\r\n                     " +
+                        "       "));
             global::System.Web.UI.WebControls.Label @__ctrl22;
-            @__ctrl22 = this.@__BuildControlZiraatLbl();
+            @__ctrl22 = this.@__BuildControlVakifbankGunlukLbl();
             @__parser.AddParsedSubObject(@__ctrl22);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
             global::System.Web.UI.WebControls.Label @__ctrl23;
-            @__ctrl23 = this.@__BuildControlZiraatOkLbl();
+            @__ctrl23 = this.@__BuildControlVakifbankGunlukOkLbl();
             @__parser.AddParsedSubObject(@__ctrl23);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"card-body\">" +
                         "\r\n                            "));
             global::System.Web.UI.WebControls.FileUpload @__ctrl24;
-            @__ctrl24 = this.@__BuildControlZiraatFU();
+            @__ctrl24 = this.@__BuildControlVakifbankGunlukFU();
             @__parser.AddParsedSubObject(@__ctrl24);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n                   " +
+                        " <div class=\"card  mt-3\">\r\n                        <div class=\"card-header\">\r\n  " +
+                        "                          "));
+            global::System.Web.UI.WebControls.Label @__ctrl25;
+            @__ctrl25 = this.@__BuildControlZiraatLbl();
+            @__parser.AddParsedSubObject(@__ctrl25);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
+            global::System.Web.UI.WebControls.Label @__ctrl26;
+            @__ctrl26 = this.@__BuildControlZiraatOkLbl();
+            @__parser.AddParsedSubObject(@__ctrl26);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"card-body\">" +
+                        "\r\n                            "));
+            global::System.Web.UI.WebControls.FileUpload @__ctrl27;
+            @__ctrl27 = this.@__BuildControlZiraatFU();
+            @__parser.AddParsedSubObject(@__ctrl27);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                         </div>
                     </div>
@@ -1363,195 +1491,210 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
                     <div class=""card  mt-3"">
                         <div class=""card-header"">
                             "));
-            global::System.Web.UI.WebControls.Label @__ctrl25;
-            @__ctrl25 = this.@__BuildControlAkbankEkstreLbl();
-            @__parser.AddParsedSubObject(@__ctrl25);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
-            global::System.Web.UI.WebControls.Label @__ctrl26;
-            @__ctrl26 = this.@__BuildControlAkbankEkstreOkLbl();
-            @__parser.AddParsedSubObject(@__ctrl26);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"card-body\">" +
-                        "\r\n                            "));
-            global::System.Web.UI.WebControls.FileUpload @__ctrl27;
-            @__ctrl27 = this.@__BuildControlAkbankEkstreFU();
-            @__parser.AddParsedSubObject(@__ctrl27);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n                   " +
-                        " <div class=\"card  mt-3\">\r\n                        <div class=\"card-header\">\r\n  " +
-                        "                          "));
             global::System.Web.UI.WebControls.Label @__ctrl28;
-            @__ctrl28 = this.@__BuildControlEDevletLbl();
+            @__ctrl28 = this.@__BuildControlAkbankEkstreLbl();
             @__parser.AddParsedSubObject(@__ctrl28);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
             global::System.Web.UI.WebControls.Label @__ctrl29;
-            @__ctrl29 = this.@__BuildControlEDevletOkLbl();
+            @__ctrl29 = this.@__BuildControlAkbankEkstreOkLbl();
             @__parser.AddParsedSubObject(@__ctrl29);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"card-body\">" +
                         "\r\n                            "));
             global::System.Web.UI.WebControls.FileUpload @__ctrl30;
-            @__ctrl30 = this.@__BuildControlEDevletFU();
+            @__ctrl30 = this.@__BuildControlAkbankEkstreFU();
             @__parser.AddParsedSubObject(@__ctrl30);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n                   " +
                         " <div class=\"card  mt-3\">\r\n                        <div class=\"card-header\">\r\n  " +
                         "                          "));
             global::System.Web.UI.WebControls.Label @__ctrl31;
-            @__ctrl31 = this.@__BuildControlGarantiEkstreLbl();
+            @__ctrl31 = this.@__BuildControlEDevletLbl();
             @__parser.AddParsedSubObject(@__ctrl31);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
             global::System.Web.UI.WebControls.Label @__ctrl32;
-            @__ctrl32 = this.@__BuildControlGarantiEkstreOkLbl();
+            @__ctrl32 = this.@__BuildControlEDevletOkLbl();
             @__parser.AddParsedSubObject(@__ctrl32);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"card-body\">" +
                         "\r\n                            "));
             global::System.Web.UI.WebControls.FileUpload @__ctrl33;
-            @__ctrl33 = this.@__BuildControlGarantiEkstreFU();
+            @__ctrl33 = this.@__BuildControlEDevletFU();
             @__parser.AddParsedSubObject(@__ctrl33);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n                   " +
                         " <div class=\"card  mt-3\">\r\n                        <div class=\"card-header\">\r\n  " +
                         "                          "));
             global::System.Web.UI.WebControls.Label @__ctrl34;
-            @__ctrl34 = this.@__BuildControlHalkbank2Lbl();
+            @__ctrl34 = this.@__BuildControlFinansbankEkstreLbl();
             @__parser.AddParsedSubObject(@__ctrl34);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
             global::System.Web.UI.WebControls.Label @__ctrl35;
-            @__ctrl35 = this.@__BuildControlHalkbank2OkLbl();
+            @__ctrl35 = this.@__BuildControlFinansbankEkstreOkLbl();
             @__parser.AddParsedSubObject(@__ctrl35);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"card-body\">" +
                         "\r\n                            "));
             global::System.Web.UI.WebControls.FileUpload @__ctrl36;
-            @__ctrl36 = this.@__BuildControlHalkbank2FU();
+            @__ctrl36 = this.@__BuildControlFinansbankEkstreFU();
             @__parser.AddParsedSubObject(@__ctrl36);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n\r\n\r\n               " +
-                        " </div>\r\n                <div class=\"col\">\r\n                    <div class=\"card" +
-                        "  mt-3\">\r\n                        <div class=\"card-header\">\r\n                   " +
-                        "         "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n                   " +
+                        " <div class=\"card  mt-3\">\r\n                        <div class=\"card-header\">\r\n  " +
+                        "                          "));
             global::System.Web.UI.WebControls.Label @__ctrl37;
-            @__ctrl37 = this.@__BuildControlIsbankEkstreLbl();
+            @__ctrl37 = this.@__BuildControlGarantiEkstreLbl();
             @__parser.AddParsedSubObject(@__ctrl37);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
             global::System.Web.UI.WebControls.Label @__ctrl38;
-            @__ctrl38 = this.@__BuildControlIsbankEkstreOkLbl();
+            @__ctrl38 = this.@__BuildControlGarantiEkstreOkLbl();
             @__parser.AddParsedSubObject(@__ctrl38);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"card-body\">" +
                         "\r\n                            "));
             global::System.Web.UI.WebControls.FileUpload @__ctrl39;
-            @__ctrl39 = this.@__BuildControlIsbankEkstreFU();
+            @__ctrl39 = this.@__BuildControlGarantiEkstreFU();
             @__parser.AddParsedSubObject(@__ctrl39);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n                   " +
                         " <div class=\"card  mt-3\">\r\n                        <div class=\"card-header\">\r\n  " +
                         "                          "));
             global::System.Web.UI.WebControls.Label @__ctrl40;
-            @__ctrl40 = this.@__BuildControlKioskLbl();
+            @__ctrl40 = this.@__BuildControlHalkbank2Lbl();
             @__parser.AddParsedSubObject(@__ctrl40);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
             global::System.Web.UI.WebControls.Label @__ctrl41;
-            @__ctrl41 = this.@__BuildControlKioskOkLbl();
+            @__ctrl41 = this.@__BuildControlHalkbank2OkLbl();
             @__parser.AddParsedSubObject(@__ctrl41);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"card-body\">" +
                         "\r\n                            "));
             global::System.Web.UI.WebControls.FileUpload @__ctrl42;
-            @__ctrl42 = this.@__BuildControlKioskFU();
+            @__ctrl42 = this.@__BuildControlHalkbank2FU();
             @__parser.AddParsedSubObject(@__ctrl42);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n                   " +
-                        " <div class=\"card  mt-3\">\r\n                        <div class=\"card-header\">\r\n  " +
-                        "                          "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n\r\n\r\n               " +
+                        " </div>\r\n                <div class=\"col\">\r\n                    <div class=\"card" +
+                        "  mt-3\">\r\n                        <div class=\"card-header\">\r\n                   " +
+                        "         "));
             global::System.Web.UI.WebControls.Label @__ctrl43;
-            @__ctrl43 = this.@__BuildControlSMSVakifLbl();
+            @__ctrl43 = this.@__BuildControlIsbankEkstreLbl();
             @__parser.AddParsedSubObject(@__ctrl43);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
             global::System.Web.UI.WebControls.Label @__ctrl44;
-            @__ctrl44 = this.@__BuildControlSMSVakifOkLbl();
+            @__ctrl44 = this.@__BuildControlIsbankEkstreOkLbl();
             @__parser.AddParsedSubObject(@__ctrl44);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"card-body\">" +
                         "\r\n                            "));
             global::System.Web.UI.WebControls.FileUpload @__ctrl45;
-            @__ctrl45 = this.@__BuildControlSMSVakifFU();
+            @__ctrl45 = this.@__BuildControlIsbankEkstreFU();
             @__parser.AddParsedSubObject(@__ctrl45);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n\r\n\r\n\r\n             " +
-                        "       <div class=\"card  mt-3\">\r\n                        <div class=\"card-header" +
-                        "\">\r\n                            "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n                   " +
+                        " <div class=\"card  mt-3\">\r\n                        <div class=\"card-header\">\r\n  " +
+                        "                          "));
             global::System.Web.UI.WebControls.Label @__ctrl46;
-            @__ctrl46 = this.@__BuildControlVakifbank2Lbl();
+            @__ctrl46 = this.@__BuildControlKioskLbl();
             @__parser.AddParsedSubObject(@__ctrl46);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
             global::System.Web.UI.WebControls.Label @__ctrl47;
-            @__ctrl47 = this.@__BuildControlVakifbank2OkLbl();
+            @__ctrl47 = this.@__BuildControlKioskOkLbl();
             @__parser.AddParsedSubObject(@__ctrl47);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"card-body\">" +
-                        "\r\n\r\n                            "));
+                        "\r\n                            "));
             global::System.Web.UI.WebControls.FileUpload @__ctrl48;
-            @__ctrl48 = this.@__BuildControlVakifbank2FU();
+            @__ctrl48 = this.@__BuildControlKioskFU();
             @__parser.AddParsedSubObject(@__ctrl48);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n                </d" +
-                        "iv>\r\n                <div class=\"col\">\r\n                    <div class=\"card  mt" +
-                        "-3\">\r\n                        <div class=\"card-header\">\r\n                       " +
-                        "     "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n                   " +
+                        " <div class=\"card  mt-3\">\r\n                        <div class=\"card-header\">\r\n  " +
+                        "                          "));
             global::System.Web.UI.WebControls.Label @__ctrl49;
-            @__ctrl49 = this.@__BuildControlVakifKatilimLbl();
+            @__ctrl49 = this.@__BuildControlSMSVakifLbl();
             @__parser.AddParsedSubObject(@__ctrl49);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
             global::System.Web.UI.WebControls.Label @__ctrl50;
-            @__ctrl50 = this.@__BuildControlVakifKatilimOk();
+            @__ctrl50 = this.@__BuildControlSMSVakifOkLbl();
             @__parser.AddParsedSubObject(@__ctrl50);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"card-body\">" +
                         "\r\n                            "));
             global::System.Web.UI.WebControls.FileUpload @__ctrl51;
-            @__ctrl51 = this.@__BuildControlVakifKatilimFU();
+            @__ctrl51 = this.@__BuildControlSMSVakifFU();
             @__parser.AddParsedSubObject(@__ctrl51);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n                   " +
-                        " <div class=\"card  mt-3\">\r\n                        <div class=\"card-header\">\r\n  " +
-                        "                          "));
+                        " \r\n\r\n\r\n                    <div class=\"card  mt-3\">\r\n                        <di" +
+                        "v class=\"card-header\">\r\n                            "));
             global::System.Web.UI.WebControls.Label @__ctrl52;
-            @__ctrl52 = this.@__BuildControlYKBEkstreLbl();
+            @__ctrl52 = this.@__BuildControlVakifbank2Lbl();
             @__parser.AddParsedSubObject(@__ctrl52);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
             global::System.Web.UI.WebControls.Label @__ctrl53;
-            @__ctrl53 = this.@__BuildControlYKBEkstreOkLbl();
+            @__ctrl53 = this.@__BuildControlVakifbank2OkLbl();
             @__parser.AddParsedSubObject(@__ctrl53);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"card-body\">" +
-                        "\r\n                            "));
+                        "\r\n\r\n                            "));
             global::System.Web.UI.WebControls.FileUpload @__ctrl54;
-            @__ctrl54 = this.@__BuildControlYKBEkstreFU();
+            @__ctrl54 = this.@__BuildControlVakifbank2FU();
             @__parser.AddParsedSubObject(@__ctrl54);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n                   " +
-                        " <div class=\"card  mt-3\">\r\n                        <div class=\"card-header\">\r\n  " +
-                        "                          "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n                </d" +
+                        "iv>\r\n                <div class=\"col\">\r\n                    <div class=\"card  mt" +
+                        "-3\">\r\n                        <div class=\"card-header\">\r\n                       " +
+                        "     "));
             global::System.Web.UI.WebControls.Label @__ctrl55;
-            @__ctrl55 = this.@__BuildControlZiraatEkstreLbl();
+            @__ctrl55 = this.@__BuildControlVakifKatilimLbl();
             @__parser.AddParsedSubObject(@__ctrl55);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
             global::System.Web.UI.WebControls.Label @__ctrl56;
-            @__ctrl56 = this.@__BuildControlZiraatEkstreOkLbl();
+            @__ctrl56 = this.@__BuildControlVakifKatilimOk();
             @__parser.AddParsedSubObject(@__ctrl56);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"card-body\">" +
                         "\r\n                            "));
             global::System.Web.UI.WebControls.FileUpload @__ctrl57;
-            @__ctrl57 = this.@__BuildControlZiraatEkstreFU();
+            @__ctrl57 = this.@__BuildControlVakifKatilimFU();
             @__parser.AddParsedSubObject(@__ctrl57);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n                   " +
                         " <div class=\"card  mt-3\">\r\n                        <div class=\"card-header\">\r\n  " +
                         "                          "));
             global::System.Web.UI.WebControls.Label @__ctrl58;
-            @__ctrl58 = this.@__BuildControlZiraatKatilimLbl();
+            @__ctrl58 = this.@__BuildControlYKBEkstreLbl();
             @__parser.AddParsedSubObject(@__ctrl58);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
             global::System.Web.UI.WebControls.Label @__ctrl59;
-            @__ctrl59 = this.@__BuildControlZiraatKatilimOkLbl();
+            @__ctrl59 = this.@__BuildControlYKBEkstreOkLbl();
             @__parser.AddParsedSubObject(@__ctrl59);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"card-body\">" +
                         "\r\n                            "));
             global::System.Web.UI.WebControls.FileUpload @__ctrl60;
-            @__ctrl60 = this.@__BuildControlZiraatKatilimFU();
+            @__ctrl60 = this.@__BuildControlYKBEkstreFU();
             @__parser.AddParsedSubObject(@__ctrl60);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n                   " +
+                        " <div class=\"card  mt-3\">\r\n                        <div class=\"card-header\">\r\n  " +
+                        "                          "));
+            global::System.Web.UI.WebControls.Label @__ctrl61;
+            @__ctrl61 = this.@__BuildControlZiraatEkstreLbl();
+            @__parser.AddParsedSubObject(@__ctrl61);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
+            global::System.Web.UI.WebControls.Label @__ctrl62;
+            @__ctrl62 = this.@__BuildControlZiraatEkstreOkLbl();
+            @__parser.AddParsedSubObject(@__ctrl62);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"card-body\">" +
+                        "\r\n                            "));
+            global::System.Web.UI.WebControls.FileUpload @__ctrl63;
+            @__ctrl63 = this.@__BuildControlZiraatEkstreFU();
+            @__parser.AddParsedSubObject(@__ctrl63);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n                   " +
+                        " <div class=\"card  mt-3\">\r\n                        <div class=\"card-header\">\r\n  " +
+                        "                          "));
+            global::System.Web.UI.WebControls.Label @__ctrl64;
+            @__ctrl64 = this.@__BuildControlZiraatKatilimLbl();
+            @__parser.AddParsedSubObject(@__ctrl64);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
+            global::System.Web.UI.WebControls.Label @__ctrl65;
+            @__ctrl65 = this.@__BuildControlZiraatKatilimOkLbl();
+            @__parser.AddParsedSubObject(@__ctrl65);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"card-body\">" +
+                        "\r\n                            "));
+            global::System.Web.UI.WebControls.FileUpload @__ctrl66;
+            @__ctrl66 = this.@__BuildControlZiraatKatilimFU();
+            @__parser.AddParsedSubObject(@__ctrl66);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n\r\n                <" +
                         "/div>\r\n            </div>\r\n        </div>\r\n        <div id=\"FooterCard\" class=\"c" +
                         "ard-footer\">\r\n            "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl61;
-            @__ctrl61 = this.@__BuildControlKaydetBtn();
-            @__parser.AddParsedSubObject(@__ctrl61);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl67;
+            @__ctrl67 = this.@__BuildControlKaydetBtn();
+            @__parser.AddParsedSubObject(@__ctrl67);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl62;
-            @__ctrl62 = this.@__BuildControlNextBtn();
-            @__parser.AddParsedSubObject(@__ctrl62);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl68;
+            @__ctrl68 = this.@__BuildControlNextBtn();
+            @__parser.AddParsedSubObject(@__ctrl68);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n        </div>\r\n    </div>\r\n</div>\r\n"));
         }
         

@@ -1,4 +1,5 @@
-﻿using Model.IKYS;
+﻿using Microsoft.SharePoint.JsonUtilities;
+using Model.IKYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -149,6 +150,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
             {
                 List<GorevOnayListItem> list = GetDataList();
                 var serializer = new JavaScriptSerializer();
+                serializer.MaxJsonLength = Int32.MaxValue;
                 jSon = serializer.Serialize(list);
             }
             catch (Exception exception)
