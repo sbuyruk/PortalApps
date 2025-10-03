@@ -205,7 +205,7 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
                     targets: 7,
                     render: function(data, type, row, meta) {
                         var today = moment();
-                        var isLinkVisible =today.diff(row.BagisTarihi, 'days') <= 30; // 30 günden eski kayıtlar için linki gizle
+                        var isLinkVisible =today.diff(row.BagisTarihi, 'days') <= 240; // 240 günden eski kayıtlar için linki gizle
 
                         if (isLinkVisible) {
                             return '<a href=""#"" onclick=""CallButtonClick(' + data + ');"" class=""btn btn-outline-danger"">Kayıt Sil</a>';
@@ -293,7 +293,7 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
         {
             AyDDL.Items.Clear();
             DateTime today = DateTime.Today;
-            DateTime basay = DateTime.Today.AddMonths(-1); // Başlangıç ayı
+            DateTime basay = DateTime.Today.AddMonths(-8); // Başlangıç ayı
             DateTime bitay = today; // Bitiş ayı
 
 

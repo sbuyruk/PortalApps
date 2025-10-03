@@ -57,6 +57,10 @@ namespace NBYS_WebParts.BeratBasimiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.DropDownList GunDDL;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.DropDownList AyDDL;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -324,6 +328,25 @@ namespace NBYS_WebParts.BeratBasimiWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "AdiLbl";
             @__ctrl.CssClass = "form-label";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.DropDownList @__BuildControlGunDDL() {
+            global::System.Web.UI.WebControls.DropDownList @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.DropDownList();
+            this.GunDDL = @__ctrl;
+            @__ctrl.TemplateControl = this;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "GunDDL";
+            @__ctrl.CssClass = "form-control form-select form-select-lg fw-bold form-select form-select-lg fw-bol" +
+                "d";
+            @__ctrl.AutoPostBack = true;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: auto");
+            @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.GunDDL_SelectedIndexChanged);
+            @__ctrl.SelectedIndexChanged += new System.EventHandler(this.GunDDL_SelectedIndexChanged);
             return @__ctrl;
         }
         
@@ -1166,12 +1189,24 @@ namespace NBYS_WebParts.BeratBasimiWP {
             <div class=""row mt-2"">
                 <div class=""form-group col-2"">
                     <div class=""row"">
-                        <label for=""AyDDL"" class=""col-4 form-label text-end "">Ay</label>
+                        <label for=""GunDDL"" class=""col-4 form-label text-end "">Gün</label>
                         <div class=""col-8"">
                             "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl1;
-            @__ctrl1 = this.@__BuildControlAyDDL();
+            @__ctrl1 = this.@__BuildControlGunDDL();
             @__parser.AddParsedSubObject(@__ctrl1);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                        </div>
+                    </div>
+                </div>
+                <div class=""form-group col-2"">
+                    <div class=""row"">
+                        <label for=""AyDDL"" class=""col-4 form-label text-end "">Ay</label>
+                        <div class=""col-8"">
+                            "));
+            global::System.Web.UI.WebControls.DropDownList @__ctrl2;
+            @__ctrl2 = this.@__BuildControlAyDDL();
+            @__parser.AddParsedSubObject(@__ctrl2);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                         </div>
                     </div>
@@ -1181,9 +1216,9 @@ namespace NBYS_WebParts.BeratBasimiWP {
                         <label for=""YilDDL"" class=""col-4 form-label text-end"">Yıl</label>
                         <div class=""col-8"">
                             "));
-            global::System.Web.UI.WebControls.DropDownList @__ctrl2;
-            @__ctrl2 = this.@__BuildControlYilDDL();
-            @__parser.AddParsedSubObject(@__ctrl2);
+            global::System.Web.UI.WebControls.DropDownList @__ctrl3;
+            @__ctrl3 = this.@__BuildControlYilDDL();
+            @__parser.AddParsedSubObject(@__ctrl3);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                         </div>
                     </div>
@@ -1196,22 +1231,22 @@ namespace NBYS_WebParts.BeratBasimiWP {
                         <h5 class=""card-title"">Altın Madalya</h5>
                         <div class=""card-body durumTable"">
                             "));
-            global::System.Web.UI.WebControls.Table @__ctrl3;
-            @__ctrl3 = this.@__BuildControlAnkATable();
-            @__parser.AddParsedSubObject(@__ctrl3);
+            global::System.Web.UI.WebControls.Table @__ctrl4;
+            @__ctrl4 = this.@__BuildControlAnkATable();
+            @__parser.AddParsedSubObject(@__ctrl4);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"card-footer" +
                         "\">\r\n                            "));
-            global::System.Web.UI.WebControls.CheckBox @__ctrl4;
-            @__ctrl4 = this.@__BuildControlAnkAltinDurumChk();
-            @__parser.AddParsedSubObject(@__ctrl4);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
-            global::System.Web.UI.WebControls.Button @__ctrl5;
-            @__ctrl5 = this.@__BuildControlAnkAltinBtn();
+            global::System.Web.UI.WebControls.CheckBox @__ctrl5;
+            @__ctrl5 = this.@__BuildControlAnkAltinDurumChk();
             @__parser.AddParsedSubObject(@__ctrl5);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
             global::System.Web.UI.WebControls.Button @__ctrl6;
-            @__ctrl6 = this.@__BuildControlAnkAltinEtiketBtn();
+            @__ctrl6 = this.@__BuildControlAnkAltinBtn();
             @__parser.AddParsedSubObject(@__ctrl6);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
+            global::System.Web.UI.WebControls.Button @__ctrl7;
+            @__ctrl7 = this.@__BuildControlAnkAltinEtiketBtn();
+            @__parser.AddParsedSubObject(@__ctrl7);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                         </div>
                     </div>
@@ -1219,22 +1254,22 @@ namespace NBYS_WebParts.BeratBasimiWP {
                         <h5 class=""card-title"">Gümüş Madalya</h5>
                         <div class=""card-body durumTable"">
                             "));
-            global::System.Web.UI.WebControls.Table @__ctrl7;
-            @__ctrl7 = this.@__BuildControlAnkGTable();
-            @__parser.AddParsedSubObject(@__ctrl7);
+            global::System.Web.UI.WebControls.Table @__ctrl8;
+            @__ctrl8 = this.@__BuildControlAnkGTable();
+            @__parser.AddParsedSubObject(@__ctrl8);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"card-footer" +
                         "\">\r\n                            "));
-            global::System.Web.UI.WebControls.CheckBox @__ctrl8;
-            @__ctrl8 = this.@__BuildControlAnkGumusDurumChk();
-            @__parser.AddParsedSubObject(@__ctrl8);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
-            global::System.Web.UI.WebControls.Button @__ctrl9;
-            @__ctrl9 = this.@__BuildControlAnkGumusBtn();
+            global::System.Web.UI.WebControls.CheckBox @__ctrl9;
+            @__ctrl9 = this.@__BuildControlAnkGumusDurumChk();
             @__parser.AddParsedSubObject(@__ctrl9);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
             global::System.Web.UI.WebControls.Button @__ctrl10;
-            @__ctrl10 = this.@__BuildControlAnkGumusEtiketBtn();
+            @__ctrl10 = this.@__BuildControlAnkGumusBtn();
             @__parser.AddParsedSubObject(@__ctrl10);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
+            global::System.Web.UI.WebControls.Button @__ctrl11;
+            @__ctrl11 = this.@__BuildControlAnkGumusEtiketBtn();
+            @__parser.AddParsedSubObject(@__ctrl11);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                         </div>
                     </div>
@@ -1242,22 +1277,22 @@ namespace NBYS_WebParts.BeratBasimiWP {
                         <h5 class=""card-title"">Bronz Madalya</h5>
                         <div class=""card-body durumTable"">
                             "));
-            global::System.Web.UI.WebControls.Table @__ctrl11;
-            @__ctrl11 = this.@__BuildControlAnkBTable();
-            @__parser.AddParsedSubObject(@__ctrl11);
+            global::System.Web.UI.WebControls.Table @__ctrl12;
+            @__ctrl12 = this.@__BuildControlAnkBTable();
+            @__parser.AddParsedSubObject(@__ctrl12);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"card-footer" +
                         "\">\r\n                            "));
-            global::System.Web.UI.WebControls.CheckBox @__ctrl12;
-            @__ctrl12 = this.@__BuildControlAnkBronzDurumChk();
-            @__parser.AddParsedSubObject(@__ctrl12);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
-            global::System.Web.UI.WebControls.Button @__ctrl13;
-            @__ctrl13 = this.@__BuildControlAnkBronzBtn();
+            global::System.Web.UI.WebControls.CheckBox @__ctrl13;
+            @__ctrl13 = this.@__BuildControlAnkBronzDurumChk();
             @__parser.AddParsedSubObject(@__ctrl13);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
             global::System.Web.UI.WebControls.Button @__ctrl14;
-            @__ctrl14 = this.@__BuildControlAnkBronzEtiketBtn();
+            @__ctrl14 = this.@__BuildControlAnkBronzBtn();
             @__parser.AddParsedSubObject(@__ctrl14);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
+            global::System.Web.UI.WebControls.Button @__ctrl15;
+            @__ctrl15 = this.@__BuildControlAnkBronzEtiketBtn();
+            @__parser.AddParsedSubObject(@__ctrl15);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                         </div>
                     </div>
@@ -1268,22 +1303,22 @@ namespace NBYS_WebParts.BeratBasimiWP {
                         <h5 class=""card-title"">Altın Madalya</h5>
                         <div class=""card-body durumTable"">
                             "));
-            global::System.Web.UI.WebControls.Table @__ctrl15;
-            @__ctrl15 = this.@__BuildControlIstATable();
-            @__parser.AddParsedSubObject(@__ctrl15);
+            global::System.Web.UI.WebControls.Table @__ctrl16;
+            @__ctrl16 = this.@__BuildControlIstATable();
+            @__parser.AddParsedSubObject(@__ctrl16);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"card-footer" +
                         "\">\r\n                            "));
-            global::System.Web.UI.WebControls.CheckBox @__ctrl16;
-            @__ctrl16 = this.@__BuildControlIstAltinDurumChk();
-            @__parser.AddParsedSubObject(@__ctrl16);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
-            global::System.Web.UI.WebControls.Button @__ctrl17;
-            @__ctrl17 = this.@__BuildControlIstAltinBtn();
+            global::System.Web.UI.WebControls.CheckBox @__ctrl17;
+            @__ctrl17 = this.@__BuildControlIstAltinDurumChk();
             @__parser.AddParsedSubObject(@__ctrl17);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
             global::System.Web.UI.WebControls.Button @__ctrl18;
-            @__ctrl18 = this.@__BuildControlIstAltinEtiketBtn();
+            @__ctrl18 = this.@__BuildControlIstAltinBtn();
             @__parser.AddParsedSubObject(@__ctrl18);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
+            global::System.Web.UI.WebControls.Button @__ctrl19;
+            @__ctrl19 = this.@__BuildControlIstAltinEtiketBtn();
+            @__parser.AddParsedSubObject(@__ctrl19);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                         </div>
                     </div>
@@ -1291,22 +1326,22 @@ namespace NBYS_WebParts.BeratBasimiWP {
                         <h5 class=""card-title"">Gümüş Madalya</h5>
                         <div class=""card-body durumTable"">
                             "));
-            global::System.Web.UI.WebControls.Table @__ctrl19;
-            @__ctrl19 = this.@__BuildControlIstGTable();
-            @__parser.AddParsedSubObject(@__ctrl19);
+            global::System.Web.UI.WebControls.Table @__ctrl20;
+            @__ctrl20 = this.@__BuildControlIstGTable();
+            @__parser.AddParsedSubObject(@__ctrl20);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"card-footer" +
                         "\">\r\n                            "));
-            global::System.Web.UI.WebControls.CheckBox @__ctrl20;
-            @__ctrl20 = this.@__BuildControlIstGumusDurumChk();
-            @__parser.AddParsedSubObject(@__ctrl20);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
-            global::System.Web.UI.WebControls.Button @__ctrl21;
-            @__ctrl21 = this.@__BuildControlIstGumusBtn();
+            global::System.Web.UI.WebControls.CheckBox @__ctrl21;
+            @__ctrl21 = this.@__BuildControlIstGumusDurumChk();
             @__parser.AddParsedSubObject(@__ctrl21);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
             global::System.Web.UI.WebControls.Button @__ctrl22;
-            @__ctrl22 = this.@__BuildControlIstGumusEtiketBtn();
+            @__ctrl22 = this.@__BuildControlIstGumusBtn();
             @__parser.AddParsedSubObject(@__ctrl22);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
+            global::System.Web.UI.WebControls.Button @__ctrl23;
+            @__ctrl23 = this.@__BuildControlIstGumusEtiketBtn();
+            @__parser.AddParsedSubObject(@__ctrl23);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                         </div>
                     </div>
@@ -1314,22 +1349,22 @@ namespace NBYS_WebParts.BeratBasimiWP {
                         <h5 class=""card-title"">Bronz Madalya</h5>
                         <div class=""card-body durumTable"">
                             "));
-            global::System.Web.UI.WebControls.Table @__ctrl23;
-            @__ctrl23 = this.@__BuildControlIstBTable();
-            @__parser.AddParsedSubObject(@__ctrl23);
+            global::System.Web.UI.WebControls.Table @__ctrl24;
+            @__ctrl24 = this.@__BuildControlIstBTable();
+            @__parser.AddParsedSubObject(@__ctrl24);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"card-footer" +
                         "\">\r\n                            "));
-            global::System.Web.UI.WebControls.CheckBox @__ctrl24;
-            @__ctrl24 = this.@__BuildControlIstBronzDurumChk();
-            @__parser.AddParsedSubObject(@__ctrl24);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
-            global::System.Web.UI.WebControls.Button @__ctrl25;
-            @__ctrl25 = this.@__BuildControlIstBronzBtn();
+            global::System.Web.UI.WebControls.CheckBox @__ctrl25;
+            @__ctrl25 = this.@__BuildControlIstBronzDurumChk();
             @__parser.AddParsedSubObject(@__ctrl25);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
             global::System.Web.UI.WebControls.Button @__ctrl26;
-            @__ctrl26 = this.@__BuildControlIstBronzEtiketBtn();
+            @__ctrl26 = this.@__BuildControlIstBronzBtn();
             @__parser.AddParsedSubObject(@__ctrl26);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
+            global::System.Web.UI.WebControls.Button @__ctrl27;
+            @__ctrl27 = this.@__BuildControlIstBronzEtiketBtn();
+            @__parser.AddParsedSubObject(@__ctrl27);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                         </div>
                     </div>
@@ -1340,22 +1375,22 @@ namespace NBYS_WebParts.BeratBasimiWP {
                         <h5 class=""card-title"">Altın Madalya</h5>
                         <div class=""card-body durumTable"">
                             "));
-            global::System.Web.UI.WebControls.Table @__ctrl27;
-            @__ctrl27 = this.@__BuildControlIzmATable();
-            @__parser.AddParsedSubObject(@__ctrl27);
+            global::System.Web.UI.WebControls.Table @__ctrl28;
+            @__ctrl28 = this.@__BuildControlIzmATable();
+            @__parser.AddParsedSubObject(@__ctrl28);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"card-footer" +
                         "\">\r\n                            "));
-            global::System.Web.UI.WebControls.CheckBox @__ctrl28;
-            @__ctrl28 = this.@__BuildControlIzmAltinDurumChk();
-            @__parser.AddParsedSubObject(@__ctrl28);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
-            global::System.Web.UI.WebControls.Button @__ctrl29;
-            @__ctrl29 = this.@__BuildControlIzmAltinBtn();
+            global::System.Web.UI.WebControls.CheckBox @__ctrl29;
+            @__ctrl29 = this.@__BuildControlIzmAltinDurumChk();
             @__parser.AddParsedSubObject(@__ctrl29);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
             global::System.Web.UI.WebControls.Button @__ctrl30;
-            @__ctrl30 = this.@__BuildControlIzmAltinEtiketBtn();
+            @__ctrl30 = this.@__BuildControlIzmAltinBtn();
             @__parser.AddParsedSubObject(@__ctrl30);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
+            global::System.Web.UI.WebControls.Button @__ctrl31;
+            @__ctrl31 = this.@__BuildControlIzmAltinEtiketBtn();
+            @__parser.AddParsedSubObject(@__ctrl31);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                         </div>
                     </div>
@@ -1363,22 +1398,22 @@ namespace NBYS_WebParts.BeratBasimiWP {
                         <h5 class=""card-title"">Gümüş Madalya</h5>
                         <div class=""card-body durumTable"">
                             "));
-            global::System.Web.UI.WebControls.Table @__ctrl31;
-            @__ctrl31 = this.@__BuildControlIzmGTable();
-            @__parser.AddParsedSubObject(@__ctrl31);
+            global::System.Web.UI.WebControls.Table @__ctrl32;
+            @__ctrl32 = this.@__BuildControlIzmGTable();
+            @__parser.AddParsedSubObject(@__ctrl32);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"card-footer" +
                         "\">\r\n                            "));
-            global::System.Web.UI.WebControls.CheckBox @__ctrl32;
-            @__ctrl32 = this.@__BuildControlIzmGumusDurumChk();
-            @__parser.AddParsedSubObject(@__ctrl32);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
-            global::System.Web.UI.WebControls.Button @__ctrl33;
-            @__ctrl33 = this.@__BuildControlIzmGumusBtn();
+            global::System.Web.UI.WebControls.CheckBox @__ctrl33;
+            @__ctrl33 = this.@__BuildControlIzmGumusDurumChk();
             @__parser.AddParsedSubObject(@__ctrl33);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
             global::System.Web.UI.WebControls.Button @__ctrl34;
-            @__ctrl34 = this.@__BuildControlIzmGumusEtiketBtn();
+            @__ctrl34 = this.@__BuildControlIzmGumusBtn();
             @__parser.AddParsedSubObject(@__ctrl34);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
+            global::System.Web.UI.WebControls.Button @__ctrl35;
+            @__ctrl35 = this.@__BuildControlIzmGumusEtiketBtn();
+            @__parser.AddParsedSubObject(@__ctrl35);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                         </div>
                     </div>
@@ -1386,22 +1421,22 @@ namespace NBYS_WebParts.BeratBasimiWP {
                         <h5 class=""card-title"">Bronz Madalya</h5>
                         <div class=""card-body durumTable"">
                             "));
-            global::System.Web.UI.WebControls.Table @__ctrl35;
-            @__ctrl35 = this.@__BuildControlIzmBTable();
-            @__parser.AddParsedSubObject(@__ctrl35);
+            global::System.Web.UI.WebControls.Table @__ctrl36;
+            @__ctrl36 = this.@__BuildControlIzmBTable();
+            @__parser.AddParsedSubObject(@__ctrl36);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"card-footer" +
                         "\">\r\n                            "));
-            global::System.Web.UI.WebControls.CheckBox @__ctrl36;
-            @__ctrl36 = this.@__BuildControlIzmBronzDurumChk();
-            @__parser.AddParsedSubObject(@__ctrl36);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
-            global::System.Web.UI.WebControls.Button @__ctrl37;
-            @__ctrl37 = this.@__BuildControlIzmBronzBtn();
+            global::System.Web.UI.WebControls.CheckBox @__ctrl37;
+            @__ctrl37 = this.@__BuildControlIzmBronzDurumChk();
             @__parser.AddParsedSubObject(@__ctrl37);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
             global::System.Web.UI.WebControls.Button @__ctrl38;
-            @__ctrl38 = this.@__BuildControlIzmBronzEtiketBtn();
+            @__ctrl38 = this.@__BuildControlIzmBronzBtn();
             @__parser.AddParsedSubObject(@__ctrl38);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
+            global::System.Web.UI.WebControls.Button @__ctrl39;
+            @__ctrl39 = this.@__BuildControlIzmBronzEtiketBtn();
+            @__parser.AddParsedSubObject(@__ctrl39);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                         </div>
                     </div>
@@ -1412,22 +1447,22 @@ namespace NBYS_WebParts.BeratBasimiWP {
                         <h5 class=""card-title"">Altın Madalya</h5>
                         <div class=""card-body durumTable"">
                             "));
-            global::System.Web.UI.WebControls.Table @__ctrl39;
-            @__ctrl39 = this.@__BuildControlMerATable();
-            @__parser.AddParsedSubObject(@__ctrl39);
+            global::System.Web.UI.WebControls.Table @__ctrl40;
+            @__ctrl40 = this.@__BuildControlMerATable();
+            @__parser.AddParsedSubObject(@__ctrl40);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"card-footer" +
                         "\">\r\n                            "));
-            global::System.Web.UI.WebControls.CheckBox @__ctrl40;
-            @__ctrl40 = this.@__BuildControlMerAltinDurumChk();
-            @__parser.AddParsedSubObject(@__ctrl40);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
-            global::System.Web.UI.WebControls.Button @__ctrl41;
-            @__ctrl41 = this.@__BuildControlMerAltinBtn();
+            global::System.Web.UI.WebControls.CheckBox @__ctrl41;
+            @__ctrl41 = this.@__BuildControlMerAltinDurumChk();
             @__parser.AddParsedSubObject(@__ctrl41);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
             global::System.Web.UI.WebControls.Button @__ctrl42;
-            @__ctrl42 = this.@__BuildControlMerAltinEtiketBtn();
+            @__ctrl42 = this.@__BuildControlMerAltinBtn();
             @__parser.AddParsedSubObject(@__ctrl42);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
+            global::System.Web.UI.WebControls.Button @__ctrl43;
+            @__ctrl43 = this.@__BuildControlMerAltinEtiketBtn();
+            @__parser.AddParsedSubObject(@__ctrl43);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                         </div>
                     </div>
@@ -1435,22 +1470,22 @@ namespace NBYS_WebParts.BeratBasimiWP {
                         <h5 class=""card-title"">Gümüş Madalya</h5>
                         <div class=""card-body durumTable"">
                             "));
-            global::System.Web.UI.WebControls.Table @__ctrl43;
-            @__ctrl43 = this.@__BuildControlMerGTable();
-            @__parser.AddParsedSubObject(@__ctrl43);
+            global::System.Web.UI.WebControls.Table @__ctrl44;
+            @__ctrl44 = this.@__BuildControlMerGTable();
+            @__parser.AddParsedSubObject(@__ctrl44);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"card-footer" +
                         "\">\r\n                            "));
-            global::System.Web.UI.WebControls.CheckBox @__ctrl44;
-            @__ctrl44 = this.@__BuildControlMerGumusDurumChk();
-            @__parser.AddParsedSubObject(@__ctrl44);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
-            global::System.Web.UI.WebControls.Button @__ctrl45;
-            @__ctrl45 = this.@__BuildControlMerGumusBtn();
+            global::System.Web.UI.WebControls.CheckBox @__ctrl45;
+            @__ctrl45 = this.@__BuildControlMerGumusDurumChk();
             @__parser.AddParsedSubObject(@__ctrl45);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
             global::System.Web.UI.WebControls.Button @__ctrl46;
-            @__ctrl46 = this.@__BuildControlMerGumusEtiketBtn();
+            @__ctrl46 = this.@__BuildControlMerGumusBtn();
             @__parser.AddParsedSubObject(@__ctrl46);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
+            global::System.Web.UI.WebControls.Button @__ctrl47;
+            @__ctrl47 = this.@__BuildControlMerGumusEtiketBtn();
+            @__parser.AddParsedSubObject(@__ctrl47);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                         </div>
                     </div>
@@ -1458,22 +1493,22 @@ namespace NBYS_WebParts.BeratBasimiWP {
                         <h5 class=""card-title"">Bronz Madalya</h5>
                         <div class=""card-body durumTable"">
                             "));
-            global::System.Web.UI.WebControls.Table @__ctrl47;
-            @__ctrl47 = this.@__BuildControlMerBTable();
-            @__parser.AddParsedSubObject(@__ctrl47);
+            global::System.Web.UI.WebControls.Table @__ctrl48;
+            @__ctrl48 = this.@__BuildControlMerBTable();
+            @__parser.AddParsedSubObject(@__ctrl48);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"card-footer" +
                         "\">\r\n                            "));
-            global::System.Web.UI.WebControls.CheckBox @__ctrl48;
-            @__ctrl48 = this.@__BuildControlMerBronzDurumChk();
-            @__parser.AddParsedSubObject(@__ctrl48);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
-            global::System.Web.UI.WebControls.Button @__ctrl49;
-            @__ctrl49 = this.@__BuildControlMerBronzBtn();
+            global::System.Web.UI.WebControls.CheckBox @__ctrl49;
+            @__ctrl49 = this.@__BuildControlMerBronzDurumChk();
             @__parser.AddParsedSubObject(@__ctrl49);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
             global::System.Web.UI.WebControls.Button @__ctrl50;
-            @__ctrl50 = this.@__BuildControlMerBronzEtiketBtn();
+            @__ctrl50 = this.@__BuildControlMerBronzBtn();
             @__parser.AddParsedSubObject(@__ctrl50);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
+            global::System.Web.UI.WebControls.Button @__ctrl51;
+            @__ctrl51 = this.@__BuildControlMerBronzEtiketBtn();
+            @__parser.AddParsedSubObject(@__ctrl51);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n                </d" +
                         "iv>\r\n            </div>\r\n        "));
         }
@@ -1484,7 +1519,7 @@ namespace NBYS_WebParts.BeratBasimiWP {
         private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control4() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
-            @__ctrl.ControlID = "AyDDL";
+            @__ctrl.ControlID = "GunDDL";
             @__ctrl.EventName = "SelectedIndexChanged";
             return @__ctrl;
         }
@@ -1493,6 +1528,17 @@ namespace NBYS_WebParts.BeratBasimiWP {
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control5() {
+            global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
+            @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
+            @__ctrl.ControlID = "AyDDL";
+            @__ctrl.EventName = "SelectedIndexChanged";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control6() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
             @__ctrl.ControlID = "YilDDL";
@@ -1510,6 +1556,9 @@ namespace NBYS_WebParts.BeratBasimiWP {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl2;
             @__ctrl2 = this.@__BuildControl__control5();
             @__ctrl.Add(@__ctrl2);
+            global::System.Web.UI.AsyncPostBackTrigger @__ctrl3;
+            @__ctrl3 = this.@__BuildControl__control6();
+            @__ctrl.Add(@__ctrl3);
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -1528,7 +1577,7 @@ namespace NBYS_WebParts.BeratBasimiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control6(System.Web.UI.Control @__ctrl) {
+        private void @__BuildControl__control7(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            <div class=\'loaderMainContainer\'>\r\n                <div class=\'load" +
                         "erContainer\'>\r\n                    <div class=\'loaderCircle\'></div>\r\n           " +
@@ -1542,7 +1591,7 @@ namespace NBYS_WebParts.BeratBasimiWP {
             global::System.Web.UI.UpdateProgress @__ctrl;
             @__ctrl = new global::System.Web.UI.UpdateProgress();
             this.updateProgress = @__ctrl;
-            @__ctrl.ProgressTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control6));
+            @__ctrl.ProgressTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control7));
             @__ctrl.ID = "updateProgress";
             return @__ctrl;
         }

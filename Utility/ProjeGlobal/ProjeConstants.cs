@@ -687,8 +687,8 @@ namespace Utility.ProjeGlobal
         //Kiosk
         public const string BANKA_KIOSK = "Kiosk";
         public const string BANKA_KIOSK_BASLIKILKHUCRE = "HESAP NO";
-        public const int BANKA_KIOSK_ILKKACSATIRHARIC = 7;
-        public const int BANKA_KIOSK_SONKACSATIRHARIC = 6;
+        public const int BANKA_KIOSK_ILKKACSATIRHARIC = 0;
+        public const int BANKA_KIOSK_SONKACSATIRHARIC = 0;
         public const string IMAGE_PATH_BANKA_KIOSK = "/" + IMAGE_PATH + "/vakifbank.png";
         //Ziraat
         public const string BANKA_ZIRAAT = "Ziraat Bankası";

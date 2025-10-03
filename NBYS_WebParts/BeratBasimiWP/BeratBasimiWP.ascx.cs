@@ -305,8 +305,15 @@ namespace NBYS_WebParts.BeratBasimiWP
         }
         private void FillDropDownList()
         {
+            GunDDLDoldur();
             AyDDLDoldur();
             YilDDLDoldur();
+        }
+        private void GunDDLDoldur()
+        {
+
+            GunDDL.Items.Add(new ListItem("1-15", "1"));
+            GunDDL.Items.Add(new ListItem("16-Ay Sonu", "2"));
         }
         private void AyDDLDoldur()
         {
@@ -337,10 +344,14 @@ namespace NBYS_WebParts.BeratBasimiWP
         {
             try
             {
+                string gun = !string.IsNullOrEmpty(SecilenGunQS) ? SecilenGunQS : DateTime.Today.Day.ToString();
+                UtilityHelper.SetDDLValue(GunDDL, gun);
+                SecilenGunQS = gun;
+
                 string ay = !string.IsNullOrEmpty(SecilenAyQS) ? SecilenAyQS : DateTime.Today.Month.ToString();
                 UtilityHelper.SetDDLValue(AyDDL, ay);
                 SecilenAyQS = ay;
-                //yil
+
                 string yil = !string.IsNullOrEmpty(SecilenYilQS) ? SecilenYilQS : DateTime.Today.Year.ReturnEmptyIfNull().ToString();
                 UtilityHelper.SetDDLValue(YilDDL, yil);
                 SecilenYilQS = yil;
@@ -364,6 +375,9 @@ namespace NBYS_WebParts.BeratBasimiWP
 
         private void SetSecilenBasTarBitTar()
         {
+            int gun = GunDDL.SelectedItem.Value.ConvertToInt();
+            int basgun= gun == 1 ? 1 : 16;
+            
             int ay = AyDDL.SelectedItem.Value.ConvertToInt();
             int yil = YilDDL.SelectedItem.Value.ConvertToInt();
 
@@ -372,19 +386,28 @@ namespace NBYS_WebParts.BeratBasimiWP
 
             if (ay == 0)
             {
-                bastar = new DateTime(yil, 1, 1);
+                bastar = new DateTime(yil, 1, basgun);
                 bittar = bastar.AddYears(1).AddDays(-1);
+                
             }
             else
             {
 
-                bastar = new DateTime(yil, ay, 1);
-                DateTime basGun = new DateTime(yil, ay, 1).AddMonths(1).AddDays(-1);
-                bittar = new DateTime(yil, ay, basGun.Day);
+                bastar = new DateTime(yil, ay, basgun);
+                var bitgun = gun == 1 ? bastar.AddDays(14) : new DateTime( bastar.Year,bastar.Month,1).AddMonths(1).AddDays(-1);
+                bittar = new DateTime(yil, ay, bitgun.Day);
 
             }
             SecilenBastarQS = bastar.ConvertToDatetimeEmptyIfNull();
             SecilenBittarQS = bittar.ConvertToDatetimeEmptyIfNull();
+        }
+        protected void GunDDL_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+            SecilenGunQS = GunDDL.SelectedItem.Value.ToString();
+            SetSecilenBasTarBitTar();
+            FillDurumValues();
+            //KayitGetir();
         }
         protected void AyDDL_SelectedIndexChanged(object sender, EventArgs e)
         {

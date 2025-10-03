@@ -39,6 +39,14 @@
             <div class="row mt-2">
                 <div class="form-group col-2">
                     <div class="row">
+                        <label for="GunDDL" class="col-4 form-label text-end ">Gün</label>
+                        <div class="col-8">
+                            <asp:DropDownList ID="GunDDL" runat="server" CssClass="form-control form-select form-select-lg fw-bold form-select form-select-lg fw-bold" OnSelectedIndexChanged="GunDDL_SelectedIndexChanged" AutoPostBack="true" Style="height: auto"></asp:DropDownList>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group col-2">
+                    <div class="row">
                         <label for="AyDDL" class="col-4 form-label text-end ">Ay</label>
                         <div class="col-8">
                             <asp:DropDownList ID="AyDDL" runat="server" CssClass="form-control form-select form-select-lg fw-bold form-select form-select-lg fw-bold" OnSelectedIndexChanged="AyDDL_SelectedIndexChanged" AutoPostBack="true" Style="height: auto"></asp:DropDownList>
@@ -214,6 +222,7 @@
             </div>
         </ContentTemplate>
         <Triggers>
+            <asp:AsyncPostBackTrigger ControlID="GunDDL" EventName="SelectedIndexChanged" />
             <asp:AsyncPostBackTrigger ControlID="AyDDL" EventName="SelectedIndexChanged" />
             <asp:AsyncPostBackTrigger ControlID="YilDDL" EventName="SelectedIndexChanged" />
         </Triggers>

@@ -1951,6 +1951,12 @@ namespace Model.NBYS
                                     Exception ex = new Exception(odemeId + " Numaralı kayıt daha önce girildiğinden tekrar aktarılmadı.");
                                     exceptionHelper.Exceptions.Add(ex);
                                 }
+                                else if (BuKayitDahaOnceGirilmisMiByFisNo(//odemeId numarasından kontrol et kayıt girilmemişse exception dondur değilse kaydet
+                                    "Kart ile Bağış", odemeId, aciklama, ekstreAktarma.BagisTarihi, tutar)) //transactionId numarasından kontrol et kayıt girilmemişse exception dondur değilse kaydet
+                                {
+                                    Exception ex = new Exception(odemeId + " Numaralı kayıt daha önce girildiğinden tekrar aktarılmadı.");
+                                    exceptionHelper.Exceptions.Add(ex);
+                                }
                                 else
                                 {
                                     ekstreAktarma.Save();
@@ -2778,8 +2784,9 @@ namespace Model.NBYS
             armagan.Tarih = nakitBagisHareket.BagisTarihi;
             armagan.ArmaganTanimId = hakedilenArmaganTanimId;
             armagan.Olusturan = currentUser;
-            armagan.Durum = nakitBagisci.BelgeIstemiyor ? ProjeConstants.DURUM_BELGE_ISTEMIYOR : ProjeConstants.DURUM_GONDERILMEDI;
-            
+            armagan.Durum = nakitBagisci.BelgeIstemiyor ? ProjeConstants.DURUM_BELGE_ISTEMIYOR : 
+                (nakitBagisci.Ulasilamiyor ? ProjeConstants.DURUM_ULASILAMADI : ProjeConstants.DURUM_GONDERILMEDI);
+
             if (hakedilenArmaganTanimId == ProjeConstants.ARMAGAN_TESEKKURID 
                 && nakitBagisHareket.BankaId == ProjeConstants.BANKA_EDEVLETBAGIS_INT) 
             {

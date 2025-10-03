@@ -199,6 +199,7 @@ namespace IKYS_WebParts.MaasOlusturmaWP
                         listItem.Derece = derece;
                         listItem.Kademe = kademe;
                         listItem.Ucret = ucret.ToString("N", culturInfo);
+                        listItem.Ikramiye = ikramiye.ToString("N", culturInfo);
                         //DereceKademeIlerlemeTarihi'nin ay'ı TarihDDLDen seçilen tarihin ay'ı ile aynıysa
                         //Kademeyi bir artır, kademe 10'dan büyük vey aeşitse artırma
                         if (kademe < 10)
@@ -211,6 +212,8 @@ namespace IKYS_WebParts.MaasOlusturmaWP
                                 UcretTanim ucretTanim = new UcretTanim();
                                 ucret = ucretTanim.SelectUcretByGrupDereceKademe(grupId, derece, listItem.Kademe);
                                 listItem.Ucret = ucret.ToString("N", culturInfo); // Ucret'i güncelle
+                                listItem.Ikramiye = ucret.ToString("N", culturInfo);
+                                ikramiye= ucret;
                             }
                         }
 
@@ -218,7 +221,7 @@ namespace IKYS_WebParts.MaasOlusturmaWP
                         listItem.ProtokolSiraNo = protokolSiraNo;
                         listItem.GrupId = grupId;
                         
-                        listItem.Ikramiye = ikramiye.ToString("N", culturInfo);
+                       
                         listItem.Agi = agi.ToString("N", culturInfo);
                         listItem.Toplam = (ucret + ikramiye + agi).ToString("N", culturInfo);
                         yeniliste.Add(listItem);
