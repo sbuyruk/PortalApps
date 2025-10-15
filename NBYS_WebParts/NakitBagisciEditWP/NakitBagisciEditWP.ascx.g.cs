@@ -343,7 +343,7 @@ namespace NBYS_WebParts.NakitBagisciEditWP {
             this.IliDDL = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "IliDDL";
-            @__ctrl.CssClass = "form-control";
+            @__ctrl.CssClass = "form-control form-select form-select-lg fw-bold";
             @__ctrl.AutoPostBack = true;
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "height:auto");
             @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.IliDDL_SelectedIndexChanged);
@@ -361,7 +361,7 @@ namespace NBYS_WebParts.NakitBagisciEditWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "IlcesiDDL";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control form-select form-select-lg fw-bold");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "height:auto");
             return @__ctrl;
         }

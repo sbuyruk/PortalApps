@@ -37,7 +37,7 @@
                             <div class="form-group col">
                                 <div class="form-group m-0 ">
                                     <label class="col-form-label">Armağan</label>
-                                    <asp:DropDownList ID="ArmaganDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="ArmaganDLL_SelectedIndexChanged" AutoPostBack="true" style="height:auto"></asp:DropDownList>
+                                    <asp:DropDownList ID="ArmaganDDL" runat="server" CssClass="form-control form-select form-select-lg fw-bold" OnSelectedIndexChanged="ArmaganDLL_SelectedIndexChanged" AutoPostBack="true" style="height:auto"></asp:DropDownList>
                                 </div>
                                 <div class="form-group m-0 ">
                                     <label class="col-form-label">Bağış Tarihi</label>
@@ -45,7 +45,7 @@
                                 </div>
                                 <div class="form-group m-0 ">
                                     <label class="col-form-label">Durum</label>
-                                    <asp:DropDownList ID="DurumDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="DurumDDL_SelectedIndexChanged" AutoPostBack="true" style="height:auto"></asp:DropDownList>
+                                    <asp:DropDownList ID="DurumDDL" runat="server" CssClass="form-control form-select form-select-lg fw-bold" OnSelectedIndexChanged="DurumDDL_SelectedIndexChanged" AutoPostBack="true" style="height:auto"></asp:DropDownList>
                                 </div>
 
                             </div>
@@ -68,8 +68,9 @@
                 <div class="card-footer">
                     <asp:LinkButton CssClass="btn btn-outline-success float-left" ID="KaydetBtn" runat="server" Text="Kaydet" OnClick="KaydetBtn_Click" />
                     <asp:LinkButton Visible="false" CssClass="btn btn-outline-secondary float-end " ID="SonrakiBtn" runat="server" Text="Sonraki>>" />
-                    <asp:LinkButton Visible="false" CssClass="btn btn-outline-secondary float-end mr-2" ID="OncekiBtn" runat="server" Text="<<Önceki" />
-                    <asp:LinkButton CssClass="btn btn-outline-secondary float-end mr-2" ID="ArmaganListesiBtn" runat="server" Text="Armağan Listesi " OnClick="ArmaganListesiBtn_Click" />
+                    <asp:LinkButton Visible="false" CssClass="btn btn-outline-secondary float-end me-5" ID="OncekiBtn" runat="server" Text="<<Önceki" />
+                    <asp:LinkButton CssClass="btn btn-outline-secondary float-end me-2" ID="ArmaganListesiBtn" runat="server" Text="Armağan Listesi " OnClick="ArmaganListesiBtn_Click" />
+                    <asp:LinkButton CssClass="btn btn-secondary float-end me-10" ID="DuzenliBagisciListesiBtn" runat="server" Text="Düzenli Bağışçı Listesi " OnClick="DuzenliBagisciListesiBtn_Click" />
                 </div>
             </div>
         </ContentTemplate>

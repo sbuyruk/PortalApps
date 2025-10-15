@@ -70,6 +70,7 @@ namespace Utility.ProjeGlobal
         public const string NBYS_FTKISLEM = "FTK İşlem";
         public const string NBYS_FTKKISI = "FTK Kişi";
         public const string NBYS_NAKITBAGISCI = "Nakit Bağışçı";
+        public const string NBYS_DUZENLINAKITBAGISCI = "Düzenli Nakit Bağışçı";
         public const string NBYS_NAKITBAGISHAREKET = "Nakit Bağış Hareket";
         public const string NBYS_NBYSPARAMETRE = "NBYS Parametre";
         public const string NBYS_SMSAYLIKBAGIS = "SMS Aylık Bağış";
@@ -255,6 +256,8 @@ namespace Utility.ProjeGlobal
         public const string PAGE_ODEMEYI_KIRA_TEMINAT_AYRISTIR = "OdemeAyristirma.aspx";
         public const string PAGE_COKDEFABAGISYAPAN_LIST = "CokDefaBagisYapanBagisciListesi.aspx";
         public const string PAGE_ARMAGANOLUSTURMA = "ArmaganOlusturma.aspx";
+        public const string PAGE_DUZENLIBAGISCI_YUKLEME = "DuzenliBagisciDosyaYukleme.aspx";
+        public const string PAGE_DUZENLIBAGISCI_LIST = "DuzenliNakitBagisciListesi.aspx";
         //IKYS
         public const string PAGE_PERSONEL_LIST = "PersonelListesi.aspx";
         public const string PAGE_ESKIPERSONEL_LIST = "EskiPersonelListesi.aspx";
@@ -706,6 +709,9 @@ namespace Utility.ProjeGlobal
         public const int BANKA_EDEVLETBAGIS_INT = 22;
         public const int BANKA_EDEVLET_ILKKACSATIRHARIC = 0;//hastitle true o yüzden 0
         public const int BANKA_EDEVLET_SONKACSATIRHARIC = 0;
+        //Düzenli bağış
+        public const int DUZENLIBAGISCI_ILKKACSATIRHARIC = 0;//hastitle true o yüzden 0
+        public const int DUZENLIBAGISCI_SONKACSATIRHARIC = 0;
         //Teb
         public const string BANKA_TEB = "TEB";
 
@@ -757,6 +763,7 @@ namespace Utility.ProjeGlobal
         public const int ARMAGAN_SUKRANBELGESIID = 6;
         public const int ARMAGAN_TESEKKURMEKTUBUID = 7;
         public const int ARMAGAN_SILTID = 8;
+        public const int ARMAGAN_DUZENLIBAGISCIBELGESIID = 9;
 
         public const string ARMAGAN_ALTIN = "Altın";
         public const string ARMAGAN_GUMUS = "Gümüş";
@@ -1119,7 +1126,7 @@ namespace Utility.ProjeGlobal
 
         #region Ortak Parametreler 
         public const string PARAM_SMTP_ADRESI_LBL= "SMTP Adresi";
-        public const string PARAM_ALTERNATIVE_SMTP_IP_ADRESI= "10.150.8.12";
+        public const string PARAM_ALTERNATIVE_SMTP_IP_ADRESI= "10.150.8.15";
         public const string PARAM_INTERNET_SMTP_IP_ADRESI= "10.150.9.12";
         public const string PARAM_TOPLANTI_MAILGRUBU = "ToplantiMailGrubu";//"ToplantiMailTestGrubu";//
         public const string PARAM_BILGISISTEM_MAILGRUBU = "BilgiSistemMailGrubu";

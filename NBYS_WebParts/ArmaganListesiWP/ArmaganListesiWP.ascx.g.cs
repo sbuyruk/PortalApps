@@ -448,7 +448,7 @@ namespace NBYS_WebParts.ArmaganListesiWP {
                                     <th>Tarih</th>
                                     <th>Armağan</th>
                                     <th>Durumu</th>
-                                    <th>Çoklu Bağış</th>
+                                    <th>Bağış</th>
                                     <th>Düzenle</th>
                                     <th>İade</th>
                                 </tr>

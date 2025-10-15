@@ -113,6 +113,10 @@ namespace NBYS_WebParts.ArmaganEditWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.LinkButton DuzenliBagisciListesiBtn;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.UpdatePanel upPanel;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebPartCodeGenerator", "17.0.0.0")]
@@ -260,7 +264,7 @@ namespace NBYS_WebParts.ArmaganEditWP {
             this.ArmaganDDL = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "ArmaganDDL";
-            @__ctrl.CssClass = "form-control";
+            @__ctrl.CssClass = "form-control form-select form-select-lg fw-bold";
             @__ctrl.AutoPostBack = true;
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "height:auto");
             @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.ArmaganDLL_SelectedIndexChanged);
@@ -292,7 +296,7 @@ namespace NBYS_WebParts.ArmaganEditWP {
             this.DurumDDL = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "DurumDDL";
-            @__ctrl.CssClass = "form-control";
+            @__ctrl.CssClass = "form-control form-select form-select-lg fw-bold";
             @__ctrl.AutoPostBack = true;
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "height:auto");
             @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.DurumDDL_SelectedIndexChanged);
@@ -453,7 +457,7 @@ namespace NBYS_WebParts.ArmaganEditWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.Visible = false;
-            @__ctrl.CssClass = "btn btn-outline-secondary float-end mr-2";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end me-5";
             @__ctrl.ID = "OncekiBtn";
             @__ctrl.Text = "<<Önceki";
             return @__ctrl;
@@ -468,11 +472,28 @@ namespace NBYS_WebParts.ArmaganEditWP {
             this.ArmaganListesiBtn = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn btn-outline-secondary float-end mr-2";
+            @__ctrl.CssClass = "btn btn-outline-secondary float-end me-2";
             @__ctrl.ID = "ArmaganListesiBtn";
             @__ctrl.Text = "Armağan Listesi ";
             @__ctrl.Click -= new System.EventHandler(this.ArmaganListesiBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.ArmaganListesiBtn_Click);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlDuzenliBagisciListesiBtn() {
+            global::System.Web.UI.WebControls.LinkButton @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
+            this.DuzenliBagisciListesiBtn = @__ctrl;
+            @__ctrl.TemplateControl = this;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.CssClass = "btn btn-secondary float-end me-10";
+            @__ctrl.ID = "DuzenliBagisciListesiBtn";
+            @__ctrl.Text = "Düzenli Bağışçı Listesi ";
+            @__ctrl.Click -= new System.EventHandler(this.DuzenliBagisciListesiBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.DuzenliBagisciListesiBtn_Click);
             return @__ctrl;
         }
         
@@ -505,6 +526,10 @@ namespace NBYS_WebParts.ArmaganEditWP {
             global::System.Web.UI.WebControls.LinkButton @__ctrl6;
             @__ctrl6 = this.@__BuildControlArmaganListesiBtn();
             @__parser.AddParsedSubObject(@__ctrl6);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl7;
+            @__ctrl7 = this.@__BuildControlDuzenliBagisciListesiBtn();
+            @__parser.AddParsedSubObject(@__ctrl7);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                </div>\r\n            </div>\r\n        "));
         }
         

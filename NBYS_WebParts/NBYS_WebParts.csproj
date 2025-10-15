@@ -190,6 +190,30 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DovizleYapilanBagislarWP.ascx</DependentUpon>
     </Compile>
+    <Compile Include="DuzenliBagisciBelgesiBasimiWP\DuzenliBagisciBelgesiBasimiWP.ascx.cs">
+      <DependentUpon>DuzenliBagisciBelgesiBasimiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DuzenliBagisciBelgesiBasimiWP\DuzenliBagisciBelgesiBasimiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DuzenliBagisciBelgesiBasimiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DuzenliBagisciDosyaYuklemeWP\DuzenliBagisciDosyaYuklemeWP.ascx.cs">
+      <DependentUpon>DuzenliBagisciDosyaYuklemeWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DuzenliBagisciDosyaYuklemeWP\DuzenliBagisciDosyaYuklemeWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DuzenliBagisciDosyaYuklemeWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DuzenliNakitBagisciListesiWP\DuzenliNakitBagisciListesiWP.ascx.cs">
+      <DependentUpon>DuzenliNakitBagisciListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DuzenliNakitBagisciListesiWP\DuzenliNakitBagisciListesiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DuzenliNakitBagisciListesiWP.ascx</DependentUpon>
+    </Compile>
     <Compile Include="EkstreAktarmaEditWP\EkstreAktarmaEditWP.ascx.cs">
       <DependentUpon>EkstreAktarmaEditWP.ascx</DependentUpon>
     </Compile>
@@ -526,6 +550,18 @@
     <None Include="DovizleYapilanBagislarWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{0a8adb18-05d6-421a-95b3-a2daade47870}</SharePointProjectItemId>
     </None>
+    <None Include="DuzenliBagisciBelgesiBasimiWP\DuzenliBagisciBelgesiBasimiWP.webpart" />
+    <None Include="DuzenliBagisciBelgesiBasimiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{4cfca0ee-9d41-4c65-b5e6-b9a26d2c69c3}</SharePointProjectItemId>
+    </None>
+    <None Include="DuzenliBagisciDosyaYuklemeWP\DuzenliBagisciDosyaYuklemeWP.webpart" />
+    <None Include="DuzenliBagisciDosyaYuklemeWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{95e2ec77-f30e-4615-ac8e-50a6685050ba}</SharePointProjectItemId>
+    </None>
+    <None Include="DuzenliNakitBagisciListesiWP\DuzenliNakitBagisciListesiWP.webpart" />
+    <None Include="DuzenliNakitBagisciListesiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{4cfba698-65b0-4ce9-8b57-0df2f0c39ed0}</SharePointProjectItemId>
+    </None>
     <None Include="EkstreAktarmaEditWP\EkstreAktarmaEditWP.webpart" />
     <None Include="EkstreAktarmaEditWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{cc2a36f1-1dad-4476-a59a-038ffc68db90}</SharePointProjectItemId>
@@ -744,6 +780,21 @@
       <LastGenOutput>DovizleYapilanBagislarWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="DovizleYapilanBagislarWP\Elements.xml" />
+    <Content Include="DuzenliBagisciBelgesiBasimiWP\DuzenliBagisciBelgesiBasimiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>DuzenliBagisciBelgesiBasimiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="DuzenliBagisciBelgesiBasimiWP\Elements.xml" />
+    <Content Include="DuzenliBagisciDosyaYuklemeWP\DuzenliBagisciDosyaYuklemeWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>DuzenliBagisciDosyaYuklemeWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="DuzenliBagisciDosyaYuklemeWP\Elements.xml" />
+    <Content Include="DuzenliNakitBagisciListesiWP\DuzenliNakitBagisciListesiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>DuzenliNakitBagisciListesiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="DuzenliNakitBagisciListesiWP\Elements.xml" />
     <Content Include="EkstreAktarmaEditWP\EkstreAktarmaEditWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>EkstreAktarmaEditWP.ascx.g.cs</LastGenOutput>

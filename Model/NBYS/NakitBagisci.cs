@@ -320,7 +320,32 @@ namespace Model.NBYS
         {
             string sqlString = string.Format(@"SELECT *
                                FROM NakitBagisci_Table 
-                               WHERE  Adi={0} AND (Telefon1={1} OR Telefon2={1})", adi.ReturnQuotedValue(), telefon.ReturnQuotedValue());
+                               WHERE  Adi={0} AND (Telefon1={1} OR Telefon2={1})", 
+                               adi.ReturnQuotedValue(), telefon.ReturnQuotedValue());
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            List<NakitBagisci> list = ToList<NakitBagisci>(dataTable);
+            NakitBagisci nakitBagisci = new NakitBagisci();
+            nakitBagisci = list.FirstOrDefault();
+            return nakitBagisci;
+
+        }
+        public NakitBagisci SelectByTelefon( string telefon)
+        {
+            string sqlString = string.Format(@"SELECT *
+                               FROM NakitBagisci_Table 
+                               WHERE (Telefon1={0} OR Telefon2={0})", telefon.ReturnQuotedValue());
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            List<NakitBagisci> list = ToList<NakitBagisci>(dataTable);
+            NakitBagisci nakitBagisci = new NakitBagisci();
+            nakitBagisci = list.FirstOrDefault();
+            return nakitBagisci;
+
+        }
+        public NakitBagisci SelectByEposta( string eposta)
+        {
+            string sqlString = string.Format(@"SELECT *
+                               FROM NakitBagisci_Table 
+                               WHERE EPosta={0}", eposta.ReturnQuotedValue());
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<NakitBagisci> list = ToList<NakitBagisci>(dataTable);
             NakitBagisci nakitBagisci = new NakitBagisci();
@@ -713,6 +738,83 @@ namespace Model.NBYS
             }
             return dataTable;
         }
+        public string SelectDuzenliBagisci(ref List<NakitBagisci> list, ref int rowCount)
+        {
 
+
+            string sqlString = string.Format(@"
+                SELECT A.BagisciId NakitBagisciId,A.BagisciAdi,A.Id AS DuzenliBagisciId, A.ArmaganId,E.Durum
+                    ,ISNULL(B.Adi, 'BAĞIŞÇI BULUNAMADI') AS Adi
+                    ,A.EslesmeBilgisi
+                    ,A.Aciklama AS DuzenliBagisciAciklama
+                    ,TCKimlikNo
+	                ,A.Tutar
+	                ,A.BaslamaTarihi
+                    ,C.IlAdi Ili
+                    ,D.IlceAdi Ilcesi
+                    ,Adres
+                    ,Telefon1 +' - '+ Telefon2+ ' ('+A.Telefon+') ' as Telefon
+                    
+                    ,TuzelKisi
+                    ,Sag
+                    ,Eposta
+                    ,PostaKodu
+                    ,A.Aciklama
+                    ,Ulasilamiyor,BelgeIstemiyor
+                FROM DuzenliNakitBagisci_Table A
+                LEFT JOIN NakitBagisci_Table B ON A.BagisciId = B.Id
+                LEFT OUTER JOIN Il_Table C ON C.Id= B.Ili 
+                LEFT OUTER JOIN Ilce_Table D ON D.Id= B.Ilcesi AND D.IlId=C.Id
+                LEFT JOIN Armagan_Table E ON E.Id=A.ArmaganId
+                WHERE A.Aktif = 1;"
+                );
+
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            if (dataTable != null)
+            {
+                rowCount = dataTable.Rows.Count;
+            }
+            string json = ToJSON(dataTable);
+            return json;
+        }
+        public DataTable SelectDuzenliBagisci()
+        {
+            string sqlString = string.Format(@"
+                SELECT A.BagisciId aBagisciId,A.BagisciAdi aBagisciAdi
+                    ,A.Id aDuzenliBagisciId
+                    ,A.BaslamaTarihi aBaslamaTarihi
+                    ,A.Tutar aTutar,A.BagisAdedi aBagisAdedi,A.BagisToplami aBagisToplami
+                    ,A.Aktif aAktif
+                    ,A.ArmaganId aArmaganId, A.NakitBagisHareketId aNakitBagisHareketId
+                    ,A.Telefon aTelefon,A.Eposta aEposta
+                    ,A.EslesmeBilgisi aEslesmeBilgisi,A.Aciklama aAciklama                    
+
+                    ,ISNULL(B.Adi, 'BAĞIŞÇI BULUNAMADI') AS bAdi
+                    ,B.TCKimlikNo bTCKimlikNo
+                    ,Adres bAdres
+                    ,Telefon1 bTelefon1
+                    ,Telefon2 bTelefon2
+                    ,TuzelKisi bTuzelKisi
+                    ,Sag bSag
+                    ,B.Eposta bEposta
+                    ,PostaKodu bPostaKodu
+                    ,B.Aciklama bAciklama
+                    ,C.IlAdi bIl
+                    ,D.IlceAdi bIlce
+                    ,Ulasilamiyor bUlasilamiyor
+                    ,BelgeIstemiyor bBelgeIstemiyor
+                    ,E.Durum bDurum
+                FROM DuzenliNakitBagisci_Table A
+                LEFT JOIN NakitBagisci_Table B ON A.BagisciId = B.Id
+                LEFT OUTER JOIN Il_Table C ON C.Id= B.Ili 
+                LEFT OUTER JOIN Ilce_Table D ON D.Id= B.Ilcesi AND D.IlId=C.Id
+                LEFT JOIN Armagan_Table E ON E.Id=A.ArmaganId
+                WHERE A.Aktif = 1;"
+                );
+
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+
+            return dataTable;
+        }
     }
 }

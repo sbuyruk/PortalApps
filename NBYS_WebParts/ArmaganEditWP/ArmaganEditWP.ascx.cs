@@ -188,6 +188,30 @@ namespace NBYS_WebParts.ArmaganEditWP
                 ViewState["CurrentUserName"] = value;
             }
         }
+        private string DuzenliBagisciIdQS
+        {
+            get
+            {
+
+                if (ViewState["DuzenliBagisciId"] == null)
+                {
+                    if (Page.Request.QueryString["DuzenliBagisciId"] != null)
+                    {
+                        ViewState["DuzenliBagisciId"] = Page.Request.QueryString["DuzenliBagisciId"];
+                    }
+                    else
+                    {
+                        ViewState["DuzenliBagisciId"] = "-2";
+                    }
+                }
+                return ViewState["DuzenliBagisciId"].ToString();
+            }
+
+            set
+            {
+                ViewState["DuzenliBagisciId"] = value;
+            }
+        }
         private int BolgeIdQS
         {
             get
@@ -421,6 +445,20 @@ namespace NBYS_WebParts.ArmaganEditWP
                 string queryStr = "?SecilenId=" + ArmaganIdQS + "&SecilenAy=" + SecilenAyQS + "&SecilenYil="
                 + SecilenYilQS + "&SecilenArmaganTanimId=" + SecilenArmaganTanimIdQS + "&SecilenDurum=" + SecilenDurumQS + "&SecilenIl=" + SecilenIlQS;
                 RedirectToPage(ProjeConstants.PAGE_ARMAGAN_LIST + queryStr);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelper exHelper = new ExceptionHelper(ex);
+                exHelper.PublishException();
+            }
+        }
+        protected void DuzenliBagisciListesiBtn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string queryStr = "?SecilenId=" + DuzenliBagisciIdQS + "&SecilenAy=" + SecilenAyQS + "&SecilenYil="
+                + SecilenYilQS;
+                RedirectToPage(ProjeConstants.PAGE_DUZENLIBAGISCI_LIST + queryStr);
             }
             catch (Exception ex)
             {

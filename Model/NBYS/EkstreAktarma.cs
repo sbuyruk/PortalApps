@@ -2777,6 +2777,7 @@ namespace Model.NBYS
             Armagan armagan = new Armagan();
 
             armagan.CokluBagis=cokluBagis;
+            armagan.DuzenliBagis = hakedilenArmaganTanimId==ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID;
             armagan.BagisciId = nakitBagisci.Id;
             //armagan.BagisId = nakitBagisHareketId;
             armagan.BagisMiktari = bagisTutari;

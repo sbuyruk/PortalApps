@@ -27,6 +27,7 @@ namespace Model.NBYS
         public decimal IadeMiktari { get; set; }
         public bool BagisMiktariYazmasin { get; set; }
         public bool CokluBagis { get; set; }
+        public bool DuzenliBagis { get; set; }= false;
         public override T Select<T>(int id)
         {
             string sqlString = string.Format(@"SELECT *
@@ -416,7 +417,9 @@ namespace Model.NBYS
                     ,FORMAT(A.BagisMiktari, 'N2', 'tr-TR') ArmaganTutari
                     ,A.Durum
                     ,ISNULL(BelgedeYazanIsim, '') BelgedeYazanIsim
-                    ,A.BelgeGecersizMi, A.IadeMiktari, A.DovizCinsi,A.BagisMiktariYazmasin, IIF(A.CokluBagis=1,'Çoklu Bağış','Bağış') CokluBagis
+                    ,A.BelgeGecersizMi, A.IadeMiktari, A.DovizCinsi,A.BagisMiktariYazmasin, 
+                    --IIF(A.CokluBagis=1,'Çoklu Bağış','Bağış') CokluBagis
+                     IIF(A.DuzenliBagis=1, 'Düzenli Bağış', IIF(A.CokluBagis=1, 'Çoklu Bağış', 'Bağış')) AS CokluBagis
                 FROM Armagan_Table A
                     INNER JOIN NakitBagisci_Table B ON B.Id=A.BagisciId
                     LEFT OUTER JOIN ArmaganTanim_Table D ON D.Id=A.ArmaganTanimId

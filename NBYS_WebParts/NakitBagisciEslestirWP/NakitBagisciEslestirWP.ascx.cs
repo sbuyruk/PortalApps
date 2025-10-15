@@ -126,6 +126,54 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP
                 ViewState["SenderApp"] = value;
             }
         }
+        private string BagisciAdiQS
+        {
+            get
+            {
+
+                if (ViewState["BagisciAdi"] == null)
+                {
+                    if (Page.Request.QueryString["BagisciAdi"] != null)
+                    {
+                        ViewState["BagisciAdi"] = Page.Request.QueryString["BagisciAdi"];
+                    }
+                    else
+                    {
+                        ViewState["BagisciAdi"] = string.Empty;
+                    }
+                }
+                return ViewState["BagisciAdi"].ToString();
+            }
+
+            set
+            {
+                ViewState["BagisciAdi"] = value;
+            }
+        }
+        private string DuzenliBagisciIdQS
+        {
+            get
+            {
+
+                if (ViewState["DuzenliBagisciId"] == null)
+                {
+                    if (Page.Request.QueryString["DuzenliBagisciId"] != null)
+                    {
+                        ViewState["DuzenliBagisciId"] = Page.Request.QueryString["DuzenliBagisciId"];
+                    }
+                    else
+                    {
+                        ViewState["DuzenliBagisciId"] = string.Empty;
+                    }
+                }
+                return ViewState["DuzenliBagisciId"].ToString();
+            }
+
+            set
+            {
+                ViewState["DuzenliBagisciId"] = value;
+            }
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -138,6 +186,14 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP
                         ekstreAktarma = ekstreAktarma.Select<EkstreAktarma>(EkstreAktarmaIdQS.ConvertToInt());
                         BagisciAraTxt.Text = ekstreAktarma != null ? ekstreAktarma.Adi : "";
 
+                    }
+                    else if (!string.IsNullOrEmpty(BagisciAdiQS))
+                    {
+                        BagisciAraTxt.Text = BagisciAdiQS.Replace("@@"," ");
+                    }
+                    else
+                    {
+                        BagisciAraTxt.Text = "";
                     }
                 }
                 TabloOlustur(true);
@@ -259,7 +315,8 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP
                     string ilcesi = row["Ilcesi"].ToString();
                     string telefon = row["Telefon1"].ToString();
                     string adres = row["Adres"].ToString();
-                    string secUrl = "<a href=EkstreAktarmaEdit.aspx?SenderApp=NBE&EkstreAktarmaId=" + EkstreAktarmaIdQS + "&NakitBagisciId=" + nakitBagisciId + "&Param=" + spaceStr + "class='btn btn-outline-success'>Seç</a>"; 
+                    string secUrl = !string.IsNullOrEmpty(EkstreAktarmaIdQS) ?"<a href=EkstreAktarmaEdit.aspx?SenderApp=NBE&EkstreAktarmaId=" + EkstreAktarmaIdQS + "&NakitBagisciId=" + nakitBagisciId + "&Param=" + spaceStr + "class='btn btn-outline-success'>Seç</a>"
+                        : "<a href=DuzenliNakitBagisciListesi.aspx?SenderApp=NBE&NakitBagisciId=" + nakitBagisciId + "&DuzenliBagisciId=" + DuzenliBagisciIdQS + "&Param=" + spaceStr + "class='btn btn-outline-success'>Seç</a>";
 
 
                     NakitBagisciListItem nakitBagisciListItem = new NakitBagisciListItem();

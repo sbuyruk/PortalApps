@@ -74,7 +74,7 @@
                 <div class="form-group row ">
                     <label class="col-4 col-form-label form-control-label">İl</label>
                     <div class="col-8">
-                        <asp:DropDownList ID="IliDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="IliDDL_SelectedIndexChanged" AutoPostBack="true" style="height:auto" />
+                        <asp:DropDownList ID="IliDDL" runat="server" CssClass="form-control form-select form-select-lg fw-bold" OnSelectedIndexChanged="IliDDL_SelectedIndexChanged" AutoPostBack="true" style="height:auto" />
                     </div>
                 </div>
                 <div class="form-group row ">
@@ -82,7 +82,7 @@
                     <div class="col-8">
                         <asp:UpdatePanel runat="server" ID="UpdatePanel" UpdateMode="Conditional">
                             <ContentTemplate>
-                                <asp:DropDownList ID="IlcesiDDL" runat="server" class="form-control" style="height:auto"></asp:DropDownList>
+                                <asp:DropDownList ID="IlcesiDDL" runat="server" class="form-control form-select form-select-lg fw-bold" style="height:auto"></asp:DropDownList>
                             </ContentTemplate>
                             <Triggers>
                                 <asp:AsyncPostBackTrigger ControlID="IliDDL" EventName="SelectedIndexChanged" />

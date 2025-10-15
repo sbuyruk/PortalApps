@@ -297,6 +297,19 @@ namespace Model.NBYS
 
             return (list);
         }
+        public NakitBagisHareket SelectBagisByBagisciIdTarih(int nakitBagisciId, DateTime bastar)
+        {
+            string sqlString = string.Format(@"				
+                SELECT TOP 1 *
+                FROM NakitBagisHareket_Table 
+                WHERE BagisciId={0} AND  (BagisTarihi >= {1} AND BagisTarihi<={2})
+				Order By BagisTarihi desc", nakitBagisciId, bastar.ReturnTRDateFormat(), bastar.AddYears(1).ReturnTRDateFormat());
+
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            List<NakitBagisHareket> list = ToList<NakitBagisHareket>(dataTable);
+
+            return (list.FirstOrDefault());
+        }
         /**
          * returns Json
          * ***/

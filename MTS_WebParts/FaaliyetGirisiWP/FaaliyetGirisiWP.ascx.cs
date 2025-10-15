@@ -775,7 +775,7 @@ namespace MTS_WebParts.FaaliyetGirisiWP
             {
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + pageUrl;
-                Page.Response.Redirect(newUrl);
+                Page.Response.Redirect(newUrl,false);
             }
             catch (Exception ex)
             {
