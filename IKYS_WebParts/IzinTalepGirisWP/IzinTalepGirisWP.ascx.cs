@@ -1550,7 +1550,8 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                         IzinDonemIdQS = izinDonemi.Id.ToString();
                         UcretliIzinDilekceBtn.Visible = true;
                     }
-                    else if (sonuctaKalanIzinInt < 0)
+                    //else if (sonuctaKalanIzinInt < 0)
+                    if (kalanIzinToplami > 0 && sonuctaKalanIzinInt < 0)
                     {
                         //son izin tarihini geçti
                         //kalan izine göre yeni bitis tarihi girip kaydetsin
@@ -1560,7 +1561,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                         UyariLbl.Text = " Lütfen izin bitiş tarihini buna göre seçerek tekrar talebinizi gönderiniz.";
                         IzinBitTarTxt.Value = baslangicTarihi.AddDays(kalanIzinInt - 1).ConvertToDatetimeEmptyIfNull();
                     }
-                    else
+                    else if (kalanIzinToplami > 0 && sonuctaKalanIzinInt >= 0)
                     {
                         isValid = true;
                         SaveBtn.Visible = true;

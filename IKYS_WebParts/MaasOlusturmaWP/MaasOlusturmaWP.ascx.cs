@@ -213,7 +213,7 @@ namespace IKYS_WebParts.MaasOlusturmaWP
                                 ucret = ucretTanim.SelectUcretByGrupDereceKademe(grupId, derece, listItem.Kademe);
                                 listItem.Ucret = ucret.ToString("N", culturInfo); // Ucret'i güncelle
                                 listItem.Ikramiye = ucret.ToString("N", culturInfo);
-                                ikramiye= ucret;
+                                ikramiye = IkramiyeChk.Checked ? ucret : 0;
                             }
                         }
 

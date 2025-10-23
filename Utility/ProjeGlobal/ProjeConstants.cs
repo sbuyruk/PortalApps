@@ -1127,7 +1127,7 @@ namespace Utility.ProjeGlobal
         #region Ortak Parametreler 
         public const string PARAM_SMTP_ADRESI_LBL= "SMTP Adresi";
         public const string PARAM_ALTERNATIVE_SMTP_IP_ADRESI= "10.150.8.15";
-        public const string PARAM_INTERNET_SMTP_IP_ADRESI= "10.150.9.12";
+        public const string PARAM_INTERNET_SMTP_IP_ADRESI= "10.150.8.12";
         public const string PARAM_TOPLANTI_MAILGRUBU = "ToplantiMailGrubu";//"ToplantiMailTestGrubu";//
         public const string PARAM_BILGISISTEM_MAILGRUBU = "BilgiSistemMailGrubu";
         public const string PARAM_IKRAM_MAILGRUBU = "IkramMailGrubu";
