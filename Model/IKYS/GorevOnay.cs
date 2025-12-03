@@ -10,6 +10,7 @@ namespace Model.IKYS
 {
     public class GorevOnay : ParentClass
     {
+        private DateTime Since = DateTime.Today.AddYears(-1);
 
         public int PersonelId { get; set; }
         public string GorevinSebebi { get; set; }
@@ -19,6 +20,7 @@ namespace Model.IKYS
         public string Sure { get; set; }
         public string Avans { get; set; }
         public string Yevmiye { get; set; }
+        public string GunlukYevmiye { get; set; }
         public string ParaBirimi { get; set; }
         public string UlasimAraci { get; set; }
         public bool AracTahsisi { get; set; }
@@ -154,25 +156,6 @@ namespace Model.IKYS
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
         }
-        private string SaveSQL()
-        {
-            //Insert  SQL
-            string InsertSQL = string.Format(@" 
-                                    INSERT INTO GorevOnay_Table 
-                                        (PersonelId,GorevinSebebi,GorevinYeri,BaslangicTarihi,BitisTarihi,Sure,Avans,Yevmiye,ParaBirimi,
-                                        AracTahsisi,AracPlakasi,PerSubeImza,PerSubeVekil,OnayImza,OnayMakam,OnayMakamVekil,GMImza,GMVekil, Aciklama,
-                                        Olusturan,OlusturmaTarihi)
-                                    VALUES ({0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20}) ",
-                                    PersonelId.ReturnQuotedValue(), GorevinSebebi.ReturnQuotedValue(), GorevinYeri.ReturnQuotedValue(),
-                                    BaslangicTarihi.ReturnTRDateFormat(), BitisTarihi.ReturnTRDateFormat(),
-                                    Sure.ReturnQuotedValue(), Avans.ReturnQuotedValue(), Yevmiye.ReturnQuotedValue(), ParaBirimi.ReturnQuotedValue(),
-                                    AracTahsisi.ReturnQuotedValue(), AracPlakasi.ReturnQuotedValue(), PerSubeImza.ReturnQuotedValue(),
-                                    PerSubeVekil.ReturnQuotedValue(), OnayImza.ReturnQuotedValue(), OnayMakam.ReturnQuotedValue(), OnayMakamVekil.ReturnQuotedValue(),
-                                    GMImza.ReturnQuotedValue(), GMVekil.ReturnQuotedValue(), Aciklama.ReturnQuotedValue(),
-                                    Olusturan.ReturnQuotedValue(), DateTime.Now.ReturnTRDateFormat());
-            return InsertSQL;
-        }
-
         public bool UpdateAllSecildiToFalse()
         {
             string sqlString = string.Format(@"
@@ -206,25 +189,10 @@ namespace Model.IKYS
                             WHERE Id={0}", Id);
             return sqlString;
         }
-        public string SelectAllReturnJson(int personelId)
-        {
 
-            string sqlString = SelectAllSQL(personelId);
-            DataTable dataTable = null;
-            try
-            {
-                dataTable = dao.SelectFromDb(sqlString, "");
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-            string json = ToJSON(dataTable);
-            return json;
-        }
-        public DataTable SelectAllReturnDT(int personelId)
+        public DataTable SelectAllReturnDT(int personelId, DateTime since)
         {
-            string sqlString = SelectAllSQL(personelId);
+            string sqlString = SelectAllSQL(personelId, since);
             DataTable dataTable = null;
             try
             {
@@ -275,17 +243,18 @@ namespace Model.IKYS
             return gorevOnay;
 
         }
-        private string SelectAllSQL(int personelId)
+        private string SelectAllSQL(int personelId, DateTime since)
         {
-            string personelIdStr = personelId > 0 ? string.Format(" WHERE PersonelId={0}",personelId):string.Empty;
+            string personelIdStr = personelId > 0 ? string.Format(" AND PersonelId={0}",personelId):string.Empty;
             string sqlstr = string.Format(@" 
                     SELECT A.Id GorevOnayId, P.Adi+' '+P.Soyadi AdiSoyadi, A.Secildi,A.UlasimAraci,
-                        A.PersonelId,A.GorevinSebebi,A.GorevinYeri,A.BaslangicTarihi,A.BitisTarihi,A.Sure,A.Avans,A.Yevmiye,A.ParaBirimi,A.Sure,
+                        A.PersonelId,A.GorevinSebebi,A.GorevinYeri,A.BaslangicTarihi,A.BitisTarihi,A.Sure,A.Avans,A.Yevmiye,A.ParaBirimi,
                         A.AracTahsisi,A.AracPlakasi,A.PerSubeImza,A.PerSubeVekil,A.OnayImza,A.OnayMakam,A.OnayMakamVekil,A.GMImza,A.GMVekil, A.Aciklama
                     FROM GorevOnay_Table A
                         INNER JOIN Personel_Table P On A.PersonelId=P.Id 
-                    {0}
-                    ORDER BY A.BaslangicTarihi DESC, A.BitisTarihi DESC ", personelIdStr);
+                    WHERE A.BitisTarihi>={0}
+                    {1}
+                    ORDER BY A.BaslangicTarihi DESC, A.BitisTarihi DESC ", since.ReturnTRDateFormat(), personelIdStr);
             return sqlstr;
         }
 

@@ -43,6 +43,7 @@ namespace TBYS_WebParts.TeminatDurumRaporuWP
             TabloyaBolgeEkle(ProjeConstants.BOLGE_ISTANBUL, ProjeConstants.BOLGE_ISTANBUL_INT);
             TabloyaBolgeEkle(ProjeConstants.BOLGE_IZMIR, ProjeConstants.BOLGE_IZMIR_INT);
             TabloyaBolgeEkle(ProjeConstants.BOLGE_MERSIN, ProjeConstants.BOLGE_MERSIN_INT);
+            TabloyaBolgeEkle(ProjeConstants.BOLGE_ERZURUM, ProjeConstants.BOLGE_ERZURUM_INT);
         }
 
         private void TabloyaBolgeEkle(string bolge,int bolgeId)

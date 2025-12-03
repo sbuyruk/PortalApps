@@ -28,11 +28,11 @@
             <div class="form-group row">
                 <div class="form-group col-4 row">
                     <asp:Label CssClass="col-form-label col-2" runat="server" Font-Bold="True">Yıl :</asp:Label>
-                    <asp:DropDownList ID="YilDDL" runat="server" CssClass="form-control col-6" OnSelectedIndexChanged="YilDDL_SelectedIndexChanged" AutoPostBack="true" Height="34px"></asp:DropDownList>
+                    <asp:DropDownList ID="YilDDL" runat="server" CssClass="form-select form-select-lg col-6" OnSelectedIndexChanged="YilDDL_SelectedIndexChanged" AutoPostBack="true" Height="34px"></asp:DropDownList>
                 </div>
                 <div class="form-group col-4 row">
                     <asp:Label CssClass="col-form-label col-2" runat="server" Font-Bold="True">Ay :</asp:Label>
-                    <asp:DropDownList ID="AyDDL" runat="server" CssClass="form-control col-6" OnSelectedIndexChanged="AyDDL_SelectedIndexChanged" AutoPostBack="true" Height="34px"></asp:DropDownList>
+                    <asp:DropDownList ID="AyDDL" runat="server" CssClass="form-select form-select-lg col-6" OnSelectedIndexChanged="AyDDL_SelectedIndexChanged" AutoPostBack="true" Height="34px"></asp:DropDownList>
                 </div>
             </div>
             <div class="form-group">
@@ -91,6 +91,16 @@
                     <asp:TableCell ID="Mer3AyCell" runat="server" BorderStyle="Solid" BorderWidth="1" BorderColor="Black"></asp:TableCell>
                     <asp:TableCell ID="Mer4AyCell" runat="server" BorderStyle="Solid" BorderWidth="1" BorderColor="Black"></asp:TableCell>
                     <asp:TableCell ID="MerTopCell" runat="server" BorderStyle="Solid" BorderWidth="1" BorderColor="Black"></asp:TableCell>
+                </asp:TableRow>
+                <asp:TableRow HorizontalAlign="Center">
+                    <asp:TableCell ID="ErzSiraCell" BorderStyle="Solid" BorderWidth="1" BorderColor="Black">5</asp:TableCell>
+                    <asp:TableCell ID="ErzBaslikCell" BorderStyle="Solid" BorderWidth="1" BorderColor="Black">Erzurum Temsilciliği</asp:TableCell>
+                    <asp:TableCell ID="ErzKiraciSayisiCell" BorderStyle="Solid" BorderWidth="1" BorderColor="Black" runat="server"></asp:TableCell>
+                    <asp:TableCell ID="Erz1AyCell" runat="server" BorderStyle="Solid" BorderWidth="1" BorderColor="Black"></asp:TableCell>
+                    <asp:TableCell ID="Erz2AyCell" runat="server" BorderStyle="Solid" BorderWidth="1" BorderColor="Black"></asp:TableCell>
+                    <asp:TableCell ID="Erz3AyCell" runat="server" BorderStyle="Solid" BorderWidth="1" BorderColor="Black"></asp:TableCell>
+                    <asp:TableCell ID="Erz4AyCell" runat="server" BorderStyle="Solid" BorderWidth="1" BorderColor="Black"></asp:TableCell>
+                    <asp:TableCell ID="ErzTopCell" runat="server" BorderStyle="Solid" BorderWidth="1" BorderColor="Black"></asp:TableCell>
                 </asp:TableRow>
 
                 <asp:TableFooterRow HorizontalAlign="Center">

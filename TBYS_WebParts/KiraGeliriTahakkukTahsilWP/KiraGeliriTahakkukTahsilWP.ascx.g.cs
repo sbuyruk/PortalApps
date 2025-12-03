@@ -181,7 +181,7 @@ namespace TBYS_WebParts.KiraGeliriTahakkukTahsilWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label col-1";
+            @__ctrl.CssClass = "col-form-label ";
             @__ctrl.Font.Bold = true;
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Yıl :"));
@@ -198,7 +198,7 @@ namespace TBYS_WebParts.KiraGeliriTahakkukTahsilWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "YilDDL";
-            @__ctrl.CssClass = "form-control col-2";
+            @__ctrl.CssClass = "form-select form-select-lg";
             @__ctrl.AutoPostBack = true;
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "height:auto");
             @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.YilDDL_SelectedIndexChanged);
@@ -216,7 +216,7 @@ namespace TBYS_WebParts.KiraGeliriTahakkukTahsilWP {
             @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "KiraGelirleriTable";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "table table-bordered table-hover table-striped");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "table table-bordered table-hover table-striped table-sm small table-responsive");
             return @__ctrl;
         }
         
@@ -248,7 +248,7 @@ namespace TBYS_WebParts.KiraGeliriTahakkukTahsilWP {
             @__ctrl1 = this.@__BuildControlCardHeader();
             @__parser.AddParsedSubObject(@__ctrl1);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                <div class=\"card-body\">\r\n                    <div class=\"form-g" +
-                        "roup row\">\r\n                        "));
+                        "roup col-2\">\r\n                        "));
             global::System.Web.UI.WebControls.Label @__ctrl2;
             @__ctrl2 = this.@__BuildControl__control3();
             @__parser.AddParsedSubObject(@__ctrl2);
@@ -343,7 +343,7 @@ namespace TBYS_WebParts.KiraGeliriTahakkukTahsilWP {
     }
 
 </script>
-<div id=""MainContainer"" class=""container col-xl"">
+<div id=""MainContainer"" class=""col-xl"">
     "));
             global::System.Web.UI.UpdatePanel @__ctrl1;
             @__ctrl1 = this.@__BuildControlupPanel();

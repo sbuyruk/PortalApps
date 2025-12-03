@@ -153,6 +153,26 @@ namespace TBYS_WebParts.BorcluKiraciTakibiByBolgeWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.TableCell ErzBaslikCell;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.TableCell ErzUyariCell;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.TableCell ErzYaziliIhtarCell;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.TableCell ErzIcraTakibiCell;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.TableCell ErzTopCell;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.TableCell TopBaslikCell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -295,7 +315,7 @@ namespace TBYS_WebParts.BorcluKiraciTakibiByBolgeWP {
             this.YilDDL = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "YilDDL";
-            @__ctrl.CssClass = "form-control col-6";
+            @__ctrl.CssClass = "form-select form-select-lg col-6";
             @__ctrl.AutoPostBack = true;
             @__ctrl.Height = new System.Web.UI.WebControls.Unit(34D, global::System.Web.UI.WebControls.UnitType.Pixel);
             @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.YilDDL_SelectedIndexChanged);
@@ -326,7 +346,7 @@ namespace TBYS_WebParts.BorcluKiraciTakibiByBolgeWP {
             this.AyDDL = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "AyDDL";
-            @__ctrl.CssClass = "form-control col-6";
+            @__ctrl.CssClass = "form-select form-select-lg col-6";
             @__ctrl.AutoPostBack = true;
             @__ctrl.Height = new System.Web.UI.WebControls.Unit(34D, global::System.Web.UI.WebControls.UnitType.Pixel);
             @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.AyDDL_SelectedIndexChanged);
@@ -922,6 +942,116 @@ namespace TBYS_WebParts.BorcluKiraciTakibiByBolgeWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlErzBaslikCell() {
+            global::System.Web.UI.WebControls.TableCell @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.TableCell();
+            this.ErzBaslikCell = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "ErzBaslikCell";
+            @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
+            @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
+            @__ctrl.BorderColor = global::System.Drawing.Color.Black;
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Erzurum Bölge Temsilciliği"));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlErzUyariCell() {
+            global::System.Web.UI.WebControls.TableCell @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.TableCell();
+            this.ErzUyariCell = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "ErzUyariCell";
+            @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
+            @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
+            @__ctrl.BorderColor = global::System.Drawing.Color.Black;
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlErzYaziliIhtarCell() {
+            global::System.Web.UI.WebControls.TableCell @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.TableCell();
+            this.ErzYaziliIhtarCell = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "ErzYaziliIhtarCell";
+            @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
+            @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
+            @__ctrl.BorderColor = global::System.Drawing.Color.Black;
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlErzIcraTakibiCell() {
+            global::System.Web.UI.WebControls.TableCell @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.TableCell();
+            this.ErzIcraTakibiCell = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "ErzIcraTakibiCell";
+            @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
+            @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
+            @__ctrl.BorderColor = global::System.Drawing.Color.Black;
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlErzTopCell() {
+            global::System.Web.UI.WebControls.TableCell @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.TableCell();
+            this.ErzTopCell = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "ErzTopCell";
+            @__ctrl.BorderStyle = global::System.Web.UI.WebControls.BorderStyle.Solid;
+            @__ctrl.BorderWidth = new System.Web.UI.WebControls.Unit(1D, global::System.Web.UI.WebControls.UnitType.Pixel);
+            @__ctrl.BorderColor = global::System.Drawing.Color.Black;
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private void @__BuildControl__control23(System.Web.UI.WebControls.TableCellCollection @__ctrl) {
+            global::System.Web.UI.WebControls.TableCell @__ctrl1;
+            @__ctrl1 = this.@__BuildControlErzBaslikCell();
+            @__ctrl.Add(@__ctrl1);
+            global::System.Web.UI.WebControls.TableCell @__ctrl2;
+            @__ctrl2 = this.@__BuildControlErzUyariCell();
+            @__ctrl.Add(@__ctrl2);
+            global::System.Web.UI.WebControls.TableCell @__ctrl3;
+            @__ctrl3 = this.@__BuildControlErzYaziliIhtarCell();
+            @__ctrl.Add(@__ctrl3);
+            global::System.Web.UI.WebControls.TableCell @__ctrl4;
+            @__ctrl4 = this.@__BuildControlErzIcraTakibiCell();
+            @__ctrl.Add(@__ctrl4);
+            global::System.Web.UI.WebControls.TableCell @__ctrl5;
+            @__ctrl5 = this.@__BuildControlErzTopCell();
+            @__ctrl.Add(@__ctrl5);
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.TableRow @__BuildControl__control22() {
+            global::System.Web.UI.WebControls.TableRow @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.TableRow();
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.HorizontalAlign = global::System.Web.UI.WebControls.HorizontalAlign.Center;
+            this.@__BuildControl__control23(@__ctrl.Cells);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.WebControls.TableCell @__BuildControlTopBaslikCell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
@@ -999,7 +1129,7 @@ namespace TBYS_WebParts.BorcluKiraciTakibiByBolgeWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control23(System.Web.UI.WebControls.TableCellCollection @__ctrl) {
+        private void @__BuildControl__control25(System.Web.UI.WebControls.TableCellCollection @__ctrl) {
             global::System.Web.UI.WebControls.TableCell @__ctrl1;
             @__ctrl1 = this.@__BuildControlTopBaslikCell();
             @__ctrl.Add(@__ctrl1);
@@ -1020,12 +1150,12 @@ namespace TBYS_WebParts.BorcluKiraciTakibiByBolgeWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableFooterRow @__BuildControl__control22() {
+        private global::System.Web.UI.WebControls.TableFooterRow @__BuildControl__control24() {
             global::System.Web.UI.WebControls.TableFooterRow @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableFooterRow();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.HorizontalAlign = global::System.Web.UI.WebControls.HorizontalAlign.Center;
-            this.@__BuildControl__control23(@__ctrl.Cells);
+            this.@__BuildControl__control25(@__ctrl.Cells);
             return @__ctrl;
         }
         
@@ -1051,9 +1181,12 @@ namespace TBYS_WebParts.BorcluKiraciTakibiByBolgeWP {
             global::System.Web.UI.WebControls.TableRow @__ctrl6;
             @__ctrl6 = this.@__BuildControl__control20();
             @__ctrl.Add(@__ctrl6);
-            global::System.Web.UI.WebControls.TableFooterRow @__ctrl7;
+            global::System.Web.UI.WebControls.TableRow @__ctrl7;
             @__ctrl7 = this.@__BuildControl__control22();
             @__ctrl.Add(@__ctrl7);
+            global::System.Web.UI.WebControls.TableFooterRow @__ctrl8;
+            @__ctrl8 = this.@__BuildControl__control24();
+            @__ctrl.Add(@__ctrl8);
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]

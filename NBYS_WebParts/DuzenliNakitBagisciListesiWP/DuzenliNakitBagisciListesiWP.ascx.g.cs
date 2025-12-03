@@ -61,6 +61,18 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.DropDownList AyDDL;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.DropDownList YilDDL;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.DropDownList DurumDDL;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.HtmlControls.HtmlInputText paramNakitBagisciIdLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -200,6 +212,57 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP {
             @__ctrl4 = this.@__BuildControlIdLbl();
             @__parser.AddParsedSubObject(@__ctrl4);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            </h3>\r\n        "));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.DropDownList @__BuildControlAyDDL() {
+            global::System.Web.UI.WebControls.DropDownList @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.DropDownList();
+            this.AyDDL = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "AyDDL";
+            @__ctrl.CssClass = "form-control form-select form-select-lg fw-bold";
+            @__ctrl.AutoPostBack = true;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: auto");
+            @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.AyDDL_SelectedIndexChanged);
+            @__ctrl.SelectedIndexChanged += new System.EventHandler(this.AyDDL_SelectedIndexChanged);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.DropDownList @__BuildControlYilDDL() {
+            global::System.Web.UI.WebControls.DropDownList @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.DropDownList();
+            this.YilDDL = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "YilDDL";
+            @__ctrl.CssClass = "form-control form-select form-select-lg fw-bold";
+            @__ctrl.AutoPostBack = true;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: auto");
+            @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.YilDDL_SelectedIndexChanged);
+            @__ctrl.SelectedIndexChanged += new System.EventHandler(this.YilDDL_SelectedIndexChanged);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.DropDownList @__BuildControlDurumDDL() {
+            global::System.Web.UI.WebControls.DropDownList @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.DropDownList();
+            this.DurumDDL = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "DurumDDL";
+            @__ctrl.CssClass = "form-control form-select form-select-lg fw-bold";
+            @__ctrl.AutoPostBack = true;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: auto");
+            @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.DurumDDL_SelectedIndexChanged);
+            @__ctrl.SelectedIndexChanged += new System.EventHandler(this.DurumDDL_SelectedIndexChanged);
             return @__ctrl;
         }
         
@@ -584,18 +647,27 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP {
             @__ctrl1 = this.@__BuildControlCardHeader();
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(@__ctrl1);
-            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl2;
-            @__ctrl2 = this.@__BuildControlparamNakitBagisciIdLbl();
+            global::System.Web.UI.WebControls.DropDownList @__ctrl2;
+            @__ctrl2 = this.@__BuildControlAyDDL();
             @__parser.AddParsedSubObject(@__ctrl2);
-            global::System.Web.UI.UpdateProgress @__ctrl3;
-            @__ctrl3 = this.@__BuildControlupdateProgress();
+            global::System.Web.UI.WebControls.DropDownList @__ctrl3;
+            @__ctrl3 = this.@__BuildControlYilDDL();
             @__parser.AddParsedSubObject(@__ctrl3);
-            global::System.Web.UI.UpdatePanel @__ctrl4;
-            @__ctrl4 = this.@__BuildControlUpdatePanel1();
+            global::System.Web.UI.WebControls.DropDownList @__ctrl4;
+            @__ctrl4 = this.@__BuildControlDurumDDL();
             @__parser.AddParsedSubObject(@__ctrl4);
-            global::System.Web.UI.UpdatePanel @__ctrl5;
-            @__ctrl5 = this.@__BuildControlUpdatePanel2();
+            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl5;
+            @__ctrl5 = this.@__BuildControlparamNakitBagisciIdLbl();
             @__parser.AddParsedSubObject(@__ctrl5);
+            global::System.Web.UI.UpdateProgress @__ctrl6;
+            @__ctrl6 = this.@__BuildControlupdateProgress();
+            @__parser.AddParsedSubObject(@__ctrl6);
+            global::System.Web.UI.UpdatePanel @__ctrl7;
+            @__ctrl7 = this.@__BuildControlUpdatePanel1();
+            @__parser.AddParsedSubObject(@__ctrl7);
+            global::System.Web.UI.UpdatePanel @__ctrl8;
+            @__ctrl8 = this.@__BuildControlUpdatePanel2();
+            @__parser.AddParsedSubObject(@__ctrl8);
             @__ctrl.SetRenderMethodDelegate(new System.Web.UI.RenderMethod(this.@__Render__control1));
         }
         
@@ -652,9 +724,21 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP {
                     "mportant;\r\n    }\r\n</style>\r\n<div class=\"col-xl\">\r\n    <div class=\"card shadow\">\r" +
                     "\n        ");
             parameterContainer.Controls[0].RenderControl(@__w);
-            @__w.Write("\r\n        <div class=\"card-body mt-1\">\r\n\r\n            <div style=\"display: none\">" +
-                    "\r\n                ");
+            @__w.Write("\r\n        <div class=\"card-body mt-1\">\r\n            <div class=\"row m-2 \">\r\n     " +
+                    "           <div class=\"form-group col-2\">\r\n                    <label class=\"for" +
+                    "m-label\" for=\"AyDDL\">Başlangıç Ayı </label>\r\n                    ");
             parameterContainer.Controls[1].RenderControl(@__w);
+            @__w.Write("\r\n                </div>\r\n                <div class=\"form-group col-2\">\r\n       " +
+                    "             <label class=\"form-label\" for=\"YilDDL\">Başlangıç Yılı </label>\r\n   " +
+                    "                 ");
+            parameterContainer.Controls[2].RenderControl(@__w);
+            @__w.Write("\r\n                </div>\r\n                <div class=\"form-group col-3\">\r\n       " +
+                    "             <label class=\"form-label\" for=\"DurumDDL\">Durum </label>\r\n          " +
+                    "          ");
+            parameterContainer.Controls[3].RenderControl(@__w);
+            @__w.Write("\r\n                </div>\r\n            </div>\r\n            <div style=\"display: no" +
+                    "ne\">\r\n                ");
+            parameterContainer.Controls[4].RenderControl(@__w);
             @__w.Write(@"
             </div>
             <div class=""form-group"">
@@ -677,7 +761,7 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP {
                 </table>
             </div>
             ");
-            parameterContainer.Controls[2].RenderControl(@__w);
+            parameterContainer.Controls[5].RenderControl(@__w);
             @__w.Write(@"
         </div>
         <div class=""card-footer"">
@@ -690,11 +774,11 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP {
         <!-- Modal content-->
         <div class=""modal-content"">
             ");
-            parameterContainer.Controls[3].RenderControl(@__w);
+            parameterContainer.Controls[6].RenderControl(@__w);
             @__w.Write("\r\n        </div>\r\n    </div>\r\n</div>\r\n\r\n<div class=\"modal\" id=\"duzenliBagisOnayMo" +
                     "dal\" role=\"dialog\">\r\n    <div class=\"modal-dialog\">\r\n        <!-- Modal content-" +
                     "->\r\n        <div class=\"modal-content\">\r\n            ");
-            parameterContainer.Controls[4].RenderControl(@__w);
+            parameterContainer.Controls[7].RenderControl(@__w);
             @__w.Write("\r\n        </div>\r\n    </div>\r\n</div>");
         }
         

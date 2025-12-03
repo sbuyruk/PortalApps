@@ -6,6 +6,16 @@
 <%@ Import Namespace="Microsoft.SharePoint" %> 
 <%@ Register Tagprefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="GorevOnayListesiWP.ascx.cs" Inherits="IKYS_WebParts.GorevOnayListesiWP.GorevOnayListesiWP" %>
+
+<style>
+    /* force color for error rows and their links/buttons */
+#CustomDataTable tbody tr.error-row td,
+#CustomDataTable tbody tr.error-row td a,
+#CustomDataTable tbody tr.error-row td .btn {
+  color: red !important;
+}
+
+</style>
 <%-- Görev sçimi işlemleri --%>
 <script type="text/javascript">
     var idArray = [];
@@ -88,6 +98,21 @@
                 { data: "Duzenle" },
 
             ],
+            createdRow: function (row, data, dataIndex) {
+                var isError = data && (data.ErrorClass === true || data.ErrorClass === 'true' || data.ErrorClass === '1');
+                if (isError) {
+                    $(row).addClass('error-row');
+                    // inline fallback for elements that still override color
+                    $(row).find('td, td a, td .btn').each(function () {
+                        this.style.setProperty('color', 'red', 'important');
+                    });
+                } else {
+                    $(row).removeClass('error-row');
+                    $(row).find('td, td a, td .btn').each(function () {
+                        this.style.removeProperty('color');
+                    });
+                }
+            },
             columnDefs: [
                 { type: 'turkish', targets: [1, 2, 5] },
             ],
@@ -166,7 +191,24 @@
             $('#checkAll').prop('checked', allChecked);
         });
     });
-
+    $('#CustomDataTable').on('draw.dt', function () {
+        table.rows().every(function () {
+            var d = this.data();
+            var r = this.node();
+            var isError = d && (d.ErrorClass === true || d.ErrorClass === 'true' || d.ErrorClass === '1');
+            if (isError) {
+                $(r).addClass('error-row');
+                $(r).find('td, td a, td .btn').each(function () {
+                    this.style.setProperty('color', 'red', 'important');
+                });
+            } else {
+                $(r).removeClass('error-row');
+                $(r).find('td, td a, td .btn').each(function () {
+                    this.style.removeProperty('color');
+                });
+            }
+        });
+    });
 
  
 </script>

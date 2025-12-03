@@ -682,7 +682,8 @@ namespace Model.NBYS
                 SELECT A.BagisTarihi, A.BagisMiktari, 
                     B.Id NakitBagisciId, B.Adi, B.Soyadi, B.Telefon1, B.Telefon2, B.Adres, B.BelgeIstemiyor,
 					C.IlAdi Ili,D.IlceAdi Ilcesi,
-					F.Armagan, E.Durum
+					F.Armagan, E.Durum,
+IIF(E.DuzenliBagis=1, 'Düzenli Bağış', IIF(E.CokluBagis=1, 'Çoklu Bağış', 'Bağış')) AS CokluBagis
                 FROM NakitBagisHareket_Table A
                 LEFT JOIN NakitBagisci_Table B ON B.Id=A.BagisciId
                 INNER JOIN Il_Table C ON C.Id=B.Ili
@@ -712,7 +713,8 @@ namespace Model.NBYS
                 SELECT A.BagisTarihi, A.BagisMiktari, 
                     B.Id NakitBagisciId, B.Adi, B.Soyadi, B.Telefon1, B.Telefon2, B.Adres, B.BelgeIstemiyor,
 					C.IlAdi Ili,D.IlceAdi Ilcesi,
-					F.Armagan, E.Durum
+					F.Armagan, E.Durum,
+            IIF(E.DuzenliBagis=1, 'Düzenli Bağış', IIF(E.CokluBagis=1, 'Çoklu Bağış', 'Bağış')) AS CokluBagis
                 FROM NakitBagisHareket_Table A
                 LEFT JOIN NakitBagisci_Table B ON B.Id=A.BagisciId
                 INNER JOIN Il_Table C ON C.Id=B.Ili

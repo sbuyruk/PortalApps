@@ -458,8 +458,9 @@ namespace NBYS_WebParts.BeratBelgesiYazisiWP
                 Bolge bolge = new Bolge();
                 bolge = bolge.Select(SecilenBolgeIdQS);
                 string zaman = DateTime.Now.ToString("dd-MM-yyyy-HH-mm");
-                string yaziDosyaAdi = bolge == null ? SecilenBolgeIdQS.ToString() : bolge.KisaAdi + "-" + MadalyaDDL.SelectedItem.Text + "-(" + zaman + ").docx";
-                string etiketDosyaAdi = bolge == null ? SecilenBolgeIdQS.ToString() : bolge.KisaAdi + "_" + MadalyaDDL.SelectedItem.Text + "_" + ProjeConstants.ADRESETIKETI_DOSYA + "-(" + zaman + ").docx";
+                string ay_yil = (new DateTime(SecilenYilQS.ConvertToInt(), SecilenAyQS.ConvertToInt(), 1)).ToString("-MM_yyyy");
+                string yaziDosyaAdi = bolge == null ? SecilenBolgeIdQS.ToString() : bolge.KisaAdi + "-" + MadalyaDDL.SelectedItem.Text + ay_yil + "-(" + zaman + ").docx";
+                string etiketDosyaAdi = bolge == null ? SecilenBolgeIdQS.ToString() : bolge.KisaAdi + "_" + MadalyaDDL.SelectedItem.Text +  ay_yil+ "_" + ProjeConstants.ADRESETIKETI_DOSYA + "-(" + zaman + ").docx";
                 yaziDosyaAdi = yaziDosyaAdi.Replace(" ", "-");
                 etiketDosyaAdi = etiketDosyaAdi.Replace(" ", "_");
                 bool isYaziOlusturuldu = BeratBelgesiOlustur(yaziDosyaAdi);
@@ -616,8 +617,10 @@ namespace NBYS_WebParts.BeratBelgesiYazisiWP
                     string belgedeYazanIsim = row["BelgedeYazanIsim"].ToString();
                     string belgeNo = row["ArmaganId"].ToString();
                     string nakitBagisciTC = row["NakitBagisciTC"].ToString();
+                    string cokluBagis = row["CokluBagis"].ToString();
                     DateTime tarih = row["Tarih"].ConvertToDatetime();
 
+                    string tarihstr= tarih.ToString("dd.MM.yyyy") + (cokluBagis.Equals("Çoklu Bağış")? " tarihine kadar":" tarihinde" );
                     decimal tutar = row["Tutar"].ConvertToDecimal();
 
                     //create key value pair, key represents words to be replace and 
@@ -626,7 +629,7 @@ namespace NBYS_WebParts.BeratBelgesiYazisiWP
                     keyValues.Add("BelgeTarihiVar", EvrakTarihiTxt.Text);
                     keyValues.Add("BelgeNoVar", belgeNo);
                     keyValues.Add("BagisciAdiVar", string.IsNullOrEmpty(belgedeYazanIsim) ? nakitBagisciAdi : belgedeYazanIsim);
-                    keyValues.Add("BagisTarihiVar", tarih.ToString("dd.MM.yyyy"));
+                    keyValues.Add("BagisTarihiVar", tarihstr);
                     keyValues.Add("TutarVar", tutar.ToString("N0", culturInfo) + " TL");
 
                     keyValues.Add("ImzaVar", ImzalayanTxt.Text);
@@ -904,7 +907,7 @@ namespace NBYS_WebParts.BeratBelgesiYazisiWP
 
                         string etiketDosyaAdi = bolge == null ? SecilenBolgeIdQS.ToString() : bolge.KisaAdi + "_" + MadalyaDDL.SelectedItem.Text + "_" + ProjeConstants.ADRESETIKETI_DOSYA + zamanEki;
                         etiketDosyaAdi = etiketDosyaAdi.Replace(" ", "_");
-                        string zaman = new DateTime(SecilenYilQS.ConvertToInt(), SecilenAyQS.ConvertToInt(), 1).ToString("-MM-yyyy-");
+                        string zaman = new DateTime(SecilenYilQS.ConvertToInt(), SecilenAyQS.ConvertToInt(), 1).ToString("-MM_yyyy");
                         if (!etiketDosyaAdi.Contains(zaman))
                         {
                             continue;

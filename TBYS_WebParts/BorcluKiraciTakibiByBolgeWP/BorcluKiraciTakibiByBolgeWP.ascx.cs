@@ -183,10 +183,20 @@ namespace TBYS_WebParts.BorcluKiraciTakibiByBolgeWP
             MerIcraTakibiCell.Text = MerIcraTakibiAdet.ToString();
             MerTopCell.Text = MerToplamAdet.ToString();
 
+            //Erz 
+            int ErzUyariAdet = kiraBorcuTakip.SelectCountAdetByTakipIslemiBolge(ProjeConstants.KIRABORCU_UYARI, ProjeConstants.BOLGE_ERZURUM, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
+            int ErzYaziliIhtarAdet = kiraBorcuTakip.SelectCountAdetByTakipIslemiBolge(ProjeConstants.KIRABORCU_YAZILIIHTAR, ProjeConstants.BOLGE_ERZURUM, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
+            int ErzIcraTakibiAdet = kiraBorcuTakip.SelectCountAdetByTakipIslemiBolge(ProjeConstants.KIRABORCU_ICRATAKIBI, ProjeConstants.BOLGE_ERZURUM, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
+            int ErzToplamAdet = ErzUyariAdet + ErzYaziliIhtarAdet + ErzIcraTakibiAdet;
+            ErzUyariCell.Text = ErzUyariAdet.ToString();
+            ErzYaziliIhtarCell.Text = ErzYaziliIhtarAdet.ToString();
+            ErzIcraTakibiCell.Text = ErzIcraTakibiAdet.ToString();
+            ErzTopCell.Text = ErzToplamAdet.ToString();
+
             //Top
-            int TopUyariAdet = AnkUyariAdet + IstUyariAdet + IzmUyariAdet + MerUyariAdet;
-            int TopYaziliIhtarAdet = AnkYaziliIhtarAdet + IstYaziliIhtarAdet + IzmYaziliIhtarAdet + MerYaziliIhtarAdet;
-            int TopIcraTakibiAdet = AnkIcraTakibiAdet + IstIcraTakibiAdet + IzmIcraTakibiAdet + MerIcraTakibiAdet;
+            int TopUyariAdet = AnkUyariAdet + IstUyariAdet + IzmUyariAdet + MerUyariAdet + ErzUyariAdet;
+            int TopYaziliIhtarAdet = AnkYaziliIhtarAdet + IstYaziliIhtarAdet + IzmYaziliIhtarAdet + MerYaziliIhtarAdet + ErzYaziliIhtarAdet;
+            int TopIcraTakibiAdet = AnkIcraTakibiAdet + IstIcraTakibiAdet + IzmIcraTakibiAdet + MerIcraTakibiAdet + ErzIcraTakibiAdet;
             int GenToplamAdet = TopUyariAdet + TopYaziliIhtarAdet + TopIcraTakibiAdet;
 
             TopUyariCell.Text = TopUyariAdet.ToString();

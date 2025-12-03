@@ -165,7 +165,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
         {
             string gorevOnayIdStr = string.Empty;
             GorevOnay gorevOnay = new GorevOnay();
-            DataTable dataTable = gorevOnay.SelectAllReturnDT(0);
+            DataTable dataTable = gorevOnay.SelectAllReturnDT(0, DateTime.Today.AddYears(-1));
 
             List<GorevOnayListItem> list = new List<GorevOnayListItem>();
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
@@ -182,7 +182,20 @@ namespace IKYS_WebParts.GorevOnayListesiWP
                 string gorevinYeri = row["GorevinYeri"].ToString();
                 int personelId = row["PersonelId"].ConvertToInt();
 
+                string sure = row["Sure"].ToString();
+                string yevmiye = row["Yevmiye"].ToString();
+                bool errorClass = false;
+                if (DateTime.Today - baslangicTarihi.ConvertToDatetime() < TimeSpan.FromDays(32))
+                {
+                    bool isError= SureVeYevmiyeHesabiDogruMu(gorevOnayId.ConvertToInt());
+                    if (isError)
+                    {
+                        errorClass = true;
+                    }
+                }
+
                 GorevOnayListItem gorevOnayListItem = new GorevOnayListItem();
+                gorevOnayListItem.ErrorClass = errorClass;
                 gorevOnayListItem.GorevOnayId = gorevOnayId;
                 gorevOnayListItem.SecChk = "<input type=checkbox id=chkBox" + gorevOnayId + " name=chkBox" + gorevOnayId + " "+ secildi + " onclick='AddRemoveSecimListesi(" + gorevOnayId + ",this);' />";
                 gorevOnayListItem.AdiSoyadi = adiSoyadi;
@@ -213,6 +226,44 @@ namespace IKYS_WebParts.GorevOnayListesiWP
 
             }
             return list;
+        }
+
+        private bool SureVeYevmiyeHesabiDogruMu(int gorevOnayId)
+        {
+            GorevOnay gorevOnay = new GorevOnay();
+            gorevOnay = gorevOnay.Select(gorevOnayId);
+            if (gorevOnay != null)
+            {
+                var gunlukYevmiye = gorevOnay.GunlukYevmiye.ConvertToDecimal();
+
+                if (gunlukYevmiye < 1)
+                    return false; // Yevmiye bilgisi yoksa doğrulama yapılamaz
+
+                var bastar = gorevOnay.BaslangicTarihi;
+                var bittar = gorevOnay.BitisTarihi;
+                decimal sure = (gorevOnay.Sure).Replace("gün", "").Replace("Gün", "").ConvertToDecimal();
+                decimal yevmiye = gorevOnay.Yevmiye.Replace(".", "").ConvertToDecimal(); 
+
+                double dakika = (bittar - bastar).TotalMinutes;
+                double saat = (dakika / 60)%24;
+                int gun = (int) ((dakika / 60) / 24);
+
+                double artan = (double)(saat == 0 ? 0 : (saat > 12 ? 1 : 0.5m));
+
+                // önce ham değeri hesapla
+                decimal hesaplananSure = (decimal)(artan + gun);
+
+                // veritabanından gelen 'sure' ve 'yevmiye' string değerlerini karşılaştır
+                if (sure != hesaplananSure)
+                    return true;
+
+                decimal hesaplananYevmiye = hesaplananSure * gunlukYevmiye;
+
+                if (yevmiye != hesaplananYevmiye)
+                    return true;
+
+            }
+            return false; // doğrulama yapılamıyor 
         }
 
         protected void CloseBtn_Click(object sender, EventArgs e)
@@ -283,6 +334,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
             public string RaporAl { get; set; }
             public string Duzenle { get; set; }
             public bool Secildi { get; set; }
+            public bool ErrorClass{ get; set; }
 
         }
         protected void SecilenleriKaydetBtn_Click(object sender, EventArgs e)

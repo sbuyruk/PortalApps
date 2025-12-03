@@ -29,7 +29,7 @@
                 <div id="TableContainer"  runat="server">
                     <asp:Table ID="KVTTable" runat="server" class="table table-bordered table-hover table-condensed table-striped">
                         <asp:TableHeaderRow>
-                            <asp:TableHeaderCell ID="GMHeaderCell"  ColumnSpan="14" CssClass="text-center" BorderStyle="Solid">Kiraya Verilmeyen Taşınmazlar</asp:TableHeaderCell>
+                            <asp:TableHeaderCell ID="GMHeaderCell"  ColumnSpan="16" CssClass="text-center" BorderStyle="Solid">Kiraya Verilmeyen Taşınmazlar</asp:TableHeaderCell>
                         </asp:TableHeaderRow>
                         <asp:TableHeaderRow HorizontalAlign="Center">
                             <asp:TableHeaderCell ID="GMSiraNoCell" RowSpan="2"  BorderStyle="Solid">Sıra</asp:TableHeaderCell>
@@ -39,6 +39,7 @@
                             <asp:TableHeaderCell ID="Ist1Cell" ColumnSpan="2" BorderStyle="Solid" >İstanbul</asp:TableHeaderCell>
                             <asp:TableHeaderCell ID="Izm1Cell" ColumnSpan="2" BorderStyle="Solid" >İzmir</asp:TableHeaderCell>
                             <asp:TableHeaderCell ID="Mer1Cell" ColumnSpan="2" BorderStyle="Solid" >Mersin</asp:TableHeaderCell>
+                            <asp:TableHeaderCell ID="Erz1Cell" ColumnSpan="2" BorderStyle="Solid" >Erzurum</asp:TableHeaderCell>
                             <asp:TableHeaderCell ID="ColTop1Cell" ColumnSpan="3" BorderStyle="Solid" >Toplam</asp:TableHeaderCell>
                         </asp:TableHeaderRow>
                         <asp:TableHeaderRow HorizontalAlign="Center">
@@ -50,6 +51,8 @@
                             <asp:TableHeaderCell ID="Izm1CMCell" BorderStyle="Solid">ÇM</asp:TableHeaderCell>
                             <asp:TableHeaderCell ID="Mer1TMCell" BorderStyle="Solid">TM</asp:TableHeaderCell>
                             <asp:TableHeaderCell ID="Mer1CMCell" BorderStyle="Solid">ÇM</asp:TableHeaderCell>
+                            <asp:TableHeaderCell ID="Erz1TMCell" BorderStyle="Solid">TM</asp:TableHeaderCell>
+                            <asp:TableHeaderCell ID="Erz1CMCell" BorderStyle="Solid">ÇM</asp:TableHeaderCell>
                             <asp:TableHeaderCell ID="ColTop1TMCell" BorderStyle="Solid">TM</asp:TableHeaderCell>
                             <asp:TableHeaderCell ID="ColTop1CMCell" BorderStyle="Solid">ÇM</asp:TableHeaderCell>
                             <asp:TableHeaderCell ID="ColTop1TMCMCell" BorderStyle="Solid">TM + ÇM</asp:TableHeaderCell>

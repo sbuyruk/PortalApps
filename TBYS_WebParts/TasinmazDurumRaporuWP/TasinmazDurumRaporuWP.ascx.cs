@@ -101,6 +101,8 @@ namespace TBYS_WebParts.TasinmazDurumRaporuWP
             int IzmCM = tasinmaz.SelectTasinmazAdetByBolgeMulkiyetSekli(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.MULKIYETSEKLI_CM);
             int MerTM = tasinmaz.SelectTasinmazAdetByBolgeMulkiyetSekli(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.MULKIYETSEKLI_TM);
             int MerCM = tasinmaz.SelectTasinmazAdetByBolgeMulkiyetSekli(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.MULKIYETSEKLI_CM);
+            int ErzTM = tasinmaz.SelectTasinmazAdetByBolgeMulkiyetSekli(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.MULKIYETSEKLI_TM);
+            int ErzCM = tasinmaz.SelectTasinmazAdetByBolgeMulkiyetSekli(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.MULKIYETSEKLI_CM);
 
             AnkTMCell.Text = AnkTM.ReturnEmptyIfZeroOrNull().ToString();
             AnkCMCell.Text = AnkCM.ReturnEmptyIfZeroOrNull().ToString();
@@ -114,9 +116,12 @@ namespace TBYS_WebParts.TasinmazDurumRaporuWP
             MerTMCell.Text = MerTM.ReturnEmptyIfZeroOrNull().ToString();
             MerCMCell.Text = MerCM.ReturnEmptyIfZeroOrNull().ToString();
             MerTMCMTopCell.Text = (MerTM + MerCM).ReturnEmptyIfZeroOrNull().ToString();
-            int TopTM = AnkTM + IstTM + IzmTM + MerTM;
+            ErzTMCell.Text = ErzTM.ReturnEmptyIfZeroOrNull().ToString();
+            ErzCMCell.Text = ErzCM.ReturnEmptyIfZeroOrNull().ToString();
+            ErzTMCMTopCell.Text = (ErzTM + ErzCM).ReturnEmptyIfZeroOrNull().ToString();
+            int TopTM = AnkTM + IstTM + IzmTM + MerTM + ErzTM;
             TopTMCell.Text = TopTM.ReturnEmptyIfZeroOrNull().ToString();
-            int TopCM = AnkCM + IstCM + IzmCM + MerCM;
+            int TopCM = AnkCM + IstCM + IzmCM + MerCM + ErzCM;
             TopCMCell.Text = TopCM.ReturnEmptyIfZeroOrNull().ToString();
             TopTMCMTopCell.Text = (TopTM + TopCM).ReturnEmptyIfZeroOrNull().ToString();
             string kiraDurumuStr = string.Empty;
@@ -180,12 +185,25 @@ namespace TBYS_WebParts.TasinmazDurumRaporuWP
             MerTarCell.Text = (MerTar).ReturnEmptyIfZeroOrNull().ToString();
             //MerMevCell.Text = (MerMev).ReturnEmptyIfZeroOrNull().ToString();
 
-            TopAptCell.Text = (AnkApt + IstApt + IzmApt + MerApt + AnkIshani + IstIshani + IzmIshani + MerIshani).ReturnEmptyIfZeroOrNull().ToString();
-            TopMesCell.Text = (AnkMes + IstMes + IzmMes + MerMes).ReturnEmptyIfZeroOrNull().ToString();
-            TopIsyCell.Text = (AnkIsy + IstIsy + IzmIsy + MerIsy).ReturnEmptyIfZeroOrNull().ToString();
-            TopArsCell.Text = (AnkArs + IstArs + IzmArs + MerArs).ReturnEmptyIfZeroOrNull().ToString();
-            TopTarCell.Text = (AnkTar + IstTar + IzmTar + MerTar).ReturnEmptyIfZeroOrNull().ToString();
-            //TopMevCell.Text = (GMMev + IstMev + IzmMev + MerMev).ReturnEmptyIfZeroOrNull().ToString();
+            int ErzApt = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_APT, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
+            int ErzIshani = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_ISHANI, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
+            int ErzMes = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_MESKEN, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
+            int ErzIsy = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_ISYERI, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
+            int ErzArs = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_ARSA, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
+            int ErzTar = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_TARLA, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
+            //int MerMev = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.KULLANIMSEKLI_MEV, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
+
+            ErzAptCell.Text = (ErzApt + ErzIshani).ReturnEmptyIfZeroOrNull().ToString();
+            ErzMesCell.Text = (ErzMes).ReturnEmptyIfZeroOrNull().ToString();
+            ErzIsyCell.Text = (ErzIsy).ReturnEmptyIfZeroOrNull().ToString();
+            ErzArsCell.Text = (ErzArs).ReturnEmptyIfZeroOrNull().ToString();
+            ErzTarCell.Text = (ErzTar).ReturnEmptyIfZeroOrNull().ToString();
+
+            TopAptCell.Text = (AnkApt + IstApt + IzmApt + MerApt + ErzApt + AnkIshani + IstIshani + IzmIshani + MerIshani+ErzIshani).ReturnEmptyIfZeroOrNull().ToString();
+            TopMesCell.Text = (AnkMes + IstMes + IzmMes + MerMes + ErzMes).ReturnEmptyIfZeroOrNull().ToString();
+            TopIsyCell.Text = (AnkIsy + IstIsy + IzmIsy + MerIsy +ErzIsy).ReturnEmptyIfZeroOrNull().ToString();
+            TopArsCell.Text = (AnkArs + IstArs + IzmArs + MerArs +ErzArs).ReturnEmptyIfZeroOrNull().ToString();
+            TopTarCell.Text = (AnkTar + IstTar + IzmTar + MerTar +ErzTar).ReturnEmptyIfZeroOrNull().ToString();
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {

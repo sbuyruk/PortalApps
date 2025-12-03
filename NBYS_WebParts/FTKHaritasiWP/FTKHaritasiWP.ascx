@@ -115,7 +115,7 @@
                 <table class="colors">
                     <tr>
                         <td style="background-color: tomato; width: 5%;"></td>
-                        <td style="width: 20%">Genel Müdürlük </td>
+                        <td style="width: 20%">Ankara Bölge Md.</td>
 
                         <td style="background-color: mediumseagreen; width: 5%;"></td>
                         <td style="width: 20%">İstanbul Bölge Md. </td>
@@ -125,6 +125,9 @@
 
                         <td style="background-color: dodgerblue; width: 5%;"></td>
                         <td style="width: 20%">Mersin Bölge Md. </td>
+                        
+                        <td style="background-color:violet ; width: 5%;"></td>
+                        <td style="width: 20%">Erzurum Bölge Md. </td>
                     </tr>
                 </table>
             </div>

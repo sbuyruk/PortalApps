@@ -293,7 +293,7 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
         {
             AyDDL.Items.Clear();
             DateTime today = DateTime.Today;
-            DateTime basay = DateTime.Today.AddMonths(-8); // Başlangıç ayı
+            DateTime basay = DateTime.Today.AddMonths(-12); // Başlangıç ayı
             DateTime bitay = today; // Bitiş ayı
 
 

@@ -22,7 +22,7 @@
     }
 </style>
 
-<div class="container col-xl">
+<div class="col-xl">
     <div class="card shadow">
         <div class="card-header">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
@@ -35,7 +35,7 @@
         <div class="card-body">
             <div class="form-group">
                
-                <table id="CustomDataTable" class="table table-striped row-border" width="100%">
+                <table id="CustomDataTable" class="table table-striped row-border table-recursive" width="100%">
                     <thead>
                     </thead>
                     <tfoot> 

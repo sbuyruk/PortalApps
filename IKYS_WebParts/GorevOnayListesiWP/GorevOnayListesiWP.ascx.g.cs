@@ -325,6 +325,16 @@ namespace IKYS_WebParts.GorevOnayListesiWP {
         private void @__Render__control1(System.Web.UI.HtmlTextWriter @__w, System.Web.UI.Control parameterContainer) {
             @__w.Write(@"
 
+<style>
+    /* force color for error rows and their links/buttons */
+#CustomDataTable tbody tr.error-row td,
+#CustomDataTable tbody tr.error-row td a,
+#CustomDataTable tbody tr.error-row td .btn {
+  color: red !important;
+}
+
+</style>
+
 <script type=""text/javascript"">
     var idArray = [];
 
@@ -381,42 +391,61 @@ namespace IKYS_WebParts.GorevOnayListesiWP {
                     "yadi\" },\r\n                { data: \"GorevinSebebi\" },\r\n                { data: \"B" +
                     "aslangicTarihi\" },\r\n                { data: \"BitisTarihi\" },\r\n                { " +
                     "data: \"GorevinYeri\" },\r\n                { data: \"RaporAl\" },\r\n                { " +
-                    "data: \"Duzenle\" },\r\n\r\n            ],\r\n            columnDefs: [\r\n               " +
-                    " { type: \'turkish\', targets: [1, 2, 5] },\r\n            ],\r\n            \'order\': " +
-                    "[[3, \'desc\']],//sort date desc\r\n            \"language\": {\r\n                \"url\"" +
-                    ": \"http://tskgv-portal/OrtakBelgeler/Turkish.txt\",\r\n                \"decimal\": \"" +
-                    ",\",\r\n                \"thousands\": \".\"\r\n            },\r\n            //column resi" +
-                    "zable\r\n            //initComplete: function (settings) {\r\n            //    $(\'#" +
-                    "CustomDataTable\').colResizable({ liveDrag: true });\r\n            //},\r\n         " +
-                    "   responsive: true,\r\n            dom: \'Bfrtip\',\r\n            buttons: [\r\n      " +
-                    "          {\r\n                    extend: \'print\',\r\n                    exportOpt" +
-                    "ions: {\r\n                        columns: \':visible\'\r\n                    }\r\n   " +
-                    "             },\r\n                {\r\n                    extend: \'excel\',\r\n      " +
-                    "              exportOptions: {\r\n                        columns: \':visible\'\r\n   " +
-                    "                 }\r\n                },\r\n                {\r\n                    e" +
-                    "xtend: \'pdf\',\r\n                    exportOptions: {\r\n                        col" +
-                    "umns: \':visible\'\r\n                    }\r\n                },\r\n                {\r\n" +
-                    "                    extend: \'copy\',\r\n                    exportOptions: {\r\n     " +
-                    "                   columns: \':visible\'\r\n                    }\r\n                }" +
-                    ",\r\n                , \'pageLength\', \"colvis\"\r\n            ],\r\n\r\n        });\r\n\r\n  " +
-                    "      ArrayDoldur();\r\n        // Check All butonuna tıklanınca\r\n        table = " +
-                    "$(\'#CustomDataTable\').DataTable();\r\n        $(\'#checkAll\').on(\'click\', function " +
-                    "() {\r\n            var isChecked = $(this).is(\':checked\');\r\n            \r\n       " +
-                    "     // Sadece aktif sayfadaki checkbox\'ları seç\r\n            table.rows({ page:" +
-                    " \'current\' }).nodes().to$().find(\'input[type=\"checkbox\"]\').each(function () {\r\n " +
-                    "               if ($(this).prop(\'checked\') !== isChecked) {\r\n                   " +
-                    " $(this).click();\r\n                }\r\n            });\r\n        });\r\n        //ta" +
-                    "bloda sayfalar arası geçişte açılan sayfadaki tüm checkbox\'lar checkli ise check" +
-                    "All\'ı checkli yap\r\n        table.on(\'draw\', function () {\r\n            var check" +
-                    "boxes = table.rows({ page: \'current\' }).nodes().to$().find(\'input[type=\"checkbox" +
-                    "\"]\');\r\n\r\n            if (checkboxes.length === 0) {\r\n                $(\'#checkAl" +
-                    "l\').prop(\'checked\', false);\r\n                return;\r\n            }\r\n\r\n         " +
-                    "   var allChecked = true;\r\n            checkboxes.each(function () {\r\n          " +
-                    "      if (!$(this).prop(\'checked\')) {\r\n                    allChecked = false;\r\n" +
-                    "                    return false; // break loop\r\n                }\r\n            " +
-                    "});\r\n\r\n            $(\'#checkAll\').prop(\'checked\', allChecked);\r\n        });\r\n   " +
-                    " });\r\n\r\n\r\n \r\n</script>\r\n<div class=\"container\">\r\n    <div class=\"card shadow\">\r\n" +
-                    "        <div class=\"card-header \">\r\n            ");
+                    "data: \"Duzenle\" },\r\n\r\n            ],\r\n            createdRow: function (row, dat" +
+                    "a, dataIndex) {\n                var isError = data && (data.ErrorClass === true " +
+                    "|| data.ErrorClass === \'true\' || data.ErrorClass === \'1\');\n                if (i" +
+                    "sError) {\n                    $(row).addClass(\'error-row\');\n                    " +
+                    "// inline fallback for elements that still override color\n                    $(" +
+                    "row).find(\'td, td a, td .btn\').each(function () {\n                        this.s" +
+                    "tyle.setProperty(\'color\', \'red\', \'important\');\n                    });\n         " +
+                    "       } else {\n                    $(row).removeClass(\'error-row\');\n           " +
+                    "         $(row).find(\'td, td a, td .btn\').each(function () {\n                   " +
+                    "     this.style.removeProperty(\'color\');\n                    });\n               " +
+                    " }\n            },\r\n            columnDefs: [\r\n                { type: \'turkish\'," +
+                    " targets: [1, 2, 5] },\r\n            ],\r\n            \'order\': [[3, \'desc\']],//sor" +
+                    "t date desc\r\n            \"language\": {\r\n                \"url\": \"http://tskgv-por" +
+                    "tal/OrtakBelgeler/Turkish.txt\",\r\n                \"decimal\": \",\",\r\n              " +
+                    "  \"thousands\": \".\"\r\n            },\r\n            //column resizable\r\n            " +
+                    "//initComplete: function (settings) {\r\n            //    $(\'#CustomDataTable\').c" +
+                    "olResizable({ liveDrag: true });\r\n            //},\r\n            responsive: true" +
+                    ",\r\n            dom: \'Bfrtip\',\r\n            buttons: [\r\n                {\r\n      " +
+                    "              extend: \'print\',\r\n                    exportOptions: {\r\n          " +
+                    "              columns: \':visible\'\r\n                    }\r\n                },\r\n  " +
+                    "              {\r\n                    extend: \'excel\',\r\n                    expor" +
+                    "tOptions: {\r\n                        columns: \':visible\'\r\n                    }\r" +
+                    "\n                },\r\n                {\r\n                    extend: \'pdf\',\r\n    " +
+                    "                exportOptions: {\r\n                        columns: \':visible\'\r\n " +
+                    "                   }\r\n                },\r\n                {\r\n                   " +
+                    " extend: \'copy\',\r\n                    exportOptions: {\r\n                        " +
+                    "columns: \':visible\'\r\n                    }\r\n                },\r\n                " +
+                    ", \'pageLength\', \"colvis\"\r\n            ],\r\n\r\n        });\r\n\r\n        ArrayDoldur()" +
+                    ";\r\n        // Check All butonuna tıklanınca\r\n        table = $(\'#CustomDataTable" +
+                    "\').DataTable();\r\n        $(\'#checkAll\').on(\'click\', function () {\r\n            v" +
+                    "ar isChecked = $(this).is(\':checked\');\r\n            \r\n            // Sadece akti" +
+                    "f sayfadaki checkbox\'ları seç\r\n            table.rows({ page: \'current\' }).nodes" +
+                    "().to$().find(\'input[type=\"checkbox\"]\').each(function () {\r\n                if (" +
+                    "$(this).prop(\'checked\') !== isChecked) {\r\n                    $(this).click();\r\n" +
+                    "                }\r\n            });\r\n        });\r\n        //tabloda sayfalar aras" +
+                    "ı geçişte açılan sayfadaki tüm checkbox\'lar checkli ise checkAll\'ı checkli yap\r\n" +
+                    "        table.on(\'draw\', function () {\r\n            var checkboxes = table.rows(" +
+                    "{ page: \'current\' }).nodes().to$().find(\'input[type=\"checkbox\"]\');\r\n\r\n          " +
+                    "  if (checkboxes.length === 0) {\r\n                $(\'#checkAll\').prop(\'checked\'," +
+                    " false);\r\n                return;\r\n            }\r\n\r\n            var allChecked =" +
+                    " true;\r\n            checkboxes.each(function () {\r\n                if (!$(this)." +
+                    "prop(\'checked\')) {\r\n                    allChecked = false;\r\n                   " +
+                    " return false; // break loop\r\n                }\r\n            });\r\n\r\n            " +
+                    "$(\'#checkAll\').prop(\'checked\', allChecked);\r\n        });\r\n    });\r\n    $(\'#Custo" +
+                    "mDataTable\').on(\'draw.dt\', function () {\n        table.rows().every(function () " +
+                    "{\n            var d = this.data();\n            var r = this.node();\n            " +
+                    "var isError = d && (d.ErrorClass === true || d.ErrorClass === \'true\' || d.ErrorC" +
+                    "lass === \'1\');\n            if (isError) {\n                $(r).addClass(\'error-r" +
+                    "ow\');\n                $(r).find(\'td, td a, td .btn\').each(function () {\n        " +
+                    "            this.style.setProperty(\'color\', \'red\', \'important\');\n               " +
+                    " });\n            } else {\n                $(r).removeClass(\'error-row\');\n       " +
+                    "         $(r).find(\'td, td a, td .btn\').each(function () {\n                    t" +
+                    "his.style.removeProperty(\'color\');\n                });\n            }\n        });" +
+                    "\n    });\r\n\r\n \r\n</script>\r\n<div class=\"container\">\r\n    <div class=\"card shadow\">" +
+                    "\r\n        <div class=\"card-header \">\r\n            ");
             parameterContainer.Controls[0].RenderControl(@__w);
             @__w.Write("\r\n            <h3 class=\"mb-1\">\r\n                ");
             parameterContainer.Controls[1].RenderControl(@__w);

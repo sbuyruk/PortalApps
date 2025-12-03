@@ -739,7 +739,7 @@ namespace TBYS_WebParts.BorcluKiracilarWP {
             parameterContainer.Controls[3].RenderControl(@__w);
             @__w.Write("\r\n            </div>\r\n            ");
             parameterContainer.Controls[4].RenderControl(@__w);
-            @__w.Write("\r\n\r\n        </div>\r\n        <div class=\"card-footer\">\r\n            ");
+            @__w.Write("\r\n        </div>\r\n        <div class=\"card-footer\">\r\n            ");
             parameterContainer.Controls[5].RenderControl(@__w);
             @__w.Write(@"
         </div>

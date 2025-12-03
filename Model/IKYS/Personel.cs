@@ -367,7 +367,7 @@ namespace Model.IKYS
                     FORMAT(B.DogumTar,'dd.MM.yyyy') DogumTarihi,B.MedeniHali,B.EvlilikTar, B.KanGrubu,G.CepTelefonu,G.Adres,G.InternetEPosta,
                     B.DogumTar,B.EvlilikTar, B.EvlilikKutlama, 
                     IIF(FORMAT(C.EmeklilikTarihi,'dd.MM.yyyy')='01.01.1900','',FORMAT(C.EmeklilikTarihi,'dd.MM.yyyy')),
-                    C.ProtokolSiraNo
+                    C.ProtokolSiraNo, C.BaslamaTar, C.AyrilmaTar, C.AyrilmaSebebi
                 FROM Personel_Table A
                 INNER JOIN Kimlik_Table B on B.PersonelId=A.Id
                 INNER JOIN IsBilgileri_Table C on A.Id=C.PersonelId

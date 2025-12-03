@@ -205,8 +205,8 @@ namespace Model.TBYS
                     A.SozlesmeId, 
                     SUM(
                         CASE 
-                            WHEN B.KatMulkiyeti = {1} THEN C.Metrekare
-                            WHEN B.KatMulkiyeti = {2} THEN B.Metrekare
+                            WHEN B.KatMulkiyeti = 0 THEN C.Metrekare 
+                            WHEN B.KatMulkiyeti = 1 THEN B.Metrekare 
                             ELSE 0
                         END
                     ) AS Metrekare
@@ -214,7 +214,7 @@ namespace Model.TBYS
                 INNER JOIN Tasinmaz_Table B ON B.Id = A.TasinmazId
                 LEFT JOIN BagimsizBolum_Table C ON C.Id = A.BolumId
                 WHERE A.SozlesmeId = {0}
-                GROUP BY A.SozlesmeId", sozlesmeId.ReturnQuotedValue(),ProjeConstants.KAT_MULKIYETI_YOK.ReturnQuotedValue(), ProjeConstants.KAT_MULKIYETI_VAR.ReturnQuotedValue());
+                GROUP BY A.SozlesmeId", sozlesmeId.ReturnQuotedValue());
             //string sqlString = string.Format(
             //    @"SELECT SozlesmeId, SUM(Metrekare) Metrekare
             //        FROM SozlesmeTasinmaz_Table A

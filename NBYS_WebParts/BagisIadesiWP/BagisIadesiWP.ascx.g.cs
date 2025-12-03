@@ -345,7 +345,7 @@ namespace NBYS_WebParts.BagisIadesiWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.CssClass = "btn text-danger m-1";
             @__ctrl.ID = "UyariLbl";
-            @__ctrl.Text = " * Yalnızca son 1 ay içinde yapılan bağışlar iade edilebilir.";
+            @__ctrl.Text = " * Yalnızca son 1 yıl içinde yapılan bağışlar iade edilebilir.";
             return @__ctrl;
         }
         

@@ -399,7 +399,7 @@
                         <div class="tab-pane" role="tabpanel" id="TasinmazBilgileriDiv">
                             <div class="row">
 
-                                <div class="col">
+                                <div class="col-2">
                                     <div class="form-group m-0 ">
                                         <label class="form-label fw-semibold" for="KullanimSekliDDL">Kullanım Şekli</label>
                                         <asp:DropDownList ID="KullanimSekliDDL" runat="server" CssClass="form-control form-select form-select-lg" ToolTip="Kullanim Şekli" Style="height: auto"></asp:DropDownList>
@@ -421,7 +421,7 @@
                                         <input class="form-control text-end" id="InsaYiliTxt" runat="server" />
                                     </div>
                                 </div>
-                                <div class="col">
+                                <div class="col-2">
                                     <div class="form-group m-0 ">
                                         <label class="form-label fw-semibold" for="KirayaUygunlukDDL">Kiraya Uygunluk</label>
                                         <asp:DropDownList ID="KirayaUygunlukDDL" runat="server" class="form-control form-select form-select-lg" Style="height: auto"></asp:DropDownList>
@@ -433,7 +433,7 @@
 
 
                                 </div>
-                                <div class="col">
+                                <div class="col-2">
                                     <div class="form-group m-0 ">
                                         <label class="form-label fw-semibold" for="ToplamKatSayisiTxt">Toplam Kat</label>
                                         <asp:TextBox ID="ToplamKatSayisiTxt" runat="server" class="form-control" ToolTip="Oda+salon sayısı vb. özellikleri"></asp:TextBox>
@@ -445,6 +445,14 @@
                                     <div class="form-group m-0 ">
                                         <label class="form-label fw-semibold" for="NitelikTxt">Niteliği</label>
                                         <asp:TextBox ID="NitelikTxt" runat="server" class="form-control" ToolTip="Oda+salon sayısı vb. özellikleri"></asp:TextBox>
+                                    </div>
+                                    <div class="form-group m-0 ">
+                                        <label class="form-label fw-semibold" for="NitelikTxt">Bağ.Böl.Sayısı</label>
+                                        <asp:TextBox ID="BagimsizBolumSayisiTxt" runat="server" class="form-control" ToolTip="Kaç bağımsız bölüm var">1</asp:TextBox>
+                                    </div>
+                                    <div class="form-group m-0 ">
+                                        <label class="form-label fw-semibold" for="NitelikTxt">Kat Maliki Sayısı</label>
+                                        <asp:TextBox ID="KatMalikiSayisiTxt" runat="server" class="form-control" ToolTip="Kat Maliki kaç kişi">1</asp:TextBox>
                                     </div>
                                 </div>
                             </div>

@@ -117,6 +117,19 @@
                                 <asp:TableCell ID="MerKurulumOraniCell" CssClass="alert-info border-dark"></asp:TableCell>
                                 <asp:TableCell ID="MerGuncellemeDurumuCell" CssClass="alert-warning border-dark"></asp:TableCell>
                             </asp:TableRow>
+                            <asp:TableRow HorizontalAlign="Center">
+                                <asp:TableCell CssClass="alert-primary border-dark">Mersin Bölgesi</asp:TableCell>
+                                <asp:TableCell ID="ErzSBIlCell" CssClass="alert-primary border-dark"></asp:TableCell>
+                                <asp:TableCell ID="ErzSBIlceCell" CssClass="alert-primary border-dark"></asp:TableCell>
+                                <asp:TableCell ID="ErzKOIlCell" CssClass="alert-success border-dark"></asp:TableCell>
+                                <asp:TableCell ID="ErzKOIlceCell" CssClass="alert-success border-dark"></asp:TableCell>
+                                <asp:TableCell ID="ErzKOlmayanIlCell" CssClass="alert-danger border-dark"></asp:TableCell>
+                                <asp:TableCell ID="ErzKOlmayanIlceCell" CssClass="alert-danger border-dark"></asp:TableCell>
+                                <asp:TableCell ID="ErzGuncellenenCell" CssClass="alert-warning border-dark"></asp:TableCell>
+                                <asp:TableCell ID="ErzYeniKurulanCell" CssClass="alert-success border-dark"></asp:TableCell>
+                                <asp:TableCell ID="ErzKurulumOraniCell" CssClass="alert-info border-dark"></asp:TableCell>
+                                <asp:TableCell ID="ErzGuncellemeDurumuCell" CssClass="alert-warning border-dark"></asp:TableCell>
+                            </asp:TableRow>
                             <asp:TableFooterRow HorizontalAlign="Center">
                                 <asp:TableCell CssClass="alert-primary border-dark">Toplam</asp:TableCell>
                                 <asp:TableCell ID="TopSBIlCell" CssClass="alert-primary border-dark"></asp:TableCell>

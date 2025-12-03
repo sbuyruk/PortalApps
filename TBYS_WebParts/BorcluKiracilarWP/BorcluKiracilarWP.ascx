@@ -53,22 +53,6 @@
                     <asp:TableHeaderCell BorderStyle="Solid" BorderWidth="2" BorderColor="Black">KİRA BORCU (AY)</asp:TableHeaderCell>
                 </asp:TableHeaderRow>
             </asp:Table>
-<%--            <div class="form-group">
-                <table id="CustomDataTable" class="table table-bordered table-hover" width="100%">
-                    <thead>
-                        <tr>
-                            <th>Dosya No</th>
-                            <th>Bölge</th>
-                            <th>Kiracı</th>
-                            <th>İlk Sözleşme Tarihi</th>
-                            <th>Kira Bedeli (TL/Ay)</th>
-                            <th>Borç Miktarı (TL)</th>
-                            <th>Faizli Bakiye (TL)</th>
-                            <th>Kira Borcu (Ay)</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>--%>
         </div>
         <div class="card-footer">
             <asp:LinkButton CssClass="btn btn-outline-success float-end" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />

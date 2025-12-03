@@ -63,6 +63,7 @@ namespace TBYS_WebParts.KiraGelirleriAyDokumuWP
                     DataTable dataTableIST = odemePlaniDao.SelectKiraGeliriByBolgeAyYil(ProjeConstants.BOLGE_ISTANBUL_INT, ay, yil);
                     DataTable dataTableIZM = odemePlaniDao.SelectKiraGeliriByBolgeAyYil(ProjeConstants.BOLGE_IZMIR_INT, ay, yil);
                     DataTable dataTableMER = odemePlaniDao.SelectKiraGeliriByBolgeAyYil(ProjeConstants.BOLGE_MERSIN_INT, ay, yil);
+                    DataTable dataTableERZ = odemePlaniDao.SelectKiraGeliriByBolgeAyYil(ProjeConstants.BOLGE_ERZURUM_INT, ay, yil);
 
                     int kiraciSayisiToplam = 0;
                     decimal meskenToplam = 0;
@@ -112,6 +113,16 @@ namespace TBYS_WebParts.KiraGelirleriAyDokumuWP
                     bisToplam += bisOdenen;
 
                     AylikKiraGeliriniHesaplaVeTabloyaEkle(ProjeConstants.BOLGE_MERSIN, false, ay, yil, dataTableMER,
+                        out arsaOdenen, out isyeriOdenen, out meskenOdenen, out tarlaOdenen, out tesisOdenen, out bisOdenen, out kiraciSayisi);
+                    kiraciSayisiToplam += kiraciSayisi;
+                    meskenToplam += meskenOdenen;
+                    isyeriToplam += isyeriOdenen;
+                    arsaToplam += arsaOdenen;
+                    tarlaToplam += tarlaOdenen;
+                    tesisToplam += tesisOdenen;
+                    bisToplam += bisOdenen;
+
+                    AylikKiraGeliriniHesaplaVeTabloyaEkle(ProjeConstants.BOLGE_ERZURUM, false, ay, yil, dataTableERZ,
                         out arsaOdenen, out isyeriOdenen, out meskenOdenen, out tarlaOdenen, out tesisOdenen, out bisOdenen, out kiraciSayisi);
                     kiraciSayisiToplam += kiraciSayisi;
                     meskenToplam += meskenOdenen;
@@ -537,7 +548,7 @@ namespace TBYS_WebParts.KiraGelirleriAyDokumuWP
             if (ilkSatir)
             {
                 TableCell siraCell = new TableCell();
-                siraCell.RowSpan = 4;
+                siraCell.RowSpan = 5;
                 siraCell.BorderStyle = BorderStyle.Solid;
                 siraCell.BorderWidth = 2;
                 siraCell.BorderColor = System.Drawing.Color.Black;
@@ -547,7 +558,7 @@ namespace TBYS_WebParts.KiraGelirleriAyDokumuWP
                 TableCell ayCell = new TableCell();
                 DateTime tarih = new DateTime(yil, ay, 1);
                 ayCell.Text = tarih.ToString("MMMM", culturInfo);
-                ayCell.RowSpan = 4;
+                ayCell.RowSpan = 5;
                 ayCell.BorderStyle = BorderStyle.Solid;
                 ayCell.BorderWidth = 2;
                 ayCell.BorderColor = System.Drawing.Color.Black;

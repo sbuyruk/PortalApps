@@ -239,7 +239,7 @@ namespace NBYS_WebParts.NakitBagisciListesiByYilAyWP {
             this.BaslikTH = @__ctrl;
             @__ctrl.TemplateControl = this;
             @__ctrl.ID = "BaslikTH";
-            @__ctrl.ColSpan = 10;
+            @__ctrl.ColSpan = 11;
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "text-center");
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("ccc\r\n                                    "));
@@ -280,8 +280,8 @@ namespace NBYS_WebParts.NakitBagisciListesiByYilAyWP {
             @__ctrl1 = this.@__BuildControlAyDDL();
             @__parser.AddParsedSubObject(@__ctrl1);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"col-2\">\r\n  " +
-                        "                          <label for=\"YilDDL\" class=\"col-form-label font-weight-" +
-                        "bold\">Bağış Yılı: </label>\r\n                            "));
+                        "                          <label for=\"YilDDL\" class=\"col-form-label fw-bold\">Bağ" +
+                        "ış Yılı: </label>\r\n                            "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl2;
             @__ctrl2 = this.@__BuildControlYilDDL();
             @__parser.AddParsedSubObject(@__ctrl2);
@@ -311,6 +311,7 @@ namespace NBYS_WebParts.NakitBagisciListesiByYilAyWP {
                                     <th>İl</th>
                                     <th>ilçe</th>
                                     <th>Armağan</th>
+                                    <th>Bağış</th>
                                     <th>Armağan Durumu</th>
                                     <th>Belge</th>
                                 </tr>
@@ -437,6 +438,7 @@ namespace NBYS_WebParts.NakitBagisciListesiByYilAyWP {
                                             <th>Bağış Tarihi</th>
                                             <th>Bağış Miktarı</th>
                                             <th>Armağan</th>
+                                            <th>Bağış</th>
                                             <th>Armağan Durumu</th>
                                         </tr>
                                     </thead>
@@ -542,10 +544,9 @@ namespace NBYS_WebParts.NakitBagisciListesiByYilAyWP {
             @__w.Write("\').value = nakitBagisciId;\r\n        document.getElementById(\'");
                          @__w.Write( ModalDoldurBtn.ClientID);
 
-            @__w.Write("\').click();\r\n\n        var myModalInstance = bootstrap.Modal.getOrCreateInstance(d" +
-                    "ocument.getElementById(\'ModalUrlDiv\'));\n        myModalInstance.show();\r\n    }\r\n" +
-                    "</script>\r\n\r\n<div class=\"container col-xl\">\r\n    <div class=\"card shadow\">\r\n    " +
-                    "    ");
+            @__w.Write("\').click();\r\n\r\n        var myModalInstance = bootstrap.Modal.getOrCreateInstance(" +
+                    "document.getElementById(\'ModalUrlDiv\'));\r\n        myModalInstance.show();\r\n    }" +
+                    "\r\n</script>\r\n\r\n<div class=\"col-xl\">\r\n    <div class=\"card shadow\">\r\n        ");
             parameterContainer.Controls[0].RenderControl(@__w);
             @__w.Write("\r\n        ");
             parameterContainer.Controls[1].RenderControl(@__w);

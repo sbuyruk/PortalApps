@@ -233,7 +233,7 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP {
             @__ctrl.CssClass = "btn-light fw-bold";
             @__ctrl.ColumnSpan = 2;
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Yurtdışı"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Erzurum Bölge"));
             return @__ctrl;
         }
         
@@ -241,6 +241,20 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP {
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.WebControls.TableCell @__BuildControl__control15() {
+            global::System.Web.UI.WebControls.TableCell @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.TableCell();
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.CssClass = "btn-light fw-bold";
+            @__ctrl.ColumnSpan = 2;
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Yurtdışı"));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.TableCell @__BuildControl__control16() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
@@ -276,6 +290,9 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP {
             global::System.Web.UI.WebControls.TableCell @__ctrl7;
             @__ctrl7 = this.@__BuildControl__control15();
             @__ctrl.Add(@__ctrl7);
+            global::System.Web.UI.WebControls.TableCell @__ctrl8;
+            @__ctrl8 = this.@__BuildControl__control16();
+            @__ctrl.Add(@__ctrl8);
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -293,26 +310,13 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableCell @__BuildControl__control18() {
-            global::System.Web.UI.WebControls.TableCell @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.TableCell();
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "btn-light";
-            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Adet"));
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.WebControls.TableCell @__BuildControl__control19() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.CssClass = "btn-light";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Tutar"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Adet"));
             return @__ctrl;
         }
         
@@ -325,7 +329,7 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.CssClass = "btn-light";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Adet"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Tutar"));
             return @__ctrl;
         }
         
@@ -338,7 +342,7 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.CssClass = "btn-light";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Tutar"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Adet"));
             return @__ctrl;
         }
         
@@ -351,7 +355,7 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.CssClass = "btn-light";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Adet"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Tutar"));
             return @__ctrl;
         }
         
@@ -364,7 +368,7 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.CssClass = "btn-light";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Tutar"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Adet"));
             return @__ctrl;
         }
         
@@ -377,7 +381,7 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.CssClass = "btn-light";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Adet"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Tutar"));
             return @__ctrl;
         }
         
@@ -390,7 +394,7 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.CssClass = "btn-light";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Tutar"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Adet"));
             return @__ctrl;
         }
         
@@ -403,7 +407,7 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.CssClass = "btn-light";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Adet"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Tutar"));
             return @__ctrl;
         }
         
@@ -416,7 +420,7 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.CssClass = "btn-light";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Tutar"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Adet"));
             return @__ctrl;
         }
         
@@ -429,7 +433,7 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.CssClass = "btn-light";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Adet"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Tutar"));
             return @__ctrl;
         }
         
@@ -442,6 +446,19 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.CssClass = "btn-light";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Adet"));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.TableCell @__BuildControl__control30() {
+            global::System.Web.UI.WebControls.TableCell @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.TableCell();
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.CssClass = "btn-light";
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Tutar"));
             return @__ctrl;
         }
@@ -449,54 +466,86 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control17(System.Web.UI.WebControls.TableCellCollection @__ctrl) {
-            global::System.Web.UI.WebControls.TableCell @__ctrl1;
-            @__ctrl1 = this.@__BuildControl__control18();
-            @__ctrl.Add(@__ctrl1);
-            global::System.Web.UI.WebControls.TableCell @__ctrl2;
-            @__ctrl2 = this.@__BuildControl__control19();
-            @__ctrl.Add(@__ctrl2);
-            global::System.Web.UI.WebControls.TableCell @__ctrl3;
-            @__ctrl3 = this.@__BuildControl__control20();
-            @__ctrl.Add(@__ctrl3);
-            global::System.Web.UI.WebControls.TableCell @__ctrl4;
-            @__ctrl4 = this.@__BuildControl__control21();
-            @__ctrl.Add(@__ctrl4);
-            global::System.Web.UI.WebControls.TableCell @__ctrl5;
-            @__ctrl5 = this.@__BuildControl__control22();
-            @__ctrl.Add(@__ctrl5);
-            global::System.Web.UI.WebControls.TableCell @__ctrl6;
-            @__ctrl6 = this.@__BuildControl__control23();
-            @__ctrl.Add(@__ctrl6);
-            global::System.Web.UI.WebControls.TableCell @__ctrl7;
-            @__ctrl7 = this.@__BuildControl__control24();
-            @__ctrl.Add(@__ctrl7);
-            global::System.Web.UI.WebControls.TableCell @__ctrl8;
-            @__ctrl8 = this.@__BuildControl__control25();
-            @__ctrl.Add(@__ctrl8);
-            global::System.Web.UI.WebControls.TableCell @__ctrl9;
-            @__ctrl9 = this.@__BuildControl__control26();
-            @__ctrl.Add(@__ctrl9);
-            global::System.Web.UI.WebControls.TableCell @__ctrl10;
-            @__ctrl10 = this.@__BuildControl__control27();
-            @__ctrl.Add(@__ctrl10);
-            global::System.Web.UI.WebControls.TableCell @__ctrl11;
-            @__ctrl11 = this.@__BuildControl__control28();
-            @__ctrl.Add(@__ctrl11);
-            global::System.Web.UI.WebControls.TableCell @__ctrl12;
-            @__ctrl12 = this.@__BuildControl__control29();
-            @__ctrl.Add(@__ctrl12);
+        private global::System.Web.UI.WebControls.TableCell @__BuildControl__control31() {
+            global::System.Web.UI.WebControls.TableCell @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.TableCell();
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.CssClass = "btn-light";
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Adet"));
+            return @__ctrl;
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TableHeaderRow @__BuildControl__control16() {
+        private global::System.Web.UI.WebControls.TableCell @__BuildControl__control32() {
+            global::System.Web.UI.WebControls.TableCell @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.TableCell();
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.CssClass = "btn-light";
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Tutar"));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private void @__BuildControl__control18(System.Web.UI.WebControls.TableCellCollection @__ctrl) {
+            global::System.Web.UI.WebControls.TableCell @__ctrl1;
+            @__ctrl1 = this.@__BuildControl__control19();
+            @__ctrl.Add(@__ctrl1);
+            global::System.Web.UI.WebControls.TableCell @__ctrl2;
+            @__ctrl2 = this.@__BuildControl__control20();
+            @__ctrl.Add(@__ctrl2);
+            global::System.Web.UI.WebControls.TableCell @__ctrl3;
+            @__ctrl3 = this.@__BuildControl__control21();
+            @__ctrl.Add(@__ctrl3);
+            global::System.Web.UI.WebControls.TableCell @__ctrl4;
+            @__ctrl4 = this.@__BuildControl__control22();
+            @__ctrl.Add(@__ctrl4);
+            global::System.Web.UI.WebControls.TableCell @__ctrl5;
+            @__ctrl5 = this.@__BuildControl__control23();
+            @__ctrl.Add(@__ctrl5);
+            global::System.Web.UI.WebControls.TableCell @__ctrl6;
+            @__ctrl6 = this.@__BuildControl__control24();
+            @__ctrl.Add(@__ctrl6);
+            global::System.Web.UI.WebControls.TableCell @__ctrl7;
+            @__ctrl7 = this.@__BuildControl__control25();
+            @__ctrl.Add(@__ctrl7);
+            global::System.Web.UI.WebControls.TableCell @__ctrl8;
+            @__ctrl8 = this.@__BuildControl__control26();
+            @__ctrl.Add(@__ctrl8);
+            global::System.Web.UI.WebControls.TableCell @__ctrl9;
+            @__ctrl9 = this.@__BuildControl__control27();
+            @__ctrl.Add(@__ctrl9);
+            global::System.Web.UI.WebControls.TableCell @__ctrl10;
+            @__ctrl10 = this.@__BuildControl__control28();
+            @__ctrl.Add(@__ctrl10);
+            global::System.Web.UI.WebControls.TableCell @__ctrl11;
+            @__ctrl11 = this.@__BuildControl__control29();
+            @__ctrl.Add(@__ctrl11);
+            global::System.Web.UI.WebControls.TableCell @__ctrl12;
+            @__ctrl12 = this.@__BuildControl__control30();
+            @__ctrl.Add(@__ctrl12);
+            global::System.Web.UI.WebControls.TableCell @__ctrl13;
+            @__ctrl13 = this.@__BuildControl__control31();
+            @__ctrl.Add(@__ctrl13);
+            global::System.Web.UI.WebControls.TableCell @__ctrl14;
+            @__ctrl14 = this.@__BuildControl__control32();
+            @__ctrl.Add(@__ctrl14);
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.TableHeaderRow @__BuildControl__control17() {
             global::System.Web.UI.WebControls.TableHeaderRow @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableHeaderRow();
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.HorizontalAlign = global::System.Web.UI.WebControls.HorizontalAlign.Center;
-            this.@__BuildControl__control17(@__ctrl.Cells);
+            this.@__BuildControl__control18(@__ctrl.Cells);
             return @__ctrl;
         }
         
@@ -511,7 +560,7 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP {
             @__ctrl2 = this.@__BuildControl__control7();
             @__ctrl.Add(@__ctrl2);
             global::System.Web.UI.WebControls.TableHeaderRow @__ctrl3;
-            @__ctrl3 = this.@__BuildControl__control16();
+            @__ctrl3 = this.@__BuildControl__control17();
             @__ctrl.Add(@__ctrl3);
         }
         
@@ -545,7 +594,7 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control31() {
+        private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control34() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
             @__ctrl.ControlID = "YilDDL";
@@ -556,9 +605,9 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control30(System.Web.UI.UpdatePanelTriggerCollection @__ctrl) {
+        private void @__BuildControl__control33(System.Web.UI.UpdatePanelTriggerCollection @__ctrl) {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl1;
-            @__ctrl1 = this.@__BuildControl__control31();
+            @__ctrl1 = this.@__BuildControl__control34();
             @__ctrl.Add(@__ctrl1);
         }
         
@@ -571,7 +620,7 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP {
             this.upPanel = @__ctrl;
             @__ctrl.ContentTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control3));
             @__ctrl.ID = "upPanel";
-            this.@__BuildControl__control30(@__ctrl.Triggers);
+            this.@__BuildControl__control33(@__ctrl.Triggers);
             return @__ctrl;
         }
         
@@ -595,7 +644,7 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control32(System.Web.UI.Control @__ctrl) {
+        private void @__BuildControl__control35(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n        <div class=\'loaderMainContainer\'>\r\n            <div class=\'loaderContai" +
                         "ner\'>\r\n                <div class=\'loaderCircle\'></div>\r\n            </div>\r\n   " +
@@ -609,7 +658,7 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP {
             global::System.Web.UI.UpdateProgress @__ctrl;
             @__ctrl = new global::System.Web.UI.UpdateProgress();
             this.updateProgress = @__ctrl;
-            @__ctrl.ProgressTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control32));
+            @__ctrl.ProgressTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control35));
             @__ctrl.ID = "updateProgress";
             return @__ctrl;
         }

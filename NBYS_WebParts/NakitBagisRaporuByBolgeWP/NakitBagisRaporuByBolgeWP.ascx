@@ -45,11 +45,14 @@
                             <asp:TableCell CssClass="btn-light fw-bold" ColumnSpan="2">İstanbul Bölge</asp:TableCell>
                             <asp:TableCell CssClass="btn-light fw-bold" ColumnSpan="2">İzmir Bölge</asp:TableCell>
                             <asp:TableCell CssClass="btn-light fw-bold" ColumnSpan="2">Mersin Bölge</asp:TableCell>
+                            <asp:TableCell CssClass="btn-light fw-bold" ColumnSpan="2">Erzurum Bölge</asp:TableCell>
                             <asp:TableCell CssClass="btn-light fw-bold" ColumnSpan="2">Yurtdışı</asp:TableCell>
                             <asp:TableCell CssClass="btn-light fw-bold" ColumnSpan="2">Toplam</asp:TableCell>
 
                         </asp:TableHeaderRow>
                         <asp:TableHeaderRow HorizontalAlign="Center">
+                            <asp:TableCell CssClass="btn-light">Adet</asp:TableCell>
+                            <asp:TableCell CssClass="btn-light">Tutar</asp:TableCell>
                             <asp:TableCell CssClass="btn-light">Adet</asp:TableCell>
                             <asp:TableCell CssClass="btn-light">Tutar</asp:TableCell>
                             <asp:TableCell CssClass="btn-light">Adet</asp:TableCell>

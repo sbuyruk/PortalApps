@@ -66,7 +66,20 @@
             </h3>
         </div>
         <div class="card-body mt-1">
-
+            <div class="row m-2 ">
+                <div class="form-group col-2">
+                    <label class="form-label" for="AyDDL">Başlangıç Ayı </label>
+                    <asp:DropDownList ID="AyDDL" runat="server" CssClass="form-control form-select form-select-lg fw-bold" AutoPostBack="True" OnSelectedIndexChanged="AyDDL_SelectedIndexChanged" Style="height: auto" />
+                </div>
+                <div class="form-group col-2">
+                    <label class="form-label" for="YilDDL">Başlangıç Yılı </label>
+                    <asp:DropDownList ID="YilDDL" runat="server" CssClass="form-control form-select form-select-lg fw-bold" AutoPostBack="True" OnSelectedIndexChanged="YilDDL_SelectedIndexChanged" Style="height: auto" />
+                </div>
+                <div class="form-group col-3">
+                    <label class="form-label" for="DurumDDL">Durum </label>
+                    <asp:DropDownList ID="DurumDDL" runat="server" CssClass="form-control form-select form-select-lg fw-bold" AutoPostBack="True" OnSelectedIndexChanged="DurumDDL_SelectedIndexChanged" Style="height: auto" />
+                </div>
+            </div>
             <div style="display: none">
                 <input id="paramNakitBagisciIdLbl" runat="server" text="Label" style="border-style: none;" text-align="center" />
             </div>

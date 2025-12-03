@@ -99,6 +99,8 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
             int IzmTopCM = tasinmaz.SelectTasinmazAdetByBolgeKirayaUygunluk(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL, ProjeConstants.MULKIYETSEKLI_CM);
             int MerTopTM = tasinmaz.SelectTasinmazAdetByBolgeKirayaUygunluk(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL, ProjeConstants.MULKIYETSEKLI_TM);
             int MerTopCM = tasinmaz.SelectTasinmazAdetByBolgeKirayaUygunluk(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL, ProjeConstants.MULKIYETSEKLI_CM);
+            int ErzTopTM = tasinmaz.SelectTasinmazAdetByBolgeKirayaUygunluk(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL, ProjeConstants.MULKIYETSEKLI_TM);
+            int ErzTopCM = tasinmaz.SelectTasinmazAdetByBolgeKirayaUygunluk(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL, ProjeConstants.MULKIYETSEKLI_CM);
 
             TableRow rowGenelToplam = new TableRow
             {
@@ -174,17 +176,32 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
             rowGenelToplam.Controls.Add(MerTopTMCell);
             rowGenelToplam.Controls.Add(MerTopCMCell);
 
+            TableCell ErzTopTMCell = new TableCell
+            {
+                BorderStyle = BorderStyle.Solid,
+                CssClass = "fw-bold",
+                Text = (ErzTopTM).ReturnEmptyIfZeroOrNull().ToString()
+            };
+            TableCell ErzTopCMCell = new TableCell
+            {
+                BorderStyle = BorderStyle.Solid,
+                CssClass = "fw-bold",
+                Text = (ErzTopCM).ReturnEmptyIfZeroOrNull().ToString()
+            };
+            rowGenelToplam.Controls.Add(ErzTopTMCell);
+            rowGenelToplam.Controls.Add(ErzTopCMCell);
+
             TableCell TopTopTMCell = new TableCell
             {
                 BorderStyle = BorderStyle.Solid,
                 CssClass = "fw-bold",
-                Text = (GMTopTM + IstTopTM + IzmTopTM + MerTopTM).ReturnEmptyIfZeroOrNull().ToString()
+                Text = (GMTopTM + IstTopTM + IzmTopTM + MerTopTM+ErzTopTM).ReturnEmptyIfZeroOrNull().ToString()
             };
             TableCell TopTopCMCell = new TableCell
             {
                 BorderStyle = BorderStyle.Solid,
                 CssClass = "fw-bold",
-                Text = (GMTopCM + IstTopCM + IzmTopCM + MerTopCM).ReturnEmptyIfZeroOrNull().ToString()
+                Text = (GMTopCM + IstTopCM + IzmTopCM + MerTopCM + ErzTopCM).ReturnEmptyIfZeroOrNull().ToString()
             };
             rowGenelToplam.Controls.Add(TopTopTMCell);
             rowGenelToplam.Controls.Add(TopTopCMCell);
@@ -193,7 +210,7 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
             {
                 BorderStyle = BorderStyle.Solid,
                 CssClass = "fw-bold",
-                Text = (GMTopTM + IstTopTM + IzmTopTM + MerTopTM + GMTopCM + IstTopCM + IzmTopCM + MerTopCM).ReturnEmptyIfZeroOrNull().ToString()
+                Text = (GMTopTM + IstTopTM + IzmTopTM + MerTopTM + GMTopCM + IstTopCM + IzmTopCM + MerTopCM + ErzTopCM).ReturnEmptyIfZeroOrNull().ToString()
             };
             rowGenelToplam.Controls.Add(TopTopTMCMCell);
 
@@ -221,98 +238,114 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
             int IstIshaniTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.KULLANIMSEKLI_ISHANI, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
             int IzmIshaniTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.KULLANIMSEKLI_ISHANI, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
             int MerIshaniTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.KULLANIMSEKLI_ISHANI, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
-            int TopIshaniTM = GMIshaniTM + IstIshaniTM + IzmIshaniTM + MerIshaniTM;
+            int ErzIshaniTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_ISHANI, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
+            int TopIshaniTM = GMIshaniTM + IstIshaniTM + IzmIshaniTM + MerIshaniTM + ErzIshaniTM;
 
             int GMAptTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.KULLANIMSEKLI_APT, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
             int IstAptTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.KULLANIMSEKLI_APT, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
             int IzmAptTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.KULLANIMSEKLI_APT, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
             int MerAptTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.KULLANIMSEKLI_APT, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
-            int TopAptTM = GMAptTM + IstAptTM + IzmAptTM + MerAptTM;
+            int ErzAptTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_APT, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
+            int TopAptTM = GMAptTM + IstAptTM + IzmAptTM + MerAptTM + ErzAptTM;
 
             int GMMesTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.KULLANIMSEKLI_MESKEN, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
             int IstMesTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.KULLANIMSEKLI_MESKEN, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
             int IzmMesTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.KULLANIMSEKLI_MESKEN, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
             int MerMesTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.KULLANIMSEKLI_MESKEN, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
-            int TopMesTM = GMMesTM + IstMesTM + IzmMesTM + MerMesTM;
+            int ErzMesTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_MESKEN, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
+            int TopMesTM = GMMesTM + IstMesTM + IzmMesTM + MerMesTM + ErzMesTM;
 
             int GMIsyTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.KULLANIMSEKLI_ISYERI, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
             int IstIsyTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.KULLANIMSEKLI_ISYERI, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
             int IzmIsyTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.KULLANIMSEKLI_ISYERI, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
             int MerIsyTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.KULLANIMSEKLI_ISYERI, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
-            int TopIsyTM = GMIsyTM + IstIsyTM + IzmIsyTM + MerIsyTM;
+            int ErzIsyTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_ISYERI, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
+            int TopIsyTM = GMIsyTM + IstIsyTM + IzmIsyTM + MerIsyTM + ErzIsyTM;
 
             int GMArsTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.KULLANIMSEKLI_ARSA, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
             int IstArsTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.KULLANIMSEKLI_ARSA, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
             int IzmArsTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.KULLANIMSEKLI_ARSA, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
             int MerArsTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.KULLANIMSEKLI_ARSA, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
-            int TopArsTM = GMArsTM + IstArsTM + IzmArsTM + MerArsTM;
+            int ErzArsTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_ARSA, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
+            int TopArsTM = GMArsTM + IstArsTM + IzmArsTM + MerArsTM + ErzArsTM;
 
             int GMTarTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.KULLANIMSEKLI_TARLA, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
             int IstTarTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.KULLANIMSEKLI_TARLA, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
             int IzmTarTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.KULLANIMSEKLI_TARLA, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
             int MerTarTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.KULLANIMSEKLI_TARLA, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
-            int TopTarTM = GMTarTM + IstTarTM + IzmTarTM + MerTarTM;
+            int ErzTarTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_TARLA, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
+            int TopTarTM = GMTarTM + IstTarTM + IzmTarTM + MerTarTM + ErzTarTM;
 
             int GMMevTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.KULLANIMSEKLI_MEV, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
             int IstMevTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.KULLANIMSEKLI_MEV, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
             int IzmMevTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.KULLANIMSEKLI_MEV, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
             int MerMevTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.KULLANIMSEKLI_MEV, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
-            int TopMevTM = GMMevTM + IstMevTM + IzmMevTM + MerMevTM;
+            int ErzMevTM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_MEV, kiraDurumu, ProjeConstants.MULKIYETSEKLI_TM, kirayaUygunluk);
+            int TopMevTM = GMMevTM + IstMevTM + IzmMevTM + MerMevTM + ErzMevTM;
 
             int GMTopTM = GMIshaniTM + GMAptTM + GMMesTM + GMIsyTM + GMArsTM + GMTarTM + GMMevTM;
             int IstTopTM = IstIshaniTM + IstAptTM + IstMesTM + IstIsyTM + IstArsTM + IstTarTM + IstMevTM;
             int IzmTopTM = IzmIshaniTM + IzmAptTM + IzmMesTM + IzmIsyTM + IzmArsTM + IzmTarTM + IzmMevTM;
             int MerTopTM = MerIshaniTM + MerAptTM + MerMesTM + MerIsyTM + MerArsTM + MerTarTM + MerMevTM;
+            int ErzTopTM = ErzIshaniTM + ErzAptTM + ErzMesTM + ErzIsyTM + ErzArsTM + ErzTarTM + ErzMevTM;
 
             int GMIshaniCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.KULLANIMSEKLI_ISHANI, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
             int IstIshaniCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.KULLANIMSEKLI_ISHANI, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
             int IzmIshaniCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.KULLANIMSEKLI_ISHANI, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
             int MerIshaniCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.KULLANIMSEKLI_ISHANI, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
-            int TopIshaniCM = GMIshaniCM + IstIshaniCM + IzmIshaniCM + MerIshaniCM;
+            int ErzIshaniCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_ISHANI, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
+            int TopIshaniCM = GMIshaniCM + IstIshaniCM + IzmIshaniCM + MerIshaniCM + ErzIshaniCM;
 
             int GMAptCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.KULLANIMSEKLI_APT, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
             int IstAptCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.KULLANIMSEKLI_APT, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
             int IzmAptCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.KULLANIMSEKLI_APT, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
             int MerAptCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.KULLANIMSEKLI_APT, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
-            int TopAptCM = GMAptCM + IstAptCM + IzmAptCM + MerAptCM;
+            int ErzAptCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_APT, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
+            int TopAptCM = GMAptCM + IstAptCM + IzmAptCM + MerAptCM + ErzAptCM;
 
             int GMMesCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.KULLANIMSEKLI_MESKEN, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
             int IstMesCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.KULLANIMSEKLI_MESKEN, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
             int IzmMesCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.KULLANIMSEKLI_MESKEN, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
             int MerMesCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.KULLANIMSEKLI_MESKEN, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
-            int TopMesCM = GMMesCM + IstMesCM + IzmMesCM + MerMesCM;
+            int ErzMesCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_MESKEN, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
+            int TopMesCM = GMMesCM + IstMesCM + IzmMesCM + MerMesCM + ErzMesCM;
 
             int GMIsyCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.KULLANIMSEKLI_ISYERI, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
             int IstIsyCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.KULLANIMSEKLI_ISYERI, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
             int IzmIsyCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.KULLANIMSEKLI_ISYERI, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
             int MerIsyCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.KULLANIMSEKLI_ISYERI, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
-            int TopIsyCM = GMIsyCM + IstIsyCM + IzmIsyCM + MerIsyCM;
+            int ErzIsyCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_ISYERI, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
+            int TopIsyCM = GMIsyCM + IstIsyCM + IzmIsyCM + MerIsyCM + ErzIsyCM;
 
             int GMArsCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.KULLANIMSEKLI_ARSA, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
             int IstArsCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.KULLANIMSEKLI_ARSA, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
             int IzmArsCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.KULLANIMSEKLI_ARSA, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
             int MerArsCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.KULLANIMSEKLI_ARSA, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
-            int TopArsCM = GMArsCM + IstArsCM + IzmArsCM + MerArsCM;
+            int ErzArsCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_ARSA, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
+            int TopArsCM = GMArsCM + IstArsCM + IzmArsCM + MerArsCM + ErzArsCM;
 
             int GMTarCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.KULLANIMSEKLI_TARLA, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
             int IstTarCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.KULLANIMSEKLI_TARLA, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
             int IzmTarCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.KULLANIMSEKLI_TARLA, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
             int MerTarCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.KULLANIMSEKLI_TARLA, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
-            int TopTarCM = GMTarCM + IstTarCM + IzmTarCM + MerTarCM;
+            int ErzTarCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_TARLA, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
+            int TopTarCM = GMTarCM + IstTarCM + IzmTarCM + MerTarCM + ErzTarCM;
 
             int GMMevCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.KULLANIMSEKLI_MEV, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
             int IstMevCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.KULLANIMSEKLI_MEV, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
             int IzmMevCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.KULLANIMSEKLI_MEV, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
             int MerMevCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.KULLANIMSEKLI_MEV, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
-            int TopMevCM = GMMevCM + IstMevCM + IzmMevCM + MerMevCM;
+            int ErzMevCM = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_MEV, kiraDurumu, ProjeConstants.MULKIYETSEKLI_CM, kirayaUygunluk);
+            int TopMevCM = GMMevCM + IstMevCM + IzmMevCM + MerMevCM + ErzMevCM;
 
             int GMTopCM = GMIshaniCM + GMAptCM + GMMesCM + GMIsyCM + GMArsCM + GMTarCM + GMMevCM;
             int IstTopCM = IstIshaniCM + IstAptCM + IstMesCM + IstIsyCM + IstArsCM + IstTarCM + IstMevCM;
             int IzmTopCM = IzmIshaniCM + IzmAptCM + IzmMesCM + IzmIsyCM + IzmArsCM + IzmTarCM + IzmMevCM;
             int MerTopCM = MerIshaniCM + MerAptCM + MerMesCM + MerIsyCM + MerArsCM + MerTarCM + MerMevCM;
+            int ErzTopCM = ErzIshaniCM + ErzAptCM + ErzMesCM + ErzIsyCM + ErzArsCM + ErzTarCM + ErzMevCM;
 
-            int TopTM = GMTopTM + IstTopTM + IzmTopTM + MerTopTM;
-            int TopCM = GMTopCM + IstTopCM + IzmTopCM + MerTopCM;
+            int TopTM = GMTopTM + IstTopTM + IzmTopTM + MerTopTM + ErzTopTM;
+            int TopCM = GMTopCM + IstTopCM + IzmTopCM + MerTopCM + ErzTopCM;
 
             #region Row1
             TableRow row1 = new TableRow
@@ -367,6 +400,12 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
                 Text = (MerAptTM + MerIshaniTM).ReturnEmptyIfZeroOrNull().ToString()
             };
 
+            TableCell KvAptErzTMCell = new TableCell
+            {
+                BorderStyle = BorderStyle.Solid,
+                Text = (ErzAptTM + ErzIshaniTM).ReturnEmptyIfZeroOrNull().ToString()
+            };
+
             TableCell KvAptTopTMCell = new TableCell
             {
                 BorderStyle = BorderStyle.Solid,
@@ -397,6 +436,12 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
                 Text = (MerAptCM + MerIshaniCM).ReturnEmptyIfZeroOrNull().ToString()
             };
 
+            TableCell KvAptErzCMCell = new TableCell
+            {
+                BorderStyle = BorderStyle.Solid,
+                Text = (ErzAptCM + ErzIshaniCM).ReturnEmptyIfZeroOrNull().ToString()
+            };
+
             TableCell KvAptTopCMCell = new TableCell
             {
                 BorderStyle = BorderStyle.Solid,
@@ -417,6 +462,8 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
             row1.Controls.Add(KvAptIzmCMCell);
             row1.Controls.Add(KvAptMerTMCell);
             row1.Controls.Add(KvAptMerCMCell);
+            row1.Controls.Add(KvAptErzTMCell);
+            row1.Controls.Add(KvAptErzCMCell);
             row1.Controls.Add(KvAptTopTMCell);
             row1.Controls.Add(KvAptTopCMCell);
             row1.Controls.Add(KvAptTopTMCMCell);
@@ -463,6 +510,12 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
                 Text = (MerMesTM).ReturnEmptyIfZeroOrNull().ToString()
             };
 
+            TableCell KvMesErzTMCell = new TableCell
+            {
+                BorderStyle = BorderStyle.Solid,
+                Text = (ErzMesTM).ReturnEmptyIfZeroOrNull().ToString()
+            };
+
             TableCell KvMesTopTMCell = new TableCell
             {
                 BorderStyle = BorderStyle.Solid,
@@ -494,6 +547,12 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
                 Text = (MerMesCM).ReturnEmptyIfZeroOrNull().ToString()
             };
 
+            TableCell KvMesErzCMCell = new TableCell
+            {
+                BorderStyle = BorderStyle.Solid,
+                Text = (ErzMesCM).ReturnEmptyIfZeroOrNull().ToString()
+            };
+
             TableCell KvMesTopCMCell = new TableCell
             {
                 BorderStyle = BorderStyle.Solid,
@@ -515,6 +574,8 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
             row2.Controls.Add(KvMesIzmCMCell);
             row2.Controls.Add(KvMesMerTMCell);
             row2.Controls.Add(KvMesMerCMCell);
+            row2.Controls.Add(KvMesErzTMCell);
+            row2.Controls.Add(KvMesErzCMCell);
             row2.Controls.Add(KvMesTopTMCell);
             row2.Controls.Add(KvMesTopCMCell);
             row2.Controls.Add(KvMesTopTMCMCell);
@@ -562,6 +623,12 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
                 Text = (MerMevTM).ReturnEmptyIfZeroOrNull().ToString()
             };
 
+            TableCell KvMevErzTMCell = new TableCell
+            {
+                BorderStyle = BorderStyle.Solid,
+                Text = (ErzMevTM).ReturnEmptyIfZeroOrNull().ToString()
+            };
+
             TableCell KvMevTopTMCell = new TableCell
             {
                 BorderStyle = BorderStyle.Solid,
@@ -593,6 +660,12 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
                 Text = (MerMevCM).ReturnEmptyIfZeroOrNull().ToString()
             };
 
+            TableCell KvMevErzCMCell = new TableCell
+            {
+                BorderStyle = BorderStyle.Solid,
+                Text = (ErzMevCM).ReturnEmptyIfZeroOrNull().ToString()
+            };
+
             TableCell KvMevTopCMCell = new TableCell
             {
                 BorderStyle = BorderStyle.Solid,
@@ -613,6 +686,8 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
             row3.Controls.Add(KvMevIzmCMCell);
             row3.Controls.Add(KvMevMerTMCell);
             row3.Controls.Add(KvMevMerCMCell);
+            row3.Controls.Add(KvMevErzTMCell);
+            row3.Controls.Add(KvMevErzCMCell);
             row3.Controls.Add(KvMevTopTMCell);
             row3.Controls.Add(KvMevTopCMCell);
             row3.Controls.Add(KvMevTopTMCMCell);
@@ -660,6 +735,12 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
                 Text = (MerIsyTM).ReturnEmptyIfZeroOrNull().ToString()
             };
 
+            TableCell KvIsyErzTMCell = new TableCell
+            {
+                BorderStyle = BorderStyle.Solid,
+                Text = (ErzIsyTM).ReturnEmptyIfZeroOrNull().ToString()
+            };
+
             TableCell KvIsyTopTMCell = new TableCell
             {
                 BorderStyle = BorderStyle.Solid,
@@ -691,6 +772,12 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
                 Text = (MerIsyCM).ReturnEmptyIfZeroOrNull().ToString()
             };
 
+            TableCell KvIsyErzCMCell = new TableCell
+            {
+                BorderStyle = BorderStyle.Solid,
+                Text = (ErzIsyCM).ReturnEmptyIfZeroOrNull().ToString()
+            };
+
             TableCell KvIsyTopCMCell = new TableCell
             {
                 BorderStyle = BorderStyle.Solid,
@@ -712,6 +799,8 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
             row4.Controls.Add(KvIsyIzmCMCell);
             row4.Controls.Add(KvIsyMerTMCell);
             row4.Controls.Add(KvIsyMerCMCell);
+            row4.Controls.Add(KvIsyErzTMCell);
+            row4.Controls.Add(KvIsyErzCMCell);
             row4.Controls.Add(KvIsyTopTMCell);
             row4.Controls.Add(KvIsyTopCMCell);
             row4.Controls.Add(KvIsyTopTMCMCell);
@@ -759,6 +848,12 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
                 Text = (MerArsTM).ReturnEmptyIfZeroOrNull().ToString()
             };
 
+            TableCell KvArsErzTMCell = new TableCell
+            {
+                BorderStyle = BorderStyle.Solid,
+                Text = (ErzArsTM).ReturnEmptyIfZeroOrNull().ToString()
+            };
+
             TableCell KvArsTopTMCell = new TableCell
             {
                 BorderStyle = BorderStyle.Solid,
@@ -790,6 +885,12 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
                 Text = (MerArsCM).ReturnEmptyIfZeroOrNull().ToString()
             };
 
+            TableCell KvArsErzCMCell = new TableCell
+            {
+                BorderStyle = BorderStyle.Solid,
+                Text = (ErzArsCM).ReturnEmptyIfZeroOrNull().ToString()
+            };
+
             TableCell KvArsTopCMCell = new TableCell
             {
                 BorderStyle = BorderStyle.Solid,
@@ -811,6 +912,8 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
             row5.Controls.Add(KvArsIzmCMCell);
             row5.Controls.Add(KvArsMerTMCell);
             row5.Controls.Add(KvArsMerCMCell);
+            row5.Controls.Add(KvArsErzTMCell);
+            row5.Controls.Add(KvArsErzCMCell);
             row5.Controls.Add(KvArsTopTMCell);
             row5.Controls.Add(KvArsTopCMCell);
             row5.Controls.Add(KvArsTopTMCMCell);
@@ -858,6 +961,12 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
                 Text = (MerTarTM).ReturnEmptyIfZeroOrNull().ToString()
             };
 
+            TableCell KvTarErzTMCell = new TableCell
+            {
+                BorderStyle = BorderStyle.Solid,
+                Text = (ErzTarTM).ReturnEmptyIfZeroOrNull().ToString()
+            };
+
             TableCell KvTarTopTMCell = new TableCell
             {
                 BorderStyle = BorderStyle.Solid,
@@ -889,6 +998,12 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
                 Text = (MerTarCM).ReturnEmptyIfZeroOrNull().ToString()
             };
 
+            TableCell KvTarErzCMCell = new TableCell
+            {
+                BorderStyle = BorderStyle.Solid,
+                Text = (ErzTarCM).ReturnEmptyIfZeroOrNull().ToString()
+            };
+
             TableCell KvTarTopCMCell = new TableCell
             {
                 BorderStyle = BorderStyle.Solid,
@@ -910,6 +1025,8 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
             row7.Controls.Add(KvTarIzmCMCell);
             row7.Controls.Add(KvTarMerTMCell);
             row7.Controls.Add(KvTarMerCMCell);
+            row7.Controls.Add(KvTarErzTMCell);
+            row7.Controls.Add(KvTarErzCMCell);
             row7.Controls.Add(KvTarTopTMCell);
             row7.Controls.Add(KvTarTopCMCell);
             row7.Controls.Add(KvTarTopTMCMCell);
@@ -957,6 +1074,12 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
                 Text = (MerTopTM).ReturnEmptyIfZeroOrNull().ToString()
             };
 
+            TableCell KvTopErzTMCell = new TableCell
+            {
+                BorderStyle = BorderStyle.Solid,
+                Text = (ErzTopTM).ReturnEmptyIfZeroOrNull().ToString()
+            };
+
             TableCell KvTopTopTMCell = new TableCell
             {
                 BorderStyle = BorderStyle.Solid,
@@ -988,6 +1111,12 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
                 Text = (MerTopCM).ReturnEmptyIfZeroOrNull().ToString()
             };
 
+            TableCell KvTopErzCMCell = new TableCell
+            {
+                BorderStyle = BorderStyle.Solid,
+                Text = (ErzTopCM).ReturnEmptyIfZeroOrNull().ToString()
+            };
+
             TableCell KvTopTopCMCell = new TableCell
             {
                 BorderStyle = BorderStyle.Solid,
@@ -1009,6 +1138,8 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
             row8.Controls.Add(KvTopIzmCMCell);
             row8.Controls.Add(KvTopMerTMCell);
             row8.Controls.Add(KvTopMerCMCell);
+            row8.Controls.Add(KvTopErzTMCell);
+            row8.Controls.Add(KvTopErzCMCell);
             row8.Controls.Add(KvTopTopTMCell);
             row8.Controls.Add(KvTopTopCMCell);
             row8.Controls.Add(KvTopTopTMCMCell);

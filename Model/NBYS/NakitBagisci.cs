@@ -777,8 +777,13 @@ namespace Model.NBYS
             string json = ToJSON(dataTable);
             return json;
         }
-        public DataTable SelectDuzenliBagisci()
+        public DataTable SelectDuzenliBagisci(DateTime bastar,DateTime bittar, string durum)
         {
+            var durumstr = string.Empty;
+            if (!durum.Equals(ProjeConstants.HEPSI)) //eğer boş ise query'e hiç eklenmesin
+            {
+                durumstr = string.Format("AND Durum = {0}", durum.ReturnQuotedValue());
+            }
             string sqlString = string.Format(@"
                 SELECT A.BagisciId aBagisciId,A.BagisciAdi aBagisciAdi
                     ,A.Id aDuzenliBagisciId
@@ -809,8 +814,9 @@ namespace Model.NBYS
                 LEFT OUTER JOIN Il_Table C ON C.Id= B.Ili 
                 LEFT OUTER JOIN Ilce_Table D ON D.Id= B.Ilcesi AND D.IlId=C.Id
                 LEFT JOIN Armagan_Table E ON E.Id=A.ArmaganId
-                WHERE A.Aktif = 1;"
-                );
+                WHERE A.Aktif = 1 AND BaslamaTarihi >= {0} AND BaslamaTarihi < {1}
+                {2};",
+                bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat(), durumstr);
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
 

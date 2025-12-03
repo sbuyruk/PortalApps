@@ -445,6 +445,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "FinansbankFU";
             @__ctrl.CssClass = "form-control";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("disabled", "");
             return @__ctrl;
         }
         

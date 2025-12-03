@@ -209,6 +209,15 @@ namespace NBYS_WebParts.BeratBasimiWP
             FillTable(mergum, MerGTable, MerGumusBtn, MerGumusEtiketBtn, MerGumusDurumChk);
             FillTable(merbro, MerBTable, MerBronzBtn, MerBronzEtiketBtn, MerBronzDurumChk);
 
+            //Erzurum
+            DataTable erzal = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_ALTINID, ProjeConstants.BOLGE_ERZURUM_INT);
+            DataTable erzgum = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_GUMUSID, ProjeConstants.BOLGE_ERZURUM_INT);
+            DataTable erzbro = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_BRONZID, ProjeConstants.BOLGE_ERZURUM_INT);
+
+            FillTable(erzal, ErzATable, ErzAltinBtn, ErzAltinEtiketBtn, ErzAltinDurumChk);
+            FillTable(erzgum, ErzGTable, ErzGumusBtn, ErzGumusEtiketBtn, ErzGumusDurumChk);
+            FillTable(erzbro, ErzBTable, ErzBronzBtn, ErzBronzEtiketBtn, ErzBronzDurumChk);
+
         }
         private void SetButtonsToFalse()
         {
@@ -263,6 +272,19 @@ namespace NBYS_WebParts.BeratBasimiWP
             MerAltinDurumChk.Enabled = false;
             MerGumusDurumChk.Enabled = false;
             MerBronzDurumChk.Enabled = false;
+
+            ErzAltinBtn.Enabled = false;
+            ErzGumusBtn.Enabled = false;
+            ErzBronzBtn.Enabled = false;
+            ErzAltinEtiketBtn.Enabled = false;
+            ErzGumusEtiketBtn.Enabled = false;
+            ErzBronzEtiketBtn.Enabled = false;
+            ErzAltinDurumChk.Checked = false;
+            ErzGumusDurumChk.Checked = false;
+            ErzBronzDurumChk.Checked = false;
+            ErzAltinDurumChk.Enabled = false;
+            ErzGumusDurumChk.Enabled = false;
+            ErzBronzDurumChk.Enabled = false;
         }
         private void FillTable(DataTable dataTable, Table table, Button beratBtn, Button etiketBtn, CheckBox durumChk)
         {
@@ -472,6 +494,18 @@ namespace NBYS_WebParts.BeratBasimiWP
         {
             BasimaGonder(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.ARMAGAN_BRONZID, MerBronzDurumChk);
         }
+        protected void ErzAltinBtn_Click(object sender, EventArgs e)
+        {
+            BasimaGonder(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.ARMAGAN_ALTINID, ErzAltinDurumChk);
+        }
+        protected void ErzGumusBtn_Click(object sender, EventArgs e)
+        {
+            BasimaGonder(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.ARMAGAN_GUMUSID, ErzGumusDurumChk);
+        }
+        protected void ErzBronzBtn_Click(object sender, EventArgs e)
+        {
+            BasimaGonder(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.ARMAGAN_BRONZID, ErzBronzDurumChk);
+        }
         private void BasimaGonder(int bolgeId, int armaganTipi, CheckBox checkBox)
         {
             if (checkBox.Checked)
@@ -558,6 +592,21 @@ namespace NBYS_WebParts.BeratBasimiWP
         protected void MerBronzEtiketBtn_Click(object sender, EventArgs e)
         {
             EtiketleriBasimaGonder(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.ARMAGAN_BRONZID);
+        }
+
+        protected void ErzAltinEtiketBtn_Click(object sender, EventArgs e)
+        {
+            EtiketleriBasimaGonder(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.ARMAGAN_ALTINID);
+        }
+
+        protected void ErzGumusEtiketBtn_Click(object sender, EventArgs e)
+        {
+            EtiketleriBasimaGonder(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.ARMAGAN_GUMUSID);
+        }
+
+        protected void ErzBronzEtiketBtn_Click(object sender, EventArgs e)
+        {
+            EtiketleriBasimaGonder(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.ARMAGAN_BRONZID);
         }
         private void RedirectToPage(string pageUrl)
         {

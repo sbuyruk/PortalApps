@@ -25,7 +25,7 @@
         font-size: 1.2rem !important;
     }
 </style>
-<div class="container shadow">
+<div class="col-xl card shadow mt-2 p-3">
     <div class="card-header ">
         <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
         <h3 class="mb-1">
@@ -62,8 +62,8 @@
                     </div>
                 </div>
             </div>
-            <div class="card-columns  text-center">
-                <div class="card bg-warning">
+            <div class="row text-center">
+                <div class="col card bg-warning">
                     <h3 class="card-title">Ankara Bölge</h3>
                     <div class="card">
                         <h5 class="card-title">Altın Madalya</h5>
@@ -102,7 +102,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card bg-success">
+                <div class="col card bg-success">
                     <h3 class="card-title">İstanbul Bölge</h3>
                     <div class="card">
                         <h5 class="card-title">Altın Madalya</h5>
@@ -141,7 +141,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card bg-danger">
+                <div class="col card bg-danger">
                     <h3 class="card-title">İzmir Bölge</h3>
                     <div class="card">
                         <h5 class="card-title">Altın Madalya</h5>
@@ -180,7 +180,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="card bg-info">
+                <div class="col card bg-info">
                     <h3 class="card-title">Mersin Bölge</h3>
                     <div class="card">
                         <h5 class="card-title">Altın Madalya</h5>
@@ -216,6 +216,45 @@
                             <asp:CheckBox ID="MerBronzDurumChk" runat="server" Checked="false" Text=" -Gönderildi- yap" Enabled="False" />
                             <asp:Button ID="MerBronzBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Bronz Madalya Beratları" OnClick="MerBronzBtn_Click" />
                             <asp:Button ID="MerBronzEtiketBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Adres Etiketleri" OnClick="MerBronzEtiketBtn_Click" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col card bg-secondary">
+                    <h3 class="card-title">Erzurum Bölge</h3>
+                    <div class="card">
+                        <h5 class="card-title">Altın Madalya</h5>
+                        <div class="card-body durumTable">
+                            <asp:Table ID="ErzATable" runat="server" class="table table-sm table-striped">
+                            </asp:Table>
+                        </div>
+                        <div class="card-footer">
+                            <asp:CheckBox ID="ErzAltinDurumChk" runat="server" Checked="false" Text=" -Gönderildi- yap" Enabled="False" />
+                            <asp:Button ID="ErzAltinBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Altın Madalya Beratları" OnClick="ErzAltinBtn_Click" />
+                            <asp:Button ID="ErzAltinEtiketBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Adres Etiketleri" OnClick="ErzAltinEtiketBtn_Click" />
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h5 class="card-title">Gümüş Madalya</h5>
+                        <div class="card-body durumTable">
+                            <asp:Table ID="ErzGTable" runat="server" class="table table-sm table-striped">
+                            </asp:Table>
+                        </div>
+                        <div class="card-footer">
+                            <asp:CheckBox ID="ErzGumusDurumChk" runat="server" Checked="false" Text=" -Gönderildi- yap" Enabled="False" />
+                            <asp:Button ID="ErzGumusBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Gümüş Madalya Beratları" OnClick="ErzGumusBtn_Click" />
+                            <asp:Button ID="ErzGumusEtiketBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Adres Etiketleri" OnClick="ErzGumusEtiketBtn_Click" />
+                        </div>
+                    </div>
+                    <div class="card">
+                        <h5 class="card-title">Bronz Madalya</h5>
+                        <div class="card-body durumTable">
+                            <asp:Table ID="ErzBTable" runat="server" class="table table-sm table-striped">
+                            </asp:Table>
+                        </div>
+                        <div class="card-footer">
+                            <asp:CheckBox ID="ErzBronzDurumChk" runat="server" Checked="false" Text=" -Gönderildi- yap" Enabled="False" />
+                            <asp:Button ID="ErzBronzBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Bronz Madalya Beratları" OnClick="ErzBronzBtn_Click" />
+                            <asp:Button ID="ErzBronzEtiketBtn" CssClass="btn btn-outline-successs" runat="server" Enabled="false" Text="Adres Etiketleri" OnClick="ErzBronzEtiketBtn_Click" />
                         </div>
                     </div>
                 </div>

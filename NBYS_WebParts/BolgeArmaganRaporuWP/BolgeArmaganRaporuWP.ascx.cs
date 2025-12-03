@@ -176,14 +176,17 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP
             MerAdetTopCell.Text = MerAltinAdetCell.Text.ConvertToInt() + MerGumusAdetCell.Text.ConvertToInt() + MerBronzAdetCell.Text.ConvertToInt() +
                 MerTesAdetCell.Text.ConvertToInt() + "";
 
+            ErzAdetTopCell.Text = ErzAltinAdetCell.Text.ConvertToInt() + ErzGumusAdetCell.Text.ConvertToInt() + ErzBronzAdetCell.Text.ConvertToInt() +
+                ErzTesAdetCell.Text.ConvertToInt() + "";
+
             YurtDisiAdetTopCell.Text = YurtDisiAltinAdetCell.Text.ConvertToInt() + YurtDisiGumusAdetCell.Text.ConvertToInt() + YurtDisiBronzAdetCell.Text.ConvertToInt() +
                YurtDisiTesAdetCell.Text.ConvertToInt() + "";
 
-            AltinAdetToplamCell.Text = AnkAltinAdetCell.Text.ConvertToInt() + IstAltinAdetCell.Text.ConvertToInt() + IzmAltinAdetCell.Text.ConvertToInt() + MerAltinAdetCell.Text.ConvertToInt() + YurtDisiAltinAdetCell.Text.ConvertToInt() + "";
-            GumusAdetToplamCell.Text = AnkGumusAdetCell.Text.ConvertToInt() + IstGumusAdetCell.Text.ConvertToInt() + IzmGumusAdetCell.Text.ConvertToInt() + MerGumusAdetCell.Text.ConvertToInt() + YurtDisiGumusAdetCell.Text.ConvertToInt() + "";
-            BronzAdetToplamCell.Text = AnkBronzAdetCell.Text.ConvertToInt() + IstBronzAdetCell.Text.ConvertToInt() + IzmBronzAdetCell.Text.ConvertToInt() + MerBronzAdetCell.Text.ConvertToInt() + "";
-            TesAdetToplamCell.Text = AnkTesAdetCell.Text.ConvertToInt() + IstTesAdetCell.Text.ConvertToInt() + IzmTesAdetCell.Text.ConvertToInt() + MerTesAdetCell.Text.ConvertToInt() + YurtDisiTesAdetCell.Text.ConvertToInt() + "";
-            TopAdetTopCell.Text = AltinAdetToplamCell.Text.ConvertToInt() + GumusAdetToplamCell.Text.ConvertToInt() + BronzAdetToplamCell.Text.ConvertToInt() + TesAdetToplamCell.Text.ConvertToInt() + YurtDisiAdetTopCell.Text.ConvertToInt() + "";
+            AltinAdetToplamCell.Text = AnkAltinAdetCell.Text.ConvertToInt() + IstAltinAdetCell.Text.ConvertToInt() + IzmAltinAdetCell.Text.ConvertToInt() + MerAltinAdetCell.Text.ConvertToInt() + ErzAltinAdetCell.Text.ConvertToInt()+ YurtDisiAltinAdetCell.Text.ConvertToInt() + "";
+            GumusAdetToplamCell.Text = AnkGumusAdetCell.Text.ConvertToInt() + IstGumusAdetCell.Text.ConvertToInt() + IzmGumusAdetCell.Text.ConvertToInt() + MerGumusAdetCell.Text.ConvertToInt() + ErzGumusAdetCell.Text.ConvertToInt()+ YurtDisiGumusAdetCell.Text.ConvertToInt() + "";
+            BronzAdetToplamCell.Text = AnkBronzAdetCell.Text.ConvertToInt() + IstBronzAdetCell.Text.ConvertToInt() + IzmBronzAdetCell.Text.ConvertToInt() + MerBronzAdetCell.Text.ConvertToInt() + ErzBronzAdetCell.Text.ConvertToInt() + YurtDisiBronzAdetCell.Text.ConvertToInt() + "";
+            TesAdetToplamCell.Text = AnkTesAdetCell.Text.ConvertToInt() + IstTesAdetCell.Text.ConvertToInt() + IzmTesAdetCell.Text.ConvertToInt() + MerTesAdetCell.Text.ConvertToInt()+ ErzTesAdetCell.Text.ConvertToInt() + YurtDisiTesAdetCell.Text.ConvertToInt() + "";
+            TopAdetTopCell.Text = AltinAdetToplamCell.Text.ConvertToInt() + GumusAdetToplamCell.Text.ConvertToInt() + BronzAdetToplamCell.Text.ConvertToInt() + TesAdetToplamCell.Text.ConvertToInt() +  "";
         }
         private void SetCellValues(DateTime bastar, DateTime bittar)
         {
@@ -308,6 +311,34 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP
                                     case ProjeConstants.ARMAGAN_TESEKKURID:
                                         {
                                             MerTesAdetCell.Text = adet;
+                                            break;
+                                        }
+                                    default:
+                                        break;
+                                }
+                            }
+                            else if (bolgeId == ProjeConstants.BOLGE_ERZURUM_INT)
+                            {
+                                switch (armaganTanimId)
+                                {
+                                    case ProjeConstants.ARMAGAN_ALTINID:
+                                        {
+                                            ErzAltinAdetCell.Text = adet;
+                                            break;
+                                        }
+                                    case ProjeConstants.ARMAGAN_GUMUSID:
+                                        {
+                                            ErzGumusAdetCell.Text = adet;
+                                            break;
+                                        }
+                                    case ProjeConstants.ARMAGAN_BRONZID:
+                                        {
+                                            ErzBronzAdetCell.Text = adet;
+                                            break;
+                                        }
+                                    case ProjeConstants.ARMAGAN_TESEKKURID:
+                                        {
+                                            ErzTesAdetCell.Text = adet;
                                             break;
                                         }
                                     default:

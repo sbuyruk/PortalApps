@@ -39,7 +39,7 @@
             <div id="TableContainer"  runat="server">
                     <asp:Table ID="KiradaOlanTasinmazlarTable" runat="server" class="table table-bordered table-hover table-sm table-striped">
                         <asp:TableHeaderRow>
-                            <asp:TableCell ID="AnkHeaderCell" CssClass="btn-primary" ColumnSpan="6" HorizontalAlign="Center">Kirada Olan Taşınmazlar</asp:TableCell>
+                            <asp:TableCell ID="AnkHeaderCell" CssClass="btn-primary" ColumnSpan="7" HorizontalAlign="Center">Kirada Olan Taşınmazlar</asp:TableCell>
                         </asp:TableHeaderRow>
                         <asp:TableHeaderRow HorizontalAlign="Center">
                             <asp:TableCell ID="KVSCell" CssClass="btn-primary" >Cinsi</asp:TableCell>
@@ -47,6 +47,7 @@
                             <asp:TableCell ID="Ist1Cell" CssClass="btn-primary" >İstanbul</asp:TableCell>
                             <asp:TableCell ID="Izm1Cell" CssClass="btn-primary" >İzmir</asp:TableCell>
                             <asp:TableCell ID="Mer1Cell" CssClass="btn-primary" >Mersin</asp:TableCell>
+                            <asp:TableCell ID="Erz1Cell" CssClass="btn-primary" >Erzurum</asp:TableCell>
                             <asp:TableCell ID="ColTop1Cell" CssClass="btn-primary" >Toplam</asp:TableCell>
                         </asp:TableHeaderRow>
                     </asp:Table>

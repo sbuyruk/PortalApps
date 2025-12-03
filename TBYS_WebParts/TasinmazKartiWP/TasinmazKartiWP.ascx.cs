@@ -347,7 +347,7 @@ namespace TBYS_WebParts.TasinmazKartiWP
             r2c1.Text = "Mülkiyet Şekli : " + tasinmaz.MulkiyetSekli;
             r3c1.Text = "" + tasinmaz.KiraDurumu;
             r4c1.Text = "Sigorta : " + tasinmaz.SigortaDurumu;
-            r5c1.Text = "Kat Mülkiyeti : " + tasinmaz.KatMulkiyeti;
+            r5c1.Text = "Kat Mülkiyeti : " + (tasinmaz.KatMulkiyeti?"Var":"Yok");
 
             r1c2.Text = "Env.Gir.Tar. : " + tasinmaz.EnvantereGirisTarihi.ConvertToDatetimeEmptyIfNull();
             r2c2.Text = "Bağış Yılı : " + tasinmaz.BagisYili;

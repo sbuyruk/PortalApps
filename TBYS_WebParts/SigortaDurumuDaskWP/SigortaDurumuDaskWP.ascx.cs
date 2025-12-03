@@ -44,6 +44,9 @@ namespace TBYS_WebParts.SigortaDurumuDaskWP
             int MerTM = tasinmaz.SelectTasinmazAdetByBolgeMulkiyetSekliSigorta(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.MULKIYETSEKLI_TM, ProjeConstants.SIGORTA_DASK);
             int MerCM = tasinmaz.SelectTasinmazAdetByBolgeMulkiyetSekliSigorta(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.MULKIYETSEKLI_CM, ProjeConstants.SIGORTA_DASK);
 
+            int ErzTM = tasinmaz.SelectTasinmazAdetByBolgeMulkiyetSekliSigorta(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.MULKIYETSEKLI_TM, ProjeConstants.SIGORTA_DASK);
+            int ErzCM = tasinmaz.SelectTasinmazAdetByBolgeMulkiyetSekliSigorta(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.MULKIYETSEKLI_CM, ProjeConstants.SIGORTA_DASK);
+
             AnkTMCell.Text = (AnkTM).ToString();
             AnkCMCell.Text = (AnkCM).ToString();
             AnkTMCMTopCell.Text = (AnkTM + AnkCM).ToString();
@@ -56,9 +59,12 @@ namespace TBYS_WebParts.SigortaDurumuDaskWP
             MerTMCell.Text = (MerTM).ToString();
             MerCMCell.Text = (MerCM).ToString();
             MerTMCMTopCell.Text = (MerTM + MerCM).ToString();
-            int TopTM = AnkTM + IstTM + IzmTM + MerTM;
+            ErzTMCell.Text = (ErzTM).ToString();
+            ErzCMCell.Text = (ErzCM).ToString();
+            ErzTMCMTopCell.Text = (ErzTM + ErzCM).ToString();
+            int TopTM = AnkTM + IstTM + IzmTM + MerTM + ErzTM;
             TopTMCell.Text = (TopTM).ToString();
-            int TopCM = AnkCM + IstCM + IzmCM + MerCM;
+            int TopCM = AnkCM + IstCM + IzmCM + MerCM + ErzCM;
             TopCMCell.Text = (TopCM).ToString();
             TopTMCMTopCell.Text = (TopTM + TopCM).ToString();
 
@@ -114,11 +120,24 @@ namespace TBYS_WebParts.SigortaDurumuDaskWP
             MerArsCell.Text = (MerArs).ToString();
             MerTarCell.Text = (MerTar).ToString();
 
-            TopAptCell.Text = (AnkApt + IstApt + IzmApt + MerApt + AnkIshani + IstIshani + IzmIshani + MerIshani).ToString();
-            TopMesCell.Text = (AnkMes + IstMes + IzmMes + MerMes).ToString();
-            TopIsyCell.Text = (AnkIsy + IstIsy + IzmIsy + MerIsy).ToString();
-            TopArsCell.Text = (AnkArs + IstArs + IzmArs + MerArs).ToString();
-            TopTarCell.Text = (AnkTar + IstTar + IzmTar + MerTar).ToString();
+            int ErzIshani = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigorta(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_ISHANI, ProjeConstants.SIGORTA_DASK);
+            int ErzApt = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigorta(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_APT, ProjeConstants.SIGORTA_DASK);
+            int ErzMes = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigorta(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_MESKEN, ProjeConstants.SIGORTA_DASK);
+            int ErzIsy = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigorta(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_ISYERI, ProjeConstants.SIGORTA_DASK);
+            int ErzArs = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigorta(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_ARSA, ProjeConstants.SIGORTA_DASK);
+            int ErzTar = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliSigorta(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_TARLA, ProjeConstants.SIGORTA_DASK);
+
+            ErzAptCell.Text = (ErzApt + ErzIshani).ToString();
+            ErzMesCell.Text = (ErzMes).ToString();
+            ErzIsyCell.Text = (ErzIsy).ToString();
+            ErzArsCell.Text = (ErzArs).ToString();
+            ErzTarCell.Text = (ErzTar).ToString();
+
+            TopAptCell.Text = (AnkApt + IstApt + IzmApt + MerApt + AnkIshani + IstIshani + IzmIshani + MerIshani + ErzApt + ErzIshani).ToString();
+            TopMesCell.Text = (AnkMes + IstMes + IzmMes + MerMes + ErzMes).ToString();
+            TopIsyCell.Text = (AnkIsy + IstIsy + IzmIsy + MerIsy + ErzIsy).ToString();
+            TopArsCell.Text = (AnkArs + IstArs + IzmArs + MerArs + ErzArs).ToString();
+            TopTarCell.Text = (AnkTar + IstTar + IzmTar + MerTar + ErzTar).ToString();
         }
         private decimal TahminiRayicToplaminiBul()
         {

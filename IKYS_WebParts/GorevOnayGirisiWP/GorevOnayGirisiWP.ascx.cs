@@ -557,6 +557,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 SureTxt.Text = gorevOnay.Sure.ReturnEmptyIfNull().ToString();
                 AvansTxt.Text = gorevOnay.Avans.ReturnEmptyIfNull().ToString();
                 YevmiyeTxt.Text = gorevOnay.Yevmiye.ReturnEmptyIfNull().ToString();
+                GunlukYevmiyeTxt.Text = gorevOnay.GunlukYevmiye.ReturnEmptyIfNull().ToString();
                 UlasimAraciDDL.SelectedItem.Text = gorevOnay.UlasimAraci;
                 AracPlakasiTxt.Text = gorevOnay.AracPlakasi.ReturnEmptyIfNull().ToString();
             }
@@ -635,6 +636,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 gorevOnay.GorevinSebebi = GorevinSebebiTxt.Text;
                 gorevOnay.Sure = SureTxt.Text;
                 gorevOnay.Yevmiye = YevmiyeTxt.Text;
+                gorevOnay.GunlukYevmiye = GunlukYevmiyeTxt.Text;
                 gorevOnay.Id = gorevOnay.Save();
 
             }
@@ -732,6 +734,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 gorevOnay.GorevinSebebi = GorevinSebebiTxt.Text;
                 gorevOnay.Sure = SureTxt.Text;
                 gorevOnay.Yevmiye = YevmiyeTxt.Text;
+                gorevOnay.GunlukYevmiye = GunlukYevmiyeTxt.Text;
                 isUpdated = gorevOnay.Update();
             }
             return isUpdated;
@@ -913,7 +916,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                         personel = personel.Select<Personel>(PersonelIdQS.ConvertToInt());
                         if (personel != null)
                         {
-                            IKYSOrtak.GorevOnayEPostasiGonder(personel, gorevOnay.Id, "YurtIci/YurtDisi");
+                            //IKYSOrtak.GorevOnayEPostasiGonder(personel, gorevOnay.Id, "YurtIci/YurtDisi");
                         }
                     }
                     RedirectToPage(ProjeConstants.PAGE_GOREVONAY_LIST + "?Mesaj=true"+ "&SecilenId="+gorevOnay.Id + (string.IsNullOrEmpty(AuthQS) ? string.Empty : "&Auth=" + ProjeConstants.IKYS_YETKILI_BIRIM));

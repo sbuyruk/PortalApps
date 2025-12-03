@@ -1338,7 +1338,7 @@ namespace IKYS_WebParts.KisiselSayfaWP
             {
                 string gorevOnayIdStr = string.Empty;
                 GorevOnay gorevOnay = new GorevOnay();
-                DataTable dataTable = gorevOnay.SelectAllReturnDT(personel.Id);// PersonelIdQS.ConvertToInt());
+                DataTable dataTable = gorevOnay.SelectAllReturnDT(personel.Id, DateTime.Today.AddYears(-5));// PersonelIdQS.ConvertToInt());
 
                 List<GorevOnayListItem> list = new List<GorevOnayListItem>();
 

@@ -682,6 +682,8 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
                     string belgeNo = row["ArmaganId"].ToString();
                     string nakitBagisciTC = row["NakitBagisciTC"].ToString();
                     DateTime tarih = row["Tarih"].ConvertToDatetime();
+                    string cokluBagis = row["CokluBagis"].ToString();
+                    string tarihstr = tarih.ToString("dd.MM.yyyy") + (cokluBagis.Equals("Çoklu Bağış") ? " tarihine kadar" : " tarihinde");
 
                     decimal tutar = row["Tutar"].ConvertToDecimal();
                     string tutarStr = bagisMiktariYazmasin ? string.Empty : tutar.ToString("N", culturInfo) + " TL'lık";
@@ -692,7 +694,7 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
                     keyValues.Add("BelgeTarihiVar", EvrakTarihiTxt.Text);
                     keyValues.Add("BelgeNoVar", belgeNo);
                     keyValues.Add("BagisciAdiVar", string.IsNullOrEmpty(belgedeYazanIsim) ? nakitBagisciAdi : belgedeYazanIsim);
-                    keyValues.Add("BagisTarihiVar", tarih.ToString("dd MMMM yyyy"));
+                    keyValues.Add("BagisTarihiVar", tarihstr);
                     keyValues.Add("TutarVar", tutarStr);
 
                     keyValues.Add("ImzaVar", ImzalayanTxt.Text);

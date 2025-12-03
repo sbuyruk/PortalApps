@@ -316,12 +316,12 @@ namespace Model.NBYS
                     {
                         EkstreAktarma ekstreAktarma = new EkstreAktarma();
                         var tarih = row[0].ReturnEmptyIfNull().ToString();//borc satırı için işlem yapma
-                        var aciklama = row[4].ReturnEmptyIfNull().ToString();
+                        var aciklama = row[5].ReturnEmptyIfNull().ToString();
                         if (string.IsNullOrEmpty(tarih))// ilk kolon boş ise dosya bitti çık
                             break;
                         try
                         {
-                            var fisNo = row[5].ToString().Trim();
+                            var fisNo = row[6].ToString().Trim();
                             var tutar = row[2].ReturnEmptyIfNull().ToString().Replace(".", ",").ConvertToDecimal();//row[6].ReturnEmptyIfNull().ToString();
                             var bagisTarihi = row[0].ReturnEmptyIfNull().ToString().ConvertToDatetime();
                             if (BuKayitDahaOnceGirilmisMiByFisNo(//ProjeConstants.BANKA_AKBANKEKSTRE, fisNo, aciklama)) //fiş numarasından kontrol et kayıt girilmişse atla

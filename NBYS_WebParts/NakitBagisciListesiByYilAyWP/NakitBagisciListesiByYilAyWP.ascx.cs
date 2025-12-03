@@ -247,22 +247,23 @@ namespace NBYS_WebParts.NakitBagisciListesiByYilAyWP
                             { data: 'Ili' },
                             { data: 'Ilcesi' },
                             { data: 'Armagan' },
+                            { data: 'CokluBagis' },
                             { data: 'ArmaganDurumu' },
                             { data: 'BelgeIstemiyor' },
                         ],
-                        'order': [[2, 'desc'],[1, 'desc'],[0, 'desc']],//sort
+                        'order': [2, 'desc'],//sort
                         'columnDefs': [
                             { targets: 0, className: 'btn-link'},
                             { targets: 2, className: 'bolded text-end'},
-                            //{ 'width': '15%', 'targets': 0 },
-                            //{ 'width': '25%', 'targets': 4 }
+                            { 'width': '15%', 'targets': 0 },
+                            { 'width': '25%', 'targets': 4 },
                         ],
                         'language': {
                             'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                             'decimal': ',',
                             'thousands': '.'
                         },
-                        responsive: true,
+                        responsive: false,
                         dom: 'Bfrtip',
                         buttons: [
                             {
@@ -343,6 +344,7 @@ namespace NBYS_WebParts.NakitBagisciListesiByYilAyWP
                     string adres = row["Adres"].ToString();
                     string armagan = row["Armagan"].ToString();
                     string armaganDurumu = row["Durum"].ToString();
+                    string cokluBagis = row["CokluBagis"].ToString();
                     bool belgeIstemiyor = row["BelgeIstemiyor"].ConvertToBool();
 
 
@@ -359,6 +361,7 @@ namespace NBYS_WebParts.NakitBagisciListesiByYilAyWP
                     bagisItem.NakitBagisciId = nakitBagisciId;
                     bagisItem.BelgeIstemiyor = belgeIstemiyor ? "Belge İstemiyor" : string.Empty;
                     bagisItem.Armagan = armagan;
+                    bagisItem.CokluBagis = cokluBagis;
                     bagisItem.ArmaganDurumu = armaganDurumu;
                     bagisItem.NakitBagisciId = nakitBagisciId;
 
@@ -379,6 +382,7 @@ namespace NBYS_WebParts.NakitBagisciListesiByYilAyWP
             public string Ili { get; set; }
             public string Ilcesi { get; set; }
             public string Armagan { get; set; }
+            public string CokluBagis { get; set; }
             public string ArmaganDurumu { get; set; }
             public string BelgeIstemiyor { get; set; }
         }
@@ -443,6 +447,7 @@ namespace NBYS_WebParts.NakitBagisciListesiByYilAyWP
                             { data: 'BagisTarihi' },
                             { data: 'BagisMiktari' },
                             { data: 'Armagan' },
+                            { data: 'CokluBagis' },
                             { data: 'ArmaganDurumu' },
                         ],
                         'order': [[0, 'desc']],//sort
@@ -488,6 +493,7 @@ namespace NBYS_WebParts.NakitBagisciListesiByYilAyWP
                     string adres = row["Adres"].ToString();
                     string armagan = row["Armagan"].ToString();
                     string armaganDurumu = row["Durum"].ToString();
+                    string cokluBagis = row["CokluBagis"].ToString();
                     bool belgeIstemiyor = row["BelgeIstemiyor"].ConvertToBool();
 
 
@@ -504,6 +510,7 @@ namespace NBYS_WebParts.NakitBagisciListesiByYilAyWP
                     bagisItem.NakitBagisciId = nakitBagisciId;
                     bagisItem.BelgeIstemiyor = belgeIstemiyor ? "Belge İstemiyor" : string.Empty;
                     bagisItem.Armagan = armagan;
+                    bagisItem.CokluBagis = cokluBagis;
                     bagisItem.ArmaganDurumu = armaganDurumu;
                     bagisItem.NakitBagisciId = nakitBagisciId;
 

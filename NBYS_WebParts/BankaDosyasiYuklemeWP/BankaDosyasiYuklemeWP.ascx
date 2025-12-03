@@ -41,7 +41,7 @@
                             <asp:Label ID="FinansbankOkLbl" runat="server" Text="" Font-Size="X-Large" Font-Bold="True" ForeColor="#33CC33"></asp:Label>
                         </div>
                         <div class="card-body">
-                            <asp:FileUpload ID="FinansbankFU" runat="server" CssClass="form-control" />
+                            <asp:FileUpload ID="FinansbankFU" runat="server" CssClass="form-control" disabled="" />
                         </div>
 
                     </div>

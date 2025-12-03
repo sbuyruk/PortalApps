@@ -71,6 +71,7 @@ namespace TBYS_WebParts.KiraGeliriTahakkukTahsilWP
                     DataTable dataTableIST = kiraSozlesmeDao.SelectKiraciSayisiVeToplamKiraBedeli(ProjeConstants.BOLGE_ISTANBUL_INT, ay, yil);
                     DataTable dataTableIZM = kiraSozlesmeDao.SelectKiraciSayisiVeToplamKiraBedeli(ProjeConstants.BOLGE_IZMIR_INT, ay, yil);
                     DataTable dataTableMER = kiraSozlesmeDao.SelectKiraciSayisiVeToplamKiraBedeli(ProjeConstants.BOLGE_MERSIN_INT, ay, yil);
+                    DataTable dataTableERZ = kiraSozlesmeDao.SelectKiraciSayisiVeToplamKiraBedeli(ProjeConstants.BOLGE_ERZURUM_INT, ay, yil);
 
                     int kiraciSayisiToplam = 0;
                     int odeyenKiraciSayisiToplam = 0;
@@ -172,6 +173,27 @@ namespace TBYS_WebParts.KiraGeliriTahakkukTahsilWP
                     bisTahsilToplam += bisTahsil;
 
                     AylikKiraGeliriniHesaplaVeTabloyaEkle(ProjeConstants.BOLGE_MERSIN, false, ay, yil, dataTableMER, out kiraciSayisi, out odeyenKiraciSayisi,
+                                            out arsaTahakkuk, out bisTahakkuk, out isyeriTahakkuk, out meskenTahakkuk, out tarlaTahakkuk, out tesisTahakkuk,
+                                            out arsaTahsil, out bisTahsil, out isyeriTahsil, out meskenTahsil, out tarlaTahsil, out tesisTahsil);
+
+                    kiraciSayisiToplam += kiraciSayisi;
+                    odeyenKiraciSayisiToplam += odeyenKiraciSayisi;
+
+                    meskenTahakkukToplam += meskenTahakkuk;
+                    isyeriTahakkukToplam += isyeriTahakkuk;
+                    arsaTahakkukToplam += arsaTahakkuk;
+                    tarlaTahakkukToplam += tarlaTahakkuk;
+                    tesisTahakkukToplam += tesisTahakkuk;
+                    bisTahakkukToplam += bisTahakkuk;
+
+                    meskenTahsilToplam += meskenTahsil;
+                    isyeriTahsilToplam += isyeriTahsil;
+                    arsaTahsilToplam += arsaTahsil;
+                    tarlaTahsilToplam += tarlaTahsil;
+                    tesisTahsilToplam += tesisTahsil;
+                    bisTahsilToplam += bisTahsil;
+
+                    AylikKiraGeliriniHesaplaVeTabloyaEkle(ProjeConstants.BOLGE_ERZURUM, false, ay, yil, dataTableERZ, out kiraciSayisi, out odeyenKiraciSayisi,
                                             out arsaTahakkuk, out bisTahakkuk, out isyeriTahakkuk, out meskenTahakkuk, out tarlaTahakkuk, out tesisTahakkuk,
                                             out arsaTahsil, out bisTahsil, out isyeriTahsil, out meskenTahsil, out tarlaTahsil, out tesisTahsil);
 
@@ -1161,7 +1183,7 @@ namespace TBYS_WebParts.KiraGeliriTahakkukTahsilWP
             if (ilkSatir)
             {
                 TableCell siraCell = new TableCell();
-                siraCell.RowSpan = 4;
+                siraCell.RowSpan = 5;
                 siraCell.BorderStyle = BorderStyle.Solid;
                 siraCell.BorderWidth = 2;
                 siraCell.BorderColor = System.Drawing.Color.Black;
@@ -1171,7 +1193,7 @@ namespace TBYS_WebParts.KiraGeliriTahakkukTahsilWP
                 TableCell ayCell = new TableCell();
                 DateTime tarih = new DateTime(yil, ay, 1);
                 ayCell.Text = tarih.ToString("MMMM", culturInfo);
-                ayCell.RowSpan = 4;
+                ayCell.RowSpan = 5;
                 ayCell.BorderStyle = BorderStyle.Solid;
                 ayCell.BorderWidth = 2;
                 ayCell.BorderColor = System.Drawing.Color.Black;
@@ -1243,12 +1265,12 @@ namespace TBYS_WebParts.KiraGeliriTahakkukTahsilWP
             TableCell toplamTahakkukCell = new TableCell();
             decimal toplamTahakkuk = meskenTahakkuk + isyeriTahakkuk + arsaTahakkuk + tarlaTahakkuk + bisTahakkuk + tesisTahakkuk;
             decimal toplamTahakkuk0 = toplamTahakkuk == 0 ? 1 : toplamTahakkuk;
-            toplamTahakkukCell.Text = toplamTahakkuk0.ToString("N", culturInfo);
+            toplamTahakkukCell.Text = toplamTahakkuk.ToString("N", culturInfo);
             
             TableCell toplamTahsilCell = new TableCell();
             decimal toplamTahsil = meskenTahsil + isyeriTahsil + arsaTahsil + tarlaTahsil + bisTahsil + tesisTahsil;
             decimal toplamTahsil0 = toplamTahsil == 0 ? 1 : toplamTahsil;
-            toplamTahsilCell.Text = toplamTahsil0.ToString("N", culturInfo);
+            toplamTahsilCell.Text = toplamTahsil.ToString("N", culturInfo);
 
             TableCell toplamOranCell = new TableCell();
             toplamOranCell.Text = (toplamTahsil * 100 / toplamTahakkuk0).ToString("N", culturInfo);

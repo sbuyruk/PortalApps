@@ -21,7 +21,7 @@
     }
 
 </script>
-<div id="MainContainer" class="container col-xl">
+<div id="MainContainer" class="col-xl">
     <asp:UpdatePanel ID="upPanel" runat="server">
         <ContentTemplate>
             <div class="card shadow">
@@ -34,12 +34,12 @@
                     </h3>
                 </div>
                 <div class="card-body">
-                    <div class="form-group row">
-                        <asp:Label CssClass="col-form-label col-1" runat="server" Font-Bold="True">Yıl :</asp:Label>
-                        <asp:DropDownList ID="YilDDL" runat="server" CssClass="form-control col-2" OnSelectedIndexChanged="YilDDL_SelectedIndexChanged" AutoPostBack="true" style="height:auto"></asp:DropDownList>
+                    <div class="form-group col-2">
+                        <asp:Label CssClass="col-form-label " runat="server" Font-Bold="True">Yıl :</asp:Label>
+                        <asp:DropDownList ID="YilDDL" runat="server" CssClass="form-select form-select-lg" OnSelectedIndexChanged="YilDDL_SelectedIndexChanged" AutoPostBack="true" style="height:auto"></asp:DropDownList>
                     </div>
 
-                    <asp:Table ID="KiraGelirleriTable" runat="server" class="table table-bordered table-hover table-striped">
+                    <asp:Table ID="KiraGelirleriTable" runat="server" class="table table-bordered table-hover table-striped table-sm small table-responsive">
 
                     </asp:Table>
  

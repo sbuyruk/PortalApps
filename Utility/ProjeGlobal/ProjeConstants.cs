@@ -529,6 +529,7 @@ namespace Utility.ProjeGlobal
         public const string BOLGE_ISTANBUL = "İstanbul";
         public const string BOLGE_IZMIR = "İzmir";
         public const string BOLGE_MERSIN = "Mersin";
+        public const string BOLGE_ERZURUM = "Erzurum";
         public const string BOLGE_YURTDISI = "Yurtdışı";
         public const string BOLGE_HEPSI = "Hepsi";
         public const string BOLGE_GENELMUDURLUK = "Genel Md.lük";
@@ -540,6 +541,7 @@ namespace Utility.ProjeGlobal
         public const int BOLGE_IZMIR_INT = 3;
         public const int BOLGE_MERSIN_INT = 4;
         public const int BOLGE_YURTDISI_INT = 5;
+        public const int BOLGE_ERZURUM_INT = 6;
         public const int BOLGE_GENELMUDURLUK_INT = 8;
 
         

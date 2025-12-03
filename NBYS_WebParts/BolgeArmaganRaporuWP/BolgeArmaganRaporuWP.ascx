@@ -111,6 +111,14 @@
                             <asp:TableCell ID="MerAdetTopCell" CssClass="fw-bold" Style="border: 1px solid black;"></asp:TableCell>
                         </asp:TableRow>
                         <asp:TableRow HorizontalAlign="Center">
+                            <asp:TableCell ID="ErzBaslikCell" CssClass="fw-bold" Style="border: 1px solid black;">Erzurum Bölge</asp:TableCell>
+                            <asp:TableCell ID="ErzAltinAdetCell" runat="server" Style="border: 1px solid black;"></asp:TableCell>
+                            <asp:TableCell ID="ErzGumusAdetCell" runat="server" Style="border: 1px solid black;"></asp:TableCell>
+                            <asp:TableCell ID="ErzBronzAdetCell" runat="server" Style="border: 1px solid black;"></asp:TableCell>
+                            <asp:TableCell ID="ErzTesAdetCell" runat="server" Style="border: 1px solid black;"></asp:TableCell>
+                            <asp:TableCell ID="ErzAdetTopCell" CssClass="fw-bold" Style="border: 1px solid black;"></asp:TableCell>
+                        </asp:TableRow>
+                        <asp:TableRow HorizontalAlign="Center">
                             <asp:TableCell ID="YurtDisiBaslikCell" CssClass="fw-bold" Style="border: 1px solid black;">Yurtdışı</asp:TableCell>
                             <asp:TableCell ID="YurtDisiAltinAdetCell" runat="server" Style="border: 1px solid black;"></asp:TableCell>
                             <asp:TableCell ID="YurtDisiGumusAdetCell" runat="server" Style="border: 1px solid black;"></asp:TableCell>

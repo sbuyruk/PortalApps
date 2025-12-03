@@ -86,6 +86,17 @@
                     <asp:TableCell ID="MerArsCell"></asp:TableCell>
                     <asp:TableCell ID="MerTarCell"></asp:TableCell>
                 </asp:TableRow>
+                <asp:TableRow HorizontalAlign="Center">
+                    <asp:TableCell ID="ErzBaslikCell" CssClass="btn-primary">Erzurum</asp:TableCell>
+                    <asp:TableCell ID="ErzTMCell"></asp:TableCell>
+                    <asp:TableCell ID="ErzCMCell"></asp:TableCell>
+                    <asp:TableCell ID="ErzTMCMTopCell"></asp:TableCell>
+                    <asp:TableCell ID="ErzAptCell"></asp:TableCell>
+                    <asp:TableCell ID="ErzMesCell"></asp:TableCell>
+                    <asp:TableCell ID="ErzIsyCell"></asp:TableCell>
+                    <asp:TableCell ID="ErzArsCell"></asp:TableCell>
+                    <asp:TableCell ID="ErzTarCell"></asp:TableCell>
+                </asp:TableRow>
                 <asp:TableRow HorizontalAlign="Center" BorderStyle="Solid" BorderWidth="2">
                     <asp:TableCell ID="TopBaslikCell" CssClass="btn-primary">Toplam</asp:TableCell>
                     <asp:TableCell ID="TopTMCell"></asp:TableCell>

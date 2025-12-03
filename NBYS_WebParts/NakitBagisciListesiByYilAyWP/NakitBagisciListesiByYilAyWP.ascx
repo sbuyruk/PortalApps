@@ -36,7 +36,7 @@
     }
 </script>
 
-<div class="container col-xl">
+<div class="col-xl">
     <div class="card shadow">
         <div class="card-header" id="CardHeader" runat="server">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
@@ -65,7 +65,7 @@
                         <table id="CustomDataTable" class="table table-hover table-striped table-bordered" width="100%">
                             <thead>
                                 <tr>
-                                    <th id="BaslikTH" colspan="10" class="text-center" runat="server">ccc
+                                    <th id="BaslikTH" colspan="11" class="text-center" runat="server">ccc
                                     </th>
                                 </tr>
                                 <tr>
@@ -77,6 +77,7 @@
                                     <th>İl</th>
                                     <th>ilçe</th>
                                     <th>Armağan</th>
+                                    <th>Bağış</th>
                                     <th>Armağan Durumu</th>
                                     <th>Belge</th>
                                 </tr>
@@ -129,6 +130,7 @@
                                             <th>Bağış Tarihi</th>
                                             <th>Bağış Miktarı</th>
                                             <th>Armağan</th>
+                                            <th>Bağış</th>
                                             <th>Armağan Durumu</th>
                                         </tr>
                                     </thead>

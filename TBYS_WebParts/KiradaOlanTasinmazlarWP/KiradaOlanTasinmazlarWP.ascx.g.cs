@@ -85,6 +85,10 @@ namespace TBYS_WebParts.KiradaOlanTasinmazlarWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.TableCell Erz1Cell;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.TableCell ColTop1Cell;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -214,7 +218,7 @@ namespace TBYS_WebParts.KiradaOlanTasinmazlarWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "AnkHeaderCell";
             @__ctrl.CssClass = "btn-primary";
-            @__ctrl.ColumnSpan = 6;
+            @__ctrl.ColumnSpan = 7;
             @__ctrl.HorizontalAlign = global::System.Web.UI.WebControls.HorizontalAlign.Center;
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Kirada Olan Taşınmazlar"));
@@ -319,6 +323,21 @@ namespace TBYS_WebParts.KiradaOlanTasinmazlarWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.TableCell @__BuildControlErz1Cell() {
+            global::System.Web.UI.WebControls.TableCell @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.TableCell();
+            this.Erz1Cell = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "Erz1Cell";
+            @__ctrl.CssClass = "btn-primary";
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Erzurum"));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.WebControls.TableCell @__BuildControlColTop1Cell() {
             global::System.Web.UI.WebControls.TableCell @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TableCell();
@@ -351,8 +370,11 @@ namespace TBYS_WebParts.KiradaOlanTasinmazlarWP {
             @__ctrl5 = this.@__BuildControlMer1Cell();
             @__ctrl.Add(@__ctrl5);
             global::System.Web.UI.WebControls.TableCell @__ctrl6;
-            @__ctrl6 = this.@__BuildControlColTop1Cell();
+            @__ctrl6 = this.@__BuildControlErz1Cell();
             @__ctrl.Add(@__ctrl6);
+            global::System.Web.UI.WebControls.TableCell @__ctrl7;
+            @__ctrl7 = this.@__BuildControlColTop1Cell();
+            @__ctrl.Add(@__ctrl7);
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]

@@ -85,7 +85,8 @@ namespace Model.TBYS
         public DateTime TapuIslemTarihi { get; set; }
         public string BBNitelik { get; set; }
         public string AnaTasinmazNitelik { get; set; }
-
+        public int BagimsizBolumSayisi { get; set; } = 1;
+        public int KatMalikiSayisi{ get; set; } = 1;
         private string IliStr() 
         {
             Il il = new Il();
@@ -887,7 +888,7 @@ namespace Model.TBYS
 	                Left Join BagimsizBolum_Table B ON B.TasinmazId=A.Id
 	                Left Join Bagis_Table C ON C.TasinmazId=A.Id
 	                Left Join TasinmazBagisci_Table D ON D.Id=C.BagisciId
-                WHERE A.Id={0} AND EnvanterdeMi=1 AND A.KatMulkiyeti={1}", tasinmazId,ProjeConstants.KAT_MULKIYETI_YOK.ReturnQuotedValue());
+                WHERE A.Id={0} AND EnvanterdeMi=1 AND A.KatMulkiyeti=0", tasinmazId);//,ProjeConstants.KAT_MULKIYETI_YOK.ReturnQuotedValue());
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return dataTable;
         }

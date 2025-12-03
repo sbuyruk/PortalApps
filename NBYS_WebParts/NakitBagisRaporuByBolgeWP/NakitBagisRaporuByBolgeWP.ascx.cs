@@ -95,6 +95,8 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP
                 Decimal IzmToplamTutar = 0;
                 int MerToplamAdet = 0;
                 Decimal MerToplamTutar = 0;
+                int ErzToplamAdet = 0;
+                Decimal ErzToplamTutar = 0;
                 int YurtdisiToplamAdet = 0;
                 Decimal YurtdisiToplamTutar = 0;
                 NakitBagisHareket nbh = new NakitBagisHareket();
@@ -137,6 +139,12 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP
                             TableCell MerTutarCell = new TableCell();
                             MerTutarCell.CssClass = "text-end";
                             tableRow.Controls.Add(MerTutarCell);
+
+                            TableCell ErzAdetCell = new TableCell();
+                            tableRow.Controls.Add(ErzAdetCell);
+                            TableCell ErzTutarCell = new TableCell();
+                            ErzTutarCell.CssClass = "text-end";
+                            tableRow.Controls.Add(ErzTutarCell);
 
                             TableCell YurtdisiAdetCell = new TableCell();
                             tableRow.Controls.Add(YurtdisiAdetCell);
@@ -183,6 +191,13 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP
                                     MerAdetCell.Text = adetStr;
                                     MerToplamAdet += adet;
                                     MerToplamTutar += tutar;
+                                }
+                                else if (bolge.Equals(ProjeConstants.BOLGE_ERZURUM))
+                                {
+                                    ErzTutarCell.Text = tutarStr;
+                                    ErzAdetCell.Text = adetStr;
+                                    ErzToplamAdet += adet;
+                                    ErzToplamTutar += tutar;
                                 }
                                 else if (bolge.Equals(ProjeConstants.BOLGE_YURTDISI))
                                 {
@@ -251,6 +266,15 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP
                 MerToplamTutarCell.Text = MerToplamTutar.ToString("N", culturInfo);
                 MerToplamTutarCell.CssClass = "fw-bold text-end";
                 toplamRow.Controls.Add(MerToplamTutarCell);
+
+                TableCell ErzToplamAdetCell = new TableCell();
+                ErzToplamAdetCell.CssClass = "fw-bold text-end";
+                ErzToplamAdetCell.Text = ErzToplamAdet + "";
+                toplamRow.Controls.Add(ErzToplamAdetCell);
+                TableCell ErzToplamTutarCell = new TableCell();
+                ErzToplamTutarCell.Text = ErzToplamTutar.ToString("N", culturInfo);
+                ErzToplamTutarCell.CssClass = "fw-bold text-end";
+                toplamRow.Controls.Add(ErzToplamTutarCell);
 
 
                 TableCell YurtdisiToplamAdetCell = new TableCell();

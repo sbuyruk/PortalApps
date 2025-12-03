@@ -30,7 +30,7 @@
                 <div>
                     <asp:Table ID="AnkTable" runat="server" class="table table-bordered table-hover table-sm">
                         <asp:TableHeaderRow>
-                            <asp:TableCell ID="AnkHeaderCell" CssClass="btn-primary" ColumnSpan="17" HorizontalAlign="Center">ANKARA</asp:TableCell>
+                            <asp:TableCell ID="AnkHeaderCell" CssClass="btn-primary" ColumnSpan="17" HorizontalAlign="Center">ANKARA BÖLGESİ</asp:TableCell>
                         </asp:TableHeaderRow>
                         <asp:TableHeaderRow HorizontalAlign="Center">
                             <asp:TableCell ID="AnkSiraNoCell" CssClass="btn-primary" RowSpan="2">Sıra</asp:TableCell>
@@ -166,6 +166,40 @@
                         </asp:TableHeaderRow>
                     </asp:Table>
                 </div>
+                <div>
+    <asp:Table ID="ErzTable" runat="server" class="table table-bordered table-hover table-sm">
+        <asp:TableHeaderRow>
+            <asp:TableCell CssClass="btn-primary" ColumnSpan="17" HorizontalAlign="Center">ERZURUM BÖLGESİ</asp:TableCell>
+        </asp:TableHeaderRow>
+        <asp:TableHeaderRow HorizontalAlign="Center">
+            <asp:TableCell ID="ErzSiraNoCell" CssClass="btn-primary" RowSpan="2">Sıra</asp:TableCell>
+            <asp:TableCell ID="ErzIllerCell" CssClass="btn-primary" RowSpan="2">İller</asp:TableCell>
+            <asp:TableCell ID="ErzAptCell" CssClass="btn-primary" ColumnSpan="2">Bina</asp:TableCell>
+            <asp:TableCell ID="ErzMEvCell" CssClass="btn-primary" ColumnSpan="2">M.Ev</asp:TableCell>
+            <asp:TableCell ID="ErzMeskenCell" CssClass="btn-primary" ColumnSpan="2">Mesken</asp:TableCell>
+            <asp:TableCell ID="ErzIsyeriCell" CssClass="btn-primary" ColumnSpan="2">İşyeri</asp:TableCell>
+            <asp:TableCell ID="ErzArsaCell" CssClass="btn-primary" ColumnSpan="2">Arsa</asp:TableCell>
+            <asp:TableCell ID="ErzTarlaCell" CssClass="btn-primary" ColumnSpan="2">Tarla</asp:TableCell>
+            <asp:TableCell ID="ErzTMCell" CssClass="btn-primary" RowSpan="2">TM</asp:TableCell>
+            <asp:TableCell ID="ErzCMCell" CssClass="btn-primary" RowSpan="2">ÇM</asp:TableCell>
+            <asp:TableCell ID="ErzToplamCell" CssClass="btn-primary" RowSpan="2">Toplam</asp:TableCell>
+        </asp:TableHeaderRow>
+        <asp:TableHeaderRow HorizontalAlign="Center">
+            <asp:TableCell ID="ErzAptTMCell" CssClass="btn-primary">TM</asp:TableCell>
+            <asp:TableCell ID="ErzAptCMCell" CssClass="btn-primary">ÇM</asp:TableCell>
+            <asp:TableCell ID="ErzMEvTMCell" CssClass="btn-primary">TM</asp:TableCell>
+            <asp:TableCell ID="ErzMEvCMCell" CssClass="btn-primary">ÇM</asp:TableCell>
+            <asp:TableCell ID="ErzMeskenTMCell" CssClass="btn-primary">TM</asp:TableCell>
+            <asp:TableCell ID="ErzMeskenCMCell" CssClass="btn-primary">ÇM</asp:TableCell>
+            <asp:TableCell ID="ErzIsyeriTMCell" CssClass="btn-primary">TM</asp:TableCell>
+            <asp:TableCell ID="ErzIsyeriCMCell" CssClass="btn-primary">ÇM</asp:TableCell>
+            <asp:TableCell ID="ErzArsaTMCell" CssClass="btn-primary">TM</asp:TableCell>
+            <asp:TableCell ID="ErzArsaCMCell" CssClass="btn-primary">ÇM</asp:TableCell>
+            <asp:TableCell ID="ErzTarlaTMCell" CssClass="btn-primary">TM</asp:TableCell>
+            <asp:TableCell ID="ErzTarlaCMCell" CssClass="btn-primary">ÇM</asp:TableCell>
+        </asp:TableHeaderRow>
+    </asp:Table>
+</div>
             </div>
             <div>
                 <strong>Emlak Beyan Değeri : </strong>

@@ -81,10 +81,12 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP
                         TablolariDoldur(ProjeConstants.BOLGE_ISTANBUL_INT);
                         TablolariDoldur(ProjeConstants.BOLGE_IZMIR_INT);
                         TablolariDoldur(ProjeConstants.BOLGE_MERSIN_INT);
+                        TablolariDoldur(ProjeConstants.BOLGE_ERZURUM_INT);
                         AnkTable.Attributes["style"] = "display:block";
                         IstTable.Attributes["style"] = "display:block";
                         IzmTable.Attributes["style"] = "display:block";
                         MerTable.Attributes["style"] = "display:block";
+                        ErzTable.Attributes["style"] = "display:block";
                         break;
                     }
                 case ProjeConstants.BOLGE_ANKARA_INT:
@@ -94,6 +96,7 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP
                         IstTable.Attributes["style"] = "display:none";
                         IzmTable.Attributes["style"] = "display:none";
                         MerTable.Attributes["style"] = "display:none";
+                        ErzTable.Attributes["style"] = "display:none";
                         break;
                     }
                 case ProjeConstants.BOLGE_ISTANBUL_INT:
@@ -103,6 +106,7 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP
                         IstTable.Attributes["style"] = "display:block";
                         IzmTable.Attributes["style"] = "display:none";
                         MerTable.Attributes["style"] = "display:none";
+                        ErzTable.Attributes["style"] = "display:none";
                         break;
                     }
                 case ProjeConstants.BOLGE_IZMIR_INT:
@@ -112,6 +116,7 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP
                         IstTable.Attributes["style"] = "display:none";
                         IzmTable.Attributes["style"] = "display:block";
                         MerTable.Attributes["style"] = "display:none";
+                        ErzTable.Attributes["style"] = "display:none";
                         break;
                     }
                 case ProjeConstants.BOLGE_MERSIN_INT:
@@ -121,6 +126,17 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP
                         IstTable.Attributes["style"] = "display:none";
                         IzmTable.Attributes["style"] = "display:none";
                         MerTable.Attributes["style"] = "display:block";
+                        ErzTable.Attributes["style"] = "display:none";
+                        break;
+                    }
+                case ProjeConstants.BOLGE_ERZURUM_INT:
+                    {
+                        TablolariDoldur(ProjeConstants.BOLGE_ERZURUM_INT);
+                        AnkTable.Attributes["style"] = "display:none";
+                        IstTable.Attributes["style"] = "display:none";
+                        IzmTable.Attributes["style"] = "display:none";
+                        MerTable.Attributes["style"] = "display:none";
+                        ErzTable.Attributes["style"] = "display:block";
                         break;
                     }
                 default:
@@ -293,6 +309,9 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP
                             case ProjeConstants.BOLGE_MERSIN_INT:
                                 MerTable.Controls.Add(row);
                                 break;
+                            case ProjeConstants.BOLGE_ERZURUM_INT:
+                                ErzTable.Controls.Add(row);
+                                break;
                         }
                     }
 
@@ -443,6 +462,12 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP
                             MerTable.Controls.Add(SonToplamrow);
                             break;
                         }
+                    case ProjeConstants.BOLGE_ERZURUM_INT:
+                        {
+                            ErzTable.Controls.Add(footerrow);
+                            ErzTable.Controls.Add(SonToplamrow);
+                            break;
+                        }
                 }
             }
 
@@ -466,6 +491,7 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP
             IstTable.RenderControl(hw);
             IzmTable.RenderControl(hw);
             MerTable.RenderControl(hw);
+            ErzTable.RenderControl(hw);
             Page.Response.ContentType = "application/vnd.ms-excel";
             Page.Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
             this.EnableViewState = false;
