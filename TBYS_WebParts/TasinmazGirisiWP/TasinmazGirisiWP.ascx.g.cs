@@ -317,7 +317,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TextBox KatMalikiSayisiTxt;
+        protected global::System.Web.UI.WebControls.TextBox MalikSayisiTxt;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -325,7 +325,15 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.HtmlControls.HtmlInputText MuhasebeyeKayitliDegerTxt;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.HtmlControls.HtmlInputText EmlakBeyanDegeriTxt;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.HtmlControls.HtmlInputText GuncelRayicDegeriTxt;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -1469,12 +1477,12 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TextBox @__BuildControlKatMalikiSayisiTxt() {
+        private global::System.Web.UI.WebControls.TextBox @__BuildControlMalikSayisiTxt() {
             global::System.Web.UI.WebControls.TextBox @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
-            this.KatMalikiSayisiTxt = @__ctrl;
+            this.MalikSayisiTxt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "KatMalikiSayisiTxt";
+            @__ctrl.ID = "MalikSayisiTxt";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control");
             @__ctrl.ToolTip = "Kat Maliki kaç kişi";
             @__ctrl.Text = "1";
@@ -1500,12 +1508,36 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.HtmlControls.HtmlInputText @__BuildControlMuhasebeyeKayitliDegerTxt() {
+            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl;
+            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
+            this.MuhasebeyeKayitliDegerTxt = @__ctrl;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-end");
+            @__ctrl.ID = "MuhasebeyeKayitliDegerTxt";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.HtmlControls.HtmlInputText @__BuildControlEmlakBeyanDegeriTxt() {
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
             this.EmlakBeyanDegeriTxt = @__ctrl;
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-end");
             @__ctrl.ID = "EmlakBeyanDegeriTxt";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.HtmlControls.HtmlInputText @__BuildControlGuncelRayicDegeriTxt() {
+            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl;
+            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
+            this.GuncelRayicDegeriTxt = @__ctrl;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-end");
+            @__ctrl.ID = "GuncelRayicDegeriTxt";
             return @__ctrl;
         }
         
@@ -2112,10 +2144,10 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                     </div>
                                     <div class=""form-group m-0 "">
-                                        <label class=""form-label fw-semibold"" for=""NitelikTxt"">Kat Maliki Sayısı</label>
+                                        <label class=""form-label fw-semibold"" for=""NitelikTxt"">Malik Sayısı</label>
                                         "));
             global::System.Web.UI.WebControls.TextBox @__ctrl59;
-            @__ctrl59 = this.@__BuildControlKatMalikiSayisiTxt();
+            @__ctrl59 = this.@__BuildControlMalikSayisiTxt();
             @__parser.AddParsedSubObject(@__ctrl59);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                     </div>
@@ -2135,21 +2167,37 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
                         <!-- 4.Tab Değerleme Bilgileri -->
                         <div class=""tab-pane"" role=""tabpanel"" id=""DegerlemeDiv"">
                             <div class=""row p-1"">
-                                <div class=""col-4 "">
+                                <div class=""col-2 "">
+                                    <div class=""form-group m-0 "">
+                                        <label class=""form-label fw-semibold"" for=""MahKoyDegTxt"">Muhs.Kayt.Değ.</label>
+                                        "));
+            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl61;
+            @__ctrl61 = this.@__BuildControlMuhasebeyeKayitliDegerTxt();
+            @__parser.AddParsedSubObject(@__ctrl61);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                                    </div>
                                     <div class=""form-group m-0 "">
                                         <label class=""form-label fw-semibold"" for=""EmlakBeyanDegeriTxt"">Eml.Bey.Değ.</label>
                                         "));
-            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl61;
-            @__ctrl61 = this.@__BuildControlEmlakBeyanDegeriTxt();
-            @__parser.AddParsedSubObject(@__ctrl61);
+            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl62;
+            @__ctrl62 = this.@__BuildControlEmlakBeyanDegeriTxt();
+            @__parser.AddParsedSubObject(@__ctrl62);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                                    </div>
+                                    <div class=""form-group m-0 "">
+                                        <label class=""form-label fw-semibold"" for=""GuncelRayicDegeriTxt"">Gün.Ray.Değ.</label>
+                                        "));
+            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl63;
+            @__ctrl63 = this.@__BuildControlGuncelRayicDegeriTxt();
+            @__parser.AddParsedSubObject(@__ctrl63);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                     </div>
                                     <div class=""form-group m-0 "">
                                         <label class=""form-label fw-semibold text-end"" for=""TahminiRayicDegeriTxt"">Tah.Rayiç Değ.</label>
                                         "));
-            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl62;
-            @__ctrl62 = this.@__BuildControlTahminiRayicDegeriTxt();
-            @__parser.AddParsedSubObject(@__ctrl62);
+            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl64;
+            @__ctrl64 = this.@__BuildControlTahminiRayicDegeriTxt();
+            @__parser.AddParsedSubObject(@__ctrl64);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    </div>\r\n                                </d" +
                         "iv>\r\n\r\n                            </div>\r\n\r\n                        </div>\r\n\r\n " +
                         "                   "));

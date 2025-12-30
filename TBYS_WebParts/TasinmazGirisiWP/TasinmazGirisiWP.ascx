@@ -451,8 +451,8 @@
                                         <asp:TextBox ID="BagimsizBolumSayisiTxt" runat="server" class="form-control" ToolTip="Kaç bağımsız bölüm var">1</asp:TextBox>
                                     </div>
                                     <div class="form-group m-0 ">
-                                        <label class="form-label fw-semibold" for="NitelikTxt">Kat Maliki Sayısı</label>
-                                        <asp:TextBox ID="KatMalikiSayisiTxt" runat="server" class="form-control" ToolTip="Kat Maliki kaç kişi">1</asp:TextBox>
+                                        <label class="form-label fw-semibold" for="NitelikTxt">Malik Sayısı</label>
+                                        <asp:TextBox ID="MalikSayisiTxt" runat="server" class="form-control" ToolTip="Kat Maliki kaç kişi">1</asp:TextBox>
                                     </div>
                                 </div>
                             </div>
@@ -466,10 +466,18 @@
                         <!-- 4.Tab Değerleme Bilgileri -->
                         <div class="tab-pane" role="tabpanel" id="DegerlemeDiv">
                             <div class="row p-1">
-                                <div class="col-4 ">
+                                <div class="col-2 ">
+                                    <div class="form-group m-0 ">
+                                        <label class="form-label fw-semibold" for="MahKoyDegTxt">Muhs.Kayt.Değ.</label>
+                                        <input class="form-control input-money text-end" id="MuhasebeyeKayitliDegerTxt" runat="server" />
+                                    </div>
                                     <div class="form-group m-0 ">
                                         <label class="form-label fw-semibold" for="EmlakBeyanDegeriTxt">Eml.Bey.Değ.</label>
                                         <input class="form-control input-money text-end" id="EmlakBeyanDegeriTxt" runat="server" />
+                                    </div>
+                                    <div class="form-group m-0 ">
+                                        <label class="form-label fw-semibold" for="GuncelRayicDegeriTxt">Gün.Ray.Değ.</label>
+                                        <input class="form-control input-money text-end" id="GuncelRayicDegeriTxt" runat="server" />
                                     </div>
                                     <div class="form-group m-0 ">
                                         <label class="form-label fw-semibold text-end" for="TahminiRayicDegeriTxt">Tah.Rayiç Değ.</label>

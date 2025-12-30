@@ -183,21 +183,21 @@ namespace Utility.ProjeGlobal
         public static bool GENEL_UPDATE_LOG = false;
         public static bool GENEL_SAVE_LOG = false;
         //MTS
-        public const bool MTS_DELETE_LOG = true;
-        public const bool MTS_UPDATE_LOG = true;
-        public const bool MTS_SAVE_LOG = true;
+        public const bool MTS_DELETE_LOG = false;
+        public const bool MTS_UPDATE_LOG = false;
+        public const bool MTS_SAVE_LOG = false;
         //IKYS
-        public const bool IKYS_DELETE_LOG = true;
-        public const bool IKYS_UPDATE_LOG = true;
-        public const bool IKYS_SAVE_LOG = true;
+        public const bool IKYS_DELETE_LOG = false;
+        public const bool IKYS_UPDATE_LOG = false;
+        public const bool IKYS_SAVE_LOG = false;
         //NBYS
         public const bool NBYS_DELETE_LOG = true;
         public const bool NBYS_UPDATE_LOG = true;
         public const bool NBYS_SAVE_LOG = true;
         //TBYS
-        public const bool TBYS_DELETE_LOG = true;
-        public const bool TBYS_UPDATE_LOG = true;
-        public const bool TBYS_SAVE_LOG = true;
+        public const bool TBYS_DELETE_LOG = false;
+        public const bool TBYS_UPDATE_LOG = false;
+        public const bool TBYS_SAVE_LOG = false;
         //TYS
         
         //PORTAL

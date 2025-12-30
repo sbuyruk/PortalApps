@@ -61,10 +61,6 @@ namespace TBYS_WebParts.KiraArtisYazisiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.DropDownList YilDDL;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.DropDownList BolgeDDL;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -191,28 +187,11 @@ namespace TBYS_WebParts.KiraArtisYazisiWP {
             this.AyDDL = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "AyDDL";
-            @__ctrl.CssClass = "form-control";
+            @__ctrl.CssClass = "form-select form-select-lg fw-bold";
             @__ctrl.AutoPostBack = true;
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: auto");
             @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.AyDDL_SelectedIndexChanged);
             @__ctrl.SelectedIndexChanged += new System.EventHandler(this.AyDDL_SelectedIndexChanged);
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.DropDownList @__BuildControlYilDDL() {
-            global::System.Web.UI.WebControls.DropDownList @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.DropDownList();
-            this.YilDDL = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "YilDDL";
-            @__ctrl.CssClass = "form-control";
-            @__ctrl.AutoPostBack = true;
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: auto");
-            @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.YilDDL_SelectedIndexChanged);
-            @__ctrl.SelectedIndexChanged += new System.EventHandler(this.YilDDL_SelectedIndexChanged);
             return @__ctrl;
         }
         
@@ -225,7 +204,7 @@ namespace TBYS_WebParts.KiraArtisYazisiWP {
             this.BolgeDDL = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "BolgeDDL";
-            @__ctrl.CssClass = "form-control";
+            @__ctrl.CssClass = "form-select form-select-lg fw-bold";
             @__ctrl.AutoPostBack = true;
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: auto");
             @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.BolgeDDL_SelectedIndexChanged);
@@ -444,31 +423,31 @@ namespace TBYS_WebParts.KiraArtisYazisiWP {
                         ": \"KiralamaAmaci\" },\r\n                { data: \"Bolge\" },\r\n                { data" +
                         ": \"SozlesmeTarihi\" },\r\n                { data: \"ArtisAyi\" },\r\n                { " +
                         "data: \"TamAdres\", \"width\": \"25%\" },\r\n                { data: \"KiraBedeli\", type:" +
-                        " \"decimal\", class: \"text-end\"},\r\n                { data: \"Tufe\" },\r\n          " +
-                        "      { data: \"YeniKiraBedeli\", type: \"decimal\", class: \"text-end\" },\r\n       " +
-                        "         { data: \"YenilendiMi\" },\r\n\r\n            ],\r\n            \'order\': [[1, \'" +
-                        "asc\']],//AdiSoyadi Sıralı\r\n            \"language\": {\r\n                \"url\": \"ht" +
-                        "tp://tskgv-portal/OrtakBelgeler/Turkish.txt\",\r\n                \"decimal\": \",\",\r\n" +
-                        "                \"thousands\": \".\"\r\n            },\r\n            responsive: true,\r" +
-                        "\n            dom: \'Bfrtip\',\r\n            //colon resizable\r\n            //initCo" +
-                        "mplete: function (settings) {\r\n            //    $(\'#CustomDataTable\').colResiza" +
-                        "ble({ liveDrag: true });\r\n            //},\r\n            buttons: [\r\n            " +
-                        "    {\r\n                    extend: \'print\',\r\n                    exportOptions: " +
-                        "{\r\n                        columns: \':visible\'\r\n                    }\r\n         " +
-                        "       },\r\n                {\r\n                    extend: \'excel\',\r\n            " +
-                        "        exportOptions: {\r\n                        columns: \':visible\'\r\n         " +
-                        "           }\r\n                },\r\n                {\r\n                    extend:" +
-                        " \'pdf\',\r\n                    exportOptions: {\r\n                        columns: " +
-                        "\':visible\'\r\n                    }\r\n                },\r\n                {\r\n      " +
-                        "              extend: \'copy\',\r\n                    exportOptions: {\r\n           " +
-                        "             columns: \':visible\'\r\n                    }\r\n                },\r\n   " +
-                        "             , \'pageLength\', \"colvis\"\r\n            ],\r\n            \"createdRow\":" +
-                        " function (row, data, dataIndex) {\r\n                if (data.OnYil == \"True\") {\r" +
-                        "\n                    $(row).addClass(\'on-yil\');\r\n                } else if (data" +
-                        ".BesYil == \"True\") {\r\n                    $(row).addClass(\'bes-yil\');\r\n         " +
-                        "       }\r\n\r\n            },//set row color\r\n\r\n\r\n        });\r\n    });\r\n</script>\r\n" +
-                        "<div class=\"col-xl\">\r\n\r\n            <div class=\"card shadow\">\r\n                <" +
-                        "div class=\"card-header\">\r\n                    "));
+                        " \"decimal\", class: \"text-end\"},\r\n                { data: \"Tufe\" },\r\n            " +
+                        "    { data: \"YeniKiraBedeli\", type: \"decimal\", class: \"text-end\" },\r\n           " +
+                        "     { data: \"YenilendiMi\" },\r\n\r\n            ],\r\n            \'order\': [[1, \'asc\'" +
+                        "]],//AdiSoyadi Sıralı\r\n            \"language\": {\r\n                \"url\": \"http:/" +
+                        "/tskgv-portal/OrtakBelgeler/Turkish.txt\",\r\n                \"decimal\": \",\",\r\n    " +
+                        "            \"thousands\": \".\"\r\n            },\r\n            responsive: true,\r\n   " +
+                        "         dom: \'Bfrtip\',\r\n            //colon resizable\r\n            //initComple" +
+                        "te: function (settings) {\r\n            //    $(\'#CustomDataTable\').colResizable(" +
+                        "{ liveDrag: true });\r\n            //},\r\n            buttons: [\r\n                " +
+                        "{\r\n                    extend: \'print\',\r\n                    exportOptions: {\r\n " +
+                        "                       columns: \':visible\'\r\n                    }\r\n             " +
+                        "   },\r\n                {\r\n                    extend: \'excel\',\r\n                " +
+                        "    exportOptions: {\r\n                        columns: \':visible\'\r\n             " +
+                        "       }\r\n                },\r\n                {\r\n                    extend: \'pd" +
+                        "f\',\r\n                    exportOptions: {\r\n                        columns: \':vi" +
+                        "sible\'\r\n                    }\r\n                },\r\n                {\r\n          " +
+                        "          extend: \'copy\',\r\n                    exportOptions: {\r\n               " +
+                        "         columns: \':visible\'\r\n                    }\r\n                },\r\n       " +
+                        "         , \'pageLength\', \"colvis\"\r\n            ],\r\n            \"createdRow\": fun" +
+                        "ction (row, data, dataIndex) {\r\n                if (data.OnYil == \"True\") {\r\n   " +
+                        "                 $(row).addClass(\'on-yil\');\r\n                } else if (data.Bes" +
+                        "Yil == \"True\") {\r\n                    $(row).addClass(\'bes-yil\');\r\n             " +
+                        "   }\r\n\r\n            },//set row color\r\n\r\n\r\n        });\r\n    });\r\n</script>\r\n<div" +
+                        " class=\"col-xl\">\r\n\r\n            <div class=\"card shadow\">\r\n                <div " +
+                        "class=\"card-header\">\r\n                    "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl1;
             @__ctrl1 = this.@__BuildControlCloseBtn();
             @__parser.AddParsedSubObject(@__ctrl1);
@@ -497,23 +476,17 @@ namespace TBYS_WebParts.KiraArtisYazisiWP {
             @__ctrl5 = this.@__BuildControlAyDDL();
             @__parser.AddParsedSubObject(@__ctrl5);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <div class=\"for" +
-                        "m-group\" style=\"display:none\">\r\n                                <label class=\"co" +
-                        "l-form-label\" for=\"YilDDL\">Yıl </label>\r\n                                "));
-            global::System.Web.UI.WebControls.DropDownList @__ctrl6;
-            @__ctrl6 = this.@__BuildControlYilDDL();
-            @__parser.AddParsedSubObject(@__ctrl6);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <div class=\"for" +
                         "m-group \">\r\n                                <label class=\"col-form-label\" for=\"B" +
                         "olgeDDL\">Bölge </label>\r\n                                "));
-            global::System.Web.UI.WebControls.DropDownList @__ctrl7;
-            @__ctrl7 = this.@__BuildControlBolgeDDL();
-            @__parser.AddParsedSubObject(@__ctrl7);
+            global::System.Web.UI.WebControls.DropDownList @__ctrl6;
+            @__ctrl6 = this.@__BuildControlBolgeDDL();
+            @__parser.AddParsedSubObject(@__ctrl6);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <div class=\"for" +
                         "m-group\">\r\n                                <label for=\"TufeTxt\" class=\"col-form-" +
                         "label\">TÜFE (%)</label>\r\n                                "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl8;
-            @__ctrl8 = this.@__BuildControlTufeTxt();
-            @__parser.AddParsedSubObject(@__ctrl8);
+            global::System.Web.UI.WebControls.TextBox @__ctrl7;
+            @__ctrl7 = this.@__BuildControlTufeTxt();
+            @__parser.AddParsedSubObject(@__ctrl7);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                             </div>
                         </div>
@@ -521,15 +494,15 @@ namespace TBYS_WebParts.KiraArtisYazisiWP {
                             <div class=""form-group"">
                                 <label for=""EvrakSayisiYiliTxt"" class=""col-form-label"">Evrak Sayısı Yılı</label>
                                 "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl9;
-            @__ctrl9 = this.@__BuildControlEvrakSayisiYiliTxt();
-            @__parser.AddParsedSubObject(@__ctrl9);
+            global::System.Web.UI.WebControls.TextBox @__ctrl8;
+            @__ctrl8 = this.@__BuildControlEvrakSayisiYiliTxt();
+            @__parser.AddParsedSubObject(@__ctrl8);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <div class=\"for" +
                         "m-group\">\r\n                                <label for=\"EvrakTarihiTxt\" class=\"co" +
                         "l-form-label\">Evrak Tarihi</label>\r\n                                "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl10;
-            @__ctrl10 = this.@__BuildControlEvrakTarihiTxt();
-            @__parser.AddParsedSubObject(@__ctrl10);
+            global::System.Web.UI.WebControls.TextBox @__ctrl9;
+            @__ctrl9 = this.@__BuildControlEvrakTarihiTxt();
+            @__parser.AddParsedSubObject(@__ctrl9);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                             </div>
                             
@@ -538,15 +511,15 @@ namespace TBYS_WebParts.KiraArtisYazisiWP {
                             <div class=""form-group"">
                                 <label for=""Parafe1Txt"" class=""col-form-label"">Parafe Eden (1)</label>
                                 "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl11;
-            @__ctrl11 = this.@__BuildControlParafe1Txt();
-            @__parser.AddParsedSubObject(@__ctrl11);
+            global::System.Web.UI.WebControls.TextBox @__ctrl10;
+            @__ctrl10 = this.@__BuildControlParafe1Txt();
+            @__parser.AddParsedSubObject(@__ctrl10);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <div class=\"for" +
                         "m-group\">\r\n                                <label for=\"Parafe2Txt\" class=\"col-fo" +
                         "rm-label\">Parafe Eden (2)</label>\r\n                                "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl12;
-            @__ctrl12 = this.@__BuildControlParafe2Txt();
-            @__parser.AddParsedSubObject(@__ctrl12);
+            global::System.Web.UI.WebControls.TextBox @__ctrl11;
+            @__ctrl11 = this.@__BuildControlParafe2Txt();
+            @__parser.AddParsedSubObject(@__ctrl11);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                             </div>
                         </div>
@@ -554,9 +527,9 @@ namespace TBYS_WebParts.KiraArtisYazisiWP {
                             <div class=""form-group"">
                                 <label for=""KoordineTxt"" class=""col-form-label"">Koordine</label>
                                 "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl13;
-            @__ctrl13 = this.@__BuildControlKoordineTxt();
-            @__parser.AddParsedSubObject(@__ctrl13);
+            global::System.Web.UI.WebControls.TextBox @__ctrl12;
+            @__ctrl12 = this.@__BuildControlKoordineTxt();
+            @__parser.AddParsedSubObject(@__ctrl12);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                             </div>
                         </div>
@@ -564,15 +537,15 @@ namespace TBYS_WebParts.KiraArtisYazisiWP {
                             <div class=""form-group"">
                                 <label for=""ImzalayanTxt"" class=""col-form-label"">İmza (Adi Soyadı)</label>
                                 "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl14;
-            @__ctrl14 = this.@__BuildControlImzalayanTxt();
-            @__parser.AddParsedSubObject(@__ctrl14);
+            global::System.Web.UI.WebControls.TextBox @__ctrl13;
+            @__ctrl13 = this.@__BuildControlImzalayanTxt();
+            @__parser.AddParsedSubObject(@__ctrl13);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <div class=\"for" +
                         "m-group\">\r\n                                <label for=\"ImzalayanMakamTxt\" class=" +
                         "\"col-form-label\">İmza (Makam)</label>\r\n                                "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl15;
-            @__ctrl15 = this.@__BuildControlImzalayanMakamTxt();
-            @__parser.AddParsedSubObject(@__ctrl15);
+            global::System.Web.UI.WebControls.TextBox @__ctrl14;
+            @__ctrl14 = this.@__BuildControlImzalayanMakamTxt();
+            @__parser.AddParsedSubObject(@__ctrl14);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                             </div>
                         </div>
@@ -600,27 +573,27 @@ namespace TBYS_WebParts.KiraArtisYazisiWP {
 
 
                         "));
-            global::System.Web.UI.UpdateProgress @__ctrl16;
-            @__ctrl16 = this.@__BuildControlupdateProgress();
-            @__parser.AddParsedSubObject(@__ctrl16);
+            global::System.Web.UI.UpdateProgress @__ctrl15;
+            @__ctrl15 = this.@__BuildControlupdateProgress();
+            @__parser.AddParsedSubObject(@__ctrl15);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        <div class=\"form-group\">\r\n                            "));
-            global::System.Web.UI.WebControls.Label @__ctrl17;
-            @__ctrl17 = this.@__BuildControlTableDataLbl();
-            @__parser.AddParsedSubObject(@__ctrl17);
+            global::System.Web.UI.WebControls.Label @__ctrl16;
+            @__ctrl16 = this.@__BuildControlTableDataLbl();
+            @__parser.AddParsedSubObject(@__ctrl16);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n                   " +
                         " <div class=\"form-group\">\r\n                        "));
-            global::System.Web.UI.WebControls.HyperLink @__ctrl18;
-            @__ctrl18 = this.@__BuildControlDosyaLnk();
-            @__parser.AddParsedSubObject(@__ctrl18);
+            global::System.Web.UI.WebControls.HyperLink @__ctrl17;
+            @__ctrl17 = this.@__BuildControlDosyaLnk();
+            @__parser.AddParsedSubObject(@__ctrl17);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        "));
-            global::System.Web.UI.WebControls.HyperLink @__ctrl19;
-            @__ctrl19 = this.@__BuildControlAdresEtiketLnk();
-            @__parser.AddParsedSubObject(@__ctrl19);
+            global::System.Web.UI.WebControls.HyperLink @__ctrl18;
+            @__ctrl18 = this.@__BuildControlAdresEtiketLnk();
+            @__parser.AddParsedSubObject(@__ctrl18);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                </div>\r\n                <div class=" +
                         "\"card-footer\">\r\n                    "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl20;
-            @__ctrl20 = this.@__BuildControlYaziyiOlusturBtn();
-            @__parser.AddParsedSubObject(@__ctrl20);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl19;
+            @__ctrl19 = this.@__BuildControlYaziyiOlusturBtn();
+            @__parser.AddParsedSubObject(@__ctrl19);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                </div>\r\n            </div>\r\n        \r\n</div>\r\n"));
         }
         

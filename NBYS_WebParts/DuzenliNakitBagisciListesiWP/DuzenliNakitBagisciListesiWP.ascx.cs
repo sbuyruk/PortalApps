@@ -873,7 +873,8 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
         }
         private void YilDDLDoldur()
         {
-            var year = (DateTime.Now.Year)-1;
+            var ilkTarih= new DateTime(DateTime.Today.AddMonths(-11).Year, 1, 1);
+            var year = ilkTarih.Year;
             for (int i = year; i >= year-5; i--)
             {
                 YilDDL.Items.Add(new ListItem(i.ToString(), i.ToString()));

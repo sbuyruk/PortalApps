@@ -787,7 +787,8 @@ namespace NBYS_WebParts.DuzenliBagisciBelgesiBasimiWP
                     string nakitBagisciAdi = row["NakitBagisciAdi"].ToString();
                     string armaganId = row["ArmaganId"].ToString();
                     string belgedeYazanIsim = row["BelgedeYazanIsim"].ToString();
-                    string adres = row == null ? "" : row["Adres"].ToString();
+                    string telefon = row == null ? "" : row["Telefon"].ToString();
+                    string adres = row == null ? "" : row["Adres"].ToString() + " " +telefon;
                     string ili = row == null ? "" : row["IlAdi"].ToString();
                     string ilcesi = row == null ? "" : row["IlceAdi"].ToString();
                     string semtIlceIl = ilcesi + @"/" + ili;

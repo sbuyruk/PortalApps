@@ -916,7 +916,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                         personel = personel.Select<Personel>(PersonelIdQS.ConvertToInt());
                         if (personel != null)
                         {
-                            //IKYSOrtak.GorevOnayEPostasiGonder(personel, gorevOnay.Id, "YurtIci/YurtDisi");
+                            IKYSOrtak.GorevOnayEPostasiGonder(personel, gorevOnay.Id, "YurtIci/YurtDisi");
                         }
                     }
                     RedirectToPage(ProjeConstants.PAGE_GOREVONAY_LIST + "?Mesaj=true"+ "&SecilenId="+gorevOnay.Id + (string.IsNullOrEmpty(AuthQS) ? string.Empty : "&Auth=" + ProjeConstants.IKYS_YETKILI_BIRIM));

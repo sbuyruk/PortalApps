@@ -29,7 +29,7 @@
                 <div class="card-body">
                     <div class="form-group row">
                         <asp:Label CssClass="col-form-label col-1" runat="server" Font-Bold="True">Yıl :</asp:Label>
-                        <asp:DropDownList ID="YilDDL" runat="server" CssClass="form-control col-2" OnSelectedIndexChanged="YilDDL_SelectedIndexChanged" AutoPostBack="true" style="height:auto"></asp:DropDownList>
+                        <asp:DropDownList ID="YilDDL" runat="server" CssClass="form-select form-select-lg fw-bold col-2" OnSelectedIndexChanged="YilDDL_SelectedIndexChanged" AutoPostBack="true" style="height:auto"></asp:DropDownList>
                     </div>
                     
                         <asp:Table ID="KiraGelirleriTable" runat="server" class="table table-bordered table-hover table-striped" >

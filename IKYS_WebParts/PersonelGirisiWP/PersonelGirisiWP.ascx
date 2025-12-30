@@ -158,12 +158,12 @@
                                             <div class="form-group m-0">
                                                 <label class="form-label fw-semibold" for="AdiTxt">Adı</label>
                                                 <asp:RequiredFieldValidator runat="server" ControlToValidate="AdiTxt" ForeColor="Red" ErrorMessage="Zorunlu Alan"> </asp:RequiredFieldValidator>
-                                                <asp:TextBox ID="AdiTxt" runat="server" CssClass="form-control" ToolTip="Adı" type="text"></asp:TextBox>
+                                                <asp:TextBox ID="AdiTxt" runat="server" CssClass="form-control" ToolTip="Adı" type="text" ClientIDMode="Static" OnTextChanged="AdiTxt_TextChanged" AutoPostBack="True" ></asp:TextBox>
                                             </div>
                                             <div class="form-group m-0">
                                                 <label class="form-label fw-semibold" for="SoyadiTxt">Soyadı</label>
                                                 <asp:RequiredFieldValidator runat="server" ControlToValidate="SoyadiTxt" ForeColor="Red" ErrorMessage="Zorunlu Alan"> </asp:RequiredFieldValidator>
-                                                <asp:TextBox ID="SoyadiTxt" runat="server" CssClass="form-control" ToolTip="Soyadı" type="text"></asp:TextBox>
+                                                <asp:TextBox ID="SoyadiTxt" runat="server" CssClass="form-control" ToolTip="Soyadı" type="text" ClientIDMode="Static" OnTextChanged="SoyadiTxt_TextChanged" AutoPostBack="True"></asp:TextBox>
                                             </div>
                                             <div class="row">
                                                 <div class="col">
@@ -442,11 +442,10 @@
                                                 <label class="form-label fw-semibold" for="DahiliTelefonuTxt">Dahili Telefonu</label>
                                                 <asp:TextBox ID="DahiliTelefonuTxt" runat="server" CssClass="form-control"></asp:TextBox>
                                             </div>
-                                            <div class="form-group m-0">
+                                            <%-- <div class="form-group m-0">
                                                 <label class="form-label fw-semibold" for="IntranetEPostaTxt">EPosta (Intarnet)</label>
                                                 <asp:TextBox ID="IntranetEPostaTxt" runat="server" CssClass="form-control"></asp:TextBox>
-                                                <%--<asp:RequiredFieldValidator runat="server" ControlToValidate="IntranetEPostaTxt" ForeColor="Red" ErrorMessage="Zorunlu Alan"> </asp:RequiredFieldValidator>--%>
-                                            </div>
+                                            </div>--%>
                                             <div class="form-group m-0">
                                                 <label class="form-label fw-semibold" for="InternetEPostaTxt">EPosta (Internet)</label>
                                                 <asp:TextBox ID="InternetEPostaTxt" runat="server" CssClass="form-control"></asp:TextBox>

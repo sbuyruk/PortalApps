@@ -26,8 +26,10 @@ namespace Model.TBYS
         public string EdinmeSekli { get; set; }
         public string BagisYili { get; set; }
         public string EmlakSicilNo { get; set; }
-        public decimal EmlakBeyanDegeri { get; set; }
+        public decimal MuhasebeyeKayitliDeger { get; set; }
         public decimal TahminiRayicDegeri { get; set; }
+        public decimal EmlakBeyanDegeri { get; set; }
+        public decimal GuncelRayicDegeri { get; set; }
         public DateTime TapuTarihi { get; set; }
         public string AdaNo { get; set; }
         public string ParselNo { get; set; }
@@ -86,7 +88,7 @@ namespace Model.TBYS
         public string BBNitelik { get; set; }
         public string AnaTasinmazNitelik { get; set; }
         public int BagimsizBolumSayisi { get; set; } = 1;
-        public int KatMalikiSayisi{ get; set; } = 1;
+        public int MalikSayisi{ get; set; } = 1;
         private string IliStr() 
         {
             Il il = new Il();
@@ -889,6 +891,33 @@ namespace Model.TBYS
 	                Left Join Bagis_Table C ON C.TasinmazId=A.Id
 	                Left Join TasinmazBagisci_Table D ON D.Id=C.BagisciId
                 WHERE A.Id={0} AND EnvanterdeMi=1 AND A.KatMulkiyeti=0", tasinmazId);//,ProjeConstants.KAT_MULKIYETI_YOK.ReturnQuotedValue());
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            return dataTable;
+        }
+
+        public DataTable ToplamTasinmazAdediGetir()
+        {
+            string sqlString = string.Format(@"
+                Select MulkiyetSekli, Count(Id) Adet From Tasinmaz_Table
+                Where EnvanterdeMi=1
+                Group By MulkiyetSekli
+                ");
+            int toplamTasinmazAdedi = 0;
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            return dataTable;
+        }
+
+        public DataTable SelectKirayaUygunTumTasinmazlar()
+        {
+            string sqlString = string.Format(@"
+                SELECT EnvanterdeMi,COUNT(DISTINCT(A.Id)) AnaTasinmaz, Count(B.Id) AltBolum,COUNT(A.Id) ToplamKiralanabilir
+                FROM Tasinmaz_Table A
+                    LEFT JOIN BagimsizBolum_Table B ON B.TasinmazId=A.Id AND AltBolum=1
+                WHERE EnvanterdeMi in (1,2) AND KirayaUygunluk='Kiraya Uygun'
+                GROUP BY EnvanterdeMi
+
+                ");
+            int toplamTasinmazAdedi = 0;
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             return dataTable;
         }

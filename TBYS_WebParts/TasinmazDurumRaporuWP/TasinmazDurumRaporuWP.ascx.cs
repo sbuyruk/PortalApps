@@ -2,6 +2,7 @@
 using Model.TBYS;
 using System;
 using System.ComponentModel;
+using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
@@ -92,118 +93,130 @@ namespace TBYS_WebParts.TasinmazDurumRaporuWP
         }
         protected void TasinmazDurumuTablosunuDoldur()
         {
-            Tasinmaz tasinmaz = new Tasinmaz();
-            int AnkTM = tasinmaz.SelectTasinmazAdetByBolgeMulkiyetSekli(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.MULKIYETSEKLI_TM);
-            int AnkCM = tasinmaz.SelectTasinmazAdetByBolgeMulkiyetSekli(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.MULKIYETSEKLI_CM);
-            int IstTM = tasinmaz.SelectTasinmazAdetByBolgeMulkiyetSekli(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.MULKIYETSEKLI_TM);
-            int IstCM = tasinmaz.SelectTasinmazAdetByBolgeMulkiyetSekli(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.MULKIYETSEKLI_CM);
-            int IzmTM = tasinmaz.SelectTasinmazAdetByBolgeMulkiyetSekli(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.MULKIYETSEKLI_TM);
-            int IzmCM = tasinmaz.SelectTasinmazAdetByBolgeMulkiyetSekli(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.MULKIYETSEKLI_CM);
-            int MerTM = tasinmaz.SelectTasinmazAdetByBolgeMulkiyetSekli(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.MULKIYETSEKLI_TM);
-            int MerCM = tasinmaz.SelectTasinmazAdetByBolgeMulkiyetSekli(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.MULKIYETSEKLI_CM);
-            int ErzTM = tasinmaz.SelectTasinmazAdetByBolgeMulkiyetSekli(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.MULKIYETSEKLI_TM);
-            int ErzCM = tasinmaz.SelectTasinmazAdetByBolgeMulkiyetSekli(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.MULKIYETSEKLI_CM);
+            try
+            {
+                // Find totals row (contains TopBaslikCell)
+                TableRow totalsRow = TopBaslikCell.Parent as TableRow;
+                int headerRows = 2; // first two header rows are static
+                int totalsIndex = -1;
+                for (int i = 0; i < TasDurTable.Rows.Count; i++)
+                {
+                    if (TasDurTable.Rows[i] == totalsRow)
+                    {
+                        totalsIndex = i;
+                        break;
+                    }
+                }
 
-            AnkTMCell.Text = AnkTM.ReturnEmptyIfZeroOrNull().ToString();
-            AnkCMCell.Text = AnkCM.ReturnEmptyIfZeroOrNull().ToString();
-            AnkTMCMTopCell.Text = (AnkTM + AnkCM).ReturnEmptyIfZeroOrNull().ToString();
-            IstTMCell.Text = IstTM.ReturnEmptyIfZeroOrNull().ToString();
-            IstCMCell.Text = IstCM.ReturnEmptyIfZeroOrNull().ToString();
-            IstTMCMTopCell.Text = (IstTM + IstCM).ReturnEmptyIfZeroOrNull().ToString();
-            IzmTMCell.Text = IzmTM.ReturnEmptyIfZeroOrNull().ToString();
-            IzmCMCell.Text = IzmCM.ReturnEmptyIfZeroOrNull().ToString();
-            IzmTMCMTopCell.Text = (IzmTM + IzmCM).ReturnEmptyIfZeroOrNull().ToString();
-            MerTMCell.Text = MerTM.ReturnEmptyIfZeroOrNull().ToString();
-            MerCMCell.Text = MerCM.ReturnEmptyIfZeroOrNull().ToString();
-            MerTMCMTopCell.Text = (MerTM + MerCM).ReturnEmptyIfZeroOrNull().ToString();
-            ErzTMCell.Text = ErzTM.ReturnEmptyIfZeroOrNull().ToString();
-            ErzCMCell.Text = ErzCM.ReturnEmptyIfZeroOrNull().ToString();
-            ErzTMCMTopCell.Text = (ErzTM + ErzCM).ReturnEmptyIfZeroOrNull().ToString();
-            int TopTM = AnkTM + IstTM + IzmTM + MerTM + ErzTM;
-            TopTMCell.Text = TopTM.ReturnEmptyIfZeroOrNull().ToString();
-            int TopCM = AnkCM + IstCM + IzmCM + MerCM + ErzCM;
-            TopCMCell.Text = TopCM.ReturnEmptyIfZeroOrNull().ToString();
-            TopTMCMTopCell.Text = (TopTM + TopCM).ReturnEmptyIfZeroOrNull().ToString();
-            string kiraDurumuStr = string.Empty;
-            int AnkApt = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.KULLANIMSEKLI_APT, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
-            int AnkIshani = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.KULLANIMSEKLI_ISHANI, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
-            int AnkMes = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.KULLANIMSEKLI_MESKEN, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
-            int AnkIsy = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.KULLANIMSEKLI_ISYERI, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
-            int AnkArs = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.KULLANIMSEKLI_ARSA, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
-            int AnkTar = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.KULLANIMSEKLI_TARLA, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
-            //int AnkMev = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.KULLANIMSEKLI_MEV, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
+                if (totalsIndex == -1)
+                {
+                    // if not found, append to end
+                    totalsIndex = TasDurTable.Rows.Count;
+                }
 
-            AnkAptCell.Text = (AnkApt + AnkIshani).ReturnEmptyIfZeroOrNull().ToString();
-            AnkMesCell.Text = AnkMes.ReturnEmptyIfZeroOrNull().ToString();
-            AnkIsyCell.Text = AnkIsy.ReturnEmptyIfZeroOrNull().ToString();
-            AnkArsCell.Text = AnkArs.ReturnEmptyIfZeroOrNull().ToString();
-            AnkTarCell.Text = AnkTar.ReturnEmptyIfZeroOrNull().ToString();
-            //AnkMevCell.Text = AnkMev.ReturnEmptyIfZeroOrNull().ToString();
+                // Remove any existing region data rows between headers and totals row
+                for (int i = totalsIndex - 1; i >= headerRows; i--)
+                {
+                    TasDurTable.Rows.RemoveAt(i);
+                }
 
-            int IstApt = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.KULLANIMSEKLI_APT, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
-            int IstIshani = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.KULLANIMSEKLI_ISHANI, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
-            int IstMes = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.KULLANIMSEKLI_MESKEN, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
-            int IstIsy = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.KULLANIMSEKLI_ISYERI, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
-            int IstArs = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.KULLANIMSEKLI_ARSA, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
-            int IstTar = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.KULLANIMSEKLI_TARLA, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
-            //int IstMev = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.KULLANIMSEKLI_MEV, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
+                // Prepare totals accumulators
+                int totalTM = 0;
+                int totalCM = 0;
+                int totalApt = 0;
+                int totalMes = 0;
+                int totalIsy = 0;
+                int totalArs = 0;
+                int totalTar = 0;
 
-            IstAptCell.Text = (IstApt + IstIshani).ReturnEmptyIfZeroOrNull().ToString();
-            IstMesCell.Text = (IstMes).ReturnEmptyIfZeroOrNull().ToString();
-            IstIsyCell.Text = (IstIsy).ReturnEmptyIfZeroOrNull().ToString();
-            IstArsCell.Text = (IstArs).ReturnEmptyIfZeroOrNull().ToString();
-            IstTarCell.Text = (IstTar).ReturnEmptyIfZeroOrNull().ToString();
-            //IstMevCell.Text = (IstMev).ReturnEmptyIfZeroOrNull().ToString();
+                Tasinmaz tasinmaz = new Tasinmaz();
 
-            int IzmApt = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.KULLANIMSEKLI_APT, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
-            int IzmIshani = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.KULLANIMSEKLI_ISHANI, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
-            int IzmMes = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.KULLANIMSEKLI_MESKEN, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
-            int IzmIsy = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.KULLANIMSEKLI_ISYERI, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
-            int IzmArs = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.KULLANIMSEKLI_ARSA, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
-            int IzmTar = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.KULLANIMSEKLI_TARLA, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
-            //int IzmMev = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.KULLANIMSEKLI_MEV, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
+                // Get active regions based on user permission/context
+                Bolge bolgeDao = new Bolge();
+                var bolgeList = bolgeDao.SelectAktifBolgeler(BolgeIdQS);
 
-            IzmAptCell.Text = (IzmApt + IzmIshani).ReturnEmptyIfZeroOrNull().ToString();
-            IzmMesCell.Text = (IzmMes).ReturnEmptyIfZeroOrNull().ToString();
-            IzmIsyCell.Text = (IzmIsy).ReturnEmptyIfZeroOrNull().ToString();
-            IzmArsCell.Text = (IzmArs).ReturnEmptyIfZeroOrNull().ToString();
-            IzmTarCell.Text = (IzmTar).ReturnEmptyIfZeroOrNull().ToString();
-            //IzmMevCell.Text = (IzmMev).ReturnEmptyIfZeroOrNull().ToString();
+                // Insert a row per bolge before totals row
+                int insertIndex = headerRows;
+                foreach (var bolge in bolgeList)
+                {
+                    if (bolge.Id == ProjeConstants.BOLGE_GENELMUDURLUK_INT ||
+                        bolge.Id == ProjeConstants.BOLGE_YURTDISI_INT)
+                        continue;
+                    int ankTM = tasinmaz.SelectTasinmazAdetByBolgeMulkiyetSekli(bolge.Id, ProjeConstants.MULKIYETSEKLI_TM);
+                    int ankCM = tasinmaz.SelectTasinmazAdetByBolgeMulkiyetSekli(bolge.Id, ProjeConstants.MULKIYETSEKLI_CM);
 
-            int MerApt = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.KULLANIMSEKLI_APT, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
-            int MerIshani = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.KULLANIMSEKLI_ISHANI, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
-            int MerMes = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.KULLANIMSEKLI_MESKEN, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
-            int MerIsy = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.KULLANIMSEKLI_ISYERI, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
-            int MerArs = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.KULLANIMSEKLI_ARSA, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
-            int MerTar = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.KULLANIMSEKLI_TARLA, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
-            //int MerMev = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.KULLANIMSEKLI_MEV, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
+                    // usage counts (APT includes ISHANI)
+                    string kiraDurumuStr = string.Empty;
+                    int apt = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(bolge.Id, ProjeConstants.KULLANIMSEKLI_APT, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
+                    int ishani = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(bolge.Id, ProjeConstants.KULLANIMSEKLI_ISHANI, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
+                    int mes = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(bolge.Id, ProjeConstants.KULLANIMSEKLI_MESKEN, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
+                    int isy = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(bolge.Id, ProjeConstants.KULLANIMSEKLI_ISYERI, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
+                    int ars = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(bolge.Id, ProjeConstants.KULLANIMSEKLI_ARSA, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
+                    int tar = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(bolge.Id, ProjeConstants.KULLANIMSEKLI_TARLA, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
 
-            MerAptCell.Text = (MerApt + MerIshani).ReturnEmptyIfZeroOrNull().ToString();
-            MerMesCell.Text = (MerMes).ReturnEmptyIfZeroOrNull().ToString();
-            MerIsyCell.Text = (MerIsy).ReturnEmptyIfZeroOrNull().ToString();
-            MerArsCell.Text = (MerArs).ReturnEmptyIfZeroOrNull().ToString();
-            MerTarCell.Text = (MerTar).ReturnEmptyIfZeroOrNull().ToString();
-            //MerMevCell.Text = (MerMev).ReturnEmptyIfZeroOrNull().ToString();
+                    int tm = ankTM;
+                    int cm = ankCM;
+                    int tmcmTop = tm + cm;
+                    int aptTotal = apt + ishani;
 
-            int ErzApt = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_APT, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
-            int ErzIshani = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_ISHANI, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
-            int ErzMes = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_MESKEN, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
-            int ErzIsy = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_ISYERI, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
-            int ErzArs = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_ARSA, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
-            int ErzTar = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_ERZURUM_INT, ProjeConstants.KULLANIMSEKLI_TARLA, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
-            //int MerMev = tasinmaz.SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(ProjeConstants.BOLGE_MERSIN_INT, ProjeConstants.KULLANIMSEKLI_MEV, kiraDurumuStr, ProjeConstants.MULKIYETSEKLI_HEPSI);
+                    // Build row
+                    TableRow row = new TableRow { HorizontalAlign = HorizontalAlign.Center };
 
-            ErzAptCell.Text = (ErzApt + ErzIshani).ReturnEmptyIfZeroOrNull().ToString();
-            ErzMesCell.Text = (ErzMes).ReturnEmptyIfZeroOrNull().ToString();
-            ErzIsyCell.Text = (ErzIsy).ReturnEmptyIfZeroOrNull().ToString();
-            ErzArsCell.Text = (ErzArs).ReturnEmptyIfZeroOrNull().ToString();
-            ErzTarCell.Text = (ErzTar).ReturnEmptyIfZeroOrNull().ToString();
+                    TableCell bolgeCell = new TableCell { CssClass = "btn-primary", Text = string.IsNullOrEmpty(bolge.KisaAdi) ? bolge.Adi : bolge.KisaAdi };
+                    row.Cells.Add(bolgeCell);
 
-            TopAptCell.Text = (AnkApt + IstApt + IzmApt + MerApt + ErzApt + AnkIshani + IstIshani + IzmIshani + MerIshani+ErzIshani).ReturnEmptyIfZeroOrNull().ToString();
-            TopMesCell.Text = (AnkMes + IstMes + IzmMes + MerMes + ErzMes).ReturnEmptyIfZeroOrNull().ToString();
-            TopIsyCell.Text = (AnkIsy + IstIsy + IzmIsy + MerIsy +ErzIsy).ReturnEmptyIfZeroOrNull().ToString();
-            TopArsCell.Text = (AnkArs + IstArs + IzmArs + MerArs +ErzArs).ReturnEmptyIfZeroOrNull().ToString();
-            TopTarCell.Text = (AnkTar + IstTar + IzmTar + MerTar +ErzTar).ReturnEmptyIfZeroOrNull().ToString();
+                    TableCell tmCell = new TableCell { Text = tm.ReturnEmptyIfZeroOrNull().ToString() };
+                    row.Cells.Add(tmCell);
+
+                    TableCell cmCell = new TableCell { Text = cm.ReturnEmptyIfZeroOrNull().ToString() };
+                    row.Cells.Add(cmCell);
+
+                    TableCell tmcmTopCell = new TableCell { Text = tmcmTop.ReturnEmptyIfZeroOrNull().ToString() };
+                    row.Cells.Add(tmcmTopCell);
+
+                    TableCell aptCell = new TableCell { Text = aptTotal.ReturnEmptyIfZeroOrNull().ToString() };
+                    row.Cells.Add(aptCell);
+
+                    TableCell mesCell = new TableCell { Text = mes.ReturnEmptyIfZeroOrNull().ToString() };
+                    row.Cells.Add(mesCell);
+
+                    TableCell isyCell = new TableCell { Text = isy.ReturnEmptyIfZeroOrNull().ToString() };
+                    row.Cells.Add(isyCell);
+
+                    TableCell arsCell = new TableCell { Text = ars.ReturnEmptyIfZeroOrNull().ToString() };
+                    row.Cells.Add(arsCell);
+
+                    TableCell tarCell = new TableCell { Text = tar.ReturnEmptyIfZeroOrNull().ToString() };
+                    row.Cells.Add(tarCell);
+
+                    // Insert before totals row
+                    TasDurTable.Rows.AddAt(insertIndex++, row);
+
+                    // Accumulate totals
+                    totalTM += tm;
+                    totalCM += cm;
+                    totalApt += aptTotal;
+                    totalMes += mes;
+                    totalIsy += isy;
+                    totalArs += ars;
+                    totalTar += tar;
+                }
+
+                // Fill totals cells (Top*)
+                TopTMCell.Text = totalTM.ReturnEmptyIfZeroOrNull().ToString();
+                TopCMCell.Text = totalCM.ReturnEmptyIfZeroOrNull().ToString();
+                TopTMCMTopCell.Text = (totalTM + totalCM).ReturnEmptyIfZeroOrNull().ToString();
+                TopAptCell.Text = totalApt.ReturnEmptyIfZeroOrNull().ToString();
+                TopMesCell.Text = totalMes.ReturnEmptyIfZeroOrNull().ToString();
+                TopIsyCell.Text = totalIsy.ReturnEmptyIfZeroOrNull().ToString();
+                TopArsCell.Text = totalArs.ReturnEmptyIfZeroOrNull().ToString();
+                TopTarCell.Text = totalTar.ReturnEmptyIfZeroOrNull().ToString();
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelper exHelper = new ExceptionHelper(ex);
+                exHelper.PublishException();
+            }
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {

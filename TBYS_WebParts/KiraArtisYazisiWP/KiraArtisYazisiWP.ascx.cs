@@ -11,6 +11,7 @@ using System.Globalization;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Web.Script.Serialization;
+using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
@@ -113,7 +114,6 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
             if (!Page.IsPostBack)
             {
                 AyDDLDoldur();
-                YilDDLDoldur();
                 BolgeDDLDoldur();
                 //SetDDLValues(); //ay ve yılı querystringden al
                 ParametreleriDoldur();
@@ -137,12 +137,27 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
         private void AyDDLDoldur()
         {
             AyDDL.Items.Clear();
-            System.Web.UI.WebControls.ListItem li = new System.Web.UI.WebControls.ListItem(DateTime.Today.AddMonths(1).ToString("MMMM"), DateTime.Today.AddMonths(1).ToString("MM"));
-            System.Web.UI.WebControls.ListItem li1 = new System.Web.UI.WebControls.ListItem(DateTime.Today.AddMonths(2).ToString("MMMM"), DateTime.Today.AddMonths(2).ToString("MM"));
-            System.Web.UI.WebControls.ListItem li2 = new System.Web.UI.WebControls.ListItem(DateTime.Today.AddMonths(3).ToString("MMMM"), DateTime.Today.AddMonths(3).ToString("MM"));
-            System.Web.UI.WebControls.ListItem li3 = new System.Web.UI.WebControls.ListItem(DateTime.Today.AddMonths(4).ToString("MMMM"), DateTime.Today.AddMonths(4).ToString("MM"));
-            System.Web.UI.WebControls.ListItem li4 = new System.Web.UI.WebControls.ListItem(DateTime.Today.AddMonths(5).ToString("MMMM"), DateTime.Today.AddMonths(5).ToString("MM"));
-            System.Web.UI.WebControls.ListItem li5 = new System.Web.UI.WebControls.ListItem(DateTime.Today.AddMonths(6).ToString("MMMM"), DateTime.Today.AddMonths(6).ToString("MM"));
+
+            DateTime tarih1aySonra = new DateTime(DateTime.Today.AddMonths(1).Year, DateTime.Today.AddMonths(1).Month, 1);
+            DateTime tarih2aySonra = new DateTime(DateTime.Today.AddMonths(2).Year, DateTime.Today.AddMonths(2).Month, 1);
+            DateTime tarih3aySonra = new DateTime(DateTime.Today.AddMonths(3).Year, DateTime.Today.AddMonths(3).Month, 1);
+            DateTime tarih4aySonra = new DateTime(DateTime.Today.AddMonths(4).Year, DateTime.Today.AddMonths(4).Month, 1);
+            DateTime tarih5aySonra = new DateTime(DateTime.Today.AddMonths(5).Year, DateTime.Today.AddMonths(5).Month, 1);
+            DateTime tarih6aySonra = new DateTime(DateTime.Today.AddMonths(6).Year, DateTime.Today.AddMonths(6).Month, 1);
+
+            //System.Web.UI.WebControls.ListItem li = new System.Web.UI.WebControls.ListItem(DateTime.Today.AddMonths(1).ToString("MMMM"), DateTime.Today.AddMonths(1).ToString("MM"));
+            //System.Web.UI.WebControls.ListItem li1 = new System.Web.UI.WebControls.ListItem(DateTime.Today.AddMonths(2).ToString("MMMM"), DateTime.Today.AddMonths(2).ToString("MM"));
+            //System.Web.UI.WebControls.ListItem li2 = new System.Web.UI.WebControls.ListItem(DateTime.Today.AddMonths(3).ToString("MMMM"), DateTime.Today.AddMonths(3).ToString("MM"));
+            //System.Web.UI.WebControls.ListItem li3 = new System.Web.UI.WebControls.ListItem(DateTime.Today.AddMonths(4).ToString("MMMM"), DateTime.Today.AddMonths(4).ToString("MM"));
+            //System.Web.UI.WebControls.ListItem li4 = new System.Web.UI.WebControls.ListItem(DateTime.Today.AddMonths(5).ToString("MMMM"), DateTime.Today.AddMonths(5).ToString("MM"));
+            //System.Web.UI.WebControls.ListItem li5 = new System.Web.UI.WebControls.ListItem(DateTime.Today.AddMonths(6).ToString("MMMM"), DateTime.Today.AddMonths(6).ToString("MM"));
+            System.Web.UI.WebControls.ListItem li = new System.Web.UI.WebControls.ListItem(tarih1aySonra.ToString("MMMM"),tarih1aySonra.ConvertToDatetimeEmptyIfNull());
+            System.Web.UI.WebControls.ListItem li1 = new System.Web.UI.WebControls.ListItem(tarih2aySonra.ToString("MMMM"),tarih2aySonra.ConvertToDatetimeEmptyIfNull());
+            System.Web.UI.WebControls.ListItem li2 = new System.Web.UI.WebControls.ListItem(tarih3aySonra.ToString("MMMM"),tarih3aySonra.ConvertToDatetimeEmptyIfNull());
+            System.Web.UI.WebControls.ListItem li3 = new System.Web.UI.WebControls.ListItem(tarih4aySonra.ToString("MMMM"),tarih4aySonra.ConvertToDatetimeEmptyIfNull());
+            System.Web.UI.WebControls.ListItem li4 = new System.Web.UI.WebControls.ListItem(tarih5aySonra.ToString("MMMM"),tarih5aySonra.ConvertToDatetimeEmptyIfNull());
+            System.Web.UI.WebControls.ListItem li5 = new System.Web.UI.WebControls.ListItem(tarih6aySonra.ToString("MMMM"),tarih6aySonra.ConvertToDatetimeEmptyIfNull());
+
             AyDDL.Items.Add(li);
             AyDDL.Items.Add(li1);
             AyDDL.Items.Add(li2);
@@ -150,63 +165,7 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
             AyDDL.Items.Add(li4);
             AyDDL.Items.Add(li5);
         }
-        private void YilDDLDoldur()
-        {
-            var year = DateTime.Now.Year;
-            for (int i = 1987; i <= year; i++)
-            {
-                YilDDL.Items.Add(new System.Web.UI.WebControls.ListItem(i.ToString(), i.ToString()));
-            }
-        }
-        private void SetDDLValues()
-        {
-            try
-            {
-                #region tarih
-                //acilista ay ve yili querystring ile gelen ay ve yıla eşitle boş geldiyse gecen aya/yila eşitle               
-                //ay
-                string ay = !string.IsNullOrEmpty(SecilenAyQS) ? SecilenAyQS : DateTime.Today.Month.ToString();
-                System.Web.UI.WebControls.ListItem AyItem = new System.Web.UI.WebControls.ListItem();
-                if (!string.IsNullOrEmpty(ay))
-                    AyItem = AyDDL.Items.FindByValue(ay);
 
-                if (AyItem != null)
-                {
-                    AyDDL.SelectedValue = AyItem.Value;
-                    SecilenAyQS = AyItem.Value;
-                }
-
-                //yil
-                string yil = !string.IsNullOrEmpty(SecilenYilQS) ? SecilenYilQS : DateTime.Today.Year.ReturnEmptyIfNull().ToString();
-                System.Web.UI.WebControls.ListItem YilItem = new System.Web.UI.WebControls.ListItem();
-                if (!string.IsNullOrEmpty(yil))
-                    YilItem = YilDDL.Items.FindByValue(yil);
-
-                if (YilItem != null)
-                {
-                    YilDDL.SelectedValue = YilItem.Value;
-                    SecilenYilQS = YilItem.Value;
-                }
-                #endregion tarih
-                #region bolge
-                //bolge
-                System.Web.UI.WebControls.ListItem bolgeItem = new System.Web.UI.WebControls.ListItem();
-                if (BolgeIdQS>-1)
-                    bolgeItem = BolgeDDL.Items.FindByValue(BolgeIdQS.ToString());
-
-                if (bolgeItem != null)
-                {
-                    BolgeDDL.SelectedValue = bolgeItem.Value;
-                    BolgeIdQS = bolgeItem.Value.ConvertToInt();
-                }
-                #endregion
-            }
-            catch (Exception)
-            {
-
-                //TODO
-            }
-        }
         private void ParametreleriDoldur()
         {
             DateTime bugun = DateTime.Today;
@@ -223,8 +182,7 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
         }
         private void TabloOlustur()
         {
-            int ay = AyDDL.SelectedItem.Value.ConvertToInt();
-            DateTime tarih = new DateTime(DateTime.Today.Year, ay, 1);
+            DateTime tarih = AyDDL.SelectedItem.Value.ConvertToDatetime();
             decimal tufe = SecilenAyIcinTufeBul(tarih);
             TufeTxt.Text = tufe.ToString("N", culturInfo);
             var jsonData = TabloJson(); 
@@ -262,8 +220,7 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
         private List<KiraArtisListItem> GetDataList()
         {
 
-            int ay = AyDDL.SelectedItem.Value.ConvertToInt();
-            DateTime tarih = new DateTime(DateTime.Today.Year, ay, 1);
+            DateTime tarih = AyDDL.SelectedItem.Value.ConvertToDatetime();
             KiraSozlesme kiraSozlesmeDao = new KiraSozlesme();
             int bolgeId= BolgeDDL.SelectedItem==null ? ProjeConstants.BOLGE_HEPSI_INT:BolgeDDL.SelectedItem.Value.ConvertToInt();
             DataTable dataTable = kiraSozlesmeDao.SelectKiraArtisiGelenSozlesmelerReturnDT(bolgeId,tarih);
@@ -376,16 +333,11 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
         }
         protected void AyDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            SecilenAyQS = AyDDL.SelectedItem.Value.ToString();
+            SecilenAyQS = AyDDL.SelectedItem.Value.ConvertToDatetime().ToString("MM");
             //KayitGetir();
             TabloOlustur();
         }
-        protected void YilDDL_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            SecilenYilQS = YilDDL.SelectedItem.Value.ToString();
-            //KayitGetir();
-            TabloOlustur();
-        }
+
         protected void BolgeDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
             BolgeIdQS = BolgeDDL.SelectedItem.Value.ConvertToInt();
@@ -540,8 +492,7 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
         }
         private MemoryStream AddData2DestinationStream(MemoryStream templateStream, IEnumerable<Paragraph> templateParagraphs)
         {
-            int ay = AyDDL.SelectedItem.Value.ConvertToInt();
-            DateTime tarih = new DateTime(DateTime.Today.Year, ay, 1);
+            DateTime tarih = AyDDL.SelectedItem.Value.ConvertToDatetime();
             MemoryStream destinationStream = null;
             DateTime bugun = DateTime.Today;
             DateTime gecenAySonGun = new DateTime(bugun.Year, bugun.Month, 1).AddDays(-1);
@@ -664,8 +615,7 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
         }
         private MemoryStream AddAdresEtiketData2DestinationStream(MemoryStream templateStream, IEnumerable<Paragraph> templateParagraphs)
         {
-            int ay = AyDDL.SelectedItem.Value.ConvertToInt();
-            DateTime tarih = new DateTime(DateTime.Today.Year, ay, 1);
+            DateTime tarih = AyDDL.SelectedItem.Value.ConvertToDatetime();
 
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             MemoryStream destinationStream = null;

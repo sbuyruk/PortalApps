@@ -91,8 +91,8 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
         private void GenelToplamiBul()
         {
             Tasinmaz tasinmaz = new Tasinmaz();
-            int GMTopTM = tasinmaz.SelectTasinmazAdetByBolgeKirayaUygunluk(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL, ProjeConstants.MULKIYETSEKLI_TM);
-            int GMTopCM = tasinmaz.SelectTasinmazAdetByBolgeKirayaUygunluk(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL, ProjeConstants.MULKIYETSEKLI_CM);
+            int AnkTopTM = tasinmaz.SelectTasinmazAdetByBolgeKirayaUygunluk(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL, ProjeConstants.MULKIYETSEKLI_TM);
+            int AnkTopCM = tasinmaz.SelectTasinmazAdetByBolgeKirayaUygunluk(ProjeConstants.BOLGE_ANKARA_INT, ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL, ProjeConstants.MULKIYETSEKLI_CM);
             int IstTopTM = tasinmaz.SelectTasinmazAdetByBolgeKirayaUygunluk(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL, ProjeConstants.MULKIYETSEKLI_TM);
             int IstTopCM = tasinmaz.SelectTasinmazAdetByBolgeKirayaUygunluk(ProjeConstants.BOLGE_ISTANBUL_INT, ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL, ProjeConstants.MULKIYETSEKLI_CM);
             int IzmTopTM = tasinmaz.SelectTasinmazAdetByBolgeKirayaUygunluk(ProjeConstants.BOLGE_IZMIR_INT, ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL, ProjeConstants.MULKIYETSEKLI_TM);
@@ -115,21 +115,21 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
             };
             rowGenelToplam.Controls.Add(BaslikCell);
 
-            TableCell GMTopTMCell = new TableCell
+            TableCell AnkTopTMCell = new TableCell
             {
                 BorderStyle = BorderStyle.Solid,
                 CssClass = "fw-bold",
-                Text = (GMTopTM).ReturnEmptyIfZeroOrNull().ToString()
+                Text = (AnkTopTM).ReturnEmptyIfZeroOrNull().ToString()
             };
 
-            TableCell GMTopCMCell = new TableCell
+            TableCell AnkTopCMCell = new TableCell
             {
                 BorderStyle = BorderStyle.Solid,
                 CssClass = "fw-bold",
-                Text = (GMTopCM).ReturnEmptyIfZeroOrNull().ToString()
+                Text = (AnkTopCM).ReturnEmptyIfZeroOrNull().ToString()
             };
-            rowGenelToplam.Controls.Add(GMTopTMCell);
-            rowGenelToplam.Controls.Add(GMTopCMCell);
+            rowGenelToplam.Controls.Add(AnkTopTMCell);
+            rowGenelToplam.Controls.Add(AnkTopCMCell);
 
             TableCell IstTopTMCell = new TableCell
             {
@@ -195,13 +195,13 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
             {
                 BorderStyle = BorderStyle.Solid,
                 CssClass = "fw-bold",
-                Text = (GMTopTM + IstTopTM + IzmTopTM + MerTopTM+ErzTopTM).ReturnEmptyIfZeroOrNull().ToString()
+                Text = (AnkTopTM + IstTopTM + IzmTopTM + MerTopTM + ErzTopTM).ReturnEmptyIfZeroOrNull().ToString()
             };
             TableCell TopTopCMCell = new TableCell
             {
                 BorderStyle = BorderStyle.Solid,
                 CssClass = "fw-bold",
-                Text = (GMTopCM + IstTopCM + IzmTopCM + MerTopCM + ErzTopCM).ReturnEmptyIfZeroOrNull().ToString()
+                Text = (AnkTopCM + IstTopCM + IzmTopCM + MerTopCM + ErzTopCM).ReturnEmptyIfZeroOrNull().ToString()
             };
             rowGenelToplam.Controls.Add(TopTopTMCell);
             rowGenelToplam.Controls.Add(TopTopCMCell);
@@ -210,7 +210,7 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
             {
                 BorderStyle = BorderStyle.Solid,
                 CssClass = "fw-bold",
-                Text = (GMTopTM + IstTopTM + IzmTopTM + MerTopTM + GMTopCM + IstTopCM + IzmTopCM + MerTopCM + ErzTopCM).ReturnEmptyIfZeroOrNull().ToString()
+                Text = (AnkTopTM + IstTopTM + IzmTopTM + MerTopTM + ErzTopTM + AnkTopCM + IstTopCM + IzmTopCM + MerTopCM + ErzTopCM).ReturnEmptyIfZeroOrNull().ToString()
             };
             rowGenelToplam.Controls.Add(TopTopTMCMCell);
 

@@ -57,10 +57,6 @@ namespace TBYS_WebParts.VasiyetciListesiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.LinkButton YeniKayitBtn;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton ExcelBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebPartCodeGenerator", "17.0.0.0")]
@@ -124,22 +120,6 @@ namespace TBYS_WebParts.VasiyetciListesiWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.CssClass = "col-form-label";
             @__ctrl.ID = "AdiLbl";
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.LinkButton @__BuildControlYeniKayitBtn() {
-            global::System.Web.UI.WebControls.LinkButton @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
-            this.YeniKayitBtn = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "YeniKayitBtn";
-            @__ctrl.CssClass = "btn btn-outline-success";
-            @__ctrl.Text = "Yeni Vasiyetçi Girişi";
-            @__ctrl.Click -= new System.EventHandler(this.YeniKayitBtn_Click);
-            @__ctrl.Click += new System.EventHandler(this.YeniKayitBtn_Click);
             return @__ctrl;
         }
         
@@ -234,14 +214,11 @@ namespace TBYS_WebParts.VasiyetciListesiWP {
             </div>
         </div>
         <div class=""card-footer"">
+            
             "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl5;
-            @__ctrl5 = this.@__BuildControlYeniKayitBtn();
+            @__ctrl5 = this.@__BuildControlExcelBtn();
             @__parser.AddParsedSubObject(@__ctrl5);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl6;
-            @__ctrl6 = this.@__BuildControlExcelBtn();
-            @__parser.AddParsedSubObject(@__ctrl6);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n        </div>\r\n\r\n    </div>\r\n</div>\r\n"));
         }
         

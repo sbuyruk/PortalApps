@@ -1338,12 +1338,24 @@ namespace IKYS_WebParts.IzinTalepGirisWP
             ClearIzinBilgileri();
             Personel personel = new Personel();
             personel = PersonelGetir();
-            int izinTipi = IzinTanimDDL.SelectedItem.Value.ConvertToInt();
-            DateTime baslangicTarihi = IzinBasTarTxt.Value.ConvertToDatetime();
             if (personel == null)
             {
                 return false;
             }
+            IsBilgileri isBilgileri = new IsBilgileri();
+            isBilgileri= isBilgileri.SelectByPersonelId(personel.Id);
+            if (isBilgileri == null )
+            {
+                MessageHelper.PublishMessage("Personelin iş bilgileri bulunamadı. İzin talebi oluşturulamaz.", ProjeConstants.MESAJ_HATA);
+                return false;
+            }else if ((isBilgileri.IzinDonemiBasTar==null) || 
+                (isBilgileri.IzinDonemiBasTar < ProjeConstants.REFERANS_TARIHI))
+            {
+                MessageHelper.PublishMessage("Personel İzinBaşlama Tarihi Geçersiz. İzin talebi oluşturulamaz.", ProjeConstants.MESAJ_HATA);
+                return false;
+            }
+            int izinTipi = IzinTanimDDL.SelectedItem.Value.ConvertToInt();
+            DateTime baslangicTarihi = IzinBasTarTxt.Value.ConvertToDatetime();
             bool devamEdenIzinTalebiVarMi = IslemiDevamEdenIzinTalebiVarMi(personel.Id);
             if (devamEdenIzinTalebiVarMi)//if (cakismaVarMi)
             {

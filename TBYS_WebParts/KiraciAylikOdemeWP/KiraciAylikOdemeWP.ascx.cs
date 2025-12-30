@@ -174,6 +174,29 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
             {
                 MessageHelper.PublishMessage("Kiracı Bulunamadı", ProjeConstants.MESAJ_HATA);
             }
+            if (BolgeIdQS.ConvertToInt() == ProjeConstants.BOLGE_HEPSI_INT || BolgeIdQS.ConvertToInt() == ProjeConstants.BOLGE_GENELMUDURLUK_INT)
+            {
+                YeniOdemeGirisiBtn.Visible = true;
+                OdemePlaniBtn.Visible = true;
+                SozlesmeBtn.Visible = true;
+                KiraciBtn.Visible = true;
+                OdemePlaniListBtn.Visible = true;
+                SozlesmeListBtn.Visible = true;
+                KiraciListBtn.Visible = true;
+                BakiyeDevirBtn.Visible = true;
+            }
+            else
+            {
+                YeniOdemeGirisiBtn.Visible = false;
+                OdemePlaniBtn.Visible = false;
+                SozlesmeBtn.Visible = false;
+                KiraciBtn.Visible = false;
+                OdemePlaniListBtn.Visible = false;
+                SozlesmeListBtn.Visible = false;
+                KiraciListBtn.Visible = false;
+                BakiyeDevirBtn.Visible = false;
+
+            }
         }
         private void DDLListeleriDoldur()
         {

@@ -1,10 +1,13 @@
-﻿using Microsoft.SharePoint;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using Microsoft.SharePoint;
 using Microsoft.SharePoint.Utilities;
 using Model.IKYS;
+using Model.Portal;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.DirectoryServices.AccountManagement;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -149,68 +152,75 @@ namespace Model.Ortak
         public static int UcretliIzinHakkiHesapla(Personel personel, DateTime izinDonemiBasi, DateTime izinDonemBasTar)
         {
             int hakEdilenIzinGunSayisi = ProjeConstants.IZIN_SURESI_1_5;
-            if (personel.Asker_sivil == ProjeConstants.PER_ASKER_INT)
+            int ilkcalistigiYilSayisi = izinDonemiBasi.Year - izinDonemBasTar.Year;
+
+            //ilk yıl izin hakkı 0 gün
+            if (ilkcalistigiYilSayisi < 1)
             {
-                hakEdilenIzinGunSayisi = ProjeConstants.IZIN_SURESI_ASKER;
+                hakEdilenIzinGunSayisi = ProjeConstants.IZIN_SURESI_0;
             }
-            else
+            else 
             {
-                try
+                if (personel.Asker_sivil == ProjeConstants.PER_ASKER_INT)
                 {
-                    //izinDonemiBasi'ndan ise baslamatar cikararak calistigi yıl suresini bul
-                    IsBilgileri ib = new IsBilgileri();
-                    ib = ib.SelectByPersonelId(personel.Id);
-                    if (ib != null)
+                    hakEdilenIzinGunSayisi = ProjeConstants.IZIN_SURESI_ASKER;
+                }
+                else
+                {
+                    try
                     {
+                        //izinDonemiBasi'ndan ise baslamatar cikararak calistigi yıl suresini bul
+                        IsBilgileri ib = new IsBilgileri();
+                        ib = ib.SelectByPersonelId(personel.Id);
+                        if (ib != null)
+                        {
 
-                        //DateTime iseBaslamaTar = ib.IzinDonemiBasTar!=null? ib.IzinDonemiBasTar:ib.BaslamaTar;
+                            //DateTime iseBaslamaTar = ib.IzinDonemiBasTar!=null? ib.IzinDonemiBasTar:ib.BaslamaTar;
 
-                        if (izinDonemiBasi < izinDonemBasTar)
-                        {
-                            Exception ex = new Exception("İzin Dönemi Başı İşe başlama tarihinden küçük olamaz");
-                            throw (ex);
+                            if (izinDonemiBasi < izinDonemBasTar)
+                            {
+                                Exception ex = new Exception("İzin Dönemi Başı İşe başlama tarihinden küçük olamaz");
+                                throw (ex);
 
-                        }
-                        int calistigiYilSayisi = izinDonemiBasi.Year - izinDonemBasTar.Year;
-                        int ilkcalistigiYilSayisi = izinDonemiBasi.Year - izinDonemBasTar.Year;
-                        int oncekiPrimgunSayisi = 0;
-                        oncekiPrimgunSayisi = ib.VakifOncesiPrimGunSayisi;
-                        if (oncekiPrimgunSayisi >= 360)
-                        {
-                            int ekGun = oncekiPrimgunSayisi / 360;
-                            calistigiYilSayisi += ekGun;
-                        }
-                        /*
-                            (1)  1 – 5 yıl olanlara (5 yıl dâhil) 14 iş günü, 
-                            (2)  6 – 15 yıl olanlara 20 iş günü, 
-                            (3)  15 yıl ve daha fazla olanlara 26 iş günü, yıllık ücretli izin verilir. 
-                        */
-                        if (ilkcalistigiYilSayisi < 1)
-                        {
-                            hakEdilenIzinGunSayisi = ProjeConstants.IZIN_SURESI_0;
-                        }
-                        else if ((calistigiYilSayisi >= 1) && (calistigiYilSayisi <= 5))
-                        {
-                            hakEdilenIzinGunSayisi = ProjeConstants.IZIN_SURESI_1_5;
-                        }
-                        else if ((calistigiYilSayisi > 5) && (calistigiYilSayisi < 15))
-                        {
-                            hakEdilenIzinGunSayisi = ProjeConstants.IZIN_SURESI_6_15;
-                        }
-                        else if (calistigiYilSayisi >= 15)
-                        {
-                            hakEdilenIzinGunSayisi = ProjeConstants.IZIN_SURESI_16PLUS;
+                            }
+                            int calistigiYilSayisi = izinDonemiBasi.Year - izinDonemBasTar.Year;
+                            //int ilkcalistigiYilSayisi = izinDonemiBasi.Year - izinDonemBasTar.Year;
+                            int oncekiPrimgunSayisi = 0;
+                            oncekiPrimgunSayisi = ib.VakifOncesiPrimGunSayisi;
+                            if (oncekiPrimgunSayisi >= 360)
+                            {
+                                int ekGun = oncekiPrimgunSayisi / 360;
+                                calistigiYilSayisi += ekGun;
+                            }
+                            /*
+                                (1)  1 – 5 yıl olanlara (5 yıl dâhil) 14 iş günü, 
+                                (2)  6 – 15 yıl olanlara 20 iş günü, 
+                                (3)  15 yıl ve daha fazla olanlara 26 iş günü, yıllık ücretli izin verilir. 
+                            */
+
+                            if ((calistigiYilSayisi >= 1) && (calistigiYilSayisi <= 5))
+                            {
+                                hakEdilenIzinGunSayisi = ProjeConstants.IZIN_SURESI_1_5;
+                            }
+                            else if ((calistigiYilSayisi > 5) && (calistigiYilSayisi < 15))
+                            {
+                                hakEdilenIzinGunSayisi = ProjeConstants.IZIN_SURESI_6_15;
+                            }
+                            else if (calistigiYilSayisi >= 15)
+                            {
+                                hakEdilenIzinGunSayisi = ProjeConstants.IZIN_SURESI_16PLUS;
+                            }
+
                         }
 
                     }
+                    catch (Exception exception)
+                    {
+                        ExceptionHelper exHelper = new ExceptionHelper(exception);
+                        exHelper.PublishException();
+                    }
 
-                }
-                catch (Exception exception)
-                {
-                    ExceptionHelper exHelper = new ExceptionHelper(exception);
-                    exHelper.PublishException();
-                }
-
+                } 
             }
 
             return hakEdilenIzinGunSayisi;
@@ -495,6 +505,93 @@ namespace Model.Ortak
             sb.Append("İnsan Kaynakları Yönetim Sistemi</br>" + DateTime.Now.ToString("dd.MM.yyyy HH:mm"));
             sb.Append("</p>");
             sb.Append("<p style='color:gray; font-family: arial;font-size:xx-small;'>IKYS &trade; Bilgi Sistemleri Kısmı </p> ");
+            return sb;
+        }
+        public static void BilgiSistemMailGrubunaEPostaGonder(PersonelItem personelItem, string baslik )
+        {
+            string userto = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_BILGISISTEM_MAILGRUBU);
+
+            string from = "IKYS <ikys@tskgv.local>";
+            string subject = baslik;
+
+
+            string grupAdi = userto.Split('@')[0];
+            bool grupMu = UtilityHelper.IsGroup("TSKGV", grupAdi);//böyle bir grup var mı
+            if (grupMu)// varsa
+            {
+                List<UserPrincipal> uplist = UtilityHelper.GetGroupMembers("TSKGV", grupAdi);
+                var emaillist = uplist.Select(item => item.EmailAddress).ToList();
+                string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL);
+                foreach (var eposta in emaillist)
+                {
+
+                    StringBuilder tabloSB = PersonelBilgileriTablosunuOlustur(personelItem, baslik);
+                    
+                    MailHelper.EPostaGonder(from, eposta, subject, "</br>" + tabloSB.ToString(), smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
+
+                }
+            }
+        }
+        private static StringBuilder PersonelBilgileriTablosunuOlustur(PersonelItem personelItem, string baslik)
+        {
+            System.Text.StringBuilder sb = new StringBuilder();
+            sb.Append(@"
+                        <style>
+                            table {
+                              font-family: arial;
+                              border-collapse: collapse;
+                              width: 40%;
+                              font-size:smaller;
+                            }
+                            p {
+                              font-family: arial;
+                              font-size:smaller;
+                            }
+                            td, th {
+                              border: 1px solid black;
+                              text-align: left;
+                              padding: 8px;
+                            }
+                        </style>
+                        ");
+            sb.Append(baslik);
+            sb.Append("<p>");
+            sb.Append("</p>");
+
+            sb.Append("<table>");
+            sb.Append("<tr>");
+            sb.Append("<th colspan='2' style='text-align: center; background-color: #dddddd'>Personel Bilgileri</th>");
+            sb.Append("</tr>");
+            sb.Append("<tr>");
+            sb.Append("<th>Adı Soyadı</th>");
+            sb.Append("<td>" + personelItem.PersonelBilgileri.Adi + " " + personelItem.PersonelBilgileri.Soyadi+ "</td>");
+            sb.Append("</tr>");
+            sb.Append("<tr>");
+            sb.Append("<th>Kullanıcı Adı</th>");
+            sb.Append("<td>" + personelItem.PersonelBilgileri.KullaniciAdi + "</td>");
+            sb.Append("</tr>");
+            sb.Append("<tr>");
+            sb.Append("<th>E-Posta</th>");
+            sb.Append("<td>" + personelItem.IletisimBilgileri.InternetEPosta + "</td>");
+            sb.Append("</tr>");
+            sb.Append("<tr>");
+            sb.Append("<th>Telefon</th>");
+            sb.Append("<td>" + personelItem.IletisimBilgileri.CepTelefonu+ "</td>");
+            sb.Append("</tr>");
+            sb.Append("<tr>");
+            sb.Append("<th>Birimi</th>");
+            sb.Append("<td>" + personelItem.IsBilgileriItem.Birim?.Adi + "</td>");
+            sb.Append("</tr>");
+            sb.Append("<th>Ünvanı</th>");
+            sb.Append("<td>" + personelItem.IsBilgileriItem.Unvan?.Adi+ "</td>");
+            sb.Append("</tr>");
+           
+
+            sb.Append("</table><br/><br/>");
+            sb.Append("<p>");
+            sb.Append("IKYS.</br>" + DateTime.Now.ToString("dd.MM.yyyy HH:mm"));
+            sb.Append("</p>");
+            sb.Append("<p style='color:gray; font-family: arial;font-size:xx-small;'>TYS &trade; Bilgi Sistem Kısmı </p> ");
             return sb;
         }
         private static string UstBirimGetir(int parentId)

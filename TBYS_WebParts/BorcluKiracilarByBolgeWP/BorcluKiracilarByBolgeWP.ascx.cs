@@ -120,7 +120,7 @@ namespace TBYS_WebParts.BorcluKiracilarByBolgeWP
             int adetMer = merDataTable == null ? 0 : merDataTable.Rows.Count;
             int adetErz = erzDataTable == null ? 0 : erzDataTable.Rows.Count;
 
-            int adetGT = adetAnk + adetIst + adetIzm + adetMer;
+            int adetGT = adetAnk + adetIst + adetIzm + adetMer +adetErz;
 
             AnkKiraciSayisiCell.Text = adetAnk.ToString();
             IstKiraciSayisiCell.Text = adetIst.ToString();

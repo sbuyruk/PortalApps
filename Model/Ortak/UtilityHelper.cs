@@ -38,21 +38,7 @@ namespace Model.Ortak
         }
         public static string GenerateJpgId(string name)
         {
-            //DateTime dt = DateTime.Today;
-            name = name.Replace(" ", "");
-            name = name.Replace("Ç", "C");
-            name = name.Replace("ç", "c");
-            name = name.Replace("Ğ", "G");
-            name = name.Replace("ğ", "g");
-            name = name.Replace("İ", "I");
-            name = name.Replace("ı", "i");
-            name = name.Replace("Ö", "O");
-            name = name.Replace("ö", "o");
-            name = name.Replace("Ş", "S");
-            name = name.Replace("ş", "s");
-            name = name.Replace("Ü", "U");
-            name = name.Replace("ü", "u");
-            //long id = long.Parse(String.Format("{0:ssfff }", DateTime.Now));
+            name= ReplaceTurkishChars(name);
             return name;// +id;
         }
         public static DateTime TariheSaatEkle(DateTime tarih, string saatStr)
@@ -809,6 +795,19 @@ namespace Model.Ortak
             }
 
             return yonergeUrl;
+        }
+        public static string ReplaceTurkishChars(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+                return input;
+
+            return input
+                .Replace('ç', 'c').Replace('Ç', 'C')
+                .Replace('ğ', 'g').Replace('Ğ', 'G')
+                .Replace('ı', 'i').Replace('İ', 'I')
+                .Replace('ö', 'o').Replace('Ö', 'O')
+                .Replace('ş', 's').Replace('Ş', 'S')
+                .Replace('ü', 'u').Replace('Ü', 'U');
         }
     }
 }

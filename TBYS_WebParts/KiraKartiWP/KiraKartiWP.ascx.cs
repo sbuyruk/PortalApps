@@ -228,19 +228,19 @@ namespace TBYS_WebParts.KiraKartiWP
                     }
                     YuzolcumuCell.Text = tasinmaz.Yuzolcumu;
                     //KiralamaAmaciCell.Text = tasinmaz.KullanimSekli;
-                    if (tasinmaz.KatMulkiyeti)
-                    {
-                        NiteligiCell.Text = tasinmaz.Nitelik;
-                    }
-                    else
+                    if (tasinmaz.AltBolum)
                     {
                         BagimsizBolum bagimsizBolum = new BagimsizBolum();
                         bagimsizBolum = bagimsizBolum.Select<BagimsizBolum>(item.BolumId);
-                        if (bagimsizBolum != null) {
+                        if (bagimsizBolum != null)
+                        {
                             NiteligiCell.Text = bagimsizBolum.Nitelik;
                         }
                     }
-
+                    else
+                    {
+                        NiteligiCell.Text = tasinmaz.Nitelik;
+                    }
                 }
                 IliCell.Text = ili;
                 IlcesiCell.Text = ilcesi;

@@ -205,8 +205,10 @@ namespace Model.TBYS
                     A.SozlesmeId, 
                     SUM(
                         CASE 
-                            WHEN B.KatMulkiyeti = 0 THEN C.Metrekare 
-                            WHEN B.KatMulkiyeti = 1 THEN B.Metrekare 
+                            WHEN B.AltBolum = 1 THEN C.Metrekare 
+                            WHEN B.AltBolum = 0 THEN B.Metrekare 
+                            --WHEN B.KatMulkiyeti = 0 THEN C.Metrekare 
+                            --WHEN B.KatMulkiyeti = 1 THEN B.Metrekare 
                             ELSE 0
                         END
                     ) AS Metrekare

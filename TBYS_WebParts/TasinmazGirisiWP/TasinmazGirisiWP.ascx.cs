@@ -369,7 +369,10 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 BagisYiliTxt.Text = tasinmaz.BagisYili;
                 CiltNoTxt.Text = tasinmaz.CiltNo;
                 CinsiTxt.Text = tasinmaz.Cinsi;
+                MuhasebeyeKayitliDegerTxt.Value = tasinmaz.MuhasebeyeKayitliDeger.ToString();
                 EmlakBeyanDegeriTxt.Value = tasinmaz.EmlakBeyanDegeri.ToString();
+                GuncelRayicDegeriTxt.Value = tasinmaz.GuncelRayicDegeri.ToString();
+                TahminiRayicDegeriTxt.Value = tasinmaz.TahminiRayicDegeri.ToString();
                 TapuTasinmazNoTxt.Value = tasinmaz.TapuTasinmazNo;
                 InsaYiliTxt.Value = tasinmaz.InsaYili;
                 EmlakSicilNoTxt.Text = tasinmaz.EmlakSicilNo;
@@ -430,7 +433,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 BBNitelikTxt.Text = tasinmaz.BBNitelik;
                 AnaTasinmazNitelikTxt.Text = tasinmaz.AnaTasinmazNitelik;
                 BagimsizBolumSayisiTxt.Text = tasinmaz.BagimsizBolumSayisi.ToString();
-                KatMalikiSayisiTxt.Text = tasinmaz.KatMalikiSayisi.ToString();
+                MalikSayisiTxt.Text = tasinmaz.MalikSayisi.ToString();
                 formDolduMu = true;
             }
             catch (Exception ex)
@@ -454,10 +457,12 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             tasinmaz.BagisYili = BagisYiliTxt.Text;
             tasinmaz.CiltNo = CiltNoTxt.Text;
             tasinmaz.Cinsi = CinsiTxt.Text;
+            tasinmaz.MuhasebeyeKayitliDeger = MuhasebeyeKayitliDegerTxt.Value.ConvertToDecimal();
             tasinmaz.EmlakBeyanDegeri = EmlakBeyanDegeriTxt.Value.ConvertToDecimal();
+            tasinmaz.TahminiRayicDegeri = TahminiRayicDegeriTxt.Value.ConvertToDecimal();
+            tasinmaz.GuncelRayicDegeri = GuncelRayicDegeriTxt.Value.ConvertToDecimal();
             tasinmaz.TapuTasinmazNo = TapuTasinmazNoTxt.Value;
             tasinmaz.InsaYili = InsaYiliTxt.Value;
-            tasinmaz.TahminiRayicDegeri = TahminiRayicDegeriTxt.Value.ConvertToDecimal();
             tasinmaz.EmlakSicilNo = EmlakSicilNoTxt.Text;
             tasinmaz.Ilcesi = IlcesiDDL.SelectedItem.Text.ToString();
             tasinmaz.IlceId = IlcesiDDL.SelectedItem.Value.ConvertToInt();
@@ -509,7 +514,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             tasinmaz.BBNitelik = BBNitelikTxt.Text;
             tasinmaz.AnaTasinmazNitelik = AnaTasinmazNitelikTxt.Text;
             tasinmaz.BagimsizBolumSayisi = BagimsizBolumSayisiTxt.Text.ConvertToInt();
-            tasinmaz.KatMalikiSayisi = KatMalikiSayisiTxt.Text.ConvertToInt();
+            tasinmaz.MalikSayisi = MalikSayisiTxt.Text.ConvertToInt();
 
             int id = tasinmaz.Save();
             tasinmaz.Id = id;
@@ -564,8 +569,10 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 tasinmaz.BagisYili = BagisYiliTxt.Text;
                 tasinmaz.CiltNo = CiltNoTxt.Text;
                 tasinmaz.Cinsi = CinsiTxt.Text;
+                tasinmaz.MuhasebeyeKayitliDeger = MuhasebeyeKayitliDegerTxt.Value.ConvertToDecimal();
                 tasinmaz.EmlakBeyanDegeri = EmlakBeyanDegeriTxt.Value.ConvertToDecimal();
                 tasinmaz.TahminiRayicDegeri = TahminiRayicDegeriTxt.Value.ConvertToDecimal();
+                tasinmaz.GuncelRayicDegeri = GuncelRayicDegeriTxt.Value.ConvertToDecimal();
                 tasinmaz.TapuTasinmazNo = TapuTasinmazNoTxt.Value;
                 tasinmaz.InsaYili = InsaYiliTxt.Value;
                 tasinmaz.EmlakSicilNo = EmlakSicilNoTxt.Text;
@@ -620,7 +627,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 tasinmaz.BBNitelik = BBNitelikTxt.Text;
                 tasinmaz.AnaTasinmazNitelik = AnaTasinmazNitelikTxt.Text;
                 tasinmaz.BagimsizBolumSayisi = BagimsizBolumSayisiTxt.Text.ConvertToInt();
-                tasinmaz.KatMalikiSayisi = KatMalikiSayisiTxt.Text.ConvertToInt();
+                tasinmaz.MalikSayisi = MalikSayisiTxt.Text.ConvertToInt();
 
                 isSaved = tasinmaz.Update();
 

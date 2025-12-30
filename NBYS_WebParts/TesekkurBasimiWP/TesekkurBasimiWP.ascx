@@ -27,6 +27,10 @@
         <ContentTemplate>
             <div class="row mt-2">
                 <div class="form-group col">
+                    <label class="form-label" for="AyDDL">Gün </label>
+                    <asp:DropDownList ID="GunDDL" runat="server" CssClass="form-control form-select form-select-lg fw-bold" AutoPostBack="True" OnSelectedIndexChanged="GunDDL_SelectedIndexChanged" Style="height: auto" />
+                </div>
+                <div class="form-group col">
                     <label class="form-label" for="AyDDL">Ay </label>
                     <asp:DropDownList ID="AyDDL" runat="server" CssClass="form-control form-select form-select-lg fw-bold" AutoPostBack="True" OnSelectedIndexChanged="AyDDL_SelectedIndexChanged" Style="height: auto" />
                 </div>

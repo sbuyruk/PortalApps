@@ -61,7 +61,7 @@
             </div>
         </div>
         <div class="card-footer">
-            <asp:LinkButton ID="YeniKayitBtn" CssClass="btn btn-outline-success" runat="server" Text="Yeni Vasiyetçi Girişi" OnClick="YeniKayitBtn_Click"></asp:LinkButton>
+            <%--<asp:LinkButton ID="YeniKayitBtn" CssClass="btn btn-outline-success" runat="server" Text="Yeni Vasiyetçi Girişi" OnClick="YeniKayitBtn_Click"></asp:LinkButton>--%>
             <asp:LinkButton CssClass="btn btn-outline-success float-end" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
         </div>
 

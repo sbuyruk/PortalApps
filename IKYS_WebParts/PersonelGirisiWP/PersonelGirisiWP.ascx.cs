@@ -317,7 +317,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
             {
                 FillPersonelBilgileri(personel);
                 FillKimlikBilgileri(personel);
-                
+
                 FillIletisimBilgileri(personel);
                 FillAileBilgileriTable(personel);
                 FillOkulBilgileri(personel);
@@ -326,10 +326,10 @@ namespace IKYS_WebParts.PersonelGirisiWP
 
                 IsBilgileri ib = new IsBilgileri();
                 ib = ib.SelectByPersonelId(personel.Id);
-                if (ib!=null)//SB 27.10.2021 Yeşim hanım işten ayrılan personelin de izin bilgilerini görmek istedi //(ib.CalismaDurumu == ProjeConstants.PER_CALISIYOR_INT) 
+                if (ib != null)//SB 27.10.2021 Yeşim hanım işten ayrılan personelin de izin bilgilerini görmek istedi //(ib.CalismaDurumu == ProjeConstants.PER_CALISIYOR_INT) 
                 {
-                    FillIsBilgileri(personel,ib);
-                    FillKadrosuzIsBilgileri(personel,ib);
+                    FillIsBilgileri(personel, ib);
+                    FillKadrosuzIsBilgileri(personel, ib);
 
                     FillUcretliIzinDonemleriTable(personel);
                     FillIzinHareketleriTable(personel);
@@ -346,7 +346,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
         private void DereceKademeBilgileriniDoldur(Personel personel)
         {
             DereceKademeDegisim dereceKademeDegisim = new DereceKademeDegisim();
-            dereceKademeDegisim=dereceKademeDegisim.SelectByPersonelId(personel.Id);
+            dereceKademeDegisim = dereceKademeDegisim.SelectByPersonelId(personel.Id);
             if (dereceKademeDegisim != null)
             {
                 DereceTxt.Text = dereceKademeDegisim.Derece.ToString();
@@ -404,7 +404,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
         private void FillKadrosuzIsBilgileri(Personel personel, IsBilgileri isb)
         {
             //birim
-            UtilityHelper.SetDDLValue(BirimDDL,isb.BirimId.ToString());
+            UtilityHelper.SetDDLValue(BirimDDL, isb.BirimId.ToString());
             //Calisma Durumu
             UtilityHelper.SetDDLValue(KadrosuzCalismaDurumuDDL, isb.CalismaDurumu.ToString());
             if (KadrosuzCalismaDurumuDDL.SelectedValue.Equals(ProjeConstants.PER_CALISIYOR_INT.ToString()))
@@ -424,7 +424,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
             }
             //ise Bas Tar
             KadrosuzIsbasTarihiTxt.Value = isb.BaslamaTar.ConvertToDatetimeEmptyIfNull();
-            
+
         }
         private void FillBirimTxt()
         {
@@ -541,7 +541,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
             EvTelefonuTxt.Text = iletsimBilgileri.EvTelefonu;
             CepTelefonuTxt.Text = iletsimBilgileri.CepTelefonu;
             CepTelefonu2Txt.Text = iletsimBilgileri.CepTelefonu2;
-            IntranetEPostaTxt.Text = iletsimBilgileri.IntranetEPosta;
+            //IntranetEPostaTxt.Text = iletsimBilgileri.IntranetEPosta;
             InternetEPostaTxt.Text = iletsimBilgileri.InternetEPosta;
             OzelEPostaTxt.Text = iletsimBilgileri.OzelEPosta;
             PlakaTxt.Text = iletsimBilgileri.Plaka;
@@ -772,8 +772,11 @@ namespace IKYS_WebParts.PersonelGirisiWP
                 IzinHareket izinHareket = new IzinHareket();
                 IzinDonem izinDonem = new IzinDonem();
                 izinDonem = izinDonem.SelectByIzinTarihi(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT, today);
-
-                if (izinDonem != null)
+                if (izinDonem == null)
+                {
+                    izinDonem = new IzinDonem();
+                    izinDonem.IzinDonemiOlustur(personel, ProjeConstants.IZINTIPI_UCRETLI_INT, today, CurrentUserName);
+                } else if (izinDonem != null)
                 {
                     //DateTime izinDonemiBasi = izinDonem != null ? izinDonem.BaslangicTarihi : today.AddYears(-1);
                     DateTime izinDonemiSonu = izinDonem != null ? izinDonem.BitisTarihi : today.AddMonths(1); ;
@@ -974,7 +977,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
                 row.Controls.Add(BitTarCell);
 
                 TableCell SureCell = new TableCell();
-                SureCell.Text = item.Sure + " " + item.Birim + (item.IzinTipi==ProjeConstants.IZINTIPI_SUTIZNI_INT?"(Günde 1 Saat 30 Dk.)":"");
+                SureCell.Text = item.Sure + " " + item.Birim + (item.IzinTipi == ProjeConstants.IZINTIPI_SUTIZNI_INT ? "(Günde 1 Saat 30 Dk.)" : "");
                 row.Controls.Add(SureCell);
                 DigerIzinlerTable.Controls.Add(row);
             }
@@ -1349,7 +1352,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
             ListItem li1 = new ListItem(ProjeConstants.PER_CALISIYOR, ProjeConstants.PER_CALISIYOR_INT.ToString());
             ListItem li = new ListItem(ProjeConstants.PER_AYRILDI, ProjeConstants.PER_AYRILDI_INT.ToString());
             CalismaDurumuDDL.Items.Add(li);
-            CalismaDurumuDDL.Items.Add(li1);            
+            CalismaDurumuDDL.Items.Add(li1);
 
 
         }
@@ -1373,7 +1376,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
             AyrilmaSebebiDDL.Items.Add("Yaş Haddi");
             AyrilmaSebebiDDL.Items.Add("Şirkete Dönme");
 
-        }        
+        }
         private void FillKadrosuzAyrilmaSebebiDDL()
         {
             KadrosuzAyrilmaSebebiDDL.Items.Clear();
@@ -1539,7 +1542,8 @@ namespace IKYS_WebParts.PersonelGirisiWP
             }
 
 
-        }protected void UpdateIsBilgileriBtn_Click(object sender, EventArgs e)
+        }
+        protected void UpdateIsBilgileriBtn_Click(object sender, EventArgs e)
         {
             SetActiveTab("IsBilgileriLi");
             bool isBilgileriUpdated = false;
@@ -1598,8 +1602,8 @@ namespace IKYS_WebParts.PersonelGirisiWP
             personel.SicilNo = SicilNoTxt.Text.ConvertToInt();
             personel.KullaniciAdi = KullaniciAdiTxt.Text;
             personel.Asker_sivil = AskerSivilDDL.SelectedValue.ConvertToInt();
-            personel.Tahsili=TahsiliDDL.SelectedValue.ConvertToInt();
-            personel.Tipi=PersonelTipiDDL.SelectedItem.Value.ConvertToInt();
+            personel.Tahsili = TahsiliDDL.SelectedValue.ConvertToInt();
+            personel.Tipi = PersonelTipiDDL.SelectedItem.Value.ConvertToInt();
             personel.Id = personel.Save();
             return personel;
         }
@@ -1707,6 +1711,11 @@ namespace IKYS_WebParts.PersonelGirisiWP
                 isBilgileri = isBilgileri.SelectByPersonelId(personel.Id);
                 if (isBilgileri != null)
                 {
+                    // capture old values
+                    int oldBirimId = isBilgileri.BirimId;
+                    int oldGorevId = isBilgileri.GorevId;
+                    int oldCalismaDurumu = isBilgileri.CalismaDurumu;
+
                     isBilgileri.UnvanId = UnvanTanimDDL.SelectedItem.Value.ConvertToInt();
                     isBilgileri.GorevId = GorevTanimDDL.SelectedItem.Value.ConvertToInt();
                     isBilgileri.BirimId = BirimIdTxt.Text.ConvertToInt();
@@ -1737,6 +1746,29 @@ namespace IKYS_WebParts.PersonelGirisiWP
                             }
                         }
 
+                        // send mail if BirimId, GorevId or CalismaDurumu changed
+                        bool birimChanged = oldBirimId != isBilgileri.BirimId;
+                        bool gorevChanged = oldGorevId != isBilgileri.GorevId;
+                        bool calismaDurumuChanged = oldCalismaDurumu != isBilgileri.CalismaDurumu;
+
+                        if (birimChanged || gorevChanged || calismaDurumuChanged)
+                        {
+                            string baslik = "Personelin İş Bilgilerinde bilgilerinde değişiklik";
+
+                            try
+                            {
+                                if (calismaDurumuChanged)
+                                    if (isBilgileri.CalismaDurumu.Equals(ProjeConstants.PER_AYRILDI_INT))
+                                        baslik = "Personel İşten Ayrıldı";
+                                PersonelItem pi = new PersonelItem { PersonelId = personel.Id };
+                                IKYSOrtak.BilgiSistemMailGrubunaEPostaGonder(pi,baslik);
+                            }
+                            catch (Exception ex)
+                            {
+                                ExceptionHelper exHelper = new ExceptionHelper(ex);
+                                exHelper.PublishException();
+                            }
+                        }
                     }
                 }
             }
@@ -1752,6 +1784,10 @@ namespace IKYS_WebParts.PersonelGirisiWP
                 isBilgileri = isBilgileri.SelectByPersonelId(personel.Id);
                 if (isBilgileri != null)
                 {
+                    // capture old values
+                    int oldBirimId = isBilgileri.BirimId;
+                    int oldCalismaDurumu = isBilgileri.CalismaDurumu;
+
                     isBilgileri.BirimId = BirimDDL.SelectedItem.Value.ConvertToInt();
                     isBilgileri.BaslamaTar = KadrosuzIsbasTarihiTxt.Value.ConvertToDatetime();
                     isBilgileri.AyrilmaTar = KadrosuzAyrilmaTarihiTxt.Value.ConvertToDatetime();
@@ -1760,6 +1796,30 @@ namespace IKYS_WebParts.PersonelGirisiWP
                     isBilgileri.Aciklama = KadrosuzIsBilgileriAciklamaTxt.Text;
                     isBilgileri.Degistiren = CurrentUserName;
                     isSaved = isBilgileri.Update();
+
+                    if (isSaved)
+                    {
+                        bool birimChanged = oldBirimId != isBilgileri.BirimId;
+                        bool calismaDurumuChanged = oldCalismaDurumu != isBilgileri.CalismaDurumu;
+
+                        if (birimChanged || calismaDurumuChanged)
+                        {
+                            try
+                            {
+                                string baslik = "Personelin İş Bilgilerinde bilgilerinde değişiklik";
+                                if (calismaDurumuChanged)
+                                    if (isBilgileri.CalismaDurumu.Equals(ProjeConstants.PER_AYRILDI_INT))
+                                        baslik = "Personel İşten Ayrıldı";
+                                PersonelItem pi = new PersonelItem { PersonelId = personel.Id };
+                                IKYSOrtak.BilgiSistemMailGrubunaEPostaGonder(pi, baslik);
+                            }
+                            catch (Exception ex)
+                            {
+                                ExceptionHelper exHelper = new ExceptionHelper(ex);
+                                exHelper.PublishException();
+                            }
+                        }
+                    }
 
                 }
             }
@@ -1792,6 +1852,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
                 {
                     iletisimBilgileri = new IletisimBilgileri();
                     iletisimBilgileri.PersonelId = personel.Id;
+                    iletisimBilgileri.InternetEPosta = InternetEPostaTxt.Text;
                     iletisimBilgileri.Id = iletisimBilgileri.Save();
                 }
             }
@@ -1807,6 +1868,10 @@ namespace IKYS_WebParts.PersonelGirisiWP
                 iletisimBilgileri = iletisimBilgileri.SelectByPersonelId(personel.Id);
                 if (iletisimBilgileri != null)
                 {
+                    // capture old values
+                    string oldEmail = iletisimBilgileri.InternetEPosta ?? string.Empty;
+                    string oldPhone = iletisimBilgileri.CepTelefonu ?? string.Empty;
+
                     iletisimBilgileri.Adres = AdresTxt.Text;
                     iletisimBilgileri.CepTelefonu = CepTelefonuTxt.Text;
                     iletisimBilgileri.CepTelefonu2 = CepTelefonu2Txt.Text;
@@ -1815,7 +1880,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
                     iletisimBilgileri.Ili = IkametIliDDL.SelectedItem.Value;
                     iletisimBilgileri.Ilcesi = IkametIlcesiDDL.SelectedItem.Value.ConvertToInt();
                     iletisimBilgileri.InternetEPosta = InternetEPostaTxt.Text;
-                    iletisimBilgileri.IntranetEPosta = IntranetEPostaTxt.Text;
+                    //iletisimBilgileri.IntranetEPosta = IntranetEPostaTxt.Text;
                     iletisimBilgileri.OzelEPosta = OzelEPostaTxt.Text;
                     iletisimBilgileri.PersonelId = personel.Id;
                     iletisimBilgileri.PostaKodu = PostaKoduTxt.Text;
@@ -1823,6 +1888,31 @@ namespace IKYS_WebParts.PersonelGirisiWP
                     iletisimBilgileri.Plaka = PlakaTxt.Text;
 
                     iletisimSaved = iletisimBilgileri.Update();
+
+                    if (iletisimSaved)
+                    {
+                        string newEmail = iletisimBilgileri.InternetEPosta ?? string.Empty;
+                        string newPhone = iletisimBilgileri.CepTelefonu ?? string.Empty;
+
+                        bool emailAddedOrChanged = (!string.Equals(oldEmail, newEmail, StringComparison.OrdinalIgnoreCase) && !string.IsNullOrEmpty(newEmail));
+                        bool phoneAddedOrChanged = (!string.Equals(oldPhone, newPhone, StringComparison.OrdinalIgnoreCase) && !string.IsNullOrEmpty(newPhone));
+
+                        if (emailAddedOrChanged || phoneAddedOrChanged)
+                        {
+                            try
+                            {
+                                string baslik = "Personelin İletişim Bilgilerinde bilgilerinde değişiklik";
+
+                                PersonelItem pi = new PersonelItem { PersonelId = personel.Id };
+                                IKYSOrtak.BilgiSistemMailGrubunaEPostaGonder(pi,baslik);
+                            }
+                            catch (Exception ex)
+                            {
+                                ExceptionHelper exHelper = new ExceptionHelper(ex);
+                                exHelper.PublishException();
+                            }
+                        }
+                    }
                 }
             }
             return iletisimSaved;
@@ -1867,6 +1957,21 @@ namespace IKYS_WebParts.PersonelGirisiWP
                     IsBilgileri isb = IsBilgileriSave(personel);
                     //İletisim tablosuna personeli gir
                     IletisimBilgileri iletisim = IletisimBilgileriSave(personel);
+
+                    // send mail on first-time personel save
+                    try
+                    {
+                        string baslik = "Yeni Personel Girişi";
+
+                        PersonelItem pi = new PersonelItem { PersonelId = personel.Id };
+                        IKYSOrtak.BilgiSistemMailGrubunaEPostaGonder(pi, baslik);
+                    }
+                    catch (Exception ex)
+                    {
+                        ExceptionHelper exhMail = new ExceptionHelper(ex);
+                        exhMail.PublishException();
+                    }
+
                     //Aile, Egitim, Kurs,IsTecrube   tabloları ayrıca save edilecek
 
                     //hataya düşmediyse kayıt tamam
@@ -1968,7 +2073,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
             }
         }
         protected void PersonelListesiBtn_Click(object sender, EventArgs e)
-        {            
+        {
             if (SenderAppQS.Equals("EPL"))
             {
                 RedirectToPage(ProjeConstants.PAGE_ESKIPERSONEL_LIST + "?SecilenId=" + PersonelIdQS);
@@ -2031,7 +2136,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
             PersonelTipiAyarlari(isDuzenle);
         }
 
-        private void PersonelTipiAyarlari(bool isDuzenle=false)
+        private void PersonelTipiAyarlari(bool isDuzenle = false)
         {
             KimlikNav.Visible = true;
             IsBilgileriNav.Visible = false;
@@ -2070,6 +2175,53 @@ namespace IKYS_WebParts.PersonelGirisiWP
                     AileNav.Visible = true;
                     EgitimNav.Visible = true;
                     IzinNav.Visible = false;
+                }
+            }
+
+        }
+        protected void AdiTxt_TextChanged(object sender, EventArgs e)
+        {
+            if (String.IsNullOrEmpty(DestinationAppQS) || String.Equals(DestinationAppQS, ""))
+            {
+                if (!string.IsNullOrEmpty(AdiTxt.Text) && !string.IsNullOrEmpty(SoyadiTxt.Text))
+                {
+                    string adiRaw = AdiTxt.Text.Trim();
+                    string adiInitials = string.Empty;
+                    string[] parts = adiRaw.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (string part in parts)
+                    {
+                        string cleaned = UtilityHelper.ReplaceTurkishChars(part).Trim();
+                        if (!string.IsNullOrEmpty(cleaned))
+                            adiInitials += cleaned.Substring(0, 1).ToLower();
+                    }
+
+                    string soyadi = UtilityHelper.ReplaceTurkishChars(SoyadiTxt.Text.Trim().ToLower());
+                    string kullanici = (adiInitials.Length > 0 ? adiInitials : "") + soyadi;
+                    KullaniciAdiTxt.Text = kullanici;
+                    InternetEPostaTxt.Text = kullanici + "@tskgv.org.tr";
+                }
+            }
+        }
+        protected void SoyadiTxt_TextChanged(object sender, EventArgs e)
+        {
+            if (String.IsNullOrEmpty(DestinationAppQS) || String.Equals(DestinationAppQS, ""))
+            {
+                if (!string.IsNullOrEmpty(AdiTxt.Text) && !string.IsNullOrEmpty(SoyadiTxt.Text))
+                {
+                    string adiRaw = AdiTxt.Text.Trim();
+                    string adiInitials = string.Empty;
+                    string[] parts = adiRaw.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (string part in parts)
+                    {
+                        string cleaned = UtilityHelper.ReplaceTurkishChars(part).Trim();
+                        if (!string.IsNullOrEmpty(cleaned))
+                            adiInitials += cleaned.Substring(0, 1).ToLower();
+                    }
+
+                    string soyadi = UtilityHelper.ReplaceTurkishChars(SoyadiTxt.Text.Trim()).ToLower();
+                    string kullanici = (adiInitials.Length > 0 ? adiInitials : "") + soyadi;
+                    KullaniciAdiTxt.Text = kullanici;
+                    InternetEPostaTxt.Text = kullanici + "@tskgv.org.tr";
                 }
             }
 

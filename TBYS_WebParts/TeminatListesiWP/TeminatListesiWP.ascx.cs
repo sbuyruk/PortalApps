@@ -148,7 +148,12 @@ namespace TBYS_WebParts.TeminatListesiWP
         }
         private string CreateDataTable(string jsonData)
         {
-
+            string sozlesmeBtn=string.Empty;
+            if (BolgeIdQS.ConvertToInt() == ProjeConstants.BOLGE_HEPSI_INT || BolgeIdQS.ConvertToInt() == ProjeConstants.BOLGE_GENELMUDURLUK_INT)
+            {
+                sozlesmeBtn = "{ data: 'Sozlesme' },{ data: 'Teminat' },";
+            }
+            
             string tableString = @"
         jQuery(document).ready(function () {
 
@@ -164,8 +169,7 @@ namespace TBYS_WebParts.TeminatListesiWP
                     { data: 'IadeTeminatTutari' },
                     { data: 'KalanTeminatTutari' },
                     { data: 'Adres', 'width': '20%' },
-                    { data: 'Sozlesme' },
-                    { data: 'Teminat' },
+                    "+ sozlesmeBtn + @"
 
                 ],
                 'order': [[0, 'asc']],//AdiSoyadi Sıralı

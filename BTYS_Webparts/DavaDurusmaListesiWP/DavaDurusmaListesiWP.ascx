@@ -21,7 +21,7 @@
         <div class="card-body">
             <div class="form-group col-2">
                 <asp:Label CssClass="form-label fw-semibold m-1" runat="server" for="DavaDurumuDDL">Dava Durumu</asp:Label>
-                <asp:DropDownList ID="DavaDurumuDDL" runat="server" CssClass="form-select-lg" OnSelectedIndexChanged="DavaDurumuDDL_SelectedIndexChanged" AutoPostBack="true" Style="height: auto"></asp:DropDownList>
+                <asp:DropDownList ID="DavaDurumuDDL" runat="server" CssClass="form-select form-select-lg fw-bold" OnSelectedIndexChanged="DavaDurumuDDL_SelectedIndexChanged" AutoPostBack="true" Style="height: auto"></asp:DropDownList>
             </div>
             <asp:UpdatePanel ID="UpdatePanel4" runat="server" UpdateMode="Conditional" ViewStateMode="Enabled">
                 <ContentTemplate>

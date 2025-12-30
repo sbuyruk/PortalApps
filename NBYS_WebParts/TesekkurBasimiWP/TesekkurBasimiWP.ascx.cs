@@ -28,6 +28,30 @@ namespace NBYS_WebParts.TesekkurBasimiWP
             InitializeControl();
             this.ChromeType = PartChromeType.None;
         }
+        private string SecilenGunQS
+        {
+            get
+            {
+
+                if (ViewState["SecilenGun"] == null)
+                {
+                    if (Page.Request.QueryString["SecilenGun"] != null)
+                    {
+                        ViewState["SecilenGun"] = Page.Request.QueryString["SecilenGun"];
+                    }
+                    else
+                    {
+                        ViewState["SecilenGun"] = string.Empty;
+                    }
+                }
+                return ViewState["SecilenGun"].ToString();
+            }
+
+            set
+            {
+                ViewState["SecilenGun"] = value;
+            }
+        }
         private string SecilenAyQS
         {
             get
@@ -145,8 +169,15 @@ namespace NBYS_WebParts.TesekkurBasimiWP
         }
         private void FillDropDownList()
         {
+            GunDDLDoldur();
             AyDDLDoldur();
             YilDDLDoldur();
+        }
+        private void GunDDLDoldur()
+        {
+
+            GunDDL.Items.Add(new ListItem("1-15", "1"));
+            GunDDL.Items.Add(new ListItem("16-Ay Sonu", "2"));
         }
         private void AyDDLDoldur()
         {
@@ -177,6 +208,10 @@ namespace NBYS_WebParts.TesekkurBasimiWP
         {
             try
             {
+                string gun = !string.IsNullOrEmpty(SecilenGunQS) ? SecilenGunQS : DateTime.Today.Day.ToString();
+                UtilityHelper.SetDDLValue(GunDDL, gun);
+                SecilenGunQS = gun;
+
                 string ay = !string.IsNullOrEmpty(SecilenAyQS) ? SecilenAyQS : DateTime.Today.Month.ToString();
                 UtilityHelper.SetDDLValue(AyDDL, ay);
                 SecilenAyQS = ay;
@@ -298,9 +333,19 @@ namespace NBYS_WebParts.TesekkurBasimiWP
             var queryString = string.Format("?Bastar={0}&Bittar={1}", SecilenBastarQS, SecilenBittarQS);
             RedirectToPage(ProjeConstants.PAGE_TESEKKURBELGESI_VIEWER + queryString);
         }
+        protected void GunDDL_SelectedIndexChanged(object sender, EventArgs e)
+        {
 
+            SecilenGunQS = GunDDL.SelectedItem.Value.ToString();
+            SetSecilenBasTarBitTar();
+            FillDurumValues();
+            //KayitGetir();
+        }
         private void SetSecilenBasTarBitTar()
         {
+            int gun = GunDDL.SelectedItem.Value.ConvertToInt();
+            int basgun = gun == 1 ? 1 : 16;
+
             int ay = AyDDL.SelectedItem.Value.ConvertToInt();
             int yil = YilDDL.SelectedItem.Value.ConvertToInt();
 
@@ -309,15 +354,14 @@ namespace NBYS_WebParts.TesekkurBasimiWP
 
             if (ay == 0)
             {
-                bastar = new DateTime(yil, 1, 1);
+                bastar = new DateTime(yil, 1, basgun);
                 bittar = bastar.AddYears(1).AddDays(-1);
             }
             else
             {
-
-                bastar = new DateTime(yil, ay, 1);
-                DateTime basGun = new DateTime(yil, ay, 1).AddMonths(1).AddDays(-1);
-                bittar = new DateTime(yil, ay, basGun.Day);
+                bastar = new DateTime(yil, ay, basgun);
+                var bitgun = gun == 1 ? bastar.AddDays(14) : new DateTime(bastar.Year, bastar.Month, 1).AddMonths(1).AddDays(-1);
+                bittar = new DateTime(yil, ay, bitgun.Day);
 
             }
             SecilenBastarQS = bastar.ConvertToDatetimeEmptyIfNull();

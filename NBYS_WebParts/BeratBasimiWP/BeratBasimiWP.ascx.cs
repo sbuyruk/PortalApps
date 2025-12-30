@@ -173,50 +173,50 @@ namespace NBYS_WebParts.BeratBasimiWP
 
             Armagan armagan = new Armagan();
             //Genel Müdürlük
-            DataTable gmal = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_ALTINID, ProjeConstants.BOLGE_ANKARA_INT);
-            DataTable gmgum = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_GUMUSID, ProjeConstants.BOLGE_ANKARA_INT);
-            DataTable gmbro = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_BRONZID, ProjeConstants.BOLGE_ANKARA_INT);
+            DataTable ankAl = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_ALTINID, ProjeConstants.BOLGE_ANKARA_INT);
+            DataTable ankGum = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_GUMUSID, ProjeConstants.BOLGE_ANKARA_INT);
+            DataTable ankBro = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_BRONZID, ProjeConstants.BOLGE_ANKARA_INT);
 
 
-            FillTable(gmal, AnkATable, AnkAltinBtn, AnkAltinEtiketBtn, AnkAltinDurumChk);
-            FillTable(gmgum, AnkGTable, AnkGumusBtn, AnkGumusEtiketBtn, AnkGumusDurumChk);
-            FillTable(gmbro, AnkBTable, AnkBronzBtn, AnkBronzEtiketBtn, AnkBronzDurumChk);
+            FillTable(ankAl, AnkATable, AnkAltinBtn, AnkAltinEtiketBtn, AnkAltinDurumChk);
+            FillTable(ankGum, AnkGTable, AnkGumusBtn, AnkGumusEtiketBtn, AnkGumusDurumChk);
+            FillTable(ankBro, AnkBTable, AnkBronzBtn, AnkBronzEtiketBtn, AnkBronzDurumChk);
 
             //İstanbul
-            DataTable istal = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_ALTINID, ProjeConstants.BOLGE_ISTANBUL_INT);
-            DataTable istgum = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_GUMUSID, ProjeConstants.BOLGE_ISTANBUL_INT);
-            DataTable istbro = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_BRONZID, ProjeConstants.BOLGE_ISTANBUL_INT);
+            DataTable istAlt = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_ALTINID, ProjeConstants.BOLGE_ISTANBUL_INT);
+            DataTable istGum = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_GUMUSID, ProjeConstants.BOLGE_ISTANBUL_INT);
+            DataTable istBro = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_BRONZID, ProjeConstants.BOLGE_ISTANBUL_INT);
 
-            FillTable(istal, IstATable, IstAltinBtn, IstAltinEtiketBtn, IstAltinDurumChk);
-            FillTable(istgum, IstGTable, IstGumusBtn, IstGumusEtiketBtn, IstGumusDurumChk);
-            FillTable(istbro, IstBTable, IstBronzBtn, IstBronzEtiketBtn, IstBronzDurumChk);
+            FillTable(istAlt, IstATable, IstAltinBtn, IstAltinEtiketBtn, IstAltinDurumChk);
+            FillTable(istGum, IstGTable, IstGumusBtn, IstGumusEtiketBtn, IstGumusDurumChk);
+            FillTable(istBro, IstBTable, IstBronzBtn, IstBronzEtiketBtn, IstBronzDurumChk);
 
             //İzmir
-            DataTable izmal = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_ALTINID, ProjeConstants.BOLGE_IZMIR_INT);
-            DataTable izmgum = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_GUMUSID, ProjeConstants.BOLGE_IZMIR_INT);
-            DataTable izmbro = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_BRONZID, ProjeConstants.BOLGE_IZMIR_INT);
+            DataTable izmAlt = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_ALTINID, ProjeConstants.BOLGE_IZMIR_INT);
+            DataTable izmGum = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_GUMUSID, ProjeConstants.BOLGE_IZMIR_INT);
+            DataTable izmBro = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_BRONZID, ProjeConstants.BOLGE_IZMIR_INT);
 
-            FillTable(izmal, IzmATable, IzmAltinBtn, IzmAltinEtiketBtn, IzmAltinDurumChk);
-            FillTable(izmgum, IzmGTable, IzmGumusBtn, IzmGumusEtiketBtn, IzmGumusDurumChk);
-            FillTable(izmbro, IzmBTable, IzmBronzBtn, IzmBronzEtiketBtn, IzmBronzDurumChk);
+            FillTable(izmAlt, IzmATable, IzmAltinBtn, IzmAltinEtiketBtn, IzmAltinDurumChk);
+            FillTable(izmGum, IzmGTable, IzmGumusBtn, IzmGumusEtiketBtn, IzmGumusDurumChk);
+            FillTable(izmBro, IzmBTable, IzmBronzBtn, IzmBronzEtiketBtn, IzmBronzDurumChk);
 
             //Mersin
-            DataTable meral = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_ALTINID, ProjeConstants.BOLGE_MERSIN_INT);
-            DataTable mergum = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_GUMUSID, ProjeConstants.BOLGE_MERSIN_INT);
-            DataTable merbro = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_BRONZID, ProjeConstants.BOLGE_MERSIN_INT);
+            DataTable merAlt = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_ALTINID, ProjeConstants.BOLGE_MERSIN_INT);
+            DataTable merGum = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_GUMUSID, ProjeConstants.BOLGE_MERSIN_INT);
+            DataTable merBro = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_BRONZID, ProjeConstants.BOLGE_MERSIN_INT);
 
-            FillTable(meral, MerATable, MerAltinBtn, MerAltinEtiketBtn, MerAltinDurumChk);
-            FillTable(mergum, MerGTable, MerGumusBtn, MerGumusEtiketBtn, MerGumusDurumChk);
-            FillTable(merbro, MerBTable, MerBronzBtn, MerBronzEtiketBtn, MerBronzDurumChk);
+            FillTable(merAlt, MerATable, MerAltinBtn, MerAltinEtiketBtn, MerAltinDurumChk);
+            FillTable(merGum, MerGTable, MerGumusBtn, MerGumusEtiketBtn, MerGumusDurumChk);
+            FillTable(merBro, MerBTable, MerBronzBtn, MerBronzEtiketBtn, MerBronzDurumChk);
 
             //Erzurum
-            DataTable erzal = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_ALTINID, ProjeConstants.BOLGE_ERZURUM_INT);
-            DataTable erzgum = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_GUMUSID, ProjeConstants.BOLGE_ERZURUM_INT);
-            DataTable erzbro = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_BRONZID, ProjeConstants.BOLGE_ERZURUM_INT);
+            DataTable erzAlt = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_ALTINID, ProjeConstants.BOLGE_ERZURUM_INT);
+            DataTable erzGum = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_GUMUSID, ProjeConstants.BOLGE_ERZURUM_INT);
+            DataTable erzBro = armagan.SelectCountDurumByBolgeBasTarBitTar(SecilenBastarQS.ConvertToDatetime(), SecilenBittarQS.ConvertToDatetime(), ProjeConstants.ARMAGAN_BRONZID, ProjeConstants.BOLGE_ERZURUM_INT);
 
-            FillTable(erzal, ErzATable, ErzAltinBtn, ErzAltinEtiketBtn, ErzAltinDurumChk);
-            FillTable(erzgum, ErzGTable, ErzGumusBtn, ErzGumusEtiketBtn, ErzGumusDurumChk);
-            FillTable(erzbro, ErzBTable, ErzBronzBtn, ErzBronzEtiketBtn, ErzBronzDurumChk);
+            FillTable(erzAlt, ErzATable, ErzAltinBtn, ErzAltinEtiketBtn, ErzAltinDurumChk);
+            FillTable(erzGum, ErzGTable, ErzGumusBtn, ErzGumusEtiketBtn, ErzGumusDurumChk);
+            FillTable(erzBro, ErzBTable, ErzBronzBtn, ErzBronzEtiketBtn, ErzBronzDurumChk);
 
         }
         private void SetButtonsToFalse()
