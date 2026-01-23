@@ -118,7 +118,7 @@
                                 <asp:TableCell ID="MerGuncellemeDurumuCell" CssClass="alert-warning border-dark"></asp:TableCell>
                             </asp:TableRow>
                             <asp:TableRow HorizontalAlign="Center">
-                                <asp:TableCell CssClass="alert-primary border-dark">Mersin Bölgesi</asp:TableCell>
+                                <asp:TableCell CssClass="alert-primary border-dark">Erzurum Bölgesi</asp:TableCell>
                                 <asp:TableCell ID="ErzSBIlCell" CssClass="alert-primary border-dark"></asp:TableCell>
                                 <asp:TableCell ID="ErzSBIlceCell" CssClass="alert-primary border-dark"></asp:TableCell>
                                 <asp:TableCell ID="ErzKOIlCell" CssClass="alert-success border-dark"></asp:TableCell>

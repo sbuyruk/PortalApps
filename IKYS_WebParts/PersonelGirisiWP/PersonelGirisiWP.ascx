@@ -258,15 +258,12 @@
                                                 <asp:DropDownList ID="UnvanTanimDDL" runat="server" CssClass="form-control form-select form-select-lg"></asp:DropDownList>
                                             </div>
                                             <div class="form-group m-0">
-                                                <label class="form-label fw-semibold" for="GorevTanimDDL">Görevi</label>
-                                                <asp:DropDownList ID="GorevTanimDDL" runat="server" CssClass="form-control form-select form-select-lg" OnSelectedIndexChanged="GorevTanimDDL_SelectedIndexChanged" AutoPostBack="true"></asp:DropDownList>
+                                                <label class="form-label fw-semibold" for="SubeTxt">Şubesi/Birimi</label>
+                                                <asp:DropDownList ID="BirimDDL" runat="server" class="form-control form-select form-select-lg" AutoPostBack="true" OnSelectedIndexChanged="BirimDDL_SelectedIndexChanged"></asp:DropDownList>
                                             </div>
                                             <div class="form-group m-0">
-                                                <label class="form-label fw-semibold" for="SubeTxt">Şubesi/Birimi</label>
-                                                <asp:TextBox ID="BirimAdiTxt" runat="server" CssClass="form-control" ToolTip="Şubesi/Birimi" type="text" ReadOnly="true"></asp:TextBox>
-                                                <div style="display: none">
-                                                    <asp:TextBox ID="BirimIdTxt" runat="server" CssClass="form-control form-select form-select-lg" type="text" ReadOnly="true"></asp:TextBox>
-                                                </div>
+                                                <label class="form-label fw-semibold" for="GorevTanimDDL">Görevi</label>
+                                                <asp:DropDownList ID="GorevTanimDDL" runat="server" CssClass="form-control form-select form-select-lg" ></asp:DropDownList>
                                             </div>
                                             <div class="form-group m-0">
                                                 <label class="form-label fw-semibold" for="IsbasTarTxt">İşe Baş.Tar.</label>
@@ -341,8 +338,8 @@
                                     <div class="form-group row">
                                         <div class="col">
                                             <div class="form-group">
-                                                <label class="form-label fw-semibold" for="BirimDDL">Birim/Şube</label>
-                                                <asp:DropDownList ID="BirimDDL" runat="server" class="form-control form-select form-select-lg"></asp:DropDownList>
+                                                <label class="form-label fw-semibold" for="KadrosuzBirimDDL">Birim/Şube</label>
+                                                <asp:DropDownList ID="KadrosuzBirimDDL" runat="server" class="form-control form-select form-select-lg"></asp:DropDownList>
                                             </div>
                                             <div class="form-group m-0">
                                                 <label class="form-label fw-semibold" for="KadrosuzIsbasTarihiTxt">İşe Baş.Tar.</label>

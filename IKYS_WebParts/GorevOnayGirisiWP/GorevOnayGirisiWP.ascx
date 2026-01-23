@@ -13,6 +13,31 @@
         color: #6c757d !important; /* Gri yazı rengi */
         pointer-events: auto; /* Kullanıcı etkileşimi aktif */
     }
+    /* Summernote içeriğindeki ul/ol stili zorla */
+    .note-editor .note-editable ul {
+        list-style-type: disc !important; /* maddelerin daire olmasını sağlar */
+        list-style-position: outside !important; /* dışta bırak, daha görünür olur */
+        margin-left: 1.25rem !important; /* girinti */
+        padding-left: 1.25rem !important;
+        color: inherit !important; /* sembol rengini içeriğin rengiyle eşitle */
+    }
+
+        /* içindeki li öğelerinin doğru davranması için */
+        .note-editor .note-editable ul li {
+            display: list-item !important;
+        }
+
+            /* alternatif: marker stilini modern tarayıcılarda ayarlamak istersen */
+            .note-editor .note-editable ul li::marker {
+                color: inherit !important;
+            }
+
+    /* ol için (sayıların davranışını garanti et) */
+    .note-editor .note-editable ol {
+        list-style-type: decimal !important;
+        margin-left: 1.25rem !important;
+        padding-left: 1.25rem !important;
+    }
 </style>
 <script type="text/javascript">
     function OpenModal() {
@@ -30,7 +55,6 @@
             return;
         }
 
-        // "dd.mm.yyyy" + "hh:mm" -> "yyyy-mm-ddThh:mm"
         var startParts = startDateStr.split('.');
         var endParts = endDateStr.split('.');
         var startDateTime = new Date(`${startParts[2]}-${startParts[1]}-${startParts[0]}T${startTimeStr}`);
@@ -41,14 +65,14 @@
             $('#SureGunTxt').val("0");
             $('#SureSaatTxt').val("0");
             $('#SureDakikaTxt').val("0");
-            // SaveBtn görünmez olsun
             var saveBtnId = '<%= SaveBtn.ClientID %>';
             $('#' + saveBtnId).hide();
             return;
         }
-        // SaveBtn görünür olsun
+
         var saveBtnId = '<%= SaveBtn.ClientID %>';
         $('#' + saveBtnId).show();
+
         var diffMins = Math.floor(diffMs / (1000 * 60));
         var days = Math.floor(diffMins / (60 * 24));
         var hours = Math.floor((diffMins % (60 * 24)) / 60);
@@ -65,77 +89,99 @@
         __doPostBack('BitSaatDDL', '');
     }
 
-    // Sayfa yüklendiğinde VEYA UpdatePanel sonrası çalışır
-    Sys.Application.add_load(function () {
-        $('#BaslangicTarihiTxt').datepicker({
+    function setupDatepickers() {
+        var common = {
             dateFormat: 'dd.mm.yy',
             changeMonth: true,
             changeYear: true,
-            firstDay: 1, // Haftayı Pazartesi başlat
+            firstDay: 1,
             dayNamesMin: ['Paz', 'Pts', 'Sal', 'Çar', 'Per', 'Cum', 'Cts'],
-            monthNames: ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
-                'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'],
-            monthNamesShort: ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz',
-                'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'],
-            onSelect: function () {
-                CalculateFullDateTimeDiff();
-            }
-        });
+            monthNames: ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'],
+            monthNamesShort: ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz', 'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'],
+            onSelect: function () { CalculateFullDateTimeDiff(); }
+        };
 
-        $('#BitisTarihiTxt').datepicker({
-            dateFormat: 'dd.mm.yy',
-            changeMonth: true,
-            changeYear: true,
-            firstDay: 1, // Haftayı Pazartesi başlat
-            dayNamesMin: ['Paz', 'Pts', 'Sal', 'Çar', 'Per', 'Cum', 'Cts'],
-            monthNames: ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran',
-                'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'],
-            monthNamesShort: ['Oca', 'Şub', 'Mar', 'Nis', 'May', 'Haz',
-                'Tem', 'Ağu', 'Eyl', 'Eki', 'Kas', 'Ara'],
-            onSelect: function () {
-                CalculateFullDateTimeDiff();
-            }
-        });
-    });
+        $('#BaslangicTarihiTxt').datepicker(common);
+        $('#BitisTarihiTxt').datepicker(common);
+    }
+
     function RegisterDDLChangeHandlers() {
         $('#BasSaatDDL, #BitSaatDDL, #BaslangicTarihiTxt, #BitisTarihiTxt').off('change').on('change', function () {
             CalculateFullDateTimeDiff();
         });
     }
-    $(document).ready(function () {
 
-        // Sayfa yüklendiğinde tarih ve saat farkını hesapla
+    // Initialize or re-initialize Summernote safely
+    function InitializeSummernote() {
+        try {
+            var $editor = $('#GorevinSebebiTxt');
+            if ($editor.length === 0) return;
 
-        CalculateFullDateTimeDiff();
+            // Eğer zaten init edilmişse destroy et (temiz state)
+            if ($editor.next().hasClass('note-editor')) {
+                try { $editor.summernote('destroy'); } catch (e) { /* ignore */ }
+            }
 
+            $editor.summernote({
+                lang: 'tr-TR',
+                height: 130,
+                focus: false, // önemli: selection bazlı active state'in gelmesini engeller
+                toolbar: [
+                    ['style', ['bold', 'italic', 'underline']],
+                    ['para', ['ul', 'ol', 'paragraph']]
+                ],
+                popover: { image: [], link: [], air: [] }
+            });
 
+            // küçük gecikmeyle toolbar üzerindeki kalan 'active' sınıflarını temizle
+            setTimeout(function () {
+                $('.note-toolbar .note-btn.active').removeClass('active');
+            }, 60);
+
+        } catch (ex) {
+            console && console.error && console.error('InitializeSummernote error', ex);
+        }
+    }
+
+    // Tek bir yerden başlangıç - hem ilk yükleme hem UpdatePanel sonrası için güvenli
+    $(function () {
+        setupDatepickers();
         RegisterDDLChangeHandlers();
+        CalculateFullDateTimeDiff();
+        InitializeSummernote();
 
-        if (typeof Sys !== 'undefined') {
-            Sys.WebForms.PageRequestManager.getInstance().add_endRequest(function () {
-                RegisterDDLChangeHandlers(); // UpdatePanel sonrası yeniden bağlanır
+        // PageRequestManager ile partial postbackleri ele al
+        if (typeof Sys !== 'undefined' && Sys.WebForms && Sys.WebForms.PageRequestManager) {
+            var prm = Sys.WebForms.PageRequestManager.getInstance();
+
+            // Partial postback başlamadan önce editörü destroy et - böylece DOM/State kalmaz
+            prm.add_beginRequest(function () {
+                try {
+                    var $ed = $('#GorevinSebebiTxt');
+                    if ($ed.length && $ed.next().hasClass('note-editor')) {
+                        $ed.summernote('destroy');
+                    }
+                } catch (e) { /* ignore */ }
+            });
+
+            // Partial postback bittikten sonra yeniden setup yap
+            prm.add_endRequest(function () {
+                try {
+                    // Tarih/saat handler'larını tekrar bağla
+                    setupDatepickers();
+                    RegisterDDLChangeHandlers();
+
+                    // yeniden init editor
+                    InitializeSummernote();
+
+                    // ve ekstra temizleme (küçük gecikmeyle)
+                    setTimeout(function () {
+                        $('.note-toolbar .note-btn.active').removeClass('active');
+                    }, 60);
+                } catch (e) { console && console.error && console.error(e); }
             });
         }
-        ////tarih saat doluysa Harcırah butonunu görünür olsun
-        //if ($('#BaslangicTarihiTxt').val() != "" && $('#BitisTarihiTxt').val() != "" && $('#BasSaatDDL').val() != "" && $('#BitSaatDDL').val() != "") {
-        //    /*$('#HarcirahHesaplaDiv').show();*/
-        //    document.getElementById('HarcirahHesaplaDiv').style.display = "block";
-        //} else {
-        //    /*$('#HarcirahHesaplaDiv').hide();*/
-        //    document.getElementById('HarcirahHesaplaDiv').style.display = "none";
-        //}
     });
-
-    //var prm = Sys.WebForms.PageRequestManager.getInstance();
-    //if (prm != null) {
-    //    prm.add_endRequest(function (sender, e) {
-    //        if (sender._postBackSettings.panelsToUpdate != null) {
-
-    //            CalculateFullDateTimeDiff()
-    //        }
-    //    });
-    //};
-
 </script>
 <div class="container w-75 ">
     <asp:UpdatePanel ID="TableUpdatePanel" runat="server">
@@ -150,10 +196,10 @@
                     </h3>
                 </div>
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col form-group p-1 col-2" id="PersonelDiv" runat="server">
-                            <label class="form-label fw-semibold p-1" for="PersonelDDL">Personel Seçimi</label>
-                            <asp:DropDownList ID="PersonelDDL" runat="server" CssClass="form-control form-select form-select-lg" OnSelectedIndexChanged="PersonelDDL_SelectedIndexChanged" AutoPostBack="true" />
+                    <div class="row gap-3 m-0">
+                        <div class="row form-group p-1 col-4 m-0" id="PersonelDiv" runat="server">
+                            <label class="col form-label fw-semibold p-1" for="PersonelDDL">Personel Seçimi</label>
+                            <asp:DropDownList ID="PersonelDDL" runat="server" CssClass="col form-control form-select form-select-lg" OnSelectedIndexChanged="PersonelDDL_SelectedIndexChanged" AutoPostBack="true" />
                         </div>
 
                         <div class="col checkbox">
@@ -163,11 +209,11 @@
                             </label>
                         </div>
                     </div>
-                    <div class="form-group p-2">
-                        <div class="row">
-                            <div class="col border p-2 me-2">
+                    <div class="form-group p-2 m-0">
+                        <div class="row m-0">
+                            <div class="col border p-2 m-0">
                                 <div class="row">
-                                    <div class="col-8">
+                                    <div class="col-5">
                                         <div class="form-group form-label">
                                             <label class="form-label fw-semibold w-sem" for="BaslangicTarihi">Başlangıç Tarihi</label>
                                             <asp:TextBox ID="BaslangicTarihiTxt" runat="server" CssClass="form-control disabled-look"
@@ -178,25 +224,10 @@
                                             <asp:TextBox ID="BitisTarihiTxt" runat="server" CssClass="form-control disabled-look"
                                                 ClientIDMode="Static" OnTextChanged="BitisTarihiTxt_TextChanged" AutoPostBack="True" placeholder="gg.aa.yyyy"></asp:TextBox>
                                         </div>
-                                        <div class="form-group form-label">
-                                            <label class="form-label fw-semibold" for="SureGunTxt">Süre Gün</label>
-                                            <asp:TextBox ID="SureGunStrTxt" runat="server" CssClass="form-control disabled-look"
-                                                ClientIDMode="Static" placeholder="Süre (gün)"></asp:TextBox>
-                                        </div>
-                                        <div class="form-group form-label" style="display: none">
-                                            <label class="form-label" for="SureGunTxt">Süre Gün</label>
-                                            <asp:TextBox ID="SureGunTxt" runat="server" CssClass="form-control"
-                                                ClientIDMode="Static" placeholder="Süre (gün)"></asp:TextBox>
-                                            <asp:TextBox ID="SureDakikaTxt" runat="server" CssClass="form-control"
-                                                ClientIDMode="Static" placeholder="Süre (gün)"></asp:TextBox>
-                                        </div>
-                                        <div class="form-group form-label">
-                                            <label class="form-label fw-semibold" for="SureSaatTxt">Süre Saat Dakika</label>
-                                            <asp:TextBox ID="SureSaatDakikaTxt" runat="server" CssClass="form-control disabled-look" ClientIDMode="Static" />
-                                        </div>
+
 
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-3">
                                         <div class="form-group form-label" id="BasSaatDiv">
                                             <label class="form-label fw-semibold" for="BasSaatDDL">Baş.Saat</label>
                                             <asp:DropDownList ID="BasSaatDDL" runat="server" CssClass="form-control form-select form-select-lg" ClientIDMode="Static"
@@ -214,11 +245,29 @@
 
                                         </div>
                                     </div>
+                                    <div class="col-4">
+                                        <div class="form-group form-label">
+                                            <label class="form-label fw-semibold" for="SureGunStrTxt">Süre Gün</label>
+                                            <asp:TextBox ID="SureGunStrTxt" runat="server" CssClass="form-control disabled-look"
+                                                ClientIDMode="Static" placeholder="Süre (gün)"></asp:TextBox>
+                                        </div>
+                                        <div class="form-group form-label" style="display: none">
+                                            <label class="form-label" for="SureGunTxt">Süre Gün</label>
+                                            <asp:TextBox ID="SureGunTxt" runat="server" CssClass="form-control"
+                                                ClientIDMode="Static" placeholder="Süre (gün)"></asp:TextBox>
+                                            <asp:TextBox ID="SureDakikaTxt" runat="server" CssClass="form-control"
+                                                ClientIDMode="Static" placeholder="Süre (gün)"></asp:TextBox>
+                                        </div>
+                                        <div class="form-group form-label">
+                                            <label class="form-label fw-semibold" for="SureSaatTxt">Süre Saat/Dk</label>
+                                            <asp:TextBox ID="SureSaatDakikaTxt" runat="server" CssClass="form-control disabled-look" ClientIDMode="Static" />
+                                        </div>
+                                    </div>
                                 </div>
 
                             </div>
 
-                            <div class="col-3 border p-2 me-2">
+                            <div class="col-3 border p-2 m-0">
                                 <div class="form-group form-label">
                                     <label class="form-label fw-semibold" for="GorevGrubuTxt">Harcırah Grubu</label>
                                     <asp:TextBox ID="GorevGrubuTxt" runat="server" CssClass="form-control" ReadOnly="True" />
@@ -227,19 +276,19 @@
                                     <label class="form-label fw-semibold" for="UlkeDDL">Ülke</label>
                                     <asp:DropDownList ID="UlkeDDL" runat="server" CssClass="form-control form-select form-select-lg" OnSelectedIndexChanged="UlkeDDL_SelectedIndexChanged" AutoPostBack="true" />
                                 </div>
-
-                                <div class="form-group form-label">
-                                    <label class="form-label fw-semibold" for="GunlukYevmiyeTxt">Günlük Yev.</label>
-                                    <asp:TextBox ID="GunlukYevmiyeTxt" runat="server" CssClass="form-control disabled-look" />
+                                <div class="row">
+                                    <div class="col form-group form-label">
+                                        <label class="form-label fw-semibold" for="GunlukYevmiyeTxt">Günlük Yev.</label>
+                                        <asp:TextBox ID="GunlukYevmiyeTxt" runat="server" CssClass="form-control disabled-look" />
+                                    </div>
+                                    <div class="col form-group form-label">
+                                        <label class="form-label fw-semibold" for="ParaBirimiTxt">Para Birimi</label>
+                                        <asp:TextBox ID="ParaBirimiTxt" runat="server" CssClass="form-control" ReadOnly="True" />
+                                    </div>
                                 </div>
-                                <div class="form-group form-label">
-                                    <label class="form-label fw-semibold" for="ParaBirimiTxt">Para Birimi</label>
-                                    <asp:TextBox ID="ParaBirimiTxt" runat="server" CssClass="form-control" ReadOnly="True" />
-                                </div>
-
                             </div>
 
-                            <div class="col-2 border p-2 me-2">
+                            <div class="col-2 border p-2 m-0">
                                 <div class="form-group form-label">
                                     <label class="form-label fw-semibold" for="AvansTxt">Avans</label>
                                     <asp:TextBox ID="AvansTxt" runat="server" CssClass="form-control" />
@@ -255,7 +304,7 @@
                                 </div>
 
                             </div>
-                            <div class="col-3 border p-2 me-2">
+                            <div class="col-3 border p-2 m-0">
                                 <div class="row">
                                     <div class="col">
                                         <div class="form-group form-label">
@@ -278,44 +327,45 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col form-group">
+                    <div class="row m-0">
+                        <div class="col-6 form-group m-0">
                             <label class="col-form-label fw-semibold" for="GorevinSebebiTxt">Görevin Sebebi</label>
-                            <asp:TextBox ID="GorevinSebebiTxt" runat="server" TextMode="MultiLine" Rows="3" CssClass="form-control" type="text" />
+                            <asp:TextBox ID="GorevinSebebiTxt" runat="server" TextMode="MultiLine" Rows="3" CssClass="form-control" ClientIDMode="Static" />
                         </div>
-                        <div class="col form-group">
-                            <label class="col-form-label fw-semibold" for="GorevinYeriTxt">Görevin Yeri</label>
-                            <asp:TextBox ID="GorevinYeriTxt" runat="server" TextMode="MultiLine" Rows="3" CssClass="form-control" type="text" />
-                        </div>
-                        <div class="col form-group">
-                            <label class="form-label fw-semibold" for="AciklamaTxt">Açıklama</label>
-                            <asp:TextBox ID="AciklamaTxt" runat="server" TextMode="MultiLine" Rows="3" CssClass="form-control" type="text" />
+                        <div class="col">
+                            <div class="form-group">
+                                <label class="col-form-label fw-semibold" for="GorevinYeriTxt">Görevin Yeri</label>
+                                <asp:TextBox ID="GorevinYeriTxt" runat="server" TextMode="MultiLine" Rows="3" CssClass="form-control" type="text" />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label fw-semibold" for="AciklamaTxt">Açıklama</label>
+                                <asp:TextBox ID="AciklamaTxt" runat="server" TextMode="MultiLine" Rows="3" CssClass="form-control" type="text" />
+                            </div>
                         </div>
                     </div>
                     <!-- Harcırah Hesaplanan bölüm-->
-                    <div class="border p-2 text-center">
+                    <div class="border p-2 text-center m-0">
                         <!-- Ortalamak için text-center -->
                         <div class="col form-group m-2">
-                            <label class="form-label fw-semibold text-danger d-block" for="YevmiyeTxt">Hesaplanan Harcırah</label>
+                            <label class="form-label fw-semibold text-primary d-block" for="YevmiyeTxt">Hesaplanan Harcırah</label>
                         </div>
 
                         <div class="row justify-content-center">
                             <!-- Ortalamak için justify-content-center -->
                             <div class="col-2 form-group">
                                 <label class="form-label fw-semibold" for="YevmiyeTxt">Hakedilen Yevmiye</label>
-                                <asp:TextBox ID="YevmiyeTxt" runat="server" CssClass="form-control text-center fw-bold text-danger" ReadOnly="True" />
+                                <asp:TextBox ID="YevmiyeTxt" runat="server" CssClass="form-control text-center fw-bold text-primary" ReadOnly="True" />
                             </div>
                             <div class="col-2 form-group">
                                 <label class="form-label fw-semibold" for="YevmiyeParaBirimiTxt">Para Birimi</label>
-                                <asp:TextBox ID="YevmiyeParaBirimiTxt" runat="server" CssClass="form-control text-center fw-bold text-danger" ReadOnly="True" />
+                                <asp:TextBox ID="YevmiyeParaBirimiTxt" runat="server" CssClass="form-control text-center fw-bold text-primary" ReadOnly="True" />
                             </div>
                             <div class="col-2 form-group">
                                 <label class="form-label fw-semibold" for="SureTxt">Hakedilen Gün</label>
-                                <asp:TextBox ID="SureTxt" runat="server" CssClass="form-control text-center fw-bold text-danger" ReadOnly="True" />
+                                <asp:TextBox ID="SureTxt" runat="server" CssClass="form-control text-center fw-bold text-primary" ReadOnly="True" />
                             </div>
                         </div>
                         <div class="col form-group m-2">
-                            <label class="form-label fw-semibold text-success d-block" for="YevmiyeTxt">(Yaptığınız değişiklerin geçerli olması için lütfen Kaydet veya Güncelle düğmesine basınız.)</label>
                         </div>
                     </div>
 
@@ -325,9 +375,10 @@
 
                     <asp:LinkButton ID="UpdateBtn" CssClass="btn btn-primary col-2 me-5" runat="server" Text="Güncelle" OnClick="UpdateBtn_Click" Visible="false" />
                     <asp:LinkButton ID="DeleteBtn" CssClass="btn btn-danger col-2 me-5" runat="server" Text="Sil" OnClick="DeleteBtn_Click" />
+                    <label class="form-label fw-semibold text-danger" for="YevmiyeTxt">(Yaptığınız değişiklerin geçerli olması için lütfen Kaydet veya Güncelle düğmesine basınız.)</label>
 
                     <asp:LinkButton ID="RaporAlBtn" CssClass="btn btn-secondary col-2 float-end" runat="server" Text="Rapor Al" OnClick="RaporAlBtn_Click" Visible="false" />
-                    <asp:LinkButton CssClass="btn btn-secondary col-2 float-end me-5" ID="GorevOnayListesiBtn" runat="server" Text="Görev Onay Listesi" CausesValidation="false" OnClick="GorevOnayListesiBtn_Click" />
+                    <asp:LinkButton CssClass="btn btn-secondary col-2 float-end " ID="GorevOnayListesiBtn" runat="server" Text="Görev Onay Listesi" CausesValidation="false" OnClick="GorevOnayListesiBtn_Click" />
                 </div>
             </div>
             <div class="modal" id="ModalOnayDiv" role="dialog">

@@ -218,7 +218,7 @@ namespace IKYS_WebParts.MaasTablolariWP
                         text-align: center;
                     }
                 </style>";
-
+            TablolariDoldur();
             StringWriter sw = new StringWriter();
             HtmlTextWriter hw = new HtmlTextWriter(sw);
 

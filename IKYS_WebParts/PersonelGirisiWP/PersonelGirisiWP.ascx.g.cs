@@ -169,15 +169,11 @@ namespace IKYS_WebParts.PersonelGirisiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.DropDownList BirimDDL;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.DropDownList GorevTanimDDL;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TextBox BirimAdiTxt;
-        
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.TextBox BirimIdTxt;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -257,7 +253,7 @@ namespace IKYS_WebParts.PersonelGirisiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.DropDownList BirimDDL;
+        protected global::System.Web.UI.WebControls.DropDownList KadrosuzBirimDDL;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -993,6 +989,22 @@ namespace IKYS_WebParts.PersonelGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.DropDownList @__BuildControlBirimDDL() {
+            global::System.Web.UI.WebControls.DropDownList @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.DropDownList();
+            this.BirimDDL = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "BirimDDL";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control form-select form-select-lg");
+            @__ctrl.AutoPostBack = true;
+            @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.BirimDDL_SelectedIndexChanged);
+            @__ctrl.SelectedIndexChanged += new System.EventHandler(this.BirimDDL_SelectedIndexChanged);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.WebControls.DropDownList @__BuildControlGorevTanimDDL() {
             global::System.Web.UI.WebControls.DropDownList @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.DropDownList();
@@ -1000,40 +1012,6 @@ namespace IKYS_WebParts.PersonelGirisiWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "GorevTanimDDL";
             @__ctrl.CssClass = "form-control form-select form-select-lg";
-            @__ctrl.AutoPostBack = true;
-            @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.GorevTanimDDL_SelectedIndexChanged);
-            @__ctrl.SelectedIndexChanged += new System.EventHandler(this.GorevTanimDDL_SelectedIndexChanged);
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TextBox @__BuildControlBirimAdiTxt() {
-            global::System.Web.UI.WebControls.TextBox @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.TextBox();
-            this.BirimAdiTxt = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "BirimAdiTxt";
-            @__ctrl.CssClass = "form-control";
-            @__ctrl.ToolTip = "Şubesi/Birimi";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
-            @__ctrl.ReadOnly = true;
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.TextBox @__BuildControlBirimIdTxt() {
-            global::System.Web.UI.WebControls.TextBox @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.TextBox();
-            this.BirimIdTxt = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "BirimIdTxt";
-            @__ctrl.CssClass = "form-control form-select form-select-lg";
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
-            @__ctrl.ReadOnly = true;
             return @__ctrl;
         }
         
@@ -1400,12 +1378,12 @@ namespace IKYS_WebParts.PersonelGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.DropDownList @__BuildControlBirimDDL() {
+        private global::System.Web.UI.WebControls.DropDownList @__BuildControlKadrosuzBirimDDL() {
             global::System.Web.UI.WebControls.DropDownList @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.DropDownList();
-            this.BirimDDL = @__ctrl;
+            this.KadrosuzBirimDDL = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "BirimDDL";
+            @__ctrl.ID = "KadrosuzBirimDDL";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control form-select form-select-lg");
             return @__ctrl;
         }
@@ -2102,33 +2080,27 @@ namespace IKYS_WebParts.PersonelGirisiWP {
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                             </div>
                                             <div class=""form-group m-0"">
-                                                <label class=""form-label fw-semibold"" for=""GorevTanimDDL"">Görevi</label>
+                                                <label class=""form-label fw-semibold"" for=""SubeTxt"">Şubesi/Birimi</label>
                                                 "));
             global::System.Web.UI.WebControls.DropDownList @__ctrl25;
-            @__ctrl25 = this.@__BuildControlGorevTanimDDL();
+            @__ctrl25 = this.@__BuildControlBirimDDL();
             @__parser.AddParsedSubObject(@__ctrl25);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                             </div>
                                             <div class=""form-group m-0"">
-                                                <label class=""form-label fw-semibold"" for=""SubeTxt"">Şubesi/Birimi</label>
+                                                <label class=""form-label fw-semibold"" for=""GorevTanimDDL"">Görevi</label>
                                                 "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl26;
-            @__ctrl26 = this.@__BuildControlBirimAdiTxt();
+            global::System.Web.UI.WebControls.DropDownList @__ctrl26;
+            @__ctrl26 = this.@__BuildControlGorevTanimDDL();
             @__parser.AddParsedSubObject(@__ctrl26);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                                <div style=\"display: none\">\r\n  " +
-                        "                                                  "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl27;
-            @__ctrl27 = this.@__BuildControlBirimIdTxt();
-            @__parser.AddParsedSubObject(@__ctrl27);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-                                                </div>
                                             </div>
                                             <div class=""form-group m-0"">
                                                 <label class=""form-label fw-semibold"" for=""IsbasTarTxt"">İşe Baş.Tar.</label>
                                                 "));
-            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl28;
-            @__ctrl28 = this.@__BuildControlIsbasTarTxt();
-            @__parser.AddParsedSubObject(@__ctrl28);
+            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl27;
+            @__ctrl27 = this.@__BuildControlIsbasTarTxt();
+            @__parser.AddParsedSubObject(@__ctrl27);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                             </div>
                                         </div>
@@ -2136,72 +2108,72 @@ namespace IKYS_WebParts.PersonelGirisiWP {
                                             <div class=""form-group m-0"">
                                                 <label class=""form-label fw-semibold"" for=""SGKSicilNoTxt"">SGK Sic.No</label>
                                                 "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl29;
-            @__ctrl29 = this.@__BuildControlSGKSicilNoTxt();
-            @__parser.AddParsedSubObject(@__ctrl29);
+            global::System.Web.UI.WebControls.TextBox @__ctrl28;
+            @__ctrl28 = this.@__BuildControlSGKSicilNoTxt();
+            @__parser.AddParsedSubObject(@__ctrl28);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                             </div>
                                             <div class=""form-group m-0"">
                                                 <label class=""form-label fw-semibold"" for=""SGKBasTarTxt"">SGK Baş.Tar.</label>
                                                 "));
-            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl30;
-            @__ctrl30 = this.@__BuildControlSGKBasTarTxt();
-            @__parser.AddParsedSubObject(@__ctrl30);
+            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl29;
+            @__ctrl29 = this.@__BuildControlSGKBasTarTxt();
+            @__parser.AddParsedSubObject(@__ctrl29);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                             </div>
                                             <div class=""form-group m-0"">
                                                 <label class=""form-label fw-semibold"" for=""VakifOncesiPrimGunSayisiTxt"">Önceki Prim Gün</label>
                                                 "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl31;
-            @__ctrl31 = this.@__BuildControlVakifOncesiPrimGunSayisiTxt();
-            @__parser.AddParsedSubObject(@__ctrl31);
+            global::System.Web.UI.WebControls.TextBox @__ctrl30;
+            @__ctrl30 = this.@__BuildControlVakifOncesiPrimGunSayisiTxt();
+            @__parser.AddParsedSubObject(@__ctrl30);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                             </div>
                                             <div class=""form-group m-0"">
                                                 <label class=""form-label fw-semibold"" for=""ProtokolSirasiTxt"">Prot.Sırası</label>
                                                 "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl32;
-            @__ctrl32 = this.@__BuildControlProtokolSirasiTxt();
-            @__parser.AddParsedSubObject(@__ctrl32);
+            global::System.Web.UI.WebControls.TextBox @__ctrl31;
+            @__ctrl31 = this.@__BuildControlProtokolSirasiTxt();
+            @__parser.AddParsedSubObject(@__ctrl31);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                            </div>\r\n                           " +
                         "             </div>\r\n                                        <div class=\"col\">\r\n" +
                         "                                            "));
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl33;
-            @__ctrl33 = this.@__BuildControlIzinDonemiBasTarDiv();
-            @__parser.AddParsedSubObject(@__ctrl33);
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl32;
+            @__ctrl32 = this.@__BuildControlIzinDonemiBasTarDiv();
+            @__parser.AddParsedSubObject(@__ctrl32);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                            "));
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl34;
-            @__ctrl34 = this.@__BuildControlEmeklilikTarDiv();
-            @__parser.AddParsedSubObject(@__ctrl34);
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl33;
+            @__ctrl33 = this.@__BuildControlEmeklilikTarDiv();
+            @__parser.AddParsedSubObject(@__ctrl33);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                            <div class=\"form-group m-0\">\r\n     " +
                         "                                           <label class=\"form-label fw-semibold\"" +
                         " for=\"CalismaDurumuDDL\">Çalışma Dur.</label>\r\n                                  " +
                         "              "));
-            global::System.Web.UI.WebControls.DropDownList @__ctrl35;
-            @__ctrl35 = this.@__BuildControlCalismaDurumuDDL();
-            @__parser.AddParsedSubObject(@__ctrl35);
+            global::System.Web.UI.WebControls.DropDownList @__ctrl34;
+            @__ctrl34 = this.@__BuildControlCalismaDurumuDDL();
+            @__parser.AddParsedSubObject(@__ctrl34);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                            </div>\r\n                           " +
                         "                 "));
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl36;
-            @__ctrl36 = this.@__BuildControlAyrilmaTarDiv();
-            @__parser.AddParsedSubObject(@__ctrl36);
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl35;
+            @__ctrl35 = this.@__BuildControlAyrilmaTarDiv();
+            @__parser.AddParsedSubObject(@__ctrl35);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                            "));
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl37;
-            @__ctrl37 = this.@__BuildControlAyrilmaSebebiDiv();
-            @__parser.AddParsedSubObject(@__ctrl37);
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl36;
+            @__ctrl36 = this.@__BuildControlAyrilmaSebebiDiv();
+            @__parser.AddParsedSubObject(@__ctrl36);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                        </div>\r\n                               " +
                         "         <div class=\"col\">\r\n                                            "));
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl37;
+            @__ctrl37 = this.@__BuildControl__control8();
+            @__parser.AddParsedSubObject(@__ctrl37);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                            "));
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl38;
-            @__ctrl38 = this.@__BuildControl__control8();
+            @__ctrl38 = this.@__BuildControl__control9();
             @__parser.AddParsedSubObject(@__ctrl38);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                            "));
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl39;
-            @__ctrl39 = this.@__BuildControl__control9();
+            @__ctrl39 = this.@__BuildControl__control10();
             @__parser.AddParsedSubObject(@__ctrl39);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                            "));
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl40;
-            @__ctrl40 = this.@__BuildControl__control10();
-            @__parser.AddParsedSubObject(@__ctrl40);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
 
                                         </div>
@@ -2209,14 +2181,14 @@ namespace IKYS_WebParts.PersonelGirisiWP {
                                     <div class=""form-group"">
                                         <label class=""form-label fw-semibold"" for=""IsBilgileriAciklamaTxt"">Açıklama</label>
                                         "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl41;
-            @__ctrl41 = this.@__BuildControlIsBilgileriAciklamaTxt();
-            @__parser.AddParsedSubObject(@__ctrl41);
+            global::System.Web.UI.WebControls.TextBox @__ctrl40;
+            @__ctrl40 = this.@__BuildControlIsBilgileriAciklamaTxt();
+            @__parser.AddParsedSubObject(@__ctrl40);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    </div>\r\n                                   " +
                         " <div class=\"card-footer\">\r\n                                        "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl42;
-            @__ctrl42 = this.@__BuildControlUpdateIsBilgileriBtn();
-            @__parser.AddParsedSubObject(@__ctrl42);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl41;
+            @__ctrl41 = this.@__BuildControlUpdateIsBilgileriBtn();
+            @__parser.AddParsedSubObject(@__ctrl41);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                     </div>
                                 </div>
@@ -2224,55 +2196,55 @@ namespace IKYS_WebParts.PersonelGirisiWP {
                                     <div class=""form-group row"">
                                         <div class=""col"">
                                             <div class=""form-group"">
-                                                <label class=""form-label fw-semibold"" for=""BirimDDL"">Birim/Şube</label>
+                                                <label class=""form-label fw-semibold"" for=""KadrosuzBirimDDL"">Birim/Şube</label>
                                                 "));
-            global::System.Web.UI.WebControls.DropDownList @__ctrl43;
-            @__ctrl43 = this.@__BuildControlBirimDDL();
-            @__parser.AddParsedSubObject(@__ctrl43);
+            global::System.Web.UI.WebControls.DropDownList @__ctrl42;
+            @__ctrl42 = this.@__BuildControlKadrosuzBirimDDL();
+            @__parser.AddParsedSubObject(@__ctrl42);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                             </div>
                                             <div class=""form-group m-0"">
                                                 <label class=""form-label fw-semibold"" for=""KadrosuzIsbasTarihiTxt"">İşe Baş.Tar.</label>
                                                 "));
-            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl44;
-            @__ctrl44 = this.@__BuildControlKadrosuzIsbasTarihiTxt();
-            @__parser.AddParsedSubObject(@__ctrl44);
+            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl43;
+            @__ctrl43 = this.@__BuildControlKadrosuzIsbasTarihiTxt();
+            @__parser.AddParsedSubObject(@__ctrl43);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                            </div>\r\n                           " +
                         "             </div>\r\n                                        "));
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl45;
-            @__ctrl45 = this.@__BuildControlDiv1();
-            @__parser.AddParsedSubObject(@__ctrl45);
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl44;
+            @__ctrl44 = this.@__BuildControlDiv1();
+            @__parser.AddParsedSubObject(@__ctrl44);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                         <div class=""col"">
                                             <div class=""form-group m-0"">
                                                 <label class=""form-label fw-semibold"" for=""KadrosuzCalismaDurumuDDL"">Çalışma Dur.</label>
                                                 "));
-            global::System.Web.UI.WebControls.DropDownList @__ctrl46;
-            @__ctrl46 = this.@__BuildControlKadrosuzCalismaDurumuDDL();
-            @__parser.AddParsedSubObject(@__ctrl46);
+            global::System.Web.UI.WebControls.DropDownList @__ctrl45;
+            @__ctrl45 = this.@__BuildControlKadrosuzCalismaDurumuDDL();
+            @__parser.AddParsedSubObject(@__ctrl45);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                            </div>\r\n                           " +
                         "                 "));
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl47;
-            @__ctrl47 = this.@__BuildControlKadrosuzAyrilmaTarihiDiv();
-            @__parser.AddParsedSubObject(@__ctrl47);
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl46;
+            @__ctrl46 = this.@__BuildControlKadrosuzAyrilmaTarihiDiv();
+            @__parser.AddParsedSubObject(@__ctrl46);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                            "));
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl48;
-            @__ctrl48 = this.@__BuildControlKadrosuzAyrilmaSebebiDiv();
-            @__parser.AddParsedSubObject(@__ctrl48);
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl47;
+            @__ctrl47 = this.@__BuildControlKadrosuzAyrilmaSebebiDiv();
+            @__parser.AddParsedSubObject(@__ctrl47);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                         </div>
                                     </div>
                                     <div class=""form-group"">
                                         <label class=""form-label fw-semibold"" for=""KadrosuzIsBilgileriAciklamaTxt"">Açıklama</label>
                                         "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl49;
-            @__ctrl49 = this.@__BuildControlKadrosuzIsBilgileriAciklamaTxt();
-            @__parser.AddParsedSubObject(@__ctrl49);
+            global::System.Web.UI.WebControls.TextBox @__ctrl48;
+            @__ctrl48 = this.@__BuildControlKadrosuzIsBilgileriAciklamaTxt();
+            @__parser.AddParsedSubObject(@__ctrl48);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                    </div>\r\n                                   " +
                         " <div class=\"card-footer\">\r\n                                        "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl50;
-            @__ctrl50 = this.@__BuildControlKadrosuzUpdateIsBilgileriBtn();
-            @__parser.AddParsedSubObject(@__ctrl50);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl49;
+            @__ctrl49 = this.@__BuildControlKadrosuzUpdateIsBilgileriBtn();
+            @__parser.AddParsedSubObject(@__ctrl49);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                     </div>
                                 </div>
@@ -2286,16 +2258,16 @@ namespace IKYS_WebParts.PersonelGirisiWP {
                                         <div class=""collapse show"" id=""AileMainPanel"">
                                             <div class=""table border-bottom"" style=""max-height: 200px; overflow: auto;"">
                                                 "));
-            global::System.Web.UI.WebControls.Table @__ctrl51;
-            @__ctrl51 = this.@__BuildControlAileTable();
-            @__parser.AddParsedSubObject(@__ctrl51);
+            global::System.Web.UI.WebControls.Table @__ctrl50;
+            @__ctrl50 = this.@__BuildControlAileTable();
+            @__parser.AddParsedSubObject(@__ctrl50);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                            </div>\r\n                           " +
                         "             </div>\r\n                                    </div>\r\n               " +
                         "                     <div class=\"card-footer\">\r\n                                " +
                         "        "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl52;
-            @__ctrl52 = this.@__BuildControlAileDuzenleBtn();
-            @__parser.AddParsedSubObject(@__ctrl52);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl51;
+            @__ctrl51 = this.@__BuildControlAileDuzenleBtn();
+            @__parser.AddParsedSubObject(@__ctrl51);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                     </div>
                                 </div>
@@ -2305,26 +2277,26 @@ namespace IKYS_WebParts.PersonelGirisiWP {
                                             <div class=""form-group m-0"">
                                                 <label class=""form-label fw-semibold"" for=""IkametIliDDL"">İkamet İli</label>
                                                 "));
-            global::System.Web.UI.WebControls.DropDownList @__ctrl53;
-            @__ctrl53 = this.@__BuildControlIkametIliDDL();
-            @__parser.AddParsedSubObject(@__ctrl53);
+            global::System.Web.UI.WebControls.DropDownList @__ctrl52;
+            @__ctrl52 = this.@__BuildControlIkametIliDDL();
+            @__parser.AddParsedSubObject(@__ctrl52);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                             </div>
                                             <div class=""form-group m-0"">
                                                 <label class=""form-label fw-semibold"" for=""IkametIlcesiDDL"">İkamet İlçe</label>
                                                 "));
-            global::System.Web.UI.WebControls.DropDownList @__ctrl54;
-            @__ctrl54 = this.@__BuildControlIkametIlcesiDDL();
-            @__parser.AddParsedSubObject(@__ctrl54);
+            global::System.Web.UI.WebControls.DropDownList @__ctrl53;
+            @__ctrl53 = this.@__BuildControlIkametIlcesiDDL();
+            @__parser.AddParsedSubObject(@__ctrl53);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                             </div>
 
                                             <div class=""form-group m-0"">
                                                 <label class=""form-label fw-semibold"" for=""AdresTxt"">Adres</label>
                                                 "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl55;
-            @__ctrl55 = this.@__BuildControlAdresTxt();
-            @__parser.AddParsedSubObject(@__ctrl55);
+            global::System.Web.UI.WebControls.TextBox @__ctrl54;
+            @__ctrl54 = this.@__BuildControlAdresTxt();
+            @__parser.AddParsedSubObject(@__ctrl54);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                             </div>
                                         </div>
@@ -2332,41 +2304,41 @@ namespace IKYS_WebParts.PersonelGirisiWP {
                                             <div class=""form-group m-0"">
                                                 <label class=""form-label fw-semibold"" for=""SemtTxt"">Semt</label>
                                                 "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl56;
-            @__ctrl56 = this.@__BuildControlSemtTxt();
-            @__parser.AddParsedSubObject(@__ctrl56);
+            global::System.Web.UI.WebControls.TextBox @__ctrl55;
+            @__ctrl55 = this.@__BuildControlSemtTxt();
+            @__parser.AddParsedSubObject(@__ctrl55);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                             </div>
                                             <div class=""form-group m-0"">
                                                 <label class=""form-label fw-semibold"" for=""PostaKoduTxt"">Posta Kodu</label>
                                                 "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl57;
-            @__ctrl57 = this.@__BuildControlPostaKoduTxt();
-            @__parser.AddParsedSubObject(@__ctrl57);
+            global::System.Web.UI.WebControls.TextBox @__ctrl56;
+            @__ctrl56 = this.@__BuildControlPostaKoduTxt();
+            @__parser.AddParsedSubObject(@__ctrl56);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                             </div>
                                             <div class=""form-group m-0"">
                                                 <label class=""form-label fw-semibold"" for=""CepTelefonuTxt"">Cep Telefonu</label>
                                                 "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl58;
-            @__ctrl58 = this.@__BuildControlCepTelefonuTxt();
-            @__parser.AddParsedSubObject(@__ctrl58);
+            global::System.Web.UI.WebControls.TextBox @__ctrl57;
+            @__ctrl57 = this.@__BuildControlCepTelefonuTxt();
+            @__parser.AddParsedSubObject(@__ctrl57);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                             </div>
                                             <div class=""form-group m-0"">
                                                 <label class=""form-label fw-semibold"" for=""CepTelefonu2Txt"">Cep Telefonu 2</label>
                                                 "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl59;
-            @__ctrl59 = this.@__BuildControlCepTelefonu2Txt();
-            @__parser.AddParsedSubObject(@__ctrl59);
+            global::System.Web.UI.WebControls.TextBox @__ctrl58;
+            @__ctrl58 = this.@__BuildControlCepTelefonu2Txt();
+            @__parser.AddParsedSubObject(@__ctrl58);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                             </div>
                                             <div class=""form-group m-0"">
                                                 <label class=""form-label fw-semibold"" for=""EvTelefonuTxt"">Ev Telefonu</label>
                                                 "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl60;
-            @__ctrl60 = this.@__BuildControlEvTelefonuTxt();
-            @__parser.AddParsedSubObject(@__ctrl60);
+            global::System.Web.UI.WebControls.TextBox @__ctrl59;
+            @__ctrl59 = this.@__BuildControlEvTelefonuTxt();
+            @__parser.AddParsedSubObject(@__ctrl59);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                             </div>
 
@@ -2375,42 +2347,42 @@ namespace IKYS_WebParts.PersonelGirisiWP {
                                             <div class=""form-group m-0"">
                                                 <label class=""form-label fw-semibold"" for=""DahiliTelefonuTxt"">Dahili Telefonu</label>
                                                 "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl61;
-            @__ctrl61 = this.@__BuildControlDahiliTelefonuTxt();
-            @__parser.AddParsedSubObject(@__ctrl61);
+            global::System.Web.UI.WebControls.TextBox @__ctrl60;
+            @__ctrl60 = this.@__BuildControlDahiliTelefonuTxt();
+            @__parser.AddParsedSubObject(@__ctrl60);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                             </div>
                                             
                                             <div class=""form-group m-0"">
                                                 <label class=""form-label fw-semibold"" for=""InternetEPostaTxt"">EPosta (Internet)</label>
                                                 "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl62;
-            @__ctrl62 = this.@__BuildControlInternetEPostaTxt();
-            @__parser.AddParsedSubObject(@__ctrl62);
+            global::System.Web.UI.WebControls.TextBox @__ctrl61;
+            @__ctrl61 = this.@__BuildControlInternetEPostaTxt();
+            @__parser.AddParsedSubObject(@__ctrl61);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                                 
                                             </div>
                                             <div class=""form-group m-0"">
                                                 <label class=""form-label fw-semibold"" for=""OzelEPostaTxt"">EPosta (Özel)</label>
                                                 "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl63;
-            @__ctrl63 = this.@__BuildControlOzelEPostaTxt();
-            @__parser.AddParsedSubObject(@__ctrl63);
+            global::System.Web.UI.WebControls.TextBox @__ctrl62;
+            @__ctrl62 = this.@__BuildControlOzelEPostaTxt();
+            @__parser.AddParsedSubObject(@__ctrl62);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                             </div>
                                             <div class=""form-group m-0"">
                                                 <label class=""form-label fw-semibold"" for=""PlakaTxt"">Plaka</label>
                                                 "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl64;
-            @__ctrl64 = this.@__BuildControlPlakaTxt();
-            @__parser.AddParsedSubObject(@__ctrl64);
+            global::System.Web.UI.WebControls.TextBox @__ctrl63;
+            @__ctrl63 = this.@__BuildControlPlakaTxt();
+            @__parser.AddParsedSubObject(@__ctrl63);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                            </div>\r\n                           " +
                         "             </div>\r\n                                    </div>\r\n\r\n             " +
                         "                       <div class=\"card-footer\">\r\n                              " +
                         "          "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl65;
-            @__ctrl65 = this.@__BuildControlUpdateIletisimBtn();
-            @__parser.AddParsedSubObject(@__ctrl65);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl64;
+            @__ctrl64 = this.@__BuildControlUpdateIletisimBtn();
+            @__parser.AddParsedSubObject(@__ctrl64);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                     </div>
                                 </div>
@@ -2425,9 +2397,9 @@ namespace IKYS_WebParts.PersonelGirisiWP {
                                             <div class=""collapse"" id=""OkulDiv"">
                                                 <div class=""table border-bottom"" style=""max-height: 200px; overflow: auto;"">
                                                     "));
-            global::System.Web.UI.WebControls.Table @__ctrl66;
-            @__ctrl66 = this.@__BuildControlOkulTable();
-            @__parser.AddParsedSubObject(@__ctrl66);
+            global::System.Web.UI.WebControls.Table @__ctrl65;
+            @__ctrl65 = this.@__BuildControlOkulTable();
+            @__parser.AddParsedSubObject(@__ctrl65);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                                 </div>
                                             </div>
@@ -2441,9 +2413,9 @@ namespace IKYS_WebParts.PersonelGirisiWP {
                                             <div class=""collapse"" id=""KursDiv"">
                                                 <div class=""table border-bottom"" style=""max-height: 200px; overflow: auto;"">
                                                     "));
-            global::System.Web.UI.WebControls.Table @__ctrl67;
-            @__ctrl67 = this.@__BuildControlKursTable();
-            @__parser.AddParsedSubObject(@__ctrl67);
+            global::System.Web.UI.WebControls.Table @__ctrl66;
+            @__ctrl66 = this.@__BuildControlKursTable();
+            @__parser.AddParsedSubObject(@__ctrl66);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                                 </div>
                                             </div>
@@ -2457,9 +2429,9 @@ namespace IKYS_WebParts.PersonelGirisiWP {
                                             <div class=""collapse"" id=""IsTecrubeDiv"">
                                                 <div class=""table border-bottom"" style=""max-height: 200px; overflow: auto;"">
                                                     "));
-            global::System.Web.UI.WebControls.Table @__ctrl68;
-            @__ctrl68 = this.@__BuildControlIsyeriTable();
-            @__parser.AddParsedSubObject(@__ctrl68);
+            global::System.Web.UI.WebControls.Table @__ctrl67;
+            @__ctrl67 = this.@__BuildControlIsyeriTable();
+            @__parser.AddParsedSubObject(@__ctrl67);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                                 </div>
                                             </div>
@@ -2467,9 +2439,9 @@ namespace IKYS_WebParts.PersonelGirisiWP {
                                     </div>
                                     <div class=""card-footer"">
                                         "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl69;
-            @__ctrl69 = this.@__BuildControlUpdateEgitimBtn();
-            @__parser.AddParsedSubObject(@__ctrl69);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl68;
+            @__ctrl68 = this.@__BuildControlUpdateEgitimBtn();
+            @__parser.AddParsedSubObject(@__ctrl68);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                     </div>
 
@@ -2485,9 +2457,9 @@ namespace IKYS_WebParts.PersonelGirisiWP {
                                             <div class=""collapse"" id=""IzinBilgileriDiv"">
                                                 <div class=""table border-bottom"" style=""max-height: 200px; overflow: auto;"">
                                                     "));
-            global::System.Web.UI.WebControls.Table @__ctrl70;
-            @__ctrl70 = this.@__BuildControlUcretliIzinDonemleriTable();
-            @__parser.AddParsedSubObject(@__ctrl70);
+            global::System.Web.UI.WebControls.Table @__ctrl69;
+            @__ctrl69 = this.@__BuildControlUcretliIzinDonemleriTable();
+            @__parser.AddParsedSubObject(@__ctrl69);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                                 </div>
                                             </div>
@@ -2505,9 +2477,9 @@ namespace IKYS_WebParts.PersonelGirisiWP {
                                                     </div>
                                                     <div class=""card-body"">
                                                         "));
-            global::System.Web.UI.WebControls.Table @__ctrl71;
-            @__ctrl71 = this.@__BuildControlUcretliIzinHareketTable();
-            @__parser.AddParsedSubObject(@__ctrl71);
+            global::System.Web.UI.WebControls.Table @__ctrl70;
+            @__ctrl70 = this.@__BuildControlUcretliIzinHareketTable();
+            @__parser.AddParsedSubObject(@__ctrl70);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                                     </div>
                                                     <div class=""card-footer"">
@@ -2519,9 +2491,9 @@ namespace IKYS_WebParts.PersonelGirisiWP {
                                                     </div>
                                                     <div class=""card-body"">
                                                         "));
-            global::System.Web.UI.WebControls.Table @__ctrl72;
-            @__ctrl72 = this.@__BuildControlMazeretIzinHareketTable();
-            @__parser.AddParsedSubObject(@__ctrl72);
+            global::System.Web.UI.WebControls.Table @__ctrl71;
+            @__ctrl71 = this.@__BuildControlMazeretIzinHareketTable();
+            @__parser.AddParsedSubObject(@__ctrl71);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                                     </div>
                                                     <div class=""card-footer"">
@@ -2533,9 +2505,9 @@ namespace IKYS_WebParts.PersonelGirisiWP {
                                                     </div>
                                                     <div class=""card-body"">
                                                         "));
-            global::System.Web.UI.WebControls.Table @__ctrl73;
-            @__ctrl73 = this.@__BuildControlDigerIzinlerTable();
-            @__parser.AddParsedSubObject(@__ctrl73);
+            global::System.Web.UI.WebControls.Table @__ctrl72;
+            @__ctrl72 = this.@__BuildControlDigerIzinlerTable();
+            @__parser.AddParsedSubObject(@__ctrl72);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                                     </div>
                                                     <div class=""card-footer"">
@@ -2552,9 +2524,9 @@ namespace IKYS_WebParts.PersonelGirisiWP {
                                             <div class=""collapse"" id=""IzinTalepleriDiv"">
                                                 <div class=""table border-bottom"" style=""max-height: 200px; overflow: auto;"">
                                                     "));
-            global::System.Web.UI.WebControls.Table @__ctrl74;
-            @__ctrl74 = this.@__BuildControlIzinTalepTable();
-            @__parser.AddParsedSubObject(@__ctrl74);
+            global::System.Web.UI.WebControls.Table @__ctrl73;
+            @__ctrl73 = this.@__BuildControlIzinTalepTable();
+            @__parser.AddParsedSubObject(@__ctrl73);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                                 </div>
                                             </div>

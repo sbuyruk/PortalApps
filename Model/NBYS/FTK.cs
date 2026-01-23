@@ -271,7 +271,7 @@ namespace Model.NBYS
                 SELECT A.Id IlId,A.BolgeId, C.Adi Bolge, A.IlAdi 
                 FROM Il_Table A 
                 LEFT JOIN Bolge_Table C ON C.Id= A.BolgeId
-                WHERE (A.Id BETWEEN 0 AND 81 AND A.IlAdi != '') 
+                WHERE (A.Id BETWEEN 0 AND 81 AND A.Id>0 AND A.IlAdi != 'Boş') 
                     {0}
                     {1}
                     AND  A.Id NOT IN (SELECT Ili FROM FTK_Table WHERE Ilcesi={2}) 
@@ -290,7 +290,7 @@ namespace Model.NBYS
 	                INNER JOIN Il_Table B ON B.Id= A.IlId
                     LEFT JOIN Bolge_Table C ON C.Id= B.BolgeId
                 WHERE A.IlceAdi!= {0} 
-                    AND (B.Id BETWEEN 0 AND 81 AND B.IlAdi != '') 
+                    AND (B.Id BETWEEN 0 AND 81 AND B.IlAdi != 'Boş') 
                     AND  A.Id NOT IN (SELECT Ilcesi FROM FTK_Table WHERE Ilcesi > 0) 
                     {1}
                     {2}

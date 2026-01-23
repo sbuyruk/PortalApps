@@ -12,11 +12,14 @@ namespace Model.IKYS
     public class Harcirah : ParentClass
     {
         public int KadroGrupId { get; set; }
+        public int SeriId { get; set; }
         public string KadroGrubu { get; set; }
         public string Ulke { get; set; }
         public decimal Miktar { get; set; }
         public string ParaBirimi { get; set; }
         public string Aciklama { get; set; }
+        public DateTime BaslangicTarihi { get; set; }
+        public DateTime BitisTarihi { get; set; }
 
         public override T Select<T>(int id)
         {

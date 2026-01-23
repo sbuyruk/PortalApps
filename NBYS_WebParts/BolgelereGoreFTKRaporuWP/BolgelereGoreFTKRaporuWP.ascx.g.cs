@@ -1484,7 +1484,7 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.CssClass = "alert-primary border-dark";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Mersin Bölgesi"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Erzurum Bölgesi"));
             return @__ctrl;
         }
         

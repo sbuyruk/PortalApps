@@ -1010,18 +1010,19 @@ namespace Portal_WebParts.DuyuruGirisiWP {
                         "= new FileReader();\r\n            reader.onload = function (e) {\r\n               " +
                         " $(\'#\' + sender).attr(\'src\', e.target.result);\r\n\r\n            }\r\n            rea" +
                         "der.readAsDataURL(personelFU.files[0]);\r\n        }\r\n    }\r\n\r\n    //summernote ed" +
-                        "itor\r\n    $(document).ready(function () {\r\n        $(\'#MetinTxt\').summernote({\r\n" +
-                        "            //toolbar: [\r\n            //    // [groupName, [list of button]]\r\n  " +
-                        "          //    [\'style\', [\'bold\', \'italic\', \'underline\', \'clear\']],\r\n          " +
-                        "  //    [\'fontsize\', [\'fontsize\']],\r\n            //    [\'color\', [\'color\']],\r\n  " +
-                        "          //    [\'para\', [\'ul\', \'ol\', \'paragraph\']],\r\n            //]\r\n         " +
-                        "   lang: \'tr-TR\', // default: \'en-US\'\r\n            height: 300,                 " +
-                        "// set editor height\r\n            minHeight: null,             // set minimum he" +
-                        "ight of editor\r\n            maxHeight: null,             // set maximum height o" +
-                        "f editor\r\n            focus: true                  // set focus to editable area" +
-                        " after initializing summe\r\n        });\r\n    });\r\n\r\n</script>\r\n\r\n\r\n<div class=\"co" +
-                        "ntainer shadow\">\r\n    <div class=\"card\">\r\n        <div class=\"card-header\">\r\n   " +
-                        "         "));
+                        "itor\r\n    $(document).ready(function () {\r\n        if (!$(\'#MetinTxt\').next().ha" +
+                        "sClass(\'note-editor\')) {\r\n            $(\'#MetinTxt\').summernote({\r\n             " +
+                        "   lang: \'tr-TR\',\r\n                height: 300,\r\n                focus: true,\r\n " +
+                        "               toolbar: [\r\n                    [\'style\', [\'bold\', \'italic\', \'und" +
+                        "erline\', \'clear\']],\r\n                    [\'font\', [\'strikethrough\', \'superscript" +
+                        "\', \'subscript\']],\r\n                    [\'fontsize\', [\'fontsize\']],\r\n            " +
+                        "        [\'color\', [\'color\']],\r\n                    [\'para\', [\'ul\', \'ol\', \'paragr" +
+                        "aph\']],\r\n                    [\'height\', [\'height\']]\r\n                ],\r\n       " +
+                        "         popover: {\r\n                    image: [], // image popover kapalı\r\n   " +
+                        "                 link: [],  // link popover kapalı\r\n                    air: [] " +
+                        "   // air (floating) popover kapalı\r\n                }\r\n            });\r\n       " +
+                        " }\r\n    });\r\n\r\n</script>\r\n\r\n\r\n<div class=\"container shadow\">\r\n    <div class=\"ca" +
+                        "rd\">\r\n        <div class=\"card-header\">\r\n            "));
             global::System.Web.UI.WebControls.LinkButton @__ctrl1;
             @__ctrl1 = this.@__BuildControlCloseBtn();
             @__parser.AddParsedSubObject(@__ctrl1);

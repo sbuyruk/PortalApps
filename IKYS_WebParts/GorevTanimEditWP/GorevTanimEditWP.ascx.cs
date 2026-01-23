@@ -120,7 +120,6 @@ namespace IKYS_WebParts.GorevTanimEditWP
             UpdateBtn.Visible = true;
             DeleteBtn.Visible = true;
             FillGorevToForm();
-            HarcirahDDLDoldur(GorevTanimIdQS.ConvertToInt());
         }
         private void FillGorevToForm()
         {
@@ -130,11 +129,9 @@ namespace IKYS_WebParts.GorevTanimEditWP
             {
                 AdiTxt.Text = gorev.Adi;
                 KisaAdiTxt.Text = gorev.KisaAdi;
-                UtilityHelper.SetDDLValue(HarcirahDDL, gorev.HarcirahGrupId.ReturnZeroIfNull().ToString());
-                if (BirimDDL.Items.FindByValue(gorev.BirimId.ReturnZeroIfNull().ToString()) != null)
-                    BirimDDL.SelectedValue = BirimDDL.Items.FindByValue(gorev.BirimId.ReturnZeroIfNull().ToString()).Value;
-                if (PersonelDDL.Items.FindByValue(gorev.PersonelId.ReturnZeroIfNull().ToString()) != null)
-                    PersonelDDL.SelectedValue = PersonelDDL.Items.FindByValue(gorev.PersonelId.ReturnZeroIfNull().ToString()).Value;
+                UtilityHelper.SetDDLValue(BirimDDL, gorev.BirimId.ReturnZeroIfNull().ToString());
+                UtilityHelper.SetDDLValue(PersonelDDL, gorev.PersonelId.ReturnZeroIfNull().ToString());
+               
                 VekilChk.Checked = gorev.Vekil;
                 AktifChk.Checked = gorev.Aktif;
 
@@ -151,18 +148,6 @@ namespace IKYS_WebParts.GorevTanimEditWP
             {
                 ListItem li = new ListItem(gr.Adi.ReturnEmptyIfNull().ToString(), gr.Id.ReturnZeroIfNull().ToString());
                 BirimDDL.Items.Add(li);
-            }
-        }
-        private void HarcirahDDLDoldur(int kadroGrupId)
-        {
-            HarcirahDDL.Items.Clear();
-            Harcirah harcirah = new Harcirah();
-            List<Harcirah> list = harcirah.SelectByKadroGrupId(kadroGrupId);
-
-            foreach (Harcirah item in list)
-            {
-                ListItem li = new ListItem(item.KadroGrupId.ReturnEmptyIfNull().ToString(), item.KadroGrupId.ReturnZeroIfNull().ToString());
-                HarcirahDDL.Items.Add(li);
             }
         }
         private void FillPersonelDDL()
@@ -194,7 +179,6 @@ namespace IKYS_WebParts.GorevTanimEditWP
                 gorev.KisaAdi = KisaAdiTxt.Text;
                 gorev.BirimId = BirimDDL.SelectedItem.Value.ConvertToInt();
                 gorev.PersonelId = PersonelDDL.SelectedItem.Value.ConvertToInt();
-                gorev.HarcirahGrupId = HarcirahDDL.SelectedItem.Value.ConvertToInt();
                 gorev.Vekil = VekilChk.Checked;
                 gorev.Aktif = AktifChk.Checked;
                 int id = gorev.Save();
@@ -262,7 +246,6 @@ namespace IKYS_WebParts.GorevTanimEditWP
                     gorev.KisaAdi = KisaAdiTxt.Text;
                     gorev.BirimId = BirimDDL.SelectedItem.Value.ConvertToInt();
                     gorev.PersonelId = PersonelDDL.SelectedItem.Value.ConvertToInt();
-                    gorev.HarcirahGrupId = HarcirahDDL.SelectedItem.Value.ConvertToInt();
                     gorev.Vekil = VekilChk.Checked;
                     gorev.Aktif = AktifChk.Checked;
                     gorev.Degistiren = CurrentUserName;

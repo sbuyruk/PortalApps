@@ -226,6 +226,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>GorevTanimListesiWP.ascx</DependentUpon>
     </Compile>
+    <Compile Include="HarcirahGirisWP\HarcirahGirisWP.ascx.cs">
+      <DependentUpon>HarcirahGirisWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="HarcirahGirisWP\HarcirahGirisWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>HarcirahGirisWP.ascx</DependentUpon>
+    </Compile>
     <Compile Include="IletisimBilgileriListesiWP\IletisimBilgileriListesiWP.ascx.cs">
       <DependentUpon>IletisimBilgileriListesiWP.ascx</DependentUpon>
     </Compile>
@@ -518,6 +526,10 @@
     <None Include="GorevTanimListesiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{774e3c1e-72f5-4140-bec3-07d28009b356}</SharePointProjectItemId>
     </None>
+    <None Include="HarcirahGirisWP\HarcirahGirisWP.webpart" />
+    <None Include="HarcirahGirisWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{4ed14f97-e9d1-4aaf-bcf2-0f3c0e5b2bfc}</SharePointProjectItemId>
+    </None>
     <None Include="IletisimBilgileriListesiWP\IletisimBilgileriListesiWP.webpart" />
     <None Include="IletisimBilgileriListesiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{9ddd2f2b-6143-4242-b0be-b72f9da4844e}</SharePointProjectItemId>
@@ -717,6 +729,11 @@
     <Content Include="GorevTanimListesiWP\GorevTanimListesiWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>GorevTanimListesiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="HarcirahGirisWP\Elements.xml" />
+    <Content Include="HarcirahGirisWP\HarcirahGirisWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>HarcirahGirisWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="IletisimBilgileriListesiWP\Elements.xml" />
     <Content Include="IletisimBilgileriListesiWP\IletisimBilgileriListesiWP.ascx">

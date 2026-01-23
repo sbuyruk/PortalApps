@@ -2185,9 +2185,21 @@ namespace Model.NBYS
             {
                 try
                 {
+                    //var aciklama = row[1].ReturnEmptyIfNull().ToString();
+                    //hata = aciklama;
+                    //if (!string.IsNullOrEmpty(aciklama) && !aciklama.Contains("Tahsilat Virmanı"))//virman değilse
+                    //{
+                    //    //var kanal = row[1].ReturnEmptyIfNull().ToString();
+                    //    //if (!kanal.Equals("BATCH"))//batch işlemleri alma
+                    //    {
+                    //        var tarih = row[0].ReturnEmptyIfNull().ToString().ConvertToDatetime();
+
+
+                    //        var tutar = row[2].ReturnEmptyIfNull().ToString().Replace(".", ",");
+                    //        var adres = string.Empty;// adres bilgisi gelmiyor
                     var aciklama = row[2].ReturnEmptyIfNull().ToString();
                     hata = aciklama;
-                    if (!string.IsNullOrEmpty(aciklama) && !aciklama.Contains("3 57968 1"))//virman değilse
+                    if (!string.IsNullOrEmpty(aciklama) && !aciklama.Contains("Tahsilat Virmanı"))//Contains("3 57968 1"))//virman değilse
                     {
                         var kanal = row[1].ReturnEmptyIfNull().ToString();
                         if (!kanal.Equals("BATCH"))//batch işlemleri alma
@@ -2197,6 +2209,7 @@ namespace Model.NBYS
 
                             var tutar = row[3].ReturnEmptyIfNull().ToString().Replace(".", ",");
                             var adres = string.Empty;// adres bilgisi gelmiyor
+
                             if (tutar.ReturnZeroIfNull().ConvertToDecimal() > 0)
                             {
                                 EkstreAktarma ekstreAktarma = new EkstreAktarma();

@@ -312,7 +312,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
         {
             FillIkametIlData();
             FillDogumIlData();
-
+            
             if (personel != null)
             {
                 FillPersonelBilgileri(personel);
@@ -329,6 +329,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
                 if (ib != null)//SB 27.10.2021 Yeşim hanım işten ayrılan personelin de izin bilgilerini görmek istedi //(ib.CalismaDurumu == ProjeConstants.PER_CALISIYOR_INT) 
                 {
                     FillIsBilgileri(personel, ib);
+
                     FillKadrosuzIsBilgileri(personel, ib);
 
                     FillUcretliIzinDonemleriTable(personel);
@@ -360,16 +361,15 @@ namespace IKYS_WebParts.PersonelGirisiWP
             //IsBilgileri isb = new IsBilgileri();
             //isb = isb.SelectByPersonelId(personel.Id);
             //ünvan
-            if (UnvanTanimDDL.Items.FindByValue(isb.UnvanId.ReturnZeroIfNull().ToString()) != null)
-                UnvanTanimDDL.SelectedValue = UnvanTanimDDL.Items.FindByValue(isb.UnvanId.ReturnZeroIfNull().ToString()).Value;
-            //görev
-            if (GorevTanimDDL.Items.FindByValue(isb.GorevId.ReturnZeroIfNull().ToString()) != null)
-                GorevTanimDDL.SelectedValue = GorevTanimDDL.Items.FindByValue(isb.GorevId.ReturnZeroIfNull().ToString()).Value;
+            UtilityHelper.SetDDLValue(UnvanTanimDDL, isb.UnvanId.ToString());            
             //birim
-            FillBirimTxt();
+            UtilityHelper.SetDDLValue(BirimDDL, isb.BirimId.ToString());
+            GorevTanimDDLDoldur(isb.BirimId);
+            //görev
+            UtilityHelper.SetDDLValue(GorevTanimDDL, isb.GorevId.ToString());
             //Calisma Durumu
-            if (CalismaDurumuDDL.Items.FindByValue(isb.CalismaDurumu.ToString()) != null)
-                CalismaDurumuDDL.SelectedValue = CalismaDurumuDDL.Items.FindByValue(isb.CalismaDurumu.ToString()).Value;
+            UtilityHelper.SetDDLValue(CalismaDurumuDDL, isb.CalismaDurumu.ToString());
+            
             if (CalismaDurumuDDL.SelectedValue.Equals(ProjeConstants.PER_CALISIYOR_INT.ToString()))
             {
                 AyrilmaTarDiv.Visible = false;
@@ -404,7 +404,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
         private void FillKadrosuzIsBilgileri(Personel personel, IsBilgileri isb)
         {
             //birim
-            UtilityHelper.SetDDLValue(BirimDDL, isb.BirimId.ToString());
+            UtilityHelper.SetDDLValue(KadrosuzBirimDDL, isb.BirimId.ToString());
             //Calisma Durumu
             UtilityHelper.SetDDLValue(KadrosuzCalismaDurumuDDL, isb.CalismaDurumu.ToString());
             if (KadrosuzCalismaDurumuDDL.SelectedValue.Equals(ProjeConstants.PER_CALISIYOR_INT.ToString()))
@@ -426,20 +426,6 @@ namespace IKYS_WebParts.PersonelGirisiWP
             KadrosuzIsbasTarihiTxt.Value = isb.BaslamaTar.ConvertToDatetimeEmptyIfNull();
 
         }
-        private void FillBirimTxt()
-        {
-            string gtId = GorevTanimDDL.SelectedItem.Value;
-            GorevTanim gtDao = new GorevTanim();
-            GorevTanim gt = gtDao.Select<GorevTanim>(gtId.ConvertToInt());
-            if (gt != null)
-            {
-                int birimId = gt.BirimId;
-                BirimTanim btDao = new BirimTanim();
-                BirimTanim bt = btDao.Select<BirimTanim>(birimId);
-                BirimAdiTxt.Text = bt == null ? "" : bt.Adi.ReturnEmptyIfNull().ToString();
-                BirimIdTxt.Text = bt == null ? "0" : bt.Id.ToString();
-            }
-        }
         private void BirimDDLDoldur()
         {
             BirimDDL.Items.Clear();
@@ -451,6 +437,19 @@ namespace IKYS_WebParts.PersonelGirisiWP
             {
                 ListItem li = new ListItem(gr.Adi.ReturnEmptyIfNull().ToString(), gr.Id.ReturnZeroIfNull().ToString());
                 BirimDDL.Items.Add(li);
+            }
+        }
+        private void KadrosuzBirimDDLDoldur()
+        {
+            KadrosuzBirimDDL.Items.Clear();
+            BirimTanim birimDao = new BirimTanim();
+            List<BirimTanim> list = birimDao.SelectAll<BirimTanim>();
+            ListItem bosLi = new ListItem("", "0");
+            KadrosuzBirimDDL.Items.Add(bosLi);
+            foreach (BirimTanim gr in list)
+            {
+                ListItem li = new ListItem(gr.Adi.ReturnEmptyIfNull().ToString(), gr.Id.ReturnZeroIfNull().ToString());
+                KadrosuzBirimDDL.Items.Add(li);
             }
         }
         private void FillKimlikBilgileri(Personel personel)
@@ -1283,8 +1282,8 @@ namespace IKYS_WebParts.PersonelGirisiWP
         }
         private void FillData2DDLs()
         {
+            KadrosuzBirimDDLDoldur();
             BirimDDLDoldur();
-            FillGorevTanimDDL();
             FillUnvanTanimDDL();
             FillMedeniHaliDDL();
             FillCinsiyetDDL();
@@ -1298,14 +1297,30 @@ namespace IKYS_WebParts.PersonelGirisiWP
             TahsiliDDLDoldur();
             PersonelTipiDDLDoldur();
         }
-        private void FillGorevTanimDDL()
+        private void GorevTanimDDLDoldur(int birimId)
         {
             GorevTanimDDL.Items.Clear();
             GorevTanim gorevDao = new GorevTanim();
-            List<GorevTanim> list = gorevDao.SelectAll<GorevTanim>();
+            List<GorevTanim> list = gorevDao.SelectByBirimId(birimId);
             foreach (GorevTanim gr in list)
             {
-                ListItem li = new ListItem(gr.Adi.ReturnEmptyIfNull().ToString(), gr.Id.ReturnZeroIfNull().ToString());
+                // base display text = görev adı
+                string display = gr.Adi.ReturnEmptyIfNull().ToString();
+
+                // if this görev is assigned to a person, append "(Adi Soyadi)"
+                if (gr.PersonelId > 0)
+                {
+                    Personel assigned = new Personel();
+                    assigned = assigned.Select<Personel>(gr.PersonelId);
+                    if (assigned != null)
+                    {
+                        string adi = assigned.Adi.ReturnEmptyIfNull().ToString();
+                        string soyadi = assigned.Soyadi.ReturnEmptyIfNull().ToString();
+                        display += " (" + adi + " " + soyadi + ")";
+                    }
+                }
+
+                ListItem li = new ListItem(display, gr.Id.ReturnZeroIfNull().ToString());
                 GorevTanimDDL.Items.Add(li);
             }
         }
@@ -1558,6 +1573,9 @@ namespace IKYS_WebParts.PersonelGirisiWP
             if (isBilgileriUpdated)
             {
                 IzinDonemiBilgileriniGuncelle(personel);
+                IsBilgileri ib = new IsBilgileri();
+                ib = ib.SelectByPersonelId(personel.Id);
+                FillIsBilgileri(personel,ib);
                 MessageHelper.PublishMessage("İş bilgileri güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
             }
             else
@@ -1718,7 +1736,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
 
                     isBilgileri.UnvanId = UnvanTanimDDL.SelectedItem.Value.ConvertToInt();
                     isBilgileri.GorevId = GorevTanimDDL.SelectedItem.Value.ConvertToInt();
-                    isBilgileri.BirimId = BirimIdTxt.Text.ConvertToInt();
+                    isBilgileri.BirimId = BirimDDL.SelectedItem.Value.ConvertToInt(); 
                     isBilgileri.BaslamaTar = IsbasTarTxt.Value.ConvertToDatetime();
                     isBilgileri.AyrilmaTar = AyrilmaTarTxt.Value.ConvertToDatetime();
                     isBilgileri.AyrilmaSebebi = AyrilmaSebebiDDL.SelectedItem.Value;
@@ -1737,6 +1755,14 @@ namespace IKYS_WebParts.PersonelGirisiWP
                         //Kadrodaki yerini kaydet
                         if (isBilgileri.CalismaDurumu == ProjeConstants.PER_CALISIYOR_INT)
                         {
+                            //Önceki görev tanımından PersonelId'yi Sil
+                            GorevTanim oldGt = new GorevTanim();
+                            oldGt = oldGt.Select<GorevTanim>(oldGorevId);
+                            if (oldGt != null)
+                            {
+                                oldGt.PersonelId = 0;
+                                oldGt.Update();
+                            }
                             GorevTanim gt = new GorevTanim();
                             gt = gt.Select<GorevTanim>(isBilgileri.GorevId);
                             if (gt != null)
@@ -1935,7 +1961,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
         {
             ActiveTabQS = activeTab;
             //ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "setActiveTab('" + ActiveTabQS + "');", true);
-            System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "setActiveTab('" + ActiveTabQS + "');", true);
+            UtilityHelper.ScriptCalistir( "setActiveTab('" + ActiveTabQS + "');");
         }
         protected void SaveBtn_Click(object sender, EventArgs e)
         {
@@ -2010,11 +2036,7 @@ namespace IKYS_WebParts.PersonelGirisiWP
             }
 
         }
-        protected void GorevTanimDDL_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            SetActiveTab("IsBilgileriLi");
-            FillBirimTxt();
-        }
+
         protected void IkametIliDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
             SetActiveTab("IletisimLi");
@@ -2225,6 +2247,14 @@ namespace IKYS_WebParts.PersonelGirisiWP
                 }
             }
 
+        }
+
+        protected void BirimDDL_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            //KadroDDL doldur
+            SetActiveTab("IsBilgileriLi");
+            var birimId = BirimDDL.SelectedItem.Value.ConvertToInt();
+            GorevTanimDDLDoldur(birimId);
         }
     }
 }

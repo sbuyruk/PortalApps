@@ -269,7 +269,9 @@ namespace NBYS_WebParts.BolgelereGoreFTKRaporuWP
             HyperLinkEkle(ProjeConstants.PAGE_FTKKURULU_OLMAYAN_ILILCE_LIST, IzmKOlmayanIlceCell, izmKOlmayanIlce, ProjeConstants.BOLGE_IZMIR_INT, KURULUOLMAYAN_ILCELER);
             merKOlmayanIlce = merIlce - merKOIlce;
             HyperLinkEkle(ProjeConstants.PAGE_FTKKURULU_OLMAYAN_ILILCE_LIST, MerKOlmayanIlceCell, merKOlmayanIlce, ProjeConstants.BOLGE_MERSIN_INT, KURULUOLMAYAN_ILCELER);
-            toplamKOlmayanIlce = ankKOlmayanIlce + istKOlmayanIlce + izmKOlmayanIlce + merKOlmayanIlce;
+            erzKOlmayanIlce = erzIlce - erzKOIlce;
+            HyperLinkEkle(ProjeConstants.PAGE_FTKKURULU_OLMAYAN_ILILCE_LIST, ErzKOlmayanIlceCell, erzKOlmayanIlce, ProjeConstants.BOLGE_ERZURUM_INT, KURULUOLMAYAN_ILCELER);
+            toplamKOlmayanIlce = ankKOlmayanIlce + istKOlmayanIlce + izmKOlmayanIlce + merKOlmayanIlce+erzKOlmayanIlce;
             HyperLinkEkle(ProjeConstants.PAGE_FTKKURULU_OLMAYAN_ILILCE_LIST, TopKOlmayanIlceCell, toplamKOlmayanIlce, ProjeConstants.BOLGE_HEPSI_INT, KURULUOLMAYAN_ILCELER);
         }
 

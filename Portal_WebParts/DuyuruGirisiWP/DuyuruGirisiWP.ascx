@@ -69,20 +69,26 @@
 
     //summernote editor
     $(document).ready(function () {
-        $('#MetinTxt').summernote({
-            //toolbar: [
-            //    // [groupName, [list of button]]
-            //    ['style', ['bold', 'italic', 'underline', 'clear']],
-            //    ['fontsize', ['fontsize']],
-            //    ['color', ['color']],
-            //    ['para', ['ul', 'ol', 'paragraph']],
-            //]
-            lang: 'tr-TR', // default: 'en-US'
-            height: 300,                 // set editor height
-            minHeight: null,             // set minimum height of editor
-            maxHeight: null,             // set maximum height of editor
-            focus: true                  // set focus to editable area after initializing summe
-        });
+        if (!$('#MetinTxt').next().hasClass('note-editor')) {
+            $('#MetinTxt').summernote({
+                lang: 'tr-TR',
+                height: 300,
+                focus: true,
+                toolbar: [
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['font', ['strikethrough', 'superscript', 'subscript']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['height', ['height']]
+                ],
+                popover: {
+                    image: [], // image popover kapalı
+                    link: [],  // link popover kapalı
+                    air: []    // air (floating) popover kapalı
+                }
+            });
+        }
     });
 
 </script>
