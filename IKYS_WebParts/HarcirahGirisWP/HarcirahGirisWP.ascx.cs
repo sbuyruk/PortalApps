@@ -226,6 +226,7 @@ namespace IKYS_WebParts.HarcirahGirisWP
                     .Select(x => new
                     {
                         x.KadroGrupId,
+                        x.Sira,
                         KadroGrubu = (x.KadroGrubu ?? string.Empty).Trim(),
                         Ulke = (x.Ulke ?? string.Empty).Trim(),
                         ParaBirimi = GetParaBirimiByUlke((x.Ulke ?? string.Empty).Trim())
@@ -241,7 +242,7 @@ namespace IKYS_WebParts.HarcirahGirisWP
                 }
 
                 int eklendi = 0;
-                foreach (var k in kadroUlkeKombinasyonlari)
+                foreach (var k in kadroUlkeKombinasyonlari.OrderBy(x => x.KadroGrupId).ThenBy(x => x.Sira))
                 {
                     bool zatenVar = seciliUlkeKayitlari.Any(x =>
                         x.KadroGrupId == k.KadroGrupId
@@ -257,6 +258,7 @@ namespace IKYS_WebParts.HarcirahGirisWP
                     Harcirah yeni = new Harcirah
                     {
                         SeriId = newSeriId,
+                        Sira = k.Sira,
                         KadroGrupId = k.KadroGrupId,
                         KadroGrubu = k.KadroGrubu,
                         Ulke = k.Ulke,

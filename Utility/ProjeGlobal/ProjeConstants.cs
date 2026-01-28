@@ -1184,5 +1184,8 @@ namespace Utility.ProjeGlobal
         public static string YABANCIDIL_ARAPCA = "Arapça";
 
         public static string TURKIYE { get; set; } = "Türkiye";
+        public static string AVRUPA { get; set; } = "Avrupa";
+        public static string INGILTERE { get; set; } = "İngiltere";
+        public static string AVRUPA_HARICI { get; set; } = "Avrupa Harici";
     }
 }

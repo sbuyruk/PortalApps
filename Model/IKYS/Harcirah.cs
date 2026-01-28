@@ -13,6 +13,7 @@ namespace Model.IKYS
     {
         public int KadroGrupId { get; set; }
         public int SeriId { get; set; }
+        public int Sira { get; set; }
         public string KadroGrubu { get; set; }
         public string Ulke { get; set; }
         public decimal Miktar { get; set; }
@@ -140,18 +141,42 @@ namespace Model.IKYS
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
         }
-        public List<Harcirah> SelectByKadroGrupId(int kadroGrupId)
+        public List<Harcirah> SelectByKadroUlkeTarih(int kadroGrupId, string ulke, DateTime tarih)
         {
-            string birimKaldirildiMiStr= string.Format(" WHERE KadroGrupId={0}", kadroGrupId ); 
+            string kadroStr = string.Format(" WHERE KadroGrupId={0}", kadroGrupId);
+            if (tarih != null)
+            {
+                kadroStr += string.Format(" AND BaslangicTarihi<={0} --AND BitisTarihi is NULL", tarih.ReturnTRDateFormat());
+            }
+            string ulkestr = string.Empty;
+            if (!string.IsNullOrEmpty(ulke))
+            {
+                ulkestr = string.Format(" AND Ulke={0}", ulke.ReturnQuotedValue());
+            }
             string sqlString = string.Format(@"SELECT *
                                FROM Harcirah_Table 
                                {0}
-                               ORDER BY KadroGrupId, Sira", birimKaldirildiMiStr);
+                                {1}
+                               ORDER BY KadroGrupId, Sira", kadroStr, ulkestr);
 
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<Harcirah> list = ToList<Harcirah>(dataTable);
 
             return list;
+        }
+        public Harcirah SelectByKadroGrupId(int kadroGrupId)
+        {
+            string kadroStr = string.Format(" WHERE KadroGrupId={0}", kadroGrupId);
+            
+            string sqlString = string.Format(@"SELECT *
+                               FROM Harcirah_Table 
+                               {0}
+                               ORDER BY KadroGrupId, Sira", kadroStr);
+
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            List<Harcirah> list = ToList<Harcirah>(dataTable);
+
+            return list.FirstOrDefault();
         }
         public DataTable SelectAllReturnDataTable()
         {
@@ -171,6 +196,27 @@ namespace Model.IKYS
                 throw e;
             }
             return dataTable;
+        }
+        public List<Harcirah> SelectAll()
+        {
+            string sqlString = string.Format(@"
+                SELECT * 
+                FROM Harcirah_Table A
+
+                ORDER BY KadroGrupId, Sira
+                                    ");
+            DataTable dataTable = null;
+            try
+            {
+                dataTable = dao.SelectFromDb(sqlString, "");
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            List<Harcirah> list = ToList<Harcirah>(dataTable);
+
+            return list;
         }
 
     }

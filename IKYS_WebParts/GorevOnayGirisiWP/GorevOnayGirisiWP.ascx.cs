@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Globalization;
+using System.Linq;
 using System.Text;
 using System.Web.Script.Serialization;
 using System.Web.UI.WebControls;
@@ -153,22 +154,6 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             {
                 if (!Page.IsPostBack)
                 {
-                    //if (AuthQS.Equals("IKYS"))
-                    //{
-                    //    PersonelDiv.Attributes["style"] = "display:block";
-                    //    //GorevOnayListesiBtn.Visible = true;
-                    //}
-                    //else if (AuthQS.Equals("BIRIM"))
-                    //{
-                    //    PersonelDiv.Attributes["style"] = "display:block";
-                    //    //GorevOnayListesiBtn.Visible = false;
-                    //}
-                    //else
-                    //{
-                    //    //personelDiv display:none yap
-                    //    PersonelDiv.Attributes["style"] = "display:none";
-                    //    //GorevOnayListesiBtn.Visible = false;
-                    //}
                     if (string.IsNullOrEmpty(GorevOnayIdQS))
                     {
                         OpenGiris();
@@ -187,7 +172,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                             OpenDuzenle();
                         }
                     }
-                    
+
                 }
             }
             catch (Exception exception)
@@ -195,6 +180,101 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 ExceptionHelper exHelper = new ExceptionHelper(exception);
                 exHelper.PublishException();
             }
+        }
+        private void SetSureFromSelectedDateTime()
+        {
+            // JS: inputlar boşsa return
+            if (string.IsNullOrEmpty(BaslangicTarihiTxt.Text.ConvertToDatetimeEmptyIfNull()) ||
+                string.IsNullOrEmpty(BitisTarihiTxt.Text.ConvertToDatetimeEmptyIfNull()) ||
+                BasSaatDDL.SelectedItem == null ||
+                BitSaatDDL.SelectedItem == null ||
+                string.IsNullOrEmpty(BasSaatDDL.SelectedItem.Text) ||
+                string.IsNullOrEmpty(BitSaatDDL.SelectedItem.Text))
+            {
+                return;
+            }
+
+            DateTime basTar = BaslangicTarihiTxt.Text.ConvertToDatetime();
+            DateTime bitTar = BitisTarihiTxt.Text.ConvertToDatetime();
+
+            basTar = UtilityHelper.TariheSaatEkle(basTar, BasSaatDDL.SelectedItem.Text);
+            bitTar = UtilityHelper.TariheSaatEkle(bitTar, BitSaatDDL.SelectedItem.Text);
+
+            TimeSpan diff = bitTar - basTar;
+
+            // JS: diff < 0 => süreleri 0'la + SaveBtn gizle
+            if (diff.Ticks < 0)
+            {
+                SureGunTxt.Text = "0";
+                SureSaatTxt.Text = "0";
+                SureDakikaTxt.Text = "0";
+                SureSaatDakikaTxt.Text = string.Empty;
+                SureGunStrTxt.Text = string.Empty;
+
+                SaveBtn.Visible = false;
+                return;
+            }
+
+            //SaveBtn.Visible = true;
+
+            int totalMinutes = (int)Math.Floor(diff.TotalMinutes);
+            int days = totalMinutes / (60 * 24);
+            int hours = (totalMinutes % (60 * 24)) / 60;
+            int minutes = totalMinutes % 60;
+
+            SureGunTxt.Text = days.ToString();
+            SureSaatTxt.Text = hours.ToString();
+            SureDakikaTxt.Text = minutes.ToString();
+
+            SureSaatDakikaTxt.Text = hours + " Saat " + minutes + " Dakika";
+            SureGunStrTxt.Text = days + " Gün ";
+        }
+        private void SetSureFieldsFromInputs()
+        {
+            int gun = 0;
+            int saat = 0;
+            int dakika = 0;
+
+            try
+            {
+                bool isEmpty = string.IsNullOrEmpty(BaslangicTarihiTxt.Text.ConvertToDatetimeEmptyIfNull()) ||
+                    string.IsNullOrEmpty(BitisTarihiTxt.Text.ConvertToDatetimeEmptyIfNull()) ||
+                    BasSaatDDL.SelectedItem == null ||
+                    BitSaatDDL.SelectedItem == null ||
+                    string.IsNullOrEmpty(BasSaatDDL.SelectedItem.Text) ||
+                    string.IsNullOrEmpty(BitSaatDDL.SelectedItem.Text);
+
+                if (!isEmpty)
+                {
+                    DateTime basTar = BaslangicTarihiTxt.Text.ConvertToDatetime();
+                    DateTime bitTar = BitisTarihiTxt.Text.ConvertToDatetime();
+
+                    basTar = UtilityHelper.TariheSaatEkle(basTar, BasSaatDDL.SelectedItem.Text);
+                    bitTar = UtilityHelper.TariheSaatEkle(bitTar, BitSaatDDL.SelectedItem.Text);
+
+                    TimeSpan diff = bitTar - basTar;
+                    if (diff.Ticks > 0)
+                    {
+                        int diffMins = (int)Math.Floor(diff.TotalMinutes);
+                        gun = diffMins / (60 * 24);
+                        saat = (diffMins % (60 * 24)) / 60;
+                        dakika = diffMins % 60;
+                    }
+                }
+            }
+            catch
+            {
+                gun = 0;
+                saat = 0;
+                dakika = 0;
+            }
+
+            SureGunTxt.Text = gun.ToString();
+            SureSaatTxt.Text = saat.ToString();
+            SureDakikaTxt.Text = dakika.ToString();
+
+            SureSaatDakikaTxt.Text = saat + " Saat " + dakika + " Dakika";
+            SureGunStrTxt.Text = gun + " Gün ";
         }
         private void OpenDuzenle()
         {
@@ -204,7 +284,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             RaporAlBtn.Visible = true;
             TitleLbl.CssClass = "col-form-primary  btn-outline-primary mb-1";
             TitleLbl.Text = "Görev Onayı Düzenleme";
-            
+
             GorevOnay gorevOnay = new GorevOnay();
             gorevOnay = gorevOnay.Select<GorevOnay>(GorevOnayIdQS.ConvertToInt());
             if (gorevOnay != null)
@@ -224,19 +304,42 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 if (personel != null)
                 {
                     PersonelAdiLbl.Text = personel.Adi + " " + personel.Soyadi;
+
                     FillBasSaat();
                     FillBitSaat();
-                    UlkeDDLDoldur(personel);
-                    YevmiyeGetir();
-                    HarcirahHesapla();
                     FillUlasimAraciDDL();
                     PersonelDDLDoldur(personel);
                     PerSubeImzaDDLDoldur();
                     OnayImzaDDLDoldur();
+
+                    // Form alanlarını set eder (tarih/saat dahil).
                     FillGorevOnayForm(gorevOnay);
+
+
+                    UlkeDDLDoldur(personel);
+                    GorevGrubuTxt.Text = GorevGrubuGetir(personel);
+                    // JS çalışmadan önce süre alanlarını server-side doldur.
+                    SetSureFieldsFromInputs();
+
+
+                    HarcirahHesapla();
                 }
             }
         }
+
+        private string GorevGrubuGetir(Personel personel)
+        {
+            if (personel != null)
+            {
+                Harcirah harcirah = HarcirahGetir(personel.Id, BaslangicTarihiTxt.Text.ConvertToDatetime());
+                if (harcirah != null)
+                {
+                    return harcirah.KadroGrubu;
+                }
+            }
+            return string.Empty;
+        }
+
         private void OpenGiris()
         {
             SaveBtn.Visible = true;
@@ -251,10 +354,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 PerSubeImzaDDLDoldur();
                 OnayImzaDDLDoldur();
                 Personel personel = PersonelGetir();
-                PersonelDDLDoldur(personel);
-                UlkeDDLDoldur(personel);
-                YevmiyeGetir();
-                HarcirahHesapla();
+
                 if (personel != null)
                 {
                     PersonelAdiLbl.Text = personel.Adi + " " + personel.Soyadi;
@@ -268,17 +368,28 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                     string bassaat = bastar.ToString("HH:mm");
                     string bitsaat = bittar.ToString("HH:mm");
                     SelectDDLByText(BasSaatDDL, bassaat);
+
+                    // Bas saat seçilince Bit saat listesi yeniden oluşmalı.
+                    FillBitSaat();
                     SelectDDLByText(BitSaatDDL, bitsaat);
+
                     UtilityHelper.SetDDLValue(OnayImzaDDL, ProjeConstants.GOREV_IKUZMANI.ToString());
                 }
+                PersonelDDLDoldur(personel);
+                UlkeDDLDoldur(personel);
+                GorevGrubuTxt.Text = GorevGrubuGetir(personel);
+                // JS çalışmadan önce süre alanlarını server-side doldur.
+                SetSureFieldsFromInputs();
 
+
+                HarcirahHesapla();
 
             }
         }
         private void PersonelDDLDoldur(Personel personel)
         {
             PersonelDDL.Items.Clear();
-            
+
             List<Personel> list = new List<Personel>();
 
             if (AuthQS.Equals("IKYS"))
@@ -288,7 +399,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             }
             else if (AuthQS.Equals("BIRIM"))
             {
-                
+
                 list = BirimdekiPersoneliGetir(personel);
             }
             else
@@ -347,7 +458,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
         }
         private List<Personel> BirimdekiPersoneliGetir(Personel personel)
         {
-            
+
             List<Personel> list = new List<Personel>();
             if (personel != null)
             {
@@ -362,9 +473,9 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                         BirimTanimIdQS = ib.BirimId.ToString();
                         //Personel perdao = new Personel();
                         //list = perdao.SelectCalisanPersonelByBirimId(birimId);
-                    } 
+                    }
                 }
-                
+
                 BirimTanim bt = new BirimTanim();
                 bt = bt.Select(BirimTanimIdQS.ConvertToInt());
                 if (bt != null)
@@ -410,32 +521,46 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
         }
         private void FillBitSaat()
         {
-            string bitsaatStr = BitSaatDDL.SelectedItem == null ? "17:00" : BitSaatDDL.SelectedItem.Text;
             BitSaatDDL.Items.Clear();
-            string bassaatStr = BasSaatDDL.SelectedItem == null ? "07:05" : BasSaatDDL.SelectedItem.Text;
-            TimeSpan bastarTS = bassaatStr.ConvertToTimeSpan();
+            TimeSpan bastarTS = new TimeSpan(0, 0, 0);
             TimeSpan aralikTS = new TimeSpan(0, 5, 0);
             TimeSpan bittarTS = new TimeSpan(23, 59, 0);
 
             TimeSpan nextTS = bastarTS;
 
-            do
+            while (nextTS < bittarTS)
             {
-                nextTS = nextTS + aralikTS;
                 string bastarStr = string.Format("{0:00}:{1:00}", nextTS.Hours, nextTS.Minutes);
                 ListItem li = new ListItem(bastarStr);
                 BitSaatDDL.Items.Add(li);
+                nextTS = nextTS + aralikTS;
+            }
+            //string bitsaatStr = BitSaatDDL.SelectedItem == null ? "17:00" : BitSaatDDL.SelectedItem.Text;
+            //BitSaatDDL.Items.Clear();
+            //string bassaatStr = BasSaatDDL.SelectedItem == null ? "07:05" : BasSaatDDL.SelectedItem.Text;
+            //TimeSpan bastarTS = bassaatStr.ConvertToTimeSpan();
+            //TimeSpan aralikTS = new TimeSpan(0, 5, 0);
+            //TimeSpan bittarTS = bassaatStr.ConvertToTimeSpan();// new TimeSpan(23, 59, 0);
+
+            //TimeSpan nextTS = bastarTS;
+
+            //do
+            //{
+            //    nextTS = nextTS + aralikTS;
+            //    string bastarStr = string.Format("{0:00}:{1:00}", nextTS.Hours, nextTS.Minutes);
+            //    ListItem li = new ListItem(bastarStr);
+            //    BitSaatDDL.Items.Add(li);
 
 
-            } while (nextTS < bittarTS);
-            if (BitSaatDDL.Items.FindByText(bitsaatStr) != null)
-            {
-                UtilityHelper.SetDDLValue(BitSaatDDL, bitsaatStr);
-            }
-            else
-            {
-                UtilityHelper.SetDDLValue(BitSaatDDL, "17:00");
-            }
+            //} while (nextTS < bittarTS);
+            //if (BitSaatDDL.Items.FindByText(bitsaatStr) != null)
+            //{
+            //    UtilityHelper.SetDDLValue(BitSaatDDL, bitsaatStr);
+            //}
+            //else
+            //{
+            //    UtilityHelper.SetDDLValue(BitSaatDDL, "17:00");
+            //}
 
         }
         private void PerSubeImzaDDLDoldur()
@@ -450,7 +575,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 string adiSoyadi = dataRow["Adi"].ToString() + " " + dataRow["Soyadi"].ToString();
                 string gorev = dataRow["Gorev"].ToString();
                 string birim = dataRow["BirimSube"].ToString();
-                if (gorev.Contains(ProjeConstants.UNVAN_DIREKTOR)|| gorev.Contains(ProjeConstants.UNVAN_BASUZMAN)|| gorev.Contains(ProjeConstants.UNVAN_KIDEMLIUZMAN))
+                if (gorev.Contains(ProjeConstants.UNVAN_DIREKTOR) || gorev.Contains(ProjeConstants.UNVAN_BASUZMAN) || gorev.Contains(ProjeConstants.UNVAN_KIDEMLIUZMAN))
                 {
                     ListItem li = new ListItem(adiSoyadi, personelId.ToString());
                     PerSubeImzaDDL.Items.Add(li);
@@ -470,7 +595,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 string gorev = dataRow["Gorev"].ToString();
                 string birim = dataRow["BirimSube"].ToString();
                 if (gorev.Contains(ProjeConstants.UNVAN_UZMAN) || gorev.Contains(ProjeConstants.UNVAN_KIDEMLIUZMAN))
-                { 
+                {
                     ListItem li = new ListItem(adiSoyadi, personelId.ToString());
                     OnayImzaDDL.Items.Add(li);
                 }
@@ -479,37 +604,39 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
         private void UlkeDDLDoldur(Personel personel)
         {
             UlkeDDL.Items.Clear();
-            
+            UlkeDDL.Items.Add(new ListItem(ProjeConstants.TURKIYE));
+            UlkeDDL.Items.Add(new ListItem(ProjeConstants.AVRUPA));
+            UlkeDDL.Items.Add(new ListItem(ProjeConstants.INGILTERE));
+            UlkeDDL.Items.Add(new ListItem(ProjeConstants.AVRUPA_HARICI));
 
-            if (personel != null)
-            {
-                GorevTanim gorevTanim = new GorevTanim();
-                gorevTanim=gorevTanim.SelectByPersonelId(personel.Id);
-                if (gorevTanim != null)
-                {
-                    Harcirah harcirah = new Harcirah();
-                    List<Harcirah> list = harcirah.SelectByKadroGrupId(gorevTanim.HarcirahGrupId);
-                    if (list.Count>0)
-                    {
-                        GorevGrubuTxt.Text = list[0].KadroGrubu;
-                        foreach (Harcirah item in list)
-                        {
-                            string ulke = item.Ulke;
-                            if (UlkeDDL.Items.FindByText(ulke) != null)
-                            {
-                                continue;
-                            }
-                            else
-                            {
-                                ListItem li = new ListItem(item.Ulke, item.Id.ToString());
-                                UlkeDDL.Items.Add(li);
-                            }
-                        } 
-                    }
+            //if (personel != null)
+            //{
+            //    GorevTanim gorevTanim = new GorevTanim();
+            //    gorevTanim = gorevTanim.SelectByPersonelId(personel.Id);
+            //    if (gorevTanim != null)
+            //    {
+            //        Harcirah harcirah = new Harcirah();
+            //        List<Harcirah> list = harcirah.SelectByKadroUlkeTarih(gorevTanim.HarcirahGrupId, null, BaslangicTarihiTxt.Text.ConvertToDatetime());
+            //        if (list.Count > 0)
+            //        {
+            //            GorevGrubuTxt.Text = list[0].KadroGrubu;
+            //            foreach (Harcirah item in list)
+            //            {
+            //                string ulke = item.Ulke;
+            //                if (UlkeDDL.Items.FindByText(ulke) != null)
+            //                {
+            //                    continue;
+            //                }
+            //                else
+            //                {
+            //                    ListItem li = new ListItem(item.Ulke);
+            //                    UlkeDDL.Items.Add(li);
+            //                }
+            //            }
+            //        }
 
-                }
-            }
-            
+            //    }
+            //}
         }
 
 
@@ -521,7 +648,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
         /// </summary>
         private void FillGorevOnayForm(GorevOnay gorevOnay)
         {
-            
+
             if (gorevOnay != null)
             {
                 GorevOnayIdLbl.Text = gorevOnay.Id.ReturnEmptyIfNull().ToString();
@@ -536,8 +663,8 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                     PersonelAdiLbl.Text = "Personel bulunamadı";
                 }
 
-                ParaBirimiTxt.Text= gorevOnay.ParaBirimi.ToString();
-                YevmiyeParaBirimiTxt.Text= gorevOnay.ParaBirimi.ToString();
+                ParaBirimiTxt.Text = gorevOnay.ParaBirimi.ToString();
+                YevmiyeParaBirimiTxt.Text = gorevOnay.ParaBirimi.ToString();
                 UtilityHelper.SetDDLValue(PersonelDDL, gorevOnay.PersonelId.ToString());
                 UtilityHelper.SetDDLValue(UlasimAraciDDL, gorevOnay.UlasimAraci.ToString());
                 string bassaat = gorevOnay.BaslangicTarihi.ToString("HH:mm");
@@ -551,7 +678,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 GorevinSebebiTxt.Text = gorevOnay.GorevinSebebi.ReturnEmptyIfNull().ToString();
                 AciklamaTxt.Text = gorevOnay.Aciklama.ReturnEmptyIfNull().ToString();
                 UtilityHelper.SetDDLValue(PerSubeImzaDDL, gorevOnay.PerSubeImza.ToString());
-                
+
                 UtilityHelper.SetDDLValue(OnayImzaDDL, gorevOnay.OnayImza.ToString());
                 PersubeVekilChk.Checked = gorevOnay.PerSubeVekil.ConvertToBool();
                 SureTxt.Text = gorevOnay.Sure.ReturnEmptyIfNull().ToString();
@@ -572,7 +699,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             Personel personel = new Personel();
             personel = personel.Select<Personel>(personelId);
             string personelAdi = string.Empty;
-            
+
             return personel;
         }
 
@@ -646,14 +773,14 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
         private void KaydetModalAc()
         {
 
-            string basSaat = " saat " + (string.IsNullOrEmpty(BasSaatDDL.SelectedItem.Text.Trim())?string.Empty: BasSaatDDL.SelectedItem.Text.Trim());
-            string bitSaat = " saat " + (string.IsNullOrEmpty(BitSaatDDL.SelectedItem.Text.Trim())?string.Empty: BitSaatDDL.SelectedItem.Text.Trim());
+            string basSaat = " saat " + (string.IsNullOrEmpty(BasSaatDDL.SelectedItem.Text.Trim()) ? string.Empty : BasSaatDDL.SelectedItem.Text.Trim());
+            string bitSaat = " saat " + (string.IsNullOrEmpty(BitSaatDDL.SelectedItem.Text.Trim()) ? string.Empty : BitSaatDDL.SelectedItem.Text.Trim());
             string konustr = string.IsNullOrEmpty(GorevinSebebiTxt.Text.Trim()) ? string.Empty : " '" + GorevinSebebiTxt.Text.Trim() + "' konulu";
 
             MessageTitleLbl.Text = "Görev kaydedilecek";
-            MessageTextLbl.Text = BaslangicTarihiTxt.Text + " günü," + basSaat + " ile " + BitisTarihiTxt.Text + " günü " +bitSaat +" arasına " + konustr +" görev kaydedilsin mi?";
+            MessageTextLbl.Text = BaslangicTarihiTxt.Text + " günü," + basSaat + " ile " + BitisTarihiTxt.Text + " günü " + bitSaat + " arasına " + konustr + " görev kaydedilsin mi?";
             DeleteNowBtn.Visible = false;
-            KaydetNowBtn.Visible = true;    
+            KaydetNowBtn.Visible = true;
             var openPopup = "OpenModal();";
             UtilityHelper.ScriptCalistir(openPopup);
         }
@@ -700,7 +827,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             }
             return (!isEmpty && !isDateUsed);
         }
-        
+
         private bool Guncelle()
         {
             bool isUpdated = false;
@@ -718,7 +845,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
 
                 gorevOnay.Aciklama = AciklamaTxt.Text;
                 gorevOnay.AracPlakasi = AracPlakasiTxt.Text;
-                gorevOnay.AracTahsisi = UlasimAraciDDL.SelectedItem.Text==ProjeConstants.ULASIMARACI_UCAK;
+                gorevOnay.AracTahsisi = UlasimAraciDDL.SelectedItem.Text == ProjeConstants.ULASIMARACI_UCAK;
                 gorevOnay.UlasimAraci = UlasimAraciDDL.SelectedItem.Text;
                 gorevOnay.Avans = AvansTxt.Text;
                 gorevOnay.BaslangicTarihi = bastar;
@@ -740,23 +867,25 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             return isUpdated;
         }
 
-
-        private void YevmiyeGetir()
+        private Harcirah HarcirahGetir(int personelId, DateTime tarih)
         {
-
-            GunlukYevmiyeTxt.Text = "0";
-            Harcirah harcirah = new Harcirah();
-            harcirah = harcirah.Select(UlkeDDL.SelectedItem.Value.ConvertToInt());
-            if (harcirah != null)
+            GorevTanim gorevTanim = new GorevTanim();
+            gorevTanim = gorevTanim.SelectByPersonelId(personelId);
+            if (gorevTanim != null)
             {
-                GunlukYevmiyeTxt.Text = harcirah.Miktar.ToString("N", culturInfo);
-                ParaBirimiTxt.Text = harcirah.ParaBirimi.ToString();
-                YevmiyeParaBirimiTxt.Text = harcirah.ParaBirimi.ToString();
-                
+                string ulke = UlkeDDL.SelectedItem.Text;
+                Harcirah harcirah = new Harcirah();
+                List<Harcirah> list = harcirah.SelectByKadroUlkeTarih(gorevTanim.HarcirahGrupId, ulke, tarih);
+                if (list.Count > 0)
+                {
+                    return list.OrderByDescending(x => x.BaslangicTarihi).First();
+
+                }
+
             }
+            return null;
         }
 
-        
         private bool GorevOnayiSil(GorevOnay gorevOnay)
         {
             bool isSaved = false;
@@ -776,24 +905,142 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
 
             return isSaved;
         }
-        
+
         private void HarcirahHesapla()
         {
-            string sonuc = "0";
-            if (HarcirahHesaplansinChk.Checked)
-            {
-                int dakika = SureDakikaTxt.Text.ConvertToInt();
-                int saat = SureSaatTxt.Text.ConvertToInt() + (dakika > 0 ? 1 : 0);
-                int gun = SureGunTxt.Text.ConvertToInt();
+            //görev süresince harcırah serisi değişmiş mi? başlangıç ve bitiş tarihine göre kontrol et
 
-                decimal yevmiye = GunlukYevmiyeTxt.Text.ConvertToDecimal();
-                decimal artan = saat == 0 ? 0 : (saat > 12 ? 1 : 0.5m);
-                SureTxt.Text = artan + gun + " gün";
-                sonuc = ((artan + gun) * yevmiye).ToString("N", culturInfo); 
+            Harcirah baslangicHarcirah = HarcirahGetir(PersonelDDL.SelectedItem.Value.ConvertToInt(), BaslangicTarihiTxt.Text.ConvertToDatetime());
+            if (baslangicHarcirah == null)
+            {
+                MessageHelper.PublishMessage("Harcırah bilgisi bulunamadı!", ProjeConstants.MESAJ_HATA);
+                return;
             }
-            YevmiyeTxt.Text = sonuc;
+
+            Harcirah bitisHarcirah = HarcirahGetir(PersonelDDL.SelectedItem.Value.ConvertToInt(), BitisTarihiTxt.Text.ConvertToDatetime());
+            if (bitisHarcirah == null)
+            {
+                MessageHelper.PublishMessage("Bitiş tarihine göre harcırah bilgisi bulunamadı!", ProjeConstants.MESAJ_HATA);
+                return;
+            }
+
+            bool seriDegistiMi = baslangicHarcirah.SeriId == bitisHarcirah.SeriId ? false : true;
+            if (seriDegistiMi)
+            {
+                if (HarcirahHesaplansinChk.Checked)
+                {
+                    decimal toplamTutar = 0;
+                    decimal toplamSure = 0;
+                    //İlk serinin harcırah hesabını yap
+                    int gun = 0;
+                    int saat = 0;
+                    int dakika = 0;
+                    DateTime basTar = BaslangicTarihiTxt.Text.ConvertToDatetime();
+                    DateTime bitTar = baslangicHarcirah.BitisTarihi.AddDays(1);
+
+
+                    TimeSpan diff = bitTar - basTar;
+                    if (diff.Ticks > 0)
+                    {
+                        int diffMins = (int)Math.Floor(diff.TotalMinutes);
+                        gun = diffMins / (60 * 24);
+                        saat = (diffMins % (60 * 24)) / 60;
+                        dakika = diffMins % 60;
+
+                        decimal yevmiye = baslangicHarcirah.Miktar;
+                        decimal artan = saat == 0 ? 0 : (saat > 12 ? 1 : 0.5m);
+                        string sureTxt = artan + gun + " gün";
+                        string sonuc = ((artan + gun) * yevmiye).ToString("N", culturInfo);
+                        toplamTutar = (artan + gun) * yevmiye;
+                        toplamSure = artan + gun;
+                        HesapAciklamaTxt.Text =
+                            yevmiye.ToString("N", culturInfo) + baslangicHarcirah.ParaBirimi + " x " + sureTxt + " = " + sonuc + baslangicHarcirah.ParaBirimi;
+                    }
+
+                    //ikinci serinin harcırah hesabını yap
+                    int gun2 = 0;
+                    int saat2 = 0;
+                    int dakika2 = 0;
+                    DateTime basTar2 = bitisHarcirah.BaslangicTarihi;
+                    DateTime bitTar2 = BitisTarihiTxt.Text.ConvertToDatetime();
+
+                    basTar2 = UtilityHelper.TariheSaatEkle(basTar2, BasSaatDDL.SelectedItem.Text);
+                    bitTar2 = UtilityHelper.TariheSaatEkle(bitTar2, BitSaatDDL.SelectedItem.Text);
+
+                    TimeSpan diff2 = bitTar2 - basTar2;
+                    if (diff2.Ticks > 0)
+                    {
+                        int diffMins2 = (int)Math.Floor(diff2.TotalMinutes);
+                        gun2 = diffMins2 / (60 * 24);
+                        saat2 = (diffMins2 % (60 * 24)) / 60;
+                        dakika = diffMins2 % 60;
+
+                        decimal yevmiye2 = bitisHarcirah.Miktar;
+                        decimal artan2 = saat2 == 0 ? 0 : (saat2 > 12 ? 1 : 0.5m);
+                        string sureTxt2 = artan2 + gun2 + " gün";
+                        string sonuc2 = ((artan2 + gun2) * yevmiye2).ToString("N", culturInfo);
+                        toplamTutar += (artan2 + gun2) * yevmiye2;
+                        toplamSure += artan2 + gun2;
+                        HesapAciklamaTxt.Text = HesapAciklamaTxt.Text +
+                            System.Environment.NewLine +
+                            yevmiye2.ToString("N", culturInfo) + baslangicHarcirah.ParaBirimi + " x " + sureTxt2 + " = " + sonuc2 + baslangicHarcirah.ParaBirimi;
+                    }
+                    HesapAciklamaTxt.Text = HesapAciklamaTxt.Text +
+                            System.Environment.NewLine + "Toplam Harcırah = " +
+                            toplamTutar.ToString("N", culturInfo) + baslangicHarcirah.ParaBirimi;
+                    GunlukYevmiyeTxt.Text = string.Empty;
+                    ParaBirimiTxt.Text = baslangicHarcirah.ParaBirimi.ToString();
+                    YevmiyeParaBirimiTxt.Text = baslangicHarcirah.ParaBirimi.ToString();
+                    YevmiyeTxt.Text = toplamTutar.ToString("N", culturInfo) + baslangicHarcirah.ParaBirimi;
+                    SureTxt.Text = toplamSure.ToString() + " gün"; 
+                }
+                else {                     
+                    GunlukYevmiyeTxt.Text = "0";
+                    if (baslangicHarcirah != null)
+                    {
+                        GunlukYevmiyeTxt.Text = baslangicHarcirah.Miktar.ToString("N", culturInfo);
+                        ParaBirimiTxt.Text = baslangicHarcirah.ParaBirimi.ToString();
+                        YevmiyeParaBirimiTxt.Text = baslangicHarcirah.ParaBirimi.ToString();
+                    }
+                    HesapAciklamaTxt.Text = "Harcırah Hesaplanmadı";
+                    YevmiyeTxt.Text = "0";
+                }
+            }
+            else
+            {
+                GunlukYevmiyeTxt.Text = "0";
+
+                if (baslangicHarcirah != null)
+                {
+                    GunlukYevmiyeTxt.Text = baslangicHarcirah.Miktar.ToString("N", culturInfo);
+                    ParaBirimiTxt.Text = baslangicHarcirah.ParaBirimi.ToString();
+                    YevmiyeParaBirimiTxt.Text = baslangicHarcirah.ParaBirimi.ToString();
+                }
+                string sonuc = "0";
+                if (HarcirahHesaplansinChk.Checked)
+                {
+                    int dakika = SureDakikaTxt.Text.ConvertToInt();
+                    int saat = SureSaatTxt.Text.ConvertToInt() + (dakika > 0 ? 1 : 0);
+                    int gun = SureGunTxt.Text.ConvertToInt();
+
+                    decimal yevmiye = GunlukYevmiyeTxt.Text.ConvertToDecimal();
+                    decimal artan = saat == 0 ? 0 : (saat > 12 ? 1 : 0.5m);
+                    SureTxt.Text = artan + gun + " gün";
+                    sonuc = ((artan + gun) * yevmiye).ToString("N", culturInfo);
+                    HesapAciklamaTxt.Text = gun + " Gün," + saat + " Saat," + dakika + " Dakika = " + SureTxt.Text +
+                        System.Environment.NewLine +
+                        yevmiye.ToString("N", culturInfo) + ParaBirimiTxt.Text + " x " + SureTxt.Text + " = " + sonuc + ParaBirimiTxt.Text;
+                }
+                else
+                {
+                    HesapAciklamaTxt.Text = "Harcırah Hesaplanmadı";
+                }
+                YevmiyeTxt.Text = sonuc;
+            }
+
+
         }
-        
+
         private void RedirectToPage(string pageUrl)
         {
             try
@@ -916,10 +1163,10 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                         personel = personel.Select<Personel>(PersonelIdQS.ConvertToInt());
                         if (personel != null)
                         {
-                            IKYSOrtak.GorevOnayEPostasiGonder(personel, gorevOnay.Id, "YurtIci/YurtDisi");
+                            IKYSOrtak.GorevOnayEPostasiGonder(personel, gorevOnay.Id, "YurtIçi/YurtDışı");
                         }
                     }
-                    RedirectToPage(ProjeConstants.PAGE_GOREVONAY_LIST + "?Mesaj=true"+ "&SecilenId="+gorevOnay.Id + (string.IsNullOrEmpty(AuthQS) ? string.Empty : "&Auth=" + ProjeConstants.IKYS_YETKILI_BIRIM));
+                    RedirectToPage(ProjeConstants.PAGE_GOREVONAY_LIST + "?Mesaj=true" + "&SecilenId=" + gorevOnay.Id + (string.IsNullOrEmpty(AuthQS) ? string.Empty : "&Auth=" + ProjeConstants.IKYS_YETKILI_BIRIM));
                 }
             }
             catch (Exception exception)
@@ -934,20 +1181,44 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
         {
             HarcirahHesapla();
 
-        } 
+        }
         protected void BaslangicTarihiTxt_TextChanged(object sender, EventArgs e)
         {
+            DateTime basTarih = BaslangicTarihiTxt.Text.ConvertToDatetime().Date;
+            DateTime bitTarih = BitisTarihiTxt.Text.ConvertToDatetime().Date;
+
+            if (basTarih > bitTarih)
+            {
+                BitisTarihiTxt.Text = BaslangicTarihiTxt.Text;
+                bitTarih = basTarih;
+            }
+
+            if ((bitTarih - basTarih).TotalDays > 40)
+            {
+                BitisTarihiTxt.Text = BaslangicTarihiTxt.Text;
+            }
+            SetSureFromSelectedDateTime();
             HarcirahHesapla();
 
         }
         protected void BitisTarihiTxt_TextChanged(object sender, EventArgs e)
         {
+            DateTime basTarih = BaslangicTarihiTxt.Text.ConvertToDatetime().Date;
+            DateTime bitTarih = BitisTarihiTxt.Text.ConvertToDatetime().Date;
+
+            if (basTarih > bitTarih)
+            {
+                BitisTarihiTxt.Text = BaslangicTarihiTxt.Text;
+                bitTarih = basTarih;
+            }
+
+            if ((bitTarih - basTarih).TotalDays > 40)
+            {
+                BitisTarihiTxt.Text = BaslangicTarihiTxt.Text;
+            }
+            SetSureFromSelectedDateTime();
             HarcirahHesapla();
 
-        }
-        protected void HarcirahHesaplaBtn_Click(object sender, EventArgs e)
-        {
-            HarcirahHesapla();
         }
         protected void PersonelDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -958,22 +1229,24 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 PersonelAdiLbl.Text = personel.Adi + " " + personel.Soyadi;
                 UlkeDDLDoldur(personel);
             }
-            YevmiyeGetir();
+
             HarcirahHesapla();
-        }        
+        }
         protected void BasSaatDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            YevmiyeGetir();
+            SetSureFromSelectedDateTime();
+
             HarcirahHesapla();
         }
         protected void BitSaatDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            YevmiyeGetir();
+            SetSureFromSelectedDateTime();
+
             HarcirahHesapla();
         }
         protected void UlkeDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
-            YevmiyeGetir();
+
             HarcirahHesapla();
         }
         protected void GorevOnayListesiBtn_Click(object sender, EventArgs e)

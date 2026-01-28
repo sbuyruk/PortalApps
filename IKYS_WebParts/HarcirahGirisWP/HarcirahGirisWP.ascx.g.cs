@@ -233,22 +233,23 @@ namespace IKYS_WebParts.HarcirahGirisWP {
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>\r" +
                         "\n\r\n<style>\r\n    .ui-datepicker {\r\n        z-index: 9999 !important;\r\n        wid" +
                         "th: 18.5em;\r\n        font-size: small;\r\n    }\r\n</style>\r\n\r\n<script type=\"text/ja" +
-                        "vascript\">\n    // On Page Load\n    $(function () {\n        SetHarcirahDatePicker" +
-                        "();\n    });\n\n    var prm = Sys.WebForms.PageRequestManager.getInstance();\n    if" +
-                        " (prm != null) {\n        prm.add_endRequest(function (sender, e) {\n            i" +
-                        "f (sender._postBackSettings.panelsToUpdate != null) {\n                SetHarcira" +
-                        "hDatePicker();\n            }\n        });\n    };\n\n    function SetHarcirahDatePic" +
-                        "ker() {\n\n        var now = new Date();\n        var year = now.getFullYear();\n\n  " +
-                        "      var defaultBas = \"01.01.\" + year;\n\n        if (!$(\"#YeniBaslangicTarihiTxt" +
-                        "\").val()) {\n            $(\"#YeniBaslangicTarihiTxt\").val(defaultBas);\n        }\n" +
-                        "\n\n        $(\"#YeniBaslangicTarihiTxt\").datepicker({\n            dateFormat: \"dd." +
-                        "mm.yy\",\n            firstDay: 1,\n            monthNames: [\"Ocak\", \"Şubat\", \"Mart" +
-                        "\", \"Nisan\", \"Mayıs\", \"Haziran\", \"Temmuz\", \"Ağustos\", \"Eylül\", \"Ekim\", \"Kasım\", \"" +
-                        "Aralık\"],\n            monthNamesShort: [\"Oca\", \"Şub\", \"Mar\", \"Nis\", \"May\", \"Haz\"" +
-                        ", \"Tem\", \"Ağu\", \"Eyl\", \"Eki\", \"Kas\", \"Ara\"],\n            dayNames: [\"Pazar\", \"Pa" +
-                        "zartesi\", \"Salı\", \"Çarşamba\", \"Perşembe\", \"Cuma\", \"Cumartesi\"],\n            dayN" +
-                        "amesMin: [\"Pz\", \"Pt\", \"Sl\", \"Çr\", \"Pr\", \"Cu\", \"Ct\"],\n            changeMonth: tr" +
-                        "ue,\n            changeYear: true\n        });\n    }\n</script>"));
+                        "vascript\">\r\n    // On Page Load\r\n    $(function () {\r\n        SetHarcirahDatePic" +
+                        "ker();\r\n    });\r\n\r\n    var prm = Sys.WebForms.PageRequestManager.getInstance();\r" +
+                        "\n    if (prm != null) {\r\n        prm.add_endRequest(function (sender, e) {\r\n    " +
+                        "        if (sender._postBackSettings.panelsToUpdate != null) {\r\n                " +
+                        "SetHarcirahDatePicker();\r\n            }\r\n        });\r\n    };\r\n\r\n    function Set" +
+                        "HarcirahDatePicker() {\r\n\r\n        var now = new Date();\r\n        var year = now." +
+                        "getFullYear();\r\n\r\n        var defaultBas = \"01.01.\" + year;\r\n\r\n        if (!$(\"#" +
+                        "YeniBaslangicTarihiTxt\").val()) {\r\n            $(\"#YeniBaslangicTarihiTxt\").val(" +
+                        "defaultBas);\r\n        }\r\n\r\n\r\n        $(\"#YeniBaslangicTarihiTxt\").datepicker({\r\n" +
+                        "            dateFormat: \"dd.mm.yy\",\r\n            firstDay: 1,\r\n            month" +
+                        "Names: [\"Ocak\", \"Şubat\", \"Mart\", \"Nisan\", \"Mayıs\", \"Haziran\", \"Temmuz\", \"Ağustos" +
+                        "\", \"Eylül\", \"Ekim\", \"Kasım\", \"Aralık\"],\r\n            monthNamesShort: [\"Oca\", \"Ş" +
+                        "ub\", \"Mar\", \"Nis\", \"May\", \"Haz\", \"Tem\", \"Ağu\", \"Eyl\", \"Eki\", \"Kas\", \"Ara\"],\r\n   " +
+                        "         dayNames: [\"Pazar\", \"Pazartesi\", \"Salı\", \"Çarşamba\", \"Perşembe\", \"Cuma\"" +
+                        ", \"Cumartesi\"],\r\n            dayNamesMin: [\"Pz\", \"Pt\", \"Sl\", \"Çr\", \"Pr\", \"Cu\", \"" +
+                        "Ct\"],\r\n            changeMonth: true,\r\n            changeYear: true\r\n        });" +
+                        "\r\n    }\r\n</script>"));
         }
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +

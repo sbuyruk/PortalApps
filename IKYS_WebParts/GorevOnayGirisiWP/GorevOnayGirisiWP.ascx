@@ -343,29 +343,34 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Harcırah Hesaplanan bölüm-->
-                    <div class="border p-2 text-center m-0">
-                        <!-- Ortalamak için text-center -->
-                        <div class="col form-group m-2">
-                            <label class="form-label fw-semibold text-primary d-block" for="YevmiyeTxt">Hesaplanan Harcırah</label>
-                        </div>
+                    <div class="row gap-3 m-0">
 
-                        <div class="row justify-content-center">
-                            <!-- Ortalamak için justify-content-center -->
-                            <div class="col-2 form-group">
-                                <label class="form-label fw-semibold" for="YevmiyeTxt">Hakedilen Yevmiye</label>
-                                <asp:TextBox ID="YevmiyeTxt" runat="server" CssClass="form-control text-center fw-bold text-primary" ReadOnly="True" />
+                        <!-- Harcırah Hesaplanan bölüm-->
+                        <div class="col-8 border p-2 text-center m-0">
+                            <!-- Ortalamak için text-center -->
+                            <div class="col form-group m-2">
+                                <label class="form-label fw-semibold text-primary d-block" for="YevmiyeTxt">Hesaplanan Harcırah</label>
                             </div>
-                            <div class="col-2 form-group">
-                                <label class="form-label fw-semibold" for="YevmiyeParaBirimiTxt">Para Birimi</label>
-                                <asp:TextBox ID="YevmiyeParaBirimiTxt" runat="server" CssClass="form-control text-center fw-bold text-primary" ReadOnly="True" />
+
+                            <div class="row justify-content-center border m-2">
+                                <!-- Ortalamak için justify-content-center -->
+                                <div class="col-3 form-group">
+                                    <label class="form-label fw-semibold" for="YevmiyeTxt">Hakedilen Yevmiye</label>
+                                    <asp:TextBox ID="YevmiyeTxt" runat="server" CssClass="form-control text-center fw-bold text-primary" ReadOnly="True" />
+                                </div>
+                                <div class="col-3 form-group">
+                                    <label class="form-label fw-semibold" for="YevmiyeParaBirimiTxt">Para Birimi</label>
+                                    <asp:TextBox ID="YevmiyeParaBirimiTxt" runat="server" CssClass="form-control text-center fw-bold text-primary" ReadOnly="True" />
+                                </div>
+                                <div class="col-3 form-group">
+                                    <label class="form-label fw-semibold" for="SureTxt">Hakedilen Gün</label>
+                                    <asp:TextBox ID="SureTxt" runat="server" CssClass="form-control text-center fw-bold text-primary" ReadOnly="True" />
+                                </div>
                             </div>
-                            <div class="col-2 form-group">
-                                <label class="form-label fw-semibold" for="SureTxt">Hakedilen Gün</label>
-                                <asp:TextBox ID="SureTxt" runat="server" CssClass="form-control text-center fw-bold text-primary" ReadOnly="True" />
-                            </div>
+
                         </div>
-                        <div class="col form-group m-2">
+                        <div class="col">
+                            <asp:TextBox ID="HesapAciklamaTxt" runat="server" TextMode="MultiLine" Rows="5" CssClass="form-control" type="text" enabled="false"/>
                         </div>
                     </div>
 
@@ -407,4 +412,13 @@
             </div>
         </ContentTemplate>
     </asp:UpdatePanel>
+     <asp:UpdateProgress ID="updateProgress1" runat="server">
+     <ProgressTemplate>
+         <div class='loaderMainContainer'>
+             <div class='loaderContainer'>
+                 <div class='loaderCircle'></div>
+             </div>
+         </div>
+     </ProgressTemplate>
+ </asp:UpdateProgress>
 </div>
