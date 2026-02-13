@@ -147,6 +147,11 @@
                             <asp:FileUpload CssClass="form-control" ID="GarantiEkstreFU" runat="server" />
                         </div>
                     </div>
+
+
+
+                </div>
+                <div class="col">
                     <div class="card  mt-3">
                         <div class="card-header">
                             <asp:Label ID="Halkbank2Lbl" runat="server" Text="HALKBANK 2" Font-Size="X-Large" Font-Bold="True" ForeColor="DeepSkyBlue"></asp:Label>
@@ -156,10 +161,6 @@
                             <asp:FileUpload CssClass="form-control" ID="Halkbank2FU" runat="server" />
                         </div>
                     </div>
-
-
-                </div>
-                <div class="col">
                     <div class="card  mt-3">
                         <div class="card-header">
                             <asp:Label ID="IsbankEkstreLbl" runat="server" Text="İşbank (Ekstre)" Font-Size="X-Large" Font-Bold="True" ForeColor="blue"></asp:Label>
@@ -167,15 +168,6 @@
                         </div>
                         <div class="card-body">
                             <asp:FileUpload ID="IsbankEkstreFU" runat="server" CssClass="form-control" />
-                        </div>
-                    </div>
-                    <div class="card  mt-3">
-                        <div class="card-header">
-                            <asp:Label ID="KioskLbl" runat="server" Text="Kiosk" Font-Size="X-Large" Font-Bold="True" ForeColor="Black"></asp:Label>
-                            <asp:Label ID="KioskOkLbl" runat="server" Font-Size="X-Large" Font-Bold="True" ForeColor="#33CC33"></asp:Label>
-                        </div>
-                        <div class="card-body">
-                            <asp:FileUpload ID="KioskFU" runat="server" CssClass="form-control" />
                         </div>
                     </div>
                     <div class="card  mt-3">

@@ -178,6 +178,20 @@ namespace Model.IKYS
 
             return list.FirstOrDefault();
         }
+        public Harcirah SelectByParaBirimi(string paraBirimi)
+        {
+            string paraBirimiStr = string.Format(" WHERE ParaBirimi={0}", paraBirimi.ReturnQuotedValue());
+
+            string sqlString = string.Format(@"SELECT *
+                               FROM Harcirah_Table 
+                               {0}
+                               ", paraBirimiStr);
+
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            List<Harcirah> list = ToList<Harcirah>(dataTable);
+
+            return list.FirstOrDefault();
+        }
         public DataTable SelectAllReturnDataTable()
         {
             string sqlString = string.Format(@"

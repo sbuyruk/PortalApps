@@ -1940,7 +1940,13 @@ namespace Model.NBYS
                                 ekstreAktarma.BagisTarihi = bagisTarihi; // Bankadan ayrıca gelen bilgi olmadığından gün eklemesi kaldırıldı
                                 ekstreAktarma.Aciklama = aciklama;
                                 ekstreAktarma.FisNo = odemeId;
-                                ekstreAktarma.BankaAdi = bagisKanali.ReturnEmptyIfNull().Equals("E-Devlet") ? ProjeConstants.BANKA_EDEVLETBAGIS: ProjeConstants.BANKA_KARTILEBAGIS;
+                                if (bagisKanali.ReturnEmptyIfNull().Equals("E-Devlet"))
+                                    ekstreAktarma.BankaAdi = ProjeConstants.BANKA_EDEVLETBAGIS;
+                                else if (bagisKanali.ReturnEmptyIfNull().Equals("Kiosk"))
+                                    ekstreAktarma.BankaAdi = ProjeConstants.BANKA_KIOSK;
+                                else
+                                    ekstreAktarma.BankaAdi = ProjeConstants.BANKA_KARTILEBAGIS;
+
                                 ekstreAktarma.IslemTarihi = islemTarihi;
                                 ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                                 ekstreAktarma.BagisTipi = bagisTipi;
@@ -1967,83 +1973,6 @@ namespace Model.NBYS
                         catch (Exception ex)
                         {
                             Exception exception = new Exception(string.Format("HATA SATIRI {0}:{1} ->", ProjeConstants.BANKA_EDEVLETBAGIS, "Dosya Sıra No=" + kayitNo), ex);
-                            exceptionHelper.Exceptions.Add(exception);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                exceptionHelper.Exceptions.Add(ex);
-            }
-            return exceptionHelper;
-        }
-        public static ExceptionHelper SaveKioskFile(Stream fileStream, DateTime islemTarihi, string currentUser)
-        {
-            int counter = ProjeConstants.BANKA_KIOSK_ILKKACSATIRHARIC;
-            ExceptionHelper exceptionHelper = new ExceptionHelper();
-            CultureInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
-            try
-            {
-                var kioskData = ExcelHelper.ReadXLSXAsDataTableKartIle(fileStream, ProjeConstants.BANKA_KIOSK_ILKKACSATIRHARIC,
-                    ProjeConstants.BANKA_KIOSK_SONKACSATIRHARIC, true);
-                if (kioskData != null)
-                {
-                    foreach (DataRow row in kioskData.Rows)
-                    {
-                        counter++;
-                        EkstreAktarma ekstreAktarma = new EkstreAktarma();
-
-                        try
-                        {
-                            var odemeId = row[0].ReturnEmptyIfNull().ToString();
-                            var adi = row[1].ReturnEmptyIfNull().ToString();
-                            var tcKimlikNo = row[2].ReturnEmptyIfNull().ToString();
-                            var telefon = row[3].ReturnEmptyIfNull().ToString();
-                            var eposta = row[4].ReturnEmptyIfNull().ToString();
-
-                            var tutar = row[5].ReturnZeroIfNull().ToString().Replace("₺", "").Replace(".", ",").ConvertToDecimal();
-                            var aciklama = row[6].ReturnEmptyIfNull().ToString();
-                            var adres = row[7].ReturnEmptyIfNull().ToString();
-                            var bagisKanali = row[8].ReturnEmptyIfNull().ToString();
-                            var odemeMetodu = row[9].ReturnEmptyIfNull().ToString();
-
-                            var bagisTarihi = row[10].ReturnEmptyIfNull().ToString().ConvertToDatetime();
-                            var sonIslemTarihi = row[11].ReturnEmptyIfNull().ToString().ConvertToDatetime();
-
-                            if (tutar > 0)
-                            {
-                                ekstreAktarma.Adi = adi.Trim();
-                                ekstreAktarma.TCKimlikNo = tcKimlikNo.ConvertToLong();
-                                ekstreAktarma.Telefon1 = UtilityHelper.TelefonFormatla(telefon.ReturnEmptyIfNull().ToString());
-                                ekstreAktarma.Adres = adres;
-
-                                ekstreAktarma.Eposta = eposta;
-                                ekstreAktarma.AktarildiMi = false;
-                                ekstreAktarma.Tutar = tutar.ConvertToDecimal();
-                                ekstreAktarma.BagisTarihi = bagisTarihi; 
-                                ekstreAktarma.Aciklama = aciklama;
-                                ekstreAktarma.FisNo = odemeId;
-                                ekstreAktarma.BankaAdi = ProjeConstants.BANKA_KIOSK;
-                                ekstreAktarma.IslemTarihi = islemTarihi;
-                                ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
-                                ekstreAktarma.Olusturan = currentUser;
-                                if (BuKayitDahaOnceGirilmisMiByFisNo(//odemeId numarasından kontrol et kayıt girilmemişse exception dondur değilse kaydet
-                                    "Kiosk", odemeId, aciklama, ekstreAktarma.BagisTarihi, tutar)) //transactionId numarasından kontrol et kayıt girilmemişse exception dondur değilse kaydet
-                                {
-                                    Exception ex = new Exception(odemeId + " Numaralı kayıt daha önce girildiğinden tekrar aktarılmadı.");
-                                    exceptionHelper.Exceptions.Add(ex);
-                                }
-                                else
-                                {
-                                    ekstreAktarma.Save();
-                                }
-                            }
-
-                        }
-                        catch (Exception ex)
-                        {
-                            Exception exception = new Exception(string.Format("HATA SATIRI {0}:{1} ->", ProjeConstants.BANKA_KIOSK, "Dosya Sıra No=" + counter), ex);
                             exceptionHelper.Exceptions.Add(exception);
                         }
                     }

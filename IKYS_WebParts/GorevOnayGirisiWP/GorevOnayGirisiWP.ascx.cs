@@ -312,11 +312,11 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                     PerSubeImzaDDLDoldur();
                     OnayImzaDDLDoldur();
 
+                    UlkeDDLDoldur(personel);
                     // Form alanlarını set eder (tarih/saat dahil).
                     FillGorevOnayForm(gorevOnay);
 
 
-                    UlkeDDLDoldur(personel);
                     GorevGrubuTxt.Text = GorevGrubuGetir(personel);
                     // JS çalışmadan önce süre alanlarını server-side doldur.
                     SetSureFieldsFromInputs();
@@ -687,6 +687,9 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 GunlukYevmiyeTxt.Text = gorevOnay.GunlukYevmiye.ReturnEmptyIfNull().ToString();
                 UlasimAraciDDL.SelectedItem.Text = gorevOnay.UlasimAraci;
                 AracPlakasiTxt.Text = gorevOnay.AracPlakasi.ReturnEmptyIfNull().ToString();
+                Harcirah harcirah = new Harcirah();
+                harcirah= harcirah.SelectByParaBirimi(gorevOnay.ParaBirimi);
+                UtilityHelper.SetDDLValue(UlkeDDL, harcirah.Ulke.ReturnEmptyIfNull().ToString());
             }
             else
             {

@@ -258,24 +258,12 @@ namespace Model.TBYS
             return dataTable;
 
         }
-        public DataTable SelectByKiraciAyYilReturnDataTable(int bolgeId,int kiraciId, int ay, int yil)
+        public DataTable SelectByKiraciAyYilReturnDataTable(int bolgeId,int kiraciId,DateTime bastar, DateTime bittar)//int ay, int yil)
         {
-            string ayYilStr = string.Empty;
-            if ((ay != ProjeConstants.HEPSI_INT) && (yil != ProjeConstants.HEPSI_INT))
-            {
-                ayYilStr = string.Format(@"
-                    AND MONTH(A.OdemeTarihi)={0} AND YEAR(A.OdemeTarihi) ={1}", ay.ReturnQuotedValue(), yil.ReturnQuotedValue());
-            }
-            else if ((ay == ProjeConstants.HEPSI_INT) && (yil != ProjeConstants.HEPSI_INT))
-            {
-                ayYilStr = string.Format(@"
-                    AND YEAR(A.OdemeTarihi) ={0}", yil.ReturnQuotedValue());
-            }
-            else if ((ay != ProjeConstants.HEPSI_INT) && (yil == ProjeConstants.HEPSI_INT))
-            {
-                ayYilStr = string.Format(@"
-                    AND MONTH(A.OdemeTarihi)={0} ", ay.ReturnQuotedValue());
-            }
+            bittar = UtilityHelper.TariheSaatEkle(bittar, "23:59:59");
+            string   bastarStr = string.Format(@"
+                    AND A.OdemeTarihi BETWEEN {0} AND {1}", bastar.ReturnQuotedValue(), bittar.ReturnQuotedValue());
+
             //WHERE MONTH(OdemeTarihi)={0} AND YEAR(OdemeTarihi)={1} {2}
             string kiraciIdStr = kiraciId > 0 ? string.Format(@" AND A.KiraciId={0}", kiraciId) : string.Empty;
             string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND C.BolgeId={0}", bolgeId);
@@ -296,7 +284,7 @@ namespace Model.TBYS
                 WHERE 1>0 
                 {0} {1} {2}
                 ORDER BY A.OdemeTarihi DESC, B.Id, A.SozlesmeId
-            ", ayYilStr, kiraciIdStr,bolgeStr);
+            ", bastarStr, kiraciIdStr,bolgeStr);
             // bölge de seçime eklendiği için sorgu üstteki ile değişti SB 23/09/2019
             //string sqlString = string.Format(@"
             //    SELECT A.Id, B.Adi,B.Soyadi,  B.Adi+' '+B.Soyadi KiraciAdiSoyadi,

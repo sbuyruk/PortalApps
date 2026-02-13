@@ -690,12 +690,6 @@ namespace Utility.ProjeGlobal
         public const int BANKA_SMSVAKIF_ILKKACSATIRHARIC = 5;
         public const int BANKA_SMSVAKIF_SONKACSATIRHARIC = 4;
         public const string IMAGE_PATH_BANKA_SMSVAKIF = "/" + IMAGE_PATH + "/vakifbank.png";
-        //Kiosk
-        public const string BANKA_KIOSK = "Kiosk";
-        public const string BANKA_KIOSK_BASLIKILKHUCRE = "HESAP NO";
-        public const int BANKA_KIOSK_ILKKACSATIRHARIC = 0;
-        public const int BANKA_KIOSK_SONKACSATIRHARIC = 0;
-        public const string IMAGE_PATH_BANKA_KIOSK = "/" + IMAGE_PATH + "/vakifbank.png";
         //Ziraat
         public const string BANKA_ZIRAAT = "Ziraat Bankası";
         public const string IMAGE_PATH_ZIRAAT = "/" + IMAGE_PATH + "/ziraat.png";
@@ -704,7 +698,11 @@ namespace Utility.ProjeGlobal
         public const string BANKA_ZIRAATEKSTRE_BASLIKILKHUCRE = "Tarih";
         public const int BANKA_ZIRAAT_ILKKACSATIRHARIC = 6;
         public const int BANKA_ZIRAAT_SONKACSATIRHARIC = 4;
+        //Kiosk
+        public const string BANKA_KIOSK = "Kiosk";
+        public const string BANKA_KIOSK_BASLIKILKHUCRE = "HESAP NO";
         //Kart ile
+        public const string BANKA_KARTILEBAGIS = "Kart ile Bağış";
         public const int BANKA_KARTILE_ILKKACSATIRHARIC = 0;//hastitle true o yüzden 0
         public const int BANKA_KARTILE_SONKACSATIRHARIC = 0;
         //EDevlet
@@ -736,8 +734,7 @@ namespace Utility.ProjeGlobal
         public const string SMS_VODAFONE = "Vodafone";
         public const string SMS_TURKTELEKOM = "TurkTelekom";
 
-        //Kart ile
-        public const string BANKA_KARTILEBAGIS = "Kart ile Bağış";
+
 
         #endregion 
         //armagan durumu

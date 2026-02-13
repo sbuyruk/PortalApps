@@ -80,6 +80,55 @@ namespace TBYS_WebParts.OdemeGirisWP
                 ViewState["SecilenYil"] = value;
             }
         }
+
+        private string BastarQS
+        {
+            get
+            {
+
+                if (ViewState["Bastar"] == null)
+                {
+                    if (Page.Request.QueryString["Bastar"] != null && !string.IsNullOrEmpty(Page.Request.QueryString["Bastar"].ToString()))
+                    {
+                        ViewState["Bastar"] = Page.Request.QueryString["Bastar"];
+                    }
+                    else
+                    {
+                        ViewState["Bastar"] = DateTime.Today.ToString();
+                    }
+                }
+                return ViewState["Bastar"].ToString();
+            }
+
+            set
+            {
+                ViewState["Bastar"] = value;
+            }
+        }
+        private string BittarQS
+        {
+            get
+            {
+
+                if (ViewState["Bittar"] == null)
+                {
+                    if (Page.Request.QueryString["Bittar"] != null && !string.IsNullOrEmpty(Page.Request.QueryString["Bittar"].ToString()))
+                    {
+                        ViewState["Bittar"] = Page.Request.QueryString["Bittar"];
+                    }
+                    else
+                    {
+                        ViewState["Bittar"] = DateTime.Today.ToString();
+                    }
+                }
+                return ViewState["Bittar"].ToString();
+            }
+
+            set
+            {
+                ViewState["Bittar"] = value;
+            }
+        }
         private string KiraciIdQS
         {
             get
@@ -197,6 +246,8 @@ namespace TBYS_WebParts.OdemeGirisWP
         {
             if (!Page.IsPostBack)
             {
+                SecilenAyQS=BastarQS.ConvertToDatetime().Month.ToString();
+                SecilenYilQS=BastarQS.ConvertToDatetime().Year.ToString();
                 if (OdemeIdQS.ConvertToInt() > 0)
                 {
                     //odeme düzenleme
@@ -485,7 +536,7 @@ namespace TBYS_WebParts.OdemeGirisWP
                     {
                         
 
-                        RedirectToPage(ProjeConstants.PAGE_KIRACI_AYLIKODEME + "?Mesaj=true&KiraciId=" + KiraciIdQS + "&SecilenAy="+ay+"&SecilenYil="+yil);
+                        RedirectToPage(ProjeConstants.PAGE_KIRACI_AYLIKODEME + "?Mesaj=true&KiraciId=" + KiraciIdQS + "&Bastar=" + BastarQS + "&Bittar=" + BittarQS);
 
                     }
                 }
@@ -505,7 +556,7 @@ namespace TBYS_WebParts.OdemeGirisWP
                             oncekiOdeme.Id, odemeTarihi, yeniOdemeTutari, AciklamaTxt.Text, CurrentUserName);
                         if (guncellendiMi)
                         {
-                            RedirectToPage(ProjeConstants.PAGE_KIRACI_AYLIKODEME + "?Mesaj=true&KiraciId=" + KiraciIdQS + "&SecilenAy=" + SecilenAyQS + "&SecilenYil=" + SecilenYilQS);
+                            RedirectToPage(ProjeConstants.PAGE_KIRACI_AYLIKODEME + "?Mesaj=true&KiraciId=" + KiraciIdQS + "&Bastar=" + BastarQS+ "&Bittar=" + BittarQS);
                         }
                             
                     }
@@ -522,7 +573,7 @@ namespace TBYS_WebParts.OdemeGirisWP
                         bool silindiMi = odemeDao.OdemeyiSilOdemePlaniniGuncelle(silinecekOdeme.Id, string.Empty, silinecekOdeme.OdemePlaniId, CurrentUserName);
                         if (silindiMi)
                         {
-                            RedirectToPage(ProjeConstants.PAGE_KIRACI_AYLIKODEME + "?KiraciId=" + KiraciIdQS + "&SecilenYil=" + SecilenYilQS + "&SecilenAy=" + SecilenAyQS);
+                            RedirectToPage(ProjeConstants.PAGE_KIRACI_AYLIKODEME + "?KiraciId=" + KiraciIdQS + "&Bastar=" + BastarQS+ "&Bittar=" + BittarQS);
                         }
 
                     }
@@ -609,13 +660,14 @@ namespace TBYS_WebParts.OdemeGirisWP
         }
         protected void KiraciSecNowBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_ODEME_GIRIS + "?KiraciId=" + paramKiraciIdLbl.Value.ConvertToInt());
+            RedirectToPage(ProjeConstants.PAGE_ODEME_GIRIS + "?KiraciId=" + paramKiraciIdLbl.Value.ConvertToInt() + "&Bastar=" + BastarQS + "&Bittar=" + BittarQS);
         }
+        
         protected void KiraciAylikOdemeBtn_Click(object sender, EventArgs e)
         {
-            string ay = OdemeTarihiTxt.Text.ConvertToDatetime().Month.ToString();
-            string yil = OdemeTarihiTxt.Text.ConvertToDatetime().Year.ToString();
-            RedirectToPage(ProjeConstants.PAGE_KIRACI_AYLIKODEME + "?KiraciId=" + KiraciIdQS + "&SecilenAy=" + ay + "&SecilenYil=" + yil);
+            //string ay = OdemeTarihiTxt.Text.ConvertToDatetime().Month.ToString();
+            //string yil = OdemeTarihiTxt.Text.ConvertToDatetime().Year.ToString();
+            RedirectToPage(ProjeConstants.PAGE_KIRACI_AYLIKODEME + "?KiraciId=" + KiraciIdQS + "&Bastar=" + BastarQS + "&Bittar=" + BittarQS);
         }
         protected void OdemePlaniDDL_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -628,7 +680,7 @@ namespace TBYS_WebParts.OdemeGirisWP
             kiraci = kiraci.Select(KiraciIdQS.ConvertToInt());
             if (kiraci != null)
             {
-                RedirectToPage(ProjeConstants.PAGE_KIRACI_GIRIS + "?DestinationApp=KD&SenderApp=KL&KiraciId=" + KiraciIdQS);
+                RedirectToPage(ProjeConstants.PAGE_KIRACI_GIRIS + "?DestinationApp=KD&SenderApp=KL&KiraciId=" + KiraciIdQS + "&Bastar=" + BastarQS + "&Bittar=" + BittarQS);
             }
             else
             {
@@ -643,7 +695,7 @@ namespace TBYS_WebParts.OdemeGirisWP
             kiraSozlesme = kiraSozlesme.SelectAktifSozlesmeByKiraciId(KiraciIdQS.ConvertToInt());
             if (kiraSozlesme != null)
             {
-                RedirectToPage(ProjeConstants.PAGE_KIRASOZLESMESI + "?KiraSozlesmeId=" + kiraSozlesme.Id);
+                RedirectToPage(ProjeConstants.PAGE_KIRASOZLESMESI + "?KiraSozlesmeId=" + kiraSozlesme.Id + "&Bastar=" + BastarQS + "&Bittar=" + BittarQS);
             }
             else
             {
@@ -661,7 +713,7 @@ namespace TBYS_WebParts.OdemeGirisWP
             {
                 if (kiraSozlesme != null)
                 {
-                    RedirectToPage(ProjeConstants.PAGE_ODEMEPLANI + "?KiraSozlesmeId=" + kiraSozlesme.Id);
+                    RedirectToPage(ProjeConstants.PAGE_ODEMEPLANI + "?KiraSozlesmeId=" + kiraSozlesme.Id + "&Bastar=" + BastarQS + "&Bittar=" + BittarQS);
                 }
                 else
                 {

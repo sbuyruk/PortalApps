@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
+using System.Globalization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
@@ -33,6 +34,7 @@ namespace TBYS_WebParts.TasinmazBagisHaritasiWP
         protected void Page_Load(object sender, EventArgs e)
         {
         }
+        private IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
         protected void BagiscilarBtn_Click(object sender, EventArgs e)
         {
             string ingIlAdi = paramLbl.Value;
@@ -62,6 +64,14 @@ namespace TBYS_WebParts.TasinmazBagisHaritasiWP
             TableCell kullanimCell = new TableCell();
             kullanimCell.Text = "Kira Durumu";
             TasinmazTableHeader.Controls.Add(kullanimCell);
+
+            TableCell EmlakBeyanDegeriCell = new TableCell();
+            EmlakBeyanDegeriCell.Text = "Emlak Beyan Değeri";
+            TasinmazTableHeader.Controls.Add(EmlakBeyanDegeriCell);
+
+            TableCell TahminiRayicDegeriCell = new TableCell();
+            TahminiRayicDegeriCell.Text = "Tahmini Rayiç Değeri";
+            TasinmazTableHeader.Controls.Add(TahminiRayicDegeriCell);
 
         }
         private void TasinmazTableDoldur(string ilstr)
@@ -94,6 +104,14 @@ namespace TBYS_WebParts.TasinmazBagisHaritasiWP
                 KullanimCell.Text = tasinmaz.KiraDurumu.ToString();
                 row.Controls.Add(KullanimCell);
 
+                TableCell EmlakBeyanDegeriCell = new TableCell();
+                EmlakBeyanDegeriCell.Text = tasinmaz.EmlakBeyanDegeri.ToString("C", culturInfo);
+                row.Controls.Add(EmlakBeyanDegeriCell);
+
+                TableCell TahminiRayicDegeriCell = new TableCell();
+                TahminiRayicDegeriCell.Text = tasinmaz.TahminiRayicDegeri.ToString("C", culturInfo);
+                row.Controls.Add(TahminiRayicDegeriCell );
+
                 TasinmazTable.Controls.Add(row);
             }
         }
@@ -118,6 +136,10 @@ namespace TBYS_WebParts.TasinmazBagisHaritasiWP
             TableCell kullanimCell = new TableCell();
             kullanimCell.Text = "Sağ/Vefat";
             BagisciTableHeader.Controls.Add(kullanimCell);
+
+            TableCell adresCell = new TableCell();
+            adresCell.Text = "Adres";
+            BagisciTableHeader.Controls.Add(adresCell);
 
         }
         private void BagisciTableDoldur(string ilAdi)
@@ -146,7 +168,6 @@ namespace TBYS_WebParts.TasinmazBagisHaritasiWP
                 TableCell TelefonCell = new TableCell();
                 TelefonCell.Text = bagisci.Telefon1.ToString() + " - " + bagisci.Telefon2.ToString();
                 row.Controls.Add(TelefonCell);
-
                 TableCell SagVefatCell = new TableCell();
                 SagVefatCell.Text = bagisci.Sag_vefat.ToString();
                 if (bagisci.Sag_vefat.Equals("Vefat"))
@@ -155,6 +176,11 @@ namespace TBYS_WebParts.TasinmazBagisHaritasiWP
                     row.ForeColor = Color.Gray;
                 }
                 row.Controls.Add(SagVefatCell);
+
+                TableCell AdresCell = new TableCell();
+                AdresCell.Text = bagisci.Adres.ToString();
+                row.Controls.Add(AdresCell);
+
 
                 BagisciTable.Controls.Add(row);
             }

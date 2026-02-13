@@ -59,7 +59,7 @@ namespace TBYS_WebParts.KiraGelirleriAyDokumuWP
                 for (int ay = 1; ay <= 12; ay++)
                 {
                     OdemePlani odemePlaniDao = new OdemePlani();
-                    DataTable dataTableGM = odemePlaniDao.SelectKiraGeliriByBolgeAyYilFTKKuruluOlmayanIlIlceListesi(ProjeConstants.BOLGE_ANKARA_INT, ay, yil);
+                    DataTable dataTableGM = odemePlaniDao.SelectKiraGeliriByBolgeAyYil(ProjeConstants.BOLGE_ANKARA_INT, ay, yil);
                     DataTable dataTableIST = odemePlaniDao.SelectKiraGeliriByBolgeAyYil(ProjeConstants.BOLGE_ISTANBUL_INT, ay, yil);
                     DataTable dataTableIZM = odemePlaniDao.SelectKiraGeliriByBolgeAyYil(ProjeConstants.BOLGE_IZMIR_INT, ay, yil);
                     DataTable dataTableMER = odemePlaniDao.SelectKiraGeliriByBolgeAyYil(ProjeConstants.BOLGE_MERSIN_INT, ay, yil);

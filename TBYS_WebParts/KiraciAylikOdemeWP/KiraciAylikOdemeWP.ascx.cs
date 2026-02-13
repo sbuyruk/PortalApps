@@ -60,52 +60,52 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
                 ViewState["KiraciId"] = value;
             }
         }
-        private string SecilenAyQS
+        private string BastarQS
         {
             get
             {
 
-                if (ViewState["SecilenAy"] == null)
+                if (ViewState["Bastar"] == null)
                 {
-                    if (Page.Request.QueryString["SecilenAy"] != null && Page.Request.QueryString["SecilenAy"].ToString().ConvertToInt() > 0)
+                    if (Page.Request.QueryString["Bastar"] != null && !string.IsNullOrEmpty(Page.Request.QueryString["Bastar"].ToString()))
                     {
-                        ViewState["SecilenAy"] = Page.Request.QueryString["SecilenAy"];
+                        ViewState["Bastar"] = Page.Request.QueryString["Bastar"];
                     }
                     else
                     {
-                        ViewState["SecilenAy"] = DateTime.Today.Month.ToString();
+                        ViewState["Bastar"] = DateTime.Today.ToString();
                     }
                 }
-                return ViewState["SecilenAy"].ToString();
+                return ViewState["Bastar"].ToString();
             }
 
             set
             {
-                ViewState["SecilenAy"] = value;
+                ViewState["Bastar"] = value;
             }
         }
-        private string SecilenYilQS
+        private string BittarQS
         {
             get
             {
 
-                if (ViewState["SecilenYil"] == null)
+                if (ViewState["Bittar"] == null)
                 {
-                    if (Page.Request.QueryString["SecilenYil"] != null && Page.Request.QueryString["SecilenYil"].ToString().ConvertToInt()>0)
+                    if (Page.Request.QueryString["Bittar"] != null && !string.IsNullOrEmpty(Page.Request.QueryString["Bittar"].ToString()))
                     {
-                        ViewState["SecilenYil"] = Page.Request.QueryString["SecilenYil"];
+                        ViewState["Bittar"] = Page.Request.QueryString["Bittar"];
                     }
                     else
                     {
-                        ViewState["SecilenYil"] = DateTime.Today.Year.ToString();
+                        ViewState["Bittar"] = DateTime.Today.ToString();
                     }
                 }
-                return ViewState["SecilenYil"].ToString();
+                return ViewState["Bittar"].ToString();
             }
 
             set
             {
-                ViewState["SecilenYil"] = value;
+                ViewState["Bittar"] = value;
             }
         }
         private int BolgeIdQS
@@ -155,125 +155,93 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
         private IFormatProvider cultureInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
         protected void Page_Load(object sender, EventArgs e)
         {
-            Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
-            BolgeIdQS = bolge == null ? 0 : bolge.Id;
             if (!Page.IsPostBack)
             {
-                DDLListeleriDoldur();
-                SetDDLValues();
-            }
-            Kiraci kiraci = new Kiraci();
-            kiraci = kiraci.Select<Kiraci>(KiraciIdQS.ConvertToInt());
-            if (kiraci != null || string.IsNullOrEmpty(KiraciIdQS) || KiraciIdQS.Equals(ProjeConstants.HEPSI_INT.ToString()))
-            {
-                KiraciTxt.Text = kiraci == null ? "Hepsi" : kiraci.Adi + " " + kiraci.Soyadi;
-                //OdemelerTablosunuDoldur();
-                TabloOlustur();
-            }
-            else
-            {
-                MessageHelper.PublishMessage("Kiracı Bulunamadı", ProjeConstants.MESAJ_HATA);
-            }
-            if (BolgeIdQS.ConvertToInt() == ProjeConstants.BOLGE_HEPSI_INT || BolgeIdQS.ConvertToInt() == ProjeConstants.BOLGE_GENELMUDURLUK_INT)
-            {
-                YeniOdemeGirisiBtn.Visible = true;
-                OdemePlaniBtn.Visible = true;
-                SozlesmeBtn.Visible = true;
-                KiraciBtn.Visible = true;
-                OdemePlaniListBtn.Visible = true;
-                SozlesmeListBtn.Visible = true;
-                KiraciListBtn.Visible = true;
-                BakiyeDevirBtn.Visible = true;
-            }
-            else
-            {
-                YeniOdemeGirisiBtn.Visible = false;
-                OdemePlaniBtn.Visible = false;
-                SozlesmeBtn.Visible = false;
-                KiraciBtn.Visible = false;
-                OdemePlaniListBtn.Visible = false;
-                SozlesmeListBtn.Visible = false;
-                KiraciListBtn.Visible = false;
-                BakiyeDevirBtn.Visible = false;
+                Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
+                BolgeIdQS = bolge == null ? 0 : bolge.Id;
+                DateTime now = DateTime.Now;
+                BitisTarihiTxt.Text = now.ConvertToDatetimeEmptyIfNull();
+                BaslangicTarihiTxt.Text = now.AddMonths(-1).ConvertToDatetimeEmptyIfNull();
 
-            }
-        }
-        private void DDLListeleriDoldur()
-        {
-            //KiraciDDLDoldur();
-            AyDDLDoldur();
-            YilDDLDoldur();
-        }
-        private void SetDDLValues()
-        {
-            try
-            {
-                //ay
-                string ay = !string.IsNullOrEmpty(SecilenAyQS) ? SecilenAyQS : DateTime.Today.Month.ReturnEmptyIfNull().ToString();
-                ListItem AyItem = new ListItem();
-                if (!string.IsNullOrEmpty(ay))
-                    AyItem = AyDDL.Items.FindByValue(ay);
-
-                if (AyItem != null)
+                if (!string.IsNullOrEmpty(BastarQS) && !string.IsNullOrEmpty(BittarQS))
                 {
-                    AyDDL.SelectedValue = AyItem.Value;
-                    SecilenAyQS = AyItem.Value;
+                    DateTime basTarih = BastarQS.ConvertToDatetime();
+                    BaslangicTarihiTxt.Text = basTarih.ConvertToDatetimeEmptyIfNull();
+                    BitisTarihiTxt.Text = BittarQS.ConvertToDatetimeEmptyIfNull();
                 }
-                //yil
-                string yil = !string.IsNullOrEmpty(SecilenYilQS) ? SecilenYilQS : DateTime.Today.Year.ReturnEmptyIfNull().ToString();
-                ListItem YilItem = new ListItem();
-                if (!string.IsNullOrEmpty(yil))
-                    YilItem = YilDDL.Items.FindByValue(yil);
-
-                if (YilItem != null)
+                Kiraci kiraci = new Kiraci();
+                kiraci = kiraci.Select<Kiraci>(KiraciIdQS.ConvertToInt());
+                if (kiraci != null || string.IsNullOrEmpty(KiraciIdQS) || KiraciIdQS.Equals(ProjeConstants.HEPSI_INT.ToString()))
                 {
-                    YilDDL.SelectedValue = YilItem.Value;
-                    SecilenYilQS = YilItem.Value;
+                    KiraciTxt.Text = kiraci == null ? "Hepsi" : kiraci.Adi + " " + kiraci.Soyadi;
+                    //OdemelerTablosunuDoldur();
+                    TabloOlustur();
                 }
-            }
-            catch (Exception)
-            {
+                else
+                {
+                    MessageHelper.PublishMessage("Kiracı Bulunamadı", ProjeConstants.MESAJ_HATA);
+                }
+                if (BolgeIdQS.ConvertToInt() == ProjeConstants.BOLGE_HEPSI_INT || BolgeIdQS.ConvertToInt() == ProjeConstants.BOLGE_GENELMUDURLUK_INT)
+                {
+                    YeniOdemeGirisiBtn.Visible = true;
+                    OdemePlaniBtn.Visible = true;
+                    SozlesmeBtn.Visible = true;
+                    KiraciBtn.Visible = true;
+                    OdemePlaniListBtn.Visible = true;
+                    SozlesmeListBtn.Visible = true;
+                    KiraciListBtn.Visible = true;
+                    BakiyeDevirBtn.Visible = true;
+                }
+                else
+                {
+                    YeniOdemeGirisiBtn.Visible = false;
+                    OdemePlaniBtn.Visible = false;
+                    SozlesmeBtn.Visible = false;
+                    KiraciBtn.Visible = false;
+                    OdemePlaniListBtn.Visible = false;
+                    SozlesmeListBtn.Visible = false;
+                    KiraciListBtn.Visible = false;
+                    BakiyeDevirBtn.Visible = false;
 
-                //TODO
+                } 
             }
         }
-        private void AyDDLDoldur()
-        {
-            //AyDDL.Items.Add(new ListItem("Hepsi", "0"));
-            AyDDL.Items.Add(new ListItem("Ocak", "1"));
-            AyDDL.Items.Add(new ListItem("Şubat", "2"));
-            AyDDL.Items.Add(new ListItem("Mart", "3"));
-            AyDDL.Items.Add(new ListItem("Nisan", "4"));
-            AyDDL.Items.Add(new ListItem("Mayıs", "5"));
-            AyDDL.Items.Add(new ListItem("Haziran", "6"));
-            AyDDL.Items.Add(new ListItem("Temmuz", "7"));
-            AyDDL.Items.Add(new ListItem("Ağustos", "8"));
-            AyDDL.Items.Add(new ListItem("Eylül", "9"));
-            AyDDL.Items.Add(new ListItem("Ekim", "10"));
-            AyDDL.Items.Add(new ListItem("Kasım", "11"));
-            AyDDL.Items.Add(new ListItem("Aralık", "12"));
 
-        }
-        private void YilDDLDoldur()
+        protected void BaslangicTarihiTxt_TextChanged(object sender, EventArgs e)
         {
-            var year = DateTime.Now.Year;
-            //YilDDL.Items.Add(new ListItem(ProjeConstants.HEPSI, ProjeConstants.HEPSI_INT.ToString()));
-            for (int i = year; i >= 2005; i--)
+            BastarQS = BaslangicTarihiTxt.Text;
+
+            DateTime basTarih = BaslangicTarihiTxt.Text.ConvertToDatetime().Date;
+            DateTime bitTarih = BitisTarihiTxt.Text.ConvertToDatetime().Date;
+
+            if (basTarih > bitTarih)
             {
-                YilDDL.Items.Add(new ListItem(i.ToString(), i.ToString()));
+                BitisTarihiTxt.Text = BaslangicTarihiTxt.Text;
+                bitTarih = basTarih;
             }
-        }
-        protected void AyDDL_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            SecilenAyQS = AyDDL.SelectedItem.Value.ToString();
-            //OdemelerTablosunuDoldur();
+
+            DateTime maxBitisTarihi = basTarih.AddMonths(3);
+            if (bitTarih > maxBitisTarihi)
+            {
+                BitisTarihiTxt.Text = maxBitisTarihi.ConvertToDatetimeEmptyIfNull();
+                BittarQS = BitisTarihiTxt.Text;
+            }
+
             TabloOlustur();
         }
-        protected void YilDDL_SelectedIndexChanged(object sender, EventArgs e)
+        protected void BitisTarihiTxt_TextChanged(object sender, EventArgs e)
         {
-            SecilenYilQS = YilDDL.SelectedItem.Value.ToString();
-            //OdemelerTablosunuDoldur();
+            BittarQS = BitisTarihiTxt.Text;
+            DateTime basTarih = BaslangicTarihiTxt.Text.ConvertToDatetime().Date;
+            DateTime bitTarih = BitisTarihiTxt.Text.ConvertToDatetime().Date;
+
+            if (basTarih > bitTarih)
+            {
+                BitisTarihiTxt.Text = BaslangicTarihiTxt.Text;
+                bitTarih = basTarih;
+            }
             TabloOlustur();
+
         }
         private void TabloOlustur()
         {
@@ -284,6 +252,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
                 var jsonData = GetJsonData(); //veri çekilip json a çeviriliyor
                                               //var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
                 UtilityHelper.ScriptCalistir("setDataSet(" + jsonData + ");");
+                ToplamLbl.Text = "Toplam Ödenen: " + GetToplamOdeme();
             }
             catch (Exception exception)
             {
@@ -292,7 +261,36 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
                 exceptionHelper.PublishException();
             }
         }
-        
+
+        private string GetToplamOdeme()
+        {
+			decimal toplam = 0m;
+
+			try
+			{
+				DateTime basTarih = BaslangicTarihiTxt.Text.ConvertToDatetime().Date;
+				DateTime bitTarih = BitisTarihiTxt.Text.ConvertToDatetime().Date;
+                Odeme odemeDao = new Odeme();
+				DataTable dataTable = odemeDao.SelectByKiraciAyYilReturnDataTable(BolgeIdQS, KiraciIdQS.ConvertToInt(), basTarih, bitTarih);
+
+				if (dataTable != null && dataTable.Rows.Count > 0)
+				{
+					foreach (DataRow row in dataTable.Rows)
+					{
+						toplam += row["OdenenTutar"].ConvertToDecimal();
+					}
+				}
+			}
+			catch (Exception exception)
+			{
+				ExceptionHelper exceptionHelper = new ExceptionHelper();
+				exceptionHelper.Exceptions.Add(exception);
+				exceptionHelper.PublishException();
+			}
+
+			return toplam.ToString("N", cultureInfo) + " TL";
+        }
+
         protected void SilNowBtn_Click(object sender, EventArgs e)
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
@@ -304,7 +302,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
                 bool silindiMi = odeme.OdemeyiSilOdemePlaniniGuncelle(OdemeIdHdn.Value.ConvertToInt(), string.Empty, OdemePlaniIdIdHdn.Value.ConvertToInt(), CurrentUserName);
                 if (silindiMi)
                 {
-                    RedirectToPage(ProjeConstants.PAGE_KIRACI_AYLIKODEME + "?KiraciId=" + KiraciIdQS + "&SecilenYil=" + SecilenYilQS + "&SecilenAy=" + SecilenAyQS);
+                    RedirectToPage(ProjeConstants.PAGE_KIRACI_AYLIKODEME + "?KiraciId=" + KiraciIdQS + "&Bittar=" + BittarQS + "&Bastar=" + BastarQS);
                 }
 
             }
@@ -393,7 +391,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
         protected void KiraciSecNowBtn_Click(object sender, EventArgs e)
         {
 
-            RedirectToPage(ProjeConstants.PAGE_KIRACI_AYLIKODEME + "?KiraciId=" + paramKiraciIdLbl.Value.ConvertToInt() + "&SecilenAy=" + SecilenAyQS + "&SecilenYil=" + SecilenYilQS);
+            RedirectToPage(ProjeConstants.PAGE_KIRACI_AYLIKODEME + "?KiraciId=" + paramKiraciIdLbl.Value.ConvertToInt() + "&Bastar=" + BastarQS + "&Bittar=" + BittarQS);
         }
         protected void OdemePlaniBtn_Click(object sender, EventArgs e)
         {
@@ -418,7 +416,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
         }
         protected void HepsiBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_KIRACI_AYLIKODEME + "?SecilenAy=" + SecilenAyQS + "&SecilenYil=" + SecilenYilQS);
+            RedirectToPage(ProjeConstants.PAGE_KIRACI_AYLIKODEME + "?Bastar=" + BastarQS + "&Bittar=" + BittarQS);
         }
 
         private void KiraciModalAc()
@@ -530,7 +528,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
         }
         protected void YeniOdemeGirisiBtn_Click(object sender, EventArgs e)
         {
-            RedirectToPage(ProjeConstants.PAGE_ODEME_GIRIS + "?KiraciId=" + KiraciIdQS +"&SecilenAy="+SecilenAyQS+"&SecilenYil="+SecilenYilQS);
+            RedirectToPage(ProjeConstants.PAGE_ODEME_GIRIS + "?KiraciId=" + KiraciIdQS +"&Bastar="+BastarQS+"&Bittar="+BittarQS);
         }
         private string GetJsonData()
         {
@@ -539,6 +537,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
             {
                 List<OdemeListItem> list = GetDataList();
                 var serializer = new JavaScriptSerializer();
+                serializer.MaxJsonLength = Int32.MaxValue;
                 jSon = serializer.Serialize(list);
             }
             catch (Exception exception)
@@ -553,10 +552,11 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
 
             try
             {
-                int ay = SecilenAyQS.ConvertToInt();
-                int yil = SecilenYilQS.ConvertToInt();
+                DateTime basTarih = BaslangicTarihiTxt.Text.ConvertToDatetime().Date;
+                DateTime bitTarih = BitisTarihiTxt.Text.ConvertToDatetime().Date;
+                
                 Odeme odemeDao = new Odeme();
-                DataTable dataTable = odemeDao.SelectByKiraciAyYilReturnDataTable(BolgeIdQS, KiraciIdQS.ConvertToInt(), ay, yil);
+                DataTable dataTable = odemeDao.SelectByKiraciAyYilReturnDataTable(BolgeIdQS, KiraciIdQS.ConvertToInt(), basTarih, bitTarih);
                 
 
                 if (dataTable != null)
@@ -612,18 +612,18 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
                         bool duzenleGorunsunMu = BolgeIdQS == ProjeConstants.HEPSI_INT || BolgeIdQS == ProjeConstants.BOLGE_GENELMUDURLUK_INT;
                         if (duzenleGorunsunMu)
                         {
-                            item.KiraciAdiSoyadi = "<a href=" + ProjeConstants.PAGE_ODEMEPLANI + "?KiraSozlesmeId=" + sozlesmeId + " class='btn-link'>" + (adi + " " + soyadi).Trim() + "</a>";
-                            item.Duzenle = "<a href=" + ProjeConstants.PAGE_ODEME_GIRIS + "?OdemeId=" + odemeId + " class='btn btn-outline-primary'>Düzenle</a>";
+                            item.KiraciAdiSoyadi = "<a href=" + ProjeConstants.PAGE_ODEMEPLANI + "?KiraSozlesmeId=" + sozlesmeId + "&Bastar=" + BastarQS + "&Bittar=" + BittarQS + " class='btn-link'>" + (adi + " " + soyadi).Trim() + "</a>";
+                            item.Duzenle = "<a href=" + ProjeConstants.PAGE_ODEME_GIRIS + "?OdemeId=" + odemeId + "&Bastar=" + BastarQS + "&Bittar=" + BittarQS+ " class='btn btn-outline-primary'>Düzenle</a>";
                             if (teminatId.ConvertToInt() > 0)
                             {
-                                item.Duzenle = "<a href=" + ProjeConstants.PAGE_TEMINAT_ISLEMLERI + "?KiraSozlesmeId=" + sozlesmeId + " class='btn btn-outline-secondary'>Teminat</a>";
+                                item.Duzenle = "<a href=" + ProjeConstants.PAGE_TEMINAT_ISLEMLERI + "?KiraSozlesmeId=" + sozlesmeId + "&Bastar=" + BastarQS + "&Bittar=" + BittarQS + " class='btn btn-outline-secondary'>Teminat</a>";
                             }
                         }
                         else
                         {
                             item.Duzenle =string.Empty;
                         }
-                        item.Sil = "<a href=" + ProjeConstants.PAGE_ODEME_GIRIS + "?OdemeId=" + odemeId + " class='btn btn-outline-danger'>Sil</a>";
+                        item.Sil = "<a href=" + ProjeConstants.PAGE_ODEME_GIRIS + "?OdemeId=" + odemeId + "&Bastar=" + BastarQS + "&Bittar=" + BittarQS + " class='btn btn-outline-danger'>Sil</a>";
                         list.Add(item);
                     }
                 }

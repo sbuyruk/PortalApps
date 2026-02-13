@@ -446,7 +446,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP {
             @__ctrl.ID = "DogumTarihiTxt";
             @__ctrl.Name = "DogumTarihiTxt";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control DateTimePickerV1");
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("readonly", "readonly");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("placeholder", "gg.aa.yyyy");
             return @__ctrl;
         }
         
@@ -621,7 +621,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP {
             @__ctrl.ID = "VefatTarihiTxt";
             @__ctrl.Name = "DogumTarihiTxt";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control DateTimePickerV1");
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("readonly", "readonly");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("placeholder", "gg.aa.yyyy");
             return @__ctrl;
         }
         

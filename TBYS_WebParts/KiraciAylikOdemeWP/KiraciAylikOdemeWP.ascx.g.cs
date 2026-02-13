@@ -61,11 +61,15 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.DropDownList AyDDL;
+        protected global::System.Web.UI.WebControls.TextBox BaslangicTarihiTxt;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.WebControls.DropDownList YilDDL;
+        protected global::System.Web.UI.WebControls.TextBox BitisTarihiTxt;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl BitTarDiv;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -78,6 +82,10 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton HepsiBtn;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.Label ToplamLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -263,76 +271,55 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControl__control3() {
-            global::System.Web.UI.WebControls.Label @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.Label();
+        private global::System.Web.UI.WebControls.TextBox @__BuildControlBaslangicTarihiTxt() {
+            global::System.Web.UI.WebControls.TextBox @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.TextBox();
+            this.BaslangicTarihiTxt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label";
-            @__ctrl.Font.Bold = true;
-            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Ay :"));
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.DropDownList @__BuildControlAyDDL() {
-            global::System.Web.UI.WebControls.DropDownList @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.DropDownList();
-            this.AyDDL = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "AyDDL";
-            @__ctrl.CssClass = "form-control";
+            @__ctrl.ID = "BaslangicTarihiTxt";
+            @__ctrl.CssClass = "DateTimePickerV1 form-control disabled-look";
+            @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
             @__ctrl.AutoPostBack = true;
-            @__ctrl.Height = new System.Web.UI.WebControls.Unit(34D, global::System.Web.UI.WebControls.UnitType.Pixel);
-            @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.AyDDL_SelectedIndexChanged);
-            @__ctrl.SelectedIndexChanged += new System.EventHandler(this.AyDDL_SelectedIndexChanged);
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("placeholder", "gg.aa.yyyy");
+            @__ctrl.TextChanged -= new System.EventHandler(this.BaslangicTarihiTxt_TextChanged);
+            @__ctrl.TextChanged += new System.EventHandler(this.BaslangicTarihiTxt_TextChanged);
             return @__ctrl;
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControl__control4() {
-            global::System.Web.UI.WebControls.Label @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.Label();
+        private global::System.Web.UI.WebControls.TextBox @__BuildControlBitisTarihiTxt() {
+            global::System.Web.UI.WebControls.TextBox @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.TextBox();
+            this.BitisTarihiTxt = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label";
-            @__ctrl.Font.Bold = true;
-            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Yıl :"));
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.DropDownList @__BuildControlYilDDL() {
-            global::System.Web.UI.WebControls.DropDownList @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.DropDownList();
-            this.YilDDL = @__ctrl;
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.ID = "YilDDL";
-            @__ctrl.CssClass = "form-control";
+            @__ctrl.ID = "BitisTarihiTxt";
+            @__ctrl.CssClass = "DateTimePickerV1 form-control disabled-look";
+            @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
             @__ctrl.AutoPostBack = true;
-            @__ctrl.Height = new System.Web.UI.WebControls.Unit(34D, global::System.Web.UI.WebControls.UnitType.Pixel);
-            @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.YilDDL_SelectedIndexChanged);
-            @__ctrl.SelectedIndexChanged += new System.EventHandler(this.YilDDL_SelectedIndexChanged);
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("placeholder", "gg.aa.yyyy");
+            @__ctrl.TextChanged -= new System.EventHandler(this.BitisTarihiTxt_TextChanged);
+            @__ctrl.TextChanged += new System.EventHandler(this.BitisTarihiTxt_TextChanged);
             return @__ctrl;
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControl__control5() {
-            global::System.Web.UI.WebControls.Label @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.Label();
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label";
-            @__ctrl.Font.Bold = true;
+        private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControlBitTarDiv() {
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
+            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
+            this.BitTarDiv = @__ctrl;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-2");
+            @__ctrl.ID = "BitTarDiv";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Kiraci"));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                <label class=\"form-label fw-semibold\" for=\"Biti" +
+                        "sTarihiTxt\">Bitiş Tarihi</label>\r\n                                "));
+            global::System.Web.UI.WebControls.TextBox @__ctrl1;
+            @__ctrl1 = this.@__BuildControlBitisTarihiTxt();
+            @__parser.AddParsedSubObject(@__ctrl1);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
             return @__ctrl;
         }
         
@@ -354,44 +341,16 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControl__control6() {
-            global::System.Web.UI.WebControls.Label @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.Label();
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-secondary";
-            @__ctrl.Font.Bold = true;
-            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(". .  ."));
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlKiraciSecBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.KiraciSecBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "KiraciSecBtn";
-            @__ctrl.CssClass = "btn btn-outline-primary ";
+            @__ctrl.CssClass = "btn btn-outline-primary";
             @__ctrl.Text = "Kiracı Seç";
             @__ctrl.Click -= new System.EventHandler(this.KiraciSecBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.KiraciSecBtn_Click);
-            return @__ctrl;
-        }
-        
-        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.WebControls.Label @__BuildControl__control7() {
-            global::System.Web.UI.WebControls.Label @__ctrl;
-            @__ctrl = new global::System.Web.UI.WebControls.Label();
-            @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-secondary";
-            @__ctrl.Font.Bold = true;
-            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(". . ."));
             return @__ctrl;
         }
         
@@ -404,7 +363,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
             this.HepsiBtn = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "HepsiBtn";
-            @__ctrl.CssClass = "btn btn-outline-primary ";
+            @__ctrl.CssClass = "btn btn-outline-primary";
             @__ctrl.Text = "Tüm Kiracılar";
             @__ctrl.Click -= new System.EventHandler(this.HepsiBtn_Click);
             @__ctrl.Click += new System.EventHandler(this.HepsiBtn_Click);
@@ -414,59 +373,60 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControl__control2() {
+        private global::System.Web.UI.WebControls.Label @__BuildControlToplamLbl() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.ToplamLbl = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "ToplamLbl";
+            @__ctrl.Text = "";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-label fw-semibold");
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControl__control3() {
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-group");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "display: block");
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                <div class=\"form-group row\">\r\n                    <div class=\"f" +
-                        "orm-group col-2\">\r\n                        "));
-            global::System.Web.UI.WebControls.Label @__ctrl1;
-            @__ctrl1 = this.@__BuildControl__control3();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                        <div class=""row g-2 align-items-end"">
+                            <div class=""col-2"">
+                                <label class=""form-label fw-semibold w-sem"" for=""BaslangicTarihiTxt"">Başlangıç Tarihi</label>
+                                "));
+            global::System.Web.UI.WebControls.TextBox @__ctrl1;
+            @__ctrl1 = this.@__BuildControlBaslangicTarihiTxt();
             @__parser.AddParsedSubObject(@__ctrl1);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        "));
-            global::System.Web.UI.WebControls.DropDownList @__ctrl2;
-            @__ctrl2 = this.@__BuildControlAyDDL();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n\r\n                            "));
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl2;
+            @__ctrl2 = this.@__BuildControlBitTarDiv();
             @__parser.AddParsedSubObject(@__ctrl2);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                    <div class=\"form-group col-2\">\r" +
-                        "\n                        "));
-            global::System.Web.UI.WebControls.Label @__ctrl3;
-            @__ctrl3 = this.@__BuildControl__control4();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n                            <div class=\"col-4\">\r\n                            " +
+                        "    <label class=\"form-label fw-semibold\" for=\"BitisTarihiTxt\">Kiraci</label>\r\n " +
+                        "                               "));
+            global::System.Web.UI.WebControls.TextBox @__ctrl3;
+            @__ctrl3 = this.@__BuildControlKiraciTxt();
             @__parser.AddParsedSubObject(@__ctrl3);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        "));
-            global::System.Web.UI.WebControls.DropDownList @__ctrl4;
-            @__ctrl4 = this.@__BuildControlYilDDL();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n\r\n                            <div class=\"c" +
+                        "ol-2 d-grid\">\r\n                                "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl4;
+            @__ctrl4 = this.@__BuildControlKiraciSecBtn();
             @__parser.AddParsedSubObject(@__ctrl4);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </div>\r\n                    <div class=\"col row\">\r\n        " +
-                        "                <div class=\"form-group col-6\">\r\n                            "));
-            global::System.Web.UI.WebControls.Label @__ctrl5;
-            @__ctrl5 = this.@__BuildControl__control5();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n\r\n                            <div class=\"c" +
+                        "ol-2 d-grid\">\r\n                                "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl5;
+            @__ctrl5 = this.@__BuildControlHepsiBtn();
             @__parser.AddParsedSubObject(@__ctrl5);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
-            global::System.Web.UI.WebControls.TextBox @__ctrl6;
-            @__ctrl6 = this.@__BuildControlKiraciTxt();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                        </div>\r\n           " +
+                        "             <div class=\"row\">\r\n                            "));
+            global::System.Web.UI.WebControls.Label @__ctrl6;
+            @__ctrl6 = this.@__BuildControlToplamLbl();
             @__parser.AddParsedSubObject(@__ctrl6);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"form-group " +
-                        "col-2\">\r\n                            "));
-            global::System.Web.UI.WebControls.Label @__ctrl7;
-            @__ctrl7 = this.@__BuildControl__control6();
-            @__parser.AddParsedSubObject(@__ctrl7);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl8;
-            @__ctrl8 = this.@__BuildControlKiraciSecBtn();
-            @__parser.AddParsedSubObject(@__ctrl8);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"form-group " +
-                        "col-2\">\r\n                            "));
-            global::System.Web.UI.WebControls.Label @__ctrl9;
-            @__ctrl9 = this.@__BuildControl__control7();
-            @__parser.AddParsedSubObject(@__ctrl9);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl10;
-            @__ctrl10 = this.@__BuildControlHepsiBtn();
-            @__parser.AddParsedSubObject(@__ctrl10);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n                </d" +
-                        "iv>\r\n            "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    "));
             return @__ctrl;
         }
         
@@ -477,38 +437,39 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
             this.MainCardDiv = @__ctrl;
+            @__ctrl.TemplateControl = this;
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "card-body ");
             @__ctrl.ID = "MainCardDiv";
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl1;
-            @__ctrl1 = this.@__BuildControl__control2();
+            @__ctrl1 = this.@__BuildControl__control3();
             @__parser.AddParsedSubObject(@__ctrl1);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
-            <div class=""form-group"">
-                <table id=""CustomDataTable"" class=""table table-striped table-bordered table-sm "" width=""100%"">
-                    <thead>
-                        <tr>
-                            <th>DNo</th>
-                            <th>Bölge</th>
-                            <th>Kiracı</th>
-                            <th>Taşınmaz Adresi</th>
-                            <th>Kir. Amaci</th>
-                            <th>İlk Söz. Tarihi</th>
-                            <th>Sözleşme</th>
-                            <th>Vade Tarihi</th>
-                            <th>Artış Ayı</th>
-                            <th>Ödeme Şekli</th>
-                            <th>Kira Bedeli</th>
-                            <th>Ödeme Tarihi</th>
-                            <th>Ödenen Tutar</th>
-                            <th>Açıklama</th>
-                            <th>Düzenle</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-        "));
+                    <div class=""form-group"">
+                        <table id=""CustomDataTable"" class=""table table-striped table-bordered table-sm "" width=""100%"">
+                            <thead>
+                                <tr>
+                                    <th>DNo</th>
+                                    <th>Bölge</th>
+                                    <th>Kiracı</th>
+                                    <th>Taşınmaz Adresi</th>
+                                    <th>Kir. Amaci</th>
+                                    <th>İlk Söz. Tarihi</th>
+                                    <th>Sözleşme</th>
+                                    <th>Vade Tarihi</th>
+                                    <th>Artış Ayı</th>
+                                    <th>Ödeme Şekli</th>
+                                    <th>Kira Bedeli</th>
+                                    <th>Ödeme Tarihi</th>
+                                    <th>Ödenen Tutar</th>
+                                    <th>Açıklama</th>
+                                    <th>Düzenle</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                "));
             return @__ctrl;
         }
         
@@ -519,6 +480,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.YeniOdemeGirisiBtn = @__ctrl;
+            @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.CssClass = "btn btn-success";
             @__ctrl.ID = "YeniOdemeGirisiBtn";
@@ -536,6 +498,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.ExcelBtn = @__ctrl;
+            @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.CssClass = "btn btn-outline-success float-end";
             @__ctrl.ID = "ExcelBtn";
@@ -553,6 +516,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.OdemePlaniBtn = @__ctrl;
+            @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "OdemePlaniBtn";
             @__ctrl.CssClass = "btn btn-outline-secondary float-end";
@@ -569,6 +533,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.SozlesmeBtn = @__ctrl;
+            @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "SozlesmeBtn";
             @__ctrl.CssClass = "btn btn-outline-secondary float-end";
@@ -585,6 +550,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.KiraciBtn = @__ctrl;
+            @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "KiraciBtn";
             @__ctrl.CssClass = "btn btn-outline-secondary float-end";
@@ -601,6 +567,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.OdemePlaniListBtn = @__ctrl;
+            @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "OdemePlaniListBtn";
             @__ctrl.CssClass = "btn btn-outline-secondary float-end";
@@ -617,6 +584,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.SozlesmeListBtn = @__ctrl;
+            @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "SozlesmeListBtn";
             @__ctrl.CssClass = "btn btn-outline-secondary float-end";
@@ -633,6 +601,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.KiraciListBtn = @__ctrl;
+            @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "KiraciListBtn";
             @__ctrl.CssClass = "btn btn-outline-secondary float-end";
@@ -649,6 +618,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
             this.BakiyeDevirBtn = @__ctrl;
+            @__ctrl.TemplateControl = this;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "BakiyeDevirBtn";
             @__ctrl.CssClass = "btn btn-outline-secondary float-end";
@@ -661,9 +631,49 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control8(System.Web.UI.Control @__ctrl) {
+        private void @__BuildControl__control2(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                "));
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl1;
+            @__ctrl1 = this.@__BuildControlMainCardDiv();
+            @__parser.AddParsedSubObject(@__ctrl1);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                <div class=\"card-footer\">\r\n                    "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl2;
+            @__ctrl2 = this.@__BuildControlYeniOdemeGirisiBtn();
+            @__parser.AddParsedSubObject(@__ctrl2);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl3;
+            @__ctrl3 = this.@__BuildControlExcelBtn();
+            @__parser.AddParsedSubObject(@__ctrl3);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl4;
+            @__ctrl4 = this.@__BuildControlOdemePlaniBtn();
+            @__parser.AddParsedSubObject(@__ctrl4);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl5;
+            @__ctrl5 = this.@__BuildControlSozlesmeBtn();
+            @__parser.AddParsedSubObject(@__ctrl5);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl6;
+            @__ctrl6 = this.@__BuildControlKiraciBtn();
+            @__parser.AddParsedSubObject(@__ctrl6);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl7;
+            @__ctrl7 = this.@__BuildControlOdemePlaniListBtn();
+            @__parser.AddParsedSubObject(@__ctrl7);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl8;
+            @__ctrl8 = this.@__BuildControlSozlesmeListBtn();
+            @__parser.AddParsedSubObject(@__ctrl8);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl9;
+            @__ctrl9 = this.@__BuildControlKiraciListBtn();
+            @__parser.AddParsedSubObject(@__ctrl9);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl10;
+            @__ctrl10 = this.@__BuildControlBakiyeDevirBtn();
+            @__parser.AddParsedSubObject(@__ctrl10);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                </div>\r\n\r\n            "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -673,7 +683,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
             global::System.Web.UI.UpdatePanel @__ctrl;
             @__ctrl = new global::System.Web.UI.UpdatePanel();
             this.upPanel = @__ctrl;
-            @__ctrl.ContentTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control8));
+            @__ctrl.ContentTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control2));
             @__ctrl.ID = "upPanel";
             return @__ctrl;
         }
@@ -681,7 +691,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control9(System.Web.UI.Control @__ctrl) {
+        private void @__BuildControl__control4(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                <div class=\'loaderMainContainer\'>\r\n                    <div cla" +
                         "ss=\'loaderContainer\'>\r\n                        <div class=\'loaderCircle\'></div>\r" +
@@ -695,7 +705,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
             global::System.Web.UI.UpdateProgress @__ctrl;
             @__ctrl = new global::System.Web.UI.UpdateProgress();
             this.updateProgress = @__ctrl;
-            @__ctrl.ProgressTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control9));
+            @__ctrl.ProgressTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control4));
             @__ctrl.ID = "updateProgress";
             return @__ctrl;
         }
@@ -826,7 +836,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private void @__BuildControl__control10(System.Web.UI.Control @__ctrl) {
+        private void @__BuildControl__control5(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        <div class=\"card\">\r\n                            <div cl" +
                         "ass=\"card-header\">\r\n                                <h3>\r\n                      " +
@@ -870,7 +880,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
             global::System.Web.UI.UpdatePanel @__ctrl;
             @__ctrl = new global::System.Web.UI.UpdatePanel();
             this.UpdatePanel2 = @__ctrl;
-            @__ctrl.ContentTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control10));
+            @__ctrl.ContentTemplate = new System.Web.UI.CompiledTemplateBuilder(new System.Web.UI.BuildTemplateMethod(this.@__BuildControl__control5));
             @__ctrl.ID = "UpdatePanel2";
             @__ctrl.UpdateMode = global::System.Web.UI.UpdatePanelUpdateMode.Conditional;
             return @__ctrl;
@@ -884,54 +894,24 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
             @__ctrl1 = this.@__BuildControlCardHeader();
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(@__ctrl1);
-            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl2;
-            @__ctrl2 = this.@__BuildControlMainCardDiv();
+            global::System.Web.UI.UpdatePanel @__ctrl2;
+            @__ctrl2 = this.@__BuildControlupPanel();
             @__parser.AddParsedSubObject(@__ctrl2);
-            global::System.Web.UI.WebControls.LinkButton @__ctrl3;
-            @__ctrl3 = this.@__BuildControlYeniOdemeGirisiBtn();
+            global::System.Web.UI.UpdateProgress @__ctrl3;
+            @__ctrl3 = this.@__BuildControlupdateProgress();
             @__parser.AddParsedSubObject(@__ctrl3);
-            global::System.Web.UI.WebControls.LinkButton @__ctrl4;
-            @__ctrl4 = this.@__BuildControlExcelBtn();
+            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl4;
+            @__ctrl4 = this.@__BuildControlparamKiraciIdLbl();
             @__parser.AddParsedSubObject(@__ctrl4);
             global::System.Web.UI.WebControls.LinkButton @__ctrl5;
-            @__ctrl5 = this.@__BuildControlOdemePlaniBtn();
+            @__ctrl5 = this.@__BuildControlKiraciSecNowBtn();
             @__parser.AddParsedSubObject(@__ctrl5);
-            global::System.Web.UI.WebControls.LinkButton @__ctrl6;
-            @__ctrl6 = this.@__BuildControlSozlesmeBtn();
+            global::System.Web.UI.WebControls.Label @__ctrl6;
+            @__ctrl6 = this.@__BuildControlLabel1();
             @__parser.AddParsedSubObject(@__ctrl6);
-            global::System.Web.UI.WebControls.LinkButton @__ctrl7;
-            @__ctrl7 = this.@__BuildControlKiraciBtn();
+            global::System.Web.UI.UpdatePanel @__ctrl7;
+            @__ctrl7 = this.@__BuildControlUpdatePanel2();
             @__parser.AddParsedSubObject(@__ctrl7);
-            global::System.Web.UI.WebControls.LinkButton @__ctrl8;
-            @__ctrl8 = this.@__BuildControlOdemePlaniListBtn();
-            @__parser.AddParsedSubObject(@__ctrl8);
-            global::System.Web.UI.WebControls.LinkButton @__ctrl9;
-            @__ctrl9 = this.@__BuildControlSozlesmeListBtn();
-            @__parser.AddParsedSubObject(@__ctrl9);
-            global::System.Web.UI.WebControls.LinkButton @__ctrl10;
-            @__ctrl10 = this.@__BuildControlKiraciListBtn();
-            @__parser.AddParsedSubObject(@__ctrl10);
-            global::System.Web.UI.WebControls.LinkButton @__ctrl11;
-            @__ctrl11 = this.@__BuildControlBakiyeDevirBtn();
-            @__parser.AddParsedSubObject(@__ctrl11);
-            global::System.Web.UI.UpdatePanel @__ctrl12;
-            @__ctrl12 = this.@__BuildControlupPanel();
-            @__parser.AddParsedSubObject(@__ctrl12);
-            global::System.Web.UI.UpdateProgress @__ctrl13;
-            @__ctrl13 = this.@__BuildControlupdateProgress();
-            @__parser.AddParsedSubObject(@__ctrl13);
-            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl14;
-            @__ctrl14 = this.@__BuildControlparamKiraciIdLbl();
-            @__parser.AddParsedSubObject(@__ctrl14);
-            global::System.Web.UI.WebControls.LinkButton @__ctrl15;
-            @__ctrl15 = this.@__BuildControlKiraciSecNowBtn();
-            @__parser.AddParsedSubObject(@__ctrl15);
-            global::System.Web.UI.WebControls.Label @__ctrl16;
-            @__ctrl16 = this.@__BuildControlLabel1();
-            @__parser.AddParsedSubObject(@__ctrl16);
-            global::System.Web.UI.UpdatePanel @__ctrl17;
-            @__ctrl17 = this.@__BuildControlUpdatePanel2();
-            @__parser.AddParsedSubObject(@__ctrl17);
             @__ctrl.SetRenderMethodDelegate(new System.Web.UI.RenderMethod(this.@__Render__control1));
         }
         
@@ -944,7 +924,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
 
 <script type=""text/javascript"">
 
-    
+
     function OpenKiraciSecModal() {
         var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('KiraciSecDiv'));
         myModalInstance.show();
@@ -964,77 +944,57 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
                     "unction setFormSubmitToFalse() {\r\n        setTimeout(function () { _spFormOnSubm" +
                     "itCalled = false; }, 3000);\r\n        return true;\r\n    }\r\n    function setDataSe" +
                     "t(myset) {\r\n        myjsons = myset;\r\n    }\r\n    var myjsons = [{ \"DosyaNo\": \"0\"" +
-                    ", \"KiraciAdiSoyadi\": \"A\", \"TasinmazAdresi\": \"A\",\"KiraBedeli\": \"1\", \"OdenenTutar\"" +
-                    ": \"1\", \"OdemeTarihi\": \"01.01.2021\", \"IlkSozlesmeTar\": \"01.01.2021\", \"ArtisAyi\": " +
-                    "\"test\",\"Sozlesme\": \"test\", \"VadeBitTar\": \"01.01.2021\", \"Aciklama\": \"www.google.c" +
-                    "om\", \"Bolge\": \"istanbul\", \"KiralamaAmaci\": \"Mesken\", \"Duzenle\": \"Duzenle\" }];\r\n " +
-                    "   jQuery(document).ready(function () {\r\n        jQuery(\'#CustomDataTable\').Data" +
-                    "Table({\r\n            data: myjsons,\r\n            columns: [\r\n                { d" +
-                    "ata: \"DosyaNo\" },\r\n                { data: \"Bolge\" },\r\n                { data: \"" +
-                    "KiraciAdiSoyadi\" },\r\n                { data: \"TasinmazAdresi\" },\r\n              " +
-                    "  { data: \"KiralamaAmaci\" },\r\n                { data: \"IlkSozlesmeTar\" },\r\n     " +
-                    "           { data: \"Sozlesme\" },\r\n                { data: \"VadeBitTar\" },\r\n     " +
-                    "           { data: \"ArtisAyi\" },\r\n                { data: \"OdemeSekli\" },\r\n     " +
-                    "           { data: \"KiraBedeli\", type: \"decimal\" },\r\n                { data: \"Od" +
-                    "emeTarihi\" },\r\n                { data: \"OdenenTutar\", type: \"decimal\" },\r\n      " +
-                    "          { data: \"Aciklama\" },\r\n                { data: \"Duzenle\" },\r\n         " +
-                    "   ],\r\n            \"columnDefs\": [\r\n                { className: \"text-end\", \"ta" +
-                    "rgets\": [10] },\r\n                { className: \"text-end\", \"targets\": [12] }\r\n   " +
-                    "         ],\r\n            \"language\": {\r\n                \"url\": \"http://tskgv-por" +
-                    "tal/OrtakBelgeler/Turkish.txt\",\r\n                \"decimal\": \",\",\r\n              " +
-                    "  \"thousands\": \".\"\r\n            },\r\n            \"order\": [[11, \"desc\"], [0, \"asc" +
-                    "\"], [2, \"asc\"]],\r\n            responsive: true,\r\n            dom: \'Bfrtip\',\r\n   " +
-                    "         buttons: [\r\n                {\r\n                    extend: \'print\',\r\n  " +
-                    "                  exportOptions: {\r\n                        columns: \':visible\'\r" +
-                    "\n                    }\r\n                },\r\n                {\r\n                 " +
-                    "   extend: \'excel\',\r\n                    exportOptions: {\r\n                     " +
-                    "   columns: \':visible\',\r\n                        format: {\r\n                    " +
-                    "        body: function (data, row, column, node) {\r\n                            " +
-                    "   \r\n                                if (column === 3) {\r\n                      " +
-                    "              var kirabedeli = data.replace(\'.\', \'#\');\r\n                        " +
-                    "            kirabedeli = kirabedeli.replace(\',\', \'.\');\r\n                        " +
-                    "            kirabedeli = kirabedeli.replace(\'#\', \',\');\r\n                        " +
-                    "            return kirabedeli;\r\n                                } else if (colum" +
-                    "n === 4) {\r\n                                    var odenenTutar = data.replace(\'" +
-                    ".\', \'#\');\r\n                                    odenenTutar = odenenTutar.replace" +
-                    "(\',\', \'.\');\r\n                                    odenenTutar = odenenTutar.repla" +
-                    "ce(\'#\', \',\');\r\n                                    return odenenTutar;\r\n        " +
-                    "                        }\r\n                                else {\r\n             " +
-                    "                       return data.replace(/(&nbsp;|<([^>]+)>)/ig, \"\");//html\'i " +
-                    "soy //regex to strip the HTML\r\n                                }\r\n\r\n            " +
-                    "                }\r\n                        }\r\n                    }\r\n           " +
-                    "     },\r\n                {\r\n                    extend: \'pdf\',\r\n                " +
-                    "    exportOptions: {\r\n                        columns: \':visible\'\r\n             " +
-                    "       }\r\n                },\r\n                {\r\n                    extend: \'co" +
-                    "py\',\r\n                    exportOptions: {\r\n                        columns: \':v" +
-                    "isible\'\r\n                    }\r\n                },\r\n                , \'pageLengt" +
-                    "h\', \"colvis\"\r\n            ]\r\n\r\n        });\r\n    });\r\n\r\n</script>\r\n<div class=\"co" +
-                    "ntainer col-xl \">\r\n    <div class=\"card shadow\">\r\n        ");
+                    ", \"KiraciAdiSoyadi\": \"A\", \"TasinmazAdresi\": \"A\", \"KiraBedeli\": \"1\", \"OdenenTutar" +
+                    "\": \"1\", \"OdemeTarihi\": \"01.01.2021\", \"IlkSozlesmeTar\": \"01.01.2021\", \"ArtisAyi\":" +
+                    " \"test\",\"OdemeSekli\": \"test\", \"Sozlesme\": \"test\", \"VadeBitTar\": \"01.01.2021\", \"A" +
+                    "ciklama\": \"www.google.com\", \"Bolge\": \"istanbul\", \"KiralamaAmaci\": \"Mesken\", \"Duz" +
+                    "enle\": \"Duzenle\" }];\r\n    jQuery(document).ready(function () {\r\n        jQuery(\'" +
+                    "#CustomDataTable\').DataTable({\r\n            data: myjsons,\r\n            columns:" +
+                    " [\r\n                { data: \"DosyaNo\" },\r\n                { data: \"Bolge\" },\r\n  " +
+                    "              { data: \"KiraciAdiSoyadi\" },\r\n                { data: \"TasinmazAdr" +
+                    "esi\" },\r\n                { data: \"KiralamaAmaci\" },\r\n                { data: \"Il" +
+                    "kSozlesmeTar\" },\r\n                { data: \"Sozlesme\" },\r\n                { data:" +
+                    " \"VadeBitTar\" },\r\n                { data: \"ArtisAyi\" },\r\n                { data:" +
+                    " \"OdemeSekli\" },\r\n                { data: \"KiraBedeli\", type: \"decimal\" },\r\n    " +
+                    "            { data: \"OdemeTarihi\" },\r\n                { data: \"OdenenTutar\", typ" +
+                    "e: \"decimal\" },\r\n                { data: \"Aciklama\" },\r\n                { data: " +
+                    "\"Duzenle\" },\r\n            ],\r\n            \"columnDefs\": [\r\n                { cla" +
+                    "ssName: \"text-end\", \"targets\": [10] },\r\n                { className: \"text-end\"," +
+                    " \"targets\": [12] }\r\n            ],\r\n            \"language\": {\r\n                \"" +
+                    "url\": \"http://tskgv-portal/OrtakBelgeler/Turkish.txt\",\r\n                \"decimal" +
+                    "\": \",\",\r\n                \"thousands\": \".\"\r\n            },\r\n            \"order\": " +
+                    "[[11, \"desc\"], [0, \"asc\"], [2, \"asc\"]],\r\n            responsive: true,\r\n        " +
+                    "    stateSave: true,\r\n            dom: \'Bfrtip\',\r\n            buttons: [\r\n      " +
+                    "          {\r\n                    extend: \'print\',\r\n                    exportOpt" +
+                    "ions: {\r\n                        columns: \':visible\'\r\n                    }\r\n   " +
+                    "             },\r\n                {\r\n                    extend: \'excel\',\r\n      " +
+                    "              exportOptions: {\r\n                        columns: \':visible\',\r\n  " +
+                    "                      format: {\r\n                            body: function (dat" +
+                    "a, row, column, node) {\r\n\r\n                                if (column === 3) {\r\n" +
+                    "                                    var kirabedeli = data.replace(\'.\', \'#\');\r\n  " +
+                    "                                  kirabedeli = kirabedeli.replace(\',\', \'.\');\r\n  " +
+                    "                                  kirabedeli = kirabedeli.replace(\'#\', \',\');\r\n  " +
+                    "                                  return kirabedeli;\r\n                          " +
+                    "      } else if (column === 4) {\r\n                                    var odenen" +
+                    "Tutar = data.replace(\'.\', \'#\');\r\n                                    odenenTutar" +
+                    " = odenenTutar.replace(\',\', \'.\');\r\n                                    odenenTut" +
+                    "ar = odenenTutar.replace(\'#\', \',\');\r\n                                    return " +
+                    "odenenTutar;\r\n                                }\r\n                               " +
+                    " else {\r\n                                    return data.replace(/(&nbsp;|<([^>]" +
+                    "+)>)/ig, \"\");//html\'i soy //regex to strip the HTML\r\n                           " +
+                    "     }\r\n\r\n                            }\r\n                        }\r\n            " +
+                    "        }\r\n                },\r\n                {\r\n                    extend: \'p" +
+                    "df\',\r\n                    exportOptions: {\r\n                        columns: \':v" +
+                    "isible\'\r\n                    }\r\n                },\r\n                {\r\n         " +
+                    "           extend: \'copy\',\r\n                    exportOptions: {\r\n              " +
+                    "          columns: \':visible\'\r\n                    }\r\n                },\r\n      " +
+                    "          , \'pageLength\', \"colvis\"\r\n            ]\r\n\r\n        });\r\n    });\r\n\r\n</s" +
+                    "cript>\r\n<div class=\"col-xl \">\r\n    <div class=\"card shadow\">\r\n        ");
             parameterContainer.Controls[0].RenderControl(@__w);
             @__w.Write("\r\n        ");
             parameterContainer.Controls[1].RenderControl(@__w);
-            @__w.Write("\r\n        <div class=\"card-footer\">\r\n            ");
-            parameterContainer.Controls[2].RenderControl(@__w);
-            @__w.Write("\r\n            ");
-            parameterContainer.Controls[3].RenderControl(@__w);
-            @__w.Write("\r\n            ");
-            parameterContainer.Controls[4].RenderControl(@__w);
-            @__w.Write("\r\n            ");
-            parameterContainer.Controls[5].RenderControl(@__w);
-            @__w.Write("\r\n            ");
-            parameterContainer.Controls[6].RenderControl(@__w);
-            @__w.Write("\r\n            ");
-            parameterContainer.Controls[7].RenderControl(@__w);
-            @__w.Write("\r\n            ");
-            parameterContainer.Controls[8].RenderControl(@__w);
-            @__w.Write("\r\n            ");
-            parameterContainer.Controls[9].RenderControl(@__w);
-            @__w.Write("\r\n            ");
-            parameterContainer.Controls[10].RenderControl(@__w);
-            @__w.Write("\r\n        </div>\r\n        ");
-            parameterContainer.Controls[11].RenderControl(@__w);
             @__w.Write("\r\n        ");
-            parameterContainer.Controls[12].RenderControl(@__w);
+            parameterContainer.Controls[2].RenderControl(@__w);
             @__w.Write(@"
     </div>
     <div class=""modal"" id=""KiraciSecDiv"" role=""dialog"">
@@ -1044,30 +1004,30 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
                 <div class=""modal-body"">
                     <div style=""display: none"">
                         ");
-            parameterContainer.Controls[13].RenderControl(@__w);
+            parameterContainer.Controls[3].RenderControl(@__w);
             @__w.Write("\r\n                        ");
-            parameterContainer.Controls[14].RenderControl(@__w);
+            parameterContainer.Controls[4].RenderControl(@__w);
             @__w.Write("\r\n                    </div>\r\n                    <div>\r\n                        " +
                     "<div class=\"text-center\">\r\n                            <h3>\r\n                   " +
                     "             ");
-            parameterContainer.Controls[15].RenderControl(@__w);
+            parameterContainer.Controls[5].RenderControl(@__w);
             @__w.Write(@"</h3>
                         </div>
                         <div class=""card-body"">
-                                <div class=""form-group"">
-                                    <table id=""CustomModalDataTable"" class=""table table-striped table-bordered table-sm small"" width=""100%"">
-                                        <thead>
-                                            <tr>
-                                                <th>Kiracı No</th>
-                                                <th>Adı Soyadi</th>
-                                                <th>TCKimlikNo</th>
-                                                <th>İl/İlçe</th>
-                                                <th>Adres</th>
-                                                <th>Seç</th>
-                                            </tr>
-                                        </thead>
-                                    </table>
-                                </div>
+                            <div class=""form-group"">
+                                <table id=""CustomModalDataTable"" class=""table table-striped table-bordered table-sm small"" width=""100%"">
+                                    <thead>
+                                        <tr>
+                                            <th>Kiracı No</th>
+                                            <th>Adı Soyadi</th>
+                                            <th>TCKimlikNo</th>
+                                            <th>İl/İlçe</th>
+                                            <th>Adres</th>
+                                            <th>Seç</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1082,9 +1042,9 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
             <!-- Modal content-->
             <div class=""modal-content"">
                 ");
-            parameterContainer.Controls[16].RenderControl(@__w);
+            parameterContainer.Controls[6].RenderControl(@__w);
             @__w.Write("\r\n            </div>\r\n        </div>\r\n    </div>\r\n    <!-- Kiracı Seçimi Modal --" +
-                    ">\r\n   \r\n</div>\r\n");
+                    ">\r\n\r\n</div>\r\n");
         }
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +

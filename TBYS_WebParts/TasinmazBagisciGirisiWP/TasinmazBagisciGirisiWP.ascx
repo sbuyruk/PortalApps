@@ -68,7 +68,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="col-form-label" for="DogumTarihiTxt">Doğum Tar.</label>
-                                        <input runat="server" type="text" id="DogumTarihiTxt" name="DogumTarihiTxt" class="form-control DateTimePickerV1" readonly="readonly" />
+                                        <input runat="server" type="text" id="DogumTarihiTxt" name="DogumTarihiTxt" class="form-control DateTimePickerV1" placeholder="gg.aa.yyyy" />
                                     </div>
                                     <div class="form-group ">
                                         <label class="col-form-label" for="MeslegiTxt">Mesleği</label>
@@ -115,7 +115,7 @@
                                     <div class="form-group" id="VefatDiv" runat="server">
                                         <div class="form-group" id="VefatTarihiDiv" runat="server">
                                             <label class="col-form-label" for="VefatTarihiTxt">Vefat Tarihi</label>
-                                            <input runat="server" type="text" id="VefatTarihiTxt" name="DogumTarihiTxt" class="form-control DateTimePickerV1" readonly="readonly" />
+                                            <input runat="server" type="text" id="VefatTarihiTxt" name="DogumTarihiTxt" class="form-control DateTimePickerV1" placeholder="gg.aa.yyyy" />
                                         </div>
                                         <div class="form-group">
                                             <label class="col-form-label" for="DefinYeriTxt">Defin Yeri (Mezarlık)</label>

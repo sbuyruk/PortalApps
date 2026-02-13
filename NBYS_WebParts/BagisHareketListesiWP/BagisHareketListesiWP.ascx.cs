@@ -409,29 +409,29 @@ namespace NBYS_WebParts.BagisHareketListesiWP
 
             Page.Response.Clear();
             Page.Response.Buffer = true;
-            Page.Response.AddHeader("content -disposition",
-             "attachment;filename=BagisHareketleri.xls");
-            Page.Response.ContentEncoding = System.Text.Encoding.GetEncoding("windows-1254");
-            Page.Response.Charset = "windows-1254";//ISO-8859-9
-            Page.Response.ContentType = "application/vnd.ms-excel";
+
+            string filename = "BagisListesi" + DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + ".xls";
+            Page.Response.AddHeader("content-disposition", "attachment;filename=" + filename);
+
+            Page.Response.ContentType = "application/ms-excel";
+            Page.Response.ContentEncoding = System.Text.Encoding.Unicode;
+            Page.Response.BinaryWrite(System.Text.Encoding.Unicode.GetPreamble());
+
             StringWriter sw = new StringWriter();
             HtmlTextWriter hw = new HtmlTextWriter(sw);
 
             for (int i = 0; i < GridView1.Rows.Count; i++)
             {
-                //Apply text style to each Row
                 GridView1.Rows[i].Attributes.Add("class", "textmode");
             }
+
             GridView1.RenderControl(hw);
-            string filename = "BagisListesi" + DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + ".xls";
-            //style to format numbers to string
+
             string style = @"<style> .textmode { mso-number-format:\@; } </style>";
             Page.Response.Write(style);
-            Page.Response.Output.Write(sw.ToString());
-            Page.Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
+            Page.Response.Write(sw.ToString());
             Page.Response.Flush();
             Page.Response.End();
-
         }
     }
 }

@@ -42,7 +42,6 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
         bool isVakifBank2Aktarildi = false;
         bool isZiraatAktarildi = false;
         bool isSMSVakifAktarildi = false;
-        bool isKioskAktarildi = false;
         //bool isZiraatMT940Aktarildi = false;
         bool isZiraatEkstreAktarildi = false;
         bool isTEBAktarildi = false;
@@ -115,7 +114,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
                         || isVakifBankAktarildi || isVakifBankGunlukAktarildi || isVakifBank2Aktarildi
                         || isVakifKatilimAktarildi || isTEBAktarildi 
                         || isZiraatAktarildi || isZiraatEkstreAktarildi || isZiraatKatilimAktarildi) || isYKBEkstreAktarildi || isEDevletAktarildi
-                        || isSMSVakifAktarildi || isKioskAktarildi; //isZiraatMT940Aktarildi || 
+                        || isSMSVakifAktarildi ; //isZiraatMT940Aktarildi || 
                 }
 
             }
@@ -305,13 +304,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
                 SMSVakifFU.Enabled = false;
                 SMSVakifOkLbl.Text = "  " + ((char)0x221A).ToString();
             }
-            isKioskAktarildi = ekstreAktarma.CheckIsExistByBankaAdiAndIslemTarihi(ProjeConstants.BANKA_KIOSK, islemTarihi);
-            if (isKioskAktarildi)
-            {
-                KioskFU.Enabled = false;
-                KioskOkLbl.Text = "  " + ((char)0x221A).ToString();
-            }
-           
+
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
         {
@@ -353,7 +346,6 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
                 Vakifbank2Save();
                 VakifKatilimSave();
                 EDevletSave();
-                KioskSave();
                 SMSVakifSave();
                 checkSavedFiles(IslemTarihiTxt.Text.ConvertToDatetime());
                 NextBtn.Visible = (isAkbankAktarildi || isFinansbankAktarildi || isGarantiAktarildi || isGarantiEkstreAktarildi 
@@ -361,7 +353,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
                     || isVakifBankAktarildi || isVakifBankGunlukAktarildi || isVakifBank2Aktarildi || isTEBAktarildi
                     || isHalkbank2Aktarildi || isVakifKatilimAktarildi || isZiraatAktarildi || isZiraatEkstreAktarildi 
                     || isZiraatKatilimAktarildi || isEDevletAktarildi
-                    || isSMSVakifAktarildi || isKioskAktarildi);
+                    || isSMSVakifAktarildi);
 
             }
             catch (Exception ex)
@@ -819,27 +811,6 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
                     EDevletFU.Enabled = false;
                     EDevletOkLbl.ForeColor = System.Drawing.Color.Green;
                     EDevletOkLbl.Text = "  " + ((char)0x221A).ToString();
-                }
-            }
-        }
-        private void KioskSave()
-        {
-            if (!isKioskAktarildi && KioskFU.HasFile)
-            {
-                var exceptionHelper = EkstreAktarma.SaveKioskFile(KioskFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
-
-                if (exceptionHelper.Exceptions.Count > 0)
-                {
-                    KioskFU.Enabled = true;
-                    KioskOkLbl.ForeColor = System.Drawing.Color.Red;
-                    KioskOkLbl.Text = "X";
-                    exceptionHelper.PublishException();
-                }
-                else
-                {
-                    KioskFU.Enabled = false;
-                    KioskOkLbl.ForeColor = System.Drawing.Color.Green;
-                    KioskOkLbl.Text = "  " + ((char)0x221A).ToString();
                 }
             }
         }

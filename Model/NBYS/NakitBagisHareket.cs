@@ -520,7 +520,7 @@ namespace Model.NBYS
             string ilStr = string.Empty;
             if (ilId > ProjeConstants.IL_HEPSI)
             {
-                ilStr = " AND E.Id =" + ilId;
+                ilStr = " AND B.Ili =" + ilId;//E.Id =
             }
             string ayStr;
             if (ay.Equals(ProjeConstants.HEPSI_INT.ToString()))
@@ -549,7 +549,7 @@ namespace Model.NBYS
                 INNER JOIN NakitBagisci_Table B ON B.Id= A.BagisciId 
                 INNER JOIN BankaTanim_Table C ON C.Id= A.BankaId
                 LEFT JOIN Armagan_Table D ON D.Id= A.ArmaganId
-			    LEFT JOIN Il_Table E ON E.Id= A.Ili
+			    LEFT JOIN Il_Table E ON E.Id= B.Ili
                 WHERE YEAR(A.BagisTarihi)={0}  
                 {1}
                 {2}

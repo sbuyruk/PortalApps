@@ -77,7 +77,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
                 ViewState["EnvanterdeMi"] = value;
             }
         }
-        private IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
+        private IFormatProvider TrCulture = new CultureInfo(ProjeConstants.CULTUREINFO, true);
         protected void Page_Load(object sender, EventArgs e)
         {
             Tasinmaz tasinmaz = new Tasinmaz();
@@ -155,7 +155,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
                 row.Controls.Add(NitelikCell);
                 
                 TableCell MetrekareCell = new TableCell();
-                MetrekareCell.Text = bagimsizBolum.Metrekare.ToString("N", culturInfo);
+                MetrekareCell.Text = bagimsizBolum.Metrekare.ToString("N", TrCulture);
                 row.Controls.Add(MetrekareCell);
 
                 TableCell KullanimAmaciCell = new TableCell();
@@ -261,7 +261,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
             AdresTxt.Text = tasinmaz.Adres;
             BolumNoTxt.Text = bagimsizBolum.BolumNo;
             NitelikTxt.Text = bagimsizBolum.Nitelik;
-            MetrekareTxt.Text = bagimsizBolum.Metrekare.ToString("N", culturInfo);
+            MetrekareTxt.Text = bagimsizBolum.Metrekare.ToString("N", TrCulture);
             KullanimAmaciDDL.SelectedValue = bagimsizBolum.KullanimAmaci;
             AciklamaTxt.Text = bagimsizBolum.Aciklama;
 
@@ -294,7 +294,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
             AdresTxt.Text = tasinmaz.Adres;
             BolumNoTxt.Text = bagimsizBolum.BolumNo;
             NitelikTxt.Text = bagimsizBolum.Nitelik;
-            MetrekareTxt.Text = bagimsizBolum.Metrekare.ToString("N", culturInfo) ;
+            MetrekareTxt.Text = bagimsizBolum.Metrekare.ToString("N", TrCulture) ;
             KullanimAmaciDDL.SelectedValue = bagimsizBolum.KullanimAmaci;
             AciklamaTxt.Text = bagimsizBolum.Aciklama;
 

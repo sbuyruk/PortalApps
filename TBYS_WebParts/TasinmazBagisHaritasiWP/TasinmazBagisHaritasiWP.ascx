@@ -116,19 +116,19 @@
                 <table class="colors">
                     <tr>
                         <td style="background-color: tomato; width: 5%;"></td>
-                        <td style="width: 15%">Ankara Bölge Md. </td>
+                        <td style="width: 15%">Ankara Bölge Tem. </td>
 
                         <td style="background-color: mediumseagreen; width: 5%;"></td>
-                        <td style="width: 15%">İstanbul Bölge Md. </td>
+                        <td style="width: 15%">İstanbul Bölge Tem. </td>
 
                         <td style="background-color: orange; width: 5%;"></td>
-                        <td style="width: 15%">İzmir Bölge Md. </td>
+                        <td style="width: 15%">İzmir Bölge Tem. </td>
 
                         <td style="background-color: dodgerblue; width: 5%;"></td>
-                        <td style="width: 15%">Mersin Bölge Md. </td>
+                        <td style="width: 15%">Mersin Bölge Tem. </td>
 
                         <td style="background-color: violet; width: 5%;"></td>
-                        <td style="width: 15%">Erzurum Bölge Md. </td>
+                        <td style="width: 15%">Erzurum Bölge Tem. </td>
                     </tr>
                 </table>
             </div>
@@ -149,7 +149,7 @@
 <div class="modal" id="ilInfoModal" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
-            <div class="modal-content" style="width: 700px;">
+            <div class="modal-content" style="width: 800px;">
                 <asp:UpdatePanel runat="server" ID="UpdatePanel1" UpdateMode="Conditional">
                     <ContentTemplate>
 

@@ -10,7 +10,7 @@
 
 <script type="text/javascript">
 
-    
+
     function OpenKiraciSecModal() {
         var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('KiraciSecDiv'));
         myModalInstance.show();
@@ -31,7 +31,7 @@
     function setDataSet(myset) {
         myjsons = myset;
     }
-    var myjsons = [{ "DosyaNo": "0", "KiraciAdiSoyadi": "A", "TasinmazAdresi": "A","KiraBedeli": "1", "OdenenTutar": "1", "OdemeTarihi": "01.01.2021", "IlkSozlesmeTar": "01.01.2021", "ArtisAyi": "test","Sozlesme": "test", "VadeBitTar": "01.01.2021", "Aciklama": "www.google.com", "Bolge": "istanbul", "KiralamaAmaci": "Mesken", "Duzenle": "Duzenle" }];
+    var myjsons = [{ "DosyaNo": "0", "KiraciAdiSoyadi": "A", "TasinmazAdresi": "A", "KiraBedeli": "1", "OdenenTutar": "1", "OdemeTarihi": "01.01.2021", "IlkSozlesmeTar": "01.01.2021", "ArtisAyi": "test","OdemeSekli": "test", "Sozlesme": "test", "VadeBitTar": "01.01.2021", "Aciklama": "www.google.com", "Bolge": "istanbul", "KiralamaAmaci": "Mesken", "Duzenle": "Duzenle" }];
     jQuery(document).ready(function () {
         jQuery('#CustomDataTable').DataTable({
             data: myjsons,
@@ -63,6 +63,7 @@
             },
             "order": [[11, "desc"], [0, "asc"], [2, "asc"]],
             responsive: true,
+            stateSave: true,
             dom: 'Bfrtip',
             buttons: [
                 {
@@ -77,7 +78,7 @@
                         columns: ':visible',
                         format: {
                             body: function (data, row, column, node) {
-                               
+
                                 if (column === 3) {
                                     var kirabedeli = data.replace('.', '#');
                                     kirabedeli = kirabedeli.replace(',', '.');
@@ -116,7 +117,7 @@
     });
 
 </script>
-<div class="container col-xl ">
+<div class="col-xl ">
     <div class="card shadow">
         <div class="card-header" id="CardHeader" runat="server">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
@@ -126,70 +127,76 @@
                 <asp:Label CssClass="col-form-label " ID="AdiLbl" runat="server"></asp:Label>
             </h3>
         </div>
-        <div class="card-body " id="MainCardDiv" runat="server">
-            <div class="form-group" style="display: block" runat="server">
-                <div class="form-group row">
-                    <div class="form-group col-2">
-                        <asp:Label CssClass="col-form-label" runat="server" Font-Bold="True">Ay :</asp:Label>
-                        <asp:DropDownList ID="AyDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="AyDDL_SelectedIndexChanged" AutoPostBack="true" Height="34px"></asp:DropDownList>
-                    </div>
-                    <div class="form-group col-2">
-                        <asp:Label CssClass="col-form-label" runat="server" Font-Bold="True">Yıl :</asp:Label>
-                        <asp:DropDownList ID="YilDDL" runat="server" CssClass="form-control" OnSelectedIndexChanged="YilDDL_SelectedIndexChanged" AutoPostBack="true" Height="34px"></asp:DropDownList>
-                    </div>
-                    <div class="col row">
-                        <div class="form-group col-6">
-                            <asp:Label CssClass="col-form-label" runat="server" Font-Bold="True">Kiraci</asp:Label>
-                            <asp:TextBox ID="KiraciTxt" runat="server" CssClass="form-control" type="text" ReadOnly="true"></asp:TextBox>
-                        </div>
-                        <div class="form-group col-2">
-                            <asp:Label CssClass="col-form-label text-secondary" runat="server" Font-Bold="True">. .  .</asp:Label>
-                            <asp:LinkButton ID="KiraciSecBtn" CssClass="btn btn-outline-primary " runat="server" Text="Kiracı Seç" OnClick="KiraciSecBtn_Click" />
-                        </div>
-                        <div class="form-group col-2">
-                            <asp:Label CssClass="col-form-label text-secondary" runat="server" Font-Bold="True">. . .</asp:Label>
-                            <asp:LinkButton ID="HepsiBtn" CssClass="btn btn-outline-primary " runat="server" Text="Tüm Kiracılar" OnClick="HepsiBtn_Click" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <table id="CustomDataTable" class="table table-striped table-bordered table-sm " width="100%">
-                    <thead>
-                        <tr>
-                            <th>DNo</th>
-                            <th>Bölge</th>
-                            <th>Kiracı</th>
-                            <th>Taşınmaz Adresi</th>
-                            <th>Kir. Amaci</th>
-                            <th>İlk Söz. Tarihi</th>
-                            <th>Sözleşme</th>
-                            <th>Vade Tarihi</th>
-                            <th>Artış Ayı</th>
-                            <th>Ödeme Şekli</th>
-                            <th>Kira Bedeli</th>
-                            <th>Ödeme Tarihi</th>
-                            <th>Ödenen Tutar</th>
-                            <th>Açıklama</th>
-                            <th>Düzenle</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-        </div>
-        <div class="card-footer">
-            <asp:LinkButton CssClass="btn btn-success" ID="YeniOdemeGirisiBtn" runat="server" Text="Yeni Ödeme Girişi" OnClick="YeniOdemeGirisiBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
-            <asp:LinkButton CssClass="btn btn-outline-success float-end" ID="ExcelBtn" runat="server" Text="Excel'e Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
-            <asp:LinkButton ID="OdemePlaniBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Son Ödeme Plani" OnClick="OdemePlaniBtn_Click" />
-            <asp:LinkButton ID="SozlesmeBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Sözleşme" OnClick="SozlesmeBtn_Click" />
-            <asp:LinkButton ID="KiraciBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Kiraci" OnClick="KiraciBtn_Click" />
-            <asp:LinkButton ID="OdemePlaniListBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Ödeme Planı Listesi" OnClick="OdemePlaniListBtn_Click" />
-            <asp:LinkButton ID="SozlesmeListBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Sözleşme Listesi" OnClick="SozlesmeListBtn_Click" />
-            <asp:LinkButton ID="KiraciListBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Kiraci Listesi" OnClick="KiraciListBtn_Click" />
-            <asp:LinkButton ID="BakiyeDevirBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Bakiye Devir İşlemleri" OnClick="BakiyeDevirBtn_Click" />
-        </div>
         <asp:UpdatePanel ID="upPanel" runat="server">
             <ContentTemplate>
+                <div class="card-body " id="MainCardDiv" runat="server">
+                    <div class="form-group" style="display: block" runat="server">
+                        <div class="row g-2 align-items-end">
+                            <div class="col-2">
+                                <label class="form-label fw-semibold w-sem" for="BaslangicTarihiTxt">Başlangıç Tarihi</label>
+                                <asp:TextBox ID="BaslangicTarihiTxt" runat="server" CssClass="DateTimePickerV1 form-control disabled-look"
+                                    ClientIDMode="Static" OnTextChanged="BaslangicTarihiTxt_TextChanged" AutoPostBack="True" placeholder="gg.aa.yyyy"></asp:TextBox>
+                            </div>
+
+                            <div class="col-2" id="BitTarDiv" runat="server">
+                                <label class="form-label fw-semibold" for="BitisTarihiTxt">Bitiş Tarihi</label>
+                                <asp:TextBox ID="BitisTarihiTxt" runat="server" CssClass="DateTimePickerV1 form-control disabled-look"
+                                    ClientIDMode="Static" OnTextChanged="BitisTarihiTxt_TextChanged" AutoPostBack="True" placeholder="gg.aa.yyyy"></asp:TextBox>
+                            </div>
+
+                            <div class="col-4">
+                                <label class="form-label fw-semibold" for="BitisTarihiTxt">Kiraci</label>
+                                <asp:TextBox ID="KiraciTxt" runat="server" CssClass="form-control" type="text" ReadOnly="true"></asp:TextBox>
+                            </div>
+
+                            <div class="col-2 d-grid">
+                                <asp:LinkButton ID="KiraciSecBtn" CssClass="btn btn-outline-primary" runat="server" Text="Kiracı Seç" OnClick="KiraciSecBtn_Click" />
+                            </div>
+
+                            <div class="col-2 d-grid">
+                                <asp:LinkButton ID="HepsiBtn" CssClass="btn btn-outline-primary" runat="server" Text="Tüm Kiracılar" OnClick="HepsiBtn_Click" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <asp:Label ID="ToplamLbl" Text="" runat="server" class="form-label fw-semibold"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <table id="CustomDataTable" class="table table-striped table-bordered table-sm " width="100%">
+                            <thead>
+                                <tr>
+                                    <th>DNo</th>
+                                    <th>Bölge</th>
+                                    <th>Kiracı</th>
+                                    <th>Taşınmaz Adresi</th>
+                                    <th>Kir. Amaci</th>
+                                    <th>İlk Söz. Tarihi</th>
+                                    <th>Sözleşme</th>
+                                    <th>Vade Tarihi</th>
+                                    <th>Artış Ayı</th>
+                                    <th>Ödeme Şekli</th>
+                                    <th>Kira Bedeli</th>
+                                    <th>Ödeme Tarihi</th>
+                                    <th>Ödenen Tutar</th>
+                                    <th>Açıklama</th>
+                                    <th>Düzenle</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <asp:LinkButton CssClass="btn btn-success" ID="YeniOdemeGirisiBtn" runat="server" Text="Yeni Ödeme Girişi" OnClick="YeniOdemeGirisiBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
+                    <asp:LinkButton CssClass="btn btn-outline-success float-end" ID="ExcelBtn" runat="server" Text="Excel'e Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
+                    <asp:LinkButton ID="OdemePlaniBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Son Ödeme Plani" OnClick="OdemePlaniBtn_Click" />
+                    <asp:LinkButton ID="SozlesmeBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Sözleşme" OnClick="SozlesmeBtn_Click" />
+                    <asp:LinkButton ID="KiraciBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Kiraci" OnClick="KiraciBtn_Click" />
+                    <asp:LinkButton ID="OdemePlaniListBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Ödeme Planı Listesi" OnClick="OdemePlaniListBtn_Click" />
+                    <asp:LinkButton ID="SozlesmeListBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Sözleşme Listesi" OnClick="SozlesmeListBtn_Click" />
+                    <asp:LinkButton ID="KiraciListBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Kiraci Listesi" OnClick="KiraciListBtn_Click" />
+                    <asp:LinkButton ID="BakiyeDevirBtn" CssClass="btn btn-outline-secondary float-end" runat="server" Text="Bakiye Devir İşlemleri" OnClick="BakiyeDevirBtn_Click" />
+                </div>
+
             </ContentTemplate>
         </asp:UpdatePanel>
         <asp:UpdateProgress ID="updateProgress" runat="server">
@@ -217,20 +224,20 @@
                                 <asp:Label ID="Label1" class="col-form-label " runat="server" Text="Kiracı Listesi"></asp:Label></h3>
                         </div>
                         <div class="card-body">
-                                <div class="form-group">
-                                    <table id="CustomModalDataTable" class="table table-striped table-bordered table-sm small" width="100%">
-                                        <thead>
-                                            <tr>
-                                                <th>Kiracı No</th>
-                                                <th>Adı Soyadi</th>
-                                                <th>TCKimlikNo</th>
-                                                <th>İl/İlçe</th>
-                                                <th>Adres</th>
-                                                <th>Seç</th>
-                                            </tr>
-                                        </thead>
-                                    </table>
-                                </div>
+                            <div class="form-group">
+                                <table id="CustomModalDataTable" class="table table-striped table-bordered table-sm small" width="100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Kiracı No</th>
+                                            <th>Adı Soyadi</th>
+                                            <th>TCKimlikNo</th>
+                                            <th>İl/İlçe</th>
+                                            <th>Adres</th>
+                                            <th>Seç</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -270,5 +277,5 @@
         </div>
     </div>
     <!-- Kiracı Seçimi Modal -->
-   
+
 </div>
