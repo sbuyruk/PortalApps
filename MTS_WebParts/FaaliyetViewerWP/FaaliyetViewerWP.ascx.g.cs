@@ -1205,9 +1205,9 @@ namespace MTS_WebParts.FaaliyetViewerWP {
                     "iye\r\n    function setFormSubmitToFalse() {\r\n        setTimeout(function () { _sp" +
                     "FormOnSubmitCalled = false; }, 3000);\r\n        return true;\r\n    }\r\n    function" +
                     " OpenToplantiModal() {\r\n        var myModalInstance = bootstrap.Modal.getOrCreat" +
-                    "eInstance(document.getElementById(\'ToplantiDetaylariModal\'));\n        myModalIns" +
-                    "tance.show();\r\n    }\r\n    function ToplantiDetaylariModal(toplantiId) {\r\n       " +
-                    " document.getElementById(\'");
+                    "eInstance(document.getElementById(\'ToplantiDetaylariModal\'));\r\n        myModalIn" +
+                    "stance.show();\r\n    }\r\n    function ToplantiDetaylariModal(toplantiId) {\r\n      " +
+                    "  document.getElementById(\'");
                          @__w.Write( paramToplantiIdLbl.ClientID);
 
             @__w.Write("\').value = toplantiId;\r\n        document.getElementById(\'");

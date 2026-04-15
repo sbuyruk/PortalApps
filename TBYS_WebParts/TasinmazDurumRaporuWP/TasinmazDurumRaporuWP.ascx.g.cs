@@ -109,6 +109,14 @@ namespace TBYS_WebParts.TasinmazDurumRaporuWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.HtmlControls.HtmlInputText MuhasebeyeKayitliTopTxt;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.HtmlControls.HtmlInputText TahminiPiyasaTopTxt;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl TasimazDurumuPanel;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -657,6 +665,32 @@ namespace TBYS_WebParts.TasinmazDurumRaporuWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.HtmlControls.HtmlInputText @__BuildControlMuhasebeyeKayitliTopTxt() {
+            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl;
+            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
+            this.MuhasebeyeKayitliTopTxt = @__ctrl;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "input-money text-end");
+            @__ctrl.ID = "MuhasebeyeKayitliTopTxt";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("readonly", "");
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.HtmlControls.HtmlInputText @__BuildControlTahminiPiyasaTopTxt() {
+            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl;
+            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
+            this.TahminiPiyasaTopTxt = @__ctrl;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "input-money text-end");
+            @__ctrl.ID = "TahminiPiyasaTopTxt";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("readonly", "");
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControlTasimazDurumuPanel() {
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
@@ -668,15 +702,23 @@ namespace TBYS_WebParts.TasinmazDurumRaporuWP {
             global::System.Web.UI.WebControls.Table @__ctrl1;
             @__ctrl1 = this.@__BuildControlTasDurTable();
             @__parser.AddParsedSubObject(@__ctrl1);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            <div class=\"float\">\r\n                <strong>Emlak Beyan Değeri : <" +
-                        "/strong>\r\n                "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            <div class=\"float\">\r\n                <strong>Eml.Bey.Değeri : </str" +
+                        "ong>\r\n                "));
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl2;
             @__ctrl2 = this.@__BuildControlEmlakBeyanTopTxt();
             @__parser.AddParsedSubObject(@__ctrl2);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                <strong>Tahmini Rayiç Değeri : </strong>\r\n                "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                <strong>Tah.Ray.Değeri : </strong>\r\n                "));
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl3;
             @__ctrl3 = this.@__BuildControlTahminiRayicTopTxt();
             @__parser.AddParsedSubObject(@__ctrl3);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                <strong>Muh.Kayıtlı Değer : </strong>\r\n                "));
+            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl4;
+            @__ctrl4 = this.@__BuildControlMuhasebeyeKayitliTopTxt();
+            @__parser.AddParsedSubObject(@__ctrl4);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                <strong>Yak.Piy.Değeri : </strong>\r\n                "));
+            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl5;
+            @__ctrl5 = this.@__BuildControlTahminiPiyasaTopTxt();
+            @__parser.AddParsedSubObject(@__ctrl5);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            </div>\r\n        "));
             return @__ctrl;
         }

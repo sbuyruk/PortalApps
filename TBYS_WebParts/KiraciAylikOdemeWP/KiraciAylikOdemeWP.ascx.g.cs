@@ -40,142 +40,146 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
     public partial class KiraciAylikOdemeWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton CloseBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label TitleLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label IdLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label AdiLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl CardHeader;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.TextBox BaslangicTarihiTxt;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.TextBox BitisTarihiTxt;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl BitTarDiv;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.TextBox KiraciTxt;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton KiraciSecBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton HepsiBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
+        protected global::System.Web.UI.WebControls.DropDownList BolgeDDL;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label ToplamLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl MainCardDiv;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton YeniOdemeGirisiBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton ExcelBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton OdemePlaniBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton SozlesmeBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton KiraciBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton OdemePlaniListBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton SozlesmeListBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton KiraciListBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton BakiyeDevirBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.UpdatePanel upPanel;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.UpdateProgress updateProgress;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.HtmlControls.HtmlInputText paramKiraciIdLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton KiraciSecNowBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label Label1;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label ModalLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label MessageLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.HiddenField OdemeIdHdn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.HiddenField OdemePlaniIdIdHdn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.HiddenField SozlesmeIdHdn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton SilNowBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.UpdatePanel UpdatePanel2;
         
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebPartCodeGenerator", "17.0.0.0")]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebPartCodeGenerator", "18.0.0.0")]
         public static implicit operator global::System.Web.UI.TemplateControl(KiraciAylikOdemeWP target) 
         {
             return target == null ? null : target.TemplateControl;
@@ -183,7 +187,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlCloseBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -200,7 +204,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlTitleLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -214,7 +218,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlIdLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -227,7 +231,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlAdiLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -240,7 +244,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControlCardHeader() {
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
@@ -270,7 +274,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.TextBox @__BuildControlBaslangicTarihiTxt() {
             global::System.Web.UI.WebControls.TextBox @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
@@ -288,7 +292,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.TextBox @__BuildControlBitisTarihiTxt() {
             global::System.Web.UI.WebControls.TextBox @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
@@ -306,7 +310,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControlBitTarDiv() {
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
@@ -325,7 +329,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.TextBox @__BuildControlKiraciTxt() {
             global::System.Web.UI.WebControls.TextBox @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
@@ -340,7 +344,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlKiraciSecBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -356,7 +360,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlHepsiBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -372,7 +376,24 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
+        private global::System.Web.UI.WebControls.DropDownList @__BuildControlBolgeDDL() {
+            global::System.Web.UI.WebControls.DropDownList @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.DropDownList();
+            this.BolgeDDL = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "BolgeDDL";
+            @__ctrl.CssClass = "form-control form-select fw-semibold";
+            @__ctrl.AutoPostBack = true;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: auto");
+            @__ctrl.SelectedIndexChanged -= new System.EventHandler(this.BolgeDDL_SelectedIndexChanged);
+            @__ctrl.SelectedIndexChanged += new System.EventHandler(this.BolgeDDL_SelectedIndexChanged);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlToplamLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -386,7 +407,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControl__control3() {
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
@@ -421,18 +442,29 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
             global::System.Web.UI.WebControls.LinkButton @__ctrl5;
             @__ctrl5 = this.@__BuildControlHepsiBtn();
             @__parser.AddParsedSubObject(@__ctrl5);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                        </div>\r\n           " +
-                        "             <div class=\"row\">\r\n                            "));
-            global::System.Web.UI.WebControls.Label @__ctrl6;
-            @__ctrl6 = this.@__BuildControlToplamLbl();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                            </div>
+                        </div>
+                        <div class=""row mt-3 g-2 align-items-end"">
+                            <div class=""form-group col-3"">
+                                <label class=""form-label fw-semibold"" for=""BolgeDDL"">Bölge </label>
+                                "));
+            global::System.Web.UI.WebControls.DropDownList @__ctrl6;
+            @__ctrl6 = this.@__BuildControlBolgeDDL();
             @__parser.AddParsedSubObject(@__ctrl6);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <div class=\"for" +
+                        "m-group col-2\">\r\n                                "));
+            global::System.Web.UI.WebControls.Label @__ctrl7;
+            @__ctrl7 = this.@__BuildControlToplamLbl();
+            @__parser.AddParsedSubObject(@__ctrl7);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                        </div>\r\n           " +
+                        "         "));
             return @__ctrl;
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControlMainCardDiv() {
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
@@ -475,7 +507,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlYeniOdemeGirisiBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -493,7 +525,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlExcelBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -511,7 +543,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlOdemePlaniBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -528,7 +560,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlSozlesmeBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -545,7 +577,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlKiraciBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -562,7 +594,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlOdemePlaniListBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -579,7 +611,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlSozlesmeListBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -596,7 +628,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlKiraciListBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -613,7 +645,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlBakiyeDevirBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -630,7 +662,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private void @__BuildControl__control2(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                "));
@@ -678,7 +710,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.UpdatePanel @__BuildControlupPanel() {
             global::System.Web.UI.UpdatePanel @__ctrl;
             @__ctrl = new global::System.Web.UI.UpdatePanel();
@@ -690,7 +722,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private void @__BuildControl__control4(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                <div class=\'loaderMainContainer\'>\r\n                    <div cla" +
@@ -700,7 +732,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.UpdateProgress @__BuildControlupdateProgress() {
             global::System.Web.UI.UpdateProgress @__ctrl;
             @__ctrl = new global::System.Web.UI.UpdateProgress();
@@ -712,7 +744,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.HtmlControls.HtmlInputText @__BuildControlparamKiraciIdLbl() {
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
@@ -724,7 +756,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlKiraciSecNowBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -739,7 +771,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlLabel1() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -753,7 +785,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlModalLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -768,7 +800,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlMessageLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -782,7 +814,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.HiddenField @__BuildControlOdemeIdHdn() {
             global::System.Web.UI.WebControls.HiddenField @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.HiddenField();
@@ -794,7 +826,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.HiddenField @__BuildControlOdemePlaniIdIdHdn() {
             global::System.Web.UI.WebControls.HiddenField @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.HiddenField();
@@ -806,7 +838,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.HiddenField @__BuildControlSozlesmeIdHdn() {
             global::System.Web.UI.WebControls.HiddenField @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.HiddenField();
@@ -818,7 +850,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlSilNowBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -835,7 +867,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private void @__BuildControl__control5(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        <div class=\"card\">\r\n                            <div cl" +
@@ -875,7 +907,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.UpdatePanel @__BuildControlUpdatePanel2() {
             global::System.Web.UI.UpdatePanel @__ctrl;
             @__ctrl = new global::System.Web.UI.UpdatePanel();
@@ -888,7 +920,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private void @__BuildControlTree(global::TBYS_WebParts.KiraciAylikOdemeWP.KiraciAylikOdemeWP @__ctrl) {
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl1;
             @__ctrl1 = this.@__BuildControlCardHeader();
@@ -917,7 +949,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private void @__Render__control1(System.Web.UI.HtmlTextWriter @__w, System.Web.UI.Control parameterContainer) {
             @__w.Write(@"
 
@@ -943,53 +975,58 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
             @__w.Write("\').click();\r\n    }\r\n    //excele export ettikten donup sonra kalmasın diye\r\n    f" +
                     "unction setFormSubmitToFalse() {\r\n        setTimeout(function () { _spFormOnSubm" +
                     "itCalled = false; }, 3000);\r\n        return true;\r\n    }\r\n    function setDataSe" +
-                    "t(myset) {\r\n        myjsons = myset;\r\n    }\r\n    var myjsons = [{ \"DosyaNo\": \"0\"" +
-                    ", \"KiraciAdiSoyadi\": \"A\", \"TasinmazAdresi\": \"A\", \"KiraBedeli\": \"1\", \"OdenenTutar" +
-                    "\": \"1\", \"OdemeTarihi\": \"01.01.2021\", \"IlkSozlesmeTar\": \"01.01.2021\", \"ArtisAyi\":" +
-                    " \"test\",\"OdemeSekli\": \"test\", \"Sozlesme\": \"test\", \"VadeBitTar\": \"01.01.2021\", \"A" +
-                    "ciklama\": \"www.google.com\", \"Bolge\": \"istanbul\", \"KiralamaAmaci\": \"Mesken\", \"Duz" +
-                    "enle\": \"Duzenle\" }];\r\n    jQuery(document).ready(function () {\r\n        jQuery(\'" +
-                    "#CustomDataTable\').DataTable({\r\n            data: myjsons,\r\n            columns:" +
-                    " [\r\n                { data: \"DosyaNo\" },\r\n                { data: \"Bolge\" },\r\n  " +
-                    "              { data: \"KiraciAdiSoyadi\" },\r\n                { data: \"TasinmazAdr" +
-                    "esi\" },\r\n                { data: \"KiralamaAmaci\" },\r\n                { data: \"Il" +
-                    "kSozlesmeTar\" },\r\n                { data: \"Sozlesme\" },\r\n                { data:" +
-                    " \"VadeBitTar\" },\r\n                { data: \"ArtisAyi\" },\r\n                { data:" +
-                    " \"OdemeSekli\" },\r\n                { data: \"KiraBedeli\", type: \"decimal\" },\r\n    " +
-                    "            { data: \"OdemeTarihi\" },\r\n                { data: \"OdenenTutar\", typ" +
-                    "e: \"decimal\" },\r\n                { data: \"Aciklama\" },\r\n                { data: " +
-                    "\"Duzenle\" },\r\n            ],\r\n            \"columnDefs\": [\r\n                { cla" +
-                    "ssName: \"text-end\", \"targets\": [10] },\r\n                { className: \"text-end\"," +
-                    " \"targets\": [12] }\r\n            ],\r\n            \"language\": {\r\n                \"" +
-                    "url\": \"http://tskgv-portal/OrtakBelgeler/Turkish.txt\",\r\n                \"decimal" +
-                    "\": \",\",\r\n                \"thousands\": \".\"\r\n            },\r\n            \"order\": " +
-                    "[[11, \"desc\"], [0, \"asc\"], [2, \"asc\"]],\r\n            responsive: true,\r\n        " +
-                    "    stateSave: true,\r\n            dom: \'Bfrtip\',\r\n            buttons: [\r\n      " +
-                    "          {\r\n                    extend: \'print\',\r\n                    exportOpt" +
-                    "ions: {\r\n                        columns: \':visible\'\r\n                    }\r\n   " +
-                    "             },\r\n                {\r\n                    extend: \'excel\',\r\n      " +
-                    "              exportOptions: {\r\n                        columns: \':visible\',\r\n  " +
-                    "                      format: {\r\n                            body: function (dat" +
-                    "a, row, column, node) {\r\n\r\n                                if (column === 3) {\r\n" +
-                    "                                    var kirabedeli = data.replace(\'.\', \'#\');\r\n  " +
-                    "                                  kirabedeli = kirabedeli.replace(\',\', \'.\');\r\n  " +
-                    "                                  kirabedeli = kirabedeli.replace(\'#\', \',\');\r\n  " +
-                    "                                  return kirabedeli;\r\n                          " +
-                    "      } else if (column === 4) {\r\n                                    var odenen" +
-                    "Tutar = data.replace(\'.\', \'#\');\r\n                                    odenenTutar" +
-                    " = odenenTutar.replace(\',\', \'.\');\r\n                                    odenenTut" +
-                    "ar = odenenTutar.replace(\'#\', \',\');\r\n                                    return " +
-                    "odenenTutar;\r\n                                }\r\n                               " +
-                    " else {\r\n                                    return data.replace(/(&nbsp;|<([^>]" +
-                    "+)>)/ig, \"\");//html\'i soy //regex to strip the HTML\r\n                           " +
-                    "     }\r\n\r\n                            }\r\n                        }\r\n            " +
-                    "        }\r\n                },\r\n                {\r\n                    extend: \'p" +
-                    "df\',\r\n                    exportOptions: {\r\n                        columns: \':v" +
-                    "isible\'\r\n                    }\r\n                },\r\n                {\r\n         " +
-                    "           extend: \'copy\',\r\n                    exportOptions: {\r\n              " +
-                    "          columns: \':visible\'\r\n                    }\r\n                },\r\n      " +
-                    "          , \'pageLength\', \"colvis\"\r\n            ]\r\n\r\n        });\r\n    });\r\n\r\n</s" +
-                    "cript>\r\n<div class=\"col-xl \">\r\n    <div class=\"card shadow\">\r\n        ");
+                    "t(myset) {\r\n        myjsons = myset;\r\n        initCustomDataTable();\r\n    }\r\n   " +
+                    " var myjsons = [{ \"DosyaNo\": \"0\", \"KiraciAdiSoyadi\": \"A\", \"TasinmazAdresi\": \"A\"," +
+                    " \"KiraBedeli\": \"1\", \"OdenenTutar\": \"1\", \"OdemeTarihi\": \"01.01.2021\", \"IlkSozlesm" +
+                    "eTar\": \"01.01.2021\", \"ArtisAyi\": \"test\",\"OdemeSekli\": \"test\", \"Sozlesme\": \"test\"" +
+                    ", \"VadeBitTar\": \"01.01.2021\", \"Aciklama\": \"www.google.com\", \"Bolge\": \"istanbul\"," +
+                    " \"KiralamaAmaci\": \"Mesken\", \"Duzenle\": \"Duzenle\" }];\r\n    function initCustomDat" +
+                    "aTable() {\r\n        if (jQuery.fn.DataTable.isDataTable(\'#CustomDataTable\')) {\r\n" +
+                    "            jQuery(\'#CustomDataTable\').DataTable().destroy();\r\n            jQuer" +
+                    "y(\'#CustomDataTable tbody\').empty();\r\n        }\r\n        jQuery(\'#CustomDataTabl" +
+                    "e\').DataTable({\r\n            data: myjsons,\r\n            columns: [\r\n           " +
+                    "     { data: \"DosyaNo\" },\r\n                { data: \"Bolge\" },\r\n                {" +
+                    " data: \"KiraciAdiSoyadi\" },\r\n                { data: \"TasinmazAdresi\" },\r\n      " +
+                    "          { data: \"KiralamaAmaci\" },\r\n                { data: \"IlkSozlesmeTar\" }" +
+                    ",\r\n                { data: \"Sozlesme\" },\r\n                { data: \"VadeBitTar\" }" +
+                    ",\r\n                { data: \"ArtisAyi\" },\r\n                { data: \"OdemeSekli\" }" +
+                    ",\r\n                { data: \"KiraBedeli\", type: \"decimal\" },\r\n                { d" +
+                    "ata: \"OdemeTarihi\" },\r\n                { data: \"OdenenTutar\", type: \"decimal\" }," +
+                    "\r\n                { data: \"Aciklama\" },\r\n                { data: \"Duzenle\" },\r\n " +
+                    "           ],\r\n            \"columnDefs\": [\r\n                { className: \"text-e" +
+                    "nd\", \"targets\": [10] },\r\n                { className: \"text-end\", \"targets\": [12" +
+                    "] }\r\n            ],\r\n            \"language\": {\r\n                \"url\": \"http://t" +
+                    "skgv-portal/OrtakBelgeler/Turkish.txt\",\r\n                \"decimal\": \",\",\r\n      " +
+                    "          \"thousands\": \".\"\r\n            },\r\n            \"order\": [[11, \"desc\"], " +
+                    "[0, \"asc\"], [2, \"asc\"]],\r\n            responsive: true,\r\n            stateSave: " +
+                    "true,\r\n            dom: \'Bfrtip\',\r\n            buttons: [\r\n                {\r\n  " +
+                    "                  extend: \'print\',\r\n                    exportOptions: {\r\n      " +
+                    "                  columns: \':visible\'\r\n                    }\r\n                }," +
+                    "\r\n                {\r\n                    extend: \'excel\',\r\n                    e" +
+                    "xportOptions: {\r\n                        columns: \':visible\',\r\n                 " +
+                    "       format: {\r\n                            body: function (data, row, column," +
+                    " node) {\r\n\r\n                                if (column === 3) {\r\n               " +
+                    "                     var kirabedeli = data.replace(\'.\', \'#\');\r\n                 " +
+                    "                   kirabedeli = kirabedeli.replace(\',\', \'.\');\r\n                 " +
+                    "                   kirabedeli = kirabedeli.replace(\'#\', \',\');\r\n                 " +
+                    "                   return kirabedeli;\r\n                                } else if" +
+                    " (column === 4) {\r\n                                    var odenenTutar = data.re" +
+                    "place(\'.\', \'#\');\r\n                                    odenenTutar = odenenTutar." +
+                    "replace(\',\', \'.\');\r\n                                    odenenTutar = odenenTuta" +
+                    "r.replace(\'#\', \',\');\r\n                                    return odenenTutar;\r\n " +
+                    "                               }\r\n                                else {\r\n      " +
+                    "                              return data.replace(/(&nbsp;|<([^>]+)>)/ig, \"\");//" +
+                    "html\'i soy //regex to strip the HTML\r\n                                }\r\n\r\n     " +
+                    "                       }\r\n                        }\r\n                    }\r\n    " +
+                    "            },\r\n                {\r\n                    extend: \'pdf\',\r\n         " +
+                    "           exportOptions: {\r\n                        columns: \':visible\'\r\n      " +
+                    "              }\r\n                },\r\n                {\r\n                    exte" +
+                    "nd: \'copy\',\r\n                    exportOptions: {\r\n                        colum" +
+                    "ns: \':visible\'\r\n                    }\r\n                },\r\n                , \'pa" +
+                    "geLength\', \"colvis\"\r\n            ]\r\n\r\n        });\r\n    }\r\n    jQuery(document).r" +
+                    "eady(function () {\r\n        if (!jQuery.fn.DataTable.isDataTable(\'#CustomDataTab" +
+                    "le\')) {\r\n            initCustomDataTable();\r\n        }\r\n    });\r\n\r\n</script>\r\n<d" +
+                    "iv class=\"col-xl \">\r\n    <div class=\"card shadow\">\r\n        ");
             parameterContainer.Controls[0].RenderControl(@__w);
             @__w.Write("\r\n        ");
             parameterContainer.Controls[1].RenderControl(@__w);
@@ -1048,7 +1085,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         }
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private void InitializeControl() {
             this.@__BuildControlTree(this);
             this.Load += new global::System.EventHandler(this.Page_Load);
@@ -1056,14 +1093,14 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected virtual object Eval(string expression) {
             return global::System.Web.UI.DataBinder.Eval(this.Page.GetDataItem(), expression);
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected virtual string Eval(string expression, string format) {
             return global::System.Web.UI.DataBinder.Eval(this.Page.GetDataItem(), expression, format);
         }

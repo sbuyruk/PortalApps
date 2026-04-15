@@ -165,6 +165,7 @@ namespace IKYS_WebParts.YoklamaListesiWP
             {
                 List<YoklamaListItem> list = GetDataList(personelId);
                 var serializer = new JavaScriptSerializer();
+                serializer.MaxJsonLength = Int32.MaxValue;
                 jSon = serializer.Serialize(list);
             }
             catch (Exception exception)

@@ -132,7 +132,7 @@ namespace NBYS_WebParts.TasinmazArmaganWP
             DurumDDL.Items.Add(ProjeConstants.DURUM_KONTROLEDILDI);
             DurumDDL.Items.Add(ProjeConstants.DURUM_ERKENGONDERILDI);
             DurumDDL.Items.Add(ProjeConstants.DURUM_ERTELENDI);
-            DurumDDL.Items.Add(ProjeConstants.DURUM_IADE);
+            DurumDDL.Items.Add(ProjeConstants.DURUM_PARAIADE);
             DurumDDL.Items.Add(ProjeConstants.DURUM_DAHAONCEIADE);
 
             //acilista durumu querystring ile gelene eşitle

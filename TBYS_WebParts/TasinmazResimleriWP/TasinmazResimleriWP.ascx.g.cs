@@ -41,6 +41,10 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.HiddenField TasinmazResimBaseUrl;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton CloseBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -54,6 +58,14 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.Label AdiLbl;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.Label GuncellemeTarihiLbl;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.Label GuncelleyenLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -221,6 +233,22 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.Label Label5;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor TasinmazRaporuDosyaLnk;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.LinkButton TasinmazRaporuSilBtn;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.FileUpload TasinmazRaporuYukleFU;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl MainCardDiv;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -248,6 +276,18 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.HiddenField @__BuildControlTasinmazResimBaseUrl() {
+            global::System.Web.UI.WebControls.HiddenField @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.HiddenField();
+            this.TasinmazResimBaseUrl = @__ctrl;
+            @__ctrl.ID = "TasinmazResimBaseUrl";
+            @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlCloseBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -270,7 +310,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.TitleLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-danger fw-bold mb-1";
+            @__ctrl.CssClass = "form-label text-danger fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
             @__ctrl.Text = "Taşınmaz Resimleri";
             return @__ctrl;
@@ -284,7 +324,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.IdLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label text-white";
+            @__ctrl.CssClass = "form-label text-white";
             @__ctrl.ID = "IdLbl";
             return @__ctrl;
         }
@@ -297,8 +337,34 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl = new global::System.Web.UI.WebControls.Label();
             this.AdiLbl = @__ctrl;
             @__ctrl.ApplyStyleSheetSkin(this.Page);
-            @__ctrl.CssClass = "col-form-label ";
+            @__ctrl.CssClass = "form-label text-muted";
             @__ctrl.ID = "AdiLbl";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlGuncellemeTarihiLbl() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.GuncellemeTarihiLbl = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.CssClass = "form-label text-muted";
+            @__ctrl.ID = "GuncellemeTarihiLbl";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlGuncelleyenLbl() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.GuncelleyenLbl = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.CssClass = "form-label text-muted";
+            @__ctrl.ID = "GuncelleyenLbl";
             return @__ctrl;
         }
         
@@ -329,6 +395,14 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             global::System.Web.UI.WebControls.Label @__ctrl4;
             @__ctrl4 = this.@__BuildControlAdiLbl();
             @__parser.AddParsedSubObject(@__ctrl4);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        "));
+            global::System.Web.UI.WebControls.Label @__ctrl5;
+            @__ctrl5 = this.@__BuildControlGuncellemeTarihiLbl();
+            @__parser.AddParsedSubObject(@__ctrl5);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        "));
+            global::System.Web.UI.WebControls.Label @__ctrl6;
+            @__ctrl6 = this.@__BuildControlGuncelleyenLbl();
+            @__parser.AddParsedSubObject(@__ctrl6);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    </h3>\r\n                "));
             return @__ctrl;
         }
@@ -343,10 +417,9 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "Image1";
             @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
-            @__ctrl.ImageUrl = "../TasinmazResimleri/_t/TasinmazFoto_jpg.jpg";
             @__ctrl.CssClass = "img-thumbnail";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onclick", "OpenModal(this)");
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onerror", "this.src=\'../TasinmazResimleri/_t/TasinmazFoto_jpg.jpg\';");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onerror", "showDefaultImage(this)");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: 150px");
             return @__ctrl;
         }
@@ -394,10 +467,9 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "Image2";
             @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
-            @__ctrl.ImageUrl = "../TasinmazResimleri/_t/TasinmazFoto1_jpg.jpg";
             @__ctrl.CssClass = "img-thumbnail";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onclick", "OpenModal(this)");
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onerror", "this.src=\'../TasinmazResimleri/_t/TasinmazFoto1_jpg.jpg\';");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onerror", "showDefaultImage(this)");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: 150px");
             return @__ctrl;
         }
@@ -445,10 +517,9 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "Image3";
             @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
-            @__ctrl.ImageUrl = "../TasinmazResimleri/_t/TasinmazFoto2_jpg.jpg";
             @__ctrl.CssClass = "img-thumbnail";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onclick", "OpenModal(this)");
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onerror", "this.src=\'../TasinmazResimleri/_t/TasinmazFoto2_jpg.jpg\';");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onerror", "showDefaultImage(this)");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: 150px");
             return @__ctrl;
         }
@@ -496,10 +567,9 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "Image4";
             @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
-            @__ctrl.ImageUrl = "../TasinmazResimleri/_t/TahkikatFoto_jpg.jpg";
             @__ctrl.CssClass = "img-thumbnail";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onclick", "OpenModal(this)");
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onerror", "this.src=\'../TasinmazResimleri/_t/TahkikatFoto_jpg.jpg\';");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onerror", "showDefaultImage(this)");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: 150px");
             return @__ctrl;
         }
@@ -547,10 +617,9 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "Image5";
             @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
-            @__ctrl.ImageUrl = "../TasinmazResimleri/_t/KrokiFoto_jpg.jpg";
             @__ctrl.CssClass = "img-thumbnail";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onclick", "OpenModal(this)");
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onerror", "this.src=\'../TasinmazResimleri/_t/KrokiFoto_jpg.jpg\';");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onerror", "showDefaultImage(this)");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: 150px");
             return @__ctrl;
         }
@@ -598,10 +667,9 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "Image6";
             @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
-            @__ctrl.ImageUrl = "../TasinmazResimleri/_t/TapuFoto_jpg.jpg";
             @__ctrl.CssClass = "img-thumbnail";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onclick", "OpenModal(this)");
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onerror", "this.src=\'../TasinmazResimleri/_t/TapuFoto_jpg.jpg\';");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onerror", "showDefaultImage(this)");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: 150px");
             return @__ctrl;
         }
@@ -635,7 +703,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "btn btn-danger form-control");
             @__ctrl.ToolTip = "Yüklenecek Resmi Seçiniz";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onchange", "readURL(this,\'Image6\')");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onchange", "readURL(this,\'Image5\')");
             return @__ctrl;
         }
         
@@ -649,10 +717,9 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "Image7";
             @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
-            @__ctrl.ImageUrl = "../TasinmazResimleri/_t/TasinmazFoto_jpg.jpg";
             @__ctrl.CssClass = "img-thumbnail";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onclick", "OpenModal(this)");
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onerror", "this.src=\'../TasinmazResimleri/_t/TasinmazFoto_jpg.jpg\';");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onerror", "showDefaultImage(this)");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: 150px");
             return @__ctrl;
         }
@@ -700,10 +767,9 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.ID = "Image8";
             @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
-            @__ctrl.ImageUrl = "../TasinmazResimleri/_t/TasinmazFoto1_jpg.jpg";
             @__ctrl.CssClass = "img-thumbnail";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onclick", "OpenModal(this)");
-            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onerror", "this.src=\'../TasinmazResimleri/_t/TasinmazFoto1_jpg.jpg\';");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("onerror", "showDefaultImage(this)");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("Style", "height: 150px");
             return @__ctrl;
         }
@@ -1020,6 +1086,75 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlLabel5() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.Label5 = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.CssClass = "col-form-label fw-bold";
+            @__ctrl.ID = "Label5";
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Taşınmaz Raporu (pdf)"));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.HtmlControls.HtmlAnchor @__BuildControlTasinmazRaporuDosyaLnk() {
+            global::System.Web.UI.HtmlControls.HtmlAnchor @__ctrl;
+            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlAnchor();
+            this.TasinmazRaporuDosyaLnk = @__ctrl;
+            @__ctrl.ID = "TasinmazRaporuDosyaLnk";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "btn btn-outline-primary");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-fancybox", "");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-type", "pdf");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-width", "960");
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("data-height", "720");
+            @__ctrl.HRef = "#";
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("Taşınmaz Raporu \r\n                                "));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.LinkButton @__BuildControlTasinmazRaporuSilBtn() {
+            global::System.Web.UI.WebControls.LinkButton @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
+            this.TasinmazRaporuSilBtn = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "TasinmazRaporuSilBtn";
+            @__ctrl.CssClass = "btn btn-outline-danger";
+            @__ctrl.CausesValidation = false;
+            @__ctrl.Text = "Sil";
+            @__ctrl.OnClientClick = "if(confirm(\' Silme İşlemini Onaylıyor musunuz?\')){return true;} else{return false" +
+                ";};";
+            @__ctrl.Visible = false;
+            @__ctrl.Click -= new System.EventHandler(this.TasinmazRaporuSilBtn_Click);
+            @__ctrl.Click += new System.EventHandler(this.TasinmazRaporuSilBtn_Click);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.FileUpload @__BuildControlTasinmazRaporuYukleFU() {
+            global::System.Web.UI.WebControls.FileUpload @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.FileUpload();
+            this.TasinmazRaporuYukleFU = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "TasinmazRaporuYukleFU";
+            @__ctrl.CssClass = "btn btn-danger form-control";
+            @__ctrl.ToolTip = "Yüklemek İçin PDF Dosya Seçiniz";
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControlMainCardDiv() {
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
@@ -1250,8 +1385,33 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             global::System.Web.UI.WebControls.FileUpload @__ctrl40;
             @__ctrl40 = this.@__BuildControlImarDurumuYukleFU();
             @__parser.AddParsedSubObject(@__ctrl40);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                            </div>
+                        </div>
+                    </div>
+                     <div class=""row"">
+                        <div class=""col-3 border border-dark p-2"">
+                            <div class=""form-group"">
+                                "));
+            global::System.Web.UI.WebControls.Label @__ctrl41;
+            @__ctrl41 = this.@__BuildControlLabel5();
+            @__parser.AddParsedSubObject(@__ctrl41);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <div class=\"for" +
+                        "m-group text-center\">\r\n                                "));
+            global::System.Web.UI.HtmlControls.HtmlAnchor @__ctrl42;
+            @__ctrl42 = this.@__BuildControlTasinmazRaporuDosyaLnk();
+            @__parser.AddParsedSubObject(@__ctrl42);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                "));
+            global::System.Web.UI.WebControls.LinkButton @__ctrl43;
+            @__ctrl43 = this.@__BuildControlTasinmazRaporuSilBtn();
+            @__parser.AddParsedSubObject(@__ctrl43);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                            <div class=\"for" +
+                        "m-group\">\r\n                                "));
+            global::System.Web.UI.WebControls.FileUpload @__ctrl44;
+            @__ctrl44 = this.@__BuildControlTasinmazRaporuYukleFU();
+            @__parser.AddParsedSubObject(@__ctrl44);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            </div>\r\n                        </div>\r\n           " +
-                        "         </div>\r\n                "));
+                        "          </div>\r\n                "));
             return @__ctrl;
         }
         
@@ -1392,16 +1552,25 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
         myModalInstance.show();
 
     }
+    function showDefaultImage(img) {
+        img.onerror = null;
+        var baseUrl = $('#TasinmazResimBaseUrl').val();
+        var rootUrl = baseUrl.substring(0, baseUrl.indexOf('/', baseUrl.indexOf('//') + 2));
+        img.src = rootUrl + '/OrtakResimler/TasinmazFoto.jpg';
+    }
 </script>
-<div class=""container col-xl"">
-    "));
-            global::System.Web.UI.UpdatePanel @__ctrl1;
-            @__ctrl1 = this.@__BuildControlUpdatePanel();
+"));
+            global::System.Web.UI.WebControls.HiddenField @__ctrl1;
+            @__ctrl1 = this.@__BuildControlTasinmazResimBaseUrl();
             @__parser.AddParsedSubObject(@__ctrl1);
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n    "));
-            global::System.Web.UI.UpdateProgress @__ctrl2;
-            @__ctrl2 = this.@__BuildControlupdateProgress();
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n<div class=\"container col-xl\">\r\n    "));
+            global::System.Web.UI.UpdatePanel @__ctrl2;
+            @__ctrl2 = this.@__BuildControlUpdatePanel();
             @__parser.AddParsedSubObject(@__ctrl2);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n    "));
+            global::System.Web.UI.UpdateProgress @__ctrl3;
+            @__ctrl3 = this.@__BuildControlupdateProgress();
+            @__parser.AddParsedSubObject(@__ctrl3);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
 </div>
 <div class=""modal"" id=""ResimAcModal"" role=""dialog"">
@@ -1411,7 +1580,7 @@ namespace TBYS_WebParts.TasinmazResimleriWP {
             <div class=""modal-header"">
                 <button type=""button"" class=""close"" data-bs-dismiss=""modal"">&times</button>
             </div>
-            <img class=""img-responsive"" src=""../TasinmazResimleri/TasinmazFoto.jpg"" id=""MaximizedImg"" height=""1000"" width=""1000"" />
+            <img class=""img-responsive"" id=""MaximizedImg"" height=""1000"" width=""1000"" />
 
             <div class=""modal-footer"">
                 <button type=""button"" class=""btn btn-default"" data-bs-dismiss=""modal"">Kapat</button>

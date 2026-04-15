@@ -394,7 +394,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
                 tasinmazListesiListItem.BagisYili = bagisYili.Trim();
 
                 tasinmazListesiListItem.TasinmazKarti = "<a target='_blank' href=" + ProjeConstants.PAGE_TASINMAZ_KARTI + "?SenderApp=TL&TasinmazId=" + tasinmazId + " class='btn btn-outline-info'>Taşınmaz Kartı</a>";
-                tasinmazListesiListItem.Resimler = "<a target='_blank' href=" + ProjeConstants.PAGE_TASINMAZ_RESIMLER_BOLGE + "?TasinmazId=" + tasinmazId + " class='btn btn-outline-info'>Resimler/Belgeler</a>";
+                tasinmazListesiListItem.Resimler = "<a target='_blank' href=" + ProjeConstants.PAGE_TASINMAZ_RESIMLER + "?TasinmazId=" + tasinmazId + " class='btn btn-outline-info'>Resimler/Belgeler</a>";
 
                 bool duzenleGorunsunMu = !string.IsNullOrEmpty(AuthQS) ||
                     AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM) ||

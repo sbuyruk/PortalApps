@@ -544,9 +544,9 @@ namespace Model.NBYS
             string postadanIadelerHaricFStr = string.Empty;
             if (postadanIadelerHaric)
             {
-                postadanIadelerHaricBStr = " AND B.Durum!=" + ProjeConstants.DURUM_IADE.ReturnQuotedValue() +
+                postadanIadelerHaricBStr = " AND B.Durum!=" + ProjeConstants.DURUM_PARAIADE.ReturnQuotedValue() +
                     " AND B.Durum!=" + ProjeConstants.DURUM_DAHAONCEIADE.ReturnQuotedValue();
-                postadanIadelerHaricFStr = " AND F.Durum!=" + ProjeConstants.DURUM_IADE.ReturnQuotedValue() +
+                postadanIadelerHaricFStr = " AND F.Durum!=" + ProjeConstants.DURUM_PARAIADE.ReturnQuotedValue() +
                     " AND F.Durum!=" + ProjeConstants.DURUM_DAHAONCEIADE.ReturnQuotedValue();
             }
             string dergiGonderilmesinlerHaricStr = string.Empty;
@@ -780,6 +780,10 @@ namespace Model.NBYS
         public DataTable SelectDuzenliBagisci(DateTime bastar,DateTime bittar, string durum)
         {
             var durumstr = string.Empty;
+            if (durum.Equals(ProjeConstants.DURUM_BELGEOLUSTURULMADI))
+            {
+                durumstr = string.Format("AND  A.ArmaganId=0 ");
+            } else
             if (!durum.Equals(ProjeConstants.HEPSI)) //eğer boş ise query'e hiç eklenmesin
             {
                 durumstr = string.Format("AND Durum = {0}", durum.ReturnQuotedValue());

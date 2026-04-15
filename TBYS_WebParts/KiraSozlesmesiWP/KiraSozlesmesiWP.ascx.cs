@@ -1466,21 +1466,31 @@ Bu durumda daha önce yapılan ödeme var ise silinmesi bilgi kaybına yolaçabi
         {
             try
             {
-                string dosyaAdi = ProjeConstants.DOSYA_KIRASOZLESMESI + KiraSozlesmeIdQS + ".pdf";
-                if (UtilityHelper.DeleteFileFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi))
+                KiraSozlesme kiraSozlesme = new KiraSozlesme();
+                kiraSozlesme = kiraSozlesme.Select(KiraSozlesmeIdQS.ConvertToInt());
+                if (kiraSozlesme != null)
                 {
-                    MessageHelper.PublishMessage(dosyaAdi + " Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
-                    BelgeSilBtn.Visible = false;
-                    DosyaLnk.Visible = false;
-                    BelgeYukleFU.Visible = true;
-                    KiraSozlesme kiraSozlesme= new KiraSozlesme();
-                    kiraSozlesme = kiraSozlesme.Select(KiraSozlesmeIdQS.ConvertToInt());
-                    if (kiraSozlesme!=null)
-                        SozlesmeTasinmazTablosunuDoldur(kiraSozlesme);
-                }
-                else
-                {
-                    MessageHelper.PublishMessage(dosyaAdi + " Silinemedi", ProjeConstants.MESAJ_HATA);
+
+                    string dosyaAdi = kiraSozlesme.SozlesmePDFDosyasi; 
+                    if (string.IsNullOrEmpty(dosyaAdi))
+                    {
+                        MessageHelper.PublishMessage("Silinecek dosya bulunamadı", ProjeConstants.MESAJ_HATA);
+                        return;
+                    }
+                    if (UtilityHelper.DeleteFileFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi))
+                    {
+                        MessageHelper.PublishMessage(dosyaAdi + " Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        BelgeSilBtn.Visible = false;
+                        DosyaLnk.Visible = false;
+                        BelgeYukleFU.Visible = true;
+
+                        if (kiraSozlesme != null)
+                            SozlesmeTasinmazTablosunuDoldur(kiraSozlesme);
+                    }
+                    else
+                    {
+                        MessageHelper.PublishMessage(dosyaAdi + " Silinemedi", ProjeConstants.MESAJ_HATA);
+                    }
                 }
             }
             catch (Exception ex)

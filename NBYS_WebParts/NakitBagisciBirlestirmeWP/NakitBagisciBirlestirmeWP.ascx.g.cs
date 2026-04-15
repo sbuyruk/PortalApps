@@ -1166,8 +1166,8 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP {
                          @__w.Write( paramNakitBagisciIdLbl.ClientID);
 
             @__w.Write("\').value = nakitBagisciId;\r\n\r\n        var myModalInstance = bootstrap.Modal.getOr" +
-                    "CreateInstance(document.getElementById(\'ModalUrlDiv\'));\n        myModalInstance." +
-                    "show();\r\n        document.getElementById(\'");
+                    "CreateInstance(document.getElementById(\'ModalUrlDiv\'));\r\n        myModalInstance" +
+                    ".show();\r\n        document.getElementById(\'");
                          @__w.Write( ModalDoldurBtn.ClientID);
 
             @__w.Write(@"').click();

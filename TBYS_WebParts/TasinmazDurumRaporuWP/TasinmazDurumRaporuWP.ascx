@@ -57,10 +57,14 @@
                 </asp:TableRow>
             </asp:Table>
             <div class="float">
-                <strong>Emlak Beyan Değeri : </strong>
+                <strong>Eml.Bey.Değeri : </strong>
                 <input class="input-money text-end" id="EmlakBeyanTopTxt" runat="server" readonly />
-                <strong>Tahmini Rayiç Değeri : </strong>
+                <strong>Tah.Ray.Değeri : </strong>
                 <input class="input-money text-end" id="TahminiRayicTopTxt" runat="server" readonly />
+                <strong>Muh.Kayıtlı Değer : </strong>
+                <input class="input-money text-end" id="MuhasebeyeKayitliTopTxt" runat="server" readonly />
+                <strong>Yak.Piy.Değeri : </strong>
+                <input class="input-money text-end" id="TahminiPiyasaTopTxt" runat="server" readonly />
             </div>
         </div>
         <div class="card-footer">

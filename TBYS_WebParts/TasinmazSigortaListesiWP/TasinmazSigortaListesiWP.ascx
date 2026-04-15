@@ -26,7 +26,7 @@
     }
 </script>
 
-<div class="container col-xl">
+<div class="col-xl">
     <asp:UpdatePanel ID="TableUpdatePanel" runat="server">
         <ContentTemplate>
             <div class="card shadow">
@@ -86,6 +86,27 @@
                                 </div>
                                 
                                 <div class="form-group border">
+                                    <div class="row">
+                                        <div class="col-2">
+                                            <label class="form-label fw-semibold w-sem" for="BaslangicTarihiTxt">Başlangıç Tarihi</label>
+                                            <asp:TextBox ID="BaslangicTarihiTxt" runat="server" CssClass="DateTimePickerV1 form-control disabled-look"
+                                                ClientIDMode="Static" OnTextChanged="BaslangicTarihiTxt_TextChanged" AutoPostBack="True" placeholder="gg.aa.yyyy"></asp:TextBox>
+                                        </div>
+
+                                        <div class="col-2" id="BitTarDiv" runat="server">
+                                            <label class="form-label fw-semibold" for="BitisTarihiTxt">Bitiş Tarihi</label>
+                                            <asp:TextBox ID="BitisTarihiTxt" runat="server" CssClass="DateTimePickerV1 form-control disabled-look"
+                                                ClientIDMode="Static" OnTextChanged="BitisTarihiTxt_TextChanged" AutoPostBack="True" placeholder="gg.aa.yyyy"></asp:TextBox>
+                                        </div>
+                                        <div class="col-2">
+                                            <label class="form-label fw-semibold" for="PrimToplamiLbl">Prim Toplamı</label>
+                                            <asp:Label ID="PrimToplamiLbl" Text="" runat="server" />
+                                        </div>
+                                        <div class="col-2">
+                                            <label class="form-label fw-semibold" for="PoliceSayisiLbl">Poliçe Sayısı</label>
+                                            <asp:Label ID="PoliceSayisiLbl" Text="" runat="server" />
+                                        </div>
+                                    </div>
                                     <div class="form-group">
                                         <table id="CustomDataTable" class="table table-hover row-border" width="100%">
                                             <thead>
@@ -98,6 +119,8 @@
                                                     <th>Taşınmazın Adresi</th>
                                                     <th>Teminatlar</th>
                                                     <th>Sig.Bit.Tar.</th>
+                                                    <th>Prim</th>
+                                                    <th>Sigorta Bedeli</th>
                                                     <th>Poliçe</th>
                                                     <th>Taşınmaz Kartı</th>
                                                     <th>Düzenle</th>

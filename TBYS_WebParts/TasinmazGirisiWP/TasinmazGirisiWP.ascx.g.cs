@@ -333,7 +333,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        protected global::System.Web.UI.HtmlControls.HtmlInputText GuncelRayicDegeriTxt;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText YaklasikPiyasaDegeriTxt;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
@@ -1532,12 +1532,12 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
-        private global::System.Web.UI.HtmlControls.HtmlInputText @__BuildControlGuncelRayicDegeriTxt() {
+        private global::System.Web.UI.HtmlControls.HtmlInputText @__BuildControlYaklasikPiyasaDegeriTxt() {
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
-            this.GuncelRayicDegeriTxt = @__ctrl;
+            this.YaklasikPiyasaDegeriTxt = @__ctrl;
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control input-money text-end");
-            @__ctrl.ID = "GuncelRayicDegeriTxt";
+            @__ctrl.ID = "YaklasikPiyasaDegeriTxt";
             return @__ctrl;
         }
         
@@ -2185,10 +2185,10 @@ namespace TBYS_WebParts.TasinmazGirisiWP {
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                     </div>
                                     <div class=""form-group m-0 "">
-                                        <label class=""form-label fw-semibold"" for=""GuncelRayicDegeriTxt"">Gün.Ray.Değ.</label>
+                                        <label class=""form-label fw-semibold"" for=""YaklasikPiyasaDegeriTxt"">Yak.Piyasa Değ.</label>
                                         "));
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl63;
-            @__ctrl63 = this.@__BuildControlGuncelRayicDegeriTxt();
+            @__ctrl63 = this.@__BuildControlYaklasikPiyasaDegeriTxt();
             @__parser.AddParsedSubObject(@__ctrl63);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
                                     </div>

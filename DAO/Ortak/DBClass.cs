@@ -29,22 +29,24 @@ namespace DAO.Ortak
                     {
                         con.Open();
                         SqlCommand cmd = new SqlCommand(sqlString + ";SELECT SCOPE_IDENTITY()", con);
-                        id = cmd.ExecuteScalar().ConvertToInt();
+
+                        object scalar = cmd.ExecuteScalar();
+                        id = scalar == null || scalar == DBNull.Value ? 0 : Convert.ToInt32(scalar);
+
                         con.Close();
                         if (ProjeConstants.GENEL_SAVE_LOG)
-                            SorguyuLogla("INSERT", true, sqlString,"Id="+id);
+                            SorguyuLogla("INSERT", true, sqlString, "Id=" + id);
                     }
                 }
                 catch (SqlException e)
                 {
-                    SorguyuLogla("INSERT", false, sqlString,e.Message);
+                    SorguyuLogla("INSERT", false, sqlString, e.Message);
                     throw e;
                 }
                 catch (Exception e)
                 {
                     throw e;
                 }
-
             }
 
             return id;

@@ -97,6 +97,26 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.TextBox BaslangicTarihiTxt;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.TextBox BitisTarihiTxt;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl BitTarDiv;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.Label PrimToplamiLbl;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.Label PoliceSayisiLbl;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.UpdatePanel upPanel;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -402,6 +422,92 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.TextBox @__BuildControlBaslangicTarihiTxt() {
+            global::System.Web.UI.WebControls.TextBox @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.TextBox();
+            this.BaslangicTarihiTxt = @__ctrl;
+            @__ctrl.TemplateControl = this;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "BaslangicTarihiTxt";
+            @__ctrl.CssClass = "DateTimePickerV1 form-control disabled-look";
+            @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
+            @__ctrl.AutoPostBack = true;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("placeholder", "gg.aa.yyyy");
+            @__ctrl.TextChanged -= new System.EventHandler(this.BaslangicTarihiTxt_TextChanged);
+            @__ctrl.TextChanged += new System.EventHandler(this.BaslangicTarihiTxt_TextChanged);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.TextBox @__BuildControlBitisTarihiTxt() {
+            global::System.Web.UI.WebControls.TextBox @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.TextBox();
+            this.BitisTarihiTxt = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "BitisTarihiTxt";
+            @__ctrl.CssClass = "DateTimePickerV1 form-control disabled-look";
+            @__ctrl.ClientIDMode = global::System.Web.UI.ClientIDMode.Static;
+            @__ctrl.AutoPostBack = true;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("placeholder", "gg.aa.yyyy");
+            @__ctrl.TextChanged -= new System.EventHandler(this.BitisTarihiTxt_TextChanged);
+            @__ctrl.TextChanged += new System.EventHandler(this.BitisTarihiTxt_TextChanged);
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControlBitTarDiv() {
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
+            @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
+            this.BitTarDiv = @__ctrl;
+            @__ctrl.TemplateControl = this;
+            ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "col-2");
+            @__ctrl.ID = "BitTarDiv";
+            System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                            <label class=\"form-label fw-semibol" +
+                        "d\" for=\"BitisTarihiTxt\">Bitiş Tarihi</label>\r\n                                  " +
+                        "          "));
+            global::System.Web.UI.WebControls.TextBox @__ctrl1;
+            @__ctrl1 = this.@__BuildControlBitisTarihiTxt();
+            @__parser.AddParsedSubObject(@__ctrl1);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                        "));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlPrimToplamiLbl() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.PrimToplamiLbl = @__ctrl;
+            @__ctrl.TemplateControl = this;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "PrimToplamiLbl";
+            @__ctrl.Text = "";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlPoliceSayisiLbl() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.PoliceSayisiLbl = @__ctrl;
+            @__ctrl.TemplateControl = this;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "PoliceSayisiLbl";
+            @__ctrl.Text = "";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private void @__BuildControl__control3(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
@@ -470,27 +576,60 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP {
             global::System.Web.UI.WebControls.CheckBox @__ctrl9;
             @__ctrl9 = this.@__BuildControlKazanChk();
             @__parser.AddParsedSubObject(@__ctrl9);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                                
+                                <div class=""form-group border"">
+                                    <div class=""row"">
+                                        <div class=""col-2"">
+                                            <label class=""form-label fw-semibold w-sem"" for=""BaslangicTarihiTxt"">Başlangıç Tarihi</label>
+                                            "));
+            global::System.Web.UI.WebControls.TextBox @__ctrl10;
+            @__ctrl10 = this.@__BuildControlBaslangicTarihiTxt();
+            @__parser.AddParsedSubObject(@__ctrl10);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                        </div>\r\n\r\n                             " +
+                        "           "));
+            global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl11;
+            @__ctrl11 = this.@__BuildControlBitTarDiv();
+            @__parser.AddParsedSubObject(@__ctrl11);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                        <div class=\"col-2\">\r\n                  " +
+                        "                          <label class=\"form-label fw-semibold\" for=\"PrimToplami" +
+                        "Lbl\">Prim Toplamı</label>\r\n                                            "));
+            global::System.Web.UI.WebControls.Label @__ctrl12;
+            @__ctrl12 = this.@__BuildControlPrimToplamiLbl();
+            @__parser.AddParsedSubObject(@__ctrl12);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
+                                        </div>
+                                        <div class=""col-2"">
+                                            <label class=""form-label fw-semibold"" for=""PoliceSayisiLbl"">Poliçe Sayısı</label>
+                                            "));
+            global::System.Web.UI.WebControls.Label @__ctrl13;
+            @__ctrl13 = this.@__BuildControlPoliceSayisiLbl();
+            @__parser.AddParsedSubObject(@__ctrl13);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                        </div>\r\n                               " +
-                        "     </div>\r\n                                </div>\r\n                           " +
-                        "     </div>\r\n                                \r\n                                <" +
-                        "div class=\"form-group border\">\r\n                                    <div class=\"" +
-                        "form-group\">\r\n                                        <table id=\"CustomDataTable" +
-                        "\" class=\"table table-hover row-border\" width=\"100%\">\r\n                          " +
-                        "                  <thead>\r\n                                                <tr>\r" +
-                        "\n                                                    <th>Bölge</th>\r\n           " +
-                        "                                         <th>Sigorta Cinsi</th>\r\n               " +
-                        "                                     <th>Adres Kodu</th>\r\n                      " +
-                        "                              <th>Poliçe No</th>\r\n                              " +
-                        "                      <th>Kullanım Şekli</th>\r\n                                 " +
-                        "                   <th>Taşınmazın Adresi</th>\r\n                                 " +
-                        "                   <th>Teminatlar</th>\r\n                                        " +
-                        "            <th>Sig.Bit.Tar.</th>\r\n                                             " +
-                        "       <th>Poliçe</th>\r\n                                                    <th>" +
-                        "Taşınmaz Kartı</th>\r\n                                                    <th>Düz" +
-                        "enle</th>\r\n                                                </tr>\r\n              " +
-                        "                              </thead>\r\n                                        " +
-                        "</table>\r\n                                    </div>\r\n                          " +
-                        "      </div>\r\n                            </div>\r\n\r\n                        "));
+                        "     </div>\r\n                                    <div class=\"form-group\">\r\n     " +
+                        "                                   <table id=\"CustomDataTable\" class=\"table tabl" +
+                        "e-hover row-border\" width=\"100%\">\r\n                                            <" +
+                        "thead>\r\n                                                <tr>\r\n                  " +
+                        "                                  <th>Bölge</th>\r\n                              " +
+                        "                      <th>Sigorta Cinsi</th>\r\n                                  " +
+                        "                  <th>Adres Kodu</th>\r\n                                         " +
+                        "           <th>Poliçe No</th>\r\n                                                 " +
+                        "   <th>Kullanım Şekli</th>\r\n                                                    " +
+                        "<th>Taşınmazın Adresi</th>\r\n                                                    " +
+                        "<th>Teminatlar</th>\r\n                                                    <th>Sig" +
+                        ".Bit.Tar.</th>\r\n                                                    <th>Prim</th" +
+                        ">\r\n                                                    <th>Sigorta Bedeli</th>\r\n" +
+                        "                                                    <th>Poliçe</th>\r\n           " +
+                        "                                         <th>Taşınmaz Kartı</th>\r\n              " +
+                        "                                      <th>Düzenle</th>\r\n                        " +
+                        "                        </tr>\r\n                                            </the" +
+                        "ad>\r\n                                        </table>\r\n                         " +
+                        "           </div>\r\n                                </div>\r\n                     " +
+                        "       </div>\r\n\r\n                        "));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
@@ -631,7 +770,7 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP {
     }
 </script>
 
-<div class=""container col-xl"">
+<div class=""col-xl"">
     "));
             global::System.Web.UI.UpdatePanel @__ctrl1;
             @__ctrl1 = this.@__BuildControlTableUpdatePanel();

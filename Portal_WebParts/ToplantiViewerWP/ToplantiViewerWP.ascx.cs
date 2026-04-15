@@ -131,6 +131,7 @@ namespace Portal_WebParts.ToplantiViewerWP
                     var calendarEl = document.getElementById('calendar');
                     var calendar = new FullCalendar.Calendar(calendarEl, {
                         locale: 'tr',
+                        firstDay: 1,
                         height: '650px',
                         initialView:  " + calendarView + @",//'dayGridMonth',
                         initialDate: " + initialDate + @",

@@ -90,14 +90,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>BolgeTasinmazBagisciListesiWP.ascx</DependentUpon>
     </Compile>
-    <Compile Include="BolgeTasinmazResimleriWP\BolgeTasinmazResimleriWP.ascx.cs">
-      <DependentUpon>BolgeTasinmazResimleriWP.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="BolgeTasinmazResimleriWP\BolgeTasinmazResimleriWP.ascx.g.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>BolgeTasinmazResimleriWP.ascx</DependentUpon>
-    </Compile>
     <Compile Include="DavaDurusmaListesiWP\DavaDurusmaListesiWP.ascx.cs">
       <DependentUpon>DavaDurusmaListesiWP.ascx</DependentUpon>
     </Compile>
@@ -121,10 +113,6 @@
     <None Include="BolgeTasinmazBagisciListesiWP\BolgeTasinmazBagisciListesiWP.webpart" />
     <None Include="BolgeTasinmazBagisciListesiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{bc348be1-4240-4347-ab5d-f311b92b1bee}</SharePointProjectItemId>
-    </None>
-    <None Include="BolgeTasinmazResimleriWP\BolgeTasinmazResimleriWP.webpart" />
-    <None Include="BolgeTasinmazResimleriWP\SharePointProjectItem.spdata">
-      <SharePointProjectItemId>{632f0d00-c1fe-4ac2-b8c5-cf257cc6da52}</SharePointProjectItemId>
     </None>
     <None Include="DavaDurusmaListesiWP\DavaDurusmaListesiWP.webpart" />
     <None Include="DavaDurusmaListesiWP\SharePointProjectItem.spdata">
@@ -157,11 +145,6 @@
       <LastGenOutput>BolgeTasinmazBagisciListesiWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="BolgeTasinmazBagisciListesiWP\Elements.xml" />
-    <Content Include="BolgeTasinmazResimleriWP\BolgeTasinmazResimleriWP.ascx">
-      <Generator>SharePointWebPartCodeGenerator</Generator>
-      <LastGenOutput>BolgeTasinmazResimleriWP.ascx.g.cs</LastGenOutput>
-    </Content>
-    <Content Include="BolgeTasinmazResimleriWP\Elements.xml" />
     <Content Include="DavaDurusmaListesiWP\DavaDurusmaListesiWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>DavaDurusmaListesiWP.ascx.g.cs</LastGenOutput>

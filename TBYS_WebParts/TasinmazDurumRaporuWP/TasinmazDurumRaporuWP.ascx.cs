@@ -76,6 +76,10 @@ namespace TBYS_WebParts.TasinmazDurumRaporuWP
             TahminiRayicTopTxt.Value = tahminiRayicToplami.ReturnEmptyIfZeroOrNull().ToString();
             decimal emlakBeyanToplami = EmlakBeyanDeğeriToplaminiBul();
             EmlakBeyanTopTxt.Value = emlakBeyanToplami.ReturnEmptyIfZeroOrNull().ToString();
+            decimal muhasebeyeKayitliToplami = MuhasebeyeKayitliToplaminiBul();
+            MuhasebeyeKayitliTopTxt.Value = muhasebeyeKayitliToplami.ReturnEmptyIfZeroOrNull().ToString();
+            decimal yaklasikPiyasaToplami = YaklasikPiyasaToplaminiBul();
+            TahminiPiyasaTopTxt.Value = yaklasikPiyasaToplami.ReturnEmptyIfZeroOrNull().ToString();
         }
         private decimal TahminiRayicToplaminiBul()
         {
@@ -84,11 +88,25 @@ namespace TBYS_WebParts.TasinmazDurumRaporuWP
             toplam = tasinmaz.SelectTahminiRayicToplami(BolgeIdQS);
             return toplam;
         }
+        private decimal MuhasebeyeKayitliToplaminiBul()
+        {
+            decimal toplam = 0;
+            Tasinmaz tasinmaz = new Tasinmaz();
+            toplam = tasinmaz.SelectMuhasebeyeKayitliDegerToplami(BolgeIdQS);
+            return toplam;
+        }
         private decimal EmlakBeyanDeğeriToplaminiBul()
         {
             decimal toplam = 0;
             Tasinmaz tasinmaz = new Tasinmaz();
             toplam = tasinmaz.SelectEmlakBeyanDegeriToplami(BolgeIdQS);
+            return toplam;
+        }
+        private decimal YaklasikPiyasaToplaminiBul()
+        {
+            decimal toplam = 0;
+            Tasinmaz tasinmaz = new Tasinmaz();
+            toplam = tasinmaz.SelectYaklasikPiyasaToplami(BolgeIdQS);
             return toplam;
         }
         protected void TasinmazDurumuTablosunuDoldur()

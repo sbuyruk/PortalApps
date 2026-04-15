@@ -30,9 +30,14 @@
     }
     function setDataSet(myset) {
         myjsons = myset;
+        initCustomDataTable();
     }
     var myjsons = [{ "DosyaNo": "0", "KiraciAdiSoyadi": "A", "TasinmazAdresi": "A", "KiraBedeli": "1", "OdenenTutar": "1", "OdemeTarihi": "01.01.2021", "IlkSozlesmeTar": "01.01.2021", "ArtisAyi": "test","OdemeSekli": "test", "Sozlesme": "test", "VadeBitTar": "01.01.2021", "Aciklama": "www.google.com", "Bolge": "istanbul", "KiralamaAmaci": "Mesken", "Duzenle": "Duzenle" }];
-    jQuery(document).ready(function () {
+    function initCustomDataTable() {
+        if (jQuery.fn.DataTable.isDataTable('#CustomDataTable')) {
+            jQuery('#CustomDataTable').DataTable().destroy();
+            jQuery('#CustomDataTable tbody').empty();
+        }
         jQuery('#CustomDataTable').DataTable({
             data: myjsons,
             columns: [
@@ -114,6 +119,11 @@
             ]
 
         });
+    }
+    jQuery(document).ready(function () {
+        if (!jQuery.fn.DataTable.isDataTable('#CustomDataTable')) {
+            initCustomDataTable();
+        }
     });
 
 </script>
@@ -157,8 +167,14 @@
                                 <asp:LinkButton ID="HepsiBtn" CssClass="btn btn-outline-primary" runat="server" Text="Tüm Kiracılar" OnClick="HepsiBtn_Click" />
                             </div>
                         </div>
-                        <div class="row">
-                            <asp:Label ID="ToplamLbl" Text="" runat="server" class="form-label fw-semibold"/>
+                        <div class="row mt-3 g-2 align-items-end">
+                            <div class="form-group col-3">
+                                <label class="form-label fw-semibold" for="BolgeDDL">Bölge </label>
+                                <asp:DropDownList ID="BolgeDDL" runat="server" CssClass="form-control form-select fw-semibold" AutoPostBack="True" OnSelectedIndexChanged="BolgeDDL_SelectedIndexChanged" Style="height: auto" />
+                            </div>
+                            <div class="form-group col-2">
+                                <asp:Label ID="ToplamLbl" Text="" runat="server" class="form-label fw-semibold" />
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">

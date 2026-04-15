@@ -151,7 +151,6 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
         }
 
         public DataTable DataTable { get; private set; }
-
         private IFormatProvider cultureInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -159,6 +158,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
             {
                 Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
                 BolgeIdQS = bolge == null ? 0 : bolge.Id;
+                BolgeDDLDoldur();
                 DateTime now = DateTime.Now;
                 BitisTarihiTxt.Text = now.ConvertToDatetimeEmptyIfNull();
                 BaslangicTarihiTxt.Text = now.AddMonths(-1).ConvertToDatetimeEmptyIfNull();
@@ -252,7 +252,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
                 var jsonData = GetJsonData(); //veri çekilip json a çeviriliyor
                                               //var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
                 UtilityHelper.ScriptCalistir("setDataSet(" + jsonData + ");");
-                ToplamLbl.Text = "Toplam Ödenen: " + GetToplamOdeme();
+                ToplamLbl.Text = "Toplam: " + GetToplamOdeme();
             }
             catch (Exception exception)
             {
@@ -270,8 +270,9 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
 			{
 				DateTime basTarih = BaslangicTarihiTxt.Text.ConvertToDatetime().Date;
 				DateTime bitTarih = BitisTarihiTxt.Text.ConvertToDatetime().Date;
+                int bolgeId = BolgeDDL.SelectedItem.Value.ConvertToInt();
                 Odeme odemeDao = new Odeme();
-				DataTable dataTable = odemeDao.SelectByKiraciAyYilReturnDataTable(BolgeIdQS, KiraciIdQS.ConvertToInt(), basTarih, bitTarih);
+				DataTable dataTable = odemeDao.SelectByKiraciAyYilReturnDataTable(bolgeId, KiraciIdQS.ConvertToInt(), basTarih, bitTarih);
 
 				if (dataTable != null && dataTable.Rows.Count > 0)
 				{
@@ -290,7 +291,10 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
 
 			return toplam.ToString("N", cultureInfo) + " TL";
         }
-
+        protected void BolgeDDL_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            TabloOlustur();
+        }
         protected void SilNowBtn_Click(object sender, EventArgs e)
         {
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
@@ -418,7 +422,29 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
         {
             RedirectToPage(ProjeConstants.PAGE_KIRACI_AYLIKODEME + "?Bastar=" + BastarQS + "&Bittar=" + BittarQS);
         }
+        private void BolgeDDLDoldur()
+        {
+            BolgeDDL.Items.Clear();
+            Bolge bolgeDao = new Bolge();
+            List<Bolge> list = new List<Bolge>();
+            if (BolgeIdQS == ProjeConstants.BOLGE_HEPSI_INT || BolgeIdQS == ProjeConstants.BOLGE_GENELMUDURLUK_INT)
+            {
+                list = bolgeDao.SelectAktifBolgeler(ProjeConstants.BOLGE_HEPSI_INT);
 
+            }
+            else
+            {
+                list = bolgeDao.SelectAktifBolgeler(BolgeIdQS);
+            }
+            foreach (Bolge item in list)
+            {
+                if (string.IsNullOrEmpty(item.Adi.Trim()))
+                    continue;
+                BolgeDDL.Items.Add(new System.Web.UI.WebControls.ListItem(item.Adi, item.Id.ToString()));
+            }
+            UtilityHelper.SetDDLValue(BolgeDDL, BolgeIdQS.ToString());
+
+        }
         private void KiraciModalAc()
         {
             TabloModalOlustur();
@@ -556,7 +582,9 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
                 DateTime bitTarih = BitisTarihiTxt.Text.ConvertToDatetime().Date;
                 
                 Odeme odemeDao = new Odeme();
-                DataTable dataTable = odemeDao.SelectByKiraciAyYilReturnDataTable(BolgeIdQS, KiraciIdQS.ConvertToInt(), basTarih, bitTarih);
+                int bolgeId = BolgeDDL.SelectedItem.Value.ConvertToInt();
+
+                DataTable dataTable = odemeDao.SelectByKiraciAyYilReturnDataTable(bolgeId, KiraciIdQS.ConvertToInt(), basTarih, bitTarih);
                 
 
                 if (dataTable != null)

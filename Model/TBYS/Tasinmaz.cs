@@ -29,7 +29,7 @@ namespace Model.TBYS
         public decimal MuhasebeyeKayitliDeger { get; set; }
         public decimal TahminiRayicDegeri { get; set; }
         public decimal EmlakBeyanDegeri { get; set; }
-        public decimal GuncelRayicDegeri { get; set; }
+        public decimal YaklasikPiyasaDegeri { get; set; }
         public DateTime TapuTarihi { get; set; }
         public string AdaNo { get; set; }
         public string ParselNo { get; set; }
@@ -426,7 +426,9 @@ namespace Model.TBYS
                     IIF(T.KatMulkiyeti = 1, 'Kat Mülkiyeti Var', 'Kat Mülkiyeti Yok') AS KatMulkiyeti,
                     IIF(T.KatIrtifaki = 1, 'Kat İrtifakı Var', 'Kat İrtifakı Yok') AS KatIrtifaki,
                     IIF(T.AltBolum = 1, 'Kat Alt Bölüm Var', 'Kat Alt Bölüm Yok') AS AltBolum,
-                    T.TapuTarihi, T.TapuIslemTarihi, T.EmlakSicilNo, T.EmlakBeyanDegeri, T.TahminiRayicDegeri, T.SigortaDurumu, T.Aciklama,
+                    T.TapuTarihi, T.TapuIslemTarihi, T.EmlakSicilNo, T.SigortaDurumu, T.Aciklama,
+                    T.EmlakBeyanDegeri, T.TahminiRayicDegeri,T.YaklasikPiyasaDegeri,T.MuhasebeyeKayitliDeger,  
+                    T. MalikSayisi,T.BagimsizBolumSayisi,
 	                T.Id TasinmazId, G.Id SozlesmeId,H.Adi,G.IlkSozlesmeTar, G.SozBasTar BaslamaTarihi,H.KiralamaAmaci,H.Adres KiraciAdresi,
 	                H.Ili,H.Ilcesi,G.OdemeSekli, G.KiraBedeli, G.ArtisAyi,YEAR(G.SozBasTar)-YEAR(G.IlkSozlesmeTar) KiraSuresi
                 FROM Tasinmaz_Table T
@@ -495,7 +497,8 @@ namespace Model.TBYS
         private string SelectAllEnvanterdenCikanSQL()
         {
             string sqlString = string.Format(@"
-                SELECT ROW_NUMBER() OVER(ORDER BY T.Id) AS Sirano, T.Id, T.Id TasinmazId,T.Cinsi, T.Ili, T.Ilcesi, T.Ili+'/'+T.Ilcesi IliIlcesi, T.SigortaDurumu, 
+                SELECT ROW_NUMBER() OVER(ORDER BY T.Id) AS Sirano, T.Id, T.Id TasinmazId,T.BagisYili,
+                    T.Cinsi, T.Ili, T.Ilcesi, T.Ili+'/'+T.Ilcesi IliIlcesi, T.SigortaDurumu, 
                     T.Adres,T.Adres+' '+T.Ili+'/'+T.Ilcesi AdresIlIlce,
 	                T.MulkiyetSekli, T.KiraDurumu, T.KatMulkiyeti, T.SorumluBolge, T.EdinmeSekli,T.BagisYili, T.EmlakSicilNo,
                     T.EmlakBeyanDegeri, T.TahminiRayicDegeri, T.TapuTarihi, T.AdaNo, T.ParselNo, T.PaftaNo, T.Yuzolcumu, T.ArsaPayi, T.VakifHissesi,
@@ -627,6 +630,46 @@ namespace Model.TBYS
             decimal toplam = 0;
             string sqlString = string.Format(@"
                 SELECT SUM(EmlakBeyanDegeri) Toplam 
+                FROM Tasinmaz_Table T
+                    LEFT JOIN IL_Table C ON C.Id=T.IlId
+	                LEFT JOIN ILCE_Table D ON D.Id=T.IlceId
+	                LEFT JOIN Bolge_Table E ON E.Id=C.BolgeId
+                WHERE T.EnvanterdeMi=1  {0}", bolgeStr);
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            if (dataTable != null)
+            {
+                DataRow row = dataTable.Rows[0];
+                toplam = row["Toplam"].ConvertToDecimal();
+
+            }
+            return toplam;
+        }
+        public decimal SelectMuhasebeyeKayitliDegerToplami(int bolgeId)
+        {
+            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND BolgeId={0} ", bolgeId);
+            decimal toplam = 0;
+            string sqlString = string.Format(@"
+                SELECT SUM(MuhasebeyeKayitliDeger) Toplam 
+                FROM Tasinmaz_Table T
+                    LEFT JOIN IL_Table C ON C.Id=T.IlId
+	                LEFT JOIN ILCE_Table D ON D.Id=T.IlceId
+	                LEFT JOIN Bolge_Table E ON E.Id=C.BolgeId
+                WHERE T.EnvanterdeMi=1  {0}", bolgeStr);
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            if (dataTable != null)
+            {
+                DataRow row = dataTable.Rows[0];
+                toplam = row["Toplam"].ConvertToDecimal();
+
+            }
+            return toplam;
+        }
+        public decimal SelectYaklasikPiyasaToplami(int bolgeId)
+        {
+            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND BolgeId={0} ", bolgeId);
+            decimal toplam = 0;
+            string sqlString = string.Format(@"
+                SELECT SUM(YaklasikPiyasaDegeri) Toplam 
                 FROM Tasinmaz_Table T
                     LEFT JOIN IL_Table C ON C.Id=T.IlId
 	                LEFT JOIN ILCE_Table D ON D.Id=T.IlceId

@@ -123,6 +123,7 @@ namespace TBYS_WebParts.EnvanterdenCikanTasinmazListesiWP
                 envanterdenCikanListesiListItem.KullanimSekli = kullanimSekli;
                 envanterdenCikanListesiListItem.EnvanterdenCikmaSebebi = envanterdenCikmaSebebi;
                 envanterdenCikanListesiListItem.EnvanterdenCikmaYili = envanterdenCikmaYili;
+                envanterdenCikanListesiListItem.BagisYili = row["BagisYili"].ToString();
                 envanterdenCikanListesiListItem.AdresIlIlce = adresIlIlce;
                 envanterdenCikanListesiListItem.Aciklama = aciklama;
 
@@ -165,6 +166,7 @@ namespace TBYS_WebParts.EnvanterdenCikanTasinmazListesiWP
                 { data: 'KullanimSekli' },
                 { data: 'EnvanterdenCikmaSebebi' },
                 { data: 'EnvanterdenCikmaYili' },
+                { data: 'BagisYili' },
                 { data: 'AdresIlIlce' , 'width':'20%'},
                 { data: 'Aciklama' , 'width':'20%'},
                 { data: 'Tasinmaz' },
@@ -281,6 +283,7 @@ namespace TBYS_WebParts.EnvanterdenCikanTasinmazListesiWP
             public string TasinmazId { get; set; }
             public string KullanimSekli { get; set; }
             public string EnvanterdenCikmaSebebi { get; set; }
+            public string BagisYili { get; set; }
             public string EnvanterdenCikmaYili { get; set; }
             public string AdresIlIlce { get; set; }
             public string Aciklama { get; set; }

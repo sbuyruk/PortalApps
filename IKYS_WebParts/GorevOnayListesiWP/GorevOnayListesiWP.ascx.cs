@@ -204,6 +204,10 @@ namespace IKYS_WebParts.GorevOnayListesiWP
                 gorevOnayListItem.BitisTarihi = bitisTarihi;
                 gorevOnayListItem.GorevinYeri = gorevinYeri;
                 gorevOnayListItem.Secildi = SecilenIdQS.Equals(gorevOnayId);
+                if (OdendiYapChk.Checked)
+                {
+                    gorevOnayListItem.Odendi = true;
+                }
                 gorevOnayListItem.BaslangicTarihiHidden = row["BaslangicTarihi"].ConvertToDatetime();
 
                 if (AuthQS.Equals(ProjeConstants.IKYS_YETKILI_BIRIM))
@@ -297,7 +301,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
             
             
             GorevOnay gorevOnay = new GorevOnay();
-            bool secilenlerKaydedildi = gorevOnay.UpdateAllSecildiToTrue(idler);
+            bool secilenlerKaydedildi = gorevOnay.UpdateAllSecildiToTrue(idler, OdendiYapChk.Checked);
         }
 
         private bool SecilenGorevVarMi()
@@ -334,6 +338,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
             public string RaporAl { get; set; }
             public string Duzenle { get; set; }
             public bool Secildi { get; set; }
+            public bool Odendi { get; set; }
             public bool ErrorClass{ get; set; }
 
         }

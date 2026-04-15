@@ -195,11 +195,12 @@ namespace Model.Ortak
                 return data;
             }
         }
-        public static ExceptionHelper uploadFile2SP(FileUpload fileBrowser, string imgType, string fName, string SPImageListName, ExceptionHelper exceptionHelper, int maxWidth, int maxHeight)
+        public static ExceptionHelper uploadFile2SP(FileUpload fileBrowser, string imgType, string fName, string SPImageListName, ExceptionHelper exceptionHelper, int maxWidth, int maxHeight, string targetWebUrl = null)
         {
             try
             {
-                using (SPSite spsite = new SPSite(SPContext.Current.Web.Url))
+                string webUrl = targetWebUrl ?? SPContext.Current.Web.Url;
+                using (SPSite spsite = new SPSite(webUrl))
                 {
                     using (SPWeb web = spsite.OpenWeb())
                     {

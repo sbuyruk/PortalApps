@@ -15,13 +15,6 @@
 
 </script>
 
-<script type="text/javascript">
-    //excele export ettikten donup sonra kalmasın diye
-    function setFormSubmitToFalse() {
-        setTimeout(function () { _spFormOnSubmitCalled = false; }, 3000);
-        return true;
-    }
-</script>
 <div class="container col-xl">
     <div class="card shadow">
         <div class="card-header" id="CardHeader" runat="server">

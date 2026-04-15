@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Globalization;
 using System.IO;
 using System.Net.NetworkInformation;
 using System.Web.Script.Serialization;
@@ -337,6 +338,55 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
                 ViewState["CurrentUserName"] = value;
             }
         }
+        private string BastarQS
+        {
+            get
+            {
+
+                if (ViewState["Bastar"] == null)
+                {
+                    if (Page.Request.QueryString["Bastar"] != null && !string.IsNullOrEmpty(Page.Request.QueryString["Bastar"].ToString()))
+                    {
+                        ViewState["Bastar"] = Page.Request.QueryString["Bastar"];
+                    }
+                    else
+                    {
+                        ViewState["Bastar"] = DateTime.Today.ToString();
+                    }
+                }
+                return ViewState["Bastar"].ToString();
+            }
+
+            set
+            {
+                ViewState["Bastar"] = value;
+            }
+        }
+        private string BittarQS
+        {
+            get
+            {
+
+                if (ViewState["Bittar"] == null)
+                {
+                    if (Page.Request.QueryString["Bittar"] != null && !string.IsNullOrEmpty(Page.Request.QueryString["Bittar"].ToString()))
+                    {
+                        ViewState["Bittar"] = Page.Request.QueryString["Bittar"];
+                    }
+                    else
+                    {
+                        ViewState["Bittar"] = DateTime.Today.ToString();
+                    }
+                }
+                return ViewState["Bittar"].ToString();
+            }
+
+            set
+            {
+                ViewState["Bittar"] = value;
+            }
+        }
+        private IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -348,6 +398,15 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
                 }
                 if (!Page.IsPostBack)
                 {
+                    if (!string.IsNullOrEmpty(BastarQS) && !string.IsNullOrEmpty(BittarQS))
+                    {
+                        DateTime basTarih = BastarQS.ConvertToDatetime();
+                        BaslangicTarihiTxt.Text = new DateTime(basTarih.Year, basTarih.Month,1).ConvertToDatetimeEmptyIfNull();
+
+                        DateTime bitTarih = BaslangicTarihiTxt.Text.ConvertToDatetime().AddMonths(1).AddDays(-1);
+                        BitisTarihiTxt.Text = bitTarih.ConvertToDatetimeEmptyIfNull();
+                    }
+
                     Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
                     BolgeIdQS = bolge == null ? 0 : bolge.Id;
                     if (string.IsNullOrEmpty(SigortaCinsiQS))
@@ -392,10 +451,12 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
         }
         private DataTable SigortaListesiGetirDT()
         {
+            DateTime basTarih = BaslangicTarihiTxt.Text.ConvertToDatetime().Date;
+            DateTime bitTarih = BitisTarihiTxt.Text.ConvertToDatetime().Date;
             Sigorta sigorta = new Sigorta();
             //DataTable dataTable = sigorta.SelectAllReturnDataTable();
             DataTable dataTable = sigorta.SelectByTeminatSigortaCinsiReturnDataTable(SigortaCinsiQS, VadesiGelenlerChk.Checked, DepremQS.ConvertToBool(), YanginQS.ConvertToBool(), Makine100000QS.ConvertToBool(),
-                Makine5000QS.ConvertToBool(), JeneratorQS.ConvertToBool(), AsansorQS.ConvertToBool(), KazanQS.ConvertToBool(), BolgeIdQS, AuthQS);
+                Makine5000QS.ConvertToBool(), JeneratorQS.ConvertToBool(), AsansorQS.ConvertToBool(), KazanQS.ConvertToBool(), BolgeIdQS, AuthQS, basTarih, bitTarih);
             return dataTable;
         }
         protected void ExcelBtn_Click(object sender, EventArgs e)
@@ -531,10 +592,10 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
 
         {
             string tableString = @"
-                if ( jQuery.fn.DataTable.isDataTable('#CustomModalDataTable') ) {
-                    jQuery('#CustomModalDataTable').DataTable().destroy();
+                if ( jQuery.fn.DataTable.isDataTable('#CustomDataTable') ) {
+                    jQuery('#CustomDataTable').DataTable().destroy();
                 }
-                jQuery('#CustomModalDataTable tbody').empty();
+                jQuery('#CustomDataTable tbody').empty();
 
                 jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
                 jQuery(document).ready(function () {
@@ -560,6 +621,8 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
                             { data: 'Adres' },
                             { data: 'TeminatListesi' },
                             { data: 'SigortaBitTar' },
+                            { data: 'Prim', 'className': 'text-end'},
+                            { data: 'SigortaBedeli', 'className': 'text-end'},
                             { data: 'Police' },
                             { data: 'TasinmazKarti' },
                             { data: 'Duzenle' },               
@@ -619,18 +682,22 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
         }
         private List<SigortaListItem> GetDataList()
         {
+            DateTime basTarih = BaslangicTarihiTxt.Text.ConvertToDatetime().Date;
+            DateTime bitTarih = BitisTarihiTxt.Text.ConvertToDatetime().Date;
+
             List<string> policeDosyalari = UtilityHelper.GetFileNameListFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, ProjeConstants.DOSYA_SIGORTAPOLICESI_DASK);
 
             Sigorta sigorta = new Sigorta();
             //DataTable dataTable = sigorta.SelectAllReturnDataTable();
 
             DataTable dataTable = sigorta.SelectByTeminatSigortaCinsiReturnDataTable(SigortaCinsiQS, VadesiGelenlerChk.Checked, DepremQS.ConvertToBool(), YanginQS.ConvertToBool(), Makine100000QS.ConvertToBool(),
-                Makine5000QS.ConvertToBool(), JeneratorQS.ConvertToBool(), AsansorQS.ConvertToBool(), KazanQS.ConvertToBool(),BolgeIdQS,AuthQS);
+                Makine5000QS.ConvertToBool(), JeneratorQS.ConvertToBool(), AsansorQS.ConvertToBool(), KazanQS.ConvertToBool(),BolgeIdQS,AuthQS, basTarih, bitTarih);
 
             int SiraNo = 1;
 
             List<SigortaListItem> list = new List<SigortaListItem>();
-
+            decimal primToplami = 0;
+            int policeSayisi = 0;
             foreach (DataRow row in dataTable.Rows)
             {
                 string sigortaId = row["SigortaId"].ToString();
@@ -639,6 +706,8 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
                 string sigortaCinsi = row["SigortaCinsi"].ToString();
                 string adresKodu = row["AdresKodu"].ToString();
                 string policeNo = row["PoliceNo"].ToString();
+                decimal prim = row["Prim"].ReturnZeroIfNull().ConvertToDecimal();
+                decimal sigortaBedeli = row["SigortaBedeli"].ReturnZeroIfNull().ConvertToDecimal();
 
                 string kullanimSekli = row["KullanimSekli"].ToString();
                 string tamAdres = row["TamAdres"].ToString();
@@ -667,6 +736,10 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
                 sigortaItem.TeminatListesi = teminatListesi;
                 sigortaItem.Adres = tamAdres;
                 sigortaItem.Police = FormLinkiGetir(policeDosyalari, ProjeConstants.DOSYA_SIGORTAPOLICESI_DASK, adresKodu,"Poliçe", "btn btn-outline-secondary", pDFDosyasi);
+                sigortaItem.Prim = prim.ToString("N", culturInfo);
+                sigortaItem.SigortaBedeli = sigortaBedeli.ToString("N", culturInfo);
+                primToplami += prim;
+                policeSayisi++;
                 sigortaItem.TasinmazKarti = "<a href=" + ProjeConstants.PAGE_TASINMAZ_KARTI + "?DestinationApp=TD&SenderApp=OL&TasinmazId=" + tasinmazId + " class='btn btn-outline-primary'>Taşınmaz Kartı</a>";
                 sigortaItem.Duzenle=string.Empty;
  
@@ -675,6 +748,8 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
                 sigortaItem.Secildi = SecilenIdQS.Equals(sigortaItem.SigortaId);
                 list.Add(sigortaItem);
             }
+            PoliceSayisiLbl.Text = policeSayisi.ToString();
+            PrimToplamiLbl.Text = primToplami.ToString("C2");
             return list;
         }
         private string FormLinkiGetir(List<string> list, string form, string adresKodu, string linkText, string classString, string pDFDosyasi)
@@ -688,6 +763,40 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
                 belgePdfLink = @"<a class='" + classString + "' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + dosyaUrl + @">" + linkText + "</a>";
             }
             return belgePdfLink;
+        }
+
+        protected void BaslangicTarihiTxt_TextChanged(object sender, EventArgs e)
+        {
+
+            DateTime basTarih = BaslangicTarihiTxt.Text.ConvertToDatetime().Date;
+            DateTime bitTarih = BitisTarihiTxt.Text.ConvertToDatetime().Date;
+
+            if (basTarih > bitTarih)
+            {
+                BitisTarihiTxt.Text = BaslangicTarihiTxt.Text;
+                bitTarih = basTarih;
+            }
+
+            DateTime maxBitisTarihi = basTarih.AddMonths(3);
+            if (bitTarih > maxBitisTarihi)
+            {
+                BitisTarihiTxt.Text = maxBitisTarihi.ConvertToDatetimeEmptyIfNull();
+            }
+
+            TabloOlustur();
+        }
+        protected void BitisTarihiTxt_TextChanged(object sender, EventArgs e)
+        {
+            DateTime basTarih = BaslangicTarihiTxt.Text.ConvertToDatetime().Date;
+            DateTime bitTarih = BitisTarihiTxt.Text.ConvertToDatetime().Date;
+
+            if (basTarih > bitTarih)
+            {
+                BitisTarihiTxt.Text = BaslangicTarihiTxt.Text;
+                bitTarih = basTarih;
+            }
+            TabloOlustur();
+
         }
         private class SigortaListItem
         {
@@ -706,6 +815,8 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
             public bool Secildi { get; set; }
             public bool Renkli { get; set; }
             public string Police { get; set; }
+            public string Prim { get; set; }
+            public string SigortaBedeli { get; set; }
         }
     }
 }

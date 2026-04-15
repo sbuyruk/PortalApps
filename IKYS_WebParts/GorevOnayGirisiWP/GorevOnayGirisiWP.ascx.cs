@@ -169,7 +169,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                         }
                         else
                         {
-                            OpenDuzenle();
+                            OpenDuzenle(gorevOnay);
                         }
                     }
 
@@ -276,7 +276,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             SureSaatDakikaTxt.Text = saat + " Saat " + dakika + " Dakika";
             SureGunStrTxt.Text = gun + " Gün ";
         }
-        private void OpenDuzenle()
+        private void OpenDuzenle(GorevOnay gorevOnay)
         {
             SaveBtn.Visible = false;
             UpdateBtn.Visible = true;
@@ -285,8 +285,6 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             TitleLbl.CssClass = "col-form-primary  btn-outline-primary mb-1";
             TitleLbl.Text = "Görev Onayı Düzenleme";
 
-            GorevOnay gorevOnay = new GorevOnay();
-            gorevOnay = gorevOnay.Select<GorevOnay>(GorevOnayIdQS.ConvertToInt());
             if (gorevOnay != null)
             {
                 GorevOnayIdLbl.Text = gorevOnay.Id.ReturnEmptyIfNull().ToString();
@@ -313,11 +311,11 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                     OnayImzaDDLDoldur();
 
                     UlkeDDLDoldur(personel);
-                    // Form alanlarını set eder (tarih/saat dahil).
-                    FillGorevOnayForm(gorevOnay);
-
-
                     GorevGrubuTxt.Text = GorevGrubuGetir(personel);
+                    // Form alanlarını set eder (tarih/saat dahil).
+                    FillGorevOnayForm(gorevOnay,personel);
+
+
                     // JS çalışmadan önce süre alanlarını server-side doldur.
                     SetSureFieldsFromInputs();
 
@@ -646,13 +644,13 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
         /// Güncelle butonunu aç
         /// Kaydet butonunu sakla
         /// </summary>
-        private void FillGorevOnayForm(GorevOnay gorevOnay)
+        private void FillGorevOnayForm(GorevOnay gorevOnay,Personel personel)
         {
 
             if (gorevOnay != null)
             {
                 GorevOnayIdLbl.Text = gorevOnay.Id.ReturnEmptyIfNull().ToString();
-                Personel personel = PersonelGetir(gorevOnay.PersonelId);
+                //Personel personel = PersonelGetir(gorevOnay.PersonelId);
                 if (personel != null)
                 {
                     PersonelAdiLbl.Text = personel.Adi + " " + personel.Soyadi;
@@ -1231,6 +1229,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             {
                 PersonelAdiLbl.Text = personel.Adi + " " + personel.Soyadi;
                 UlkeDDLDoldur(personel);
+                GorevGrubuTxt.Text = GorevGrubuGetir(personel);
             }
 
             HarcirahHesapla();

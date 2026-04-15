@@ -262,6 +262,9 @@
         </div>
         <div class="card-footer">
             <asp:LinkButton ID="YeniGorevOnayiBtn" CssClass="btn btn-outline-success " runat="server" Text="Yeni Görev Onayı" OnClick="YeniGorevOnayiBtn_Click" />
+            
+            <asp:CheckBox ID="OdendiYapChk" runat="server" Text="Ödendi Yap" CssClass="form-check form-check-inline ms-3" />
+
             <asp:LinkButton ID="RaporAlBtn" CssClass="btn btn-outline-success float-end" runat="server" Text="Seçilen Görevler İçin Rapor Al" OnClick="RaporAlBtn_Click" />
         </div>
 

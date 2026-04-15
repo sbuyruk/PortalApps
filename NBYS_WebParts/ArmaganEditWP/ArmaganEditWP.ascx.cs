@@ -318,7 +318,7 @@ namespace NBYS_WebParts.ArmaganEditWP
             DurumDDL.Items.Add(ProjeConstants.DURUM_KONTROLEDILDI);
             DurumDDL.Items.Add(ProjeConstants.DURUM_ERKENGONDERILDI);
             DurumDDL.Items.Add(ProjeConstants.DURUM_ERTELENDI);
-            DurumDDL.Items.Add(ProjeConstants.DURUM_IADE);
+            DurumDDL.Items.Add(ProjeConstants.DURUM_PARAIADE);
             DurumDDL.Items.Add(ProjeConstants.DURUM_DAHAONCEIADE);
             DurumDDL.Items.Add(ProjeConstants.DURUM_AFETNEDENIYLE_GONDERILMEDI);
             DurumDDL.Items.Add(ProjeConstants.DURUM_EDEVLETTENBELGEGONDERILDI);

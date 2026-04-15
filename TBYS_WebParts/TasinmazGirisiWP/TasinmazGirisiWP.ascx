@@ -476,8 +476,8 @@
                                         <input class="form-control input-money text-end" id="EmlakBeyanDegeriTxt" runat="server" />
                                     </div>
                                     <div class="form-group m-0 ">
-                                        <label class="form-label fw-semibold" for="GuncelRayicDegeriTxt">Gün.Ray.Değ.</label>
-                                        <input class="form-control input-money text-end" id="GuncelRayicDegeriTxt" runat="server" />
+                                        <label class="form-label fw-semibold" for="YaklasikPiyasaDegeriTxt">Yak.Piyasa Değ.</label>
+                                        <input class="form-control input-money text-end" id="YaklasikPiyasaDegeriTxt" runat="server" />
                                     </div>
                                     <div class="form-group m-0 ">
                                         <label class="form-label fw-semibold text-end" for="TahminiRayicDegeriTxt">Tah.Rayiç Değ.</label>

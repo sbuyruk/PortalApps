@@ -298,12 +298,22 @@ namespace Model.IKYS
             return isDeleted;
         }
 
-        public decimal SelectUcretByGrupDereceKademe(int grupId, int derece, int kademe)
+        public decimal SelectUcretByGrupDereceKademe(Personel personel, int grupId, int derece, int kademe)
         {
-            //GrupId, Derece ve Kademe ile eşleşen Ucret değerini döner
-            string sqlString = string.Format(@"
+            string sqlString =string.Empty;
+            if (personel.Asker_sivil == ProjeConstants.PER_ASKER_INT)
+            {
+                sqlString = string.Format(@"
+                SELECT AskerUcret FROM UcretTanim_Table
+                WHERE GrupId={0} AND Derece={1} AND Kademe={2}", grupId, derece, kademe);
+            }
+            else
+            {
+                sqlString = string.Format(@"
                 SELECT UstUcret FROM UcretTanim_Table
                 WHERE GrupId={0} AND Derece={1} AND Kademe={2}", grupId, derece, kademe);
+                //GrupId, Derece ve Kademe ile eşleşen Ucret değerini döner
+            }
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable.Rows.Count > 0)
             {

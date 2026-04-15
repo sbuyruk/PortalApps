@@ -187,17 +187,17 @@ namespace Utility.ProjeGlobal
         public const bool MTS_UPDATE_LOG = false;
         public const bool MTS_SAVE_LOG = false;
         //IKYS
-        public const bool IKYS_DELETE_LOG = false;
-        public const bool IKYS_UPDATE_LOG = false;
-        public const bool IKYS_SAVE_LOG = false;
+        public const bool IKYS_DELETE_LOG = true;
+        public const bool IKYS_UPDATE_LOG = true;
+        public const bool IKYS_SAVE_LOG = true;
         //NBYS
         public const bool NBYS_DELETE_LOG = true;
         public const bool NBYS_UPDATE_LOG = true;
         public const bool NBYS_SAVE_LOG = true;
         //TBYS
-        public const bool TBYS_DELETE_LOG = false;
+        public const bool TBYS_DELETE_LOG = true;
         public const bool TBYS_UPDATE_LOG = false;
-        public const bool TBYS_SAVE_LOG = false;
+        public const bool TBYS_SAVE_LOG = true;
         //TYS
         
         //PORTAL
@@ -258,6 +258,8 @@ namespace Utility.ProjeGlobal
         public const string PAGE_ARMAGANOLUSTURMA = "ArmaganOlusturma.aspx";
         public const string PAGE_DUZENLIBAGISCI_YUKLEME = "DuzenliBagisciDosyaYukleme.aspx";
         public const string PAGE_DUZENLIBAGISCI_LIST = "DuzenliNakitBagisciListesi.aspx";
+        public const string PAGE_BAGISAVESILE_GIRIS = "BagisaVesileOlanTesekkurGirisi.aspx";
+        public const string PAGE_BAGISAVESILE_LIST = "BagisaVesileOlanTesekkurListesi.aspx";
         //IKYS
         public const string PAGE_PERSONEL_LIST = "PersonelListesi.aspx";
         public const string PAGE_ESKIPERSONEL_LIST = "EskiPersonelListesi.aspx";
@@ -727,7 +729,7 @@ namespace Utility.ProjeGlobal
         //Ziraat Katılım
         public const string BANKA_ZIRAAT_KATILIM = "Ziraat Katılım";
         public const string BANKA_ZIRAAT_KATILIM_BASLIKILKHUCRE = "Tarih";
-        public const int BANKA_ZIRAATKATILIM_ILKKACSATIRHARIC = 8;
+        public const int BANKA_ZIRAATKATILIM_ILKKACSATIRHARIC = 20; //Ziraat Katılım bankası ekstre formatında ilk 20 satırda işlem bilgisi bulunmamakta, bu nedenle 20 olarak belirlenmiştir.
         public const int BANKA_ZIRAATKATILIM_SONKACSATIRHARIC = 0;
         //SMS Operatörleri
         public const string SMS_TURKCELL = "Turkcell";
@@ -741,7 +743,7 @@ namespace Utility.ProjeGlobal
         public const string DURUM_BOS = "";
         public const string DURUM_GONDERILMEDI = "Gönderilmedi";
         public const string DURUM_GONDERILDI = "Gönderildi";
-        public const string DURUM_IADE = "İade Edildi";
+        //public const string DURUM_IADE = "İade Edildi";
         public const string DURUM_BELGE_ISTEMIYOR = "Belge İstemiyor";
         public const string DURUM_LIMIT_ALTI = "Limit Altı";
         public const string DURUM_ILETISIM_YOK = "İletişim Bilgisi Yok";
@@ -749,10 +751,11 @@ namespace Utility.ProjeGlobal
         public const string DURUM_ERTELENDI = "Ertelendi";
         public const string DURUM_KONTROLEDILDI = "Kontrol Edildi";
         public const string DURUM_ERKENGONDERILDI = "Erken Gönderildi";
-        public const string DURUM_DAHAONCEIADE = "Daha Önce Belgesi İade Edildi";
+        public const string DURUM_DAHAONCEIADE = "Belgesi İade Edildi";
         public const string DURUM_PARAIADE = "Parası İade Edildi";
         public const string DURUM_AFETNEDENIYLE_GONDERILMEDI = "Afet Nedeniyle Gönderilmedi";
         public const string DURUM_EDEVLETTENBELGEGONDERILDI = "E-Devletten Belge Gönderildi";
+        public const string DURUM_BELGEOLUSTURULMADI = "Belge Oluşturulmadı";
 
         //Armaganlar
         public const int ARMAGAN_ALTINID = 4;
@@ -1165,6 +1168,7 @@ namespace Utility.ProjeGlobal
         public static string DOSYA_YAPIKAYIT_BELGESI = "YapiKayitBelgesi";
         public static string DOSYA_TAPUKAYIT_BELGESI = "TapuKayitBelgesi";
         public static string DOSYA_IMARDURUMU_BELGESI = "ImarDurumu";
+        public static string DOSYA_TASINMAZ_RAPORU = "TasinmazRaporu";
 
 
         public static string COKBAGISYAPAN_BASLAMATARIHI = "01.01.2018";

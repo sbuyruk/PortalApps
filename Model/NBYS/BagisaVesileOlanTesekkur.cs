@@ -139,6 +139,14 @@ namespace Model.NBYS
             string json = ToJSON(dataTable);
             return json;
         }
+        public DataTable SelectReturnDataTable()
+        {
+            string sqlString = string.Format(@"SELECT *, CONVERT(varchar,FORMAT(BelgeTarihi,'dd.MM.yyyy')) BelgeTarihiDDMMYYYY
+                               FROM BagisaVesileOlanTesekkur_Table");
+
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            return dataTable;
+        }
         public BagisaVesileOlanTesekkur SelectByTcKimlikno(long tcKimlikno)
         {
             string sqlString = string.Format(@"SELECT *

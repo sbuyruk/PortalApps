@@ -811,7 +811,8 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
                         exceptionHelper.Exceptions.Add(exception);
                         return exceptionHelper;
                     }
-                    int armaganId = EkstreAktarma.ArmaganiKaydet(nakitBagisHareket, bagisci, duzenliNakitBagisci.BagisToplami, ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID, CurrentUserName);
+                    int armaganId = EkstreAktarma.ArmaganiKaydet(nakitBagisHareket, bagisci, duzenliNakitBagisci.BagisToplami, 
+                        ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID, CurrentUserName);
                     if (armaganId < 1)
                     {
                         string aciklamaStr = string.IsNullOrEmpty(duzenliNakitBagisci.Aciklama) ? " Armağan kaydı oluşturulamadı -> " + duzenliNakitBagisci.BagisciAdi : duzenliNakitBagisci.Aciklama;
@@ -882,6 +883,7 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
         }
         private void DurumDDLDoldur()
         {
+            DurumDDL.Items.Add(ProjeConstants.DURUM_BELGEOLUSTURULMADI);
             DurumDDL.Items.Add(ProjeConstants.HEPSI);
             DurumDDL.Items.Add(ProjeConstants.DURUM_BELGE_ISTEMIYOR);
             DurumDDL.Items.Add(ProjeConstants.DURUM_GONDERILMEDI);
@@ -890,7 +892,7 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
             DurumDDL.Items.Add(ProjeConstants.DURUM_KONTROLEDILDI);
             DurumDDL.Items.Add(ProjeConstants.DURUM_ERKENGONDERILDI);
             DurumDDL.Items.Add(ProjeConstants.DURUM_ERTELENDI);
-            DurumDDL.Items.Add(ProjeConstants.DURUM_IADE);
+            //DurumDDL.Items.Add(ProjeConstants.DURUM_IADE);
             DurumDDL.Items.Add(ProjeConstants.DURUM_DAHAONCEIADE);
             DurumDDL.Items.Add(ProjeConstants.DURUM_PARAIADE);
             DurumDDL.Items.Add(ProjeConstants.DURUM_AFETNEDENIYLE_GONDERILMEDI);

@@ -208,9 +208,11 @@ namespace IKYS_WebParts.MaasOlusturmaWP
                             {
                                 listItem.DereceKademeIlerlemeTarihi = new DateTime(tarih.Year, tarih.Month, dereceKademeIlerlemeTarihi.Day).ToString("dd.MM.yyyy"); // DereceKademeDegisim'in tarihi, maaşın oluşturulduğu tarih olacak
                                 listItem.Kademe = kademe + 1; // Kademe'yi 1 artır
+                                Personel personel = new Personel();
+                                personel = personel.Select(personelId);
                                 //maaşı yeni kademeye göre bul
                                 UcretTanim ucretTanim = new UcretTanim();
-                                ucret = ucretTanim.SelectUcretByGrupDereceKademe(grupId, derece, listItem.Kademe);
+                                ucret = ucretTanim.SelectUcretByGrupDereceKademe(personel,grupId, derece, listItem.Kademe);
                                 listItem.Ucret = ucret.ToString("N", culturInfo); // Ucret'i güncelle
                                 listItem.Ikramiye = ucret.ToString("N", culturInfo);
                                 ikramiye = IkramiyeChk.Checked ? ucret : 0;

@@ -170,11 +170,11 @@ namespace Utility.HelperClasses
                 DataRow dataRow = dataTable.NewRow();
                 for (int i = 0; i < row.Descendants<Cell>().Count(); i++)
                 {
-                    dataRow[i] = GetCellValue(spreadSheetDocument, row.Descendants<Cell>().ElementAt(i));
+                    //dataRow[i] = GetCellValue(spreadSheetDocument, row.Descendants<Cell>().ElementAt(i));
                     //SB boş hücreyi atlama sorununu düzeltmek için aşağısı eklendi, üstteki satır kaldırıldı
-                    //Cell cell = row.Descendants<Cell>().ElementAt(i);
-                    //int actualCellIndex = CellReferenceToIndex(cell);
-                    //dataRow[actualCellIndex] = GetCellValue(spreadSheetDocument, cell);
+                    Cell cell = row.Descendants<Cell>().ElementAt(i);
+                    int actualCellIndex = CellReferenceToIndex(cell);
+                    dataRow[actualCellIndex] = GetCellValue(spreadSheetDocument, cell);
                 }
 
                 dataTable.Rows.Add(dataRow);

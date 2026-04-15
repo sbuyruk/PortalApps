@@ -34,6 +34,7 @@
                             <th>Kullanım Şekli</th>
                             <th>Çıkarma Sebebi</th>
                             <th>Çıkarma Yılı</th>
+                            <th>Bağış Yılı</th>
                             <th>Adres</th>
                             <th>Açıklama</th>
                             <th>Taşınmaz</th>

@@ -34,6 +34,7 @@ namespace Model.IKYS
         public bool GMVekil { get; set; }
         public string Aciklama { get; set; }
         public bool Secildi { get; set; }
+        public bool Odendi { get; set; }
         public override T Select<T>(int id)
         {
             GenericEntity<GorevOnay> genericEntity = new GenericEntity<GorevOnay>(ProjeConstants.SQL_SELECT);
@@ -164,13 +165,14 @@ namespace Model.IKYS
                 ");
             return dao.Update2Db(sqlString); ;
         }
-        public bool UpdateAllSecildiToTrue(string idString)
+        public bool UpdateAllSecildiToTrue(string idString, bool @checked)
         {
+            string odemeDurumuStr = @checked ? "1" : "0";
             string sqlString = string.Format(@"
                     UPDATE GorevOnay_Table
-                    SET Secildi=1
-                    WHERE ID IN ({0})
-                ", idString);
+                    SET Secildi={0}
+                    WHERE ID IN ({1})
+                ", odemeDurumuStr, idString);
             return dao.Update2Db(sqlString);
         }
 

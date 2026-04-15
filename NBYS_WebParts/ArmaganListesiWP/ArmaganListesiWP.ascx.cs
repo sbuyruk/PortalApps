@@ -524,7 +524,7 @@ namespace NBYS_WebParts.ArmaganListesiWP
             DurumDDL.Items.Add(ProjeConstants.DURUM_KONTROLEDILDI);
             DurumDDL.Items.Add(ProjeConstants.DURUM_ERKENGONDERILDI);
             DurumDDL.Items.Add(ProjeConstants.DURUM_ERTELENDI);
-            DurumDDL.Items.Add(ProjeConstants.DURUM_IADE);
+            //DurumDDL.Items.Add(ProjeConstants.DURUM_IADE);
             DurumDDL.Items.Add(ProjeConstants.DURUM_DAHAONCEIADE);
             DurumDDL.Items.Add(ProjeConstants.DURUM_PARAIADE);
             DurumDDL.Items.Add(ProjeConstants.DURUM_AFETNEDENIYLE_GONDERILMEDI);
@@ -712,11 +712,11 @@ namespace NBYS_WebParts.ArmaganListesiWP
                 armagan = armagan.Select<Armagan>(paramArmaganIdLbl.Value.ConvertToInt());
                 if (armagan != null)
                 {
-                    armagan.Durum = ProjeConstants.DURUM_IADE;
+                    armagan.Durum = ProjeConstants.DURUM_PARAIADE;
                     if (armagan.Update())
                     {
                         TabloOlustur();
-                        MessageHelper.PublishMessage(" Armağan Durumu " + ProjeConstants.DURUM_IADE
+                        MessageHelper.PublishMessage(" Armağan Durumu " + ProjeConstants.DURUM_PARAIADE
                             + " Olarak Değiştirildi", ProjeConstants.MESAJ_BASARILI, 2000);
                     }
                     else

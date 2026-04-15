@@ -1944,9 +1944,10 @@ namespace Model.NBYS
                                     ekstreAktarma.BankaAdi = ProjeConstants.BANKA_EDEVLETBAGIS;
                                 else if (bagisKanali.ReturnEmptyIfNull().Equals("Kiosk"))
                                     ekstreAktarma.BankaAdi = ProjeConstants.BANKA_KIOSK;
-                                else
+                                else if (bagisKanali.ReturnEmptyIfNull().Equals("Sistem içi"))
                                     ekstreAktarma.BankaAdi = ProjeConstants.BANKA_KARTILEBAGIS;
-
+                                else
+                                    continue;// diğer kanallardan gelen bağışları kaydetme zaten var
                                 ekstreAktarma.IslemTarihi = islemTarihi;
                                 ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                                 ekstreAktarma.BagisTipi = bagisTipi;
@@ -1959,6 +1960,12 @@ namespace Model.NBYS
                                 }
                                 else if (BuKayitDahaOnceGirilmisMiByFisNo(//odemeId numarasından kontrol et kayıt girilmemişse exception dondur değilse kaydet
                                     "Kart ile Bağış", odemeId, aciklama, ekstreAktarma.BagisTarihi, tutar)) //transactionId numarasından kontrol et kayıt girilmemişse exception dondur değilse kaydet
+                                {
+                                    Exception ex = new Exception(odemeId + " Numaralı kayıt daha önce girildiğinden tekrar aktarılmadı.");
+                                    exceptionHelper.Exceptions.Add(ex);
+                                }
+                                else if (BuKayitDahaOnceGirilmisMiByFisNo(//odemeId numarasından kontrol et kayıt girilmemişse exception dondur değilse kaydet
+                                    "Kiosk", odemeId, aciklama, ekstreAktarma.BagisTarihi, tutar)) //transactionId numarasından kontrol et kayıt girilmemişse exception dondur değilse kaydet
                                 {
                                     Exception ex = new Exception(odemeId + " Numaralı kayıt daha önce girildiğinden tekrar aktarılmadı.");
                                     exceptionHelper.Exceptions.Add(ex);
@@ -2126,7 +2133,7 @@ namespace Model.NBYS
 
                     //        var tutar = row[2].ReturnEmptyIfNull().ToString().Replace(".", ",");
                     //        var adres = string.Empty;// adres bilgisi gelmiyor
-                    var aciklama = row[2].ReturnEmptyIfNull().ToString();
+                    var aciklama = row[1].ReturnEmptyIfNull().ToString(); //[2] idi 1 oldu
                     hata = aciklama;
                     if (!string.IsNullOrEmpty(aciklama) && !aciklama.Contains("Tahsilat Virmanı"))//Contains("3 57968 1"))//virman değilse
                     {
@@ -2136,7 +2143,7 @@ namespace Model.NBYS
                             var tarih = row[0].ReturnEmptyIfNull().ToString().ConvertToDatetime();
 
 
-                            var tutar = row[3].ReturnEmptyIfNull().ToString().Replace(".", ",");
+                            var tutar = row[2].ReturnEmptyIfNull().ToString().Replace(".", ",");//[3] idi 2 oldu
                             var adres = string.Empty;// adres bilgisi gelmiyor
 
                             if (tutar.ReturnZeroIfNull().ConvertToDecimal() > 0)
@@ -2583,7 +2590,7 @@ namespace Model.NBYS
                 armagan.Durum = ProjeConstants.DURUM_EDEVLETTENBELGEGONDERILDI;
             }
             Armagan iadeEdilmisArmagan = new Armagan();
-            List<Armagan> iadeEdilmisArmaganListesi = iadeEdilmisArmagan.SelectByBagisciIdAndDurum(nakitBagisci.Id, ProjeConstants.DURUM_IADE);
+            List<Armagan> iadeEdilmisArmaganListesi = iadeEdilmisArmagan.SelectByBagisciIdAndDurum(nakitBagisci.Id, ProjeConstants.DURUM_PARAIADE);
             if (iadeEdilmisArmaganListesi.Count > 0)
             {
                 armagan.Durum = ProjeConstants.DURUM_DAHAONCEIADE;
@@ -2736,7 +2743,7 @@ namespace Model.NBYS
                 armagan.Durum = ProjeConstants.DURUM_EDEVLETTENBELGEGONDERILDI;
             }
             Armagan iadeEdilmisArmagan = new Armagan();
-            List<Armagan> iadeEdilmisArmaganListesi = iadeEdilmisArmagan.SelectByBagisciIdAndDurum(nakitBagisci.Id, ProjeConstants.DURUM_IADE);
+            List<Armagan> iadeEdilmisArmaganListesi = iadeEdilmisArmagan.SelectByBagisciIdAndDurum(nakitBagisci.Id, ProjeConstants.DURUM_PARAIADE);
             if (iadeEdilmisArmaganListesi.Count > 0)
             {
                 armagan.Durum = ProjeConstants.DURUM_DAHAONCEIADE;

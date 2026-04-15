@@ -378,6 +378,7 @@ namespace MTS_WebParts.FaaliyetViewerWP
                 var calendarEl = document.getElementById('calendar');
                 var calendar = new FullCalendar.Calendar(calendarEl, {
                     locale: 'tr',
+                    firstDay: 1,
                     initialView:  " + calendarView + @",//'dayGridMonth',
                     initialDate: " + initialDate + @",
                     events:" + jsonData + @",

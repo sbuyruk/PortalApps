@@ -371,7 +371,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 CinsiTxt.Text = tasinmaz.Cinsi;
                 MuhasebeyeKayitliDegerTxt.Value = tasinmaz.MuhasebeyeKayitliDeger.ToString();
                 EmlakBeyanDegeriTxt.Value = tasinmaz.EmlakBeyanDegeri.ToString();
-                GuncelRayicDegeriTxt.Value = tasinmaz.GuncelRayicDegeri.ToString();
+                YaklasikPiyasaDegeriTxt.Value = tasinmaz.YaklasikPiyasaDegeri.ToString();
                 TahminiRayicDegeriTxt.Value = tasinmaz.TahminiRayicDegeri.ToString();
                 TapuTasinmazNoTxt.Value = tasinmaz.TapuTasinmazNo;
                 InsaYiliTxt.Value = tasinmaz.InsaYili;
@@ -460,7 +460,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             tasinmaz.MuhasebeyeKayitliDeger = MuhasebeyeKayitliDegerTxt.Value.ConvertToDecimal();
             tasinmaz.EmlakBeyanDegeri = EmlakBeyanDegeriTxt.Value.ConvertToDecimal();
             tasinmaz.TahminiRayicDegeri = TahminiRayicDegeriTxt.Value.ConvertToDecimal();
-            tasinmaz.GuncelRayicDegeri = GuncelRayicDegeriTxt.Value.ConvertToDecimal();
+            tasinmaz.YaklasikPiyasaDegeri = YaklasikPiyasaDegeriTxt.Value.ConvertToDecimal();
             tasinmaz.TapuTasinmazNo = TapuTasinmazNoTxt.Value;
             tasinmaz.InsaYili = InsaYiliTxt.Value;
             tasinmaz.EmlakSicilNo = EmlakSicilNoTxt.Text;
@@ -572,7 +572,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 tasinmaz.MuhasebeyeKayitliDeger = MuhasebeyeKayitliDegerTxt.Value.ConvertToDecimal();
                 tasinmaz.EmlakBeyanDegeri = EmlakBeyanDegeriTxt.Value.ConvertToDecimal();
                 tasinmaz.TahminiRayicDegeri = TahminiRayicDegeriTxt.Value.ConvertToDecimal();
-                tasinmaz.GuncelRayicDegeri = GuncelRayicDegeriTxt.Value.ConvertToDecimal();
+                tasinmaz.YaklasikPiyasaDegeri = YaklasikPiyasaDegeriTxt.Value.ConvertToDecimal();
                 tasinmaz.TapuTasinmazNo = TapuTasinmazNoTxt.Value;
                 tasinmaz.InsaYili = InsaYiliTxt.Value;
                 tasinmaz.EmlakSicilNo = EmlakSicilNoTxt.Text;

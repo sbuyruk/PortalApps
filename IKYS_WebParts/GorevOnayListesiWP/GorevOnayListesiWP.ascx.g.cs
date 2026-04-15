@@ -69,6 +69,10 @@ namespace IKYS_WebParts.GorevOnayListesiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        protected global::System.Web.UI.WebControls.CheckBox OdendiYapChk;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton RaporAlBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
@@ -249,6 +253,20 @@ namespace IKYS_WebParts.GorevOnayListesiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "17.0.0.0")]
+        private global::System.Web.UI.WebControls.CheckBox @__BuildControlOdendiYapChk() {
+            global::System.Web.UI.WebControls.CheckBox @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.CheckBox();
+            this.OdendiYapChk = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "OdendiYapChk";
+            @__ctrl.Text = "Ödendi Yap";
+            @__ctrl.CssClass = "form-check form-check-inline ms-3";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "17.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlRaporAlBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -310,12 +328,15 @@ namespace IKYS_WebParts.GorevOnayListesiWP {
             global::System.Web.UI.WebControls.LinkButton @__ctrl7;
             @__ctrl7 = this.@__BuildControlYeniGorevOnayiBtn();
             @__parser.AddParsedSubObject(@__ctrl7);
-            global::System.Web.UI.WebControls.LinkButton @__ctrl8;
-            @__ctrl8 = this.@__BuildControlRaporAlBtn();
+            global::System.Web.UI.WebControls.CheckBox @__ctrl8;
+            @__ctrl8 = this.@__BuildControlOdendiYapChk();
             @__parser.AddParsedSubObject(@__ctrl8);
-            global::System.Web.UI.UpdateProgress @__ctrl9;
-            @__ctrl9 = this.@__BuildControlupdateProgress();
+            global::System.Web.UI.WebControls.LinkButton @__ctrl9;
+            @__ctrl9 = this.@__BuildControlRaporAlBtn();
             @__parser.AddParsedSubObject(@__ctrl9);
+            global::System.Web.UI.UpdateProgress @__ctrl10;
+            @__ctrl10 = this.@__BuildControlupdateProgress();
+            @__parser.AddParsedSubObject(@__ctrl10);
             @__ctrl.SetRenderMethodDelegate(new System.Web.UI.RenderMethod(this.@__Render__control1));
         }
         
@@ -392,60 +413,61 @@ namespace IKYS_WebParts.GorevOnayListesiWP {
                     "aslangicTarihi\" },\r\n                { data: \"BitisTarihi\" },\r\n                { " +
                     "data: \"GorevinYeri\" },\r\n                { data: \"RaporAl\" },\r\n                { " +
                     "data: \"Duzenle\" },\r\n\r\n            ],\r\n            createdRow: function (row, dat" +
-                    "a, dataIndex) {\n                var isError = data && (data.ErrorClass === true " +
-                    "|| data.ErrorClass === \'true\' || data.ErrorClass === \'1\');\n                if (i" +
-                    "sError) {\n                    $(row).addClass(\'error-row\');\n                    " +
-                    "// inline fallback for elements that still override color\n                    $(" +
-                    "row).find(\'td, td a, td .btn\').each(function () {\n                        this.s" +
-                    "tyle.setProperty(\'color\', \'red\', \'important\');\n                    });\n         " +
-                    "       } else {\n                    $(row).removeClass(\'error-row\');\n           " +
-                    "         $(row).find(\'td, td a, td .btn\').each(function () {\n                   " +
-                    "     this.style.removeProperty(\'color\');\n                    });\n               " +
-                    " }\n            },\r\n            columnDefs: [\r\n                { type: \'turkish\'," +
-                    " targets: [1, 2, 5] },\r\n            ],\r\n            \'order\': [[3, \'desc\']],//sor" +
-                    "t date desc\r\n            \"language\": {\r\n                \"url\": \"http://tskgv-por" +
-                    "tal/OrtakBelgeler/Turkish.txt\",\r\n                \"decimal\": \",\",\r\n              " +
-                    "  \"thousands\": \".\"\r\n            },\r\n            //column resizable\r\n            " +
-                    "//initComplete: function (settings) {\r\n            //    $(\'#CustomDataTable\').c" +
-                    "olResizable({ liveDrag: true });\r\n            //},\r\n            responsive: true" +
-                    ",\r\n            dom: \'Bfrtip\',\r\n            buttons: [\r\n                {\r\n      " +
-                    "              extend: \'print\',\r\n                    exportOptions: {\r\n          " +
+                    "a, dataIndex) {\r\n                var isError = data && (data.ErrorClass === true" +
+                    " || data.ErrorClass === \'true\' || data.ErrorClass === \'1\');\r\n                if " +
+                    "(isError) {\r\n                    $(row).addClass(\'error-row\');\r\n                " +
+                    "    // inline fallback for elements that still override color\r\n                 " +
+                    "   $(row).find(\'td, td a, td .btn\').each(function () {\r\n                        " +
+                    "this.style.setProperty(\'color\', \'red\', \'important\');\r\n                    });\r\n " +
+                    "               } else {\r\n                    $(row).removeClass(\'error-row\');\r\n " +
+                    "                   $(row).find(\'td, td a, td .btn\').each(function () {\r\n        " +
+                    "                this.style.removeProperty(\'color\');\r\n                    });\r\n  " +
+                    "              }\r\n            },\r\n            columnDefs: [\r\n                { ty" +
+                    "pe: \'turkish\', targets: [1, 2, 5] },\r\n            ],\r\n            \'order\': [[3, " +
+                    "\'desc\']],//sort date desc\r\n            \"language\": {\r\n                \"url\": \"ht" +
+                    "tp://tskgv-portal/OrtakBelgeler/Turkish.txt\",\r\n                \"decimal\": \",\",\r\n" +
+                    "                \"thousands\": \".\"\r\n            },\r\n            //column resizable" +
+                    "\r\n            //initComplete: function (settings) {\r\n            //    $(\'#Custo" +
+                    "mDataTable\').colResizable({ liveDrag: true });\r\n            //},\r\n            re" +
+                    "sponsive: true,\r\n            dom: \'Bfrtip\',\r\n            buttons: [\r\n           " +
+                    "     {\r\n                    extend: \'print\',\r\n                    exportOptions:" +
+                    " {\r\n                        columns: \':visible\'\r\n                    }\r\n        " +
+                    "        },\r\n                {\r\n                    extend: \'excel\',\r\n           " +
+                    "         exportOptions: {\r\n                        columns: \':visible\'\r\n        " +
+                    "            }\r\n                },\r\n                {\r\n                    extend" +
+                    ": \'pdf\',\r\n                    exportOptions: {\r\n                        columns:" +
+                    " \':visible\'\r\n                    }\r\n                },\r\n                {\r\n     " +
+                    "               extend: \'copy\',\r\n                    exportOptions: {\r\n          " +
                     "              columns: \':visible\'\r\n                    }\r\n                },\r\n  " +
-                    "              {\r\n                    extend: \'excel\',\r\n                    expor" +
-                    "tOptions: {\r\n                        columns: \':visible\'\r\n                    }\r" +
-                    "\n                },\r\n                {\r\n                    extend: \'pdf\',\r\n    " +
-                    "                exportOptions: {\r\n                        columns: \':visible\'\r\n " +
-                    "                   }\r\n                },\r\n                {\r\n                   " +
-                    " extend: \'copy\',\r\n                    exportOptions: {\r\n                        " +
-                    "columns: \':visible\'\r\n                    }\r\n                },\r\n                " +
-                    ", \'pageLength\', \"colvis\"\r\n            ],\r\n\r\n        });\r\n\r\n        ArrayDoldur()" +
-                    ";\r\n        // Check All butonuna tıklanınca\r\n        table = $(\'#CustomDataTable" +
-                    "\').DataTable();\r\n        $(\'#checkAll\').on(\'click\', function () {\r\n            v" +
-                    "ar isChecked = $(this).is(\':checked\');\r\n            \r\n            // Sadece akti" +
-                    "f sayfadaki checkbox\'ları seç\r\n            table.rows({ page: \'current\' }).nodes" +
-                    "().to$().find(\'input[type=\"checkbox\"]\').each(function () {\r\n                if (" +
-                    "$(this).prop(\'checked\') !== isChecked) {\r\n                    $(this).click();\r\n" +
-                    "                }\r\n            });\r\n        });\r\n        //tabloda sayfalar aras" +
-                    "ı geçişte açılan sayfadaki tüm checkbox\'lar checkli ise checkAll\'ı checkli yap\r\n" +
-                    "        table.on(\'draw\', function () {\r\n            var checkboxes = table.rows(" +
-                    "{ page: \'current\' }).nodes().to$().find(\'input[type=\"checkbox\"]\');\r\n\r\n          " +
-                    "  if (checkboxes.length === 0) {\r\n                $(\'#checkAll\').prop(\'checked\'," +
-                    " false);\r\n                return;\r\n            }\r\n\r\n            var allChecked =" +
-                    " true;\r\n            checkboxes.each(function () {\r\n                if (!$(this)." +
-                    "prop(\'checked\')) {\r\n                    allChecked = false;\r\n                   " +
-                    " return false; // break loop\r\n                }\r\n            });\r\n\r\n            " +
-                    "$(\'#checkAll\').prop(\'checked\', allChecked);\r\n        });\r\n    });\r\n    $(\'#Custo" +
-                    "mDataTable\').on(\'draw.dt\', function () {\n        table.rows().every(function () " +
-                    "{\n            var d = this.data();\n            var r = this.node();\n            " +
-                    "var isError = d && (d.ErrorClass === true || d.ErrorClass === \'true\' || d.ErrorC" +
-                    "lass === \'1\');\n            if (isError) {\n                $(r).addClass(\'error-r" +
-                    "ow\');\n                $(r).find(\'td, td a, td .btn\').each(function () {\n        " +
-                    "            this.style.setProperty(\'color\', \'red\', \'important\');\n               " +
-                    " });\n            } else {\n                $(r).removeClass(\'error-row\');\n       " +
-                    "         $(r).find(\'td, td a, td .btn\').each(function () {\n                    t" +
-                    "his.style.removeProperty(\'color\');\n                });\n            }\n        });" +
-                    "\n    });\r\n\r\n \r\n</script>\r\n<div class=\"container\">\r\n    <div class=\"card shadow\">" +
-                    "\r\n        <div class=\"card-header \">\r\n            ");
+                    "              , \'pageLength\', \"colvis\"\r\n            ],\r\n\r\n        });\r\n\r\n       " +
+                    " ArrayDoldur();\r\n        // Check All butonuna tıklanınca\r\n        table = $(\'#C" +
+                    "ustomDataTable\').DataTable();\r\n        $(\'#checkAll\').on(\'click\', function () {\r" +
+                    "\n            var isChecked = $(this).is(\':checked\');\r\n            \r\n            " +
+                    "// Sadece aktif sayfadaki checkbox\'ları seç\r\n            table.rows({ page: \'cur" +
+                    "rent\' }).nodes().to$().find(\'input[type=\"checkbox\"]\').each(function () {\r\n      " +
+                    "          if ($(this).prop(\'checked\') !== isChecked) {\r\n                    $(th" +
+                    "is).click();\r\n                }\r\n            });\r\n        });\r\n        //tabloda" +
+                    " sayfalar arası geçişte açılan sayfadaki tüm checkbox\'lar checkli ise checkAll\'ı" +
+                    " checkli yap\r\n        table.on(\'draw\', function () {\r\n            var checkboxes" +
+                    " = table.rows({ page: \'current\' }).nodes().to$().find(\'input[type=\"checkbox\"]\');" +
+                    "\r\n\r\n            if (checkboxes.length === 0) {\r\n                $(\'#checkAll\').p" +
+                    "rop(\'checked\', false);\r\n                return;\r\n            }\r\n\r\n            va" +
+                    "r allChecked = true;\r\n            checkboxes.each(function () {\r\n               " +
+                    " if (!$(this).prop(\'checked\')) {\r\n                    allChecked = false;\r\n     " +
+                    "               return false; // break loop\r\n                }\r\n            });\r\n" +
+                    "\r\n            $(\'#checkAll\').prop(\'checked\', allChecked);\r\n        });\r\n    });\r" +
+                    "\n    $(\'#CustomDataTable\').on(\'draw.dt\', function () {\r\n        table.rows().eve" +
+                    "ry(function () {\r\n            var d = this.data();\r\n            var r = this.nod" +
+                    "e();\r\n            var isError = d && (d.ErrorClass === true || d.ErrorClass === " +
+                    "\'true\' || d.ErrorClass === \'1\');\r\n            if (isError) {\r\n                $(" +
+                    "r).addClass(\'error-row\');\r\n                $(r).find(\'td, td a, td .btn\').each(f" +
+                    "unction () {\r\n                    this.style.setProperty(\'color\', \'red\', \'import" +
+                    "ant\');\r\n                });\r\n            } else {\r\n                $(r).removeCl" +
+                    "ass(\'error-row\');\r\n                $(r).find(\'td, td a, td .btn\').each(function " +
+                    "() {\r\n                    this.style.removeProperty(\'color\');\r\n                }" +
+                    ");\r\n            }\r\n        });\r\n    });\r\n\r\n \r\n</script>\r\n<div class=\"container\">" +
+                    "\r\n    <div class=\"card shadow\">\r\n        <div class=\"card-header \">\r\n           " +
+                    " ");
             parameterContainer.Controls[0].RenderControl(@__w);
             @__w.Write("\r\n            <h3 class=\"mb-1\">\r\n                ");
             parameterContainer.Controls[1].RenderControl(@__w);
@@ -469,10 +491,12 @@ namespace IKYS_WebParts.GorevOnayListesiWP {
             @__w.Write("\r\n            </div>\r\n        </div>\r\n        <div class=\"card-footer\">\r\n        " +
                     "    ");
             parameterContainer.Controls[6].RenderControl(@__w);
-            @__w.Write("\r\n            ");
+            @__w.Write("\r\n            \r\n            ");
             parameterContainer.Controls[7].RenderControl(@__w);
-            @__w.Write("\r\n        </div>\r\n\r\n    </div>\r\n    ");
+            @__w.Write("\r\n\r\n            ");
             parameterContainer.Controls[8].RenderControl(@__w);
+            @__w.Write("\r\n        </div>\r\n\r\n    </div>\r\n    ");
+            parameterContainer.Controls[9].RenderControl(@__w);
             @__w.Write("\r\n</div>");
         }
         

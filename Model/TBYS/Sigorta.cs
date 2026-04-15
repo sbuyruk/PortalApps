@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.Linq;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
@@ -223,11 +224,12 @@ namespace Model.TBYS
         }
         
         public DataTable SelectByTeminatSigortaCinsiReturnDataTable(string sigortaCinsi, bool vadesiGelenler, bool isDeprem, bool isYangin, bool isMakine100000,
-            bool isMakine5000, bool isJenerator, bool isAsansor, bool isKazan, int bolgeId, string auth)
+            bool isMakine5000, bool isJenerator, bool isAsansor, bool isKazan, int bolgeId, string auth, DateTime basTarih, DateTime bitTarih)
         {
             string bolgeStr = string.Empty;
             
-            string sqlString = SelectByTeminatSigortaCinsiSQL(sigortaCinsi, vadesiGelenler, isDeprem, isYangin, isMakine100000, isMakine5000, isJenerator, isAsansor, isKazan, bolgeId,auth);
+            string sqlString = SelectByTeminatSigortaCinsiSQL(sigortaCinsi, vadesiGelenler, isDeprem, isYangin, isMakine100000, isMakine5000, isJenerator, 
+                isAsansor, isKazan, bolgeId,auth, basTarih, bitTarih);
             DataTable dataTable = null;
             try
             {
@@ -241,9 +243,10 @@ namespace Model.TBYS
 
         }
         private string SelectByTeminatSigortaCinsiSQL(string sigortaCinsi, bool vadesiGelenler, bool isDeprem, bool isYangin, bool isMakine100000, bool isMakine5000, 
-            bool isJenerator, bool isAsansor, bool isKazan, int bolgeId, string auth)
+            bool isJenerator, bool isAsansor, bool isKazan, int bolgeId, string auth, DateTime basTarih, DateTime bitTarih)
         {
-            
+            string tarStr = string.Format(@"
+                    AND A.SigortaBasTar >= {0} AND A.SigortaBasTar <= {1}", basTarih.ReturnQuotedValue(), bitTarih.ReturnQuotedValue());
             string bolgeStr = bolgeId == ProjeConstants.BOLGE_HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format("  AND E.Id={0} ", bolgeId);
 
 
@@ -273,7 +276,7 @@ namespace Model.TBYS
             string sqlString = string.Format(@"
                 SELECT A.Id SigortaId, B.SorumluBolge,E.KisaAdi Bolge, A.TasinmazId,B.SorumluBolge,A.SigortaCinsi,A.AdresKodu,A.PoliceNo,A.SigortaBasTar,A.SigortaBitTar,
 	                A.YapiTarzi,A.InsaYili, A.BulunduguKat,B.BulunduguKat, A.ToplamKatSayisi,B.ToplamKatSayisi, A.Metrekare, B.Metrekare ,A.BrutYuzolcumu, B.Yuzolcumu,
-	                A.SigortaBedeli, A.Prim,A.DaskPoliceNo,A.BagimsizBolumNo,A.PDFDosyasi,
+	                A.SigortaBedeli, A.Prim,A.DaskPoliceNo,A.BagimsizBolumNo,A.PDFDosyasi,A.Prim,
                     B.Adres+ISNULL(F.BolumNo,'') Adres, B.Ili,B.Ilcesi, B.Ilcesi +' '+ B.Ili IliIlcesi, B.KullanimSekli, B.Cinsi, B.PaftaNo,B.AdaNo,B.ParselNo,B.SahifeNo,F.BolumNo,
                     A.TeminatListesi,A.TeminatAciklama,A.Aciklama,B.EnvanterdeMi,
                     B.Adres+ISNULL(F.BolumNo,'') +' '+ B.Ilcesi+'-'+ B.Ili TamAdres,
@@ -290,8 +293,9 @@ namespace Model.TBYS
                     {1} 
                     {2}
                     {3}
+                    {4}
                 ORDER BY B.SorumluBolge, B.Ili,B.Ilcesi, A.Id, SigortaBasTar DESC
-                            ", sigortaCinsiStr, teminatStr,vadeStr, bolgeStr);
+                            ", sigortaCinsiStr, teminatStr,vadeStr, bolgeStr,tarStr);
             return sqlString;
         }
         public List<Sigorta> SelectBySigortaId(int sigortaId)
