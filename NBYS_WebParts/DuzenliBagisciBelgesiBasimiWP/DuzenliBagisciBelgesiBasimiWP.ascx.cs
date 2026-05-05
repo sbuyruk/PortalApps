@@ -210,7 +210,8 @@ namespace NBYS_WebParts.DuzenliBagisciBelgesiBasimiWP
         private void YilDDLDoldur()
         {
             var year = DateTime.Now.Year;
-            for (int i = 1987; i <= year; i++)
+            YilDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Hepsi", "0"));
+            for (int i = year-3; i <= year; i++)
             {
                 YilDDL.Items.Add(new System.Web.UI.WebControls.ListItem(i.ToString(), i.ToString()));
             }
@@ -280,18 +281,22 @@ namespace NBYS_WebParts.DuzenliBagisciBelgesiBasimiWP
             DateTime bastar = DateTime.Today;
             DateTime bittar = DateTime.Today;
 
-            if (ay == 0)
+            if (yil == 0)
+            {
+                // Hepsi: son 3 yılı kapsa
+                bastar = new DateTime(DateTime.Today.Year - 2, 1, 1);
+                bittar = new DateTime(DateTime.Today.Year, 12, 31);
+            }
+            else if (ay == 0)
             {
                 bastar = new DateTime(yil, 1, 1);
                 bittar = bastar.AddYears(1).AddDays(-1);
             }
             else
             {
-
                 bastar = new DateTime(yil, ay, 1);
                 DateTime basGun = new DateTime(yil, ay, 1).AddMonths(1).AddDays(-1);
                 bittar = new DateTime(yil, ay, basGun.Day);
-
             }
             SecilenBastarQS = bastar.ConvertToDatetimeEmptyIfNull();
             SecilenBittarQS = bittar.ConvertToDatetimeEmptyIfNull();
@@ -382,45 +387,30 @@ namespace NBYS_WebParts.DuzenliBagisciBelgesiBasimiWP
         //
         private DateTime GetBasTar()
         {
-
             int ay = AyDDL.SelectedItem.Value.ConvertToInt();
             int yil = YilDDL.SelectedItem.Value.ConvertToInt();
 
-            DateTime bastar = DateTime.Today;
+            if (yil == 0)
+                return new DateTime(DateTime.Today.Year - 2, 1, 1);
 
             if (ay == 0)
-            {
-                bastar = new DateTime(yil, 1, 1);
-            }
-            else
-            {
-                bastar = new DateTime(yil, ay, 1);
+                return new DateTime(yil, 1, 1);
 
-            }
-            return bastar;
+            return new DateTime(yil, ay, 1);
         }
         private DateTime GetBitTar()
         {
             int ay = AyDDL.SelectedItem.Value.ConvertToInt();
             int yil = YilDDL.SelectedItem.Value.ConvertToInt();
 
-            DateTime bastar = DateTime.Today;
-            DateTime bittar = DateTime.Today;
+            if (yil == 0)
+                return new DateTime(DateTime.Today.Year, 12, 31);
 
             if (ay == 0)
-            {
-                bastar = new DateTime(yil, 1, 1);
-                bittar = bastar.AddYears(1).AddDays(-1);
-            }
-            else
-            {
+                return new DateTime(yil, 1, 1).AddYears(1).AddDays(-1);
 
-                bastar = new DateTime(yil, ay, 1);
-                DateTime basGun = new DateTime(yil, ay, 1).AddMonths(1).AddDays(-1);
-                bittar = new DateTime(yil, ay, basGun.Day);
-
-            }
-            return bittar;
+            DateTime basGun = new DateTime(yil, ay, 1).AddMonths(1).AddDays(-1);
+            return new DateTime(yil, ay, basGun.Day);
         }
         private void FillDurumValues()
         {

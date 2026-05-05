@@ -301,7 +301,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
             
             
             GorevOnay gorevOnay = new GorevOnay();
-            bool secilenlerKaydedildi = gorevOnay.UpdateAllSecildiToTrue(idler, OdendiYapChk.Checked);
+            bool secilenlerKaydedildi = gorevOnay.UpdateAllSecildiToTrue(idler);
         }
 
         private bool SecilenGorevVarMi()

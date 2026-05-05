@@ -134,7 +134,7 @@ namespace NBYS_WebParts.BagisIadesiWP
                     {
                         //iade edilebilir mi kontrolü
                         //bagis tarihi aydan eski olmamalı
-                        bool isLinkVisible = DateTime.Today <= bagisTarihi.AddYears(1);//(DateTime.Today.Year == bagisTarihi.Year && DateTime.Today.Month == bagisTarihi.Month) || (DateTime.Today.Year == bagisTarihi.Year && DateTime.Today.Month - 1 == bagisTarihi.Month);
+                        bool isLinkVisible = DateTime.Today <= bagisTarihi.AddYears(2);//(DateTime.Today.Year == bagisTarihi.Year && DateTime.Today.Month == bagisTarihi.Month) || (DateTime.Today.Year == bagisTarihi.Year && DateTime.Today.Month - 1 == bagisTarihi.Month);
                         if (isLinkVisible)
                             iadeLink = "<a href=# onclick=CallButtonClick(" + bagisHareketId + "); class=\'btn btn-outline-danger \'>Parayı İade Et</a>";
                         else
@@ -164,6 +164,7 @@ namespace NBYS_WebParts.BagisIadesiWP
 
                 List<BagisHareketListItem> list = GetDataList();
                 var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+                serializer.MaxJsonLength = Int32.MaxValue;
                 jSon = serializer.Serialize(list);
                 return jSon;
 
@@ -379,7 +380,7 @@ namespace NBYS_WebParts.BagisIadesiWP
 
             if (nbh != null)//bu bagis varsa
             {
-                bool isLinkVisible = DateTime.Today <= nbh.BagisTarihi.AddYears(1);
+                bool isLinkVisible = DateTime.Today <= nbh.BagisTarihi.AddYears(2);
                 //(DateTime.Today.Year == nbh.BagisTarihi.Year && DateTime.Today.Month == nbh.BagisTarihi.Month) 
                 //    || (DateTime.Today.Year == nbh.BagisTarihi.Year && DateTime.Today.Month - 1 == nbh.BagisTarihi.Month);
                 if (isLinkVisible)

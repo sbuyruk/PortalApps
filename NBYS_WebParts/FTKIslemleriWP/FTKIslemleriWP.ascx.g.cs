@@ -40,158 +40,158 @@ namespace NBYS_WebParts.FTKIslemleriWP {
     public partial class FTKIslemleriWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton CloseBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.HtmlControls.HtmlAnchor YonergeLnk;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label TitleLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label IdLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label AdiLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.UpdatePanel UpdatePanel4;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.DropDownList IliDDL;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.DropDownList IlcesiDDL;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.TextBox SorumluBolgeTxt;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.TextBox BolgeIdTxt;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.TextBox FTKKurulusTarihiTxt;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.TextBox FTKGuncellemeTarihiTxt;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.TextBox ValiTxt;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.TextBox KaymakamTxt;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.TextBox AciklamaTxt;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.CheckBox KayitDuzeltmesiChk;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl KayitDuzeltmeDiv;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.UpdatePanel UpdatePanel3;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.UpdateProgress updateProgress;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.CheckBox AktifOlmayanlariGostermeChk;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl AktifOlmayanlariGostermeDiv;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.UpdatePanel UpdatePanel2;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton FTKKisiEkleBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton UyelerinGoreviniSonlandirBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton KaydetBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton FTKListesiBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton BolgelereGoreFTKRaporuBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton FTKYazilariBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.UpdatePanel UpdatePanel1;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.HtmlControls.HtmlInputText paramFTKIslemleriUyeIdLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton FTKKisiDuzenleBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label ModalFTKListesiBaslikLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label ModalKurulusTarihiLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label ModalGuncellemeTarihiLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl ModalTarihDiv;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton KaydetNowBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton TumununGoreviniSonlandirNowBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.UpdatePanel UpdatePanel5;
         
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebPartCodeGenerator", "17.0.0.0")]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebPartCodeGenerator", "18.0.0.0")]
         public static implicit operator global::System.Web.UI.TemplateControl(FTKIslemleriWP target) 
         {
             return target == null ? null : target.TemplateControl;
@@ -199,7 +199,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlCloseBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -217,7 +217,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.HtmlControls.HtmlAnchor @__BuildControlYonergeLnk() {
             global::System.Web.UI.HtmlControls.HtmlAnchor @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlAnchor();
@@ -238,7 +238,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlTitleLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -253,7 +253,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlIdLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -267,7 +267,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlAdiLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -281,7 +281,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private void @__BuildControl__control2(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
@@ -309,7 +309,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control4() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
@@ -320,7 +320,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control5() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
@@ -331,7 +331,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control6() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
@@ -342,7 +342,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control7() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
@@ -353,7 +353,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private void @__BuildControl__control3(System.Web.UI.UpdatePanelTriggerCollection @__ctrl) {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl1;
             @__ctrl1 = this.@__BuildControl__control4();
@@ -371,7 +371,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.UpdatePanel @__BuildControlUpdatePanel4() {
             global::System.Web.UI.UpdatePanel @__ctrl;
             @__ctrl = new global::System.Web.UI.UpdatePanel();
@@ -386,7 +386,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControl__control9() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -401,7 +401,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.DropDownList @__BuildControlIliDDL() {
             global::System.Web.UI.WebControls.DropDownList @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.DropDownList();
@@ -419,7 +419,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.RequiredFieldValidator @__BuildControl__control10() {
             global::System.Web.UI.WebControls.RequiredFieldValidator @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.RequiredFieldValidator();
@@ -433,7 +433,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControl__control11() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -448,7 +448,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.DropDownList @__BuildControlIlcesiDDL() {
             global::System.Web.UI.WebControls.DropDownList @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.DropDownList();
@@ -466,7 +466,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControl__control12() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -480,7 +480,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.TextBox @__BuildControlSorumluBolgeTxt() {
             global::System.Web.UI.WebControls.TextBox @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
@@ -497,7 +497,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControl__control13() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -511,7 +511,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.TextBox @__BuildControlBolgeIdTxt() {
             global::System.Web.UI.WebControls.TextBox @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
@@ -528,7 +528,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControl__control14() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -541,7 +541,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.TextBox @__BuildControlFTKKurulusTarihiTxt() {
             global::System.Web.UI.WebControls.TextBox @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
@@ -558,7 +558,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControl__control15() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -571,7 +571,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.TextBox @__BuildControlFTKGuncellemeTarihiTxt() {
             global::System.Web.UI.WebControls.TextBox @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
@@ -588,7 +588,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControl__control16() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -601,7 +601,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.TextBox @__BuildControlValiTxt() {
             global::System.Web.UI.WebControls.TextBox @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
@@ -617,7 +617,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControl__control17() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -630,7 +630,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.TextBox @__BuildControlKaymakamTxt() {
             global::System.Web.UI.WebControls.TextBox @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
@@ -646,7 +646,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControl__control18() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -659,7 +659,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.TextBox @__BuildControlAciklamaTxt() {
             global::System.Web.UI.WebControls.TextBox @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
@@ -676,7 +676,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.CheckBox @__BuildControlKayitDuzeltmesiChk() {
             global::System.Web.UI.WebControls.CheckBox @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.CheckBox();
@@ -689,7 +689,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControlKayitDuzeltmeDiv() {
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
@@ -699,8 +699,8 @@ namespace NBYS_WebParts.FTKIslemleriWP {
             @__ctrl.ID = "KayitDuzeltmeDiv";
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("style", "display: none");
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
-            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                <label class=\"col-form-label fw-bold\">" +
-                        "\r\n                                    "));
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                                <label class=\"col-form-label fw-bold\">\r\n       " +
+                        "                             "));
             global::System.Web.UI.WebControls.CheckBox @__ctrl1;
             @__ctrl1 = this.@__BuildControlKayitDuzeltmesiChk();
             @__parser.AddParsedSubObject(@__ctrl1);
@@ -711,7 +711,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private void @__BuildControl__control8(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            <div class=\"row\">\r\n                                " +
@@ -812,7 +812,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control20() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
@@ -823,7 +823,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control21() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
@@ -834,7 +834,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private void @__BuildControl__control19(System.Web.UI.UpdatePanelTriggerCollection @__ctrl) {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl1;
             @__ctrl1 = this.@__BuildControl__control20();
@@ -846,7 +846,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.UpdatePanel @__BuildControlUpdatePanel3() {
             global::System.Web.UI.UpdatePanel @__ctrl;
             @__ctrl = new global::System.Web.UI.UpdatePanel();
@@ -861,7 +861,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private void @__BuildControl__control22(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
@@ -875,7 +875,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.UpdateProgress @__BuildControlupdateProgress() {
             global::System.Web.UI.UpdateProgress @__ctrl;
             @__ctrl = new global::System.Web.UI.UpdateProgress();
@@ -887,7 +887,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControl__control23() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -899,7 +899,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.CheckBox @__BuildControlAktifOlmayanlariGostermeChk() {
             global::System.Web.UI.WebControls.CheckBox @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.CheckBox();
@@ -916,7 +916,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControlAktifOlmayanlariGostermeDiv() {
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
@@ -935,7 +935,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private void @__BuildControl__control24(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
@@ -960,7 +960,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control26() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
@@ -971,7 +971,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control27() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
@@ -982,7 +982,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private void @__BuildControl__control25(System.Web.UI.UpdatePanelTriggerCollection @__ctrl) {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl1;
             @__ctrl1 = this.@__BuildControl__control26();
@@ -994,7 +994,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.UpdatePanel @__BuildControlUpdatePanel2() {
             global::System.Web.UI.UpdatePanel @__ctrl;
             @__ctrl = new global::System.Web.UI.UpdatePanel();
@@ -1009,7 +1009,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlFTKKisiEkleBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -1025,7 +1025,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlUyelerinGoreviniSonlandirBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -1041,7 +1041,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlKaydetBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -1058,7 +1058,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlFTKListesiBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -1075,7 +1075,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlBolgelereGoreFTKRaporuBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -1093,7 +1093,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlFTKYazilariBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -1112,7 +1112,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private void @__BuildControl__control28(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                    "));
@@ -1136,7 +1136,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control30() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
@@ -1147,7 +1147,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control31() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
@@ -1158,7 +1158,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control32() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
@@ -1169,7 +1169,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control33() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
@@ -1180,7 +1180,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private void @__BuildControl__control29(System.Web.UI.UpdatePanelTriggerCollection @__ctrl) {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl1;
             @__ctrl1 = this.@__BuildControl__control30();
@@ -1198,7 +1198,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.UpdatePanel @__BuildControlUpdatePanel1() {
             global::System.Web.UI.UpdatePanel @__ctrl;
             @__ctrl = new global::System.Web.UI.UpdatePanel();
@@ -1213,7 +1213,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.HtmlControls.HtmlInputText @__BuildControlparamFTKIslemleriUyeIdLbl() {
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
@@ -1225,7 +1225,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlFTKKisiDuzenleBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -1242,7 +1242,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlModalFTKListesiBaslikLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -1256,7 +1256,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControl__control35() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -1268,7 +1268,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlModalKurulusTarihiLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -1281,7 +1281,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControl__control36() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -1293,7 +1293,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlModalGuncellemeTarihiLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -1306,7 +1306,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.HtmlControls.HtmlGenericControl @__BuildControlModalTarihDiv() {
             global::System.Web.UI.HtmlControls.HtmlGenericControl @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlGenericControl("div");
@@ -1340,7 +1340,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlKaydetNowBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -1357,7 +1357,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlTumununGoreviniSonlandirNowBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -1374,7 +1374,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private void @__BuildControl__control34(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
@@ -1422,7 +1422,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control38() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
@@ -1433,7 +1433,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control39() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
@@ -1444,7 +1444,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private void @__BuildControl__control37(System.Web.UI.UpdatePanelTriggerCollection @__ctrl) {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl1;
             @__ctrl1 = this.@__BuildControl__control38();
@@ -1456,7 +1456,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.UpdatePanel @__BuildControlUpdatePanel5() {
             global::System.Web.UI.UpdatePanel @__ctrl;
             @__ctrl = new global::System.Web.UI.UpdatePanel();
@@ -1471,7 +1471,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private void @__BuildControlTree(global::NBYS_WebParts.FTKIslemleriWP.FTKIslemleriWP @__ctrl) {
             global::System.Web.UI.UpdatePanel @__ctrl1;
             @__ctrl1 = this.@__BuildControlUpdatePanel4();
@@ -1515,7 +1515,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private void @__Render__control1(System.Web.UI.HtmlTextWriter @__w, System.Web.UI.Control parameterContainer) {
             @__w.Write(@"
 <style>
@@ -1592,7 +1592,7 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         }
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private void InitializeControl() {
             this.@__BuildControlTree(this);
             this.Load += new global::System.EventHandler(this.Page_Load);
@@ -1600,14 +1600,14 @@ namespace NBYS_WebParts.FTKIslemleriWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected virtual object Eval(string expression) {
             return global::System.Web.UI.DataBinder.Eval(this.Page.GetDataItem(), expression);
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected virtual string Eval(string expression, string format) {
             return global::System.Web.UI.DataBinder.Eval(this.Page.GetDataItem(), expression, format);
         }

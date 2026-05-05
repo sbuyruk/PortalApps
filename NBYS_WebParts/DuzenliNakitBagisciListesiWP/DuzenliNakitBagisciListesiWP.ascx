@@ -92,6 +92,7 @@
                             <th>Tutar</th>
                             <th>Başlama Tarihi</th>
                             <th>Telefon</th>
+                            <th>Bölge</th>
                             <th>İl</th>
                             <th>İlçesi</th>
                             <th>Adres</th>

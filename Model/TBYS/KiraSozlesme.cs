@@ -217,7 +217,7 @@ namespace Model.TBYS
                     INNER JOIN Bolge_Table H ON H.Id=A.BolgeId
                     LEFT JOIN OdemePlani_Table C ON C.SozlesmeId=A.Id AND {3} 
                     LEFT JOIN SozlesmeTasinmaz_Table D On D.SozlesmeId=A.Id AND D.Id = (Select top 1 Id from SozlesmeTasinmaz_Table where SozlesmeId = A.Id) 
-                    LEFT JOIN Tasinmaz_Table E On D.Id=D.TasinmazId
+                    LEFT JOIN Tasinmaz_Table E On E.Id=D.TasinmazId
                     LEFT JOIN BagimsizBolum_Table F On F.Id=D.BolumId
                 WHERE 1>0
 	                {0}    

@@ -165,14 +165,13 @@ namespace Model.IKYS
                 ");
             return dao.Update2Db(sqlString); ;
         }
-        public bool UpdateAllSecildiToTrue(string idString, bool @checked)
+        public bool UpdateAllSecildiToTrue(string idString)
         {
-            string odemeDurumuStr = @checked ? "1" : "0";
             string sqlString = string.Format(@"
                     UPDATE GorevOnay_Table
-                    SET Secildi={0}
-                    WHERE ID IN ({1})
-                ", odemeDurumuStr, idString);
+                    SET Secildi=1
+                    WHERE ID IN ({0})
+                ", idString);
             return dao.Update2Db(sqlString);
         }
 

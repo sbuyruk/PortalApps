@@ -210,7 +210,7 @@ namespace Model.NBYS
                  string.Format(" AND A.Id={0}", ftkislemId);
 
             string sqlString = string.Format(@"
-                SELECT  A.Id FTKIslemId, C.Id FTKKisiId,
+                SELECT  A.Id FTKIslemId, C.Id Id, C.Id FTKKisiId,
                     A.*, C.*
                 FROM FTKKisi_Table C   
 	                LEFT JOIN FTKIslem_Table A ON A.Ili = C.Ili AND A.Ilcesi=C.Ilcesi

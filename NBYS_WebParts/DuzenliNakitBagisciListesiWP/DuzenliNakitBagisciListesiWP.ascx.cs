@@ -322,6 +322,7 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
                         string bAciklama = row["bAciklama"].ReturnEmptyIfNull().ToString();
                         string bIl = row["bIl"].ReturnEmptyIfNull().ToString();
                         string bIlce = row["bIlce"].ReturnEmptyIfNull().ToString();
+                        string bBolgeKisaAdi = row["bBolgeKisaAdi"].ReturnEmptyIfNull().ToString();
                         bool bUlasilamiyor = row["bUlasilamiyor"].ReturnFalseIfNull().ConvertToBool();
                         bool bBelgeIstemiyor = row["bBelgeIstemiyor"].ReturnFalseIfNull().ConvertToBool();
                         string bDurum = row["bDurum"].ReturnEmptyIfNull().ToString();
@@ -352,6 +353,7 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
                         listItem.bAciklama = bAciklama;
                         listItem.bIl = bIl;
                         listItem.bIlce = bIlce;
+                        listItem.bBolgeKisaAdi = bBolgeKisaAdi;
                         listItem.bUlasilamiyor = bUlasilamiyor;
                         listItem.bBelgeIstemiyor = bBelgeIstemiyor;
                         listItem.bDurum = bDurum;
@@ -489,6 +491,7 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
                     { data: 'Tutar', width: '10%', className: 'text-end' },
                     { data: 'BaslamaTarihi', width: '10%'},
                     { data: 'Telefon' },
+                    { data: 'Bolge' },
                     { data: 'Ili' },
                     { data: 'Ilcesi' },
                     { data: 'bAdres',width: '15%' },
@@ -585,6 +588,7 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
             public string bAciklama { get; set; } = string.Empty;
             public string bIl { get; set; } = string.Empty;
             public string bIlce { get; set; } = string.Empty;
+            public string bBolgeKisaAdi { get; set; } = string.Empty;
             public bool bUlasilamiyor { get; set; }
             public bool bBelgeIstemiyor { get; set; }
             public string bDurum { get; set; }
@@ -609,6 +613,11 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
                     return telefon;
                 }
                 set { aTelefon = value; }
+            }
+            public string Bolge
+            {
+                get { return bBolgeKisaAdi; }
+                set { bBolgeKisaAdi = value; }
             }
             public string Ili
             {

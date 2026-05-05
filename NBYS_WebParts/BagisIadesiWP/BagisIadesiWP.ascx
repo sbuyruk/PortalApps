@@ -96,7 +96,7 @@
                     <label class="col-form-label m-1" for="BagisAraTxt">Aranacak sözcük :</label>
                     <asp:TextBox ID="BagisAraTxt" runat="server" CssClass="form-control m-1" AutoPostBack="true" OnTextChanged="BagisAraTxt_TextChanged" ToolTip="Ad,TCKimlikNo,Telefon veya Adres yazarak arayabilirsiniz" />
                     <asp:LinkButton CssClass="btn bagis-color m-1" ID="AraBtn" runat="server" CausesValidation="false" Text="Ara" OnClientClick="{return true;};" OnClick="AraBtn_Click" />
-                    <asp:Label CssClass="btn text-danger m-1" ID="UyariLbl" runat="server" Text=" * Yalnızca son 1 yıl içinde yapılan bağışlar iade edilebilir." />
+                    <asp:Label CssClass="btn text-danger m-1" ID="UyariLbl" runat="server" Text=" * Yalnızca son 2 yıl içinde yapılan bağışlar iade edilebilir." />
                 </div>
             </div>
             <div class="form-group border bagis-border-color" id="BagisciSecTableDiv" runat="server">

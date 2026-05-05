@@ -813,11 +813,13 @@ namespace Model.NBYS
                     ,Ulasilamiyor bUlasilamiyor
                     ,BelgeIstemiyor bBelgeIstemiyor
                     ,E.Durum bDurum
+                    ,F.KisaAdi bBolgeKisaAdi
                 FROM DuzenliNakitBagisci_Table A
                 LEFT JOIN NakitBagisci_Table B ON A.BagisciId = B.Id
                 LEFT OUTER JOIN Il_Table C ON C.Id= B.Ili 
                 LEFT OUTER JOIN Ilce_Table D ON D.Id= B.Ilcesi AND D.IlId=C.Id
                 LEFT JOIN Armagan_Table E ON E.Id=A.ArmaganId
+                LEFT JOIN Bolge_Table F ON F.Id=C.BolgeId
                 WHERE A.Aktif = 1 AND BaslamaTarihi >= {0} AND BaslamaTarihi < {1}
                 {2};",
                 bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat(), durumstr);
