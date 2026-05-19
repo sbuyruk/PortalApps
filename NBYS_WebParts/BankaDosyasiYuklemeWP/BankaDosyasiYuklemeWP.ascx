@@ -238,6 +238,15 @@
                             <asp:FileUpload ID="ZiraatKatilimFU" runat="server" CssClass="form-control" />
                         </div>
                     </div>
+                    <div class="card  mt-3">
+                        <div class="card-header">
+                            <asp:Label ID="AlbarakaLbl" runat="server" Text="ALBARAKA" Font-Size="X-Large" Font-Bold="True" ForeColor="Orange"></asp:Label>
+                            <asp:Label ID="AlbarakaOkLbl" runat="server" Font-Size="X-Large" Font-Bold="True" ForeColor="#33CC33"></asp:Label>
+                        </div>
+                        <div class="card-body">
+                            <asp:FileUpload ID="AlbarakaFU" runat="server" CssClass="form-control" />
+                        </div>
+                    </div>
 
                 </div>
             </div>

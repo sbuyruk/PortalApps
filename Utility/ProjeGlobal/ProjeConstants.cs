@@ -637,6 +637,10 @@ namespace Utility.ProjeGlobal
         public const string IMAGE_PATH_AKBANK = "/" + IMAGE_PATH + "/akbank.png";
         public const string IMAGE_PATH_AKBANKOK = "/" + IMAGE_PATH + "/akbankok.png";
         public const string IMAGE_PATH_AKBANKNOTOK = "/" + IMAGE_PATH + "/akbanknotok.png";
+        //Albaraka 
+        public const string BANKA_ALBARAKA = "Albaraka";
+        public const int BANKA_ALBARAKA_ILKKACSATIRHARIC = 7;
+        public const int BANKA_ALBARAKA_SONKACSATIRHARIC = 0;
 
         //Finansbank
         public const string BANKA_FINANSBANK = "Finansbank";
@@ -700,6 +704,8 @@ namespace Utility.ProjeGlobal
         public const string BANKA_ZIRAATEKSTRE_BASLIKILKHUCRE = "Tarih";
         public const int BANKA_ZIRAAT_ILKKACSATIRHARIC = 6;
         public const int BANKA_ZIRAAT_SONKACSATIRHARIC = 4;
+        public const int BANKA_ZIRAATEKSTRE_ILKKACSATIRHARIC = 12;
+        public const int BANKA_ZIRAATEKSTRE_SONKACSATIRHARIC = 8;
         //Kiosk
         public const string BANKA_KIOSK = "Kiosk";
         public const string BANKA_KIOSK_BASLIKILKHUCRE = "HESAP NO";
@@ -726,6 +732,7 @@ namespace Utility.ProjeGlobal
         public const string BANKA_VAKIF_KATILIM_BASLIKILKHUCRE = "Tarih";
         public const int BANKA_VAKIFKATILIM_ILKKACSATIRHARIC = 4;
         public const int BANKA_VAKIFKATILIM_SONKACSATIRHARIC = 0;
+
         //Ziraat Katılım
         public const string BANKA_ZIRAAT_KATILIM = "Ziraat Katılım";
         public const string BANKA_ZIRAAT_KATILIM_BASLIKILKHUCRE = "Tarih";

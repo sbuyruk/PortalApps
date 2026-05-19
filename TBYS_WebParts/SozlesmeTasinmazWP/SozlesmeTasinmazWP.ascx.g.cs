@@ -524,7 +524,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP {
         myModalInstance.show();
     }
     function KiraciSecimiModal() {
-        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('KiraciSecDiv'));
+        var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('KiraciSecimiModal'));
         myModalInstance.show();
     }
 </script>

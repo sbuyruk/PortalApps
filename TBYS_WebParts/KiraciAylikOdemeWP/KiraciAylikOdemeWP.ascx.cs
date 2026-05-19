@@ -430,6 +430,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
             if (BolgeIdQS == ProjeConstants.BOLGE_HEPSI_INT || BolgeIdQS == ProjeConstants.BOLGE_GENELMUDURLUK_INT)
             {
                 list = bolgeDao.SelectAktifBolgeler(ProjeConstants.BOLGE_HEPSI_INT);
+                BolgeDDL.Items.Add(new System.Web.UI.WebControls.ListItem(ProjeConstants.BOLGE_HEPSI, ProjeConstants.BOLGE_HEPSI_INT.ToString()));
 
             }
             else

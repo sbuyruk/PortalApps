@@ -141,6 +141,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>BagisHareketListesiWP.ascx</DependentUpon>
     </Compile>
+    <Compile Include="BagisIadeListesiWP\BagisIadeListesiWP.ascx.cs">
+      <DependentUpon>BagisIadeListesiWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="BagisIadeListesiWP\BagisIadeListesiWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BagisIadeListesiWP.ascx</DependentUpon>
+    </Compile>
     <Compile Include="BagisIadesiWP\BagisIadesiWP.ascx.cs">
       <DependentUpon>BagisIadesiWP.ascx</DependentUpon>
     </Compile>
@@ -542,6 +550,10 @@
     <None Include="BagisHareketListesiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{2cdba60c-2d25-4723-9c9e-60306c988603}</SharePointProjectItemId>
     </None>
+    <None Include="BagisIadeListesiWP\BagisIadeListesiWP.webpart" />
+    <None Include="BagisIadeListesiWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{e44abbdc-c22d-40d1-bf99-acae7d70edb9}</SharePointProjectItemId>
+    </None>
     <None Include="BagisIadesiWP\BagisIadesiWP.webpart" />
     <None Include="BagisIadesiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{0bc2e9a7-fbf9-4327-8270-1ec805819109}</SharePointProjectItemId>
@@ -769,6 +781,11 @@
       <LastGenOutput>BagisaVesileOlanTesekkurListesiWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="BagisaVesileOlanTesekkurListesiWP\Elements.xml" />
+    <Content Include="BagisIadeListesiWP\BagisIadeListesiWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>BagisIadeListesiWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="BagisIadeListesiWP\Elements.xml" />
     <Content Include="BagisHareketListesiWP\BagisHareketListesiWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>BagisHareketListesiWP.ascx.g.cs</LastGenOutput>

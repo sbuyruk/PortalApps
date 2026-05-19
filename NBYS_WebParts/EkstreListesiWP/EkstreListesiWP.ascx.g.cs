@@ -40,266 +40,274 @@ namespace NBYS_WebParts.EkstreListesiWP {
     public partial class EkstreListesiWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton CloseBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.HtmlControls.HtmlAnchor YonergeLnk;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label TitleLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label IdLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label AdiLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.TextBox IslemTarihiTxt;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.DropDownList BankaDDL;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label AkbankLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label AkbankOkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label AkbankEkstreLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label AkbankEkstreOkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
+        protected global::System.Web.UI.WebControls.Label AlbarakaLbl;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        protected global::System.Web.UI.WebControls.Label AlbarakaOkLbl;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label FinansbankLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label FinansbankOkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label FinansbankEkstreLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label FinansbankEkstreOkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label EDevletLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label EDevletOkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label GarantiLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label GarantiOkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label GarantiEkstreLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label GarantiEkstreOkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label HalkbankLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label HalkbankOkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label Halkbank2Lbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label Halkbank2OkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label IsbankLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label IsbankOkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label IsbankEkstreLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label IsbankEkstreOkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label KartIleLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label KartIleOkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label KioskLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label KioskOkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label SMSVakifLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label SMSVakifOkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label TebLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label TebOkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label VakifbankLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label VakifbankOkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label Vakifbank2Lbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label Vakifbank2OkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label VakifKatilimLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label VakifKatilimOkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label YKBEkstreLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label YKBEkstreOkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label ZiraatBankLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label ZiraatBankOkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label ZiraatBankEkstreLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label ZiraatBankEkstreOkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label ZiraatKatilimLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label ZiraatKatilimOkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.CheckBox AktarilanlarHaricChk;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.CheckBox TumunuSecChk;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.HtmlControls.HtmlInputText paramArray;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton SecilenleriKaydetBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton SecilenleriSilBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton ExcelBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label ModalTitleLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label ModalSubTitleLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label UyariMesajiLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label OnayMesajiLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton KaydetNowBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton SilNowBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.UpdatePanel UpdatePanel1;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.UpdateProgress updateProgress;
         
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebPartCodeGenerator", "17.0.0.0")]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebPartCodeGenerator", "18.0.0.0")]
         public static implicit operator global::System.Web.UI.TemplateControl(EkstreListesiWP target) 
         {
             return target == null ? null : target.TemplateControl;
@@ -307,7 +315,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlCloseBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -324,7 +332,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.HtmlControls.HtmlAnchor @__BuildControlYonergeLnk() {
             global::System.Web.UI.HtmlControls.HtmlAnchor @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlAnchor();
@@ -344,7 +352,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlTitleLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -358,7 +366,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlIdLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -371,7 +379,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlAdiLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -384,7 +392,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.TextBox @__BuildControlIslemTarihiTxt() {
             global::System.Web.UI.WebControls.TextBox @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
@@ -401,7 +409,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.DropDownList @__BuildControlBankaDDL() {
             global::System.Web.UI.WebControls.DropDownList @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.DropDownList();
@@ -418,7 +426,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlAkbankLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -432,7 +440,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlAkbankOkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -446,7 +454,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlAkbankEkstreLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -460,7 +468,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlAkbankEkstreOkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -474,7 +482,35 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlAlbarakaLbl() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.AlbarakaLbl = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.CssClass = "form-label";
+            @__ctrl.ID = "AlbarakaLbl";
+            @__ctrl.Text = "Albaraka";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlAlbarakaOkLbl() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.AlbarakaOkLbl = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.CssClass = "form-label fw-bold";
+            @__ctrl.ID = "AlbarakaOkLbl";
+            @__ctrl.Text = "";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlFinansbankLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -488,7 +524,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlFinansbankOkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -502,7 +538,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlFinansbankEkstreLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -516,7 +552,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlFinansbankEkstreOkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -530,7 +566,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlEDevletLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -544,7 +580,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlEDevletOkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -558,7 +594,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlGarantiLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -572,7 +608,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlGarantiOkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -586,7 +622,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlGarantiEkstreLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -600,7 +636,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlGarantiEkstreOkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -614,7 +650,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlHalkbankLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -628,7 +664,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlHalkbankOkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -642,7 +678,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlHalkbank2Lbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -656,7 +692,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlHalkbank2OkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -670,7 +706,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlIsbankLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -684,7 +720,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlIsbankOkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -698,7 +734,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlIsbankEkstreLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -712,7 +748,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlIsbankEkstreOkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -726,7 +762,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlKartIleLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -740,7 +776,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlKartIleOkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -754,7 +790,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlKioskLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -768,7 +804,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlKioskOkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -782,7 +818,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlSMSVakifLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -796,7 +832,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlSMSVakifOkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -810,7 +846,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlTebLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -824,7 +860,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlTebOkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -838,7 +874,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlVakifbankLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -852,7 +888,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlVakifbankOkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -866,7 +902,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlVakifbank2Lbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -880,7 +916,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlVakifbank2OkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -894,7 +930,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlVakifKatilimLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -908,7 +944,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlVakifKatilimOkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -922,7 +958,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlYKBEkstreLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -936,7 +972,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlYKBEkstreOkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -950,7 +986,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlZiraatBankLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -964,7 +1000,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlZiraatBankOkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -978,7 +1014,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlZiraatBankEkstreLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -992,7 +1028,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlZiraatBankEkstreOkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -1006,7 +1042,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlZiraatKatilimLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -1020,7 +1056,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlZiraatKatilimOkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -1034,7 +1070,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.CheckBox @__BuildControlAktarilanlarHaricChk() {
             global::System.Web.UI.WebControls.CheckBox @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.CheckBox();
@@ -1051,7 +1087,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.CheckBox @__BuildControlTumunuSecChk() {
             global::System.Web.UI.WebControls.CheckBox @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.CheckBox();
@@ -1069,7 +1105,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.HtmlControls.HtmlInputText @__BuildControlparamArray() {
             global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl;
             @__ctrl = new global::System.Web.UI.HtmlControls.HtmlInputText();
@@ -1081,7 +1117,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlSecilenleriKaydetBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -1098,7 +1134,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlSecilenleriSilBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -1115,7 +1151,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlExcelBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -1133,7 +1169,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlModalTitleLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -1148,7 +1184,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlModalSubTitleLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -1163,7 +1199,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlUyariMesajiLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -1178,7 +1214,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlOnayMesajiLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -1193,7 +1229,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlKaydetNowBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -1213,7 +1249,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlSilNowBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -1233,7 +1269,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private void @__BuildControl__control2(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            <div class=\"card\">\r\n                               " +
@@ -1278,7 +1314,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control4() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
@@ -1289,7 +1325,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.AsyncPostBackTrigger @__BuildControl__control5() {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl;
             @__ctrl = new global::System.Web.UI.AsyncPostBackTrigger();
@@ -1300,7 +1336,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private void @__BuildControl__control3(System.Web.UI.UpdatePanelTriggerCollection @__ctrl) {
             global::System.Web.UI.AsyncPostBackTrigger @__ctrl1;
             @__ctrl1 = this.@__BuildControl__control4();
@@ -1312,7 +1348,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.UpdatePanel @__BuildControlUpdatePanel1() {
             global::System.Web.UI.UpdatePanel @__ctrl;
             @__ctrl = new global::System.Web.UI.UpdatePanel();
@@ -1326,7 +1362,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private void @__BuildControl__control6(System.Web.UI.Control @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl(@"
@@ -1341,7 +1377,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.UpdateProgress @__BuildControlupdateProgress() {
             global::System.Web.UI.UpdateProgress @__ctrl;
             @__ctrl = new global::System.Web.UI.UpdateProgress();
@@ -1353,7 +1389,7 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private void @__BuildControlTree(global::NBYS_WebParts.EkstreListesiWP.EkstreListesiWP @__ctrl) {
             global::System.Web.UI.WebControls.LinkButton @__ctrl1;
             @__ctrl1 = this.@__BuildControlCloseBtn();
@@ -1390,155 +1426,161 @@ namespace NBYS_WebParts.EkstreListesiWP {
             @__ctrl11 = this.@__BuildControlAkbankEkstreOkLbl();
             @__parser.AddParsedSubObject(@__ctrl11);
             global::System.Web.UI.WebControls.Label @__ctrl12;
-            @__ctrl12 = this.@__BuildControlFinansbankLbl();
+            @__ctrl12 = this.@__BuildControlAlbarakaLbl();
             @__parser.AddParsedSubObject(@__ctrl12);
             global::System.Web.UI.WebControls.Label @__ctrl13;
-            @__ctrl13 = this.@__BuildControlFinansbankOkLbl();
+            @__ctrl13 = this.@__BuildControlAlbarakaOkLbl();
             @__parser.AddParsedSubObject(@__ctrl13);
             global::System.Web.UI.WebControls.Label @__ctrl14;
-            @__ctrl14 = this.@__BuildControlFinansbankEkstreLbl();
+            @__ctrl14 = this.@__BuildControlFinansbankLbl();
             @__parser.AddParsedSubObject(@__ctrl14);
             global::System.Web.UI.WebControls.Label @__ctrl15;
-            @__ctrl15 = this.@__BuildControlFinansbankEkstreOkLbl();
+            @__ctrl15 = this.@__BuildControlFinansbankOkLbl();
             @__parser.AddParsedSubObject(@__ctrl15);
             global::System.Web.UI.WebControls.Label @__ctrl16;
-            @__ctrl16 = this.@__BuildControlEDevletLbl();
+            @__ctrl16 = this.@__BuildControlFinansbankEkstreLbl();
             @__parser.AddParsedSubObject(@__ctrl16);
             global::System.Web.UI.WebControls.Label @__ctrl17;
-            @__ctrl17 = this.@__BuildControlEDevletOkLbl();
+            @__ctrl17 = this.@__BuildControlFinansbankEkstreOkLbl();
             @__parser.AddParsedSubObject(@__ctrl17);
             global::System.Web.UI.WebControls.Label @__ctrl18;
-            @__ctrl18 = this.@__BuildControlGarantiLbl();
+            @__ctrl18 = this.@__BuildControlEDevletLbl();
             @__parser.AddParsedSubObject(@__ctrl18);
             global::System.Web.UI.WebControls.Label @__ctrl19;
-            @__ctrl19 = this.@__BuildControlGarantiOkLbl();
+            @__ctrl19 = this.@__BuildControlEDevletOkLbl();
             @__parser.AddParsedSubObject(@__ctrl19);
             global::System.Web.UI.WebControls.Label @__ctrl20;
-            @__ctrl20 = this.@__BuildControlGarantiEkstreLbl();
+            @__ctrl20 = this.@__BuildControlGarantiLbl();
             @__parser.AddParsedSubObject(@__ctrl20);
             global::System.Web.UI.WebControls.Label @__ctrl21;
-            @__ctrl21 = this.@__BuildControlGarantiEkstreOkLbl();
+            @__ctrl21 = this.@__BuildControlGarantiOkLbl();
             @__parser.AddParsedSubObject(@__ctrl21);
             global::System.Web.UI.WebControls.Label @__ctrl22;
-            @__ctrl22 = this.@__BuildControlHalkbankLbl();
+            @__ctrl22 = this.@__BuildControlGarantiEkstreLbl();
             @__parser.AddParsedSubObject(@__ctrl22);
             global::System.Web.UI.WebControls.Label @__ctrl23;
-            @__ctrl23 = this.@__BuildControlHalkbankOkLbl();
+            @__ctrl23 = this.@__BuildControlGarantiEkstreOkLbl();
             @__parser.AddParsedSubObject(@__ctrl23);
             global::System.Web.UI.WebControls.Label @__ctrl24;
-            @__ctrl24 = this.@__BuildControlHalkbank2Lbl();
+            @__ctrl24 = this.@__BuildControlHalkbankLbl();
             @__parser.AddParsedSubObject(@__ctrl24);
             global::System.Web.UI.WebControls.Label @__ctrl25;
-            @__ctrl25 = this.@__BuildControlHalkbank2OkLbl();
+            @__ctrl25 = this.@__BuildControlHalkbankOkLbl();
             @__parser.AddParsedSubObject(@__ctrl25);
             global::System.Web.UI.WebControls.Label @__ctrl26;
-            @__ctrl26 = this.@__BuildControlIsbankLbl();
+            @__ctrl26 = this.@__BuildControlHalkbank2Lbl();
             @__parser.AddParsedSubObject(@__ctrl26);
             global::System.Web.UI.WebControls.Label @__ctrl27;
-            @__ctrl27 = this.@__BuildControlIsbankOkLbl();
+            @__ctrl27 = this.@__BuildControlHalkbank2OkLbl();
             @__parser.AddParsedSubObject(@__ctrl27);
             global::System.Web.UI.WebControls.Label @__ctrl28;
-            @__ctrl28 = this.@__BuildControlIsbankEkstreLbl();
+            @__ctrl28 = this.@__BuildControlIsbankLbl();
             @__parser.AddParsedSubObject(@__ctrl28);
             global::System.Web.UI.WebControls.Label @__ctrl29;
-            @__ctrl29 = this.@__BuildControlIsbankEkstreOkLbl();
+            @__ctrl29 = this.@__BuildControlIsbankOkLbl();
             @__parser.AddParsedSubObject(@__ctrl29);
             global::System.Web.UI.WebControls.Label @__ctrl30;
-            @__ctrl30 = this.@__BuildControlKartIleLbl();
+            @__ctrl30 = this.@__BuildControlIsbankEkstreLbl();
             @__parser.AddParsedSubObject(@__ctrl30);
             global::System.Web.UI.WebControls.Label @__ctrl31;
-            @__ctrl31 = this.@__BuildControlKartIleOkLbl();
+            @__ctrl31 = this.@__BuildControlIsbankEkstreOkLbl();
             @__parser.AddParsedSubObject(@__ctrl31);
             global::System.Web.UI.WebControls.Label @__ctrl32;
-            @__ctrl32 = this.@__BuildControlKioskLbl();
+            @__ctrl32 = this.@__BuildControlKartIleLbl();
             @__parser.AddParsedSubObject(@__ctrl32);
             global::System.Web.UI.WebControls.Label @__ctrl33;
-            @__ctrl33 = this.@__BuildControlKioskOkLbl();
+            @__ctrl33 = this.@__BuildControlKartIleOkLbl();
             @__parser.AddParsedSubObject(@__ctrl33);
             global::System.Web.UI.WebControls.Label @__ctrl34;
-            @__ctrl34 = this.@__BuildControlSMSVakifLbl();
+            @__ctrl34 = this.@__BuildControlKioskLbl();
             @__parser.AddParsedSubObject(@__ctrl34);
             global::System.Web.UI.WebControls.Label @__ctrl35;
-            @__ctrl35 = this.@__BuildControlSMSVakifOkLbl();
+            @__ctrl35 = this.@__BuildControlKioskOkLbl();
             @__parser.AddParsedSubObject(@__ctrl35);
             global::System.Web.UI.WebControls.Label @__ctrl36;
-            @__ctrl36 = this.@__BuildControlTebLbl();
+            @__ctrl36 = this.@__BuildControlSMSVakifLbl();
             @__parser.AddParsedSubObject(@__ctrl36);
             global::System.Web.UI.WebControls.Label @__ctrl37;
-            @__ctrl37 = this.@__BuildControlTebOkLbl();
+            @__ctrl37 = this.@__BuildControlSMSVakifOkLbl();
             @__parser.AddParsedSubObject(@__ctrl37);
             global::System.Web.UI.WebControls.Label @__ctrl38;
-            @__ctrl38 = this.@__BuildControlVakifbankLbl();
+            @__ctrl38 = this.@__BuildControlTebLbl();
             @__parser.AddParsedSubObject(@__ctrl38);
             global::System.Web.UI.WebControls.Label @__ctrl39;
-            @__ctrl39 = this.@__BuildControlVakifbankOkLbl();
+            @__ctrl39 = this.@__BuildControlTebOkLbl();
             @__parser.AddParsedSubObject(@__ctrl39);
             global::System.Web.UI.WebControls.Label @__ctrl40;
-            @__ctrl40 = this.@__BuildControlVakifbank2Lbl();
+            @__ctrl40 = this.@__BuildControlVakifbankLbl();
             @__parser.AddParsedSubObject(@__ctrl40);
             global::System.Web.UI.WebControls.Label @__ctrl41;
-            @__ctrl41 = this.@__BuildControlVakifbank2OkLbl();
+            @__ctrl41 = this.@__BuildControlVakifbankOkLbl();
             @__parser.AddParsedSubObject(@__ctrl41);
             global::System.Web.UI.WebControls.Label @__ctrl42;
-            @__ctrl42 = this.@__BuildControlVakifKatilimLbl();
+            @__ctrl42 = this.@__BuildControlVakifbank2Lbl();
             @__parser.AddParsedSubObject(@__ctrl42);
             global::System.Web.UI.WebControls.Label @__ctrl43;
-            @__ctrl43 = this.@__BuildControlVakifKatilimOkLbl();
+            @__ctrl43 = this.@__BuildControlVakifbank2OkLbl();
             @__parser.AddParsedSubObject(@__ctrl43);
             global::System.Web.UI.WebControls.Label @__ctrl44;
-            @__ctrl44 = this.@__BuildControlYKBEkstreLbl();
+            @__ctrl44 = this.@__BuildControlVakifKatilimLbl();
             @__parser.AddParsedSubObject(@__ctrl44);
             global::System.Web.UI.WebControls.Label @__ctrl45;
-            @__ctrl45 = this.@__BuildControlYKBEkstreOkLbl();
+            @__ctrl45 = this.@__BuildControlVakifKatilimOkLbl();
             @__parser.AddParsedSubObject(@__ctrl45);
             global::System.Web.UI.WebControls.Label @__ctrl46;
-            @__ctrl46 = this.@__BuildControlZiraatBankLbl();
+            @__ctrl46 = this.@__BuildControlYKBEkstreLbl();
             @__parser.AddParsedSubObject(@__ctrl46);
             global::System.Web.UI.WebControls.Label @__ctrl47;
-            @__ctrl47 = this.@__BuildControlZiraatBankOkLbl();
+            @__ctrl47 = this.@__BuildControlYKBEkstreOkLbl();
             @__parser.AddParsedSubObject(@__ctrl47);
             global::System.Web.UI.WebControls.Label @__ctrl48;
-            @__ctrl48 = this.@__BuildControlZiraatBankEkstreLbl();
+            @__ctrl48 = this.@__BuildControlZiraatBankLbl();
             @__parser.AddParsedSubObject(@__ctrl48);
             global::System.Web.UI.WebControls.Label @__ctrl49;
-            @__ctrl49 = this.@__BuildControlZiraatBankEkstreOkLbl();
+            @__ctrl49 = this.@__BuildControlZiraatBankOkLbl();
             @__parser.AddParsedSubObject(@__ctrl49);
             global::System.Web.UI.WebControls.Label @__ctrl50;
-            @__ctrl50 = this.@__BuildControlZiraatKatilimLbl();
+            @__ctrl50 = this.@__BuildControlZiraatBankEkstreLbl();
             @__parser.AddParsedSubObject(@__ctrl50);
             global::System.Web.UI.WebControls.Label @__ctrl51;
-            @__ctrl51 = this.@__BuildControlZiraatKatilimOkLbl();
+            @__ctrl51 = this.@__BuildControlZiraatBankEkstreOkLbl();
             @__parser.AddParsedSubObject(@__ctrl51);
-            global::System.Web.UI.WebControls.CheckBox @__ctrl52;
-            @__ctrl52 = this.@__BuildControlAktarilanlarHaricChk();
+            global::System.Web.UI.WebControls.Label @__ctrl52;
+            @__ctrl52 = this.@__BuildControlZiraatKatilimLbl();
             @__parser.AddParsedSubObject(@__ctrl52);
-            global::System.Web.UI.WebControls.CheckBox @__ctrl53;
-            @__ctrl53 = this.@__BuildControlTumunuSecChk();
+            global::System.Web.UI.WebControls.Label @__ctrl53;
+            @__ctrl53 = this.@__BuildControlZiraatKatilimOkLbl();
             @__parser.AddParsedSubObject(@__ctrl53);
-            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl54;
-            @__ctrl54 = this.@__BuildControlparamArray();
+            global::System.Web.UI.WebControls.CheckBox @__ctrl54;
+            @__ctrl54 = this.@__BuildControlAktarilanlarHaricChk();
             @__parser.AddParsedSubObject(@__ctrl54);
-            global::System.Web.UI.WebControls.LinkButton @__ctrl55;
-            @__ctrl55 = this.@__BuildControlSecilenleriKaydetBtn();
+            global::System.Web.UI.WebControls.CheckBox @__ctrl55;
+            @__ctrl55 = this.@__BuildControlTumunuSecChk();
             @__parser.AddParsedSubObject(@__ctrl55);
-            global::System.Web.UI.WebControls.LinkButton @__ctrl56;
-            @__ctrl56 = this.@__BuildControlSecilenleriSilBtn();
+            global::System.Web.UI.HtmlControls.HtmlInputText @__ctrl56;
+            @__ctrl56 = this.@__BuildControlparamArray();
             @__parser.AddParsedSubObject(@__ctrl56);
             global::System.Web.UI.WebControls.LinkButton @__ctrl57;
-            @__ctrl57 = this.@__BuildControlExcelBtn();
+            @__ctrl57 = this.@__BuildControlSecilenleriKaydetBtn();
             @__parser.AddParsedSubObject(@__ctrl57);
-            global::System.Web.UI.UpdatePanel @__ctrl58;
-            @__ctrl58 = this.@__BuildControlUpdatePanel1();
+            global::System.Web.UI.WebControls.LinkButton @__ctrl58;
+            @__ctrl58 = this.@__BuildControlSecilenleriSilBtn();
             @__parser.AddParsedSubObject(@__ctrl58);
-            global::System.Web.UI.UpdateProgress @__ctrl59;
-            @__ctrl59 = this.@__BuildControlupdateProgress();
+            global::System.Web.UI.WebControls.LinkButton @__ctrl59;
+            @__ctrl59 = this.@__BuildControlExcelBtn();
             @__parser.AddParsedSubObject(@__ctrl59);
+            global::System.Web.UI.UpdatePanel @__ctrl60;
+            @__ctrl60 = this.@__BuildControlUpdatePanel1();
+            @__parser.AddParsedSubObject(@__ctrl60);
+            global::System.Web.UI.UpdateProgress @__ctrl61;
+            @__ctrl61 = this.@__BuildControlupdateProgress();
+            @__parser.AddParsedSubObject(@__ctrl61);
             @__ctrl.SetRenderMethodDelegate(new System.Web.UI.RenderMethod(this.@__Render__control1));
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private void @__Render__control1(System.Web.UI.HtmlTextWriter @__w, System.Web.UI.Control parameterContainer) {
             @__w.Write("\r\n\r\n<style>\r\n    .uyari {\r\n        color:red;\r\n    }\r\n    .ekstre-aktarildi {\r\n  " +
                     "      color: grey;\r\n    }\r\n\r\n    .ekstre-aktarilmadi {\r\n        color: black;\r\n " +
@@ -1625,9 +1667,9 @@ namespace NBYS_WebParts.EkstreListesiWP {
             parameterContainer.Controls[15].RenderControl(@__w);
             @__w.Write("\r\n                            ");
             parameterContainer.Controls[16].RenderControl(@__w);
-            @__w.Write("\r\n                        </div>\r\n\r\n                    </div>\r\n                 " +
-                    "   <div class=\"col\">\r\n                        <div class=\"form-group m-0\">\r\n    " +
-                    "                        ");
+            @__w.Write("\r\n                        </div>\r\n\r\n\r\n                    </div>\r\n               " +
+                    "     <div class=\"col\">\r\n                        <div class=\"form-group m-0\">\r\n  " +
+                    "                          ");
             parameterContainer.Controls[17].RenderControl(@__w);
             @__w.Write("\r\n                            ");
             parameterContainer.Controls[18].RenderControl(@__w);
@@ -1646,14 +1688,14 @@ namespace NBYS_WebParts.EkstreListesiWP {
             parameterContainer.Controls[23].RenderControl(@__w);
             @__w.Write("\r\n                            ");
             parameterContainer.Controls[24].RenderControl(@__w);
-            @__w.Write("\r\n                        </div>\r\n                    </div>\r\n                   " +
-                    " <div class=\"col\">\r\n                        <div class=\"form-group m-0\">\r\n      " +
-                    "                      ");
+            @__w.Write("\r\n                        </div>\r\n                        <div class=\"form-group " +
+                    "m-0\">\r\n                            ");
             parameterContainer.Controls[25].RenderControl(@__w);
             @__w.Write("\r\n                            ");
             parameterContainer.Controls[26].RenderControl(@__w);
-            @__w.Write("\r\n                        </div>\r\n                        <div class=\"form-group " +
-                    "m-0\">\r\n                            ");
+            @__w.Write("\r\n                        </div>\r\n                    </div>\r\n                   " +
+                    " <div class=\"col\">\r\n                        <div class=\"form-group m-0\">\r\n      " +
+                    "                      ");
             parameterContainer.Controls[27].RenderControl(@__w);
             @__w.Write("\r\n                            ");
             parameterContainer.Controls[28].RenderControl(@__w);
@@ -1667,46 +1709,46 @@ namespace NBYS_WebParts.EkstreListesiWP {
             parameterContainer.Controls[31].RenderControl(@__w);
             @__w.Write("\r\n                            ");
             parameterContainer.Controls[32].RenderControl(@__w);
-            @__w.Write("\r\n                        </div>\r\n                    </div>\r\n                   " +
-                    " <div class=\"col\">\r\n                        <div class=\"form-group m-0\">\r\n      " +
-                    "                      ");
+            @__w.Write("\r\n                        </div>\r\n                        <div class=\"form-group " +
+                    "m-0\">\r\n                            ");
             parameterContainer.Controls[33].RenderControl(@__w);
             @__w.Write("\r\n                            ");
             parameterContainer.Controls[34].RenderControl(@__w);
-            @__w.Write("\r\n                        </div>\r\n                        <div class=\"form-group " +
-                    "m-0\">\r\n                            ");
+            @__w.Write("\r\n                        </div>\r\n                    </div>\r\n                   " +
+                    " <div class=\"col\">\r\n                        <div class=\"form-group m-0\">\r\n      " +
+                    "                      ");
             parameterContainer.Controls[35].RenderControl(@__w);
             @__w.Write("\r\n                            ");
             parameterContainer.Controls[36].RenderControl(@__w);
-            @__w.Write("\r\n                        </div>\r\n\r\n                        <div class=\"form-grou" +
-                    "p m-0\">\r\n                            ");
+            @__w.Write("\r\n                        </div>\r\n                        <div class=\"form-group " +
+                    "m-0\">\r\n                            ");
             parameterContainer.Controls[37].RenderControl(@__w);
             @__w.Write("\r\n                            ");
             parameterContainer.Controls[38].RenderControl(@__w);
-            @__w.Write("\r\n                        </div>\r\n                    </div>\r\n                   " +
-                    " <div class=\"col\">\r\n                        <div class=\"form-group m-0\">\r\n      " +
-                    "                      ");
+            @__w.Write("\r\n                        </div>\r\n\r\n                        <div class=\"form-grou" +
+                    "p m-0\">\r\n                            ");
             parameterContainer.Controls[39].RenderControl(@__w);
             @__w.Write("\r\n                            ");
             parameterContainer.Controls[40].RenderControl(@__w);
-            @__w.Write("\r\n                        </div>\r\n\r\n                        <div class=\"form-grou" +
-                    "p m-0\">\r\n                            ");
-            parameterContainer.Controls[41].RenderControl(@__w);
-            @__w.Write("\r\n                            ");
-            parameterContainer.Controls[42].RenderControl(@__w);
-            @__w.Write("\r\n                        </div>\r\n                        <div class=\"form-group " +
-                    "m-0\">\r\n                            ");
-            parameterContainer.Controls[43].RenderControl(@__w);
-            @__w.Write("\r\n                            ");
-            parameterContainer.Controls[44].RenderControl(@__w);
             @__w.Write("\r\n                        </div>\r\n                    </div>\r\n                   " +
                     " <div class=\"col\">\r\n                        <div class=\"form-group m-0\">\r\n      " +
                     "                      ");
+            parameterContainer.Controls[41].RenderControl(@__w);
+            @__w.Write("\r\n                            ");
+            parameterContainer.Controls[42].RenderControl(@__w);
+            @__w.Write("\r\n                        </div>\r\n\r\n                        <div class=\"form-grou" +
+                    "p m-0\">\r\n                            ");
+            parameterContainer.Controls[43].RenderControl(@__w);
+            @__w.Write("\r\n                            ");
+            parameterContainer.Controls[44].RenderControl(@__w);
+            @__w.Write("\r\n                        </div>\r\n                        <div class=\"form-group " +
+                    "m-0\">\r\n                            ");
             parameterContainer.Controls[45].RenderControl(@__w);
             @__w.Write("\r\n                            ");
             parameterContainer.Controls[46].RenderControl(@__w);
-            @__w.Write("\r\n                        </div>\r\n                        <div class=\"form-group " +
-                    "m-0\">\r\n                            ");
+            @__w.Write("\r\n                        </div>\r\n                    </div>\r\n                   " +
+                    " <div class=\"col\">\r\n                        <div class=\"form-group m-0\">\r\n      " +
+                    "                      ");
             parameterContainer.Controls[47].RenderControl(@__w);
             @__w.Write("\r\n                            ");
             parameterContainer.Controls[48].RenderControl(@__w);
@@ -1715,6 +1757,11 @@ namespace NBYS_WebParts.EkstreListesiWP {
             parameterContainer.Controls[49].RenderControl(@__w);
             @__w.Write("\r\n                            ");
             parameterContainer.Controls[50].RenderControl(@__w);
+            @__w.Write("\r\n                        </div>\r\n                        <div class=\"form-group " +
+                    "m-0\">\r\n                            ");
+            parameterContainer.Controls[51].RenderControl(@__w);
+            @__w.Write("\r\n                            ");
+            parameterContainer.Controls[52].RenderControl(@__w);
             @__w.Write(@"
                         </div>
                     </div>
@@ -1726,12 +1773,12 @@ namespace NBYS_WebParts.EkstreListesiWP {
                         <div class=""checkbox"">
                             <label>
                                 ");
-            parameterContainer.Controls[51].RenderControl(@__w);
+            parameterContainer.Controls[53].RenderControl(@__w);
             @__w.Write("\r\n                                Aktarılanları Gösterme\r\n                       " +
                     "     </label>\r\n                        </div>\r\n                        <div clas" +
                     "s=\"checkbox\">\r\n                            <label>\r\n                            " +
                     "    ");
-            parameterContainer.Controls[52].RenderControl(@__w);
+            parameterContainer.Controls[54].RenderControl(@__w);
             @__w.Write("\r\n                                Sayfanın Tümünü Seç\r\n                          " +
                     "  </label>\r\n                        </div>\r\n                    </div>\r\n        " +
                     "        </div>\r\n            </div>\r\n            <div class=\"form-group\">\r\n      " +
@@ -1754,13 +1801,13 @@ namespace NBYS_WebParts.EkstreListesiWP {
                     "ccess\" type=\"button\" value=\"Seçilenleri Sil\" onclick=\"SecilenleriSilTriggerBtnCl" +
                     "icked();\" />\r\n            </div>\r\n            <div id=\"InvisibleDiv\" style=\"disp" +
                     "lay: none\">\r\n                ");
-            parameterContainer.Controls[53].RenderControl(@__w);
-            @__w.Write("\r\n                ");
-            parameterContainer.Controls[54].RenderControl(@__w);
-            @__w.Write("\r\n                ");
             parameterContainer.Controls[55].RenderControl(@__w);
-            @__w.Write("\r\n            </div>\r\n            ");
+            @__w.Write("\r\n                ");
             parameterContainer.Controls[56].RenderControl(@__w);
+            @__w.Write("\r\n                ");
+            parameterContainer.Controls[57].RenderControl(@__w);
+            @__w.Write("\r\n            </div>\r\n            ");
+            parameterContainer.Controls[58].RenderControl(@__w);
             @__w.Write(@"
         </div>
 
@@ -1771,14 +1818,14 @@ namespace NBYS_WebParts.EkstreListesiWP {
             <div class=""modal-content"">
                 <div class=""modal-body"">
                     ");
-            parameterContainer.Controls[57].RenderControl(@__w);
+            parameterContainer.Controls[59].RenderControl(@__w);
             @__w.Write("\r\n                    ");
-            parameterContainer.Controls[58].RenderControl(@__w);
+            parameterContainer.Controls[60].RenderControl(@__w);
             @__w.Write("\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>");
         }
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private void InitializeControl() {
             this.@__BuildControlTree(this);
             this.Load += new global::System.EventHandler(this.Page_Load);
@@ -1786,14 +1833,14 @@ namespace NBYS_WebParts.EkstreListesiWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected virtual object Eval(string expression) {
             return global::System.Web.UI.DataBinder.Eval(this.Page.GetDataItem(), expression);
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected virtual string Eval(string expression, string format) {
             return global::System.Web.UI.DataBinder.Eval(this.Page.GetDataItem(), expression, format);
         }

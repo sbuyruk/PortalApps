@@ -266,7 +266,7 @@ namespace Model.TBYS
 
             //WHERE MONTH(OdemeTarihi)={0} AND YEAR(OdemeTarihi)={1} {2}
             string kiraciIdStr = kiraciId > 0 ? string.Format(@" AND A.KiraciId={0}", kiraciId) : string.Empty;
-            string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND C.BolgeId={0}", bolgeId);
+            string bolgeStr = ((bolgeId == ProjeConstants.HEPSI_INT) || (bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT)) ? string.Empty : string.Format(" AND C.BolgeId={0}", bolgeId);
             string sqlString = string.Format(@"
 				SELECT A.Id, A.Id OdemeId,A.OdemePlaniId,A.SozlesmeId,A.KiraciId,
 	                A.OdemeTarihi, A.OdenenTutar, A.Aciklama, 

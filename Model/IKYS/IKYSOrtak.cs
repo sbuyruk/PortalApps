@@ -403,7 +403,7 @@ namespace Model.Ortak
         public static void GorevOnayEPostasiGonder(Personel personel, int gorevOnayId, string tip)
         {
             string from = "ikys@tskgv.local";
-            string to = "izinonaymailgrubu@tskgv.local";
+            string to = "gorevonaymailgrubu@tskgv.org.tr";
             string url = string.Empty;
             string body = string.Empty;
             string subject = string.Empty;

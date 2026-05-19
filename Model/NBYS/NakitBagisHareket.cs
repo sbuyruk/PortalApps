@@ -961,7 +961,7 @@ IIF(E.DuzenliBagis=1, 'Düzenli Bağış', IIF(E.CokluBagis=1, 'Çoklu Bağış'
             try
             {
                 dataTable = dao.SelectFromDb(sqlString, "");
-                
+
             }
             catch (Exception e)
             {
@@ -970,6 +970,67 @@ IIF(E.DuzenliBagis=1, 'Düzenli Bağış', IIF(E.CokluBagis=1, 'Çoklu Bağış'
             }
             return dataTable;
         }
+
+        public string SelectIadeEdilenBagislarReturnJson(string ay, string yil)
+        {
+            string sqlString = GetSQLSelectIadeEdilenBagislar(ay, yil);
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            string json = ToJSON(dataTable);
+            return json;
+        }
+
+        public DataTable SelectIadeEdilenBagislarReturnDataTable(string ay, string yil)
+        {
+            string sqlString = GetSQLSelectIadeEdilenBagislar(ay, yil);
+            DataTable dataTable;
+            try
+            {
+                dataTable = dao.SelectFromDb(sqlString, "");
+            }
+            catch (Exception e)
+            {
+                Exception ex = new Exception("sql=" + sqlString, e);
+                throw ex;
+            }
+            return dataTable;
+        }
+
+        private string GetSQLSelectIadeEdilenBagislar(string ay, string yil)
+        {
+            string ayStr;
+            if (ay.Equals(ProjeConstants.HEPSI_INT.ToString()))
+            {
+                ayStr = " ";
+            }
+            else
+            {
+                ayStr = " AND MONTH(A.IadeTarihi)=" + ay.ReturnQuotedValue();
+            }
+
+            string sqlString = string.Format(@"
+                SELECT
+                    A.IadeTarihi,
+                    Convert(nvarchar, replace(ISNULL(A.IadeMiktari,0), '.', ',')) AS IadeMiktari,
+                    ISNULL(A.IadeSebebi,'') AS IadeSebebi,
+                    B.Adi + ' ' + ISNULL(B.Soyadi,'') AS BagisciAdiSoyadi,
+                    A.BagisTarihi,
+                    ISNULL(C.Banka,'') AS Banka,
+                    ISNULL(B.Adres,'') AS Adres,
+                    ISNULL(E.IlAdi,'') AS Ili,
+                    ISNULL(F.IlceAdi,'') AS Ilcesi
+                FROM NakitBagisHareket_Table A
+                INNER JOIN NakitBagisci_Table B ON B.Id = A.BagisciId
+                LEFT JOIN BankaTanim_Table C ON C.Id = A.BankaId
+                LEFT JOIN Il_Table E ON E.Id = B.Ili
+                LEFT JOIN Ilce_Table F ON F.Id = B.Ilcesi
+                WHERE A.IadeEdildiMi = 1
+                  AND YEAR(A.IadeTarihi) = {0}
+                  {1}
+                ORDER BY A.IadeTarihi DESC
+            ", yil, ayStr);
+
+            return sqlString;
+        }
     }
-    
+
 }

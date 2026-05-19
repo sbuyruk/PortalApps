@@ -243,6 +243,7 @@ namespace NBYS_WebParts.EkstreListesiWP
         {
             AkbankLbl.Text = ProjeConstants.BANKA_AKBANK;
             AkbankEkstreLbl.Text = ProjeConstants.BANKA_AKBANKEKSTRE;
+            AlbarakaLbl.Text = ProjeConstants.BANKA_ALBARAKA;
             FinansbankLbl.Text = ProjeConstants.BANKA_FINANSBANK;
             FinansbankEkstreLbl.Text = ProjeConstants.BANKA_FINANSBANKEKSTRE;
             EDevletLbl.Text = ProjeConstants.BANKA_EDEVLETBAGIS;
@@ -262,6 +263,7 @@ namespace NBYS_WebParts.EkstreListesiWP
 
             AkbankOkLbl.Text = string.Empty;
             AkbankEkstreOkLbl.Text = string.Empty;
+            AlbarakaOkLbl.Text = string.Empty;
             FinansbankOkLbl.Text = string.Empty;
             FinansbankEkstreOkLbl.Text = string.Empty;
             EDevletOkLbl.Text = string.Empty;
@@ -292,6 +294,17 @@ namespace NBYS_WebParts.EkstreListesiWP
             {
                 AkbankOkLbl.ForeColor = System.Drawing.Color.Red;
                 AkbankOkLbl.Text = "X";
+            }
+            bool isAlbarakaAktarildi = ekstreAktarma.CheckIsExistByBankaAdiAndIslemTarihi(ProjeConstants.BANKA_ALBARAKA, islemTarihi);
+            if (isAlbarakaAktarildi)
+            {
+                AlbarakaOkLbl.ForeColor = System.Drawing.Color.Green;
+                AlbarakaOkLbl.Text = "  " + ((char)0x221A).ToString();
+            }
+            else
+            {
+                AlbarakaOkLbl.ForeColor = System.Drawing.Color.Red;
+                AlbarakaOkLbl.Text = "X";
             }
             bool isFinansbankAktarildi = ekstreAktarma.CheckIsExistByBankaAdiAndIslemTarihi(ProjeConstants.BANKA_FINANSBANK, islemTarihi);
             if (isFinansbankAktarildi)

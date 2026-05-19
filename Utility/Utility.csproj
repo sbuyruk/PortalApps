@@ -83,6 +83,9 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Temp\albaraka..xlsx" />
+    <None Include="Temp\yapikredi.xlsx" />
+    <None Include="Temp\ziraat-ekstre.xlsx" />
     <None Include="tskgv.snk" />
   </ItemGroup>
   <ItemGroup>

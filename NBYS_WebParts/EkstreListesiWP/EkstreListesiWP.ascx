@@ -120,6 +120,10 @@
                             <asp:Label CssClass="form-label fw-bold" ID="AkbankEkstreOkLbl" runat="server" Text=""></asp:Label>
                         </div>
                         <div class="form-group m-0">
+                            <asp:Label CssClass="form-label" ID="AlbarakaLbl" runat="server" Text="Albaraka"></asp:Label>
+                            <asp:Label CssClass="form-label fw-bold" ID="AlbarakaOkLbl" runat="server" Text=""></asp:Label>
+                        </div>
+                        <div class="form-group m-0">
                             <asp:Label CssClass="form-label" ID="FinansbankLbl" runat="server" Text="Finansbank"></asp:Label>
                             <asp:Label CssClass="form-label fw-bold" ID="FinansbankOkLbl" runat="server" Text=""></asp:Label>
                         </div>
@@ -127,13 +131,14 @@
                             <asp:Label CssClass="form-label" ID="FinansbankEkstreLbl" runat="server" Text="Finansbank (Ekstre)"></asp:Label>
                             <asp:Label CssClass="form-label fw-bold" ID="FinansbankEkstreOkLbl" runat="server" Text=""></asp:Label>
                         </div>
+
+
+                    </div>
+                    <div class="col">
                         <div class="form-group m-0">
                             <asp:Label CssClass="form-label" ID="EDevletLbl" runat="server" Text="EDevlet"></asp:Label>
                             <asp:Label CssClass="form-label fw-bold" ID="EDevletOkLbl" runat="server" Text=""></asp:Label>
                         </div>
-
-                    </div>
-                    <div class="col">
                         <div class="form-group m-0">
                             <asp:Label CssClass="form-label" ID="GarantiLbl" runat="server" Text="Garanti"></asp:Label>
                             <asp:Label CssClass="form-label fw-bold" ID="GarantiOkLbl" runat="server" Text=""></asp:Label>

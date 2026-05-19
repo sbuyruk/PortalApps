@@ -40,262 +40,274 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
     public partial class BankaDosyasiYuklemeWP {
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton CloseBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.TextBox IslemTarihiTxt;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label AkbankLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label AkbankOkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.FileUpload AkbankFU;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label FinansbankLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label FinansbankOkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.FileUpload FinansbankFU;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label GarantiLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label GarantiOkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.FileUpload GarantiFU;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label HalkbankLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label HalkbankOkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.FileUpload HalkbankFU;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label IsbankLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label IsbankOkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.FileUpload IsbankFU;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label TebLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label TebOkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.FileUpload TebFU;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label VakifbankGunlukLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label VakifbankGunlukOkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.FileUpload VakifbankGunlukFU;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label ZiraatLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label ZiraatOkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.FileUpload ZiraatFU;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label AkbankEkstreLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label AkbankEkstreOkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.FileUpload AkbankEkstreFU;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label EDevletLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label EDevletOkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.FileUpload EDevletFU;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label FinansbankEkstreLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label FinansbankEkstreOkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.FileUpload FinansbankEkstreFU;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label GarantiEkstreLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label GarantiEkstreOkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.FileUpload GarantiEkstreFU;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label Halkbank2Lbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label Halkbank2OkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.FileUpload Halkbank2FU;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label IsbankEkstreLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label IsbankEkstreOkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.FileUpload IsbankEkstreFU;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label SMSVakifLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label SMSVakifOkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.FileUpload SMSVakifFU;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label Vakifbank2Lbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label Vakifbank2OkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.FileUpload Vakifbank2FU;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label VakifKatilimLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label VakifKatilimOk;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.FileUpload VakifKatilimFU;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label YKBEkstreLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label YKBEkstreOkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.FileUpload YKBEkstreFU;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label ZiraatEkstreLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label ZiraatEkstreOkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.FileUpload ZiraatEkstreFU;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label ZiraatKatilimLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.Label ZiraatKatilimOkLbl;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.FileUpload ZiraatKatilimFU;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
+        protected global::System.Web.UI.WebControls.Label AlbarakaLbl;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        protected global::System.Web.UI.WebControls.Label AlbarakaOkLbl;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        protected global::System.Web.UI.WebControls.FileUpload AlbarakaFU;
+        
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton KaydetBtn;
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected global::System.Web.UI.WebControls.LinkButton NextBtn;
         
-        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebPartCodeGenerator", "17.0.0.0")]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebPartCodeGenerator", "18.0.0.0")]
         public static implicit operator global::System.Web.UI.TemplateControl(BankaDosyasiYuklemeWP target) 
         {
             return target == null ? null : target.TemplateControl;
@@ -303,7 +315,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlCloseBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -320,7 +332,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControl__control2() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -332,7 +344,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.TextBox @__BuildControlIslemTarihiTxt() {
             global::System.Web.UI.WebControls.TextBox @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.TextBox();
@@ -348,7 +360,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlAkbankLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -364,7 +376,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlAkbankOkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -380,7 +392,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.FileUpload @__BuildControlAkbankFU() {
             global::System.Web.UI.WebControls.FileUpload @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.FileUpload();
@@ -393,7 +405,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlFinansbankLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -409,7 +421,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlFinansbankOkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -425,7 +437,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.FileUpload @__BuildControlFinansbankFU() {
             global::System.Web.UI.WebControls.FileUpload @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.FileUpload();
@@ -439,7 +451,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlGarantiLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -455,7 +467,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlGarantiOkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -471,7 +483,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.FileUpload @__BuildControlGarantiFU() {
             global::System.Web.UI.WebControls.FileUpload @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.FileUpload();
@@ -484,7 +496,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlHalkbankLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -500,7 +512,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlHalkbankOkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -516,7 +528,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.FileUpload @__BuildControlHalkbankFU() {
             global::System.Web.UI.WebControls.FileUpload @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.FileUpload();
@@ -529,7 +541,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlIsbankLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -545,7 +557,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlIsbankOkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -561,7 +573,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.FileUpload @__BuildControlIsbankFU() {
             global::System.Web.UI.WebControls.FileUpload @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.FileUpload();
@@ -574,7 +586,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlTebLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -590,7 +602,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlTebOkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -606,7 +618,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.FileUpload @__BuildControlTebFU() {
             global::System.Web.UI.WebControls.FileUpload @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.FileUpload();
@@ -619,7 +631,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlVakifbankGunlukLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -635,7 +647,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlVakifbankGunlukOkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -650,7 +662,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.FileUpload @__BuildControlVakifbankGunlukFU() {
             global::System.Web.UI.WebControls.FileUpload @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.FileUpload();
@@ -663,7 +675,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlZiraatLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -679,7 +691,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlZiraatOkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -694,7 +706,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.FileUpload @__BuildControlZiraatFU() {
             global::System.Web.UI.WebControls.FileUpload @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.FileUpload();
@@ -707,7 +719,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlAkbankEkstreLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -723,7 +735,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlAkbankEkstreOkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -739,7 +751,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.FileUpload @__BuildControlAkbankEkstreFU() {
             global::System.Web.UI.WebControls.FileUpload @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.FileUpload();
@@ -752,7 +764,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlEDevletLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -768,7 +780,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlEDevletOkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -783,7 +795,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.FileUpload @__BuildControlEDevletFU() {
             global::System.Web.UI.WebControls.FileUpload @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.FileUpload();
@@ -796,7 +808,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlFinansbankEkstreLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -812,7 +824,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlFinansbankEkstreOkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -827,7 +839,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.FileUpload @__BuildControlFinansbankEkstreFU() {
             global::System.Web.UI.WebControls.FileUpload @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.FileUpload();
@@ -840,7 +852,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlGarantiEkstreLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -856,7 +868,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlGarantiEkstreOkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -872,7 +884,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.FileUpload @__BuildControlGarantiEkstreFU() {
             global::System.Web.UI.WebControls.FileUpload @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.FileUpload();
@@ -885,7 +897,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlHalkbank2Lbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -901,7 +913,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlHalkbank2OkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -917,7 +929,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.FileUpload @__BuildControlHalkbank2FU() {
             global::System.Web.UI.WebControls.FileUpload @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.FileUpload();
@@ -930,7 +942,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlIsbankEkstreLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -946,7 +958,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlIsbankEkstreOkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -962,7 +974,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.FileUpload @__BuildControlIsbankEkstreFU() {
             global::System.Web.UI.WebControls.FileUpload @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.FileUpload();
@@ -975,7 +987,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlSMSVakifLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -991,7 +1003,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlSMSVakifOkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -1007,7 +1019,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.FileUpload @__BuildControlSMSVakifFU() {
             global::System.Web.UI.WebControls.FileUpload @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.FileUpload();
@@ -1020,7 +1032,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlVakifbank2Lbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -1036,7 +1048,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlVakifbank2OkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -1052,7 +1064,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.FileUpload @__BuildControlVakifbank2FU() {
             global::System.Web.UI.WebControls.FileUpload @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.FileUpload();
@@ -1066,7 +1078,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlVakifKatilimLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -1082,7 +1094,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlVakifKatilimOk() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -1098,7 +1110,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.FileUpload @__BuildControlVakifKatilimFU() {
             global::System.Web.UI.WebControls.FileUpload @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.FileUpload();
@@ -1112,7 +1124,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlYKBEkstreLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -1128,7 +1140,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlYKBEkstreOkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -1144,7 +1156,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.FileUpload @__BuildControlYKBEkstreFU() {
             global::System.Web.UI.WebControls.FileUpload @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.FileUpload();
@@ -1157,7 +1169,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlZiraatEkstreLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -1173,7 +1185,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlZiraatEkstreOkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -1188,7 +1200,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.FileUpload @__BuildControlZiraatEkstreFU() {
             global::System.Web.UI.WebControls.FileUpload @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.FileUpload();
@@ -1201,7 +1213,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlZiraatKatilimLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -1217,7 +1229,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.Label @__BuildControlZiraatKatilimOkLbl() {
             global::System.Web.UI.WebControls.Label @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.Label();
@@ -1232,7 +1244,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.FileUpload @__BuildControlZiraatKatilimFU() {
             global::System.Web.UI.WebControls.FileUpload @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.FileUpload();
@@ -1245,7 +1257,51 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlAlbarakaLbl() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.AlbarakaLbl = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "AlbarakaLbl";
+            @__ctrl.Text = "ALBARAKA";
+            @__ctrl.Font.Size = global::System.Web.UI.WebControls.FontUnit.XLarge;
+            @__ctrl.Font.Bold = true;
+            @__ctrl.ForeColor = global::System.Drawing.Color.Orange;
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        private global::System.Web.UI.WebControls.Label @__BuildControlAlbarakaOkLbl() {
+            global::System.Web.UI.WebControls.Label @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.Label();
+            this.AlbarakaOkLbl = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "AlbarakaOkLbl";
+            @__ctrl.Font.Size = global::System.Web.UI.WebControls.FontUnit.XLarge;
+            @__ctrl.Font.Bold = true;
+            @__ctrl.ForeColor = ((System.Drawing.Color)(global::System.Drawing.Color.FromArgb(51, 204, 51)));
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
+        private global::System.Web.UI.WebControls.FileUpload @__BuildControlAlbarakaFU() {
+            global::System.Web.UI.WebControls.FileUpload @__ctrl;
+            @__ctrl = new global::System.Web.UI.WebControls.FileUpload();
+            this.AlbarakaFU = @__ctrl;
+            @__ctrl.ApplyStyleSheetSkin(this.Page);
+            @__ctrl.ID = "AlbarakaFU";
+            @__ctrl.CssClass = "form-control";
+            return @__ctrl;
+        }
+        
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
+        [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlKaydetBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -1261,7 +1317,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private global::System.Web.UI.WebControls.LinkButton @__BuildControlNextBtn() {
             global::System.Web.UI.WebControls.LinkButton @__ctrl;
             @__ctrl = new global::System.Web.UI.WebControls.LinkButton();
@@ -1277,7 +1333,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private void @__BuildControlTree(global::NBYS_WebParts.BankaDosyasiYuklemeWP.BankaDosyasiYuklemeWP @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n<div class=\"container-fluid\">\r\n    <div class=\"card text-left shadow\">\r\n     " +
@@ -1615,21 +1671,36 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
             global::System.Web.UI.WebControls.FileUpload @__ctrl63;
             @__ctrl63 = this.@__BuildControlZiraatKatilimFU();
             @__parser.AddParsedSubObject(@__ctrl63);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n                   " +
+                        " <div class=\"card  mt-3\">\r\n                        <div class=\"card-header\">\r\n  " +
+                        "                          "));
+            global::System.Web.UI.WebControls.Label @__ctrl64;
+            @__ctrl64 = this.@__BuildControlAlbarakaLbl();
+            @__parser.AddParsedSubObject(@__ctrl64);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                            "));
+            global::System.Web.UI.WebControls.Label @__ctrl65;
+            @__ctrl65 = this.@__BuildControlAlbarakaOkLbl();
+            @__parser.AddParsedSubObject(@__ctrl65);
+            @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                        <div class=\"card-body\">" +
+                        "\r\n                            "));
+            global::System.Web.UI.WebControls.FileUpload @__ctrl66;
+            @__ctrl66 = this.@__BuildControlAlbarakaFU();
+            @__parser.AddParsedSubObject(@__ctrl66);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n                        </div>\r\n                    </div>\r\n\r\n                <" +
                         "/div>\r\n            </div>\r\n        </div>\r\n        <div id=\"FooterCard\" class=\"c" +
                         "ard-footer\">\r\n            "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl64;
-            @__ctrl64 = this.@__BuildControlKaydetBtn();
-            @__parser.AddParsedSubObject(@__ctrl64);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl67;
+            @__ctrl67 = this.@__BuildControlKaydetBtn();
+            @__parser.AddParsedSubObject(@__ctrl67);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n            "));
-            global::System.Web.UI.WebControls.LinkButton @__ctrl65;
-            @__ctrl65 = this.@__BuildControlNextBtn();
-            @__parser.AddParsedSubObject(@__ctrl65);
+            global::System.Web.UI.WebControls.LinkButton @__ctrl68;
+            @__ctrl68 = this.@__BuildControlNextBtn();
+            @__parser.AddParsedSubObject(@__ctrl68);
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n        </div>\r\n    </div>\r\n</div>\r\n"));
         }
         
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         private void InitializeControl() {
             this.@__BuildControlTree(this);
             this.Load += new global::System.EventHandler(this.Page_Load);
@@ -1637,14 +1708,14 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP {
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected virtual object Eval(string expression) {
             return global::System.Web.UI.DataBinder.Eval(this.Page.GetDataItem(), expression);
         }
         
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
-            "artCodeGenerator", "17.0.0.0")]
+            "artCodeGenerator", "18.0.0.0")]
         protected virtual string Eval(string expression, string format) {
             return global::System.Web.UI.DataBinder.Eval(this.Page.GetDataItem(), expression, format);
         }

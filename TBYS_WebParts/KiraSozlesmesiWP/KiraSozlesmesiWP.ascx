@@ -2,7 +2,6 @@
 <%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
-<%@ Register TagPrefix="asp" Namespace="System.Web.UI" Assembly="System.Web.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" %>
 <%@ Import Namespace="Microsoft.SharePoint" %>
 <%@ Register TagPrefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="KiraSozlesmesiWP.ascx.cs" Inherits="TBYS_WebParts.KiraSozlesmesiWP.KiraSozlesmesiWP" %>
@@ -270,8 +269,8 @@
                             </div>
                             <div class="form-group row">
                                 <div class="form-group col-3">
-                                     <asp:Label ID="DurumDegisimTarihiLbl" runat="server" class="col-form-label">Tarih </asp:Label>
-                                    <asp:TextBox type="ModalDurumDegismeTarTxt" ID="ModalDurumDegismeTarTxt" CssClass="form-control DateTimePickerV1 input-date" runat="server" ReadOnly="true" />
+                                     <asp:Label ID="DurumDegisimTarihiLbl" runat="server" class="col-form-label">Sözleşme Fesih Tarihi </asp:Label>
+                                    <asp:TextBox type="ModalDurumDegismeTarTxt" ID="ModalDurumDegismeTarTxt" CssClass="form-control DateTimePickerV1 input-date" runat="server" onkeydown="return false;" />
                                 </div>
                                <div class="form-group col" id="ArtisOraniDiv" runat="server" style="display:none">
                                    <asp:Label ID="Label1" runat="server" class="col-form-label">Artış Oranı </asp:Label>

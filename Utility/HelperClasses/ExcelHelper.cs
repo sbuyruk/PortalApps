@@ -140,29 +140,44 @@ namespace Utility.HelperClasses
             Worksheet workSheet = worksheetPart.Worksheet;
             SheetData sheetData = workSheet.GetFirstChild<SheetData>();
             IEnumerable<Row> rows = sheetData.Descendants<Row>();
-            for (int i = 0; i < ilkKacSatirHaric; i++)//başlık bilgilerini sil
+            // Boş satırlar XML'de bulunmadığından element-count yerine gerçek Excel satır numarasıyla filtrele
+            if (ilkKacSatirHaric > 0)
             {
-                if (rows.Count<Row>() > 0)
-                    rows.FirstOrDefault().Remove();
+                var rowsToRemoveFirst = rows.Where(r => r.RowIndex != null && r.RowIndex.Value <= (uint)ilkKacSatirHaric).ToList();
+                foreach (var r in rowsToRemoveFirst)
+                    r.Remove();
             }
-            for (int i = 0; i < sonKacSatirHaric; i++)//başlık bilgilerini sil
+            for (int i = 0; i < sonKacSatirHaric; i++)//son satırları sil
             {
                 if (rows.Count<Row>() > 0)
                     rows.LastOrDefault().Remove();
             }
-            int count = 0;
-            foreach (Cell cell in rows.ElementAt(0))
+            // Build columns using the actual cell reference index to account for empty/skipped cells in the header row.
+            // OpenXML omits empty cells from the XML, so sequential counting would produce fewer columns than the
+            // actual sheet width, causing IndexOutOfRangeException when data rows reference a higher column index.
+            // Scan ALL rows to find the true maximum column index, since data rows may be wider than the header row.
+            int maxColumnIndex = -1;
+            foreach (Row r in rows)
             {
-                if (hasTitle) //il satır veri içermiyor. başlık içeriyorsa
+                foreach (Cell cell in r.Descendants<Cell>())
                 {
-                    string cellValue = GetCellValue(spreadSheetDocument, cell);
-                    dataTable.Columns.Add(cellValue.Equals("0") ? "Col_" + count : cellValue);
+                    int idx = CellReferenceToIndex(cell);
+                    if (idx > maxColumnIndex) maxColumnIndex = idx;
+                }
+            }
+            var headerCells = rows.ElementAt(0).Descendants<Cell>().ToList();
+            for (int col = 0; col <= maxColumnIndex; col++)
+            {
+                Cell headerCell = headerCells.FirstOrDefault(c => CellReferenceToIndex(c) == col);
+                if (hasTitle && headerCell != null)
+                {
+                    string cellValue = GetCellValue(spreadSheetDocument, headerCell);
+                    dataTable.Columns.Add(cellValue.Equals("0") ? "Col_" + col : cellValue);
                 }
                 else
                 {
-                    dataTable.Columns.Add("Column_" + count);
+                    dataTable.Columns.Add("Column_" + col);
                 }
-                count++;
             }
 
             foreach (Row row in rows)
@@ -193,12 +208,14 @@ namespace Utility.HelperClasses
             Worksheet workSheet = worksheetPart.Worksheet;
             SheetData sheetData = workSheet.GetFirstChild<SheetData>();
             IEnumerable<Row> rows = sheetData.Descendants<Row>();
-            for (int i = 0; i < ilkKacSatirHaric; i++)//başlık bilgilerini sil
+            // Boş satırlar XML'de bulunmadığından element-count yerine gerçek Excel satır numarasıyla filtrele
+            if (ilkKacSatirHaric > 0)
             {
-                if (rows.Count<Row>() > 0)
-                    rows.FirstOrDefault().Remove();
+                var rowsToRemoveFirst = rows.Where(r => r.RowIndex != null && r.RowIndex.Value <= (uint)ilkKacSatirHaric).ToList();
+                foreach (var r in rowsToRemoveFirst)
+                    r.Remove();
             }
-            for (int i = 0; i < sonKacSatirHaric; i++)//başlık bilgilerini sil
+            for (int i = 0; i < sonKacSatirHaric; i++)//son satırları sil
             {
                 if (rows.Count<Row>() > 0)
                     rows.LastOrDefault().Remove();

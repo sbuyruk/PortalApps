@@ -49,6 +49,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
         bool isVakifKatilimAktarildi = false;
         bool isZiraatKatilimAktarildi = false;
         bool isEDevletAktarildi = false;
+        bool isAlbarakaAktarildi = false;
         private string CurrentUserName
         {
             get
@@ -148,6 +149,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
             Halkbank2Lbl.Text = ProjeConstants.BANKA_HALKBANK2;
             VakifKatilimLbl.Text = ProjeConstants.BANKA_VAKIF_KATILIM;
             ZiraatKatilimLbl.Text = ProjeConstants.BANKA_ZIRAAT_KATILIM;
+            AlbarakaLbl.Text = ProjeConstants.BANKA_ALBARAKA;
 
 
             AkbankOkLbl.Text = string.Empty;
@@ -169,6 +171,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
             Halkbank2OkLbl.Text = string.Empty;
             VakifKatilimOk.Text = string.Empty;
             ZiraatKatilimOkLbl.Text = string.Empty;
+            AlbarakaOkLbl.Text = string.Empty;
         }
         private void checkSavedFiles(DateTime islemTarihi)
         {
@@ -304,6 +307,12 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
                 SMSVakifFU.Enabled = false;
                 SMSVakifOkLbl.Text = "  " + ((char)0x221A).ToString();
             }
+            isAlbarakaAktarildi = ekstreAktarma.CheckIsExistByBankaAdiAndIslemTarihi(ProjeConstants.BANKA_ALBARAKA, islemTarihi);
+            if (isAlbarakaAktarildi)
+            {
+                AlbarakaFU.Enabled = false;
+                AlbarakaOkLbl.Text = "  " + ((char)0x221A).ToString();
+            }
 
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
@@ -325,6 +334,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
         {
             try
             {
+
                 AkbankSave();
                 AkbankEkstreSave();
                 FinansbankSave();
@@ -347,13 +357,14 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
                 VakifKatilimSave();
                 EDevletSave();
                 SMSVakifSave();
+                AlbarakaSave();
                 checkSavedFiles(IslemTarihiTxt.Text.ConvertToDatetime());
                 NextBtn.Visible = (isAkbankAktarildi || isFinansbankAktarildi || isGarantiAktarildi || isGarantiEkstreAktarildi 
                     || isHalkBankAktarildi || isIsbankAktarildi || isIsbankEkstreAktarildi | isYKBEkstreAktarildi
                     || isVakifBankAktarildi || isVakifBankGunlukAktarildi || isVakifBank2Aktarildi || isTEBAktarildi
                     || isHalkbank2Aktarildi || isVakifKatilimAktarildi || isZiraatAktarildi || isZiraatEkstreAktarildi 
                     || isZiraatKatilimAktarildi || isEDevletAktarildi
-                    || isSMSVakifAktarildi);
+                    || isSMSVakifAktarildi || isAlbarakaAktarildi);
 
             }
             catch (Exception ex)
@@ -631,26 +642,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
                 }
             }
         }
-        //private void VakifbankSave()
-        //{
-        //    if (!isVakifBankAktarildi && VakifbankFU.HasFile)
-        //    {
-        //        var exceptionHelper = EkstreAktarma.SaveVakifBankFile(VakifbankFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
-        //        if (exceptionHelper.Exceptions.Count > 0)
-        //        {
-        //            VakifbankFU.Enabled = true;
-        //            VakifbankOkLbl.ForeColor = System.Drawing.Color.Red;
-        //            VakifbankOkLbl.Text = "X";
-        //            exceptionHelper.PublishException();
-        //        }
-        //        else
-        //        {
-        //            VakifbankFU.Enabled = false;
-        //            VakifbankOkLbl.ForeColor = System.Drawing.Color.Green;
-        //            VakifbankOkLbl.Text = "  " + ((char)0x221A).ToString();
-        //        }
-        //    }
-        //}
+
         private void VakifbankGunlukSaveTxt()
         {
             if (!isVakifBankGunlukAktarildi && VakifbankGunlukFU.HasFile)
@@ -731,27 +723,6 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
                 }
             }
         }
-        //private void ZiraatMT940Save()
-        //{
-        //    if (!isZiraatMT940Aktarildi && ZiraatMT940FU.HasFile)
-        //    {
-        //        var exceptionHelper = EkstreAktarma.SaveZiraatMT940File(ZiraatMT940FU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
-
-        //        if (exceptionHelper.Exceptions.Count > 0)
-        //        {
-        //            ZiraatMT940FU.Enabled = true;
-        //            ZiraatMT940OkLbl.ForeColor = System.Drawing.Color.Red;
-        //            ZiraatMT940OkLbl.Text = "X";
-        //            exceptionHelper.PublishException();
-        //        }
-        //        else
-        //        {
-        //            ZiraatMT940FU.Enabled = false;
-        //            ZiraatMT940OkLbl.ForeColor = System.Drawing.Color.Green;
-        //            ZiraatMT940OkLbl.Text = "  " + ((char)0x221A).ToString();
-        //        }
-        //    }
-        //}
         private void ZiraatEkstreSave()
         {
             if (!isZiraatEkstreAktarildi && ZiraatEkstreFU.HasFile)
@@ -811,6 +782,27 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
                     EDevletFU.Enabled = false;
                     EDevletOkLbl.ForeColor = System.Drawing.Color.Green;
                     EDevletOkLbl.Text = "  " + ((char)0x221A).ToString();
+                }
+            }
+        }
+        private void AlbarakaSave()
+        {
+            if (!isAlbarakaAktarildi && AlbarakaFU.HasFile)
+            {
+                var exceptionHelper = EkstreAktarma.SaveAlbarakaFile(AlbarakaFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
+
+                if (exceptionHelper.Exceptions.Count > 0)
+                {
+                    AlbarakaFU.Enabled = true;
+                    AlbarakaOkLbl.ForeColor = System.Drawing.Color.Red;
+                    AlbarakaOkLbl.Text = "X";
+                    exceptionHelper.PublishException();
+                }
+                else
+                {
+                    AlbarakaFU.Enabled = false;
+                    AlbarakaOkLbl.ForeColor = System.Drawing.Color.Green;
+                    AlbarakaOkLbl.Text = "  " + ((char)0x221A).ToString();
                 }
             }
         }
