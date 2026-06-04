@@ -1,4 +1,4 @@
-﻿using Model.NBYS;
+using Model.NBYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -105,8 +105,8 @@ namespace NBYS_WebParts.NBYSParametreGirisiWP
         }
         private void TabloOlustur(List<NBYSParametre> parametreList)
         {
-            var jsonData = TabloJson(parametreList); //veri çekilip json a çeviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = TabloJson(parametreList); //veri �ekilip json a �eviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler,
                 typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), jsString, true);
         }
@@ -169,7 +169,7 @@ namespace NBYS_WebParts.NBYSParametreGirisiWP
                 pItem.Grup = item.Grup;
                 pItem.Anahtar = item.Anahtar;
                 pItem.Deger = item.Deger;
-                pItem.Duzenle = "<a href='#' class='btn btn-outline-primary' onclick=DuzenleSilModalAc(" + item.Id + "," + ProjeConstants.GUNCELLE.ReturnQuotedValue() + ")>Düzenle</a>";
+                pItem.Duzenle = "<a href='#' class='btn btn-outline-primary' onclick=DuzenleSilModalAc(" + item.Id + "," + ProjeConstants.GUNCELLE.ReturnQuotedValue() + ")>D�zenle</a>";
                 pItem.Sil = "<a href='#' class='btn btn-outline-danger' onclick=DuzenleSilModalAc(" + item.Id + "," + ProjeConstants.SIL.ReturnQuotedValue() + ")>Sil</a>";
                 parametreListItemList.Add(pItem);
             }
@@ -213,7 +213,7 @@ namespace NBYS_WebParts.NBYSParametreGirisiWP
                         AnahtarTxt.Enabled = AuthQS.Equals(ProjeConstants.PARAM_YETKI_ADMIN);
                         DegerTxt.Text = nbysParam.Deger;
                         SiraTxt.Text = nbysParam.Sira.ToString();
-                        ModalLbl.Text = "Parametre Düzenleme";
+                        ModalLbl.Text = "Parametre D�zenleme";
                         SilDiv.Attributes["style"] = "display:none";
                         DuzenleDiv.Attributes["style"] = "display:block";
                         ModalLbl.CssClass = "col-form-label text-primary fw-bold";
@@ -223,12 +223,12 @@ namespace NBYS_WebParts.NBYSParametreGirisiWP
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Parametre bulunamadı", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Parametre bulunamadi", ProjeConstants.MESAJ_HATA);
                     }
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Parametre bulunamadı", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Parametre bulunamadi", ProjeConstants.MESAJ_HATA);
                 }
 
             }
@@ -250,7 +250,7 @@ namespace NBYS_WebParts.NBYSParametreGirisiWP
                 else
                 {
                     ModalLbl.Text = "Parametre Silinemez";
-                    MessageLbl.Text = "Silmek istediğiniz parametreyi kullanan uygulamalar bulunmaktadır.";
+                    MessageLbl.Text = "Silmek istediginiz parametreyi kullanan uygulamalar bulunmaktadir.";
                     SilDiv.Attributes["style"] = "display:block";
                     DuzenleDiv.Attributes["style"] = "display:none";
                     ModalLbl.CssClass = "col-form-label text-info fw-bold";
@@ -272,11 +272,11 @@ namespace NBYS_WebParts.NBYSParametreGirisiWP
             {
                 NBYSParametre param = AyniIsimdeVarMi(nbysParametre.Grup, AnahtarTxt.Text, DegerTxt.Text);
 
-                if (param != null)//aynı Deger'li parametre varsa güncellemesin 
+                if (param != null)//ayni Deger'li parametre varsa g�ncellemesin 
                 {
                     CloseModal();
                     TabloyuGuncelle();
-                    MessageHelper.PublishMessage("Güncellenmedi, aynı isimde parametre zaten var.", ProjeConstants.MESAJ_HATA, 2000);
+                    MessageHelper.PublishMessage("G�ncellenmedi, ayni isimde parametre zaten var.", ProjeConstants.MESAJ_HATA, 2000);
                 }
                 else
                 {
@@ -286,18 +286,18 @@ namespace NBYS_WebParts.NBYSParametreGirisiWP
                     if (nbysParametre.Update())
                     {
                         CloseModal();
-                        MessageHelper.PublishMessage("Parametre güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        MessageHelper.PublishMessage("Parametre g�ncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                         TabloyuGuncelle();
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Parametre güncellenemedi!", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Parametre g�ncellenemedi!", ProjeConstants.MESAJ_HATA);
                     }
                 }
             }
             else
             {
-                MessageHelper.PublishMessage("Parametre bulunamadı!", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Parametre bulunamadi!", ProjeConstants.MESAJ_HATA);
             }
         }
 
@@ -327,7 +327,7 @@ namespace NBYS_WebParts.NBYSParametreGirisiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Parametre bulunamadı!", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Parametre bulunamadi!", ProjeConstants.MESAJ_HATA);
             }
 
         }
@@ -342,7 +342,7 @@ namespace NBYS_WebParts.NBYSParametreGirisiWP
                     if (parametre != null)
                     {
                         TabloyuGuncelle();
-                        MessageHelper.PublishMessage("Kaydedilemedi, aynı isimde bir parametre zaten var.", ProjeConstants.MESAJ_HATA, 2000);
+                        MessageHelper.PublishMessage("Kaydedilemedi, ayni isimde bir parametre zaten var.", ProjeConstants.MESAJ_HATA, 2000);
                     }
                     else
                     {
@@ -368,7 +368,7 @@ namespace NBYS_WebParts.NBYSParametreGirisiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Yeni kayıt yapabilmek için parametre grubunu seçmelisiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                MessageHelper.PublishMessage("Yeni kayit yapabilmek i�in parametre grubunu se�melisiniz.", ProjeConstants.MESAJ_BILGI, 2000);
             }
 
         }

@@ -1,4 +1,4 @@
-﻿using Model.NBYS;
+using Model.NBYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -121,7 +121,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
                 ViewState["SenderApp"] = value;
             }
         }
-        private string ParamQS//nakit bagisci düzenlemeden dönüyorsa aranan texti tekrar arasın
+        private string ParamQS//nakit bagisci d�zenlemeden d�n�yorsa aranan texti tekrar arasin
         {
             get
             {
@@ -176,7 +176,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
         {
             //CardHeader.Attributes["Class"] = "btn-primary";
             KaydetBtn.CssClass = "btn btn-outline-primary m-2";
-            KaydetBtn.Text = "Güncelle";
+            KaydetBtn.Text = "G�ncelle";
             if (SenderAppQS.Equals("EkstreListesi") || SenderAppQS.Equals("NBE"))
             {
                 EslestirBtn.Visible = true;
@@ -393,7 +393,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
                 bool isSaved = false;
                 if (string.IsNullOrWhiteSpace(AdiTxt.Text))
                 {
-                    MessageHelper.PublishMessage("Bağışçı Adı boş olamaz. Lütfen bağışçı adını giriniz.", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Bagis�i Adi bos olamaz. L�tfen bagis�i adini giriniz.", ProjeConstants.MESAJ_HATA);
                 }
                 else
                 {

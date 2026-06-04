@@ -1,4 +1,4 @@
-﻿using Model.IKYS;
+using Model.IKYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -55,7 +55,7 @@ namespace IKYS_WebParts.ResmiTatillerWP
             TableHeaderRow thbaslik = new TableHeaderRow();
             TableHeaderCell baslikCell = new TableHeaderCell();
 
-            baslikCell.Text = DateTime.Today.ConvertToDatetimeEmptyIfNull()+" - " + DateTime.Today.AddYears(1).ConvertToDatetimeEmptyIfNull() +" Arası Resmi Tatiller";
+            baslikCell.Text = DateTime.Today.ConvertToDatetimeEmptyIfNull()+" - " + DateTime.Today.AddYears(1).ConvertToDatetimeEmptyIfNull() +" Arasi Resmi Tatiller";
             baslikCell.Font.Bold = true;
             baslikCell.ColumnSpan = 4;
             thbaslik.CssClass = "alert-secondary text-center";
@@ -64,13 +64,13 @@ namespace IKYS_WebParts.ResmiTatillerWP
 
             TableHeaderRow th = new TableHeaderRow();
             TableHeaderCell siraCell = new TableHeaderCell();
-            siraCell.Text = "Sıra";
+            siraCell.Text = "Sira";
             TableHeaderCell resmiTarihCell = new TableHeaderCell();
             resmiTarihCell.Text = "Resmi Tatil";
             TableHeaderCell BaslangicTarCell = new TableHeaderCell();
-            BaslangicTarCell.Text = "Başlangıç Tarihi";
+            BaslangicTarCell.Text = "Baslangi� Tarihi";
             TableHeaderCell BitisTarCell = new TableHeaderCell();
-            BitisTarCell.Text = "Bitiş Tarihi";
+            BitisTarCell.Text = "Bitis Tarihi";
 
             th.Controls.Add(siraCell);
             th.Controls.Add(resmiTarihCell);
@@ -134,7 +134,7 @@ namespace IKYS_WebParts.ResmiTatillerWP
                 TableHeaderRow thbaslik = new TableHeaderRow();
                 TableHeaderCell baslikCell = new TableHeaderCell();
 
-                baslikCell.Text = DateTime.Today.Year + " Yılı Resmi Tatil Listesi";
+                baslikCell.Text = DateTime.Today.Year + " Yili Resmi Tatil Listesi";
                 baslikCell.Font.Bold = true;
                 baslikCell.ColumnSpan = 4;
                 thbaslik.CssClass = "alert-secondary text-center";
@@ -144,7 +144,7 @@ namespace IKYS_WebParts.ResmiTatillerWP
                 TableRow tr = new TableRow();
                 TableCell tc = new TableCell();
                 tc.ColumnSpan = 7;
-                tc.Text = "Kayıtlı resmi tatil bulunmamaktadır.";
+                tc.Text = "Kayitli resmi tatil bulunmamaktadir.";
                 tr.Controls.Add(tc);
                 ResmiTatilTable.Controls.Add(tr);
             }

@@ -1,4 +1,4 @@
-﻿using Model.NBYS;
+using Model.NBYS;
 using Model.Ortak;
 using Model.TBYS;
 using System;
@@ -44,8 +44,8 @@ namespace MFYS_WebParts.AylikParaGirisleriWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = TabloJson(); //veri �ekilip json a �eviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string TabloJson()
@@ -77,7 +77,7 @@ namespace MFYS_WebParts.AylikParaGirisleriWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
                 jQuery(document).ready(function () {
                     jQuery('#CustomDataTable').DataTable({
-                        'initComplete': function (settings, json) {//tablo yüklendiğinde
+                        'initComplete': function (settings, json) {//tablo y�klendiginde
                             var api = this.api();
                             var row = api.row(function (idx, data, node) { //secilen kayda gider
                                 return data['Secildi'] == true;
@@ -119,7 +119,7 @@ namespace MFYS_WebParts.AylikParaGirisleriWP
                             },
                             {
                                 extend: 'excel',
-                                title: 'Aylık Para Girişleri',
+                                title: 'Aylik Para Girisleri',
                                 filename: function(){
                                     var d = new Date();
                                     var n = d.getTime();
@@ -131,7 +131,7 @@ namespace MFYS_WebParts.AylikParaGirisleriWP
                             },
                             {
                                 extend: 'pdf',
-                                title: 'Aylık Para Girişleri',
+                                title: 'Aylik Para Girisleri',
                                 filename: function(){
                                     var d = new Date();
                                     var n = d.getTime();
@@ -239,7 +239,7 @@ namespace MFYS_WebParts.AylikParaGirisleriWP
                 ListItem li = new ListItem(tarih.ToString("MMMM"), tarih.ToString("MM"));
                 AyDDL.Items.Add(li);
             }
-            AyDDL.Items.Add(new ListItem("Tüm Aylar", "0"));
+            AyDDL.Items.Add(new ListItem("T�m Aylar", "0"));
         }
         private void YilDDLDoldur()
         {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net.Mail;
 using System.Text;
 using Utility.ProjeGlobal;
@@ -9,13 +9,13 @@ namespace Utility.HelperClasses
     {
         
         /// <summary>
-        /// Eposta gönderir
+        /// Eposta g�nderir
         /// </summary>
         public static void EPostaGonder(string from, string to, string subject, string body,string smptpAdres)
         {
             if (string.IsNullOrEmpty(to))
             {
-                MessageHelper.PublishMessage("Gideceği adres yok", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Gidecegi adres yok", ProjeConstants.MESAJ_HATA);
             }
             else
             {
@@ -37,8 +37,8 @@ namespace Utility.HelperClasses
                     mail.Body = body;
                     smtp.Send(mail);
 
-                    //MessageHelper.PublishMessage(" E-Posta gönderildi ;) : to= " + to + " konu=" + subject, ProjeConstants.MESAJ_BILGI);
-                    //Console.WriteLine(" E-Posta gönderildi ;) : to= " + to + " konu=" + subject);
+                    //MessageHelper.PublishMessage(" E-Posta g�nderildi ;) : to= " + to + " konu=" + subject, ProjeConstants.MESAJ_BILGI);
+                    //Console.WriteLine(" E-Posta g�nderildi ;) : to= " + to + " konu=" + subject);
                 }
                 catch (System.Exception exception)
                 {
@@ -61,19 +61,19 @@ namespace Utility.HelperClasses
             mail.AlternateViews.Add(m_calV);
             smtp.Send(mail);
 
-            //MessageHelper.PublishMessage(" Takvime ekle gönderildi ;) : to= " + to + " konu=" + title, ProjeConstants.MESAJ_BILGI);
-            //Console.WriteLine(" Takvime ekle gönderildi ;) : to= " + to + " konu=" + title);
+            //MessageHelper.PublishMessage(" Takvime ekle g�nderildi ;) : to= " + to + " konu=" + title, ProjeConstants.MESAJ_BILGI);
+            //Console.WriteLine(" Takvime ekle g�nderildi ;) : to= " + to + " konu=" + title);
         }
         public static void TakvimdenSil(Guid uniqueId, string from, string to, string title, DateTime startTime, DateTime endTime, string location, string desc,string smtpAdres)
         {
             try
             {
-                title = "İptal Edildi : " + title;
-                string desc2 = desc + "\n\n Toplantı iptal edilmiştir. Lütfen takviminizden kaldırmak için 'Takvimden Kaldır' butonuna tıklayınız.";// UtilityHelper.parametreDegeriSorgula("Toplantı Takvimden Kaldırma Mesajı");
+                title = "Iptal Edildi : " + title;
+                string desc2 = desc + "\n\n Toplanti iptal edilmistir. L�tfen takviminizden kaldirmak i�in 'Takvimden Kaldir' butonuna tiklayiniz.";// UtilityHelper.parametreDegeriSorgula("Toplanti Takvimden Kaldirma Mesaji");
 
                 SmtpClient smtp = new SmtpClient(string.IsNullOrEmpty(smtpAdres) ? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI : smtpAdres);
                 MailMessage mail = new MailMessage();
-                mail.From = new MailAddress(from);//new MailAddress(parametreDegeriSorgula("Sistem Hesabı") + parametreDegeriSorgula("EPosta Domain Uzantısı"));
+                mail.From = new MailAddress(from);//new MailAddress(parametreDegeriSorgula("Sistem Hesabi") + parametreDegeriSorgula("EPosta Domain Uzantisi"));
                 mail.Subject = title;
                 mail.IsBodyHtml = true;
                 mail.To.Add(new MailAddress(to));
@@ -83,7 +83,7 @@ namespace Utility.HelperClasses
 
                 mail.AlternateViews.Add(m_calV);
                 smtp.Send(mail);
-                //MessageHelper.PublishMessage(" Takvimden sil gönderildi ;) : to= " + to + " konu=" + title, ProjeConstants.MESAJ_BILGI);
+                //MessageHelper.PublishMessage(" Takvimden sil g�nderildi ;) : to= " + to + " konu=" + title, ProjeConstants.MESAJ_BILGI);
             }
             catch (Exception ex)
             {
@@ -138,7 +138,7 @@ namespace Utility.HelperClasses
             catch (Exception ex)
             {
                 //Logging.WriteTrace(ex);
-                throw ex;
+                throw;
             }
 
             return m_calV;
@@ -186,7 +186,7 @@ namespace Utility.HelperClasses
             govde.Append("<table style=\"width: 100%\" cellspacing=\"0\" cellpadding=\"4\">");
             govde.Append("	<tr>");
             govde.Append("	<td class=\"style2\">");
-            // govde.Append("<img id=\"imgLogo\" src=\"" + rootUrl + "/Style Library/_i/" + parametreDegeriSorgula("Eposta Logo Dosya Adı") + "\"/>");
+            // govde.Append("<img id=\"imgLogo\" src=\"" + rootUrl + "/Style Library/_i/" + parametreDegeriSorgula("Eposta Logo Dosya Adi") + "\"/>");
             govde.Append("<img id=\"imgLogo\" src=\"cid:" + contentId + "\" style=\"border-color: Silver;\"\n");
             govde.Append(" border-width: 2px\";/>");
             govde.Append("</td>");

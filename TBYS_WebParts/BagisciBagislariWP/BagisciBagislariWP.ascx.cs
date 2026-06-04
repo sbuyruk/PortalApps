@@ -1,4 +1,4 @@
-﻿using DocumentFormat.OpenXml.Spreadsheet;
+using DocumentFormat.OpenXml.Spreadsheet;
 using Model.Ortak;
 using Model.TBYS;
 using System;
@@ -128,7 +128,7 @@ namespace TBYS_WebParts.BagisciBagislariWP
             {
                 if (!string.IsNullOrEmpty(MesajQS))
                 {
-                    MessageHelper.PublishMessage("Taşınmaz Eklendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Tasinmaz Eklendi", ProjeConstants.MESAJ_BASARILI, 2000);
                     MesajQS = string.Empty;
                 }
                 TasinmazBagisci bagisci = new TasinmazBagisci();
@@ -139,7 +139,7 @@ namespace TBYS_WebParts.BagisciBagislariWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Bağışçı bulunamadı", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Bagis�i bulunamadi", ProjeConstants.MESAJ_HATA);
                 }
 
             }
@@ -155,31 +155,31 @@ namespace TBYS_WebParts.BagisciBagislariWP
             TableHeaderRow th = new TableHeaderRow();
 
             TableCell siranoCell = new TableCell();
-            siranoCell.Text = "Sırano";
+            siranoCell.Text = "Sirano";
 
             TableCell cinsiCell = new TableCell();
             cinsiCell.Text = "Cinsi";
 
             TableCell kullanimSekliCell = new TableCell();
-            kullanimSekliCell.Text = "Kullanım Şekli";
+            kullanimSekliCell.Text = "Kullanim Sekli";
 
             TableCell iliCell = new TableCell();
-            iliCell.Text = "İl-İlçe";
+            iliCell.Text = "Il-Il�e";
 
             TableCell adresCell = new TableCell();
             adresCell.Text = "Adres";
 
             TableCell mulkiyetCell = new TableCell();
-            mulkiyetCell.Text = "Mülkiyet Şekli";
+            mulkiyetCell.Text = "M�lkiyet Sekli";
 
             TableCell kullanimCell = new TableCell();
             kullanimCell.Text = "Kira Durumu";
 
             TableCell emlakBeyanDegeriCell = new TableCell();
-            emlakBeyanDegeriCell.Text = "Emlak Beyan Değeri";
+            emlakBeyanDegeriCell.Text = "Emlak Beyan Degeri";
 
             TableCell tahminiRayicDegeriCell = new TableCell();
-            tahminiRayicDegeriCell.Text = "Tahmini Rayiç Değeri";
+            tahminiRayicDegeriCell.Text = "Tahmini Rayi� Degeri";
 
             TableCell silCell = new TableCell();
             silCell.Text = "Sil";
@@ -199,7 +199,7 @@ namespace TBYS_WebParts.BagisciBagislariWP
         }
         private void BagisciTasinmazlarTablosunuDoldur(TasinmazBagisci bagisci)
         {
-            TitleLbl.Text = bagisci.Adi + " " + bagisci.Soyadi + " Tarafından Yapılan Bağışlar";
+            TitleLbl.Text = bagisci.Adi + " " + bagisci.Soyadi + " Tarafindan Yapilan Bagislar";
 
             Bagis bagis = new Bagis();
             DataTable dataTable = bagis.SelectTasinmazByBagisciIdReturnDT(bagisci.Id);
@@ -261,15 +261,15 @@ namespace TBYS_WebParts.BagisciBagislariWP
 
                     TableCell CikarCell = new TableCell();
                     LinkButton CikarBtn = new LinkButton();
-                    CikarBtn.Text = "Çıkar";
+                    CikarBtn.Text = "�ikar";
                     CikarBtn.CssClass = "btn btn-outline-danger btn-sm";
 
                     CikarBtn.ID = "CikarBtn" + sira;
                     TableUpdatePanel.ContentTemplateContainer.Controls.Add(CikarBtn);
                     CikarBtn.Click += delegate
                     {
-                        CikarLbl.Text = "Lütfen Dikkat: Taşınmaz Bağışlardan Çıkarılacak";
-                        CikarMesajiLbl.Text = "Seçilen Taşınmazı Bağışlardan Çıkarmak İstediğinizden Emin misiniz?";
+                        CikarLbl.Text = "L�tfen Dikkat: Tasinmaz Bagislardan �ikarilacak";
+                        CikarMesajiLbl.Text = "Se�ilen Tasinmazi Bagislardan �ikarmak Istediginizden Emin misiniz?";
                         //TasinmazIdLbl.Text = tasinmazIdStr;
                         Tasinmaz tasinmaz = new Tasinmaz();
                         tasinmaz = tasinmaz.Select<Tasinmaz>(tasinmazIdStr.ConvertToInt());
@@ -345,17 +345,17 @@ namespace TBYS_WebParts.BagisciBagislariWP
                         }
                         else
                         {
-                            MessageHelper.PublishMessage("Bağışçı bulunamadı", ProjeConstants.MESAJ_HATA);
+                            MessageHelper.PublishMessage("Bagis�i bulunamadi", ProjeConstants.MESAJ_HATA);
                         }
 
-                        MessageHelper.PublishMessage("Bağışlardan Çıkarıldı", ProjeConstants.MESAJ_BASARILI, 2000);
+                        MessageHelper.PublishMessage("Bagislardan �ikarildi", ProjeConstants.MESAJ_BASARILI, 2000);
                     }
                 }
             }
             catch (Exception exception)
             {
                 ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
-                Exception exceptionInfo = new Exception("Taşınmaz Bağışlardan Çıkarılamadı");
+                Exception exceptionInfo = new Exception("Tasinmaz Bagislardan �ikarilamadi");
                 exceptionHelper.Exceptions.Add(exceptionInfo);
                 exceptionHelper.PublishException();
             }
@@ -376,14 +376,14 @@ namespace TBYS_WebParts.BagisciBagislariWP
         }
         protected void TasinmazEkleBtn_Click(object sender, EventArgs e)
         {
-            //popup olarak Tasinmaz Listesini Aç
+            //popup olarak Tasinmaz Listesini A�
             TabloModalOlustur();
             UtilityHelper.ScriptCalistir("OpenModal();");
         }
         private void TabloModalOlustur()
         {
-            var jsonData = TabloModalJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateModalDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = TabloModalJson(); //veri �ekilip json a �eviriliyor
+            var jsString = CreateModalDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string TabloModalJson()
@@ -438,8 +438,8 @@ namespace TBYS_WebParts.BagisciBagislariWP
         protected void TasinmazEkleNowBtnBtn_Click(object sender, EventArgs e)
         {
             //paramTasinmazIdLbl daki TasinmazId'sini al
-            //Bagislarda tasinmazId var mı bak
-            //Seçileni ekle
+            //Bagislarda tasinmazId var mi bak
+            //Se�ileni ekle
             int tasinmazId = paramTasinmazIdLbl.Value.ConvertToInt();
 
             Tasinmaz tasinmaz = new Tasinmaz();
@@ -470,7 +470,7 @@ namespace TBYS_WebParts.BagisciBagislariWP
                 }
                 if (kaydedildiMi)
                 {
-                    MessageHelper.PublishMessage("Bağış Kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Bagis Kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
                     RedirectToPage(ProjeConstants.PAGE_TASINMAZBAGISCI_BAGISLARI + "?Mesaj=true" + "&DestinationApp=TBD&BagisciId=" + bagis.BagisciId);
                 }
             }

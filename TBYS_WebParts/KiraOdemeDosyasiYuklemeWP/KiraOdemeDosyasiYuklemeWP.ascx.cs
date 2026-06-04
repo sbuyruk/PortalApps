@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -123,30 +123,30 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
                     foreach (DataRow row in vakifBank2Data.Rows)
                     {
                         KiraEkstreAktarma kiraEkstreAktarma = new KiraEkstreAktarma();
-                        var hesapNo = row[0].ReturnEmptyIfNull().ToString();//borc satırı için işlem yapma
+                        var hesapNo = row[0].ReturnEmptyIfNull().ToString();//borc satiri i�in islem yapma
                         var islem = row[5].ReturnEmptyIfNull().ToString();
                         var tutar = row[6].ReturnEmptyIfNull().ToString().Replace(".", ",").ConvertToDecimal();//row[6].ReturnEmptyIfNull().ToString();
                         var detay = row[16].ReturnEmptyIfNull().ToString().Replace("'","");
                         aciklamaStr = detay;
-                        if (string.IsNullOrEmpty(hesapNo))// ilk kolon boş ise dosya bitti çık
+                        if (string.IsNullOrEmpty(hesapNo))// ilk kolon bos ise dosya bitti �ik
                         {
                             break;
                         }
                         else if (
-                           detay.Contains("TÜRK SİLAHLI KUVVETLERİNİ GÜÇLENDİRME VAKFI tarafından TÜRK SİLAHLI KUVVETLERİNİ GÜÇLENDİRME VAKFI tarafına gelen")//ziraat bank
-                           || detay.Contains("TÜRK SİLAHLI KUVVETLERİNİ GÜÇLENDİRME V tarafından TÜRK SİLAHLI KUVVETLERİNİ GÜÇLENDİRME VAKFI tarafına gelen") //işbank
-                           || detay.Contains("TÜRK SİLAHLI KUVVETLERİNİ GÜÇL tarafından TÜRK SILAHLI KUVVETLERINI GÜÇLENDIRME VAKFI tarafına gelen ")//garanti bank
+                           detay.Contains("T�RK SILAHLI KUVVETLERINI G��LENDIRME VAKFI tarafindan T�RK SILAHLI KUVVETLERINI G��LENDIRME VAKFI tarafina gelen")//ziraat bank
+                           || detay.Contains("T�RK SILAHLI KUVVETLERINI G��LENDIRME V tarafindan T�RK SILAHLI KUVVETLERINI G��LENDIRME VAKFI tarafina gelen") //isbank
+                           || detay.Contains("T�RK SILAHLI KUVVETLERINI G��L tarafindan T�RK SILAHLI KUVVETLERINI G��LENDIRME VAKFI tarafina gelen ")//garanti bank
                            || detay.Contains(" virman ")
-                           || detay.Contains(" VİRMAN ")
+                           || detay.Contains(" VIRMAN ")
                            || hesapNo.Equals("HESAP NO")
-                           || tutar < 0) //Bu borç demek değil mi?
+                           || tutar < 0) //Bu bor� demek degil mi?
                         {
                             continue;
                         }
                         
                         try
                         {
-                            var borc_alacak = row[15].ReturnEmptyIfNull().ToString();//borc satırı için işlem yapma
+                            var borc_alacak = row[15].ReturnEmptyIfNull().ToString();//borc satiri i�in islem yapma
                             if (borc_alacak.Equals("B"))
                             {
                                 continue;
@@ -173,13 +173,13 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
                             //var vkn = row[14].ReturnEmptyIfNull().ToString();
                             var b_a = row[15].ReturnEmptyIfNull().ToString();
                             //
-                            //var detay = row[16].ReturnEmptyIfNull().ToString(); //yukarıda
+                            //var detay = row[16].ReturnEmptyIfNull().ToString(); //yukarida
                             var aciklama = detay.ToString();
                             var adi = string.Empty;
                             var tel1 = string.Empty;
                             var adres = string.Empty;//adres bilgisi yok
 
-                            var splitText = new string[] { " sorgu numaralı ", " tarafından " };
+                            var splitText = new string[] { " sorgu numarali ", " tarafindan " };
                             var holder = detay.Split(splitText, StringSplitOptions.None);
                             if (holder.Length > 2)
                             {
@@ -189,7 +189,7 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
                             else
                             {
 
-                                var splitTextM = new string[] { "nolu ", " hesabından " };
+                                var splitTextM = new string[] { "nolu ", " hesabindan " };
                                 holder = detay.Split(splitTextM, StringSplitOptions.None);
 
                                 if (holder.Length > 2)
@@ -208,7 +208,7 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
                                     }
                                     else
                                     {
-                                        var splitTextB = new string[] { "A.Ş. ", " hesabından " };
+                                        var splitTextB = new string[] { "A.S. ", " hesabindan " };
                                         holder = detay.Split(splitTextB, StringSplitOptions.None);
                                         if (holder.Length > 2)
                                         {
@@ -216,7 +216,7 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
                                         }
                                         else
                                         {
-                                            var splitTextC = new string[] { "Adına işlem Yapan: " };
+                                            var splitTextC = new string[] { "Adina islem Yapan: " };
                                             holder = detay.Split(splitTextC, StringSplitOptions.None);
                                             if (holder.Length > 1)
                                             {
@@ -224,7 +224,7 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
                                             }
                                             else
                                             {
-                                                var splitTextD = new string[] { "Kiracı Adı:" };
+                                                var splitTextD = new string[] { "Kiraci Adi:" };
                                                 holder = detay.Split(splitTextD, StringSplitOptions.None);
                                                 if (holder.Length > 2)
                                                     adi = holder[2].ReturnEmptyIfNull().ToString().Trim();
@@ -233,28 +233,28 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
                                     }
                                 }
                             }
-                            adi = adi.ToUpper().Replace("KUVEYT TÜRK KATILIM BANKASI A.Ş.", "")
-                                   .Replace("QNB FİNANSBANK A.Ş.", "")
-                                   .Replace("YAPI VE KREDİ BANKASI A.Ş.", "")
-                                   .Replace("TÜRKİYE GARANTİ BANKASI A.Ş.", "")
-                                   .Replace("AKBANK T.A.Ş.", "")
-                                   .Replace("TÜRKİYE GARANTİ BANKASI A.Ş.", "")
-                                   .Replace("TÜRKİYE İŞ BANKASI A.Ş.", "")
-                                   .Replace("TÜRKİYE CUMHURİYETİ ZİRAAT BANKASI A.Ş.", "")
-                                   .Replace("TÜRKİYE HALK BANKASI A.Ş.", "")
-                                   .Replace("TÜRK EKONOMİ BANKASI A.Ş.", "").Trim();
+                            adi = adi.ToUpper().Replace("KUVEYT T�RK KATILIM BANKASI A.S.", "")
+                                   .Replace("QNB FINANSBANK A.S.", "")
+                                   .Replace("YAPI VE KREDI BANKASI A.S.", "")
+                                   .Replace("T�RKIYE GARANTI BANKASI A.S.", "")
+                                   .Replace("AKBANK T.A.S.", "")
+                                   .Replace("T�RKIYE GARANTI BANKASI A.S.", "")
+                                   .Replace("T�RKIYE IS BANKASI A.S.", "")
+                                   .Replace("T�RKIYE CUMHURIYETI ZIRAAT BANKASI A.S.", "")
+                                   .Replace("T�RKIYE HALK BANKASI A.S.", "")
+                                   .Replace("T�RK EKONOMI BANKASI A.S.", "").Trim();
 
-                            //işlem numarası varsa kaydı atla
+                            //islem numarasi varsa kaydi atla
                             KiraEkstreAktarma keaDao = new KiraEkstreAktarma();
                             List<KiraEkstreAktarma> bulunanIslemNolar = keaDao.SelectByIslemNo(islemno);
                             if (bulunanIslemNolar.Count > 0)
                             {
-                                Exception kayitVar = new Exception("İşlem Numarası Çakışıyor. (" + adi + ", " + tutar + "TL, " + hareketTar);
+                                Exception kayitVar = new Exception("Islem Numarasi �akisiyor. (" + adi + ", " + tutar + "TL, " + hareketTar);
                                 exceptionHelper.Exceptions.Add(kayitVar);
                                 continue;
                             }
                             int kiraciId = 0;
-                            if (true)// Borç Alacak Ayrımı için
+                            if (true)// Bor� Alacak Ayrimi i�in
                             {
                                 kiraEkstreAktarma.Aciklama = aciklama;
                                 kiraEkstreAktarma.OdemeSebebiId = OdemeSebebiBelirle(kiraEkstreAktarma,islem);
@@ -274,7 +274,7 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
                                     }
                                     else
                                     {
-                                        // SB DosyaNo ile konu çözülemiyor! o yüzden kapandı
+                                        // SB DosyaNo ile konu ��z�lemiyor! o y�zden kapandi
                                         //bool birdenCokSozlesmesiVarMi = BirdenCokSozlesmesiVarMi(adi);
                                         //if (birdenCokSozlesmesiVarMi)
                                         //{
@@ -301,7 +301,7 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
                                     kiraEkstreAktarma.Olusturan = currentUser;
                                     
                                     kiraEkstreAktarma.Save();  
-                                }else if (true)//Kira veya Teminat değilse 
+                                }else if (true)//Kira veya Teminat degilse 
                                 {
 
                                     kiraEkstreAktarma.Adi = aciklama ;
@@ -347,41 +347,41 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
                 odemeSebebiId = ProjeConstants.ODEMESEBEBI_BATCH_YATAN_INT;
             }
             else if ((islem.Contains(ProjeConstants.ODEMESEBEBI_BATCH_KOMISYONU)) ||
-               islem.ToUpper(cultureInfo).Contains("BATCH KOMİSYONU") ||
+               islem.ToUpper(cultureInfo).Contains("BATCH KOMISYONU") ||
                islem.ToLower(cultureInfo).Contains("Batch Komisyonu"))
             {
                 odemeSebebiId = ProjeConstants.ODEMESEBEBI_BATCH_KOMISYONU_INT;
             }
             else if ((islem.Contains(ProjeConstants.ODEMESEBEBI_OTOMATIK_SUPURME)) ||
-               islem.ToUpper(cultureInfo).Contains("OTOMATİK SÜPÜRME İŞLEMLERİ VİRMAN") ||
-               islem.ToLower(cultureInfo).Contains("Otomatik Süpürme İşlemleri Virman"))
+               islem.ToUpper(cultureInfo).Contains("OTOMATIK S�P�RME ISLEMLERI VIRMAN") ||
+               islem.ToLower(cultureInfo).Contains("Otomatik S�p�rme Islemleri Virman"))
             {
                 odemeSebebiId = ProjeConstants.ODEMESEBEBI_OTOMATIK_SUPURME_INT;
             }
             else if ((islem.Contains(ProjeConstants.ODEMESEBEBI_VALOR_CEK_YATIR)) ||
-               islem.ToUpper(cultureInfo).Contains("VALOR İŞLEMİ İÇİN PARA ÇEK VE YATIR") ||
-               islem.ToLower(cultureInfo).Contains("Valor İşlemi İçin Para Çek ve Yatır"))
+               islem.ToUpper(cultureInfo).Contains("VALOR ISLEMI I�IN PARA �EK VE YATIR") ||
+               islem.ToLower(cultureInfo).Contains("Valor Islemi I�in Para �ek ve Yatir"))
             {
                 odemeSebebiId = ProjeConstants.ODEMESEBEBI_VALOR_CEK_YATIR_INT;
             }
             else if ((islem.Contains(ProjeConstants.ODEMESEBEBI_YATIRIM_FONU_SATIS)) ||
-               islem.ToUpper(cultureInfo).Contains("YATIRIM FONU SATIŞ") ||
-               islem.ToLower(cultureInfo).Contains("Yatırım Fonu Satış"))
+               islem.ToUpper(cultureInfo).Contains("YATIRIM FONU SATIS") ||
+               islem.ToLower(cultureInfo).Contains("Yatirim Fonu Satis"))
             {
                 odemeSebebiId = ProjeConstants.ODEMESEBEBI_YATIRIM_FONU_SATIS_INT;
             }
-            //yoksa açıklamaya bak
+            //yoksa a�iklamaya bak
             else if (kiraEkstreAktarma != null && kiraEkstreAktarma.Aciklama != null)
             {
                 if ((kiraEkstreAktarma.Aciklama.Contains(ProjeConstants.ODEMESEBEBI_GECICITEMINAT)) ||
-                        kiraEkstreAktarma.Aciklama.ToUpper(cultureInfo).Contains("GEÇİCİ TEMİNAT") ||
-                        kiraEkstreAktarma.Aciklama.ToLower(cultureInfo).Contains("geçici teminat"))
+                        kiraEkstreAktarma.Aciklama.ToUpper(cultureInfo).Contains("GE�ICI TEMINAT") ||
+                        kiraEkstreAktarma.Aciklama.ToLower(cultureInfo).Contains("ge�ici teminat"))
                 {
                     odemeSebebiId = ProjeConstants.ODEMESEBEBI_GECICITEMINAT_INT;
                 }
                 else if ((kiraEkstreAktarma.Aciklama.Contains(ProjeConstants.ODEMESEBEBI_KESINTEMINAT) ||
                     (kiraEkstreAktarma.Aciklama.Contains(ProjeConstants.TEMINAT_ODEMESI)) ||
-                    kiraEkstreAktarma.Aciklama.ToUpper(cultureInfo).Contains("TEMİNAT")) ||
+                    kiraEkstreAktarma.Aciklama.ToUpper(cultureInfo).Contains("TEMINAT")) ||
                     kiraEkstreAktarma.Aciklama.ToLower(cultureInfo).Contains("teminat"))
                 {
                     odemeSebebiId = ProjeConstants.ODEMESEBEBI_KESINTEMINAT_INT;
@@ -390,34 +390,34 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
                 {
                     odemeSebebiId = ProjeConstants.ODEMESEBEBI_KIRA_INT;
                 }
-                else if ((kiraEkstreAktarma.Aciklama.ToUpper(cultureInfo).Contains("KİRA BEDELİ")) ||
+                else if ((kiraEkstreAktarma.Aciklama.ToUpper(cultureInfo).Contains("KIRA BEDELI")) ||
                     (kiraEkstreAktarma.Aciklama.ToLower(cultureInfo).Contains("kira bedeli")) ||
                     (kiraEkstreAktarma.Aciklama.ToLower(cultureInfo).Contains("kira")) ||
-                    (kiraEkstreAktarma.Aciklama.ToUpper(cultureInfo).Contains("KİRA")))
+                    (kiraEkstreAktarma.Aciklama.ToUpper(cultureInfo).Contains("KIRA")))
                 {
                     odemeSebebiId = ProjeConstants.ODEMESEBEBI_KIRA_INT;
                 }
                 else if ((kiraEkstreAktarma.Aciklama.Contains(ProjeConstants.ODEMESEBEBI_AIDAT)) ||
-                    kiraEkstreAktarma.Aciklama.ToUpper(cultureInfo).Contains("AİDAT") ||
+                    kiraEkstreAktarma.Aciklama.ToUpper(cultureInfo).Contains("AIDAT") ||
                     (kiraEkstreAktarma.Aciklama.ToLower(cultureInfo).Contains("aidat")))
                 {
                     odemeSebebiId = ProjeConstants.ODEMESEBEBI_AIDAT_INT;
                 }
                 else if ((kiraEkstreAktarma.Aciklama.Contains(ProjeConstants.ODEMESEBEBI_SIGORTA)) ||
-                        (kiraEkstreAktarma.Aciklama.ToUpper(cultureInfo).Contains("SİGORTA")) ||
+                        (kiraEkstreAktarma.Aciklama.ToUpper(cultureInfo).Contains("SIGORTA")) ||
                     (kiraEkstreAktarma.Aciklama.ToLower(cultureInfo).Contains("sigorta")))
                 {
                     odemeSebebiId = ProjeConstants.ODEMESEBEBI_SIGORTA_INT;
                 }
                 else if ((kiraEkstreAktarma.Aciklama.Contains(ProjeConstants.ODEMESEBEBI_AVUKATLIKUCRETI)) ||
                     kiraEkstreAktarma.Aciklama.ToUpper(cultureInfo).Contains("AVUKATLIK") ||
-                    kiraEkstreAktarma.Aciklama.ToLower(cultureInfo).Contains("avukatlık"))
+                    kiraEkstreAktarma.Aciklama.ToLower(cultureInfo).Contains("avukatlik"))
                 {
                     odemeSebebiId = ProjeConstants.ODEMESEBEBI_AVUKATLIKUCRETI_INT;
                 }
                 else if ((kiraEkstreAktarma.Aciklama.Contains(ProjeConstants.ODEMESEBEBI_YARGILAMAUCRETI)) ||
                     kiraEkstreAktarma.Aciklama.ToUpper(cultureInfo).Contains("YARGILAMA") ||
-                    kiraEkstreAktarma.Aciklama.ToLower(cultureInfo).Contains("yargılama"))
+                    kiraEkstreAktarma.Aciklama.ToLower(cultureInfo).Contains("yargilama"))
                 {
                     odemeSebebiId = ProjeConstants.ODEMESEBEBI_YARGILAMAUCRETI_INT;
                 }
@@ -428,8 +428,8 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
                     odemeSebebiId = ProjeConstants.ODEMESEBEBI_AVANSIADESI_INT;
                 }
                 else if ((kiraEkstreAktarma.Aciklama.Contains(ProjeConstants.ODEMESEBEBI_SATIS)) ||
-                        (kiraEkstreAktarma.Aciklama.ToUpper(cultureInfo).Contains("SATIŞ")) ||
-                    kiraEkstreAktarma.Aciklama.ToLower(cultureInfo).Contains("satış"))
+                        (kiraEkstreAktarma.Aciklama.ToUpper(cultureInfo).Contains("SATIS")) ||
+                    kiraEkstreAktarma.Aciklama.ToLower(cultureInfo).Contains("satis"))
                 {
                     odemeSebebiId = ProjeConstants.ODEMESEBEBI_SATIS_INT;
                 }
@@ -453,7 +453,7 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
             int kiraciId = 0;
             if (!string.IsNullOrEmpty(adi))
             {
-                //kiraEkstreAktarma Listesinde kiraciId>0 olan kayıtları ada göre sorgulasın 
+                //kiraEkstreAktarma Listesinde kiraciId>0 olan kayitlari ada g�re sorgulasin 
                 KiraEkstreAktarma keaDao = new KiraEkstreAktarma();
                 List<KiraEkstreAktarma> keaList = keaDao.SelectKiraciIdByAdi(adi);
                 foreach (var item in keaList)
@@ -464,7 +464,7 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
                         break;
                     }
                 }
-                //kiraci tablosundaki kayıtları isme göre sorgulasın
+                //kiraci tablosundaki kayitlari isme g�re sorgulasin
                 if (kiraciId < 1)
                 {
                     Kiraci kiraciDao = new Kiraci();
@@ -486,7 +486,7 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
             bool varMi = false;
             if (!string.IsNullOrEmpty(adi))
             {
-                //kiraci tablosundaki kayıtları isme göre sorgulasın
+                //kiraci tablosundaki kayitlari isme g�re sorgulasin
                 Kiraci kiraciDao = new Kiraci();
                 List<Kiraci> kiraciList = kiraciDao.SelectByAdi(adi);
                 if (kiraciList.Count > 1)
@@ -503,7 +503,7 @@ namespace TBYS_WebParts.KiraOdemeDosyasiYuklemeWP
             bool varMi = false;
             if (!string.IsNullOrEmpty(adi))
             {
-                //kiraSozlesme tablosundaki kayıtları isme göre sorgulasın
+                //kiraSozlesme tablosundaki kayitlari isme g�re sorgulasin
                 KiraSozlesme kirasozlesmeDao = new KiraSozlesme();
                 List<KiraSozlesme> sozlesmeList = kirasozlesmeDao.SelectByKiraciAdi(adi);
                 if (sozlesmeList.Count > 1)

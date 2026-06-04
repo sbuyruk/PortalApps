@@ -1,4 +1,4 @@
-ï»¿using Model.MYS;
+using Model.MYS;
 using Model.Ortak;
 using System;
 using System.ComponentModel;
@@ -141,7 +141,7 @@ namespace MYS_WebParts.MalzemeKategoriGirisWP
             UpdateBtn.Visible = true;
             DeleteBtn.Visible = true;
             TitleLbl.CssClass = "col-form-primary  btn-outline-primary mb-1";
-            TitleLbl.Text = "Malzeme Kategorisi DÃ¼zenleme";
+            TitleLbl.Text = "Malzeme Kategorisi Düzenleme";
             MalzemeKategori kategori = new MalzemeKategori();
             kategori = kategori.Select<MalzemeKategori>(MalzemeKategoriIdQS.ConvertToInt());
             if (!Page.IsPostBack)
@@ -192,7 +192,7 @@ namespace MYS_WebParts.MalzemeKategoriGirisWP
                     mk.KisaAdi = KisaAdiTxt.Text;
                     mk.Degistiren = CurrentUserName;
                     mk.Update();
-                    MessageHelper.PublishMessage("Kategori GÃ¼ncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Kategori Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                     RedirectToPage(ProjeConstants.PAGE_MALZEMEKATEGORI_LIST + "?Mesaj=true");
                 }
 

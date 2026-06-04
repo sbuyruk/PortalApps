@@ -1,4 +1,4 @@
-﻿using Model.IKYS;
+using Model.IKYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -199,10 +199,10 @@ namespace IKYS_WebParts.EgitimGirisiWP
                         if (isDeleted)
                         {
                             FillOkulTable(personel);
-                            MessageHelper.PublishMessage("Kayıt Silindi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                            MessageHelper.PublishMessage("Kayit Silindi.", ProjeConstants.MESAJ_BASARILI, 2000);
                         }
                         else
-                            MessageHelper.PublishMessage("Kayıt Silinemedi.", ProjeConstants.MESAJ_HATA);
+                            MessageHelper.PublishMessage("Kayit Silinemedi.", ProjeConstants.MESAJ_HATA);
                     }
                     catch (Exception exception)
                     {
@@ -262,10 +262,10 @@ namespace IKYS_WebParts.EgitimGirisiWP
                         if (isDeleted)
                         {
                             FillKursTable(personel);
-                            MessageHelper.PublishMessage("Kayıt Silindi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                            MessageHelper.PublishMessage("Kayit Silindi.", ProjeConstants.MESAJ_BASARILI, 2000);
                         }
                         else
-                            MessageHelper.PublishMessage("Kayıt Silinemedi.", ProjeConstants.MESAJ_HATA);
+                            MessageHelper.PublishMessage("Kayit Silinemedi.", ProjeConstants.MESAJ_HATA);
                     }
                     catch (Exception exception)
                     {
@@ -325,10 +325,10 @@ namespace IKYS_WebParts.EgitimGirisiWP
                         if (isDeleted)
                         {
                             FillIsyeriTable(personel);
-                            MessageHelper.PublishMessage("Kayıt Silindi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                            MessageHelper.PublishMessage("Kayit Silindi.", ProjeConstants.MESAJ_BASARILI, 2000);
                         }
                         else
-                            MessageHelper.PublishMessage("Kayıt Silinemedi.", ProjeConstants.MESAJ_HATA);
+                            MessageHelper.PublishMessage("Kayit Silinemedi.", ProjeConstants.MESAJ_HATA);
                     }
                     catch (Exception exception)
                     {
@@ -346,7 +346,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
         {
            
 
-            string[] headers = { "Sıra", "Yabancı Dil","Sınav Adı","Sınav Notu","Sınav Tarihi","Açıklama" };
+            string[] headers = { "Sira", "Yabanci Dil","Sinav Adi","Sinav Notu","Sinav Tarihi","A�iklama" };
             UtilityHelper.SetTableHeaders(YabanciDilTable,headers);
 
             YabanciDil dilDao = new YabanciDil();
@@ -393,10 +393,10 @@ namespace IKYS_WebParts.EgitimGirisiWP
                         if (isDeleted)
                         {
                             FillYabanciDilTable(personel);
-                            MessageHelper.PublishMessage("Kayıt Silindi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                            MessageHelper.PublishMessage("Kayit Silindi.", ProjeConstants.MESAJ_BASARILI, 2000);
                         }
                         else
-                            MessageHelper.PublishMessage("Kayıt Silinemedi.", ProjeConstants.MESAJ_HATA);
+                            MessageHelper.PublishMessage("Kayit Silinemedi.", ProjeConstants.MESAJ_HATA);
                     }
                     catch (Exception exception)
                     {
@@ -432,7 +432,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
             OkulTable.Rows.Clear();
             TableHeaderRow th = new TableHeaderRow();
             TableHeaderCell siraCell = new TableHeaderCell();
-            siraCell.Text = "Sıra";
+            siraCell.Text = "Sira";
             TableHeaderCell OkulCell = new TableHeaderCell();
             OkulCell.Text = "Okul";
             TableHeaderCell SeviyeCell = new TableHeaderCell();
@@ -440,7 +440,7 @@ namespace IKYS_WebParts.EgitimGirisiWP
             TableHeaderCell MezuniyetTarCell = new TableHeaderCell();
             MezuniyetTarCell.Text = "Mezuniyet Tarihi";
             TableHeaderCell AciklamaCell = new TableHeaderCell();
-            AciklamaCell.Text = "Açıklama";
+            AciklamaCell.Text = "A�iklama";
             TableHeaderCell SilCell = new TableHeaderCell();
             SilCell.Text = "Sil";
 
@@ -458,11 +458,11 @@ namespace IKYS_WebParts.EgitimGirisiWP
             KursTable.Rows.Clear();
             TableHeaderRow th = new TableHeaderRow();
             TableHeaderCell siraCell = new TableHeaderCell();
-            siraCell.Text = "Sıra";
+            siraCell.Text = "Sira";
             TableHeaderCell KursCell = new TableHeaderCell();
-            KursCell.Text = "Kurs/Eğt/Sertifika";
+            KursCell.Text = "Kurs/Egt/Sertifika";
             TableHeaderCell SureCell = new TableHeaderCell();
-            SureCell.Text = "Kurs Süresi";
+            SureCell.Text = "Kurs S�resi";
             TableHeaderCell TarihCell = new TableHeaderCell();
             TarihCell.Text = "Tarih";
             TableHeaderCell VerenKurumCell = new TableHeaderCell();
@@ -484,13 +484,13 @@ namespace IKYS_WebParts.EgitimGirisiWP
             IsyeriTable.Rows.Clear();
             TableHeaderRow th = new TableHeaderRow();
             TableHeaderCell siraCell = new TableHeaderCell();
-            siraCell.Text = "Sıra";
+            siraCell.Text = "Sira";
             TableHeaderCell IsyeriCell = new TableHeaderCell();
-            IsyeriCell.Text = "Çalıştığı İşyeri";
+            IsyeriCell.Text = "�alistigi Isyeri";
             TableHeaderCell GorevCell = new TableHeaderCell();
-            GorevCell.Text = "Yaptığı Görev";
+            GorevCell.Text = "Yaptigi G�rev";
             TableHeaderCell BasTarCell = new TableHeaderCell();
-            BasTarCell.Text = "Başlama Tarihi";
+            BasTarCell.Text = "Baslama Tarihi";
             TableHeaderCell BitTarCell = new TableHeaderCell();
             BitTarCell.Text = "Ayrilma Tarihi";
 
@@ -532,11 +532,11 @@ namespace IKYS_WebParts.EgitimGirisiWP
                 {
                     Personel personel = PersonelGetir();
                     FillOkulTable(personel);
-                    MessageHelper.PublishMessage("Kayıt Eklendi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Kayit Eklendi.", ProjeConstants.MESAJ_BASARILI, 2000);
                 }
 
                 else
-                    MessageHelper.PublishMessage("Kayıt Eklenemedi.", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Kayit Eklenemedi.", ProjeConstants.MESAJ_HATA);
             }
             catch (Exception exception)
             {
@@ -614,11 +614,11 @@ namespace IKYS_WebParts.EgitimGirisiWP
                 {
                     Personel personel = PersonelGetir();
                     FillKursTable(personel);
-                    MessageHelper.PublishMessage("Kayıt Eklendi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Kayit Eklendi.", ProjeConstants.MESAJ_BASARILI, 2000);
                 }
 
                 else
-                    MessageHelper.PublishMessage("Kayıt Eklenemedi.", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Kayit Eklenemedi.", ProjeConstants.MESAJ_HATA);
             }
             catch (Exception exception)
             {
@@ -636,11 +636,11 @@ namespace IKYS_WebParts.EgitimGirisiWP
                 {
                     Personel personel = PersonelGetir();
                     FillIsyeriTable(personel);
-                    MessageHelper.PublishMessage("Kayıt Eklendi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Kayit Eklendi.", ProjeConstants.MESAJ_BASARILI, 2000);
                 }
 
                 else
-                    MessageHelper.PublishMessage("Kayıt Eklenemedi.", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Kayit Eklenemedi.", ProjeConstants.MESAJ_HATA);
             }
             catch (Exception exception)
             {
@@ -659,11 +659,11 @@ namespace IKYS_WebParts.EgitimGirisiWP
                 {
                     Personel personel = PersonelGetir();
                     FillYabanciDilTable(personel);
-                    MessageHelper.PublishMessage("Kayıt Eklendi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Kayit Eklendi.", ProjeConstants.MESAJ_BASARILI, 2000);
                 }
 
                 else
-                    MessageHelper.PublishMessage("Kayıt Eklenemedi.", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Kayit Eklenemedi.", ProjeConstants.MESAJ_HATA);
             }
             catch (Exception exception)
             {

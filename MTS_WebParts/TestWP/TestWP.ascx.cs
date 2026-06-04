@@ -1,4 +1,4 @@
-﻿using Microsoft.Office.Audit.Schema.SharePoint;
+using Microsoft.Office.Audit.Schema.SharePoint;
 using Model.Portal;
 using System;
 using System.ComponentModel;
@@ -50,7 +50,7 @@ namespace MTS_WebParts.TestWP
             string from = "Makam Takip Sistemi <mts@tskgv.local>";
             string userto = "asbuyruk@tskgv.org.tr";
             string baslik = "Deneme Randevu";
-            string yer = "Makam Odası";
+            string yer = "Makam Odasi";
             MailHelper.TakvimeEkle(toplanti.UniqueId, from, userto, baslik, DateTime.Now.AddDays(-10), DateTime.Now.AddHours(1), yer, toplanti.Aciklama, ProjeConstants.PARAM_INTERNET_SMTP_IP_ADRESI);
         }
         protected void TakvimDegistirBtn_Click(object sender, EventArgs e)
@@ -61,7 +61,7 @@ namespace MTS_WebParts.TestWP
             string from = "Makam Takip Sistemi <mts@tskgv.local>";
             string userto = "asbuyruk@tskgv.org.tr";
             string baslik = "Deneme Randevu";
-            string yer = "Makam Odası";
+            string yer = "Makam Odasi";
             DateTime bastar = toplanti.BaslangicTarihi.AddDays(1);
             DateTime bittar = toplanti.BitisTarihi.AddDays(1);
             MailHelper.TakvimeEkle(toplanti.UniqueId, from, userto, baslik, bastar, bittar, yer, toplanti.Aciklama, ProjeConstants.PARAM_INTERNET_SMTP_IP_ADRESI);
@@ -73,8 +73,8 @@ namespace MTS_WebParts.TestWP
 
             string from = "Makam Takip Sistemi <mts@tskgv.local>";
             string userto = "asbuyruk@tskgv.org.tr";
-            string baslik = "Deneme Randevu Değişti";
-            string yer = "Öbür Oda";
+            string baslik = "Deneme Randevu Degisti";
+            string yer = "�b�r Oda";
             DateTime bastar = toplanti.BaslangicTarihi.AddDays(1);
             DateTime bittar = toplanti.BitisTarihi.AddDays(1);
             MailHelper.TakvimdenSil(toplanti.UniqueId, from, userto, baslik, bastar, bittar, yer, toplanti.Aciklama, ProjeConstants.PARAM_INTERNET_SMTP_IP_ADRESI);

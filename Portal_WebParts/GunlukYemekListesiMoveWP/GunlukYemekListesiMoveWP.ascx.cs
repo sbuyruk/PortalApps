@@ -1,4 +1,4 @@
-﻿using Microsoft.SharePoint;
+using Microsoft.SharePoint;
 using System;
 using System.ComponentModel;
 using System.Data;
@@ -141,7 +141,7 @@ namespace Portal_WebParts.GunlukYemekListesiMoveWP
             {
                 YokDiv.Attributes["style"] = "display : block";
                 TabloDiv.Attributes["style"] = "display : none";
-                YokLbl.Text = DateTime.Now.ConvertToDatetimeEmptyIfNull() + " tarihi için tanımlanmış yemek menüsü bulunamamıştır.";
+                YokLbl.Text = DateTime.Now.ConvertToDatetimeEmptyIfNull() + " tarihi i�in tanimlanmis yemek men�s� bulunamamistir.";
 
             }
 
@@ -176,9 +176,9 @@ namespace Portal_WebParts.GunlukYemekListesiMoveWP
 
             TableHeaderRow th = new TableHeaderRow();
             TableHeaderCell siraCell = new TableHeaderCell();
-            siraCell.Text = "Sıra";
+            siraCell.Text = "Sira";
             TableHeaderCell yemekCell = new TableHeaderCell();
-            yemekCell.Text = "Yemek Adı";
+            yemekCell.Text = "Yemek Adi";
             TableHeaderCell kaloriCell = new TableHeaderCell();
             kaloriCell.Text = "Kalori";
 

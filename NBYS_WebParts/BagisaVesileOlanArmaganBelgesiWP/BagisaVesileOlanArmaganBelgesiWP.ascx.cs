@@ -1,4 +1,4 @@
-﻿using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.SharePoint;
 using Model.NBYS;
@@ -40,7 +40,7 @@ namespace NBYS_WebParts.BagisaVesileOlanArmaganBelgesiWP
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            //time out olmasın diye
+            //time out olmasin diye
             ScriptManager _scriptMan = ScriptManager.GetCurrent(Page);
             _scriptMan.AsyncPostBackTimeout = 36000;
             if (!Page.IsPostBack)
@@ -53,9 +53,9 @@ namespace NBYS_WebParts.BagisaVesileOlanArmaganBelgesiWP
         {
             DateTime bugun = DateTime.Today;
 
-            ImzalayanTxt.Text = @"Bilal TOPÇU";
+            ImzalayanTxt.Text = @"Bilal TOP�U";
             ImzalayanUnvanTxt.Text = string.Empty;
-            ImzalayanMakamTxt.Text = @"Genel Müdür";
+            ImzalayanMakamTxt.Text = @"Genel M�d�r";
             BelgeTarihiTxt.Text = bugun.ToString("dd") + " " + bugun.ToString("MMMM") + " " + bugun.Year;
         }
 
@@ -63,18 +63,18 @@ namespace NBYS_WebParts.BagisaVesileOlanArmaganBelgesiWP
 
         private void TabloOlustur()
         {
-            var jsonData = GetData(); //veri çekilip json a çeviriliyor
+            var jsonData = GetData(); //veri �ekilip json a �eviriliyor
 
             bool jasonDataBosMu = string.IsNullOrWhiteSpace(jsonData.Replace("[", "").Replace("]", "").Replace("{", "").Replace("}", ""));
             if (!jasonDataBosMu)
             {
                 DosyaOlusturBtn.Visible = true;
-                var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+                var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
                 UtilityHelper.ScriptCalistir(jsString);
             }
             else
             {
-                TableDataLbl.Text = "Teşekkür Belgesi bulunmamaktadır.";
+                TableDataLbl.Text = "Tesekk�r Belgesi bulunmamaktadir.";
                 //DosyaOlusturBtn.Visible = false;
             }
         }
@@ -137,19 +137,19 @@ namespace NBYS_WebParts.BagisaVesileOlanArmaganBelgesiWP
             {
                 BagisaVesileOlanTesekkur bagisaVesileOlanTesekkur = BagisaVesileOlanTesekkurKaydet();
 
-                // Dosya adları 
+                // Dosya adlari 
                 string zaman = DateTime.Now.ToString("dd-MM-yyyy-HH-mm");
                 string yaziDosyaAdi = "BagisaVesileOlanTesekkurBelgesi(" + zaman + ").docx";
                 bool isYaziOlusturuldu = TesekkurBelgesiDosyasiOlustur(yaziDosyaAdi, bagisaVesileOlanTesekkur);
                 if (isYaziOlusturuldu)
                 {
-                    MessageHelper.PublishMessage("Teşekkür belgesi hazırlandı, Dosya ismine basarak yazıyı indirebilirsiniz.", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Tesekk�r belgesi hazirlandi, Dosya ismine basarak yaziyi indirebilirsiniz.", ProjeConstants.MESAJ_BASARILI, 2000);
                 }
 
             }
             catch (Exception ex)
             {
-                Exception ex1 = new Exception("Yazı oluşturmada hata");
+                Exception ex1 = new Exception("Yazi olusturmada hata");
                 ExceptionHelper exh = new ExceptionHelper(ex);
                 exh.PublishException();
             }
@@ -256,7 +256,7 @@ namespace NBYS_WebParts.BagisaVesileOlanArmaganBelgesiWP
                 {
                     sw.Write(docText);
                 }
-                //boş sayfa ekle
+                //bos sayfa ekle
                 //Paragraph PageBreakParagraph = new Paragraph(new DocumentFormat.OpenXml.Wordprocessing.Run(new DocumentFormat.OpenXml.Wordprocessing.Break() { Type = BreakValues.Page }));
                 //wordDoc.MainDocumentPart.Document.Body.Append(PageBreakParagraph);
 
@@ -323,7 +323,7 @@ namespace NBYS_WebParts.BagisaVesileOlanArmaganBelgesiWP
             }
             catch (Exception ex)
             {
-                Exception e1 = new Exception("GetTemplateStream() hatası");
+                Exception e1 = new Exception("GetTemplateStream() hatasi");
                 ExceptionHelper eh = new ExceptionHelper(ex);
                 eh.Exceptions.Add(e1);
                 eh.PublishException();

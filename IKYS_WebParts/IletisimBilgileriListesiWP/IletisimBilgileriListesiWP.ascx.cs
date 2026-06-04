@@ -1,4 +1,4 @@
-嚜簑sing Model.IKYS;
+using Model.IKYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -257,11 +257,11 @@ namespace IKYS_WebParts.IletisimBilgileriListesiWP
             TableHeaderRow th = new TableHeaderRow();
             th.CssClass = "sticky-top";
             TableHeaderCell siraCell = new TableHeaderCell();
-            siraCell.Text = "S覺ra";
+            siraCell.Text = "Sira";
             TableHeaderCell adiSoyadiCell = new TableHeaderCell();
-            adiSoyadiCell.Text = "Ad覺 Soyad覺";
+            adiSoyadiCell.Text = "Adi Soyadi";
             TableHeaderCell goreviCell = new TableHeaderCell();
-            goreviCell.Text = "G繹revi";
+            goreviCell.Text = "G顤evi";
             TableHeaderCell dahiliTelCell = new TableHeaderCell();
             dahiliTelCell.Text = "Dahili Tel.";
             TableHeaderCell evtTelCell = new TableHeaderCell();
@@ -271,7 +271,7 @@ namespace IKYS_WebParts.IletisimBilgileriListesiWP
             TableHeaderCell kurumEPostaCell = new TableHeaderCell();
             kurumEPostaCell.Text = "Kurum E-Posta";
             TableHeaderCell plakaCell = new TableHeaderCell();
-            plakaCell.Text = "Ara癟Plakas覺";
+            plakaCell.Text = "Ara蔩lakasi";
 
             th.Controls.Add(siraCell);
             th.Controls.Add(adiSoyadiCell);

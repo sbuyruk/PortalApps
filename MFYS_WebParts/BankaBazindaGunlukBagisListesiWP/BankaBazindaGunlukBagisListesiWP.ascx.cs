@@ -1,4 +1,4 @@
-﻿using Model.NBYS;
+using Model.NBYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -45,8 +45,8 @@ namespace MFYS_WebParts.BankaBazindaGunlukBagisListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = TabloJson(); //veri �ekilip json a �eviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string TabloJson()
@@ -78,9 +78,9 @@ namespace MFYS_WebParts.BankaBazindaGunlukBagisListesiWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
                 jQuery(document).ready(function () {
                     jQuery('#CustomDataTable').DataTable({
-                        'initComplete': function (settings, json) {//tablo yüklendiğinde
+                        'initComplete': function (settings, json) {//tablo y�klendiginde
                             var api = this.api();
-                            var row = api.row(function (idx, data, node) { //secilen toplantıya gider
+                            var row = api.row(function (idx, data, node) { //secilen toplantiya gider
                                 return data['Secildi'] == true;
                             });
                             if (row.length > 0) {
@@ -117,7 +117,7 @@ namespace MFYS_WebParts.BankaBazindaGunlukBagisListesiWP
                             },
                             {
                                 extend: 'excel',
-                                title: 'Banka Bazında Günlük Bağışlar (TL)',
+                                title: 'Banka Bazinda G�nl�k Bagislar (TL)',
                                 filename: function(){
                                     var d = new Date();
                                     var n = d.getTime();
@@ -129,7 +129,7 @@ namespace MFYS_WebParts.BankaBazindaGunlukBagisListesiWP
                             },
                             {
                                 extend: 'pdf',
-                                title: 'Banka Bazında Günlük Bağışlar (TL)',
+                                title: 'Banka Bazinda G�nl�k Bagislar (TL)',
                                 filename: function(){
                                     var d = new Date();
                                     var n = d.getTime();
@@ -204,7 +204,7 @@ namespace MFYS_WebParts.BankaBazindaGunlukBagisListesiWP
                 {
                     BankaDDL.Items.Add(new ListItem(banka, banka));
                 }
-                //BankaDDL.Items.Add(new ListItem("Tüm Bankalar", "0"));
+                //BankaDDL.Items.Add(new ListItem("T�m Bankalar", "0"));
             }
         }
         private void AyDDLDoldur()
@@ -218,7 +218,7 @@ namespace MFYS_WebParts.BankaBazindaGunlukBagisListesiWP
                 ListItem li = new ListItem(tarih.ToString("MMMM"), tarih.ToString("MM"));
                 AyDDL.Items.Add(li);
             }
-            AyDDL.Items.Add(new ListItem("Tüm Aylar", "0"));
+            AyDDL.Items.Add(new ListItem("T�m Aylar", "0"));
         }
         private void YilDDLDoldur()
         {

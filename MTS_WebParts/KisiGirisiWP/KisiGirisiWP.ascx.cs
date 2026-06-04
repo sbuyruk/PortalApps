@@ -1,4 +1,4 @@
-﻿using System.Web.UI.WebControls;
+using System.Web.UI.WebControls;
 using Model.MTS;
 using Model.Ortak;
 using System;
@@ -57,7 +57,7 @@ namespace MTS_WebParts.KisiGirisiWP
         
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!Page.IsPostBack)// sayfa ilk kez açılıyorsa (bu sayfanın içindeki butona basılma anı hariç)
+            if (!Page.IsPostBack)// sayfa ilk kez a�iliyorsa (bu sayfanin i�indeki butona basilma ani hari�)
             {
                 
                 MTSUnvanDDLDoldur();
@@ -76,25 +76,25 @@ namespace MTS_WebParts.KisiGirisiWP
                         GuncelleBtn.Visible = true;
                         //KisiyiSilBtn.Visible = true;
                         FaaliyetGirBtn.Visible = true;
-                        TitleLbl.Text = "Kişi Düzenle";
+                        TitleLbl.Text = "Kisi D�zenle";
                         TitleLbl.CssClass = "col-form-label text-primary fw-bold mb-1";
                         FormuDoldur();
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Kişi Bulunamadı",ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Kisi Bulunamadi",ProjeConstants.MESAJ_HATA);
                     }
                 }
                 else
                 {
-                    TitleLbl.Text = "Kişi Girişi";
+                    TitleLbl.Text = "Kisi Girisi";
                     TitleLbl.CssClass = "col-form-label text-success fw-bold mb-1";
                     IdLbl.Text = string.Empty;
                     KaydetBtn.Visible = true;
                     GuncelleBtn.Visible = false;
                     KisiyiSilBtn.Visible = false;
                     FaaliyetGirBtn.Visible = false;
-                    MessageHelper.PublishMessage("Yeni kişi bilgilerini girerek kayıt yapabilirsiniz.", ProjeConstants.MESAJ_BILGI,2000);
+                    MessageHelper.PublishMessage("Yeni kisi bilgilerini girerek kayit yapabilirsiniz.", ProjeConstants.MESAJ_BILGI,2000);
                 }
             }
         }
@@ -211,7 +211,7 @@ namespace MTS_WebParts.KisiGirisiWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Kisi Bulunamadı", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Kisi Bulunamadi", ProjeConstants.MESAJ_HATA);
                 }
 
             }
@@ -222,17 +222,17 @@ namespace MTS_WebParts.KisiGirisiWP
             {
                 if (string.IsNullOrEmpty(AdiTxt.Text))
                 {
-                    MessageHelper.PublishMessage("Kişi Adı Boş Olamaz.", ProjeConstants.MESAJ_HATA, 2000);
+                    MessageHelper.PublishMessage("Kisi Adi Bos Olamaz.", ProjeConstants.MESAJ_HATA, 2000);
                 }
                 else if (string.IsNullOrEmpty(SoyadiTxt.Text))
                 {
-                    MessageHelper.PublishMessage("Kişi Soyadı Boş Olamaz.", ProjeConstants.MESAJ_HATA, 2000);
+                    MessageHelper.PublishMessage("Kisi Soyadi Bos Olamaz.", ProjeConstants.MESAJ_HATA, 2000);
                 }
                 else
                 {
                     if (KayitVarMi(TCKimlikNoTxt.Text))
                     {
-                        MessageHelper.PublishMessage("Bu TCKimlik numaralı bir kayıt zaten var.", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Bu TCKimlik numarali bir kayit zaten var.", ProjeConstants.MESAJ_HATA);
                     }else                        
                     {
                         Kisi yeniKisi = new Kisi();
@@ -269,11 +269,11 @@ namespace MTS_WebParts.KisiGirisiWP
                         {
                             KisiIdQS = yeniId.ToString();
                             RedirectToPage(ProjeConstants.PAGE_KISI_GIRIS + "?KisiId=" + KisiIdQS);
-                            MessageHelper.PublishMessage("Kişi Kaydedildi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                            MessageHelper.PublishMessage("Kisi Kaydedildi.", ProjeConstants.MESAJ_BASARILI, 2000);
                         }
                         else
                         {
-                            MessageHelper.PublishMessage("Kişi Kaydedilemedi.", ProjeConstants.MESAJ_HATA);
+                            MessageHelper.PublishMessage("Kisi Kaydedilemedi.", ProjeConstants.MESAJ_HATA);
                         } 
                     }
                 }
@@ -374,11 +374,11 @@ namespace MTS_WebParts.KisiGirisiWP
 
                 if (string.IsNullOrEmpty(AdiTxt.Text))
                 {
-                    MessageHelper.PublishMessage("Kişi Adı Boş Olamaz.", ProjeConstants.MESAJ_HATA, 2000);
+                    MessageHelper.PublishMessage("Kisi Adi Bos Olamaz.", ProjeConstants.MESAJ_HATA, 2000);
                 }
                 else if (string.IsNullOrEmpty(SoyadiTxt.Text))
                 {
-                    MessageHelper.PublishMessage("Kişi Soyadı Boş Olamaz.", ProjeConstants.MESAJ_HATA, 2000);
+                    MessageHelper.PublishMessage("Kisi Soyadi Bos Olamaz.", ProjeConstants.MESAJ_HATA, 2000);
                 }
                 else
                 {
@@ -386,11 +386,11 @@ namespace MTS_WebParts.KisiGirisiWP
                     if (guncellendiMi)
                     {
                         RedirectToPage(ProjeConstants.PAGE_KISI_LIST+"?SecilenId="+kisi.Id);
-                        MessageHelper.PublishMessage("Kişi Güncellendi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                        MessageHelper.PublishMessage("Kisi G�ncellendi.", ProjeConstants.MESAJ_BASARILI, 2000);
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Kişi Güncellenmedi.", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Kisi G�ncellenmedi.", ProjeConstants.MESAJ_HATA);
                     }
                 }
 
@@ -417,7 +417,7 @@ namespace MTS_WebParts.KisiGirisiWP
         }
         protected void KisiyiSilBtn_Click(object sender, EventArgs e)
         {
-            //Kişi Silme Kaldırıldı
+            //Kisi Silme Kaldirildi
             try
             {
                 Kisi kisi = new Kisi();
@@ -430,7 +430,7 @@ namespace MTS_WebParts.KisiGirisiWP
             catch (Exception e1)
             {
                 ExceptionHelper eh = new ExceptionHelper();
-                Exception e2 = new Exception("Kişi silinemedi");
+                Exception e2 = new Exception("Kisi silinemedi");
                 eh.Exceptions.Add(e2);
                 eh.Exceptions.Add(e1);
                 eh.PublishException();
@@ -455,13 +455,13 @@ namespace MTS_WebParts.KisiGirisiWP
             if (averilenAniObjesiVarmi)
             {
                 silinebilirMi = false;
-                OnayMesajiLbl.Text += " Seçtiğiniz kişiye verilen anı objesi kaydı bulunmaktadır." + "</br>";
+                OnayMesajiLbl.Text += " Se�tiginiz kisiye verilen ani objesi kaydi bulunmaktadir." + "</br>";
             }
             bool getirilenAniObjesiVarmi = GetirilenAniObjesiVarMi(KisiIdQS.ConvertToInt());
             if (getirilenAniObjesiVarmi)
             {
                 silinebilirMi = false;
-                OnayMesajiLbl.Text += " Seçtiğiniz kişinin getirdiği anı objesi kaydı bulunmaktadır." + "</br>";
+                OnayMesajiLbl.Text += " Se�tiginiz kisinin getirdigi ani objesi kaydi bulunmaktadir." + "</br>";
             }
             
 
@@ -472,7 +472,7 @@ namespace MTS_WebParts.KisiGirisiWP
             {
                 silinebilirMi = false;
                 
-                OnayMesajiLbl.Text += "Seçtiğiniz kişinin katıldığı faaliyet bulunmaktadır." + "</br>";
+                OnayMesajiLbl.Text += "Se�tiginiz kisinin katildigi faaliyet bulunmaktadir." + "</br>";
 
 
             }
@@ -483,7 +483,7 @@ namespace MTS_WebParts.KisiGirisiWP
             {
                 silinebilirMi = false;
 
-                OnayMesajiLbl.Text += "Seçtiğiniz kişinin arama/görüşme kaydı bulunmaktadır." + "</br>";
+                OnayMesajiLbl.Text += "Se�tiginiz kisinin arama/g�r�sme kaydi bulunmaktadir." + "</br>";
 
 
             }
@@ -491,7 +491,7 @@ namespace MTS_WebParts.KisiGirisiWP
             {
                 kaydetGuncelleSilHdn.Value = ProjeConstants.SIL;
                 OnayMesajiLbl.Visible = true;
-                OnayMesajiLbl.Text = kisi.Adi +" "+kisi.Soyadi +" adlı kişiyi silmek istediğinizden emin misiniz?";
+                OnayMesajiLbl.Text = kisi.Adi +" "+kisi.Soyadi +" adli kisiyi silmek istediginizden emin misiniz?";
                 ModalBaslikLbl.Text = kisi.Adi + " " + kisi.Soyadi + " Silinecek";
                 KisiSilNowBtn.Visible = true;
             }
@@ -530,13 +530,13 @@ namespace MTS_WebParts.KisiGirisiWP
                 }
                 if (!silindi)
                 {
-                    MessageHelper.PublishMessage("Kişi Silinemedi", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Kisi Silinemedi", ProjeConstants.MESAJ_HATA);
                 }
             }
             catch (Exception e1)
             {
                 ExceptionHelper eh = new ExceptionHelper();
-                Exception e2 = new Exception("Kişi silinemedi");
+                Exception e2 = new Exception("Kisi silinemedi");
                 eh.Exceptions.Add(e2);
                 eh.Exceptions.Add(e1);
                 eh.PublishException();
@@ -556,7 +556,7 @@ namespace MTS_WebParts.KisiGirisiWP
             catch (Exception e1)
             {
                 ExceptionHelper eh = new ExceptionHelper();
-                Exception e2 = new Exception("Kişi bulunamadı");
+                Exception e2 = new Exception("Kisi bulunamadi");
                 eh.Exceptions.Add(e2);
                 eh.Exceptions.Add(e1);
                 eh.PublishException();
@@ -569,8 +569,8 @@ namespace MTS_WebParts.KisiGirisiWP
             string openModal = "OpenModalOnay();";
             kaydetGuncelleSilHdn.Value = ProjeConstants.YENI;
             OnayMesajiLbl.Visible = true;
-            OnayMesajiLbl.Text = "Yeni faaliyet kaydı açılmasının onaylıyor musunuz?";
-            ModalBaslikLbl.Text = "Yeni Faaliyet Oluşturulacak";
+            OnayMesajiLbl.Text = "Yeni faaliyet kaydi a�ilmasinin onayliyor musunuz?";
+            ModalBaslikLbl.Text = "Yeni Faaliyet Olusturulacak";
             KisiSilNowBtn.Visible = false;
             OnaylaBtn.Visible = true;
             OnaylaBtn.CssClass = "btn btn-outline-success";
@@ -646,18 +646,18 @@ namespace MTS_WebParts.KisiGirisiWP
                             }
                             else
                             {
-                                throw new Exception("Faaliyet oluşturuldu, ancak katilimci eklenemedi");
+                                throw new Exception("Faaliyet olusturuldu, ancak katilimci eklenemedi");
                             }
                         }
                     }
                     else
                     {
-                        throw new Exception("Faaliyet oluşturulamadı.");
+                        throw new Exception("Faaliyet olusturulamadi.");
                     }
                 }
                 else
                 {
-                    throw new Exception("Kişi Bulunamadı");
+                    throw new Exception("Kisi Bulunamadi");
                 }
 
                 ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "CloseModalOnay();", true);
@@ -689,7 +689,7 @@ namespace MTS_WebParts.KisiGirisiWP
         {
             if (AdSoyadVarMi(AdiTxt.Text, SoyadiTxt.Text))
             {
-                MessageHelper.PublishMessage("Bu AD ve SOYADI içeren bir kayıt zaten var. Lütfen kaydetmeden önce kontrol ediniz ", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Bu AD ve SOYADI i�eren bir kayit zaten var. L�tfen kaydetmeden �nce kontrol ediniz ", ProjeConstants.MESAJ_HATA);
             }
         }
     }

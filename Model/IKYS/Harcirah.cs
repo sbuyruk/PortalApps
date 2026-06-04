@@ -1,4 +1,4 @@
-﻿
+
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -65,7 +65,7 @@ namespace Model.IKYS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
 
 
@@ -128,7 +128,7 @@ namespace Model.IKYS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
         }
         public override List<T> SelectAll<T>()

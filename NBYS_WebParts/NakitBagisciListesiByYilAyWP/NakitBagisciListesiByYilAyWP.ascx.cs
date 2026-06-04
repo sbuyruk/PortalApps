@@ -1,4 +1,4 @@
-﻿using Model.NBYS;
+using Model.NBYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -136,7 +136,7 @@ namespace NBYS_WebParts.NakitBagisciListesiByYilAyWP
                 ListItem li = new ListItem(tarih.ToString("MMMM"), tarih.ToString("MM"));
                 AyDDL.Items.Add(li);
             }
-            AyDDL.Items.Add(new ListItem("Tüm Aylar", "0"));
+            AyDDL.Items.Add(new ListItem("T�m Aylar", "0"));
         }
         private void YilDDLDoldur()
         {
@@ -202,8 +202,8 @@ namespace NBYS_WebParts.NakitBagisciListesiByYilAyWP
         private void TabloOlustur()
         {
             
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = TabloJson(); //veri �ekilip json a �eviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string TabloJson()
@@ -327,7 +327,7 @@ namespace NBYS_WebParts.NakitBagisciListesiByYilAyWP
                 bolge = bolge.Select<Bolge>(BolgeIdQS);
                 if (bolge == null || bolge.Id == ProjeConstants.BOLGE_GENELMUDURLUK_INT)
                 {
-                    BaslikTH.InnerText = ilkTarih.ToString("dd.MM.yyyy") + " - " + sonTarih.ToString("dd.MM.yyyy") + " Tarihleri Arası Nakit Bağışlar";
+                    BaslikTH.InnerText = ilkTarih.ToString("dd.MM.yyyy") + " - " + sonTarih.ToString("dd.MM.yyyy") + " Tarihleri Arasi Nakit Bagislar";
                 }
                 
                 foreach (DataRow row in dataTable.Rows)
@@ -359,7 +359,7 @@ namespace NBYS_WebParts.NakitBagisciListesiByYilAyWP
                     bagisItem.Ilcesi = ilcesi;
                     bagisItem.Adres = adres;
                     bagisItem.NakitBagisciId = nakitBagisciId;
-                    bagisItem.BelgeIstemiyor = belgeIstemiyor ? "Belge İstemiyor" : string.Empty;
+                    bagisItem.BelgeIstemiyor = belgeIstemiyor ? "Belge Istemiyor" : string.Empty;
                     bagisItem.Armagan = armagan;
                     bagisItem.CokluBagis = cokluBagis;
                     bagisItem.ArmaganDurumu = armaganDurumu;
@@ -411,8 +411,8 @@ namespace NBYS_WebParts.NakitBagisciListesiByYilAyWP
         private void ModalTabloOlustur()
         {
 
-            var jsonData = ModalTabloJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateModalDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = ModalTabloJson(); //veri �ekilip json a �eviriliyor
+            var jsString = CreateModalDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string ModalTabloJson()
@@ -508,7 +508,7 @@ namespace NBYS_WebParts.NakitBagisciListesiByYilAyWP
                     bagisItem.Ilcesi = ilcesi;
                     bagisItem.Adres = adres;
                     bagisItem.NakitBagisciId = nakitBagisciId;
-                    bagisItem.BelgeIstemiyor = belgeIstemiyor ? "Belge İstemiyor" : string.Empty;
+                    bagisItem.BelgeIstemiyor = belgeIstemiyor ? "Belge Istemiyor" : string.Empty;
                     bagisItem.Armagan = armagan;
                     bagisItem.CokluBagis = cokluBagis;
                     bagisItem.ArmaganDurumu = armaganDurumu;

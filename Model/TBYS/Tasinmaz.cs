@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -127,7 +127,7 @@ namespace Model.TBYS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public override bool Update()
@@ -184,7 +184,7 @@ namespace Model.TBYS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public Tasinmaz Select(int id)
@@ -285,7 +285,7 @@ namespace Model.TBYS
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
         }
         /// <summary>
-        /// Bağışçısı olmayan envanterdeki taşınmazları getir Ortak bağışlar dahil
+        /// Bagis�isi olmayan envanterdeki tasinmazlari getir Ortak bagislar dahil
         /// </summary>
         /// <returns></returns>
         public DataTable SelectBagiscisiOlmayanTasinmazlarByBagsciIdReturnDT()
@@ -423,9 +423,9 @@ namespace Model.TBYS
                     T.TapuTasinmazNo, T.Cinsi, T.MulkiyetSekli, T.KirayaUygunluk,T.KiraDurumu, T.EdinmeSekli, T.BagisYili, T.Nitelik,
                     T.BulunduguKat, T.BagimsizBolumNo, T.TamHisse, T.HisseMiktariPay, T.HisseMiktariPayda, T.ToplamKatSayisi, T.InsaYili,
                     T.Metrekare, T.ToplamMetrekare, T.ProjeM2, T.ZeminTipi, T.ZeminHisse, T.BBBrutAlan, T.BBNetAlan, T.EnvantereGirisTarihi,
-                    IIF(T.KatMulkiyeti = 1, 'Kat Mülkiyeti Var', 'Kat Mülkiyeti Yok') AS KatMulkiyeti,
-                    IIF(T.KatIrtifaki = 1, 'Kat İrtifakı Var', 'Kat İrtifakı Yok') AS KatIrtifaki,
-                    IIF(T.AltBolum = 1, 'Kat Alt Bölüm Var', 'Kat Alt Bölüm Yok') AS AltBolum,
+                    IIF(T.KatMulkiyeti = 1, 'Kat M�lkiyeti Var', 'Kat M�lkiyeti Yok') AS KatMulkiyeti,
+                    IIF(T.KatIrtifaki = 1, 'Kat Irtifaki Var', 'Kat Irtifaki Yok') AS KatIrtifaki,
+                    IIF(T.AltBolum = 1, 'Kat Alt B�l�m Var', 'Kat Alt B�l�m Yok') AS AltBolum,
                     T.TapuTarihi, T.TapuIslemTarihi, T.EmlakSicilNo, T.SigortaDurumu, T.Aciklama,
                     T.EmlakBeyanDegeri, T.TahminiRayicDegeri,T.YaklasikPiyasaDegeri,T.MuhasebeyeKayitliDeger,  
                     T. MalikSayisi,T.BagimsizBolumSayisi,
@@ -455,9 +455,9 @@ namespace Model.TBYS
             //     T.TapuTasinmazNo,T.Cinsi, T.MulkiyetSekli,T.KirayaUygunluk,T.EdinmeSekli,T.BagisYili,T.Nitelik,
             //     T.BulunduguKat, T.BagimsizBolumNo,T.TamHisse,T.HisseMiktariPay,T.HisseMiktariPayda,T.ToplamKatSayisi,T.InsaYili,
             //     T.Metrekare,T.ToplamMetrekare,T.ProjeM2,T.ZeminTipi,T.ZeminHisse, T.BBBrutAlan,T.BBNetAlan,T.EnvantereGirisTarihi,
-            //        IIF(T.KatMulkiyeti=1,'Kat Mülkiyeti Var','Kat Mülkiyeti Yok') KatMulkiyeti,
-            //     IIF(T.KatIrtifaki=1,'Kat İrtifakı Var','Kat İrtifakı Yok') KatIrtifaki,
-            //        IIF(T.AltBolum=1,'Kat Alt Bölüm Var','Kat Alt Bölüm Yok') AltBolum,
+            //        IIF(T.KatMulkiyeti=1,'Kat M�lkiyeti Var','Kat M�lkiyeti Yok') KatMulkiyeti,
+            //     IIF(T.KatIrtifaki=1,'Kat Irtifaki Var','Kat Irtifaki Yok') KatIrtifaki,
+            //        IIF(T.AltBolum=1,'Kat Alt B�l�m Var','Kat Alt B�l�m Yok') AltBolum,
             //     T.TapuTarihi,T.TapuIslemTarihi,T.EmlakSicilNo, T.EmlakBeyanDegeri,T.TahminiRayicDegeri,T.SigortaDurumu,T.Aciklama
             //    FROM Tasinmaz_Table T
             //        LEFT OUTER JOIN Bagis_Table A ON A.TasinmazId=T.Id
@@ -780,13 +780,13 @@ namespace Model.TBYS
             }
             return Adet;
         }
-        public int SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(int bolgeId, string kullanimSekli, string kiraDurumu, string mülkiyetSekli, string kirayaUygunluk = null)
+        public int SelectTasinmazAdetByBolgeKullanimSekliKiraDurumu(int bolgeId, string kullanimSekli, string kiraDurumu, string m�lkiyetSekli, string kirayaUygunluk = null)
         {
             string whereStr = string.Empty;
             if (!string.IsNullOrEmpty(kiraDurumu))
                 whereStr = " AND KiraDurumu = " + kiraDurumu.ReturnQuotedValue();
-            if (!string.IsNullOrEmpty(mülkiyetSekli))
-                whereStr += " AND MulkiyetSekli = " + mülkiyetSekli.ReturnQuotedValue();
+            if (!string.IsNullOrEmpty(m�lkiyetSekli))
+                whereStr += " AND MulkiyetSekli = " + m�lkiyetSekli.ReturnQuotedValue();
             if (!string.IsNullOrEmpty(kirayaUygunluk))
                 whereStr += " AND KirayaUygunluk = " + kirayaUygunluk.ReturnQuotedValue();
             string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND BolgeId={0} ", bolgeId);
@@ -809,13 +809,13 @@ namespace Model.TBYS
             }
             return Adet;
         }
-        public int SelectTasinmazAdetByBolgeKullanimSekliKirayaUygunluk(int bolgeId, string kullanimSekli, string kirayaUygunluk, string mülkiyetSekli)
+        public int SelectTasinmazAdetByBolgeKullanimSekliKirayaUygunluk(int bolgeId, string kullanimSekli, string kirayaUygunluk, string m�lkiyetSekli)
         {
             string whereStr = string.Empty;
             if (!string.IsNullOrEmpty(kirayaUygunluk))
                 whereStr = " AND KirayaUygunluk = " + kirayaUygunluk.ReturnQuotedValue();
-            if (!string.IsNullOrEmpty(mülkiyetSekli))
-                whereStr += " AND MulkiyetSekli = " + mülkiyetSekli.ReturnQuotedValue();
+            if (!string.IsNullOrEmpty(m�lkiyetSekli))
+                whereStr += " AND MulkiyetSekli = " + m�lkiyetSekli.ReturnQuotedValue();
             string bolgeStr = bolgeId == ProjeConstants.HEPSI_INT || bolgeId == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? string.Empty : string.Format(" AND BolgeId={0} ", bolgeId);
 
             int Adet = 0;

@@ -1,4 +1,4 @@
-ï»¿using DocumentFormat.OpenXml.Office2010.Excel;
+using DocumentFormat.OpenXml.Office2010.Excel;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -72,7 +72,7 @@ namespace Model.IKYS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
 
         }
@@ -136,7 +136,7 @@ namespace Model.IKYS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
         }
         public override List<T> SelectAll<T>()
@@ -170,7 +170,7 @@ namespace Model.IKYS
 
         public List<MaasHareket> SelectMaasListesiByTarih(DateTime tarih)
         {
-            // MaasHareket_Table'dan Tarih'e gÃ¶re maaÅŸ listesini seÃ§en SQL sorgusu
+            // MaasHareket_Table'dan Tarih'e göre maas listesini seçen SQL sorgusu
             string sqlString = string.Format(@"
                 SELECT *
                 FROM MaasHareket_Table 
@@ -184,7 +184,7 @@ namespace Model.IKYS
 
         public bool DeleteByGrupId(int grupId)
         {
-            // MaasHareket_Table'dan GrupId'ye gÃ¶re silen SQL sorgusu
+            // MaasHareket_Table'dan GrupId'ye göre silen SQL sorgusu
             string sqlString = string.Format(@"
                 DELETE FROM MaasHareket_Table 
                 WHERE GrupId={0}

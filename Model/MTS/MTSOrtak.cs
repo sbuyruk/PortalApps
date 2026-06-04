@@ -1,4 +1,4 @@
-﻿using Model.IKYS;
+using Model.IKYS;
 using Model.Portal;
 using System;
 using System.Collections.Generic;
@@ -16,9 +16,9 @@ namespace Model.Ortak
         {
 
         }
-        #region Toplantı
+        #region Toplanti
         /// <summary>
-        /// Toplantı e-postası oluşturma
+        /// Toplanti e-postasi olusturma
         /// </summary>
         /// <param name="toplantiId"></param>
         /// <returns></returns>
@@ -34,36 +34,36 @@ namespace Model.Ortak
                 EPostaGondelienleriTemizle();
                 foreach (var item in katilimciListesi)
                 {
-                    string from = "Toplantı Yönetim Sistemi <tys@tskgv.local>";
+                    string from = "Toplanti Y�netim Sistemi <tys@tskgv.local>";
                     string baslik = string.Empty;
                     string subject = string.Empty;
 
 
                     
 
-                    string toplantiAdi = toplanti.ToplantiKonusu + " konulu ve " + toplanti.BaslangicTarihi.ToString("dd.MM.yyyy HH:mm") + " tarihli toplantı";
+                    string toplantiAdi = toplanti.ToplantiKonusu + " konulu ve " + toplanti.BaslangicTarihi.ToString("dd.MM.yyyy HH:mm") + " tarihli toplanti";
                     switch (islemTipi)
                     {
                         case ProjeConstants.KAYDET:
                             {
-                                subject = "Yeni Toplantı : " + toplantiAdi + " oluşturulmuştur.";
-                                baslik = "<u><b style='color:green;'>YENİ TOPLANTI</b></u>" +
-                                    "</br>Aşağıda ayrıntıları bulunan <b>'" + toplantiAdi + 
-                                    (item.Bilgi?"'ya BİLGİ amaçlı eklendiniz. ": "ya KATILIMCI olarak eklendiniz. <br/><br/>");
+                                subject = "Yeni Toplanti : " + toplantiAdi + " olusturulmustur.";
+                                baslik = "<u><b style='color:green;'>YENI TOPLANTI</b></u>" +
+                                    "</br>Asagida ayrintilari bulunan <b>'" + toplantiAdi + 
+                                    (item.Bilgi?"'ya BILGI ama�li eklendiniz. ": "ya KATILIMCI olarak eklendiniz. <br/><br/>");
                                 break;
                             }
                         case ProjeConstants.GUNCELLE:
                             {
-                                subject = "Toplantı Güncelleme : " + toplantiAdi + "da değişiklik yapılmıştır.";
-                                baslik = "<u><b style='color:blue;'>TOPLANTI GÜNCELLEME</b></u>" +
-                                    "</br>Aşağıda ayrıntıları bulunan <b>'" + toplantiAdi + "da değişiklik yapılmıştır. <br/><br/>";
+                                subject = "Toplanti G�ncelleme : " + toplantiAdi + "da degisiklik yapilmistir.";
+                                baslik = "<u><b style='color:blue;'>TOPLANTI G�NCELLEME</b></u>" +
+                                    "</br>Asagida ayrintilari bulunan <b>'" + toplantiAdi + "da degisiklik yapilmistir. <br/><br/>";
                                 break;
                             }
                         case ProjeConstants.SIL:
                             {
-                                subject = "Toplantı İptali : " + toplantiAdi + " iptal edilmiştir.";
-                                baslik = "<u><b style='color:red;'>TOPLANTI İPTALİ!</b></u>" +
-                                    "</br>Aşağıda ayrıntıları bulunan <b>'" + toplantiAdi + " iptal edilmiştir. <br/><br/>";
+                                subject = "Toplanti Iptali : " + toplantiAdi + " iptal edilmistir.";
+                                baslik = "<u><b style='color:red;'>TOPLANTI IPTALI!</b></u>" +
+                                    "</br>Asagida ayrintilari bulunan <b>'" + toplantiAdi + " iptal edilmistir. <br/><br/>";
                                 break;
                             }
 
@@ -81,11 +81,11 @@ namespace Model.Ortak
                         if (personel != null)
                         {
 
-                            MessageHelper.PublishMessage(personel.Adi+" "+personel.Soyadi + " adlı kişiye ait İletişim billgilerinde e-posta adresi bulunamadı.", ProjeConstants.MESAJ_HATA);
+                            MessageHelper.PublishMessage(personel.Adi+" "+personel.Soyadi + " adli kisiye ait Iletisim billgilerinde e-posta adresi bulunamadi.", ProjeConstants.MESAJ_HATA);
                         }
                         else
                         {
-                            MessageHelper.PublishMessage("İletişim billgilerinde e-posta adresi bulunamadı. personelId="+personelId, ProjeConstants.MESAJ_HATA);
+                            MessageHelper.PublishMessage("Iletisim billgilerinde e-posta adresi bulunamadi. personelId="+personelId, ProjeConstants.MESAJ_HATA);
                         }
                     }
                     else{
@@ -95,14 +95,14 @@ namespace Model.Ortak
                             personel = personel.Select(personelId);
                             if (personel != null)
                             {
-                                tabloSB.Append("Sayın " + personel.Adi + " " + personel.Soyadi + ",<br/><br/>");
+                                tabloSB.Append("Sayin " + personel.Adi + " " + personel.Soyadi + ",<br/><br/>");
                                 tabloSB = ToplantiTablosunuOlustur(toplanti, baslik);
                                 string body = "</br>" + tabloSB.ToString();
                                 string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL);
                                 MailHelper.EPostaGonder(from, userto, subject, body, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
                                 if (islemTipi.Equals(ProjeConstants.KAYDET))
                                 {
-                                    if (!item.Bilgi)//bilgi değilse katılımcıdır
+                                    if (!item.Bilgi)//bilgi degilse katilimcidir
                                         MailHelper.TakvimeEkle(toplanti.UniqueId, from, userto, toplantiAdi, toplanti.BaslangicTarihi, toplanti.BitisTarihi, ParseToplantiYeri(toplanti.ToplantiYeri, toplanti.ToplantiYeriDiger), toplanti.Aciklama, smtpAdresi);
                                 }
                                 else if (islemTipi.Equals(ProjeConstants.GUNCELLE))
@@ -110,14 +110,14 @@ namespace Model.Ortak
                                     ToplantiKatilim onceki = null;
                                     try
                                     {
-                                        onceki = oncekiKatilimciListesi.Single(s => s.KatilimciId == personelId); //eğer listede yoksa null exception döner
-                                                                                                                  //bilgiden katılımcıya döndüyse
+                                        onceki = oncekiKatilimciListesi.Single(s => s.KatilimciId == personelId); //eger listede yoksa null exception d�ner
+                                                                                                                  //bilgiden katilimciya d�nd�yse
                                         if (onceki.Bilgi && !item.Bilgi)
                                             MailHelper.TakvimeEkle(toplanti.UniqueId, from, userto, toplantiAdi, toplanti.BaslangicTarihi, toplanti.BitisTarihi, ParseToplantiYeri(toplanti.ToplantiYeri, toplanti.ToplantiYeriDiger), toplanti.Aciklama, smtpAdresi);
-                                        //katılımcıdan bilgiye döndüyse
+                                        //katilimcidan bilgiye d�nd�yse
                                         if (!onceki.Bilgi && item.Bilgi)
                                             MailHelper.TakvimdenSil(toplanti.UniqueId, from, userto, toplantiAdi, toplanti.BaslangicTarihi, toplanti.BitisTarihi, ParseToplantiYeri(toplanti.ToplantiYeri, toplanti.ToplantiYeriDiger), toplanti.Aciklama, smtpAdresi);
-                                        // Katılımcı olarak kaldıysa
+                                        // Katilimci olarak kaldiysa
                                         if (!onceki.Bilgi && !item.Bilgi)
                                             MailHelper.TakvimeEkle(toplanti.UniqueId, from, userto, toplantiAdi, toplanti.BaslangicTarihi, toplanti.BitisTarihi, ParseToplantiYeri(toplanti.ToplantiYeri, toplanti.ToplantiYeriDiger), toplanti.Aciklama, smtpAdresi);
 
@@ -125,7 +125,7 @@ namespace Model.Ortak
                                     catch (Exception)
                                     {
                                         onceki = null;
-                                        //Onceden olmayıp yeni eklendiyse
+                                        //Onceden olmayip yeni eklendiyse
                                         if (onceki == null && !item.Bilgi)
                                             MailHelper.TakvimeEkle(toplanti.UniqueId, from, userto, toplantiAdi, toplanti.BaslangicTarihi, toplanti.BitisTarihi, ParseToplantiYeri(toplanti.ToplantiYeri, toplanti.ToplantiYeriDiger), toplanti.Aciklama, smtpAdresi);
 
@@ -135,7 +135,7 @@ namespace Model.Ortak
                                 else if (islemTipi.Equals(ProjeConstants.SIL))
                                 {
                                     ToplantiKatilim onceki = oncekiKatilimciListesi.Single(s => s.KatilimciId == personelId);
-                                    //önceki bilgi değil kayılımcı ise
+                                    //�nceki bilgi degil kayilimci ise
                                     if (!onceki.Bilgi)
                                         MailHelper.TakvimdenSil(toplanti.UniqueId, from, userto, toplantiAdi, toplanti.BaslangicTarihi, toplanti.BitisTarihi, ParseToplantiYeri(toplanti.ToplantiYeri, toplanti.ToplantiYeriDiger), toplanti.Aciklama, smtpAdresi);
                                 }
@@ -148,7 +148,7 @@ namespace Model.Ortak
             }
             else
             {
-                MessageHelper.PublishMessage("Toplantı bilgisi bulunamadı", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Toplanti bilgisi bulunamadi", ProjeConstants.MESAJ_HATA);
             }
         }
         private static void EPostaGondelienleriTemizle()
@@ -166,38 +166,38 @@ namespace Model.Ortak
             string userto = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_TOPLANTI_MAILGRUBU);
             if (string.IsNullOrEmpty(userto))
             {
-                MessageHelper.PublishMessage("Toplantı Parametreleri arasında " + ProjeConstants.PARAM_TOPLANTI_MAILGRUBU + " bulunamadı, e-posta gönderilemedi", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Toplanti Parametreleri arasinda " + ProjeConstants.PARAM_TOPLANTI_MAILGRUBU + " bulunamadi, e-posta g�nderilemedi", ProjeConstants.MESAJ_HATA);
             }
             else
             {
-                string from = "Toplantı Yönetim Sistemi <tys@tskgv.local>";
+                string from = "Toplanti Y�netim Sistemi <tys@tskgv.local>";
                 string baslik = string.Empty;
                 string subject = string.Empty;
-                string toplantiAdi = toplanti.ToplantiKonusu + " konulu ve " + toplanti.BaslangicTarihi.ToString("dd.MM.yyyy HH:mm") + " tarihli toplantı";
+                string toplantiAdi = toplanti.ToplantiKonusu + " konulu ve " + toplanti.BaslangicTarihi.ToString("dd.MM.yyyy HH:mm") + " tarihli toplanti";
                 switch (islemTipi)
                 {
                     case ProjeConstants.KAYDET:
                         {
-                            subject = " Toplantı Bilgilendirme (Yeni Toplantı) :" + toplantiAdi + " oluşturulmuştur.";
-                            baslik = "<u><b>YENİ TOPLANTI</b></u>" +
-                                "</br>Bu E-Posta bilgilendirme amaçlı gönderilmiştir." +
-                                "</br> <p style='color:red;'> Aşağıda ayrıntıları bulunan <b>'" + toplantiAdi + " oluşturulmuştur. <br/><br/> </p>";
+                            subject = " Toplanti Bilgilendirme (Yeni Toplanti) :" + toplantiAdi + " olusturulmustur.";
+                            baslik = "<u><b>YENI TOPLANTI</b></u>" +
+                                "</br>Bu E-Posta bilgilendirme ama�li g�nderilmistir." +
+                                "</br> <p style='color:red;'> Asagida ayrintilari bulunan <b>'" + toplantiAdi + " olusturulmustur. <br/><br/> </p>";
                             break;
                         }
                     case ProjeConstants.GUNCELLE:
                         {
-                            subject = "Toplantı Bilgilendirme (Toplantı Güncelleme) : " + toplantiAdi + "da değişiklik yapılmıştır.";
-                            baslik = "<u><b>TOPLANTI GÜNCELLEME</b></u>" +
-                                "</br> Bu E-Posta bilgilendirme amaçlı gönderilmiştir." +
-                                "</br> <p style='color:red;'> Aşağıda ayrıntıları bulunan <b>'" + toplantiAdi + "da değişiklik yapılmıştır. <br/><br/></p>";
+                            subject = "Toplanti Bilgilendirme (Toplanti G�ncelleme) : " + toplantiAdi + "da degisiklik yapilmistir.";
+                            baslik = "<u><b>TOPLANTI G�NCELLEME</b></u>" +
+                                "</br> Bu E-Posta bilgilendirme ama�li g�nderilmistir." +
+                                "</br> <p style='color:red;'> Asagida ayrintilari bulunan <b>'" + toplantiAdi + "da degisiklik yapilmistir. <br/><br/></p>";
                             break;
                         }
                     case ProjeConstants.SIL:
                         {
-                            subject = "Toplantı Bilgilendirme (Toplantı İptali) : " + toplantiAdi + " iptal edilmiştir.";
-                            baslik = "<u><b>TOPLANTI İPTALİ!</b></u>" +
-                                "</br> Bu E-Posta bilgilendirme amaçlı gönderilmiştir." +
-                                "</br><p style='color:red;'>Aşağıda ayrıntıları bulunan <b>'" + toplantiAdi + " iptal edilmiştir. <br/><br/></p>";
+                            subject = "Toplanti Bilgilendirme (Toplanti Iptali) : " + toplantiAdi + " iptal edilmistir.";
+                            baslik = "<u><b>TOPLANTI IPTALI!</b></u>" +
+                                "</br> Bu E-Posta bilgilendirme ama�li g�nderilmistir." +
+                                "</br><p style='color:red;'>Asagida ayrintilari bulunan <b>'" + toplantiAdi + " iptal edilmistir. <br/><br/></p>";
                             break;
                         }
 
@@ -207,10 +207,10 @@ namespace Model.Ortak
 
                 if (toplanti != null)
                 {
-                    if (!EpostaGonderilenlerList.Contains(userto)) //gruba gönderildiyse bi daha gönderme
+                    if (!EpostaGonderilenlerList.Contains(userto)) //gruba g�nderildiyse bi daha g�nderme
                     {
                         string grupAdi = userto.Split('@')[0];
-                        bool grupMu = UtilityHelper.IsGroup("TSKGV", grupAdi);//böyle bir grup var mı
+                        bool grupMu = UtilityHelper.IsGroup("TSKGV", grupAdi);//b�yle bir grup var mi
                         if (grupMu)// varsa
                         {
                             List<UserPrincipal> uplist = UtilityHelper.GetGroupMembers("TSKGV", grupAdi);
@@ -233,7 +233,7 @@ namespace Model.Ortak
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Toplantı bilgisi bulunamadı", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Toplanti bilgisi bulunamadi", ProjeConstants.MESAJ_HATA);
                 }
             }
         }
@@ -242,38 +242,38 @@ namespace Model.Ortak
             string userto = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_IKRAM_MAILGRUBU);
             if (string.IsNullOrEmpty(userto))
             {
-                MessageHelper.PublishMessage("Toplantı Parametreleri arasında " + ProjeConstants.PARAM_IKRAM_MAILGRUBU + " bulunamadı, e-posta gönderilemedi", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Toplanti Parametreleri arasinda " + ProjeConstants.PARAM_IKRAM_MAILGRUBU + " bulunamadi, e-posta g�nderilemedi", ProjeConstants.MESAJ_HATA);
             }
             else
             {
-                string from = "Toplantı Yönetim Sistemi <tys@tskgv.local>";
+                string from = "Toplanti Y�netim Sistemi <tys@tskgv.local>";
                 string baslik = string.Empty;
                 string subject = string.Empty;
-                string toplantiAdi = toplanti.ToplantiKonusu + " konulu ve " + toplanti.BaslangicTarihi.ToString("dd.MM.yyyy HH:mm") + " tarihli toplantı";
+                string toplantiAdi = toplanti.ToplantiKonusu + " konulu ve " + toplanti.BaslangicTarihi.ToString("dd.MM.yyyy HH:mm") + " tarihli toplanti";
                 switch (islemTipi)
                 {
                     case ProjeConstants.KAYDET:
                         {
-                            subject = " Toplantı Bilgilendirme (Yeni Toplantı) :" + toplantiAdi + " oluşturulmuştur.";
-                            baslik = "<u><b>YENİ TOPLANTI</b></u>" +
-                                "</br>Bu toplantıda İkram yapılacaktır." +
-                                "</br> <p style='color:red;'> Aşağıda ayrıntıları bulunan <b>'" + toplantiAdi + " oluşturulmuştur. <br/><br/> </p>";
+                            subject = " Toplanti Bilgilendirme (Yeni Toplanti) :" + toplantiAdi + " olusturulmustur.";
+                            baslik = "<u><b>YENI TOPLANTI</b></u>" +
+                                "</br>Bu toplantida Ikram yapilacaktir." +
+                                "</br> <p style='color:red;'> Asagida ayrintilari bulunan <b>'" + toplantiAdi + " olusturulmustur. <br/><br/> </p>";
                             break;
                         }
                     case ProjeConstants.GUNCELLE:
                         {
-                            subject = "Toplantı Bilgilendirme (Toplantı Güncelleme) : " + toplantiAdi + "da değişiklik yapılmıştır.";
-                            baslik = "<u><b>TOPLANTI GÜNCELLEME</b></u>" +
-                                (toplanti.IkramOnayi? "</br>Bu toplantıda İkram yapılacaktır.": "</br>Bu toplantıda İkram yapılmayacaktır.") +                                
-                                "</br> <p style='color:red;'> Aşağıda ayrıntıları bulunan <b>'" + toplantiAdi + "da değişiklik yapılmıştır. <br/><br/></p>";
+                            subject = "Toplanti Bilgilendirme (Toplanti G�ncelleme) : " + toplantiAdi + "da degisiklik yapilmistir.";
+                            baslik = "<u><b>TOPLANTI G�NCELLEME</b></u>" +
+                                (toplanti.IkramOnayi? "</br>Bu toplantida Ikram yapilacaktir.": "</br>Bu toplantida Ikram yapilmayacaktir.") +                                
+                                "</br> <p style='color:red;'> Asagida ayrintilari bulunan <b>'" + toplantiAdi + "da degisiklik yapilmistir. <br/><br/></p>";
                             break;
                         }
                     case ProjeConstants.SIL:
                         {
-                            subject = "Toplantı Bilgilendirme (Toplantı İptali) : " + toplantiAdi + " iptal edilmiştir.";
-                            baslik = "<u><b>TOPLANTI İPTALİ!</b></u>" +
-                                (toplanti.IkramOnayi ? "</br>Toplantıda planlanan İkram iptal edilmiştir." : "</br>Bu eposta bilgilendirme amacıyla gönderilmiştir.") +
-                                "</br><p style='color:red;'>Aşağıda ayrıntıları bulunan <b>'" + toplantiAdi + " iptal edilmiştir. <br/><br/></p>";
+                            subject = "Toplanti Bilgilendirme (Toplanti Iptali) : " + toplantiAdi + " iptal edilmistir.";
+                            baslik = "<u><b>TOPLANTI IPTALI!</b></u>" +
+                                (toplanti.IkramOnayi ? "</br>Toplantida planlanan Ikram iptal edilmistir." : "</br>Bu eposta bilgilendirme amaciyla g�nderilmistir.") +
+                                "</br><p style='color:red;'>Asagida ayrintilari bulunan <b>'" + toplantiAdi + " iptal edilmistir. <br/><br/></p>";
                             break;
                         }
 
@@ -283,10 +283,10 @@ namespace Model.Ortak
 
                 if (toplanti != null)
                 {
-                    if (!EpostaGonderilenlerList.Contains(userto)) //gruba gönderildiyse bi daha gönderme
+                    if (!EpostaGonderilenlerList.Contains(userto)) //gruba g�nderildiyse bi daha g�nderme
                     {
                         string grupAdi = userto.Split('@')[0];
-                        bool grupMu = UtilityHelper.IsGroup("TSKGV", grupAdi);//böyle bir grup var mı
+                        bool grupMu = UtilityHelper.IsGroup("TSKGV", grupAdi);//b�yle bir grup var mi
                         if (grupMu)// varsa
                         {
                             List<UserPrincipal> uplist = UtilityHelper.GetGroupMembers("TSKGV", grupAdi);
@@ -309,7 +309,7 @@ namespace Model.Ortak
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Toplantı bilgisi bulunamadı", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Toplanti bilgisi bulunamadi", ProjeConstants.MESAJ_HATA);
                 }
             }
         }
@@ -318,40 +318,40 @@ namespace Model.Ortak
             string userto = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_BILGISISTEM_MAILGRUBU);
             if (string.IsNullOrEmpty(userto))
             {
-                MessageHelper.PublishMessage("Toplantı Parametreleri arasında " + ProjeConstants.PARAM_BILGISISTEM_MAILGRUBU + " bulunamadı, e-posta gönderilemedi", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Toplanti Parametreleri arasinda " + ProjeConstants.PARAM_BILGISISTEM_MAILGRUBU + " bulunamadi, e-posta g�nderilemedi", ProjeConstants.MESAJ_HATA);
             }
             else
             {
                 if (!EpostaGonderilenlerList.Contains(userto))
                 {
-                    string from = "Toplantı Yönetim Sistemi <tys@tskgv.local>";
+                    string from = "Toplanti Y�netim Sistemi <tys@tskgv.local>";
                     string baslik = string.Empty;
                     string subject = string.Empty;
-                    string toplantiAdi = toplanti.ToplantiKonusu + " konulu ve " + toplanti.BaslangicTarihi.ToString("dd.MM.yyyy HH:mm") + " tarihli ÇEVRİMİÇİ toplantı";
+                    string toplantiAdi = toplanti.ToplantiKonusu + " konulu ve " + toplanti.BaslangicTarihi.ToString("dd.MM.yyyy HH:mm") + " tarihli �EVRIMI�I toplanti";
                     switch (islemTipi)
                     {
                         case ProjeConstants.KAYDET:
                             {
-                                subject = " Toplantı Bilgilendirme (Yeni Toplantı) :" + toplantiAdi + " oluşturulmuştur.";
-                                baslik = "<u><b>YENİ ÇEVRİMİÇİ TOPLANTI</b></u>" +
-                                    "</br>Bu E-Posta bilgilendirme amaçlı gönderilmiştir." +
-                                    "</br> <p style='color:red;'> Aşağıda ayrıntıları bulunan <b>'" + toplantiAdi + " oluşturulmuştur. <br/><br/> </p>";
+                                subject = " Toplanti Bilgilendirme (Yeni Toplanti) :" + toplantiAdi + " olusturulmustur.";
+                                baslik = "<u><b>YENI �EVRIMI�I TOPLANTI</b></u>" +
+                                    "</br>Bu E-Posta bilgilendirme ama�li g�nderilmistir." +
+                                    "</br> <p style='color:red;'> Asagida ayrintilari bulunan <b>'" + toplantiAdi + " olusturulmustur. <br/><br/> </p>";
                                 break;
                             }
                         case ProjeConstants.GUNCELLE:
                             {
-                                subject = "Toplantı Bilgilendirme (Toplantı Güncelleme) : " + toplantiAdi + "da değişiklik yapılmıştır.";
-                                baslik = "<u><b>ÇEVRİMİÇİ TOPLANTI GÜNCELLEME</b></u>" +
-                                    "</br> Bu E-Posta bilgilendirme amaçlı gönderilmiştir." +
-                                    "</br> <p style='color:red;'> Aşağıda ayrıntıları bulunan <b>'" + toplantiAdi + "da değişiklik yapılmıştır. <br/><br/></p>";
+                                subject = "Toplanti Bilgilendirme (Toplanti G�ncelleme) : " + toplantiAdi + "da degisiklik yapilmistir.";
+                                baslik = "<u><b>�EVRIMI�I TOPLANTI G�NCELLEME</b></u>" +
+                                    "</br> Bu E-Posta bilgilendirme ama�li g�nderilmistir." +
+                                    "</br> <p style='color:red;'> Asagida ayrintilari bulunan <b>'" + toplantiAdi + "da degisiklik yapilmistir. <br/><br/></p>";
                                 break;
                             }
                         case ProjeConstants.SIL:
                             {
-                                subject = "Toplantı Bilgilendirme (Toplantı İptali) : " + toplantiAdi + " iptal edilmiştir.";
-                                baslik = "<u><b>ÇEVRİMİÇİ TOPLANTI İPTALİ!</b></u>" +
-                                    "</br> Bu E-Posta bilgilendirme amaçlı gönderilmiştir." +
-                                    "</br><p style='color:red;'>Aşağıda ayrıntıları bulunan <b>'" + toplantiAdi + " iptal edilmiştir. <br/><br/></p>";
+                                subject = "Toplanti Bilgilendirme (Toplanti Iptali) : " + toplantiAdi + " iptal edilmistir.";
+                                baslik = "<u><b>�EVRIMI�I TOPLANTI IPTALI!</b></u>" +
+                                    "</br> Bu E-Posta bilgilendirme ama�li g�nderilmistir." +
+                                    "</br><p style='color:red;'>Asagida ayrintilari bulunan <b>'" + toplantiAdi + " iptal edilmistir. <br/><br/></p>";
                                 break;
                             }
 
@@ -361,7 +361,7 @@ namespace Model.Ortak
                     if (toplanti != null)
                     {
                         string grupAdi = userto.Split('@')[0];
-                        bool grupMu = UtilityHelper.IsGroup("TSKGV", grupAdi);//böyle bir grup var mı
+                        bool grupMu = UtilityHelper.IsGroup("TSKGV", grupAdi);//b�yle bir grup var mi
                         if (grupMu)// varsa
                         {
                             List<UserPrincipal> uplist = UtilityHelper.GetGroupMembers("TSKGV", grupAdi);
@@ -382,7 +382,7 @@ namespace Model.Ortak
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Toplantı bilgisi bulunamadı", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Toplanti bilgisi bulunamadi", ProjeConstants.MESAJ_HATA);
                     }
                 }
             }
@@ -390,12 +390,12 @@ namespace Model.Ortak
         public static void ToplantidanCikanKatilimcilaraEPostaGonder(Toplanti toplanti, List<int> cikanKatilimciList, List<ToplantiKatilim> oncekiKatilimciListesi)
         {
 
-            string from = "Toplantı Yönetim Sistemi <tys@tskgv.local>";
-            string toplantiAdi = toplanti.ToplantiKonusu + " konulu ve " + toplanti.BaslangicTarihi.ToString("dd.MM.yyyy HH:mm") + " tarihli toplantı";
-            string subject = toplantiAdi + "nın katılım listesinden çıkarıldınız.";
+            string from = "Toplanti Y�netim Sistemi <tys@tskgv.local>";
+            string toplantiAdi = toplanti.ToplantiKonusu + " konulu ve " + toplanti.BaslangicTarihi.ToString("dd.MM.yyyy HH:mm") + " tarihli toplanti";
+            string subject = toplantiAdi + "nin katilim listesinden �ikarildiniz.";
 
-            string baslik = "<u><b style='color:darkred;'>TOPLANTI BİLGİLERİ</b></u>" +
-                            "</br>Aşağıda ayrıntıları bulunan <b>'" + toplantiAdi + "dan çıkarıldınız.<br/><br/>";
+            string baslik = "<u><b style='color:darkred;'>TOPLANTI BILGILERI</b></u>" +
+                            "</br>Asagida ayrintilari bulunan <b>'" + toplantiAdi + "dan �ikarildiniz.<br/><br/>";
 
             if (toplanti != null)
             {
@@ -414,14 +414,14 @@ namespace Model.Ortak
 
                     if (personel != null)
                     {
-                        tabloSB.Append("Sayın " + personel.Adi + " " + personel.Soyadi + ",<br/><br/>");
+                        tabloSB.Append("Sayin " + personel.Adi + " " + personel.Soyadi + ",<br/><br/>");
                         tabloSB = ToplantiTablosunuOlustur(toplanti, baslik);
 
                         string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL);
                         MailHelper.EPostaGonder(from, userto, subject, "</br>" + tabloSB.ToString(), smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
                         
                         ToplantiKatilim onceki = oncekiKatilimciListesi.Single(s => s.KatilimciId == personelId);
-                        //önceki bilgi değil kayılımcı ise
+                        //�nceki bilgi degil kayilimci ise
                         if (!onceki.Bilgi)
                             MailHelper.TakvimdenSil(toplanti.UniqueId, from, userto, toplantiAdi, toplanti.BaslangicTarihi, toplanti.BitisTarihi, ParseToplantiYeri(toplanti.ToplantiYeri, toplanti.ToplantiYeriDiger), toplanti.Aciklama, smtpAdresi);
 
@@ -433,38 +433,38 @@ namespace Model.Ortak
             }
             else
             {
-                MessageHelper.PublishMessage("Toplantı bilgisi bulunamadı", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Toplanti bilgisi bulunamadi", ProjeConstants.MESAJ_HATA);
             }
         }
         public static void ToplantiYetkilisineEPostaGonder(Toplanti toplanti, string islemTipi)
         {
 
-            string from = "Toplantı Yönetim Sistemi <tys@tskgv.local>";
+            string from = "Toplanti Y�netim Sistemi <tys@tskgv.local>";
             string baslik = string.Empty;
             string subject = string.Empty;
-            string toplantiAdi = toplanti.ToplantiKonusu + " konulu ve " + toplanti.BaslangicTarihi.ToString("dd.MM.yyyy HH:mm") + " tarihli toplantı";
+            string toplantiAdi = toplanti.ToplantiKonusu + " konulu ve " + toplanti.BaslangicTarihi.ToString("dd.MM.yyyy HH:mm") + " tarihli toplanti";
 
             switch (islemTipi)
             {
                 case ProjeConstants.KAYDET:
                     {
-                        subject = "Yeni Toplantı : " + toplantiAdi + "yı oluşturdunuz.";
-                        baslik = "<u><b style='color:green;'>YENİ TOPLANTI</b></u>" +
-                            "</br>Aşağıda ayrıntıları bulunan <b>'" + toplantiAdi + "yı oluşturdunuz. <br/><br/>";
+                        subject = "Yeni Toplanti : " + toplantiAdi + "yi olusturdunuz.";
+                        baslik = "<u><b style='color:green;'>YENI TOPLANTI</b></u>" +
+                            "</br>Asagida ayrintilari bulunan <b>'" + toplantiAdi + "yi olusturdunuz. <br/><br/>";
                         break;
                     }
                 case ProjeConstants.GUNCELLE:
                     {
-                        subject = "Toplantı Güncelleme : " + toplantiAdi + "da değişiklik yaptınız.";
-                        baslik = "<u><b style='color:blue;'>TOPLANTI GÜNCELLEME</b></u>" +
-                            "</br>Aşağıda ayrıntıları bulunan <b>'" + toplantiAdi + "da değişiklik yaptınız. <br/><br/>";
+                        subject = "Toplanti G�ncelleme : " + toplantiAdi + "da degisiklik yaptiniz.";
+                        baslik = "<u><b style='color:blue;'>TOPLANTI G�NCELLEME</b></u>" +
+                            "</br>Asagida ayrintilari bulunan <b>'" + toplantiAdi + "da degisiklik yaptiniz. <br/><br/>";
                         break;
                     }
                 case ProjeConstants.SIL:
                     {
-                        subject = "Toplantı İptali : " + toplantiAdi + "yı iptal ettiniz.";
-                        baslik = "<u><b style='color:red;'>TOPLANTI İPTALİ!</b></u>" +
-                            "</br>Aşağıda ayrıntıları bulunan <b>'" + toplantiAdi + "yı iptal ettiniz. <br/><br/>";
+                        subject = "Toplanti Iptali : " + toplantiAdi + "yi iptal ettiniz.";
+                        baslik = "<u><b style='color:red;'>TOPLANTI IPTALI!</b></u>" +
+                            "</br>Asagida ayrintilari bulunan <b>'" + toplantiAdi + "yi iptal ettiniz. <br/><br/>";
                         break;
                     }
 
@@ -489,7 +489,7 @@ namespace Model.Ortak
                     if (!EpostaGonderilenlerList.Contains(userto))
                     {
                         StringBuilder tabloSB = new StringBuilder();
-                        tabloSB.Append("Sayın " + toplantiYetkilisi.Adi + " " + toplantiYetkilisi.Soyadi + ",<br/><br/>");
+                        tabloSB.Append("Sayin " + toplantiYetkilisi.Adi + " " + toplantiYetkilisi.Soyadi + ",<br/><br/>");
                         tabloSB = ToplantiTablosunuOlustur(toplanti, baslik);
                         string body = "</br>" + tabloSB.ToString();
                         string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL);
@@ -502,7 +502,7 @@ namespace Model.Ortak
             }
             else
             {
-                MessageHelper.PublishMessage("Toplantı bilgisi bulunamadı", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Toplanti bilgisi bulunamadi", ProjeConstants.MESAJ_HATA);
             }
 
         }
@@ -534,30 +534,30 @@ namespace Model.Ortak
 
             sb.Append("<table>");
             sb.Append("<tr>");
-            sb.Append("<th colspan='2' style='text-align: center; background-color: #dddddd'>Toplantı Ayrıntıları</th>");
+            sb.Append("<th colspan='2' style='text-align: center; background-color: #dddddd'>Toplanti Ayrintilari</th>");
             sb.Append("</tr>");
             sb.Append("<tr>");
-            sb.Append("<th>Toplantı Numarası</th>");
+            sb.Append("<th>Toplanti Numarasi</th>");
             sb.Append("<td>" + toplanti.Id + "</td>");
             sb.Append("</tr>");
             sb.Append("<tr>");
-            sb.Append("<th>Toplantı Konusu</th>");
+            sb.Append("<th>Toplanti Konusu</th>");
             sb.Append("<td>" + toplanti.ToplantiKonusu + "</td>");
             sb.Append("</tr>");
             sb.Append("<tr>");
-            sb.Append("<th>Başlangıç Zamanı</th>");
+            sb.Append("<th>Baslangi� Zamani</th>");
             sb.Append("<td>" + toplanti.BaslangicTarihi.ToString("dd.MM.yyyy HH:mm") + "</td>");
             sb.Append("</tr>");
             sb.Append("<tr>");
-            sb.Append("<th>Bitiş Zamanı</th>");
+            sb.Append("<th>Bitis Zamani</th>");
             sb.Append("<td>" + toplanti.BitisTarihi.ToString("dd.MM.yyyy HH:mm") + "</td>");
             sb.Append("</tr>");
             sb.Append("<tr>");
-            sb.Append("<th>Toplantı Yeri</th>");
+            sb.Append("<th>Toplanti Yeri</th>");
             sb.Append("<td>" + ParseToplantiYeri(toplanti.ToplantiYeri, toplanti.ToplantiYeriDiger) + "</td>");
             sb.Append("</tr>");
             sb.Append("<tr>");
-            sb.Append("<th>Toplantı Yetkilisi</th>");
+            sb.Append("<th>Toplanti Yetkilisi</th>");
             sb.Append("<td>" + ParseToplantiYetkilisi(toplanti.ToplantiYetkilisi) + "</td>");
             sb.Append("</tr>");
             sb.Append("<tr>");
@@ -565,11 +565,11 @@ namespace Model.Ortak
             sb.Append("<td>" + ParseKoordinator(toplanti.Koordinator) + "</td>");
             sb.Append("</tr>");
             sb.Append("<tr>");
-            sb.Append("<th>İç Katılımcılar</th>");
+            sb.Append("<th>I� Katilimcilar</th>");
             sb.Append("<td>" + ParseKatilimciListesi(toplanti.Id) + "</td>");
             sb.Append("</tr>");
             sb.Append("<tr>");
-            sb.Append("<th>Dış Katılımcılar</th>");
+            sb.Append("<th>Dis Katilimcilar</th>");
             sb.Append("<td>" + toplanti.DisKatilimcilar + "</td>");
             sb.Append("</tr>");
             sb.Append("<tr>");
@@ -577,30 +577,30 @@ namespace Model.Ortak
             sb.Append("<td>" + ParseBilgiListesi(toplanti.Id) + "</td>");
             sb.Append("</tr>");
             sb.Append("<tr>");
-            sb.Append("<th>Çevrimiçi</th>");
-            sb.Append("<td>" + (toplanti.CevrimIci ? "Evet" : "Hayır") + "</td>");
+            sb.Append("<th>�evrimi�i</th>");
+            sb.Append("<td>" + (toplanti.CevrimIci ? "Evet" : "Hayir") + "</td>");
             sb.Append("</tr>");
             sb.Append("<tr>");
-            sb.Append("<th>İkram Onayı</th>");
-            sb.Append("<td>" + (toplanti.IkramOnayi ? "Evet" : "Hayır") + "</td>");
+            sb.Append("<th>Ikram Onayi</th>");
+            sb.Append("<td>" + (toplanti.IkramOnayi ? "Evet" : "Hayir") + "</td>");
             sb.Append("</tr>");
             sb.Append("<tr>");
-            sb.Append("<th>Açıklama</th>");
+            sb.Append("<th>A�iklama</th>");
             sb.Append("<td>" + toplanti.Aciklama + "</td>");
             sb.Append("</tr>"); 
             if (toplanti.IkramOnayi)
             {
                 sb.Append("<tr>");
-                sb.Append("<th>İkram Malzemesi</th>");
+                sb.Append("<th>Ikram Malzemesi</th>");
                 sb.Append("<td>" + toplanti.IkramMalzemesi + "</td>");
                 sb.Append("</tr>");
             }
 
             sb.Append("</table><br/><br/>");
             sb.Append("<p>");
-            sb.Append("Toplantı Yönetim Sistemi.</br>" + DateTime.Now.ToString("dd.MM.yyyy HH:mm"));
+            sb.Append("Toplanti Y�netim Sistemi.</br>" + DateTime.Now.ToString("dd.MM.yyyy HH:mm"));
             sb.Append("</p>");
-            sb.Append("<p style='color:gray; font-family: arial;font-size:xx-small;'>TYS &trade; Bilgi Sistem Kısmı </p> ");
+            sb.Append("<p style='color:gray; font-family: arial;font-size:xx-small;'>TYS &trade; Bilgi Sistem Kismi </p> ");
             return sb;
         }
         private static string ParseKatilimciListesi(int toplantiId)
@@ -666,7 +666,7 @@ namespace Model.Ortak
             }
             return yetkiliStr;
         }
-        #endregion Toplantı
+        #endregion Toplanti
         public static string ParseFaaliyetAmaci(string amac)
         {
             string amacStr = string.Empty;

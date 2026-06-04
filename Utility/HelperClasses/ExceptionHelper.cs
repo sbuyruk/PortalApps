@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -27,7 +27,7 @@ namespace Utility.HelperClasses
 
             while (ex != null)
             {
-                LogHelper.WriteTrace(ex);//Sharepoint log larına yazıyor.
+                LogHelper.WriteTrace(ex);//Sharepoint log larina yaziyor.
 
                 if (!string.IsNullOrEmpty(ex.Message))
                 {

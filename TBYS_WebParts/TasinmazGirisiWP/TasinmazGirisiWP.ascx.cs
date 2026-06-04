@@ -1,4 +1,4 @@
-﻿using Model.IKYS;
+using Model.IKYS;
 using Model.Ortak;
 using Model.TBYS;
 using System;
@@ -105,7 +105,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 DDLleriDoldur();
                 if (TasinmazIdQS.ConvertToInt() < 1)
                 {
-                    //TasinmazGirisi açılacak TG
+                    //TasinmazGirisi a�ilacak TG
                     TasinmazGirisi();
                 }
                 else
@@ -128,7 +128,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
         {
             bool tasinmazBulunamadi = true;
             int tasinmazId = (TasinmazIdQS.ConvertToInt());
-            //TasinmazDuzenle açılacak
+            //TasinmazDuzenle a�ilacak
             Tasinmaz tasinmaz = new Tasinmaz();
             tasinmaz = tasinmaz.Select<Tasinmaz>(tasinmazId);
             if (tasinmaz != null)
@@ -156,7 +156,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
 
             }
             if (tasinmazBulunamadi)
-                MessageHelper.PublishMessage("Taşınmaz Bulunamadı!", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Tasinmaz Bulunamadi!", ProjeConstants.MESAJ_HATA);
 
 
         }
@@ -179,7 +179,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 BackBtn.Visible = true;
                 //CardHeader.Attributes["Class"] = "bg-info";
                 TitleLbl.CssClass = "col-form-label fw-bold mb-1 text-primary";
-                TitleLbl.Text = "Taşınmaz Bilgi Güncelleme";
+                TitleLbl.Text = "Tasinmaz Bilgi G�ncelleme";
                 IdLbl.Visible = true;
             }
             else
@@ -198,7 +198,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 IdLbl.Visible = false;
                 //CardHeader.Attributes["Class"] = "bg-success";
                 TitleLbl.CssClass = "col-form-label fw-bold mb-1 text-danger";
-                TitleLbl.Text = "Taşınmaz Girişi";
+                TitleLbl.Text = "Tasinmaz Girisi";
             }
             if (EnvanterdeMiQS.Equals(ProjeConstants.TASINMAZ_ENVANTERDEN_CIKTI.ToString()))
             {
@@ -219,7 +219,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 BackBtn.Visible = true;
                 IdLbl.Visible = true;
                 TitleLbl.CssClass = "col-form-label fw-bold mb-1 text-secondary";
-                TitleLbl.Text = "Envanterden Çıkarılmış Taşınmaz";
+                TitleLbl.Text = "Envanterden �ikarilmis Tasinmaz";
             }
             if (AltBolumChk.Checked)
             {
@@ -288,23 +288,23 @@ namespace TBYS_WebParts.TasinmazGirisiWP
         private void EdinmeSekliDDLDoldur()
         {
             EdinmeSekliDDL.Items.Clear();
-            EdinmeSekliDDL.Items.Add("Bağış");
+            EdinmeSekliDDL.Items.Add("Bagis");
             EdinmeSekliDDL.Items.Add("Vasiyetin Tenfizi");
-            EdinmeSekliDDL.Items.Add("Mahkeme Kararı");
-            EdinmeSekliDDL.Items.Add("Satın Alma");
+            EdinmeSekliDDL.Items.Add("Mahkeme Karari");
+            EdinmeSekliDDL.Items.Add("Satin Alma");
             EdinmeSekliDDL.Items.Add("Tashih/Cins Tashihi");
-            EdinmeSekliDDL.Items.Add("İmar Uygulaması");
+            EdinmeSekliDDL.Items.Add("Imar Uygulamasi");
             EdinmeSekliDDL.Items.Add("Kadastro (Yenileme)");
             EdinmeSekliDDL.Items.Add("Trampa/Takas");
-            EdinmeSekliDDL.Items.Add("İfraz");
-            EdinmeSekliDDL.Items.Add("Toplulaştırma");
+            EdinmeSekliDDL.Items.Add("Ifraz");
+            EdinmeSekliDDL.Items.Add("Toplulastirma");
             EdinmeSekliDDL.Items.Add("Tevhit");
-            EdinmeSekliDDL.Items.Add("Kat Mülkiyeti");
-            EdinmeSekliDDL.Items.Add("Kamulaştırma (Tümü)");
-            EdinmeSekliDDL.Items.Add("Kamulaştırma (Kısmi)");
-            EdinmeSekliDDL.Items.Add("TÜRK KARA KUV.GÜÇ.VAKFI");
-            EdinmeSekliDDL.Items.Add("TÜRK DENİZ KUV.GÜÇ.VAKFI");
-            EdinmeSekliDDL.Items.Add("TÜRK HAVA KUV.GÜÇ.VAKFI");
+            EdinmeSekliDDL.Items.Add("Kat M�lkiyeti");
+            EdinmeSekliDDL.Items.Add("Kamulastirma (T�m�)");
+            EdinmeSekliDDL.Items.Add("Kamulastirma (Kismi)");
+            EdinmeSekliDDL.Items.Add("T�RK KARA KUV.G��.VAKFI");
+            EdinmeSekliDDL.Items.Add("T�RK DENIZ KUV.G��.VAKFI");
+            EdinmeSekliDDL.Items.Add("T�RK HAVA KUV.G��.VAKFI");
         }
         private void KiraDurumuDDLDoldur()
         {
@@ -439,7 +439,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             catch (Exception ex)
             {
                 ExceptionHelper exhelper = new ExceptionHelper();
-                Exception message = new Exception("Taşınmaz ekrana getirilemedi");
+                Exception message = new Exception("Tasinmaz ekrana getirilemedi");
                 exhelper.Exceptions.Add(message);
                 exhelper.Exceptions.Add(ex);
                 exhelper.PublishException();
@@ -518,7 +518,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
 
             int id = tasinmaz.Save();
             tasinmaz.Id = id;
-            //tasınmaz tablosundaki Bagisci alanı her kaydedildiğinde Ad+soyad olarak güncellesin
+            //tasinmaz tablosundaki Bagisci alani her kaydedildiginde Ad+soyad olarak g�ncellesin
             Bagis bagis = new Bagis();
             bagis = bagis.SelectByTasinmazId(id);
             if (bagis != null)
@@ -536,7 +536,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             {
                 Sigorta sigorta = new Sigorta();
                 sigorta = sigorta.SelectByTasinmazId(tasinmaz.Id);
-                if (sigorta == null)//henuz sigorta kaydı yok yeni sigorta yarat
+                if (sigorta == null)//henuz sigorta kaydi yok yeni sigorta yarat
                 {
                     sigorta = new Sigorta();
                     sigorta.TasinmazId = tasinmaz.Id;
@@ -650,7 +650,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 {
                     Sigorta sigorta = new Sigorta();
                     sigorta = sigorta.SelectByTasinmazId(tasinmaz.Id);
-                    if (sigorta == null)//henuz sigorta kaydı yok yeni sigorta yarat
+                    if (sigorta == null)//henuz sigorta kaydi yok yeni sigorta yarat
                     {
                         sigorta = new Sigorta();
                         sigorta.TasinmazId = tasinmaz.Id;
@@ -690,18 +690,18 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 Page.Response.Redirect(newUrl, true);
             }
             else
-                MessageHelper.PublishMessage("Taşınmaz Kaydı başarısız oldu.-TS001", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Tasinmaz Kaydi basarisiz oldu.-TS001", ProjeConstants.MESAJ_HATA);
         }
         protected void UpdateBtn_Click(object sender, EventArgs e)
         {
             if (UpdateTasinmazData2Db(TasinmazIdQS.ConvertToInt()))
             {
                 TasinmazDuzenle();
-                MessageHelper.PublishMessage("Taşınmaz kaydı güncellendi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                MessageHelper.PublishMessage("Tasinmaz kaydi g�ncellendi.", ProjeConstants.MESAJ_BASARILI, 2000);
             }
             else
             {
-                MessageHelper.PublishMessage("Taşınmaz Güncellenemedi.-TS001", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Tasinmaz G�ncellenemedi.-TS001", ProjeConstants.MESAJ_HATA);
             }
         }
         protected void TasinmazKartiBtn_Click(object sender, EventArgs e)
@@ -757,10 +757,10 @@ namespace TBYS_WebParts.TasinmazGirisiWP
         }
         protected void DeleteBtn_Click(object sender, EventArgs e)
         {
-            ///Taşınmazın siinmesi bir dizi konrol ile yapılabilir. Şu an silme yetkisi kaldırıldı SB 24.06.2021
+            ///Tasinmazin siinmesi bir dizi konrol ile yapilabilir. Su an silme yetkisi kaldirildi SB 24.06.2021
             if (true)
             {
-                MessageHelper.PublishMessage("Taşınmaz silme yetkiniz bulunmamaktadır. Taşınmaz silinemez.", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Tasinmaz silme yetkiniz bulunmamaktadir. Tasinmaz silinemez.", ProjeConstants.MESAJ_HATA);
             }
             else
             {
@@ -768,7 +768,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 Tasinmaz tasinmaz = new Tasinmaz();
 #pragma warning restore CS0162 // Unreachable code detected
                 tasinmaz = tasinmaz.Select<Tasinmaz>(TasinmazIdQS.ConvertToInt());
-                if (tasinmaz != null) //sildikten sonra önceki sayfaya dön
+                if (tasinmaz != null) //sildikten sonra �nceki sayfaya d�n
                 {
 
                     if (!SozlesmesiVarMi(tasinmaz))
@@ -783,15 +783,15 @@ namespace TBYS_WebParts.TasinmazGirisiWP
 
                         }
                         else
-                            MessageHelper.PublishMessage("Taşınmaz silinemedi", ProjeConstants.MESAJ_HATA);
+                            MessageHelper.PublishMessage("Tasinmaz silinemedi", ProjeConstants.MESAJ_HATA);
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Taşınmaza ait sözleşme bulunmaktadır. Taşınmaz silinemez.", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Tasinmaza ait s�zlesme bulunmaktadir. Tasinmaz silinemez.", ProjeConstants.MESAJ_HATA);
                     }
                 }
                 else
-                    MessageHelper.PublishMessage("Taşınmaz bulunamadı", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Tasinmaz bulunamadi", ProjeConstants.MESAJ_HATA);
             }
         }
         protected void ResimlerBtn_Click(object sender, EventArgs e)
@@ -818,7 +818,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
 
             if (bagis == null)
             {
-                MessageHelper.PublishMessage("Bağışçı Bulunamadı. Bu taşınmaz henüz bir bağışçıyla ilişkilendirilmemiş. Lütfen Bağışçı sayfasından bağışçı ataması yapınız.", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Bagis�i Bulunamadi. Bu tasinmaz hen�z bir bagis�iyla iliskilendirilmemis. L�tfen Bagis�i sayfasindan bagis�i atamasi yapiniz.", ProjeConstants.MESAJ_HATA);
             }
             else
             {
@@ -826,7 +826,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 bagisci = bagisci.Select<TasinmazBagisci>(bagis.BagisciId);
                 if (bagisci == null)
                 {
-                    MessageHelper.PublishMessage("Bağışçı Bulunamadı. Bu taşınmazın ilişkilendirilildiği bağışçı bulunamadı. Lütfen Bağışçı sayfasından bağışçı ataması yapınız.", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Bagis�i Bulunamadi. Bu tasinmazin iliskilendirilildigi bagis�i bulunamadi. L�tfen Bagis�i sayfasindan bagis�i atamasi yapiniz.", ProjeConstants.MESAJ_HATA);
                 }
                 else
                 {
@@ -881,12 +881,12 @@ namespace TBYS_WebParts.TasinmazGirisiWP
 
             try
             {
-                //Onay Popup Aç
+                //Onay Popup A�
 
                 KopyalaNowBtn.Visible = true;
                 SBIDeleteBtn.Visible = false;
-                MesajLbl.Text = "Taşınmaza bağlı Bağışçı, Kira Sözleşmesi, Ödeme Planı, Sigorta ve Onarım işlemleri gibi bilgiler aktarılacak.";
-                MesajLbl1.Text = "Bu taşınmazdan kopyalanarak yeni bir taşınmaz yaratılmasını onaylıyor musunuz?";
+                MesajLbl.Text = "Tasinmaza bagli Bagis�i, Kira S�zlesmesi, �deme Plani, Sigorta ve Onarim islemleri gibi bilgiler aktarilacak.";
+                MesajLbl1.Text = "Bu tasinmazdan kopyalanarak yeni bir tasinmaz yaratilmasini onayliyor musunuz?";
                 var openPopup = "OpenModal();";
                 UtilityHelper.ScriptCalistir(openPopup);
             }
@@ -897,18 +897,18 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             }
         }
         /// <summary>
-        /// Envanterden Çıkmış bir taşınmazı yeni bir taşınmaz olarak kopyalar
-        /// yeni kopyalanarak yaratılan taşınmaza önceki taşınmazdan gelen bağışçı, sigorta ve onarım bilgilrini taşır
-        /// envanterden çıkmış taşınmazın resimlerini yeni yaratılan taşınmaza verir
-        /// Eklendi 10.06.2022 KiraSozlesmesi aktif olan tasinmazları da yeni kopyalanan tasinmaza aktarır
+        /// Envanterden �ikmis bir tasinmazi yeni bir tasinmaz olarak kopyalar
+        /// yeni kopyalanarak yaratilan tasinmaza �nceki tasinmazdan gelen bagis�i, sigorta ve onarim bilgilrini tasir
+        /// envanterden �ikmis tasinmazin resimlerini yeni yaratilan tasinmaza verir
+        /// Eklendi 10.06.2022 KiraSozlesmesi aktif olan tasinmazlari da yeni kopyalanan tasinmaza aktarir
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         protected void KopyalaNowBtn_Click(object sender, EventArgs e)
         {
-            //Önce onay popup aç 
-            //onay evetse envanterdeMi=1 yap ve Tasinmaz_Table'a ayrı bir kayıt olarak insert et, 
-            //Resimleri Kopyalasın mı?? bağımsız bolumleri kopytalasın mı? sigortaları kopyalasın mı?
+            //�nce onay popup a� 
+            //onay evetse envanterdeMi=1 yap ve Tasinmaz_Table'a ayri bir kayit olarak insert et, 
+            //Resimleri Kopyalasin mi?? bagimsiz bolumleri kopytalasin mi? sigortalari kopyalasin mi?
             Tasinmaz envanterdencikmisTasinmaz = new Tasinmaz();
             envanterdencikmisTasinmaz = envanterdencikmisTasinmaz.SelectEnvanterdenCikanTasinmaz(TasinmazIdQS.ConvertToInt());
             ExceptionHelper eh = new ExceptionHelper();
@@ -917,8 +917,8 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             if (envanterdencikmisTasinmaz != null)
             {
                 //Tasinmaz yarat
-                //envanterdemi=0, ve env çıkış bilgilerini yaz
-                //tasinmazı kaydet
+                //envanterdemi=0, ve env �ikis bilgilerini yaz
+                //tasinmazi kaydet
                 int envanterdencikmisTasinmazId = envanterdencikmisTasinmaz.Id;
                 Tasinmaz tasinmaz = new Tasinmaz();
                 tasinmaz = envanterdencikmisTasinmaz;
@@ -929,7 +929,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 int tasinmazId = tasinmaz.Save();
 
                 #region Bagis
-                //Bu yeni Id'li tasinmaz için Bagis Tablosunda yeni Bagis nesnesi yarat
+                //Bu yeni Id'li tasinmaz i�in Bagis Tablosunda yeni Bagis nesnesi yarat
                 //BagisciId sini gir
                 //Bagis nesnesini kaydet
                 Bagis eskibagis = new Bagis();
@@ -957,7 +957,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                     sigorta.Update();
                 }
                 #endregion
-                #region Onarım
+                #region Onarim
                 //Onarim verilerini de aktar
                 Onarim onarimDao = new Onarim();
                 List<Onarim> onarimList = onarimDao.SelectOnarimByTasinmazId(envanterdencikmisTasinmazId);
@@ -970,9 +970,9 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                     }
                 }
                 #endregion
-                #region Kira İşlemleri
-                //SozlesmeTasinmaz_Table'da KiraSozlesmesi Aktif olan ve TasinmazId=EnvanterdenCikanTasinmazId olan var mı
-                //Varsa SozlesmeTasinmaz_Table'da tasinmaz Id'sini yeni tasinmazId ile değiştir.
+                #region Kira Islemleri
+                //SozlesmeTasinmaz_Table'da KiraSozlesmesi Aktif olan ve TasinmazId=EnvanterdenCikanTasinmazId olan var mi
+                //Varsa SozlesmeTasinmaz_Table'da tasinmaz Id'sini yeni tasinmazId ile degistir.
                 SozlesmeTasinmaz st = new SozlesmeTasinmaz();
                 List<SozlesmeTasinmaz> stList = st.SelectByTasinmazId(envanterdencikmisTasinmazId);
                 foreach (var item in stList)
@@ -990,11 +990,11 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 Page.Response.Redirect(newUrl, true);
             }
             else
-                MessageHelper.PublishMessage("Taşınmaz Kaydı başarısız oldu.-TS001", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Tasinmaz Kaydi basarisiz oldu.-TS001", ProjeConstants.MESAJ_HATA);
         }
         protected void AltBolumChk_CheckedChanged(object sender, EventArgs e)
         {
-            //AltBolumChk.checked ise bagimsiz Bölüm Buttonu görünsün
+            //AltBolumChk.checked ise bagimsiz B�l�m Buttonu g�r�ns�n
             if (AltBolumChk.Checked)
             {
                 BagimsizBolumBtn.Visible = true;
@@ -1010,8 +1010,8 @@ namespace TBYS_WebParts.TasinmazGirisiWP
        
         private void SerhBeyanIrtifakTabloOlustur(Tasinmaz tasinmaz)
         {
-            var jsonData = SerhBeyanIrtifakTabloJson(tasinmaz); //veri çekilip json a çeviriliyor
-            var jsString = CreateSerhBeyanIrtifakDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = SerhBeyanIrtifakTabloJson(tasinmaz); //veri �ekilip json a �eviriliyor
+            var jsString = CreateSerhBeyanIrtifakDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string SerhBeyanIrtifakTabloJson(Tasinmaz tasinmaz)
@@ -1070,7 +1070,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
         {
             if (tasinmaz == null)
             {
-                MessageHelper.PublishMessage("Taşınmaz bulunamadı", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Tasinmaz bulunamadi", ProjeConstants.MESAJ_HATA);
                 return new List<SerhBeyanIrtifakListItem>();
             }
             else
@@ -1080,7 +1080,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 List<SerhBeyanIrtifak> sbiList= sbiDao.SelectByTasinmazId(tasinmaz.Id);
                 foreach (var sbi in sbiList)
                 {
-                    int serhBeyanIrtifakId = sbi.Id; // örnek id
+                    int serhBeyanIrtifakId = sbi.Id; // �rnek id
 
                     SerhBeyanIrtifakListItem item = new SerhBeyanIrtifakListItem
                     {
@@ -1090,7 +1090,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                         MalikLehtar = sbi.MalikLehtar,
                         TesiKurumTarihYevmiye = sbi.TesisKurum +" " + sbi.Tarih.ConvertToDatetimeEmptyIfNull()+" " + sbi.Yevmiye,
                         TerkinSebebi = sbi.TerkinSebebi,
-                        Duzenle = $"<button href='#' class='btn btn-primary' onclick=DuzenleSilModalAc({serhBeyanIrtifakId},{ProjeConstants.GUNCELLE.ReturnQuotedValue()});>Düzenle</button>",
+                        Duzenle = $"<button href='#' class='btn btn-primary' onclick=DuzenleSilModalAc({serhBeyanIrtifakId},{ProjeConstants.GUNCELLE.ReturnQuotedValue()});>D�zenle</button>",
                         Sil = $"<button href='#' class='btn btn-danger' onclick=DuzenleSilModalAc({serhBeyanIrtifakId},{ProjeConstants.SIL.ReturnQuotedValue()});>Sil</button>"
                     };
 
@@ -1108,9 +1108,9 @@ namespace TBYS_WebParts.TasinmazGirisiWP
 
             if (islemTipi.Equals(ProjeConstants.KAYDET) )
             {
-                //SerhBeyanIrtifakDiv modalını aç
-                //SerhBeyanIrtifakDiv içindeki alanları hazırla
-                ModalBaslikLbl.InnerText = "Serh Beyan ve İrtifak Ekle";
+                //SerhBeyanIrtifakDiv modalini a�
+                //SerhBeyanIrtifakDiv i�indeki alanlari hazirla
+                ModalBaslikLbl.InnerText = "Serh Beyan ve Irtifak Ekle";
                 SerhBeyanIrtifakDDLDoldur();
                 MalikLehtarTxt.Text = string.Empty;
                 AciklamaTxt.Text = string.Empty;
@@ -1129,12 +1129,12 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             {
                 if (serhBeyanIrtifakId > 0)
                 {
-                    //SerhBeyanIrtifakDiv modalını aç
-                    //SerhBeyanIrtifakDiv içindeki alanları hazırla
-                    ModalBaslikLbl.InnerText = "Serh Beyan ve İrtifak Düzenle";
+                    //SerhBeyanIrtifakDiv modalini a�
+                    //SerhBeyanIrtifakDiv i�indeki alanlari hazirla
+                    ModalBaslikLbl.InnerText = "Serh Beyan ve Irtifak D�zenle";
                     SerhBeyanIrtifakDDLDoldur();
 
-                    //Seçilen Serh Beyan ve İrtifak kaydını getir
+                    //Se�ilen Serh Beyan ve Irtifak kaydini getir
                     SerhBeyanIrtifak sbi = new SerhBeyanIrtifak();
                     sbi = sbi.Select<SerhBeyanIrtifak>(serhBeyanIrtifakId);
                     if (sbi != null)
@@ -1153,15 +1153,15 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 }
                 else
                 {
-                    //hata mesajı ver, Şerh/Beyan/İrtifa kaydı bulunamadı
-                    MessageHelper.PublishMessage("Serh Beyan ve İrtifak kaydı bulunamadı.", ProjeConstants.MESAJ_HATA);
+                    //hata mesaji ver, Serh/Beyan/Irtifa kaydi bulunamadi
+                    MessageHelper.PublishMessage("Serh Beyan ve Irtifak kaydi bulunamadi.", ProjeConstants.MESAJ_HATA);
                 }
             }
             else if (islemTipi.Equals(ProjeConstants.SIL))
             {
-                //Modalı silme işlemi onayı için aç
-                MesajLbl.Text = serhBeyanIrtifakId+ " Numaralı Şerh Beyan İrtifak Kaydı Silinecek";
-                MesajLbl1.Text = "Silme işlemini onaylıyor musunuz?";
+                //Modali silme islemi onayi i�in a�
+                MesajLbl.Text = serhBeyanIrtifakId+ " Numarali Serh Beyan Irtifak Kaydi Silinecek";
+                MesajLbl1.Text = "Silme islemini onayliyor musunuz?";
                 KopyalaNowBtn.Visible = false;
                 SBIDeleteBtn.Visible = true;
                 UtilityHelper.ScriptCalistir("OpenModal();");
@@ -1179,7 +1179,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
 
         private void SerhBeyanIrtifakDDLDoldur()
         {
-            //Şerh,Beyan ve İrtifak seçeneklerini bunları ProjeConstants içinde tanımla, sonra SerhBeyanIrtifakDDL içine ekle
+            //Serh,Beyan ve Irtifak se�eneklerini bunlari ProjeConstants i�inde tanimla, sonra SerhBeyanIrtifakDDL i�ine ekle
             SerhBeyanIrtifakDDL.Items.Clear();
             SerhBeyanIrtifakDDL.Items.Add(new ListItem(ProjeConstants.SERH));
             SerhBeyanIrtifakDDL.Items.Add(new ListItem(ProjeConstants.BEYAN));
@@ -1212,15 +1212,15 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             int sbiId = sbi.Save();
             if (sbiId > 0)
             {
-                //SerhBeyanIrtifak tablosunu güncelle
+                //SerhBeyanIrtifak tablosunu g�ncelle
                 Tasinmaz tasinmaz = new Tasinmaz();
                 tasinmaz = tasinmaz.Select<Tasinmaz>(TasinmazIdQS.ConvertToInt());
                 SerhBeyanIrtifakTabloOlustur(tasinmaz);
-                MessageHelper.PublishMessage("Serh Beyan ve İrtifak kaydı eklendi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                MessageHelper.PublishMessage("Serh Beyan ve Irtifak kaydi eklendi.", ProjeConstants.MESAJ_BASARILI, 2000);
             }
             else
             {
-                MessageHelper.PublishMessage("Serh Beyan ve İrtifak kaydı eklenemedi.", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Serh Beyan ve Irtifak kaydi eklenemedi.", ProjeConstants.MESAJ_HATA);
             }
             UtilityHelper.ScriptCalistir("setActiveTab('SerhBeyanIrtifakLi');");
         }
@@ -1228,22 +1228,22 @@ namespace TBYS_WebParts.TasinmazGirisiWP
         {
             
             int parametreId = parametreIdLbl.Value.ConvertToInt();
-            // SerhBeyanIrtifak tablosundan Id= parametreId olan kaydı güncelle
+            // SerhBeyanIrtifak tablosundan Id= parametreId olan kaydi g�ncelle
             SerhBeyanIrtifak sbi = new SerhBeyanIrtifak();
             sbi = sbi.Select<SerhBeyanIrtifak>(parametreId);
             if (sbi != null)
             {
                 if (sbi.Delete())
                 {
-                    //SerhBeyanIrtifak tablosunu güncelle
+                    //SerhBeyanIrtifak tablosunu g�ncelle
                     Tasinmaz tasinmaz = new Tasinmaz();
                     tasinmaz = tasinmaz.Select<Tasinmaz>(TasinmazIdQS.ConvertToInt());
                     SerhBeyanIrtifakTabloOlustur(tasinmaz);
-                    MessageHelper.PublishMessage("Serh Beyan ve İrtifak kaydı silindi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Serh Beyan ve Irtifak kaydi silindi.", ProjeConstants.MESAJ_BASARILI, 2000);
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Serh Beyan ve İrtifak kaydı silinemedi.", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Serh Beyan ve Irtifak kaydi silinemedi.", ProjeConstants.MESAJ_HATA);
                 }
             }
             UtilityHelper.ScriptCalistir("setActiveTab('SerhBeyanIrtifakLi');");
@@ -1252,7 +1252,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
         {
             
             int parametreId = parametreIdLbl.Value.ConvertToInt();
-            // SerhBeyanIrtifak tablosundan Id= parametreId olan kaydı güncelle
+            // SerhBeyanIrtifak tablosundan Id= parametreId olan kaydi g�ncelle
             SerhBeyanIrtifak sbi = new SerhBeyanIrtifak();
             sbi = sbi.Select<SerhBeyanIrtifak>(parametreId);
             if (sbi != null)
@@ -1267,15 +1267,15 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 sbi.Degistiren = CurrentUserName;
                 if (sbi.Update())
                 {
-                    //SerhBeyanIrtifak tablosunu güncelle
+                    //SerhBeyanIrtifak tablosunu g�ncelle
                     Tasinmaz tasinmaz = new Tasinmaz();
                     tasinmaz = tasinmaz.Select<Tasinmaz>(TasinmazIdQS.ConvertToInt());
                     SerhBeyanIrtifakTabloOlustur(tasinmaz);
-                    MessageHelper.PublishMessage("Serh Beyan ve İrtifak kaydı güncellendi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Serh Beyan ve Irtifak kaydi g�ncellendi.", ProjeConstants.MESAJ_BASARILI, 2000);
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Serh Beyan ve İrtifak kaydı güncellenemedi.", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Serh Beyan ve Irtifak kaydi g�ncellenemedi.", ProjeConstants.MESAJ_HATA);
                 }
                 UtilityHelper.ScriptCalistir("setActiveTab('SerhBeyanIrtifakLi');");
             }
@@ -1284,7 +1284,7 @@ namespace TBYS_WebParts.TasinmazGirisiWP
         private class SerhBeyanIrtifakListItem
         {
 
-            //SerhBeyanIrtifak tablosundan gelen veriler için kullanılacak sınıf
+            //SerhBeyanIrtifak tablosundan gelen veriler i�in kullanilacak sinif
             public int No { get; set; }
             public string SBI { get; set; }
             public string Aciklama { get; set; }

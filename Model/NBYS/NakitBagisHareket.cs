@@ -1,4 +1,4 @@
-﻿using DocumentFormat.OpenXml.Bibliography;
+using DocumentFormat.OpenXml.Bibliography;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -53,7 +53,7 @@ namespace Model.NBYS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public override bool Update()
@@ -110,7 +110,7 @@ namespace Model.NBYS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public override T Select<T>(int id)
@@ -148,7 +148,7 @@ namespace Model.NBYS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
         }
         public string GetUpdateSQL(string extId)
@@ -165,7 +165,7 @@ namespace Model.NBYS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
         }
         public string GetDeleteSQL(string extId)
@@ -180,7 +180,7 @@ namespace Model.NBYS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
         }
         public List<NakitBagisHareket> SelectByArmaganId(int armaganId)
@@ -568,7 +568,7 @@ namespace Model.NBYS
             catch (Exception e)
             {
                 Exception ex = new Exception("sql=" + sqlString, e);
-                throw ex;
+                throw;
             }
             return dataTable;
         }
@@ -598,7 +598,7 @@ namespace Model.NBYS
             catch (Exception e)
             {
                 Exception ex = new Exception("sql=" + sqlString, e);
-                throw ex;
+                throw;
             }
             return dataTable;
         }
@@ -666,8 +666,8 @@ namespace Model.NBYS
             string sqlString = string.Format(@"        
                                 SELECT COUNT(H.Id) Adet,SUM(BagisMiktari) Toplam, B.BankaGrup Banka 
                                 FROM NakitBagisHareket_Table H
-                                    --bu sefer de Vakıfta sorun oldu INNER JOIN NakitBagisci_Table A ON A.Id= H.BagisciId    --LEFT OUTER iş bankası toplamı hatalı çıktığı için değiştirildi
-                                    INNER JOIN NakitBagisci_Table A ON A.Id= H.BagisciId --bi daa açtım bakalım hayırlısı
+                                    --bu sefer de Vakifta sorun oldu INNER JOIN NakitBagisci_Table A ON A.Id= H.BagisciId    --LEFT OUTER is bankasi toplami hatali �iktigi i�in degistirildi
+                                    INNER JOIN NakitBagisci_Table A ON A.Id= H.BagisciId --bi daa a�tim bakalim hayirlisi
 									INNER JOIN BankaTanim_Table B ON B.Id= H.BankaId        --LEFT OUTER 
                                 WHERE BagisTarihi BETWEEN {0} AND {1}
                                 GROUP BY B.BankaGrup 
@@ -683,7 +683,7 @@ namespace Model.NBYS
                     B.Id NakitBagisciId, B.Adi, B.Soyadi, B.Telefon1, B.Telefon2, B.Adres, B.BelgeIstemiyor,
 					C.IlAdi Ili,D.IlceAdi Ilcesi,
 					F.Armagan, E.Durum,
-IIF(E.DuzenliBagis=1, 'Düzenli Bağış', IIF(E.CokluBagis=1, 'Çoklu Bağış', 'Bağış')) AS CokluBagis
+IIF(E.DuzenliBagis=1, 'D�zenli Bagis', IIF(E.CokluBagis=1, '�oklu Bagis', 'Bagis')) AS CokluBagis
                 FROM NakitBagisHareket_Table A
                 LEFT JOIN NakitBagisci_Table B ON B.Id=A.BagisciId
                 INNER JOIN Il_Table C ON C.Id=B.Ili
@@ -692,7 +692,7 @@ IIF(E.DuzenliBagis=1, 'Düzenli Bağış', IIF(E.CokluBagis=1, 'Çoklu Bağış'
                 LEFT JOIN ArmaganTanim_Table F ON F.Id=E.ArmaganTanimId
                 WHERE (BagisTarihi BETWEEN {1} AND {2})
                     {0} 
-                    --AND E.Durum NOT IN ('Ulaşılamıyor', 'Belge İstemiyor') --30.12.2022 Deniz Hanım aradı, Zeki Alb. ve Kemal Alb.. tarafından bu şeklde olmasının istendiğini iletti
+                    --AND E.Durum NOT IN ('Ulasilamiyor', 'Belge Istemiyor') --30.12.2022 Deniz Hanim aradi, Zeki Alb. ve Kemal Alb.. tarafindan bu seklde olmasinin istendigini iletti
                 ORDER BY BagisMiktari DESC,Adi, BagisTarihi DESC
             ", bolgeStr, ilkTarih.ReturnTRDateFormat(),sonTarih.ReturnTRDateFormat());
             DataTable dataTable;
@@ -703,7 +703,7 @@ IIF(E.DuzenliBagis=1, 'Düzenli Bağış', IIF(E.CokluBagis=1, 'Çoklu Bağış'
             catch (Exception e)
             {
                 Exception ex = new Exception("sql=" + sqlString, e);
-                throw ex;
+                throw;
             }
             return dataTable;
         }
@@ -714,7 +714,7 @@ IIF(E.DuzenliBagis=1, 'Düzenli Bağış', IIF(E.CokluBagis=1, 'Çoklu Bağış'
                     B.Id NakitBagisciId, B.Adi, B.Soyadi, B.Telefon1, B.Telefon2, B.Adres, B.BelgeIstemiyor,
 					C.IlAdi Ili,D.IlceAdi Ilcesi,
 					F.Armagan, E.Durum,
-            IIF(E.DuzenliBagis=1, 'Düzenli Bağış', IIF(E.CokluBagis=1, 'Çoklu Bağış', 'Bağış')) AS CokluBagis
+            IIF(E.DuzenliBagis=1, 'D�zenli Bagis', IIF(E.CokluBagis=1, '�oklu Bagis', 'Bagis')) AS CokluBagis
                 FROM NakitBagisHareket_Table A
                 LEFT JOIN NakitBagisci_Table B ON B.Id=A.BagisciId
                 INNER JOIN Il_Table C ON C.Id=B.Ili
@@ -732,7 +732,7 @@ IIF(E.DuzenliBagis=1, 'Düzenli Bağış', IIF(E.CokluBagis=1, 'Çoklu Bağış'
             catch (Exception e)
             {
                 Exception ex = new Exception("sql=" + sqlString, e);
-                throw ex;
+                throw;
             }
             return dataTable;
         }
@@ -768,7 +768,7 @@ IIF(E.DuzenliBagis=1, 'Düzenli Bağış', IIF(E.CokluBagis=1, 'Çoklu Bağış'
             catch (Exception e)
             {
                 Exception ex = new Exception("sql=" + sqlString, e);
-                throw ex;
+                throw;
             }
             return dataTable;
         }
@@ -802,7 +802,7 @@ IIF(E.DuzenliBagis=1, 'Düzenli Bağış', IIF(E.CokluBagis=1, 'Çoklu Bağış'
             catch (Exception e)
             {
                 Exception ex = new Exception("sql=" + sqlString, e);
-                throw ex;
+                throw;
             }
             return toplam;
         }
@@ -825,7 +825,7 @@ IIF(E.DuzenliBagis=1, 'Düzenli Bağış', IIF(E.CokluBagis=1, 'Çoklu Bağış'
             catch (Exception e)
             {
                 Exception ex = new Exception("sql=" + sqlString, e);
-                throw ex;
+                throw;
             }
             return dataTable;
         }
@@ -848,7 +848,7 @@ IIF(E.DuzenliBagis=1, 'Düzenli Bağış', IIF(E.CokluBagis=1, 'Çoklu Bağış'
             catch (Exception e)
             {
                 Exception ex = new Exception("sql=" + sqlString, e);
-                throw ex;
+                throw;
             }
             return dataTable;
         }
@@ -870,7 +870,7 @@ IIF(E.DuzenliBagis=1, 'Düzenli Bağış', IIF(E.CokluBagis=1, 'Çoklu Bağış'
             catch (Exception e)
             {
                 Exception ex = new Exception("sql=" + sqlString, e);
-                throw ex;
+                throw;
             }
             return dataTable;
         }
@@ -915,7 +915,7 @@ IIF(E.DuzenliBagis=1, 'Düzenli Bağış', IIF(E.CokluBagis=1, 'Çoklu Bağış'
             catch (Exception e)
             {
                 Exception ex = new Exception("sql=" + sqlString, e);
-                throw ex;
+                throw;
             }
             return dataTable;
         }
@@ -940,7 +940,7 @@ IIF(E.DuzenliBagis=1, 'Düzenli Bağış', IIF(E.CokluBagis=1, 'Çoklu Bağış'
             catch (Exception e)
             {
                 Exception ex = new Exception("sql=" + sqlString, e);
-                throw ex;
+                throw;
             }
             return dataTable;
         }
@@ -966,7 +966,7 @@ IIF(E.DuzenliBagis=1, 'Düzenli Bağış', IIF(E.CokluBagis=1, 'Çoklu Bağış'
             catch (Exception e)
             {
                 Exception ex = new Exception("sql=" + sqlString, e);
-                throw ex;
+                throw;
             }
             return dataTable;
         }
@@ -990,7 +990,7 @@ IIF(E.DuzenliBagis=1, 'Düzenli Bağış', IIF(E.CokluBagis=1, 'Çoklu Bağış'
             catch (Exception e)
             {
                 Exception ex = new Exception("sql=" + sqlString, e);
-                throw ex;
+                throw;
             }
             return dataTable;
         }

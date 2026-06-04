@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -105,12 +105,12 @@ namespace TBYS_WebParts.TeminatListesiWP
                 {
                     Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
                     BolgeIdQS = bolge == null ? 0 : bolge.Id;
-                    TitleLbl.Text = "Taahhüt Listesi";
+                    TitleLbl.Text = "Taahh�t Listesi";
                     if (BolgeIdQS != ProjeConstants.BOLGE_HEPSI_INT && BolgeIdQS != ProjeConstants.BOLGE_GENELMUDURLUK_INT)
                     {
                         Bolge bolgeDao = new Bolge();
                         bolgeDao = bolgeDao.Select(bolge.Id);
-                        TitleLbl.Text = bolgeDao == null ? "Teminat Listesi" : "Teminat Listesi" + " (" + bolge.KisaAdi + " Bölgesi )";
+                        TitleLbl.Text = bolgeDao == null ? "Teminat Listesi" : "Teminat Listesi" + " (" + bolge.KisaAdi + " B�lgesi )";
                     }
                     TabloOlustur();
                 }
@@ -124,8 +124,8 @@ namespace TBYS_WebParts.TeminatListesiWP
         private void TabloOlustur()
         {
             List<Tasinmaz> list = new List<Tasinmaz>();
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = TabloJson(); //veri �ekilip json a �eviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string TabloJson()
@@ -172,7 +172,7 @@ namespace TBYS_WebParts.TeminatListesiWP
                     "+ sozlesmeBtn + @"
 
                 ],
-                'order': [[0, 'asc']],//AdiSoyadi Sıralı
+                'order': [[0, 'asc']],//AdiSoyadi Sirali
                 'language': {
                         'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                     'decimal': ',',
@@ -273,7 +273,7 @@ namespace TBYS_WebParts.TeminatListesiWP
                         list.Remove(tempSozlesmeItem);
 
                         tasinmazAdedi++;
-                        tempSozlesmeItem.Adres = "@" + ilkAdres + "( Toplam " + tasinmazAdedi + " adet taşınmaz.)";
+                        tempSozlesmeItem.Adres = "@" + ilkAdres + "( Toplam " + tasinmazAdedi + " adet tasinmaz.)";
                         list.Add(tempSozlesmeItem);
                     }
                     else
@@ -303,7 +303,7 @@ namespace TBYS_WebParts.TeminatListesiWP
 
                         if (!isExcel)
                         {
-                            teminatItem.Sozlesme = "<a href=" + ProjeConstants.PAGE_KIRASOZLESMESI + "?KiraSozlesmeId=" + kiraSozlesmeId + " class='btn btn-outline-primary'>Sözleşme</a>";
+                            teminatItem.Sozlesme = "<a href=" + ProjeConstants.PAGE_KIRASOZLESMESI + "?KiraSozlesmeId=" + kiraSozlesmeId + " class='btn btn-outline-primary'>S�zlesme</a>";
                             teminatItem.Teminat = "<a href=" + ProjeConstants.PAGE_TEMINAT_ISLEMLERI + "?KiraSozlesmeId=" + kiraSozlesmeId + " class='btn btn-outline-primary'>Teminat</a>";
                         }
 

@@ -1,4 +1,4 @@
-﻿using Model.NBYS;
+using Model.NBYS;
 using Model.Ortak;
 using System;
 using System.ComponentModel;
@@ -45,23 +45,23 @@ namespace NBYS_WebParts.NakitBagisHaritasiWP
         {
             TableCell siranoCell = new TableCell();
             siranoCell.CssClass = "btn-default";
-            siranoCell.Text = "Sırano";
+            siranoCell.Text = "Sirano";
             IlinfoTableHeader.Controls.Add(siranoCell);
 
             TableCell yilCell = new TableCell();
             yilCell.CssClass = "btn-default";
-            yilCell.Text = "Yıl";
+            yilCell.Text = "Yil";
             IlinfoTableHeader.Controls.Add(yilCell);
 
             TableCell bagisSayisiCell = new TableCell();
             bagisSayisiCell.CssClass = "btn-default";
-            bagisSayisiCell.Text = "Bağış Adedi";
+            bagisSayisiCell.Text = "Bagis Adedi";
             IlinfoTableHeader.Controls.Add(bagisSayisiCell);
 
             TableCell bagisToplamiCell = new TableCell();
             bagisToplamiCell.CssClass = "btn-default";
             bagisToplamiCell.CssClass = "text-end";
-            bagisToplamiCell.Text = "Bağış Miktarı";
+            bagisToplamiCell.Text = "Bagis Miktari";
             IlinfoTableHeader.Controls.Add(bagisToplamiCell);
 
         }
@@ -124,7 +124,7 @@ namespace NBYS_WebParts.NakitBagisHaritasiWP
             Il il = new Il();
             il = il.SelectByIngAdi(ingIlAdi);
             TitleLbl.CssClass = "btn-primary";
-            TitleLbl.Text = il.IlAdi + " İli Nakit Bağış Bilgileri ";
+            TitleLbl.Text = il.IlAdi + " Ili Nakit Bagis Bilgileri ";
 
             FillData2IlinfoTable(il.Id);
             //ShowModal("Test");

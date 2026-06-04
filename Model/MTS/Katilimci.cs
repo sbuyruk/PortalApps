@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -16,22 +16,22 @@ namespace Model.MTS
     public class Katilimci : ParentClass
     {
         [Required]
-        [DisplayName("Katılımcı Tipi")]
+        [DisplayName("Katilimci Tipi")]
         public int KatilimciTipi { get; set; }
 
         [Required]
-        [DisplayName("Adı")]
+        [DisplayName("Adi")]
         public string Adi { get; set; }
         [Required]
-        [DisplayName("Soyadı")]
+        [DisplayName("Soyadi")]
         public string Soyadi { get; set; }
         [DisplayName("TC Kimlik No")]
         public long TCKimlikNo { get; set; }
         [DisplayName("Kurumu")]
         public string Kurumu { get; set; }
-        [DisplayName("Ünvanı")]
+        [DisplayName("�nvani")]
         public string Unvani { get; set; }
-        [DisplayName("Görevi")]
+        [DisplayName("G�revi")]
         public string Gorevi { get; set; }
         [DisplayName("Telefon 1")]
         public string Telefon1 { get; set; }
@@ -41,13 +41,13 @@ namespace Model.MTS
         [DisplayName("Telefon 3")]
         public string Telefon3 { get; set; }
         
-        [DisplayName("Açıklama 1")]
+        [DisplayName("A�iklama 1")]
         public string TelAciklama1 { get; set; }
         
-        [DisplayName("Açıklama 2")]
+        [DisplayName("A�iklama 2")]
         public string TelAciklama2 { get; set; }
         
-        [DisplayName("Açıklama 3")]
+        [DisplayName("A�iklama 3")]
         public string TelAciklama3 { get; set; }
         
         [DisplayName("Adres")]
@@ -56,10 +56,10 @@ namespace Model.MTS
         [DisplayName("EPosta")]
         public string EPosta { get; set; }
         
-        [DisplayName("İl")]
+        [DisplayName("Il")]
         public int Ili { get; set; }
         
-        [DisplayName("İlçe")]
+        [DisplayName("Il�e")]
         public int Ilcesi { get; set; }
         
         [DisplayName("Dahili Telefon 1")]
@@ -71,12 +71,12 @@ namespace Model.MTS
         [DisplayName("Dahili Telefon 3")]
         public string Dahili3 { get; set; }
         
-        [DisplayName("Doğum Tarihi")]
+        [DisplayName("Dogum Tarihi")]
         public DateTime DogumTarihi { get; set; }
         
         [DisplayName("Kutlama")]
         public bool Kutlama { get; set; } = false;
-        [DisplayName("Randevu Kısıtı")]
+        [DisplayName("Randevu Kisiti")]
         public bool RandevuKisiti { get; set; } = false;
 
         public override bool Delete()

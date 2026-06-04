@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -94,7 +94,7 @@ namespace TBYS_WebParts.GecikmeZammiWP
 
                 TableCell GuncelleCell = new TableCell();
                 LinkButton GuncelleBtn = new LinkButton();
-                GuncelleBtn.Text = "Güncelle";
+                GuncelleBtn.Text = "G�ncelle";
                 GuncelleBtn.CssClass = "btn btn-outline-primary";
                 GuncelleBtn.ID = "GuncelleBtn" + sira;
                 GuncelleBtn.Click += delegate
@@ -102,10 +102,10 @@ namespace TBYS_WebParts.GecikmeZammiWP
                     try
                     {
                         ///
-                        /// Bundan önceki kaydı bul,
-                        ///     Bitis tarihini değiştir (bu kaydın baslangıc tarihi - 1 Gun yap)
-                        ///Bundan Sonraki kaydı bul
-                        ///     Bu kaydın bitiş tarihini Sonrakinin baslangıc tarihi olarak değiştir
+                        /// Bundan �nceki kaydi bul,
+                        ///     Bitis tarihini degistir (bu kaydin baslangic tarihi - 1 Gun yap)
+                        ///Bundan Sonraki kaydi bul
+                        ///     Bu kaydin bitis tarihini Sonrakinin baslangic tarihi olarak degistir
 
                         item.BaslangicTarihi = BaslangicTarihiTxt.Value.ConvertToDatetime();
                         item.ZamOrani = ZamOraniTxt.Text.ConvertToDecimal();
@@ -132,7 +132,7 @@ namespace TBYS_WebParts.GecikmeZammiWP
 
                         if (item.Update())
                         {
-                            MessageHelper.PublishMessage("Kayıt Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                            MessageHelper.PublishMessage("Kayit G�ncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                             string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
                             newUrl += "/" + ProjeConstants.PAGE_GECIKMEZAMMI;
@@ -143,7 +143,7 @@ namespace TBYS_WebParts.GecikmeZammiWP
                     catch (Exception)
                     {
 
-                        MessageHelper.PublishMessage("Gecikme Zammı Kaydedilemedi", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Gecikme Zammi Kaydedilemedi", ProjeConstants.MESAJ_HATA);
                     }
                 };
                 GuncelleCell.Controls.Add(GuncelleBtn);
@@ -169,7 +169,7 @@ namespace TBYS_WebParts.GecikmeZammiWP
 
                         if (item.Delete())
                         {
-                            MessageHelper.PublishMessage("Kayıt Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
+                            MessageHelper.PublishMessage("Kayit Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
                             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                             string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
                             newUrl += "/" + ProjeConstants.PAGE_GECIKMEZAMMI;
@@ -179,7 +179,7 @@ namespace TBYS_WebParts.GecikmeZammiWP
                     catch (Exception)
                     {
 
-                        MessageHelper.PublishMessage("Faiz Oranları Kaydedilemedi", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Faiz Oranlari Kaydedilemedi", ProjeConstants.MESAJ_HATA);
                     }
                 };
                 SilCell.Controls.Add(SilBtn);
@@ -227,7 +227,7 @@ namespace TBYS_WebParts.GecikmeZammiWP
 
             GecikmeZammi oncekiTarihliFO = new GecikmeZammi();
             oncekiTarihliFO = oncekiTarihliFO.SelectOncekiGecikmeZammi(YeniBaslangicTarihiTxt.Value.ConvertToDatetime());
-            //öncekinin biti tarihini değiştir
+            //�ncekinin biti tarihini degistir
             if (oncekiTarihliFO != null)
             {
                 oncekiTarihliFO.BitisTarihi = YeniBaslangicTarihiTxt.Value.ConvertToDatetime().AddDays(-1);
@@ -237,7 +237,7 @@ namespace TBYS_WebParts.GecikmeZammiWP
 
             GecikmeZammi sonrakiTarihliFO = new GecikmeZammi();
             sonrakiTarihliFO = sonrakiTarihliFO.SelectSonrakiGecikmeZammi(yeni.BaslangicTarihi);
-            //yeninin bitiş tarihini sonrakinin başlama tarihi yap
+            //yeninin bitis tarihini sonrakinin baslama tarihi yap
             if (sonrakiTarihliFO != null)
             {
                 yeni.BitisTarihi = sonrakiTarihliFO.BaslangicTarihi.AddDays(-1);

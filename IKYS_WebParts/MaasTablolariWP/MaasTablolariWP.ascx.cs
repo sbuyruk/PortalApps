@@ -1,4 +1,4 @@
-﻿using Model.IKYS;
+using Model.IKYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -51,8 +51,8 @@ namespace IKYS_WebParts.MaasTablolariWP
 
         private void TablolariDoldur()
         {
-            Table1Title.Text = TarihDDL.SelectedItem.Text + " TARİHLERİ ARASI GEÇERLİ TSKGV ÜCRET TABLOSU-1";
-            Table2Title.Text = TarihDDL.SelectedItem.Text + " TARİHLERİ ARASI GEÇERLİ TSKGV ÜCRET TABLOSU-2 (TSK'DAN EMEKLİ PERSONEL İÇİN GEÇERLİDİR)";
+            Table1Title.Text = TarihDDL.SelectedItem.Text + " TARIHLERI ARASI GE�ERLI TSKGV �CRET TABLOSU-1";
+            Table2Title.Text = TarihDDL.SelectedItem.Text + " TARIHLERI ARASI GE�ERLI TSKGV �CRET TABLOSU-2 (TSK'DAN EMEKLI PERSONEL I�IN GE�ERLIDIR)";
             int grupId = TarihDDL.SelectedItem.Value.ConvertToInt();
             UcretTanim ucretTanim = new UcretTanim();
             int derece = 1;
@@ -80,14 +80,14 @@ namespace IKYS_WebParts.MaasTablolariWP
                 string tablo1AltUcret= item.AltUcret.ToString("N", culturInfo);
                 switch (item.Derece)
                 {
-                    case 1: //Genel Müdür
+                    case 1: //Genel M�d�r
                         {
                             if (table== UcretTanimTable1)
                             {
                                 TableCell altUcretCell = new TableCell();
 
                                 altUcretCell.Text = tablo1AltUcret;
-                                altUcretCell.HorizontalAlign = HorizontalAlign.Right;  // Sağ hizalama
+                                altUcretCell.HorizontalAlign = HorizontalAlign.Right;  // Sag hizalama
                                 row.Controls.Add(altUcretCell); 
                             }
 
@@ -96,20 +96,20 @@ namespace IKYS_WebParts.MaasTablolariWP
                             row.Controls.Add(ustUcretCell);
                             break;
                         }
-                    case 2: //Genel Müdür Yard
+                    case 2: //Genel M�d�r Yard
                         {
                             if (table == UcretTanimTable1)
                             {
                                 TableCell altUcretCell = new TableCell();
 
                                 altUcretCell.Text = tablo1AltUcret;
-                                altUcretCell.HorizontalAlign = HorizontalAlign.Right;  // Sağ hizalama
+                                altUcretCell.HorizontalAlign = HorizontalAlign.Right;  // Sag hizalama
                                 row.Controls.Add(altUcretCell); 
                             }
 
                             TableCell ustUcretCell = new TableCell();
                             ustUcretCell.Text = gecerliUcret;
-                            ustUcretCell.HorizontalAlign = HorizontalAlign.Right;  // Sağ hizalama
+                            ustUcretCell.HorizontalAlign = HorizontalAlign.Right;  // Sag hizalama
                             row.Controls.Add(ustUcretCell);
                             break;
                         }
@@ -120,21 +120,21 @@ namespace IKYS_WebParts.MaasTablolariWP
                                 TableCell altUcretCell = new TableCell();
 
                                 altUcretCell.Text = tablo1AltUcret;
-                                altUcretCell.HorizontalAlign = HorizontalAlign.Right;  // Sağ hizalama
+                                altUcretCell.HorizontalAlign = HorizontalAlign.Right;  // Sag hizalama
                                 row.Controls.Add(altUcretCell); 
                             }
 
                             TableCell ustUcretCell = new TableCell();
                             ustUcretCell.Text = gecerliUcret;
-                            ustUcretCell.HorizontalAlign = HorizontalAlign.Right;  // Sağ hizalama
+                            ustUcretCell.HorizontalAlign = HorizontalAlign.Right;  // Sag hizalama
                             row.Controls.Add(ustUcretCell);
                             break;
                         }
-                    case 4: //Baş
+                    case 4: //Bas
                         {
                             TableCell ustUcretCell = new TableCell();
                             ustUcretCell.Text = gecerliUcret;
-                            ustUcretCell.HorizontalAlign = HorizontalAlign.Right;  // Sağ hizalama
+                            ustUcretCell.HorizontalAlign = HorizontalAlign.Right;  // Sag hizalama
                             row.Controls.Add(ustUcretCell);
                             break;
                         }
@@ -142,7 +142,7 @@ namespace IKYS_WebParts.MaasTablolariWP
                         {
                             TableCell ustUcretCell = new TableCell();
                             ustUcretCell.Text = gecerliUcret;
-                            ustUcretCell.HorizontalAlign = HorizontalAlign.Right;  // Sağ hizalama
+                            ustUcretCell.HorizontalAlign = HorizontalAlign.Right;  // Sag hizalama
                             row.Controls.Add(ustUcretCell);
                             break;
                         }
@@ -157,16 +157,16 @@ namespace IKYS_WebParts.MaasTablolariWP
                         {
                             TableCell ustUcretCell = new TableCell();
                             ustUcretCell.Text = gecerliUcret;
-                            ustUcretCell.HorizontalAlign = HorizontalAlign.Right;  // Sağ hizalama
+                            ustUcretCell.HorizontalAlign = HorizontalAlign.Right;  // Sag hizalama
                             row.Controls.Add(ustUcretCell);
                             break;
                         }
-                    case 8: //Şoför Hiz
+                    case 8: //Sof�r Hiz
                         {
 
                             TableCell ustUcretCell = new TableCell();
                             ustUcretCell.Text = gecerliUcret;
-                            ustUcretCell.HorizontalAlign = HorizontalAlign.Right;  // Sağ hizalama
+                            ustUcretCell.HorizontalAlign = HorizontalAlign.Right;  // Sag hizalama
                             row.Controls.Add(ustUcretCell);
                             break;
                         }
@@ -205,7 +205,7 @@ namespace IKYS_WebParts.MaasTablolariWP
             HttpContext.Current.Response.ContentEncoding = Encoding.UTF8;
             HttpContext.Current.Response.AddHeader("content-disposition", "attachment;filename=UcretTablosu1.xls");
 
-            // Excel'e stil bilgisi göndermek için <style> bloğu ekle
+            // Excel'e stil bilgisi g�ndermek i�in <style> blogu ekle
             string style = @"
                 <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
                 <style>
@@ -225,7 +225,7 @@ namespace IKYS_WebParts.MaasTablolariWP
             // Tabloyu render et
             TablesDiv.RenderControl(hw);
 
-            // HTML + style + tablo içeriğini gönder
+            // HTML + style + tablo i�erigini g�nder
             HttpContext.Current.Response.Write(style + sw.ToString());
             HttpContext.Current.Response.Flush();
             HttpContext.Current.Response.End();
@@ -241,7 +241,7 @@ namespace IKYS_WebParts.MaasTablolariWP
             HttpContext.Current.Response.ContentEncoding = Encoding.UTF8;
             HttpContext.Current.Response.AddHeader("content-disposition", "attachment;filename=UcretTablosu-2.xls");
 
-            // Excel'e stil bilgisi göndermek için <style> bloğu ekle
+            // Excel'e stil bilgisi g�ndermek i�in <style> blogu ekle
             string style = @"
                 <meta http-equiv='Content-Type' content='text/html; charset=utf-8'>
                 <style>
@@ -261,7 +261,7 @@ namespace IKYS_WebParts.MaasTablolariWP
             // Tabloyu render et
             UcretTanimTable2.RenderControl(hw);
 
-            // HTML + style + tablo içeriğini gönder
+            // HTML + style + tablo i�erigini g�nder
             HttpContext.Current.Response.Write(style + sw.ToString());
             HttpContext.Current.Response.Flush();
             HttpContext.Current.Response.End();

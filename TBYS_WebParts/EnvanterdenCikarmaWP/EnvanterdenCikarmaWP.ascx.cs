@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.ComponentModel;
@@ -126,7 +126,7 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
                     tasinmaz = tasinmaz.Select<Tasinmaz>(TasinmazIdQS.ConvertToInt());
                     if (tasinmaz != null)
                     {
-                        //envanterden çıkar btn yi visible yap
+                        //envanterden �ikar btn yi visible yap
                         //
                         UpdateBtn.Visible = false;
                         EnvanterdenCikarBtn.Visible = true;
@@ -226,7 +226,7 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
 
             try
             {
-                //Onay Popup Aç
+                //Onay Popup A�
 
                 EnvanterdenCikarNowBtn.Visible = true;
                 var openPopup = "OpenModal();";
@@ -261,13 +261,13 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
                 {
                     UpdateBtn.Visible = true;
                     EnvanterdenCikarBtn.Visible = false;
-                    MessageHelper.PublishMessage("(Envanterde olmayan) Taşınmaz Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("(Envanterde olmayan) Tasinmaz G�ncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                 }
             }
             catch (Exception ex)
             {
                 ExceptionHelper exHelper = new ExceptionHelper(ex);
-                Exception guncellemeExc = new Exception("(Envanterde olmayan) Taşınmaz Güncellenemedi1");
+                Exception guncellemeExc = new Exception("(Envanterde olmayan) Tasinmaz G�ncellenemedi1");
                 exHelper.PublishException();
             }
             finally {
@@ -278,8 +278,8 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
         protected void EnvanterdenCikarNowBtn_Click(object sender, EventArgs e)
         {
             //tasinmaz.EnvanterdeMi=0 yap
-            //EnvanterdenCikarmaWP'ı reload et SenderApp
-            //envanterden çıkarıldı mesajı ver
+            //EnvanterdenCikarmaWP'i reload et SenderApp
+            //envanterden �ikarildi mesaji ver
             bool envanterdenCikarildiMi = false;
             bool bagisGuncellendiMi = false;
             try
@@ -313,7 +313,7 @@ namespace TBYS_WebParts.EnvanterdenCikarmaWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Envanterden çıkarma işlemi başarısız oldu", ProjeConstants.MESAJ_HATA, 2000);
+                    MessageHelper.PublishMessage("Envanterden �ikarma islemi basarisiz oldu", ProjeConstants.MESAJ_HATA, 2000);
                 }
             }
             catch (Exception ex)

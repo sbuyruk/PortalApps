@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -67,7 +67,7 @@ namespace Model.IKYS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
 
         }
@@ -131,7 +131,7 @@ namespace Model.IKYS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
         }
         public override List<T> SelectAll<T>()
@@ -285,7 +285,7 @@ namespace Model.IKYS
 
         public bool DeleteByGrupId(int grupId)
         {
-            //GrupId ile eşleşen tüm kayıtları siler
+            //GrupId ile eslesen t�m kayitlari siler
             string sqlString = string.Format(@"
                 DELETE FROM UcretTanim_Table
                 WHERE GrupId={0}", grupId);
@@ -312,7 +312,7 @@ namespace Model.IKYS
                 sqlString = string.Format(@"
                 SELECT UstUcret FROM UcretTanim_Table
                 WHERE GrupId={0} AND Derece={1} AND Kademe={2}", grupId, derece, kademe);
-                //GrupId, Derece ve Kademe ile eşleşen Ucret değerini döner
+                //GrupId, Derece ve Kademe ile eslesen Ucret degerini d�ner
             }
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable.Rows.Count > 0)

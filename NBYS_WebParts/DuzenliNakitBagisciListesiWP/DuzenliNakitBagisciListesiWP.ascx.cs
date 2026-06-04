@@ -1,4 +1,4 @@
-﻿using Model.NBYS;
+using Model.NBYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -358,7 +358,7 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
                         listItem.bBelgeIstemiyor = bBelgeIstemiyor;
                         listItem.bDurum = bDurum;
                         listItem.BagisciEslestir = BagisciEslestirLinkGetir(aBagisciId,aArmaganId,aBagisciAdi,bAdi,bDurum,aDuzenliBagisciId,aEslesmeBilgisi);
-                        listItem.DuzenliBagisciBelgesi = DuzenliBagisciBelgesiLinkiGetir(aBagisciId, aArmaganId, aBaslamaTarihi, bBelgeIstemiyor, bDurum, aDuzenliBagisciId); //property içindeki logic çalıştırılıyor
+                        listItem.DuzenliBagisciBelgesi = DuzenliBagisciBelgesiLinkiGetir(aBagisciId, aArmaganId, aBaslamaTarihi, bBelgeIstemiyor, bDurum, aDuzenliBagisciId); //property i�indeki logic �alistiriliyor
                         listItem.Adi = AdiLinkGetir(aBagisciId,aBagisciAdi,bAdi,aEslesmeBilgisi);
                         list.Add(listItem);
                     }
@@ -376,7 +376,7 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
             string link = string.Empty;
             if (!aEslesmeBilgisi.Contains("TCKN ile bulundu"))
             {
-                //Duzenli bağışçı belgesi oluşturulmuş mu, Armagan_Table'dan kontrol et
+                //Duzenli bagis�i belgesi olusturulmus mu, Armagan_Table'dan kontrol et
                 //Armagan armagan = new Armagan();
                 //armagan = armagan.SelectByBagisciIdAndArmaganTanimId(aBagisciId, ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID);
                 //if (armagan != null)
@@ -391,12 +391,12 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
 
                 if (aBagisciId == -1)
                 {
-                    link = "<a href='" + ProjeConstants.PAGE_NAKITBAGISCI_ESLESTIR + "?SenderApp=DNBL&DuzenliBagisciId=" + aDuzenliBagisciId + "&BagisciAdi=" + aBagisciAdi.Replace(" ", "@@") + "' class='btn btn-warning ' >Eşleştir</a>";
+                    link = "<a href='" + ProjeConstants.PAGE_NAKITBAGISCI_ESLESTIR + "?SenderApp=DNBL&DuzenliBagisciId=" + aDuzenliBagisciId + "&BagisciAdi=" + aBagisciAdi.Replace(" ", "@@") + "' class='btn btn-warning ' >Eslestir</a>";
                 }
                 else
                 {
-                    link = "<a href='" + ProjeConstants.PAGE_NAKITBAGISCI_EDIT + "?NakitBagisciId=" + aBagisciId + "' class='btn btn-outline-secondary ' >Bağışçı</a> " +
-                             " <a href='" + ProjeConstants.PAGE_NAKITBAGISCI_ESLESTIR + "?SenderApp=DNBL&DuzenliBagisciId=" + aDuzenliBagisciId + "&BagisciAdi=" + aBagisciAdi.Replace(" ", "@@") + "' class='btn btn-warning ' >Eşleştir</a>";
+                    link = "<a href='" + ProjeConstants.PAGE_NAKITBAGISCI_EDIT + "?NakitBagisciId=" + aBagisciId + "' class='btn btn-outline-secondary ' >Bagis�i</a> " +
+                             " <a href='" + ProjeConstants.PAGE_NAKITBAGISCI_ESLESTIR + "?SenderApp=DNBL&DuzenliBagisciId=" + aDuzenliBagisciId + "&BagisciAdi=" + aBagisciAdi.Replace(" ", "@@") + "' class='btn btn-warning ' >Eslestir</a>";
                 } 
             }
             return link;
@@ -425,15 +425,15 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
             string link = string.Empty;
             if (aBagisciId == -1)
             {
-                link = "Bağışçı bulunamadı";
+                link = "Bagis�i bulunamadi";
             }
             else if (bBelgeIstemiyor == true)
             {
-                link = "Belge İstemiyor";
+                link = "Belge Istemiyor";
             }
             else
             {
-                ////Duzenli bağışçı belgesi oluşturulmuş mu, Armagan_Table'dan kontrol et
+                ////Duzenli bagis�i belgesi olusturulmus mu, Armagan_Table'dan kontrol et
                 //Armagan armagan = new Armagan();
                 //armagan = armagan.SelectByBagisciIdAndArmaganTanimId(aBagisciId, ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID);
                 //if (armagan != null)
@@ -455,12 +455,12 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
                         var secilenYil = baslamaTarihi.Year;
                         var queryStr = "&SecilenAy=" + secilenAy + "&SecilenYil=" + secilenYil + "&SecilenArmaganTanimId=" + ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID
                             + "&DuzenliBagisciId=" + aDuzenliBagisciId;
-                        link = "<a href='" + ProjeConstants.PAGE_ARMAGAN_EDIT + "?ArmaganId=" + aArmaganId + "&NakitBagisciId=" + aBagisciId + queryStr + "' class='btn btn-outline-primary' >Düzenle</a> </br>" + "(" + bDurum + ")";
+                        link = "<a href='" + ProjeConstants.PAGE_ARMAGAN_EDIT + "?ArmaganId=" + aArmaganId + "&NakitBagisciId=" + aBagisciId + queryStr + "' class='btn btn-outline-primary' >D�zenle</a> </br>" + "(" + bDurum + ")";
                     }
                 }
                 else
                 {
-                    link = "<button type=button class='btn btn-success' onclick=showDuzenliBagisOnay(" + aBagisciId + "," + aDuzenliBagisciId + ")>Düzenli Bağışçı Belgesi oluştur</button>";
+                    link = "<button type=button class='btn btn-success' onclick=showDuzenliBagisOnay(" + aBagisciId + "," + aDuzenliBagisciId + ")>D�zenli Bagis�i Belgesi olustur</button>";
                 }
             }
             return link;
@@ -472,9 +472,9 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
             jQuery(document).ready(function () {
             jQuery.fn.dataTable.moment('DD.MM.YYYY');
             jQuery('#CustomDataTable').DataTable({
-                'initComplete': function (settings, json) {//tablo yüklendiğinde
+                'initComplete': function (settings, json) {//tablo y�klendiginde
                     var api = this.api();
-                    var row = api.row(function(idx, data, node) { //secilen satıra gider
+                    var row = api.row(function(idx, data, node) { //secilen satira gider
                         return data['aDuzenliBagisciId'] ==" + SecilenIdQS + @";
                     });
                     if (row.length > 0)
@@ -640,8 +640,8 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
 
         private void TabloModalOlustur(string nakitBagisciId)
         {
-            var jsonData = GetModalDataJson(nakitBagisciId); //veri çekilip json a çeviriliyor
-            var jsString = CreateModalDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = GetModalDataJson(nakitBagisciId); //veri �ekilip json a �eviriliyor
+            var jsString = CreateModalDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string CreateModalDataTable(string jsonData)
@@ -692,8 +692,8 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
             var json = nbh.SelectByBagisciIdReturnJSon(nakitBagisciId, ref rowCount);
             decimal toplamTutar = nbh.GetSumBagisMiktariByNakitBagisciIdBetweenBasTarBitTar(
                 ProjeConstants.BAGIS_SORGU_BASTAR.ConvertToDatetime(), DateTime.Today, nakitBagisciId.ConvertToInt());
-            BagisBilgileriLbl.Text = rowCount < 1 ? "Bağış bulunmamaktadır" :
-                "Bağışçının " + rowCount + " defada yaptığı toplam " + toplamTutar.ToString("N", culturInfo) + "TL bağışı bulunmaktadır";
+            BagisBilgileriLbl.Text = rowCount < 1 ? "Bagis bulunmamaktadir" :
+                "Bagis�inin " + rowCount + " defada yaptigi toplam " + toplamTutar.ToString("N", culturInfo) + "TL bagisi bulunmaktadir";
             return json;
         }
         protected void ModalDoldurBtn_Click(object sender, EventArgs e)
@@ -751,7 +751,7 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
                         IlIlceCell.Text += " " + ilce.IlceAdi.ReturnEmptyIfNull().ToString();
                     }
                     TelefonCell.Text = nakitBagisci.Telefon1.ReturnEmptyIfNull().ToString();
-                    TuzelKisiCell.Text = nakitBagisci.TuzelKisi.ConvertToBool() ? "Evet" : "Hayır";
+                    TuzelKisiCell.Text = nakitBagisci.TuzelKisi.ConvertToBool() ? "Evet" : "Hayir";
                     row.Controls.Add(AdiCell);
                     row.Controls.Add(TCKimlikNoCell);
                     row.Controls.Add(AdresCell);
@@ -786,7 +786,7 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
                 }
                 else
                 {
-                    Exception exception = new Exception(string.Format("HATA SATIRI {0}: Bağışçı bulunamadı -> NakitBagisciId: {1}", ProjeConstants.PAGE_DUZENLIBAGISCI_YUKLEME, nakitBagisciId));
+                    Exception exception = new Exception(string.Format("HATA SATIRI {0}: Bagis�i bulunamadi -> NakitBagisciId: {1}", ProjeConstants.PAGE_DUZENLIBAGISCI_YUKLEME, nakitBagisciId));
                     ExceptionHelper exHelper = new ExceptionHelper(exception);
                     exHelper.PublishException();
                 }
@@ -806,17 +806,17 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
                 // Son nakitBagisii bul
                 NakitBagisHareket nakitBagisHareket = new NakitBagisHareket();
                 nakitBagisHareket = nakitBagisHareket.SelectBagisByBagisciIdTarih(duzenliNakitBagisci.BagisciId, duzenliNakitBagisci.BaslamaTarihi);
-                //Armağan Oluştur
+                //Armagan Olustur
                 if (nakitBagisHareket != null)
                 {
                     duzenliNakitBagisci.NakitBagisHareketId = nakitBagisHareket.Id;
-                    //Bu bağışçı daha önce Düzenli Bağışçı belgesi almış mı bak
+                    //Bu bagis�i daha �nce D�zenli Bagis�i belgesi almis mi bak
                     Armagan armagan = new Armagan();
                     armagan = armagan.SelectByBagisciIdAndArmaganTanimId(bagisci.Id, ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID);
                     if (armagan != null)
                     {
-                        string aciklamaStr = string.IsNullOrEmpty(duzenliNakitBagisci.Aciklama) ? " Daha önce Düzenli Bağışçı Belgesi almış -> " + duzenliNakitBagisci.BagisciAdi : duzenliNakitBagisci.Aciklama;
-                        Exception exception = new Exception(string.Format("HATA SATIRI {0}:{1} -> Bu bağışçı daha önce Düzenli Bağışçı Belgesi almış.", ProjeConstants.PAGE_DUZENLIBAGISCI_YUKLEME, aciklamaStr));
+                        string aciklamaStr = string.IsNullOrEmpty(duzenliNakitBagisci.Aciklama) ? " Daha �nce D�zenli Bagis�i Belgesi almis -> " + duzenliNakitBagisci.BagisciAdi : duzenliNakitBagisci.Aciklama;
+                        Exception exception = new Exception(string.Format("HATA SATIRI {0}:{1} -> Bu bagis�i daha �nce D�zenli Bagis�i Belgesi almis.", ProjeConstants.PAGE_DUZENLIBAGISCI_YUKLEME, aciklamaStr));
                         exceptionHelper.Exceptions.Add(exception);
                         return exceptionHelper;
                     }
@@ -824,8 +824,8 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
                         ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID, CurrentUserName);
                     if (armaganId < 1)
                     {
-                        string aciklamaStr = string.IsNullOrEmpty(duzenliNakitBagisci.Aciklama) ? " Armağan kaydı oluşturulamadı -> " + duzenliNakitBagisci.BagisciAdi : duzenliNakitBagisci.Aciklama;
-                        Exception exception = new Exception(string.Format("HATA SATIRI {0}:{1} -> Armağan kaydı oluşturulamadı.", ProjeConstants.PAGE_DUZENLIBAGISCI_YUKLEME, aciklamaStr));
+                        string aciklamaStr = string.IsNullOrEmpty(duzenliNakitBagisci.Aciklama) ? " Armagan kaydi olusturulamadi -> " + duzenliNakitBagisci.BagisciAdi : duzenliNakitBagisci.Aciklama;
+                        Exception exception = new Exception(string.Format("HATA SATIRI {0}:{1} -> Armagan kaydi olusturulamadi.", ProjeConstants.PAGE_DUZENLIBAGISCI_YUKLEME, aciklamaStr));
                         exceptionHelper.Exceptions.Add(exception);
                     }
                     else
@@ -868,17 +868,17 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
         {
             AyDDL.Items.Add(new ListItem(ProjeConstants.HEPSI, ProjeConstants.HEPSI_INT.ToString()));
             AyDDL.Items.Add(new ListItem("Ocak", "1"));
-            AyDDL.Items.Add(new ListItem("Şubat", "2"));
+            AyDDL.Items.Add(new ListItem("Subat", "2"));
             AyDDL.Items.Add(new ListItem("Mart", "3"));
             AyDDL.Items.Add(new ListItem("Nisan", "4"));
-            AyDDL.Items.Add(new ListItem("Mayıs", "5"));
+            AyDDL.Items.Add(new ListItem("Mayis", "5"));
             AyDDL.Items.Add(new ListItem("Haziran", "6"));
             AyDDL.Items.Add(new ListItem("Temmuz", "7"));
-            AyDDL.Items.Add(new ListItem("Ağustos", "8"));
-            AyDDL.Items.Add(new ListItem("Eylül", "9"));
+            AyDDL.Items.Add(new ListItem("Agustos", "8"));
+            AyDDL.Items.Add(new ListItem("Eyl�l", "9"));
             AyDDL.Items.Add(new ListItem("Ekim", "10"));
-            AyDDL.Items.Add(new ListItem("Kasım", "11"));
-            AyDDL.Items.Add(new ListItem("Aralık", "12"));
+            AyDDL.Items.Add(new ListItem("Kasim", "11"));
+            AyDDL.Items.Add(new ListItem("Aralik", "12"));
 
         }
         private void YilDDLDoldur()
@@ -907,7 +907,7 @@ namespace NBYS_WebParts.DuzenliNakitBagisciListesiWP
             DurumDDL.Items.Add(ProjeConstants.DURUM_AFETNEDENIYLE_GONDERILMEDI);
             DurumDDL.Items.Add(ProjeConstants.DURUM_EDEVLETTENBELGEGONDERILDI);
 
-            //acilista durumu querystring ile gelene eşitle
+            //acilista durumu querystring ile gelene esitle
             ListItem DurumItem = new ListItem();
             if (!string.IsNullOrEmpty(SecilenDurumQS))
                 DurumItem = DurumDDL.Items.FindByValue(SecilenDurumQS);

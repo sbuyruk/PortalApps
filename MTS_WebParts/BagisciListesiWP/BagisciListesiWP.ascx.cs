@@ -1,4 +1,4 @@
-﻿using Model.MTS;
+using Model.MTS;
 using Model.NBYS;
 using Model.TBYS;
 using System;
@@ -63,8 +63,8 @@ namespace MTS_WebParts.BagisciListesiWP
         private void TabloOlustur()
         {
             List<Kisi> list = new List<Kisi>();
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            //var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = TabloJson(); //veri �ekilip json a �eviriliyor
+            //var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler,
                 typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "setDataSet(" + jsonData + ");", true);
         }

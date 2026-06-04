@@ -1,4 +1,4 @@
-﻿using Model.NBYS;
+using Model.NBYS;
 using Model.Ortak;
 using System;
 using System.ComponentModel;
@@ -126,22 +126,22 @@ namespace NBYS_WebParts.NakitBagisciByTarihWP
             SonucTable.Rows.Clear();
             TableHeaderRow headerThRow = new TableHeaderRow();
             TableHeaderCell headerCell = new TableHeaderCell();
-            headerCell.Text = BasTarTxt.Value.ConvertToDatetimeEmptyIfNull() + "-" + BitTarTxt.Value.ConvertToDatetimeEmptyIfNull() + " TARİHLERİ ARASINDA YAPILAN NAKİT BAĞIŞLAR";
+            headerCell.Text = BasTarTxt.Value.ConvertToDatetimeEmptyIfNull() + "-" + BitTarTxt.Value.ConvertToDatetimeEmptyIfNull() + " TARIHLERI ARASINDA YAPILAN NAKIT BAGISLAR";
             headerCell.ColumnSpan = 7;
             headerThRow.Controls.Add(headerCell);
             SonucTable.Controls.Add(headerThRow);
 
             TableHeaderRow th = new TableHeaderRow();
             TableHeaderCell bolgeThCell = new TableHeaderCell();
-            bolgeThCell.Text = "Bölge";
+            bolgeThCell.Text = "B�lge";
             bolgeThCell.RowSpan = 2;
 
             TableHeaderCell bagisciCell = new TableHeaderCell();
-            bagisciCell.Text = "Bağışçı Sayısı";
+            bagisciCell.Text = "Bagis�i Sayisi";
             bagisciCell.ColumnSpan = 3;
 
             TableHeaderCell bagiMiktariCell = new TableHeaderCell();
-            bagiMiktariCell.Text = "Bağış Miktarı";
+            bagiMiktariCell.Text = "Bagis Miktari";
             bagiMiktariCell.ColumnSpan = 3;
 
             th.Controls.Add(bolgeThCell);
@@ -301,20 +301,20 @@ namespace NBYS_WebParts.NakitBagisciByTarihWP
         //    SMSTable.Rows.Clear();
         //    TableHeaderRow headerThRow = new TableHeaderRow();
         //    TableHeaderCell headerCell = new TableHeaderCell();
-        //    headerCell.Text = BasTarTxt.Value.ConvertToDatetimeEmptyIfNull() + "-" + BitTarTxt.Value.ConvertToDatetimeEmptyIfNull() + " TARİHLERİ ARASINDA YAPILAN SMS BAĞIŞLARI";
+        //    headerCell.Text = BasTarTxt.Value.ConvertToDatetimeEmptyIfNull() + "-" + BitTarTxt.Value.ConvertToDatetimeEmptyIfNull() + " TARIHLERI ARASINDA YAPILAN SMS BAGISLARI";
         //    headerCell.ColumnSpan = 8;
         //    headerThRow.Controls.Add(headerCell);
         //    SMSTable.Controls.Add(headerThRow);
 
         //    TableHeaderRow th = new TableHeaderRow();
         //    TableHeaderCell smsOperatorThCell = new TableHeaderCell();
-        //    smsOperatorThCell.Text = "GSM Operatörü";
+        //    smsOperatorThCell.Text = "GSM Operat�r�";
 
         //    TableHeaderCell bagisciCell = new TableHeaderCell();
-        //    bagisciCell.Text = "Bağışçı Sayısı";
+        //    bagisciCell.Text = "Bagis�i Sayisi";
 
         //    TableHeaderCell tutarCell = new TableHeaderCell();
-        //    tutarCell.Text = "Bağış Tutarı";
+        //    tutarCell.Text = "Bagis Tutari";
         //    tutarCell.CssClass = "text-end";
 
         //    th.Controls.Add(smsOperatorThCell);

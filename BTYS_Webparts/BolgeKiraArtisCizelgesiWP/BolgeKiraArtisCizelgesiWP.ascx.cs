@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -95,8 +95,8 @@ namespace BTYS_Webparts.BolgeKiraArtisCizelgesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            //var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = TabloJson(); //veri �ekilip json a �eviriliyor
+            //var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir("setDataSet(" + jsonData + ");");
         }
         private string TabloJson()
@@ -134,7 +134,7 @@ namespace BTYS_Webparts.BolgeKiraArtisCizelgesiWP
         {
             TabloOlustur();
             string filename = "KiraArtisCizelgesi.xls";// + DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + ".xls";
-            //Türkçe sorunu yok
+            //T�rk�e sorunu yok
             Page.Response.Clear();
             Page.Response.AddHeader("content-disposition", "attachment;filename=" + filename + "");
             Page.Response.ContentType = "application/ms-excel";
@@ -219,7 +219,7 @@ namespace BTYS_Webparts.BolgeKiraArtisCizelgesiWP
                 kiraArtisListItem.SozlesmeTarihi = ilkSozlesmeTarStr;
 
                 int kiraSuresi = Math.Round(DateTime.Today.AddMonths(1).Subtract(ilkSozlesmeTar).TotalDays / 365).ConvertToInt();
-                kiraArtisListItem.KiraSuresi = kiraSuresi + " Yıl";
+                kiraArtisListItem.KiraSuresi = kiraSuresi + " Yil";
                 kiraArtisListItem.BesYil = kiraSuresi >= 5 ? "True" : "False";
                 kiraArtisListItem.OnYil = kiraSuresi >= 10 ? "True" : "False";
                 kiraArtisListItem.SozlesmeBasTar = sozBasTar.ConvertToDatetimeEmptyIfNull();

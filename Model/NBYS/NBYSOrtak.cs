@@ -1,4 +1,4 @@
-﻿using DocumentFormat.OpenXml.Office2010.ExcelAc;
+using DocumentFormat.OpenXml.Office2010.ExcelAc;
 using Model.IKYS;
 using Model.Ortak;
 using System;
@@ -46,19 +46,19 @@ namespace Model.NBYS
                         string ilstr = il.IlAdi + " ili ";
                         Ilce ilce= new Ilce();
                         ilce=ilce.Select<Ilce>(ilceId);
-                        string ilcestr = ilce==null?string.Empty:ilce.IlceAdi + " ilçesi ";
+                        string ilcestr = ilce==null?string.Empty:ilce.IlceAdi + " il�esi ";
 
                         if (bolge != null && (bolge.Id != ProjeConstants.BOLGE_HEPSI_INT || bolge.Id != ProjeConstants.BOLGE_GENELMUDURLUK_INT))
                         {
                             userto = UserToGetir(bolge);
                             string from = "dgundur@tskgv.local";
-                            string subject = bolge.KisaAdi + " bölgesi sorumluluğunda bulunan " + ilstr + ilcestr + " FTK listesi oluşturulmuştur.";
+                            string subject = bolge.KisaAdi + " b�lgesi sorumlulugunda bulunan " + ilstr + ilcestr + " FTK listesi olusturulmustur.";
                             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                             var ftkListesiUrl = "";
                             ftkListesiUrl = string.Format("{0}?BolgeId={1}&IlId={2}&IlceId={3}", currentUrl + "/" + ProjeConstants.PAGE_FTK_LIST, bolge.Id, ilId, ilceId);
 
-                            string userbody = subject + " <br>ilgili FTK bilgilerine ulaşmak için "
-                                + " Ayrıntılı bilgi için <a href ='" + ftkListesiUrl + "'>FTK Listesi</a> sayfasına gidebilirsiniz.";
+                            string userbody = subject + " <br>ilgili FTK bilgilerine ulasmak i�in "
+                                + " Ayrintili bilgi i�in <a href ='" + ftkListesiUrl + "'>FTK Listesi</a> sayfasina gidebilirsiniz.";
 
                             string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL);
                             MailHelper.EPostaGonder(from, userto, subject, userbody, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);

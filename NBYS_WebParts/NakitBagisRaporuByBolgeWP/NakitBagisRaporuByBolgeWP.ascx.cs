@@ -1,4 +1,4 @@
-﻿using Model.NBYS;
+using Model.NBYS;
 using System;
 using System.ComponentModel;
 using System.Data;
@@ -77,7 +77,7 @@ namespace NBYS_WebParts.NakitBagisRaporuByBolgeWP
             int yil = YilDDL.SelectedItem.Value.ConvertToInt();
 
 
-            TableHeaderCell.Text = yil + " YILI NAKİT BAĞIŞ RAPORU";
+            TableHeaderCell.Text = yil + " YILI NAKIT BAGIS RAPORU";
 
             SetCellValues(yil);
 

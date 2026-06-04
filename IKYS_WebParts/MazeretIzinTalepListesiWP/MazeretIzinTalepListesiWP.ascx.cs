@@ -1,4 +1,4 @@
-﻿using Model.IKYS;
+using Model.IKYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -103,7 +103,7 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
                 {
                     DateTime izinDonemiBasi = izinDonem != null ? izinDonem.BaslangicTarihi : today.AddYears(-1);
                     DateTime izinDonemiSonu = izinDonem != null ? izinDonem.BitisTarihi : today.AddMonths(1); ;
-                    //DataTable dataTable = izinHareket.SelectByIzinDonemiReturnDataTable(personel.Id, ProjeConstants.IZINTIPI_MAZERET_INT, izinDonemiBasi, threeMonthsLater);//3 ay içinde yeni izin dönemi başlıyor olabilir
+                    //DataTable dataTable = izinHareket.SelectByIzinDonemiReturnDataTable(personel.Id, ProjeConstants.IZINTIPI_MAZERET_INT, izinDonemiBasi, threeMonthsLater);//3 ay i�inde yeni izin d�nemi basliyor olabilir
                     DataTable dataTable = izinHareket.SelectByIzinDonemiReturnDataTable(izinDonem.Id, personel.Id, ProjeConstants.IZINTIPI_MAZERET_INT);
                     int SiraNo = 1;
                     if (dataTable == null)
@@ -111,7 +111,7 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
                         IzinHareketTable.Rows.Clear();
                         TableRow tr = new TableRow();
                         TableCell tc = new TableCell();
-                        tc.Text = "Henüz izin kullanılmamış.";
+                        tc.Text = "Hen�z izin kullanilmamis.";
                         tr.Controls.Add(tc);
                         IzinHareketTable.Controls.Add(tr);
                     }
@@ -145,7 +145,7 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
                             SureCell.Text = dataRow["Sure"].ConvertToTimeSpanReturnInHHmm();
                             row.Controls.Add(SureCell);
 
-                            if (bastar > izinDonemiSonu) //gelecek izin dönemine aitse farklı renk yazdır
+                            if (bastar > izinDonemiSonu) //gelecek izin d�nemine aitse farkli renk yazdir
                             {
                                 SiraNoCell.ForeColor = System.Drawing.Color.Red;
                                 IzinTipiCell.ForeColor = System.Drawing.Color.Red;
@@ -154,7 +154,7 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
                                 BitTarCell.ForeColor = System.Drawing.Color.Red;
                                 SureCell.ForeColor = System.Drawing.Color.Red;
 
-                                row.ToolTip = "Yeni İzin Dönemi";
+                                row.ToolTip = "Yeni Izin D�nemi";
                             }
 
                             IzinHareketTable.Controls.Add(row);
@@ -165,7 +165,7 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
             }
             else
             {
-                // MessageHelper.PublishMessage("İşe başlama tarihi belirlenemedi", ProjeConstants.MESAJ_HATA);
+                // MessageHelper.PublishMessage("Ise baslama tarihi belirlenemedi", ProjeConstants.MESAJ_HATA);
             }
         }
         private void FillIzinBilgileriTable(Personel personel)
@@ -211,7 +211,7 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
             }
             else
             {
-                MessageHelper.PublishMessage("İşe başlama tarihi belirlenemedi", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Ise baslama tarihi belirlenemedi", ProjeConstants.MESAJ_HATA);
             }
         }
         private void IzinHareketTableHeaders()
@@ -219,17 +219,17 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
             IzinHareketTable.Rows.Clear();
             TableHeaderRow th = new TableHeaderRow();
             TableHeaderCell siraCell = new TableHeaderCell();
-            siraCell.Text = "Sıra";
+            siraCell.Text = "Sira";
             TableHeaderCell izintipiCell = new TableHeaderCell();
-            izintipiCell.Text = "İzin Tipi";
+            izintipiCell.Text = "Izin Tipi";
             TableHeaderCell bastarCell = new TableHeaderCell();
-            bastarCell.Text = "Başlangıç tarihi";
+            bastarCell.Text = "Baslangi� tarihi";
             TableHeaderCell bittarCell = new TableHeaderCell();
-            bittarCell.Text = "Bitiş tarihi";
+            bittarCell.Text = "Bitis tarihi";
             TableHeaderCell sureCell = new TableHeaderCell();
-            sureCell.Text = "İzinli Süre";
+            sureCell.Text = "Izinli S�re";
             TableHeaderCell yazdirCell = new TableHeaderCell();
-            yazdirCell.Text = "Yazdır";
+            yazdirCell.Text = "Yazdir";
             th.Controls.Add(siraCell);
             th.Controls.Add(izintipiCell);
             th.Controls.Add(bastarCell);
@@ -242,13 +242,13 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
             IzinBilgileriTable.Rows.Clear();
             TableHeaderRow th = new TableHeaderRow();
             TableHeaderCell donemCell = new TableHeaderCell();
-            donemCell.Text = "İzin Dönemi";
+            donemCell.Text = "Izin D�nemi";
             TableHeaderCell hakCell = new TableHeaderCell();
-            hakCell.Text = "İzin Hakkı";
+            hakCell.Text = "Izin Hakki";
             TableHeaderCell kullanilanCell = new TableHeaderCell();
-            kullanilanCell.Text = "Kullanılan İzin";
+            kullanilanCell.Text = "Kullanilan Izin";
             TableHeaderCell kalanCell = new TableHeaderCell();
-            kalanCell.Text = "Kalan İzin";
+            kalanCell.Text = "Kalan Izin";
             th.Controls.Add(donemCell);
             th.Controls.Add(hakCell);
             th.Controls.Add(kullanilanCell);
@@ -265,7 +265,7 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
         {
             try
             {
-                //IzinTalep_Table da onayDurumu hanesini kayıtlara işlendi yap
+                //IzinTalep_Table da onayDurumu hanesini kayitlara islendi yap
                 IzinTalep izinTalep = new IzinTalep();
                 izinTalep.Aciklama = AciklamaTxt.Text;
                 izinTalep = izinTalep.Select<IzinTalep>(paramIzinTalepIdLbl.Value.ConvertToInt());
@@ -279,7 +279,7 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
                         bool izinHareketTablosundaVarMi = IzinHareketTablosundaVarMI(izinTalep.Id);
                         if (izinHareketTablosundaVarMi)
                         {
-                            MessageHelper.PublishMessage("Bu Talep daha önce zaten onaylanmıştır.", ProjeConstants.MESAJ_HATA);
+                            MessageHelper.PublishMessage("Bu Talep daha �nce zaten onaylanmistir.", ProjeConstants.MESAJ_HATA);
                         }
                         else
                         {
@@ -311,7 +311,7 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
                                         ih.KullanilanIzinStr = izinTalep.Sure;
                                         izinDonemi.KullanilanIzinGuncelle(izinDonemi, ih.Sure, true, CurrentUserName);
                                         ih.KalanIzinStr = izinDonemi.KalanIzin.ToString();
-                                        ih.Update();//kalan izin hesaplandıktan sonra izinHareket tablosuna yazsın
+                                        ih.Update();//kalan izin hesaplandiktan sonra izinHareket tablosuna yazsin
                                     }
                                 }
                             }
@@ -324,7 +324,7 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
                 {
                     IKYSOrtak.IzinKabulRedOnayEPostasiGonder(izinTalep.PersonelId, izinTalep.Id, "Onay");
                 }
-                MessageHelper.PublishMessage("İzin Talebi " + ProjeConstants.PER_IZINTALEBI_KAYITLARAISLENDI, ProjeConstants.MESAJ_BASARILI, 2000);
+                MessageHelper.PublishMessage("Izin Talebi " + ProjeConstants.PER_IZINTALEBI_KAYITLARAISLENDI, ProjeConstants.MESAJ_BASARILI, 2000);
                 TabloOlustur();
 
             }
@@ -355,7 +355,7 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
                         {
                             IKYSOrtak.IzinKabulRedOnayEPostasiGonder(izinTalep.PersonelId, izinTalep.Id, "Kabul");
                         }
-                        MessageHelper.PublishMessage("İzin Talebi " + ProjeConstants.PER_IZINTALEBI_KONTROLEDILDI, ProjeConstants.MESAJ_BASARILI, 2000);
+                        MessageHelper.PublishMessage("Izin Talebi " + ProjeConstants.PER_IZINTALEBI_KONTROLEDILDI, ProjeConstants.MESAJ_BASARILI, 2000);
                         TabloOlustur();
                     }
                 }
@@ -387,7 +387,7 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
                     {
                         IKYSOrtak.IzinKabulRedOnayEPostasiGonder(izinTalep.PersonelId, izinTalep.Id, "Red");
                     }
-                    MessageHelper.PublishMessage("İzin Talebi Reddedildi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Izin Talebi Reddedildi", ProjeConstants.MESAJ_BASARILI, 2000);
                 }
             }
             TabloOlustur();
@@ -425,9 +425,9 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
             IzinTanim izinTanim = new IzinTanim();
             izinTanim = izinTanim.Select<IzinTanim>(it.IzinTipi);
             string izinTanimStr = izinTanim == null ? "" : izinTanim.Adi;
-            IzinTalebiLbl.Text = personel.Adi + " " + personel.Soyadi + " Tarafından " + it.BaslangicTarihi.ToString("dd.MM.yyyy") + " Tarihinde "
-                + it.BaslangicTarihi.ToString("HH:mm") + " - " + it.BitisTarihi.ToString("HH:mm") + " Saatleri Arasında "
-                + it.Sure + " " + it.Birim + " " + izinTanimStr + " İzin Talep Edilmektedir.";
+            IzinTalebiLbl.Text = personel.Adi + " " + personel.Soyadi + " Tarafindan " + it.BaslangicTarihi.ToString("dd.MM.yyyy") + " Tarihinde "
+                + it.BaslangicTarihi.ToString("HH:mm") + " - " + it.BitisTarihi.ToString("HH:mm") + " Saatleri Arasinda "
+                + it.Sure + " " + it.Birim + " " + izinTanimStr + " Izin Talep Edilmektedir.";
         }
         private bool IzinHareketTablosundaVarMI(int izinTalepId)
         {
@@ -447,8 +447,8 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
         #region Liste Olusturma
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = TabloJson(); //veri �ekilip json a �eviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string TabloJson()
@@ -509,7 +509,7 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
 
                 if (onayDurumuId == ProjeConstants.ONAYDURUMU_ISLEM_INT || onayDurumuId == ProjeConstants.ONAYDURUMU_DILEKCE_INT)
                 {
-                    izinTalepListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_IZINTALEP_GIRIS + "?DestinationApp=TD&IzinTalepId=" + izinTalepId + "&PersonelId=" + personelId + "&IzinTanimId=" + izinTipiId + " class='btn btn-outline-primary'>Düzenle</a>";
+                    izinTalepListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_IZINTALEP_GIRIS + "?DestinationApp=TD&IzinTalepId=" + izinTalepId + "&PersonelId=" + personelId + "&IzinTanimId=" + izinTipiId + " class='btn btn-outline-primary'>D�zenle</a>";
                 }
                 else
                 {
@@ -522,7 +522,7 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
                 }
                 else if (onayDurumuId == ProjeConstants.ONAYDURUMU_KONTROL_INT)
                 {
-                    izinTalepListItem.KayitKontrolRed = "<a href=# onclick=OpenModal('onay'," + izinTalepId + "," + personelId + "); class=\'btn btn-outline-success \'>Kayıt/Red</a>";
+                    izinTalepListItem.KayitKontrolRed = "<a href=# onclick=OpenModal('onay'," + izinTalepId + "," + personelId + "); class=\'btn btn-outline-success \'>Kayit/Red</a>";
                 }
                 else
                 {
@@ -551,9 +551,9 @@ namespace IKYS_WebParts.MazeretIzinTalepListesiWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
 
                 jQuery('#CustomDataTable').DataTable({
-                    'initComplete': function (settings, json) {//tablo yüklendiğinde
+                    'initComplete': function (settings, json) {//tablo y�klendiginde
                         var api = this.api();
-                        var row = api.row(function(idx, data, node) { //secilen toplantıya gider
+                        var row = api.row(function(idx, data, node) { //secilen toplantiya gider
                             return data['Secildi'] == true;
                         });
                         if (row.length > 0)

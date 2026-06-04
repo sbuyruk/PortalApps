@@ -1,4 +1,4 @@
-﻿using Model.IKYS;
+using Model.IKYS;
 using Model.Ortak;
 using System;
 using System.ComponentModel;
@@ -216,7 +216,7 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Resmi Tatil Açılamadı", ProjeConstants.MESAJ_BILGI);
+                MessageHelper.PublishMessage("Resmi Tatil A�ilamadi", ProjeConstants.MESAJ_BILGI);
             }
         }
         private bool YeniTatiliKaydet()
@@ -244,7 +244,7 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
 
             int yil = bastar.Year;
             resmiTatil.Yil = yil;
-            if (gecerlilik.Equals(TUM_YILLAR_GECERLI))//gecerli yıl
+            if (gecerlilik.Equals(TUM_YILLAR_GECERLI))//gecerli yil
             {
                 yil = 1800;
                 bastar = new DateTime(yil, BasAyDDL.SelectedItem.Value.ConvertToInt(), GunTxt.Text.ConvertToInt());
@@ -272,7 +272,7 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
             isSaved = tatilId > 0 ? true : false;
             return isSaved;
         }
-        private bool ResmiTatiliGüncelle()
+        private bool ResmiTatiliG�ncelle()
         {
             bool isSaved = false;
             ResmiTatil resmiTatil = new ResmiTatil();
@@ -300,7 +300,7 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
 
                 int yil = bastar.Year;
                 resmiTatil.Yil = yil;
-                if (gecerlilik.Equals(TUM_YILLAR_GECERLI))//gecerli yıl
+                if (gecerlilik.Equals(TUM_YILLAR_GECERLI))//gecerli yil
                 {
                     yil = 1800;
                     bastar =new DateTime(yil, BasAyDDL.SelectedItem.Value.ConvertToInt(), GunTxt.Text.ConvertToInt());
@@ -387,9 +387,9 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
         private void FillGecerlilikDDL()
         {
             GecerlilikDDL.Items.Clear();
-            ListItem li0 = new ListItem("Sadece girilen yıl için geçerli", GIRILEN_YIL_GECERLI);
+            ListItem li0 = new ListItem("Sadece girilen yil i�in ge�erli", GIRILEN_YIL_GECERLI);
             GecerlilikDDL.Items.Add(li0);
-            ListItem li1 = new ListItem("Tüm yıllar için geçerli", TUM_YILLAR_GECERLI);
+            ListItem li1 = new ListItem("T�m yillar i�in ge�erli", TUM_YILLAR_GECERLI);
             GecerlilikDDL.Items.Add(li1);
         }
         protected void GuncelleBtn_Click(object sender, EventArgs e)
@@ -397,8 +397,8 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
             bool isValid = KontrolIslemleri();
             if (isValid)
             {
-                SilLbl.Text = "Lütfen Dikkat";
-                SilmeMesajiLbl.Text = "Tatil kaydını değiştirdiğiniz takdirde, söz konusu tarihlerde kullanılan izinlerin sürelerinde tutarsızlık oluşabilir."
+                SilLbl.Text = "L�tfen Dikkat";
+                SilmeMesajiLbl.Text = "Tatil kaydini degistirdiginiz takdirde, s�z konusu tarihlerde kullanilan izinlerin s�relerinde tutarsizlik olusabilir."
                    + System.Environment.NewLine + "Yine de kaydetmek istiyor musunuz?";
                 DeleteNowBtn.Visible = false;
                 GuncelleNowBtn.Visible = true;
@@ -407,7 +407,7 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Kaydetmeden önce Başlama/Bitiş Tarihi ve Tatil alanlarını doldurunuz.",ProjeConstants.MESAJ_HATA,2000);
+                MessageHelper.PublishMessage("Kaydetmeden �nce Baslama/Bitis Tarihi ve Tatil alanlarini doldurunuz.",ProjeConstants.MESAJ_HATA,2000);
             }
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
@@ -441,7 +441,7 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Kaydetmeden önce Başlama/Bitiş Tarihi ve Tatil alanlarını doldurunuz.", ProjeConstants.MESAJ_HATA, 2000);
+                    MessageHelper.PublishMessage("Kaydetmeden �nce Baslama/Bitis Tarihi ve Tatil alanlarini doldurunuz.", ProjeConstants.MESAJ_HATA, 2000);
                 }
 
 
@@ -457,17 +457,17 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
         private void AyDDLDoldur(DropDownList ddl)
         {
             ddl.Items.Add(new ListItem("Ocak", "1"));
-            ddl.Items.Add(new ListItem("Şubat", "2"));
+            ddl.Items.Add(new ListItem("Subat", "2"));
             ddl.Items.Add(new ListItem("Mart", "3"));
             ddl.Items.Add(new ListItem("Nisan", "4"));
-            ddl.Items.Add(new ListItem("Mayıs", "5"));
+            ddl.Items.Add(new ListItem("Mayis", "5"));
             ddl.Items.Add(new ListItem("Haziran", "6"));
             ddl.Items.Add(new ListItem("Temmuz", "7"));
-            ddl.Items.Add(new ListItem("Ağustos", "8"));
-            ddl.Items.Add(new ListItem("Eylül", "9"));
+            ddl.Items.Add(new ListItem("Agustos", "8"));
+            ddl.Items.Add(new ListItem("Eyl�l", "9"));
             ddl.Items.Add(new ListItem("Ekim", "10"));
-            ddl.Items.Add(new ListItem("Kasım", "11"));
-            ddl.Items.Add(new ListItem("Aralık", "12"));
+            ddl.Items.Add(new ListItem("Kasim", "11"));
+            ddl.Items.Add(new ListItem("Aralik", "12"));
 
         }
         private void RedirectToPage(string pageUrl)
@@ -486,9 +486,9 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
         }
         protected void DeleteBtn_Click(object sender, EventArgs e)
         {
-            SilLbl.Text = "Lütfen Dikkat: Tatil Kaydı Silinecek";
-            SilmeMesajiLbl.Text = "Tatil kaydını sildiğiniz takdirde, söz konusu tarihlerde kullanılan izin sürelerinde tutarsızlıklar oluşabilir."
-                + System.Environment.NewLine + "Yine de bu tatil kaydını silmek musunuz?";
+            SilLbl.Text = "L�tfen Dikkat: Tatil Kaydi Silinecek";
+            SilmeMesajiLbl.Text = "Tatil kaydini sildiginiz takdirde, s�z konusu tarihlerde kullanilan izin s�relerinde tutarsizliklar olusabilir."
+                + System.Environment.NewLine + "Yine de bu tatil kaydini silmek musunuz?";
             DeleteNowBtn.Visible = true;
             GuncelleNowBtn.Visible = false;
             var openPopup = "OpenModal();";
@@ -506,7 +506,7 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
                     bool isDeleted = ResmiTatiliSil(resmiTatil);
                     if (isDeleted)
                     {
-                        MessageHelper.PublishMessage("Tatil Kaydı Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        MessageHelper.PublishMessage("Tatil Kaydi Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
                         RedirectToPage(ProjeConstants.PAGE_RESMITATIL_LIST + "?Mesaj=true");
                     }
                 }
@@ -514,7 +514,7 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
             catch (Exception exception)
             {
                 ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
-                Exception exceptionInfo = new Exception("Tatil Kaydı Silinemedi");
+                Exception exceptionInfo = new Exception("Tatil Kaydi Silinemedi");
                 exceptionHelper.Exceptions.Add(exceptionInfo);
                 exceptionHelper.PublishException();
             }
@@ -524,12 +524,12 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
         {
             try
             {
-                bool isSaved = ResmiTatiliGüncelle();
+                bool isSaved = ResmiTatiliG�ncelle();
                 
                 if (isSaved)
                 {
                     UtilityHelper.ScriptCalistir("CloseModal();");
-                    MessageHelper.PublishMessage("Tatil Bilgileri Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Tatil Bilgileri G�ncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                 }
                     
 
@@ -537,7 +537,7 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
             catch (Exception exception)
             {
                 ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
-                Exception exceptionInfo = new Exception("Tatil Bilgileri Güncellenemdi");
+                Exception exceptionInfo = new Exception("Tatil Bilgileri G�ncellenemdi");
                 exceptionHelper.Exceptions.Add(exceptionInfo);
                 exceptionHelper.PublishException();
             }
@@ -550,7 +550,7 @@ namespace IKYS_WebParts.ResmiTatilGirisiWP
 
         private void BastarBittarAyarla()
         {
-            if (GecerlilikDDL.SelectedItem.Value.Equals(GIRILEN_YIL_GECERLI)) //yanlızca girilen yıl
+            if (GecerlilikDDL.SelectedItem.Value.Equals(GIRILEN_YIL_GECERLI)) //yanlizca girilen yil
             {
                 GirilenYilGecerliDiv.Attributes["style"] = "display:block";
                 GirilenYilGecerliBitTarDiv.Attributes["style"] = "display:block";

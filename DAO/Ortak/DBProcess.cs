@@ -1,4 +1,4 @@
-﻿namespace DAO.Ortak
+namespace DAO.Ortak
 {
     public static class DBProcess
     {
@@ -13,6 +13,9 @@
         {
             get
             {
+                if (!string.IsNullOrEmpty(_ConnectionString))
+                    return _ConnectionString;
+
                 System.Configuration.Configuration rootWebConfig = System.Web.Configuration.WebConfigurationManager.OpenWebConfiguration("/");
                 System.Configuration.ConnectionStringSettings connString;
 

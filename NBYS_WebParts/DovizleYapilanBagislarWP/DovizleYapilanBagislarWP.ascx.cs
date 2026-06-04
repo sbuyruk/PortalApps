@@ -1,4 +1,4 @@
-﻿using Model.NBYS;
+using Model.NBYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -44,8 +44,8 @@ namespace NBYS_WebParts.DovizleYapilanBagislarWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = TabloJson(); //veri �ekilip json a �eviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string TabloJson()
@@ -77,9 +77,9 @@ namespace NBYS_WebParts.DovizleYapilanBagislarWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
                 jQuery(document).ready(function () {
                     jQuery('#CustomDataTable').DataTable({
-                        'initComplete': function (settings, json) {//tablo yüklendiğinde
+                        'initComplete': function (settings, json) {//tablo y�klendiginde
                             var api = this.api();
-                            var row = api.row(function (idx, data, node) { //secilen toplantıya gider
+                            var row = api.row(function (idx, data, node) { //secilen toplantiya gider
                                 return data['Secildi'] == true;
                             });
                             if (row.length > 0) {
@@ -118,7 +118,7 @@ namespace NBYS_WebParts.DovizleYapilanBagislarWP
                             },
                             {
                                 extend: 'excel',
-                                title: 'Tarih Bazında Günlük Bağışlar',
+                                title: 'Tarih Bazinda G�nl�k Bagislar',
                                 filename: function(){
                                     var d = new Date();
                                     var n = d.getTime();
@@ -130,7 +130,7 @@ namespace NBYS_WebParts.DovizleYapilanBagislarWP
                             },
                             {
                                 extend: 'pdf',
-                                title: 'Tarih Bazında Günlük Bağışlar',
+                                title: 'Tarih Bazinda G�nl�k Bagislar',
                                 filename: function(){
                                     var d = new Date();
                                     var n = d.getTime();
@@ -196,7 +196,7 @@ namespace NBYS_WebParts.DovizleYapilanBagislarWP
             if (BankaDDL.SelectedItem == null)
             {
                 BankaDDL.Items.Clear();
-                BankaDDL.Items.Add(new ListItem("Tüm Bankalar", "0"));
+                BankaDDL.Items.Add(new ListItem("T�m Bankalar", "0"));
                 BankaTanim pBanka = new BankaTanim();
                 List<string> list = pBanka.SelectByBankaGrup();
                 foreach (string banka in list)
@@ -216,7 +216,7 @@ namespace NBYS_WebParts.DovizleYapilanBagislarWP
                 ListItem li = new ListItem(tarih.ToString("MMMM"), tarih.ToString("MM"));
                 AyDDL.Items.Add(li);
             }
-            AyDDL.Items.Add(new ListItem("Tüm Aylar", "0"));
+            AyDDL.Items.Add(new ListItem("T�m Aylar", "0"));
         }
         private void YilDDLDoldur()
         {

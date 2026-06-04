@@ -1,4 +1,4 @@
-﻿using Model.IKYS;
+using Model.IKYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -95,11 +95,11 @@ namespace IKYS_WebParts.AileGirisiWP
             TitleLbl.Text = personel.Adi + " " + personel.Soyadi + " Aile Bilgileri";
             PersonelIdLbl.Text = personel.Id + "";
             //Column headers
-            HeaderCell1.Text = "Adı Soyadı";
+            HeaderCell1.Text = "Adi Soyadi";
             HeaderCell1.Visible = true;
             HeaderCell2.Text = "Yak.Derecesi";
             HeaderCell2.Visible = true;
-            HeaderCell3.Text = "Doğ.Tarihi";
+            HeaderCell3.Text = "Dog.Tarihi";
             HeaderCell3.Visible = true;
             HeaderCell4.Text = "Okul";
             HeaderCell4.Visible = true;

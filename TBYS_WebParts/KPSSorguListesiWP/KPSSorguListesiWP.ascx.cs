@@ -1,4 +1,4 @@
-﻿using Microsoft.SharePoint;
+using Microsoft.SharePoint;
 using Model.Ortak;
 using Model.TBYS;
 using System;
@@ -66,8 +66,8 @@ namespace TBYS_WebParts.KPSSorguListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = TabloJson(); //veri �ekilip json a �eviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string TabloJson()
@@ -101,8 +101,8 @@ namespace TBYS_WebParts.KPSSorguListesiWP
                 Soyadi = a.Soyadi,
                 DogumTarihi = a.DogumTarihi,
                 SagVefat=a.Sag_vefat,
-                Sorgulanan= "Bağışçı",
-                Cikar = "<a class='btn btn-outline-danger' onclick=CikarButtonClick(" + a.TCKimlikNo + ");>ÇIKAR</a>"
+                Sorgulanan= "Bagis�i",
+                Cikar = "<a class='btn btn-outline-danger' onclick=CikarButtonClick(" + a.TCKimlikNo + ");>�IKAR</a>"
             }).ToList();
             var sorgulanacakTaahhutList = new List<SorgulanacakKisi>();
             if (TaahhutChk.Checked)
@@ -119,8 +119,8 @@ namespace TBYS_WebParts.KPSSorguListesiWP
                     DogumTarihi = a.DogumTarihi,
                     SagVefat = a.Sag_vefat,
                     VefatTarihi=a.VefatTarihi,
-                    Sorgulanan = "Taahhüt Verilen Kişi",
-                    Cikar= "<a class='btn btn-outline-danger' onclick=CikarButtonClick(" + a.TCKimlikNo + ");>ÇIKAR</a>"
+                    Sorgulanan = "Taahh�t Verilen Kisi",
+                    Cikar= "<a class='btn btn-outline-danger' onclick=CikarButtonClick(" + a.TCKimlikNo + ");>�IKAR</a>"
             }).ToList();
 
 
@@ -141,8 +141,8 @@ namespace TBYS_WebParts.KPSSorguListesiWP
                     DogumTarihi = a.DogumTarihi,
                     SagVefat = a.SagVefat,
                     VefatTarihi = a.VefatTarihi,
-                    Sorgulanan = "Vasiyetçi",
-                    Cikar = "<a class='btn btn-outline-danger' onclick=CikarButtonClick(" + a.TCKimlikNo + ");>ÇIKAR</a>"
+                    Sorgulanan = "Vasiyet�i",
+                    Cikar = "<a class='btn btn-outline-danger' onclick=CikarButtonClick(" + a.TCKimlikNo + ");>�IKAR</a>"
                 }).ToList();
 
 
@@ -353,7 +353,7 @@ namespace TBYS_WebParts.KPSSorguListesiWP
                 }
                 var serializer = new JavaScriptSerializer();
                 string jSon = serializer.Serialize(SorgulanacakKisilistesiQS);
-                var jsString = CreateDataTable(jSon); //javascript kodu hazırlanıyor.
+                var jsString = CreateDataTable(jSon); //javascript kodu hazirlaniyor.
                 UtilityHelper.ScriptCalistir(jsString);
             }
             catch (Exception exception)

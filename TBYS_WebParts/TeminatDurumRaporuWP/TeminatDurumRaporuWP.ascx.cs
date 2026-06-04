@@ -1,4 +1,4 @@
-﻿using Model.TBYS;
+using Model.TBYS;
 using System;
 using System.ComponentModel;
 using System.Data;
@@ -170,7 +170,7 @@ namespace TBYS_WebParts.TeminatDurumRaporuWP
 
             TableHeaderCell bolgeCell = new TableHeaderCell();
             bolgeCell.RowSpan = 2;
-            bolgeCell.Text = "Bölge";
+            bolgeCell.Text = "B�lge";
             headerRow.Controls.Add(bolgeCell);
 
             TableHeaderCell sozlesmeCell = new TableHeaderCell();
@@ -185,7 +185,7 @@ namespace TBYS_WebParts.TeminatDurumRaporuWP
 
             TableHeaderCell isyeriCell = new TableHeaderCell();
             isyeriCell.RowSpan = 2;
-            isyeriCell.Text = "İşyeri";
+            isyeriCell.Text = "Isyeri";
             headerRow.Controls.Add(isyeriCell);
 
             TableHeaderCell arsaCell = new TableHeaderCell();
@@ -200,7 +200,7 @@ namespace TBYS_WebParts.TeminatDurumRaporuWP
 
             TableHeaderCell bisCell = new TableHeaderCell();
             bisCell.RowSpan = 2;
-            bisCell.Text = "Baz İstasyonu";
+            bisCell.Text = "Baz Istasyonu";
             headerRow.Controls.Add(bisCell);
 
             TableHeaderCell tesisCell = new TableHeaderCell();
@@ -215,7 +215,7 @@ namespace TBYS_WebParts.TeminatDurumRaporuWP
             headerRow1.Controls.Add(adetCell);
 
             TableHeaderCell teminatCell = new TableHeaderCell();
-            teminatCell.Text = "Teminat Tutarı";
+            teminatCell.Text = "Teminat Tutari";
             headerRow1.Controls.Add(teminatCell);
 
             bolgeCell.BorderStyle = BorderStyle.Solid;

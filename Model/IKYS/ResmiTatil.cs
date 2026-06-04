@@ -1,4 +1,4 @@
-﻿using Model.MTS;
+using Model.MTS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -71,7 +71,7 @@ namespace Model.IKYS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public override bool Update()
@@ -128,7 +128,7 @@ namespace Model.IKYS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         private string saveSQL()
@@ -177,7 +177,7 @@ namespace Model.IKYS
         
         public List<ResmiTatil> SelectBySonIkiYil()
         {
-            DateTime basTar = new DateTime(DateTime.Today.AddYears(-1).Year,1,1);//geçen yılbaşı
+            DateTime basTar = new DateTime(DateTime.Today.AddYears(-1).Year,1,1);//ge�en yilbasi
             DateTime bitTar = basTar.AddYears(2).AddDays(1);
             string sqlString = string.Format(@"
                 SELECT *
@@ -249,7 +249,7 @@ namespace Model.IKYS
 
                         CalendarEvent item = new CalendarEvent();
                         item.state = ProjeConstants.FAALIYET_DURUMU_ONAYLANDI_INT.ToString();
-                        item.id = 999;//999 önemli taşınamayan event
+                        item.id = 999;//999 �nemli tasinamayan event
                         item.purpose = ProjeConstants.FAALIYET_AMACI_RESMITATIL_INT;
                         item.title = resmiTatil.Tatil;
                         //item.description = resmiTatil.Tatil;
@@ -273,7 +273,7 @@ namespace Model.IKYS
                 {
                     CalendarEvent item = new CalendarEvent();
                     item.state = ProjeConstants.FAALIYET_DURUMU_ONAYLANDI_INT.ToString();
-                    item.id = 999;//999 önemli taşınamayan event
+                    item.id = 999;//999 �nemli tasinamayan event
                     item.purpose = ProjeConstants.FAALIYET_AMACI_RESMITATIL_INT;
                     item.title = resmiTatil.Tatil;
                     //item.description = resmiTatil.Tatil;

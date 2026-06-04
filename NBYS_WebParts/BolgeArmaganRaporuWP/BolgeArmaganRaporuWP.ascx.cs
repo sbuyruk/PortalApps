@@ -1,4 +1,4 @@
-﻿using Model.NBYS;
+using Model.NBYS;
 using System;
 using System.ComponentModel;
 using System.Data;
@@ -160,7 +160,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP
             DateTime bastar = new DateTime(basyil, basay, 1);
             DateTime bittar = new DateTime(bityil, bitay, 1).AddMonths(1).AddDays(-1);
 
-            TableHeaderCell.Text = bastar.ToString(ProjeConstants.DATE_TR) + " - " + bittar.ToString(ProjeConstants.DATE_TR) + " TARİHLERİ ARASI ARMAĞAN RAPORU";
+            TableHeaderCell.Text = bastar.ToString(ProjeConstants.DATE_TR) + " - " + bittar.ToString(ProjeConstants.DATE_TR) + " TARIHLERI ARASI ARMAGAN RAPORU";
 
             SetCellValues(bastar, bittar);
 
@@ -390,30 +390,30 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP
         {
 
             BasAyDDL.Items.Add(new ListItem("Ocak", "1"));
-            BasAyDDL.Items.Add(new ListItem("Şubat", "2"));
+            BasAyDDL.Items.Add(new ListItem("Subat", "2"));
             BasAyDDL.Items.Add(new ListItem("Mart", "3"));
             BasAyDDL.Items.Add(new ListItem("Nisan", "4"));
-            BasAyDDL.Items.Add(new ListItem("Mayıs", "5"));
+            BasAyDDL.Items.Add(new ListItem("Mayis", "5"));
             BasAyDDL.Items.Add(new ListItem("Haziran", "6"));
             BasAyDDL.Items.Add(new ListItem("Temmuz", "7"));
-            BasAyDDL.Items.Add(new ListItem("Ağustos", "8"));
-            BasAyDDL.Items.Add(new ListItem("Eylül", "9"));
+            BasAyDDL.Items.Add(new ListItem("Agustos", "8"));
+            BasAyDDL.Items.Add(new ListItem("Eyl�l", "9"));
             BasAyDDL.Items.Add(new ListItem("Ekim", "10"));
-            BasAyDDL.Items.Add(new ListItem("Kasım", "11"));
-            BasAyDDL.Items.Add(new ListItem("Aralık", "12"));
+            BasAyDDL.Items.Add(new ListItem("Kasim", "11"));
+            BasAyDDL.Items.Add(new ListItem("Aralik", "12"));
 
             BitAyDDL.Items.Add(new ListItem("Ocak", "1"));
-            BitAyDDL.Items.Add(new ListItem("Şubat", "2"));
+            BitAyDDL.Items.Add(new ListItem("Subat", "2"));
             BitAyDDL.Items.Add(new ListItem("Mart", "3"));
             BitAyDDL.Items.Add(new ListItem("Nisan", "4"));
-            BitAyDDL.Items.Add(new ListItem("Mayıs", "5"));
+            BitAyDDL.Items.Add(new ListItem("Mayis", "5"));
             BitAyDDL.Items.Add(new ListItem("Haziran", "6"));
             BitAyDDL.Items.Add(new ListItem("Temmuz", "7"));
-            BitAyDDL.Items.Add(new ListItem("Ağustos", "8"));
-            BitAyDDL.Items.Add(new ListItem("Eylül", "9"));
+            BitAyDDL.Items.Add(new ListItem("Agustos", "8"));
+            BitAyDDL.Items.Add(new ListItem("Eyl�l", "9"));
             BitAyDDL.Items.Add(new ListItem("Ekim", "10"));
-            BitAyDDL.Items.Add(new ListItem("Kasım", "11"));
-            BitAyDDL.Items.Add(new ListItem("Aralık", "12"));
+            BitAyDDL.Items.Add(new ListItem("Kasim", "11"));
+            BitAyDDL.Items.Add(new ListItem("Aralik", "12"));
         }
         private void FillYear()
         {
@@ -428,7 +428,7 @@ namespace NBYS_WebParts.BolgeArmaganRaporuWP
         {
             try
             {
-                //acilista ay ve yili querystring ile gelen ay ve yıla eşitle boş geldiyse gecen aya/yila eşitle
+                //acilista ay ve yili querystring ile gelen ay ve yila esitle bos geldiyse gecen aya/yila esitle
 
                 //ay
                 string ay = !string.IsNullOrEmpty(SecilenBasAyQS) ? SecilenBasAyQS : DateTime.Today.Month.ReturnEmptyIfNull().ToString();

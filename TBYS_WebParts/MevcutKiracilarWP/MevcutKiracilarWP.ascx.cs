@@ -1,4 +1,4 @@
-嚜簑sing Model.Ortak;
+using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.ComponentModel;
@@ -175,7 +175,7 @@ namespace TBYS_WebParts.MevcutKiracilarWP
             int yil = SecilenYilQS.ConvertToInt();
             KiraSozlesme kiraSozlesmeDao = new KiraSozlesme();
             DataTable dataTable = kiraSozlesmeDao.SelectKiraciSayisiByBolgeTarih(BolgeIdQS, ay, yil);
-            TableTitleCell.Text = (new DateTime(SecilenYilQS.ConvertToInt(), SecilenAyQS.ConvertToInt(), 1)).ToString("MMMM yyyy", culturInfo) + " 襤tibar覺 ile Kirac覺 Listesi";
+            TableTitleCell.Text = (new DateTime(SecilenYilQS.ConvertToInt(), SecilenAyQS.ConvertToInt(), 1)).ToString("MMMM yyyy", culturInfo) + " Itibari ile Kiraci Listesi";
             if (dataTable != null)
             {
                 int SiraNo = 1;
@@ -263,7 +263,7 @@ namespace TBYS_WebParts.MevcutKiracilarWP
             }
             else
             {
-                MessageHelper.PublishMessage("Bor癟lu Kirac覺 bulunamad覺", ProjeConstants.MESAJ_BILGI, 2000);
+                MessageHelper.PublishMessage("Bor蔮u Kiraci bulunamadi", ProjeConstants.MESAJ_BILGI, 2000);
             }
 
         }

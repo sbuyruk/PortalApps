@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -70,14 +70,14 @@ namespace TBYS_WebParts.KiraciGirisiWP
                     KiralamaAmaciDDLDoldur();
                     if (kiraci != null)
                     {
-                        //KiraciDuzenle açılacak
+                        //KiraciDuzenle a�ilacak
                         OpenKiraciDuzenle(kiraci);
                         EnableOdemeSozlesmeBtns(kiraci);
 
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Kiracı bulunamadı!", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Kiraci bulunamadi!", ProjeConstants.MESAJ_HATA);
                     }
                 }
                 SozlesmelerTablosunuDoldur(kiraci.Id);
@@ -97,7 +97,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
             SaveBtn.Visible = false;
             UpdateBtn.Visible = true;
             SilBtn.Visible = true;
-            TitleLbl.Text = "Kiracı Güncelleme";
+            TitleLbl.Text = "Kiraci G�ncelleme";
             IdLbl.Visible = true;
 
             FillKiraci2Form(kiraci);
@@ -106,7 +106,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
         }
         private void OpenKiraciGirisi()
         {
-            TitleLbl.Text = "Kiracı Girişi";
+            TitleLbl.Text = "Kiraci Girisi";
             SaveBtn.Visible = true;
             UpdateBtn.Visible = false;
             PrevBtn.Visible = false;
@@ -117,7 +117,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
             bool dataFilledToModal = true;
             try
             {
-                IdLbl.Text = " (Kiracı No: " + kiraci.Id.ToString() + ")";
+                IdLbl.Text = " (Kiraci No: " + kiraci.Id.ToString() + ")";
                 AdiTxt.Text = kiraci.Adi;
                 SoyadiTxt.Text = kiraci.Soyadi;
                 TCKimlikNoTxt.Text = kiraci.TCKimlikNo;
@@ -140,7 +140,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
             }
             catch (Exception)
             {
-                MessageHelper.PublishMessage("Kiracı ekrana getirilemedi", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Kiraci ekrana getirilemedi", ProjeConstants.MESAJ_HATA);
                 dataFilledToModal = false;
             }
             return dataFilledToModal;
@@ -254,7 +254,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
         {
             KiralamaAmaciDDL.Items.Clear();
             KiralamaAmaciDDL.Items.Add("Mesken");
-            KiralamaAmaciDDL.Items.Add("İşyeri");
+            KiralamaAmaciDDL.Items.Add("Isyeri");
             KiralamaAmaciDDL.Items.Add("Arsa");
             KiralamaAmaciDDL.Items.Add("Tarla");
             KiralamaAmaciDDL.Items.Add("Bis");
@@ -273,8 +273,8 @@ namespace TBYS_WebParts.KiraciGirisiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = TabloJson(); //veri �ekilip json a �eviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string CreateDataTable(string jsonData)
@@ -392,7 +392,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
 
                         //tempSozlesmeItem.Adres += "@" + adres;
                         tasinmazAdedi++;
-                        tempSozlesmeItem.Adres = "@" + ilkAdres + "( Toplam " + tasinmazAdedi + " adet taşınmaz.)";
+                        tempSozlesmeItem.Adres = "@" + ilkAdres + "( Toplam " + tasinmazAdedi + " adet tasinmaz.)";
                         list.Add(tempSozlesmeItem);
                     }
                     else
@@ -416,8 +416,8 @@ namespace TBYS_WebParts.KiraciGirisiWP
                         sozlesmeItem.Adres = "- " + adres;
                         sozlesmeItem.Ilcesi = ilcesi;
                         sozlesmeItem.Ili = ili;
-                        sozlesmeItem.Sozlesme = "<a href=" + ProjeConstants.PAGE_KIRASOZLESMESI + "?KiraSozlesmeId=" + kiraSozlesmeId + " class='btn btn-outline-secondary'>Sözleşme</a>";
-                        sozlesmeItem.OdemePlani = "<a href=" + ProjeConstants.PAGE_ODEMEPLANI + "?KiraSozlesmeId=" + kiraSozlesmeId + " class='btn btn-outline-secondary'>Ödeme Planı</a>";
+                        sozlesmeItem.Sozlesme = "<a href=" + ProjeConstants.PAGE_KIRASOZLESMESI + "?KiraSozlesmeId=" + kiraSozlesmeId + " class='btn btn-outline-secondary'>S�zlesme</a>";
+                        sozlesmeItem.OdemePlani = "<a href=" + ProjeConstants.PAGE_ODEMEPLANI + "?KiraSozlesmeId=" + kiraSozlesmeId + " class='btn btn-outline-secondary'>�deme Plani</a>";
                         list.Add(sozlesmeItem);
                         tempSozlesmeItem = sozlesmeItem;
                         tasinmazAdedi = 1;
@@ -445,7 +445,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Kiracı Kaydedilemedi", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Kiraci Kaydedilemedi", ProjeConstants.MESAJ_HATA);
                 }
             }
             catch (Exception ex)
@@ -463,11 +463,11 @@ namespace TBYS_WebParts.KiraciGirisiWP
                 Bolge bolge = BolgeGetir();
                 bool ksUpdateed = ks.UpdateByKiraciId(bolge.Id, kiraci.Id);
                 SozlesmelerTablosunuDoldur(kiraci.Id);
-                MessageHelper.PublishMessage("Kiracı Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                MessageHelper.PublishMessage("Kiraci G�ncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
             }
             else
             {
-                MessageHelper.PublishMessage("Kiracı Güncellenemedi", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Kiraci G�ncellenemedi", ProjeConstants.MESAJ_HATA);
             }
         }
         private Bolge BolgeGetir()
@@ -523,7 +523,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
         }
         private void OdemePlaniGoruntule(KiraSozlesme kiraSozlesme, Kiraci kiraci)
         {
-            TitleLbl.Text = " Kiracı : " + kiraci.Adi + " " + kiraci.Soyadi;
+            TitleLbl.Text = " Kiraci : " + kiraci.Adi + " " + kiraci.Soyadi;
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
 
             OdemePlani odemePlaniDao = new OdemePlani();
@@ -582,7 +582,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
                 kiraSozlesme = kiraSozlesme.SelectAktifSozlesmeByKiraciId(kiraci.Id);
                 if (kiraSozlesme != null) //bu sozlesme varsa
                 {
-                    MessageHelper.PublishMessage("Zaten Bir kira sözlesmesi mevcut", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Zaten Bir kira s�zlesmesi mevcut", ProjeConstants.MESAJ_HATA);
                 }
                 ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "YeniSozlesmeModalOnay();", true);
             }
@@ -610,7 +610,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Sözleşme Kaydı Açılamadı", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("S�zlesme Kaydi A�ilamadi", ProjeConstants.MESAJ_HATA);
             }
         }
         protected void BitenSozlesmeOnayBtn_Click(object sender, EventArgs e)
@@ -693,7 +693,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Sözleşme Kaydı Açılamadı", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("S�zlesme Kaydi A�ilamadi", ProjeConstants.MESAJ_HATA);
             }
         }
         protected void KiraKartiBtn_Click(object sender, EventArgs e)
@@ -728,7 +728,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
                         Page.Response.Redirect(newUrl, true);
                     }
                     else
-                        MessageHelper.PublishMessage("Bu kiracıya ait sözleşme kaydı bulunamadı", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Bu kiraciya ait s�zlesme kaydi bulunamadi", ProjeConstants.MESAJ_HATA);
                 }
             }
             catch (Exception ex)
@@ -855,7 +855,7 @@ namespace TBYS_WebParts.KiraciGirisiWP
         {
             Kiraci kiraci = new Kiraci();
             kiraci = kiraci.Select<Kiraci>(KiraciIdQS.ConvertToInt());
-            ///Kiracının siinmesi bir dizi konrol ile yapılabilir. 
+            ///Kiracinin siinmesi bir dizi konrol ile yapilabilir. 
             if (KiraciSilinebilirMi(kiraci))
             {
                 if (kiraci.Delete())
@@ -873,20 +873,20 @@ namespace TBYS_WebParts.KiraciGirisiWP
             {
                 if (kiraci==null)
                 {
-                    MessageHelper.PublishMessage("Kiracı bulunamadı.",ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Kiraci bulunamadi.",ProjeConstants.MESAJ_HATA);
                 }
                 else
                 {
-                    //Sözlesmesi Var mı
+                    //S�zlesmesi Var mi
                     if (SozlesmesiVarMi(kiraci))
                     {
-                        MessageHelper.PublishMessage("Kiracıya ait sözlesme bulunduğundan kiracı silinemez.", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Kiraciya ait s�zlesme bulundugundan kiraci silinemez.", ProjeConstants.MESAJ_HATA);
                     }
                     else
                     {
                         if (OdemesiVarMi(kiraci))
                         {
-                            MessageHelper.PublishMessage("Kiracı daha önce ödeme yaptığından kiracı silinemez.", ProjeConstants.MESAJ_HATA);
+                            MessageHelper.PublishMessage("Kiraci daha �nce �deme yaptigindan kiraci silinemez.", ProjeConstants.MESAJ_HATA);
                         }
                         else
                         {

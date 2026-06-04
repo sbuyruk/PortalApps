@@ -1,4 +1,4 @@
-﻿using Model.IKYS;
+using Model.IKYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -228,8 +228,8 @@ namespace IKYS_WebParts.GorevTanimEditWP
                 Personel personel = new Personel();
                 personel = personel.Select(isBilgileri.PersonelId);
                 string adi = personel!=null? "(" + personel.Adi + " " + personel.Soyadi +")":string.Empty;
-                MessageHelper.PublishMessage("Bu kadroda tanımlı personel bulunmaktadır.\n+" + adi +
-                    " Kadroyu silmek için önce kadroyu boşaltın", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Bu kadroda tanimli personel bulunmaktadir.\n+" + adi +
+                    " Kadroyu silmek i�in �nce kadroyu bosaltin", ProjeConstants.MESAJ_HATA);
             }
         }
         protected void UpdateBtn_Click(object sender, EventArgs e)
@@ -267,7 +267,7 @@ namespace IKYS_WebParts.GorevTanimEditWP
                             ib.Update();
                         }
 
-                        MessageHelper.PublishMessage("Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        MessageHelper.PublishMessage("G�ncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                     }
 
                 }

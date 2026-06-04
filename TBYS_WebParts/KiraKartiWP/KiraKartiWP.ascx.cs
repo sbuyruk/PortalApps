@@ -1,4 +1,4 @@
-﻿using Model.TBYS;
+using Model.TBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -149,12 +149,12 @@ namespace TBYS_WebParts.KiraKartiWP
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Kira Sözleşmesi Bulunamadı", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Kira S�zlesmesi Bulunamadi", ProjeConstants.MESAJ_HATA);
                     }
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Kiracı Bulunamadı", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Kiraci Bulunamadi", ProjeConstants.MESAJ_HATA);
                 }
             }
 
@@ -179,18 +179,18 @@ namespace TBYS_WebParts.KiraKartiWP
                     IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
                     TeminatTutariCell.Text = aktifSozlesme.TeminatTutari.ConvertToDecimal().ToString("N", culturInfo);
                     OdenenTeminatTutariCell.Text = aktifSozlesme.OdenenTeminatTutari.ConvertToDecimal().ToString("N", culturInfo);
-                    string iade = aktifSozlesme.IadeTeminatTutari>0?" (İade/Mahsup Tutarı : " + aktifSozlesme.IadeTeminatTutari.ConvertToDecimal().ToString("N", culturInfo)+")":string.Empty;
+                    string iade = aktifSozlesme.IadeTeminatTutari>0?" (Iade/Mahsup Tutari : " + aktifSozlesme.IadeTeminatTutari.ConvertToDecimal().ToString("N", culturInfo)+")":string.Empty;
                     KalanTeminatTutariCell.Text = aktifSozlesme.KalanTeminatTutari.ConvertToDecimal().ToString("N", culturInfo) + iade;
                     //KalanTeminatTutariCell.Text = aktifSozlesme.KalanTeminatTutari.ConvertToDecimal().ToString("N", culturInfo);
                     //TeminatIadeTarihiCell.Text = aktifSozlesme.TeminatIadeTarihi.ConvertToDatetimeEmptyIfNull();
                     TeminatTarihiCell.Text = aktifSozlesme.TeminatOdemeTarihi.ConvertToDatetimeEmptyIfNull();
-                    KiraTeminatiCell.Text = "TEMİNAT (" + aktifSozlesme.TeminatCinsi + ")";
+                    KiraTeminatiCell.Text = "TEMINAT (" + aktifSozlesme.TeminatCinsi + ")";
 
                 }
             }
             else
             {
-                MessageHelper.PublishMessage("Kiracı Bulunamadı", ProjeConstants.MESAJ_BILGI);
+                MessageHelper.PublishMessage("Kiraci Bulunamadi", ProjeConstants.MESAJ_BILGI);
             }
         }
         private void TasinmazBilgileriniTabloyaYaz(KiraSozlesme ks)
@@ -215,7 +215,7 @@ namespace TBYS_WebParts.KiraKartiWP
                         bagimsizBolum = bagimsizBolum.Select<BagimsizBolum>(item.BolumId);
                         if (bagimsizBolum == null)
                         {
-                            MessageHelper.PublishMessage("Bağımsız bölüm bulunamadı. Sözleşmeden bağımsız bölüm kaydını düzeltmeniz gerekmektedir.",ProjeConstants.MESAJ_HATA);
+                            MessageHelper.PublishMessage("Bagimsiz b�l�m bulunamadi. S�zlesmeden bagimsiz b�l�m kaydini d�zeltmeniz gerekmektedir.",ProjeConstants.MESAJ_HATA);
                         }
                         else
                         {
@@ -392,21 +392,21 @@ namespace TBYS_WebParts.KiraKartiWP
         {
             TableHeaderRow baslikRow = new TableHeaderRow();
             TableHeaderCell donemCell = new TableHeaderCell();
-            donemCell.Text = "DÖNEM";
+            donemCell.Text = "D�NEM";
             TableHeaderCell kiraTutariCell = new TableHeaderCell();
             kiraTutariCell.Text = "KIRA TUTARI";
             TableHeaderCell odenenTarCell = new TableHeaderCell();
-            odenenTarCell.Text = "ÖDENEN TARIH";
+            odenenTarCell.Text = "�DENEN TARIH";
             TableHeaderCell odenenTutarCell = new TableHeaderCell();
-            odenenTutarCell.Text = "ÖDENEN TUTAR";
+            odenenTutarCell.Text = "�DENEN TUTAR";
             TableHeaderCell kalanAnaParaCell = new TableHeaderCell();
             kalanAnaParaCell.Text = "KALAN ANAPARA";
             TableHeaderCell gecikmeFaiziCell = new TableHeaderCell();
-            gecikmeFaiziCell.Text = "GECİKME FAİZİ";
+            gecikmeFaiziCell.Text = "GECIKME FAIZI";
             TableHeaderCell faizliBakiyeCell = new TableHeaderCell();
-            faizliBakiyeCell.Text = "FAİZLİ BAKİYE";
+            faizliBakiyeCell.Text = "FAIZLI BAKIYE";
             TableHeaderCell aciklamaCell = new TableHeaderCell();
-            aciklamaCell.Text = "AÇIKLAMA";
+            aciklamaCell.Text = "A�IKLAMA";
 
             donemCell.Width = new Unit("10%");
             kiraTutariCell.Width = new Unit("10%");

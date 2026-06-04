@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -200,7 +200,7 @@ namespace TBYS_WebParts.GenelSozlesmeListesiWP
                     string teminatOdemeTar = row == null ? "" : row["TeminatOdemeTarihi"].ConvertToDatetime().ConvertToDatetimeEmptyIfNull();
                     string teminatTutari = row == null ? "" : row["TeminatTutari"].ConvertToDecimal().ToString("N", culturInfo);
 
-                    int borcluAyAdedi = (int)(Math.Abs(faizliBakiyeDec) / kiraBedeliDec) - 1;// -1 çünkü içinde bulunduğumu ayı ödenmemiş kabul etmemeli, henuz vade bitmedi
+                    int borcluAyAdedi = (int)(Math.Abs(faizliBakiyeDec) / kiraBedeliDec) - 1;// -1 ��nk� i�inde bulundugumu ayi �denmemis kabul etmemeli, henuz vade bitmedi
                     //string BolumNo = row["BolumNo"].ToString();
                     adres = row["Adres"].ToString();// + " " + BolumNo;
 
@@ -247,15 +247,15 @@ namespace TBYS_WebParts.GenelSozlesmeListesiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Borçlu Kiracı bulunamadı", ProjeConstants.MESAJ_BILGI, 2000);
+                MessageHelper.PublishMessage("Bor�lu Kiraci bulunamadi", ProjeConstants.MESAJ_BILGI, 2000);
             }
             return list;
         }
 
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = TabloJson(); //veri �ekilip json a �eviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string CreateDataTable(string jsonData)
@@ -269,7 +269,7 @@ namespace TBYS_WebParts.GenelSozlesmeListesiWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY');//sort date
                 jQuery(document).ready(function () {
                     jQuery('#CustomDataTable').DataTable({
-                        'initComplete': function (settings, json) {//tablo yüklendiğinde
+                        'initComplete': function (settings, json) {//tablo y�klendiginde
                             var api = this.api();
                             var row = api.row(function (idx, data, node) { //secilen kayda gider
                                 return data['Secildi'] == true;

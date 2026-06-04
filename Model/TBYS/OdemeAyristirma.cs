@@ -1,4 +1,4 @@
-﻿using DocumentFormat.OpenXml.Office.CustomUI;
+using DocumentFormat.OpenXml.Office.CustomUI;
 using Model.NBYS;
 using Model.Ortak;
 using System;
@@ -99,7 +99,7 @@ namespace Model.TBYS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public override bool Update()
@@ -156,7 +156,7 @@ namespace Model.TBYS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public override List<T> SelectAll<T>()
@@ -198,7 +198,7 @@ namespace Model.TBYS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
         }
         public string GetUpdateSQL(string extId)
@@ -214,7 +214,7 @@ namespace Model.TBYS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
         }
         public string GetDeleteSQL(string extId)
@@ -230,7 +230,7 @@ namespace Model.TBYS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
         }
     }

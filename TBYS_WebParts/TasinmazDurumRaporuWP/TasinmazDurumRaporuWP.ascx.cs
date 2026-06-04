@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.ComponentModel;
@@ -74,7 +74,7 @@ namespace TBYS_WebParts.TasinmazDurumRaporuWP
             TasinmazDurumuTablosunuDoldur();
             decimal tahminiRayicToplami = TahminiRayicToplaminiBul();
             TahminiRayicTopTxt.Value = tahminiRayicToplami.ReturnEmptyIfZeroOrNull().ToString();
-            decimal emlakBeyanToplami = EmlakBeyanDeğeriToplaminiBul();
+            decimal emlakBeyanToplami = EmlakBeyanDegeriToplaminiBul();
             EmlakBeyanTopTxt.Value = emlakBeyanToplami.ReturnEmptyIfZeroOrNull().ToString();
             decimal muhasebeyeKayitliToplami = MuhasebeyeKayitliToplaminiBul();
             MuhasebeyeKayitliTopTxt.Value = muhasebeyeKayitliToplami.ReturnEmptyIfZeroOrNull().ToString();
@@ -95,7 +95,7 @@ namespace TBYS_WebParts.TasinmazDurumRaporuWP
             toplam = tasinmaz.SelectMuhasebeyeKayitliDegerToplami(BolgeIdQS);
             return toplam;
         }
-        private decimal EmlakBeyanDeğeriToplaminiBul()
+        private decimal EmlakBeyanDegeriToplaminiBul()
         {
             decimal toplam = 0;
             Tasinmaz tasinmaz = new Tasinmaz();

@@ -1,4 +1,4 @@
-﻿using Model.Portal;
+using Model.Portal;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -36,12 +36,12 @@ namespace NBYS_WebParts.NBYSYetkilendirmeWP
         {
             ProgramYetki programYetki = new ProgramYetki();
             string bolgeler = "(7,8,9)";
-            List<ProgramYetki> list = programYetki.SelectByProgramModul(ProjeConstants.NBYS, ProjeConstants.NBYS_BOLGE_NAKITBAGISCILISTESİ, bolgeler);
+            List<ProgramYetki> list = programYetki.SelectByProgramModul(ProjeConstants.NBYS, ProjeConstants.NBYS_BOLGE_NAKITBAGISCILISTESI, bolgeler);
             foreach (var item in list)
             {
-                if (item.Kosul.Equals("Belge İstemiyor"))
+                if (item.Kosul.Equals("Belge Istemiyor"))
                     BelgeIstemiyorChk.Checked = item.Deger;
-                if (item.Kosul.Equals("Ulaşılamıyor"))
+                if (item.Kosul.Equals("Ulasilamiyor"))
                     UlasilamiyorChk.Checked = item.Deger;
             }
         }

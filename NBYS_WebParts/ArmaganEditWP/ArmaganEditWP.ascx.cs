@@ -1,4 +1,4 @@
-﻿using Model.NBYS;
+using Model.NBYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -265,13 +265,13 @@ namespace NBYS_WebParts.ArmaganEditWP
                     else
                     {
                         KaydetBtn.Visible = false;
-                        MessageHelper.PublishMessage("Armagan, Bölgenizdeki bir bağışçıya ait değil.", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Armagan, B�lgenizdeki bir bagis�iya ait degil.", ProjeConstants.MESAJ_HATA);
                     }
                 }
                 else
                 {
                     KaydetBtn.Visible = false;
-                    MessageHelper.PublishMessage("Armagan Bulunamadı", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Armagan Bulunamadi", ProjeConstants.MESAJ_HATA);
                 }
             }
             catch (Exception ex)
@@ -283,7 +283,7 @@ namespace NBYS_WebParts.ArmaganEditWP
         private void FillArmaganForm(Armagan armagan)
         {
             KaydetBtn.CssClass = "btn btn-outline-primary";
-            KaydetBtn.Text = "Güncelle";
+            KaydetBtn.Text = "G�ncelle";
             if (armagan!=null)
             {
                 IdLbl.Text = armagan.Id.ToString();
@@ -369,8 +369,8 @@ namespace NBYS_WebParts.ArmaganEditWP
                 if (string.IsNullOrEmpty(ArmaganIdQS))
                 {
                     //System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler,
-                    //    typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "Alert.danger('Armağan Kaydı bulunamadı.')", true);
-                    MessageHelper.PublishMessage("Armağan Kaydı bulunamadı", ProjeConstants.MESAJ_HATA);
+                    //    typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "Alert.danger('Armagan Kaydi bulunamadi.')", true);
+                    MessageHelper.PublishMessage("Armagan Kaydi bulunamadi", ProjeConstants.MESAJ_HATA);
                 }
                 else
                 {
@@ -391,13 +391,13 @@ namespace NBYS_WebParts.ArmaganEditWP
 
                 if (isSaved)
                 {
-                    //System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "Alert.success('Armağan Kaydedildi.')", true);
-                    MessageHelper.PublishMessage("Armağan Kaydı Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    //System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "Alert.success('Armagan Kaydedildi.')", true);
+                    MessageHelper.PublishMessage("Armagan Kaydi G�ncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                 }
                 else
                 {
-                    //System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "Alert.danger('Armağan Kaydedilemedi.')", true);
-                    MessageHelper.PublishMessage("Armağan Kaydedilemedi", ProjeConstants.MESAJ_HATA);
+                    //System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "Alert.danger('Armagan Kaydedilemedi.')", true);
+                    MessageHelper.PublishMessage("Armagan Kaydedilemedi", ProjeConstants.MESAJ_HATA);
                 }
             }
             catch (Exception ex)

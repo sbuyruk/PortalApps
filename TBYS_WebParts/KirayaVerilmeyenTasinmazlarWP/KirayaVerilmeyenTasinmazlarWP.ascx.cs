@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.ComponentModel;
@@ -73,16 +73,16 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
             Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
             BolgeIdQS = bolge == null ? 0 : bolge.Id;
             string kirayaUygunluk = ProjeConstants.KIRADURUMU_KIRAYAUYGUNDEGIL;
-            TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_KDCM,  "Çıplak Mülkiyet Taşınmazlar", 1, kirayaUygunluk);
-            TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_KDTAAH,  "Taahhüt Verilen Taşınmazlar", 2, kirayaUygunluk);
-            TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_KDHUKSOR, "Hukuki Sorunlu Taşınmazlar", 3, kirayaUygunluk);
-            //TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_KDKIRAC, "Kıraç Taşınmazlar", 4, kirayaUygunluk);
-            TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_KDKIRAKABYOK, "Kiralanma Talebi Olmayan Taşınmazlar", 4, kirayaUygunluk);
-            TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_KDCOKHIS, "Hisseli Taşınmazlar", 5, kirayaUygunluk);
-            TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_KDVAKKUL, "Vakıf Kullanımında", 6, kirayaUygunluk);
-            TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_YENIDENINSA, "Yeniden İnşa", 7, kirayaUygunluk);
-            //TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_RISKLIYAPI_KENTSELDONUSUM, "Riskli Yapı-Kentsel Dönüşüm", 8, kirayaUygunluk);
-            //TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_KATKARSILIGI_YENIYAPI, "Kat Karşılığı-Yeni Yapı İnşası", 9, kirayaUygunluk);
+            TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_KDCM,  "�iplak M�lkiyet Tasinmazlar", 1, kirayaUygunluk);
+            TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_KDTAAH,  "Taahh�t Verilen Tasinmazlar", 2, kirayaUygunluk);
+            TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_KDHUKSOR, "Hukuki Sorunlu Tasinmazlar", 3, kirayaUygunluk);
+            //TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_KDKIRAC, "Kira� Tasinmazlar", 4, kirayaUygunluk);
+            TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_KDKIRAKABYOK, "Kiralanma Talebi Olmayan Tasinmazlar", 4, kirayaUygunluk);
+            TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_KDCOKHIS, "Hisseli Tasinmazlar", 5, kirayaUygunluk);
+            TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_KDVAKKUL, "Vakif Kullaniminda", 6, kirayaUygunluk);
+            TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_YENIDENINSA, "Yeniden Insa", 7, kirayaUygunluk);
+            //TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_RISKLIYAPI_KENTSELDONUSUM, "Riskli Yapi-Kentsel D�n�s�m", 8, kirayaUygunluk);
+            //TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_KATKARSILIGI_YENIYAPI, "Kat Karsiligi-Yeni Yapi Insasi", 9, kirayaUygunluk);
             //TabloyuDoldur(ProjeConstants.KULLANIMDURUMU_DIGER, " Metruk-Tahditli vb.", 10, kirayaUygunluk);
             GenelToplamiBul();
             TahminiRayicTopTxt.Value = TahminiRayicToplaminiBul().ToString();
@@ -470,10 +470,10 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
 
             KVTTable.Controls.Add(row1);
             #endregion
-            //birinci satır toplam bitti
+            //birinci satir toplam bitti
             #region Row2
 
-            //ikinci Satır
+            //ikinci Satir
             TableRow row2 = new TableRow
             {
                 HorizontalAlign = HorizontalAlign.Center
@@ -583,7 +583,7 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
 
             KVTTable.Controls.Add(row2);
             #endregion
-            //Mesken satır bitti
+            //Mesken satir bitti
             #region Row3
             //M.Ev
             TableRow row3 = new TableRow
@@ -594,7 +594,7 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
             TableCell KvMevCell = new TableCell
             {
                 BorderStyle = BorderStyle.Solid,
-                Text = "Müstakil Ev"
+                Text = "M�stakil Ev"
             };
             row3.Controls.Add(KvMevCell);
 
@@ -697,7 +697,7 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
             //Mev bitti
 
             #region Row4
-            //İsyeri Satır
+            //Isyeri Satir
             TableRow row4 = new TableRow
             {
                 HorizontalAlign = HorizontalAlign.Center
@@ -706,7 +706,7 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
             TableCell KvIsyCell = new TableCell
             {
                 BorderStyle = BorderStyle.Solid,
-                Text = "İşyeri"
+                Text = "Isyeri"
             };
             row4.Controls.Add(KvIsyCell);
 
@@ -807,10 +807,10 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
 
             KVTTable.Controls.Add(row4);
             #endregion
-            //İsyeri satır bitti
+            //Isyeri satir bitti
 
             #region Row5
-            //Arsa satır
+            //Arsa satir
             TableRow row5 = new TableRow
             {
                 HorizontalAlign = HorizontalAlign.Center
@@ -920,10 +920,10 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
 
             KVTTable.Controls.Add(row5);
             #endregion
-            //Arsa satır bitti
+            //Arsa satir bitti
 
             #region Row7
-            //Tarla satır
+            //Tarla satir
             TableRow row7 = new TableRow
             {
                 HorizontalAlign = HorizontalAlign.Center
@@ -1033,10 +1033,10 @@ namespace TBYS_WebParts.KirayaVerilmeyenTasinmazlarWP
 
             KVTTable.Controls.Add(row7);
             #endregion
-            //Tarla satır bitti
+            //Tarla satir bitti
 
             #region Row8
-            //toplam satır
+            //toplam satir
             TableRow row8 = new TableRow
             {
                 HorizontalAlign = HorizontalAlign.Center

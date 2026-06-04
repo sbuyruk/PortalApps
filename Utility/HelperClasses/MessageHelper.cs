@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text;
 
 namespace Utility.HelperClasses
@@ -13,7 +13,7 @@ namespace Utility.HelperClasses
                 var className = string.Format("customMessage_{0}", classId.ToString());
                 message = message.Replace(Environment.NewLine, "<br>");
 
-                message = string.Format("<div class='container'><div class='d-flex justify-content-center'><div class='{0} snackbar'><div class='card shadow'><div class='card-header'><span class='close' onclick=CloseMessage('{0}')>×</span></div><div class='card-body customMessageBody'>{1}</div></div></div></div></div>", className, message);
+                message = string.Format("<div class='container'><div class='d-flex justify-content-center'><div class='{0} snackbar'><div class='card shadow'><div class='card-header'><span class='close' onclick=CloseMessage('{0}')>�</span></div><div class='card-body customMessageBody'>{1}</div></div></div></div></div>", className, message);
 
                 var messageHtml = string.Format("$('body').append({0});", "\"" + message + "\"");
 
@@ -37,7 +37,7 @@ namespace Utility.HelperClasses
         /// </summary>
         /// <param name="message">Mesaj</param>
         /// <param name="messageType">ProjeConstants.MESAJ_HATA,ProjeConstants.MESAJ_BASARILI ,ProjeConstants.MESAJ_BILGI</param>
-        /// <param name="fadeOutTime">kaç milisaniye sonra kapanacağını belirler. boş bırakılırsa hiç kapanmaz. Örnek 2000 girilirse 2sn sonra kapanır.</param>
+        /// <param name="fadeOutTime">ka� milisaniye sonra kapanacagini belirler. bos birakilirsa hi� kapanmaz. �rnek 2000 girilirse 2sn sonra kapanir.</param>
         public static void PublishMessage(string message, string messageType, int fadeOutTime)
         {
             string fadeOutString = string.Empty;

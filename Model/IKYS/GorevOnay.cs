@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -80,7 +80,7 @@ namespace Model.IKYS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
 
         }
@@ -144,7 +144,7 @@ namespace Model.IKYS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
         }
         public override List<T> SelectAll<T>()
@@ -274,7 +274,7 @@ namespace Model.IKYS
 
         public bool GorevOnayVarMi(int personelId, DateTime basTarih, DateTime bitTarih, int gorevOnayId)
         {
-           // bu personelId için bu tarihler arasında onay var mı?
+           // bu personelId i�in bu tarihler arasinda onay var mi?
             string sqlString = string.Format(@"
                 SELECT TOP 1 *
                 FROM GorevOnay_Table

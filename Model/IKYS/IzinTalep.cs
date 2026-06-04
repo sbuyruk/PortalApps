@@ -1,4 +1,4 @@
-﻿
+
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -60,7 +60,7 @@ namespace Model.IKYS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
 
         }
@@ -124,7 +124,7 @@ namespace Model.IKYS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
         }
         public override List<T> SelectAll<T>()
@@ -220,7 +220,7 @@ namespace Model.IKYS
 
                     string gelecekUcretliIzinDonemiStr = gelecekUcretliIzinDonemi == null ? "" : string.Format(" OR  IzinDonemId={0}", gelecekUcretliIzinDonemi.Id);
                     string gelecekMazeretIzinDonemiStr = gelecekMazeretIzinDonemi == null ? "" : string.Format(" OR  IzinDonemId={0}", gelecekMazeretIzinDonemi.Id);
-                    izinDonemiStr = string.Format(" AND (IzinDonemId={0} OR IzinDonemId={1} OR IzinDonemId=0 {2} {3}) ", ucretliIzinDonemi.Id, mazeretIzinDonemi.Id, gelecekUcretliIzinDonemiStr, gelecekMazeretIzinDonemiStr);// OR IzinDonemId=0 çünkü ücretli ve mazeret izni dışındakilerin izindonemId si yok SB_UPDATE 25.03.2019
+                    izinDonemiStr = string.Format(" AND (IzinDonemId={0} OR IzinDonemId={1} OR IzinDonemId=0 {2} {3}) ", ucretliIzinDonemi.Id, mazeretIzinDonemi.Id, gelecekUcretliIzinDonemiStr, gelecekMazeretIzinDonemiStr);// OR IzinDonemId=0 ��nk� �cretli ve mazeret izni disindakilerin izindonemId si yok SB_UPDATE 25.03.2019
                 }
             }
 
@@ -243,9 +243,9 @@ namespace Model.IKYS
         /// <param name="personelId"></param>
         /// <param name="basTar"></param>
         /// <param name="bitTar"></param>
-        /// <returns>Girilen tarihler arasında :
-        /// OnayDurumu Reddedildi veya İptal Edildi olanlar hariç olmak koşulu ile,
-        /// IzinTalebi varsa bu döner, yoksa null döner </returns>
+        /// <returns>Girilen tarihler arasinda :
+        /// OnayDurumu Reddedildi veya Iptal Edildi olanlar hari� olmak kosulu ile,
+        /// IzinTalebi varsa bu d�ner, yoksa null d�ner </returns>
         public IzinTalep SelectByPersonelIdBasBitTar(int personelId, DateTime basTar, DateTime bitTar)
         {
             string sqlString = string.Format(@"
@@ -269,7 +269,7 @@ namespace Model.IKYS
             izinTalebi = list.FirstOrDefault<IzinTalep>();
             return izinTalebi;
         }
-        public IzinTalep SelectIslemiDevamEdenIzinTalebiVarMı(int personelId, int izinTipi)
+        public IzinTalep SelectIslemiDevamEdenIzinTalebiVarMi(int personelId, int izinTipi)
         {
             string sqlString = string.Format(@"
                             SELECT *

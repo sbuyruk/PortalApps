@@ -1,4 +1,4 @@
-﻿using Microsoft.SharePoint;
+using Microsoft.SharePoint;
 using Microsoft.SharePoint.Client;
 using Microsoft.Web.Hosting.Administration;
 using Model.NBYS;
@@ -47,8 +47,8 @@ namespace BTYS_Webparts.DavaDurusmaListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = TabloJson(); //veri �ekilip json a �eviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string TabloJson()
@@ -80,7 +80,7 @@ namespace BTYS_Webparts.DavaDurusmaListesiWP
                     {
                         if (web != null)
                         {
-                            SPList list = web.Lists["Dava Duruşma Listesi"];
+                            SPList list = web.Lists["Dava Durusma Listesi"];
 
                             SPQuery query = new SPQuery();
                             query.Query = string.Format(@"
@@ -146,9 +146,9 @@ namespace BTYS_Webparts.DavaDurusmaListesiWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
                 jQuery(document).ready(function () {
                     jQuery('#CustomDataTable').DataTable({
-                        'initComplete': function (settings, json) {//tablo yüklendiğinde
+                        'initComplete': function (settings, json) {//tablo y�klendiginde
                             var api = this.api();
-                            var row = api.row(function (idx, data, node) { //secilen toplantıya gider
+                            var row = api.row(function (idx, data, node) { //secilen toplantiya gider
                                 return data['Secildi'] == true;
                             });
                             if (row.length > 0) {

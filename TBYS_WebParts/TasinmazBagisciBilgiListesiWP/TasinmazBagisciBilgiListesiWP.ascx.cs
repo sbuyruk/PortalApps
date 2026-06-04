@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -58,8 +58,8 @@ namespace TBYS_WebParts.TasinmazBagisciBilgiListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            //var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = TabloJson(); //veri �ekilip json a �eviriliyor
+            //var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir("setDataSet(" + jsonData + ");");
         }
         private string TabloJson()
@@ -132,7 +132,7 @@ namespace TBYS_WebParts.TasinmazBagisciBilgiListesiWP
                         decimal tahminiRayic = row["TahminiRayic"].ConvertToDecimal();
 
                         {
-                            bagislari += adet + " Adet " + kullanimSekli + " İli:" +ili +"</br>" + System.Environment.NewLine;
+                            bagislari += adet + " Adet " + kullanimSekli + " Ili:" +ili +"</br>" + System.Environment.NewLine;
                             tahminiRayicToplami += tahminiRayic;
                         }
                     } 

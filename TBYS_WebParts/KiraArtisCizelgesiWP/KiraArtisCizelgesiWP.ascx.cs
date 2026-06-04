@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -95,8 +95,8 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = TabloJson(); //veri �ekilip json a �eviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             //UtilityHelper.ScriptCalistir(jsString);
             UtilityHelper.ScriptCalistir("setDataSet(" + jsonData + ");");
         }
@@ -147,7 +147,7 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP
                         { data: 'YenilendiMi' },
 
                     ],
-                    'order': [[0, 'asc']],//bolge Sıralı
+                    'order': [[0, 'asc']],//bolge Sirali
                     'language': {
                         'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                         'decimal': ',',
@@ -173,7 +173,7 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP
                                 $('row c[r^='E']', sheet).each(function () {
                                     if (count++ > 0) {
                                         var text = $(this).text();
-                                        var yilInt = text.replace(' Yıl', '');
+                                        var yilInt = text.replace(' Yil', '');
                                         if (yilInt >= 5) {
                                             $(this).attr('s', '11');
                                         }
@@ -226,7 +226,7 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP
         {
             TabloOlustur();
             string filename = "KiraArtisCizelgesi."+ DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + ".xls";
-            //Türkçe sorunu yok
+            //T�rk�e sorunu yok
             Page.Response.Clear();
             Page.Response.AddHeader("content-disposition", "attachment;filename=" + filename + "");
             Page.Response.ContentType = "application/ms-excel";
@@ -299,7 +299,7 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP
                 //    }
                     
                 //}
-                string artisOrani= "%" + tufe.ToString("N", culturInfo) + " (TÜFE)";
+                string artisOrani= "%" + tufe.ToString("N", culturInfo) + " (T�FE)";
                 DateTime bastar = string.IsNullOrEmpty(sozBasTar.ConvertToDatetimeEmptyIfNull()) ? DateTime.Today : sozBasTar.ConvertToDatetime();
                 DateTime yenibastar = bastar.AddYears(1);
                 if ((yenibastar >= ProjeConstants.SINIRLIKIRAARTISI_BASLAMATARIHI) &&
@@ -334,7 +334,7 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP
                 int secilenKiraSuresi= KiraSuresiDDL.SelectedItem.Value.ConvertToInt();
                 if ((secilenKiraSuresi == 0)||(secilenKiraSuresi==kiraSuresi1))
                 {
-                    kiraArtisListItem.KiraSuresi = kiraSuresi + " Yıl";
+                    kiraArtisListItem.KiraSuresi = kiraSuresi + " Yil";
                     kiraArtisListItem.BesYil = kiraSuresi >= 5 ? "True" : "False";
                     kiraArtisListItem.OnYil = kiraSuresi >= 10 ? "True" : "False";
                     kiraArtisListItem.SozlesmeBasTar = sozBasTar.ConvertToDatetimeEmptyIfNull();
@@ -396,9 +396,9 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP
         {
             KiraSuresiDDL.Items.Clear();
             ListItem li = new ListItem("Hepsi", "0");
-            ListItem li1 = new ListItem("5 Yılı Dolan Kiracılar","5");
-            ListItem li2 = new ListItem("10 Yılı Dolan Kiracılar","10");
-            //ListItem li3 = new ListItem("5 ve 10 Yılı Dolan Kiracılar","3");
+            ListItem li1 = new ListItem("5 Yili Dolan Kiracilar","5");
+            ListItem li2 = new ListItem("10 Yili Dolan Kiracilar","10");
+            //ListItem li3 = new ListItem("5 ve 10 Yili Dolan Kiracilar","3");
             KiraSuresiDDL.Items.Add(li);
             KiraSuresiDDL.Items.Add(li1);
             KiraSuresiDDL.Items.Add(li2);
@@ -406,7 +406,7 @@ namespace TBYS_WebParts.KiraArtisCizelgesiWP
         }
         private decimal SecilenAyIcinTufeBul(DateTime tarih)
         {
-            //tarih = tarih.AddMonths(1);//bir önceki ay geliyor
+            //tarih = tarih.AddMonths(1);//bir �nceki ay geliyor
             decimal tufe = 1M;
             YasalFaiz yasalFaiz = new YasalFaiz();
             //DateTime gelecekAy = DateTime.Today.AddMonths(1);

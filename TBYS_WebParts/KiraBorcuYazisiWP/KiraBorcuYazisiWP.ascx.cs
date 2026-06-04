@@ -1,4 +1,4 @@
-﻿using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.SharePoint;
 using Model.Ortak;
@@ -151,7 +151,7 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
             if (!Page.IsPostBack)
             {
                 FillDropDownList();
-                SetDDLValues(); //ay ve yılı querystringden al
+                SetDDLValues(); //ay ve yili querystringden al
                 ParametreleriDoldur();
 
             }
@@ -179,17 +179,17 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
         {
 
             AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Ocak", "1"));
-            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Şubat", "2"));
+            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Subat", "2"));
             AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Mart", "3"));
             AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Nisan", "4"));
-            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Mayıs", "5"));
+            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Mayis", "5"));
             AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Haziran", "6"));
             AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Temmuz", "7"));
-            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Ağustos", "8"));
-            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Eylül", "9"));
+            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Agustos", "8"));
+            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Eyl�l", "9"));
             AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Ekim", "10"));
-            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Kasım", "11"));
-            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Aralık", "12"));
+            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Kasim", "11"));
+            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Aralik", "12"));
 
         }
         private void YilDDLDoldur()
@@ -205,7 +205,7 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
             try
             {
                 #region tarih
-                //acilista ay ve yili querystring ile gelen ay ve yıla eşitle boş geldiyse gecen aya/yila eşitle               
+                //acilista ay ve yili querystring ile gelen ay ve yila esitle bos geldiyse gecen aya/yila esitle               
                 //ay
                 string ay = !string.IsNullOrEmpty(SecilenAyQS) ? SecilenAyQS : DateTime.Today.Month.ToString();
                 System.Web.UI.WebControls.ListItem AyItem = new System.Web.UI.WebControls.ListItem();
@@ -253,10 +253,10 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
             DateTime buAyIlkGun = new DateTime(bugun.Year, bugun.Month, 1);
             DateTime buAySonGun = new DateTime(bugun.Year, bugun.Month, 1).AddMonths(1).AddDays(-1);
 
-            Parafe1Txt.Text = @"…./" + bugun.ToString("MM") + @"/" + bugun.Year + " Eml.Ynt.Kd.Uzm.Z.ÇALIŞ";
-            Parafe2Txt.Text = @"…./" + bugun.ToString("MM") + @"/" + bugun.Year + " İnş.Eml.Ynt.Dir.M.TAŞKALDIRAN";
-            ImzalayanTxt.Text = @"Emrah ŞENGÜL";
-            ImzalayanMakamTxt.Text = @"TSKGV Baş Hukuk Müşaviri";
+            Parafe1Txt.Text = @"�./" + bugun.ToString("MM") + @"/" + bugun.Year + " Eml.Ynt.Kd.Uzm.Z.�ALIS";
+            Parafe2Txt.Text = @"�./" + bugun.ToString("MM") + @"/" + bugun.Year + " Ins.Eml.Ynt.Dir.M.TASKALDIRAN";
+            ImzalayanTxt.Text = @"Emrah SENG�L";
+            ImzalayanMakamTxt.Text = @"TSKGV Bas Hukuk M�saviri";
             EvrakTarihiTxt.Text = bugun.ToString("dd") + " " + bugun.ToString("MMMM") + " " + bugun.Year;
             GecerlilikTarihiTxt.Text = buAyIlkGun.ToString("dd") + " " + buAyIlkGun.ToString("MMMM") + " " + buAyIlkGun.Year;
             
@@ -266,7 +266,7 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = GetData(); //veri çekilip json a çeviriliyor
+            var jsonData = GetData(); //veri �ekilip json a �eviriliyor
 
             bool jasonDataBosMu = string.IsNullOrWhiteSpace(jsonData.Replace("[", "").Replace("]", "").Replace("{", "").Replace("}", ""));
             if (!jasonDataBosMu)
@@ -277,7 +277,7 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
             }
             else
             {
-                TableDataLbl.Text = "Kira borcu olan kiracı bulunmamaktadır.";
+                TableDataLbl.Text = "Kira borcu olan kiraci bulunmamaktadir.";
                 YaziyiOlusturBtn.Visible = false;
             }
         }
@@ -339,7 +339,7 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
             OdemePlani opl = new OdemePlani();
             int kayitSayisi = 0;
             string json = opl.SelectBorcluOdemePlanlariByBolgeTarihJson(bolgeId, vadeBastar, vadeBittar, 2, 2, ref kayitSayisi);
-            TableDataLbl.Text = "Toplam " + kayitSayisi + " kayıt bulundu";
+            TableDataLbl.Text = "Toplam " + kayitSayisi + " kayit bulundu";
             return json;
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
@@ -376,14 +376,14 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
                 if (isYaziOlusturuldu)
                 {
                     YeniAdresEtiketDosyasiOlustur(etiketDosyaAdi);
-                    MessageHelper.PublishMessage("Dosyalar hazırlandı, Dosya ismine basarak yazıyı indirebilirsiniz", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Dosyalar hazirlandi, Dosya ismine basarak yaziyi indirebilirsiniz", ProjeConstants.MESAJ_BASARILI, 2000);
                 }
                 else
-                    MessageHelper.PublishMessage("Hata Oluştu", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Hata Olustu", ProjeConstants.MESAJ_HATA);
             }
             catch (Exception ex)
             {
-                Exception ex1 = new Exception("Yazı ve Adres oluşturmada hata");
+                Exception ex1 = new Exception("Yazi ve Adres olusturmada hata");
                 ExceptionHelper exh = new ExceptionHelper(ex);
                 exh.PublishException();
             }
@@ -509,7 +509,7 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
                     keyValues.Add("IlkSozlesmeTarihiVar", ilkSozlesmeTar);
                     keyValues.Add("GecerlilikTarihiVar", GecerlilikTarihiTxt.Text);
 
-                    keyValues.Add("AyYilVar", bugun.ToString("MMMM") + " " + bugun.ToString("yyyy") + " ayı ");
+                    keyValues.Add("AyYilVar", bugun.ToString("MMMM") + " " + bugun.ToString("yyyy") + " ayi ");
 
                     keyValues.Add("VadeBitTarVar", vadeBitTar);// SonOdemeTarihiTxt.Text);
                     keyValues.Add("TutarVar", borcStr);
@@ -598,7 +598,7 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
                 {
                     string message = string.Join(Environment.NewLine, uzunAdresliler);
                     MessageHelper.PublishMessage(message + Environment.NewLine +
-                        " adresi çok uzun olduğundan kesilerek kısaltıldı. Lütfen etiketini kontrol ediniz. ", ProjeConstants.MESAJ_BILGI);
+                        " adresi �ok uzun oldugundan kesilerek kisaltildi. L�tfen etiketini kontrol ediniz. ", ProjeConstants.MESAJ_BILGI);
                 }
             }
             return destinationStream;
@@ -607,7 +607,7 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
         {
             using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(destinationStream, true))
             {
-                //boş sayfa ekle
+                //bos sayfa ekle
                 Paragraph PageBreakParagraph = new Paragraph(new DocumentFormat.OpenXml.Wordprocessing.Run(new DocumentFormat.OpenXml.Wordprocessing.Break() { Type = BreakValues.Page }));
                 wordDoc.MainDocumentPart.Document.Body.Append(PageBreakParagraph);
 
@@ -624,7 +624,7 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
         {
             using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(destinationStream, true))
             {
-                //boş sayfa ekle
+                //bos sayfa ekle
                 Paragraph PageBreakParagraph = new Paragraph(new DocumentFormat.OpenXml.Wordprocessing.Run(new DocumentFormat.OpenXml.Wordprocessing.Break() { Type = BreakValues.Page }));
                 wordDoc.MainDocumentPart.Document.Body.Append(PageBreakParagraph);
 

@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -71,7 +71,7 @@ namespace Model.TBYS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public override bool Update()
@@ -128,7 +128,7 @@ namespace Model.TBYS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public override List<T> SelectAll<T>()
@@ -394,7 +394,7 @@ namespace Model.TBYS
             string sqlString = string.Format(@"
                 SELECT A.*
                 FROM Kiraci_Table A
-				INNER JOIN KiraSozlesme_Table B ON B.KiraciId=A.Id AND B.Id IN (SELECT MAX(Id) FROM KiraSozlesme_Table WHERE KiraciId=A.Id GROUP BY KiraciId) --Sözeşlmesi yeni olan önce gelsin
+				INNER JOIN KiraSozlesme_Table B ON B.KiraciId=A.Id AND B.Id IN (SELECT MAX(Id) FROM KiraSozlesme_Table WHERE KiraciId=A.Id GROUP BY KiraciId) --S�zeslmesi yeni olan �nce gelsin
                 WHERE Adi Like '%{0}%' 
                      {1}
                 ORDER BY B.SozBasTar DESC

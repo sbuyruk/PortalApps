@@ -1,4 +1,4 @@
-﻿using DocumentFormat.OpenXml.Office2010.Excel;
+using DocumentFormat.OpenXml.Office2010.Excel;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -53,7 +53,7 @@ namespace Model.TBYS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public override bool Update()
@@ -110,7 +110,7 @@ namespace Model.TBYS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public override List<T> SelectAll<T>()

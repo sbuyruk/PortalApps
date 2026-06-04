@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
@@ -46,7 +46,7 @@ namespace Model.MTS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
 
         }
@@ -104,7 +104,7 @@ namespace Model.MTS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public DepoStok Select(int id)

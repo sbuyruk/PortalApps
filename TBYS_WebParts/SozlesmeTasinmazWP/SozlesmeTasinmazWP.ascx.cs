@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -171,12 +171,12 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
         }
         private void SozlesmeTasinmazTablosunuDoldur(KiraSozlesme kiraSozlesme)
         {
-            //önce tabloyu temizle
+            //�nce tabloyu temizle
             PopUpTable.Rows.Clear();
 
             SozlesmeTasinmaz st = new SozlesmeTasinmaz();
             List<SozlesmeTasinmaz> list = st.SelectBySozlesmeId(kiraSozlesme.Id);
-            SiraNoCell.Text = "Sıra";
+            SiraNoCell.Text = "Sira";
             AdresCell.Text = "Adres";
             int siraNo = 1;
             foreach (SozlesmeTasinmaz sozlesmeTasinmaz in list)
@@ -188,7 +188,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
                 PupUpCell0.Text = siraNo++ + "";
                 row.Controls.Add(PupUpCell0);
 
-                //tabloya kira sözlesme Id ekle
+                //tabloya kira s�zlesme Id ekle
                 TableCell SozlesmeIdCell = new TableCell();
                 SozlesmeIdCell.Text = kiraSozlesme.Id.ToString();
                 row.Controls.Add(SozlesmeIdCell);
@@ -250,7 +250,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
 
                 TableCell cikarCell = new TableCell();
                 LinkButton cikarBtn = new LinkButton();
-                cikarBtn.Text = "Çıkar";
+                cikarBtn.Text = "�ikar";
                 cikarBtn.CssClass = "btn btn-xs btn-danger";
                 cikarBtn.Click += delegate
                 {
@@ -283,12 +283,12 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
 
                         BagimsizBolum babo = new BagimsizBolum();
                         babo = babo.Select<BagimsizBolum>(BolumIdQS.ConvertToInt());
-                        //BagimsizBolum bolüm varsa
+                        //BagimsizBolum bol�m varsa
                         if (babo != null)
                         {
                             SozlesmeTasinmaz st = new SozlesmeTasinmaz();
                             List<SozlesmeTasinmaz> list = st.SelectBySozlesmeIdTasinmazId(kiraSozlesme.Id, tasinmaz.Id, babo.Id);
-                            if (list.Count < 1)// bu bagimsizbolum  vt'da yoksa insert et varsa bişey yapma varsa
+                            if (list.Count < 1)// bu bagimsizbolum  vt'da yoksa insert et varsa bisey yapma varsa
                             {
                                 st.SozlesmeId = kiraSozlesme.Id;
                                 st.TasinmazId = tasinmaz.Id;
@@ -375,12 +375,12 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
             EnvanterdeOlmayanTasinmazSecimiModalShow();
         }
 
-        #region  Modal Taşınmaz Kiracı Env olmayan Tasinmazlar
+        #region  Modal Tasinmaz Kiraci Env olmayan Tasinmazlar
         private void TasinmazSecimiModalShow()
         {
             Tasinmaz tasinmaz = new Tasinmaz();
             var jsonData = tasinmaz.SelectTasinmazBolumNoReturnJson(ProjeConstants.TASINMAZ_ENVANTERDE, ProjeConstants.KIRADURUMU_KIRAYAUYGUN);
-            var jsString = CreateTasinmazModalDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsString = CreateTasinmazModalDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
             UtilityHelper.ScriptCalistir("TasinmazSecimiModal();");
         }
@@ -414,7 +414,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
                 columnDefs:[
                     {targets:5, render:function(data, type, row, meta){
                         var linkEkle='<a href=" + ProjeConstants.PAGE_KIRASOZLESME_TASINMAZ + @"?KiraSozlesmeId=" + KiraSozlesmeIdQS +
-                            @"&EnvanterdeMi=1&DestinationApp=TD&TasinmazId=' + row.TasinmazId + '&BolumId=' + row.BolumId + ' class=\'btn btn-outline-primary \'>Sözleşmeye Ekle</a>'
+                            @"&EnvanterdeMi=1&DestinationApp=TD&TasinmazId=' + row.TasinmazId + '&BolumId=' + row.BolumId + ' class=\'btn btn-outline-primary \'>S�zlesmeye Ekle</a>'
                         return linkEkle;
                     }},
                 ],
@@ -431,7 +431,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
         {
             Kiraci kiraci = new Kiraci();
             var jsonData = kiraci.SelectAllReturnJson();
-            var jsString = CreateKiraciModalDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsString = CreateKiraciModalDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
             UtilityHelper.ScriptCalistir("KiraciSecimiModal();");
         }
@@ -464,7 +464,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
                 columnDefs:[
                     {targets:3, render:function(data, type, row, meta){
                         var linkEkle='<a href=" + ProjeConstants.PAGE_KIRASOZLESME_TASINMAZ + @"?KiraSozlesmeId=" + KiraSozlesmeIdQS +
-                            @"&DestinationApp=ST&KiraciId=' + row.KiraciId + ' class=\'btn btn-outline-primary \'>Kiracıyı Seç</a>'
+                            @"&DestinationApp=ST&KiraciId=' + row.KiraciId + ' class=\'btn btn-outline-primary \'>Kiraciyi Se�</a>'
                         return linkEkle;
                     }},
                 ],
@@ -480,7 +480,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
         {
             Tasinmaz tasinmaz = new Tasinmaz();
             var jsonData = tasinmaz.SelectEnvanterdeOlmayanTasinmazReturnJson();
-            var jsString = CreateEnvanterdeOlmayanTasinmazModalDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsString = CreateEnvanterdeOlmayanTasinmazModalDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
             UtilityHelper.ScriptCalistir("EnvanterdeOlmayanTasinmazSecimiModal();");
         }
@@ -512,7 +512,7 @@ namespace TBYS_WebParts.SozlesmeTasinmazWP
                 columnDefs:[
                     {targets:3, render:function(data, type, row, meta){
                         var linkEkle='<a href=" + ProjeConstants.PAGE_KIRASOZLESME_TASINMAZ + @"?KiraSozlesmeId=" + KiraSozlesmeIdQS +
-                            @"&EnvanterdeMi=1&DestinationApp=TD&TasinmazId=' + row.TasinmazId + ' class=\'btn btn-outline-primary \'>Sözleşmeye Ekle</a>'
+                            @"&EnvanterdeMi=1&DestinationApp=TD&TasinmazId=' + row.TasinmazId + ' class=\'btn btn-outline-primary \'>S�zlesmeye Ekle</a>'
                         return linkEkle;
                     }},
                 ],

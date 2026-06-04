@@ -1,4 +1,4 @@
-﻿using Model.IKYS;
+using Model.IKYS;
 using Model.MTS;
 using Model.NBYS;
 using Model.Ortak;
@@ -64,8 +64,8 @@ namespace MTS_WebParts.MtsOlayListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = TabloJson(); //veri �ekilip json a �eviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string TabloJson()
@@ -154,7 +154,7 @@ namespace MTS_WebParts.MtsOlayListesiWP
                 {
                     katilimci = kisi.Adi + " " + kisi.Soyadi;
 
-                    //Burada verilen ani objeleri alınıyor
+                    //Burada verilen ani objeleri aliniyor
                     AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
                     DataTable dataTable = aniObjesiDagitim.SelectReturnDT(faaliyetId, kisi.Id);
                     if (dataTable != null)
@@ -173,7 +173,7 @@ namespace MTS_WebParts.MtsOlayListesiWP
                         aniObjesiStr = objeStr;
                     }
 
-                    //Getirilen Ani Objeleri ayrıca alınıyor
+                    //Getirilen Ani Objeleri ayrica aliniyor
                     AniObjesiDagitim getirilenAniObjesi = new AniObjesiDagitim();
                     getirilenAniObjesi = getirilenAniObjesi.SelectGetirilenAniObjesi(faaliyetId, kisi.Id);
                     if (getirilenAniObjesi != null)
@@ -183,21 +183,21 @@ namespace MTS_WebParts.MtsOlayListesiWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Kişi Bulunamadı", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Kisi Bulunamadi", ProjeConstants.MESAJ_HATA);
                 }
 
             }
             string faaliyetStr = faaliyet == null ?
                             string.Empty :
                              "<strong>"+ faaliyet.FaaliyetKonusu + "</strong> konulu ve  <strong>" + faaliyet.BaslangicTarihi + "</strong> tarihli faaliyetin ";
-            string ayrintiStr = (string.IsNullOrEmpty(katilimci) ? string.Empty : "- Katılımcı : " + katilimci) +
-                (string.IsNullOrEmpty(aniObjesiStr) ? string.Empty : "- Verilen Anı Objesi : " + aniObjesiStr)+
-                (string.IsNullOrEmpty(getirilenAniObjesiStr) ? string.Empty : "- Getirilen Anı Objesi : " + getirilenAniObjesiStr);
+            string ayrintiStr = (string.IsNullOrEmpty(katilimci) ? string.Empty : "- Katilimci : " + katilimci) +
+                (string.IsNullOrEmpty(aniObjesiStr) ? string.Empty : "- Verilen Ani Objesi : " + aniObjesiStr)+
+                (string.IsNullOrEmpty(getirilenAniObjesiStr) ? string.Empty : "- Getirilen Ani Objesi : " + getirilenAniObjesiStr);
             string retval = "(" + olay.IslemTarihi.ConvertToDDMMYYYHHmmFormat() + ") -" +
                faaliyetStr + "  <strong>" +
-               olay.IslemKonusu + "</strong> bölümünde " +
-               olay.IslemYapan + " tarafından  <strong> " +
-               olay.IslemTipi + "</strong> işlemi yapılmıştır." + ayrintiStr;
+               olay.IslemKonusu + "</strong> b�l�m�nde " +
+               olay.IslemYapan + " tarafindan  <strong> " +
+               olay.IslemTipi + "</strong> islemi yapilmistir." + ayrintiStr;
             return retval;
         }
 

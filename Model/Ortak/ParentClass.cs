@@ -1,4 +1,4 @@
-ï»¿using DAO.Ortak;
+using DAO.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -13,7 +13,7 @@ namespace Model.Ortak
     [Serializable]
     public abstract class ParentClass : ICRUDInterface
     {
-        public DbClass dao = new DbClass();
+        protected readonly DbClass dao = new DbClass();
         public int Id { get; set; }
         public DateTime OlusturmaTarihi { get; set; }
         public DateTime DegistirmeTarihi { get; set; }
@@ -125,7 +125,7 @@ namespace Model.Ortak
                 }
                 else
                 {
-                    //todo:query boÅŸ
+                    //todo:query bos
                 }
                 return dataList;
             }
@@ -169,13 +169,39 @@ namespace Model.Ortak
 
         private DateTime convertToDateTime(object date)
         {
+            if (date == null || date == DBNull.Value)
+            {
+                return DateTime.MinValue;
+            }
 
+            // Eger zaten DateTime ise, direkt dön
+            if (date is DateTime)
+            {
+                return (DateTime)date;
+            }
 
-            var dateTime = Convert.ToDateTime(HelperFunctions.ReturnDateTimeMinIfNull(date));
-
-            DateTime trDateTime = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour, dateTime.Minute, dateTime.Second);
-
-            return trDateTime;
+            // String ise, Invariant Culture ile parse et (Türkçe tarih problemi çözümü)
+            try
+            {
+                var dateTime = Convert.ToDateTime(date, System.Globalization.CultureInfo.InvariantCulture);
+                DateTime trDateTime = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour, dateTime.Minute, dateTime.Second);
+                return trDateTime;
+            }
+            catch
+            {
+                // Fallback: Türkçe locale deneyisim, sonra InvariantCulture
+                try
+                {
+                    var dateTime = DateTime.Parse(date.ToString(), System.Globalization.CultureInfo.GetCultureInfo("tr-TR"));
+                    DateTime trDateTime = new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour, dateTime.Minute, dateTime.Second);
+                    return trDateTime;
+                }
+                catch
+                {
+                    // Son çare: String'i format etmeye çalis
+                    throw new Exception($"Tarih parsing hatasi: '{date}' - Geçersiz tarih formati");
+                }
+            }
         }
 
         public string ToJSON(DataTable table)

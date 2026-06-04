@@ -1,4 +1,4 @@
-﻿
+
 using Microsoft.SharePoint;
 using System;
 using System.Linq;
@@ -27,7 +27,7 @@ namespace DAO.Ortak
 
         public static string FindTable(string sqlString)
         {
-            string retval = "Bulunamadı!";
+            string retval = "Bulunamadi!";
             var punctuation = sqlString.Where(Char.IsPunctuation).Distinct().ToArray();
             var words = sqlString.Split().Select(x => x.Trim(punctuation));
             foreach (string item in words)

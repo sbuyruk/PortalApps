@@ -1,4 +1,4 @@
-﻿using Model.IKYS;
+using Model.IKYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -242,7 +242,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                     PersonelAdiLbl.Text = personel.Adi + " " + personel.Soyadi;
                     FillVekilImzaDDL();
                     FillAmirImzaDDL();
-                    //FillOnayImzaDDL(); SB OnayDiv kaldırıldı
+                    //FillOnayImzaDDL(); SB OnayDiv kaldirildi
                     FillIzinBasSaat();
                     FillIzinBitSaat();
 
@@ -264,7 +264,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                 FillIzinTanim();
                 FillVekilImzaDDL();
                 FillAmirImzaDDL();
-                //FillOnayImzaDDL();SB OnayDiv kaldırıldı
+                //FillOnayImzaDDL();SB OnayDiv kaldirildi
 
                 FillIzinBasSaat();
                 FillIzinBitSaat();
@@ -316,7 +316,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                     IzinTalepTable.Rows.Clear();
                     TableRow tr = new TableRow();
                     TableCell tc = new TableCell();
-                    tc.Text = "İzin talebi bulunmamaktadır.";
+                    tc.Text = "Izin talebi bulunmamaktadir.";
                     tr.Controls.Add(tc);
                     IzinTalepTable.Controls.Add(tr);
                 }
@@ -401,15 +401,15 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                 IzinTalepIdHdn1.Value = izinTalepId.ToString();
                 YazdirLnk1.Visible = false;
                 SilBtn1.Visible = true;
-                SilBtn1.ToolTip = "Talebiniz İşlem görmeden önce silebilirsiniz.";
+                SilBtn1.ToolTip = "Talebiniz Islem g�rmeden �nce silebilirsiniz.";
             }
             else if (onayDurumuId.Equals(ProjeConstants.PER_IZINTALEBI_KONTROLEDILDI_INT))
             {
                 YazdirLnk1.Visible = true;
                 SilBtn1.Visible = false;
                 YazdirLnk1.Target = "_blank";
-                YazdirLnk1.ToolTip = "Talebiniz yazdırmak için düğmeye basınız.";
-                YazdirLnk1.Text = "Yazdır";
+                YazdirLnk1.ToolTip = "Talebiniz yazdirmak i�in d�gmeye basiniz.";
+                YazdirLnk1.Text = "Yazdir";
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string rawUrl = System.Web.HttpContext.Current.Request.RawUrl.ToString();
                 int index = currentUrl.IndexOf(rawUrl);
@@ -434,7 +434,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
 
                     fullUrl = string.Format("{0}?IzinTalepId={1}&SureStr={2}&KalanIzinStr={3}&SonIzin={4}", rootUrl + ProjeConstants.RAPOR_MAZERETIZINBELGESI_URL, izinTalepId, sure, kalanIzin, sonIzin);
                 }
-                else //diger İzinler
+                else //diger Izinler
                 {
                     fullUrl = string.Format("{0}?IzinTalepId={1}&SureStr={2}&KalanIzinStr={3}&SonIzin={4}", rootUrl + ProjeConstants.RAPOR_IZINBELGESI_URL, izinTalepId, sure, "", "");
                 }
@@ -463,15 +463,15 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                 IzinTalepIdHdn2.Value = izinTalepId.ToString();
                 YazdirLnk2.Visible = false;
                 SilBtn2.Visible = true;
-                SilBtn2.ToolTip = "Talebiniz İşlem görmeden önce silebilirsiniz.";
+                SilBtn2.ToolTip = "Talebiniz Islem g�rmeden �nce silebilirsiniz.";
             }
             else if (onayDurumuId.Equals(ProjeConstants.PER_IZINTALEBI_KONTROLEDILDI_INT))
             {
                 YazdirLnk2.Visible = true;
                 SilBtn2.Visible = false;
                 YazdirLnk2.Target = "_blank";
-                YazdirLnk2.ToolTip = "Talebiniz yazdırmak için düğmeye basınız.";
-                YazdirLnk2.Text = "Yazdır";
+                YazdirLnk2.ToolTip = "Talebiniz yazdirmak i�in d�gmeye basiniz.";
+                YazdirLnk2.Text = "Yazdir";
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string rawUrl = System.Web.HttpContext.Current.Request.RawUrl.ToString();
                 int index = currentUrl.IndexOf(rawUrl);
@@ -496,7 +496,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
 
                     fullUrl = string.Format("{0}?IzinTalepId={1}&SureStr={2}&KalanIzinStr={3}&SonIzin={4}", rootUrl + ProjeConstants.RAPOR_MAZERETIZINBELGESI_URL, izinTalepId, sure, kalanIzin, sonIzin);
                 }
-                else //diger İzinler
+                else //diger Izinler
                 {
                     fullUrl = string.Format("{0}?IzinTalepId={1}&SureStr={2}&KalanIzinStr={3}&SonIzin={4}", rootUrl + ProjeConstants.RAPOR_IZINBELGESI_URL, izinTalepId, sure, "", "");
                 }
@@ -525,15 +525,15 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                 IzinTalepIdHdn3.Value = izinTalepId.ToString();
                 YazdirLnk3.Visible = false;
                 SilBtn3.Visible = true;
-                SilBtn3.ToolTip = "Talebiniz İşlem görmeden önce silebilirsiniz.";
+                SilBtn3.ToolTip = "Talebiniz Islem g�rmeden �nce silebilirsiniz.";
             }
             else if (onayDurumuId.Equals(ProjeConstants.PER_IZINTALEBI_KONTROLEDILDI_INT))
             {
                 YazdirLnk3.Visible = true;
                 SilBtn3.Visible = false;
                 YazdirLnk3.Target = "_blank";
-                YazdirLnk3.ToolTip = "Talebiniz yazdırmak için düğmeye basınız.";
-                YazdirLnk3.Text = "Yazdır";
+                YazdirLnk3.ToolTip = "Talebiniz yazdirmak i�in d�gmeye basiniz.";
+                YazdirLnk3.Text = "Yazdir";
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string rawUrl = System.Web.HttpContext.Current.Request.RawUrl.ToString();
                 int index = currentUrl.IndexOf(rawUrl);
@@ -558,7 +558,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
 
                     fullUrl = string.Format("{0}?IzinTalepId={1}&SureStr={2}&KalanIzinStr={3}&SonIzin={4}", rootUrl + ProjeConstants.RAPOR_MAZERETIZINBELGESI_URL, izinTalepId, sure, kalanIzin, sonIzin);
                 }
-                else //diger İzinler
+                else //diger Izinler
                 {
                     fullUrl = string.Format("{0}?IzinTalepId={1}&SureStr={2}&KalanIzinStr={3}&SonIzin={4}", rootUrl + ProjeConstants.RAPOR_IZINBELGESI_URL, izinTalepId, sure, "", "");
                 }
@@ -587,15 +587,15 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                 IzinTalepIdHdn4.Value = izinTalepId.ToString();
                 YazdirLnk4.Visible = false;
                 SilBtn4.Visible = true;
-                SilBtn4.ToolTip = "Talebiniz İşlem görmeden önce silebilirsiniz.";
+                SilBtn4.ToolTip = "Talebiniz Islem g�rmeden �nce silebilirsiniz.";
             }
             else if (onayDurumuId.Equals(ProjeConstants.PER_IZINTALEBI_KONTROLEDILDI_INT))
             {
                 YazdirLnk4.Visible = true;
                 SilBtn4.Visible = false;
                 YazdirLnk4.Target = "_blank";
-                YazdirLnk4.ToolTip = "Talebiniz yazdırmak için düğmeye basınız.";
-                YazdirLnk4.Text = "Yazdır";
+                YazdirLnk4.ToolTip = "Talebiniz yazdirmak i�in d�gmeye basiniz.";
+                YazdirLnk4.Text = "Yazdir";
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string rawUrl = System.Web.HttpContext.Current.Request.RawUrl.ToString();
                 int index = currentUrl.IndexOf(rawUrl);
@@ -620,7 +620,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
 
                     fullUrl = string.Format("{0}?IzinTalepId={1}&SureStr={2}&KalanIzinStr={3}&SonIzin={4}", rootUrl + ProjeConstants.RAPOR_MAZERETIZINBELGESI_URL, izinTalepId, sure, kalanIzin, sonIzin);
                 }
-                else //diger İzinler
+                else //diger Izinler
                 {
                     fullUrl = string.Format("{0}?IzinTalepId={1}&SureStr={2}&KalanIzinStr={3}&SonIzin={4}", rootUrl + ProjeConstants.RAPOR_IZINBELGESI_URL, izinTalepId, sure, "", "");
                 }
@@ -649,15 +649,15 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                 IzinTalepIdHdn5.Value = izinTalepId.ToString();
                 YazdirLnk5.Visible = false;
                 SilBtn5.Visible = true;
-                SilBtn5.ToolTip = "Talebiniz İşlem görmeden önce silebilirsiniz.";
+                SilBtn5.ToolTip = "Talebiniz Islem g�rmeden �nce silebilirsiniz.";
             }
             else if (onayDurumuId.Equals(ProjeConstants.PER_IZINTALEBI_KONTROLEDILDI_INT))
             {
                 YazdirLnk5.Visible = true;
                 SilBtn5.Visible = false;
                 YazdirLnk5.Target = "_blank";
-                YazdirLnk5.ToolTip = "Talebiniz yazdırmak için düğmeye basınız.";
-                YazdirLnk5.Text = "Yazdır";
+                YazdirLnk5.ToolTip = "Talebiniz yazdirmak i�in d�gmeye basiniz.";
+                YazdirLnk5.Text = "Yazdir";
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string rawUrl = System.Web.HttpContext.Current.Request.RawUrl.ToString();
                 int index = currentUrl.IndexOf(rawUrl);
@@ -682,7 +682,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
 
                     fullUrl = string.Format("{0}?IzinTalepId={1}&SureStr={2}&KalanIzinStr={3}&SonIzin={4}", rootUrl + ProjeConstants.RAPOR_MAZERETIZINBELGESI_URL, izinTalepId, sure, kalanIzin, sonIzin);
                 }
-                else //diger İzinler
+                else //diger Izinler
                 {
                     fullUrl = string.Format("{0}?IzinTalepId={1}&SureStr={2}&KalanIzinStr={3}&SonIzin={4}", rootUrl + ProjeConstants.RAPOR_IZINBELGESI_URL, izinTalepId, sure, "", "");
                 }
@@ -728,7 +728,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
         {
             SelectDDLValue(VekilImzaDDL, ProjeConstants.BOS_INT.ToString());
             SelectDDLValue(AmirImzaDDL, ProjeConstants.BOS_INT.ToString());
-            //SelectDDLValue(OnayImzaDDL, ProjeConstants.BOS_INT.ToString()); SB OnayDiv kaldırıldı
+            //SelectDDLValue(OnayImzaDDL, ProjeConstants.BOS_INT.ToString()); SB OnayDiv kaldirildi
 
         }
         private void FillPersonelDDL()
@@ -787,7 +787,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                 AmirImzaDDL.Items.Add(li);
             }
         }
-        //private void FillOnayImzaDDL() SB OnayDiv kaldırıldı
+        //private void FillOnayImzaDDL() SB OnayDiv kaldirildi
         //{
         //    OnayImzaDDL.Items.Clear();
         //    ListItem bosLi = new ListItem(ProjeConstants.BOS, ProjeConstants.BOS_INT.ToString());
@@ -893,7 +893,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                 IzinTipiLbl.Text = it.Adi;
                 SelectDDLValue(VekilImzaDDL, izinTalep.VekilImza.ToString());
                 SelectDDLValue(AmirImzaDDL, izinTalep.AmirImza.ToString());
-                //SelectDDLValue(OnayImzaDDL, izinTalep.OnayImza.ToString()); SB OnayDiv kaldırıldı
+                //SelectDDLValue(OnayImzaDDL, izinTalep.OnayImza.ToString()); SB OnayDiv kaldirildi
                 SelectDDLValue(IzinTanimDDL, izinTalep.IzinTipi.ToString());
                 string bassaat = izinTalep.BaslangicTarihi.ToString("HH:mm");
                 SelectDDLByText(IzinBasSaatDDL, bassaat);
@@ -907,7 +907,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
             }
             else
             {
-                MessageHelper.PublishMessage("Izin talebi bulunamadı", ProjeConstants.MESAJ_BILGI);
+                MessageHelper.PublishMessage("Izin talebi bulunamadi", ProjeConstants.MESAJ_BILGI);
             }
         }
         private void SetLayoutByIzinTipi()
@@ -919,20 +919,20 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                 VekilDiv.Attributes["style"] = "display:none";
                 AmirDiv.Attributes["style"] = "display:block";
                 AciklamaDiv.Attributes["style"] = "display:none";
-                //OnayDiv.Attributes["style"] = "display:none"; SB OnayDiv kaldırıldı
+                //OnayDiv.Attributes["style"] = "display:none"; SB OnayDiv kaldirildi
                 IzinBitTarDiv.Attributes["style"] = "display:none";
                 IzinBasSaatDiv.Attributes["style"] = "display:block";
                 IzinBitSaatDiv.Attributes["style"] = "display:block";
                 IzinTalepDiv.Attributes["Class"] = "card-body alert-warning";
                 AdresLbl.InnerText = "Mazeret";
                 //KalanIzinKontrolIslemleri();
-                KullanilmayanLbl.Text = "Not: Kullanılmayan Mazeret izinleri müteakip yıla aktarılmaz.";
+                KullanilmayanLbl.Text = "Not: Kullanilmayan Mazeret izinleri m�teakip yila aktarilmaz.";
             }
             else if (IzinTanimIdQS.ConvertToInt() == (ProjeConstants.IZINTIPI_UCRETLI_INT)) // (IzinTanimDDL.SelectedItem.Value.ConvertToInt() == (ProjeConstants.IZINTIPI_UCRETLI_INT))
             {
                 VekilDiv.Attributes["style"] = "display:block";
                 AmirDiv.Attributes["style"] = "display:block";
-                //OnayDiv.Attributes["style"] = "display:block"; SB OnayDiv kaldırıldı
+                //OnayDiv.Attributes["style"] = "display:block"; SB OnayDiv kaldirildi
                 IzinBitTarDiv.Attributes["style"] = "display:block";
                 IzinBasSaatDiv.Attributes["style"] = "display:none";
                 IzinBitSaatDiv.Attributes["style"] = "display:none";
@@ -947,13 +947,13 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                 VekilDiv.Attributes["style"] = "display:none";
                 AmirDiv.Attributes["style"] = "display:none";
                 AciklamaDiv.Attributes["style"] = "display:block";
-                //OnayDiv.Attributes["style"] = "display:none"; SB OnayDiv kaldırıldı
+                //OnayDiv.Attributes["style"] = "display:none"; SB OnayDiv kaldirildi
                 IzinBitTarDiv.Attributes["style"] = "display:block";
                 IzinBasSaatDiv.Attributes["style"] = "display:block";
                 IzinBitSaatDiv.Attributes["style"] = "display:none";
                 IzinTalepDiv.Attributes["Class"] = "card-body alert-info";
-                AciklamaTxt.Text = "Süt İzni (Günde 1 Buçuk saat)";
-                KullanilmayanLbl.Text = "Not: Süt İzni girdiğiniz saatten başlayarak günlük 1 buçuk saat olarak uygulanır.";
+                AciklamaTxt.Text = "S�t Izni (G�nde 1 Bu�uk saat)";
+                KullanilmayanLbl.Text = "Not: S�t Izni girdiginiz saatten baslayarak g�nl�k 1 bu�uk saat olarak uygulanir.";
                 IletisimBilgileri ib = new IletisimBilgileri();
                 ib = ib.SelectByPersonelId(PersonelIdQS.ConvertToInt());
                 if (ib != null)
@@ -968,7 +968,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
             {
                 VekilDiv.Attributes["style"] = "display:block";
                 VekilDiv.Attributes["style"] = "display:block";
-                //OnayDiv.Attributes["style"] = "display:block"; SB OnayDiv kaldırıldı
+                //OnayDiv.Attributes["style"] = "display:block"; SB OnayDiv kaldirildi
                 IzinBitTarDiv.Attributes["style"] = "display:block";
                 IzinBasSaatDiv.Attributes["style"] = "display:none";
                 IzinBitSaatDiv.Attributes["style"] = "display:none";
@@ -999,9 +999,9 @@ namespace IKYS_WebParts.IzinTalepGirisWP
             return string.Empty;
         }
         /// <summary>
-        /// Yeni Oluşturulan İzin talebini IzinTalep_Table'a kaydeder.
-        /// Girilen İzin başlangıç tarihine bakarak izin dönemi başlangıcını bulur,
-        /// Bulduğu döneme ait IzinDonem_Table'da kayıt yoksa, ekler
+        /// Yeni Olusturulan Izin talebini IzinTalep_Table'a kaydeder.
+        /// Girilen Izin baslangi� tarihine bakarak izin d�nemi baslangicini bulur,
+        /// Buldugu d�neme ait IzinDonem_Table'da kayit yoksa, ekler
         /// </summary>
         /// <returns></returns>
         private int YeniTalebiKaydet(int onayDurumu)
@@ -1040,7 +1040,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                     izinTalep.Sure = IKYSOrtak.IzinSuresiHesapla(izinTalep.IzinTipi, izinTalep.BaslangicTarihi, izinTalep.BitisTarihi);
                     izinTalep.VekilImza = VekilImzaDDL.SelectedItem.Value.ConvertToInt();
                     izinTalep.AmirImza = AmirImzaDDL.SelectedItem.Value.ConvertToInt();
-                    //izinTalep.OnayImza = OnayImzaDDL.SelectedItem.Value.ConvertToInt();SB OnayDiv kaldırıldı
+                    //izinTalep.OnayImza = OnayImzaDDL.SelectedItem.Value.ConvertToInt();SB OnayDiv kaldirildi
 
 
                 }
@@ -1059,7 +1059,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                 izinTalep.Aktif = true;
 
                 izinTalep.IzinDonemId = 0;
-                //sadece Mazeret ve Ucretli izinler için Dönem hesapla
+                //sadece Mazeret ve Ucretli izinler i�in D�nem hesapla
                 if ((izinTalep.IzinTipi == ProjeConstants.IZINTIPI_MAZERET_INT) ||
                    (izinTalep.IzinTipi == ProjeConstants.IZINTIPI_UCRETLI_INT))
                 {
@@ -1104,7 +1104,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                     izinTalep.Adres = AdresTxt.Text;
                     izinTalep.Aciklama = AciklamaTxt.Text;
 
-                    if (izinTalep.IzinTipi == ProjeConstants.IZINTIPI_SUTIZNI_INT)//süt izni, 1buçuk saat
+                    if (izinTalep.IzinTipi == ProjeConstants.IZINTIPI_SUTIZNI_INT)//s�t izni, 1bu�uk saat
                     {
                         string basSaat = IzinBasSaatDDL.SelectedItem.Text;
                         izinTalep.BaslangicTarihi = UtilityHelper.TariheSaatEkle(izinTalep.BaslangicTarihi, basSaat);
@@ -1115,7 +1115,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                         izinTalep.BitisTarihi = UtilityHelper.TariheSaatEkle(izinTalep.BitisTarihi, bitSaat);
                         izinTalep.Birim = ProjeConstants.IZIN_BIRIMI_GUN;
                     }
-                    else if (izinTalep.IzinTipi != ProjeConstants.IZINTIPI_MAZERET_INT) //Mazeret hariç diğr izinler
+                    else if (izinTalep.IzinTipi != ProjeConstants.IZINTIPI_MAZERET_INT) //Mazeret hari� digr izinler
                     {
                         TimeSpan izinBitisSaati = new TimeSpan(0, 17, 0, 0);
                         DateTime bitisTar = (IzinBitTarTxt.Value.ConvertToDatetime() + izinBitisSaati);
@@ -1124,7 +1124,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                         izinTalep.Sure = IKYSOrtak.IzinSuresiHesapla(izinTalep.IzinTipi, izinTalep.BaslangicTarihi, izinTalep.BitisTarihi);
                         izinTalep.VekilImza = VekilImzaDDL.SelectedItem.Value.ConvertToInt();
                         izinTalep.AmirImza = AmirImzaDDL.SelectedItem.Value.ConvertToInt();
-                        //izinTalep.OnayImza = OnayImzaDDL.SelectedItem.Value.ConvertToInt();SB OnayDiv kaldırıldı
+                        //izinTalep.OnayImza = OnayImzaDDL.SelectedItem.Value.ConvertToInt();SB OnayDiv kaldirildi
 
                     }
                     else if (izinTalep.IzinTipi == ProjeConstants.IZINTIPI_MAZERET_INT)
@@ -1143,7 +1143,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                     izinTalep.Aktif = true;
 
                     izinTalep.IzinDonemId = 0;
-                    //sadece Mazeret ve Ucretli izinler için Dönem hesapla
+                    //sadece Mazeret ve Ucretli izinler i�in D�nem hesapla
                     if ((izinTalep.IzinTipi == ProjeConstants.IZINTIPI_MAZERET_INT) ||
                        (izinTalep.IzinTipi == ProjeConstants.IZINTIPI_UCRETLI_INT))
                     {
@@ -1166,7 +1166,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Izin talebi bulunamadı", ProjeConstants.MESAJ_BILGI);
+                    MessageHelper.PublishMessage("Izin talebi bulunamadi", ProjeConstants.MESAJ_BILGI);
                 }
             }
             catch (Exception ex)
@@ -1237,7 +1237,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                     if (string.IsNullOrEmpty(VekilImzaDDL.SelectedItem.Text) || string.IsNullOrEmpty(AmirImzaDDL.SelectedItem.Text) )
                     {
                         TabloyuDoldur();
-                        MessageHelper.PublishMessage("Vekil ve Amir Seçiniz.", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Vekil ve Amir Se�iniz.", ProjeConstants.MESAJ_HATA);
                         return;
                     }
 
@@ -1250,13 +1250,13 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                     if (isValid)
                     {
                         bool devamEdenIzinTalebiVarMi = IslemiDevamEdenIzinTalebiVarMi(personel.Id);// SB 13/09/2019 devam eden izin talebi kontrolu eklendi
-                                                                                                    //bool cakismaVarMi = BuTarihteCakisanIzinTalebiVarMi(personel.Id);//  SB 13/09/2019 devam eden izin talebi kontrolu eklendiğinden çalışma kontrolüne gerek kalmadı
+                                                                                                    //bool cakismaVarMi = BuTarihteCakisanIzinTalebiVarMi(personel.Id);//  SB 13/09/2019 devam eden izin talebi kontrolu eklendiginden �alisma kontrol�ne gerek kalmadi
                         if (devamEdenIzinTalebiVarMi)//if (cakismaVarMi)
                         {
-                            //MessageHelper.PublishMessage("Bu tarihle çakışan bir izin talebiniz zaten var."+System.Environment.NewLine+
-                            //    "Kişisel sayfanızdan İzin taleplerinizi görebilirsiniz.", ProjeConstants.MESAJ_HATA,15000);
-                            MessageHelper.PublishMessage("İşlemi devam eden bir izin talebiniz zaten var." + System.Environment.NewLine +
-                               "Yeni bir izin talep etmeden önce var olan izin talebinizin sonuçlanması gerekmektedir.", ProjeConstants.MESAJ_HATA, 15000);
+                            //MessageHelper.PublishMessage("Bu tarihle �akisan bir izin talebiniz zaten var."+System.Environment.NewLine+
+                            //    "Kisisel sayfanizdan Izin taleplerinizi g�rebilirsiniz.", ProjeConstants.MESAJ_HATA,15000);
+                            MessageHelper.PublishMessage("Islemi devam eden bir izin talebiniz zaten var." + System.Environment.NewLine +
+                               "Yeni bir izin talep etmeden �nce var olan izin talebinizin sonu�lanmasi gerekmektedir.", ProjeConstants.MESAJ_HATA, 15000);
                             SaveBtn.Visible = false;
                             UpdateBtn.Visible = false;
                             UcretliIzinDilekceBtn.Visible = false;
@@ -1265,7 +1265,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                         else
                         {
                             //Talebi kaydet
-                            //İzinTalepTablosunu Doldur
+                            //IzinTalepTablosunu Doldur
                             int izinTalepId = YeniTalebiKaydet(ProjeConstants.PER_IZINTALEBI_ISLEMBEKLIYOR);
                             if (izinTalepId > 0)
                             {
@@ -1275,26 +1275,26 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                                 }
                                 TabloyuDoldur();
                                 SaveBtn.Visible = false;
-                                MessageHelper.PublishMessage("İzin Talebi Kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
+                                MessageHelper.PublishMessage("Izin Talebi Kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
                             }
                         }
 
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Lütfen Kalan İzin sürenizi Kontrol Ediniz.", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("L�tfen Kalan Izin s�renizi Kontrol Ediniz.", ProjeConstants.MESAJ_HATA);
                     }
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Personel Bulunamadı!", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Personel Bulunamadi!", ProjeConstants.MESAJ_HATA);
                 }
 
             }
             catch (Exception exception)
             {
                 ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
-                Exception exceptionInfo = new Exception("İzin Talebi kaydedilemedi");
+                Exception exceptionInfo = new Exception("Izin Talebi kaydedilemedi");
                 exceptionHelper.Exceptions.Add(exceptionInfo);
                 exceptionHelper.PublishException();
             }
@@ -1305,7 +1305,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
             int izinTipi = IzinTanimDDL.SelectedItem.Value.ConvertToInt();
 
             IzinTalep izinTalep = new IzinTalep();
-            izinTalep = izinTalep.SelectIslemiDevamEdenIzinTalebiVarMı(personelId, izinTipi);
+            izinTalep = izinTalep.SelectIslemiDevamEdenIzinTalebiVarMi(personelId, izinTipi);
             if (izinTalep != null)
             {
                 izinTalebiVarMi = true;
@@ -1317,16 +1317,16 @@ namespace IKYS_WebParts.IzinTalepGirisWP
             try
             {
                 //Talebi kaydet
-                //İzinTalepTablosunu Doldur
+                //IzinTalepTablosunu Doldur
                 bool isSaved = IzinTalebiGuncelle();
                 if (isSaved)
-                    MessageHelper.PublishMessage("İzin Talebi Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Izin Talebi G�ncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
 
             }
             catch (Exception exception)
             {
                 ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
-                Exception exceptionInfo = new Exception("İzin Talebi Güncellenemdi");
+                Exception exceptionInfo = new Exception("Izin Talebi G�ncellenemdi");
                 exceptionHelper.Exceptions.Add(exceptionInfo);
                 exceptionHelper.PublishException();
             }
@@ -1346,12 +1346,12 @@ namespace IKYS_WebParts.IzinTalepGirisWP
             isBilgileri= isBilgileri.SelectByPersonelId(personel.Id);
             if (isBilgileri == null )
             {
-                MessageHelper.PublishMessage("Personelin iş bilgileri bulunamadı. İzin talebi oluşturulamaz.", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Personelin is bilgileri bulunamadi. Izin talebi olusturulamaz.", ProjeConstants.MESAJ_HATA);
                 return false;
             }else if ((isBilgileri.IzinDonemiBasTar==null) || 
                 (isBilgileri.IzinDonemiBasTar < ProjeConstants.REFERANS_TARIHI))
             {
-                MessageHelper.PublishMessage("Personel İzinBaşlama Tarihi Geçersiz. İzin talebi oluşturulamaz.", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Personel IzinBaslama Tarihi Ge�ersiz. Izin talebi olusturulamaz.", ProjeConstants.MESAJ_HATA);
                 return false;
             }
             int izinTipi = IzinTanimDDL.SelectedItem.Value.ConvertToInt();
@@ -1359,10 +1359,10 @@ namespace IKYS_WebParts.IzinTalepGirisWP
             bool devamEdenIzinTalebiVarMi = IslemiDevamEdenIzinTalebiVarMi(personel.Id);
             if (devamEdenIzinTalebiVarMi)//if (cakismaVarMi)
             {
-                //MessageHelper.PublishMessage("Bu tarihle çakışan bir izin talebiniz zaten var."+System.Environment.NewLine+
-                //    "Kişisel sayfanızdan İzin taleplerinizi görebilirsiniz.", ProjeConstants.MESAJ_HATA,15000);
-                MessageHelper.PublishMessage("İşlemi devam eden bir izin talebiniz zaten var." + System.Environment.NewLine +
-                   "Yeni bir izin talep etmeden önce var olan izin talebinizin sonuçlanması gerekmektedir.", ProjeConstants.MESAJ_HATA, 5000);
+                //MessageHelper.PublishMessage("Bu tarihle �akisan bir izin talebiniz zaten var."+System.Environment.NewLine+
+                //    "Kisisel sayfanizdan Izin taleplerinizi g�rebilirsiniz.", ProjeConstants.MESAJ_HATA,15000);
+                MessageHelper.PublishMessage("Islemi devam eden bir izin talebiniz zaten var." + System.Environment.NewLine +
+                   "Yeni bir izin talep etmeden �nce var olan izin talebinizin sonu�lanmasi gerekmektedir.", ProjeConstants.MESAJ_HATA, 5000);
                 return false;
             }
             if (!ValidateInputs(izinTipi))
@@ -1394,20 +1394,20 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                     }
                     else
                     {
-                        UyariLbl.Text = "Yalnızca bir yaşını doldurmamış çocuğu olan personel için süt izni girilebilir. ";
+                        UyariLbl.Text = "Yalnizca bir yasini doldurmamis �ocugu olan personel i�in s�t izni girilebilir. ";
                         return false;
                     }
                 }
                 else
                 {
-                    UyariLbl.Text = "Yalnızca bir yaşını doldurmamış çocuğu olan personel için süt izni girilebilir. ";
+                    UyariLbl.Text = "Yalnizca bir yasini doldurmamis �ocugu olan personel i�in s�t izni girilebilir. ";
                     return false;
                 }
 
             }
             #endregion
             #region diger izinler
-            else if (izinTipi != ProjeConstants.IZINTIPI_UCRETLI_INT && izinTipi != ProjeConstants.IZINTIPI_MAZERET_INT) // bu iki izin tipi dışındaki izinler için kontrol yapmasın
+            else if (izinTipi != ProjeConstants.IZINTIPI_UCRETLI_INT && izinTipi != ProjeConstants.IZINTIPI_MAZERET_INT) // bu iki izin tipi disindaki izinler i�in kontrol yapmasin
             {
                 IzinSuresiLbl.Text = string.Empty;
                 KullanilanIzinLbl.Text = string.Empty;
@@ -1419,7 +1419,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                 return true;
             }
             #endregion
-            #region ucretli ve mazeret  --> !DİKKAT
+            #region ucretli ve mazeret  --> !DIKKAT
             else
             {
                 bool isValid = false;
@@ -1443,7 +1443,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                 {
                     GecmisDonemlerdenKalanIznLbl.Text=string.Empty;
                     KullanilanIzinLbl.Text = izinDonemi.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + "-" + izinDonemi.BitisTarihi.ConvertToDatetimeEmptyIfNull()
-                        + " İzin döneminde, " + izinDonemi.IzinHakki.ConvertToTimeSpanReturnInHHmm() + " " + ProjeConstants.IZINTIPI_MAZERET + " izninizden kullandığınız izin süresi "
+                        + " Izin d�neminde, " + izinDonemi.IzinHakki.ConvertToTimeSpanReturnInHHmm() + " " + ProjeConstants.IZINTIPI_MAZERET + " izninizden kullandiginiz izin s�resi "
                         + izinDonemi.KullanilanIzin.ConvertToTimeSpanReturnInHHmm()
                         + System.Environment.NewLine;
                     TimeSpan kalanIzinTs = izinDonemi.KalanIzin.ConvertToTimeSpan();
@@ -1455,7 +1455,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                     DateTime bitisTarihi = UtilityHelper.TariheSaatEkle(izinTarihi, bitSaat);
 
                     string sureStr = IKYSOrtak.IzinSuresiHesapla(izinTipi, baslangicTarihi, bitisTarihi);
-                    IzinSuresiLbl.Text = "Kullanmak istediğiniz izin süresi: " + sureStr.ConvertToTimeSpanReturnInHHmm() ;
+                    IzinSuresiLbl.Text = "Kullanmak istediginiz izin s�resi: " + sureStr.ConvertToTimeSpanReturnInHHmm() ;
                     TimeSpan sureTs = sureStr.ConvertToTimeSpan();
                     TimeSpan sonuctaKalanIzinTs = kalanIzinTs - sureTs;
                     TimeSpan sifirTs = new TimeSpan(0, 0, 0);
@@ -1464,8 +1464,8 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                     {
                         isValid = false;
                         SaveBtn.Visible = false;
-                        KalanIzinLbl.Text = " Kullanabileceğiniz " + ProjeConstants.IZINTIPI_MAZERET + " izniniz bulunmamaktadır.";
-                        UyariLbl.Text = " Mazeret izni kullanabilmeniz için 'Yıllık Ücretli İzninizden Mazeret İznine Mahsup' dilekçenizi onaylatarak Personel Kısmına teslim etmeniz gerekmektedir.";
+                        KalanIzinLbl.Text = " Kullanabileceginiz " + ProjeConstants.IZINTIPI_MAZERET + " izniniz bulunmamaktadir.";
+                        UyariLbl.Text = " Mazeret izni kullanabilmeniz i�in 'Yillik �cretli Izninizden Mazeret Iznine Mahsup' dilek�enizi onaylatarak Personel Kismina teslim etmeniz gerekmektedir.";
                         IzinDonemIdQS = izinDonemi.Id.ToString();
                         MazereteMahsupDilekceBtn.Visible = true;
                     }
@@ -1473,8 +1473,8 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                     {
                         isValid = false;
                         SaveBtn.Visible = true;
-                        KalanIzinLbl.Text = " Kullanabileceğiniz en fazla " + izinDonemi.KalanIzin.ConvertToTimeSpanReturnInHHmm() + ProjeConstants.IZINTIPI_MAZERET + " izniniz bulunmaktadır.";
-                        UyariLbl.Text = "Daha fazla izin talebinde bulunmak istiyorsanız lütfen 'Yıllık Ücretli İzninizden Mazeret İznine Mahsup' dilekçenizi onaylatarak Personel Kısmına teslim etmeniz gerekmektedir.";
+                        KalanIzinLbl.Text = " Kullanabileceginiz en fazla " + izinDonemi.KalanIzin.ConvertToTimeSpanReturnInHHmm() + ProjeConstants.IZINTIPI_MAZERET + " izniniz bulunmaktadir.";
+                        UyariLbl.Text = "Daha fazla izin talebinde bulunmak istiyorsaniz l�tfen 'Yillik �cretli Izninizden Mazeret Iznine Mahsup' dilek�enizi onaylatarak Personel Kismina teslim etmeniz gerekmektedir.";
                         int selectedSaat = IzinBasSaatDDL.SelectedItem.Value.ConvertToInt();
                         FillIzinBitSaat();
                         IzinDonemIdQS = izinDonemi.Id.ToString();
@@ -1484,14 +1484,14 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                     {
                         isValid = true;
                         SaveBtn.Visible = true;
-                        KalanIzinLbl.Text = " Kullanabileceğiniz, " + izinDonemi.KalanIzin.ConvertToTimeSpanReturnInHHmm() + " " + ProjeConstants.IZINTIPI_MAZERET + " izniniz bulunmaktadır.";
+                        KalanIzinLbl.Text = " Kullanabileceginiz, " + izinDonemi.KalanIzin.ConvertToTimeSpanReturnInHHmm() + " " + ProjeConstants.IZINTIPI_MAZERET + " izniniz bulunmaktadir.";
                     }
                 }
                 else if (izinTipi == ProjeConstants.IZINTIPI_UCRETLI_INT)
                 {
                     KullanilanIzinLbl.Text = izinDonemi.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + "-" + izinDonemi.BitisTarihi.ConvertToDatetimeEmptyIfNull() 
-                        + " İzin döneminde, " + izinDonemi.IzinHakki.ConvertToInt() + " " + izinDonemi.Birim + " " + ProjeConstants.IZINTIPI_UCRETLI + " izninizden kullandığınız izin süresi : "
-                        + izinDonemi.KullanilanIzin.ConvertToInt() + " " + izinDonemi.Birim + "dür. " + System.Environment.NewLine;
+                        + " Izin d�neminde, " + izinDonemi.IzinHakki.ConvertToInt() + " " + izinDonemi.Birim + " " + ProjeConstants.IZINTIPI_UCRETLI + " izninizden kullandiginiz izin s�resi : "
+                        + izinDonemi.KullanilanIzin.ConvertToInt() + " " + izinDonemi.Birim + "d�r. " + System.Environment.NewLine;
 
                     int kalanIzinInt = izinDonemi.KalanIzin.ConvertToInt();
                     int kalanIzinToplami = IKYSOrtak.KalanIzinToplamiGetir(personel.Id,false);
@@ -1506,29 +1506,29 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                             if (gecmisDonemlerdenKalanIzin >= Math.Abs(kalanIzinInt))
                             {
                                 KullanilanIzinLbl.Text = izinDonemi.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + "-" + izinDonemi.BitisTarihi.ConvertToDatetimeEmptyIfNull()
-                                   + " İzin dönemine ait izninizin tamamını kullandınız. İlave olarak geçmiş dönemleden kalan izin hakkınızdan karşılanan " + Math.Abs(kalanIzinInt) + " gün ile birlikte, bu izin döneminde kullandığınız izin toplamı "
-                                   + izinDonemi.KullanilanIzin.ConvertToInt() + " " + izinDonemi.Birim + "dür. " + System.Environment.NewLine;
+                                   + " Izin d�nemine ait izninizin tamamini kullandiniz. Ilave olarak ge�mis d�nemleden kalan izin hakkinizdan karsilanan " + Math.Abs(kalanIzinInt) + " g�n ile birlikte, bu izin d�neminde kullandiginiz izin toplami "
+                                   + izinDonemi.KullanilanIzin.ConvertToInt() + " " + izinDonemi.Birim + "d�r. " + System.Environment.NewLine;
 
-                                GecmisDonemlerdenKalanIznLbl.Text = " Geçmiş dönemlerden kalan <strong>" + gecmisDonemlerdenKalanIzin + "</strong> gün izninizin <strong>" + Math.Abs(kalanIzinInt) + "</strong> gününü kullandınız.";
+                                GecmisDonemlerdenKalanIznLbl.Text = " Ge�mis d�nemlerden kalan <strong>" + gecmisDonemlerdenKalanIzin + "</strong> g�n izninizin <strong>" + Math.Abs(kalanIzinInt) + "</strong> g�n�n� kullandiniz.";
                             }
                             else
                             {
                                 KullanilanIzinLbl.Text = izinDonemi.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + "-" + izinDonemi.BitisTarihi.ConvertToDatetimeEmptyIfNull()
-                                   + " İzin dönemine ait izninizin tamamını kullandınız. İlave olarak geçmiş dönemleden kalan izin hakkınızdan karşılanan " + gecmisDonemlerdenKalanIzin + " gün ve fazladan kullandığınız "
-                                   + (Math.Abs(kalanIzinInt)- gecmisDonemlerdenKalanIzin) + "gün ile birlikte, bu izin döneminde kullandığınız izin toplamı "
-                                   + izinDonemi.KullanilanIzin.ConvertToInt() + " gündür. " + System.Environment.NewLine;
+                                   + " Izin d�nemine ait izninizin tamamini kullandiniz. Ilave olarak ge�mis d�nemleden kalan izin hakkinizdan karsilanan " + gecmisDonemlerdenKalanIzin + " g�n ve fazladan kullandiginiz "
+                                   + (Math.Abs(kalanIzinInt)- gecmisDonemlerdenKalanIzin) + "g�n ile birlikte, bu izin d�neminde kullandiginiz izin toplami "
+                                   + izinDonemi.KullanilanIzin.ConvertToInt() + " g�nd�r. " + System.Environment.NewLine;
                                 
-                                GecmisDonemlerdenKalanIznLbl.Text = " Geçmiş dönemlerden kalan <strong>" + gecmisDonemlerdenKalanIzin + "</strong> gün izninizi kullandınız.";
+                                GecmisDonemlerdenKalanIznLbl.Text = " Ge�mis d�nemlerden kalan <strong>" + gecmisDonemlerdenKalanIzin + "</strong> g�n izninizi kullandiniz.";
                             }
                         }
                         else
                         {
                             KullanilanIzinLbl.Text = izinDonemi.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + "-" + izinDonemi.BitisTarihi.ConvertToDatetimeEmptyIfNull()
-                                  + " İzin dönemine ait izninizin tamamını kullandınız. İlave olarak fazladan kullandığınız "
-                                  + Math.Abs(kalanIzinInt)  + "gün ile birlikte, bu izin döneminde kullandığınız izin toplamı "
-                                  + izinDonemi.KullanilanIzin.ConvertToInt() + " gündür. " + System.Environment.NewLine;
+                                  + " Izin d�nemine ait izninizin tamamini kullandiniz. Ilave olarak fazladan kullandiginiz "
+                                  + Math.Abs(kalanIzinInt)  + "g�n ile birlikte, bu izin d�neminde kullandiginiz izin toplami "
+                                  + izinDonemi.KullanilanIzin.ConvertToInt() + " g�nd�r. " + System.Environment.NewLine;
                             
-                            GecmisDonemlerdenKalanIznLbl.Text = " Geçmiş Dönemlerden kalan kullanılmamış izniniz bulunmamaktadır.";
+                            GecmisDonemlerdenKalanIznLbl.Text = " Ge�mis D�nemlerden kalan kullanilmamis izniniz bulunmamaktadir.";
                         } 
                     }
                     else
@@ -1536,13 +1536,13 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                         if (gecmisDonemlerdenKalanIzin > 0)
                         {
                             
-                                GecmisDonemlerdenKalanIznLbl.Text = " Geçmiş dönemlerden kalan <strong>" + gecmisDonemlerdenKalanIzin + "</strong> gün izniniz bulunmaktadır.";
+                                GecmisDonemlerdenKalanIznLbl.Text = " Ge�mis d�nemlerden kalan <strong>" + gecmisDonemlerdenKalanIzin + "</strong> g�n izniniz bulunmaktadir.";
                          }
                         else if (gecmisDonemlerdenKalanIzin == 0)
-                            GecmisDonemlerdenKalanIznLbl.Text = " Geçmiş Dönemlerden kalan kullanılmamış izniniz bulunmamaktadır.";
+                            GecmisDonemlerdenKalanIznLbl.Text = " Ge�mis D�nemlerden kalan kullanilmamis izniniz bulunmamaktadir.";
                         else
                         {
-                            GecmisDonemlerdenKalanIznLbl.Text = " Bu yılki izninizden  <strong>" + Math.Abs(gecmisDonemlerdenKalanIzin)+ "</strong> gün geçmiş dönemlerde kullandınız.";
+                            GecmisDonemlerdenKalanIznLbl.Text = " Bu yilki izninizden  <strong>" + Math.Abs(gecmisDonemlerdenKalanIzin)+ "</strong> g�n ge�mis d�nemlerde kullandiniz.";
                         }
                     }
                     
@@ -1550,37 +1550,37 @@ namespace IKYS_WebParts.IzinTalepGirisWP
 
                     DateTime bitisTarihi = IzinBitTarTxt.Value.ConvertToDatetime();
                     string sureStr = IKYSOrtak.IzinSuresiHesapla(izinTipi, baslangicTarihi, bitisTarihi);
-                    IzinSuresiLbl.Text = "Kullanmak istediğiniz izin süresi: " + sureStr + " "+ izinDonemi.Birim;
+                    IzinSuresiLbl.Text = "Kullanmak istediginiz izin s�resi: " + sureStr + " "+ izinDonemi.Birim;
                     int sureInt = sureStr.ConvertToInt();
                     int sonuctaKalanIzinInt = kalanIzinToplami - sureInt;
                     if (kalanIzinToplami <= 0)
                     {
                         isValid = false;
                         SaveBtn.Visible = false;
-                        KalanIzinLbl.Text = " Kullanabileceğiniz, " + ProjeConstants.IZINTIPI_UCRETLI + " izniniz bulunmamaktadır.";
-                        UyariLbl.Text = " İzin talebinde bulunmadan önce Gelecek Dönem Yıllık Ücretli İzninizden mahsup edilmesi için dilekçenizi onaylatarak Personel Kısmına teslim etmeniz gerekmektedir.";
+                        KalanIzinLbl.Text = " Kullanabileceginiz, " + ProjeConstants.IZINTIPI_UCRETLI + " izniniz bulunmamaktadir.";
+                        UyariLbl.Text = " Izin talebinde bulunmadan �nce Gelecek D�nem Yillik �cretli Izninizden mahsup edilmesi i�in dilek�enizi onaylatarak Personel Kismina teslim etmeniz gerekmektedir.";
                         IzinDonemIdQS = izinDonemi.Id.ToString();
                         UcretliIzinDilekceBtn.Visible = true;
                     }
                     //else if (sonuctaKalanIzinInt < 0)
                     if (kalanIzinToplami > 0 && sonuctaKalanIzinInt < 0)
                     {
-                        //son izin tarihini geçti
-                        //kalan izine göre yeni bitis tarihi girip kaydetsin
+                        //son izin tarihini ge�ti
+                        //kalan izine g�re yeni bitis tarihi girip kaydetsin
                         isValid = false;
                         SaveBtn.Visible = false;
-                        KalanIzinLbl.Text = " Kullanabileceğiniz, en fazla <strong>" + kalanIzinToplami + "</strong> " + izinDonemi.Birim + " " + ProjeConstants.IZINTIPI_UCRETLI + " izniniz bulunmaktadır.";
-                        UyariLbl.Text = " Lütfen izin bitiş tarihini buna göre seçerek tekrar talebinizi gönderiniz.";
+                        KalanIzinLbl.Text = " Kullanabileceginiz, en fazla <strong>" + kalanIzinToplami + "</strong> " + izinDonemi.Birim + " " + ProjeConstants.IZINTIPI_UCRETLI + " izniniz bulunmaktadir.";
+                        UyariLbl.Text = " L�tfen izin bitis tarihini buna g�re se�erek tekrar talebinizi g�nderiniz.";
                         IzinBitTarTxt.Value = baslangicTarihi.AddDays(kalanIzinInt - 1).ConvertToDatetimeEmptyIfNull();
                     }
                     else if (kalanIzinToplami > 0 && sonuctaKalanIzinInt >= 0)
                     {
                         isValid = true;
                         SaveBtn.Visible = true;
-                        KalanIzinLbl.Text = " Kullanabileceğiniz toplam " + kalanIzinToplami + " " + izinDonemi.Birim + " " + ProjeConstants.IZINTIPI_UCRETLI + " izniniz bulunmaktadır.";
+                        KalanIzinLbl.Text = " Kullanabileceginiz toplam " + kalanIzinToplami + " " + izinDonemi.Birim + " " + ProjeConstants.IZINTIPI_UCRETLI + " izniniz bulunmaktadir.";
                     }
                 }
-                else// diğer izinler
+                else// diger izinler
                 {
                     isValid = true;
                     SaveBtn.Visible = true;
@@ -1629,14 +1629,14 @@ namespace IKYS_WebParts.IzinTalepGirisWP
             if (string.IsNullOrEmpty(IzinBasTarTxt.Value))
             {
                 isValidated = false;
-                MessageHelper.PublishMessage("Lütfen izin başlangıç tarihini giriniz.", ProjeConstants.MESAJ_HATA, 2000);
+                MessageHelper.PublishMessage("L�tfen izin baslangi� tarihini giriniz.", ProjeConstants.MESAJ_HATA, 2000);
             }
             else if (izinTipi != ProjeConstants.IZINTIPI_MAZERET_INT)
             {
                 if (string.IsNullOrEmpty(IzinBitTarTxt.Value))
                 {
                     isValidated = false;
-                    MessageHelper.PublishMessage("Lütfen izin bitiş tarihini giriniz.", ProjeConstants.MESAJ_HATA, 2000);
+                    MessageHelper.PublishMessage("L�tfen izin bitis tarihini giriniz.", ProjeConstants.MESAJ_HATA, 2000);
 
                 }
 
@@ -1649,7 +1649,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                     )
                 {
                     isValidated = false;
-                    MessageHelper.PublishMessage("Lütfen izin başlama ve bitiş saatlerini giriniz.", ProjeConstants.MESAJ_HATA, 2000);
+                    MessageHelper.PublishMessage("L�tfen izin baslama ve bitis saatlerini giriniz.", ProjeConstants.MESAJ_HATA, 2000);
                 }
             }
             else if (izinTipi == ProjeConstants.IZINTIPI_SUTIZNI_INT)
@@ -1658,7 +1658,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                 if (string.IsNullOrEmpty(IzinBasSaatDDL.SelectedValue))
                 {
                     isValidated = false;
-                    MessageHelper.PublishMessage("Lütfen izin başlama saatini giriniz.", ProjeConstants.MESAJ_HATA, 2000);
+                    MessageHelper.PublishMessage("L�tfen izin baslama saatini giriniz.", ProjeConstants.MESAJ_HATA, 2000);
                 }
             }
             return isValidated;
@@ -1697,7 +1697,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
             }
             else
             {
-                MessageHelper.PublishMessage("Personel Bulunamadı!", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Personel Bulunamadi!", ProjeConstants.MESAJ_HATA);
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_PERSONEL_LIST;
                 Page.Response.Redirect(newUrl);
@@ -1724,7 +1724,7 @@ namespace IKYS_WebParts.IzinTalepGirisWP
             }
             else
             {
-                MessageHelper.PublishMessage("İzin Dönemi Bulunamadı.", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Izin D�nemi Bulunamadi.", ProjeConstants.MESAJ_HATA);
             }
         }
         protected void UcretliIzinDilekceBtn_Click(object sender, EventArgs e)
@@ -1752,14 +1752,14 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                     string sure = IKYSOrtak.IzinSuresiHesapla(ProjeConstants.IZINTIPI_UCRETLI_INT, izinBasTar, izinBitTar);
                     var fullUrl = string.Format("{0}?PersonelId={1}&GelecekDonem={2}&IzinBasTar={3}&IzinBitTar={4}&Sure={5}&AmirId={6}&OnaylayanId={7}",
                         rootUrl + ProjeConstants.RAPOR_UCRETLIMAHSUPDILEKCE, PersonelIdQS, gelecekIzinDonemiBasi.ConvertToDatetimeEmptyIfNull(),
-                        izinBasTar.ConvertToDatetimeEmptyIfNull(), izinBitTar.ConvertToDatetimeEmptyIfNull(), sure, AmirImzaDDL.SelectedItem.Value, ""); // OnayImzaDDL.SelectedItem.Value);SB OnayDiv kaldırıldı
+                        izinBasTar.ConvertToDatetimeEmptyIfNull(), izinBitTar.ConvertToDatetimeEmptyIfNull(), sure, AmirImzaDDL.SelectedItem.Value, ""); // OnayImzaDDL.SelectedItem.Value);SB OnayDiv kaldirildi
                     ResponseHelper.Redirect(fullUrl, "_blank", "");
 
                 }
             }
             else
             {
-                MessageHelper.PublishMessage("İzin Dönemi Bulunamadı.", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Izin D�nemi Bulunamadi.", ProjeConstants.MESAJ_HATA);
             }
         }
 
@@ -1788,19 +1788,19 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                     if (isdeleted)
                     {
                         TabloyuDoldur();
-                        MessageHelper.PublishMessage("İzin talebi silindi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        MessageHelper.PublishMessage("Izin talebi silindi", ProjeConstants.MESAJ_BASARILI, 2000);
                     }
                     else
-                        MessageHelper.PublishMessage("İzin talebi silinemedi ", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Izin talebi silinemedi ", ProjeConstants.MESAJ_HATA);
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Talebinizin onay durumu değiştiğinden silinemedi.", ProjeConstants.MESAJ_BILGI);
+                    MessageHelper.PublishMessage("Talebinizin onay durumu degistiginden silinemedi.", ProjeConstants.MESAJ_BILGI);
                 }
             }
             else
             {
-                MessageHelper.PublishMessage("İzin talebi bulunamadı, talebiniz zaten silinmiş olabilir. Lütfen kontolediniz.", ProjeConstants.MESAJ_BILGI);
+                MessageHelper.PublishMessage("Izin talebi bulunamadi, talebiniz zaten silinmis olabilir. L�tfen kontolediniz.", ProjeConstants.MESAJ_BILGI);
             }
 
         }
@@ -1817,19 +1817,19 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                     if (isdeleted)
                     {
                         TabloyuDoldur();
-                        MessageHelper.PublishMessage("İzin talebi silindi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        MessageHelper.PublishMessage("Izin talebi silindi", ProjeConstants.MESAJ_BASARILI, 2000);
                     }
                     else
-                        MessageHelper.PublishMessage("İzin talebi silinemedi ", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Izin talebi silinemedi ", ProjeConstants.MESAJ_HATA);
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Talebinizin onay durumu değiştiğinden silinemedi.", ProjeConstants.MESAJ_BILGI);
+                    MessageHelper.PublishMessage("Talebinizin onay durumu degistiginden silinemedi.", ProjeConstants.MESAJ_BILGI);
                 }
             }
             else
             {
-                MessageHelper.PublishMessage("İzin talebi bulunamadı, talebiniz zaten silinmiş olabilir. Lütfen kontolediniz.", ProjeConstants.MESAJ_BILGI);
+                MessageHelper.PublishMessage("Izin talebi bulunamadi, talebiniz zaten silinmis olabilir. L�tfen kontolediniz.", ProjeConstants.MESAJ_BILGI);
             }
 
         }
@@ -1846,19 +1846,19 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                     if (isdeleted)
                     {
                         TabloyuDoldur();
-                        MessageHelper.PublishMessage("İzin talebi silindi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        MessageHelper.PublishMessage("Izin talebi silindi", ProjeConstants.MESAJ_BASARILI, 2000);
                     }
                     else
-                        MessageHelper.PublishMessage("İzin talebi silinemedi ", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Izin talebi silinemedi ", ProjeConstants.MESAJ_HATA);
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Talebinizin onay durumu değiştiğinden silinemedi.", ProjeConstants.MESAJ_BILGI);
+                    MessageHelper.PublishMessage("Talebinizin onay durumu degistiginden silinemedi.", ProjeConstants.MESAJ_BILGI);
                 }
             }
             else
             {
-                MessageHelper.PublishMessage("İzin talebi bulunamadı, talebiniz zaten silinmiş olabilir. Lütfen kontolediniz.", ProjeConstants.MESAJ_BILGI);
+                MessageHelper.PublishMessage("Izin talebi bulunamadi, talebiniz zaten silinmis olabilir. L�tfen kontolediniz.", ProjeConstants.MESAJ_BILGI);
             }
 
         }
@@ -1875,19 +1875,19 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                     if (isdeleted)
                     {
                         TabloyuDoldur();
-                        MessageHelper.PublishMessage("İzin talebi silindi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        MessageHelper.PublishMessage("Izin talebi silindi", ProjeConstants.MESAJ_BASARILI, 2000);
                     }
                     else
-                        MessageHelper.PublishMessage("İzin talebi silinemedi ", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Izin talebi silinemedi ", ProjeConstants.MESAJ_HATA);
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Talebinizin onay durumu değiştiğinden silinemedi.", ProjeConstants.MESAJ_BILGI);
+                    MessageHelper.PublishMessage("Talebinizin onay durumu degistiginden silinemedi.", ProjeConstants.MESAJ_BILGI);
                 }
             }
             else
             {
-                MessageHelper.PublishMessage("İzin talebi bulunamadı, talebiniz zaten silinmiş olabilir. Lütfen kontolediniz.", ProjeConstants.MESAJ_BILGI);
+                MessageHelper.PublishMessage("Izin talebi bulunamadi, talebiniz zaten silinmis olabilir. L�tfen kontolediniz.", ProjeConstants.MESAJ_BILGI);
             }
 
         }
@@ -1904,19 +1904,19 @@ namespace IKYS_WebParts.IzinTalepGirisWP
                     if (isdeleted)
                     {
                         TabloyuDoldur();
-                        MessageHelper.PublishMessage("İzin talebi silindi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        MessageHelper.PublishMessage("Izin talebi silindi", ProjeConstants.MESAJ_BASARILI, 2000);
                     }
                     else
-                        MessageHelper.PublishMessage("İzin talebi silinemedi ", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Izin talebi silinemedi ", ProjeConstants.MESAJ_HATA);
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Talebinizin onay durumu değiştiğinden silinemedi.", ProjeConstants.MESAJ_BILGI);
+                    MessageHelper.PublishMessage("Talebinizin onay durumu degistiginden silinemedi.", ProjeConstants.MESAJ_BILGI);
                 }
             }
             else
             {
-                MessageHelper.PublishMessage("İzin talebi bulunamadı, talebiniz zaten silinmiş olabilir. Lütfen kontolediniz.", ProjeConstants.MESAJ_BILGI);
+                MessageHelper.PublishMessage("Izin talebi bulunamadi, talebiniz zaten silinmis olabilir. L�tfen kontolediniz.", ProjeConstants.MESAJ_BILGI);
             }
 
         }

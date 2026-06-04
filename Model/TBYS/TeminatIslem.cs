@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -65,7 +65,7 @@ namespace Model.TBYS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public override bool Update()
@@ -122,7 +122,7 @@ namespace Model.TBYS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public string GetInsertSQL(string extId)
@@ -138,7 +138,7 @@ namespace Model.TBYS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
         }
         public string GetUpdateSQL(string extId)
@@ -154,7 +154,7 @@ namespace Model.TBYS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
         }
         public string GetDeleteSQL(string extId)
@@ -170,7 +170,7 @@ namespace Model.TBYS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
         }
         public bool DeleteBySozlesmeId(int sozlesmeId)
@@ -208,7 +208,7 @@ namespace Model.TBYS
             string sqlString = string.Format(@"
                 SELECT SUM(IslemTutari) Toplam 
                 FROM TeminatIslem_Table
-                WHERE IslemTipi='Teminat Ödemesi'
+                WHERE IslemTipi='Teminat �demesi'
 	                AND KiraciId={0} ", kiraciId.ReturnQuotedValue());
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             if (dataTable != null)

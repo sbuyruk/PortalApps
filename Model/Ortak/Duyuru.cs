@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Model.Ortak;
@@ -56,7 +56,7 @@ namespace Model.Ortak
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
 
             

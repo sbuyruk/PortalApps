@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -156,7 +156,7 @@ namespace TBYS_WebParts.KiraciEslestirWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY');//sort date
                 jQuery(document).ready(function () {
                     jQuery('#CustomDataTable').DataTable({
-                        'initComplete': function (settings, json) {//tablo yüklendiğinde
+                        'initComplete': function (settings, json) {//tablo y�klendiginde
                             var api = this.api();
                             var row = api.row(function (idx, data, node) { //secilen kayda gider
                                 return data['Secildi'] == true;
@@ -179,7 +179,7 @@ namespace TBYS_WebParts.KiraciEslestirWP
                             { data: 'KiraBedeli' },
                             { data: 'Sec' },               
                         ],
-                        'order': [[5, 'desc']],//SozBasTar Sıralı
+                        'order': [[5, 'desc']],//SozBasTar Sirali
                         'columnDefs': [
                             { 'width': '20%', 'targets': 1 },
                             { 'width': '25%', 'targets': 2 }
@@ -214,7 +214,7 @@ namespace TBYS_WebParts.KiraciEslestirWP
             kea = kea.Select<KiraEkstreAktarma>(KiraEkstreAktarmaIdQS.ConvertToInt());
             if (kea != null)
             {
-                GelenOdemeLbl.Text = "Ödenen Tutar :" + kea.Tutar.ToString("N", culturInfo) + " TL";
+                GelenOdemeLbl.Text = "�denen Tutar :" + kea.Tutar.ToString("N", culturInfo) + " TL";
             }
             
             Kiraci kiraci = new Kiraci();
@@ -263,7 +263,7 @@ namespace TBYS_WebParts.KiraciEslestirWP
                     }
 
                     int sonSozlesmeId = ks != null ? ks.Id : sozlesmeId.ConvertToInt();
-                    kiraciItem.Sec = "<a href=# onclick=KiraciSec(" + kiraciId + ","+sozlesmeId+"); class='btn btn-outline-primary \'>Seç</a>";
+                    kiraciItem.Sec = "<a href=# onclick=KiraciSec(" + kiraciId + ","+sozlesmeId+"); class='btn btn-outline-primary \'>Se�</a>";
 
                     kiraciItem.Aktif = aktif;
                     list.Add(kiraciItem);

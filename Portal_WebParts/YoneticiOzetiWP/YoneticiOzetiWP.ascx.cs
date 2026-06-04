@@ -1,4 +1,4 @@
-﻿using DocumentFormat.OpenXml.Vml;
+using DocumentFormat.OpenXml.Vml;
 using Model.NBYS;
 using Model.Ortak;
 using Model.TBYS;
@@ -37,7 +37,7 @@ namespace Portal_WebParts.YoneticiOzetiWP
         private IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
         protected void Page_Load(object sender, EventArgs e)
         {
-            TitleLbl.InnerText = "Yönetici Özeti " +"("+ DateTime.Now.ToString("d", culturInfo)+")";
+            TitleLbl.InnerText = "Y�netici �zeti " +"("+ DateTime.Now.ToString("d", culturInfo)+")";
             TasinmazAdetleriniGetir();
             KiralikAdetleriniGetir();
         }
@@ -82,7 +82,7 @@ namespace Portal_WebParts.YoneticiOzetiWP
                 {
                     string mulkiyetSekli = row["MulkiyetSekli"].ToString();
                     int adet = Convert.ToInt32(row["Adet"]);
-                    if (mulkiyetSekli == "ÇM")
+                    if (mulkiyetSekli == "�M")
                     {
                         cm += adet;
                     }
@@ -106,7 +106,7 @@ namespace Portal_WebParts.YoneticiOzetiWP
             }
             catch (Exception ex)
             {
-                MessageHelper.PublishMessage("Taşınmaz Durumu Tablosu Doldurulurken Hata Oluştu. Hata : "+ ex, ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Tasinmaz Durumu Tablosu Doldurulurken Hata Olustu. Hata : "+ ex, ProjeConstants.MESAJ_HATA);
             }
         }
         protected void KiraDurumuBtn_Click(object sender, EventArgs e)
@@ -119,7 +119,7 @@ namespace Portal_WebParts.YoneticiOzetiWP
             }
             catch (Exception ex)
             {
-                MessageHelper.PublishMessage("Kira Durumu Tablosu Doldurulurken Hata Oluştu. Hata : "+ ex, ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Kira Durumu Tablosu Doldurulurken Hata Olustu. Hata : "+ ex, ProjeConstants.MESAJ_HATA);
             }
         }
         protected void KirayaUygunOlmayanDurumuBtn_Click(object sender, EventArgs e)
@@ -132,7 +132,7 @@ namespace Portal_WebParts.YoneticiOzetiWP
             }
             catch (Exception ex)
             {
-                MessageHelper.PublishMessage("Kiraya Uygun Olmayanlar Tablosu Doldurulurken Hata Oluştu. Hata : "+ ex, ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Kiraya Uygun Olmayanlar Tablosu Doldurulurken Hata Olustu. Hata : "+ ex, ProjeConstants.MESAJ_HATA);
             }
         }
         protected void KiraGelirleriBtn_Click(object sender, EventArgs e)
@@ -145,7 +145,7 @@ namespace Portal_WebParts.YoneticiOzetiWP
             }
             catch (Exception ex)
             {
-                MessageHelper.PublishMessage("Kira Durumu Tablosu Doldurulurken Hata Oluştu. Hata : "+ ex, ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Kira Durumu Tablosu Doldurulurken Hata Olustu. Hata : "+ ex, ProjeConstants.MESAJ_HATA);
             }
         }
 

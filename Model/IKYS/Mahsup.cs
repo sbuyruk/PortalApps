@@ -1,4 +1,4 @@
-﻿
+
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -48,7 +48,7 @@ namespace Model.IKYS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
 
         }
@@ -111,7 +111,7 @@ namespace Model.IKYS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
         }
         public override List<T> SelectAll<T>()
@@ -185,7 +185,7 @@ namespace Model.IKYS
         }
         private string SelectByPersonelSQL(int personelId, int izinTipi)
         {
-            string andStr = izinTipi == 0 ? "" : izinTipi == ProjeConstants.IZINTIPI_MAZERET_INT ? string.Format(" AND IzinTipi={0}", izinTipi) : " AND IzinTipi!=2 ";//sadece mazeret iznini ayrı göster
+            string andStr = izinTipi == 0 ? "" : izinTipi == ProjeConstants.IZINTIPI_MAZERET_INT ? string.Format(" AND IzinTipi={0}", izinTipi) : " AND IzinTipi!=2 ";//sadece mazeret iznini ayri g�ster
 
             string sqlstr = string.Format(@" 
                     SELECT * FROM Mahsup_Table  

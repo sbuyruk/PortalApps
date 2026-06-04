@@ -1,4 +1,4 @@
-﻿using Model.IKYS;
+using Model.IKYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -75,7 +75,7 @@ namespace IKYS_WebParts.EskiPersonelListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            var jsonData = TabloJson(); //veri �ekilip json a �eviriliyor
             UtilityHelper.ScriptCalistir("setDataSet(" + jsonData + ");");
             //MessageHelper.PublishMessage(string.Format("T1:{0} , T2:{1}, T3:{2}, T4:{3}, T5:{4}",t1.ToString("ss:fff"),t2.ToString("ss:fff"), t3.ToString("ss:fff"), t4.ToString("ss:fff"), t5.ToString("ss:fff")), ProjeConstants.MESAJ_BILGI);
         }
@@ -119,9 +119,9 @@ namespace IKYS_WebParts.EskiPersonelListesiWP
 
                 TabloData.Secildi = SecilenIdQS.Equals(TabloData.PersonelId);
 
-                //TabloData.PersonelKarti = "<a href=" + ProjeConstants.PAGE_PERSONEL_KARTI + "?PersonelId=" + TabloData.PersonelId + " class='btn btn-outline-primary'>Per.Kartı</a>";
-                //TabloData.KisiselSayfa = "<a href=" + ProjeConstants.PAGE_KISISELSAYFA + "?PersonelId=" + TabloData.PersonelId + " class='btn btn-outline-primary'>Kişis.Say.</a>";
-                TabloData.Duzenle = "<a href=" + ProjeConstants.PAGE_ESKIPERSONEL_EDIT + "?DestinationApp=PerD&PersonelId=" + TabloData.PersonelId + " class='btn btn-outline-primary'>Düzenle</a>";
+                //TabloData.PersonelKarti = "<a href=" + ProjeConstants.PAGE_PERSONEL_KARTI + "?PersonelId=" + TabloData.PersonelId + " class='btn btn-outline-primary'>Per.Karti</a>";
+                //TabloData.KisiselSayfa = "<a href=" + ProjeConstants.PAGE_KISISELSAYFA + "?PersonelId=" + TabloData.PersonelId + " class='btn btn-outline-primary'>Kisis.Say.</a>";
+                TabloData.Duzenle = "<a href=" + ProjeConstants.PAGE_ESKIPERSONEL_EDIT + "?DestinationApp=PerD&PersonelId=" + TabloData.PersonelId + " class='btn btn-outline-primary'>D�zenle</a>";
 
                 list.Add(TabloData);
             });

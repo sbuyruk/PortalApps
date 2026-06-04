@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Model.Ortak;
 
 namespace TSKGVApps.DataAccess.data

@@ -1,4 +1,4 @@
-ï»¿using Microsoft.SharePoint;
+using Microsoft.SharePoint;
 using Model.MYS;
 using Model.Ortak;
 using System;
@@ -149,7 +149,7 @@ namespace MYS_WebParts.MalzemeGirisiWP
             UpdateBtn.Visible = true;
             DeleteBtn.Visible = true;
             TitleLbl.CssClass = "col-form-primary  btn-outline-primary mb-1";
-            TitleLbl.Text = "Malzeme DÃ¼zenleme";
+            TitleLbl.Text = "Malzeme Düzenleme";
             Malzeme malzeme = new Malzeme();
             malzeme = malzeme.Select<Malzeme>(MalzemeIdQS.ConvertToInt());
             if (!Page.IsPostBack)
@@ -262,7 +262,7 @@ namespace MYS_WebParts.MalzemeGirisiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Ä°ÅŸlem TamamlandÄ±.Resim yÃ¼klendi.", ProjeConstants.MESAJ_BASARILI);
+                MessageHelper.PublishMessage("Islem Tamamlandi.Resim yüklendi.", ProjeConstants.MESAJ_BASARILI);
             }
         }
         protected void BackBtn_Click(object sender, EventArgs e)
@@ -293,13 +293,13 @@ namespace MYS_WebParts.MalzemeGirisiWP
                     malzeme.SeriNo = SeriNoTxt.Text;
                     malzeme.Degistiren = CurrentUserName;
                     bool isSaved = malzeme.Update();
-                    // eger bir resim seÃ§ildi ise o resmi Sharepointteki MalzemeResimleri listesine ekle
+                    // eger bir resim seçildi ise o resmi Sharepointteki MalzemeResimleri listesine ekle
                     if (xFileUpload.HasFile)
                     {
                         saveImageFiles2SP(malzeme.Id.ToString());
 
                     }
-                    MessageHelper.PublishMessage("Malzeme GÃ¼ncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Malzeme Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                     RedirectToPage(ProjeConstants.PAGE_MALZEME_LIST + "?Mesaj=true");
                 }
 
@@ -348,7 +348,7 @@ namespace MYS_WebParts.MalzemeGirisiWP
                 int malzemeId = malzeme.Save();
                 if (malzemeId > 0)
                 {
-                    // eger bir resim seÃ§ildi ise o resmi Sharepointteki MalzemeResimleri listesine ekle
+                    // eger bir resim seçildi ise o resmi Sharepointteki MalzemeResimleri listesine ekle
                     if (xFileUpload.HasFile)
                     {
                         saveImageFiles2SP(malzemeId.ToString());

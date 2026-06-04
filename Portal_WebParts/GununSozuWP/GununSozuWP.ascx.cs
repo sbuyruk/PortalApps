@@ -1,4 +1,4 @@
-ï»¿using Microsoft.SharePoint;
+using Microsoft.SharePoint;
 using System;
 using System.ComponentModel;
 using System.Web.UI.WebControls.WebParts;
@@ -29,7 +29,7 @@ namespace Portal_WebParts.GununSozuWP
             {
                 using (SPWeb web = site.OpenWeb())
                 {
-                    string listname = "GÃ¼nÃ¼n SÃ¶zÃ¼";
+                    string listname = "Günün Sözü";
                     SPList list = web.Lists.TryGetList(listname);
                     SPQuery q = new SPQuery();
                     q.Query = "<OrderBy><FieldRef Name=\"Created\" Ascending=\"False\"/></OrderBy>";

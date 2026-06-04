@@ -1,4 +1,4 @@
-﻿using Model.IKYS;
+using Model.IKYS;
 using Model.Ortak;
 using Model.Portal;
 using System;
@@ -189,7 +189,7 @@ namespace Portal_WebParts.DuyuruPopupWP
         {
             if (startup && !duyuru.Popup)
             {
-                //ilk açılışta popup = false ise gösterme
+                //ilk a�ilista popup = false ise g�sterme
             }
             else
             {
@@ -287,8 +287,8 @@ namespace Portal_WebParts.DuyuruPopupWP
 
                 CheckBox OkudumChk = new CheckBox();
                 OkudumChk.ID = "OkudumChk" + duyuru.Id.ToString();
-                OkudumChk.Text = "Okudum, bir daha gösterme";
-                OkudumChk.CssClass = "FontSmall";//ascx içinde style
+                OkudumChk.Text = "Okudum, bir daha g�sterme";
+                OkudumChk.CssClass = "FontSmall";//ascx i�inde style
                 OkudumChk.Checked = true;
 
                 okudumDiv.Controls.Add(OkudumChk);
@@ -340,7 +340,7 @@ namespace Portal_WebParts.DuyuruPopupWP
                 {
                     clickedx = "false";
                 }
-                if (!Page.IsPostBack || !startup) //kayan duyuruya tıklandıysa göster ama modal butona basıldığında olan postbackde göstermes
+                if (!Page.IsPostBack || !startup) //kayan duyuruya tiklandiysa g�ster ama modal butona basildiginda olan postbackde g�stermes
                 {
                     var openDuyuruPopupModal = "OpenDuyuruPopupModal(" + modalDiv.ClientID + "," + duyuru.Id + "," + dgId + "," + clickedx + ",'" + okudumDiv.ClientID + "');";
                     UtilityHelper.ScriptCalistir(openDuyuruPopupModal);

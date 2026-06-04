@@ -1,4 +1,4 @@
-﻿using Microsoft.SharePoint;
+using Microsoft.SharePoint;
 using Microsoft.SharePoint.Utilities;
 using Model.NBYS;
 using Model.TBYS;
@@ -132,7 +132,7 @@ namespace Model.Ortak
         public static void SetControlState<T>(bool isVisible, bool isEnabled, params T[] controls) where T : WebControl
         {
             if (controls == null || controls.Length == 0)
-                return; // Eğer hiç kontrol yoksa metottan çık
+                return; // Eger hi� kontrol yoksa metottan �ik
 
             foreach (var ctrl in controls)
             {
@@ -206,7 +206,7 @@ namespace Model.Ortak
                     {
                         if (!fileBrowser.HasFile)
                         {
-                            Exception exceptionInfo = new Exception(String.Format(fileBrowser.FileName + " : Resim dosyası seçmediniz."));
+                            Exception exceptionInfo = new Exception(String.Format(fileBrowser.FileName + " : Resim dosyasi se�mediniz."));
                             exceptionHelper.Exceptions.Add(exceptionInfo);
                         }
                         else
@@ -215,7 +215,7 @@ namespace Model.Ortak
                             int fileSize = fileBrowser.PostedFile.ContentLength;
                             if (fileSize > 6000000)
                             {
-                                Exception exceptionInfo = new Exception(String.Format(fileBrowser.FileName + " : Dosya boyutu 4Mb'tan büyük olduğu için kaydedilmedi."));
+                                Exception exceptionInfo = new Exception(String.Format(fileBrowser.FileName + " : Dosya boyutu 4Mb'tan b�y�k oldugu i�in kaydedilmedi."));
                                 exceptionHelper.Exceptions.Add(exceptionInfo);
 
                             }
@@ -225,7 +225,7 @@ namespace Model.Ortak
                                 //Check the user has selected a jpg image
                                 if (imageFileExtension == null || imageFileExtension.ToLower() != ".jpg")
                                 {
-                                    Exception exceptionInfo = new Exception(String.Format(fileBrowser.FileName + " : Lütfen .jpg formatında resim seçiniz."));
+                                    Exception exceptionInfo = new Exception(String.Format(fileBrowser.FileName + " : L�tfen .jpg formatinda resim se�iniz."));
                                     exceptionHelper.Exceptions.Add(exceptionInfo);
                                 }
                                 else
@@ -241,7 +241,7 @@ namespace Model.Ortak
 
                                         if (listExists == null)
                                         {
-                                            Exception exceptionInfo = new Exception(String.Format(SPImageListName + " Sharepoint listesi mevcut değil. "));
+                                            Exception exceptionInfo = new Exception(String.Format(SPImageListName + " Sharepoint listesi mevcut degil. "));
                                             exceptionHelper.Exceptions.Add(exceptionInfo);
                                         }
                                         try
@@ -284,20 +284,20 @@ namespace Model.Ortak
                 {
                     using (SPWeb web = spsite.OpenWeb())
                     {
-                        //kopyalanacak dosya adı boş mu
+                        //kopyalanacak dosya adi bos mu
                         if (string.IsNullOrEmpty(sourceImage))
                         {
-                            Exception exceptionInfo = new Exception(String.Format("Kopyalanacak dosya adı boş."));
+                            Exception exceptionInfo = new Exception(String.Format("Kopyalanacak dosya adi bos."));
                             exceptionHelper.Exceptions.Add(exceptionInfo);
                         }
                         else
                         {
-                            //liste var mı
+                            //liste var mi
                             //SPPictureLibrary pictureLibrary = (SPPictureLibrary) web.Lists.TryGetList(SPImageListName);
                             SPList splist = web.Lists.TryGetList(SPImageListName);
                             if (splist == null)
                             {
-                                Exception exceptionInfo = new Exception(String.Format(SPImageListName + " Sharepoint listesi mevcut değil. "));
+                                Exception exceptionInfo = new Exception(String.Format(SPImageListName + " Sharepoint listesi mevcut degil. "));
                                 exceptionHelper.Exceptions.Add(exceptionInfo);
                             }
                             else
@@ -370,7 +370,7 @@ namespace Model.Ortak
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
             return isDeleted;
         }
@@ -429,21 +429,21 @@ namespace Model.Ortak
             if (!string.IsNullOrEmpty(telefon))
             {
 
-                // içinde "+", "(" veya ")" veya "-" veya " " var mı
+                // i�inde "+", "(" veya ")" veya "-" veya " " var mi
                 //  varsa sil
                 formatliTelNo = telefon.Replace("+", string.Empty).Replace("/", string.Empty).Replace("(", string.Empty).Replace(")", string.Empty)
                     .Replace("-", string.Empty).Replace(" ", string.Empty).Replace(".", string.Empty).Replace(",", string.Empty);
 
                 if (formatliTelNo.Length > 9)// 532 XXX XXX XX en az 10 karakter olsun
                 {
-                    // başında 90 var mı
+                    // basinda 90 var mi
                     //  varsa sil
                     string ilkIkiChar = formatliTelNo.Substring(0, 2);
                     if (ilkIkiChar.Equals("90"))
                     {
                         formatliTelNo = formatliTelNo.Substring(2);
                     }
-                    // başında 0 var mı
+                    // basinda 0 var mi
                     //  varsa sil
 
                     string ilkChar = formatliTelNo.Substring(0, 1);
@@ -477,7 +477,7 @@ namespace Model.Ortak
 
         public static List<UserPrincipal> GetGroupMembers(string domain, string groupname)
         {
-            //burayı application pool yetkisi ile çalıştır
+            //burayi application pool yetkisi ile �alistir
             using (HostingEnvironment.Impersonate())
             {
                 PrincipalContext ctx = new PrincipalContext(ContextType.Domain, domain);
@@ -512,7 +512,7 @@ namespace Model.Ortak
         {
             try
             {
-                //burayı application pool yetkisi ile çalıştır
+                //burayi application pool yetkisi ile �alistir
                 using (HostingEnvironment.Impersonate())
                 {
                     // This code runs as the application pool user
@@ -526,7 +526,7 @@ namespace Model.Ortak
             catch (Exception e)
             {
 
-                MessageHelper.PublishMessage("IsGroup() hatası : "+ e.Message,ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("IsGroup() hatasi : "+ e.Message,ProjeConstants.MESAJ_HATA);
                 return false;
             }
         }
@@ -639,7 +639,7 @@ namespace Model.Ortak
             catch (Exception e)
             {
                 ExceptionHelper eh = new ExceptionHelper(e);
-                eh.Exceptions.Add(new Exception("Dosya Yüklenemedi"));
+                eh.Exceptions.Add(new Exception("Dosya Y�klenemedi"));
                 eh.PublishException();
                 isOk = false;
             }
@@ -661,7 +661,7 @@ namespace Model.Ortak
             catch (Exception e)
             {
                 ExceptionHelper eh = new ExceptionHelper(e);
-                eh.Exceptions.Add(new Exception("Dosya Yüklenemedi"));
+                eh.Exceptions.Add(new Exception("Dosya Y�klenemedi"));
                 eh.PublishException();
                 isOk = false;
             }
@@ -776,7 +776,7 @@ namespace Model.Ortak
             bolge = bolge.Select(Il.BolgeId);
             return bolge;
         }
-        // Display adını almak için yardımcı fonksiyon
+        // Display adini almak i�in yardimci fonksiyon
         public static string GetEnumDisplayName(Enum enumValue)
         {
             var fieldInfo = enumValue.GetType().GetField(enumValue.ToString());
@@ -803,12 +803,12 @@ namespace Model.Ortak
                 return input;
 
             return input
-                .Replace('ç', 'c').Replace('Ç', 'C')
-                .Replace('ğ', 'g').Replace('Ğ', 'G')
-                .Replace('ı', 'i').Replace('İ', 'I')
-                .Replace('ö', 'o').Replace('Ö', 'O')
-                .Replace('ş', 's').Replace('Ş', 'S')
-                .Replace('ü', 'u').Replace('Ü', 'U');
+                .Replace('�', 'c').Replace('�', 'C')
+                .Replace('g', 'g').Replace('G', 'G')
+                .Replace('i', 'i').Replace('I', 'I')
+                .Replace('�', 'o').Replace('�', 'O')
+                .Replace('s', 's').Replace('S', 'S')
+                .Replace('�', 'u').Replace('�', 'U');
         }
     }
 }

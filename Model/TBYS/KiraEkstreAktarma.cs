@@ -1,4 +1,4 @@
-﻿using DAO.Ortak;
+using DAO.Ortak;
 using Model.NBYS;
 using Model.Ortak;
 using System;
@@ -59,7 +59,7 @@ namespace Model.TBYS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public override bool Update()
@@ -116,7 +116,7 @@ namespace Model.TBYS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public override T Select<T>(int id)
@@ -153,7 +153,7 @@ namespace Model.TBYS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
         }
         public string GetUpdateSQL(string extId)
@@ -169,7 +169,7 @@ namespace Model.TBYS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
         }
         public string GetDeleteSQL(string extId)
@@ -185,7 +185,7 @@ namespace Model.TBYS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
         }
         public List<KiraEkstreAktarma> SelectKiraciIdByAdi(string adi)

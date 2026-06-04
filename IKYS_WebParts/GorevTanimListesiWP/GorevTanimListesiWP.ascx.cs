@@ -1,4 +1,4 @@
-﻿using Model.IKYS;
+using Model.IKYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -102,8 +102,8 @@ namespace IKYS_WebParts.GorevTanimListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = TabloJson(); //veri �ekilip json a �eviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string TabloJson()
@@ -135,9 +135,9 @@ namespace IKYS_WebParts.GorevTanimListesiWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
                 jQuery(document).ready(function () {
                     jQuery('#CustomDataTable').DataTable({
-                        'initComplete': function (settings, json) {//tablo yüklendiğinde
+                        'initComplete': function (settings, json) {//tablo y�klendiginde
                             var api = this.api();
-                            var row = api.row(function (idx, data, node) { //secilen toplantıya gider
+                            var row = api.row(function (idx, data, node) { //secilen toplantiya gider
                                 return data['Secildi'] == true;
                             });
                             if (row.length > 0) {
@@ -223,7 +223,7 @@ namespace IKYS_WebParts.GorevTanimListesiWP
                     Personel = personel,
                     BirimAdi = birimAdi,
 
-                    Duzenle = "<a href=" + ProjeConstants.PAGE_GOREVTANIM_EDIT + "?DestinationApp=BirD&GorevTanimId=" + gorevTanimId + " class='btn btn-outline-primary'>Düzenle</a>"
+                    Duzenle = "<a href=" + ProjeConstants.PAGE_GOREVTANIM_EDIT + "?DestinationApp=BirD&GorevTanimId=" + gorevTanimId + " class='btn btn-outline-primary'>D�zenle</a>"
                 };
                 item.Secildi = SecilenIdQS.Equals(item.GorevTanimId);
                 list.Add(item);

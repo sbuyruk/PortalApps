@@ -1,4 +1,4 @@
-ï»¿using Model.MTS;
+using Model.MTS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -74,7 +74,7 @@ namespace MTS_WebParts.FaaliyetListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri Ã§ekilip json a Ã§eviriliyor
+            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
             System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler,
                 typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "setDataSet(" + jsonData + ");", true);
         }
@@ -154,7 +154,7 @@ namespace MTS_WebParts.FaaliyetListesiWP
                         faaliyetListItem.FaaliyetDurumu = faaliyetDurumuStr;
 
                         faaliyetListItem.Katilimci += katilimci + "; ";
-                        faaliyetListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_FAALIYET_GIRIS + "?FaaliyetId=" + faaliyetId + " class='btn btn-outline-primary'>DÃ¼zenle</a>";
+                        faaliyetListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_FAALIYET_GIRIS + "?FaaliyetId=" + faaliyetId + " class='btn btn-outline-primary'>Düzenle</a>";
                         faaliyetListItem.Secildi = SecilenIdQS.Equals(faaliyetListItem.FaaliyetId.ToString());
                         tempFaaliyetListItem = faaliyetListItem;
                         faaliyetList.Add(tempFaaliyetListItem);

@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -63,7 +63,7 @@ namespace Model.TBYS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public override bool Update()
@@ -120,7 +120,7 @@ namespace Model.TBYS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public string GetInsertSQL(string extId)
@@ -136,7 +136,7 @@ namespace Model.TBYS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
         }
         public string GetUpdateSQL(string extId)
@@ -152,7 +152,7 @@ namespace Model.TBYS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
         }
         public string GetDeleteSQL(string extId)
@@ -168,7 +168,7 @@ namespace Model.TBYS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
         }
         public bool DeleteBySozlesmeId(int sozlesmeId)
@@ -244,7 +244,7 @@ namespace Model.TBYS
                 {0} {1}
                 ORDER BY A.OdemeTarihi DESC, B.Id, A.SozlesmeId
             ", ayYilStr, kiraciIdStr);
-            // bölge de seçime eklendiği için sorgu üstteki ile değişti SB 23/09/2019
+            // b�lge de se�ime eklendigi i�in sorgu �stteki ile degisti SB 23/09/2019
             //string sqlString = string.Format(@"
             //    SELECT A.Id, B.Adi,B.Soyadi,  B.Adi+' '+B.Soyadi KiraciAdiSoyadi,
             //        A.Id OdemeId, A.OdemeTarihi, A.OdenenTutar, A.Aciklama, A.SozlesmeId, A.KiraciId, A.OdemePlaniId 
@@ -285,7 +285,7 @@ namespace Model.TBYS
                 {0} {1} {2}
                 ORDER BY A.OdemeTarihi DESC, B.Id, A.SozlesmeId
             ", bastarStr, kiraciIdStr,bolgeStr);
-            // bölge de seçime eklendiği için sorgu üstteki ile değişti SB 23/09/2019
+            // b�lge de se�ime eklendigi i�in sorgu �stteki ile degisti SB 23/09/2019
             //string sqlString = string.Format(@"
             //    SELECT A.Id, B.Adi,B.Soyadi,  B.Adi+' '+B.Soyadi KiraciAdiSoyadi,
             //        A.Id OdemeId, A.OdemeTarihi, A.OdenenTutar, A.Aciklama, A.SozlesmeId, A.KiraciId, A.OdemePlaniId 
@@ -397,16 +397,16 @@ namespace Model.TBYS
                 odeme.Id = odeme.Save();
                 if (odeme.Id > 0)
                 {
-                    // toplamı bul
+                    // toplami bul
                     Odeme odemeDao = new Odeme();
 
 
-                    //toplam Odenenin bulunması Aylık ve Gunluk olarak ayrılmalı
-                    //Aylık ise 
+                    //toplam Odenenin bulunmasi Aylik ve Gunluk olarak ayrilmali
+                    //Aylik ise 
                     decimal toplamOdenen = odemeDao.SelectSumBySozlesmeIdOdemePlaniId(kiraSozlesme.Id, odemePlani.Id);
                     //Gunluk ise
-                    // OdemeAyrintiya kayıt atsın TODO SB
-                    //if (kiraSozlesme.GecikmeZammiTipi.Equals("Günlük"))
+                    // OdemeAyrintiya kayit atsin TODO SB
+                    //if (kiraSozlesme.GecikmeZammiTipi.Equals("G�nl�k"))
                     //{
                     //    UtilityHelper.OdemeAyrintiliGunlukFaizhesapla(kiraSozlesme, odemePlani);
                     //}
@@ -420,7 +420,7 @@ namespace Model.TBYS
             catch (Exception exception1)
             {
                 ExceptionHelper exHelper = new ExceptionHelper();
-                Exception exception2 = new Exception("Ödeme Kaydedilemedi");
+                Exception exception2 = new Exception("�deme Kaydedilemedi");
                 exHelper.Exceptions.Add(exception2);
                 exHelper.Exceptions.Add(exception1);
                 exHelper.PublishException();
@@ -454,7 +454,7 @@ namespace Model.TBYS
                     decimal toplamOdenen = odemeDao.SelectSumBySozlesmeIdOdemePlaniId(odemePlani.SozlesmeId, odemePlani.Id);
                     odemePlani.OdenenTutar = toplamOdenen;
                     odemePlani.Aciklama += aciklama + System.Environment.NewLine +
-                        " *" + odeme.OdemeTarihi.ConvertToDatetimeEmptyIfNull() + " tarihli " + odeme.OdenenTutar.ToString("N", culturInfo) + " ödeme silindi." + System.Environment.NewLine;
+                        " *" + odeme.OdemeTarihi.ConvertToDatetimeEmptyIfNull() + " tarihli " + odeme.OdenenTutar.ToString("N", culturInfo) + " �deme silindi." + System.Environment.NewLine;
                     odemePlani.Degistiren = kullanici;
                     odemePlani.Update();
                 }
@@ -464,7 +464,7 @@ namespace Model.TBYS
             {
 
                 ExceptionHelper exHelper = new ExceptionHelper();
-                Exception exception2 = new Exception("Ödeme Silinemedi");
+                Exception exception2 = new Exception("�deme Silinemedi");
                 exHelper.Exceptions.Add(exception2);
                 exHelper.Exceptions.Add(exception1);
                 exHelper.PublishException();
@@ -499,11 +499,11 @@ namespace Model.TBYS
                     }
                     else
                     {
-                        ExceptionHelper ex = new ExceptionHelper(new Exception("Ödeme Tablosunda OdemePlaniId=0 olduğundan kayıt yapılamadı"));
+                        ExceptionHelper ex = new ExceptionHelper(new Exception("�deme Tablosunda OdemePlaniId=0 oldugundan kayit yapilamadi"));
                         ex.PublishException();
                     }
                 }
-                //Odeme tablosunu güncelle
+                //Odeme tablosunu g�ncelle
                 if (yeniOdemePlani != null)
                 {
                     odeme = odeme.Select(odemeId.ConvertToInt());
@@ -521,7 +521,7 @@ namespace Model.TBYS
                 
                 if (guncellendiMi)
                 {
-                    //onceki Odeme planını güncelle
+                    //onceki Odeme planini g�ncelle
                     if (oncekiOdemePlani != null)
                     {
                         Odeme odemeDao = new Odeme();
@@ -530,7 +530,7 @@ namespace Model.TBYS
                         oncekiOdemePlani.Degistiren = kullanici;
                         oncekiOdemePlani.Update();
                     }
-                    //yeni Odeme planını güncelle
+                    //yeni Odeme planini g�ncelle
                     if (yeniOdemePlani != null)
                     {
                         Odeme odemeDao = new Odeme();
@@ -548,7 +548,7 @@ namespace Model.TBYS
             {
                 odemeVeOdemePlaniGuncellendiMi = false;
                 ExceptionHelper exHelper = new ExceptionHelper();
-                Exception exception2 = new Exception("Ödeme Kaydedilemedi");
+                Exception exception2 = new Exception("�deme Kaydedilemedi");
                 exHelper.Exceptions.Add(exception2);
                 exHelper.Exceptions.Add(exception1);
                 exHelper.PublishException();

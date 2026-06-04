@@ -1,4 +1,4 @@
-﻿using Model.MTS;
+using Model.MTS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -49,7 +49,7 @@ namespace Model.Portal
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public override bool Update()
@@ -106,7 +106,7 @@ namespace Model.Portal
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public override T Select<T>(int id)

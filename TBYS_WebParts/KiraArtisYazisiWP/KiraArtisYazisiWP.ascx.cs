@@ -1,4 +1,4 @@
-﻿using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.SharePoint;
 using Model.Ortak;
@@ -115,7 +115,7 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
             {
                 AyDDLDoldur();
                 BolgeDDLDoldur();
-                //SetDDLValues(); //ay ve yılı querystringden al
+                //SetDDLValues(); //ay ve yili querystringden al
                 ParametreleriDoldur();
                 TabloOlustur();
             }
@@ -170,11 +170,11 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
         {
             DateTime bugun = DateTime.Today;
 
-            Parafe1Txt.Text = @"…./" + bugun.ToString("MM") + @"/" + bugun.Year + " Eml.Ynt.Kd.Uzm.Z.ÇALIŞ";
-            Parafe2Txt.Text = @"…./" + bugun.ToString("MM") + @"/" + bugun.Year + " İnş.Eml.Ynt.Ş.Md.M.TAŞKALDIRAN";
-            KoordineTxt.Text = @"…./" + bugun.ToString("MM") + @"/" + bugun.Year + " Huk.Müş.E.ŞENGÜL";
-            ImzalayanTxt.Text = @"Erhan SİPAHİOĞLU";
-            ImzalayanMakamTxt.Text = @"Genel Müdür Yardımcısı";
+            Parafe1Txt.Text = @"�./" + bugun.ToString("MM") + @"/" + bugun.Year + " Eml.Ynt.Kd.Uzm.Z.�ALIS";
+            Parafe2Txt.Text = @"�./" + bugun.ToString("MM") + @"/" + bugun.Year + " Ins.Eml.Ynt.S.Md.M.TASKALDIRAN";
+            KoordineTxt.Text = @"�./" + bugun.ToString("MM") + @"/" + bugun.Year + " Huk.M�s.E.SENG�L";
+            ImzalayanTxt.Text = @"Erhan SIPAHIOGLU";
+            ImzalayanMakamTxt.Text = @"Genel M�d�r Yardimcisi";
             EvrakTarihiTxt.Text = bugun.ToString("dd") + " " + bugun.ToString("MMMM") + " " + bugun.Year;
 
             EvrakSayisiYiliTxt.Text = bugun.ToString("yy");
@@ -211,7 +211,7 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
             string jSon = string.Empty;
 
             List<KiraArtisListItem> list = GetDataList();
-            TableDataLbl.Text = "Toplam " + list.Count + " kayıt bulundu";
+            TableDataLbl.Text = "Toplam " + list.Count + " kayit bulundu";
             var serializer = new JavaScriptSerializer();
             serializer.MaxJsonLength = Int32.MaxValue;
             jSon = serializer.Serialize(list);
@@ -258,7 +258,7 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
                 //    }
 
                 //}
-                string artisOrani = "%" + tufe.ToString("N", culturInfo) + " (TÜFE)";
+                string artisOrani = "%" + tufe.ToString("N", culturInfo) + " (T�FE)";
                 //DateTime bastar = string.IsNullOrEmpty(kiraSozlesmeDao.SozBasTar.ConvertToDatetimeEmptyIfNull()) ? DateTime.Today : kiraSozlesmeDao.SozBasTar;
                 //DateTime yenibastar = bastar.AddYears(1);
                 //if ((yenibastar >= ProjeConstants.SINIRLIKIRAARTISI_BASLAMATARIHI) &&
@@ -297,7 +297,7 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
                 kiraArtisListItem.SozlesmeTarihi = ilkSozlesmeTarStr;
 
                 int kiraSuresi = Math.Round(DateTime.Today.AddMonths(1).Subtract(ilkSozlesmeTar).TotalDays / 365).ConvertToInt();
-                kiraArtisListItem.KiraSuresi = kiraSuresi + " Yıl";
+                kiraArtisListItem.KiraSuresi = kiraSuresi + " Yil";
                 kiraArtisListItem.BesYil = kiraSuresi >= 5 ? "True" : "False";
                 kiraArtisListItem.OnYil = kiraSuresi >= 10 ? "True" : "False";
                 kiraArtisListItem.SozlesmeBasTar = sozBasTar.ConvertToDatetimeEmptyIfNull();
@@ -322,7 +322,7 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
         {
             decimal tufe = 1M;
             YasalFaiz yasalFaiz = new YasalFaiz();
-            //tarih = tarih.AddMonths(1);//bir önceki ay geliyor
+            //tarih = tarih.AddMonths(1);//bir �nceki ay geliyor
             //DateTime gelecekAy = DateTime.Today.AddMonths(1);
             yasalFaiz = yasalFaiz.SelectByYilAy(tarih.Year, tarih.Month);
             if (yasalFaiz != null)
@@ -354,7 +354,7 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
         {
             try
             {
-                // Dosya adları 
+                // Dosya adlari 
                 string zaman = DateTime.Now.ToString("dd-MM-yyyy-HH-mm");
                 string yaziDosyaAdi = ("Kira-Artis-" + BolgeIdQS + "-(" + zaman + ").docx").Replace(" ","");
                 string etiketDosyaAdi = ("Adres-EtiketiKA-" + BolgeIdQS + "-(" + zaman + ").docx").Replace(" ", "");
@@ -362,16 +362,16 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
                 if (isYaziOlusturuldu)
                 {
                     YeniAdresEtiketDosyasiOlustur(etiketDosyaAdi);
-                    MessageHelper.PublishMessage("Dosyalar hazırlandı, Dosya ismine basarak yazıyı indirebilirsiniz", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Dosyalar hazirlandi, Dosya ismine basarak yaziyi indirebilirsiniz", ProjeConstants.MESAJ_BASARILI, 2000);
                 }
                 else
-                    MessageHelper.PublishMessage("Hata Oluştu", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Hata Olustu", ProjeConstants.MESAJ_HATA);
                 TabloOlustur();
             }
             catch (Exception ex)
             {
                 TabloOlustur();
-                Exception ex1 = new Exception("Yazı ve Adres oluşturmada hata");
+                Exception ex1 = new Exception("Yazi ve Adres olusturmada hata");
                 ExceptionHelper exh = new ExceptionHelper(ex);
                 exh.PublishException();
             }
@@ -416,12 +416,12 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
             return isYaziOlusturuldu;
         }
         /// <summary>
-        /// Template dosyasını aç
-        /// Paragrafları kopyala
-        /// Yeni bir stream içine koy
-        /// Yeni stream içinde veritabanından gelen verilere göre yeni paragraflar oluştur AddData2DestinationStream()
+        /// Template dosyasini a�
+        /// Paragraflari kopyala
+        /// Yeni bir stream i�ine koy
+        /// Yeni stream i�inde veritabanindan gelen verilere g�re yeni paragraflar olustur AddData2DestinationStream()
         /// SharePointe kaydet
-        /// Yeni dosyalar için bağlantı oluştur
+        /// Yeni dosyalar i�in baglanti olustur
         /// </summary>
         /// <param name="dosyaAdi"></param>
         /// <returns></returns>
@@ -457,7 +457,7 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
             catch (Exception ex)
             {
                 isYaziOlusturuldu = false;
-                throw ex;
+                throw;
             }
             return isYaziOlusturuldu;
         }
@@ -529,9 +529,9 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
                     ili = row["Ili"].ToString();
                     ilcesi = row["Ilcesi"].ToString();
 
-                    // %25 olayı
-                    string artisOraniVar = "Tüketici Fiyat Endeksi (TÜFE) on iki aylık ortalamalara göre %" +tufe;
-                    string artisOrani = "%" + TufeTxt.Text + " (TÜFE)";
+                    // %25 olayi
+                    string artisOraniVar = "T�ketici Fiyat Endeksi (T�FE) on iki aylik ortalamalara g�re %" +tufe;
+                    string artisOrani = "%" + TufeTxt.Text + " (T�FE)";
                     DateTime bastar = string.IsNullOrEmpty(sozBasTar) ? DateTime.Today : sozBasTar.ConvertToDatetime();
                     DateTime yenibastar = bastar.AddYears(1);
                     if ((yenibastar >= ProjeConstants.SINIRLIKIRAARTISI_BASLAMATARIHI) &&
@@ -540,7 +540,7 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
                     {
                         yeniKiraBedeli = Math.Round(kiraBedeli + kiraBedeli * ProjeConstants.SINIRLIKIRAARTISI_ORANI / 100);
                         artisOrani = "%" + ProjeConstants.SINIRLIKIRAARTISI_ORANI.ToString("N", culturInfo) ;
-                        artisOraniVar = "6098 sayılı Türk Borçlar Kanununa eklenen geçici madde kapsamında yeni dönem kiranızın " + artisOrani;
+                        artisOraniVar = "6098 sayili T�rk Bor�lar Kanununa eklenen ge�ici madde kapsaminda yeni d�nem kiranizin " + artisOrani;
                     }
                     else
                     {
@@ -565,14 +565,14 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
                     keyValues.Add("YeniBedelVar", yeniKiraBedeli.ToString("N", culturInfo) + " TL ");
                     keyValues.Add("TufeVar", "%" + TufeTxt.Text);
                     keyValues.Add("OdemeSekliVar", odemeSekli.ToLower());
-                    keyValues.Add("SonOdemeVar", odemeSekli.Equals(ProjeConstants.KIRA_ODMSEKLI_YILLIK)? "sözleşmede belirlenen ayın son mesai gününe": "her ayın en son mesai günü akşamına");
+                    keyValues.Add("SonOdemeVar", odemeSekli.Equals(ProjeConstants.KIRA_ODMSEKLI_YILLIK)? "s�zlesmede belirlenen ayin son mesai g�n�ne": "her ayin en son mesai g�n� aksamina");
                     keyValues.Add("ArtisOraniVar", artisOraniVar);
 
                     keyValues.Add("ImzaVar", ImzalayanTxt.Text);
                     keyValues.Add("UnvanVar", ImzalayanMakamTxt.Text);
                     keyValues.Add("Paraf1Var", Parafe1Txt.Text);
                     keyValues.Add("Paraf2Var", Parafe2Txt.Text);
-                    keyValues.Add("KoordineBaslikVar", "KOORDİNE:");
+                    keyValues.Add("KoordineBaslikVar", "KOORDINE:");
                     keyValues.Add("KoordineVar", KoordineTxt.Text);
 
                     destinationStream = SearchAndReplace(templateStream, keyValues);
@@ -600,7 +600,7 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
         {
             using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(destinationStream, true))
             {
-                //boş sayfa ekle
+                //bos sayfa ekle
                 Paragraph PageBreakParagraph = new Paragraph(new DocumentFormat.OpenXml.Wordprocessing.Run(new DocumentFormat.OpenXml.Wordprocessing.Break() { Type = BreakValues.Page }));
                 wordDoc.MainDocumentPart.Document.Body.Append(PageBreakParagraph);
 
@@ -670,7 +670,7 @@ namespace TBYS_WebParts.KiraArtisYazisiWP
                 {
                     string message = string.Join(Environment.NewLine, uzunAdresliler);
                     MessageHelper.PublishMessage(message + Environment.NewLine +
-                        " adresi çok uzun olduğundan kesilerek kısaltıldı. Lütfen etiketini kontrol ediniz. ", ProjeConstants.MESAJ_BILGI);
+                        " adresi �ok uzun oldugundan kesilerek kisaltildi. L�tfen etiketini kontrol ediniz. ", ProjeConstants.MESAJ_BILGI);
                 }
             }
 

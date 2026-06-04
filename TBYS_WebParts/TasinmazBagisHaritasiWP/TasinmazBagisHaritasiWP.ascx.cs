@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -46,7 +46,7 @@ namespace TBYS_WebParts.TasinmazBagisHaritasiWP
         private void TasinmazTableHeaders()
         {
             TableCell siranoCell = new TableCell();
-            siranoCell.Text = "Sıra";
+            siranoCell.Text = "Sira";
             TasinmazTableHeader.Controls.Add(siranoCell);
 
             TableCell cinsiCell = new TableCell();
@@ -54,11 +54,11 @@ namespace TBYS_WebParts.TasinmazBagisHaritasiWP
             TasinmazTableHeader.Controls.Add(cinsiCell);
 
             TableCell ilcesiCell = new TableCell();
-            ilcesiCell.Text = "İlçe";
+            ilcesiCell.Text = "Il�e";
             TasinmazTableHeader.Controls.Add(ilcesiCell);
 
             TableCell mulkiyetCell = new TableCell();
-            mulkiyetCell.Text = "Mülk. Şekli";
+            mulkiyetCell.Text = "M�lk. Sekli";
             TasinmazTableHeader.Controls.Add(mulkiyetCell);
 
             TableCell kullanimCell = new TableCell();
@@ -66,11 +66,11 @@ namespace TBYS_WebParts.TasinmazBagisHaritasiWP
             TasinmazTableHeader.Controls.Add(kullanimCell);
 
             TableCell EmlakBeyanDegeriCell = new TableCell();
-            EmlakBeyanDegeriCell.Text = "Emlak Beyan Değeri";
+            EmlakBeyanDegeriCell.Text = "Emlak Beyan Degeri";
             TasinmazTableHeader.Controls.Add(EmlakBeyanDegeriCell);
 
             TableCell TahminiRayicDegeriCell = new TableCell();
-            TahminiRayicDegeriCell.Text = "Tahmini Rayiç Değeri";
+            TahminiRayicDegeriCell.Text = "Tahmini Rayi� Degeri";
             TasinmazTableHeader.Controls.Add(TahminiRayicDegeriCell);
 
         }
@@ -118,7 +118,7 @@ namespace TBYS_WebParts.TasinmazBagisHaritasiWP
         private void BagisciTableHeaders()
         {
             TableCell siranoCell = new TableCell();
-            siranoCell.Text = "Sıra";
+            siranoCell.Text = "Sira";
             BagisciTableHeader.Controls.Add(siranoCell);
 
             TableCell adiSoyadiCell = new TableCell();
@@ -126,7 +126,7 @@ namespace TBYS_WebParts.TasinmazBagisHaritasiWP
             BagisciTableHeader.Controls.Add(adiSoyadiCell);
 
             TableCell ilcesiCell = new TableCell();
-            ilcesiCell.Text = "İlçe";
+            ilcesiCell.Text = "Il�e";
             BagisciTableHeader.Controls.Add(ilcesiCell);
 
             TableCell telefonCell = new TableCell();
@@ -134,7 +134,7 @@ namespace TBYS_WebParts.TasinmazBagisHaritasiWP
             BagisciTableHeader.Controls.Add(telefonCell);
 
             TableCell kullanimCell = new TableCell();
-            kullanimCell.Text = "Sağ/Vefat";
+            kullanimCell.Text = "Sag/Vefat";
             BagisciTableHeader.Controls.Add(kullanimCell);
 
             TableCell adresCell = new TableCell();
@@ -207,8 +207,8 @@ namespace TBYS_WebParts.TasinmazBagisHaritasiWP
                 string ingIlAdi = paramLbl.Value;
                 Il il = new Il();
                 il = il.SelectByIngAdi(ingIlAdi);
-                TasinmazTitleLbl.Text = il.IlAdi + " İlinde Bulunan Taşınmazlar";
-                BagisciTitleLbl.Text = il.IlAdi + " İlinde İkamet Eden Bağışçılar";
+                TasinmazTitleLbl.Text = il.IlAdi + " Ilinde Bulunan Tasinmazlar";
+                BagisciTitleLbl.Text = il.IlAdi + " Ilinde Ikamet Eden Bagis�ilar";
                 TasinmazTableDoldur(il.IlAdi);
                 BagisciTableDoldur(il.IlAdi);
                 //ShowModal("Test");

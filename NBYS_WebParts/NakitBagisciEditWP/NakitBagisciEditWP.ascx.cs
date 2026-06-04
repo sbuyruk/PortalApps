@@ -1,4 +1,4 @@
-﻿using Model.NBYS;
+using Model.NBYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -78,7 +78,7 @@ namespace NBYS_WebParts.NakitBagisciEditWP
                 ViewState["NakitBagisciId"] = value;
             }
         }
-        private string ParamQS//bagisci birlestirme webparttan gelen dönüste searc texti de götürsün ki aranan texti tekrar arayabilsin
+        private string ParamQS//bagisci birlestirme webparttan gelen d�n�ste searc texti de g�t�rs�n ki aranan texti tekrar arayabilsin
         {
             get
             {
@@ -171,13 +171,13 @@ namespace NBYS_WebParts.NakitBagisciEditWP
                     else
                     {
                         KaydetBtn.Visible = false;
-                        MessageHelper.PublishMessage("Bağışçı bölgenizde olmadığından bilgilerine erişemezsiniz", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Bagis�i b�lgenizde olmadigindan bilgilerine erisemezsiniz", ProjeConstants.MESAJ_HATA);
                     }
                 }
                 else
                 {
                     KaydetBtn.Visible = false;
-                    MessageHelper.PublishMessage("Bağışçı bulunamadı", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Bagis�i bulunamadi", ProjeConstants.MESAJ_HATA);
                 }
             }
             catch (Exception ex)
@@ -228,7 +228,7 @@ namespace NBYS_WebParts.NakitBagisciEditWP
         private void NakitBagisciFormunuDoldur()
         {
             KaydetBtn.Attributes["Class"] = "btn btn-outline-primary";
-            KaydetBtn.Text = "Güncelle";
+            KaydetBtn.Text = "G�ncelle";
             if (!string.IsNullOrEmpty(NakitBagisciIdQS))
             {
                 int nakitBagisciId = NakitBagisciIdQS.ConvertToInt();
@@ -277,8 +277,8 @@ namespace NBYS_WebParts.NakitBagisciEditWP
                 if (string.IsNullOrWhiteSpace(AdiTxt.Text))
                 {
                     //System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler,
-                    //    typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "Alert.danger('Bağışçı Adı boş olamaz. Lütfen bağışçı adını giriniz.')", true);
-                    MessageHelper.PublishMessage("Bağışçı Adı boş olamaz. Lütfen bağışçı adını giriniz.", ProjeConstants.MESAJ_HATA);
+                    //    typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "Alert.danger('Bagis�i Adi bos olamaz. L�tfen bagis�i adini giriniz.')", true);
+                    MessageHelper.PublishMessage("Bagis�i Adi bos olamaz. L�tfen bagis�i adini giriniz.", ProjeConstants.MESAJ_HATA);
                 }
                 else
                 {
@@ -299,14 +299,14 @@ namespace NBYS_WebParts.NakitBagisciEditWP
 
                 if (isSaved)
                 {
-                    //System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "Alert.success('Nakit Bağışçı Bilgisi Kaydedildi.')", true);
-                    MessageHelper.PublishMessage("Nakit Bağışçı Bilgisi Kaydedildi.", ProjeConstants.MESAJ_BASARILI, 4000);
+                    //System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "Alert.success('Nakit Bagis�i Bilgisi Kaydedildi.')", true);
+                    MessageHelper.PublishMessage("Nakit Bagis�i Bilgisi Kaydedildi.", ProjeConstants.MESAJ_BASARILI, 4000);
 
                 }
                 else
                 {
-                    //System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "Alert.danger('Nakit Bağışçı Bilgisi Kaydedilemedi.')", true);
-                    MessageHelper.PublishMessage("Nakit Bağışçı Bilgisi Kaydedilemedi.", ProjeConstants.MESAJ_HATA);
+                    //System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "Alert.danger('Nakit Bagis�i Bilgisi Kaydedilemedi.')", true);
+                    MessageHelper.PublishMessage("Nakit Bagis�i Bilgisi Kaydedilemedi.", ProjeConstants.MESAJ_HATA);
                 }
             }
             catch (Exception ex)
@@ -377,7 +377,7 @@ namespace NBYS_WebParts.NakitBagisciEditWP
             if (statusChanged)
             {
                 Armagan armagan = new Armagan();
-                var armaganList = armagan.SelectByBagisciIdAndDurum(nakitBagisci.Id, ProjeConstants.DURUM_GONDERILMEDI);//bu bagisci üzerinde gönderilmemiş armagan öğesi varsa tekrar hesaplanması gerekir. Çünkü Tüzel kişi ve özel kişinin armagan aralıkları farklıdır
+                var armaganList = armagan.SelectByBagisciIdAndDurum(nakitBagisci.Id, ProjeConstants.DURUM_GONDERILMEDI);//bu bagisci �zerinde g�nderilmemis armagan �gesi varsa tekrar hesaplanmasi gerekir. ��nk� T�zel kisi ve �zel kisinin armagan araliklari farklidir
                 foreach (Armagan item in armaganList)
                 {
                     EkstreAktarma.SaveArmagan(item.Tarih, nakitBagisci.TuzelKisi, item.BagisciId, 0, user);

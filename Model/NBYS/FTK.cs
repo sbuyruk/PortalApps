@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -47,7 +47,7 @@ namespace Model.NBYS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public override bool Update()
@@ -104,7 +104,7 @@ namespace Model.NBYS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public FTK Select(int id)
@@ -133,7 +133,7 @@ namespace Model.NBYS
                     LEFT JOIN Il_Table B ON B.Id = A.Ili
                     LEFT JOIN Ilce_Table C ON C.Id = A.Ilcesi AND C.IlId=A.Ili
                     LEFT JOIN Bolge_Table D ON D.Id = B.BolgeId
-                WHERE Sayac= (SELECT MAX(Sayac) FROM FTK_Table WHERE FTKIslemId=A.FtkIslemId) --birden fazla guncellenen FTKların son guncellemesini dikkate alsın diye
+                WHERE Sayac= (SELECT MAX(Sayac) FROM FTK_Table WHERE FTKIslemId=A.FtkIslemId) --birden fazla guncellenen FTKlarin son guncellemesini dikkate alsin diye
                     {0}
                     {1}
                     {2}
@@ -271,7 +271,7 @@ namespace Model.NBYS
                 SELECT A.Id IlId,A.BolgeId, C.Adi Bolge, A.IlAdi 
                 FROM Il_Table A 
                 LEFT JOIN Bolge_Table C ON C.Id= A.BolgeId
-                WHERE (A.Id BETWEEN 0 AND 81 AND A.Id>0 AND A.IlAdi != 'Boş') 
+                WHERE (A.Id BETWEEN 0 AND 81 AND A.Id>0 AND A.IlAdi != 'Bos') 
                     {0}
                     {1}
                     AND  A.Id NOT IN (SELECT Ili FROM FTK_Table WHERE Ilcesi={2}) 
@@ -290,7 +290,7 @@ namespace Model.NBYS
 	                INNER JOIN Il_Table B ON B.Id= A.IlId
                     LEFT JOIN Bolge_Table C ON C.Id= B.BolgeId
                 WHERE A.IlceAdi!= {0} 
-                    AND (B.Id BETWEEN 0 AND 81 AND B.IlAdi != 'Boş') 
+                    AND (B.Id BETWEEN 0 AND 81 AND B.IlAdi != 'Bos') 
                     AND  A.Id NOT IN (SELECT Ilcesi FROM FTK_Table WHERE Ilcesi > 0) 
                     {1}
                     {2}

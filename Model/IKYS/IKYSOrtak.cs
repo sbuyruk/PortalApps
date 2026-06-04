@@ -1,4 +1,4 @@
-﻿using DocumentFormat.OpenXml.Spreadsheet;
+using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.SharePoint;
 using Microsoft.SharePoint.Utilities;
 using Model.IKYS;
@@ -30,9 +30,9 @@ namespace Model.Ortak
         }
         #region IKYS
         //IKYS
-        //İzin Hesapları
+        //Izin Hesaplari
         /// <summary>
-        /// Kullanılan izin süresini hesaplarken Cumartesi-Pazar günülerini ve Resmi Tatilleri dikkate alır
+        /// Kullanilan izin s�resini hesaplarken Cumartesi-Pazar g�n�lerini ve Resmi Tatilleri dikkate alir
         /// </summary>
         /// <param name="izinTipi"></param>
         /// <param name="bastar"></param>
@@ -51,7 +51,7 @@ namespace Model.Ortak
                 int sure = 0;
                 do
                 {
-                    //Cumartesi ve Pazar Günlerini izinden sayma
+                    //Cumartesi ve Pazar G�nlerini izinden sayma
                     if (!date.DayOfWeek.Equals(DayOfWeek.Sunday) && !date.DayOfWeek.Equals(DayOfWeek.Saturday))
                     {
                         bool tatil = resmiTatil.ResmiTatilMi(date);
@@ -69,7 +69,7 @@ namespace Model.Ortak
                 TimeSpan ogleArasi = new TimeSpan(1, 0, 0);
                 DateTime ogleArasiBasTar = new DateTime(bastar.Year, bastar.Month, bastar.Day, 12, 0, 0);
                 DateTime ogleArasiBitTar = ogleArasiBasTar.AddHours(1);
-                if ((bastar <= ogleArasiBasTar) && (bittar >= ogleArasiBitTar))//öğle arasını izinden sayma
+                if ((bastar <= ogleArasiBasTar) && (bittar >= ogleArasiBitTar))//�gle arasini izinden sayma
                 {
                     kullanilan = kullanilan.Subtract(ogleArasi);
                 }
@@ -79,14 +79,14 @@ namespace Model.Ortak
                    (izinTipi == ProjeConstants.IZINTIPI_DOGUM_INT) ||
                    (izinTipi == ProjeConstants.IZINTIPI_SUTIZNI_INT))
             {
-                TimeSpan sureTs = bittar.AddDays(1).Subtract(bastar);//basladığı ve bittiği gün dahil
-                sureStr = sureTs.Days.ToString();//tam gun sayısı
+                TimeSpan sureTs = bittar.AddDays(1).Subtract(bastar);//basladigi ve bittigi g�n dahil
+                sureStr = sureTs.Days.ToString();//tam gun sayisi
             }
             return sureStr;
         }
 
         /// <summary>
-        /// Kullanılan izin süresini hesaplarken Pazar gününü ve Resmi Tatilleri dikkate alır
+        /// Kullanilan izin s�resini hesaplarken Pazar g�n�n� ve Resmi Tatilleri dikkate alir
         /// </summary>
         /// <param name="izinTipi"></param>
         /// <param name="bastar"></param>
@@ -122,7 +122,7 @@ namespace Model.Ortak
                 TimeSpan ogleArasi = new TimeSpan(1, 0, 0);
                 DateTime ogleArasiBasTar = new DateTime(bastar.Year, bastar.Month, bastar.Day, 12, 0, 0);
                 DateTime ogleArasiBitTar = ogleArasiBasTar.AddHours(1);
-                if ((bastar <= ogleArasiBasTar) && (bittar >= ogleArasiBitTar))//öğle arasını izinden sayma
+                if ((bastar <= ogleArasiBasTar) && (bittar >= ogleArasiBitTar))//�gle arasini izinden sayma
                 {
                     kullanilan = kullanilan.Subtract(ogleArasi);
                 }
@@ -131,8 +131,8 @@ namespace Model.Ortak
             else if ((izinTipi == ProjeConstants.IZINTIPI_UCRETSIZ_INT) ||
                    (izinTipi == ProjeConstants.IZINTIPI_DOGUM_INT))
             {
-                TimeSpan sureTs = bittar.AddDays(1).Subtract(bastar);//basladığı ve bittiği gün dahil
-                sureStr = sureTs.Days.ToString();//tam gun sayısı
+                TimeSpan sureTs = bittar.AddDays(1).Subtract(bastar);//basladigi ve bittigi g�n dahil
+                sureStr = sureTs.Days.ToString();//tam gun sayisi
             }
             return sureStr;
         }
@@ -154,7 +154,7 @@ namespace Model.Ortak
             int hakEdilenIzinGunSayisi = ProjeConstants.IZIN_SURESI_1_5;
             int ilkcalistigiYilSayisi = izinDonemiBasi.Year - izinDonemBasTar.Year;
 
-            //ilk yıl izin hakkı 0 gün
+            //ilk yil izin hakki 0 g�n
             if (ilkcalistigiYilSayisi < 1)
             {
                 hakEdilenIzinGunSayisi = ProjeConstants.IZIN_SURESI_0;
@@ -169,7 +169,7 @@ namespace Model.Ortak
                 {
                     try
                     {
-                        //izinDonemiBasi'ndan ise baslamatar cikararak calistigi yıl suresini bul
+                        //izinDonemiBasi'ndan ise baslamatar cikararak calistigi yil suresini bul
                         IsBilgileri ib = new IsBilgileri();
                         ib = ib.SelectByPersonelId(personel.Id);
                         if (ib != null)
@@ -179,7 +179,7 @@ namespace Model.Ortak
 
                             if (izinDonemiBasi < izinDonemBasTar)
                             {
-                                Exception ex = new Exception("İzin Dönemi Başı İşe başlama tarihinden küçük olamaz");
+                                Exception ex = new Exception("Izin D�nemi Basi Ise baslama tarihinden k���k olamaz");
                                 throw (ex);
 
                             }
@@ -193,9 +193,9 @@ namespace Model.Ortak
                                 calistigiYilSayisi += ekGun;
                             }
                             /*
-                                (1)  1 – 5 yıl olanlara (5 yıl dâhil) 14 iş günü, 
-                                (2)  6 – 15 yıl olanlara 20 iş günü, 
-                                (3)  15 yıl ve daha fazla olanlara 26 iş günü, yıllık ücretli izin verilir. 
+                                (1)  1 � 5 yil olanlara (5 yil d�hil) 14 is g�n�, 
+                                (2)  6 � 15 yil olanlara 20 is g�n�, 
+                                (3)  15 yil ve daha fazla olanlara 26 is g�n�, yillik �cretli izin verilir. 
                             */
 
                             if ((calistigiYilSayisi >= 1) && (calistigiYilSayisi <= 5))
@@ -273,18 +273,18 @@ namespace Model.Ortak
                     izintipi = izintipi.Select<IzinTanim>(izinTalep.IzinTipi);
                     string izintipiStr = izintipi == null ? "" : izintipi.Adi;
 
-                    string subject = bastarBittar + " tarihleri arasındaki " + izintipiStr + " İzin talebiniz.";
+                    string subject = bastarBittar + " tarihleri arasindaki " + izintipiStr + " Izin talebiniz.";
 
-                    string url = "<a href = 'http://tskgv-portal/YonetimBirimleri/PersonelVeIdariIslerSubesi/Sayfalar/IzinTalepListesi.aspx'>İzin Talepleri </a>";
+                    string url = "<a href = 'http://tskgv-portal/YonetimBirimleri/PersonelVeIdariIslerSubesi/Sayfalar/IzinTalepListesi.aspx'>Izin Talepleri </a>";
                     if (izinTalep.IzinTipi == ProjeConstants.IZINTIPI_MAZERET_INT)
                     {
-                        url = "<a href = 'http://tskgv-portal/YonetimBirimleri/PersonelVeIdariIslerSubesi/Sayfalar/MazeretIzinTalepListesi.aspx'>İzin Talepleri </a>";
+                        url = "<a href = 'http://tskgv-portal/YonetimBirimleri/PersonelVeIdariIslerSubesi/Sayfalar/MazeretIzinTalepListesi.aspx'>Izin Talepleri </a>";
                     }
 
-                    //string userbody = bastarBittar + " tarihleri arasında talep ettiğiniz " + izintipiStr + " izniniz kontrol edilmiştir.<br>"
-                    //    + " Lütfen " + userurl + " talep belgenizi bastırıp imzalatarak Personel Kısmına teslim ediniz.";
-                    //string body = personel.Adi + " " + personel.Soyadi + " tarafından " + bastarBittar + " tarihleri arasında talep edilen " + izintipiStr
-                    //    + " kontrol edilmiştir.<br>Ayrıntılı bilgi için " + url + " sayfasına gidiniz";
+                    //string userbody = bastarBittar + " tarihleri arasinda talep ettiginiz " + izintipiStr + " izniniz kontrol edilmistir.<br>"
+                    //    + " L�tfen " + userurl + " talep belgenizi bastirip imzalatarak Personel Kismina teslim ediniz.";
+                    //string body = personel.Adi + " " + personel.Soyadi + " tarafindan " + bastarBittar + " tarihleri arasinda talep edilen " + izintipiStr
+                    //    + " kontrol edilmistir.<br>Ayrintili bilgi i�in " + url + " sayfasina gidiniz";
                     string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                     string rawUrl = System.Web.HttpContext.Current.Request.RawUrl.ToString();
                     int index = currentUrl.IndexOf(rawUrl);
@@ -311,30 +311,30 @@ namespace Model.Ortak
 
                         izinBelgesiUrl = string.Format("{0}?IzinTalepId={1}&SureStr={2}&KalanIzinStr={3}&SonIzin={4}", rootUrl + ProjeConstants.RAPOR_MAZERETIZINBELGESI_URL, izinTalepId, izinSuresi, kalanIzin, sonIzin);
                     }
-                    else //diger İzinler
+                    else //diger Izinler
                     {
                         string izinSuresi = izinTalep.Sure.ConvertToTimeSpanReturnInHHmm();
                         izinBelgesiUrl = string.Format("{0}?IzinTalepId={1}&SureStr={2}&KalanIzinStr={3}&SonIzin={4}", rootUrl + ProjeConstants.RAPOR_IZINBELGESI_URL, izinTalepId, izinSuresi, "", "");
                     }
 
 
-                    string userbody = bastarBittar + " tarihleri arasında talep ettiğiniz " + izintipiStr + " izniniz kontrol edilmiştir.<br>Döküm almak için "
-                        + " lütfen <a href ='" + izinBelgesiUrl + "'>İZİN BELGESİ</a>ni bastırıp imzalatarak Personel Kısmına teslim ediniz.";
-                    string body = personel.Adi + " " + personel.Soyadi + " tarafından " + bastarBittar + " tarihleri arasında talep edilen " + izintipiStr
-                        + " kontrol edilmiştir.<br>Ayrıntılı bilgi için " + url + " sayfasına gidiniz";
+                    string userbody = bastarBittar + " tarihleri arasinda talep ettiginiz " + izintipiStr + " izniniz kontrol edilmistir.<br>D�k�m almak i�in "
+                        + " l�tfen <a href ='" + izinBelgesiUrl + "'>IZIN BELGESI</a>ni bastirip imzalatarak Personel Kismina teslim ediniz.";
+                    string body = personel.Adi + " " + personel.Soyadi + " tarafindan " + bastarBittar + " tarihleri arasinda talep edilen " + izintipiStr
+                        + " kontrol edilmistir.<br>Ayrintili bilgi i�in " + url + " sayfasina gidiniz";
 
                     /////////////////////
                     if (kabulRedOnay.Equals("Red"))
                     {
-                        userbody = bastarBittar + " tarihleri arasında talep ettiğiniz " + izintipiStr + " izniniz reddedilmiştir.<br> Personel Kısmı açıklaması:" + izinTalep.Aciklama;
-                        body = personel.Adi + " " + personel.Soyadi + " tarafından " + bastarBittar + " tarihleri arasında talep edilen " + izintipiStr + " reddedilmiştir.<br>" +
-                            " Ayrıntılı bilgi için " + url + " sayfasına gidiniz";
+                        userbody = bastarBittar + " tarihleri arasinda talep ettiginiz " + izintipiStr + " izniniz reddedilmistir.<br> Personel Kismi a�iklamasi:" + izinTalep.Aciklama;
+                        body = personel.Adi + " " + personel.Soyadi + " tarafindan " + bastarBittar + " tarihleri arasinda talep edilen " + izintipiStr + " reddedilmistir.<br>" +
+                            " Ayrintili bilgi i�in " + url + " sayfasina gidiniz";
                     }
                     else if (kabulRedOnay.Equals("Onay"))
                     {
-                        userbody = bastarBittar + " tarihleri arasında talep ettiğiniz " + izintipiStr + " izniniz kayıtlara işlenmiştir.<br> İyi izinler.";
-                        body = personel.Adi + " " + personel.Soyadi + " tarafından " + bastarBittar + " tarihleri arasında talep edilen " + izintipiStr +
-                            " kayıtlara işlenmiştir.";
+                        userbody = bastarBittar + " tarihleri arasinda talep ettiginiz " + izintipiStr + " izniniz kayitlara islenmistir.<br> Iyi izinler.";
+                        body = personel.Adi + " " + personel.Soyadi + " tarafindan " + bastarBittar + " tarihleri arasinda talep edilen " + izintipiStr +
+                            " kayitlara islenmistir.";
                     }
                     IletisimBilgileri ib = new IletisimBilgileri();
                     ib = ib.SelectByPersonelId(personel.Id);
@@ -353,7 +353,7 @@ namespace Model.Ortak
             }
             else
             {
-                MessageHelper.PublishMessage("Personel ve/veya İzintalep bilgisi bulunamadı", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Personel ve/veya Izintalep bilgisi bulunamadi", ProjeConstants.MESAJ_HATA);
             }
 
         }
@@ -363,7 +363,7 @@ namespace Model.Ortak
             izinTalep = izinTalep.Select<IzinTalep>(izinTalepId);
             if (izinTalep != null)
             {
-                //EPostayı hazırla
+                //EPostayi hazirla
                 string to = personel.KullaniciAdi + "@tskgv.local";
                 string from = "ikys@tskgv.local";
                 string bastarBittar = izinTalep.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + "-" + izinTalep.BitisTarihi.ConvertToDatetimeEmptyIfNull();
@@ -372,10 +372,10 @@ namespace Model.Ortak
                 izintipi = izintipi.Select<IzinTanim>(izinTalep.IzinTipi);
                 string izintipiStr = izintipi == null ? "" : izintipi.Adi;
 
-                string subject = bastarBittar + " tarihleri arasındaki " + izintipiStr + " İzin talebiniz. ";
-                string userurl = "<a href = 'http://tskgv-portal/KullaniciUygulamalari/Sayfalar/KisiselSayfa.aspx'>kişisel sayfanızdan </a>";
+                string subject = bastarBittar + " tarihleri arasindaki " + izintipiStr + " Izin talebiniz. ";
+                string userurl = "<a href = 'http://tskgv-portal/KullaniciUygulamalari/Sayfalar/KisiselSayfa.aspx'>kisisel sayfanizdan </a>";
 
-                string body = izintipiStr + " İzin talebiniz oluşturulmuştur. <br>Lütfen " + userurl + " talebinizin durumunu takip ediniz.";
+                string body = izintipiStr + " Izin talebiniz olusturulmustur. <br>L�tfen " + userurl + " talebinizin durumunu takip ediniz.";
 
                 IletisimBilgileri ib = new IletisimBilgileri();
                 ib = ib.SelectByPersonelId(personel.Id);
@@ -383,19 +383,19 @@ namespace Model.Ortak
                 {
                     to = ib.IntranetEPosta;
                 }
-                //İzin sahibine eposta gönder
+                //Izin sahibine eposta g�nder
                 string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL);
                 MailHelper.EPostaGonder(from, to, subject, body, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
 
-                //IKYS Onay grubuna eposta gönder
+                //IKYS Onay grubuna eposta g�nder
                 to = "izinonaymailgrubu@tskgv.local";
                 subject = personel.Adi + " " + personel.Soyadi + " Yeni " + izintipiStr + " izin talebi ";
-                string url = "<a href = 'http://tskgv-portal/YonetimBirimleri/PersonelVeIdariIslerSubesi/Sayfalar/IzinTalepListesi.aspx'>İzin Talepleri </a>";
+                string url = "<a href = 'http://tskgv-portal/YonetimBirimleri/PersonelVeIdariIslerSubesi/Sayfalar/IzinTalepListesi.aspx'>Izin Talepleri </a>";
                 if (izinTalep.IzinTipi == ProjeConstants.IZINTIPI_MAZERET_INT)
                 {
-                    url = "<a href = 'http://tskgv-portal/YonetimBirimleri/PersonelVeIdariIslerSubesi/Sayfalar/MazeretIzinTalepListesi.aspx'>İzin Talepleri </a>";
+                    url = "<a href = 'http://tskgv-portal/YonetimBirimleri/PersonelVeIdariIslerSubesi/Sayfalar/MazeretIzinTalepListesi.aspx'>Izin Talepleri </a>";
                 }
-                body = personel.Adi + " " + personel.Soyadi + " " + bastarBittar + " tarihleri arasında " + izintipiStr + " izin talebinde bulunmuştur. <br>Lütfen kontrol-red işlemleri için " + url + " sayfasına gidiniz";
+                body = personel.Adi + " " + personel.Soyadi + " " + bastarBittar + " tarihleri arasinda " + izintipiStr + " izin talebinde bulunmustur. <br>L�tfen kontrol-red islemleri i�in " + url + " sayfasina gidiniz";
                 MailHelper.EPostaGonder(from, to, subject, body, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
             }
 
@@ -415,9 +415,9 @@ namespace Model.Ortak
                 if (yoklama != null)
                 {
                     string bastarBittar = yoklama.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + "-" + yoklama.BitisTarihi.ConvertToDatetimeEmptyIfNull();
-                    subject = personel.Adi + " " + personel.Soyadi + " tarafından " + bastarBittar + " tarihleri arasında Şehir İçi Görev girilmiştir. ";
+                    subject = personel.Adi + " " + personel.Soyadi + " tarafindan " + bastarBittar + " tarihleri arasinda Sehir I�i G�rev girilmistir. ";
                     url = "<a href = 'http://tskgv-portal/YonetimBirimleri/PersonelVeIdariIslerSubesi/Sayfalar/YoklamaListesi.aspx'>Yoklama Listesi </a>";
-                    body = personel.Adi + " " + personel.Soyadi + " tarafından " + bastarBittar + " tarihleri arasında Şehir İçi Görev Onayı girilmiştir. <br>Yoklama işlemlerini " + url + " sayfasından yapabilirsiniz.";
+                    body = personel.Adi + " " + personel.Soyadi + " tarafindan " + bastarBittar + " tarihleri arasinda Sehir I�i G�rev Onayi girilmistir. <br>Yoklama islemlerini " + url + " sayfasindan yapabilirsiniz.";
 
                     string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL);
                     MailHelper.EPostaGonder(from, to, subject, body, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
@@ -431,9 +431,9 @@ namespace Model.Ortak
                 if (gorevOnay != null)
                 {
                     string bastarBittar = gorevOnay.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + "-" + gorevOnay.BitisTarihi.ConvertToDatetimeEmptyIfNull();
-                    subject = personel.Adi + " " + personel.Soyadi + " tarafından " + bastarBittar + " tarihleri arasında Yurt İçi/Yurt Dışı Görev Onayı girilmiştir. ";
-                    url = "<a href = 'http://tskgv-portal/YonetimBirimleri/PersonelVeIdariIslerSubesi/Sayfalar/GorevOnayListesi.aspx'>Görev Onay Listesi </a>";
-                    body = personel.Adi + " " + personel.Soyadi + " tarafından " + bastarBittar + " tarihleri arasında Yurt İçi/Yurt Dışı Görev Onayı girilmiştir. <br>Görev onay işlemlerini " + url + " sayfasından yapabilirsiniz.";
+                    subject = personel.Adi + " " + personel.Soyadi + " tarafindan " + bastarBittar + " tarihleri arasinda Yurt I�i/Yurt Disi G�rev Onayi girilmistir. ";
+                    url = "<a href = 'http://tskgv-portal/YonetimBirimleri/PersonelVeIdariIslerSubesi/Sayfalar/GorevOnayListesi.aspx'>G�rev Onay Listesi </a>";
+                    body = personel.Adi + " " + personel.Soyadi + " tarafindan " + bastarBittar + " tarihleri arasinda Yurt I�i/Yurt Disi G�rev Onayi girilmistir. <br>G�rev onay islemlerini " + url + " sayfasindan yapabilirsiniz.";
                     StringBuilder tabloSB = EpostaTablosunuOlustur(gorevOnay);
                     body += "</br>" + tabloSB.ToString();
                     string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL);
@@ -469,42 +469,42 @@ namespace Model.Ortak
 
             sb.Append("<table>");
             sb.Append("<tr>");
-            sb.Append("<th colspan='2' style='text-align: center; background-color: #dddddd'>Görev Bilgileri</th>");
+            sb.Append("<th colspan='2' style='text-align: center; background-color: #dddddd'>G�rev Bilgileri</th>");
             sb.Append("</tr>");
             sb.Append("<tr>");
-            sb.Append("<th>Görev Kayıt Numarası</th>");
+            sb.Append("<th>G�rev Kayit Numarasi</th>");
             sb.Append("<td>" + gorevOnay.Id + "</td>");
             sb.Append("</tr>");
             sb.Append("<tr>");
-            sb.Append("<th>Görevin Sebebi</th>");
+            sb.Append("<th>G�revin Sebebi</th>");
             sb.Append("<td>" + gorevOnay.GorevinSebebi + "</td>");
             sb.Append("</tr>");
             sb.Append("<tr>");
-            sb.Append("<th>Başlangıç Zamanı</th>");
+            sb.Append("<th>Baslangi� Zamani</th>");
             sb.Append("<td>" + gorevOnay.BaslangicTarihi.ToString("dd.MM.yyyy HH:mm") + "</td>");
             sb.Append("</tr>");
             sb.Append("<tr>");
-            sb.Append("<th>Bitiş Zamanı</th>");
+            sb.Append("<th>Bitis Zamani</th>");
             sb.Append("<td>" + gorevOnay.BitisTarihi.ToString("dd.MM.yyyy HH:mm") + "</td>");
             sb.Append("</tr>");
             sb.Append("<tr>");
-            sb.Append("<th>Görevin Yeri</th>");
+            sb.Append("<th>G�revin Yeri</th>");
             sb.Append("<td>" + gorevOnay.GorevinYeri + "</td>");
             sb.Append("</tr>");
             sb.Append("<tr>");
-            sb.Append("<th>Ulaşım Aracı</th>");
+            sb.Append("<th>Ulasim Araci</th>");
             sb.Append("<td>" + gorevOnay.UlasimAraci + "</td>");
             sb.Append("</tr>");
             sb.Append("<tr>");
-            sb.Append("<th>Açıklama</th>");
+            sb.Append("<th>A�iklama</th>");
             sb.Append("<td>" + gorevOnay.Aciklama + "</td>");
             sb.Append("</tr>");
 
             sb.Append("</table><br/><br/>");
             sb.Append("<p>");
-            sb.Append("İnsan Kaynakları Yönetim Sistemi</br>" + DateTime.Now.ToString("dd.MM.yyyy HH:mm"));
+            sb.Append("Insan Kaynaklari Y�netim Sistemi</br>" + DateTime.Now.ToString("dd.MM.yyyy HH:mm"));
             sb.Append("</p>");
-            sb.Append("<p style='color:gray; font-family: arial;font-size:xx-small;'>IKYS &trade; Bilgi Sistemleri Kısmı </p> ");
+            sb.Append("<p style='color:gray; font-family: arial;font-size:xx-small;'>IKYS &trade; Bilgi Sistemleri Kismi </p> ");
             return sb;
         }
         public static void BilgiSistemMailGrubunaEPostaGonder(PersonelItem personelItem, string baslik )
@@ -516,7 +516,7 @@ namespace Model.Ortak
 
 
             string grupAdi = userto.Split('@')[0];
-            bool grupMu = UtilityHelper.IsGroup("TSKGV", grupAdi);//böyle bir grup var mı
+            bool grupMu = UtilityHelper.IsGroup("TSKGV", grupAdi);//b�yle bir grup var mi
             if (grupMu)// varsa
             {
                 List<UserPrincipal> uplist = UtilityHelper.GetGroupMembers("TSKGV", grupAdi);
@@ -563,11 +563,11 @@ namespace Model.Ortak
             sb.Append("<th colspan='2' style='text-align: center; background-color: #dddddd'>Personel Bilgileri</th>");
             sb.Append("</tr>");
             sb.Append("<tr>");
-            sb.Append("<th>Adı Soyadı</th>");
+            sb.Append("<th>Adi Soyadi</th>");
             sb.Append("<td>" + personelItem.PersonelBilgileri.Adi + " " + personelItem.PersonelBilgileri.Soyadi+ "</td>");
             sb.Append("</tr>");
             sb.Append("<tr>");
-            sb.Append("<th>Kullanıcı Adı</th>");
+            sb.Append("<th>Kullanici Adi</th>");
             sb.Append("<td>" + personelItem.PersonelBilgileri.KullaniciAdi + "</td>");
             sb.Append("</tr>");
             sb.Append("<tr>");
@@ -582,7 +582,7 @@ namespace Model.Ortak
             sb.Append("<th>Birimi</th>");
             sb.Append("<td>" + personelItem.IsBilgileriItem.Birim?.Adi + "</td>");
             sb.Append("</tr>");
-            sb.Append("<th>Ünvanı</th>");
+            sb.Append("<th>�nvani</th>");
             sb.Append("<td>" + personelItem.IsBilgileriItem.Unvan?.Adi+ "</td>");
             sb.Append("</tr>");
            
@@ -591,7 +591,7 @@ namespace Model.Ortak
             sb.Append("<p>");
             sb.Append("IKYS.</br>" + DateTime.Now.ToString("dd.MM.yyyy HH:mm"));
             sb.Append("</p>");
-            sb.Append("<p style='color:gray; font-family: arial;font-size:xx-small;'>TYS &trade; Bilgi Sistem Kısmı </p> ");
+            sb.Append("<p style='color:gray; font-family: arial;font-size:xx-small;'>TYS &trade; Bilgi Sistem Kismi </p> ");
             return sb;
         }
         private static string UstBirimGetir(int parentId)
@@ -667,7 +667,7 @@ namespace Model.Ortak
             }
             else
             {
-                MessageHelper.PublishMessage("Personel bulunamadı",ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Personel bulunamadi",ProjeConstants.MESAJ_HATA);
                 return string.Empty;
             }
         }
@@ -691,7 +691,7 @@ namespace Model.Ortak
             }
             else
             {
-                MessageHelper.PublishMessage("Personel bulunamadı", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Personel bulunamadi", ProjeConstants.MESAJ_HATA);
                 return null;
             }
         }

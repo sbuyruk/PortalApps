@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace Utility.ProjeGlobal
 {
@@ -15,40 +15,40 @@ namespace Utility.ProjeGlobal
         //moduller MTS
         public const string MTS_FAALIYET = "Faaliyet";
         public const string MTS_KISI = "Kisi";
-        public const string MTS_ARAMAGORUSME = "Arama/Görüşme";
-        public const string MTS_ANIOBJESIDAGITIM = "Anı Objesi Dağıtım";
-        public const string MTS_ANIOBJESITANIM = "Anı Objesi Tanım";
-        public const string MTS_DEPOTANIM = "Depo Tanım";
-        public const string MTS_KAYNAKTANIM = "Kaynak Tanım";
-        public const string MTS_ANIOBJESI = "Anı Objesi";
-        public const string MTS_FAALIYETKATILIM = "Faaliyet Katılım";
+        public const string MTS_ARAMAGORUSME = "Arama/G�r�sme";
+        public const string MTS_ANIOBJESIDAGITIM = "Ani Objesi Dagitim";
+        public const string MTS_ANIOBJESITANIM = "Ani Objesi Tanim";
+        public const string MTS_DEPOTANIM = "Depo Tanim";
+        public const string MTS_KAYNAKTANIM = "Kaynak Tanim";
+        public const string MTS_ANIOBJESI = "Ani Objesi";
+        public const string MTS_FAALIYETKATILIM = "Faaliyet Katilim";
         public const string MTS_ANIOBJESISTOKLU = "Stoklu";
         public const string MTS_ANIOBJESISTOKSUZ = "Stoksuz";
-        public const string MTS_KURUMGOREV = "MTS Kurum Görev";
-        public const string MTS_KURUMTANIM = "MTS Kurum Tanım";
-        public const string MTS_GOREVTANIM = "MTS Görev Tanım";
-        public const string MTS_UNVANTANIM = "MTS Ünvan Tanım";
-        public const string MTSGOREVDURUMU_GOREVDE = "Görevde";
-        public const string MTSGOREVDURUMU_AYRILDI = "Ayrıldı";
+        public const string MTS_KURUMGOREV = "MTS Kurum G�rev";
+        public const string MTS_KURUMTANIM = "MTS Kurum Tanim";
+        public const string MTS_GOREVTANIM = "MTS G�rev Tanim";
+        public const string MTS_UNVANTANIM = "MTS �nvan Tanim";
+        public const string MTSGOREVDURUMU_GOREVDE = "G�revde";
+        public const string MTSGOREVDURUMU_AYRILDI = "Ayrildi";
         public const string MTSAYRILMASEBEBI_BOS = "";
         public const string MTSTAKVIMDAVETIYESI_GONDERILMEDI = "";
-        public const string MTSTAKVIMDAVETIYESI_GONDERILDI = "Davet Gönderildi";
+        public const string MTSTAKVIMDAVETIYESI_GONDERILDI = "Davet G�nderildi";
         //moduller IKYS
         public const string IKYS_AILE = "Aile";        
-        public const string IKYS_BIRIMTANIM = "Birim Tanım";
+        public const string IKYS_BIRIMTANIM = "Birim Tanim";
         public const string IKYS_BULUNMAMASEBEBI = "Bulunmama Sebebi";
-        public const string IKYS_EGITIM = "Eğitim";
-        public const string IKYS_EGITIMSEVIYESI = "Eğitim Seviyesi";
-        public const string IKYS_GOREVONAY = "Görev Onayı";
-        public const string IKYS_GOREVTANIM = "Görev Tanım";
-        public const string IKYS_ESKIPERSONELGOREVTANIM = "Eski Görev Tanım";
-        public const string IKYS_ILETISIMBILGILERI = "İletişim Bilgileri";
-        public const string IKYS_ISBILGILERI = "İş Bilgileri";
-        public const string IKYS_ISTECRUBE = "İş Tecrübesi";
-        public const string IKYS_IZINDONEM = "İzin Dönemleri";
-        public const string IKYS_IZINHAREKET = "İzin Hareket";
-        public const string IKYS_IZINTALEP = "İzin Talep";
-        public const string IKYS_IZINTANIM = "İzin Tanım";
+        public const string IKYS_EGITIM = "Egitim";
+        public const string IKYS_EGITIMSEVIYESI = "Egitim Seviyesi";
+        public const string IKYS_GOREVONAY = "G�rev Onayi";
+        public const string IKYS_GOREVTANIM = "G�rev Tanim";
+        public const string IKYS_ESKIPERSONELGOREVTANIM = "Eski G�rev Tanim";
+        public const string IKYS_ILETISIMBILGILERI = "Iletisim Bilgileri";
+        public const string IKYS_ISBILGILERI = "Is Bilgileri";
+        public const string IKYS_ISTECRUBE = "Is Tecr�besi";
+        public const string IKYS_IZINDONEM = "Izin D�nemleri";
+        public const string IKYS_IZINHAREKET = "Izin Hareket";
+        public const string IKYS_IZINTALEP = "Izin Talep";
+        public const string IKYS_IZINTANIM = "Izin Tanim";
         public const string IKYS_KIMLIK = "Kimlik";
         public const string IKYS_KURS = "Kurs";
         public const string IKYS_MAHSUP = "Mahsup";
@@ -56,62 +56,62 @@ namespace Utility.ProjeGlobal
         public const string IKYS_PERSONEL = "Personel";
         public const string IKYS_RESMITATIL = "Resmi Tatil";
         public const string IKYS_TAHSILTANIM = "Tahsil";
-        public const string IKYS_UNVANTANIM = "Ünvan Tanım";
-        public const string IKYS_YABANCIDIL = "Yabancı Dil";
+        public const string IKYS_UNVANTANIM = "�nvan Tanim";
+        public const string IKYS_YABANCIDIL = "Yabanci Dil";
         public const string IKYS_YOKLAMA = "Yoklama";
-        public const string IKYS_HARCIRAH= "Harcırah";
-        public const string IKYS_MAASARTISI= "Maaş Artışı";
+        public const string IKYS_HARCIRAH= "Harcirah";
+        public const string IKYS_MAASARTISI= "Maas Artisi";
         //moduller  NBYS
-        public const string NBYS_ARMAGAN = "Armağan";
-        public const string NBYS_ARMAGANTANIM = "Armağan Tanım";
-        public const string NBYS_BANKATANIM = "Banka Tanım";
+        public const string NBYS_ARMAGAN = "Armagan";
+        public const string NBYS_ARMAGANTANIM = "Armagan Tanim";
+        public const string NBYS_BANKATANIM = "Banka Tanim";
         public const string NBYS_EKSTREAKTARMA = "Ekstre Aktarma";
         public const string NBYS_FTK = "FTK";
-        public const string NBYS_FTKISLEM = "FTK İşlem";
-        public const string NBYS_FTKKISI = "FTK Kişi";
-        public const string NBYS_NAKITBAGISCI = "Nakit Bağışçı";
-        public const string NBYS_DUZENLINAKITBAGISCI = "Düzenli Nakit Bağışçı";
-        public const string NBYS_NAKITBAGISHAREKET = "Nakit Bağış Hareket";
+        public const string NBYS_FTKISLEM = "FTK Islem";
+        public const string NBYS_FTKKISI = "FTK Kisi";
+        public const string NBYS_NAKITBAGISCI = "Nakit Bagis�i";
+        public const string NBYS_DUZENLINAKITBAGISCI = "D�zenli Nakit Bagis�i";
+        public const string NBYS_NAKITBAGISHAREKET = "Nakit Bagis Hareket";
         public const string NBYS_NBYSPARAMETRE = "NBYS Parametre";
-        public const string NBYS_SMSAYLIKBAGIS = "SMS Aylık Bağış";
+        public const string NBYS_SMSAYLIKBAGIS = "SMS Aylik Bagis";
 
-        public const string NBYS_BOLGE_NAKITBAGISCILISTESİ = "BolgeNakitBagisciListesi";
+        public const string NBYS_BOLGE_NAKITBAGISCILISTESI = "BolgeNakitBagisciListesi";
         //moduller  TBYS
-        public const string TBYS_BAGIMSIZBOLUM = "Bağımsız Bölüm";
-        public const string TBYS_BAGIS = "Bağış";
-        public const string TBYS_BAGISCIBAGIS = "Bağışçı Bağış";
-        public const string TBYS_BAGISCITALEPLERI = "Bağışçı Talepleri";
-        public const string TBYS_BAGISCIYAKINLARI = "Bağışçı Yakınları";
-        public const string TBYS_GECIKMEZAMMI = "Gecikme Zammı";
+        public const string TBYS_BAGIMSIZBOLUM = "Bagimsiz B�l�m";
+        public const string TBYS_BAGIS = "Bagis";
+        public const string TBYS_BAGISCIBAGIS = "Bagis�i Bagis";
+        public const string TBYS_BAGISCITALEPLERI = "Bagis�i Talepleri";
+        public const string TBYS_BAGISCIYAKINLARI = "Bagis�i Yakinlari";
+        public const string TBYS_GECIKMEZAMMI = "Gecikme Zammi";
         public const string TBYS_HUKUKITAKIP = "Hukuki Takip";
-        public const string TBYS_KIRACI = "Kiracı";
+        public const string TBYS_KIRACI = "Kiraci";
         public const string TBYS_KIRAEKSTREAKTARMA = "Kira Ekstre Aktarma";
-        public const string TBYS_KIRASOZLESME = "Kira Sözlesme";
+        public const string TBYS_KIRASOZLESME = "Kira S�zlesme";
         public const string TBYS_KIRABORCUTAKIP = "Kira Borcu Takip";
-        public const string TBYS_ODEME = "Ödeme";
-        public const string TBYS_ODEMEAYRINTI = "Ödeme Ayrıntı";
-        public const string TBYS_ODEMEAYRISTIRMA = "Ödeme Ayrıştırma";
-        public const string TBYS_ODEMEPLANI = "Ödeme Planı";
-        public const string TBYS_ODEMESEBEBITANIM = "Ödeme Sebebi Tanım";
-        public const string TBYS_ONARIM = "Onarım";
+        public const string TBYS_ODEME = "�deme";
+        public const string TBYS_ODEMEAYRINTI = "�deme Ayrinti";
+        public const string TBYS_ODEMEAYRISTIRMA = "�deme Ayristirma";
+        public const string TBYS_ODEMEPLANI = "�deme Plani";
+        public const string TBYS_ODEMESEBEBITANIM = "�deme Sebebi Tanim";
+        public const string TBYS_ONARIM = "Onarim";
         public const string TBYS_SIGORTA = "Sigorta";
-        public const string TBYS_SOZLESMETASINMAZ = "Sözleşme Taşınmaz";
-        public const string TBYS_TASINMAZ = "Taşınmaz";
-        public const string TBYS_TASINMAZBAGISCI = "Taşınmaz Bagisci";
-        public const string TBYS_TASINMAZTAAHHUT = "Taşınmaz Taahhut";
-        public const string TBYS_TEMINATISLEM = "Teminat İşlem";
-        public const string TBYS_VASIYETCI = "Vasiyetçi";
-        public const string TBYS_VASIYETEKONUVARLIK = "Vasiyete Konu Varlık";
+        public const string TBYS_SOZLESMETASINMAZ = "S�zlesme Tasinmaz";
+        public const string TBYS_TASINMAZ = "Tasinmaz";
+        public const string TBYS_TASINMAZBAGISCI = "Tasinmaz Bagisci";
+        public const string TBYS_TASINMAZTAAHHUT = "Tasinmaz Taahhut";
+        public const string TBYS_TEMINATISLEM = "Teminat Islem";
+        public const string TBYS_VASIYETCI = "Vasiyet�i";
+        public const string TBYS_VASIYETEKONUVARLIK = "Vasiyete Konu Varlik";
         public const string TBYS_YASALFAIZ = "Yasal Faiz";
         //moduller  TYS
         // Hukuk
         public const string HUKUK_DAVA_DURUMU_DEVAM = "Devam Ediyor";
-        public const string HUKUK_DAVA_DURUMU_KARARACIKTI = "Karara Çıktı";
-        public const string HUKUK_DAVA_DURUMU_ARSIV = "Arşiv";
+        public const string HUKUK_DAVA_DURUMU_KARARACIKTI = "Karara �ikti";
+        public const string HUKUK_DAVA_DURUMU_ARSIV = "Arsiv";
         //moduller  Portal
-        public const string PORTAL_TOPLANTI = "Toplantı";
-        public const string PORTAL_TOPLANTIKATILIM = "Toplantı Katılım";
-        public const string PORTAL_TOPLANTIPARAMETRE = "Toplantı Parametre";
+        public const string PORTAL_TOPLANTI = "Toplanti";
+        public const string PORTAL_TOPLANTIKATILIM = "Toplanti Katilim";
+        public const string PORTAL_TOPLANTIPARAMETRE = "Toplanti Parametre";
 
         #region Resimler
         public const string IMAGE_PATH = "Resimler/";
@@ -165,7 +165,7 @@ namespace Utility.ProjeGlobal
         public const string SIL = "Sil";
         public const string BILGI = "Bilgi";
 
-        public const string GOREV_GENELMUDUR = "Genel Müdür";
+        public const string GOREV_GENELMUDUR = "Genel M�d�r";
         public const int GOREV_GENELMUDUR_INT = 1;
         
         public const int GENELMUDUR_PERSONELID = 1184;
@@ -177,8 +177,8 @@ namespace Utility.ProjeGlobal
         public const int SQL_BOS = 99;
         public const int SQL_SELECTWITHFILTER = 4;
         public const int SQL_GENERIC_INT_VALUE = 987654321;
-        public const string GIZLI_STRING = "GİZLİ";
-        //Bağımsız genel log
+        public const string GIZLI_STRING = "GIZLI";
+        //Bagimsiz genel log
         public static bool GENEL_DELETE_LOG = false;
         public static bool GENEL_UPDATE_LOG = false;
         public static bool GENEL_SAVE_LOG = false;
@@ -209,9 +209,9 @@ namespace Utility.ProjeGlobal
         public const char DELIMITER = ';';
 
         //Birimler
-        public const string BIRIM_INSAATEMLAK = "Emlak Direktörlüğü";
-        public const string BIRIM_HUKUK = "Hukuk Müşavirliği";
-        public const string BIRIM_BOLGETEMSILCILIGI = "Bölge Temsilciliği";
+        public const string BIRIM_INSAATEMLAK = "Emlak Direkt�rl�g�";
+        public const string BIRIM_HUKUK = "Hukuk M�savirligi";
+        public const string BIRIM_BOLGETEMSILCILIGI = "B�lge Temsilciligi";
 
         #endregion
 
@@ -382,7 +382,7 @@ namespace Utility.ProjeGlobal
         public const string PAGE_FTKKURULU_OLMAYAN_ILILCE_LIST = "FTKKuruluOlmayanIlIlceListesi.aspx";
         public const string PAGE_FTK_YAZILARI = "FTKYazilari.aspx";
 
-        //Toplantı Sabit Değerler
+        //Toplanti Sabit Degerler
         public const string PAGE_TOPLANTI_GIRIS = "ToplantiGirisi.aspx";
         public const string PAGE_TOPLANTI_LIST = "ToplantiListesi.aspx";
         public const string PAGE_TOPLANTI_TAKVIM = "ToplantiViewer.aspx";
@@ -397,7 +397,7 @@ namespace Utility.ProjeGlobal
         public const string NBYS_YETKILI_BIRIM = "BTHI";
         public const string IKYS_YETKILI_BIRIM = "IKYS";
 
-        //TBYS Sabit değerler
+        //TBYS Sabit degerler
         //Tasinmaz
 
 
@@ -405,76 +405,76 @@ namespace Utility.ProjeGlobal
         
         public const string SIGORTA_YOK = "Yok";
         public const string SIGORTA_DASK = "DASK";
-        public const string SIGORTA_DEPREM_IHTIYARI = "Deprem+İhtiyari";
+        public const string SIGORTA_DEPREM_IHTIYARI = "Deprem+Ihtiyari";
         public const bool ALTBOLUM_VAR = true;
         public const bool ALTBOLUM_YOK = false;
 
         public const bool KAT_MULKIYETI_VAR = true;
         public const bool KAT_MULKIYETI_YOK = false;
 
-        public const string TAPUTIPI_KATMULKIYETI = "Kat Mülkiyeti";
-        public const string TAPUTIPI_KATIRTIFAKI = "Kat İrtifakı";
+        public const string TAPUTIPI_KATMULKIYETI = "Kat M�lkiyeti";
+        public const string TAPUTIPI_KATIRTIFAKI = "Kat Irtifaki";
         public const string TAPUTIPI_YOK = "Yok";
-        public const string TAPUTIPI_DIGER= "Diğer";
+        public const string TAPUTIPI_DIGER= "Diger";
 
-        public static string SERH = "Şerh";
+        public static string SERH = "Serh";
         public static string BEYAN = "Beyan";
-        public static string IRTIFAK = "İrtifak";
+        public static string IRTIFAK = "Irtifak";
 
-        //Kira Sözleşme Ödeme planı
-        public const string KIRA_ODMSEKLI_AYLIK = "Aylık";
-        public const string KIRA_ODMSEKLI_YILLIK = "Yıllık";
+        //Kira S�zlesme �deme plani
+        public const string KIRA_ODMSEKLI_AYLIK = "Aylik";
+        public const string KIRA_ODMSEKLI_YILLIK = "Yillik";
         //KiraSozleme durumu
         public const string KIRASOZLESME_DURUMU_DEVAM = "Devam Ediyor";
         public const string KIRASOZLESME_DURUMU_YENILENDI = "Yenilendi";
         public const string KIRASOZLESME_DURUMU_BITTI = "Bitti";
         public const string KIRASOZLESME_DURUMU_TAKIP = "Takip Listesine Eklendi";
         public const string KIRASOZLESME_DURUMU_FESIH = "Feshedildi";
-        public const string KIRASOZLESME_DURUMU_ILERITARİHLİ = "İleri Tarihli";
-        public const string KIRASOZLESME_DURUMU_TAKIPSONUCLANDI = "Takip Sonuçlandı";
+        public const string KIRASOZLESME_DURUMU_ILERITARIHLI = "Ileri Tarihli";
+        public const string KIRASOZLESME_DURUMU_TAKIPSONUCLANDI = "Takip Sonu�landi";
 
         public const int KIRASOZLESME_AKTIF_INT = 1;
-        public const string KIRASOZLESME_AKTIF = "Aktif Sözleşmesi Olan Kiracılar";
+        public const string KIRASOZLESME_AKTIF = "Aktif S�zlesmesi Olan Kiracilar";
         public const bool KIRASOZLESME_AKTIFBOOL = true;
 
         public const int KIRASOZLESME_AKTIF_DEGIL_INT = 0;
-        public const string KIRASOZLESME_AKTIF_DEGIL = "Eski Kiracılar";
+        public const string KIRASOZLESME_AKTIF_DEGIL = "Eski Kiracilar";
         public const bool KIRASOZLESME_AKTIFDEGILBOOL = false;
         
         public const int KIRASOZLESME_AKTIF_HEPSI_INT = 2;
         public const string KIRASOZLESME_AKTIF_HEPSI = "Hepsi";
 
         // gecikme zammi
-        public const string KIRASOZLESME_GECIKMEZAMMI_AYLIK = "Aylık";
-        public const string KIRASOZLESME_GECIKMEZAMMI_GUNLUK = "Günlük";
+        public const string KIRASOZLESME_GECIKMEZAMMI_AYLIK = "Aylik";
+        public const string KIRASOZLESME_GECIKMEZAMMI_GUNLUK = "G�nl�k";
         //KiraDurumu
-        public static string KULLANIMDURUMU_KIRADA = "Kiralandı";
-        public static string KULLANIMDURUMU_KDBOS = "Kirada Değil - Boş";
-        //public static string KULLANIMDURUMU_KDBAGKUL = "Kirada Değil - Bağışçı Kullanıyor";
-        public static string KULLANIMDURUMU_KDCM = "Kirada Değil - Çıplak Mülkiyet";
-        public static string KULLANIMDURUMU_KDTAAH = "Kirada Değil - Taahhütname Verilen";
-        public static string KULLANIMDURUMU_KDCOKHIS = "Kirada Değil - Hisseli";
-        public static string KULLANIMDURUMU_KDHUKSOR = "Kirada Değil - Hukuki Sorun";
-        //public static string KULLANIMDURUMU_KDKIRAC = "Kirada Değil - Kıraç";
-        public static string KULLANIMDURUMU_KDVAKKUL = "Kirada Değil - Vakıf Kullanımında";
-        public static string KULLANIMDURUMU_KDKIRAKABYOK = "Kirada Değil - Kiralanma Talebi Olmayan";
-        public static string KULLANIMDURUMU_YENIDENINSA = "Kirada Değil - Yeniden İnşa";
-        //public static string KULLANIMDURUMU_RISKLIYAPI_KENTSELDONUSUM = "Kirada Değil - Riskli Yapı-Kentsel Dönüşüm";
-        //public static string KULLANIMDURUMU_KATKARSILIGI_YENIYAPI = "Kirada Değil - Kat Karşılığı-Yeni Yapı İnşası";
-        //public static string KULLANIMDURUMU_DIGER = "Kirada Değil - Metruk-Tahditli vb.";
+        public static string KULLANIMDURUMU_KIRADA = "Kiralandi";
+        public static string KULLANIMDURUMU_KDBOS = "Kirada Degil - Bos";
+        //public static string KULLANIMDURUMU_KDBAGKUL = "Kirada Degil - Bagis�i Kullaniyor";
+        public static string KULLANIMDURUMU_KDCM = "Kirada Degil - �iplak M�lkiyet";
+        public static string KULLANIMDURUMU_KDTAAH = "Kirada Degil - Taahh�tname Verilen";
+        public static string KULLANIMDURUMU_KDCOKHIS = "Kirada Degil - Hisseli";
+        public static string KULLANIMDURUMU_KDHUKSOR = "Kirada Degil - Hukuki Sorun";
+        //public static string KULLANIMDURUMU_KDKIRAC = "Kirada Degil - Kira�";
+        public static string KULLANIMDURUMU_KDVAKKUL = "Kirada Degil - Vakif Kullaniminda";
+        public static string KULLANIMDURUMU_KDKIRAKABYOK = "Kirada Degil - Kiralanma Talebi Olmayan";
+        public static string KULLANIMDURUMU_YENIDENINSA = "Kirada Degil - Yeniden Insa";
+        //public static string KULLANIMDURUMU_RISKLIYAPI_KENTSELDONUSUM = "Kirada Degil - Riskli Yapi-Kentsel D�n�s�m";
+        //public static string KULLANIMDURUMU_KATKARSILIGI_YENIYAPI = "Kirada Degil - Kat Karsiligi-Yeni Yapi Insasi";
+        //public static string KULLANIMDURUMU_DIGER = "Kirada Degil - Metruk-Tahditli vb.";
         //KirayaUygunluk
         public static string KIRADURUMU_KIRAYAUYGUN = "Kiraya Uygun";
-        public static string KIRADURUMU_KIRAYAUYGUNDEGIL = "Kiraya Uygun Değil";
+        public static string KIRADURUMU_KIRAYAUYGUNDEGIL = "Kiraya Uygun Degil";
         //MulkiyetSekli
         public static string MULKIYETSEKLI_TM = "TM";
-        public static string MULKIYETSEKLI_CM = "ÇM";
+        public static string MULKIYETSEKLI_CM = "�M";
         public static string MULKIYETSEKLI_HEPSI = string.Empty;
         //KullanimSekli
-        public const string KULLANIMSEKLI_ISHANI = "İşhanı";
+        public const string KULLANIMSEKLI_ISHANI = "Ishani";
         public const string KULLANIMSEKLI_APT = "Apt.";
         public const string KULLANIMSEKLI_ARSA = "Arsa";
         public const string KULLANIMSEKLI_BAZISTASYONU = "Bis";
-        public const string KULLANIMSEKLI_ISYERI = "İşyeri";
+        public const string KULLANIMSEKLI_ISYERI = "Isyeri";
         public const string KULLANIMSEKLI_MEV = "M.Ev";
         public const string KULLANIMSEKLI_MESKEN = "Mesken";
         public const string KULLANIMSEKLI_TARLA = "Tarla";
@@ -483,19 +483,19 @@ namespace Utility.ProjeGlobal
         //KiralamaAmaci
         public const string KIRALAMAAMACI_ARSA = "Arsa";
         public const string KIRALAMAAMACI_BAZISTASYONU = "Bis";
-        public const string KIRALAMAAMACI_ISYERI = "İşyeri";
+        public const string KIRALAMAAMACI_ISYERI = "Isyeri";
         public const string KIRALAMAAMACI_MESKEN = "Mesken";
         public const string KIRALAMAAMACI_TARLA = "Tarla";
         public const string KIRALAMAAMACI_TESIS = "Tesis";
 
         //envanterden Cikarma
-        public const string ENVANTERDEN_CIKARMA_KAMU = "Kamulaştırma";
-        public const string ENVANTERDEN_CIKARMA_SATIS = "Satış";
-        public const string ENVANTERDEN_CIKARMA_INTIFA_HT = "İntifa Hakkı Terkini";
-        public const string ENVANTERDEN_CIKARMA_PLAN_DEG = "Plan değişikliği";
-        public const string ENVANTERDEN_CIKARMA_TAPU_BD = "Tapu Bilgi Değişikliği";
-        public const string ENVANTERDEN_CIKARMA_KAT_KI = "Kat Karşılığı İnşaat";
-        public const string ENVANTERDEN_CIKARMA_DIGER = "Diğer";
+        public const string ENVANTERDEN_CIKARMA_KAMU = "Kamulastirma";
+        public const string ENVANTERDEN_CIKARMA_SATIS = "Satis";
+        public const string ENVANTERDEN_CIKARMA_INTIFA_HT = "Intifa Hakki Terkini";
+        public const string ENVANTERDEN_CIKARMA_PLAN_DEG = "Plan degisikligi";
+        public const string ENVANTERDEN_CIKARMA_TAPU_BD = "Tapu Bilgi Degisikligi";
+        public const string ENVANTERDEN_CIKARMA_KAT_KI = "Kat Karsiligi Insaat";
+        public const string ENVANTERDEN_CIKARMA_DIGER = "Diger";
 
         public static int TASINMAZ_ENVANTERDE = 1;
         public static int TASINMAZ_ENVANTERDEN_CIKTI = 0;
@@ -505,13 +505,13 @@ namespace Utility.ProjeGlobal
         public static bool ENVANTERDE = true;
         public static bool ENVANTERDEN_CIKTI = false;
 
-        public static string BAGISCI_SAG = "Sağ";
+        public static string BAGISCI_SAG = "Sag";
         public static string BAGISCI_VEFAT = "Vefat";
         public static string BAGISCI_BILINMIYOR = "Bilinmiyor";
-        public static string BAGISCI_MULGA = "Mülga";
-        public static string BAGISCI_KURULUS = "Kuruluş";
+        public static string BAGISCI_MULGA = "M�lga";
+        public static string BAGISCI_KURULUS = "Kurulus";
         public static string BAGISCI_TASFIYE = "Tasfiye";
-        public static string BAGISCI_LAGV = "Lağv";
+        public static string BAGISCI_LAGV = "Lagv";
         
         public static string BAGIS_SORGU_BASTAR = "01.01.2005";
         
@@ -524,19 +524,19 @@ namespace Utility.ProjeGlobal
         public static string BAGISCI_TASFIYE_INT = "6";
         public static string BAGISCI_LAGV_INT = "7";
 
-        //Onarım
-        public const string HARCAMAUSULU_PIYASADANALIM = "Piyasadan Alım";
-        public const string HARCAMAUSULU_YONETIMEKATILMA = "Yönetime Katılma";
+        //Onarim
+        public const string HARCAMAUSULU_PIYASADANALIM = "Piyasadan Alim";
+        public const string HARCAMAUSULU_YONETIMEKATILMA = "Y�netime Katilma";
         //Bolgeler
         public const string BOLGE_ANKARA = "Ankara";
-        public const string BOLGE_ISTANBUL = "İstanbul";
-        public const string BOLGE_IZMIR = "İzmir";
+        public const string BOLGE_ISTANBUL = "Istanbul";
+        public const string BOLGE_IZMIR = "Izmir";
         public const string BOLGE_MERSIN = "Mersin";
         public const string BOLGE_ERZURUM = "Erzurum";
-        public const string BOLGE_YURTDISI = "Yurtdışı";
+        public const string BOLGE_YURTDISI = "Yurtdisi";
         public const string BOLGE_HEPSI = "Hepsi";
-        public const string BOLGE_GENELMUDURLUK = "Genel Md.lük";
-        public const string BOLGE_TEMSILCILIGI = "Bölge Temsilciliği";
+        public const string BOLGE_GENELMUDURLUK = "Genel Md.l�k";
+        public const string BOLGE_TEMSILCILIGI = "B�lge Temsilciligi";
 
         public const int BOLGE_HEPSI_INT = 0;
         public const int BOLGE_ANKARA_INT = 1;
@@ -549,53 +549,53 @@ namespace Utility.ProjeGlobal
 
         
         //Vasiyet Durumu
-        public static string VASIYETIN_DURUMU_GECERLI = "Geçerli";
-        public static string VASIYETIN_DURUMU_GERCEKLESTI = "Gerçekleşti";
-        public static string VASIYETIN_DURUMU_IPTAL = "İptal";
-        public static string VASIYETIN_DURUMU_RUCU = "Rücu";
-        public static string VASIYETIN_DURUMU_HUKUKI = "Hukuki İşlem";
-        public static string VASIYETIN_DURUMU_BILGIEKSIK = "Bilgi Eksikliği";
-        public static string VASIYETIN_DURUMU_SAGLIGINDABAGIS = "Vasiyetçi Sağlığında Taşınmazları Vakfa Bağışlamış";
-        public static string VASIYETIN_DURUMU_MAHKEMEKARARI = "Mahkeme Kararı ile İptal";
-        public static string VASIYETIN_DURUMU_MALVARLIGIYOK = "Mal Varlığı Kalmamış";
-        public static string VASIYETIN_DURUMU_MALVARLIGIVAKFAGECTI = "Mal Varlığı Vakfa Geçti";
+        public static string VASIYETIN_DURUMU_GECERLI = "Ge�erli";
+        public static string VASIYETIN_DURUMU_GERCEKLESTI = "Ger�eklesti";
+        public static string VASIYETIN_DURUMU_IPTAL = "Iptal";
+        public static string VASIYETIN_DURUMU_RUCU = "R�cu";
+        public static string VASIYETIN_DURUMU_HUKUKI = "Hukuki Islem";
+        public static string VASIYETIN_DURUMU_BILGIEKSIK = "Bilgi Eksikligi";
+        public static string VASIYETIN_DURUMU_SAGLIGINDABAGIS = "Vasiyet�i Sagliginda Tasinmazlari Vakfa Bagislamis";
+        public static string VASIYETIN_DURUMU_MAHKEMEKARARI = "Mahkeme Karari ile Iptal";
+        public static string VASIYETIN_DURUMU_MALVARLIGIYOK = "Mal Varligi Kalmamis";
+        public static string VASIYETIN_DURUMU_MALVARLIGIVAKFAGECTI = "Mal Varligi Vakfa Ge�ti";
 
         //Vasiyet Konusu
-        public static string VASIYETIN_KONUSU_TUM_TASINMAZLAR = "Tüm Taşınmazlar";
-        public static string VASIYETIN_KONUSU_TUM_MENKULVARLIKLAR = "Tüm Menkul Varlıklar";
-        public static string VASIYETIN_KONUSU_TASINMAZ = "Taşınmaz";
-        public static string VASIYETIN_KONUSU_MENKULBAGISLAR = "Menkul Bağışlar";
-        public static string VASIYETIN_KONUSU_EVESYASI = "Ev Eşyası";
-        public static string VASIYETIN_KONUSU_KAPALIVASIYET = "Kapalı Vasiyet";
-        public static string VASIYETIN_KONUSU_BILGIEKSIK = "Bilgi Eksikliği";
-        public static string VASIYETIN_KONUSU_DIGER = "Diğer Bağışlar";
+        public static string VASIYETIN_KONUSU_TUM_TASINMAZLAR = "T�m Tasinmazlar";
+        public static string VASIYETIN_KONUSU_TUM_MENKULVARLIKLAR = "T�m Menkul Varliklar";
+        public static string VASIYETIN_KONUSU_TASINMAZ = "Tasinmaz";
+        public static string VASIYETIN_KONUSU_MENKULBAGISLAR = "Menkul Bagislar";
+        public static string VASIYETIN_KONUSU_EVESYASI = "Ev Esyasi";
+        public static string VASIYETIN_KONUSU_KAPALIVASIYET = "Kapali Vasiyet";
+        public static string VASIYETIN_KONUSU_BILGIEKSIK = "Bilgi Eksikligi";
+        public static string VASIYETIN_KONUSU_DIGER = "Diger Bagislar";
 
-        public const string TEMINAT_ODEMESI = "Teminat Ödemesi";
-        public const string TEMINAT_GECICITEMINATODEMESI = " Geçici Teminat Ödemesi";
-        public const string TEMINAT_KIRACIYAIADE = "Kiracıya İade";
+        public const string TEMINAT_ODEMESI = "Teminat �demesi";
+        public const string TEMINAT_GECICITEMINATODEMESI = " Ge�ici Teminat �demesi";
+        public const string TEMINAT_KIRACIYAIADE = "Kiraciya Iade";
         public const string TEMINAT_KIRAYAMAHSUP = "Kiraya Mahsup";
         public const string TEMINAT_HASARAMAHSUP = "Hasara Mahsup";
         public const string TEMINAT_AIDATAMAHSUP = "Aidata Mahsup";
-        public const string TEMINAT_VAKFABAGIS = "Vakfa Bağış";
+        public const string TEMINAT_VAKFABAGIS = "Vakfa Bagis";
         //Odeme Sebebi
         public const string ODEMESEBEBI_KIRA = "Kira";
         public const string ODEMESEBEBI_KESINTEMINAT = "Kesin Teminat";
-        public const string ODEMESEBEBI_GECICITEMINAT = "Geçici Teminat";
+        public const string ODEMESEBEBI_GECICITEMINAT = "Ge�ici Teminat";
         public const string ODEMESEBEBI_AIDAT = "Aidat";
         public const string ODEMESEBEBI_SIGORTA = "Sigorta";
-        public const string ODEMESEBEBI_AVUKATLIKUCRETI = "Avukatlık Ücreti";
-        public const string ODEMESEBEBI_YARGILAMAUCRETI = "Yargılama Ücreti";
-        public const string ODEMESEBEBI_AVANSIADESI = "Avans İade";
-        public const string ODEMESEBEBI_SATIS = "Satış";
+        public const string ODEMESEBEBI_AVUKATLIKUCRETI = "Avukatlik �creti";
+        public const string ODEMESEBEBI_YARGILAMAUCRETI = "Yargilama �creti";
+        public const string ODEMESEBEBI_AVANSIADESI = "Avans Iade";
+        public const string ODEMESEBEBI_SATIS = "Satis";
         public const string ODEMESEBEBI_KIRA_TEMINAT = "Kira/Teminat";
         public const string ODEMESEBEBI_BATCH_YATAN = "Batch Yatan";
         public const string ODEMESEBEBI_BATCH_KOMISYONU = "Batch Komisyonu";
-        public const string ODEMESEBEBI_OTOMATIK_SUPURME = "Otomatik Süpürme İşlemleri Virman";
-        public const string ODEMESEBEBI_VALOR_CEK_YATIR = "Valor İşlemi İçin Para Çek ve Yatır";
-        public const string ODEMESEBEBI_YATIRIM_FONU_SATIS = "Yatırım Fonu Satış";
+        public const string ODEMESEBEBI_OTOMATIK_SUPURME = "Otomatik S�p�rme Islemleri Virman";
+        public const string ODEMESEBEBI_VALOR_CEK_YATIR = "Valor Islemi I�in Para �ek ve Yatir";
+        public const string ODEMESEBEBI_YATIRIM_FONU_SATIS = "Yatirim Fonu Satis";
         
         
-        public const string ODEMESEBEBI_DIGER = "Diğer";
+        public const string ODEMESEBEBI_DIGER = "Diger";
         public const string ODEME_SEBEBI_DEFAULT = ODEMESEBEBI_DIGER;        
         
         public const int ODEMESEBEBI_KIRA_INT = 1;
@@ -622,10 +622,10 @@ namespace Utility.ProjeGlobal
         public const string TEMINATCINSI_NAKIT_USD = "USD";
         public const string TEMINATCINSI_NAKIT_EURO = "Euro";
         public const string TEMINATCINSI_BANKATEMINATMEKTUBU = "Banka Teminat Mektubu";
-        public const string TEMINATCINSI_IPOTEK = "İpotek";
+        public const string TEMINATCINSI_IPOTEK = "Ipotek";
 
         #region Bankalar
-        //Boş
+        //Bos
         public const string BANKA_BOS = "";
         public const string BANKA_BOS_INT = "8";
         //Akbank
@@ -650,8 +650,8 @@ namespace Utility.ProjeGlobal
         public const int BANKA_FINANSBANKEKSTRE_SONKACSATIRHARIC = 4;
         public const string IMAGE_PATH_FINANSBANK = "/" + IMAGE_PATH + "/finansbank.png";
         //Garanti
-        public const string BANKA_GARANTI = "Garanti Bankası";
-        public const string BANKA_GARANTIEKSTRE = "Garanti Bankası (Ekstre)";
+        public const string BANKA_GARANTI = "Garanti Bankasi";
+        public const string BANKA_GARANTIEKSTRE = "Garanti Bankasi (Ekstre)";
 
         public const int BANKA_GARANTIEKSTRE_ILKKACSATIRHARIC = 10;
         public const int BANKA_GARANTIEKSTRE_SONKACSATIRHARIC = 0;
@@ -661,46 +661,46 @@ namespace Utility.ProjeGlobal
         public const string BANKA_HALKBANK = "HalkBank";
         public const string IMAGE_PATH_HALKBANK = "/" + IMAGE_PATH + "/halkbank.png";
         public const string BANKA_HALKBANK2 = "HalkBank2";
-        public const string BANKA_BANKA_HALKBANK2_BASLIKILKHUCRE = "İşlem Tarihi";
+        public const string BANKA_BANKA_HALKBANK2_BASLIKILKHUCRE = "Islem Tarihi";
         public const int BANKA_HALKBANK2_ILKKACSATIRHARIC = 24;
         public const int BANKA_HALKBANK2_SONKACSATIRHARIC = 2;
 
-        //İşbank
-        public const string BANKA_ISBANK = "İş Bankası";
-        public const string BANKA_ISBANKEKSTRE = "İş Bankası (Ekstre)";
+        //Isbank
+        public const string BANKA_ISBANK = "Is Bankasi";
+        public const string BANKA_ISBANKEKSTRE = "Is Bankasi (Ekstre)";
         public const string BANKA_ISBANKEKSTRE_BASLIKILKHUCRE = "Tarih/Saat";
         public const int BANKA_ISBANKEKSTRE_ILKKACSATIRHARIC = 12;
         public const int BANKA_ISBANKEKSTRE_SONKACSATIRHARIC = 4;
         public const string IMAGE_PATH_ISBANK = "/" + IMAGE_PATH + "/isbank.png";
         //YKB
-        public const string BANKA_YKBEKSTRE = "Yapı Kredi Bankası (Ekstre)";
+        public const string BANKA_YKBEKSTRE = "Yapi Kredi Bankasi (Ekstre)";
         public const string BANKA_YKBEKSTRE_KISA = "YKB (Ekstre)";
         public const int BANKA_YKBEKSTRE_ILKKACSATIRHARIC = 11;
         public const int BANKA_YKBEKSTRE_SONKACSATIRHARIC = 0;
         //Vakifbank
-        public const string BANKA_VAKIF = "VakıfBank";
+        public const string BANKA_VAKIF = "VakifBank";
         public const string BANKA_VAKIF_BASLIKILKHUCRE = "HESAP NO";
         public const int BANKA_VAKIF_ILKKACSATIRHARIC = 6;
         public const int BANKA_VAKIF_SONKACSATIRHARIC = 4;
         public const string IMAGE_PATH_VAKIF = "/" + IMAGE_PATH + "/vakifbank.png";
-        //public const string BANKA_VAKIFGUNLUK = "VakıfBank (Günlük)";
+        //public const string BANKA_VAKIFGUNLUK = "VakifBank (G�nl�k)";
 
-        public const string BANKA_VAKIF2 = "VakıfBank2";
+        public const string BANKA_VAKIF2 = "VakifBank2";
         public const string BANKA_VAKIF2_BASLIKILKHUCRE = "HESAP NO";
         public const int BANKA_VAKIF2_ILKKACSATIRHARIC = 5;
         public const int BANKA_VAKIF2_SONKACSATIRHARIC = 4;
         public const string IMAGE_PATH_VAKIF2 = "/" + IMAGE_PATH + "/vakifbank.png";
-        //SMS Vakıf
-        public const string BANKA_SMSVAKIF = "SMS Vakıfbank";
+        //SMS Vakif
+        public const string BANKA_SMSVAKIF = "SMS Vakifbank";
         public const string BANKA_SMSVAKIF_BASLIKILKHUCRE = "HESAP NO";
         public const int BANKA_SMSVAKIF_ILKKACSATIRHARIC = 5;
         public const int BANKA_SMSVAKIF_SONKACSATIRHARIC = 4;
         public const string IMAGE_PATH_BANKA_SMSVAKIF = "/" + IMAGE_PATH + "/vakifbank.png";
         //Ziraat
-        public const string BANKA_ZIRAAT = "Ziraat Bankası";
+        public const string BANKA_ZIRAAT = "Ziraat Bankasi";
         public const string IMAGE_PATH_ZIRAAT = "/" + IMAGE_PATH + "/ziraat.png";
-        public const string BANKA_ZIRAATMT940 = "Ziraat Bankası (MT940)";
-        public const string BANKA_ZIRAATEKSTRE = "Ziraat Bankası (Ekstre)";
+        public const string BANKA_ZIRAATMT940 = "Ziraat Bankasi (MT940)";
+        public const string BANKA_ZIRAATEKSTRE = "Ziraat Bankasi (Ekstre)";
         public const string BANKA_ZIRAATEKSTRE_BASLIKILKHUCRE = "Tarih";
         public const int BANKA_ZIRAAT_ILKKACSATIRHARIC = 6;
         public const int BANKA_ZIRAAT_SONKACSATIRHARIC = 4;
@@ -710,35 +710,35 @@ namespace Utility.ProjeGlobal
         public const string BANKA_KIOSK = "Kiosk";
         public const string BANKA_KIOSK_BASLIKILKHUCRE = "HESAP NO";
         //Kart ile
-        public const string BANKA_KARTILEBAGIS = "Kart ile Bağış";
-        public const int BANKA_KARTILE_ILKKACSATIRHARIC = 0;//hastitle true o yüzden 0
+        public const string BANKA_KARTILEBAGIS = "Kart ile Bagis";
+        public const int BANKA_KARTILE_ILKKACSATIRHARIC = 0;//hastitle true o y�zden 0
         public const int BANKA_KARTILE_SONKACSATIRHARIC = 0;
         //EDevlet
-        public const string BANKA_EDEVLETBAGIS = "EDevlet ile Bağış";
+        public const string BANKA_EDEVLETBAGIS = "EDevlet ile Bagis";
         public const int BANKA_EDEVLETBAGIS_INT = 22;
-        public const int BANKA_EDEVLET_ILKKACSATIRHARIC = 0;//hastitle true o yüzden 0
+        public const int BANKA_EDEVLET_ILKKACSATIRHARIC = 0;//hastitle true o y�zden 0
         public const int BANKA_EDEVLET_SONKACSATIRHARIC = 0;
-        //Düzenli bağış
-        public const int DUZENLIBAGISCI_ILKKACSATIRHARIC = 0;//hastitle true o yüzden 0
+        //D�zenli bagis
+        public const int DUZENLIBAGISCI_ILKKACSATIRHARIC = 0;//hastitle true o y�zden 0
         public const int DUZENLIBAGISCI_SONKACSATIRHARIC = 0;
         //Teb
         public const string BANKA_TEB = "TEB";
 
-        //Şekerbank
-        public const string BANKA_SEKER = "ŞekerBank";
+        //Sekerbank
+        public const string BANKA_SEKER = "SekerBank";
 
-        //Vakif Katılım
-        public const string BANKA_VAKIF_KATILIM = "Vakıf Katılım";
+        //Vakif Katilim
+        public const string BANKA_VAKIF_KATILIM = "Vakif Katilim";
         public const string BANKA_VAKIF_KATILIM_BASLIKILKHUCRE = "Tarih";
         public const int BANKA_VAKIFKATILIM_ILKKACSATIRHARIC = 4;
         public const int BANKA_VAKIFKATILIM_SONKACSATIRHARIC = 0;
 
-        //Ziraat Katılım
-        public const string BANKA_ZIRAAT_KATILIM = "Ziraat Katılım";
+        //Ziraat Katilim
+        public const string BANKA_ZIRAAT_KATILIM = "Ziraat Katilim";
         public const string BANKA_ZIRAAT_KATILIM_BASLIKILKHUCRE = "Tarih";
-        public const int BANKA_ZIRAATKATILIM_ILKKACSATIRHARIC = 20; //Ziraat Katılım bankası ekstre formatında ilk 20 satırda işlem bilgisi bulunmamakta, bu nedenle 20 olarak belirlenmiştir.
+        public const int BANKA_ZIRAATKATILIM_ILKKACSATIRHARIC = 20; //Ziraat Katilim bankasi ekstre formatinda ilk 20 satirda islem bilgisi bulunmamakta, bu nedenle 20 olarak belirlenmistir.
         public const int BANKA_ZIRAATKATILIM_SONKACSATIRHARIC = 0;
-        //SMS Operatörleri
+        //SMS Operat�rleri
         public const string SMS_TURKCELL = "Turkcell";
         public const string SMS_VODAFONE = "Vodafone";
         public const string SMS_TURKTELEKOM = "TurkTelekom";
@@ -748,21 +748,21 @@ namespace Utility.ProjeGlobal
         #endregion 
         //armagan durumu
         public const string DURUM_BOS = "";
-        public const string DURUM_GONDERILMEDI = "Gönderilmedi";
-        public const string DURUM_GONDERILDI = "Gönderildi";
-        //public const string DURUM_IADE = "İade Edildi";
-        public const string DURUM_BELGE_ISTEMIYOR = "Belge İstemiyor";
-        public const string DURUM_LIMIT_ALTI = "Limit Altı";
-        public const string DURUM_ILETISIM_YOK = "İletişim Bilgisi Yok";
-        public const string DURUM_ULASILAMADI = "Ulaşılamadı";
+        public const string DURUM_GONDERILMEDI = "G�nderilmedi";
+        public const string DURUM_GONDERILDI = "G�nderildi";
+        //public const string DURUM_IADE = "Iade Edildi";
+        public const string DURUM_BELGE_ISTEMIYOR = "Belge Istemiyor";
+        public const string DURUM_LIMIT_ALTI = "Limit Alti";
+        public const string DURUM_ILETISIM_YOK = "Iletisim Bilgisi Yok";
+        public const string DURUM_ULASILAMADI = "Ulasilamadi";
         public const string DURUM_ERTELENDI = "Ertelendi";
         public const string DURUM_KONTROLEDILDI = "Kontrol Edildi";
-        public const string DURUM_ERKENGONDERILDI = "Erken Gönderildi";
-        public const string DURUM_DAHAONCEIADE = "Belgesi İade Edildi";
-        public const string DURUM_PARAIADE = "Parası İade Edildi";
-        public const string DURUM_AFETNEDENIYLE_GONDERILMEDI = "Afet Nedeniyle Gönderilmedi";
-        public const string DURUM_EDEVLETTENBELGEGONDERILDI = "E-Devletten Belge Gönderildi";
-        public const string DURUM_BELGEOLUSTURULMADI = "Belge Oluşturulmadı";
+        public const string DURUM_ERKENGONDERILDI = "Erken G�nderildi";
+        public const string DURUM_DAHAONCEIADE = "Belgesi Iade Edildi";
+        public const string DURUM_PARAIADE = "Parasi Iade Edildi";
+        public const string DURUM_AFETNEDENIYLE_GONDERILMEDI = "Afet Nedeniyle G�nderilmedi";
+        public const string DURUM_EDEVLETTENBELGEGONDERILDI = "E-Devletten Belge G�nderildi";
+        public const string DURUM_BELGEOLUSTURULMADI = "Belge Olusturulmadi";
 
         //Armaganlar
         public const int ARMAGAN_ALTINID = 4;
@@ -775,14 +775,14 @@ namespace Utility.ProjeGlobal
         public const int ARMAGAN_SILTID = 8;
         public const int ARMAGAN_DUZENLIBAGISCIBELGESIID = 9;
 
-        public const string ARMAGAN_ALTIN = "Altın";
-        public const string ARMAGAN_GUMUS = "Gümüş";
+        public const string ARMAGAN_ALTIN = "Altin";
+        public const string ARMAGAN_GUMUS = "G�m�s";
         public const string ARMAGAN_BRONZ = "Bronz";
 
         //Armagan Periyodu
-        public const string ARMAGANPERIODU_AYLIK = "Aylık";
-        public const string ARMAGANPERIODU_15GUNDEBIR = "15 Günde bir";
-        public const string ARMAGANPERIODU_10GUNDEBIR = "10 Günde bir";
+        public const string ARMAGANPERIODU_AYLIK = "Aylik";
+        public const string ARMAGANPERIODU_15GUNDEBIR = "15 G�nde bir";
+        public const string ARMAGANPERIODU_10GUNDEBIR = "10 G�nde bir";
 
         //Doviz cinsi
         public const string DOVIZ_TL = "TL";
@@ -790,21 +790,21 @@ namespace Utility.ProjeGlobal
         public const string DOVIZ_EURO = "Euro";
         public const string DOVIZ_USD = "USD";
         public const string DOVIZ_GBP = "GBP";
-        //Yönerge Parametre
-        public const string PARAM_NBYSYONERGE = "NBYS Yönergeleri";
-        public const string PARAM_FTKYONERGE = "FTK Yönergeleri";
-        public const string PARAM_IKYSYONERGE = "IKYS Yönergeleri";
+        //Y�nerge Parametre
+        public const string PARAM_NBYSYONERGE = "NBYS Y�nergeleri";
+        public const string PARAM_FTKYONERGE = "FTK Y�nergeleri";
+        public const string PARAM_IKYSYONERGE = "IKYS Y�nergeleri";
 
         public const string PARAM_YETKI_FTK = "FTK";
         public const string PARAM_YETKI_ADMIN = "Admin";
 
-        public const string PARAM_FTKYAZI = "FTK Yazı Parametreleri";
-        public const string PARAM_FTKYAZI_PARAFE1 = "Parafe (Grup Başkanı)";
-        public const string PARAM_FTKYAZI_PARAFE2 = "Parafe (Şb.Md.)";
+        public const string PARAM_FTKYAZI = "FTK Yazi Parametreleri";
+        public const string PARAM_FTKYAZI_PARAFE1 = "Parafe (Grup Baskani)";
+        public const string PARAM_FTKYAZI_PARAFE2 = "Parafe (Sb.Md.)";
         public const string PARAM_FTKYAZI_IRTIBAT = "Irtibat";
-        public const string PARAM_FTKYAZI_IMZAADSOYAD = "İmza (Adi Soyadı)";
-        public const string PARAM_FTKYAZI_IMZAUNVAN = "İmza (Ünvan)";
-        public const string PARAM_FTKYAZI_IMZAMAKAM = "İmza (Makam)";
+        public const string PARAM_FTKYAZI_IMZAADSOYAD = "Imza (Adi Soyadi)";
+        public const string PARAM_FTKYAZI_IMZAUNVAN = "Imza (�nvan)";
+        public const string PARAM_FTKYAZI_IMZAMAKAM = "Imza (Makam)";
         //TBYS
         public const string PARAM_TASINMAZ_TASINMAZFOTO = "TasinmazFoto";
         public const string PARAM_TASINMAZ_TASINMAZFOTO1 = "TasinmazFoto1";
@@ -814,7 +814,7 @@ namespace Utility.ProjeGlobal
         public const string PARAM_TASINMAZ_TAHKIKATFOTO = "TahkikatFoto";
         public const string PARAM_TASINMAZ_KROKIFOTO = "KrokiFoto";
         public const string PARAM_TASINMAZ_TAPUFOTO = "TapuFoto";
-        //SSRS raporları
+        //SSRS raporlari
         public const string RAPOR_SUNUCU_SAYFASI = "/BeratBelgesiViewer.aspx";
         public const string RAPOR_BERATBELGESI_URL = "/Reports/BeratBelgesi.rdl";
         public const string RAPOR_BERATBOLGE_URL = "/Reports/BeratBelgesiByBolge.rdl";
@@ -839,7 +839,7 @@ namespace Utility.ProjeGlobal
         public const string RAPOR_SEHIRICIGOREVFORMU_URL = "SehirIciGorevFormuViewer.aspx";
         public const string RAPOR_UCRETLIIZINIPTALDILEKCE = "UcretliIzinIptalDilekceViewer.aspx";
         public const string RAPOR_UCRETLIIZINDEGISIKLIKDILEKCE = "UcretliIzinDegisiklikDilekceViewer.aspx";
-        //İL İLÇE vs Default Values
+        //IL IL�E vs Default Values
         public const int DEFAULT_ILID = 6;
         public const string DEFAULT_ILADI = "Ankara";
         public const int IL_HEPSI = 0;
@@ -847,14 +847,14 @@ namespace Utility.ProjeGlobal
         public const int ILCE_BOS = 0;
         public const string VALILIK = "Valilik";
         public const int VALILIK_INT = -1;
-        public const string SADECE_ILCELER = "İlçeler";
+        public const string SADECE_ILCELER = "Il�eler";
         public const int SADECE_ILCELER_INT = -2;
         public const string ILCE_MERKEZ = "Merkez";
         public const int ILCE_MERKEZ_INT = 0;
 
-        public const string FTK_GRUPLAMA_YOK = "Tam Liste Göster";
+        public const string FTK_GRUPLAMA_YOK = "Tam Liste G�ster";
         public const int FTK_GRUPLAMA_YOK_INT = 0;
-        public const string FTK_GRUPLAMA_ILLERE_GORE = "İl ve ilçeye Göre Grupla";
+        public const string FTK_GRUPLAMA_ILLERE_GORE = "Il ve il�eye G�re Grupla";
         public const int FTK_GRUPLAMA_IL_ILCEYE_GORE_INT = 1;
 
         //Mesaj
@@ -862,49 +862,49 @@ namespace Utility.ProjeGlobal
         public const string MESAJ_BASARILI = "alert-success";
         public const string MESAJ_BILGI = "alert-info";
 
-        public const string NAKITBAGISCI_BILINMEYEN = "BİLİNMEYEN";
+        public const string NAKITBAGISCI_BILINMEYEN = "BILINMEYEN";
 
         //personel
-        public static string PER_YAKINLIKDERECESI_ES = "Eş";
+        public static string PER_YAKINLIKDERECESI_ES = "Es";
         public const int PER_YAKINLIKDERECESI_ES_INT = 1;
-        public static string PER_YAKINLIKDERECESI_COCUK = "Çocuk";
+        public static string PER_YAKINLIKDERECESI_COCUK = "�ocuk";
         public const int PER_YAKINLIKDERECESI_COCUK_INT = 2;
         public static string PER_EVLI = "Evli";
         public static string PER_BEKAR = "Bekar";
         public static int PER_IZINTALEBI_ISLEMBEKLIYOR = 0;
         public static int PER_IZINTALEBI_KONTROLEDILDI_INT = 1;
         public static int PER_IZINTALEBI_KAYITLARAISLENDI_INT = 2;
-        public static string PER_IZINTALEBI_KAYITLARAISLENDI = "Kayıtlara işlendi";
+        public static string PER_IZINTALEBI_KAYITLARAISLENDI = "Kayitlara islendi";
         public static string PER_IZINTALEBI_KONTROLEDILDI = "Kontrol Edildi";
         public static int PER_IZINTALEBI_DILEKCEBEKLIYOR = 5;
         public static int PER_IZINTALEBI_REDDEDILDI = 3;
         public static int PER_IZINTALEBI_IPTALEDILDI = 4;
         public static string PER_CINSIYET_ERKEK = "Erkek";
-        public static string PER_CINSIYET_KADIN = "Kadın";
+        public static string PER_CINSIYET_KADIN = "Kadin";
         public static string PER_ASKERSIVIL = "(E)Asker/Sivil";
         public static string PER_ASKER = "(E)Asker";
         public static int PER_ASKER_INT = 1;
         public static string PER_SIVIL = "Sivil";
         public static int PER_SIVIL_INT = 0;
         public static int PER_CALISIYOR_INT = 1;
-        public static string PER_CALISIYOR = "Çalışıyor";
+        public static string PER_CALISIYOR = "�alisiyor";
         public static int PER_AYRILDI_INT = 0;
-        public static string PER_AYRILDI = "Ayrıldı";
-        public static string PER_SUBE = "Personel ve İdari İşler Direktörlüğü";
+        public static string PER_AYRILDI = "Ayrildi";
+        public static string PER_SUBE = "Personel ve Idari Isler Direkt�rl�g�";
         public static int PER_SUBE_INT = 5;
 
         public static string UNVAN_UZMAN = "Uzman";
-        public static string UNVAN_KIDEMLIUZMAN = "Kıdemli Uzman";
-        public static string UNVAN_BASUZMAN = "Başuzman";
-        public static string UNVAN_DIREKTOR = "Direktör";
+        public static string UNVAN_KIDEMLIUZMAN = "Kidemli Uzman";
+        public static string UNVAN_BASUZMAN = "Basuzman";
+        public static string UNVAN_DIREKTOR = "Direkt�r";
         public static int GOREV_IKUZMANI = 124;
 
         public static int BULUNMAMASEBEBI_RAPORLU_INT = 1;// "Raporlu";
         public static int BULUNMAMASEBEBI_HASTANE_INT = 2;//"Hastane";
-        public static int BULUNMAMASEBEBI_GOREVLI_INT = 3;//"Görevli";
-        public static string BULUNMAMASEBEBI_GOREVLI_UZAKTANCALISMA = "Uzaktan Çalışma";
+        public static int BULUNMAMASEBEBI_GOREVLI_INT = 3;//"G�revli";
+        public static string BULUNMAMASEBEBI_GOREVLI_UZAKTANCALISMA = "Uzaktan �alisma";
 
-        //izin süreleri
+        //izin s�releri
         public static int IZIN_SURESI_ASKER = 26;
         public static int IZIN_SURESI_0 = 0;
         public static int IZIN_SURESI_1_5 = 14;
@@ -914,7 +914,7 @@ namespace Utility.ProjeGlobal
         public static TimeSpan BIRGUN_MAZERET_SAAT_TS = new TimeSpan(9, 00, 00);
         public static int BIRGUN_MAZERET_SAAT_INT = 9;
         public static int BIRGUN_MAZERETEMAHSUP = 1;
-        //İş Saatleri
+        //Is Saatleri
         public static TimeSpan MESAI_BASLAMA_SAATI = new TimeSpan(0, 8, 0, 0);//sabah 8:00
         public static TimeSpan MESAI_BITIS_SAATI = new TimeSpan(0, 17, 0, 0);//Aksam 1700
         public static TimeSpan MAZERETIZNI_SAAT_ARALIGI = new TimeSpan(0, 5, 0);//new TimeSpan(0, 17, 0, 0);//Aksam 1700
@@ -925,14 +925,14 @@ namespace Utility.ProjeGlobal
         //izin tipleri
         /*
             Id	Adi
-            1	Ücretli
+            1	�cretli
             2	Mazeret
-            3	Ücretsiz
+            3	�cretsiz
             4	Evlenme
-            5	Doğum
-            6	Babalık
-            7	Ölüm
-            8   Süt İzni
+            5	Dogum
+            6	Babalik
+            7	�l�m
+            8   S�t Izni
             */
         public static int IZINTIPI_HEPSI_INT = 0;
         public static int IZINTIPI_UCRETLI_INT = 1;
@@ -944,16 +944,16 @@ namespace Utility.ProjeGlobal
         public static int IZINTIPI_OLUM_INT = 7;
         public static int IZINTIPI_SUTIZNI_INT = 8;
         public static string IZINTIPI_HEPSI = "Hepsi";
-        public static string IZINTIPI_UCRETLI = "Ücretli";
+        public static string IZINTIPI_UCRETLI = "�cretli";
         public static string IZINTIPI_MAZERET = "Mazeret";
-        public static string IZINTIPI_UCRETSIZ = "Ücretsiz";
+        public static string IZINTIPI_UCRETSIZ = "�cretsiz";
         public static string IZINTIPI_EVLENME = "Evlenme";
-        public static string IZINTIPI_DOGUM = "Doğum";
-        public static string IZINTIPI_BABALIK = "Babalık";
-        public static string IZINTIPI_OLUM = "Ölüm";
-        public static string IZINTIPI_SUTIZNI = "Süt İzni";
-        //İzin Birimleri
-        public const string IZIN_BIRIMI_GUN = "Gün";
+        public static string IZINTIPI_DOGUM = "Dogum";
+        public static string IZINTIPI_BABALIK = "Babalik";
+        public static string IZINTIPI_OLUM = "�l�m";
+        public static string IZINTIPI_SUTIZNI = "S�t Izni";
+        //Izin Birimleri
+        public const string IZIN_BIRIMI_GUN = "G�n";
         public const string IZIN_BIRIMI_SAAT = "Saat";
         //ONAY Tanimlari
         public static int ONAYDURUMU_ISLEM_INT = 0;
@@ -962,27 +962,27 @@ namespace Utility.ProjeGlobal
         public static int ONAYDURUMU_RED_INT = 3;
         public static int ONAYDURUMU_IPTAL_INT = 4;
         public static int ONAYDURUMU_DILEKCE_INT = 5;
-        public static string ONAYDURUMU_ISLEM = "İşlem Bekliyor";
+        public static string ONAYDURUMU_ISLEM = "Islem Bekliyor";
         public static string ONAYDURUMU_KONTROL = "Kontrol Edildi";
-        public static string ONAYDURUMU_KAYIT = "Kayıtlara İşlendi";
+        public static string ONAYDURUMU_KAYIT = "Kayitlara Islendi";
         public static string ONAYDURUMU_RED = "Reddedildi";
-        public static string ONAYDURUMU_IPTAL = "İptal Edildi";
-        public static string ONAYDURUMU_DILEKCE = "Dilekçe Bekleniyor";
+        public static string ONAYDURUMU_IPTAL = "Iptal Edildi";
+        public static string ONAYDURUMU_DILEKCE = "Dilek�e Bekleniyor";
         //IKYS permisions
         public static readonly int IZINDUZENLEMESURESI_GUN = 30;
 
         public const string ULASIMARACI_BOS = "";
-        public const string ULASIMARACI_UCAK = "Uçak";
-        public const string ULASIMARACI_OTOBUS = "Otobüs";
+        public const string ULASIMARACI_UCAK = "U�ak";
+        public const string ULASIMARACI_OTOBUS = "Otob�s";
         public const string ULASIMARACI_TREN = "Tren";
-        public const string ULASIMARACI_VAKIFARACI = "Vakıf Aracı";
+        public const string ULASIMARACI_VAKIFARACI = "Vakif Araci";
 
         //Portal
         public const string DUYURU_TEKRAR_YOK = "Tekrar Yok";
-        public const string DUYURU_TEKRARLA_GUN = "Gün";
+        public const string DUYURU_TEKRARLA_GUN = "G�n";
         public const string DUYURU_TEKRARLA_HAFTA = "Hafta";
         public const string DUYURU_TEKRARLA_AY = "Ay";
-        public const string DUYURU_TEKRARLA_YIL = "Yıl";
+        public const string DUYURU_TEKRARLA_YIL = "Yil";
 
         public const int TRUE_INT = 1;
         public const int FALSE_INT = 0;
@@ -997,15 +997,15 @@ namespace Utility.ProjeGlobal
         public static decimal SMS_TUTAR_2022 = 10;
         public static decimal SMS_TUTAR_2023 = 20;
         public static decimal SMS_TUTAR_2024= 100;
-        //yazılar
+        //yazilar
         public const string KIRABORCU_DOSYA = "Kira-Borcu";
         public const string KIRAARTIS_DOSYA = "Kira-Artis";
         public const string ADRESETIKETI_DOSYA = "Adres-Etiketi";
         public const string TESEKKUR_DOSYA = "TesekkurBelgesi";
         //kira borcu takip
-        public const string KIRABORCU_UYARI = "Uyarı";
-        public const string KIRABORCU_YAZILIIHTAR = "Yazılı İhtar";
-        public const string KIRABORCU_ICRATAKIBI = "İcra Takibi";
+        public const string KIRABORCU_UYARI = "Uyari";
+        public const string KIRABORCU_YAZILIIHTAR = "Yazili Ihtar";
+        public const string KIRABORCU_ICRATAKIBI = "Icra Takibi";
 
 
         //MTS
@@ -1013,21 +1013,21 @@ namespace Utility.ProjeGlobal
         public const string FAALIYET_ACIKTARIHLI = "true";
 
         public static string RANDEVU_VERILEN = "Verilen Randevu";
-        public static string RANDEVU_ALINAN = "Alınan Randevu";
-        public static string RANDEVU_DIGER = "Diğer";
+        public static string RANDEVU_ALINAN = "Alinan Randevu";
+        public static string RANDEVU_DIGER = "Diger";
 
-        public const string FAALIYET_AMACI_TOPLANTI = "Toplantı";
+        public const string FAALIYET_AMACI_TOPLANTI = "Toplanti";
         public const string FAALIYET_AMACI_ZIYARET = "Ziyaret";
         public const string FAALIYET_AMACI_DAVET = "Davet";
-        public const string FAALIYET_AMACI_YILDONUMU = "Yıldönümü";
-        public const string FAALIYET_AMACI_DOGUMGUNU = "Doğum Günü";
-        public const string FAALIYET_AMACI_OZELCALISMA = "Özel Çalışma";
-        public const string FAALIYET_AMACI_IZIN = "İzin";
+        public const string FAALIYET_AMACI_YILDONUMU = "Yild�n�m�";
+        public const string FAALIYET_AMACI_DOGUMGUNU = "Dogum G�n�";
+        public const string FAALIYET_AMACI_OZELCALISMA = "�zel �alisma";
+        public const string FAALIYET_AMACI_IZIN = "Izin";
         public const string FAALIYET_AMACI_RESMITATIL = "Resmi Tatil";
         public const string FAALIYET_AMACI_SEYAHAT = "Seyahat";
-        public const string FAALIYET_AMACI_GORUSME = "Görüşme";
+        public const string FAALIYET_AMACI_GORUSME = "G�r�sme";
         public const string FAALIYET_AMACI_BILGI = "Bilgi";
-        public const string FAALIYET_AMACI_VAKIF_TOPLANISI = "Vakıf Toplantısı";
+        public const string FAALIYET_AMACI_VAKIF_TOPLANISI = "Vakif Toplantisi";
 
         public const string FAALIYET_AMACI_TOPLANTI_INT = "1";
         public const string FAALIYET_AMACI_ZIYARET_INT = "2";
@@ -1041,11 +1041,11 @@ namespace Utility.ProjeGlobal
         public const string FAALIYET_AMACI_SEYAHAT_INT = "10";
         public const string FAALIYET_AMACI_BILGI_INT = "11";
         public const string FAALIYET_AMACI_VAKIF_TOPLANISI_INT = "12";
-        //public enum RandevuAmaciEnum { Diğer, Toplantı, Ziyaret, Davet, Yıldönümü, ÖzelÇalışma, İzin }
+        //public enum RandevuAmaciEnum { Diger, Toplanti, Ziyaret, Davet, Yild�n�m�, �zel�alisma, Izin }
 
-        public static string FAALIYET_DURUMU_PLANLANDI = "Planlandı";
-        public static string FAALIYET_DURUMU_ONAYLANDI = "Onaylandı";
-        public static string FAALIYET_DURUMU_IPTALEDILDI = "İptal Edildi";
+        public static string FAALIYET_DURUMU_PLANLANDI = "Planlandi";
+        public static string FAALIYET_DURUMU_ONAYLANDI = "Onaylandi";
+        public static string FAALIYET_DURUMU_IPTALEDILDI = "Iptal Edildi";
 
         public const int FAALIYET_DURUMU_PLANLANDI_INT = 1;
         public const int FAALIYET_DURUMU_ONAYLANDI_INT = 2;        
@@ -1053,15 +1053,15 @@ namespace Utility.ProjeGlobal
 
         public const string FAALIYET_YERI_MAKAM = "Makam";
         public const string FAALIYET_YERI_ZEHRAURGA = "Zehra Urga";
-        public const string FAALIYET_YERI_ILHANBASAR = "İlhan Başar";
-        public const string FAALIYET_YERI_MAKAMTOPLANTIODASI = "Makam Toplantı Odası";
+        public const string FAALIYET_YERI_ILHANBASAR = "Ilhan Basar";
+        public const string FAALIYET_YERI_MAKAMTOPLANTIODASI = "Makam Toplanti Odasi";
         public const string FAALIYET_YERI_ASELSAN = "ASELSAN";
-        public const string FAALIYET_YERI_TUSAS = "TUSAŞ";
+        public const string FAALIYET_YERI_TUSAS = "TUSAS";
         public const string FAALIYET_YERI_HAVELSAN = "HAVELSAN";
         public const string FAALIYET_YERI_ROKETSAN = "ROKETSAN";
         public const string FAALIYET_YERI_ASPILSAN = "ASPILSAN";
         public const string FAALIYET_YERI_ISBIR = "ISBIR";
-        public const string FAALIYET_YERI_DIGER = "Diğer";
+        public const string FAALIYET_YERI_DIGER = "Diger";
 
         public const string FAALIYET_YERI_MAKAM_INT = "1";
         public const string FAALIYET_YERI_ZEHRAURGA_INT = "2";
@@ -1073,27 +1073,27 @@ namespace Utility.ProjeGlobal
         public const int FAALIYET_KATILIMCI_TASINMAZBAGISCI_INT = 4;
         public const int NAKITBAGISCI_SORGUBAGISTUTARI = 2000;
 
-        public const string FAALIYET_KATILIMCI_IC = "Vakıf Personeli";
-        public const string FAALIYET_KATILIMCI_DIS = "Vakıf Dışı";
-        public const string FAALIYET_KATILIMCI_NAKITBAGISCI = "Nakit Bağışçı";
-        public const string FAALIYET_KATILIMCI_TASINMAZBAGISCI = "Taşınmaz Bağışçı";
+        public const string FAALIYET_KATILIMCI_IC = "Vakif Personeli";
+        public const string FAALIYET_KATILIMCI_DIS = "Vakif Disi";
+        public const string FAALIYET_KATILIMCI_NAKITBAGISCI = "Nakit Bagis�i";
+        public const string FAALIYET_KATILIMCI_TASINMAZBAGISCI = "Tasinmaz Bagis�i";
 
         public const string PARAM_RANDEVUYERI = "Randevu Yeri";
-        public const string PARAM_ANIOBJESI = "Anı Objesi";
+        public const string PARAM_ANIOBJESI = "Ani Objesi";
 
-        public const string PARAM_RANDEVUAMACI = "Randevu Amacı";
+        public const string PARAM_RANDEVUAMACI = "Randevu Amaci";
         public const string PARAM_RANDEVUTIPI = "Randevu Tipi";
         public const string PARAM_RANDEVUDURUMU = "Randevu Durumu";
-        public const string PARAM_ARAMAGORUSMESEKLI = "Arama/Görüşme Şekli";
+        public const string PARAM_ARAMAGORUSMESEKLI = "Arama/G�r�sme Sekli";
 
-        public static string ARAMAGORUSME_GELENTELEFON = "Gelen Telefon Araması";
-        public static string ARAMAGORUSME_GIDENTELEFON = "Giden Telefon Araması";
-        public static string ARAMAGORUSME_YUZYUZEGORUSME = "Yüzyüze Görüşme";
-        public static string ARAMAGORUSME_YONETICIDIREKTIFI = "Yönetici Direktifi";
+        public static string ARAMAGORUSME_GELENTELEFON = "Gelen Telefon Aramasi";
+        public static string ARAMAGORUSME_GIDENTELEFON = "Giden Telefon Aramasi";
+        public static string ARAMAGORUSME_YUZYUZEGORUSME = "Y�zy�ze G�r�sme";
+        public static string ARAMAGORUSME_YONETICIDIREKTIFI = "Y�netici Direktifi";
 
-        public static string ANIOBJESI_VERILEN = "Verilen Anı Objesi";
+        public static string ANIOBJESI_VERILEN = "Verilen Ani Objesi";
         public static int ANIOBJESI_VERILEN_INT = 0;
-        public static string ANIOBJESI_GETIRILEN = "Getirilen Anı Objesi";
+        public static string ANIOBJESI_GETIRILEN = "Getirilen Ani Objesi";
         public static int ANIOBJESI_GETIRILEN_INT = 1;        
         public static string ANIOBJESI_VERILENGETIRILEN = "Hepsi";
         public static int ANIOBJESI_VERILENGETIRILEN_INT = 2;
@@ -1104,20 +1104,20 @@ namespace Utility.ProjeGlobal
         public static bool FTK_AKTIF = true;
         public static bool FTK_AKTIF_DEGIL = false;
         public static string FTK_UYELIK_DURUMU_AKTIF = "Aktif";
-        public static string FTK_UYELIK_DURUMU_AKTIF_DEGIL = "Aktif Değil";
+        public static string FTK_UYELIK_DURUMU_AKTIF_DEGIL = "Aktif Degil";
         public static string FTK_UYELIK_DURUMU_BILINMIYOR = "Bilinmiyor";
 
-        public const string FTK_GOREVI_FAHRIBASKAN = "Fahri Başkan";
-        public const string FTK_GOREVI_BASKAN = "Başkan";
+        public const string FTK_GOREVI_FAHRIBASKAN = "Fahri Baskan";
+        public const string FTK_GOREVI_BASKAN = "Baskan";
         public const string FTK_GOREVI_GENELSEKRETER = "Genel Sekreter";
-        public const string FTK_GOREVI_UYE = "Üye";
+        public const string FTK_GOREVI_UYE = "�ye";
 
         public const int FTK_GOREVI_FAHRIBASKAN_INT = 1;
         public const int FTK_GOREVI_BASKAN_INT = 2;
         public const int FTK_GOREVI_GENELSEKRETER_INT = 3;
         public const int FTK_GOREVI_UYE_INT = 4;
 
-        #region Yazı Template
+        #region Yazi Template
         //TBYS
         public static string TBYS_KIRAARTIS_TEMPLATE = "TemplateKiraArtis.docx";
         public static string TBYS_KIRAARTIS_5YIL_TEMPLATE = "TemplateKiraArtis5.docx";
@@ -1146,12 +1146,12 @@ namespace Utility.ProjeGlobal
 
         #endregion
         //TOPLANTI
-        public const string PARAM_DIGER = "Diğer";
+        public const string PARAM_DIGER = "Diger";
         public const int PARAM_DIGER_INT = 3;
-        public const string PARAM_TOPLANTIYERI = "Toplantı Yeri";
-        public const string PARAM_TOPLANTIYETKILISI = "Toplantı Yetkilisi";
+        public const string PARAM_TOPLANTIYERI = "Toplanti Yeri";
+        public const string PARAM_TOPLANTIYETKILISI = "Toplanti Yetkilisi";
         public const string PARAM_TOPLANTIYERI_INT = "1";
-        public const string PARAM_TOPLANTIYONETICISI = "Toplanti Yöneticisi";
+        public const string PARAM_TOPLANTIYONETICISI = "Toplanti Y�neticisi";
 
         public static TimeSpan TOPLANTI_BASLAMAZAMANI = new TimeSpan(6, 0, 0);
         public static TimeSpan TOPLANTI_BITISZAMANI = new TimeSpan(23, 45, 0);
@@ -1160,8 +1160,8 @@ namespace Utility.ProjeGlobal
         public const int TOPLANTI_KATILIMCI_IC_INT = 1;
         public const int TOPLANTI_KATILIMCI_DIS_INT = 2;
 
-        public static string TOPLANTI_AKTIF = "Aktif Toplantılar";
-        public static string TOPLANTI_PASIF = "Pasif Toplantılar";
+        public static string TOPLANTI_AKTIF = "Aktif Toplantilar";
+        public static string TOPLANTI_PASIF = "Pasif Toplantilar";
         public static bool TOPLANTI_PASIF_BOOL = true;
 
         public const string TOPLANTI_ACIKTARIHLI_DEGIL = "false";
@@ -1181,19 +1181,19 @@ namespace Utility.ProjeGlobal
         public static string COKBAGISYAPAN_BASLAMATARIHI = "01.01.2018";
         public static int COKBAGISYAPAN_SONBAGISI_KAC_AY_ONCE_YAPTI = -12;
 
-        public static string YABANCIDIL_INGILIZCE = "İngilizce";
+        public static string YABANCIDIL_INGILIZCE = "Ingilizce";
         public static string YABANCIDIL_ALMANCA = "Almanca";
-        public static string YABANCIDIL_FRANSIZCA = "Fransızca";
+        public static string YABANCIDIL_FRANSIZCA = "Fransizca";
         public static string YABANCIDIL_RUSCA = "Rusca";
-        public static string YABANCIDIL_CINCE = "Çince";
-        public static string YABANCIDIL_ISPANYOLCA = "İspanyolca";
-        public static string YABANCIDIL_ITALYANCA = "İtalyanca";
+        public static string YABANCIDIL_CINCE = "�ince";
+        public static string YABANCIDIL_ISPANYOLCA = "Ispanyolca";
+        public static string YABANCIDIL_ITALYANCA = "Italyanca";
         public static string YABANCIDIL_YUNANCA = "Yunanca";
-        public static string YABANCIDIL_ARAPCA = "Arapça";
+        public static string YABANCIDIL_ARAPCA = "Arap�a";
 
-        public static string TURKIYE { get; set; } = "Türkiye";
+        public static string TURKIYE { get; set; } = "T�rkiye";
         public static string AVRUPA { get; set; } = "Avrupa";
-        public static string INGILTERE { get; set; } = "İngiltere";
+        public static string INGILTERE { get; set; } = "Ingiltere";
         public static string AVRUPA_HARICI { get; set; } = "Avrupa Harici";
     }
 }

@@ -1,4 +1,4 @@
-﻿using Model.NBYS;
+using Model.NBYS;
 using System;
 using System.ComponentModel;
 using System.Data;
@@ -119,10 +119,10 @@ namespace NBYS_WebParts.NakitBagisRaporuByYil_il
             TableHeaderRow tableHeaderRow1 = new TableHeaderRow();
 
             TableHeaderCell bolgeHeaderCell = new TableHeaderCell();
-            bolgeHeaderCell.Text = "Bölge";
+            bolgeHeaderCell.Text = "B�lge";
             bolgeHeaderCell.RowSpan = 2;
             TableHeaderCell ilHeaderCell = new TableHeaderCell();
-            ilHeaderCell.Text = "İl";
+            ilHeaderCell.Text = "Il";
             ilHeaderCell.RowSpan = 2;
             tableHeaderRow.Controls.Add(bolgeHeaderCell);
             tableHeaderRow.Controls.Add(ilHeaderCell);
@@ -135,7 +135,7 @@ namespace NBYS_WebParts.NakitBagisRaporuByYil_il
                 TableHeaderCell adetHeaderCell = new TableHeaderCell();
                 adetHeaderCell.Text = "Adet";
                 TableHeaderCell bagisMiktariHeaderCell = new TableHeaderCell();
-                bagisMiktariHeaderCell.Text = "Bağış Miktarı";
+                bagisMiktariHeaderCell.Text = "Bagis Miktari";
                 tableHeaderRow1.Controls.Add(adetHeaderCell);
                 tableHeaderRow1.Controls.Add(bagisMiktariHeaderCell);
             }

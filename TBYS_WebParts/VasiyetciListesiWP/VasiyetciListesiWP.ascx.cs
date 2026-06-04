@@ -1,4 +1,4 @@
-ï»¿using Microsoft.SharePoint;
+using Microsoft.SharePoint;
 using Microsoft.SharePoint.Mobile.Controls;
 using Model.IKYS;
 using Model.Ortak;
@@ -106,12 +106,12 @@ namespace TBYS_WebParts.VasiyetciListesiWP
         {
             try
             {
-                TitleLbl.Text = "VasiyetÃ§i Listesi";
+                TitleLbl.Text = "Vasiyetçi Listesi";
                 Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
                 BolgeIdQS = bolge == null ? 0 : bolge.Id;
                 if (BolgeIdQS>0)
                 {
-                    TitleLbl.Text = "VasiyetÃ§i Listesi" + " (" + bolge.KisaAdi + " BÃ¶lgesi)";
+                    TitleLbl.Text = "Vasiyetçi Listesi" + " (" + bolge.KisaAdi + " Bölgesi)";
                     
                 }
                 TabloOlustur();
@@ -130,8 +130,8 @@ namespace TBYS_WebParts.VasiyetciListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = VasiyetciJson(); //veri Ã§ekilip json a Ã§eviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazÄ±rlanÄ±yor.
+            var jsonData = VasiyetciJson(); //veri çekilip json a çeviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string CreateDataTable(string jsonData)
@@ -187,7 +187,7 @@ namespace TBYS_WebParts.VasiyetciListesiWP
                     }},
                     {
                         targets: 11, render: function(data, type, row, meta) {
-                        var link= '<a href=" + ProjeConstants.PAGE_VASIYETCI_GIRISI + @"?DestinationApp=Duzenle&VasiyetciId='+row.VasiyetciId +' class=\'btn btn-outline-primary \'>DÃ¼zenle</a>';
+                        var link= '<a href=" + ProjeConstants.PAGE_VASIYETCI_GIRISI + @"?DestinationApp=Duzenle&VasiyetciId='+row.VasiyetciId +' class=\'btn btn-outline-primary \'>Düzenle</a>';
                         return link;
                     }},
                     ],
@@ -388,7 +388,7 @@ namespace TBYS_WebParts.VasiyetciListesiWP
                 if (duzenleGorunsunMu)
                     if (duzenleGorunsunMu)
                 {
-                    vasiyetciItem.Duzenle = "'<a href=" + ProjeConstants.PAGE_VASIYETCI_GIRISI + @"?DestinationApp=Duzenle&VasiyetciId=' + row.VasiyetciId + ' class=\'btn btn-outline-primary \'>DÃ¼zenle</a>'";
+                    vasiyetciItem.Duzenle = "'<a href=" + ProjeConstants.PAGE_VASIYETCI_GIRISI + @"?DestinationApp=Duzenle&VasiyetciId=' + row.VasiyetciId + ' class=\'btn btn-outline-primary \'>Düzenle</a>'";
                 }
 
 

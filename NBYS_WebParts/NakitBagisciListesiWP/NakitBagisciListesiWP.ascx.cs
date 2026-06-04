@@ -1,4 +1,4 @@
-﻿using Model.NBYS;
+using Model.NBYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -98,11 +98,11 @@ namespace NBYS_WebParts.NakitBagisciListesiWP
         private void FillBagisZamaniDDL()
         {
             BagisZamaniDDL.Items.Add(new ListItem(ProjeConstants.HEPSI, ProjeConstants.HEPSI));
-            BagisZamaniDDL.Items.Add(new ListItem("Son 5 Yıl", "Son5Yil"));
-            BagisZamaniDDL.Items.Add(new ListItem("Önceki Ay (Tüm Bağışçılar)", "OncekiAyTamami"));
-            BagisZamaniDDL.Items.Add(new ListItem("Önceki Ay (Yeni Bağışçılar)", "OncekiAyYeni"));
-            BagisZamaniDDL.Items.Add(new ListItem("Son Ay (Tüm Bağışçılar)", "SonAyTamami"));
-            BagisZamaniDDL.Items.Add(new ListItem("Son Ay (Yeni Bağışçılar)", "SonAyYeni"));
+            BagisZamaniDDL.Items.Add(new ListItem("Son 5 Yil", "Son5Yil"));
+            BagisZamaniDDL.Items.Add(new ListItem("�nceki Ay (T�m Bagis�ilar)", "OncekiAyTamami"));
+            BagisZamaniDDL.Items.Add(new ListItem("�nceki Ay (Yeni Bagis�ilar)", "OncekiAyYeni"));
+            BagisZamaniDDL.Items.Add(new ListItem("Son Ay (T�m Bagis�ilar)", "SonAyTamami"));
+            BagisZamaniDDL.Items.Add(new ListItem("Son Ay (Yeni Bagis�ilar)", "SonAyYeni"));
         }
         private void FillIlData()
         {
@@ -124,7 +124,7 @@ namespace NBYS_WebParts.NakitBagisciListesiWP
         {
             try
             {
-                //acilista ili querystringde gelen ile eşitle
+                //acilista ili querystringde gelen ile esitle
 
                 //il
                 string il = !string.IsNullOrEmpty(SecilenIlQS) ? SecilenIlQS : ProjeConstants.IL_HEPSI.ToString();
@@ -152,8 +152,8 @@ namespace NBYS_WebParts.NakitBagisciListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = GetBagisciData(); //veri çekilip json a çeviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = GetBagisciData(); //veri �ekilip json a �eviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string GetBagisciData()
@@ -169,33 +169,33 @@ namespace NBYS_WebParts.NakitBagisciListesiWP
 
             if (selectedOption.Equals("OncekiAyTamami"))
             {
-                string basTar = new DateTime(today.Year, today.Month, 1).AddMonths(-1).ToString(ProjeConstants.DATE_TR).ReturnQuotedValue().ToString();//geçen ayın ilk günü
-                string sonTar = new DateTime(today.Year, today.Month, 1).ToString(ProjeConstants.DATE_TR).ReturnQuotedValue().ToString();//bu ayın ilk günü
+                string basTar = new DateTime(today.Year, today.Month, 1).AddMonths(-1).ToString(ProjeConstants.DATE_TR).ReturnQuotedValue().ToString();//ge�en ayin ilk g�n�
+                string sonTar = new DateTime(today.Year, today.Month, 1).ToString(ProjeConstants.DATE_TR).ReturnQuotedValue().ToString();//bu ayin ilk g�n�
                 json = nakitBagisci.SelectByIlBagisTarihi(SecilenIlQS.ConvertToInt(), basTar, sonTar, ref list, ref rowCount);//nakitBagisci.SelectByIl(SecilenIlQS.ConvertToInt(), ref rowCount);
             }
             else if (selectedOption.Equals("OncekiAyYeni"))
             {
-                string basTar = new DateTime(today.Year, today.Month, 1).AddMonths(-1).ToString(ProjeConstants.DATE_TR).ReturnQuotedValue().ToString();//geçen ayın ilk günü
-                string sonTar = new DateTime(today.Year, today.Month, 1).ToString(ProjeConstants.DATE_TR).ReturnQuotedValue().ToString();//bu ayın ilk günü
+                string basTar = new DateTime(today.Year, today.Month, 1).AddMonths(-1).ToString(ProjeConstants.DATE_TR).ReturnQuotedValue().ToString();//ge�en ayin ilk g�n�
+                string sonTar = new DateTime(today.Year, today.Month, 1).ToString(ProjeConstants.DATE_TR).ReturnQuotedValue().ToString();//bu ayin ilk g�n�
                 json = nakitBagisci.SelectByIlBagisTarihiYeni(SecilenIlQS.ConvertToInt(), basTar, sonTar, ref list, ref rowCount);
             }
             if (selectedOption.Equals("SonAyTamami"))
             {
-                string basTar = new DateTime(today.Year, today.Month, 1).ToString(ProjeConstants.DATE_TR).ReturnQuotedValue().ToString();//bu ayın ilk günü
-                string sonTar = new DateTime(today.Year, today.Month, 1).AddMonths(1).AddDays(-1).ToString(ProjeConstants.DATE_TR).ReturnQuotedValue().ToString();//bu ayın son günü
+                string basTar = new DateTime(today.Year, today.Month, 1).ToString(ProjeConstants.DATE_TR).ReturnQuotedValue().ToString();//bu ayin ilk g�n�
+                string sonTar = new DateTime(today.Year, today.Month, 1).AddMonths(1).AddDays(-1).ToString(ProjeConstants.DATE_TR).ReturnQuotedValue().ToString();//bu ayin son g�n�
                 json = nakitBagisci.SelectByIlBagisTarihi(SecilenIlQS.ConvertToInt(), basTar, sonTar, ref list, ref rowCount);//nakitBagisci.SelectByIl(SecilenIlQS.ConvertToInt(), ref rowCount);
             }
             else if (selectedOption.Equals("SonAyYeni"))
             {
-                string basTar = new DateTime(today.Year, today.Month, 1).ToString(ProjeConstants.DATE_TR).ReturnQuotedValue().ToString();//bu ayın ilk günü
-                string sonTar = new DateTime(today.Year, today.Month, 1).AddMonths(1).AddDays(-1).ToString(ProjeConstants.DATE_TR).ReturnQuotedValue().ToString();//bu ayın son günü
+                string basTar = new DateTime(today.Year, today.Month, 1).ToString(ProjeConstants.DATE_TR).ReturnQuotedValue().ToString();//bu ayin ilk g�n�
+                string sonTar = new DateTime(today.Year, today.Month, 1).AddMonths(1).AddDays(-1).ToString(ProjeConstants.DATE_TR).ReturnQuotedValue().ToString();//bu ayin son g�n�
 
                 json = nakitBagisci.SelectByIlBagisTarihiYeni(SecilenIlQS.ConvertToInt(), basTar, sonTar, ref list, ref rowCount);
             }
             else if (selectedOption.Equals("Son5Yil"))
             {
                 string besYilOnce = DateTime.Today.AddYears(-5).ToString(ProjeConstants.DATE_TR).ReturnQuotedValue().ToString();
-                string sonTar = new DateTime(today.Year, today.Month, 1).AddMonths(1).AddDays(-1).ToString(ProjeConstants.DATE_TR).ReturnQuotedValue().ToString();//bu ayın son günü
+                string sonTar = new DateTime(today.Year, today.Month, 1).AddMonths(1).AddDays(-1).ToString(ProjeConstants.DATE_TR).ReturnQuotedValue().ToString();//bu ayin son g�n�
                 json = nakitBagisci.SelectByIlBagisTarihi(SecilenIlQS.ConvertToInt(), besYilOnce, sonTar, ref list, ref rowCount);//nakitBagisci.SelectByIl(SecilenIlQS.ConvertToInt(), ref rowCount);
             }
             else if (selectedOption.Equals("Hepsi"))
@@ -212,9 +212,9 @@ namespace NBYS_WebParts.NakitBagisciListesiWP
             jQuery(document).ready(function () {
 
             jQuery('#CustomDataTable').DataTable({
-                'initComplete': function (settings, json) {//tablo yüklendiğinde
+                'initComplete': function (settings, json) {//tablo y�klendiginde
                     var api = this.api();
-                    var row = api.row(function(idx, data, node) { //secilen satıra gider
+                    var row = api.row(function(idx, data, node) { //secilen satira gider
                         return data['NakitBagisciId'] ==" + SecilenIdQS + @";
                     });
                     if (row.length > 0)
@@ -246,7 +246,7 @@ namespace NBYS_WebParts.NakitBagisciListesiWP
                 }},
                 {
                     targets: 7, render: function(data, type, row, meta) {
-                    var link= '<a href=' + '" + ProjeConstants.PAGE_NAKITBAGISCI_EDIT + "?NakitBagisciId=' + row.NakitBagisciId + '" + queryStr + @" class=\'btn-link text-primary\' >Düzenle</a>';
+                    var link= '<a href=' + '" + ProjeConstants.PAGE_NAKITBAGISCI_EDIT + "?NakitBagisciId=' + row.NakitBagisciId + '" + queryStr + @" class=\'btn-link text-primary\' >D�zenle</a>';
                     return link;
                 }},
                 ],
@@ -315,8 +315,8 @@ namespace NBYS_WebParts.NakitBagisciListesiWP
         }
         private void TabloModalOlustur(string nakitBagisciId)
         {
-            var jsonData = GetModalDataJson(nakitBagisciId); //veri çekilip json a çeviriliyor
-            var jsString = CreateModalDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = GetModalDataJson(nakitBagisciId); //veri �ekilip json a �eviriliyor
+            var jsString = CreateModalDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string CreateModalDataTable(string jsonData)
@@ -367,8 +367,8 @@ namespace NBYS_WebParts.NakitBagisciListesiWP
             var json = nbh.SelectByBagisciIdReturnJSon(nakitBagisciId, ref rowCount);
             decimal toplamTutar = nbh.GetSumBagisMiktariByNakitBagisciIdBetweenBasTarBitTar(
                 ProjeConstants.BAGIS_SORGU_BASTAR.ConvertToDatetime(), DateTime.Today, nakitBagisciId.ConvertToInt());
-            BagisBilgileriLbl.Text = rowCount < 1 ? "Bağış bulunmamaktadır" :
-                "Bağışçının " + rowCount + " defada yaptığı toplam " + toplamTutar.ToString("N", culturInfo) + "TL bağışı bulunmaktadır";
+            BagisBilgileriLbl.Text = rowCount < 1 ? "Bagis bulunmamaktadir" :
+                "Bagis�inin " + rowCount + " defada yaptigi toplam " + toplamTutar.ToString("N", culturInfo) + "TL bagisi bulunmaktadir";
             return json;
         }
         protected void ExcelBtn_Click(object sender, EventArgs e)
@@ -470,7 +470,7 @@ namespace NBYS_WebParts.NakitBagisciListesiWP
                         IlIlceCell.Text += " " + ilce.IlceAdi.ReturnEmptyIfNull().ToString();
                     }
                     TelefonCell.Text = nakitBagisci.Telefon1.ReturnEmptyIfNull().ToString();
-                    TuzelKisiCell.Text = nakitBagisci.TuzelKisi.ConvertToBool() ? "Evet" : "Hayır";
+                    TuzelKisiCell.Text = nakitBagisci.TuzelKisi.ConvertToBool() ? "Evet" : "Hayir";
                     row.Controls.Add(AdiCell);
                     row.Controls.Add(TCKimlikNoCell);
                     row.Controls.Add(AdresCell);

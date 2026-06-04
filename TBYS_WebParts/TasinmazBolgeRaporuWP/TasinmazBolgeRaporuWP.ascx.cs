@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -316,7 +316,7 @@ namespace TBYS_WebParts.TasinmazBolgeRaporuWP
                     }
 
                 }
-                //footera toplamları yaz
+                //footera toplamlari yaz
                 TableRow footerrow = new TableRow();
                 footerrow.BorderWidth = 4;
                 footerrow.HorizontalAlign = HorizontalAlign.Center;

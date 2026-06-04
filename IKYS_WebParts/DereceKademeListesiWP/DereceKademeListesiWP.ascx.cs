@@ -1,4 +1,4 @@
-﻿using Model.IKYS;
+using Model.IKYS;
 using Model.Ortak;
 using Model.TBYS;
 using System;
@@ -80,7 +80,7 @@ namespace IKYS_WebParts.DereceKademeListesiWP
             {
 
                 FillPersonelDDL();
-                PersonelIdQS = string.IsNullOrEmpty(PersonelIdQS) ? PersonelDDL.SelectedItem.Value : PersonelIdQS; // Eğer PersonelIdQS boş ise, geçerli kullanıcı Id'sini kullan
+                PersonelIdQS = string.IsNullOrEmpty(PersonelIdQS) ? PersonelDDL.SelectedItem.Value : PersonelIdQS; // Eger PersonelIdQS bos ise, ge�erli kullanici Id'sini kullan
                 Personel personel = PersonelGetir();
                 if (personel != null)
                 {
@@ -96,7 +96,7 @@ namespace IKYS_WebParts.DereceKademeListesiWP
 
         private void ButtonGorunurlugunuAyarla(Personel personel)
         {
-            // Personelin geçerli kademesi >=10 ise, Kademe dropdown visible= false olsun
+            // Personelin ge�erli kademesi >=10 ise, Kademe dropdown visible= false olsun
             if (GecerliKademeTxt.Text.ConvertToInt() >= 10)
             {
                 KademeYukseltPanel.Visible = false;
@@ -105,7 +105,7 @@ namespace IKYS_WebParts.DereceKademeListesiWP
             {
                 KademeYukseltPanel.Visible = true;
             }
-            // Personelin geçerli derecesi <=1 ise, Derece dropdown visible= false olsun
+            // Personelin ge�erli derecesi <=1 ise, Derece dropdown visible= false olsun
             if (GecerliDereceTxt.Text.ConvertToInt() <= 1)
             {
                 DereceYukseltPanel.Visible = false;
@@ -150,8 +150,8 @@ namespace IKYS_WebParts.DereceKademeListesiWP
         #region DereceKademe Listesi
         private void DereceKademeTabloOlustur(Personel personel)
         {
-            var jsonData = DereceKademeTabloJson(personel); //veri çekilip json a çeviriliyor
-            var jsString = CreateDereceKademeDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = DereceKademeTabloJson(personel); //veri �ekilip json a �eviriliyor
+            var jsString = CreateDereceKademeDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string DereceKademeTabloJson(Personel personel)
@@ -209,7 +209,7 @@ namespace IKYS_WebParts.DereceKademeListesiWP
         {
             if (personel == null)
             {
-                MessageHelper.PublishMessage("Personel bulunamadı", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Personel bulunamadi", ProjeConstants.MESAJ_HATA);
                 return new List<DereceKademeListItem>();
             }
             else
@@ -227,9 +227,9 @@ namespace IKYS_WebParts.DereceKademeListesiWP
                         string derece = row["Derece"].ToString();
                         string kademe = row["Kademe"].ToString();
                         string aciklama = row["Aciklama"].ToString();
-                        string degisimTarihi = ((DateTime)row["DegisimTarihi"]).ToString("yyyy-MM-dd"); // JS için uygun tarih formatı
+                        string degisimTarihi = ((DateTime)row["DegisimTarihi"]).ToString("yyyy-MM-dd"); // JS i�in uygun tarih formati
 
-                        // JS parametrelerini güvenli hale getir (tırnak içine al)
+                        // JS parametrelerini g�venli hale getir (tirnak i�ine al)
                         string jsDegisim = "\"" + HttpUtility.JavaScriptStringEncode(degisim) + "\"";
                         string jsDerece = "\"" + HttpUtility.JavaScriptStringEncode(derece) + "\"";
                         string jsKademe = "\"" + HttpUtility.JavaScriptStringEncode(kademe) + "\"";
@@ -252,7 +252,7 @@ namespace IKYS_WebParts.DereceKademeListesiWP
                             Derece = derece,
                             Kademe = kademe,
                             Aciklama = aciklama,
-                            Duzenle = $"<a href=\"javascript:void(0);\" onclick='{jsDuzenle}' class=\"btn btn-primary\">Düzenle</a>",
+                            Duzenle = $"<a href=\"javascript:void(0);\" onclick='{jsDuzenle}' class=\"btn btn-primary\">D�zenle</a>",
                             Sil = $"<a href=\"javascript:void(0);\" onclick='{jsSil}' class=\"btn btn-danger\">Sil</a>"
                         };
 
@@ -267,14 +267,14 @@ namespace IKYS_WebParts.DereceKademeListesiWP
         {
             if (personel == null)
             {
-                MessageHelper.PublishMessage("Personel bulunamadı", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Personel bulunamadi", ProjeConstants.MESAJ_HATA);
             }
             else
             {
                 DereceKademeDegisim dereceKademe = new DereceKademeDegisim();
                 dereceKademe = dereceKademe.SelectByPersonelId(personel.Id);
-                GecerliDereceTxt.Text = dereceKademe?.Derece.ToString() ?? "Bulunamadı";
-                GecerliKademeTxt.Text = dereceKademe?.Kademe.ToString() ?? "Bulunamadı";
+                GecerliDereceTxt.Text = dereceKademe?.Derece.ToString() ?? "Bulunamadi";
+                GecerliKademeTxt.Text = dereceKademe?.Kademe.ToString() ?? "Bulunamadi";
             }
         }
         private class DereceKademeListItem
@@ -305,11 +305,11 @@ namespace IKYS_WebParts.DereceKademeListesiWP
                 };
 
                 dereceKademeDegisim.Save();
-                MessageHelper.PublishMessage("Derece ve Kademe Değişikliği Kaydedildi.", ProjeConstants.MESAJ_BASARILI);
+                MessageHelper.PublishMessage("Derece ve Kademe Degisikligi Kaydedildi.", ProjeConstants.MESAJ_BASARILI);
             }
             catch (Exception)
             {
-                MessageHelper.PublishMessage("Derece ve Kademe Değişikliği Kaydedilemedi.", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Derece ve Kademe Degisikligi Kaydedilemedi.", ProjeConstants.MESAJ_HATA);
             }
         }
         private void UpdateDereceKademeDegisim(int id, string degisim, DateTime degisimTarihi, int derece, int kademe, string aciklama)
@@ -317,12 +317,12 @@ namespace IKYS_WebParts.DereceKademeListesiWP
 
             try
             {
-                // Bu kısmı kendi veritabanı ya da SharePoint listesi güncelleme kodu ile tamamlayın
+                // Bu kismi kendi veritabani ya da SharePoint listesi g�ncelleme kodu ile tamamlayin
                 DereceKademeDegisim dereceKademeDegisim = new DereceKademeDegisim();
                 dereceKademeDegisim = dereceKademeDegisim.Select(id);
                 if (dereceKademeDegisim == null)
                 {
-                    MessageHelper.PublishMessage("Derece ve Kademe Değişikliği Bulunamadı.", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Derece ve Kademe Degisikligi Bulunamadi.", ProjeConstants.MESAJ_HATA);
                     return;
                 }
                 dereceKademeDegisim.Degisim = degisim;
@@ -331,11 +331,11 @@ namespace IKYS_WebParts.DereceKademeListesiWP
                 dereceKademeDegisim.Kademe = kademe;
                 dereceKademeDegisim.Aciklama = aciklama;
                 dereceKademeDegisim.Update();
-                MessageHelper.PublishMessage("Derece ve Kademe Değişikliği Güncellendi.", ProjeConstants.MESAJ_BASARILI);
+                MessageHelper.PublishMessage("Derece ve Kademe Degisikligi G�ncellendi.", ProjeConstants.MESAJ_BASARILI);
             }
             catch (Exception)
             {
-                MessageHelper.PublishMessage("Derece ve Kademe Değişikliği Güncellenemedi.", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Derece ve Kademe Degisikligi G�ncellenemedi.", ProjeConstants.MESAJ_HATA);
             }
         }
         private void SilDereceKademeDegisim(int id, string degisim, DateTime degisimTarihi, int derece, int kademe, string aciklama)
@@ -343,12 +343,12 @@ namespace IKYS_WebParts.DereceKademeListesiWP
 
             try
             {
-                // Bu kısmı kendi veritabanı ya da SharePoint listesi güncelleme kodu ile tamamlayın
+                // Bu kismi kendi veritabani ya da SharePoint listesi g�ncelleme kodu ile tamamlayin
                 DereceKademeDegisim dereceKademeDegisim = new DereceKademeDegisim();
                 dereceKademeDegisim = dereceKademeDegisim.Select(id);
                 if (dereceKademeDegisim == null)
                 {
-                    MessageHelper.PublishMessage("Derece ve Kademe Değişikliği Bulunamadı.", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Derece ve Kademe Degisikligi Bulunamadi.", ProjeConstants.MESAJ_HATA);
                     return;
                 }
 
@@ -412,10 +412,10 @@ namespace IKYS_WebParts.DereceKademeListesiWP
             int derece = int.Parse(DereceDDL.SelectedItem.Value);
             int kademe = int.Parse(KademeDDL.SelectedItem.Value);
             string aciklama = editAciklama.Text;
-            //kademe == Gecerli kademe  VE derece==gecerli derece ise kayıt yapmasın
+            //kademe == Gecerli kademe  VE derece==gecerli derece ise kayit yapmasin
             if (GecerliKademeTxt.Text.ConvertToInt() == kademe && GecerliDereceTxt.Text.ConvertToInt() == derece)
             {
-                MessageHelper.PublishMessage("Kayıt yapabilmek için geçerli derece ve kademeden farklı bir değer seçmelisiniz.", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Kayit yapabilmek i�in ge�erli derece ve kademeden farkli bir deger se�melisiniz.", ProjeConstants.MESAJ_HATA);
             }
             else
             {
@@ -434,8 +434,8 @@ namespace IKYS_WebParts.DereceKademeListesiWP
             int kademe = int.Parse(KademeDDL.SelectedItem.Value);
             string aciklama = editAciklama.Text;
 
-            // Veriyi güncelleme işlemi yapılacak
-            // Örnek: Veritabanına veya SharePoint listesine veri güncelleme
+            // Veriyi g�ncelleme islemi yapilacak
+            // �rnek: Veritabanina veya SharePoint listesine veri g�ncelleme
             UpdateDereceKademeDegisim(id, degisim, degisimTarihi, derece, kademe, aciklama);
             BilgileriDoldur();
 
@@ -450,8 +450,8 @@ namespace IKYS_WebParts.DereceKademeListesiWP
             int kademe = int.Parse(KademeDDL.SelectedItem.Value);
             string aciklama = editAciklama.Text;
 
-            // Veriyi güncelleme işlemi yapılacak
-            // Örnek: Veritabanına veya SharePoint listesine veri güncelleme
+            // Veriyi g�ncelleme islemi yapilacak
+            // �rnek: Veritabanina veya SharePoint listesine veri g�ncelleme
             SilDereceKademeDegisim(id, degisim, degisimTarihi, derece, kademe, aciklama);
             BilgileriDoldur();
 
@@ -478,7 +478,7 @@ namespace IKYS_WebParts.DereceKademeListesiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Personel Bulunamadı!", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Personel Bulunamadi!", ProjeConstants.MESAJ_HATA);
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_PERSONEL_LIST;
                 Page.Response.Redirect(newUrl);

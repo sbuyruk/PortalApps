@@ -1,4 +1,4 @@
-﻿using Model.IKYS;
+using Model.IKYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -127,7 +127,7 @@ namespace IKYS_WebParts.PersonelKartiWP
 
             #endregion
 
-            #region İş bilgileri
+            #region Is bilgileri
             IsBilgileri isBilgisi = new IsBilgileri();
             isBilgisi = isBilgisi.SelectByPersonelId(personel.Id);
             if (isBilgisi != null)
@@ -164,7 +164,7 @@ namespace IKYS_WebParts.PersonelKartiWP
             }
             #endregion
 
-            #region İletişim Bilgileri
+            #region Iletisim Bilgileri
             IletisimBilgileri ib = new IletisimBilgileri();
             ib = ib.SelectByPersonelId(personel.Id);
             Ilce ilce = new Ilce(ib.Ilcesi.ConvertToInt());
@@ -173,7 +173,7 @@ namespace IKYS_WebParts.PersonelKartiWP
             EvTelCell.Text = ib.EvTelefonu;
             #endregion
 
-            #region Eğitim Bilgileri
+            #region Egitim Bilgileri
             Egitim egitim = new Egitim();
             List<Egitim> egitimList = egitim.SelectByPersonelId(personel.Id);
             string liseOkul = string.Empty;
@@ -197,7 +197,7 @@ namespace IKYS_WebParts.PersonelKartiWP
                             break;
                         }
 
-                    case "5"://önlisans
+                    case "5"://�nlisans
                         {
                             onLisansOkul = item.Okul;
                             onLisansMezuniyet = item.MezuniyetTar.ConvertToDatetimeEmptyIfNull();
@@ -236,7 +236,7 @@ namespace IKYS_WebParts.PersonelKartiWP
             }
             #endregion
 
-            #region İş Deneyimi
+            #region Is Deneyimi
             IsTecrube isTecrubeDao = new IsTecrube();
             List<IsTecrube> isTecrubeList = isTecrubeDao.SelectByPersonelId(personel.Id);
             sayac = 0;
@@ -244,7 +244,7 @@ namespace IKYS_WebParts.PersonelKartiWP
             {
                 switch (sayac++)
                 {
-                    case 0://iş 1
+                    case 0://is 1
                         {
                             IsyeriCell.Text = item.Isyeri;
                             PozisyonCell.Text = item.Gorevi;
@@ -252,14 +252,14 @@ namespace IKYS_WebParts.PersonelKartiWP
                             break;
                         }
 
-                    case 1://iş 2
+                    case 1://is 2
                         {
                             Isyeri1Cell.Text = item.Isyeri;
                             Pozisyon1Cell.Text = item.Gorevi;
                             Donem1Cell.Text = item.BasTar.ConvertToDatetimeEmptyIfNull() + " - " + item.BitTar.ConvertToDatetimeEmptyIfNull();
                             break;
                         }
-                    case 2://iş 3
+                    case 2://is 3
                         {
                             Isyeri2Cell.Text = item.Isyeri;
                             Pozisyon2Cell.Text = item.Gorevi;
@@ -272,7 +272,7 @@ namespace IKYS_WebParts.PersonelKartiWP
             }
             #endregion
 
-            #region Yabancı Dil
+            #region Yabanci Dil
             YabanciDil yabanciDilDao = new YabanciDil();
             List<YabanciDil> yabanciDilList = yabanciDilDao.SelectByPersonelId(personel.Id);
             sayac = 0;
@@ -280,20 +280,20 @@ namespace IKYS_WebParts.PersonelKartiWP
             {
                 switch (sayac++)
                 {
-                    case 0://iş 1
+                    case 0://is 1
                         {
                             YabanciDilCell.Text = item.Dil;
                             YabanciDilNotuCell.Text = item.SinavAdi + " Notu:" + item.SinavNotu + " (" + item.SinavTarihi.ConvertToDatetimeEmptyIfNull() + ")";
                             break;
                         }
 
-                    case 1://iş 2
+                    case 1://is 2
                         {
                             YabanciDil1Cell.Text = item.Dil;
                             YabanciDilNotu1Cell.Text = item.SinavAdi + " Notu:" + item.SinavNotu + " (" + item.SinavTarihi.ConvertToDatetimeEmptyIfNull() + ")";
                             break;
                         }
-                    case 2://iş 3
+                    case 2://is 3
                         {
                             YabanciDil2Cell.Text = item.Dil;
                             YabanciDilNotu2Cell.Text = item.SinavAdi + " Notu:" + item.SinavNotu + " (" + item.SinavTarihi.ConvertToDatetimeEmptyIfNull() + ")";

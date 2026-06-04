@@ -1,4 +1,4 @@
-﻿using Model.IKYS;
+using Model.IKYS;
 using Model.Ortak;
 using System;
 using System.ComponentModel;
@@ -57,7 +57,7 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
             try
             {
                 DateTime today = DateTime.Today;
-                TitleLbl.Text = "Görevli/İzinli Personel Listesi";
+                TitleLbl.Text = "G�revli/Izinli Personel Listesi";
                 GorevOnayliOlanPersonelTablosunuDoldur();
                 UcretliIzinliPersonelTablosunuDoldur();
                 RaporluGorevliHastanedePersonelTablosunuDoldur();
@@ -85,7 +85,7 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
             TableHeaderRow baslikHR = new TableHeaderRow();
             TableHeaderCell baslikHRCell = new TableHeaderCell();
 
-            baslikHRCell.Text = " Görevli/İzinli Personel Listesi - " + DateTime.Now.ConvertToDDMMYYYHHmmFormat();
+            baslikHRCell.Text = " G�revli/Izinli Personel Listesi - " + DateTime.Now.ConvertToDDMMYYYHHmmFormat();
             baslikHRCell.Font.Bold = true;
             baslikHRCell.ColumnSpan = 7;
             baslikHR.CssClass = "text-center";
@@ -97,7 +97,7 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
             TableHeaderRow thbaslik = new TableHeaderRow();
             TableHeaderCell baslikCell = new TableHeaderCell();
 
-            baslikCell.Text = "Dış Görevde Olanlar";
+            baslikCell.Text = "Dis G�revde Olanlar";
             baslikCell.Font.Bold = true;
             baslikCell.ColumnSpan = 7;
             thbaslik.CssClass = "alert-secondary text-center";
@@ -106,19 +106,19 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
 
             TableHeaderRow th = new TableHeaderRow();
             TableHeaderCell siraCell = new TableHeaderCell();
-            siraCell.Text = "Sıra";
+            siraCell.Text = "Sira";
             TableHeaderCell AdiSoyadiCell = new TableHeaderCell();
-            AdiSoyadiCell.Text = "Adı Soyadı";
+            AdiSoyadiCell.Text = "Adi Soyadi";
             TableHeaderCell GorevinSebebiCell = new TableHeaderCell();
-            GorevinSebebiCell.Text = "Görevin Sebebi";
+            GorevinSebebiCell.Text = "G�revin Sebebi";
             TableHeaderCell GidilecekYerCell = new TableHeaderCell();
             GidilecekYerCell.Text = "Gidilecek Yer";
             TableHeaderCell BaslangicTarCell = new TableHeaderCell();
-            BaslangicTarCell.Text = "Başlangıç Tarihi";
+            BaslangicTarCell.Text = "Baslangi� Tarihi";
             TableHeaderCell BitisTarCell = new TableHeaderCell();
-            BitisTarCell.Text = "Bitiş Tarihi";
+            BitisTarCell.Text = "Bitis Tarihi";
             TableHeaderCell GorevYeriCell = new TableHeaderCell();
-            GorevYeriCell.Text = "Görevi";
+            GorevYeriCell.Text = "G�revi";
 
             th.Controls.Add(siraCell);
             th.Controls.Add(AdiSoyadiCell);
@@ -143,7 +143,7 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
                 GorevOnayTable.Rows.Clear();
                 TableHeaderRow baslikHR = new TableHeaderRow();
                 TableHeaderCell baslikHRCell = new TableHeaderCell();
-                baslikHRCell.Text = " Görevli/İzinli Personel Listesi - " + DateTime.Now.ConvertToDDMMYYYHHmmFormat();
+                baslikHRCell.Text = " G�revli/Izinli Personel Listesi - " + DateTime.Now.ConvertToDDMMYYYHHmmFormat();
                 baslikHRCell.Font.Bold = true;
                 baslikHRCell.ColumnSpan = 7;
                 baslikHR.CssClass = "text-center";
@@ -154,7 +154,7 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
                 TableHeaderRow thbaslik = new TableHeaderRow();
                 TableHeaderCell baslikCell = new TableHeaderCell();
 
-                baslikCell.Text = "Dış Görevde Olanlar";
+                baslikCell.Text = "Dis G�revde Olanlar";
                 baslikCell.Font.Bold = true;
                 baslikCell.ColumnSpan = 7;
                 thbaslik.CssClass = "alert-secondary text-center";
@@ -164,7 +164,7 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
                 TableRow tr = new TableRow();
                 TableCell tc = new TableCell();
                 tc.ColumnSpan = 7;
-                tc.Text = "Dış görevde olan personel bulunmamaktadır.";
+                tc.Text = "Dis g�revde olan personel bulunmamaktadir.";
                 tr.Controls.Add(tc);
                 GorevOnayTable.Controls.Add(tr);
             }
@@ -240,7 +240,7 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
             TableHeaderRow thbaslik = new TableHeaderRow();
             TableHeaderCell baslikCell = new TableHeaderCell();
 
-            baslikCell.Text = "Raporlu/Hastanede/Şehir İçi Görevde Olanlar";
+            baslikCell.Text = "Raporlu/Hastanede/Sehir I�i G�revde Olanlar";
             baslikCell.Font.Bold = true;
             baslikCell.ColumnSpan = 7;
             thbaslik.CssClass = "alert-secondary text-center";
@@ -249,20 +249,20 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
 
             TableHeaderRow th = new TableHeaderRow();
             TableHeaderCell siraCell = new TableHeaderCell();
-            siraCell.Text = "Sıra";
+            siraCell.Text = "Sira";
             TableHeaderCell adiSoyadiCell = new TableHeaderCell();
-            adiSoyadiCell.Text = "Adı Soyadı";
+            adiSoyadiCell.Text = "Adi Soyadi";
             TableHeaderCell BulunmamaSebebiCell = new TableHeaderCell();
             BulunmamaSebebiCell.Text = "Bulunmama Sebebi";
             TableHeaderCell BaslangicTarCell = new TableHeaderCell();
-            BaslangicTarCell.Text = "Başlangıç Tarihi";
+            BaslangicTarCell.Text = "Baslangi� Tarihi";
             TableHeaderCell BitisTarCell = new TableHeaderCell();
-            BitisTarCell.Text = "Bitiş Tarihi";
+            BitisTarCell.Text = "Bitis Tarihi";
             TableHeaderCell SureCell = new TableHeaderCell();
-            SureCell.Text = "Süre";
+            SureCell.Text = "S�re";
 
             TableHeaderCell AciklamaCell = new TableHeaderCell();
-            AciklamaCell.Text = "Açıklama";
+            AciklamaCell.Text = "A�iklama";
 
             th.Controls.Add(siraCell);
             th.Controls.Add(adiSoyadiCell);
@@ -288,7 +288,7 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
                 TableHeaderRow thbaslik = new TableHeaderRow();
                 TableHeaderCell baslikCell = new TableHeaderCell();
 
-                baslikCell.Text = "Raporlu/Hastanede/Şehir İçi Görevde Olanlar";
+                baslikCell.Text = "Raporlu/Hastanede/Sehir I�i G�revde Olanlar";
                 baslikCell.Font.Bold = true;
                 baslikCell.ColumnSpan = 7;
                 thbaslik.CssClass = "alert-secondary text-center";
@@ -298,7 +298,7 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
                 TableRow tr = new TableRow();
                 TableCell tc = new TableCell();
                 tc.ColumnSpan = 7;
-                tc.Text = "Raporlu/Hastanede/Görevli olan personel bulunmamaktadır.";
+                tc.Text = "Raporlu/Hastanede/G�revli olan personel bulunmamaktadir.";
                 tr.Controls.Add(tc);
                 RaporluPerTable.Controls.Add(tr);
             }
@@ -354,13 +354,13 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
                         //SureCell.Text = (bittarx - bastarx).ConvertToTimeSpanReturnInHHmm();
                         int gun = (bit - bas).Days;
 
-                        int saat = (bittarx - bastarx).Hours;//artan saat var mı
+                        int saat = (bittarx - bastarx).Hours;//artan saat var mi
                         if (saat >= 9)
                         {
                             gun++;
                             saat = 0;
                         }
-                        string gunStr = gun > 0 ? gun + " Gün " : "";
+                        string gunStr = gun > 0 ? gun + " G�n " : "";
                         string saatstr = saat > 0 ? saat + " Saat" : "";
                         SureCell.Text = gunStr + saatstr;
                     }
@@ -377,7 +377,7 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
                     }
                     else
                     {
-                        SureCell.Text = (bit - bas).TotalDays + 1 + " Gün";
+                        SureCell.Text = (bit - bas).TotalDays + 1 + " G�n";
 
                     }
                     string izinDevami = BitisTarihindeBaslayanIzniVarMi(personelId, bitTarDate);
@@ -395,14 +395,14 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
                 }
             }
         }
-        private void IzinliPerTableHeaders(Table table, string İzinTipi)
+        private void IzinliPerTableHeaders(Table table, string IzinTipi)
         {
             table.Rows.Clear();
 
             TableHeaderRow thbaslik = new TableHeaderRow();
             TableHeaderCell baslikCell = new TableHeaderCell();
 
-            baslikCell.Text = İzinTipi.Equals(ProjeConstants.IZINTIPI_MAZERET)? ProjeConstants.IZINTIPI_MAZERET+ " İzinli Olanlar": "İzinli Olanlar (Mazeret Hariç)";
+            baslikCell.Text = IzinTipi.Equals(ProjeConstants.IZINTIPI_MAZERET)? ProjeConstants.IZINTIPI_MAZERET+ " Izinli Olanlar": "Izinli Olanlar (Mazeret Hari�)";
             baslikCell.Font.Bold = true;
             baslikCell.ColumnSpan = 7;
             thbaslik.CssClass = "alert-secondary text-center";
@@ -411,19 +411,19 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
 
             TableHeaderRow th = new TableHeaderRow();
             TableHeaderCell siraCell = new TableHeaderCell();
-            siraCell.Text = "Sıra";
+            siraCell.Text = "Sira";
             TableHeaderCell adiSoyadiCell = new TableHeaderCell();
-            adiSoyadiCell.Text = "Adı Soyadı";
+            adiSoyadiCell.Text = "Adi Soyadi";
             TableHeaderCell IzinTipiCell = new TableHeaderCell();
-            IzinTipiCell.Text = "İzin Tipi";
+            IzinTipiCell.Text = "Izin Tipi";
             TableHeaderCell BaslangicTarCell = new TableHeaderCell();
-            BaslangicTarCell.Text = "Başlangıç Tarihi";
+            BaslangicTarCell.Text = "Baslangi� Tarihi";
             TableHeaderCell BitisTarCell = new TableHeaderCell();
-            BitisTarCell.Text = "Bitiş Tarihi";
+            BitisTarCell.Text = "Bitis Tarihi";
             TableHeaderCell SureCell = new TableHeaderCell();
-            SureCell.Text = "Süre";
+            SureCell.Text = "S�re";
             TableHeaderCell GorevYeriCell = new TableHeaderCell();
-            GorevYeriCell.Text = "Görev Yeri";
+            GorevYeriCell.Text = "G�rev Yeri";
 
             th.Controls.Add(siraCell);
             th.Controls.Add(adiSoyadiCell);
@@ -508,8 +508,8 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
                     row.Controls.Add(BittarCell);
                     if (izinTipi.Equals(ProjeConstants.IZINTIPI_SUTIZNI))
                     {
-                        BastarCell.Text = bastar + " </br>İzin saati : " + bastarDate.ToString("HH:mm")+"-"+ bitTarDate.ToString("HH:mm") ;
-                        BittarCell.Text = bittar + " </br>İzin saati : " + bastarDate.ToString("HH:mm") + "-" + bitTarDate.ToString("HH:mm");
+                        BastarCell.Text = bastar + " </br>Izin saati : " + bastarDate.ToString("HH:mm")+"-"+ bitTarDate.ToString("HH:mm") ;
+                        BittarCell.Text = bittar + " </br>Izin saati : " + bastarDate.ToString("HH:mm") + "-" + bitTarDate.ToString("HH:mm");
                     }
                     TableCell SureCell = new TableCell();
                     SureCell.Text = sure + " " + birim;
@@ -529,7 +529,7 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
                 TableHeaderRow thbaslik = new TableHeaderRow();
                 TableHeaderCell baslikCell = new TableHeaderCell();
 
-                baslikCell.Text = "İzinli Olanlar (Mazeret Hariç)";
+                baslikCell.Text = "Izinli Olanlar (Mazeret Hari�)";
                 baslikCell.Font.Bold = true;
                 baslikCell.ColumnSpan = 7;
                 thbaslik.CssClass = "alert-secondary text-center";
@@ -539,7 +539,7 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
                 TableRow tr = new TableRow();
                 TableCell tc = new TableCell();
                 tc.ColumnSpan = 7;
-                tc.Text = "İzinli personel bulunmamaktadır.";
+                tc.Text = "Izinli personel bulunmamaktadir.";
                 tr.Controls.Add(tc);
                 IzinliPerTable.Controls.Add(tr);
             }
@@ -552,19 +552,19 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
             DateTime bastar = UtilityHelper.TariheSaatEkle(tarih.AddDays(1), "17:00");
             DateTime bittar = UtilityHelper.TariheSaatEkle(tarih.AddDays(1), "07:00");
 
-            //iznin son günü cuma ise
+            //iznin son g�n� cuma ise
             if (tarih.DayOfWeek.Equals(DayOfWeek.Friday))
             {                
                 bastar = UtilityHelper.TariheSaatEkle(tarih.AddDays(3), "17:00");
                 bittar = UtilityHelper.TariheSaatEkle(tarih.AddDays(3), "07:00");
             }
-            //iznin son günü cumartesi ise
+            //iznin son g�n� cumartesi ise
             else if (tarih.DayOfWeek.Equals(DayOfWeek.Saturday))
             {
                 bastar = UtilityHelper.TariheSaatEkle(tarih.AddDays(2), "17:00");
                 bittar = UtilityHelper.TariheSaatEkle(tarih.AddDays(2), "07:00");
             }
-            //iznin son günü pazar ise
+            //iznin son g�n� pazar ise
             else if (tarih.DayOfWeek.Equals(DayOfWeek.Sunday))
             {
                 bastar = UtilityHelper.TariheSaatEkle(tarih.AddDays(1), "17:00");
@@ -574,7 +574,7 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
             ih = ih.SelectByPersonelTarih(personelId,bastar,bittar);
             if (ih != null)
             {
-                return ("(Devamında izni var. </br>Dönüş tarihi: "+ih.BitisTarihi.AddDays(1).ConvertToDatetimeEmptyIfNull()+")");
+                return ("(Devaminda izni var. </br>D�n�s tarihi: "+ih.BitisTarihi.AddDays(1).ConvertToDatetimeEmptyIfNull()+")");
             }
             else 
                 return (string.Empty);
@@ -586,19 +586,19 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
             DateTime bastar = UtilityHelper.TariheSaatEkle(tarih.AddDays(1), "17:00");
             DateTime bittar = UtilityHelper.TariheSaatEkle(tarih.AddDays(1), "07:00");
 
-            //Görevin son günü cuma ise
+            //G�revin son g�n� cuma ise
             if (tarih.DayOfWeek.Equals(DayOfWeek.Friday))
             {
                 bastar = UtilityHelper.TariheSaatEkle(tarih.AddDays(3), "17:00");
                 bittar = UtilityHelper.TariheSaatEkle(tarih.AddDays(3), "07:00");
             }
-            //Görevin son günü cumartesi ise
+            //G�revin son g�n� cumartesi ise
             else if (tarih.DayOfWeek.Equals(DayOfWeek.Saturday))
             {
                 bastar = UtilityHelper.TariheSaatEkle(tarih.AddDays(2), "17:00");
                 bittar = UtilityHelper.TariheSaatEkle(tarih.AddDays(2), "07:00");
             }
-            //Görevin son günü pazar ise
+            //G�revin son g�n� pazar ise
             else if (tarih.DayOfWeek.Equals(DayOfWeek.Sunday))
             {
                 bastar = UtilityHelper.TariheSaatEkle(tarih.AddDays(1), "17:00");
@@ -608,7 +608,7 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
             gorevOnay = gorevOnay.SelectByPersonelTarih(personelId, bastar, bittar);
             if (gorevOnay != null)
             {
-                return ("(Devamında görevi var. </br>Görev Bitişi: " + gorevOnay.BitisTarihi.ConvertToDDMMYYYHHmmFormat() + ")");
+                return ("(Devaminda g�revi var. </br>G�rev Bitisi: " + gorevOnay.BitisTarihi.ConvertToDDMMYYYHHmmFormat() + ")");
             }
             else
                 return (string.Empty);
@@ -687,7 +687,7 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
                 TableHeaderRow thbaslik = new TableHeaderRow();
                 TableHeaderCell baslikCell = new TableHeaderCell();
 
-                baslikCell.Text = "Mazeret İzinli Olanlar";
+                baslikCell.Text = "Mazeret Izinli Olanlar";
                 baslikCell.Font.Bold = true;
                 baslikCell.ColumnSpan = 7;
                 thbaslik.CssClass = "alert-secondary text-center";
@@ -697,7 +697,7 @@ namespace IKYS_WebParts.GorevliIzinliPersonelWP
                 TableRow tr = new TableRow();
                 TableCell tc = new TableCell();
                 tc.ColumnSpan = 7;
-                tc.Text = "İzinli personel bulunmamaktadır.";
+                tc.Text = "Izinli personel bulunmamaktadir.";
                 tr.Controls.Add(tc);
                 MazeretIzinliPerTable.Controls.Add(tr);
             }

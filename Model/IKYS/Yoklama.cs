@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -59,7 +59,7 @@ namespace Model.IKYS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
 
         }
@@ -122,7 +122,7 @@ namespace Model.IKYS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
         }
         public override List<T> SelectAll<T>()
@@ -238,7 +238,7 @@ namespace Model.IKYS
                 SELECT *
                 FROM Yoklama_Table
                 WHERE PersonelId={0}
-                    AND BulunmamaSebebi=3 --Görevli
+                    AND BulunmamaSebebi=3 --G�revli
 					AND  (BitisTarihi >= {1} AND BaslangicTarihi <= {2}) ", personelId.ToString(), bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat());
 
                 DataTable dataTable = dao.SelectFromDb(sqlString, "");

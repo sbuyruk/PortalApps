@@ -1,4 +1,4 @@
-﻿using Model.NBYS;
+using Model.NBYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -44,8 +44,8 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = TabloJson(); //veri �ekilip json a �eviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
             NakitBagisHareket nbh= new NakitBagisHareket();
             DateTime bagisTarihi = BagisTarihiTxt.Text.ConvertToDatetime();
@@ -83,9 +83,9 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
                 jQuery(document).ready(function () {
                     jQuery('#CustomDataTable').DataTable({
-                        'initComplete': function (settings, json) {//tablo yüklendiğinde
+                        'initComplete': function (settings, json) {//tablo y�klendiginde
                             var api = this.api();
-                            var row = api.row(function (idx, data, node) { //secilen toplantıya gider
+                            var row = api.row(function (idx, data, node) { //secilen toplantiya gider
                                 return data['Secildi'] == true;
                             });
                             if (row.length > 0) {
@@ -128,7 +128,7 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP
                             },
                             {
                                 extend: 'excel',
-                                title: 'Tarih Bazında Günlük Bağışlar',
+                                title: 'Tarih Bazinda G�nl�k Bagislar',
                                 filename: function(){
                                     var d = new Date();
                                     var n = d.getTime();
@@ -140,7 +140,7 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP
                             },
                             {
                                 extend: 'pdf',
-                                title: 'Tarih Bazında Günlük Bağışlar',
+                                title: 'Tarih Bazinda G�nl�k Bagislar',
                                 filename: function(){
                                     var d = new Date();
                                     var n = d.getTime();
@@ -203,7 +203,7 @@ namespace MFYS_WebParts.TarihBazindaGunlukBagisListesiWP
             if (BankaDDL.SelectedItem == null)
             {
                 BankaDDL.Items.Clear();
-                BankaDDL.Items.Add(new ListItem("Tüm Bankalar", string.Empty));
+                BankaDDL.Items.Add(new ListItem("T�m Bankalar", string.Empty));
                 BankaTanim pBanka = new BankaTanim();
                 List<string> list = pBanka.SelectByBankaGrup();
                 foreach (string bankaGrup in list)

@@ -1,4 +1,4 @@
-﻿using DAO.Ortak;
+using DAO.Ortak;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -63,7 +63,7 @@ namespace Model.NBYS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public override bool Update()
@@ -120,7 +120,7 @@ namespace Model.NBYS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public override T Select<T>(int id)
@@ -162,7 +162,7 @@ namespace Model.NBYS
         public DataTable SelectByIslemTarihi(DateTime islemTarihi, ref int rowCount, bool aktarilanlarHaric, string banka)
         {
             string aktarilanlarHaricStr = aktarilanlarHaric ? " AND AktarildiMi=0 " : "";
-            banka = banka.Equals(ProjeConstants.HEPSI) ? string.Empty : banka;//hepsi geldiyse bankastr boş olsun            
+            banka = banka.Equals(ProjeConstants.HEPSI) ? string.Empty : banka;//hepsi geldiyse bankastr bos olsun            
             string bankaStr = string.IsNullOrEmpty(banka) ? "" : " AND BankaAdi= " + banka.ReturnQuotedValue(); ;
             string sqlString = string.Format(@"
                 SELECT Id EkstreAktarmaId, BankaAdi, TCKimlikNo, Adi, Soyadi, ISNULL(Adi,'')  +' ' +ISNULL(Soyadi,'') AdiSoyadi,
@@ -182,7 +182,7 @@ namespace Model.NBYS
         public DataTable SelectByIslemTarihiReturnDT(DateTime islemTarihi, bool aktarilanlarHaric, string banka)
         {
             string aktarilanlarHaricStr = aktarilanlarHaric ? " AND AktarildiMi=0 " : "";
-            banka = banka.Equals(ProjeConstants.HEPSI) ? string.Empty : banka;//hepsi geldiyse bankastr boş olsun            
+            banka = banka.Equals(ProjeConstants.HEPSI) ? string.Empty : banka;//hepsi geldiyse bankastr bos olsun            
             string bankaStr = string.IsNullOrEmpty(banka) ? "" : " AND BankaAdi= " + banka.ReturnQuotedValue(); ;
             string sqlString = string.Format(@"
                 SELECT COUNT(A.Id) KayitAdedi, A.Id EkstreAktarmaId, A.BankaAdi, A.TCKimlikNo, A.Adi,A.Soyadi, ISNULL(A.Adi,'')  +' ' +ISNULL(A.Soyadi,'') AdiSoyadi,
@@ -256,15 +256,15 @@ namespace Model.NBYS
                     EkstreAktarma ekstreAktarma = new EkstreAktarma();
                     //var fisNo = line.Substring(51, 72 - 51).TrimEnd();
                     var ad = line.Substring(51, 72 - 51).TrimEnd();
-                    if (!string.IsNullOrEmpty(ad)) //en son satırı almamak için
+                    if (!string.IsNullOrEmpty(ad)) //en son satiri almamak i�in
                     {
                         var soyisim = line.Substring(72, 93 - 73).TrimEnd();
                         var tc = line.Substring(93, 105 - 93).TrimEnd();
                         var tel = line.Substring(105, 123 - 105).TrimEnd();
                         var adres = line.Substring(123, 178 - 123).TrimEnd();
                         var postaKodu = line.Substring(178, 183 - 178).TrimEnd();
-                        var ülke = line.Substring(183, 7).TrimEnd();
-                        var tutarTl = line.Substring(230, 15).TrimEnd();//TODO: sonunda bir sıfır fazla mı? yoksa son iki rakam küsürat mı? sorulacak
+                        var �lke = line.Substring(183, 7).TrimEnd();
+                        var tutarTl = line.Substring(230, 15).TrimEnd();//TODO: sonunda bir sifir fazla mi? yoksa son iki rakam k�s�rat mi? sorulacak
 
                         var tutarKr = line.Substring(245, 2).TrimEnd();
                         var tutar = tutarTl + "," + tutarKr;
@@ -315,17 +315,17 @@ namespace Model.NBYS
                     foreach (DataRow row in akbankEkstreData.Rows)
                     {
                         EkstreAktarma ekstreAktarma = new EkstreAktarma();
-                        var tarih = row[0].ReturnEmptyIfNull().ToString();//borc satırı için işlem yapma
+                        var tarih = row[0].ReturnEmptyIfNull().ToString();//borc satiri i�in islem yapma
                         var aciklama = row[5].ReturnEmptyIfNull().ToString();
-                        if (string.IsNullOrEmpty(tarih))// ilk kolon boş ise dosya bitti çık
+                        if (string.IsNullOrEmpty(tarih))// ilk kolon bos ise dosya bitti �ik
                             break;
                         try
                         {
                             var fisNo = row[6].ToString().Trim();
                             var tutar = row[2].ReturnEmptyIfNull().ToString().Replace(".", ",").ConvertToDecimal();//row[6].ReturnEmptyIfNull().ToString();
                             var bagisTarihi = row[0].ReturnEmptyIfNull().ToString().ConvertToDatetime();
-                            if (BuKayitDahaOnceGirilmisMiByFisNo(//ProjeConstants.BANKA_AKBANKEKSTRE, fisNo, aciklama)) //fiş numarasından kontrol et kayıt girilmişse atla
-                                "Akbank", fisNo, aciklama, bagisTarihi, tutar)) //fiş numarasından kontrol et kayıt girilmişse atla
+                            if (BuKayitDahaOnceGirilmisMiByFisNo(//ProjeConstants.BANKA_AKBANKEKSTRE, fisNo, aciklama)) //fis numarasindan kontrol et kayit girilmisse atla
+                                "Akbank", fisNo, aciklama, bagisTarihi, tutar)) //fis numarasindan kontrol et kayit girilmisse atla
                             {
                                 continue;
                             }
@@ -369,11 +369,11 @@ namespace Model.NBYS
             var tarih = string.Empty;
             foreach (var line in lines)
             {
-                //if (count == 0)//ilk satırda tarih bilgisi var
+                //if (count == 0)//ilk satirda tarih bilgisi var
                 //{
                 //    tarih = line.Substring(10, 8);
                 //}
-                if (count > 0 && count < (lines.Count - 1)) //ilk satır ve son satır alınmayacak
+                if (count > 0 && count < (lines.Count - 1)) //ilk satir ve son satir alinmayacak
                 {
                     try
                     {
@@ -381,7 +381,7 @@ namespace Model.NBYS
 
                         var ad = line.Substring(1, 30).TrimEnd();
 
-                        if (!string.IsNullOrEmpty(ad)) //en son satırı almamak için
+                        if (!string.IsNullOrEmpty(ad)) //en son satiri almamak i�in
                         {
                             var adres = line.Substring(30, 61).TrimEnd();
                             var il = line.Substring(91, 20).TrimEnd();
@@ -473,10 +473,10 @@ namespace Model.NBYS
                             DateTime bagisTarihi = tarihStr.ConvertToDatetime();
                             var detay = row[1].ReturnEmptyIfNull().ToString();
                             string tutar = row[3].ReturnZeroIfNull().ToString().Replace(".", ",");
-                            if (detay.Contains("TSKGÇL BAĞIŞI") || tutar.ConvertToDecimal() < 0
+                            if (detay.Contains("TSKG�L BAGISI") || tutar.ConvertToDecimal() < 0
                                 || detay.Contains("901.00114.98.00012")//stopaj kesintisi
-                                || detay.Contains("22100000000")//swap açılış kapanış
-                                || detay.Contains("EF3077117 TÜRK SİLAHLI")) //vakıf hesabına virman
+                                || detay.Contains("22100000000")//swap a�ilis kapanis
+                                || detay.Contains("EF3077117 T�RK SILAHLI")) //vakif hesabina virman
                             {
                                 continue;
                             }
@@ -484,25 +484,25 @@ namespace Model.NBYS
                             string adi = string.Empty;
                             var adres = string.Empty;// adres bilgisi gelmiyor
 
-                            if (detay.Contains("CEP ŞUBE-HVL-Bağış -"))
+                            if (detay.Contains("CEP SUBE-HVL-Bagis -"))
                             {
-                                var splitText = new string[] { "CEP ŞUBE-HVL-Bağış -" };
+                                var splitText = new string[] { "CEP SUBE-HVL-Bagis -" };
                                 var holder = detay.Split(splitText, StringSplitOptions.None);
                                 adi = holder[1].ReturnEmptyIfNull().ToString().TrimEnd();
                             }
-                            else if (detay.Contains("CEP ŞUBE-HVL-BAĞIŞ -"))
+                            else if (detay.Contains("CEP SUBE-HVL-BAGIS -"))
                             {
-                                var splitText = new string[] { "CEP ŞUBE-HVL-BAĞIŞ -" };
+                                var splitText = new string[] { "CEP SUBE-HVL-BAGIS -" };
                                 var holder = detay.Split(splitText, StringSplitOptions.None);
                                 adi = holder[1].ReturnEmptyIfNull().ToString().TrimEnd();
                             }
-                            else if (detay.Contains("CEP ŞUBE-HVL--"))
+                            else if (detay.Contains("CEP SUBE-HVL--"))
                             {
-                                var splitText = new string[] { "CEP ŞUBE-HVL--" };
+                                var splitText = new string[] { "CEP SUBE-HVL--" };
                                 var holder = detay.Split(splitText, StringSplitOptions.None);
                                 adi = holder[1].ReturnEmptyIfNull().ToString().TrimEnd();
                             }
-                            else if (detay.Contains("CEP ŞUBE-HVL-"))
+                            else if (detay.Contains("CEP SUBE-HVL-"))
                             {
                                 char splitText = '-';
                                 var holder = detay.Split(splitText);
@@ -513,15 +513,15 @@ namespace Model.NBYS
                                     adi = string.Empty;
                                 }
                             }
-                            else if (detay.Contains("INT-HVL-bağış -"))
+                            else if (detay.Contains("INT-HVL-bagis -"))
                             {
-                                var splitText = new string[] { "INT-HVL-bağış -" };
+                                var splitText = new string[] { "INT-HVL-bagis -" };
                                 var holder = detay.Split(splitText, StringSplitOptions.None);
                                 adi = holder[1].ReturnEmptyIfNull().ToString().TrimEnd();
                             }
-                            else if (detay.Contains("INT-HVL-BAĞIŞ -"))
+                            else if (detay.Contains("INT-HVL-BAGIS -"))
                             {
-                                var splitText = new string[] { "INT-HVL-BAĞIŞ -" };
+                                var splitText = new string[] { "INT-HVL-BAGIS -" };
                                 var holder = detay.Split(splitText, StringSplitOptions.None);
                                 adi = holder[1].ReturnEmptyIfNull().ToString().TrimEnd();
                             }
@@ -586,18 +586,18 @@ namespace Model.NBYS
                         ekstreAktarma.TCKimlikNo = holder[1].ConvertToLong();
                         ekstreAktarma.Telefon1 = UtilityHelper.TelefonFormatla(holder[2].ReturnEmptyIfNull().ToString());
                         ekstreAktarma.Adi = RemoveWhiteSpaces(holder[3]).ReturnEmptyIfNull().ToString().Trim().ToUpper(culturInfo);
-                        //holder[4] Genel Bağış yazıyor. bu bilgiye ihtiyaç yok
+                        //holder[4] Genel Bagis yaziyor. bu bilgiye ihtiya� yok
                         ekstreAktarma.Ili = holder[5];
                         ekstreAktarma.Ilcesi = holder[6];
                         ekstreAktarma.Adres = holder[7].ReturnEmptyIfNull().ToString().Trim().ToUpper(culturInfo);
                         string aciklama = holder[8];
                         ekstreAktarma.Aciklama = aciklama;
-                        //holder[9] dosyanın tarihini içeriyor
+                        //holder[9] dosyanin tarihini i�eriyor
                         ekstreAktarma.Tutar = holder[10].ReturnEmptyIfNull().ToString().Replace(".", ",").ConvertToDecimal();
                         ekstreAktarma.BagisTarihi = ConvertTextToDateTime(holder[11]);
                         ekstreAktarma.AktarildiMi = false;
                         ekstreAktarma.BankaAdi = ProjeConstants.BANKA_HALKBANK;
-                        ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL; //döviz cinsi hep tl oluyor
+                        ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL; //d�viz cinsi hep tl oluyor
                         ekstreAktarma.IslemTarihi = processTime;
                         ekstreAktarma.Olusturan = currentUser;
                         ekstreAktarma.BelgeIstemiyor = ekstreAktarma.Aciklama.Contains(ProjeConstants.DURUM_BELGE_ISTEMIYOR) || ekstreAktarma.Adres.Contains(ProjeConstants.DURUM_BELGE_ISTEMIYOR) ? true : false;
@@ -626,8 +626,8 @@ namespace Model.NBYS
 
                     foreach (DataRow row in ekstreData.Rows)
                     {
-                        var bagisTarihi = row[0].ReturnEmptyIfNull().ToString();//borc satırı için işlem yapma
-                        if (string.IsNullOrEmpty(bagisTarihi))// ilk kolon boş ise dosya bitti çık
+                        var bagisTarihi = row[0].ReturnEmptyIfNull().ToString();//borc satiri i�in islem yapma
+                        if (string.IsNullOrEmpty(bagisTarihi))// ilk kolon bos ise dosya bitti �ik
                             break;
 
                         string hata = string.Empty;
@@ -637,7 +637,7 @@ namespace Model.NBYS
                             var detay = row[1].ReturnEmptyIfNull().ToString();
                             var tutar = row[2].ReturnZeroIfNull().ToString().Replace(".", ",");
                             if (detay.Contains("50060309TSK") 
-                                || (detay.Contains("5528790009947647 KREDİ KARTI OTOMATİK VİRMAN"))
+                                || (detay.Contains("5528790009947647 KREDI KARTI OTOMATIK VIRMAN"))
                                 || (tutar.ReturnZeroIfNull().ConvertToDecimal() < 0))
                             {
                                 continue;
@@ -659,7 +659,7 @@ namespace Model.NBYS
                                 }
                                 else
                                 {
-                                    var splitText = new string[] { "OTURUM ÜCRETİ", "TC:" };
+                                    var splitText = new string[] { "OTURUM �CRETI", "TC:" };
                                     var holder = detay.Split(splitText, StringSplitOptions.None);
                                     if (holder.Length > 1)
                                     {
@@ -742,9 +742,9 @@ namespace Model.NBYS
                     };
                     //item.FisNo = fisNo;
                     //if (BuKayitDahaOnceGirilmisMiByFisNo(ProjeConstants.BANKA_FINANSBANK,
-                    //    fisNo, aciklama, tarih.ReturnEmptyIfNull().ConvertToDatetime(), item.Tutar)) //fiş numarasından kontrol et kayıt girilmemişse exception dondur değilse kaydet
+                    //    fisNo, aciklama, tarih.ReturnEmptyIfNull().ConvertToDatetime(), item.Tutar)) //fis numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
                     //{
-                    //    Exception ex = new Exception(fisNo + " Numaralı fiş daha önce girildiğinden tekrar aktarılmadı.");
+                    //    Exception ex = new Exception(fisNo + " Numarali fis daha �nce girildiginden tekrar aktarilmadi.");
                     //    exceptionHelper.Exceptions.Add(ex);
                     //}
                     //else
@@ -779,13 +779,13 @@ namespace Model.NBYS
                     {
                         kayitNo++;
                         EkstreAktarma ekstreAktarma = new EkstreAktarma();
-                        var tarih = row[0].ReturnEmptyIfNull().ToString();//borc satırı için işlem yapma
+                        var tarih = row[0].ReturnEmptyIfNull().ToString();//borc satiri i�in islem yapma
 
-                        if (string.IsNullOrEmpty(tarih))// ilk kolon boş ise dosya bitti çık
+                        if (string.IsNullOrEmpty(tarih))// ilk kolon bos ise dosya bitti �ik
                             break;
                         try
                         {
-                            var fisAaciklama = row[8].ReturnEmptyIfNull().ToString();//herşey açıklamanın içinde
+                            var fisAaciklama = row[8].ReturnEmptyIfNull().ToString();//hersey a�iklamanin i�inde
                             string adi = string.Empty;
                             string aciklama = string.Empty;
                             if (!string.IsNullOrEmpty(fisAaciklama))
@@ -794,8 +794,8 @@ namespace Model.NBYS
                                 foreach (var part in parts)
                                 {
                                     var trimmed = part.Trim();
-                                    if (trimmed.StartsWith("BAGIŞCI ADI SOYADI:"))
-                                        adi = trimmed.Substring("BAGIŞCI ADI SOYADI:".Length).Trim();
+                                    if (trimmed.StartsWith("BAGISCI ADI SOYADI:"))
+                                        adi = trimmed.Substring("BAGISCI ADI SOYADI:".Length).Trim();
                                     else if (trimmed.StartsWith("ACIKLAMA:"))
                                         aciklama = trimmed.Substring("ACIKLAMA:".Length).Trim();
                                 }
@@ -817,9 +817,9 @@ namespace Model.NBYS
                                     ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                                     ekstreAktarma.Olusturan = currentUser;
                                     ekstreAktarma.FisNo = fisNo;
-                                    if (BuKayitDahaOnceGirilmisMiByFisNo(ProjeConstants.BANKA_FINANSBANK ,fisNo, aciklama, bagisTarihi, tutar)) //fiş numarasından kontrol et kayıt girilmemişse exception dondur değilse kaydet
+                                    if (BuKayitDahaOnceGirilmisMiByFisNo(ProjeConstants.BANKA_FINANSBANK ,fisNo, aciklama, bagisTarihi, tutar)) //fis numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
                                     {
-                                        Exception ex = new Exception(fisNo + " Numaralı fiş daha önce girildiğinden tekrar aktarılmadı.");
+                                        Exception ex = new Exception(fisNo + " Numarali fis daha �nce girildiginden tekrar aktarilmadi.");
                                         exceptionHelper.Exceptions.Add(ex);
                                     }
                                     else
@@ -844,7 +844,7 @@ namespace Model.NBYS
             return exceptionHelper;
         }
         /// <summary>
-        /// int liste aalıp EkstreAktarma Listesi döndürür
+        /// int liste aalip EkstreAktarma Listesi d�nd�r�r
         /// </summary>
         /// <param name="checkedRows"></param>
         /// <returns></returns>
@@ -950,7 +950,7 @@ namespace Model.NBYS
                         ekstreAktarma.BankaAdi = ProjeConstants.BANKA_ISBANK;
                         ekstreAktarma.IslemTarihi = processTime;
                         ekstreAktarma.Olusturan = currentUser;
-                        //TC bilgisi dosyada yer almıyor
+                        //TC bilgisi dosyada yer almiyor
 
 
 
@@ -965,7 +965,7 @@ namespace Model.NBYS
                 }
                 else
                 {
-                    exceptionHelper.Exceptions.Add(new Exception(line + " Kayıt aktarılamadı. " + ProjeConstants.BANKA_ISBANK));
+                    exceptionHelper.Exceptions.Add(new Exception(line + " Kayit aktarilamadi. " + ProjeConstants.BANKA_ISBANK));
                 }
             }
             return exceptionHelper;
@@ -1015,9 +1015,9 @@ namespace Model.NBYS
                                         adi = detay.Substring(0, detay.IndexOf("*"));
                                     }
                                 }
-                                else if (detay.Contains("BAĞIŞ") && detay.IndexOf("BAĞIŞ") > 0)
+                                else if (detay.Contains("BAGIS") && detay.IndexOf("BAGIS") > 0)
                                 {
-                                    adi = detay.Substring(0, detay.IndexOf("BAĞIŞ"));
+                                    adi = detay.Substring(0, detay.IndexOf("BAGIS"));
                                 }
                                 else if (detay.Contains("TARAFINDAN"))
                                 {
@@ -1116,9 +1116,9 @@ namespace Model.NBYS
                                     adi = string.Empty;
                                 }
                             }
-                            else if (detay.Contains("TSK Güçlendirme Vakfı - Genel Bağış / "))
+                            else if (detay.Contains("TSK G��lendirme Vakfi - Genel Bagis / "))
                             {
-                                adi = detay.Replace("TSK Güçlendirme Vakfı - Genel Bağış / ", "").Substring(0, (detay.IndexOf(" / "))).Trim();
+                                adi = detay.Replace("TSK G��lendirme Vakfi - Genel Bagis / ", "").Substring(0, (detay.IndexOf(" / "))).Trim();
                             }
                             else if (detay.Contains("GELEN HAVALE -"))
                             {
@@ -1162,13 +1162,13 @@ namespace Model.NBYS
                                     }
                                 }
                             }
-                            else if (detay.Contains("-Bağış"))
+                            else if (detay.Contains("-Bagis"))
                             {
-                                adi = detay.Substring(0, detay.IndexOf("-Bağış")).Replace("-Bağış", "").Replace(" -", ""); ;
+                                adi = detay.Substring(0, detay.IndexOf("-Bagis")).Replace("-Bagis", "").Replace(" -", ""); ;
                             }
-                            else if (detay.Contains("BAĞIŞ  GONDERICI:"))
+                            else if (detay.Contains("BAGIS  GONDERICI:"))
                             {
-                                adi = detay.Replace("BAĞIŞ  GONDERICI:","");
+                                adi = detay.Replace("BAGIS  GONDERICI:","");
                                 
                             }
 
@@ -1185,9 +1185,9 @@ namespace Model.NBYS
                             ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                             ekstreAktarma.Olusturan = currentUser;
                             ekstreAktarma.FisNo = fisno;
-                            if (BuKayitDahaOnceGirilmisMiByFisNo(ProjeConstants.BANKA_YKBEKSTRE, fisno, detay, tarih.ReturnEmptyIfNull().ConvertToDatetime(), tutar.ConvertToDecimal())) //Referans numarasından kontrol et kayıt girilmemişse exception dondur değilse kaydet
+                            if (BuKayitDahaOnceGirilmisMiByFisNo(ProjeConstants.BANKA_YKBEKSTRE, fisno, detay, tarih.ReturnEmptyIfNull().ConvertToDatetime(), tutar.ConvertToDecimal())) //Referans numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
                             {
-                                Exception ex = new Exception(fisno + " Numaralı fiş daha önce girildiğinden tekrar aktarılmadı.");
+                                Exception ex = new Exception(fisno + " Numarali fis daha �nce girildiginden tekrar aktarilmadi.");
                                 exceptionHelper.Exceptions.Add(ex);
                             }
                             else
@@ -1220,7 +1220,7 @@ namespace Model.NBYS
             CultureInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             try
             {
-                var splitText = new string[] { "Bağışçı Ad Soyad:", ", Cep Telefon Numarası:", ", Müşteri Notu:", ", İşlem No:" };
+                var splitText = new string[] { "Bagis�i Ad Soyad:", ", Cep Telefon Numarasi:", ", M�steri Notu:", ", Islem No:" };
                 var vakifBankData = ExcelHelper.ReadXLSXAsDataTable(fileStream, ProjeConstants.BANKA_VAKIF_ILKKACSATIRHARIC, ProjeConstants.BANKA_VAKIF_SONKACSATIRHARIC, true);
                 if (vakifBankData != null)
                 {
@@ -1230,7 +1230,7 @@ namespace Model.NBYS
                         EkstreAktarma ekstreAktarma = new EkstreAktarma();
                         try
                         {
-                            var borc_alacak = row[15].ReturnEmptyIfNull().ToString();//borc satırı için işlem yapma
+                            var borc_alacak = row[15].ReturnEmptyIfNull().ToString();//borc satiri i�in islem yapma
                             if (borc_alacak.Equals("B"))
                             {
                                 continue;
@@ -1304,18 +1304,18 @@ namespace Model.NBYS
         public static ExceptionHelper SaveVakifBankGunlukTextFile(Stream filePath, DateTime processTime, string currentUser)
         {
             /**             
-                D                   :  Satır Başı
-                İşlem No            :  Sadece o işleme/bağışa mahsus bir işlem numarası.
-                Bağış Tarihi        :  Bağışın hesaba yatırıldığı tarih
-                Adı                 :  Bağış yapan kişinin adı
-                Soyadı              :  Bağış yapan kişinin soyadı
-                Adres               :  Bağış yapan kişinin adresi
-                İlçe                :  Bağış yapan kişinin ilçesi
-                İli                 :  Bağış yapan kişinin ili
-                TC Kimlik No        :  Bağış yapan kişinin TC Kimlik numarası
-                Telefon             :  Bağış yapan kişinin telefon numarası
-                Bağış Tutarı        :  Bağış tutarı
-                Açıklama-Not        :  Bağış yapan kişinin notu, açıklaması
+                D                   :  Satir Basi
+                Islem No            :  Sadece o isleme/bagisa mahsus bir islem numarasi.
+                Bagis Tarihi        :  Bagisin hesaba yatirildigi tarih
+                Adi                 :  Bagis yapan kisinin adi
+                Soyadi              :  Bagis yapan kisinin soyadi
+                Adres               :  Bagis yapan kisinin adresi
+                Il�e                :  Bagis yapan kisinin il�esi
+                Ili                 :  Bagis yapan kisinin ili
+                TC Kimlik No        :  Bagis yapan kisinin TC Kimlik numarasi
+                Telefon             :  Bagis yapan kisinin telefon numarasi
+                Bagis Tutari        :  Bagis tutari
+                A�iklama-Not        :  Bagis yapan kisinin notu, a�iklamasi
 
              **/
             ExceptionHelper exceptionHelper = new ExceptionHelper();
@@ -1330,10 +1330,10 @@ namespace Model.NBYS
                     if (holder.Length >= 11)
                     {
                         EkstreAktarma ekstreAktarma = new EkstreAktarma();
-                        //İşlem Nu
+                        //Islem Nu
                         ekstreAktarma.FisNo = holder[1].ToString();
                         ekstreAktarma.BagisTarihi = holder[2].ReturnEmptyIfNull().ToString().Replace("/", ".").ConvertToDatetime();
-                        //Ad soyad birlikte ada yazılacak
+                        //Ad soyad birlikte ada yazilacak
                         ekstreAktarma.Adi = RemoveWhiteSpaces(holder[3]).ReturnEmptyIfNull().ToString().Trim().ToUpper(culturInfo) +
                             " " + RemoveWhiteSpaces(holder[4]).ReturnEmptyIfNull().ToString().Trim().ToUpper(culturInfo);
                         ekstreAktarma.Adres = holder[5].ReturnEmptyIfNull().ToString().Trim().ToUpper(culturInfo);
@@ -1346,7 +1346,7 @@ namespace Model.NBYS
 
                         ekstreAktarma.AktarildiMi = false;
                         ekstreAktarma.BankaAdi = ProjeConstants.BANKA_VAKIF;// GUNLUK;
-                        ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL; //döviz cinsi hep tl oluyor
+                        ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL; //d�viz cinsi hep tl oluyor
                         ekstreAktarma.IslemTarihi = processTime;
                         ekstreAktarma.Olusturan = currentUser;
                         ekstreAktarma.BelgeIstemiyor = ekstreAktarma.Aciklama.Contains(ProjeConstants.DURUM_BELGE_ISTEMIYOR) || ekstreAktarma.Adres.Contains(ProjeConstants.DURUM_BELGE_ISTEMIYOR) ? true : false;
@@ -1376,21 +1376,21 @@ namespace Model.NBYS
                     foreach (DataRow row in vakifBank2Data.Rows)
                     {
                         EkstreAktarma ekstreAktarma = new EkstreAktarma();
-                        var hesapNo = row[0].ReturnEmptyIfNull().ToString();//borc satırı için işlem yapma
+                        var hesapNo = row[0].ReturnEmptyIfNull().ToString();//borc satiri i�in islem yapma
                         var islem = row[5].ReturnEmptyIfNull().ToString();
                         var tutar = row[6].ReturnEmptyIfNull().ToString().Replace(".", ",").ConvertToDecimal();//row[6].ReturnEmptyIfNull().ToString();
-                        if (string.IsNullOrEmpty(hesapNo))// ilk kolon boş ise dosya bitti çık
+                        if (string.IsNullOrEmpty(hesapNo))// ilk kolon bos ise dosya bitti �ik
                         {
                             break;
                         }
-                        else if (islem.Contains("Batch Yatan")//Kart ile bağıştan gelen toplam miktar, zaten ayrıca girişi yapılıyor, dikkate alma
+                        else if (islem.Contains("Batch Yatan")//Kart ile bagistan gelen toplam miktar, zaten ayrica girisi yapiliyor, dikkate alma
                            || islem.Contains("Batch Komisyonu")
                            || hesapNo.Equals("HESAP NO")
                            || tutar < 0)
                             continue;
                         try
                         {
-                            var borc_alacak = row[15].ReturnEmptyIfNull().ToString();//borc satırı için işlem yapma
+                            var borc_alacak = row[15].ReturnEmptyIfNull().ToString();//borc satiri i�in islem yapma
                             if (borc_alacak.Equals("B"))
                             {
                                 continue;
@@ -1423,12 +1423,12 @@ namespace Model.NBYS
                             var aciklama = string.Empty;
                             var adres = string.Empty;//adres bilgisi yok
 
-                            var splitText = new string[] { "sorgu numaralı", "tarafından" };
+                            var splitText = new string[] { "sorgu numarali", "tarafindan" };
                             var holder = detay.Split(splitText, StringSplitOptions.None);
 
-                            if (kanal.Equals("Mobil Bankacılık") || kanal.Equals("İnternet"))
+                            if (kanal.Equals("Mobil Bankacilik") || kanal.Equals("Internet"))
                             {
-                                var splitTextM = new string[] { "nolu", "hesabından" };
+                                var splitTextM = new string[] { "nolu", "hesabindan" };
                                 holder = detay.Split(splitTextM, StringSplitOptions.None);
                             }
                             if (holder.Length > 2)
@@ -1486,7 +1486,7 @@ namespace Model.NBYS
                             var tutar = row[2].ReturnZeroIfNull().ToString().Replace(".", ",");
                             var adres = string.Empty;// adres bilgisi gelmiyor
 
-                            string ayrac1 = "Genel Bağış";
+                            string ayrac1 = "Genel Bagis";
 
                             if (detay.Contains(ayrac1))
                             {
@@ -1534,11 +1534,11 @@ namespace Model.NBYS
             var tarih = string.Empty;
             foreach (var line in lines)
             {
-                //if (count == 0)//ilk satırda tarih bilgisi var
+                //if (count == 0)//ilk satirda tarih bilgisi var
                 //{
                 //    tarih = line.Substring(10, 8);
                 //}
-                if (count > 0 && count < (lines.Count - 1)) //ilk satır ve son satır alınmayacak
+                if (count > 0 && count < (lines.Count - 1)) //ilk satir ve son satir alinmayacak
                 {
                     try
                     {
@@ -1557,7 +1557,7 @@ namespace Model.NBYS
                             var eposta = line.Substring(267, 50).TrimEnd();
                             //dummy bagisturu
                             var bagisturu = line.Substring(317, 3).TrimEnd();
-                            tarih = line.Substring(320, 8).Trim();//20190617 YYYYMMDD formatı
+                            tarih = line.Substring(320, 8).Trim();//20190617 YYYYMMDD formati
                             var tutarTl = line.Substring(328, 15).TrimEnd();// 0000000000111.00
                             var tutar = string.IsNullOrEmpty(tutarTl.Trim()) ? "0" : tutarTl;
                             if (tutar.Contains("."))
@@ -1614,7 +1614,7 @@ namespace Model.NBYS
             {
                 try
                 {
-                    if (count > 0) //ilk satır alınmıyor
+                    if (count > 0) //ilk satir alinmiyor
                     {
                         EkstreAktarma ekstreAktarma = new EkstreAktarma();
 
@@ -1657,16 +1657,16 @@ namespace Model.NBYS
                         ekstreAktarma.AktarildiMi = false;
                         ekstreAktarma.BankaAdi = ProjeConstants.BANKA_ZIRAAT;
                         ekstreAktarma.Ili = GetIlNameById(il);
-                        //ekstreAktarma.Ilcesi = ilce; ziraat bankasından gelen ilce kodları tutmuyor. bu yuzden ilceyi yazmasın
+                        //ekstreAktarma.Ilcesi = ilce; ziraat bankasindan gelen ilce kodlari tutmuyor. bu yuzden ilceyi yazmasin
                         ekstreAktarma.Eposta = eposta;
                         ekstreAktarma.IslemTarihi = islemTarihi;
                         ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                         ekstreAktarma.Olusturan = currentUser;
                         ekstreAktarma.FisNo = fisNo;
                         if (BuKayitDahaOnceGirilmisMiByFisNo(//ProjeConstants.BANKA_ZIRAAT,fisNo,aciklama)) 
-                            "Ziraat", fisNo, aciklama, tarih.ReturnEmptyIfNull().ConvertToDatetime(), tutar)) //fiş numarasından kontrol et kayıt girilmemişse exception dondur değilse kaydet
+                            "Ziraat", fisNo, aciklama, tarih.ReturnEmptyIfNull().ConvertToDatetime(), tutar)) //fis numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
                         {
-                            Exception ex = new Exception(fisNo + " Numaralı fiş daha önce girildiğinden tekrar aktarılmadı.");
+                            Exception ex = new Exception(fisNo + " Numarali fis daha �nce girildiginden tekrar aktarilmadi.");
                             exceptionHelper.Exceptions.Add(ex);
                         }
                         else
@@ -1706,7 +1706,7 @@ namespace Model.NBYS
                         var adi = row[0].ReturnEmptyIfNull().ToString();
                         var onayli = row[11].ReturnEmptyIfNull().ToString();
                         bool kaydiAtla = !onayli.Equals("ONAYLI");
-                        if (kaydiAtla)// onaylı olmayanları atla
+                        if (kaydiAtla)// onayli olmayanlari atla
                             continue;
                         try
                         {
@@ -1739,7 +1739,7 @@ namespace Model.NBYS
                                     ekstreAktarma.Adres = adres;
                                     ekstreAktarma.Ili = il;
                                     string ulkestr = ulke.ToUpper();
-                                    if (ulkestr.Equals("TURKEY") || ulkestr.Equals("TÜRKİYE"))
+                                    if (ulkestr.Equals("TURKEY") || ulkestr.Equals("T�RKIYE"))
                                     {
 
                                     }
@@ -1749,15 +1749,15 @@ namespace Model.NBYS
                                     }
                                     else
                                     {
-                                        ekstreAktarma.Ili = "YURTDIŞI";
+                                        ekstreAktarma.Ili = "YURTDISI";
                                     }
                                     ekstreAktarma.Ilcesi = ilce;
                                     ekstreAktarma.Adres = adres;
                                     ekstreAktarma.Eposta = eposta;
                                     ekstreAktarma.AktarildiMi = false;
                                     ekstreAktarma.Tutar = tutar.ConvertToDecimal();
-                                    //alt satır kapatıldı. Ay sonu ve başında hesabı tutturamıyo (Deniz ÖZKAN) bagis tarihini kendi seçsin S.B. 30.12.2020 
-                                    //ekstreAktarma.BagisTarihi = bagisTarihi.AddDays(1);//burada bağış tarihine bir gün eklenmesinin sebebi, bankanın gün içindeki bağışları vakıf hesabına ertesi gün kaydetmesi nedeniyle oluşan tutarsızlığı gidermektir. 15.06.2020 SB
+                                    //alt satir kapatildi. Ay sonu ve basinda hesabi tutturamiyo (Deniz �ZKAN) bagis tarihini kendi se�sin S.B. 30.12.2020 
+                                    //ekstreAktarma.BagisTarihi = bagisTarihi.AddDays(1);//burada bagis tarihine bir g�n eklenmesinin sebebi, bankanin g�n i�indeki bagislari vakif hesabina ertesi g�n kaydetmesi nedeniyle olusan tutarsizligi gidermektir. 15.06.2020 SB
                                     ekstreAktarma.BagisTarihi = bagisTarihi;
                                     ekstreAktarma.Aciklama = aciklama;
                                     ekstreAktarma.BelgeIstemiyor = belgeIstiyorMu.Equals("-") ? true : false;
@@ -1766,10 +1766,10 @@ namespace Model.NBYS
                                     ekstreAktarma.IslemTarihi = islemTarihi;
                                     ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                                     ekstreAktarma.Olusturan = currentUser;
-                                    if (BuKayitDahaOnceGirilmisMiByFisNo(//transactionId numarasından kontrol et kayıt girilmemişse exception dondur değilse kaydet
-                                        "Kart ile Bağış", transactionId, aciklama, bagisTarihi, tutar)) //transactionId numarasından kontrol et kayıt girilmemişse exception dondur değilse kaydet
+                                    if (BuKayitDahaOnceGirilmisMiByFisNo(//transactionId numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
+                                        "Kart ile Bagis", transactionId, aciklama, bagisTarihi, tutar)) //transactionId numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
                                     {
-                                        Exception ex = new Exception(transactionId + " Numaralı kayıt daha önce girildiğinden tekrar aktarılmadı.");
+                                        Exception ex = new Exception(transactionId + " Numarali kayit daha �nce girildiginden tekrar aktarilmadi.");
                                         exceptionHelper.Exceptions.Add(ex);
                                     }
                                     else
@@ -1781,7 +1781,7 @@ namespace Model.NBYS
                         }
                         catch (Exception ex)
                         {
-                            Exception exception = new Exception(string.Format("HATA SATIRI {0}:{1} ->", ProjeConstants.BANKA_KARTILEBAGIS, "Dosya Sıra No=" + kayitNo), ex);
+                            Exception exception = new Exception(string.Format("HATA SATIRI {0}:{1} ->", ProjeConstants.BANKA_KARTILEBAGIS, "Dosya Sira No=" + kayitNo), ex);
                             exceptionHelper.Exceptions.Add(exception);
                         }
                     }
@@ -1802,11 +1802,11 @@ namespace Model.NBYS
 
             foreach (var line in lines)
             {
-                //if (count == 0)//ilk satırda tarih bilgisi var
+                //if (count == 0)//ilk satirda tarih bilgisi var
                 //{
                 //    tarih = line.Substring(10, 8);
                 //}
-                if (count >= 0 && count < (lines.Count - 1)) //ilk satır ve son satır alınmayacak
+                if (count >= 0 && count < (lines.Count - 1)) //ilk satir ve son satir alinmayacak
                 {
                     try
                     {
@@ -1814,34 +1814,34 @@ namespace Model.NBYS
                         var tag = line.Substring(0, 4).TrimEnd();
                         switch (tag)
                         {
-                            case ":20:": // :20: referans numarası
-                                var referans = line.Substring(5, line.Length - 5); //- 5 mi olmalı?
+                            case ":20:": // :20: referans numarasi
+                                var referans = line.Substring(5, line.Length - 5); //- 5 mi olmali?
                                 break;
                             case ":28:":
 
                                 break;
 
-                            case ":60F":// açılış bilgileri
+                            case ":60F":// a�ilis bilgileri
 
                                 break;
-                            case ":61:":// Bu günkü işlem
+                            case ":61:":// Bu g�nk� islem
                                 var tarih = line.Substring(5, 6);
                                 var girisTarihi = line.Substring(11, 4); //aagg
                                 var borcAlacak = line.Substring(15, 1); // b/a
                                 var dovizCinsi = line.Substring(16, 1); //Y : YTL galiba
-                                //mt940 stadardında tutar 15 char ama ziraat buna uymuyor o nedenle satırın kalanını ayrı pars edeceğiz
+                                //mt940 stadardinda tutar 15 char ama ziraat buna uymuyor o nedenle satirin kalanini ayri pars edecegiz
                                 var geriKalan = line.Substring(17, line.Length - 17);
                                 var holder = geriKalan.Split(',');
-                                var tutarTamsayı = holder.Length > 0 ? holder[0].ConvertToInt() : 0;
+                                var tutarTamsayi = holder.Length > 0 ? holder[0].ConvertToInt() : 0;
                                 var tutarKurus = holder[1].ToString().Substring(0, 2).ConvertToInt();
-                                var tutar = tutarTamsayı + "," + tutarKurus;
+                                var tutar = tutarTamsayi + "," + tutarKurus;
 
                                 var fisNo = holder[1].ToString().Split('/')[1].ToString();
                                 break;
-                            case ":86:": //bugunku islemin açıklaması
+                            case ":86:": //bugunku islemin a�iklamasi
 
                                 break;
-                            case ":62F": //kapanış bilgileri
+                            case ":62F": //kapanis bilgileri
 
                                 break;
                         }
@@ -1911,7 +1911,7 @@ namespace Model.NBYS
                             var telefon = row[3].ReturnEmptyIfNull().ToString();
                             var eposta = row[4].ReturnEmptyIfNull().ToString();
 
-                            var tutar = row[5].ReturnZeroIfNull().ToString().Replace("₺", "").Replace(".", ",").ConvertToDecimal();
+                            var tutar = row[5].ReturnZeroIfNull().ToString().Replace("?", "").Replace(".", ",").ConvertToDecimal();
                             var aciklama = row[6].ReturnEmptyIfNull().ToString();
                             var adres = row[7].ReturnEmptyIfNull().ToString();
                             var bagisKanali = row[8].ReturnEmptyIfNull().ToString();
@@ -1935,39 +1935,39 @@ namespace Model.NBYS
                                 ekstreAktarma.Eposta = eposta;
                                 ekstreAktarma.AktarildiMi = false;
                                 ekstreAktarma.Tutar = tutar.ConvertToDecimal();
-                                //Alt satır kapatıldı 08.05.2025 SB
-                                //ekstreAktarma.BagisTarihi = bagisTarihi.AddDays(1);//burada bağış tarihine bir gün eklenmesinin sebebi, bankanın gün içindeki bağışları vakıf hesabına ertesi gün kaydetmesi nedeniyle oluşan tutarsızlığı gidermektir. 15.06.2020 SB
-                                ekstreAktarma.BagisTarihi = bagisTarihi; // Bankadan ayrıca gelen bilgi olmadığından gün eklemesi kaldırıldı
+                                //Alt satir kapatildi 08.05.2025 SB
+                                //ekstreAktarma.BagisTarihi = bagisTarihi.AddDays(1);//burada bagis tarihine bir g�n eklenmesinin sebebi, bankanin g�n i�indeki bagislari vakif hesabina ertesi g�n kaydetmesi nedeniyle olusan tutarsizligi gidermektir. 15.06.2020 SB
+                                ekstreAktarma.BagisTarihi = bagisTarihi; // Bankadan ayrica gelen bilgi olmadigindan g�n eklemesi kaldirildi
                                 ekstreAktarma.Aciklama = aciklama;
                                 ekstreAktarma.FisNo = odemeId;
                                 if (bagisKanali.ReturnEmptyIfNull().Equals("E-Devlet"))
                                     ekstreAktarma.BankaAdi = ProjeConstants.BANKA_EDEVLETBAGIS;
                                 else if (bagisKanali.ReturnEmptyIfNull().Equals("Kiosk"))
                                     ekstreAktarma.BankaAdi = ProjeConstants.BANKA_KIOSK;
-                                else if (bagisKanali.ReturnEmptyIfNull().Equals("Sistem içi"))
+                                else if (bagisKanali.ReturnEmptyIfNull().Equals("Sistem i�i"))
                                     ekstreAktarma.BankaAdi = ProjeConstants.BANKA_KARTILEBAGIS;
                                 else
-                                    continue;// diğer kanallardan gelen bağışları kaydetme zaten var
+                                    continue;// diger kanallardan gelen bagislari kaydetme zaten var
                                 ekstreAktarma.IslemTarihi = islemTarihi;
                                 ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                                 ekstreAktarma.BagisTipi = bagisTipi;
                                 ekstreAktarma.Olusturan = currentUser;
-                                if (BuKayitDahaOnceGirilmisMiByFisNo(//odemeId numarasından kontrol et kayıt girilmemişse exception dondur değilse kaydet
-                                    "EDevlet ile Bağış", odemeId, aciklama, ekstreAktarma.BagisTarihi, tutar)) //transactionId numarasından kontrol et kayıt girilmemişse exception dondur değilse kaydet
+                                if (BuKayitDahaOnceGirilmisMiByFisNo(//odemeId numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
+                                    "EDevlet ile Bagis", odemeId, aciklama, ekstreAktarma.BagisTarihi, tutar)) //transactionId numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
                                 {
-                                    Exception ex = new Exception(odemeId + " Numaralı kayıt daha önce girildiğinden tekrar aktarılmadı.");
+                                    Exception ex = new Exception(odemeId + " Numarali kayit daha �nce girildiginden tekrar aktarilmadi.");
                                     exceptionHelper.Exceptions.Add(ex);
                                 }
-                                else if (BuKayitDahaOnceGirilmisMiByFisNo(//odemeId numarasından kontrol et kayıt girilmemişse exception dondur değilse kaydet
-                                    "Kart ile Bağış", odemeId, aciklama, ekstreAktarma.BagisTarihi, tutar)) //transactionId numarasından kontrol et kayıt girilmemişse exception dondur değilse kaydet
+                                else if (BuKayitDahaOnceGirilmisMiByFisNo(//odemeId numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
+                                    "Kart ile Bagis", odemeId, aciklama, ekstreAktarma.BagisTarihi, tutar)) //transactionId numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
                                 {
-                                    Exception ex = new Exception(odemeId + " Numaralı kayıt daha önce girildiğinden tekrar aktarılmadı.");
+                                    Exception ex = new Exception(odemeId + " Numarali kayit daha �nce girildiginden tekrar aktarilmadi.");
                                     exceptionHelper.Exceptions.Add(ex);
                                 }
-                                else if (BuKayitDahaOnceGirilmisMiByFisNo(//odemeId numarasından kontrol et kayıt girilmemişse exception dondur değilse kaydet
-                                    "Kiosk", odemeId, aciklama, ekstreAktarma.BagisTarihi, tutar)) //transactionId numarasından kontrol et kayıt girilmemişse exception dondur değilse kaydet
+                                else if (BuKayitDahaOnceGirilmisMiByFisNo(//odemeId numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
+                                    "Kiosk", odemeId, aciklama, ekstreAktarma.BagisTarihi, tutar)) //transactionId numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
                                 {
-                                    Exception ex = new Exception(odemeId + " Numaralı kayıt daha önce girildiğinden tekrar aktarılmadı.");
+                                    Exception ex = new Exception(odemeId + " Numarali kayit daha �nce girildiginden tekrar aktarilmadi.");
                                     exceptionHelper.Exceptions.Add(ex);
                                 }
                                 else
@@ -1979,7 +1979,7 @@ namespace Model.NBYS
                         }
                         catch (Exception ex)
                         {
-                            Exception exception = new Exception(string.Format("HATA SATIRI {0}:{1} ->", ProjeConstants.BANKA_EDEVLETBAGIS, "Dosya Sıra No=" + kayitNo), ex);
+                            Exception exception = new Exception(string.Format("HATA SATIRI {0}:{1} ->", ProjeConstants.BANKA_EDEVLETBAGIS, "Dosya Sira No=" + kayitNo), ex);
                             exceptionHelper.Exceptions.Add(exception);
                         }
                     }
@@ -2000,7 +2000,7 @@ namespace Model.NBYS
             {
                 if (ekstreAktarma != null)
                 {
-                    //eğer bu kayıtın fisnosu daha önce girilmişse bir de bagistarihi ve tutardan kontrol et 
+                    //eger bu kayitin fisnosu daha �nce girilmisse bir de bagistarihi ve tutardan kontrol et 
                     if ((bagisTarihi == ekstreAktarma.BagisTarihi) && (Math.Round(tutar,2) == Math.Round(ekstreAktarma.Tutar,2)))
                     {
                         kaydedilmisMi = true;
@@ -2030,14 +2030,14 @@ namespace Model.NBYS
                     {
                         kayitNo++;
                         EkstreAktarma ekstreAktarma = new EkstreAktarma();
-                        var tarih = row[0].ReturnEmptyIfNull().ToString();//borc satırı için işlem yapma
+                        var tarih = row[0].ReturnEmptyIfNull().ToString();//borc satiri i�in islem yapma
 
-                        if (string.IsNullOrEmpty(tarih))// ilk kolon boş ise dosya bitti çık
+                        if (string.IsNullOrEmpty(tarih))// ilk kolon bos ise dosya bitti �ik
                             break;
                         try
                         {
-                            var aciklama = row[2].ReturnEmptyIfNull().ToString();//herşey açıklamanın içinde
-                            //if (aciklama.Contains("Tsk Güçlendirme Vakfı Bağış/"))
+                            var aciklama = row[2].ReturnEmptyIfNull().ToString();//hersey a�iklamanin i�inde
+                            //if (aciklama.Contains("Tsk G��lendirme Vakfi Bagis/"))
                             //{
                             //    continue;
                             //}
@@ -2057,25 +2057,25 @@ namespace Model.NBYS
                                     ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                                     ekstreAktarma.Olusturan = currentUser;
                                     ekstreAktarma.FisNo = fisNo;
-                                    if (BuKayitDahaOnceGirilmisMiByFisNo(//ProjeConstants.BANKA_ZIRAATEKSTRE, fisNo,aciklama)) //fiş numarasından kontrol et kayıt girilmemişse exception dondur değilse kaydet
-                                        "Ziraat", fisNo, aciklama, bagisTarihi, tutar)) //fiş numarasından kontrol et kayıt girilmemişse exception dondur değilse kaydet
+                                    if (BuKayitDahaOnceGirilmisMiByFisNo(//ProjeConstants.BANKA_ZIRAATEKSTRE, fisNo,aciklama)) //fis numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
+                                        "Ziraat", fisNo, aciklama, bagisTarihi, tutar)) //fis numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
                                     {
-                                        Exception ex = new Exception(fisNo + " Numaralı fiş daha önce girildiğinden tekrar aktarılmadı.");
+                                        Exception ex = new Exception(fisNo + " Numarali fis daha �nce girildiginden tekrar aktarilmadi.");
                                         exceptionHelper.Exceptions.Add(ex);
                                     }
                                     else
                                     {
-                                        if (aciklama.Contains("- Pazarcık Depremi Bağış"))
+                                        if (aciklama.Contains("- Pazarcik Depremi Bagis"))
                                         {
-                                            // Örnek: "AHMET YILMAZ - Pazarcık Depremi Bağış"
-                                            var splitText = new string[] { "- Pazarcık Depremi Bağış" };
+                                            // �rnek: "AHMET YILMAZ - Pazarcik Depremi Bagis"
+                                            var splitText = new string[] { "- Pazarcik Depremi Bagis" };
                                             var holder = aciklama.Split(splitText, StringSplitOptions.None);
                                             var adi = holder[0].ReturnEmptyIfNull().ToString().TrimEnd();
                                             ekstreAktarma.Adi = adi;
                                         }
-                                        else if (aciklama.Contains("Tsk Güçlendirme Vakfı Bağış/"))
+                                        else if (aciklama.Contains("Tsk G��lendirme Vakfi Bagis/"))
                                         {
-                                            // Örnek: "Tsk Güçlendirme Vakfı Bağış/Ad-Soyad: SAKİNE GENÇOSMAN /Tckn/Vkn: 58957418782 /Gsm: 5313668361 ..."
+                                            // �rnek: "Tsk G��lendirme Vakfi Bagis/Ad-Soyad: SAKINE GEN�OSMAN /Tckn/Vkn: 58957418782 /Gsm: 5313668361 ..."
                                             var holder = aciklama.Split('/');
                                             int holderLength = holder.Length - 1;
                                             var adi = holderLength < 1 ? "" : holder[1].ReturnEmptyIfNull().ToString().TrimEnd().Split(':')[1].ReturnEmptyIfNull().ToString();
@@ -2091,12 +2091,12 @@ namespace Model.NBYS
                                         }
                                         else if (aciklama.Contains("Ziraat Mobil Havale"))
                                         {
-                                            // Örnek 1: "GÖZDE HİLAL ÖÇALAN Ziraat Mobil Havale"
-                                            // Örnek 2: "MUSTAFA ÇETİNKAYA bağış MUSTAFA ÇETİNKAYA Ziraat Mobil Havale"
-                                            // Örnek 3: "AHMET DERECİ AHMET DERECİ Ziraat Mobil Havale" (tekrar eden isim)
+                                            // �rnek 1: "G�ZDE HILAL ��ALAN Ziraat Mobil Havale"
+                                            // �rnek 2: "MUSTAFA �ETINKAYA bagis MUSTAFA �ETINKAYA Ziraat Mobil Havale"
+                                            // �rnek 3: "AHMET DERECI AHMET DERECI Ziraat Mobil Havale" (tekrar eden isim)
                                             var oncesi = aciklama.Substring(0, aciklama.IndexOf("Ziraat Mobil Havale")).TrimEnd();
-                                            if (oncesi.Contains(" bağış "))
-                                                oncesi = oncesi.Substring(0, oncesi.IndexOf(" bağış ")).TrimEnd();
+                                            if (oncesi.Contains(" bagis "))
+                                                oncesi = oncesi.Substring(0, oncesi.IndexOf(" bagis ")).TrimEnd();
                                             var kelimeler = oncesi.Trim().Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                                             int yariKelime = kelimeler.Length / 2;
                                             if (yariKelime > 0
@@ -2104,17 +2104,17 @@ namespace Model.NBYS
                                                 oncesi = string.Join(" ", kelimeler, 0, yariKelime);
                                             ekstreAktarma.Adi = oncesi.Trim().ToUpper(culturInfo);
                                         }
-                                        else if (aciklama.StartsWith("Gönd: "))
+                                        else if (aciklama.StartsWith("G�nd: "))
                                         {
-                                            // Örnek: "Gönd: HALİL BARUT bağış 0205-Kuveyt Türk Katılım Bankası A.Ş. FAST işlemi"
-                                            var sonrasi = aciklama.Substring("Gönd: ".Length);
+                                            // �rnek: "G�nd: HALIL BARUT bagis 0205-Kuveyt T�rk Katilim Bankasi A.S. FAST islemi"
+                                            var sonrasi = aciklama.Substring("G�nd: ".Length);
                                             var kelimeler = sonrasi.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                                             ekstreAktarma.Adi = (kelimeler.Length >= 2 ? kelimeler[0] + " " + kelimeler[1] : sonrasi).Trim().ToUpper(culturInfo);
                                         }
-                                        else if (aciklama.Contains("Genel Bağış"))
+                                        else if (aciklama.Contains("Genel Bagis"))
                                         {
-                                            // Örnek: "İsmail Şenkal Genel Bağış Tel:0534 520 2096 Mail:... T.C:10366911490 ..."
-                                            var adi = aciklama.Substring(0, aciklama.IndexOf("Genel Bağış")).Trim();
+                                            // �rnek: "Ismail Senkal Genel Bagis Tel:0534 520 2096 Mail:... T.C:10366911490 ..."
+                                            var adi = aciklama.Substring(0, aciklama.IndexOf("Genel Bagis")).Trim();
                                             ekstreAktarma.Adi = adi.ToUpper(culturInfo);
                                             if (aciklama.Contains("Tel:"))
                                             {
@@ -2168,10 +2168,10 @@ namespace Model.NBYS
                 {
                     //var aciklama = row[1].ReturnEmptyIfNull().ToString();
                     //hata = aciklama;
-                    //if (!string.IsNullOrEmpty(aciklama) && !aciklama.Contains("Tahsilat Virmanı"))//virman değilse
+                    //if (!string.IsNullOrEmpty(aciklama) && !aciklama.Contains("Tahsilat Virmani"))//virman degilse
                     //{
                     //    //var kanal = row[1].ReturnEmptyIfNull().ToString();
-                    //    //if (!kanal.Equals("BATCH"))//batch işlemleri alma
+                    //    //if (!kanal.Equals("BATCH"))//batch islemleri alma
                     //    {
                     //        var tarih = row[0].ReturnEmptyIfNull().ToString().ConvertToDatetime();
 
@@ -2180,10 +2180,10 @@ namespace Model.NBYS
                     //        var adres = string.Empty;// adres bilgisi gelmiyor
                     var aciklama = row[1].ReturnEmptyIfNull().ToString(); //[2] idi 1 oldu
                     hata = aciklama;
-                    if (!string.IsNullOrEmpty(aciklama) && !aciklama.Contains("Tahsilat Virmanı"))//Contains("3 57968 1"))//virman değilse
+                    if (!string.IsNullOrEmpty(aciklama) && !aciklama.Contains("Tahsilat Virmani"))//Contains("3 57968 1"))//virman degilse
                     {
                         var kanal = row[1].ReturnEmptyIfNull().ToString();
-                        if (!kanal.Equals("BATCH"))//batch işlemleri alma
+                        if (!kanal.Equals("BATCH"))//batch islemleri alma
                         {
                             var tarih = row[0].ReturnEmptyIfNull().ToString().ConvertToDatetime();
 
@@ -2242,10 +2242,10 @@ namespace Model.NBYS
 
                                 var islemNo = row[9].ReturnEmptyIfNull().ToString();
                                 var aciklama = row[16].ReturnEmptyIfNull().ToString();
-                                var adi = aciklama.Contains("TT MOBİL") ? "TT MOBİL" : (aciklama.Contains("VODAFONE") ? "VODAFONE" : (aciklama.Contains("TURKCELL") ? "TURKCELL" : string.Empty));
+                                var adi = aciklama.Contains("TT MOBIL") ? "TT MOBIL" : (aciklama.Contains("VODAFONE") ? "VODAFONE" : (aciklama.Contains("TURKCELL") ? "TURKCELL" : string.Empty));
 
-                                var tutar = row[6].ReturnZeroIfNull().ToString().Replace("₺", "").Replace(".", ",").ConvertToDecimal();
-                                var tcKimlikNo = aciklama.Contains("TT MOBİL") ? 30088888888 : (aciklama.Contains("VODAFONE") ? 30077777777 : (aciklama.Contains("TURKCELL") ? 30066666666 : 0));
+                                var tutar = row[6].ReturnZeroIfNull().ToString().Replace("?", "").Replace(".", ",").ConvertToDecimal();
+                                var tcKimlikNo = aciklama.Contains("TT MOBIL") ? 30088888888 : (aciklama.Contains("VODAFONE") ? 30077777777 : (aciklama.Contains("TURKCELL") ? 30066666666 : 0));
 
                                 var bagisTarihi = row[2].ReturnEmptyIfNull().ToString().ConvertToDatetime();
                                 var sonIslemTarihi = row[3].ReturnEmptyIfNull().ToString().ConvertToDatetime();
@@ -2262,10 +2262,10 @@ namespace Model.NBYS
                                     ekstreAktarma.IslemTarihi = islemTarihi;
                                     ekstreAktarma.DovizCinsi = ProjeConstants.DOVIZ_TL;
                                     ekstreAktarma.Olusturan = currentUser;
-                                    if (BuKayitDahaOnceGirilmisMiByFisNo(//odemeId numarasından kontrol et kayıt girilmemişse exception dondur değilse kaydet
-                                        ProjeConstants.BANKA_SMSVAKIF, islemNo, aciklama, ekstreAktarma.BagisTarihi, tutar)) //transactionId numarasından kontrol et kayıt girilmemişse exception dondur değilse kaydet
+                                    if (BuKayitDahaOnceGirilmisMiByFisNo(//odemeId numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
+                                        ProjeConstants.BANKA_SMSVAKIF, islemNo, aciklama, ekstreAktarma.BagisTarihi, tutar)) //transactionId numarasindan kontrol et kayit girilmemisse exception dondur degilse kaydet
                                     {
-                                        Exception ex = new Exception(islemNo + " Numaralı kayıt daha önce girildiğinden tekrar aktarılmadı.");
+                                        Exception ex = new Exception(islemNo + " Numarali kayit daha �nce girildiginden tekrar aktarilmadi.");
                                         exceptionHelper.Exceptions.Add(ex);
                                     }
                                     else
@@ -2278,7 +2278,7 @@ namespace Model.NBYS
                         }
                         catch (Exception ex)
                         {
-                            Exception exception = new Exception(string.Format("HATA SATIRI {0}:{1} ->", ProjeConstants.BANKA_KIOSK, "Dosya Sıra No=" + counter), ex);
+                            Exception exception = new Exception(string.Format("HATA SATIRI {0}:{1} ->", ProjeConstants.BANKA_KIOSK, "Dosya Sira No=" + counter), ex);
                             exceptionHelper.Exceptions.Add(exception);
                         }
                     }
@@ -2297,10 +2297,10 @@ namespace Model.NBYS
             CultureInfo culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             try
             {
-                // Dosya yapısı:
-                // Satır 1-7 : meta/logo/başlık bilgileri (atlanır)
-                // Satır 8   : kolon başlıkları (A:Tarih, B:Kanal, C:Fiş No, D:Açıklama, E:Tutar(TL), F:Güncel Bakiye)
-                // Satır 9+  : veri satırları
+                // Dosya yapisi:
+                // Satir 1-7 : meta/logo/baslik bilgileri (atlanir)
+                // Satir 8   : kolon basliklari (A:Tarih, B:Kanal, C:Fis No, D:A�iklama, E:Tutar(TL), F:G�ncel Bakiye)
+                // Satir 9+  : veri satirlari
                 var data = ExcelHelper.ReadXLSXAsDataTable(fileStream,
                     ProjeConstants.BANKA_ALBARAKA_ILKKACSATIRHARIC,
                     ProjeConstants.BANKA_ALBARAKA_SONKACSATIRHARIC, true);
@@ -2321,11 +2321,11 @@ namespace Model.NBYS
                             var aciklama = row[3].ReturnEmptyIfNull().ToString().Trim();
                             var tutar = row[4].ReturnZeroIfNull().ToString().Replace(".", ",").ConvertToDecimal();
 
-                            // Sadece pozitif tutarlar alınır; bakiye satırları vb. atlanır
+                            // Sadece pozitif tutarlar alinir; bakiye satirlari vb. atlanir
                             if (tutar <= 0)
                                 continue;
 
-                            // "AD SOYAD / GENEL BAĞIŞ" formatından ad soyad çıkar
+                            // "AD SOYAD / GENEL BAGIS" formatindan ad soyad �ikar
                             string adi = string.Empty;
                             if (aciklama.Contains("/"))
                             {
@@ -2336,13 +2336,13 @@ namespace Model.NBYS
                                 adi = aciklama.Trim();
                             }
 
-                            // Tarih: "01.04.2026 21:08" formatı — sadece tarih kısmı alınır
+                            // Tarih: "01.04.2026 21:08" formati � sadece tarih kismi alinir
                             string tarihKismi = tarihStr.Contains(" ") ? tarihStr.Substring(0, tarihStr.IndexOf(" ")) : tarihStr;
                             DateTime bagisTarihi = tarihKismi.ConvertToDatetime();
 
                             if (BuKayitDahaOnceGirilmisMiByFisNo("Albaraka", fisNo, aciklama, bagisTarihi, tutar))
                             {
-                                Exception ex = new Exception(fisNo + " Numaralı fiş daha önce girildiğinden tekrar aktarılmadı.");
+                                Exception ex = new Exception(fisNo + " Numarali fis daha �nce girildiginden tekrar aktarilmadi.");
                                 exceptionHelper.Exceptions.Add(ex);
                                 continue;
                             }
@@ -2547,25 +2547,25 @@ namespace Model.NBYS
             //WriteText("------------------- START ------------------------" +ekstreAktarma);
             //WriteText("SaveEkstreAktarma-0 : "+DateTime.Now);
 
-            if (!ekstreAktarma.AktarildiMi) //zaten aktarılmış olanlar bir kez daha aktarılmasın
+            if (!ekstreAktarma.AktarildiMi) //zaten aktarilmis olanlar bir kez daha aktarilmasin
             {
                 var nakitBagisciId = 0;
 
-                if (ekstreAktarma.NakitBagisciId > 0)//NakitBagisciId si dolu olarak gelen ekstreAktarma (Yani elle yeni kayıt girisi yapilmis ve NakitBagisci popup window dan secilmis )
+                if (ekstreAktarma.NakitBagisciId > 0)//NakitBagisciId si dolu olarak gelen ekstreAktarma (Yani elle yeni kayit girisi yapilmis ve NakitBagisci popup window dan secilmis )
                 {
                     nakitBagisciId = ekstreAktarma.NakitBagisciId;
                 }
                 else
                 {
-                    nakitBagisciId = SaveNakitBagisciFromEkstre(ekstreAktarma, currentUser); // NakitBagisci_Table tablosuna aktarım
+                    nakitBagisciId = SaveNakitBagisciFromEkstre(ekstreAktarma, currentUser); // NakitBagisci_Table tablosuna aktarim
                     //WriteText("SaveEkstreAktarma-1 : " + DateTime.Now);
                 }
 
-                var nakitBagisHareket = SaveBagisFromEkstreAktarma(ekstreAktarma, nakitBagisciId, currentUser); //NakitBagisHareket_Table tablosuna aktarım
+                var nakitBagisHareket = SaveBagisFromEkstreAktarma(ekstreAktarma, nakitBagisciId, currentUser); //NakitBagisHareket_Table tablosuna aktarim
                 //WriteText("SaveEkstreAktarma-2 : " + DateTime.Now);
 
-                //bool isArmaganSaved = SaveArmagan(ekstreAktarma.BagisTarihi, ekstreAktarma.TuzelKisi, nakitBagisciId, nakitBagisHareketId, currentUser);//Armagan tablosuna aktarım
-                bool isArmaganSaved = SaveArmaganYeni(ekstreAktarma, ref nakitBagisHareket, currentUser);//Armagan tablosuna aktarım
+                //bool isArmaganSaved = SaveArmagan(ekstreAktarma.BagisTarihi, ekstreAktarma.TuzelKisi, nakitBagisciId, nakitBagisHareketId, currentUser);//Armagan tablosuna aktarim
+                bool isArmaganSaved = SaveArmaganYeni(ekstreAktarma, ref nakitBagisHareket, currentUser);//Armagan tablosuna aktarim
 
                 //WriteText("SaveEkstreAktarma-3 : " + DateTime.Now);
 
@@ -2573,9 +2573,9 @@ namespace Model.NBYS
                 {
                     NakitBagisci nakitBagisci = new NakitBagisci();
                     nakitBagisci = nakitBagisci.Select<NakitBagisci>(nakitBagisciId);
-                    if (nakitBagisci.Adi.Contains(ProjeConstants.NAKITBAGISCI_BILINMEYEN))// adı bilinmeyen bagisci için eksrteAktarma tablosuna aciklama yaz 
+                    if (nakitBagisci.Adi.Contains(ProjeConstants.NAKITBAGISCI_BILINMEYEN))// adi bilinmeyen bagisci i�in eksrteAktarma tablosuna aciklama yaz 
                     {
-                        ekstreAktarma.Aciklama += "-NBYS- Adı BİLİNMEYEN bağışçı olduğundan armağan oluşturulmadı ";
+                        ekstreAktarma.Aciklama += "-NBYS- Adi BILINMEYEN bagis�i oldugundan armagan olusturulmadi ";
                     }
 
                     ekstreAktarma.NakitBagisHareketId = nakitBagisHareket.Id;
@@ -2591,24 +2591,24 @@ namespace Model.NBYS
             bool isArmaganSaved = false;
             NakitBagisci nakitBagisci = new NakitBagisci();
             nakitBagisci = nakitBagisci.Select<NakitBagisci>(nakitBagisciId);
-            if ((nakitBagisci == null) || (nakitBagisci.Adi.Contains(ProjeConstants.NAKITBAGISCI_BILINMEYEN)))//nakit bagışçı nuul veya bilinmeyen ise armagan üretmesin
+            if ((nakitBagisci == null) || (nakitBagisci.Adi.Contains(ProjeConstants.NAKITBAGISCI_BILINMEYEN)))//nakit bagis�i nuul veya bilinmeyen ise armagan �retmesin
             {
                 isArmaganSaved = false;
             }
             else
             {
                 NakitBagisHareket nakitBagisHareket = new NakitBagisHareket();
-                /// SB Ay bazında değil de ayı iki parçaya bölerek armağan gönderme uygulamasına geçildi, 17 Nisan 2019. 
-                /// Bu nedenle aşağıdaki satır kapatıldı
+                /// SB Ay bazinda degil de ayi iki par�aya b�lerek armagan g�nderme uygulamasina ge�ildi, 17 Nisan 2019. 
+                /// Bu nedenle asagidaki satir kapatildi
                 /// decimal toplamBagis = nakitBagisHareket.GetSumBagisMiktariByNakitBagisciIdAndBagisTarihi(bagisTarihi, nakitBagisciId);
-                /// yerine baslama bitiş tarihi alan metot yazıldı
+                /// yerine baslama bitis tarihi alan metot yazildi
 
                 //ARMAGAN PERIODU
                 DateTime bastar = new DateTime();
                 DateTime bittar = new DateTime();
                 int bagisGunu = bagisTarihi.Day;
 
-                //10 Günde bir
+                //10 G�nde bir
                 //if (bagisGunu < 11)
                 //{
                 //    basTar = new DateTime(bagisTarihi.Year, bagisTarihi.Month, 1);
@@ -2625,7 +2625,7 @@ namespace Model.NBYS
                 //    bitTar = ilkGun.AddMonths(1).AddDays(-1);
                 //}
 
-                //15 Günde bir
+                //15 G�nde bir
                 //if (bagisGunu < 16)
                 //{
                 //    bastar = new DateTime(bagisTarihi.Year, bagisTarihi.Month, 1);
@@ -2650,7 +2650,7 @@ namespace Model.NBYS
                 if (hakedilenArmaganTanim != null && hakedilenArmaganTanim.Id != ProjeConstants.ARMAGAN_YOKID)
                 {
                     //Armagan armagan = new Armagan();
-                    ////bagis tarihi ve BagisciId ye göre armagan tablosunu sorgula, bu kişi varsa update yoksa insert etmek için
+                    ////bagis tarihi ve BagisciId ye g�re armagan tablosunu sorgula, bu kisi varsa update yoksa insert etmek i�in
                     //armagan = armagan.SelectByBagisciIdAndBagisTarihi(bastar, bittar, nakitBagisciId);
                     //if (armagan == null)
                     //    armagan = new Armagan();
@@ -2671,9 +2671,9 @@ namespace Model.NBYS
                     //    armagan.Durum = ProjeConstants.DURUM_DAHAONCEIADE;
                     //}
 
-                    //if (hakedilenArmaganTanim.Id != ProjeConstants.ARMAGAN_TESEKKURID) //yeni hakkettiği armağan teşekkür ise eski armağanı sorgulama (Olumsuz)
+                    //if (hakedilenArmaganTanim.Id != ProjeConstants.ARMAGAN_TESEKKURID) //yeni hakkettigi armagan tesekk�r ise eski armagani sorgulama (Olumsuz)
                     //{
-                    //    //yeni hakkettiği armağan teşekkür değilise, eski armağanı sorgula, yeni armağanı daha önce almış mı, evet ise teşekkür ver
+                    //    //yeni hakkettigi armagan tesekk�r degilise, eski armagani sorgula, yeni armagani daha �nce almis mi, evet ise tesekk�r ver
                     //    DateTime armaganSorgulamaBasTar = new DateTime(2005, 1, 1);
                     //    DateTime armaganSorgulamaBitTar = bastar;
                     //    Armagan eskiArmagan = armagan.SelectByBagisciIdBagisTarihi(armagan.BagisciId, hakedilenArmaganTanim.Id, armaganSorgulamaBasTar, armaganSorgulamaBitTar);
@@ -2701,7 +2701,7 @@ namespace Model.NBYS
         {
             int armaganId = 0;
             Armagan armagan = new Armagan();
-            //bagis tarihi ve BagisciId ye göre armagan tablosunu sorgula, bu kişi varsa update yoksa insert etmek için
+            //bagis tarihi ve BagisciId ye g�re armagan tablosunu sorgula, bu kisi varsa update yoksa insert etmek i�in
             armagan = armagan.SelectByBagisciIdAndBagisTarihi(bastar, bittar, nakitBagisciId);
             if (armagan == null)
                 armagan = new Armagan();
@@ -2726,9 +2726,9 @@ namespace Model.NBYS
                 armagan.Durum = ProjeConstants.DURUM_DAHAONCEIADE;
             }
 
-            if (hakedilenArmaganTanimId != ProjeConstants.ARMAGAN_TESEKKURID) //yeni hakkettiği armağan teşekkür ise eski armağanı sorgulama (Olumsuz)
+            if (hakedilenArmaganTanimId != ProjeConstants.ARMAGAN_TESEKKURID) //yeni hakkettigi armagan tesekk�r ise eski armagani sorgulama (Olumsuz)
             {
-                //yeni hakkettiği armağan teşekkür değilise, eski armağanı sorgula, yeni armağanı daha önce almış mı, evet ise teşekkür ver
+                //yeni hakkettigi armagan tesekk�r degilise, eski armagani sorgula, yeni armagani daha �nce almis mi, evet ise tesekk�r ver
                 DateTime armaganSorgulamaBasTar = new DateTime(2005, 1, 1);
                 DateTime armaganSorgulamaBitTar = bastar;
                 Armagan eskiArmagan = armagan.SelectByBagisciIdBagisTarihi(armagan.BagisciId, hakedilenArmaganTanimId, armaganSorgulamaBasTar, armaganSorgulamaBitTar);
@@ -2745,7 +2745,7 @@ namespace Model.NBYS
             bool isArmaganSaved = false;
             NakitBagisci nakitBagisci = new NakitBagisci();
             nakitBagisci = nakitBagisci.Select<NakitBagisci>(nakitBagisHareket.BagisciId);
-            //nakit bagışçı null veya bilinmeyen ise armagan üretmesin
+            //nakit bagis�i null veya bilinmeyen ise armagan �retmesin
             if ((nakitBagisci == null) || (nakitBagisci.Adi.Contains(ProjeConstants.NAKITBAGISCI_BILINMEYEN)))
             {
                 isArmaganSaved = false;
@@ -2754,7 +2754,7 @@ namespace Model.NBYS
             {
                 int armaganId = 0;
 
-                //Şu ana kadar aldığı ArmaganTanimId leri bul
+                //Su ana kadar aldigi ArmaganTanimId leri bul
                 Armagan alinanArmagan = new Armagan();
                 List<Armagan> alinanArmaganListesi = alinanArmagan.SelectByBagisciId(nakitBagisci.Id);
                 List<int> alinanArmaganTanimIdListesi = new List<int>();
@@ -2765,12 +2765,12 @@ namespace Model.NBYS
                 }
 
                 decimal bagisTutari = nakitBagisHareket.BagisMiktari;
-                //Geçmişten bugüne kadar olan toplam bağış tutarını bul
+                //Ge�misten bug�ne kadar olan toplam bagis tutarini bul
                 NakitBagisHareket nbh = new NakitBagisHareket();
                 decimal toplamBagis = nbh.GetSumBagisMiktariByNakitBagisciIdBetweenBasTarBitTar(
                     ProjeConstants.COKBAGISYAPAN_BASLAMATARIHI.ConvertToDatetime(), nakitBagisHareket.BagisTarihi, nakitBagisci.Id);
 
-                //Geçmişten bugüne kadar olan toplam bağış tutarına göre Çoklu Bağış armağanı hakediyor mu
+                //Ge�misten bug�ne kadar olan toplam bagis tutarina g�re �oklu Bagis armagani hakediyor mu
                 ArmaganTanim cokluBagisanHakedilenArmaganTanim = new ArmaganTanim();
                 cokluBagisanHakedilenArmaganTanim = cokluBagisanHakedilenArmaganTanim.SelectByTutar(toplamBagis, ekstreAktarma.TuzelKisi);
 
@@ -2784,59 +2784,59 @@ namespace Model.NBYS
                     && tekliBagistanHakedilenArmaganTanim.Id != ProjeConstants.ARMAGAN_YOKID;
                 
 
-                //Hem tekli bağıştan hem de çoklu bağıştan armağan hakediyorsa ve Tekli Bağıştan hakedilen armağan ile çoklu bağıştan hak edilen armağan aynı ise
+                //Hem tekli bagistan hem de �oklu bagistan armagan hakediyorsa ve Tekli Bagistan hakedilen armagan ile �oklu bagistan hak edilen armagan ayni ise
                 if (cokluBagistanArmaganHakediyorMu && tekliBagisArmaganHakediyorMu
                     && cokluBagisanHakedilenArmaganTanim.Id == tekliBagistanHakedilenArmaganTanim.Id)
                 {
-                    //daha önce bu armağanı aldıysa, armağan verme
+                    //daha �nce bu armagani aldiysa, armagan verme
                     if (alinanArmaganTanimIdListesi.Contains(tekliBagistanHakedilenArmaganTanim.Id))
                     {
                         isArmaganSaved = false;
-                        nakitBagisHareket.Aciklama += "-NBYS- Daha önce "+ tekliBagistanHakedilenArmaganTanim.Armagan+" aldığı için armağan verilmedi ";
+                        nakitBagisHareket.Aciklama += "-NBYS- Daha �nce "+ tekliBagistanHakedilenArmaganTanim.Armagan+" aldigi i�in armagan verilmedi ";
                     }
                     else
                     {
-                        //Tekli bağıştan armağan ver, Çoklu bağıştan verme
+                        //Tekli bagistan armagan ver, �oklu bagistan verme
                         armaganId = ArmaganiKaydet( nakitBagisHareket, nakitBagisci, nakitBagisHareket.BagisMiktari, tekliBagistanHakedilenArmaganTanim.Id, currentUser);
                         isArmaganSaved= armaganId > 0;
-                        nakitBagisHareket.Aciklama += "-NBYS- Hem tekli hem çoklu bağıştan "+tekliBagistanHakedilenArmaganTanim.Armagan+ " hakediyor, Tekli bağıştan armağan verildi ";
+                        nakitBagisHareket.Aciklama += "-NBYS- Hem tekli hem �oklu bagistan "+tekliBagistanHakedilenArmaganTanim.Armagan+ " hakediyor, Tekli bagistan armagan verildi ";
                     }
 
                 }
-                //Çoklu armağan hakediyorsa, tekli armağan hakediyor veya etmiyorsa farketmez, önce çoklu bağış oluştursun
+                //�oklu armagan hakediyorsa, tekli armagan hakediyor veya etmiyorsa farketmez, �nce �oklu bagis olustursun
 
                 if (!isArmaganSaved && cokluBagistanArmaganHakediyorMu)
                 {
                     if (alinanArmaganTanimIdListesi.Contains(cokluBagisanHakedilenArmaganTanim.Id))
                     {
                         isArmaganSaved = false;
-                        nakitBagisHareket.Aciklama += "-NBYS- Daha önce " + cokluBagisanHakedilenArmaganTanim.Armagan + " aldığı için armağan oluşturulmadı ";
+                        nakitBagisHareket.Aciklama += "-NBYS- Daha �nce " + cokluBagisanHakedilenArmaganTanim.Armagan + " aldigi i�in armagan olusturulmadi ";
                     }
                     else
                     {
                         armaganId = ArmaganiKaydet(nakitBagisHareket, nakitBagisci, toplamBagis, cokluBagisanHakedilenArmaganTanim.Id, currentUser, true);
                         isArmaganSaved = armaganId > 0;
                         nakitBagisHareket.Aciklama += "-NBYS-"+ nakitBagisHareket.BagisTarihi.ConvertToDatetimeEmptyIfNull() +
-                            " tarihine kadar yaptığı bağışlardan hak ettiği " + cokluBagisanHakedilenArmaganTanim.Armagan + " oluşturuldu.";
+                            " tarihine kadar yaptigi bagislardan hak ettigi " + cokluBagisanHakedilenArmaganTanim.Armagan + " olusturuldu.";
                     }
                     
                 }
-                //Sadece tekli armağan hakediyorsa
+                //Sadece tekli armagan hakediyorsa
                 if (!isArmaganSaved && !cokluBagistanArmaganHakediyorMu && tekliBagisArmaganHakediyorMu)
                 {
                     if (alinanArmaganTanimIdListesi.Contains(tekliBagistanHakedilenArmaganTanim.Id))
                     {
                         isArmaganSaved = false;
-                        nakitBagisHareket.Aciklama += "-NBYS- Daha önce " + tekliBagistanHakedilenArmaganTanim.Armagan + " aldığı için armağan oluşturulmadı ";
+                        nakitBagisHareket.Aciklama += "-NBYS- Daha �nce " + tekliBagistanHakedilenArmaganTanim.Armagan + " aldigi i�in armagan olusturulmadi ";
                     }
                     else
                     {
                         armaganId = ArmaganiKaydet(nakitBagisHareket, nakitBagisci, nakitBagisHareket.BagisMiktari, tekliBagistanHakedilenArmaganTanim.Id, currentUser);
                         isArmaganSaved = armaganId > 0;
-                        nakitBagisHareket.Aciklama += "-NBYS- tekli bağıştan hakettiği " + tekliBagistanHakedilenArmaganTanim.Armagan + " oluşturuldu.";
+                        nakitBagisHareket.Aciklama += "-NBYS- tekli bagistan hakettigi " + tekliBagistanHakedilenArmaganTanim.Armagan + " olusturuldu.";
                     }
                 }
-                //Nakit Bağışa bu armaganId'yi kaydes
+                //Nakit Bagisa bu armaganId'yi kaydes
                 if (isArmaganSaved)
                 {
                     if (armaganId > 0)
@@ -2889,24 +2889,24 @@ namespace Model.NBYS
             NakitBagisci nakitBagisci = new NakitBagisci();
             if (ekstreAktarma.Adi != ProjeConstants.NAKITBAGISCI_BILINMEYEN)
             {
-                nakitBagisci = nakitBagisci.SelectByTcKimlikno(ekstreAktarma.TCKimlikNo); //tc kimlik no bagisci tablosunda var mı kontrol ediliyor.
+                nakitBagisci = nakitBagisci.SelectByTcKimlikno(ekstreAktarma.TCKimlikNo); //tc kimlik no bagisci tablosunda var mi kontrol ediliyor.
 
                 if (nakitBagisci != null)//bagisci tablosunda var
                 {
                     nakitBagisciId = nakitBagisci.Id;
                     nakitBagisciId = SaveBagisciFromEkstreAktarma(nakitBagisci, ekstreAktarma, false, currentUser);
                 }
-                else //bagisci tablosunda tc kimlikno ile bulunamadı
+                else //bagisci tablosunda tc kimlikno ile bulunamadi
                 {
                     nakitBagisci = new NakitBagisci();
 
-                    nakitBagisciId = GetUserIdByTelefonAndAd(ekstreAktarma);// telefon ve isime bakıyor
+                    nakitBagisciId = GetUserIdByTelefonAndAd(ekstreAktarma);// telefon ve isime bakiyor
 
-                    if (nakitBagisciId == 0) //bu kişi kesin olarak yeni bağişci (Telefon ve isimden bulunamadı ise)
+                    if (nakitBagisciId == 0) //bu kisi kesin olarak yeni bagisci (Telefon ve isimden bulunamadi ise)
                     {
                         nakitBagisciId = SaveBagisciFromEkstreAktarma(nakitBagisci, ekstreAktarma, true, currentUser);
                     }
-                    else //nakitBagisciId boş veya 0 değil, öyleyse bu bağışçıyı select edelim 22.ocak.2020
+                    else //nakitBagisciId bos veya 0 degil, �yleyse bu bagis�iyi select edelim 22.ocak.2020
                     {
                         nakitBagisci = nakitBagisci.Select<NakitBagisci>(nakitBagisciId);
                         nakitBagisciId = SaveBagisciFromEkstreAktarma(nakitBagisci, ekstreAktarma, false, currentUser);
@@ -2927,23 +2927,23 @@ namespace Model.NBYS
             nbToSave = new NakitBagisci();
             nbToSave.Olusturan = UtilityHelper.GetCurrentUserLoginName();
 
-            //herbir nesne için bir dbo yarat
-            //önce nakitbağışçıyı kaydet
+            //herbir nesne i�in bir dbo yarat
+            //�nce nakitbagis�iyi kaydet
             DBObject nb1Dbo = new DBObject();
             nb1Dbo.SQLString = nbToSave.GetInsertSQL("");
             nb1Dbo.SQLType = ProjeConstants.SQL_INSERT;
             nb1Dbo.IsFilled = true;
             db.DBObjectList.Add(nb1Dbo);
 
-            //şimdi update et
+            //simdi update et
             DBObject nb2Dbo = new DBObject();
 
-            //guncellenecek alanları nesnelerde guncelle
-            //sonra Id ile bilinmeyenden Ad üret ve güncelle
+            //guncellenecek alanlari nesnelerde guncelle
+            //sonra Id ile bilinmeyenden Ad �ret ve g�ncelle
             NakitBagisci nbToUpdate = new NakitBagisci();
             nbToUpdate.Degistiren = UtilityHelper.GetCurrentUserLoginName();
             nbToUpdate.Adi = ProjeConstants.NAKITBAGISCI_BILINMEYEN + "_{0}";
-            nbToUpdate.Aciklama = nbToUpdate.Aciklama + ProjeConstants.NAKITBAGISCI_BILINMEYEN + " Bağışçı Id= " + "{0}";
+            nbToUpdate.Aciklama = nbToUpdate.Aciklama + ProjeConstants.NAKITBAGISCI_BILINMEYEN + " Bagis�i Id= " + "{0}";
 
             //dbo ayarla
             nb2Dbo.SQLString = nbToUpdate.GetUpdateSQL("{0}");
@@ -2953,7 +2953,7 @@ namespace Model.NBYS
             nb2Dbo.IsFilled = true;
             db.DBObjectList.Add(nb2Dbo);
 
-            //hazırlanan sorguları çalıştır
+            //hazirlanan sorgulari �alistir
             List<DBObject> savedDBOList = db.ExecuteTransaction();
             if (savedDBOList.Count > 0)
             {
@@ -2987,10 +2987,10 @@ namespace Model.NBYS
             var nakitBagisci = new NakitBagisci();
             var adi = ekstreAktarma.Adi;
 
-            if (!string.IsNullOrEmpty(adi)) // adi boş ise yeni bağışçı olarak kabul edilecek
+            if (!string.IsNullOrEmpty(adi)) // adi bos ise yeni bagis�i olarak kabul edilecek
             {
                 var telefon1 = UtilityHelper.TelefonFormatla(ekstreAktarma.Telefon1.ReturnEmptyIfNull().ToString());
-                if (!string.IsNullOrEmpty(telefon1)) //telefon1 boş değil ise ise kontrol ediliyor adı ve telefon1 bulunur ise aynı kişi olarak kabul ediliyor, yeni kayıt atılmıyor
+                if (!string.IsNullOrEmpty(telefon1)) //telefon1 bos degil ise ise kontrol ediliyor adi ve telefon1 bulunur ise ayni kisi olarak kabul ediliyor, yeni kayit atilmiyor
                 {
                     nakitBagisciId = GetUserId(nakitBagisci, adi, telefon1);
                     if (nakitBagisciId != 0)
@@ -3000,7 +3000,7 @@ namespace Model.NBYS
                 }
                 if (nakitBagisciId < 1)
                 {
-                    var telefon2 = UtilityHelper.TelefonFormatla(ekstreAktarma.Telefon2.ReturnEmptyIfNull().ToString()); //telefon1 ve adı eşleşmedi ise, telefon2 ve adi eşleişiyor mu bakılıyor
+                    var telefon2 = UtilityHelper.TelefonFormatla(ekstreAktarma.Telefon2.ReturnEmptyIfNull().ToString()); //telefon1 ve adi eslesmedi ise, telefon2 ve adi esleisiyor mu bakiliyor
                     if (!string.IsNullOrEmpty(telefon2))
                     {
                         nakitBagisciId = telefon2.Length > 3 ? GetUserId(nakitBagisci, adi, telefon2) : 0;
@@ -3048,7 +3048,7 @@ namespace Model.NBYS
         }
         private static int GetIlId(string value)
         {
-            //il ziraat bankası dosyasında id olarak geliyor. diğer bankalarda il adı olarak geliyor.
+            //il ziraat bankasi dosyasinda id olarak geliyor. diger bankalarda il adi olarak geliyor.
             int ilId = 0;
 
             var isInt = Int32.TryParse(value, out ilId);
@@ -3129,7 +3129,7 @@ namespace Model.NBYS
                 }
                 else
                 {
-                    //TODO: hata mesajı verilecek
+                    //TODO: hata mesaji verilecek
                 }
 
             }
@@ -3157,7 +3157,7 @@ namespace Model.NBYS
                 nakitBagisci.TuzelKisi = ekstreAktarma.TuzelKisi;
                 nakitBagisci.Olusturan = currentUser;
                 nakitBagisci.Sag = true;
-                nakitBagisci.Ulasilamiyor = false; //brası tamam çünkü bu yeni biri
+                nakitBagisci.Ulasilamiyor = false; //brasi tamam ��nk� bu yeni biri
                 nakitBagisci.BelgeIstemiyor = false;
                 nakitBagisci.BelgeIstemiyor = ekstreAktarma.BelgeIstemiyor == true ? true : false;
                 if (string.IsNullOrEmpty(ekstreAktarma.Telefon1) &&
@@ -3185,8 +3185,8 @@ namespace Model.NBYS
                 nakitBagisci.TuzelKisi = ekstreAktarma.TuzelKisi;
                 nakitBagisci.Olusturan = currentUser;
                 nakitBagisci.Sag = true;
-                //nakitBagisci.Ulasilamiyor = false; kapandı, çünkü  SB 02.04.2021 Bağışçının ulaşılamıyor bilgisini bozuyor
-                //nakitBagisci.BelgeIstemiyor = false; kapandı, çünkü  SB 02.04.2021 Bağışçının BelgeIstemiyor bilgisini bozuyor
+                //nakitBagisci.Ulasilamiyor = false; kapandi, ��nk�  SB 02.04.2021 Bagis�inin ulasilamiyor bilgisini bozuyor
+                //nakitBagisci.BelgeIstemiyor = false; kapandi, ��nk�  SB 02.04.2021 Bagis�inin BelgeIstemiyor bilgisini bozuyor
                 nakitBagisci.BelgeIstemiyor = ekstreAktarma.BelgeIstemiyor == true ? true : nakitBagisci.BelgeIstemiyor;
                 if (string.IsNullOrEmpty(ekstreAktarma.Telefon1) &&
                     string.IsNullOrEmpty(ekstreAktarma.Telefon2) &&

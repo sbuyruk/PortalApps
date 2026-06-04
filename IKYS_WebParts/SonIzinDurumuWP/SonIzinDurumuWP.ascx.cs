@@ -1,4 +1,4 @@
-嚜簑sing Model.IKYS;
+using Model.IKYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -78,7 +78,7 @@ namespace IKYS_WebParts.SonIzinDurumuWP
             {
                 if (!Page.IsPostBack)
                 {
-                    TitleLbl.Text = "Son 襤zin Durumu ("+ DateTime.Now.ConvertToDDMMYYYHHmmFormat()+")";
+                    TitleLbl.Text = "Son Izin Durumu ("+ DateTime.Now.ConvertToDDMMYYYHHmmFormat()+")";
                     TabloOlustur();
                 }
             }
@@ -90,8 +90,8 @@ namespace IKYS_WebParts.SonIzinDurumuWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri 癟ekilip json a 癟eviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu haz覺rlan覺yor.
+            var jsonData = TabloJson(); //veri 蔒kilip json a 蔒viriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
 
@@ -131,8 +131,8 @@ namespace IKYS_WebParts.SonIzinDurumuWP
                 personelListItem.Soyadi = soyadi;
 
 
-                personelListItem.GecmisDonemlerdenKalanIzin = GecmisDonemlerdenKalanIzinToplam覺Getir(personelId);
-                personelListItem.SonIzinDonemindenKalanIzin = SonIzindenKalanIzinToplam覺Getir(personelId);
+                personelListItem.GecmisDonemlerdenKalanIzin = GecmisDonemlerdenKalanIzinToplamiGetir(personelId);
+                personelListItem.SonIzinDonemindenKalanIzin = SonIzindenKalanIzinToplamiGetir(personelId);
                 personelListItem.NetKalanIzin = personelListItem.GecmisDonemlerdenKalanIzin + personelListItem.SonIzinDonemindenKalanIzin;
 
                 list.Add(personelListItem);
@@ -220,7 +220,7 @@ namespace IKYS_WebParts.SonIzinDurumuWP
             string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_HOME;
             Page.Response.Redirect(newUrl);
         }
-        private int GecmisDonemlerdenKalanIzinToplam覺Getir(int personelId)
+        private int GecmisDonemlerdenKalanIzinToplamiGetir(int personelId)
         {
 
             IzinDonem izinDonemDao = new IzinDonem();
@@ -236,7 +236,7 @@ namespace IKYS_WebParts.SonIzinDurumuWP
 
             return kalanIzinToplami;
         }
-        private int SonIzindenKalanIzinToplam覺Getir(int personelId)
+        private int SonIzindenKalanIzinToplamiGetir(int personelId)
         {
             //izinDonemini bul
             IzinDonem izinDonemi = new IzinDonem();

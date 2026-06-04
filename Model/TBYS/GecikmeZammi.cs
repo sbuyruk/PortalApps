@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -47,7 +47,7 @@ namespace Model.TBYS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public override bool Update()
@@ -104,7 +104,7 @@ namespace Model.TBYS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public override List<T> SelectAll<T>()
@@ -226,7 +226,7 @@ namespace Model.TBYS
         public List<GecikmeZammi> SelectByTarih(DateTime ilkOdemeTarihi, DateTime sonOdemeTarihi)
         {
             GecikmeZammi gecikmeZammiDao = new GecikmeZammi();
-            //bu ay içinde oran değişti mi?
+            //bu ay i�inde oran degisti mi?
             List<GecikmeZammi> buayDegisenGecikmeZammiList = gecikmeZammiDao.SelectBuAyIcindeDegisen(ilkOdemeTarihi, sonOdemeTarihi);
 
             bool oncekiGecikmeZammiDaEklensinMi = false;

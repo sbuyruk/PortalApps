@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -61,7 +61,7 @@ namespace Model.Portal
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
 
 
@@ -78,67 +78,78 @@ namespace Model.Portal
 
             return list;
         }
-        public List<Duyuru> SelectByTarihReturnList(DateTime now, string tekrar)
-        {
-            string sqlString = string.Empty;
-            if (tekrar.Equals(ProjeConstants.DUYURU_TEKRAR_YOK))
-            {
-                sqlString = string.Format(@"
-                    SELECT *
-                    FROM Duyuru_Table 
-                    WHERE Aktif=1 AND Tekrar= {0} AND YayinBasTar <= {1} AND YayinBitTar >={1}
-                    ORDER BY YayinBasTar,YayinBitTar DESC", tekrar.ReturnQuotedValue(), now.ReturnTRDateFormat());
-            }
-            else if (tekrar.Equals(ProjeConstants.DUYURU_TEKRARLA_YIL))
-            {
-                string saatDakika = now.ToString("HH:MM:SS");
-                string gun = now.Day.ToString();
-                string ay = now.Month.ToString();
-                sqlString = string.Format(@"
-                    SELECT *
-                    FROM Duyuru_Table 
-                    WHERE Aktif=1 AND Tekrar= {0}
-						    AND CONVERT(nvarchar,YayinBasTar,108)<={1} 
-						    AND CONVERT(nvarchar,YayinBitTar,108)>={1}  
-						    AND DAY(YayinBasTar) <=  {2}  AND DAY(YayinBitTar) >= {2} 
-						    AND MONTH(YayinBasTar) <={3} AND MONTH(YayinBitTar) >={3} 
-                    ORDER BY YayinBasTar,YayinBitTar DESC"
-                , tekrar.ReturnQuotedValue(), saatDakika.ReturnQuotedValue(), gun.ReturnQuotedValue(), ay.ReturnQuotedValue());
-            }
-            else if (tekrar.Equals(ProjeConstants.DUYURU_TEKRARLA_AY))
-            {
-                string saatDakika = now.ToString("HH:MM:SS");
-                string gun = now.Day.ToString();
-                string ay = now.Month.ToString();
-                sqlString = string.Format(@"
-                    SELECT *
-                    FROM Duyuru_Table 
-                    WHERE Aktif=1 AND Tekrar= {0}
-						    AND	CONVERT(nvarchar,YayinBasTar,108)<={1} 
-						    AND CONVERT(nvarchar,YayinBitTar,108)>={1} 
-						    AND DAY(YayinBasTar) <=  {2} AND DAY(YayinBitTar) >=  {2} 
-                    ORDER BY YayinBasTar,YayinBitTar DESC"
-                , tekrar.ReturnQuotedValue(), saatDakika.ReturnQuotedValue(), gun.ReturnQuotedValue());
-            }
-            else if (tekrar.Equals(ProjeConstants.DUYURU_TEKRARLA_HAFTA))
-            {
-                string saatDakika = now.ToString("HH:MM:SS");
-                sqlString = string.Format(@"
-                    SELECT*
-                    FROM Duyuru_Table 
-                    WHERE Aktif=1 AND Tekrar= {0}
-						    AND	CONVERT(nvarchar,YayinBasTar,108)<={1} 
-						    AND CONVERT(nvarchar,YayinBitTar,108)>={1} 
-						    AND DATEPART(dw,YayinBasTar) = DATEPART(dw,GETDATE())
-                    ORDER BY YayinBasTar,YayinBitTar DESC"
-                , tekrar.ReturnQuotedValue(), saatDakika.ReturnQuotedValue());
-            }
+		public List<Duyuru> SelectByTarihReturnList(DateTime now, string tekrar)
+		{
+			if (string.IsNullOrWhiteSpace(tekrar))
+			{
+				return new List<Duyuru>();
+			}
 
-            DataTable dataTable = dao.SelectFromDb(sqlString, "");
-            List<Duyuru> list = ToList<Duyuru>(dataTable);
+			tekrar = tekrar.Trim();
+			string sqlString = string.Empty;
 
-            return list;
-        }
+			if (tekrar.Equals(ProjeConstants.DUYURU_TEKRAR_YOK))
+			{
+				sqlString = string.Format(@"
+					SELECT *
+					FROM Duyuru_Table 
+					WHERE Aktif=1 AND Tekrar= {0} AND YayinBasTar <= {1} AND YayinBitTar >={1}
+					ORDER BY YayinBasTar,YayinBitTar DESC", tekrar.ReturnQuotedValue(), now.ReturnTRDateFormat());
+			}
+			else if (tekrar.Equals(ProjeConstants.DUYURU_TEKRARLA_YIL))
+			{
+				string saatDakika = now.ToString("HH:MM:SS");
+				string gun = now.Day.ToString();
+				string ay = now.Month.ToString();
+				sqlString = string.Format(@"
+					SELECT *
+					FROM Duyuru_Table 
+					WHERE Aktif=1 AND Tekrar= {0}
+							AND CONVERT(nvarchar,YayinBasTar,108)<={1} 
+							AND CONVERT(nvarchar,YayinBitTar,108)>={1}  
+							AND DAY(YayinBasTar) <=  {2}  AND DAY(YayinBitTar) >= {2} 
+							AND MONTH(YayinBasTar) <={3} AND MONTH(YayinBitTar) >={3} 
+					ORDER BY YayinBasTar,YayinBitTar DESC"
+				, tekrar.ReturnQuotedValue(), saatDakika.ReturnQuotedValue(), gun.ReturnQuotedValue(), ay.ReturnQuotedValue());
+			}
+			else if (tekrar.Equals(ProjeConstants.DUYURU_TEKRARLA_AY))
+			{
+				string saatDakika = now.ToString("HH:MM:SS");
+				string gun = now.Day.ToString();
+				string ay = now.Month.ToString();
+				sqlString = string.Format(@"
+					SELECT *
+					FROM Duyuru_Table 
+					WHERE Aktif=1 AND Tekrar= {0}
+							AND	CONVERT(nvarchar,YayinBasTar,108)<={1} 
+							AND CONVERT(nvarchar,YayinBitTar,108)>={1} 
+							AND DAY(YayinBasTar) <=  {2} AND DAY(YayinBitTar) >=  {2} 
+					ORDER BY YayinBasTar,YayinBitTar DESC"
+				, tekrar.ReturnQuotedValue(), saatDakika.ReturnQuotedValue(), gun.ReturnQuotedValue());
+			}
+			else if (tekrar.Equals(ProjeConstants.DUYURU_TEKRARLA_HAFTA))
+			{
+				string saatDakika = now.ToString("HH:MM:SS");
+				sqlString = string.Format(@"
+					SELECT*
+					FROM Duyuru_Table 
+					WHERE Aktif=1 AND Tekrar= {0}
+							AND	CONVERT(nvarchar,YayinBasTar,108)<={1} 
+							AND CONVERT(nvarchar,YayinBitTar,108)>={1} 
+							AND DATEPART(dw,YayinBasTar) = DATEPART(dw,GETDATE())
+					ORDER BY YayinBasTar,YayinBitTar DESC"
+				, tekrar.ReturnQuotedValue(), saatDakika.ReturnQuotedValue());
+			}
+			else
+			{
+				return new List<Duyuru>();
+			}
+
+			DataTable dataTable = dao.SelectFromDb(sqlString, "");
+			List<Duyuru> list = ToList<Duyuru>(dataTable);
+
+			return list;
+		}
         public override bool Update()
         {
             bool isSuccess = false;

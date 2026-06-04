@@ -1,4 +1,4 @@
-﻿using Model.IKYS;
+using Model.IKYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -200,7 +200,7 @@ namespace IKYS_WebParts.KullanilmayanIzinListesiWP
             DateTime now = DateTime.Now;
             DateTime raporTarihi = DateTime.Today;
 
-            baslikCell.Text = "KULLANILMAYAN İZİNLER " + "(" + raporTarihi.ConvertToDatetimeEmptyIfNull() + ")";
+            baslikCell.Text = "KULLANILMAYAN IZINLER " + "(" + raporTarihi.ConvertToDatetimeEmptyIfNull() + ")";
             baslikCell.Font.Bold = true;
             baslikCell.ColumnSpan = 7;
             thbaslik.HorizontalAlign = HorizontalAlign.Center;
@@ -250,19 +250,19 @@ namespace IKYS_WebParts.KullanilmayanIzinListesiWP
                     row1.Controls.Add(iseGirisCell);
                     
                     TableHeaderCell izinDonemiCell = new TableHeaderCell();
-                    izinDonemiCell.Text = "İzin Dönemi";
+                    izinDonemiCell.Text = "Izin D�nemi";
                     row1.Controls.Add(izinDonemiCell);
 
                     TableHeaderCell izinHakkiCell = new TableHeaderCell();
-                    izinHakkiCell.Text = "İzin Hakkı";
+                    izinHakkiCell.Text = "Izin Hakki";
                     row1.Controls.Add(izinHakkiCell);
 
                     TableHeaderCell kullanilanIzinCell = new TableHeaderCell();
-                    kullanilanIzinCell.Text = "Kullanılan İzin";
+                    kullanilanIzinCell.Text = "Kullanilan Izin";
                     row1.Controls.Add(kullanilanIzinCell);
 
                     TableHeaderCell kalanIzinCell = new TableHeaderCell();
-                    kalanIzinCell.Text = "Kalan İzin";
+                    kalanIzinCell.Text = "Kalan Izin";
                     row1.Controls.Add(kalanIzinCell);
 
                     baslikCell.BorderStyle = BorderStyle.Solid;
@@ -358,7 +358,7 @@ namespace IKYS_WebParts.KullanilmayanIzinListesiWP
                     
                     TableHeaderCell toplamCell = new TableHeaderCell();
                     toplamCell.BorderStyle = BorderStyle.Solid;
-                    toplamCell.Text = toplam.ToString()+" Gün"; 
+                    toplamCell.Text = toplam.ToString()+" G�n"; 
 
                     toplamRow.Controls.Add(toplamLblCell);
                     toplamRow.Controls.Add(toplamCell);
@@ -435,7 +435,7 @@ namespace IKYS_WebParts.KullanilmayanIzinListesiWP
             DateTime now = DateTime.Now;
             DateTime raporTarihi = DateTime.Today;
 
-            baslikCell.Text = "KULLANILMAYAN İZİNLER " + "(" + raporTarihi.ConvertToDatetimeEmptyIfNull() + ")";
+            baslikCell.Text = "KULLANILMAYAN IZINLER " + "(" + raporTarihi.ConvertToDatetimeEmptyIfNull() + ")";
             baslikCell.Font.Bold = true;
             baslikCell.ColumnSpan = 7;
             thbaslik.HorizontalAlign = HorizontalAlign.Center;
@@ -444,21 +444,21 @@ namespace IKYS_WebParts.KullanilmayanIzinListesiWP
 
             TableHeaderRow th = new TableHeaderRow();
             TableHeaderCell siraCell = new TableHeaderCell();
-            siraCell.Text = "Sıra";
+            siraCell.Text = "Sira";
             TableHeaderCell adiSoyadiCell = new TableHeaderCell();
-            adiSoyadiCell.Text = "Adı Soyadı";
+            adiSoyadiCell.Text = "Adi Soyadi";
             TableHeaderCell goreviCell = new TableHeaderCell();
-            goreviCell.Text = "Görevi";
+            goreviCell.Text = "G�revi";
             TableHeaderCell izinBasTarCell = new TableHeaderCell();
-            izinBasTarCell.Text = "İşe Giriş Tarihi";
+            izinBasTarCell.Text = "Ise Giris Tarihi";
             TableHeaderCell izinDonemiCell = new TableHeaderCell();
-            izinDonemiCell.Text = "İzin Dönemi";
+            izinDonemiCell.Text = "Izin D�nemi";
             TableHeaderCell izinHakkiCell = new TableHeaderCell();
-            izinHakkiCell.Text = "İzin Hakkı";
+            izinHakkiCell.Text = "Izin Hakki";
             TableHeaderCell kullanilanIzinCell = new TableHeaderCell();
-            kullanilanIzinCell.Text = "Kullanılan İzin";
+            kullanilanIzinCell.Text = "Kullanilan Izin";
             TableHeaderCell kalanIzinCell = new TableHeaderCell();
-            kalanIzinCell.Text = "Kalan İzin";
+            kalanIzinCell.Text = "Kalan Izin";
 
             th.Controls.Add(siraCell);
             th.Controls.Add(adiSoyadiCell);

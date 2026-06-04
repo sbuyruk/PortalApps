@@ -1,4 +1,4 @@
-﻿
+
 using Model.Ortak;
 using Model.Portal;
 using System;
@@ -60,7 +60,7 @@ namespace Model.IKYS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
 
         }
@@ -123,7 +123,7 @@ namespace Model.IKYS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
         }
 

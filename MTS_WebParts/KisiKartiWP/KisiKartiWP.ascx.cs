@@ -1,4 +1,4 @@
-﻿using Microsoft.SharePoint;
+using Microsoft.SharePoint;
 using Model.IKYS;
 using Model.MTS;
 using Model.NBYS;
@@ -107,7 +107,7 @@ namespace MTS_WebParts.KisiKartiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Kişi Bulunamadı", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Kisi Bulunamadi", ProjeConstants.MESAJ_HATA);
             }
         }
 
@@ -205,13 +205,13 @@ namespace MTS_WebParts.KisiKartiWP
             row3.Controls.Add(r3c4);
 
 
-            r1c1.Text = "Ünvanı : " + katilimci.Unvani;
-            r2c1.Text = "Görevi : " + katilimci.Gorevi;
+            r1c1.Text = "�nvani : " + katilimci.Unvani;
+            r2c1.Text = "G�revi : " + katilimci.Gorevi;
             r3c1.Text = "";
 
             r1c2.Text = "Kurumu : " + katilimci.Kurumu;
             r2c2.Text = "Adresi : " + katilimci.Adresi;
-            r3c2.Text = "İlçe/İl :" + katilimci.IlcesiIli;
+            r3c2.Text = "Il�e/Il :" + katilimci.IlcesiIli;
 
             r1c3.Text = katilimci.Telefon;
 
@@ -287,7 +287,7 @@ namespace MTS_WebParts.KisiKartiWP
                 }
                 else
                 {
-                    AlınanFaaliyetBilgileriTable.Rows.Add(row);
+                    AlinanFaaliyetBilgileriTable.Rows.Add(row);
                 }
 
             }
@@ -356,7 +356,7 @@ namespace MTS_WebParts.KisiKartiWP
                         faaliyetListItem.GetirilenAniObjesi = getirilenAniObjesiStr;
 
                         faaliyetListItem.Katilimci += katilimci + "; ";
-                        faaliyetListItem.FaaliyetKarti = "<a href=" + ProjeConstants.PAGE_FAALIYET_KARTI + "?FaaliyetId=" + faaliyetId + " class='btn btn-outline-primary'>Faaliyet Kartı</a>";
+                        faaliyetListItem.FaaliyetKarti = "<a href=" + ProjeConstants.PAGE_FAALIYET_KARTI + "?FaaliyetId=" + faaliyetId + " class='btn btn-outline-primary'>Faaliyet Karti</a>";
 
                         tempFaaliyetListItem = faaliyetListItem;
 
@@ -486,14 +486,14 @@ namespace MTS_WebParts.KisiKartiWP
                 else
                 {
                     if (item.RandevuIstendi)
-                        faaliyetcell.Text = "İstendi";
+                        faaliyetcell.Text = "Istendi";
                     else
                     {
                         faaliyetcell.Text = "-";
                     }
                 }
                 TableCell gorusmecell = new TableCell();
-                gorusmecell.Text = item.GorusmeSaglandi ? "Evet" : "Hayır";
+                gorusmecell.Text = item.GorusmeSaglandi ? "Evet" : "Hayir";
 
                 row.Controls.Add(nocell);
                 row.Controls.Add(tarihcell);

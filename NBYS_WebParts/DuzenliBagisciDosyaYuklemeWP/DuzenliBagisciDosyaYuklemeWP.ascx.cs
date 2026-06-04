@@ -1,4 +1,4 @@
-﻿using Microsoft.SharePoint.JSGrid;
+using Microsoft.SharePoint.JSGrid;
 using Model.NBYS;
 using Model.Ortak;
 using Model.TBYS;
@@ -121,7 +121,7 @@ namespace NBYS_WebParts.DuzenliBagisciDosyaYuklemeWP
                 {
                     DosyaFU.Enabled = false;
                     KaydetBtn.Enabled = false;
-                    MessageHelper.PublishMessage("Dosya başarıyla yüklendi.", ProjeConstants.MESAJ_BASARILI,2000);
+                    MessageHelper.PublishMessage("Dosya basariyla y�klendi.", ProjeConstants.MESAJ_BASARILI,2000);
                 }
 
             }
@@ -140,7 +140,7 @@ namespace NBYS_WebParts.DuzenliBagisciDosyaYuklemeWP
                     foreach (DataRow row in data.Rows)
                     {
                         string aciklamaStr = string.Empty;
-                        var tutar = row[6].ReturnZeroIfNull().ToString().Replace("₺","").ConvertToDecimal();
+                        var tutar = row[6].ReturnZeroIfNull().ToString().Replace("?","").ConvertToDecimal();
                         if (tutar < 1)
                         {
                             continue; //tutar 1 den azsa atla
@@ -152,7 +152,7 @@ namespace NBYS_WebParts.DuzenliBagisciDosyaYuklemeWP
                         var TCKimlikNo = row[4].ReturnEmptyIfNull().ConvertToLong();
                         var adres = row[5].ReturnEmptyIfNull().ConvertToLong();
                         var bagisadedi = row[7].ReturnZeroIfNull().ConvertToInt();
-                        var toplambagis = row[8].ReturnZeroIfNull().ToString().Replace("₺", "").ConvertToDecimal();
+                        var toplambagis = row[8].ReturnZeroIfNull().ToString().Replace("?", "").ConvertToDecimal();
                         var baslamaTarihi = row[9].ReturnEmptyIfNull().ConvertToDatetime();
 
                         try
@@ -178,10 +178,10 @@ namespace NBYS_WebParts.DuzenliBagisciDosyaYuklemeWP
                                         {
 
 
-                                            //Bağışçı bulunamadı
-                                            //Bu durumda yeni bağışçı oluşturmak doğru değil, çünkü 12 aydır bağış yaptığına göre mutlaka bir kaydı vardır.
+                                            //Bagis�i bulunamadi
+                                            //Bu durumda yeni bagis�i olusturmak dogru degil, ��nk� 12 aydir bagis yaptigina g�re mutlaka bir kaydi vardir.
                                             bagisciId = -1;
-                                            eslesmeBilgisi = " # Bağışçı Bulunamadı ";
+                                            eslesmeBilgisi = " # Bagis�i Bulunamadi ";
                                         }
                                         else
                                         {
@@ -215,7 +215,7 @@ namespace NBYS_WebParts.DuzenliBagisciDosyaYuklemeWP
                             bool saved = false;
                             bool updated = false;   
 
-                            //Aktif düzenli bağışçı kaydı yoksa
+                            //Aktif d�zenli bagis�i kaydi yoksa
                             if (duzenliNakitBagisci == null)
                             {
                                 duzenliNakitBagisci = new DuzenliNakitBagisci();
@@ -234,8 +234,8 @@ namespace NBYS_WebParts.DuzenliBagisciDosyaYuklemeWP
                                 int id = duzenliNakitBagisci.Save();
                                 if (id < 1)
                                 {
-                                    aciklamaStr= string.IsNullOrEmpty(aciklama) ? " Yeni Düzenli Bağışçı yaratılamadı -> " + adi : aciklama;
-                                    Exception exception = new Exception(string.Format("HATA SATIRI {0}:{1} -> Düzenli bağışçı kaydı oluşturulamadı.", ProjeConstants.PAGE_DUZENLIBAGISCI_YUKLEME, aciklamaStr));
+                                    aciklamaStr= string.IsNullOrEmpty(aciklama) ? " Yeni D�zenli Bagis�i yaratilamadi -> " + adi : aciklama;
+                                    Exception exception = new Exception(string.Format("HATA SATIRI {0}:{1} -> D�zenli bagis�i kaydi olusturulamadi.", ProjeConstants.PAGE_DUZENLIBAGISCI_YUKLEME, aciklamaStr));
                                     exceptionHelper.Exceptions.Add(exception);
                                 }
                             }

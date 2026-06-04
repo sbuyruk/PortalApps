@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -94,21 +94,21 @@ namespace TBYS_WebParts.BagimsizBolumWP
             BagimsizBolumTable.Rows.Clear();
             TableHeaderRow th = new TableHeaderRow();
             TableHeaderCell siraCell = new TableHeaderCell();
-            siraCell.Text = "Sıra";
+            siraCell.Text = "Sira";
             TableHeaderCell AdresCell = new TableHeaderCell();
             AdresCell.Text = "Adres";
             TableHeaderCell BolumCell = new TableHeaderCell();
-            BolumCell.Text = "Bölüm No";
+            BolumCell.Text = "B�l�m No";
             TableHeaderCell NitelikCell = new TableHeaderCell();
             NitelikCell.Text = "Nitelik";
             TableHeaderCell MetrekareCell = new TableHeaderCell();
             MetrekareCell.Text = "Metrekare";
             TableHeaderCell KullanimAmaciCell = new TableHeaderCell();
-            KullanimAmaciCell.Text = "Kullanım Amacı";
+            KullanimAmaciCell.Text = "Kullanim Amaci";
             TableHeaderCell AciklamaCell = new TableHeaderCell();
-            AciklamaCell.Text = "Açıklama";
+            AciklamaCell.Text = "A�iklama";
             TableHeaderCell DuzenleCell = new TableHeaderCell();
-            DuzenleCell.Text = "Düzenle";
+            DuzenleCell.Text = "D�zenle";
             TableHeaderCell SilCell = new TableHeaderCell();
             SilCell.Text = "Sil";
 
@@ -169,7 +169,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
                 //DuzenleButonu ve Cell ekle
                 TableCell DuzenleCell = new TableCell();
                 LinkButton DuzenleBtn = new LinkButton();
-                DuzenleBtn.Text = "Düzenle";
+                DuzenleBtn.Text = "D�zenle";
                 DuzenleBtn.CssClass = "btn btn-outline-primary";
                 DuzenleBtn.Click += delegate
                 {
@@ -237,7 +237,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
         private void BagimsizBolumEkleModalAc(Tasinmaz tasinmaz)
         {
             KullanimAmaciDDLDoldur();
-            BagimsizBolumHeaderLbl.InnerText = "Bağımsız Bölüm Ekleme";
+            BagimsizBolumHeaderLbl.InnerText = "Bagimsiz B�l�m Ekleme";
             AdresTxt.Text = tasinmaz.Adres;
             BolumNoTxt.Text = string.Empty;
             MetrekareTxt.Text = string.Empty;
@@ -256,7 +256,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
         }
         private void BagimsizBolumDuzenleModalAc(Tasinmaz tasinmaz, BagimsizBolum bagimsizBolum)
         {
-            BagimsizBolumHeaderLbl.InnerText = "Bağımsız Bölüm Düzenleme";
+            BagimsizBolumHeaderLbl.InnerText = "Bagimsiz B�l�m D�zenleme";
             ParamBagimsizBolumIdLbl.Text = bagimsizBolum.Id.ToString();
             AdresTxt.Text = tasinmaz.Adres;
             BolumNoTxt.Text = bagimsizBolum.BolumNo;
@@ -289,7 +289,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
 
         private void BagimsizBolumSilModalAc(Tasinmaz tasinmaz, BagimsizBolum bagimsizBolum)
         {
-            BagimsizBolumHeaderLbl.InnerText = "Bağımsız Bölüm Silme";
+            BagimsizBolumHeaderLbl.InnerText = "Bagimsiz B�l�m Silme";
             ParamBagimsizBolumIdLbl.Text = bagimsizBolum.Id.ToString();
             AdresTxt.Text = tasinmaz.Adres;
             BolumNoTxt.Text = bagimsizBolum.BolumNo;
@@ -304,19 +304,19 @@ namespace TBYS_WebParts.BagimsizBolumWP
             KaydetBtn.Visible = false;
             GuncelleBtn.Visible = false;
 
-            MessageLbl.Text = "Bağımsız Bölüm silinecek. Onaylıyor musunuz?";
+            MessageLbl.Text = "Bagimsiz B�l�m silinecek. Onayliyor musunuz?";
             MessageLbl.CssClass = "col-form-label text-danger fw-bold";
             MessageLbl.Visible = true;
 
             if (BagimsizBolumSilinebilirMi(bagimsizBolum))
             {
                 SilBtn.Visible = true;
-                SilBtn.Text = "Bağımsız Bölümü Sil";
+                SilBtn.Text = "Bagimsiz B�l�m� Sil";
                 SilBtn.CssClass = "btn btn-outline-danger";
             }
             else
             {
-                MessageLbl.Text = "Bu Bağımsız Bölüm ile ilişkilendirilmiş bir Sözleşme bulunmaktadır. Bağımsız Bölüm kaydı silinemez.";
+                MessageLbl.Text = "Bu Bagimsiz B�l�m ile iliskilendirilmis bir S�zlesme bulunmaktadir. Bagimsiz B�l�m kaydi silinemez.";
                 MessageLbl.CssClass = "col-form-label text-danger fw-bold";
                 MessageLbl.Visible = true;
                 SilBtn.Visible = false;
@@ -373,7 +373,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
                     {
                         BagimsizBolumTablosunuDoldur(tasinmaz);
                     }
-                    MessageHelper.PublishMessage("Bağımsız Bölüm güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Bagimsiz B�l�m g�ncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                     string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                     int queryIndex = newUrl.IndexOf("?");
                     if (queryIndex > 0)
@@ -383,12 +383,12 @@ namespace TBYS_WebParts.BagimsizBolumWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Bağımsız Bölüm güncellenemedi", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Bagimsiz B�l�m g�ncellenemedi", ProjeConstants.MESAJ_HATA);
                 }
             }
             else
             {
-                MessageHelper.PublishMessage("Bağımsız Bölüm bulunamadı", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Bagimsiz B�l�m bulunamadi", ProjeConstants.MESAJ_HATA);
             }
 
         }
@@ -407,7 +407,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
                     {
                         BagimsizBolumTablosunuDoldur(tasinmaz);
                     }
-                    MessageHelper.PublishMessage("Bağımsız Bölüm silindi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Bagimsiz B�l�m silindi", ProjeConstants.MESAJ_BASARILI, 2000);
                     string newUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                     int queryIndex = newUrl.IndexOf("?");
                     if (queryIndex > 0)
@@ -419,7 +419,7 @@ namespace TBYS_WebParts.BagimsizBolumWP
             }
             else
             {
-                MessageHelper.PublishMessage("Bağımsız Bölüm silinemedi", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Bagimsiz B�l�m silinemedi", ProjeConstants.MESAJ_HATA);
             }
         }
     }

@@ -1,4 +1,4 @@
-﻿using Model.IKYS;
+using Model.IKYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -151,8 +151,8 @@ namespace IKYS_WebParts.YoklamaListesiWP
         }
         private void TabloOlustur(int personelId)
         {
-            var jsonData = TabloJson(personelId); //veri çekilip json a çeviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = TabloJson(personelId); //veri �ekilip json a �eviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
 
@@ -211,7 +211,7 @@ namespace IKYS_WebParts.YoklamaListesiWP
                 {
                     yoklamaListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_YOKLAMA_GIRIS +
                         "?Auth=IKYS&DestinationApp=YokD&YoklamaId=" + yoklamaId +
-                        "&PersonelId=" + buPersonelId + " class='btn btn-outline-primary'>Düzenle</a>";
+                        "&PersonelId=" + buPersonelId + " class='btn btn-outline-primary'>D�zenle</a>";
                 }
 
 
@@ -247,9 +247,9 @@ namespace IKYS_WebParts.YoklamaListesiWP
 
                 jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
                 jQuery('#CustomDataTable').DataTable({
-                    'initComplete': function (settings, json) {//tablo yüklendiğinde
+                    'initComplete': function (settings, json) {//tablo y�klendiginde
                         var api = this.api();
-                        var row = api.row(function (idx, data, node) { //secilen toplantıya gider
+                        var row = api.row(function (idx, data, node) { //secilen toplantiya gider
                         return data['Secildi'] == true;
                         });
                         if (row.length > 0)

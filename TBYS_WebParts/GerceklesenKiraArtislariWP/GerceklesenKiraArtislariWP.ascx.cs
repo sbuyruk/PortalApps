@@ -1,4 +1,4 @@
-ï»¿using Model.Ortak;
+using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -89,8 +89,8 @@ namespace TBYS_WebParts.GerceklesenKiraArtislariWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri Ã§ekilip json a Ã§eviriliyor
-            //var jsString = CreateDataTable(jsonData); //javascript kodu hazÄ±rlanÄ±yor.
+            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            //var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir("setDataSet(" + jsonData + ");");
         }
         private string TabloJson()
@@ -128,7 +128,7 @@ namespace TBYS_WebParts.GerceklesenKiraArtislariWP
         {
             TabloOlustur();
             string filename = "GerceklesenKiraArtisCizelgesi.xls";// + DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + ".xls";
-            //TÃ¼rkÃ§e sorunu yok
+            //Türkçe sorunu yok
             Page.Response.Clear();
             Page.Response.AddHeader("content-disposition", "attachment;filename=" + filename + "");
             Page.Response.ContentType = "application/ms-excel";
@@ -193,7 +193,7 @@ namespace TBYS_WebParts.GerceklesenKiraArtislariWP
                 DateTime bugun = DateTime.Today;
                 decimal yasalOranaGoreKiraBedeli = oncekiKiraBedeli>0? oncekiKiraBedeli + Math.Round(oncekiKiraBedeli * tufe / 100):0;
                 
-                string yasalArtisOrani = "%" + tufe.ToString("N", culturInfo) + " (TÃœFE)";
+                string yasalArtisOrani = "%" + tufe.ToString("N", culturInfo) + " (TÜFE)";
                 DateTime bastar = string.IsNullOrEmpty(sozBasTar.ConvertToDatetimeEmptyIfNull()) ? DateTime.Today : sozBasTar.ConvertToDatetime();
                 if ((bastar >= ProjeConstants.SINIRLIKIRAARTISI_BASLAMATARIHI) &&
                    (bastar <= ProjeConstants.SINIRLIKIRAARTISI_BITISTARIHI) &&
@@ -221,7 +221,7 @@ namespace TBYS_WebParts.GerceklesenKiraArtislariWP
                 kiraArtisListItem.SozlesmeTarihi = ilkSozlesmeTarStr;
 
                 int kiraSuresi = Math.Round(DateTime.Today.AddMonths(1).Subtract(ilkSozlesmeTar).TotalDays / 365).ConvertToInt();
-                kiraArtisListItem.KiraSuresi = kiraSuresi + " YÄ±l";
+                kiraArtisListItem.KiraSuresi = kiraSuresi + " Yil";
                 kiraArtisListItem.BesYil = kiraSuresi >= 5 ? "True" : "False";
                 kiraArtisListItem.OnYil = kiraSuresi >= 10 ? "True" : "False";
                 kiraArtisListItem.SozlesmeBasTar = sozBasTar.ConvertToDatetimeEmptyIfNull();

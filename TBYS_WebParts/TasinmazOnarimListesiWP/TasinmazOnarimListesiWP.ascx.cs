@@ -1,4 +1,4 @@
-﻿using Model.TBYS;
+using Model.TBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -46,8 +46,8 @@ namespace TBYS_WebParts.TasinmazOnarimListesiWP
         private void TabloOlustur()
         {
             List<Tasinmaz> list = new List<Tasinmaz>();
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            //var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = TabloJson(); //veri �ekilip json a �eviriliyor
+            //var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler,
                 typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "setDataSet(" + jsonData + ");", true);
         }
@@ -108,8 +108,8 @@ namespace TBYS_WebParts.TasinmazOnarimListesiWP
                 onarimListItem.Adres = adres;
 
 
-                onarimListItem.TasinmazKarti = "<a target='_blank' href=" + ProjeConstants.PAGE_TASINMAZ_KARTI + "?SenderApp=TL&TasinmazId=" + tasinmazId + " class='btn btn-outline-info'>Taşınmaz Kartı</a>";
-                onarimListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_TASINMAZ_GIRIS + "?DestinationApp=TD&TasinmazId=" + tasinmazId + " class='btn btn-outline-primary'>Düzenle</a>";
+                onarimListItem.TasinmazKarti = "<a target='_blank' href=" + ProjeConstants.PAGE_TASINMAZ_KARTI + "?SenderApp=TL&TasinmazId=" + tasinmazId + " class='btn btn-outline-info'>Tasinmaz Karti</a>";
+                onarimListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_TASINMAZ_GIRIS + "?DestinationApp=TD&TasinmazId=" + tasinmazId + " class='btn btn-outline-primary'>D�zenle</a>";
                 list.Add(onarimListItem);
             }
             return list;

@@ -1,4 +1,4 @@
-﻿
+
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -62,7 +62,7 @@ namespace Model.IKYS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
 
         }
@@ -126,7 +126,7 @@ namespace Model.IKYS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
         }
         public override List<T> SelectAll<T>()
@@ -177,7 +177,7 @@ namespace Model.IKYS
                     INNER JOIN IzinTanim_Table C ON C.Id= A.IzinTipi
                     LEFT JOIN IsBilgileri_Table D ON D.PersonelId= A.PersonelId
                     INNER JOIN BirimTanim_Table E ON E.Id= D.BirimId
-                WHERE --Mahsup=0 AND --SB 21.09.2020 Yeşim Hanımın talebi, Deniz özkanın 21.09.2020 tarihli izni o günkü görevli izinli personel listesinde çıkmadı o yüzden mahsup=0 kapatıldı
+                WHERE --Mahsup=0 AND --SB 21.09.2020 Yesim Hanimin talebi, Deniz �zkanin 21.09.2020 tarihli izni o g�nk� g�revli izinli personel listesinde �ikmadi o y�zden mahsup=0 kapatildi
                     BaslangicTarihi<={0} AND BitisTarihi>={1}
                 ORDER BY  ProtokolSiraNo, A.IzinTipi, BaslangicTarihi ", bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat()); //TODO 8 saat olan Mazeret de dahil olsun
 
@@ -193,7 +193,7 @@ namespace Model.IKYS
                 SELECT *
                 FROM IzinHareket_Table A
                 WHERE PersonelId={0} 
-                    AND IzinTipi!=2 AND IzinTipi!=8 -- süt izni ve mazeret haric
+                    AND IzinTipi!=2 AND IzinTipi!=8 -- s�t izni ve mazeret haric
                     AND BaslangicTarihi<={1} AND BitisTarihi>={2}
                 ORDER BY BitisTarihi DESC
             ",personelId, bastar.ReturnTRDateFormat(), bittar.ReturnTRDateFormat()); 

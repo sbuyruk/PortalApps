@@ -1,4 +1,4 @@
-﻿using Model.IKYS;
+using Model.IKYS;
 using Model.MTS;
 using Model.Portal;
 using System;
@@ -65,7 +65,7 @@ namespace Portal_WebParts.ToplantiKatilimTutanagiWP
             toplanti = toplanti.Select(ToplantiIdQS.ConvertToInt());
             if (toplanti != null)
             {
-                BaslikCell.Text = "TOPLANTI KATILIM TUTANAĞI <br style='mso-data-placement:same-cell;' />(" + toplanti.ToplantiKonusu + ") <br style='mso-data-placement:same-cell;' />(" + toplanti.BaslangicTarihi.ToString("dd.MM.yyyy") + ")";
+                BaslikCell.Text = "TOPLANTI KATILIM TUTANAGI <br style='mso-data-placement:same-cell;' />(" + toplanti.ToplantiKonusu + ") <br style='mso-data-placement:same-cell;' />(" + toplanti.BaslangicTarihi.ToString("dd.MM.yyyy") + ")";
                 ToplantiKatilim toplantiKatilim = new ToplantiKatilim();
                 List<ToplantiKatilim> katilimciListesi = toplantiKatilim.SelectBytoplantiId(toplanti.Id);
                 int siraNo = 0;

@@ -1,4 +1,4 @@
-﻿using Model.IKYS;
+using Model.IKYS;
 using Model.MTS;
 using Model.Portal;
 using System;
@@ -114,7 +114,7 @@ namespace MTS_WebParts.HaftalikGorunumWP
                 personelDogumGunleriJsonData +
                 "]";
 
-            var jsString = CreateJsString(jsonArrayString); //javascript kodu hazırlanıyor.
+            var jsString = CreateJsString(jsonArrayString); //javascript kodu hazirlaniyor.
             System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), jsString, true);
         }
         private string ToplantiListesiniGetir()
@@ -157,16 +157,16 @@ namespace MTS_WebParts.HaftalikGorunumWP
             foreach (var item in kisiListesi)
             {
 
-                for (int i = -1; i < 2; i++)//geçen yıl, bu yıl ve gelecek yıl için d.günü göster
+                for (int i = -1; i < 2; i++)//ge�en yil, bu yil ve gelecek yil i�in d.g�n� g�ster
                 {
                     DateTime dogumGunu = item.DogumTarihi;
                     DateTime dogumGunuBuYil = new DateTime(DateTime.Today.Year + i, dogumGunu.Month, dogumGunu.Day);
 
                     CalendarEvent dogumGunuitem = new CalendarEvent();
                     dogumGunuitem.state = ProjeConstants.FAALIYET_DURUMU_ONAYLANDI_INT.ToString();
-                    dogumGunuitem.id = 999;//999 önemli taşınamayan event
+                    dogumGunuitem.id = 999;//999 �nemli tasinamayan event
                     dogumGunuitem.purpose = ProjeConstants.FAALIYET_AMACI_DOGUMGUNU_INT;
-                    dogumGunuitem.title = "D.Günü :" + item.Adi + " " + item.Soyadi;
+                    dogumGunuitem.title = "D.G�n� :" + item.Adi + " " + item.Soyadi;
                     dogumGunuitem.start = string.Format("{0:s}", dogumGunuBuYil);
                     dogumGunuitem.end = string.Format("{0:s}", dogumGunuBuYil);
 
@@ -195,7 +195,7 @@ namespace MTS_WebParts.HaftalikGorunumWP
             {
                 foreach (DataRow row in dataTable.Rows)
                 {
-                    for (int i = -1; i < 2; i++)//geçen yıl, bu yıl ve gelecek yıl için d.günü göster
+                    for (int i = -1; i < 2; i++)//ge�en yil, bu yil ve gelecek yil i�in d.g�n� g�ster
                     {
                         string adi = row["Adi"].ToString();
                         string soyadi = row["Soyadi"].ToString();
@@ -209,9 +209,9 @@ namespace MTS_WebParts.HaftalikGorunumWP
 
                         CalendarEvent dogumGunuitem = new CalendarEvent();
                         dogumGunuitem.state = ProjeConstants.FAALIYET_DURUMU_ONAYLANDI_INT.ToString();
-                        dogumGunuitem.id = 999;//999 önemli taşınamayan event
+                        dogumGunuitem.id = 999;//999 �nemli tasinamayan event
                         dogumGunuitem.purpose = ProjeConstants.FAALIYET_AMACI_DOGUMGUNU_INT;
-                        dogumGunuitem.title = "D.Günü :" + adi + " " + soyadi;
+                        dogumGunuitem.title = "D.G�n� :" + adi + " " + soyadi;
                         dogumGunuitem.start = string.Format("{0:s}", dogumGunuBuYil);
                         dogumGunuitem.end = string.Format("{0:s}", dogumGunuBuYil);
                         dogumGunuitem.url = "";
@@ -225,9 +225,9 @@ namespace MTS_WebParts.HaftalikGorunumWP
                         {
                             CalendarEvent evlilikYildonumuItem = new CalendarEvent();
                             evlilikYildonumuItem.state = ProjeConstants.FAALIYET_DURUMU_ONAYLANDI_INT.ToString();
-                            evlilikYildonumuItem.id = 999;//999 önemli taşınamayan event
+                            evlilikYildonumuItem.id = 999;//999 �nemli tasinamayan event
                             evlilikYildonumuItem.purpose = ProjeConstants.FAALIYET_AMACI_YILDONUMU_INT;
-                            evlilikYildonumuItem.title = "Evl.Yıld. :" + adi + " " + soyadi;
+                            evlilikYildonumuItem.title = "Evl.Yild. :" + adi + " " + soyadi;
                             evlilikYildonumuItem.start = string.Format("{0:s}", evlilikTarBuYil);
                             evlilikYildonumuItem.end = string.Format("{0:s}", evlilikTarBuYil);
                             evlilikYildonumuItem.url = "";
@@ -294,7 +294,7 @@ headerToolbar: {
       }
     },
                     editable: true,
-                    eventAllow: function(dropLocation, draggedEvent) { //resmi tatillerin draggable olmaması için
+                    eventAllow: function(dropLocation, draggedEvent) { //resmi tatillerin draggable olmamasi i�in
                         if (draggedEvent.id === '999') {
                             return false; // a boolean
                         }
@@ -307,7 +307,7 @@ headerToolbar: {
                             info.revert();
                         }else
                         {
-                            if (!confirm('Faaliyet saati değiştirilsin mi?'))
+                            if (!confirm('Faaliyet saati degistirilsin mi?'))
                             {
                                 info.revert();
                             }else{
@@ -324,7 +324,7 @@ headerToolbar: {
                             info.revert();
                         }else
                         {
-                            if (!confirm('Faaliyet Taşınsın mı?'))
+                            if (!confirm('Faaliyet Tasinsin mi?'))
                             {
                                 info.revert();
                             }else{
@@ -419,7 +419,7 @@ headerToolbar: {
             }
         }
 
-        #region Toplanti Ayrıntıları Popup
+        #region Toplanti Ayrintilari Popup
         protected void ToplantiDetaylariBtn_Click(object sender, EventArgs e)
         {
             IcKatilimcilarCell.Text = string.Empty;
@@ -429,7 +429,7 @@ headerToolbar: {
             toplanti = toplanti.Select(toplantiId);
             if (toplanti != null)
             {
-                IdLbl.Text = " ( Toplantı No: " + toplanti.Id.ToString() + " )";
+                IdLbl.Text = " ( Toplanti No: " + toplanti.Id.ToString() + " )";
                 ToplantiKonusuCell.Text = toplanti.ToplantiKonusu;
                 ToplantiYetkilisiCell.Text = ParseToplantiYetkilisi(toplanti.ToplantiYetkilisi);
                 KoordinatorCell.Text = ParseKoordinator(toplanti.Koordinator);
@@ -453,8 +453,8 @@ headerToolbar: {
 
                 ToplantiYeriCell.Text = ParseToplantiYeri(toplanti.ToplantiYeri, toplanti.ToplantiYeriDiger);
                 AciklamaCell.Text = toplanti.Aciklama;
-                CevrimIciCell.Text = toplanti.CevrimIci ? "Evet" : "Hayır";
-                IkramOnayiCell.Text = toplanti.IkramOnayi ? "Evet" : "Hayır";
+                CevrimIciCell.Text = toplanti.CevrimIci ? "Evet" : "Hayir";
+                IkramOnayiCell.Text = toplanti.IkramOnayi ? "Evet" : "Hayir";
                 IkramMalzemesiCell.Text = toplanti.IkramOnayi ? toplanti.IkramMalzemesi : "-";
 
             }

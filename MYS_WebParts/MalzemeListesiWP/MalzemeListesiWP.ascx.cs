@@ -1,4 +1,4 @@
-﻿using Model.MYS;
+using Model.MYS;
 using Model.Ortak;
 using System;
 using System.ComponentModel;
@@ -124,7 +124,7 @@ namespace MYS_WebParts.MalzemeListesiWP
                     KayitGetir();
                     if (!string.IsNullOrEmpty(MesajQS))
                     {
-                        MessageHelper.PublishMessage("İşlem Tamamlandı", ProjeConstants.MESAJ_BASARILI, 2000);
+                        MessageHelper.PublishMessage("Islem Tamamlandi", ProjeConstants.MESAJ_BASARILI, 2000);
                         MesajQS = string.Empty;
                     }
                 }
@@ -137,8 +137,8 @@ namespace MYS_WebParts.MalzemeListesiWP
         }
         private void KayitGetir()
         {
-            var jsonData = GetDataJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateJsString(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = GetDataJson(); //veri �ekilip json a �eviriliyor
+            var jsString = CreateJsString(jsonData); //javascript kodu hazirlaniyor.
             System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), jsString, true);
         }
         private string GetDataJson()
@@ -149,7 +149,7 @@ namespace MYS_WebParts.MalzemeListesiWP
         }
         private string CreateJsString(string jsonData)
         {
-            //{ field: 'Gorev', headerText: 'Görev', sortable:true,filter: true },
+            //{ field: 'Gorev', headerText: 'G�rev', sortable:true,filter: true },
             //string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
             //string rawUrl = System.Web.HttpContext.Current.Request.RawUrl.ToString();
             //int index = currentUrl.IndexOf(rawUrl);
@@ -168,7 +168,7 @@ namespace MYS_WebParts.MalzemeListesiWP
                                             },
                                 columns: [
 
-                                    { field: 'Sirano', headerText: 'Sıra', headerClass:'darSutun' },
+                                    { field: 'Sirano', headerText: 'Sira', headerClass:'darSutun' },
                                     { field: 'Malzeme', headerText: 'Malzeme', sortable:true,filter: true},
                                     { field: 'Adet', headerText: 'Adet', sortable:true,filter: true},
                                     { field: 'EnvantereGirisTar', headerText: 'Envantere Gir.Tar.', sortable:true, 
@@ -194,7 +194,7 @@ namespace MYS_WebParts.MalzemeListesiWP
 
                                     { field: 'MalzemeId',headerClass:'darSutun', content: function (rowData)
                                     	{
-                                            return $('<a href='+'MalzemeGirisi.aspx?DestinationApp=MKD&MalzemeId='+rowData.MalzemeId +  ' class=\'btn btn-outline-primary \'>Düzenle</a>')
+                                            return $('<a href='+'MalzemeGirisi.aspx?DestinationApp=MKD&MalzemeId='+rowData.MalzemeId +  ' class=\'btn btn-outline-primary \'>D�zenle</a>')
                                     	}
                                     }
 

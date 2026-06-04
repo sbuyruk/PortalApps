@@ -1,4 +1,4 @@
-﻿using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Packaging;
 using Microsoft.SharePoint;
 using System;
 using System.Collections.Generic;
@@ -60,7 +60,7 @@ namespace TBYS_WebParts.VasiyetciAdresListesiWP
         {
             try
             {
-                //time out olmasın diye
+                //time out olmasin diye
                 ScriptManager _scriptMan = ScriptManager.GetCurrent(Page);
                 _scriptMan.AsyncPostBackTimeout = 36000;
                 if (!Page.IsPostBack)
@@ -97,7 +97,7 @@ namespace TBYS_WebParts.VasiyetciAdresListesiWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY');//sort date
                 jQuery(document).ready(function () {
                     jQuery('#CustomDataTable').DataTable({
-                        'initComplete': function (settings, json) {//tablo yüklendiğinde
+                        'initComplete': function (settings, json) {//tablo y�klendiginde
                             var api = this.api();
                             var row = api.row(function (idx, data, node) { //secilen kayda gider
                                 return data['Secildi'] == true;
@@ -181,8 +181,8 @@ namespace TBYS_WebParts.VasiyetciAdresListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = VasiyetciJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = VasiyetciJson(); //veri �ekilip json a �eviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
 
@@ -306,7 +306,7 @@ namespace TBYS_WebParts.VasiyetciAdresListesiWP
                 }
                 if (index < 21)
                 {
-                    //Sayfada 21 den az kayıt varsa template alanlarını temizle adsoyad vs
+                    //Sayfada 21 den az kayit varsa template alanlarini temizle adsoyad vs
                     for (int i = index; i < 22; i++)
                     {
                         Dictionary<string, string> keyValues = new Dictionary<string, string>();
@@ -321,7 +321,7 @@ namespace TBYS_WebParts.VasiyetciAdresListesiWP
                 {
                     string message = string.Join(Environment.NewLine, uzunAdresliler);
                     MessageHelper.PublishMessage(message + Environment.NewLine +
-                        " adresi çok uzun olduğundan kesilerek kısaltıldı. Lütfen etiketini kontrol ediniz. ", ProjeConstants.MESAJ_BILGI);
+                        " adresi �ok uzun oldugundan kesilerek kisaltildi. L�tfen etiketini kontrol ediniz. ", ProjeConstants.MESAJ_BILGI);
                 }
             }
 
@@ -332,7 +332,7 @@ namespace TBYS_WebParts.VasiyetciAdresListesiWP
         {
             using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(destinationStream, true))
             {
-                //boş sayfa ekle
+                //bos sayfa ekle
                 DocumentFormat.OpenXml.Wordprocessing.Paragraph PageBreakParagraph = new DocumentFormat.OpenXml.Wordprocessing.Paragraph(new DocumentFormat.OpenXml.Wordprocessing.Run(new DocumentFormat.OpenXml.Wordprocessing.Break() { Type = DocumentFormat.OpenXml.Wordprocessing.BreakValues.Page }));
                 wordDoc.MainDocumentPart.Document.Body.Append(PageBreakParagraph);
 
@@ -399,21 +399,21 @@ namespace TBYS_WebParts.VasiyetciAdresListesiWP
             try
             {
 
-                // Dosya adları 
+                // Dosya adlari 
                 string zaman = DateTime.Now.ToString("dd-MM-yyyy-HH-mm");
                 string etiketDosyaAdi = "Vasiyetci-Adres-Etiketi(" + zaman + ").docx";
                 bool etiketOlustuMu = YeniAdresEtiketDosyasiOlustur(etiketDosyaAdi);
                 if (etiketOlustuMu)
-                    MessageHelper.PublishMessage("Vasiyetçi adres etiketleri hazırlandı, Dosya ismine basarak yazıyı indirebilirsiniz.", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Vasiyet�i adres etiketleri hazirlandi, Dosya ismine basarak yaziyi indirebilirsiniz.", ProjeConstants.MESAJ_BASARILI, 2000);
                 else
                 {
-                    MessageHelper.PublishMessage("Adres etiketleri oluşturulamadı.", ProjeConstants.MESAJ_BILGI, 3000);
+                    MessageHelper.PublishMessage("Adres etiketleri olusturulamadi.", ProjeConstants.MESAJ_BILGI, 3000);
                 }
 
             }
             catch (Exception ex)
             {
-                Exception ex1 = new Exception("Adres etiketleri oluşturmada hata");
+                Exception ex1 = new Exception("Adres etiketleri olusturmada hata");
                 ExceptionHelper exh = new ExceptionHelper(ex);
                 exh.PublishException();
             }

@@ -1,4 +1,4 @@
-﻿using Model.TBYS;
+using Model.TBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -47,8 +47,8 @@ namespace TBYS_WebParts.TasinmazSorgulamaWP
         private void TabloOlustur()
         {
             List<Tasinmaz> list = new List<Tasinmaz>();
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            //var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = TabloJson(); //veri �ekilip json a �eviriliyor
+            //var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler,
                 typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "setDataSet(" + jsonData + ");", true);
         }

@@ -1,4 +1,4 @@
-﻿using Model.IKYS;
+using Model.IKYS;
 using Model.Portal;
 using Model.Ortak;
 using System;
@@ -117,8 +117,8 @@ namespace Portal_WebParts.ToplantiListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = TabloJson(); //veri �ekilip json a �eviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string TabloJson()
@@ -215,7 +215,7 @@ namespace Portal_WebParts.ToplantiListesiWP
                         toplantiListItem.ToplantiYeri = toplantiYeriStr;
                         toplantiListItem.PasifToplanti = bitTar < DateTime.Now ? ProjeConstants.TOPLANTI_PASIF_BOOL : false;
                         toplantiListItem.SecilenToplanti = SecilenToplantiIdQS.Equals(toplantiListItem.ToplantiId);
-                        toplantiListItem.CevrimIci = cevrimIci ? "Evet" : "Hayır";
+                        toplantiListItem.CevrimIci = cevrimIci ? "Evet" : "Hayir";
                         toplantiListItem.Aciklama = aciklama;
 
 
@@ -252,9 +252,9 @@ namespace Portal_WebParts.ToplantiListesiWP
 
                 jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
                 jQuery('#CustomDataTable').DataTable({
-                    'initComplete': function (settings, json) {//tablo yüklendiğinde
+                    'initComplete': function (settings, json) {//tablo y�klendiginde
                         var api = this.api();
-                        var row = api.row(function(idx, data, node) { //secilen toplantıya gider
+                        var row = api.row(function(idx, data, node) { //secilen toplantiya gider
                             return data['SecilenToplanti'] == true;
                         });
                         if (row.length > 0)
@@ -324,7 +324,7 @@ namespace Portal_WebParts.ToplantiListesiWP
             int toplantiYetkilisiBirimi = 0;
             if (currentuser.Equals(olusturan))
             {
-                sonuc = "<a href=" + ProjeConstants.PAGE_TOPLANTI_GIRIS + "?ToplantiId=" + toplantiId + " class='btn btn-outline-primary'>Düzenle</a>";
+                sonuc = "<a href=" + ProjeConstants.PAGE_TOPLANTI_GIRIS + "?ToplantiId=" + toplantiId + " class='btn btn-outline-primary'>D�zenle</a>";
             }
             else
             {
@@ -362,7 +362,7 @@ namespace Portal_WebParts.ToplantiListesiWP
                             {
                                 toplantiYetkilisiBirimi = ib.BirimId;
                             }
-                            ///sonuc = "<a href=" + ProjeConstants.PAGE_TOPLANTI_GIRIS + "?ToplantiId=" + toplantiId + " class='btn btn-outline-primary'>Düzenle</a>"; 
+                            ///sonuc = "<a href=" + ProjeConstants.PAGE_TOPLANTI_GIRIS + "?ToplantiId=" + toplantiId + " class='btn btn-outline-primary'>D�zenle</a>"; 
                         }
                     }
 
@@ -372,7 +372,7 @@ namespace Portal_WebParts.ToplantiListesiWP
                 if ((toplantiYetkilisiBirimi != 0 && goruntuleyenininBirimi != 0 && toplantiYetkilisiBirimi == goruntuleyenininBirimi) ||
                      toplantiYoneticisi)
                 {
-                    sonuc = "<a href=" + ProjeConstants.PAGE_TOPLANTI_GIRIS + "?ToplantiId=" + toplantiId + " class='btn btn-outline-primary'>Düzenle</a>";
+                    sonuc = "<a href=" + ProjeConstants.PAGE_TOPLANTI_GIRIS + "?ToplantiId=" + toplantiId + " class='btn btn-outline-primary'>D�zenle</a>";
                 }
 
             }
@@ -394,7 +394,7 @@ namespace Portal_WebParts.ToplantiListesiWP
                 if (personel != null)
                     PersonelIdQS = personel.Id.ToString();
                 else
-                    MessageHelper.PublishMessage("Personel bulunamadı", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Personel bulunamadi", ProjeConstants.MESAJ_HATA);
             }
 
             return personel;

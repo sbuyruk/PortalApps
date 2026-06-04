@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -187,20 +187,20 @@ namespace TBYS_WebParts.TasinmazOnarimGirisiWP
         {
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
 
-            AdiLbl.Text = "</br> Taşınmaz : " + tasinmaz.Adres + System.Environment.NewLine +
+            AdiLbl.Text = "</br> Tasinmaz : " + tasinmaz.Adres + System.Environment.NewLine +
                 " - " + tasinmaz.Ili + " / " + tasinmaz.Ilcesi + System.Environment.NewLine +
                 tasinmaz.Cinsi;
-            IdLbl.Text = "(Onarım No:" + tasinmaz.Id + ")";
+            IdLbl.Text = "(Onarim No:" + tasinmaz.Id + ")";
             //Column headers
-            HeaderCell1.Text = "Yapilan İş";
+            HeaderCell1.Text = "Yapilan Is";
             HeaderCell1.Visible = true;
-            HeaderCell2.Text = "Harcama Usulü";
+            HeaderCell2.Text = "Harcama Usul�";
             HeaderCell2.Visible = true;
             HeaderCell3.Text = "Onay Tarihi";
             HeaderCell3.Visible = true;
             HeaderCell4.Text = "Tutar";
             HeaderCell4.Visible = true;
-            HeaderCell5.Text = "Açıklama";
+            HeaderCell5.Text = "A�iklama";
             HeaderCell5.Visible = true;
 
             List<Onarim> list = new Onarim().SelectOnarimByTasinmazId(tasinmaz.Id);

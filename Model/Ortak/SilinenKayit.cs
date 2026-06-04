@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Utility.ProjeGlobal;
 
@@ -26,7 +26,7 @@ namespace Model.Ortak
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
 
             //string sqlString = string.Format(@"INSERT INTO SilinenKayit_Table (TabloAdi,SilinenKayitBilgisi,Silen,SilinmeTarihi,SilinmeSebebi )
@@ -80,7 +80,7 @@ namespace Model.Ortak
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
         }
         public string GetUpdateSQL(string extId)
@@ -96,7 +96,7 @@ namespace Model.Ortak
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
         }
         public string GetDeleteSQL(string extId)
@@ -112,7 +112,7 @@ namespace Model.Ortak
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
         }
         public override List<T> SelectAll<T>()

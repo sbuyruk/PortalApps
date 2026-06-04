@@ -1,4 +1,4 @@
-﻿using Model.IKYS;
+using Model.IKYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -105,7 +105,7 @@ namespace IKYS_WebParts.PersonelListesiWP
         private void PersonelTipiDDLDoldur()
         {
             PersonelTipiDDL.Items.Clear();
-            // Enum'u Dropdown için listeye dönüştürme
+            // Enum'u Dropdown i�in listeye d�n�st�rme
 
             var personelTipleri = Enum.GetValues(typeof(PersonelTipi))
                            .Cast<PersonelTipi>()
@@ -126,8 +126,8 @@ namespace IKYS_WebParts.PersonelListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = TabloJson(); //veri �ekilip json a �eviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
 
@@ -184,7 +184,7 @@ namespace IKYS_WebParts.PersonelListesiWP
                     string sGKSicilNo = row["SGKSicilNo"].ReturnEmptyIfNull().ToString();
                     string vakifOncesiPrimGunSayisi = row["VakifOncesiPrimGunSayisi"].ReturnEmptyIfNull().ToString();
                     string emeklilikTarihi = row["EmeklilikTarihi"].ReturnEmptyIfNull().ConvertToDatetime().ConvertToDatetimeEmptyIfNull();
-                    string calismaDurumu = row["CalismaDurumu"].ReturnEmptyIfNull().ConvertToInt() == 0 ? "Ayrıldı" : "Çalışıyor";
+                    string calismaDurumu = row["CalismaDurumu"].ReturnEmptyIfNull().ConvertToInt() == 0 ? "Ayrildi" : "�alisiyor";
                     string ayrilmaTar = row["AyrilmaTar"].ReturnEmptyIfNull().ConvertToDatetime().ConvertToDatetimeEmptyIfNull();
                     string ayrilmaSebebi = row["AyrilmaSebebi"].ReturnEmptyIfNull().ToString();
                     string ceptelefonu = row["CepTelefonu"].ReturnEmptyIfNull().ToString();
@@ -207,9 +207,9 @@ namespace IKYS_WebParts.PersonelListesiWP
                     personelListItem.BirimSube = birimSube;
                     personelListItem.Secildi = SecilenIdQS.Equals(personelListItem.PersonelId);
 
-                    personelListItem.PersonelKarti = "<a href=" + ProjeConstants.PAGE_PERSONEL_KARTI + "?PersonelId=" + personelId + " class='btn btn-outline-primary'>Per.Kartı</a>";
-                    personelListItem.KisiselSayfa = "<a href=" + ProjeConstants.PAGE_KISISELSAYFA + "?PersonelId=" + personelId + " class='btn btn-outline-primary'>Kişis.Say.</a>";
-                    personelListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_PERSONEL_EDIT + "?DestinationApp=PerD&PersonelId=" + personelId + " class='btn btn-outline-primary'>Düzenle</a>";
+                    personelListItem.PersonelKarti = "<a href=" + ProjeConstants.PAGE_PERSONEL_KARTI + "?PersonelId=" + personelId + " class='btn btn-outline-primary'>Per.Karti</a>";
+                    personelListItem.KisiselSayfa = "<a href=" + ProjeConstants.PAGE_KISISELSAYFA + "?PersonelId=" + personelId + " class='btn btn-outline-primary'>Kisis.Say.</a>";
+                    personelListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_PERSONEL_EDIT + "?DestinationApp=PerD&PersonelId=" + personelId + " class='btn btn-outline-primary'>D�zenle</a>";
                     //ekleneneler
                     personelListItem.SicilNo = sicilNo;
                     personelListItem.Tahsili = tahsili;
@@ -256,7 +256,7 @@ namespace IKYS_WebParts.PersonelListesiWP
                  jQuery(document).ready(function () {
 
                         jQuery('#CustomDataTable').DataTable({
-                            'initComplete': function (settings, json) {//tablo yüklendiğinde
+                            'initComplete': function (settings, json) {//tablo y�klendiginde
                                 var api = this.api();
                                 var row = api.row(function (idx, data, node) { //secilen Id'ye gider
                                     return data['Secildi'] == true;
@@ -318,7 +318,7 @@ namespace IKYS_WebParts.PersonelListesiWP
                                 { type: 'num', targets: 0 },
                                 { 'visible': false, 'targets': [9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34]},
                             ],
-                            'order': [[0, 'asc']],// Sıralı
+                            'order': [[0, 'asc']],// Sirali
                             'language': {
                                 'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                                 'decimal': ',',

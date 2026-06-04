@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -60,7 +60,7 @@ namespace Model.NBYS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public override bool Update()
@@ -117,7 +117,7 @@ namespace Model.NBYS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public override List<T> SelectAll<T>()
@@ -143,7 +143,7 @@ namespace Model.NBYS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
         }
         public string GetInsertSQL(string extId)
@@ -161,7 +161,7 @@ namespace Model.NBYS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
         }
         public string GetUpdateSQL(string extId)
@@ -178,7 +178,7 @@ namespace Model.NBYS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
         }
         public string GetDeleteSQL(string extId)
@@ -193,7 +193,7 @@ namespace Model.NBYS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
         }
         public DataTable SelectBagisciGroupByBagisAdediReturnDataTable(decimal bronzMadalyaMiktari)
@@ -296,7 +296,7 @@ namespace Model.NBYS
 
         }
         /// <summary>
-        /// NakitBagisHareket_Table'da Bağışı olmayan Bağışçıyı bulur
+        /// NakitBagisHareket_Table'da Bagisi olmayan Bagis�iyi bulur
         /// </summary>
         /// <param name="bagisciId"></param>
         /// <returns></returns>
@@ -581,7 +581,7 @@ namespace Model.NBYS
                 WHERE 
                     B.Tarih BETWEEN 
                         {1} AND {2}
-                    {7} --Armagan tablosunda Durum=  daha önce iade edildi olanlar haric
+                    {7} --Armagan tablosunda Durum=  daha �nce iade edildi olanlar haric
                 GROUP BY A.Id,A.Adi,A.Adres,A.Ili,F.IlAdi,G.IlceAdi,A.Telefon1,A.Telefon2, A.DergiGonderilmesin,A.TuzelKisi, BelgeIstemiyor,Ulasilamiyor
                 EXCEPT				
                 SELECT	E.Id NakitBagisciId, E.Adi,E.Adres,E.Telefon1,E.Telefon2,J.IlceAdi Ilcesi, H.IlAdi Ili,E.DergiGonderilmesin, E.TuzelKisi, BelgeIstemiyor,Ulasilamiyor
@@ -595,12 +595,12 @@ namespace Model.NBYS
                         {1} AND {2} 
 	                AND G.Tarih BETWEEN 
                         {3} AND {4}
-                    {8} --Armagan tablosunda Durum=  daha önce iade edildi olanlar haric
+                    {8} --Armagan tablosunda Durum=  daha �nce iade edildi olanlar haric
 	                ) Z
 	                INNER JOIN Armagan_Table Y ON Z.NakitBagisciId=Y.BagisciId
                 WHERE Y.Tarih > {4}
                     {5} --belge istemiyor
-                    {6} --adresi boş olanlar
+                    {6} --adresi bos olanlar
                     {9} --dergi gonderilmesinler
                     {10} --ulasilamiyor olanlar haric
                 GROUP BY NakitBagisciId,Adi,Adres,Ili,Ilcesi,Telefon1,Telefon2, DergiGonderilmesin,TuzelKisi,BelgeIstemiyor,Ulasilamiyor
@@ -624,7 +624,7 @@ namespace Model.NBYS
                             {1} AND {2}
                          {3} --durum
                          {4}--belge istemiyor
-                         {5}--adresi boş olanlar
+                         {5}--adresi bos olanlar
                          {6}--dergi gonderilmesinler
                          {7}--ulasilamayanlar haric
                     GROUP BY A.Id, A.Adi, A.Adres, A.Ili, F.IlAdi, G.IlceAdi, A.Telefon1, A.Telefon2, A.DergiGonderilmesin, A.TuzelKisi, BelgeIstemiyor, Ulasilamiyor
@@ -722,7 +722,7 @@ namespace Model.NBYS
 						AND Tarih>{0} AND BagisMiktari >= {1}
                     LEFT JOIN Il_Table C ON C.Id=A.Ili 
 					LEFT JOIN Ilce_Table D ON D.Id=A.Ilcesi AND D.IlId=A.Ili 
-				WHERE A.Sag=1 AND A.TuzelKisi=0 AND A.Adi IS NOT NULL AND A.Adi!='' AND A.Adi NOT Like '%BİLİNMEYEN%'
+				WHERE A.Sag=1 AND A.TuzelKisi=0 AND A.Adi IS NOT NULL AND A.Adi!='' AND A.Adi NOT Like '%BILINMEYEN%'
 				GROUP BY  A.Id , A.Adi, A.Soyadi,
 					A.Adres,A.Telefon1,A.Sag,D.IlceAdi,C.IlAdi
                 ORDER BY A.Id
@@ -744,7 +744,7 @@ namespace Model.NBYS
 
             string sqlString = string.Format(@"
                 SELECT A.BagisciId NakitBagisciId,A.BagisciAdi,A.Id AS DuzenliBagisciId, A.ArmaganId,E.Durum
-                    ,ISNULL(B.Adi, 'BAĞIŞÇI BULUNAMADI') AS Adi
+                    ,ISNULL(B.Adi, 'BAGIS�I BULUNAMADI') AS Adi
                     ,A.EslesmeBilgisi
                     ,A.Aciklama AS DuzenliBagisciAciklama
                     ,TCKimlikNo
@@ -784,7 +784,7 @@ namespace Model.NBYS
             {
                 durumstr = string.Format("AND  A.ArmaganId=0 ");
             } else
-            if (!durum.Equals(ProjeConstants.HEPSI)) //eğer boş ise query'e hiç eklenmesin
+            if (!durum.Equals(ProjeConstants.HEPSI)) //eger bos ise query'e hi� eklenmesin
             {
                 durumstr = string.Format("AND Durum = {0}", durum.ReturnQuotedValue());
             }
@@ -798,7 +798,7 @@ namespace Model.NBYS
                     ,A.Telefon aTelefon,A.Eposta aEposta
                     ,A.EslesmeBilgisi aEslesmeBilgisi,A.Aciklama aAciklama                    
 
-                    ,ISNULL(B.Adi, 'BAĞIŞÇI BULUNAMADI') AS bAdi
+                    ,ISNULL(B.Adi, 'BAGIS�I BULUNAMADI') AS bAdi
                     ,B.TCKimlikNo bTCKimlikNo
                     ,Adres bAdres
                     ,Telefon1 bTelefon1

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -264,7 +264,7 @@ namespace Utility.HelperClasses
             }
             else
             {
-                value = "'" + value.ToString().Replace('\'', ' ') + "'"; //string içinde ' karakteri geçiyorsa hata alınıyor. O nedenle ' karakteri boşluk ile değiştiriliyor.
+                value = "'" + value.ToString().Replace('\'', ' ') + "'"; //string i�inde ' karakteri ge�iyorsa hata aliniyor. O nedenle ' karakteri bosluk ile degistiriliyor.
             }
             return value;
         }
@@ -277,7 +277,7 @@ namespace Utility.HelperClasses
             }
             else
             {
-                value = "\"" + value.ToString().Replace('\'', ' ') + "\""; //string içinde ' karakteri geçiyorsa hata alınıyor. O nedenle ' karakteri boşluk ile değiştiriliyor.
+                value = "\"" + value.ToString().Replace('\'', ' ') + "\""; //string i�inde ' karakteri ge�iyorsa hata aliniyor. O nedenle ' karakteri bosluk ile degistiriliyor.
             }
             return value;
         }
@@ -449,7 +449,7 @@ namespace Utility.HelperClasses
             }
             catch (Exception ex)
             {
-                Exception exception = new Exception("Decimal hatası alındı.ConvertToDecimal methodu ", ex);
+                Exception exception = new Exception("Decimal hatasi alindi.ConvertToDecimal methodu ", ex);
                 throw exception;
             }
             return result;
@@ -587,18 +587,18 @@ namespace Utility.HelperClasses
             string newValue = value.ReturnZeroIfNull().ToString();
             //DateTime dt = DateTime.Today;
             newValue = newValue.Replace(" ", "");
-            newValue = newValue.Replace("Ç", "C");
-            newValue = newValue.Replace("ç", "c");
-            newValue = newValue.Replace("Ğ", "G");
-            newValue = newValue.Replace("ğ", "g");
-            newValue = newValue.Replace("İ", "I");
-            newValue = newValue.Replace("ı", "i");
-            newValue = newValue.Replace("Ö", "O");
-            newValue = newValue.Replace("ö", "o");
-            newValue = newValue.Replace("Ş", "S");
-            newValue = newValue.Replace("ş", "s");
-            newValue = newValue.Replace("Ü", "U");
-            newValue = newValue.Replace("ü", "u");
+            newValue = newValue.Replace("�", "C");
+            newValue = newValue.Replace("�", "c");
+            newValue = newValue.Replace("G", "G");
+            newValue = newValue.Replace("g", "g");
+            newValue = newValue.Replace("I", "I");
+            newValue = newValue.Replace("i", "i");
+            newValue = newValue.Replace("�", "O");
+            newValue = newValue.Replace("�", "o");
+            newValue = newValue.Replace("S", "S");
+            newValue = newValue.Replace("s", "s");
+            newValue = newValue.Replace("�", "U");
+            newValue = newValue.Replace("�", "u");
             return newValue;
         }
     }

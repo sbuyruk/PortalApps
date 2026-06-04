@@ -1,4 +1,4 @@
-﻿using Model.NBYS;
+using Model.NBYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -134,7 +134,7 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
             UyelikDurumuDDLDoldur();
             if (string.IsNullOrEmpty(FTKKisiIdQS))
             {
-                TitleLbl.Text = "FTK Kişi Girişi";
+                TitleLbl.Text = "FTK Kisi Girisi";
                 TitleLbl.CssClass = "col-form-label text-success fw-bold mb-1";
                 IdLbl.Text = string.Empty;
                 KaydetBtn.Visible = true;
@@ -144,11 +144,11 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
 
                 SilBtn.Visible = false;
 
-                MessageHelper.PublishMessage("Yeni üye bilgilerini girerek kayıt yapabilirsiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                MessageHelper.PublishMessage("Yeni �ye bilgilerini girerek kayit yapabilirsiniz.", ProjeConstants.MESAJ_BILGI, 2000);
             }
             else
             {
-                TitleLbl.Text = "FTK Kişi Düzenle";
+                TitleLbl.Text = "FTK Kisi D�zenle";
                 TitleLbl.CssClass = "col-form-label text-primary fw-bold mb-1";
                 //IdLbl.Text = FTKKisiIdQS.ToString();
                 KaydetBtn.Visible = false;
@@ -263,7 +263,7 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Kişi Bulunamadı", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Kisi Bulunamadi", ProjeConstants.MESAJ_HATA);
                 }
             }
             catch (Exception exception)
@@ -280,15 +280,15 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
             try
             {
                 FTKKisi ftkKisi = KaydetFTKKisiData2Db(exceptionHelper);
-                if (ftkKisi != null) //kaydettikten sonra önceki sayfaya dön
+                if (ftkKisi != null) //kaydettikten sonra �nceki sayfaya d�n
                 {
                     FTKKisiIdQS = ftkKisi.Id.ToString();
                     IlkACilis();
-                    MessageHelper.PublishMessage("Kişi Kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Kisi Kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
                 }
                 else
                 {
-                    throw (new Exception("Kişi kaydedilemedi."));
+                    throw (new Exception("Kisi kaydedilemedi."));
                 }
             }
             catch (Exception ex)
@@ -302,17 +302,17 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
             FTKKisi yeniFTKKisi = null;
             if (string.IsNullOrEmpty(AdiTxt.Text))
             {
-                MessageHelper.PublishMessage("Kişi Adı Boş Olamaz.", ProjeConstants.MESAJ_HATA, 2000);
+                MessageHelper.PublishMessage("Kisi Adi Bos Olamaz.", ProjeConstants.MESAJ_HATA, 2000);
             }
             else if (string.IsNullOrEmpty(SoyadiTxt.Text))
             {
-                MessageHelper.PublishMessage("Kişi Soyadı Boş Olamaz.", ProjeConstants.MESAJ_HATA, 2000);
+                MessageHelper.PublishMessage("Kisi Soyadi Bos Olamaz.", ProjeConstants.MESAJ_HATA, 2000);
             }
             else
             {
                 if (KayitVarMi(TCKimlikNoTxt.Text.ConvertToLong()))
                 {
-                    exceptionHelper.Exceptions.Add(new Exception("Bu TCKimlik numaralı bir kayıt zaten var."));
+                    exceptionHelper.Exceptions.Add(new Exception("Bu TCKimlik numarali bir kayit zaten var."));
                 }
                 else
                 {
@@ -358,11 +358,11 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
                 bool guncellendiMi = GuncelleFTKKisiData2Db(exceptionHelper);
                 if (guncellendiMi)
                 {
-                    MessageHelper.PublishMessage("Kişi Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Kisi G�ncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                 }
                 else
                 {
-                    throw (new Exception("Kişi Güncellenemedi."));
+                    throw (new Exception("Kisi G�ncellenemedi."));
 
                 }
             }
@@ -379,7 +379,7 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
             ftkKisi = ftkKisi.Select<FTKKisi>(FTKKisiIdQS.ConvertToInt());
             if ((ftkKisi.TCKimlikNo != TCKimlikNoTxt.Text.ConvertToLong()) && KayitVarMi(TCKimlikNoTxt.Text.ConvertToLong()))
             {
-                exceptionHelper.Exceptions.Add(new Exception("Bu TCKimlik numaralı bir kayıt zaten var."));
+                exceptionHelper.Exceptions.Add(new Exception("Bu TCKimlik numarali bir kayit zaten var."));
             }
             else
             {
@@ -465,7 +465,7 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
         {
             if (AdSoyadVarMi(AdiTxt.Text, SoyadiTxt.Text))
             {
-                MessageHelper.PublishMessage("Bu AD ve SOYADI içeren bir kayıt zaten var. Lütfen kaydetmeden önce kontrol ediniz ", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Bu AD ve SOYADI i�eren bir kayit zaten var. L�tfen kaydetmeden �nce kontrol ediniz ", ProjeConstants.MESAJ_HATA);
             }
         }
         private void RedirectToPage(string pageUrl)
@@ -559,7 +559,7 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
             catch (Exception e1)
             {
                 ExceptionHelper eh = new ExceptionHelper();
-                Exception e2 = new Exception("Kişi silinemedi");
+                Exception e2 = new Exception("Kisi silinemedi");
                 eh.Exceptions.Add(e2);
                 eh.Exceptions.Add(e1);
                 eh.PublishException();
@@ -570,7 +570,7 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
             ParamVnLbl.Text = FTKKisiIdQS;
             string openModal = "OpenSilModal();";
             SilMesajiLbl.Visible = true;
-            SilMesajiLbl.Text = "Onayladığınız takdirde FTK personeline ait tüm bilgiler silinecektir.</br>Silmek istediğinizden eminmisiniz?";
+            SilMesajiLbl.Text = "Onayladiginiz takdirde FTK personeline ait t�m bilgiler silinecektir.</br>Silmek istediginizden eminmisiniz?";
             SilModalBaslikLbl.Text = "Silmeyi Onayla";
             SilNowBtn.Visible = true;
             UtilityHelper.ScriptCalistir(openModal);
@@ -594,13 +594,13 @@ namespace NBYS_WebParts.FTKKisiGirisiWP
                 }
                 if (!silindi)
                 {
-                    MessageHelper.PublishMessage("Kişi Silinemedi", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Kisi Silinemedi", ProjeConstants.MESAJ_HATA);
                 }
             }
             catch (Exception e1)
             {
                 ExceptionHelper eh = new ExceptionHelper();
-                Exception e2 = new Exception("Kişi silinemedi");
+                Exception e2 = new Exception("Kisi silinemedi");
                 eh.Exceptions.Add(e2);
                 eh.Exceptions.Add(e1);
                 eh.PublishException();

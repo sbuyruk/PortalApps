@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -77,7 +77,7 @@ namespace Model.MTS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
 
         }
@@ -135,7 +135,7 @@ namespace Model.MTS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public Faaliyet Select(int id)

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace DAO.Ortak
 {
@@ -9,13 +9,13 @@ namespace DAO.Ortak
         public int ReturnId { get; set; }
         public bool UseReturnIdAsParam { get; set; }
         public int DbObjectParamIndex { get; set; }
-        //sql cünlesinde parametrenin yeri.. gelecekte kullanmak üzere planlandı
+        //sql c�nlesinde parametrenin yeri.. gelecekte kullanmak �zere planlandi
         public int SQLStringParamIndex { get; set; } = 0;
-        //kaç kayıt etkilendi
+        //ka� kayit etkilendi
         public int RowsAffected { get; set; }
-        //çalıştıktan sonra başarılı oldu mu
+        //�alistiktan sonra basarili oldu mu
         public bool Success { get; set; }
-        //dbobject doldurulduğunda true yapılması gerekir
+        //dbobject dolduruldugunda true yapilmasi gerekir
         public bool IsFilled { get; set; }
         public string Message { get; set; }
         public HashSet<DbParam> QueryParams { get; set; }

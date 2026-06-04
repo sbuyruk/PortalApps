@@ -1,4 +1,4 @@
-﻿using Model.NBYS;
+using Model.NBYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -42,15 +42,15 @@ namespace NBYS_WebParts.FTKHaritasiWP
         private void FTKUyeTableHeaders()
         {
             TableCell siraNoCell = new TableCell();
-            siraNoCell.Text = "Sıra";
+            siraNoCell.Text = "Sira";
             FTKUyeTableHeader.Controls.Add(siraNoCell);
 
             TableCell adiSoyadiCell = new TableCell();
-            adiSoyadiCell.Text = "Adı/Soyadı";
+            adiSoyadiCell.Text = "Adi/Soyadi";
             FTKUyeTableHeader.Controls.Add(adiSoyadiCell);
 
             TableCell goreviCell = new TableCell();
-            goreviCell.Text = "Görevi";
+            goreviCell.Text = "G�revi";
             FTKUyeTableHeader.Controls.Add(goreviCell);
 
         }
@@ -109,7 +109,7 @@ namespace NBYS_WebParts.FTKHaritasiWP
                 string ingIlAdi = paramLbl.Value;
                 Il il = new Il();
                 il = il.SelectByIngAdi(ingIlAdi);
-                FTKUyeTitleLbl.Text = il.IlAdi + " İlinde Bulunan FTK Üyeleri";
+                FTKUyeTitleLbl.Text = il.IlAdi + " Ilinde Bulunan FTK �yeleri";
                 FTKUyeTableDoldur(il);
                 //ShowModal("Test");
                 ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "OpenModal();", true);

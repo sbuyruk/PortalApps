@@ -1,4 +1,4 @@
-ï»¿using Model.IKYS;
+using Model.IKYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -115,7 +115,7 @@ namespace Portal_WebParts.KutlamaMoveWP
             List<Personel> dogumGunuKutlanacakPersonel = new List<Personel>();
             List<Personel> evlilikYildonumuKutlanacakPersonel = new List<Personel>();
             DateTime tarih = DateTime.Today;
-            //ertesi gÃ¼n tatil ise bugunden kutlamayÄ± gostersin
+            //ertesi gün tatil ise bugunden kutlamayi gostersin
             do
             {
 
@@ -168,7 +168,7 @@ namespace Portal_WebParts.KutlamaMoveWP
             {
                 string personelAdi = personel.Adi + " " + personel.Soyadi;
                 Kutlama kutlama = new Kutlama();
-                kutlama.Adi = string.Format("SayÄ±n {0};", personel.Adi + " " + personel.Soyadi);
+                kutlama.Adi = string.Format("Sayin {0};", personel.Adi + " " + personel.Soyadi);
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string hostUrl = currentUrl.Substring(0, currentUrl.LastIndexOf(System.Web.HttpContext.Current.Request.Url.AbsolutePath));
 
@@ -189,16 +189,16 @@ namespace Portal_WebParts.KutlamaMoveWP
                         double gunfarki = (new DateTime(bugun.Year, kimlik.DogumTar.Month, kimlik.DogumTar.Day) - bugun).TotalDays;
                         DateTime dogumTar = bugun.AddDays(gunfarki);
                         kutlama.KutlamaTarihi = dogumTar.ConvertToDatetimeEmptyIfNull();
-                        tarih = dogumTar == bugun ? " DoÄŸum" : dogumTar.ConvertToDatetimeEmptyIfNull() + " tarihindeki doÄŸum";
+                        tarih = dogumTar == bugun ? " Dogum" : dogumTar.ConvertToDatetimeEmptyIfNull() + " tarihindeki dogum";
                     }
                     if (GMKutlanacakMi)
                     {
-                        kutlama.Metin = string.Format("{0} gÃ¼nÃ¼nÃ¼zÃ¼ kutlar, mutlu yÄ±llar dileriz.", tarih);
-                        GenelMudur = "TSKGV Ã‡alÄ±ÅŸanlarÄ±";
+                        kutlama.Metin = string.Format("{0} gününüzü kutlar, mutlu yillar dileriz.", tarih);
+                        GenelMudur = "TSKGV Çalisanlari";
                         GenelMudurUnvani = string.Empty;
                     }
                     else
-                        kutlama.Metin = string.Format("{0} gÃ¼nÃ¼nÃ¼zÃ¼ kutlar, mutlu yÄ±llar dilerim.", tarih);
+                        kutlama.Metin = string.Format("{0} gününüzü kutlar, mutlu yillar dilerim.", tarih);
                     listDogum.Add(kutlama);
                 }
                 else
@@ -215,12 +215,12 @@ namespace Portal_WebParts.KutlamaMoveWP
                     }
                     if (GMKutlanacakMi)
                     {
-                        kutlama.Metin = string.Format("{0} yÄ±ldÃ¶nÃ¼mÃ¼nÃ¼zÃ¼ kutlar, Ã¶mÃ¼r boyu mutluluklar dileriz.", tarih);
-                        GenelMudur = "TSKGV Ã‡alÄ±ÅŸanlarÄ±";
+                        kutlama.Metin = string.Format("{0} yildönümünüzü kutlar, ömür boyu mutluluklar dileriz.", tarih);
+                        GenelMudur = "TSKGV Çalisanlari";
                         GenelMudurUnvani = string.Empty;
                     }
                     else
-                        kutlama.Metin = string.Format("{0} yÄ±ldÃ¶nÃ¼mÃ¼nÃ¼zÃ¼ kutlar, Ã¶mÃ¼r boyu mutluluklar dilerim.", tarih);
+                        kutlama.Metin = string.Format("{0} yildönümünüzü kutlar, ömür boyu mutluluklar dilerim.", tarih);
                     listEvlilik.Add(kutlama);
                 }
 

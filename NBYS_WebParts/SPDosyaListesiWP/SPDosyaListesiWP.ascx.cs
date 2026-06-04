@@ -1,4 +1,4 @@
-﻿using Microsoft.SharePoint;
+using Microsoft.SharePoint;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -81,7 +81,7 @@ namespace NBYS_WebParts.SPDosyaListesiWP
             string fileName = ProjeConstants.TESEKKUR_DOSYA;
             if (string.IsNullOrEmpty(YaziQS))
             {
-                TitleLbl.Text = "Teşekkür Belgesi Dosyaları";
+                TitleLbl.Text = "Tesekk�r Belgesi Dosyalari";
                 LibraryNameQS = ProjeConstants.NBYSBELGELERI_LIB;
                 fileName = ProjeConstants.TESEKKUR_DOSYA;
             }
@@ -113,7 +113,7 @@ namespace NBYS_WebParts.SPDosyaListesiWP
                     foreach (var file in fileList)
                     {
                         if (file.Name.Equals("TesekkurBelgesiTemplate.docx"))
-                            continue;//template dosyasını listeye koyma
+                            continue;//template dosyasini listeye koyma
 
                         childRow = new Dictionary<string, object>();
                         string fileUrl = "<a href=" + rootUrl + "/_layouts/15/download.aspx?SourceUrl=" + dosyaUrl + file.Name + @" class='btn-link fw-bold'>" + file.Name + "</a>";
@@ -139,7 +139,7 @@ namespace NBYS_WebParts.SPDosyaListesiWP
                         string labelUrl = "<a href=" + rootUrl + "/_layouts/15/download.aspx?SourceUrl=" + dosyaUrl + etiketDosyaAdi + @" class='btn-link fw-bold'>" + etiketDosyaAdi + "</a>";
                         childRow.Add("LabelFileName", labelUrl);
                         
-                        string deleteFile = "<a href=# onclick=CallButtonClick('"+file.Name + "','"+ etiketDosyaAdi+"'); class='btn btn-outline-danger'>Dosyayı Sil</a>";
+                        string deleteFile = "<a href=# onclick=CallButtonClick('"+file.Name + "','"+ etiketDosyaAdi+"'); class='btn btn-outline-danger'>Dosyayi Sil</a>";
                         childRow.Add("DeleteFile", deleteFile);
 
                         parentRow.Add(childRow);
@@ -159,8 +159,8 @@ namespace NBYS_WebParts.SPDosyaListesiWP
         private void TabloOlustur(string fileName)
         {
             List<SPFile> fileList = DosyaListesiniGetir(LibraryNameQS, fileName);
-            var jsonData = ToJSON(fileList, fileName); //veri çekilip json a çeviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = ToJSON(fileList, fileName); //veri �ekilip json a �eviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string CreateDataTable(string jsonData)

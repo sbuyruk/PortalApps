@@ -1,4 +1,4 @@
-﻿using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.SharePoint;
 using Model.NBYS;
@@ -76,9 +76,9 @@ namespace NBYS_WebParts.BagisaVesileOlanTesekkurGirisiWP
             if (secilenId < 1)
             {
                 DateTime bugun = DateTime.Today;
-                ImzalayanTxt.Text = @"Bilal TOPÇU";
+                ImzalayanTxt.Text = @"Bilal TOP�U";
                 ImzalayanUnvanTxt.Text = string.Empty;
-                ImzalayanMakamTxt.Text = @"Genel Müdür";
+                ImzalayanMakamTxt.Text = @"Genel M�d�r";
                 BelgeTarihiTxt.Text = bugun.ToString("dd") + " " + bugun.ToString("MMMM") + " " + bugun.Year;
             }else
             {
@@ -119,7 +119,7 @@ namespace NBYS_WebParts.BagisaVesileOlanTesekkurGirisiWP
             }
             catch (Exception ex)
             {
-                Exception ex1 = new Exception("Kaydetme başarısız oldu");
+                Exception ex1 = new Exception("Kaydetme basarisiz oldu");
                 ExceptionHelper exh = new ExceptionHelper(ex);
                 exh.PublishException();
             }
@@ -132,7 +132,7 @@ namespace NBYS_WebParts.BagisaVesileOlanTesekkurGirisiWP
             }
             catch (Exception ex)
             {
-                Exception ex1 = new Exception("Kaydetme başarısız oldu");
+                Exception ex1 = new Exception("Kaydetme basarisiz oldu");
                 ExceptionHelper exh = new ExceptionHelper(ex);
                 exh.PublishException();
             }
@@ -145,22 +145,22 @@ namespace NBYS_WebParts.BagisaVesileOlanTesekkurGirisiWP
                 bagisaVesileOlanTesekkur = bagisaVesileOlanTesekkur.Select<BagisaVesileOlanTesekkur>(SecilenIdQS.ConvertToInt());
                 if (bagisaVesileOlanTesekkur == null || bagisaVesileOlanTesekkur.Id < 1)
                 {
-                    throw new Exception("Teşekkür belgesi bulunamadı");
+                    throw new Exception("Tesekk�r belgesi bulunamadi");
                 }
 
-                // Dosya adları 
+                // Dosya adlari 
                 string zaman = DateTime.Now.ToString("dd-MM-yyyy-HH-mm");
                 string yaziDosyaAdi = "BagisaVesileOlanTesekkurBelgesi(" + zaman + ").docx";
                 bool isYaziOlusturuldu = TesekkurBelgesiDosyasiOlustur(yaziDosyaAdi, bagisaVesileOlanTesekkur);
                 if (isYaziOlusturuldu)
                 {
-                    MessageHelper.PublishMessage("Teşekkür belgesi hazırlandı, Dosya ismine basarak yazıyı indirebilirsiniz.", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Tesekk�r belgesi hazirlandi, Dosya ismine basarak yaziyi indirebilirsiniz.", ProjeConstants.MESAJ_BASARILI, 2000);
                 }
 
             }
             catch (Exception ex)
             {
-                Exception ex1 = new Exception("Yazı oluşturmada hata");
+                Exception ex1 = new Exception("Yazi olusturmada hata");
                 ExceptionHelper exh = new ExceptionHelper(ex);
                 exh.PublishException();
             }
@@ -206,7 +206,7 @@ namespace NBYS_WebParts.BagisaVesileOlanTesekkurGirisiWP
             bagisaVesileOlanTesekkur = bagisaVesileOlanTesekkur.Select<BagisaVesileOlanTesekkur>(secilenId);
             if (bagisaVesileOlanTesekkur == null || bagisaVesileOlanTesekkur.Id < 1)
             {
-                throw new Exception("Güncellenecek teşekkür belgesi bulunamadı");
+                throw new Exception("G�ncellenecek tesekk�r belgesi bulunamadi");
             } else
             {
                 bagisaVesileOlanTesekkur.Adi = AdiTxt.Text;
@@ -300,7 +300,7 @@ namespace NBYS_WebParts.BagisaVesileOlanTesekkurGirisiWP
                 {
                     sw.Write(docText);
                 }
-                //boş sayfa ekle
+                //bos sayfa ekle
                 //Paragraph PageBreakParagraph = new Paragraph(new DocumentFormat.OpenXml.Wordprocessing.Run(new DocumentFormat.OpenXml.Wordprocessing.Break() { Type = BreakValues.Page }));
                 //wordDoc.MainDocumentPart.Document.Body.Append(PageBreakParagraph);
 
@@ -367,7 +367,7 @@ namespace NBYS_WebParts.BagisaVesileOlanTesekkurGirisiWP
             }
             catch (Exception ex)
             {
-                Exception e1 = new Exception("GetTemplateStream() hatası");
+                Exception e1 = new Exception("GetTemplateStream() hatasi");
                 ExceptionHelper eh = new ExceptionHelper(ex);
                 eh.Exceptions.Add(e1);
                 eh.PublishException();

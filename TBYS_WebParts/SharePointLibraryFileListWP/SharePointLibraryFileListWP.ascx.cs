@@ -1,4 +1,4 @@
-﻿using Microsoft.SharePoint;
+using Microsoft.SharePoint;
 using Model.NBYS;
 using Model.Ortak;
 using System;
@@ -83,7 +83,7 @@ namespace TBYS_WebParts.SharePointLibraryFileListWP
             string fileName = ProjeConstants.KIRABORCU_DOSYA;
             if (string.IsNullOrEmpty(YaziQS))
             {
-                TitleLbl.Text = "Kira Borcu Bildirim Yazıları";
+                TitleLbl.Text = "Kira Borcu Bildirim Yazilari";
                 LibraryNameQS = ProjeConstants.TBYSBELGELERI_LIB;
                 fileName = ProjeConstants.KIRABORCU_DOSYA;
             }
@@ -91,7 +91,7 @@ namespace TBYS_WebParts.SharePointLibraryFileListWP
             {
                 if (YaziQS.Equals(ProjeConstants.KIRAARTIS_DOSYA))
                 {
-                    TitleLbl.Text = "Kira Artış Bildirim Yazıları";
+                    TitleLbl.Text = "Kira Artis Bildirim Yazilari";
                     LibraryNameQS = ProjeConstants.TBYSBELGELERI_LIB;
                     fileName = ProjeConstants.KIRAARTIS_DOSYA;
 
@@ -147,7 +147,7 @@ namespace TBYS_WebParts.SharePointLibraryFileListWP
                         string labelUrl = "<a href=" + rootUrl + "/_layouts/15/download.aspx?SourceUrl=" + dosyaUrl + etiketDosyaAdi + @" class='btn-link fw-bold'>" + etiketDosyaAdi + "</a>";
                         childRow.Add("LabelFileName", labelUrl);
 
-                        string deleteFile = "<a href=# onclick=CallButtonClick('" + file.Name + "','" + etiketDosyaAdi + "'); class='btn btn-outline-danger'>Dosyayı Sil</a>";
+                        string deleteFile = "<a href=# onclick=CallButtonClick('" + file.Name + "','" + etiketDosyaAdi + "'); class='btn btn-outline-danger'>Dosyayi Sil</a>";
                         childRow.Add("DeleteFile", deleteFile);
 
                         parentRow.Add(childRow);
@@ -167,8 +167,8 @@ namespace TBYS_WebParts.SharePointLibraryFileListWP
         private void TabloOlustur(string fileName)
         {
             List<SPFile> fileList = DosyaListesiniGetir(LibraryNameQS, fileName);
-            var jsonData = ToJSON(fileList, fileName); //veri çekilip json a çeviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = ToJSON(fileList, fileName); //veri �ekilip json a �eviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string CreateDataTable(string jsonData)
@@ -182,9 +182,9 @@ namespace TBYS_WebParts.SharePointLibraryFileListWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
                 jQuery(document).ready(function () {
                     jQuery('#CustomDataTable').DataTable({
-                        'initComplete': function (settings, json) {//tablo yüklendiğinde
+                        'initComplete': function (settings, json) {//tablo y�klendiginde
                             var api = this.api();
-                            var row = api.row(function (idx, data, node) { //secilen toplantıya gider
+                            var row = api.row(function (idx, data, node) { //secilen toplantiya gider
                                 return data['Secildi'] == true;
                             });
                             if (row.length > 0) {

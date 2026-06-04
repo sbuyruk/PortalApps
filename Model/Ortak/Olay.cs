@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -11,8 +11,8 @@ namespace Model.Ortak
     public class Olay : ParentClass
     {
         public string Program { get; set; }
-        public string IslemTipi { get; set; } //Giriş-düzeltme-silme
-        public string IslemKonusu { get; set; } //faaliyet-tasinmaz-kiraci, sözlesme, nakitbagis vs
+        public string IslemTipi { get; set; } //Giris-d�zeltme-silme
+        public string IslemKonusu { get; set; } //faaliyet-tasinmaz-kiraci, s�zlesme, nakitbagis vs
         public DateTime IslemTarihi { get; set; }
         public string IslemYapan { get; set; }
         public string Aciklama { get; set; }
@@ -61,7 +61,7 @@ namespace Model.Ortak
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
 
 

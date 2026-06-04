@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -74,7 +74,7 @@ namespace Model.TBYS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public override bool Update()
@@ -131,7 +131,7 @@ namespace Model.TBYS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public override List<T> SelectAll<T>()
@@ -321,7 +321,7 @@ namespace Model.TBYS
                     LEFT JOIN Tasinmaz_Table D on D.Id=C.TasinmazId AND D.EnvanterdeMi=1
 					LEFT JOIN Il_Table E on E.IlAdi=A.Ili 
 					LEFT JOIN Armagan_Table F on F.Id=A.Ili 
-                WHERE D.EdinmeSekli='Bağış'
+                WHERE D.EdinmeSekli='Bagis'
                 {0}
 				ORDER BY C.BagisTarihi DESC                               
                 ", gizliBagiscilarHaricStr);
@@ -343,7 +343,7 @@ namespace Model.TBYS
                 SELECT A.Id KatilimciId, A.Adi, A.Soyadi, 
                     A.Adres,A.Telefon1 Telefon,A.Sag_vefat,A.Ilcesi Ilce,A.Ili Il
                 FROM TasinmazBagisci_Table A
-                WHERE Sag_vefat='Sağ' 
+                WHERE Sag_vefat='Sag' 
                 ORDER BY A.Adi");
             DataTable dataTable;
             try

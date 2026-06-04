@@ -1,4 +1,4 @@
-﻿using Model.MTS;
+using Model.MTS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -85,8 +85,8 @@ namespace MTS_WebParts.KisiListesiWP
         private void TabloOlustur()
         {
             List<Kisi> list = new List<Kisi>();
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            //var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = TabloJson(); //veri �ekilip json a �eviriliyor
+            //var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, 
                 typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(),"setDataSet("+ jsonData +");", true);
         }
@@ -171,9 +171,9 @@ namespace MTS_WebParts.KisiListesiWP
                 kisiItem.Ilcesi = ilcesi;
                 kisiItem.Adres = adres;
                 kisiItem.Aciklama = aciklama;
-                kisiItem.Arama = "<a href=" + ProjeConstants.PAGE_ARAMAGORUSME_GIRIS + "?ArayanId=" + kisiId + " class='btn btn-outline-success'>Yeni Ara./Gör. Ekle</a>";
-                kisiItem.KisiKarti = "<a  target='_blank' href=" + ProjeConstants.PAGE_KISI_KARTI + "?KatilimciId=" + kisiId + " class='btn btn-outline-info'>Kişi Kartı</a>"; 
-                kisiItem.Duzenle = "<a href=" + ProjeConstants.PAGE_KISI_GIRIS + "?KisiId=" + kisiId + " class='btn btn-outline-primary'>Düzenle</a>";
+                kisiItem.Arama = "<a href=" + ProjeConstants.PAGE_ARAMAGORUSME_GIRIS + "?ArayanId=" + kisiId + " class='btn btn-outline-success'>Yeni Ara./G�r. Ekle</a>";
+                kisiItem.KisiKarti = "<a  target='_blank' href=" + ProjeConstants.PAGE_KISI_KARTI + "?KatilimciId=" + kisiId + " class='btn btn-outline-info'>Kisi Karti</a>"; 
+                kisiItem.Duzenle = "<a href=" + ProjeConstants.PAGE_KISI_GIRIS + "?KisiId=" + kisiId + " class='btn btn-outline-primary'>D�zenle</a>";
                 kisiItem.Secildi = SecilenIdQS.Equals(kisiItem.KisiId);
                 list.Add(kisiItem);
             }

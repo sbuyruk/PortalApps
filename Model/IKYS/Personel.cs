@@ -1,4 +1,4 @@
-ï»¿
+
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -15,7 +15,7 @@ namespace Model.IKYS
     {
         public enum PersonelTipi
         {
-            [Display(Name = "TÃ¼m Personel")]
+            [Display(Name = "Tüm Personel")]
             Tumu = 0,
 
             [Display(Name = "Kadrolu Personel")]
@@ -82,7 +82,7 @@ namespace Model.IKYS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
 
         }
@@ -145,7 +145,7 @@ namespace Model.IKYS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
         }
         public override List<T> SelectAll<T>()
@@ -516,7 +516,7 @@ namespace Model.IKYS
 
             return list;
         }
-        //DogumGunuKutlama=1 olanlarÄ± dÃ¶ndÃ¼rÃ¼r
+        //DogumGunuKutlama=1 olanlari döndürür
         public List<Personel> SelectByDogumGunu(int gun, int ay)
         {
 
@@ -542,7 +542,7 @@ namespace Model.IKYS
 
             return list;
         }
-        //EvlilikKutlama=1 olanlarÄ± dÃ¶ndÃ¼rÃ¼r
+        //EvlilikKutlama=1 olanlari döndürür
         public List<Personel> SelectByEvlilikTar(int gun, int ay)
         {
 

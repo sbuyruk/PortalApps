@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -566,8 +566,8 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = TabloJson(); //veri �ekilip json a �eviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string TabloJson()
@@ -600,9 +600,9 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
                 jQuery(document).ready(function () {
                     jQuery('#CustomDataTable').DataTable({
-                        'initComplete': function (settings, json) {//tablo yüklendiğinde
+                        'initComplete': function (settings, json) {//tablo y�klendiginde
                             var api = this.api();
-                            var row = api.row(function (idx, data, node) { //secilen toplantıya gider
+                            var row = api.row(function (idx, data, node) { //secilen toplantiya gider
                                 return data['Secildi'] == true;
                             });
                             if (row.length > 0) {
@@ -682,6 +682,7 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
         }
         private List<SigortaListItem> GetDataList()
         {
+            List<SigortaListItem> list = new List<SigortaListItem>();
             DateTime basTarih = BaslangicTarihiTxt.Text.ConvertToDatetime().Date;
             DateTime bitTarih = BitisTarihiTxt.Text.ConvertToDatetime().Date;
 
@@ -693,63 +694,67 @@ namespace TBYS_WebParts.TasinmazSigortaListesiWP
             DataTable dataTable = sigorta.SelectByTeminatSigortaCinsiReturnDataTable(SigortaCinsiQS, VadesiGelenlerChk.Checked, DepremQS.ConvertToBool(), YanginQS.ConvertToBool(), Makine100000QS.ConvertToBool(),
                 Makine5000QS.ConvertToBool(), JeneratorQS.ConvertToBool(), AsansorQS.ConvertToBool(), KazanQS.ConvertToBool(),BolgeIdQS,AuthQS, basTarih, bitTarih);
 
-            int SiraNo = 1;
-
-            List<SigortaListItem> list = new List<SigortaListItem>();
-            decimal primToplami = 0;
-            int policeSayisi = 0;
-            foreach (DataRow row in dataTable.Rows)
+            if (dataTable != null && dataTable.Rows.Count > 0)
             {
-                string sigortaId = row["SigortaId"].ToString();
-                DateTime sigortaBitTar = row["SigortaBitTar"].ConvertToDatetime();
-                string bolge = row["Bolge"].ToString();
-                string sigortaCinsi = row["SigortaCinsi"].ToString();
-                string adresKodu = row["AdresKodu"].ToString();
-                string policeNo = row["PoliceNo"].ToString();
-                decimal prim = row["Prim"].ReturnZeroIfNull().ConvertToDecimal();
-                decimal sigortaBedeli = row["SigortaBedeli"].ReturnZeroIfNull().ConvertToDecimal();
+                int SiraNo = 1;
 
-                string kullanimSekli = row["KullanimSekli"].ToString();
-                string tamAdres = row["TamAdres"].ToString();
-                string teminatListesi = row["TeminatListesi"].ToString();
-                string tasinmazId = row["TasinmazId"].ToString();
-                bool katMulkiyeti = row["KatMulkiyeti"].ReturnFalseIfNull().ConvertToBool();
-                string kullanimAmaci = row["KullanimAmaci"].ToString();
-                string pDFDosyasi = row["PDFDosyasi"].ToString().Trim();
-
-                SigortaListItem sigortaItem = new SigortaListItem();
-                sigortaItem.Sirano = SiraNo++.ToString();
-                sigortaItem.Bolge = bolge;
-                sigortaItem.SigortaCinsi =sigortaCinsi;
-                DateTime sonGun=new DateTime(DateTime.Today.AddMonths(2).Year, DateTime.Today.AddMonths(2).Month, 1);
-                if (sigortaBitTar < sonGun)
-                {
-                    sigortaItem.Renkli = true;
-                }
-                    
-                else
-                    sigortaItem.Renkli = false;
-                sigortaItem.SigortaBitTar = sigortaBitTar<=DateTime.MinValue?string.Empty:sigortaBitTar.ToString("dd.MM.yyyy");
-                sigortaItem.AdresKodu = adresKodu;
-                sigortaItem.PoliceNo= policeNo;
-                sigortaItem.KullanimSekli = katMulkiyeti.Equals(ProjeConstants.KAT_MULKIYETI_VAR)?kullanimSekli:kullanimAmaci;
-                sigortaItem.TeminatListesi = teminatListesi;
-                sigortaItem.Adres = tamAdres;
-                sigortaItem.Police = FormLinkiGetir(policeDosyalari, ProjeConstants.DOSYA_SIGORTAPOLICESI_DASK, adresKodu,"Poliçe", "btn btn-outline-secondary", pDFDosyasi);
-                sigortaItem.Prim = prim.ToString("N", culturInfo);
-                sigortaItem.SigortaBedeli = sigortaBedeli.ToString("N", culturInfo);
-                primToplami += prim;
-                policeSayisi++;
-                sigortaItem.TasinmazKarti = "<a href=" + ProjeConstants.PAGE_TASINMAZ_KARTI + "?DestinationApp=TD&SenderApp=OL&TasinmazId=" + tasinmazId + " class='btn btn-outline-primary'>Taşınmaz Kartı</a>";
-                sigortaItem.Duzenle=string.Empty;
- 
-                sigortaItem.Duzenle = "<a href=" + ProjeConstants.PAGE_TASINMAZSIGORTA_GIRIS + "?DestinationApp=SigortaD&SenderApp=SigortaL&SigortaId=" + sigortaId + "&TasinmazId=" + tasinmazId + " class='btn btn-outline-primary'>Düzenle</a>";
                 
-                sigortaItem.Secildi = SecilenIdQS.Equals(sigortaItem.SigortaId);
-                list.Add(sigortaItem);
+                decimal primToplami = 0;
+                int policeSayisi = 0;
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    string sigortaId = row["SigortaId"].ToString();
+                    DateTime sigortaBitTar = row["SigortaBitTar"].ConvertToDatetime();
+                    string bolge = row["Bolge"].ToString();
+                    string sigortaCinsi = row["SigortaCinsi"].ToString();
+                    string adresKodu = row["AdresKodu"].ToString();
+                    string policeNo = row["PoliceNo"].ToString();
+                    decimal prim = row["Prim"].ReturnZeroIfNull().ConvertToDecimal();
+                    decimal sigortaBedeli = row["SigortaBedeli"].ReturnZeroIfNull().ConvertToDecimal();
+
+                    string kullanimSekli = row["KullanimSekli"].ToString();
+                    string tamAdres = row["TamAdres"].ToString();
+                    string teminatListesi = row["TeminatListesi"].ToString();
+                    string tasinmazId = row["TasinmazId"].ToString();
+                    bool katMulkiyeti = row["KatMulkiyeti"].ReturnFalseIfNull().ConvertToBool();
+                    string kullanimAmaci = row["KullanimAmaci"].ToString();
+                    string pDFDosyasi = row["PDFDosyasi"].ToString().Trim();
+
+                    SigortaListItem sigortaItem = new SigortaListItem();
+                    sigortaItem.Sirano = SiraNo++.ToString();
+                    sigortaItem.Bolge = bolge;
+                    sigortaItem.SigortaCinsi = sigortaCinsi;
+                    DateTime sonGun = new DateTime(DateTime.Today.AddMonths(2).Year, DateTime.Today.AddMonths(2).Month, 1);
+                    if (sigortaBitTar < sonGun)
+                    {
+                        sigortaItem.Renkli = true;
+                    }
+
+                    else
+                        sigortaItem.Renkli = false;
+                    sigortaItem.SigortaBitTar = sigortaBitTar <= DateTime.MinValue ? string.Empty : sigortaBitTar.ToString("dd.MM.yyyy");
+                    sigortaItem.AdresKodu = adresKodu;
+                    sigortaItem.PoliceNo = policeNo;
+                    sigortaItem.KullanimSekli = katMulkiyeti.Equals(ProjeConstants.KAT_MULKIYETI_VAR) ? kullanimSekli : kullanimAmaci;
+                    sigortaItem.TeminatListesi = teminatListesi;
+                    sigortaItem.Adres = tamAdres;
+                    sigortaItem.Police = FormLinkiGetir(policeDosyalari, ProjeConstants.DOSYA_SIGORTAPOLICESI_DASK, adresKodu, "Poli�e", "btn btn-outline-secondary", pDFDosyasi);
+                    sigortaItem.Prim = prim.ToString("N", culturInfo);
+                    sigortaItem.SigortaBedeli = sigortaBedeli.ToString("N", culturInfo);
+                    primToplami += prim;
+                    policeSayisi++;
+                    sigortaItem.TasinmazKarti = "<a href=" + ProjeConstants.PAGE_TASINMAZ_KARTI + "?DestinationApp=TD&SenderApp=OL&TasinmazId=" + tasinmazId + " class='btn btn-outline-primary'>Tasinmaz Karti</a>";
+                    sigortaItem.Duzenle = string.Empty;
+
+                    sigortaItem.Duzenle = "<a href=" + ProjeConstants.PAGE_TASINMAZSIGORTA_GIRIS + "?DestinationApp=SigortaD&SenderApp=SigortaL&SigortaId=" + sigortaId + "&TasinmazId=" + tasinmazId + " class='btn btn-outline-primary'>D�zenle</a>";
+
+                    sigortaItem.Secildi = SecilenIdQS.Equals(sigortaItem.SigortaId);
+                    list.Add(sigortaItem);
+                }
+
+                PoliceSayisiLbl.Text = policeSayisi.ToString();
+                PrimToplamiLbl.Text = primToplami.ToString("C2");
             }
-            PoliceSayisiLbl.Text = policeSayisi.ToString();
-            PrimToplamiLbl.Text = primToplami.ToString("C2");
             return list;
         }
         private string FormLinkiGetir(List<string> list, string form, string adresKodu, string linkText, string classString, string pDFDosyasi)

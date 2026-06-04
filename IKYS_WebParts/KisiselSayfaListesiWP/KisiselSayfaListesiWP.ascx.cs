@@ -1,4 +1,4 @@
-﻿using Model.IKYS;
+using Model.IKYS;
 using Model.Ortak;
 using System;
 using System.ComponentModel;
@@ -89,17 +89,17 @@ namespace IKYS_WebParts.KisiselSayfaListesiWP
 
             TableHeaderRow th = new TableHeaderRow();
             TableHeaderCell siraCell = new TableHeaderCell();
-            siraCell.Text = "Sıra";
+            siraCell.Text = "Sira";
             TableHeaderCell adiSoyadiCell = new TableHeaderCell();
-            adiSoyadiCell.Text = "Adı Soyadı";
+            adiSoyadiCell.Text = "Adi Soyadi";
             TableHeaderCell goreviCell = new TableHeaderCell();
-            goreviCell.Text = "Görevi";
+            goreviCell.Text = "G�revi";
             TableHeaderCell unvanCell = new TableHeaderCell();
-            unvanCell.Text = "Ünvanı";
+            unvanCell.Text = "�nvani";
             TableHeaderCell iseBasTarCell = new TableHeaderCell();
-            iseBasTarCell.Text = "İşe Başlama tarihi";
+            iseBasTarCell.Text = "Ise Baslama tarihi";
             TableHeaderCell kisiKartiCell = new TableHeaderCell();
-            kisiKartiCell.Text = "Kişi Kartı";
+            kisiKartiCell.Text = "Kisi Karti";
 
             th.Controls.Add(siraCell);
             th.Controls.Add(adiSoyadiCell);
@@ -170,7 +170,7 @@ namespace IKYS_WebParts.KisiselSayfaListesiWP
 
                     TableCell kisiselSayfaCell = new TableCell();
                     LinkButton KisiselSayfaBtn = new LinkButton();
-                    KisiselSayfaBtn.Text = "Kişi Kartı";
+                    KisiselSayfaBtn.Text = "Kisi Karti";
                     KisiselSayfaBtn.ID = "KisiselSayfaBtn" + sira;
                     TableUpdatePanel.ContentTemplateContainer.Controls.Add(KisiselSayfaBtn);
                     KisiselSayfaBtn.CssClass = "btn btn-outline-primary";
@@ -179,7 +179,7 @@ namespace IKYS_WebParts.KisiselSayfaListesiWP
                         try
                         {
                             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-                            string pageUrl = ProjeConstants.PAGE_KISISELSAYFA + "?SenderApp=KSL&PersonelId=" + personelId;// eski izinler de görünsün istenirse Auth=IKYS& eklenmeli
+                            string pageUrl = ProjeConstants.PAGE_KISISELSAYFA + "?SenderApp=KSL&PersonelId=" + personelId;// eski izinler de g�r�ns�n istenirse Auth=IKYS& eklenmeli
                             RedirectToPage(pageUrl);
                         }
                         catch (Exception exception)

@@ -1,4 +1,4 @@
-﻿using Microsoft.SharePoint;
+using Microsoft.SharePoint;
 using Model.IKYS;
 using Model.Ortak;
 using Model.Portal;
@@ -175,7 +175,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
 
         private void DuyuruDuzenlemeyiAc()
         {
-            TitleLbl.Text = "Duyuru Düzenleme";
+            TitleLbl.Text = "Duyuru D�zenleme";
             TitleLbl.CssClass = "col-form-label text-primary fw-bold mb-1";
             BaslangicSaatiDDLDoldur();
             BitisSaatiDDLDoldur();
@@ -262,7 +262,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
                 BitisSaatiDDLDoldur();
 
                 TekrarlaDDLDoldur();
-                TümPersoneliSecilenmeyenPersonelListesieEkle();
+                T�mPersoneliSecilenmeyenPersonelListesieEkle();
                 PersonelDDLDoldur();
             }
 
@@ -337,7 +337,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
                 PersonelDDL.Items.Add(li);
             }
         }
-        private void TümPersoneliSecilenPersonelListesineEkle()
+        private void T�mPersoneliSecilenPersonelListesineEkle()
         {
             SecilmeyenPersonelList.Clear();
             SecilenPersonelList.Clear();
@@ -354,7 +354,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
                 SecilenPersonelList.Add(pI);
             }
         }
-        private void TümPersoneliSecilenmeyenPersonelListesieEkle()
+        private void T�mPersoneliSecilenmeyenPersonelListesieEkle()
         {
             SecilenPersonelList.Clear();
 
@@ -388,7 +388,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
 
                     TableCell SilCell = new TableCell();
                     LinkButton SilBtn = new LinkButton();
-                    SilBtn.Text = "Çıkar";
+                    SilBtn.Text = "�ikar";
 
                     SilBtn.ID = "SilBtn" + SiraNo++;
                     TableUpdatePanel.ContentTemplateContainer.Controls.Add(SilBtn);
@@ -456,7 +456,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Personel Bulunamadı!", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Personel Bulunamadi!", ProjeConstants.MESAJ_HATA);
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_PERSONEL_LIST;
                 Page.Response.Redirect(newUrl);
@@ -480,13 +480,13 @@ namespace Portal_WebParts.DuyuruGirisiWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Lütfen Duyuru bilgilerini tamamladıktan sonra kaydedin.", ProjeConstants.MESAJ_HATA, 2000);
+                    MessageHelper.PublishMessage("L�tfen Duyuru bilgilerini tamamladiktan sonra kaydedin.", ProjeConstants.MESAJ_HATA, 2000);
                 }
             }
             catch (Exception ex)
             {
                 ExceptionHelper exhelper = new ExceptionHelper(ex);
-                exhelper.Exceptions.Add(new Exception("Duyuru kayıt edilemedi."));
+                exhelper.Exceptions.Add(new Exception("Duyuru kayit edilemedi."));
                 exhelper.PublishException();
             }
         }
@@ -505,13 +505,13 @@ namespace Portal_WebParts.DuyuruGirisiWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Lütfen Duyuru bilgilerini tamamladıktan sonra kaydedin.", ProjeConstants.MESAJ_HATA, 2000);
+                    MessageHelper.PublishMessage("L�tfen Duyuru bilgilerini tamamladiktan sonra kaydedin.", ProjeConstants.MESAJ_HATA, 2000);
                 }
             }
             catch (Exception ex)
             {
                 ExceptionHelper exhelper = new ExceptionHelper(ex);
-                exhelper.Exceptions.Add(new Exception("Duyuru kayıt edilemedi."));
+                exhelper.Exceptions.Add(new Exception("Duyuru kayit edilemedi."));
                 exhelper.PublishException();
             }
         }
@@ -520,8 +520,8 @@ namespace Portal_WebParts.DuyuruGirisiWP
             try
             {
 
-                SilLbl.Text = "Lütfen Dikkat: Duyuru Silinecek";
-                SilmeMesajiLbl.Text = "Duyuruyu Silmek İstediğinizden Emin misiniz?";
+                SilLbl.Text = "L�tfen Dikkat: Duyuru Silinecek";
+                SilmeMesajiLbl.Text = "Duyuruyu Silmek Istediginizden Emin misiniz?";
                 DeleteNowBtn.Visible = true;
                 var openPopup = "OpenModal();";
                 System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), openPopup, true);
@@ -565,7 +565,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
             }
             else
             {                
-                MessageHelper.PublishMessage("İşlem Tamamlandı.Resim yüklendi.", ProjeConstants.MESAJ_BASARILI);
+                MessageHelper.PublishMessage("Islem Tamamlandi.Resim y�klendi.", ProjeConstants.MESAJ_BASARILI);
                 return fotoFile;
             }
         }
@@ -606,7 +606,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
             catch (Exception ex)
             {
                 ExceptionHelper exhelper = new ExceptionHelper(ex);
-                exhelper.Exceptions.Add(new Exception("Duyuru kayıt edilemedi."));
+                exhelper.Exceptions.Add(new Exception("Duyuru kayit edilemedi."));
                 exhelper.PublishException();
                 return null;
             }
@@ -622,7 +622,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
                 duyuru = duyuru.Select<Duyuru>(DuyuruIdQS.ConvertToInt());
                 if (duyuru == null)
                 {
-                    MessageHelper.PublishMessage("Duyuru bulunamadı", ProjeConstants.MESAJ_HATA, 5000);
+                    MessageHelper.PublishMessage("Duyuru bulunamadi", ProjeConstants.MESAJ_HATA, 5000);
                 }
                 else
                 {
@@ -651,11 +651,11 @@ namespace Portal_WebParts.DuyuruGirisiWP
                             duyuruGosterim.SaveDuyuru(duyuru);
                             
                         }
-                        MessageHelper.PublishMessage("Duyuru güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        MessageHelper.PublishMessage("Duyuru g�ncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Duyuru güncellenemedi", ProjeConstants.MESAJ_HATA, 5000);
+                        MessageHelper.PublishMessage("Duyuru g�ncellenemedi", ProjeConstants.MESAJ_HATA, 5000);
                     }
                 }
 
@@ -663,7 +663,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
             catch (Exception ex)
             {
                 ExceptionHelper exhelper = new ExceptionHelper(ex);
-                exhelper.Exceptions.Add(new Exception("Duyuru güncellenemedi."));
+                exhelper.Exceptions.Add(new Exception("Duyuru g�ncellenemedi."));
                 exhelper.PublishException();
             }
             return guncellendiMi;
@@ -696,7 +696,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
             return isGecerli;
         }
@@ -719,7 +719,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Duyuru bulunamadı.", ProjeConstants.MESAJ_HATA, 2000);
+                    MessageHelper.PublishMessage("Duyuru bulunamadi.", ProjeConstants.MESAJ_HATA, 2000);
                 }
             }
             catch (Exception exception)
@@ -749,7 +749,7 @@ namespace Portal_WebParts.DuyuruGirisiWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Duyuru bulunamadı.", ProjeConstants.MESAJ_HATA, 2000);
+                    MessageHelper.PublishMessage("Duyuru bulunamadi.", ProjeConstants.MESAJ_HATA, 2000);
                 }
             }
             catch (Exception exception)
@@ -776,14 +776,14 @@ namespace Portal_WebParts.DuyuruGirisiWP
         }
         protected void HepsiniEkleBtn_Click(object sender, EventArgs e)
         {
-            TümPersoneliSecilenPersonelListesineEkle();
+            T�mPersoneliSecilenPersonelListesineEkle();
             SecilenPersonelTablosunuDoldur();
             PersonelDDLDoldur();
         }
 
         protected void HepsiniCikarBtn_Click(object sender, EventArgs e)
         {
-            TümPersoneliSecilenmeyenPersonelListesieEkle();
+            T�mPersoneliSecilenmeyenPersonelListesieEkle();
             SecilenPersonelTablosunuDoldur();
             PersonelDDLDoldur();
         }

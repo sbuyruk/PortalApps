@@ -1,4 +1,4 @@
-﻿using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Packaging;
 using Microsoft.SharePoint;
 using Model.Ortak;
 using Model.TBYS;
@@ -64,7 +64,7 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP
         {
             try
             {
-                //time out olmasın diye
+                //time out olmasin diye
                 ScriptManager _scriptMan = ScriptManager.GetCurrent(Page);
                 _scriptMan.AsyncPostBackTimeout = 36000;
                 if (!Page.IsPostBack)
@@ -96,8 +96,8 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = TabloJson(); //veri �ekilip json a �eviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string CreateDataTable(string jsonData)
@@ -360,7 +360,7 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP
                 }
                 if (index < 21)
                 {
-                    //Sayfada 21 den az kayıt varsa template alanlarını temizle adsoyad vs
+                    //Sayfada 21 den az kayit varsa template alanlarini temizle adsoyad vs
                     for (int i = index; i < 22; i++)
                     {
                         Dictionary<string, string> keyValues = new Dictionary<string, string>();
@@ -375,7 +375,7 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP
                 {
                     string message = string.Join(Environment.NewLine, uzunAdresliler);
                     MessageHelper.PublishMessage(message + Environment.NewLine +
-                        " adresi çok uzun olduğundan kesilerek kısaltıldı. Lütfen etiketini kontrol ediniz. ", ProjeConstants.MESAJ_BILGI);
+                        " adresi �ok uzun oldugundan kesilerek kisaltildi. L�tfen etiketini kontrol ediniz. ", ProjeConstants.MESAJ_BILGI);
                 }
             }
 
@@ -386,7 +386,7 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP
         {
             using (WordprocessingDocument wordDoc = WordprocessingDocument.Open(destinationStream, true))
             {
-                //boş sayfa ekle
+                //bos sayfa ekle
                 DocumentFormat.OpenXml.Wordprocessing.Paragraph PageBreakParagraph = new DocumentFormat.OpenXml.Wordprocessing.Paragraph(new DocumentFormat.OpenXml.Wordprocessing.Run(new DocumentFormat.OpenXml.Wordprocessing.Break() { Type = DocumentFormat.OpenXml.Wordprocessing.BreakValues.Page }));
                 wordDoc.MainDocumentPart.Document.Body.Append(PageBreakParagraph);
 
@@ -442,7 +442,7 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP
             }
             catch (Exception ex)
             {
-                AdresEtiketLnk.Text = "Dosya Oluşturulamadı";
+                AdresEtiketLnk.Text = "Dosya Olusturulamadi";
                 AdresEtiketLnk.ForeColor = Color.Red;
                 isYaziOlusturuldu = false;
                 ExceptionHelper exh = new ExceptionHelper(ex);
@@ -455,22 +455,22 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP
             try
             {
                 AdresEtiketLnk.Visible = true;
-                AdresEtiketLnk.Text = "Dosya Oluşturuluyor...";
-                // Dosya adları 
+                AdresEtiketLnk.Text = "Dosya Olusturuluyor...";
+                // Dosya adlari 
                 string zaman = DateTime.Now.ToString("dd-MM-yyyy-HH-mm");
                 string etiketDosyaAdi = "Bagisci-Adres-Etiketi(" + zaman + ").docx";
                 bool etiketOlustuMu = YeniAdresEtiketDosyasiOlustur(etiketDosyaAdi);
                 if (etiketOlustuMu)
-                    MessageHelper.PublishMessage("Bağışçı adres etiketleri hazırlandı, Dosya ismine basarak yazıyı indirebilirsiniz.", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Bagis�i adres etiketleri hazirlandi, Dosya ismine basarak yaziyi indirebilirsiniz.", ProjeConstants.MESAJ_BASARILI, 2000);
                 else
                 {
-                    MessageHelper.PublishMessage("Adres etiketleri oluşturulamadı.", ProjeConstants.MESAJ_BILGI, 3000);
+                    MessageHelper.PublishMessage("Adres etiketleri olusturulamadi.", ProjeConstants.MESAJ_BILGI, 3000);
                 }
 
             }
             catch (Exception ex)
             {
-                Exception ex1 = new Exception("Adres etiketleri oluşturmada hata");
+                Exception ex1 = new Exception("Adres etiketleri olusturmada hata");
                 ExceptionHelper exh = new ExceptionHelper(ex);
                 exh.PublishException();
             }
@@ -608,8 +608,8 @@ namespace NBYS_WebParts.TasinmazBagisciAdresListesiWP
         //modal
         private void TabloModalOlustur(int tasinmazBagisciId)
         {
-            var jsonData = TabloModalJson(tasinmazBagisciId); //veri çekilip json a çeviriliyor
-            var jsString = CreateModalDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = TabloModalJson(tasinmazBagisciId); //veri �ekilip json a �eviriliyor
+            var jsString = CreateModalDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string TabloModalJson(int tasinmazBagisciId)

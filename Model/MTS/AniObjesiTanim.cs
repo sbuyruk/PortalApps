@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
 using System.ComponentModel;
@@ -16,7 +16,7 @@ namespace Model.MTS
     {
        
         [Required]
-        [DisplayName("Anı Objesinin Adı")]
+        [DisplayName("Ani Objesinin Adi")]
         public string Adi { get; set; }
         public string StokluMu { get; set; }
         public int Sira { get; set; }
@@ -44,7 +44,7 @@ namespace Model.MTS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
 
         }
@@ -102,7 +102,7 @@ namespace Model.MTS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public AniObjesiTanim Select(int id)

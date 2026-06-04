@@ -1,4 +1,4 @@
-﻿
+
 namespace Model.MTS
 {
     public class CalendarEvent

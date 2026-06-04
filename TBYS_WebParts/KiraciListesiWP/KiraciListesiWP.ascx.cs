@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -161,8 +161,8 @@ namespace TBYS_WebParts.KiraciListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = TabloJson(); //veri �ekilip json a �eviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string TabloJson()
@@ -198,9 +198,9 @@ namespace TBYS_WebParts.KiraciListesiWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
                 jQuery(document).ready(function () {
                     jQuery('#CustomDataTable').DataTable({
-                        'initComplete': function (settings, json) {//tablo yüklendiğinde
+                        'initComplete': function (settings, json) {//tablo y�klendiginde
                             var api = this.api();
-                            var row = api.row(function (idx, data, node) { //secilen toplantıya gider
+                            var row = api.row(function (idx, data, node) { //secilen toplantiya gider
                                 return data['Secildi'] == true;
                             });
                             if (row.length > 0) {
@@ -332,18 +332,18 @@ namespace TBYS_WebParts.KiraciListesiWP
                 }
                 
                 int sonSozlesmeId = ks != null ? ks.Id : sozlesmeId.ConvertToInt();
-                 kiraciItem.KiraKarti = "<a  target='_blank' href=" + ProjeConstants.PAGE_KIRAKARTI + "?KiraciId=" + kiraciId + " class='btn btn-outline-secondary'>Kira Kartı</a>";
+                 kiraciItem.KiraKarti = "<a  target='_blank' href=" + ProjeConstants.PAGE_KIRAKARTI + "?KiraciId=" + kiraciId + " class='btn btn-outline-secondary'>Kira Karti</a>";
                 
                 bool duzenleGorunsunMu = !string.IsNullOrEmpty(AuthQS) && AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM);
                 if (duzenleGorunsunMu)
                 {
-                    kiraciItem.Sozlesme = ks != null ? ("<a href=" + ProjeConstants.PAGE_KIRASOZLESMESI + "?KiraSozlesmeId=" + sonSozlesmeId + " class='btn btn-outline-secondary'>Sözleşme</a>")
+                    kiraciItem.Sozlesme = ks != null ? ("<a href=" + ProjeConstants.PAGE_KIRASOZLESMESI + "?KiraSozlesmeId=" + sonSozlesmeId + " class='btn btn-outline-secondary'>S�zlesme</a>")
                     : string.Empty;
                     kiraciItem.Teminat = ks != null ? ("<a  target='_blank' href=" + ProjeConstants.PAGE_TEMINAT_ISLEMLERI + "?KiraSozlesmeId=" + sonSozlesmeId + " class='btn btn-outline-secondary'>Teminat</a>")
                         : string.Empty;
                     kiraciItem.Bakiye = "<a  target='_blank' href=" + ProjeConstants.PAGE_KIRA_BAKIYEDEVRI + "?KiraciId=" + kiraciId + " class='btn btn-outline-secondary'>Bakiye Devri</a>";
 
-                    kiraciItem.Duzenle = "<a href=" + ProjeConstants.PAGE_KIRACI_GIRIS + "?DestinationApp=KD&SenderApp=KL&KiraciId=" + kiraciId + " class='btn btn-outline-primary'>Düzenle</a>";
+                    kiraciItem.Duzenle = "<a href=" + ProjeConstants.PAGE_KIRACI_GIRIS + "?DestinationApp=KD&SenderApp=KL&KiraciId=" + kiraciId + " class='btn btn-outline-primary'>D�zenle</a>";
                 }
 
                 kiraciItem.Secildi = SecilenIdQS.Equals(kiraciItem.KiraciId);

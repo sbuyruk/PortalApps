@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -41,11 +41,11 @@ namespace DAO.Ortak
                 catch (SqlException e)
                 {
                     SorguyuLogla("INSERT", false, sqlString, e.Message);
-                    throw e;
+                    throw;
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    throw e;
+                    throw;
                 }
             }
 
@@ -142,7 +142,7 @@ namespace DAO.Ortak
         }
         public bool DeleteFromDb<T>(string sqlString, T objectToDelete)
         {
-            string eskiDeger = "Silinen Kayıt: " +GetEskiDeger(objectToDelete);
+            string eskiDeger = "Silinen Kayit: " +GetEskiDeger(objectToDelete);
             bool isDeleted = false;
             string connectString = DBProcess.getConnectString();
             SqlConnection con = new SqlConnection(connectString);
@@ -208,7 +208,6 @@ namespace DAO.Ortak
                         con.Open();
 
                     SqlCommand cmd = new SqlCommand(sqlString, con);
-                    cmd.ExecuteNonQuery();
                     SqlDataAdapter dataReader = new SqlDataAdapter();
                     dataReader.SelectCommand = cmd;
                     DataSet dataSet = new DataSet();
@@ -220,13 +219,13 @@ namespace DAO.Ortak
                     else
                         return dataTable;
                 }
-                catch (SqlException e)
+                catch (SqlException)
                 {
-                    throw e;
+                    throw;
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    throw e;
+                    throw;
                 }
 
             }
@@ -401,13 +400,13 @@ namespace DAO.Ortak
                         con.Close();
                     }
                 }
-                catch (SqlException e)
+                catch (SqlException)
                 {
-                    throw e;
+                    throw;
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
-                    throw e;
+                    throw;
                 }
 
             }

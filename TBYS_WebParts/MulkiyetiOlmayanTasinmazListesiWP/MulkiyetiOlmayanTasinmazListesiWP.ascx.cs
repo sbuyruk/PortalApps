@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -93,8 +93,8 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = TabloJson(); //veri �ekilip json a �eviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
 
@@ -142,7 +142,7 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazListesiWP
                 bool duzenleGorunsunMu = BolgeIdQS == ProjeConstants.HEPSI_INT || BolgeIdQS == ProjeConstants.BOLGE_GENELMUDURLUK_INT;
                 if (duzenleGorunsunMu)
                 {
-                    mulkiyetiOlmayanTasinmazListesiListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_MULKIYETIOLMAYANTASINMAZ_GIRIS + "?EnvanterdeMi=2&DestinationApp=TD&SenderApp=TL&TasinmazId=" + tasinmazId + " class='btn btn-outline-primary'>Düzenle</a>";
+                    mulkiyetiOlmayanTasinmazListesiListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_MULKIYETIOLMAYANTASINMAZ_GIRIS + "?EnvanterdeMi=2&DestinationApp=TD&SenderApp=TL&TasinmazId=" + tasinmazId + " class='btn btn-outline-primary'>D�zenle</a>";
                 }
                  list.Add(mulkiyetiOlmayanTasinmazListesiListItem);
             }

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -165,6 +165,14 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>BorcluKiraciTakibiByBolgeWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DevirGerekenSozlesmelerWP\DevirGerekenSozlesmelerWP.ascx.cs">
+      <DependentUpon>DevirGerekenSozlesmelerWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="DevirGerekenSozlesmelerWP\DevirGerekenSozlesmelerWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DevirGerekenSozlesmelerWP.ascx</DependentUpon>
     </Compile>
     <Compile Include="EmptyWP\EmptyWP.ascx.cs">
       <DependentUpon>EmptyWP.ascx</DependentUpon>
@@ -718,6 +726,10 @@
     <None Include="BorcluKiraciTakibiByBolgeWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{25d9a615-ef88-4fa2-8576-dc5300081be5}</SharePointProjectItemId>
     </None>
+    <None Include="DevirGerekenSozlesmelerWP\DevirGerekenSozlesmelerWP.webpart" />
+    <None Include="DevirGerekenSozlesmelerWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{f64b1830-911c-40f5-a14b-7c647ec06770}</SharePointProjectItemId>
+    </None>
     <None Include="EmptyWP\EmptyWP.webpart" />
     <None Include="EmptyWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{7985a8d7-b6d9-49e5-ad5e-375747307ffc}</SharePointProjectItemId>
@@ -1033,6 +1045,11 @@
       <LastGenOutput>BorcluKiraciTakibiByBolgeWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="BorcluKiraciTakibiByBolgeWP\Elements.xml" />
+    <Content Include="DevirGerekenSozlesmelerWP\DevirGerekenSozlesmelerWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>DevirGerekenSozlesmelerWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="DevirGerekenSozlesmelerWP\Elements.xml" />
     <Content Include="EmptyWP\Elements.xml" />
     <Content Include="EmptyWP\EmptyWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>

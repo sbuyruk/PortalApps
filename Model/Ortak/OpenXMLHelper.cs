@@ -1,4 +1,4 @@
-嚜簑sing DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Wordprocessing;
 using System.Linq;
 
@@ -72,13 +72,13 @@ namespace Model.Ortak
             Run run3 = paragraph2.GetFirstChild<Run>();
 
             Text text3 = run3.GetFirstChild<Text>();
-            text3.Text = "K覺z覺lay Mahallesi 襤zmir 2 Caddesi Ersan Apartman覺 No:49/4 ";
+            text3.Text = "Kizilay Mahallesi Izmir 2 Caddesi Ersan Apartmani No:49/4 ";
 
 
             Run run4 = paragraph3.GetFirstChild<Run>();
 
             Text text4 = run4.GetFirstChild<Text>();
-            text4.Text = " K覺z覺lay-��ankaya/Ankara";
+            text4.Text = " Kizilay-ドnkaya/Ankara";
 
 
             Run run5 = paragraph4.Elements<Run>().ElementAt(2);

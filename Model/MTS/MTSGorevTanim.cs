@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using System.Collections.Generic;
 using System;
 using System.ComponentModel;
@@ -12,9 +12,9 @@ namespace Model.MTS
     public class MTSGorevTanim : ParentClass
     {
         [Required]
-        [DisplayName("Kurum Adı")]
+        [DisplayName("Kurum Adi")]
         public string Adi { get; set; }
-        [DisplayName("Kısa Adı")]
+        [DisplayName("Kisa Adi")]
         public string KisaAdi { get; set; }
         public override int Save()
         {
@@ -37,7 +37,7 @@ namespace Model.MTS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
 
         }
@@ -95,7 +95,7 @@ namespace Model.MTS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public MTSGorevTanim Select(int id)

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
@@ -18,7 +18,7 @@ namespace Utility.HelperClasses
                 dataTable = ConvertToDatetable(spreadSheetDocument, hasTitle);
 
             }
-            if (hasTitle) //il satır veri içermiyor. başlık içeriyorsa
+            if (hasTitle) //il satir veri i�ermiyor. baslik i�eriyorsa
             {
                 dataTable.Rows.RemoveAt(0);
             }
@@ -46,7 +46,7 @@ namespace Utility.HelperClasses
                 dataTable = ConvertToDatetableKartIle(spreadSheetDocument, ilkKacSatirHaric, sonKacSatirHaric);
 
             }
-            if (hasTitle) //il satır veri içermiyor. başlık içeriyorsa
+            if (hasTitle) //il satir veri i�ermiyor. baslik i�eriyorsa
             {
                 dataTable.Rows.RemoveAt(0);
             }
@@ -60,7 +60,7 @@ namespace Utility.HelperClasses
             {
                 dataTable = ConvertToDatetable(spreadSheetDocument, hasTitle);
             }
-            if (hasTitle) //il satır veri içermiyor. başlık içeriyorsa
+            if (hasTitle) //il satir veri i�ermiyor. baslik i�eriyorsa
             {
                 dataTable.Rows.RemoveAt(0);
             }
@@ -82,7 +82,7 @@ namespace Utility.HelperClasses
             int count = 0;
             foreach (Cell cell in rows.ElementAt(0))
             {
-                if (hasTitle) //il satır veri içermiyor. başlık içeriyorsa
+                if (hasTitle) //il satir veri i�ermiyor. baslik i�eriyorsa
                 {
                     dataTable.Columns.Add(GetCellValue(spreadSheetDocument, cell));
                 }
@@ -99,7 +99,7 @@ namespace Utility.HelperClasses
                 for (int i = 0; i < row.Descendants<Cell>().Count(); i++)
                 {
                     dataRow[i] = GetCellValue(spreadSheetDocument, row.Descendants<Cell>().ElementAt(i));
-                    //SB boş hücreyi atlama sorununu düzeltmek için aşağısı eklendi, üstteki satır kaldırıldı
+                    //SB bos h�creyi atlama sorununu d�zeltmek i�in asagisi eklendi, �stteki satir kaldirildi
                     //Cell cell = row.Descendants<Cell>().ElementAt(i);
                     //int actualCellIndex = CellReferenceToIndex(cell);
                     //dataRow[actualCellIndex] = GetCellValue(spreadSheetDocument, cell);
@@ -140,14 +140,14 @@ namespace Utility.HelperClasses
             Worksheet workSheet = worksheetPart.Worksheet;
             SheetData sheetData = workSheet.GetFirstChild<SheetData>();
             IEnumerable<Row> rows = sheetData.Descendants<Row>();
-            // Boş satırlar XML'de bulunmadığından element-count yerine gerçek Excel satır numarasıyla filtrele
+            // Bos satirlar XML'de bulunmadigindan element-count yerine ger�ek Excel satir numarasiyla filtrele
             if (ilkKacSatirHaric > 0)
             {
                 var rowsToRemoveFirst = rows.Where(r => r.RowIndex != null && r.RowIndex.Value <= (uint)ilkKacSatirHaric).ToList();
                 foreach (var r in rowsToRemoveFirst)
                     r.Remove();
             }
-            for (int i = 0; i < sonKacSatirHaric; i++)//son satırları sil
+            for (int i = 0; i < sonKacSatirHaric; i++)//son satirlari sil
             {
                 if (rows.Count<Row>() > 0)
                     rows.LastOrDefault().Remove();
@@ -186,7 +186,7 @@ namespace Utility.HelperClasses
                 for (int i = 0; i < row.Descendants<Cell>().Count(); i++)
                 {
                     //dataRow[i] = GetCellValue(spreadSheetDocument, row.Descendants<Cell>().ElementAt(i));
-                    //SB boş hücreyi atlama sorununu düzeltmek için aşağısı eklendi, üstteki satır kaldırıldı
+                    //SB bos h�creyi atlama sorununu d�zeltmek i�in asagisi eklendi, �stteki satir kaldirildi
                     Cell cell = row.Descendants<Cell>().ElementAt(i);
                     int actualCellIndex = CellReferenceToIndex(cell);
                     dataRow[actualCellIndex] = GetCellValue(spreadSheetDocument, cell);
@@ -208,14 +208,14 @@ namespace Utility.HelperClasses
             Worksheet workSheet = worksheetPart.Worksheet;
             SheetData sheetData = workSheet.GetFirstChild<SheetData>();
             IEnumerable<Row> rows = sheetData.Descendants<Row>();
-            // Boş satırlar XML'de bulunmadığından element-count yerine gerçek Excel satır numarasıyla filtrele
+            // Bos satirlar XML'de bulunmadigindan element-count yerine ger�ek Excel satir numarasiyla filtrele
             if (ilkKacSatirHaric > 0)
             {
                 var rowsToRemoveFirst = rows.Where(r => r.RowIndex != null && r.RowIndex.Value <= (uint)ilkKacSatirHaric).ToList();
                 foreach (var r in rowsToRemoveFirst)
                     r.Remove();
             }
-            for (int i = 0; i < sonKacSatirHaric; i++)//son satırları sil
+            for (int i = 0; i < sonKacSatirHaric; i++)//son satirlari sil
             {
                 if (rows.Count<Row>() > 0)
                     rows.LastOrDefault().Remove();
@@ -234,7 +234,7 @@ namespace Utility.HelperClasses
                 for (int i = 0; i < row.Descendants<Cell>().Count(); i++)
                 {
                     //dataRow[i] = GetCellValue(spreadSheetDocument, row.Descendants<Cell>().ElementAt(i));
-                    //SB boş hücreyi atlama sorununu düzeltmek için aşağısı eklendi, üstteki satır kaldırıldı
+                    //SB bos h�creyi atlama sorununu d�zeltmek i�in asagisi eklendi, �stteki satir kaldirildi
                     Cell cell = row.Descendants<Cell>().ElementAt(i);
                     int actualCellIndex = CellReferenceToIndex(cell);
                     dataRow[actualCellIndex] = GetCellValue(spreadSheetDocument, cell);

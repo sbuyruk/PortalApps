@@ -1,4 +1,4 @@
-﻿using Microsoft.SharePoint;
+using Microsoft.SharePoint;
 using Model.Ortak;
 using Model.TBYS;
 using System;
@@ -110,12 +110,12 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
 
                 if (string.IsNullOrEmpty(DestinationAppQS) || (DestinationAppQS.Equals("TBG")))
                 {
-                    //BagisciGirisi açılacak BG
+                    //BagisciGirisi a�ilacak BG
                     OpenBagisciGirisi();
                 }
                 else if (DestinationAppQS.Equals("TBD"))
                 {
-                    //BagisciDuzenle açılacak
+                    //BagisciDuzenle a�ilacak
                     OpenBagisciDuzenle(BagisciIdQS);
                 }
             }
@@ -133,7 +133,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
             BagisciMainPanel.Attributes["Class"] = "card";
             TitleLbl.CssClass = "col-form-label text-danger fw-bold mb-1";
 
-            TitleLbl.Text = "Bağışçı Bilgisi Güncelleme";
+            TitleLbl.Text = "Bagis�i Bilgisi G�ncelleme";
 
             IdLbl.Visible = true;
             IdLbl.Text = bagisciId;
@@ -153,7 +153,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
 
             DisplayImage.ImageUrl = UtilityHelper.GetImageUrl(ProjeConstants.RESIMLER_BAGISCI) + "/_t/bagisci_jpg.jpg";
             TitleLbl.CssClass = "col-form-label text-success fw-bold mb-1";
-            TitleLbl.Text = "Taşınmaz Bağışçısı Girişi";
+            TitleLbl.Text = "Tasinmaz Bagis�isi Girisi";
             SaveBtn.Visible = true;
             UpdateBtn.Visible = false;
             DeleteBtn.Visible = false;
@@ -288,9 +288,9 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
             SosyalGuvenceDDL.Items.Clear();
             SosyalGuvenceDDL.Items.Add("Yok");
             SosyalGuvenceDDL.Items.Add("SGK");
-            SosyalGuvenceDDL.Items.Add("Emekli Sandığı");
+            SosyalGuvenceDDL.Items.Add("Emekli Sandigi");
             SosyalGuvenceDDL.Items.Add("SSK");
-            SosyalGuvenceDDL.Items.Add("Bağkur");
+            SosyalGuvenceDDL.Items.Add("Bagkur");
         }
         private void Sag_vefatDDLDoldur()
         {
@@ -431,7 +431,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
             }
             else
             {
-                MessageHelper.PublishMessage("İşlem Tamamlandı.Resim yüklendi.", ProjeConstants.MESAJ_BASARILI);
+                MessageHelper.PublishMessage("Islem Tamamlandi.Resim y�klendi.", ProjeConstants.MESAJ_BASARILI);
             }
         }
         protected void IliDDL_SelectedIndexChanged(object sender, EventArgs e)
@@ -447,13 +447,13 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
         {
             TasinmazBagisci bagisci = new TasinmazBagisci();
             bagisci = bagisci.Select<TasinmazBagisci>(BagisciIdQS.ConvertToInt());
-            if (bagisci != null) //sildikten sonra önceki sayfaya dön
+            if (bagisci != null) //sildikten sonra �nceki sayfaya d�n
             {
-                //Bağışçı talebi var mı
-                //Bağışçı yakını var mı
-                //Bağış var mı
-                //taahhüt var mı
-                //armagan var mı
+                //Bagis�i talebi var mi
+                //Bagis�i yakini var mi
+                //Bagis var mi
+                //taahh�t var mi
+                //armagan var mi
                 //yoksa sil
 
                 if (BagisVarmi(bagisci) 
@@ -462,7 +462,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
                     || BagisciTaahhuduVarmi(bagisci)
                     || BagisciyaArmaganVerilmisMi(bagisci))
                 {
-                    MessageHelper.PublishMessage("Bağışçıya ait talepler, kayıtlı bağışçı yakınları, bağışçı ahhütleri veya verilmiş armağan olduğundan dolayı bu bağışçı silinemez",ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Bagis�iya ait talepler, kayitli bagis�i yakinlari, bagis�i ahh�tleri veya verilmis armagan oldugundan dolayi bu bagis�i silinemez",ProjeConstants.MESAJ_HATA);
                 }
                 else
                 {
@@ -474,7 +474,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
                 }
             }
             else
-                MessageHelper.PublishMessage("Hata Bağışçı bulunamadı", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Hata Bagis�i bulunamadi", ProjeConstants.MESAJ_HATA);
         }
 
         private bool BagisVarmi(TasinmazBagisci bagisci)
@@ -536,22 +536,22 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
             try
             {
                 TasinmazBagisci bagisci = SaveBagisciData2Db();
-                if (bagisci != null) //kaydettikten sonra önceki sayfaya dön
+                if (bagisci != null) //kaydettikten sonra �nceki sayfaya d�n
                 {
 
-                    // eger bir resim seçildi ise o resmi Sharepointteki MalzemeResimleri listesine ekle
+                    // eger bir resim se�ildi ise o resmi Sharepointteki MalzemeResimleri listesine ekle
                     if (ResimYukleFU.HasFile)
                     {
                         SaveImageFiles2SP(bagisci.Foto);
                     }
                     PDFKaydet(bagisci.Id);
-                    MessageHelper.PublishMessage("Bağışçı Kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Bagis�i Kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
                     RedirectToPage(ProjeConstants.PAGE_TASINMAZBAGISCI_LIST + "?Mesaj=true" + "&SecilenId=" + bagisci.Id);
 
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Bağışçı Kaydedilemedi", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Bagis�i Kaydedilemedi", ProjeConstants.MESAJ_HATA);
                 }
 
 
@@ -569,18 +569,18 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
                 TasinmazBagisci bagisci = UpdateBagisciData2Db();
                 if (bagisci != null)
                 {
-                    // eger bir resim seçildi ise o resmi Sharepointteki MalzemeResimleri listesine ekle
+                    // eger bir resim se�ildi ise o resmi Sharepointteki MalzemeResimleri listesine ekle
                     if (ResimYukleFU.HasFile)
                     {
                         SaveImageFiles2SP(bagisci.Foto);
                     }
                     PDFKaydet(bagisci.Id);
                     PDFGoster(bagisci);
-                    MessageHelper.PublishMessage("Bağışçı Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Bagis�i G�ncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Bağışçı Güncellenemedi", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Bagis�i G�ncellenemedi", ProjeConstants.MESAJ_HATA);
                 }
 
 
@@ -616,14 +616,14 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
                     if (isOk)
                     {
                         DosyaLnk.Visible = true;
-                        MessageHelper.PublishMessage("Bilgi Formu Yüklendi", ProjeConstants.MESAJ_BASARILI, 2000); 
+                        MessageHelper.PublishMessage("Bilgi Formu Y�klendi", ProjeConstants.MESAJ_BASARILI, 2000); 
                     }
                 }
                 else
                 {
                     DosyaLnk.Visible = false;
                     BelgeSilBtn.Visible = false;
-                    MessageHelper.PublishMessage("Lütfen Bağışçı Bilgi ve Talep Belgesi yükleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                    MessageHelper.PublishMessage("L�tfen Bagis�i Bilgi ve Talep Belgesi y�kleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
                 }
                 if (TaahhutYukleFU.HasFile)
                 {
@@ -632,18 +632,18 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
                     if (isOk)
                     {
                         TaahhutSilBtn.Visible = true;
-                        MessageHelper.PublishMessage("Taahhüt Belgesi yüklendi", ProjeConstants.MESAJ_BASARILI, 2000); 
+                        MessageHelper.PublishMessage("Taahh�t Belgesi y�klendi", ProjeConstants.MESAJ_BASARILI, 2000); 
                     }
                 }
                 else
                 {
                     TaahhutDosyaLnk.Visible = false;
-                    MessageHelper.PublishMessage("Lütfen Taahhüt Belgesi yükleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                    MessageHelper.PublishMessage("L�tfen Taahh�t Belgesi y�kleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
                 }
             }
             catch (Exception exception)
             {
-                Exception ex = new Exception("Dosya Yüklenemedi");
+                Exception ex = new Exception("Dosya Y�klenemedi");
                 ExceptionHelper exhelper = new ExceptionHelper(exception);
                 exhelper.Exceptions.Add(ex);
                 exhelper.PublishException();
@@ -660,7 +660,7 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
                     bool dosyaVarMi = UtilityHelper.DosyaVarMi(UtilityHelper.TbysBelgelerURLGetir(), ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi);
                     if (dosyaVarMi)
                     {
-                        string belgePdfLink = @"'<a class=\'btn btn-secondary\' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + dosyaUrl + @"> Belge Görüntüle </a>'";
+                        string belgePdfLink = @"'<a class=\'btn btn-secondary\' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + dosyaUrl + @"> Belge G�r�nt�le </a>'";
 
                         DosyaLnk.Target = "_blank";
                         DosyaLnk.HRef = dosyaUrl;
@@ -674,14 +674,14 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
                         DosyaLnk.Visible = false;
                         BelgeSilBtn.Visible = false;
                         BelgeYukleFU.Visible = true;
-                        MessageHelper.PublishMessage("Lütfen Bağışçı Bilgi ve Talep Formunu pdf olarak yükleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                        MessageHelper.PublishMessage("L�tfen Bagis�i Bilgi ve Talep Formunu pdf olarak y�kleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
                     }
                     string taahhutDosyaAdi = ProjeConstants.DOSYA_TAAHHUT_FORMU + bagisci.Id + ".pdf";
                     string taahhutDosyaUrl = UtilityHelper.TbysBelgelerURLGetir() + "/" + taahhutDosyaAdi;
                     bool taahhutDosyasiVarMi = UtilityHelper.DosyaVarMi(UtilityHelper.TbysBelgelerURLGetir(), ProjeConstants.TBYSBELGELERI_LIB, taahhutDosyaAdi);
                     if (taahhutDosyasiVarMi)
                     {
-                        string belgePdfLink = @"'<a class=\'btn btn-secondary\' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + taahhutDosyaUrl + @"> Belge Görüntüle </a>'";
+                        string belgePdfLink = @"'<a class=\'btn btn-secondary\' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + taahhutDosyaUrl + @"> Belge G�r�nt�le </a>'";
 
                         TaahhutDosyaLnk.Target = "_blank";
                         TaahhutDosyaLnk.HRef = taahhutDosyaUrl;
@@ -694,18 +694,18 @@ namespace TBYS_WebParts.TasinmazBagisciGirisiWP
                         TaahhutDosyaLnk.Visible = false;
                         TaahhutSilBtn.Visible = false;
                         TaahhutYukleFU.Visible = true;
-                        MessageHelper.PublishMessage("Lütfen Bağışçı Taahhüt Formunu pdf olarak yükleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                        MessageHelper.PublishMessage("L�tfen Bagis�i Taahh�t Formunu pdf olarak y�kleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
                     }
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Bağışçı bulunamadı.", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Bagis�i bulunamadi.", ProjeConstants.MESAJ_HATA);
                 }
                 
             }
             catch (Exception exception)
             {
-                Exception ex = new Exception("PDF Yüklenemedi");
+                Exception ex = new Exception("PDF Y�klenemedi");
                 ExceptionHelper exhelper = new ExceptionHelper(exception);
                 exhelper.Exceptions.Add(ex);
                 exhelper.PublishException();

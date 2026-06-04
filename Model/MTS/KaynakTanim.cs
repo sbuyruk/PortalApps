@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using System.Collections.Generic;
 using System;
 using System.ComponentModel;
@@ -12,7 +12,7 @@ namespace Model.MTS
     public class KaynakTanim : ParentClass
     {
         [Required]
-        [DisplayName("Anı Objesi Kaynağı")]
+        [DisplayName("Ani Objesi Kaynagi")]
         public string Adi { get; set; }
 
         public override int Save()
@@ -36,7 +36,7 @@ namespace Model.MTS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
 
         }
@@ -94,7 +94,7 @@ namespace Model.MTS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public KaynakTanim Select(int id)

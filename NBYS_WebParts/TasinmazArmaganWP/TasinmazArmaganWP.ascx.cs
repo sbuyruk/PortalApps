@@ -1,4 +1,4 @@
-﻿using Model.TBYS;
+using Model.TBYS;
 using System;
 using System.ComponentModel;
 using System.Globalization;
@@ -135,7 +135,7 @@ namespace NBYS_WebParts.TasinmazArmaganWP
             DurumDDL.Items.Add(ProjeConstants.DURUM_PARAIADE);
             DurumDDL.Items.Add(ProjeConstants.DURUM_DAHAONCEIADE);
 
-            //acilista durumu querystring ile gelene eşitle
+            //acilista durumu querystring ile gelene esitle
             ListItem DurumItem = new ListItem();
             if (!string.IsNullOrEmpty(SecilenDurumQS))
                 DurumItem = DurumDDL.Items.FindByValue(SecilenDurumQS);

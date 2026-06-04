@@ -1,4 +1,4 @@
-﻿using Model.IKYS;
+using Model.IKYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -303,7 +303,7 @@ namespace IKYS_WebParts.AylikYoklamaRaporuWP
             TableHeaderRow thbaslik = new TableHeaderRow();
             TableHeaderCell baslikCell = new TableHeaderCell();
             DateTime secilenTarih = new DateTime(SecilenYilQS.ConvertToInt(), SecilenAyQS.ConvertToInt(), 1);
-            baslikCell.Text = "GÜN İÇİNDE VAKIF DIŞINDA BULUNAN PERSONEL LİSTESİ (" + secilenTarih.ToString("MMMM").ToUpper() + " " + secilenTarih.ToString("yyyy") + ")";
+            baslikCell.Text = "G�N I�INDE VAKIF DISINDA BULUNAN PERSONEL LISTESI (" + secilenTarih.ToString("MMMM").ToUpper() + " " + secilenTarih.ToString("yyyy") + ")";
             baslikCell.ColumnSpan = 10;
             thbaslik.CssClass = "alert-secondary text-center";
             thbaslik.Controls.Add(baslikCell);
@@ -312,28 +312,28 @@ namespace IKYS_WebParts.AylikYoklamaRaporuWP
             TableHeaderRow th = new TableHeaderRow();
             th.CssClass = "alert-secondary text-center";
             TableHeaderCell siraCell = new TableHeaderCell();
-            siraCell.Text = "Sıra";
+            siraCell.Text = "Sira";
             TableHeaderCell adiSoyadiCell = new TableHeaderCell();
-            adiSoyadiCell.Text = "Adı Soyadı";
+            adiSoyadiCell.Text = "Adi Soyadi";
             TableHeaderCell bulunmamaSebebiCell = new TableHeaderCell();
             bulunmamaSebebiCell.Text = "Bulunmama Sebebi";
             TableHeaderCell baslangicTarCell = new TableHeaderCell();
             baslangicTarCell.Text = "Tarih";
             TableHeaderCell baslangicSaatiCell = new TableHeaderCell();
-            baslangicSaatiCell.Text = "Gidiş Saati";
+            baslangicSaatiCell.Text = "Gidis Saati";
 
             TableHeaderCell bitisSaatiCell = new TableHeaderCell();
-            bitisSaatiCell.Text = "Dönüş Saati";
+            bitisSaatiCell.Text = "D�n�s Saati";
             TableHeaderCell sureCell = new TableHeaderCell();
-            sureCell.Text = "Süre";
+            sureCell.Text = "S�re";
 
             TableHeaderCell aciklamaCell = new TableHeaderCell();
-            aciklamaCell.Text = "Açıklama";
+            aciklamaCell.Text = "A�iklama";
 
             TableHeaderCell mesaiyeGelisSaatiCell = new TableHeaderCell();
-            mesaiyeGelisSaatiCell.Text = "Mesaiye Geliş";
+            mesaiyeGelisSaatiCell.Text = "Mesaiye Gelis";
             TableHeaderCell mesaidenCikisSaatiCell = new TableHeaderCell();
-            mesaidenCikisSaatiCell.Text = "Mesaiden Çıkış";
+            mesaidenCikisSaatiCell.Text = "Mesaiden �ikis";
 
             baslikCell.BorderWidth = 1;
             siraCell.BorderWidth = 1;
@@ -377,17 +377,17 @@ namespace IKYS_WebParts.AylikYoklamaRaporuWP
         private void AyDDLDoldur()
         {
             AyDDL.Items.Add(new ListItem("Ocak", "1"));
-            AyDDL.Items.Add(new ListItem("Şubat", "2"));
+            AyDDL.Items.Add(new ListItem("Subat", "2"));
             AyDDL.Items.Add(new ListItem("Mart", "3"));
             AyDDL.Items.Add(new ListItem("Nisan", "4"));
-            AyDDL.Items.Add(new ListItem("Mayıs", "5"));
+            AyDDL.Items.Add(new ListItem("Mayis", "5"));
             AyDDL.Items.Add(new ListItem("Haziran", "6"));
             AyDDL.Items.Add(new ListItem("Temmuz", "7"));
-            AyDDL.Items.Add(new ListItem("Ağustos", "8"));
-            AyDDL.Items.Add(new ListItem("Eylül", "9"));
+            AyDDL.Items.Add(new ListItem("Agustos", "8"));
+            AyDDL.Items.Add(new ListItem("Eyl�l", "9"));
             AyDDL.Items.Add(new ListItem("Ekim", "10"));
-            AyDDL.Items.Add(new ListItem("Kasım", "11"));
-            AyDDL.Items.Add(new ListItem("Aralık", "12"));
+            AyDDL.Items.Add(new ListItem("Kasim", "11"));
+            AyDDL.Items.Add(new ListItem("Aralik", "12"));
 
         }
         private void SetDDLValues()
@@ -437,7 +437,7 @@ namespace IKYS_WebParts.AylikYoklamaRaporuWP
             int yil = SecilenYilQS.ConvertToInt();
             DateTime basTar = new DateTime(yil, ay, 1);
             DateTime bitTar = basTar.AddMonths(1).AddDays(-1) + ProjeConstants.MESAI_BITIS_SAATI;
-            string bulunmamaSebebiIds = "2,3";//hastanede, görevli
+            string bulunmamaSebebiIds = "2,3";//hastanede, g�revli
             dataTable = yoklamaDao.SelectByTarihReturnDataTable(bulunmamaSebebiIds, basTar, bitTar);
             List<AylikYoklamaListItem> yoklamaList = new List<AylikYoklamaListItem>();
             if (dataTable != null)
@@ -507,13 +507,13 @@ namespace IKYS_WebParts.AylikYoklamaRaporuWP
             string sure = string.Empty;
             int gun = (bit - bas).Days;
 
-            int saat = (bit - bas).Hours;//artan saat var mı
+            int saat = (bit - bas).Hours;//artan saat var mi
             if (saat >= 9)
             {
                 gun++;
                 saat = 0;
             }
-            string gunStr = gun > 0 ? gun + " Gün " : "";
+            string gunStr = gun > 0 ? gun + " G�n " : "";
             string saatstr = saat > 0 ? saat + " Saat" : "";
             if (gun > 0)
                 sure = gunStr + saatstr;

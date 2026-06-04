@@ -1,4 +1,4 @@
-﻿using Model.IKYS;
+using Model.IKYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -79,7 +79,7 @@ namespace IKYS_WebParts.IzinDonemListesiWP
                 {
                     if (!string.IsNullOrEmpty(MesajQS))
                     {
-                        MessageHelper.PublishMessage("Kayıt Tamamlandı", ProjeConstants.MESAJ_BASARILI, 2000);
+                        MessageHelper.PublishMessage("Kayit Tamamlandi", ProjeConstants.MESAJ_BASARILI, 2000);
                         MesajQS = string.Empty;
                     }
                     FillPersonelDDL();
@@ -102,23 +102,23 @@ namespace IKYS_WebParts.IzinDonemListesiWP
             IzinDonemTable.Rows.Clear();
             TableHeaderRow th = new TableHeaderRow();
             TableHeaderCell siraCell = new TableHeaderCell();
-            siraCell.Text = "Sıra";
+            siraCell.Text = "Sira";
             //TableHeaderCell izinBasTarCell = new TableHeaderCell();
-            //izinBasTarCell.Text = "İşe Giriş Tarihi";
+            //izinBasTarCell.Text = "Ise Giris Tarihi";
             TableHeaderCell izinDonemiCell = new TableHeaderCell();
-            izinDonemiCell.Text = "İzin Dönemi";
+            izinDonemiCell.Text = "Izin D�nemi";
             TableHeaderCell izinHakkiCell = new TableHeaderCell();
-            izinHakkiCell.Text = "İzin Hakkı";
+            izinHakkiCell.Text = "Izin Hakki";
             TableHeaderCell kullanilanIzinCell = new TableHeaderCell();
-            kullanilanIzinCell.Text = "Kullanılan İzin";
+            kullanilanIzinCell.Text = "Kullanilan Izin";
             TableHeaderCell kalanIzinCell = new TableHeaderCell();
-            kalanIzinCell.Text = "Kalan İzin";
+            kalanIzinCell.Text = "Kalan Izin";
             TableHeaderCell aciklamaCell = new TableHeaderCell();
-            aciklamaCell.Text = "Açıklama";
+            aciklamaCell.Text = "A�iklama";
             TableHeaderCell duzenleCell = new TableHeaderCell();
-            duzenleCell.Text = "Düzenle";
+            duzenleCell.Text = "D�zenle";
             TableHeaderCell izinlerCell = new TableHeaderCell();
-            izinlerCell.Text = "İzinler";
+            izinlerCell.Text = "Izinler";
 
             th.Controls.Add(siraCell);
 
@@ -210,7 +210,7 @@ namespace IKYS_WebParts.IzinDonemListesiWP
 
                     TableCell DuzenleCell = new TableCell();
                     LinkButton DuzenleBtn = new LinkButton();
-                    DuzenleBtn.Text = "Düzenle";
+                    DuzenleBtn.Text = "D�zenle";
                     DuzenleBtn.ID = "DuzenleBtn" + sira;
                     TableUpdatePanel.ContentTemplateContainer.Controls.Add(DuzenleBtn);
                     DuzenleBtn.CssClass = "btn btn-outline-danger";
@@ -233,14 +233,14 @@ namespace IKYS_WebParts.IzinDonemListesiWP
                                 IzinHakkiTxt.Text = izinHakki;
                                 KullanilanIzinTxt.Text = kullanilanIzin;
                                 KalanIzinTxt.Text = kalanIzin;
-                                ModalSubTitleLbl.Text = izinDonemiStr + " İzin Dönemi";
+                                ModalSubTitleLbl.Text = izinDonemiStr + " Izin D�nemi";
                                 var openPopup = "OpenModal();";
                                 System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), openPopup, true);
 
                             }
                             else
                             {
-                                MessageHelper.PublishMessage("İzin Donem Bulunamadı", ProjeConstants.MESAJ_HATA);
+                                MessageHelper.PublishMessage("Izin Donem Bulunamadi", ProjeConstants.MESAJ_HATA);
                             }
 
                         }
@@ -255,7 +255,7 @@ namespace IKYS_WebParts.IzinDonemListesiWP
 
                     TableCell IzinlerCell = new TableCell();
                     LinkButton IzinlerBtn = new LinkButton();
-                    IzinlerBtn.Text = "İzinler";
+                    IzinlerBtn.Text = "Izinler";
                     IzinlerBtn.ID = "IzinlerBtn" + sira;
                     TableUpdatePanel.ContentTemplateContainer.Controls.Add(IzinlerBtn);
                     IzinlerBtn.CssClass = "btn btn-outline-secondary";
@@ -277,7 +277,7 @@ namespace IKYS_WebParts.IzinDonemListesiWP
                                 IzinHakkiTxt.Text = izinHakki;
                                 KullanilanIzinTxt.Text = kullanilanIzin;
                                 KalanIzinTxt.Text = kalanIzin;
-                                ModalSubTitleLbl.Text = izinDonemiStr + " İzin Dönemi";
+                                ModalSubTitleLbl.Text = izinDonemiStr + " Izin D�nemi";
                                 FillIzinHareketleriTable(izinDonemId);
                                 var openPopup = "OpenModal();";
                                 System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), openPopup, true);
@@ -285,7 +285,7 @@ namespace IKYS_WebParts.IzinDonemListesiWP
                             }
                             else
                             {
-                                MessageHelper.PublishMessage("İzin Donem Bulunamadı", ProjeConstants.MESAJ_HATA);
+                                MessageHelper.PublishMessage("Izin Donem Bulunamadi", ProjeConstants.MESAJ_HATA);
                             }
 
                         }
@@ -311,15 +311,15 @@ namespace IKYS_WebParts.IzinDonemListesiWP
             TableHeaderCell siraCell = new TableHeaderCell();
             siraCell.Text = "";
             //TableHeaderCell izintipiCell = new TableHeaderCell();
-            //izintipiCell.Text = "İzin Tipi";
+            //izintipiCell.Text = "Izin Tipi";
             TableHeaderCell bastarCell = new TableHeaderCell();
-            bastarCell.Text = "Başlangıç tarihi";
+            bastarCell.Text = "Baslangi� tarihi";
             TableHeaderCell bittarCell = new TableHeaderCell();
-            bittarCell.Text = "Bitiş tarihi";
+            bittarCell.Text = "Bitis tarihi";
             TableHeaderCell sureCell = new TableHeaderCell();
-            sureCell.Text = "İzinli Süre";
+            sureCell.Text = "Izinli S�re";
             TableHeaderCell aciklamaCell = new TableHeaderCell();
-            aciklamaCell.Text = "Açıklama";
+            aciklamaCell.Text = "A�iklama";
             th.Controls.Add(siraCell);
             //th.Controls.Add(izintipiCell);
             th.Controls.Add(bastarCell);
@@ -334,7 +334,7 @@ namespace IKYS_WebParts.IzinDonemListesiWP
             izinDonemi = izinDonemi.Select<IzinDonem>(izinDonemId);
             if (izinDonemi == null)
             {
-                MessageHelper.PublishMessage("İzin Dönemi bulunamadı.", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Izin D�nemi bulunamadi.", ProjeConstants.MESAJ_HATA);
             }
             else
             {
@@ -346,7 +346,7 @@ namespace IKYS_WebParts.IzinDonemListesiWP
                     IzinHareketTable.Rows.Clear();
                     TableRow tr = new TableRow();
                     TableCell tc = new TableCell();
-                    tc.Text = "Henüz izin kullanılmamış.";
+                    tc.Text = "Hen�z izin kullanilmamis.";
                     tr.Controls.Add(tc);
                     IzinHareketTable.Controls.Add(tr);
                 }
@@ -449,7 +449,7 @@ namespace IKYS_WebParts.IzinDonemListesiWP
             {
                 try
                 {
-                    //int girildiğinden emin ol
+                    //int girildiginden emin ol
                     int value = 0;
                     bool validated = false;
                     if ((int.TryParse(IzinHakkiTxt.Text, out value)) &&
@@ -465,31 +465,31 @@ namespace IKYS_WebParts.IzinDonemListesiWP
                     if (validated)
                     {
                         bool issaved = izinDonemi.Update();
-                        MessageHelper.PublishMessage("Kayıt Tamamlandı", ProjeConstants.MESAJ_BASARILI, 2000);
+                        MessageHelper.PublishMessage("Kayit Tamamlandi", ProjeConstants.MESAJ_BASARILI, 2000);
                         FillIzinDonemTable();
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Kayıt Yapılamadı. İzin Hakkı, Kullanılan İzin ve Kalan İzin değerlerine lütfen tamsayı giriniz", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Kayit Yapilamadi. Izin Hakki, Kullanilan Izin ve Kalan Izin degerlerine l�tfen tamsayi giriniz", ProjeConstants.MESAJ_HATA);
                     }
                 }
                 catch (Exception)
                 {
 
-                    MessageHelper.PublishMessage("İzin Hakkıi Kullanılan İzin ve Kalan İzin bilgilerine lütfen tamsayı giriniz", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Izin Hakkii Kullanilan Izin ve Kalan Izin bilgilerine l�tfen tamsayi giriniz", ProjeConstants.MESAJ_HATA);
                 }
 
 
             }
         }
         /// <summary>
-        /// Dönem ekle modal pencere aç
-        /// Dönem Başı tarihine işe girdiği yıl+1,
-        /// Bitiş Sonu tarihine son en eski izin dönemi başlama tarihini yaz
-        /// izin hakkı, kullanılan izin ve kalan izin hanelerine 0 gir, kullanıcı tarafından girilecek
-        /// dönem başı sonu ve işe giriş tarihlerinde oluşacak çakışmalare ve 
-        /// işe başladığı tarihten öncesine dönem girişini izin vermemek için 
-        /// modal pencereyi açtırma, mesaj ver
+        /// D�nem ekle modal pencere a�
+        /// D�nem Basi tarihine ise girdigi yil+1,
+        /// Bitis Sonu tarihine son en eski izin d�nemi baslama tarihini yaz
+        /// izin hakki, kullanilan izin ve kalan izin hanelerine 0 gir, kullanici tarafindan girilecek
+        /// d�nem basi sonu ve ise giris tarihlerinde olusacak �akismalare ve 
+        /// ise basladigi tarihten �ncesine d�nem girisini izin vermemek i�in 
+        /// modal pencereyi a�tirma, mesaj ver
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -502,7 +502,7 @@ namespace IKYS_WebParts.IzinDonemListesiWP
                 personel = personel.Select<Personel>(PersonelDDL.SelectedItem.Value.ConvertToInt());
                 if (personel == null)
                 {
-                    Exception ex = new Exception("Personel bulunamadı. ");
+                    Exception ex = new Exception("Personel bulunamadi. ");
                     throw (ex);
                 }
 
@@ -520,8 +520,8 @@ namespace IKYS_WebParts.IzinDonemListesiWP
                 IzinDonem izinDonemi = new IzinDonem();
                 List<IzinDonem> list = izinDonemi.SelectByPersonelId(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT);
 
-                //modal açılışta Dönem başı ve sonunu dolu getirsin en eski dönemden önceki bir yıl değerini doldursun
-                izinDonemi = list.FirstOrDefault<IzinDonem>();//en eski dönem (baslangıçTarihine göre sıralı olduğundan)
+                //modal a�ilista D�nem basi ve sonunu dolu getirsin en eski d�nemden �nceki bir yil degerini doldursun
+                izinDonemi = list.FirstOrDefault<IzinDonem>();//en eski d�nem (baslangi�Tarihine g�re sirali oldugundan)
                 if (izinDonemi != null)
                 {
 
@@ -535,7 +535,7 @@ namespace IKYS_WebParts.IzinDonemListesiWP
 
                         if (bittar < bastar)
                         {
-                            Exception ex = new Exception("İşe Başladığından bu yana olan tüm dönemler zaten tanımlı. Yeni izin dönemi eklenemez.");
+                            Exception ex = new Exception("Ise Basladigindan bu yana olan t�m d�nemler zaten tanimli. Yeni izin d�nemi eklenemez.");
                             throw (ex);
 
                         }
@@ -567,7 +567,7 @@ namespace IKYS_WebParts.IzinDonemListesiWP
             IzinDonem izinDonemi = new IzinDonem();
             try
             {
-                //int girildiğinden emin ol
+                //int girildiginden emin ol
                 int value = 0;
                 bool validated = false;
                 if ((int.TryParse(IzinHakkiTxt.Text, out value)) &&
@@ -586,7 +586,7 @@ namespace IKYS_WebParts.IzinDonemListesiWP
                     personel = personel.Select<Personel>(PersonelDDL.SelectedItem.Value.ConvertToInt());
                     if (personel == null)
                     {
-                        Exception ex = new Exception("Personel bulunamadı. ");
+                        Exception ex = new Exception("Personel bulunamadi. ");
                         throw (ex);
                     }
 
@@ -606,29 +606,29 @@ namespace IKYS_WebParts.IzinDonemListesiWP
                         DateTime iseBaslamaTar = ib.BaslamaTar != null ? ib.BaslamaTar : ib.IzinDonemiBasTar;
                         if (bastar < iseBaslamaTar)
                         {
-                            Exception ex = new Exception("İzin Dönemi Başı İşe başlama tarihinden küçük olamaz");
+                            Exception ex = new Exception("Izin D�nemi Basi Ise baslama tarihinden k���k olamaz");
                             throw (ex);
                         }
                         if (bittar > enEskiIzinDonemi.BaslangicTarihi)
                         {
-                            Exception ex = new Exception("İzin Dönemi sonu itibarı ile dönemler arası çakışma var");
+                            Exception ex = new Exception("Izin D�nemi sonu itibari ile d�nemler arasi �akisma var");
                             throw (ex);
                         }
                     }
                     izinDonemi.BaslangicTarihi = bastar;
                     izinDonemi.BitisTarihi = bittar;
                     izinDonemi.Birim = ProjeConstants.IZIN_BIRIMI_GUN;
-                    izinDonemi.Adi = bastar.Year + "-" + bittar.Year + " İzin Donemi";
+                    izinDonemi.Adi = bastar.Year + "-" + bittar.Year + " Izin Donemi";
                     izinDonemi.Aciklama = AciklamaTxt.Text;
                     izinDonemi.Olusturan = CurrentUserName;
                     izinDonemi.Id = izinDonemi.Save();
                     bool issaved = izinDonemi.Id > 0 ? true : false;
-                    MessageHelper.PublishMessage("Kayıt Tamamlandı", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Kayit Tamamlandi", ProjeConstants.MESAJ_BASARILI, 2000);
                     FillIzinDonemTable();
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Kayıt Yapılamadı. İzin Hakkı, Kullanılan İzin ve Kalan İzin değerlerine lütfen tamsayı giriniz", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Kayit Yapilamadi. Izin Hakki, Kullanilan Izin ve Kalan Izin degerlerine l�tfen tamsayi giriniz", ProjeConstants.MESAJ_HATA);
                 }
             }
             catch (Exception exception)

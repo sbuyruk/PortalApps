@@ -1,4 +1,4 @@
-﻿using DocumentFormat.OpenXml.Office2010.Excel;
+using DocumentFormat.OpenXml.Office2010.Excel;
 using Model.MTS;
 using Model.Ortak;
 using System;
@@ -55,7 +55,7 @@ namespace Model.Portal
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
 
 

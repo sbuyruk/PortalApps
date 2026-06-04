@@ -1,4 +1,4 @@
-﻿using Model.IKYS;
+using Model.IKYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -103,7 +103,7 @@ namespace IKYS_WebParts.UcretliMahsupWP
                 {
                     if (!string.IsNullOrEmpty(MesajQS))
                     {
-                        MessageHelper.PublishMessage("Mahsup Tamamlandı", ProjeConstants.MESAJ_BASARILI, 2000);
+                        MessageHelper.PublishMessage("Mahsup Tamamlandi", ProjeConstants.MESAJ_BASARILI, 2000);
                         MesajQS = string.Empty;
                     }
                     FillPersonelDDL();
@@ -208,15 +208,15 @@ namespace IKYS_WebParts.UcretliMahsupWP
             izinHareket = izinHareket.Select<IzinHareket>(paramIzinHareketIdLbl.Value.ConvertToInt());
             if (isUygunDonemVar)
             {
-                OnayLbl.Text = "Onayladığınız takdirde " + personel.Adi + " " + personel.Soyadi + " Tarafından " + izinHareket.BaslangicTarihi.ToString("dd.MM.yyyy") + " - "
-                + izinHareket.BitisTarihi.ToString("dd.MM.yyyy") + " Tarihleri Arasında kullanılan " + izinHareket.Sure + " " + izinHareket.Birim
-                + " süreli izin için MAHSUP İŞLEMİ uygulanacaktır.";
+                OnayLbl.Text = "Onayladiginiz takdirde " + personel.Adi + " " + personel.Soyadi + " Tarafindan " + izinHareket.BaslangicTarihi.ToString("dd.MM.yyyy") + " - "
+                + izinHareket.BitisTarihi.ToString("dd.MM.yyyy") + " Tarihleri Arasinda kullanilan " + izinHareket.Sure + " " + izinHareket.Birim
+                + " s�reli izin i�in MAHSUP ISLEMI uygulanacaktir.";
                 MahsupEtModalBtn.Visible = true;
 
             }
             else
             {
-                OnayLbl.Text = "Mahsup işlemi için uygun dönem bulunmamaktadır.";
+                OnayLbl.Text = "Mahsup islemi i�in uygun d�nem bulunmamaktadir.";
                 MahsupEtModalBtn.Visible = false;
             }
 
@@ -270,7 +270,7 @@ namespace IKYS_WebParts.UcretliMahsupWP
             }
             else
             {
-                MessageHelper.PublishMessage("İşe başlama tarihi belirlenemedi", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Ise baslama tarihi belirlenemedi", ProjeConstants.MESAJ_HATA);
             }
         }
         private void IzinBilgileriTableHeaders()
@@ -278,13 +278,13 @@ namespace IKYS_WebParts.UcretliMahsupWP
             IzinBilgileriTable.Rows.Clear();
             TableHeaderRow th = new TableHeaderRow();
             TableHeaderCell donemCell = new TableHeaderCell();
-            donemCell.Text = "İzin Dönemi";
+            donemCell.Text = "Izin D�nemi";
             TableHeaderCell hakCell = new TableHeaderCell();
-            hakCell.Text = "İzin Hakkı";
+            hakCell.Text = "Izin Hakki";
             TableHeaderCell kullanilanCell = new TableHeaderCell();
-            kullanilanCell.Text = "Kullanılan İzin";
+            kullanilanCell.Text = "Kullanilan Izin";
             TableHeaderCell kalanCell = new TableHeaderCell();
-            kalanCell.Text = "Kalan İzin";
+            kalanCell.Text = "Kalan Izin";
             th.Controls.Add(donemCell);
             th.Controls.Add(hakCell);
             th.Controls.Add(kullanilanCell);
@@ -392,29 +392,29 @@ namespace IKYS_WebParts.UcretliMahsupWP
 
                     if ((oncekiIzinDonemi == null) || (yeniIzinDonemi == null))
                     {
-                        MessageHelper.PublishMessage("Mahsup işlemi yapılamaz, İzin dönemi bulunamadı!", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Mahsup islemi yapilamaz, Izin d�nemi bulunamadi!", ProjeConstants.MESAJ_HATA);
                     }
                     else
                     {
 
-                        //önceki izin dönemini güncelle,  kullanılan izni süre kadar eksilt, kalan izni süre kadar artır
-                        //yeni izin dönemini güncelle kullanılan izni süre kadar artır, kalan izni süre kadar eksilt
-                        // izinhareketi mahsup=true yap, açıklama yaz
+                        //�nceki izin d�nemini g�ncelle,  kullanilan izni s�re kadar eksilt, kalan izni s�re kadar artir
+                        //yeni izin d�nemini g�ncelle kullanilan izni s�re kadar artir, kalan izni s�re kadar eksilt
+                        // izinhareketi mahsup=true yap, a�iklama yaz
                         //mahsup tablosune ekle
-                        //her üçü de ok ise islem tamamlandı
-                        //eger herhangi biri tamamlanmadı ize rollback yap
+                        //her ��� de ok ise islem tamamlandi
+                        //eger herhangi biri tamamlanmadi ize rollback yap
 
                         if (oncekiIzinDonemi != null)
                         {
                             int sure = izinHareket.Sure.ConvertToInt();
                             oncekiIzinDonemiRB = oncekiIzinDonemi;
                             DateTime izinBastar = oncekiIzinDonemi.BaslangicTarihi;
-                            string mahsupAciklama = "# Önceki izin dönemi= " + oncekiIzinDonemi.BaslangicTarihi + "-" + oncekiIzinDonemi.BitisTarihi
-                                + "; Yeni izin dönemi= " + yeniIzinDonemi.BaslangicTarihi + "-" + yeniIzinDonemi.BitisTarihi + "; "
-                                + "; Mahsup Edilen süre = " + izinHareket.Sure;
+                            string mahsupAciklama = "# �nceki izin d�nemi= " + oncekiIzinDonemi.BaslangicTarihi + "-" + oncekiIzinDonemi.BitisTarihi
+                                + "; Yeni izin d�nemi= " + yeniIzinDonemi.BaslangicTarihi + "-" + yeniIzinDonemi.BitisTarihi + "; "
+                                + "; Mahsup Edilen s�re = " + izinHareket.Sure;
                             Mahsup mahsup = MahsupTablosunaEkle(izinHareket, ProjeConstants.IZINTIPI_UCRETLI_INT, oncekiIzinDonemi.Id, yeniIzinDonemi.Id, mahsupAciklama);
                             mahsupRB = mahsup;
-                            //önceki izin dönemi mahsupişlemleri
+                            //�nceki izin d�nemi mahsupislemleri
                             int oncekiKullanilanIzinInt = oncekiIzinDonemi.KullanilanIzin.ConvertToInt() - sure;
                             oncekiIzinDonemi.KullanilanIzin = oncekiKullanilanIzinInt.ToString();
                             int oncekiKalanIzinInt = oncekiIzinDonemi.KalanIzin.ConvertToInt() + sure;
@@ -423,7 +423,7 @@ namespace IKYS_WebParts.UcretliMahsupWP
                             oncekiIzinDonemi.Degistiren = CurrentUserName;
                             isOncekiDonemGuncellendi = oncekiIzinDonemi.Update();
 
-                            //yeni izin dönemi mahsupişlemleri
+                            //yeni izin d�nemi mahsupislemleri
                             int yeniKullanilanIzinInt = yeniIzinDonemi.KullanilanIzin.ConvertToInt() + sure;
                             yeniIzinDonemi.KullanilanIzin = yeniKullanilanIzinInt.ToString();
                             int yeniKalanIzinInt = yeniIzinDonemi.KalanIzin.ConvertToInt() - sure;
@@ -448,10 +448,10 @@ namespace IKYS_WebParts.UcretliMahsupWP
                         bool isIzinHareketRB = izinHareketRB.Update();
                         bool isOncekiIzinRB = oncekiIzinDonemiRB.Update();
                         bool isYeniIzinRB = yeniIzinDonemiRB.Update();
-                        string message = " Mahsup sırasında sorunlarla karşılaşıldı. Geri alma işleminde: "
-                            + " İzin Hareketi geri alma : " + (isIzinHareketRB ? "Başarılı. " : "Başarısız. ")
-                            + " Önceki İzin Dönemi geri alma : " + (isOncekiIzinRB ? "Başarılı. " : " Başarısız")
-                            + (isYeniIzinRB ? "Başarılı. " : " Başarısız.");
+                        string message = " Mahsup sirasinda sorunlarla karsilasildi. Geri alma isleminde: "
+                            + " Izin Hareketi geri alma : " + (isIzinHareketRB ? "Basarili. " : "Basarisiz. ")
+                            + " �nceki Izin D�nemi geri alma : " + (isOncekiIzinRB ? "Basarili. " : " Basarisiz")
+                            + (isYeniIzinRB ? "Basarili. " : " Basarisiz.");
                         MessageHelper.PublishMessage(message, ProjeConstants.MESAJ_HATA);
                     }
 
@@ -463,8 +463,8 @@ namespace IKYS_WebParts.UcretliMahsupWP
         }
         private void TabloOlustur()
         {
-            var jsonData = GetDataJson();//TabloJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = GetDataJson();//TabloJson(); //veri �ekilip json a �eviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string CreateDataTable(string jsonData)
@@ -478,9 +478,9 @@ namespace IKYS_WebParts.UcretliMahsupWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY');//sort date
 
                 jQuery('#CustomDataTable').DataTable({
-                    'initComplete': function (settings, json) {//tablo yüklendiğinde
+                    'initComplete': function (settings, json) {//tablo y�klendiginde
                         var api = this.api();
-                        var row = api.row(function(idx, data, node) { //secilen toplantıya gider
+                        var row = api.row(function(idx, data, node) { //secilen toplantiya gider
                             return data['Secildi'] == true;
                         });
                         if (row.length > 0)
@@ -498,7 +498,7 @@ namespace IKYS_WebParts.UcretliMahsupWP
                               return moment(data).format('DD.MM.YYYY');
                             }},
                             {targets:5, render:function(data){
-                                var link= '<a href=# onclick=OpenModal('+data+'); class=\'btn btn-outline-danger \'>Mahsup İşlemi</a>';
+                                var link= '<a href=# onclick=OpenModal('+data+'); class=\'btn btn-outline-danger \'>Mahsup Islemi</a>';
                               return link;
                             }}],                    
                     data: " + jsonData + @",

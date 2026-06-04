@@ -1,4 +1,4 @@
-﻿using Model.IKYS;
+using Model.IKYS;
 using Model.Ortak;
 using System;
 using System.ComponentModel;
@@ -180,7 +180,7 @@ namespace IKYS_WebParts.HarcirahGirisWP
             {
                 if (string.IsNullOrWhiteSpace(YeniBaslangicTarihiTxt.Text))
                 {
-                    MessageHelper.PublishMessage("Başlangıç tarihi zorunludur.", ProjeConstants.MESAJ_BILGI, 3000);
+                    MessageHelper.PublishMessage("Baslangi� tarihi zorunludur.", ProjeConstants.MESAJ_BILGI, 3000);
                     return;
                 }
 
@@ -189,7 +189,7 @@ namespace IKYS_WebParts.HarcirahGirisWP
                 if (string.IsNullOrWhiteSpace(seciliUlke) ||
                     seciliUlke == ProjeConstants.BOS_INT.ToString())
                 {
-                    MessageHelper.PublishMessage("Ülke seçilmelidir.", ProjeConstants.MESAJ_BILGI, 3000);
+                    MessageHelper.PublishMessage("�lke se�ilmelidir.", ProjeConstants.MESAJ_BILGI, 3000);
                     return;
                 }
 
@@ -237,7 +237,7 @@ namespace IKYS_WebParts.HarcirahGirisWP
 
                 if (kadroUlkeKombinasyonlari.Count == 0)
                 {
-                    MessageHelper.PublishMessage("Seçili ülke için kadro grubu/ülke tanımı bulunamadı.", ProjeConstants.MESAJ_BILGI, 3000);
+                    MessageHelper.PublishMessage("Se�ili �lke i�in kadro grubu/�lke tanimi bulunamadi.", ProjeConstants.MESAJ_BILGI, 3000);
                     return;
                 }
 
@@ -275,7 +275,7 @@ namespace IKYS_WebParts.HarcirahGirisWP
                     }
                 }
 
-                MessageHelper.PublishMessage(eklendi + " kayıt eklendi.", ProjeConstants.MESAJ_BASARILI, 3000);
+                MessageHelper.PublishMessage(eklendi + " kayit eklendi.", ProjeConstants.MESAJ_BASARILI, 3000);
                 RedirectToSelf();
             }
             catch (Exception ex)
@@ -292,15 +292,15 @@ namespace IKYS_WebParts.HarcirahGirisWP
             // Header
             TableHeaderRow headerRow = new TableHeaderRow();
 
-            headerRow.Cells.Add(new TableHeaderCell { Text = "Sıra" });
+            headerRow.Cells.Add(new TableHeaderCell { Text = "Sira" });
             headerRow.Cells.Add(new TableHeaderCell { Text = "Kadro Grubu" });
-            headerRow.Cells.Add(new TableHeaderCell { Text = "Ülke" });
+            headerRow.Cells.Add(new TableHeaderCell { Text = "�lke" });
             headerRow.Cells.Add(new TableHeaderCell { Text = "Para Birimi" });
             headerRow.Cells.Add(new TableHeaderCell { Text = "Miktar" });
-            headerRow.Cells.Add(new TableHeaderCell { Text = "Başlangıç Tarihi" });
-            headerRow.Cells.Add(new TableHeaderCell { Text = "Bitiş Tarihi" });
-            headerRow.Cells.Add(new TableHeaderCell { Text = "Açıklama" });
-            headerRow.Cells.Add(new TableHeaderCell { Text = "Güncelle" });
+            headerRow.Cells.Add(new TableHeaderCell { Text = "Baslangi� Tarihi" });
+            headerRow.Cells.Add(new TableHeaderCell { Text = "Bitis Tarihi" });
+            headerRow.Cells.Add(new TableHeaderCell { Text = "A�iklama" });
+            headerRow.Cells.Add(new TableHeaderCell { Text = "G�ncelle" });
             headerRow.Cells.Add(new TableHeaderCell { Text = "Sil" });
 
             AyrintiTable.Rows.Add(headerRow);
@@ -336,7 +336,7 @@ namespace IKYS_WebParts.HarcirahGirisWP
                 };
                 kadroCell.Controls.Add(kadroTxt);
 
-                // Ülke (Text)
+                // �lke (Text)
                 TableCell ulkeCell = new TableCell();
                 TextBox ulkeTxt = new TextBox
                 {
@@ -356,7 +356,7 @@ namespace IKYS_WebParts.HarcirahGirisWP
                 TextBox miktarTxt = new TextBox { CssClass = "form-control input-money text-end", Text = item.Miktar.ToString() };
                 miktarCell.Controls.Add(miktarTxt);
 
-                // Başlangıç / Bitiş
+                // Baslangi� / Bitis
                 TableCell basTarCell = new TableCell();
                 TextBox basTarTxt = new TextBox { CssClass = "form-control", Text = item.BaslangicTarihi.ConvertToDatetimeEmptyIfNull(), Enabled = false };
                 basTarCell.Controls.Add(basTarTxt);
@@ -365,16 +365,16 @@ namespace IKYS_WebParts.HarcirahGirisWP
                 TextBox bitTarTxt = new TextBox { CssClass = "form-control", Text = item.BitisTarihi.ConvertToDatetimeEmptyIfNull(), Enabled = false };
                 bitTarCell.Controls.Add(bitTarTxt);
 
-                // Açıklama
+                // A�iklama
                 TableCell aciklamaCell = new TableCell();
                 TextBox aciklamaTxt = new TextBox { CssClass = "form-control", Text = item.Aciklama };
                 aciklamaCell.Controls.Add(aciklamaTxt);
 
-                // Güncelle
+                // G�ncelle
                 TableCell guncelleCell = new TableCell();
                 LinkButton guncelleBtn = new LinkButton
                 {
-                    Text = "Güncelle",
+                    Text = "G�ncelle",
                     CssClass = "btn btn-outline-primary",
                     ID = "GuncelleBtn" + sira
                 };
@@ -392,7 +392,7 @@ namespace IKYS_WebParts.HarcirahGirisWP
 
                         if (item.Update())
                         {
-                            MessageHelper.PublishMessage("Güncellendi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                            MessageHelper.PublishMessage("G�ncellendi.", ProjeConstants.MESAJ_BASARILI, 2000);
                             RedirectToSelf();
                         }
                     }
@@ -504,12 +504,12 @@ namespace IKYS_WebParts.HarcirahGirisWP
             string u = ulke.Trim();
 
             if (string.Equals(u, ProjeConstants.TURKIYE, StringComparison.OrdinalIgnoreCase) ||
-                string.Equals(u, "Türkiye", StringComparison.OrdinalIgnoreCase))
+                string.Equals(u, "T�rkiye", StringComparison.OrdinalIgnoreCase))
             {
                 return "TL";
             }
 
-            if (string.Equals(u, "İngiltere", StringComparison.OrdinalIgnoreCase) ||
+            if (string.Equals(u, "Ingiltere", StringComparison.OrdinalIgnoreCase) ||
                 string.Equals(u, "Ingiltere", StringComparison.OrdinalIgnoreCase) ||
                 string.Equals(u, "United Kingdom", StringComparison.OrdinalIgnoreCase) ||
                 string.Equals(u, "UK", StringComparison.OrdinalIgnoreCase))
@@ -523,7 +523,7 @@ namespace IKYS_WebParts.HarcirahGirisWP
             }
 
             if (string.Equals(u, "Avrupa Harici", StringComparison.OrdinalIgnoreCase) ||
-                string.Equals(u, "Avrupa Dışı", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(u, "Avrupa Disi", StringComparison.OrdinalIgnoreCase) ||
                 string.Equals(u, "Avrupa Disi", StringComparison.OrdinalIgnoreCase))
             {
                 return "USD";

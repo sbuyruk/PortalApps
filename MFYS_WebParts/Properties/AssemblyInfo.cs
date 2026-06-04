@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security;
@@ -11,7 +11,7 @@ using System.Security;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("HAVELSAN")]
 [assembly: AssemblyProduct("MFYS_WebParts")]
-[assembly: AssemblyCopyright("Copyright © HAVELSAN 2023")]
+[assembly: AssemblyCopyright("Copyright � HAVELSAN 2023")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

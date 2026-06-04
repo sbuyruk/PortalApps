@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.ComponentModel;
@@ -46,7 +46,7 @@ namespace TBYS_WebParts.KiraGelirleriAyDokumuWP
         {
             if (yil>0)
             {
-                TitleLbl.Text = yil + " YILI AYLIK KİRA GELİRLERİ";
+                TitleLbl.Text = yil + " YILI AYLIK KIRA GELIRLERI";
                 KiraGelirleriTable.Controls.Clear();
                 KiraGelirleriTableHeaders();
                 string bolge = string.Empty;
@@ -181,7 +181,7 @@ namespace TBYS_WebParts.KiraGelirleriAyDokumuWP
             bolgeCell.HorizontalAlign = HorizontalAlign.Center;
             bolgeCell.Attributes["style"] = "vertical-align:middle";
             bolgeCell.Font.Bold = true;
-            bolgeCell.Text = "BÖLGE";
+            bolgeCell.Text = "B�LGE";
 
             TableHeaderCell kiraciSayisiCell = new TableHeaderCell();
             kiraciSayisiCell.RowSpan = 2;
@@ -191,7 +191,7 @@ namespace TBYS_WebParts.KiraGelirleriAyDokumuWP
             kiraciSayisiCell.HorizontalAlign = HorizontalAlign.Center;
             kiraciSayisiCell.Attributes["style"] = "vertical-align:middle";
             kiraciSayisiCell.Font.Bold = true;
-            kiraciSayisiCell.Text = "KİRACI SAYISI";
+            kiraciSayisiCell.Text = "KIRACI SAYISI";
 
             TableHeaderCell tasinmazTuruCell = new TableHeaderCell();
             tasinmazTuruCell.ColumnSpan = 6;
@@ -201,7 +201,7 @@ namespace TBYS_WebParts.KiraGelirleriAyDokumuWP
             tasinmazTuruCell.HorizontalAlign = HorizontalAlign.Center;
             tasinmazTuruCell.Attributes["style"] = "vertical-align:middle";
             tasinmazTuruCell.Font.Bold = true;
-            tasinmazTuruCell.Text = "KİRA ELDE EDİLEN TAŞINMAZIN TÜRÜ";
+            tasinmazTuruCell.Text = "KIRA ELDE EDILEN TASINMAZIN T�R�";
 
             TableHeaderCell kiraGeliriCell = new TableHeaderCell();
             kiraGeliriCell.RowSpan = 2;
@@ -211,7 +211,7 @@ namespace TBYS_WebParts.KiraGelirleriAyDokumuWP
             kiraGeliriCell.HorizontalAlign = HorizontalAlign.Right;
             kiraGeliriCell.Attributes["style"] = "vertical-align:middle";
             kiraGeliriCell.Font.Bold = true;
-            kiraGeliriCell.Text = "KİRA GELİRİ";
+            kiraGeliriCell.Text = "KIRA GELIRI";
 
             tableHeaderRow.Controls.Add(siraNoCell);
             tableHeaderRow.Controls.Add(ayCell);
@@ -234,7 +234,7 @@ namespace TBYS_WebParts.KiraGelirleriAyDokumuWP
             isyeriCell.BorderColor = System.Drawing.Color.Black;
             isyeriCell.HorizontalAlign = HorizontalAlign.Center;
             isyeriCell.Font.Bold = true;
-            isyeriCell.Text = "İşyeri";
+            isyeriCell.Text = "Isyeri";
 
 
             TableHeaderCell arsaCell = new TableHeaderCell();
@@ -295,7 +295,7 @@ namespace TBYS_WebParts.KiraGelirleriAyDokumuWP
             ayToplamLabelCell.BackColor = System.Drawing.Color.Gray;
             ayToplamLabelCell.HorizontalAlign = HorizontalAlign.Right;
             ayToplamLabelCell.Font.Bold = true;
-            ayToplamLabelCell.Text = yil + " Toplamı";
+            ayToplamLabelCell.Text = yil + " Toplami";
 
             TableCell meskenToplamCell = new TableCell();
             meskenToplamCell.BorderStyle = BorderStyle.Solid;
@@ -390,7 +390,7 @@ namespace TBYS_WebParts.KiraGelirleriAyDokumuWP
             ayToplamLabelCell.HorizontalAlign = HorizontalAlign.Right;
             ayToplamLabelCell.Font.Bold = true;
             DateTime tarih = new DateTime(yil, ay, 1);
-            ayToplamLabelCell.Text = tarih.ToString("MMMM", culturInfo) + " Toplamı";
+            ayToplamLabelCell.Text = tarih.ToString("MMMM", culturInfo) + " Toplami";
 
 
             TableCell kiraciSayisiToplamCell = new TableCell();

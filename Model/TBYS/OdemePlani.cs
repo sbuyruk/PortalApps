@@ -1,4 +1,4 @@
-﻿using DocumentFormat.OpenXml.Wordprocessing;
+using DocumentFormat.OpenXml.Wordprocessing;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -60,7 +60,7 @@ namespace Model.TBYS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public override bool Update()
@@ -117,7 +117,7 @@ namespace Model.TBYS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public bool DeleteBySozlesmeId(int sozlesmeId)
@@ -203,7 +203,7 @@ namespace Model.TBYS
                     (
                         A.SozBasTar<{2} AND A.SozBitTar >= {1} 
 						AND
-                        (--SB 12.08.2022 parantez icine aldım cift cikan kayitlar oluyordu
+                        (--SB 12.08.2022 parantez icine aldim cift cikan kayitlar oluyordu
 							(
 								A.SozlesmeDurumu = 'Devam Ediyor' 
 								OR
@@ -298,7 +298,7 @@ namespace Model.TBYS
                 WHERE Sira!=0 AND SozlesmeId={0} 
                 {1} 
                 ORDER BY VadeBasTar ", sozlesmeId.ReturnQuotedValue(), vadeBasTarStr);
-            //Sira!=0 olmalı çünkü ilk ay devir ayı
+            //Sira!=0 olmali ��nk� ilk ay devir ayi
             DataTable dataTable = dao.SelectFromDb(sqlString, "");
             List<OdemePlani> list = ToList<OdemePlani>(dataTable);
             OdemePlani odemePlani = list.FirstOrDefault<OdemePlani>();
@@ -380,7 +380,7 @@ namespace Model.TBYS
             }
             bool isSaved = false;
 
-            DateTime sozBastarDate = kiraSozlesme.SozBasTar;//.AddMonths(1);//vade tarihi bir ay sonra olsun Zekayi Çalış 22/04/2019
+            DateTime sozBastarDate = kiraSozlesme.SozBasTar;//.AddMonths(1);//vade tarihi bir ay sonra olsun Zekayi �alis 22/04/2019
             DateTime bittarDate = sozBastarDate.AddMonths(taksitSayisi);
 
             int odemeBitYil = bittarDate.Year;
@@ -389,7 +389,7 @@ namespace Model.TBYS
 
             DateTime vadeBasTarX = sozBastarDate;
             DateTime vadeBitTarX = vadeBasTarX.AddMonths(1).AddDays(-1);
-            //taksitsayisi verilebilsin diye aşağısı kapatıldı
+            //taksitsayisi verilebilsin diye asagisi kapatildi
             //if (kiraSozlesme.OdemeSekli == ProjeConstants.KIRA_ODMSEKLI_YILLIK)
             //{
             //    vadeBasTarX = kiraSozlesme.SozBitTar;
@@ -405,9 +405,9 @@ namespace Model.TBYS
                 }
 
                 OdemePlani odemePlaniDevir = new OdemePlani();
-                odemePlaniDevir = SaveDevir(kiraSozlesme, kiraSozlesme.DevirAnaPara, kiraSozlesme.DevirFaizTutari, "Önceki Sözleşmeden devir", 0);
+                odemePlaniDevir = SaveDevir(kiraSozlesme, kiraSozlesme.DevirAnaPara, kiraSozlesme.DevirFaizTutari, "�nceki S�zlesmeden devir", 0);
 
-                for (int i = 1; i <= taksitSayisi; i++)//taksitlere böl
+                for (int i = 1; i <= taksitSayisi; i++)//taksitlere b�l
                 {
 
                     int yil = vadeBasTarX.Year;
@@ -417,14 +417,14 @@ namespace Model.TBYS
                     {
                         break;
                     }
-                    //odeme sozlesme bas ayda yapıldı o yüzden bit ayda ödeme olmasın
+                    //odeme sozlesme bas ayda yapildi o y�zden bit ayda �deme olmasin
                     OdemePlani odemePlani = new OdemePlani();
                     odemePlani = SaveNew(kiraSozlesme, yil, ay, vadeBasTarX, vadeBitTarX, sozBastarDate, bittarDate, aylikKira, i);
-                    //odemeBasTar ilk ay başlasın zekayi bey 16/11/2017
+                    //odemeBasTar ilk ay baslasin zekayi bey 16/11/2017
                     vadeBasTarX = vadeBasTarX.AddMonths(1);
-                    vadeBitTarX = vadeBasTarX.AddMonths(1).AddDays(-1); //vadeBitTarX.AddMonths(1) -- bu şubat ayı için yanlış çalışıyor, 29 şubat ayın son günü, 1 ay ekleyince 29 mart oluyor, ama ayın sonu olmuyordu. SB
+                    vadeBitTarX = vadeBasTarX.AddMonths(1).AddDays(-1); //vadeBitTarX.AddMonths(1) -- bu subat ayi i�in yanlis �alisiyor, 29 subat ayin son g�n�, 1 ay ekleyince 29 mart oluyor, ama ayin sonu olmuyordu. SB
                 }
-                //sözlesme bitimine kadar olan aylar için satır ekle
+                //s�zlesme bitimine kadar olan aylar i�in satir ekle
                 for (int i = taksitSayisi+1; i <= 12; i++)
                 {
                     int yil = vadeBasTarX.Year;
@@ -472,10 +472,10 @@ namespace Model.TBYS
             DateTime pVadeBitTar = kiraSozlesme.SozBasTar.AddDays(-1);
             OdemePlani odemePlani = new OdemePlani();
             odemePlani.SozlesmeId = kiraSozlesme.Id;
-            //VadeBasTar null veya boş olmalı 
+            //VadeBasTar null veya bos olmali 
             //odemePlani.VadeBasTar = pVadeBasTar; 
             
-            //VadeBitTar eklendi SB 20.01.2021 sebebi BölgelereGöeBorcluKiracılar raporunda içinde bulunulan ayda yeni sözleşmesi olanların devir borcu varsa dikkate almıyordu
+            //VadeBitTar eklendi SB 20.01.2021 sebebi B�lgelereG�eBorcluKiracilar raporunda i�inde bulunulan ayda yeni s�zlesmesi olanlarin devir borcu varsa dikkate almiyordu
             odemePlani.VadeBitTar = pVadeBitTar;
 
             odemePlani.AnaPara = devirAnaPara;

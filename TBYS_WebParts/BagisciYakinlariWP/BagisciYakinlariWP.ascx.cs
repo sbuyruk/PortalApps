@@ -1,4 +1,4 @@
-﻿using Model.TBYS;
+using Model.TBYS;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -101,7 +101,7 @@ namespace TBYS_WebParts.BagisciYakinlariWP
         protected void Page_Load(object sender, EventArgs e)
         {
 
-            //önceki sayfayı tut, geri tuşuna basıldığında gerekli
+            //�nceki sayfayi tut, geri tusuna basildiginda gerekli
 
             TasinmazBagisci bagisci = new TasinmazBagisci();
             bagisci = bagisci.Select<TasinmazBagisci>(BagisciIdQS.ConvertToInt());
@@ -115,13 +115,13 @@ namespace TBYS_WebParts.BagisciYakinlariWP
             BagisciYakinlariTable.Rows.Clear();
             TableHeaderRow th = new TableHeaderRow();
             TableHeaderCell siraCell = new TableHeaderCell();
-            siraCell.Text = "Sıra";
+            siraCell.Text = "Sira";
             TableHeaderCell AdisoyadCell = new TableHeaderCell();
-            AdisoyadCell.Text = "Adı Soyadı";
+            AdisoyadCell.Text = "Adi Soyadi";
             TableHeaderCell IrtibatCell = new TableHeaderCell();
             IrtibatCell.Text = "Telefon";
             TableHeaderCell YakinlikDerecesiCell = new TableHeaderCell();
-            YakinlikDerecesiCell.Text = "Yakınlık Derecesi";
+            YakinlikDerecesiCell.Text = "Yakinlik Derecesi";
 
 
             th.Controls.Add(siraCell);
@@ -132,7 +132,7 @@ namespace TBYS_WebParts.BagisciYakinlariWP
         }
         private void FillBagisciYakinlari2Table(TasinmazBagisci bagisci)
         {
-            AdiLbl.Text = " Bağışçı : " + bagisci.Adi + " " + bagisci.Soyadi;
+            AdiLbl.Text = " Bagis�i : " + bagisci.Adi + " " + bagisci.Soyadi;
             BagisciIdLbl.Text = bagisci.Id + "";
             //Column headers
             BagisciYakinlariTableHeaders();

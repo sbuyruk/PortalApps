@@ -1,4 +1,4 @@
-﻿using Microsoft.SharePoint.JsonUtilities;
+using Microsoft.SharePoint.JsonUtilities;
 using Model.IKYS;
 using Model.Ortak;
 using System;
@@ -117,9 +117,9 @@ namespace IKYS_WebParts.GorevOnayListesiWP
         }
 
         /// <summary>
-        /// GorevOnay.Secildi kolonu sadece toplu Rapor Alımı için kullanılır
-        /// SSRS Select ... IN (parametre) şeklindeki sorgularda "," ile ayrılmış parametreleri desteklemediği için tabloya Secildi alanı eklendi
-        /// Bu nedenle her açılışta tüm secildi kolonları false yapılır
+        /// GorevOnay.Secildi kolonu sadece toplu Rapor Alimi i�in kullanilir
+        /// SSRS Select ... IN (parametre) seklindeki sorgularda "," ile ayrilmis parametreleri desteklemedigi i�in tabloya Secildi alani eklendi
+        /// Bu nedenle her a�ilista t�m secildi kolonlari false yapilir
         /// </summary>
         private void SecildiFalseYap()
         {
@@ -138,8 +138,8 @@ namespace IKYS_WebParts.GorevOnayListesiWP
 
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            //var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = TabloJson(); //veri �ekilip json a �eviriliyor
+            //var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir("setDataSet(" + jsonData + ");");
         }
         private string TabloJson()
@@ -213,7 +213,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
                 if (AuthQS.Equals(ProjeConstants.IKYS_YETKILI_BIRIM))
                 {
                     gorevOnayListItem.RaporAl = "<a href=" + ProjeConstants.RAPOR_GOREVONAYBELGESI_URL + "?Auth="+AuthQS+"&GorevOnayId=" + gorevOnayId + " class='btn btn-outline-primary'>Rapor Al</a>";
-                    gorevOnayListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_GOREVONAY_GIRIS + "?Auth="+AuthQS+"&GorevOnayId=" + gorevOnayId + " class='btn btn-outline-primary'>Düzenle</a>";
+                    gorevOnayListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_GOREVONAY_GIRIS + "?Auth="+AuthQS+"&GorevOnayId=" + gorevOnayId + " class='btn btn-outline-primary'>D�zenle</a>";
                     list.Add(gorevOnayListItem);
                 }else if (personel.Id == personelId)
                 {
@@ -222,7 +222,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
                     if (!string.IsNullOrEmpty(baslangicTarihi) && fark<4)
                     {
                         gorevOnayListItem.RaporAl = "<a href=" + ProjeConstants.RAPOR_GOREVONAYBELGESI_URL + "?GorevOnayId=" + gorevOnayId + " class='btn btn-outline-primary'>Rapor Al</a>";
-                        gorevOnayListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_GOREVONAY_GIRIS + "?GorevOnayId=" + gorevOnayId + " class='btn btn-outline-primary'>Düzenle</a>"; 
+                        gorevOnayListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_GOREVONAY_GIRIS + "?GorevOnayId=" + gorevOnayId + " class='btn btn-outline-primary'>D�zenle</a>"; 
                     }
                     list.Add(gorevOnayListItem);
                 }
@@ -241,11 +241,11 @@ namespace IKYS_WebParts.GorevOnayListesiWP
                 var gunlukYevmiye = gorevOnay.GunlukYevmiye.ConvertToDecimal();
 
                 if (gunlukYevmiye < 1)
-                    return false; // Yevmiye bilgisi yoksa doğrulama yapılamaz
+                    return false; // Yevmiye bilgisi yoksa dogrulama yapilamaz
 
                 var bastar = gorevOnay.BaslangicTarihi;
                 var bittar = gorevOnay.BitisTarihi;
-                decimal sure = (gorevOnay.Sure).Replace("gün", "").Replace("Gün", "").ConvertToDecimal();
+                decimal sure = (gorevOnay.Sure).Replace("g�n", "").Replace("G�n", "").ConvertToDecimal();
                 decimal yevmiye = gorevOnay.Yevmiye.Replace(".", "").ConvertToDecimal(); 
 
                 double dakika = (bittar - bastar).TotalMinutes;
@@ -254,10 +254,10 @@ namespace IKYS_WebParts.GorevOnayListesiWP
 
                 double artan = (double)(saat == 0 ? 0 : (saat > 12 ? 1 : 0.5m));
 
-                // önce ham değeri hesapla
+                // �nce ham degeri hesapla
                 decimal hesaplananSure = (decimal)(artan + gun);
 
-                // veritabanından gelen 'sure' ve 'yevmiye' string değerlerini karşılaştır
+                // veritabanindan gelen 'sure' ve 'yevmiye' string degerlerini karsilastir
                 if (sure != hesaplananSure)
                     return true;
 
@@ -267,7 +267,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
                     return true;
 
             }
-            return false; // doğrulama yapılamıyor 
+            return false; // dogrulama yapilamiyor 
         }
 
         protected void CloseBtn_Click(object sender, EventArgs e)
@@ -285,7 +285,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Toplu rapor almak için görevleri seçmeniz gerekli, henüz hiç görev seçmediniz",ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Toplu rapor almak i�in g�revleri se�meniz gerekli, hen�z hi� g�rev se�mediniz",ProjeConstants.MESAJ_HATA);
             }
             
         }

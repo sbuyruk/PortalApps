@@ -1,4 +1,4 @@
-﻿using Model.NBYS;
+using Model.NBYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -30,7 +30,7 @@ namespace NBYS_WebParts.NakitBagisciBagislariWP
             InitializeControl();
             this.ChromeType = PartChromeType.None;
         }
-        private string ParamQS//nakit bagisci düzenlemeden dönüyorsa aranan texti tekrar arasın
+        private string ParamQS//nakit bagisci d�zenlemeden d�n�yorsa aranan texti tekrar arasin
         {
             get
             {
@@ -126,8 +126,8 @@ namespace NBYS_WebParts.NakitBagisciBagislariWP
         {
             if (!string.IsNullOrEmpty(BagisciAraTxt.Text) && BagisciAraTxt.Text.Length > 3)
             {
-                var jsonData = BagisciTabloJson(); //veri çekilip json a çeviriliyor
-                var jsString = BagisciCreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+                var jsonData = BagisciTabloJson(); //veri �ekilip json a �eviriliyor
+                var jsString = BagisciCreateDataTable(jsonData); //javascript kodu hazirlaniyor.
                 UtilityHelper.ScriptCalistir(jsString);
                 BagisciSecTableDiv.Attributes["style"] = "display:block";
 
@@ -171,7 +171,7 @@ namespace NBYS_WebParts.NakitBagisciBagislariWP
                     string telefon = row["Telefon1"].ToString();
                     string adres = row["Adres"].ToString();
 
-                    string secUrl = "<a class='btn btn-outline-info' onclick=BagisListesiGoster(" + nakitBagisciId + ");>Seç</>";
+                    string secUrl = "<a class='btn btn-outline-info' onclick=BagisListesiGoster(" + nakitBagisciId + ");>Se�</>";
 
                     NakitBagisciListItem nakitBagisciListItem = new NakitBagisciListItem();
                     nakitBagisciListItem.NakitBagisciId = nakitBagisciId;
@@ -183,7 +183,7 @@ namespace NBYS_WebParts.NakitBagisciBagislariWP
                     nakitBagisciListItem.Adres = adres;
 
 
-                    nakitBagisciListItem.Sec = adi.IndexOf("BİLİNMEYEN") >= 0 ? string.Empty : secUrl;
+                    nakitBagisciListItem.Sec = adi.IndexOf("BILINMEYEN") >= 0 ? string.Empty : secUrl;
 
                     nakitBagisciListItem.Secildi = SecilenIdQS.Equals(nakitBagisciListItem.NakitBagisciId);
                     list.Add(nakitBagisciListItem);
@@ -212,7 +212,7 @@ namespace NBYS_WebParts.NakitBagisciBagislariWP
                 jQuery(document).ready(function() {
 
                     jQuery('#CustomDataTable').DataTable({
-                        'initComplete': function(settings, json) {//tablo yüklendiğinde
+                        'initComplete': function(settings, json) {//tablo y�klendiginde
                             var api = this.api();
                             var row = api.row(function(idx, data, node) { //secilen Id'ye gider
                                 return data['Secildi'] == true;
@@ -236,7 +236,7 @@ namespace NBYS_WebParts.NakitBagisciBagislariWP
                     { data: 'Sec' },
 
                 ],
-                'order': [0],//AdiSoyadi Sıralı
+                'order': [0],//AdiSoyadi Sirali
                 columnDefs:
                     [
                     ],
@@ -259,8 +259,8 @@ namespace NBYS_WebParts.NakitBagisciBagislariWP
         #region Bagis listesi
         private void BagisTablosuOlustur(string nakitBagisciId)
         {
-            var jsonData = BagisDataJson(nakitBagisciId); //veri çekilip json a çeviriliyor
-            var jsString = CreateBagisDataTable(jsonData, nakitBagisciId.ConvertToInt()); //javascript kodu hazırlanıyor.
+            var jsonData = BagisDataJson(nakitBagisciId); //veri �ekilip json a �eviriliyor
+            var jsString = CreateBagisDataTable(jsonData, nakitBagisciId.ConvertToInt()); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
             BagisciSecTableDiv.Attributes["style"] = "display:none";
             BagisTableDiv.Attributes["style"] = "display:block";
@@ -321,8 +321,8 @@ namespace NBYS_WebParts.NakitBagisciBagislariWP
 
 
 
-            BagisBilgileriLbl.Text = rowCount < 1 ? "Bağış bulunmamaktadır." :
-                "(Bağışçının " + rowCount + " defada yaptığı toplam " + toplamTutar.ToString("N", culturInfo) + "TL bağışı bulunmaktadır.)";
+            BagisBilgileriLbl.Text = rowCount < 1 ? "Bagis bulunmamaktadir." :
+                "(Bagis�inin " + rowCount + " defada yaptigi toplam " + toplamTutar.ToString("N", culturInfo) + "TL bagisi bulunmaktadir.)";
             return json;
         }
         protected void BagisListesiGosterBtn_Click(object sender, EventArgs e)

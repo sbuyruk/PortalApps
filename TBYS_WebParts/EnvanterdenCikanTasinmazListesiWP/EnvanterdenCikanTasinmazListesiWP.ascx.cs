@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -76,8 +76,8 @@ namespace TBYS_WebParts.EnvanterdenCikanTasinmazListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = TabloJson(); //veri �ekilip json a �eviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string TabloJson()
@@ -128,8 +128,8 @@ namespace TBYS_WebParts.EnvanterdenCikanTasinmazListesiWP
                 envanterdenCikanListesiListItem.Aciklama = aciklama;
 
 
-                envanterdenCikanListesiListItem.Tasinmaz = "<a target='_blank' href=" + ProjeConstants.PAGE_TASINMAZ_GIRIS + "?EnvanterdeMi=0&DestinationApp=TD&SenderApp=STL&TasinmazId=" + tasinmazId + " class='btn btn-outline-info'>Taşınmaz</a>";
-                envanterdenCikanListesiListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_TASINMAZ_ENVANTERDEN_CIKARMA + "?EnvanterdeMi=0&DestinationApp=ECD&SenderApp=STL&TasinmazId=" + tasinmazId + " class='btn btn-outline-primary'>Düzenle</a>";
+                envanterdenCikanListesiListItem.Tasinmaz = "<a target='_blank' href=" + ProjeConstants.PAGE_TASINMAZ_GIRIS + "?EnvanterdeMi=0&DestinationApp=TD&SenderApp=STL&TasinmazId=" + tasinmazId + " class='btn btn-outline-info'>Tasinmaz</a>";
+                envanterdenCikanListesiListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_TASINMAZ_ENVANTERDEN_CIKARMA + "?EnvanterdeMi=0&DestinationApp=ECD&SenderApp=STL&TasinmazId=" + tasinmazId + " class='btn btn-outline-primary'>D�zenle</a>";
                 list.Add(envanterdenCikanListesiListItem);
             }
             return list;
@@ -148,9 +148,9 @@ namespace TBYS_WebParts.EnvanterdenCikanTasinmazListesiWP
             jQuery(document).ready(function () {
 
                     jQuery('#CustomDataTable').DataTable({
-            'initComplete': function (settings, json) {//tablo yüklendiğinde
+            'initComplete': function (settings, json) {//tablo y�klendiginde
                 var api = this.api();
-                var row = api.row(function (idx, data, node) { //secilen satıra gider
+                var row = api.row(function (idx, data, node) { //secilen satira gider
                     return data['TasinmazId'] == " + SecilenIdQS + @";
                 });
                 if (row.length > 0) {
@@ -172,7 +172,7 @@ namespace TBYS_WebParts.EnvanterdenCikanTasinmazListesiWP
                 { data: 'Tasinmaz' },
                 { data: 'Duzenle' },
             ],
-            'order': [[2, 'desc']],//AdiSoyadi Sıralı
+            'order': [[2, 'desc']],//AdiSoyadi Sirali
             'language': {
                 'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                 'decimal': ',',

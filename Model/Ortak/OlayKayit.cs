@@ -1,4 +1,4 @@
-﻿using Model.MTS;
+using Model.MTS;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +33,7 @@ namespace Model.Ortak
                     }
                     olay.IslemKonusu =modul;
                     olay.IslemTarihi = DateTime.Now;
-                    olay.IslemTipi = "Güncelleme";
+                    olay.IslemTipi = "G�ncelleme";
                     olay.IslemYapan = UtilityHelper.GetCurrentUserName();
                     olay.Olusturan = UtilityHelper.GetCurrentUserName();
                     olay.OlusturmaTarihi = DateTime.Now;
@@ -97,7 +97,7 @@ namespace Model.Ortak
                     }
                     olay.IslemKonusu = modul;
                     olay.IslemTarihi = DateTime.Now;
-                    olay.IslemTipi = "Giriş";
+                    olay.IslemTipi = "Giris";
                     olay.IslemYapan = UtilityHelper.GetCurrentUserName();
                     olay.Olusturan = UtilityHelper.GetCurrentUserName();
                     olay.OlusturmaTarihi = DateTime.Now;

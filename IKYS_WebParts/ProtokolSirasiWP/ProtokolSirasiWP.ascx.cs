@@ -1,4 +1,4 @@
-嚜簑sing Model.IKYS;
+using Model.IKYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -40,8 +40,8 @@ namespace IKYS_WebParts.ProtokolSirasiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri 癟ekilip json a 癟eviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu haz覺rlan覺yor.
+            var jsonData = TabloJson(); //veri 蔒kilip json a 蔒viriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
 
@@ -203,11 +203,11 @@ $('#CustomDataTable').on( 'draw.dt', function () {
 
                 }
                 TabloOlustur();
-                MessageHelper.PublishMessage("S覺ralama kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
+                MessageHelper.PublishMessage("Siralama kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
             }
             catch (Exception)
             {
-                MessageHelper.PublishMessage("S覺ralama kaydedilemedi", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Siralama kaydedilemedi", ProjeConstants.MESAJ_HATA);
             }
 
         }

@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -77,17 +77,17 @@ namespace TBYS_WebParts.BagisciTalepleriWP
             BagisciTalepleriTable.Rows.Clear();
             TableHeaderRow th = new TableHeaderRow();
             TableHeaderCell siraCell = new TableHeaderCell();
-            siraCell.Text = "Sıra";
+            siraCell.Text = "Sira";
             TableHeaderCell TalepCell = new TableHeaderCell();
             TalepCell.Text = "Talep";
             TableHeaderCell IrtibatCell = new TableHeaderCell();
-            IrtibatCell.Text = "İrtibat";
+            IrtibatCell.Text = "Irtibat";
             TableHeaderCell TarihCell = new TableHeaderCell();
-            TarihCell.Text = "Uygulanacağı Zaman";
+            TarihCell.Text = "Uygulanacagi Zaman";
             TableHeaderCell AciklamaCell = new TableHeaderCell();
-            AciklamaCell.Text = "Açıklama";
+            AciklamaCell.Text = "A�iklama";
             TableHeaderCell DuzenleCell = new TableHeaderCell();
-            DuzenleCell.Text = "Düzenle";
+            DuzenleCell.Text = "D�zenle";
             TableHeaderCell SilCell = new TableHeaderCell();
             SilCell.Text = "Sil";
 
@@ -102,7 +102,7 @@ namespace TBYS_WebParts.BagisciTalepleriWP
         }
         private void BagisciTalepleriTablosunuDoldur(TasinmazBagisci bagisci)
         {
-            AdiLbl.Text = " Bağışçı : " + bagisci.Adi + " " + bagisci.Soyadi;
+            AdiLbl.Text = " Bagis�i : " + bagisci.Adi + " " + bagisci.Soyadi;
             BagisciIdLbl.Text = bagisci.Id + "";
             //Column headers
             BagisciTalepleriTableHeaders();
@@ -136,7 +136,7 @@ namespace TBYS_WebParts.BagisciTalepleriWP
                 row.Controls.Add(AciklamaCell);
 
                 TableCell DuzenleCell = new TableCell();
-                string duzenleLink = "<a href=# onclick=OpenModalTalep("+item.Id+ "); class=\'btn btn-outline-primary \'> Düzenle</a>";
+                string duzenleLink = "<a href=# onclick=OpenModalTalep("+item.Id+ "); class=\'btn btn-outline-primary \'> D�zenle</a>";
                 DuzenleCell.Text=duzenleLink;
                 row.Controls.Add(DuzenleCell);
                 TableCell SilCell = new TableCell();
@@ -278,7 +278,7 @@ namespace TBYS_WebParts.BagisciTalepleriWP
 
             }
             else
-                MessageHelper.PublishMessage("Talep bulunamadı",ProjeConstants.MESAJ_BILGI);
+                MessageHelper.PublishMessage("Talep bulunamadi",ProjeConstants.MESAJ_BILGI);
 
         }
     }

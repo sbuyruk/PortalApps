@@ -1,4 +1,4 @@
-ï»¿using Model.Ortak;
+using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -89,7 +89,7 @@ namespace Model.TBYS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public override bool Update()
@@ -146,7 +146,7 @@ namespace Model.TBYS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public override List<T> SelectAll<T>()
@@ -227,9 +227,9 @@ namespace Model.TBYS
 							(
 								A.SozlesmeDurumu = 'Devam Ediyor' --hala devam edenler
 								OR
-								(A.SozlesmeDurumu != 'Devam Ediyor' AND A.SozlesmeDurumu != 'Yenilendi' AND A.DurumDegismeTar BETWEEN {1} AND {2}) --bu ay durumu deÄŸiÅŸmiÅŸ olanlar
+								(A.SozlesmeDurumu != 'Devam Ediyor' AND A.SozlesmeDurumu != 'Yenilendi' AND A.DurumDegismeTar BETWEEN {1} AND {2}) --bu ay durumu degismis olanlar
         						OR 
-		        				(A.SozlesmeDurumu='Yenilendi' AND A.SozBitTar>{2}) --sonOdemeTar dan sonra (Ã¶nÃ¼ndeki aylarda) yenilenenler.. aslÄ±nda A.SozlesmeDurumu != 'Devam Ediyor' daha doÄŸru olabilir
+		        				(A.SozlesmeDurumu='Yenilendi' AND A.SozBitTar>{2}) --sonOdemeTar dan sonra (önündeki aylarda) yenilenenler.. aslinda A.SozlesmeDurumu != 'Devam Ediyor' daha dogru olabilir
 					        )
                     )
                 ORDER BY A.BolgeId,A.DosyaNo,B.Adi
@@ -291,9 +291,9 @@ namespace Model.TBYS
 	                LEFT JOIN Kiraci_Table K on K.Id= S.KiraciId
 	                WHERE 1>0 AND S.Aktif = 1 
                         {0}
-                        --AND ArtisAyi = MONTH(GETDATE())+1 AND YEAR(SozBitTar)=YEAR(GETDATE())  --12nci ayda yanlÄ±ÅŸ Ã§alÄ±ÅŸtÄ±
+                        --AND ArtisAyi = MONTH(GETDATE())+1 AND YEAR(SozBitTar)=YEAR(GETDATE())  --12nci ayda yanlis çalisti
                         --AND (ArtisAyi = DATEPART(MM,DATEADD(mm,1, GETDATE())) AND YEAR(SozBitTar)=YEAR(DATEADD(mm,1, GETDATE())) )
-                        --AND CONVERT(int,ArtisAyi) = DATEPART(MM,DATEADD(mm,1, GETDATE())) --sÃ¶zlesmesi yenilenenlerde esi v yeni kirabedeli yanlÄ±ÅŸ Ã§Ä±kÄ±yor                        
+                        --AND CONVERT(int,ArtisAyi) = DATEPART(MM,DATEADD(mm,1, GETDATE())) --sözlesmesi yenilenenlerde esi v yeni kirabedeli yanlis çikiyor                        
                         AND (CONVERT(int,ArtisAyi) = DATEPART(MM,DATEADD(mm,1, GETDATE())) AND YEAR(SozBitTar)=DATEPART(YYYY,DATEADD(mm,1, GETDATE())))--AND (YEAR(SozBitTar)=YEAR(GETDATE())) )
 	                ORDER BY S.BolgeId, SozBitTar
             ", bolgeStr);
@@ -547,7 +547,7 @@ namespace Model.TBYS
         }
         public KiraSozlesme SelectEnYakinTarihliSozlesmeByKiraciIdTarih(int kiraciId, DateTime tarih)
         {
-            //Ã¶deme tarihinden sonra yapÄ±lmÄ±ÅŸ bir sÃ¶zleÅŸme var mÄ±
+            //ödeme tarihinden sonra yapilmis bir sözlesme var mi
             KiraSozlesme kiraSozlesme = null;
             string sqlString = string.Format(@"
                 SELECT  *
@@ -561,7 +561,7 @@ namespace Model.TBYS
                 KiraSozlesme sonrakiIlkKiraSozlesmesi = list.FirstOrDefault();
                 kiraSozlesme= sonrakiIlkKiraSozlesmesi;
             }
-            else //Ã¶deme tarihinden Ã¶nce yapÄ±lmÄ±ÅŸ bir sÃ¶zleÅŸme var mÄ±
+            else //ödeme tarihinden önce yapilmis bir sözlesme var mi
             {
                 sqlString = string.Format(@"
                 SELECT  *
@@ -923,6 +923,53 @@ namespace Model.TBYS
                 kiraSozlesme = list.FirstOrDefault();
             }
             return kiraSozlesme;
+        }
+
+        /// <summary>
+        /// Devir tutari farkli olan aktif sözlesmeleri tek sorguda döndürür.
+        /// Önceki sözlesmenin MAX(Sira) ödeme plani satirindaki AnaPara/FaizliBakiye degerleri
+        /// aktif sözlesmenin DevirAnaPara/DevirFaizliBakiye degerlerinden farkli olanlari getirir.
+        /// Sütunlar: DosyaNo, KiraciAdi, KiraciId, SozlesmeId, SozBasTar, SozBitTar, KiraBedeli,
+        ///           SonAnaPara, SonFaizliBakiye, DevirAnaPara, DevirFaizTutari, DevirFaizliBakiye
+        /// </summary>
+        public DataTable SelectDevirGerekenAktifSozlesmelerReturnDT()
+        {
+            string sqlString = @"
+                SELECT
+                    A.Id            AS SozlesmeId,
+                    A.DosyaNo,
+                    A.KiraciId,
+                    K.Adi + ' ' + K.Soyadi AS KiraciAdi,
+                    A.SozBasTar,
+                    A.SozBitTar,
+                    A.KiraBedeli,
+                    A.DevirAnaPara,
+                    A.DevirFaizTutari,
+                    A.DevirFaizliBakiye,
+                    OP.AnaPara      AS SonAnaPara,
+                    OP.FaizliBakiye AS SonFaizliBakiye
+                FROM KiraSozlesme_Table A
+                INNER JOIN Kiraci_Table K ON K.Id = A.KiraciId
+                -- Önceki sözlesme: ayni kiraciya ait, baslangiç tarihi daha eski
+                CROSS APPLY (
+                    SELECT TOP 1 Id
+                    FROM KiraSozlesme_Table
+                    WHERE KiraciId = A.KiraciId
+                      AND SozBasTar < A.SozBasTar
+                    ORDER BY SozBasTar DESC
+                ) AS OncekiSoz
+                -- Önceki sözlesmenin MAX(Sira) ödeme plani satiri
+                CROSS APPLY (
+                    SELECT TOP 1 AnaPara, FaizliBakiye
+                    FROM OdemePlani_Table
+                    WHERE SozlesmeId = OncekiSoz.Id
+                    ORDER BY Sira DESC
+                ) AS OP
+                WHERE A.Aktif = 1
+                  AND (OP.AnaPara != A.DevirAnaPara OR OP.FaizliBakiye != A.DevirFaizliBakiye)
+                ORDER BY A.DosyaNo, A.Id";
+
+            return dao.SelectFromDb(sqlString, "");
         }
 
     }

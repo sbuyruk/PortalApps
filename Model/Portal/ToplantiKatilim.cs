@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -36,7 +36,7 @@ namespace Model.Portal
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public override bool Update()
@@ -93,7 +93,7 @@ namespace Model.Portal
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public ToplantiKatilim Select(int id)

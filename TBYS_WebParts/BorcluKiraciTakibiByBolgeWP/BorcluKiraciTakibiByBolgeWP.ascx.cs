@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.ComponentModel;
@@ -140,7 +140,7 @@ namespace TBYS_WebParts.BorcluKiraciTakibiByBolgeWP
         {
 
             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
-            GenelBaslikCell.Text = AyDDL.SelectedItem.Text + " " + YilDDL.SelectedItem.Text + " İtibarı İle  Yapılan Takip İşlemleri";
+            GenelBaslikCell.Text = AyDDL.SelectedItem.Text + " " + YilDDL.SelectedItem.Text + " Itibari Ile  Yapilan Takip Islemleri";
 
             KiraBorcuTakip kiraBorcuTakip = new KiraBorcuTakip();
 
@@ -153,7 +153,7 @@ namespace TBYS_WebParts.BorcluKiraciTakibiByBolgeWP
             AnkYaziliIhtarCell.Text = AnkYaziliIhtarAdet.ToString();
             AnkIcraTakibiCell.Text = AnkIcraTakibiAdet.ToString();
             AnkTopCell.Text = AnkToplamAdet.ToString();
-            //İst 
+            //Ist 
             int IstUyariAdet = kiraBorcuTakip.SelectCountAdetByTakipIslemiBolge(ProjeConstants.KIRABORCU_UYARI, ProjeConstants.BOLGE_ISTANBUL, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
             int IstYaziliIhtarAdet = kiraBorcuTakip.SelectCountAdetByTakipIslemiBolge(ProjeConstants.KIRABORCU_YAZILIIHTAR, ProjeConstants.BOLGE_ISTANBUL, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
             int IstIcraTakibiAdet = kiraBorcuTakip.SelectCountAdetByTakipIslemiBolge(ProjeConstants.KIRABORCU_ICRATAKIBI, ProjeConstants.BOLGE_ISTANBUL, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
@@ -163,7 +163,7 @@ namespace TBYS_WebParts.BorcluKiraciTakibiByBolgeWP
             IstIcraTakibiCell.Text = IstIcraTakibiAdet.ToString();
             IstTopCell.Text = IstToplamAdet.ToString();
 
-            //İzm 
+            //Izm 
             int IzmUyariAdet = kiraBorcuTakip.SelectCountAdetByTakipIslemiBolge(ProjeConstants.KIRABORCU_UYARI, ProjeConstants.BOLGE_IZMIR, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
             int IzmYaziliIhtarAdet = kiraBorcuTakip.SelectCountAdetByTakipIslemiBolge(ProjeConstants.KIRABORCU_YAZILIIHTAR, ProjeConstants.BOLGE_IZMIR, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
             int IzmIcraTakibiAdet = kiraBorcuTakip.SelectCountAdetByTakipIslemiBolge(ProjeConstants.KIRABORCU_ICRATAKIBI, ProjeConstants.BOLGE_IZMIR, AyDDL.SelectedItem.Value.ConvertToInt(), YilDDL.SelectedItem.Value.ConvertToInt());
@@ -259,17 +259,17 @@ namespace TBYS_WebParts.BorcluKiraciTakibiByBolgeWP
         private void AyDDLDoldur()
         {
             AyDDL.Items.Add(new ListItem("Ocak", "1"));
-            AyDDL.Items.Add(new ListItem("Şubat", "2"));
+            AyDDL.Items.Add(new ListItem("Subat", "2"));
             AyDDL.Items.Add(new ListItem("Mart", "3"));
             AyDDL.Items.Add(new ListItem("Nisan", "4"));
-            AyDDL.Items.Add(new ListItem("Mayıs", "5"));
+            AyDDL.Items.Add(new ListItem("Mayis", "5"));
             AyDDL.Items.Add(new ListItem("Haziran", "6"));
             AyDDL.Items.Add(new ListItem("Temmuz", "7"));
-            AyDDL.Items.Add(new ListItem("Ağustos", "8"));
-            AyDDL.Items.Add(new ListItem("Eylül", "9"));
+            AyDDL.Items.Add(new ListItem("Agustos", "8"));
+            AyDDL.Items.Add(new ListItem("Eyl�l", "9"));
             AyDDL.Items.Add(new ListItem("Ekim", "10"));
-            AyDDL.Items.Add(new ListItem("Kasım", "11"));
-            AyDDL.Items.Add(new ListItem("Aralık", "12"));
+            AyDDL.Items.Add(new ListItem("Kasim", "11"));
+            AyDDL.Items.Add(new ListItem("Aralik", "12"));
 
         }
         private void YilDDLDoldur()
@@ -285,7 +285,7 @@ namespace TBYS_WebParts.BorcluKiraciTakibiByBolgeWP
         protected void ExportToExcel()
         {
             string filename = "BorcluKiracilarRaporu" + DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + ".xls";
-            //Türkçe sorunu yok
+            //T�rk�e sorunu yok
             Page.Response.Clear();
             Page.Response.AddHeader("content-disposition", "attachment;filename=" + filename + "");
             Page.Response.ContentType = "application/ms-excel";

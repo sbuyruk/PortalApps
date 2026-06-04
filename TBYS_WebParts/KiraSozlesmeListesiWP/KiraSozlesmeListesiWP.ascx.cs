@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -157,7 +157,7 @@ namespace TBYS_WebParts.KiraSozlesmeListesiWP
                     BolgeIdQS = bolge == null ? 0 : bolge.Id;
                     if (!string.IsNullOrEmpty(AuthQS) && !AuthQS.Equals(ProjeConstants.TBYS_YETKILI_BIRIM))
                     {
-                        TitleLbl.Text = "Kira Sözleşme Listesi" + " (" + AuthQS + " Bölgesi)";
+                        TitleLbl.Text = "Kira S�zlesme Listesi" + " (" + AuthQS + " B�lgesi)";
                     }
                     TabloOlustur();
                 }
@@ -170,8 +170,8 @@ namespace TBYS_WebParts.KiraSozlesmeListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = TabloJson(); //veri �ekilip json a �eviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string CreateDataTable(string jsonData)
@@ -188,9 +188,9 @@ namespace TBYS_WebParts.KiraSozlesmeListesiWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY');//sort date
                 jQuery(document).ready(function () {
                     jQuery('#CustomDataTable').DataTable({
-                        'initComplete': function (settings, json) {//tablo yüklendiğinde
+                        'initComplete': function (settings, json) {//tablo y�klendiginde
                             var api = this.api();
-                            var row = api.row(function (idx, data, node) { //secilen toplantıya gider
+                            var row = api.row(function (idx, data, node) { //secilen toplantiya gider
                                 return data['Secildi'] == true;
                             });
                             if (row.length > 0) {
@@ -349,7 +349,7 @@ namespace TBYS_WebParts.KiraSozlesmeListesiWP
 
                     //tempSozlesmeItem.Adres += "@" + adres;
                     tasinmazAdedi++;
-                    tempSozlesmeItem.Adres = "@" + ilkAdres + "( Toplam " + tasinmazAdedi + " adet taşınmaz.)";
+                    tempSozlesmeItem.Adres = "@" + ilkAdres + "( Toplam " + tasinmazAdedi + " adet tasinmaz.)";
                     list.Add(tempSozlesmeItem);
                 }
                 else
@@ -372,13 +372,13 @@ namespace TBYS_WebParts.KiraSozlesmeListesiWP
                     sozlesmeItem.Ili = ili;
                     if (!string.IsNullOrEmpty(sozlesmePDFDosyasi))
                     {
-                        sozlesmeItem.SozlesmePDFDosyasi = @"<a  class='btn btn-outline-secondary' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + UtilityHelper.TbysBelgelerURLGetir() + "/" + sozlesmePDFDosyasi + @">Kira Sözleşmesi</a>";
+                        sozlesmeItem.SozlesmePDFDosyasi = @"<a  class='btn btn-outline-secondary' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + UtilityHelper.TbysBelgelerURLGetir() + "/" + sozlesmePDFDosyasi + @">Kira S�zlesmesi</a>";
                     }
                     else
                     {
-                        sozlesmeItem.SozlesmePDFDosyasi = "Dosya Yüklenmedi";
+                        sozlesmeItem.SozlesmePDFDosyasi = "Dosya Y�klenmedi";
                     }
-                    sozlesmeItem.Sozlesme = "<a href=" + ProjeConstants.PAGE_KIRASOZLESMESI + "?KiraSozlesmeId=" + kiraSozlesmeId + " class='btn btn-outline-primary'>Sözleşme</a>";
+                    sozlesmeItem.Sozlesme = "<a href=" + ProjeConstants.PAGE_KIRASOZLESMESI + "?KiraSozlesmeId=" + kiraSozlesmeId + " class='btn btn-outline-primary'>S�zlesme</a>";
                     sozlesmeItem.Secildi = SecilenIdQS.Equals(sozlesmeItem.SozlesmeId);
                     sozlesmeItem.Aktif = aktif;
                     list.Add(sozlesmeItem);

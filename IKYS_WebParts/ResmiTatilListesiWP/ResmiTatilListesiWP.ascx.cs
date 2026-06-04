@@ -1,4 +1,4 @@
-ï»¿using Model.IKYS;
+using Model.IKYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -106,7 +106,7 @@ namespace IKYS_WebParts.ResmiTatilListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri Ã§ekilip json a Ã§eviriliyor
+            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
             UtilityHelper.ScriptCalistir("setDataSet(" + jsonData + ");");
         }
         private string TabloJson()
@@ -163,12 +163,12 @@ namespace IKYS_WebParts.ResmiTatilListesiWP
                     resmiTatilListItem.IlanTarihi= dataRow["IlanTarihi"].ConvertToDatetime().ConvertToDatetimeEmptyIfNull();
                     resmiTatilListItem.IptalTarihi= dataRow["IptalTarihi"].ConvertToDatetime().ConvertToDatetimeEmptyIfNull();
                     string yilStr = dataRow["Yil"].ToString();
-                    resmiTatilListItem.Yil = yilStr.Equals("0")?"SÃ¼rekli":yilStr;
+                    resmiTatilListItem.Yil = yilStr.Equals("0")?"Sürekli":yilStr;
 
                     resmiTatilListItem.Duzenle = string.Empty;
 
                     string duzenleLinkStr = "<a href=" + ProjeConstants.PAGE_RESMITATIL_GIRIS + "?SenderApp=RTL&DestinationApp=RTD&ResmiTatilId=" + 
-                        resmiTatilListItem.ResimiTatilId + " class='btn btn-outline-primary' >DÃ¼zenle</a>";
+                        resmiTatilListItem.ResimiTatilId + " class='btn btn-outline-primary' >Düzenle</a>";
                     resmiTatilListItem.Duzenle = duzenleLinkStr;
 
 

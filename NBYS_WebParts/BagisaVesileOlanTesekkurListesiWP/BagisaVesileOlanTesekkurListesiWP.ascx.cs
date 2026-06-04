@@ -1,4 +1,4 @@
-﻿using Model.IKYS;
+using Model.IKYS;
 using Model.NBYS;
 using Model.Ortak;
 using System;
@@ -72,12 +72,12 @@ namespace NBYS_WebParts.BagisaVesileOlanTesekkurListesiWP
             bool jasonDataBosMu = string.IsNullOrWhiteSpace(jsonData.Replace("[", "").Replace("]", "").Replace("{", "").Replace("}", ""));
             if (!jasonDataBosMu)
             {
-                var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+                var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
                 UtilityHelper.ScriptCalistir(jsString);
             }
             else
             {
-                TableDataLbl.Text = "Teşekkür Belgesi bulunmamaktadır.";
+                TableDataLbl.Text = "Tesekk�r Belgesi bulunmamaktadir.";
             }
         }
         private List<BagisaVesileOlanTesekkurListItem> GetData()
@@ -103,7 +103,7 @@ namespace NBYS_WebParts.BagisaVesileOlanTesekkurListesiWP
                         BelgeTarihi = belgeTarihi.ToString("dd.MM.yyyy"),
                         ImzalayanAdiSoyadi = row["ImzalayanAdiSoyadi"].ToString(),
                         Aciklama = row["Aciklama"].ToString(),
-                        Duzenle = "<a href='" + ProjeConstants.PAGE_BAGISAVESILE_GIRIS + "?SecilenId=" + row["Id"] + @"' class='btn btn-sm btn-primary'>Düzenle</a>",
+                        Duzenle = "<a href='" + ProjeConstants.PAGE_BAGISAVESILE_GIRIS + "?SecilenId=" + row["Id"] + @"' class='btn btn-sm btn-primary'>D�zenle</a>",
                         Sil = "<a href='#' onclick='Sil(" + row["Id"] + @")' class='btn btn-sm btn-danger'>Sil</a>"
                     });
 
@@ -118,18 +118,18 @@ namespace NBYS_WebParts.BagisaVesileOlanTesekkurListesiWP
                 int silId = HiddenSecilenId.Value.ConvertToInt();
                 if (silId < 1)
                 {
-                    throw new Exception("Silinecek kayıt bulunamadı");
+                    throw new Exception("Silinecek kayit bulunamadi");
                 }
                 BagisaVesileOlanTesekkur bagisaVesileOlanTesekkur = new BagisaVesileOlanTesekkur() { Id = silId };
                 bool silindi = bagisaVesileOlanTesekkur.Delete();
                 if (silindi)
                 {
-                    MessageHelper.PublishMessage("Teşekkür belgesi silindi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Tesekk�r belgesi silindi.", ProjeConstants.MESAJ_BASARILI, 2000);
                     TabloOlustur();
                 }
                 else
                 {
-                    throw new Exception("Silme işlemi başarısız oldu");
+                    throw new Exception("Silme islemi basarisiz oldu");
                 }
             }
             catch (Exception ex)
@@ -165,9 +165,9 @@ namespace NBYS_WebParts.BagisaVesileOlanTesekkurListesiWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY');//sort date
 
                 jQuery('#CustomDataTable').DataTable({ 
-                'initComplete': function (settings, json) {//tablo yüklendiğinde
+                'initComplete': function (settings, json) {//tablo y�klendiginde
                     var api = this.api();
-                    var row = api.row(function(idx, data, node) { //secilen satıra gider
+                    var row = api.row(function(idx, data, node) { //secilen satira gider
                         return data['BelgeId'] ==" + SecilenIdQS + @";
                     });
                     if (row.length > 0)

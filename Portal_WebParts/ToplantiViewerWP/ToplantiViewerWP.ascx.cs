@@ -1,4 +1,4 @@
-﻿using Model.IKYS;
+using Model.IKYS;
 using Model.Portal;
 using System;
 using System.Collections.Generic;
@@ -109,7 +109,7 @@ namespace Portal_WebParts.ToplantiViewerWP
         {
             var jsonArrayString = ToplantiListesiniGetir();
 
-            var jsString = CreateJsString(jsonArrayString); //javascript kodu hazırlanıyor.
+            var jsString = CreateJsString(jsonArrayString); //javascript kodu hazirlaniyor.
             System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), jsString, true);
         }
         private string ToplantiListesiniGetir()
@@ -164,7 +164,7 @@ namespace Portal_WebParts.ToplantiViewerWP
             toplanti = toplanti.Select(toplantiId);
             if (toplanti != null)
             {
-                IdLbl.Text = " ( Toplantı No: " + toplanti.Id.ToString() + " )";
+                IdLbl.Text = " ( Toplanti No: " + toplanti.Id.ToString() + " )";
                 ToplantiKonusuCell.Text = toplanti.ToplantiKonusu;
                 ToplantiYetkilisiCell.Text = ParseToplantiYetkilisi(toplanti.ToplantiYetkilisi);
                 KoordinatorCell.Text = ParseKoordinator(toplanti.Koordinator);
@@ -186,8 +186,8 @@ namespace Portal_WebParts.ToplantiViewerWP
 
                 ToplantiYeriCell.Text = ParseToplantiYeri(toplanti.ToplantiYeri, toplanti.ToplantiYeriDiger);
                 AciklamaCell.Text = toplanti.Aciklama;
-                CevrimIciCell.Text = toplanti.CevrimIci ? "Evet" : "Hayır";
-                IkramOnayiCell.Text = toplanti.IkramOnayi ? "Evet" : "Hayır";
+                CevrimIciCell.Text = toplanti.CevrimIci ? "Evet" : "Hayir";
+                IkramOnayiCell.Text = toplanti.IkramOnayi ? "Evet" : "Hayir";
                 IkramMalzemesiCell.Text = toplanti.IkramOnayi ? toplanti.IkramMalzemesi : "-";
             }
             System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "OpenToplantiModal();", true);

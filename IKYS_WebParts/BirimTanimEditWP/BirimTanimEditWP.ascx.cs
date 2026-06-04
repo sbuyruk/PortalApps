@@ -1,4 +1,4 @@
-﻿using Model.IKYS;
+using Model.IKYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -105,7 +105,7 @@ namespace IKYS_WebParts.BirimTanimEditWP
             }
             if (birim == null)
             {
-                TitleLbl.Text = "Birim/Şube/Dir. Girişi";
+                TitleLbl.Text = "Birim/Sube/Dir. Girisi";
                 UpdateBtn.Visible = false;
                 SaveBtn.Visible = true;
                 AktifChk.Checked = true;
@@ -113,7 +113,7 @@ namespace IKYS_WebParts.BirimTanimEditWP
             }
             else
             {
-                TitleLbl.Text = "Birim/Şube/Dir. Düzenleme";
+                TitleLbl.Text = "Birim/Sube/Dir. D�zenleme";
                 UpdateBtn.Visible = true;
                 SaveBtn.Visible = false;
             }
@@ -211,8 +211,8 @@ namespace IKYS_WebParts.BirimTanimEditWP
         }
         protected void DeleteBtn_Click(object sender, EventArgs e)
         {
-            //iki koşulu sağlarsa silebilir aksi halde sildirmemeli
-            // 1. bu birim BirimTanim_Table'da başka bir birimin parentId'si ise silinemez 
+            //iki kosulu saglarsa silebilir aksi halde sildirmemeli
+            // 1. bu birim BirimTanim_Table'da baska bir birimin parentId'si ise silinemez 
             // 2. IsBilgileri_Table'da birimId'si bu birim olan varsa sildirme
         }
         protected void UpdateBtn_Click(object sender, EventArgs e)
@@ -232,9 +232,9 @@ namespace IKYS_WebParts.BirimTanimEditWP
                     birim.Degistiren = CurrentUserName;
                     bool isupdated = birim.Update();
                     if (isupdated)
-                        MessageHelper.PublishMessage("Birim Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        MessageHelper.PublishMessage("Birim G�ncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                     else
-                        MessageHelper.PublishMessage("Birim Güncellenemedi", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Birim G�ncellenemedi", ProjeConstants.MESAJ_HATA);
                 }
             }
             catch (Exception exception)

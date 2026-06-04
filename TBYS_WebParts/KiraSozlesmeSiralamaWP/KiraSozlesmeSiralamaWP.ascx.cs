@@ -1,4 +1,4 @@
-嚜簑sing Model.Ortak;
+using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -50,8 +50,8 @@ namespace TBYS_WebParts.KiraSozlesmeSiralamaWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri 癟ekilip json a 癟eviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu haz覺rlan覺yor.
+            var jsonData = TabloJson(); //veri 蔒kilip json a 蔒viriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
 
@@ -165,7 +165,7 @@ $('#CustomDataTable').on( 'draw.dt', function () {
                     tempSozlesmeId = kiraSozlesmeId;
                     list.Remove(tempSozlesmeItem);
                     //tempSozlesmeItem.Adres += "@" + adres;
-                    tempSozlesmeItem.Adres = adres + (sozlesmeAdedi > 1 ? " (Toplam " + sozlesmeAdedi.ToString() + " adet ta��覺nmaz)" : "");
+                    tempSozlesmeItem.Adres = adres + (sozlesmeAdedi > 1 ? " (Toplam " + sozlesmeAdedi.ToString() + " adet tasinmaz)" : "");
                     list.Add(tempSozlesmeItem);
                 }
                 else
@@ -244,11 +244,11 @@ $('#CustomDataTable').on( 'draw.dt', function () {
                     }
                 }
                 TabloOlustur();
-                MessageHelper.PublishMessage("S覺ralama kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
+                MessageHelper.PublishMessage("Siralama kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
             }
             catch (Exception)
             {
-                MessageHelper.PublishMessage("S覺ralama kaydedilemedi", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Siralama kaydedilemedi", ProjeConstants.MESAJ_HATA);
             }
 
         }

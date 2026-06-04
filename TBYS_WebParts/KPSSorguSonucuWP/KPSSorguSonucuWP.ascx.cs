@@ -1,4 +1,4 @@
-﻿using Microsoft.SharePoint;
+using Microsoft.SharePoint;
 using Microsoft.SharePoint.Client;
 using Model.Ortak;
 using Model.TBYS;
@@ -36,7 +36,7 @@ namespace TBYS_WebParts.KPSSorguSonucuWP
         }
         private void TabloOlustur (string jsonData)
         {
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string CreateDataTable(string jsonData)
@@ -58,8 +58,8 @@ namespace TBYS_WebParts.KPSSorguSonucuWP
                     'columnDefs': [
                         { type: 'turkish', targets: [1,2] },
                         {targets:2, render:function(data, type, row, meta){
-                            if (row.SagVefat =='Açık'){
-                                return 'Sağ';
+                            if (row.SagVefat =='A�ik'){
+                                return 'Sag';
                             }else
                             {
                                 return data;

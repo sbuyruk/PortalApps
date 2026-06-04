@@ -1,4 +1,4 @@
-﻿using Model.IKYS;
+using Model.IKYS;
 using Model.MTS;
 using Model.NBYS;
 using Model.Ortak;
@@ -66,7 +66,7 @@ namespace MTS_WebParts.FaaliyetKartiWP
         private void AniObjesiBilgileriTableDoldur()
         {
             /***
-             * FaaliyetKatılım_Table'dan Bu Faaliyetya katılanları getir
+             * FaaliyetKatilim_Table'dan Bu Faaliyetya katilanlari getir
              * **/
             FaaliyetKatilim faaliyetKatilim = new FaaliyetKatilim();
             List<FaaliyetKatilim> liste = faaliyetKatilim.SelectByFaaliyetId(FaaliyetIdQS.ConvertToInt());
@@ -85,7 +85,7 @@ namespace MTS_WebParts.FaaliyetKartiWP
                     katilimciAdiSoyadiCell.Text = kisi.Adi + " " + kisi.Soyadi;
                     kurumuCell.Text = item.KurumGorev;
 
-                    //Burada verilen ani objeleri alınıyor
+                    //Burada verilen ani objeleri aliniyor
                     AniObjesiDagitim aniObjesiDagitim = new AniObjesiDagitim();
                     DataTable dataTable = aniObjesiDagitim.SelectReturnDT(FaaliyetIdQS.ConvertToInt(), kisi.Id);
                     if (dataTable != null)
@@ -104,7 +104,7 @@ namespace MTS_WebParts.FaaliyetKartiWP
                         verilenAniObjesiCell.Text = objeStr;
                     }
 
-                    //Getirilen Ani Objeleri ayrıca alınıyor
+                    //Getirilen Ani Objeleri ayrica aliniyor
                     AniObjesiDagitim getirilenAniObjesi = new AniObjesiDagitim();
                     getirilenAniObjesi = getirilenAniObjesi.SelectGetirilenAniObjesi(FaaliyetIdQS.ConvertToInt(), kisi.Id);
                     if (getirilenAniObjesi != null)
@@ -114,7 +114,7 @@ namespace MTS_WebParts.FaaliyetKartiWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Kişi Bulunamadı", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Kisi Bulunamadi", ProjeConstants.MESAJ_HATA);
                 }
 
                 tableRow.Controls.Add(katilimciAdiSoyadiCell);
@@ -170,11 +170,11 @@ namespace MTS_WebParts.FaaliyetKartiWP
 
 
                 r2c1.Text = "Faaliyet Yeri : " + (faaliyet.FaaliyetYeriStr== null ? "" : faaliyet.FaaliyetYeriStr);
-                r2c2.Text = "Faaliyet Amacı : " + MTSOrtak.ParseFaaliyetAmaci(faaliyet.FaaliyetAmaciId.ToString());
+                r2c2.Text = "Faaliyet Amaci : " + MTSOrtak.ParseFaaliyetAmaci(faaliyet.FaaliyetAmaciId.ToString());
                 r2c3.Text = "Faaliyet Durumu : " + MTSOrtak.ParseFaaliyetDurumu(faaliyet.FaaliyetDurumu.ConvertToInt());
 
                 r3c1.Text = "Faaliyet Konusu : " + faaliyet.FaaliyetKonusu;
-                r3c2.Text = "Açıklama : " + faaliyet.Aciklama;
+                r3c2.Text = "A�iklama : " + faaliyet.Aciklama;
                 r3c2.ColumnSpan = 2;
 
                 BorderEkle(row1);
@@ -187,7 +187,7 @@ namespace MTS_WebParts.FaaliyetKartiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Faaliyet Bulunamadı", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Faaliyet Bulunamadi", ProjeConstants.MESAJ_HATA);
             }
         }
         protected void CloseBtn_Click(object sender, EventArgs e)

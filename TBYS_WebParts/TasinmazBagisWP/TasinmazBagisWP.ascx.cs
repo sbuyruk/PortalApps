@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -38,8 +38,8 @@ namespace TBYS_WebParts.TasinmazBagisWP
         }
         private void TasinmazTablosunuOlustur()
         {
-            var jsonData = TasinmazTabloJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateDataTableTasinmaz(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = TasinmazTabloJson(); //veri �ekilip json a �eviriliyor
+            var jsString = CreateDataTableTasinmaz(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         
@@ -106,8 +106,8 @@ namespace TBYS_WebParts.TasinmazBagisWP
 
         private void BagisciTablosunuOlustur()
         {
-            var jsonData = BagisciTabloJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateDataTableBagisci(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = BagisciTabloJson(); //veri �ekilip json a �eviriliyor
+            var jsString = CreateDataTableBagisci(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string BagisciTabloJson()
@@ -178,13 +178,13 @@ namespace TBYS_WebParts.TasinmazBagisWP
             TableHeaderCell bagisciBaslikCell = new TableHeaderCell();
             
 
-            bagisciBaslikCell.Text ="Bağışçı(lar)";
+            bagisciBaslikCell.Text ="Bagis�i(lar)";
             bagisciBaslikCell.Font.Bold = true;
             bagisciBaslikCell.ColumnSpan = 6;
             
 
             TableHeaderCell tasinmazBaslikCell = new TableHeaderCell();
-            tasinmazBaslikCell.Text = "Taşınmaz(lar)";
+            tasinmazBaslikCell.Text = "Tasinmaz(lar)";
             tasinmazBaslikCell.Font.Bold = true;
             tasinmazBaslikCell.ColumnSpan = 5;
             
@@ -195,17 +195,17 @@ namespace TBYS_WebParts.TasinmazBagisWP
 
             TableHeaderRow bagisciTableHeader = new TableHeaderRow();
             TableHeaderCell siraCell = new TableHeaderCell();
-            siraCell.Text = "Sıra";
+            siraCell.Text = "Sira";
             TableHeaderCell adiSoyadiCell = new TableHeaderCell();
-            adiSoyadiCell.Text = "Adı Soyadı";
+            adiSoyadiCell.Text = "Adi Soyadi";
             TableHeaderCell adresiCell = new TableHeaderCell();
             adresiCell.Text = "Adresi";
             TableHeaderCell iliCell = new TableHeaderCell();
-            iliCell.Text = "İli";
+            iliCell.Text = "Ili";
             TableHeaderCell ilcesiCell = new TableHeaderCell();
-            ilcesiCell.Text = "İlçesi";
+            ilcesiCell.Text = "Il�esi";
             TableHeaderCell duzenleCell = new TableHeaderCell();
-            duzenleCell.Text = "Düzenle";
+            duzenleCell.Text = "D�zenle";
 
             bagisciTableHeader.Controls.Add(siraCell);
             bagisciTableHeader.Controls.Add(adiSoyadiCell);
@@ -215,15 +215,15 @@ namespace TBYS_WebParts.TasinmazBagisWP
             bagisciTableHeader.Controls.Add(duzenleCell);
 
             TableHeaderCell tasinmazSiraCell = new TableHeaderCell();
-            tasinmazSiraCell.Text = "Sıra";
+            tasinmazSiraCell.Text = "Sira";
             TableHeaderCell tasinmazAdresiCell = new TableHeaderCell();
             tasinmazAdresiCell.Text = "Adresi";
             TableHeaderCell tasinmazIliCell = new TableHeaderCell();
-            tasinmazIliCell.Text = "İli";
+            tasinmazIliCell.Text = "Ili";
             TableHeaderCell tasinmazIlcesiCell = new TableHeaderCell();
-            tasinmazIlcesiCell.Text = "İlçesi";
+            tasinmazIlcesiCell.Text = "Il�esi";
             TableHeaderCell tasinmazDuzenleCell = new TableHeaderCell();
-            tasinmazDuzenleCell.Text = "Düzenle";
+            tasinmazDuzenleCell.Text = "D�zenle";
 
             bagisciTableHeader.Controls.Add(tasinmazSiraCell);
             bagisciTableHeader.Controls.Add(tasinmazAdresiCell);

@@ -1,4 +1,4 @@
-ï»¿using Model.MYS;
+using Model.MYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -147,7 +147,7 @@ namespace MYS_WebParts.MalzemeCinsiGirisiWP
             UpdateBtn.Visible = true;
             DeleteBtn.Visible = true;
             TitleLbl.CssClass = "col-form-primary  btn-outline-primary mb-1";
-            TitleLbl.Text = "Malzeme Cinsi DÃ¼zenleme";
+            TitleLbl.Text = "Malzeme Cinsi Düzenleme";
             MalzemeCinsi cinsi = new MalzemeCinsi();
             cinsi = cinsi.Select<MalzemeCinsi>(MalzemeCinsiIdQS.ConvertToInt());
             if (!Page.IsPostBack)
@@ -221,7 +221,7 @@ namespace MYS_WebParts.MalzemeCinsiGirisiWP
                     mk.KategoriId = KategoriDDL.SelectedItem.Value.ConvertToInt();
                     mk.Degistiren = CurrentUserName;
                     mk.Update();
-                    MessageHelper.PublishMessage("Malzeme Cinsi GÃ¼ncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Malzeme Cinsi Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                     RedirectToPage(ProjeConstants.PAGE_MALZEMECINSI_LIST + "?Mesaj=true");
                 }
 

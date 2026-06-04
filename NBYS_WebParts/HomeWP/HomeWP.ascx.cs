@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
@@ -51,8 +51,8 @@ namespace NBYS_WebParts.HomeWP
             if (!string.IsNullOrEmpty(MesajQS))
             {
                 ExceptionHelper eh = new ExceptionHelper();
-                eh.Exceptions.Add(new Exception("Sayfada Düzenleme Yapılmaktadır."));
-                eh.Exceptions.Add(new Exception("Lütfen daha sonra tekrar deneyiniz."));
+                eh.Exceptions.Add(new Exception("Sayfada D�zenleme Yapilmaktadir."));
+                eh.Exceptions.Add(new Exception("L�tfen daha sonra tekrar deneyiniz."));
 
                 MesajQS = string.Empty;
             }

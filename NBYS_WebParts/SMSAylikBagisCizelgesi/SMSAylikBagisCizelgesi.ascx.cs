@@ -1,4 +1,4 @@
-﻿using DocumentFormat.OpenXml.Spreadsheet;
+using DocumentFormat.OpenXml.Spreadsheet;
 using Model.NBYS;
 using Model.Ortak;
 using System;
@@ -202,12 +202,12 @@ namespace NBYS_WebParts.SMSAylikBagisCizelgesi
 
                 LinkButton duzenleBtn = new LinkButton();
                 duzenleBtn.CausesValidation = false;
-                duzenleBtn.Text = "Düzenle";
+                duzenleBtn.Text = "D�zenle";
                 duzenleBtn.CssClass = "btn btn-outline-primary";
                 duzenleBtn.Click += delegate
                 {
                     HiddenSMSAylikBagisId.Value = item.Id.ToString();
-                    PopupMesajLbl.Text = new DateTime(item.Yil, item.Ay, 1).ToString("MMMM", culturInfo) + " " + item.Yil + " SMS Bağışları";
+                    PopupMesajLbl.Text = new DateTime(item.Yil, item.Ay, 1).ToString("MMMM", culturInfo) + " " + item.Yil + " SMS Bagislari";
                     SMSAdediniDegistirDiv.Attributes["style"] = "display: block";
                     TurkcellSMSTxt.Text = item.TurkcellSMSAdedi.ToString();
                     VodafoneSMSTxt.Text = item.VodafoneSMSAdedi.ToString();
@@ -312,8 +312,8 @@ namespace NBYS_WebParts.SMSAylikBagisCizelgesi
         //}
 
         /// <summary>
-        /// LinkButton Düzenle excele aktarırken hata verdiğinden 
-        /// CizelgeyiDoldur() metodu ile aynı işlemi Linkbutton olmadan yapıyor
+        /// LinkButton D�zenle excele aktarirken hata verdiginden 
+        /// CizelgeyiDoldur() metodu ile ayni islemi Linkbutton olmadan yapiyor
         /// </summary>
         /// <param name="yil"></param>
         private void ExcelIcinCizelgeyiDoldur(int yil)
@@ -383,12 +383,12 @@ namespace NBYS_WebParts.SMSAylikBagisCizelgesi
 
                 LinkButton duzenleBtn = new LinkButton();
                 duzenleBtn.CausesValidation = false;
-                duzenleBtn.Text = "Düzenle";
+                duzenleBtn.Text = "D�zenle";
                 duzenleBtn.CssClass = "btn btn-outline-primary";
                 duzenleBtn.Click += delegate
                 {
                     HiddenSMSAylikBagisId.Value = item.Id.ToString();
-                    PopupMesajLbl.Text = new DateTime(item.Yil, item.Ay, 1).ToString("MMMM", culturInfo) + " " + item.Yil + " SMS Bağışları";
+                    PopupMesajLbl.Text = new DateTime(item.Yil, item.Ay, 1).ToString("MMMM", culturInfo) + " " + item.Yil + " SMS Bagislari";
                     SMSAdediniDegistirDiv.Attributes["style"] = "display: block";
                     TurkcellSMSTxt.Text = item.TurkcellSMSAdedi.ToString();
                     VodafoneSMSTxt.Text = item.VodafoneSMSAdedi.ToString();

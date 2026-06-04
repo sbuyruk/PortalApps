@@ -1,4 +1,4 @@
-﻿using Model.MYS;
+using Model.MYS;
 using Model.Ortak;
 using System;
 using System.ComponentModel;
@@ -124,7 +124,7 @@ namespace MYS_WebParts.MalzemeCinsiListesiWP
                     KayitGetir();
                     if (!string.IsNullOrEmpty(MesajQS))
                     {
-                        MessageHelper.PublishMessage("İşlem Tamamlandı", ProjeConstants.MESAJ_BASARILI, 2000);
+                        MessageHelper.PublishMessage("Islem Tamamlandi", ProjeConstants.MESAJ_BASARILI, 2000);
                         MesajQS = string.Empty;
                     }
                 }
@@ -137,8 +137,8 @@ namespace MYS_WebParts.MalzemeCinsiListesiWP
         }
         private void KayitGetir()
         {
-            var jsonData = GetDataJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateJsString(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = GetDataJson(); //veri �ekilip json a �eviriliyor
+            var jsString = CreateJsString(jsonData); //javascript kodu hazirlaniyor.
             System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), jsString, true);
         }
         private string GetDataJson()
@@ -149,7 +149,7 @@ namespace MYS_WebParts.MalzemeCinsiListesiWP
         }
         private string CreateJsString(string jsonData)
         {
-            //{ field: 'Gorev', headerText: 'Görev', sortable:true,filter: true },
+            //{ field: 'Gorev', headerText: 'G�rev', sortable:true,filter: true },
             string tablestr = @"   
                                 $('#tblfilter').puidatatable({
                                 caption: '',
@@ -159,13 +159,13 @@ namespace MYS_WebParts.MalzemeCinsiListesiWP
                                             },
                                 columns: [
 
-                                    { field: 'Sirano', headerText: 'Sıra', sortable:true,filter: true },
+                                    { field: 'Sirano', headerText: 'Sira', sortable:true,filter: true },
                                     { field: 'MalzemeCinsi', headerText: 'Malzeme Cinsi', sortable:true,filter: true},
 
                                     { field: 'Kategori', headerText: 'Malzeme Kategorisi',sortable:true,filter: true },
                                     { field: 'MalzemeCinsiId',headerClass:'darSutun', content: function (rowData)
                                     	{
-                                            return $('<a href='+'MalzemeCinsiGirisi.aspx?DestinationApp=MKD&MalzemeCinsiId='+rowData.MalzemeCinsiId +  ' class=\'btn btn-outline-primary \'>Düzenle</a>')
+                                            return $('<a href='+'MalzemeCinsiGirisi.aspx?DestinationApp=MKD&MalzemeCinsiId='+rowData.MalzemeCinsiId +  ' class=\'btn btn-outline-primary \'>D�zenle</a>')
                                     	}
                                     }
 

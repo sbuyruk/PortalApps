@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using System.Collections.Generic;
 using System;
 using System.ComponentModel;
@@ -16,13 +16,13 @@ namespace Model.MTS
         public int MTSKurumTanimId { get; set; }
         public int MTSGorevTanimId { get; set; }
         public int KisiId { get; set; }
-        [DisplayName("Görev Durumu")]
-        [Required(ErrorMessage = "Görev Durumu boş olamaz.")]
+        [DisplayName("G�rev Durumu")]
+        [Required(ErrorMessage = "G�rev Durumu bos olamaz.")]
         public string Durum { get; set; } = ProjeConstants.MTSGOREVDURUMU_GOREVDE;
-        [DisplayName("Başlama Tarihi")]
+        [DisplayName("Baslama Tarihi")]
         public DateTime BaslamaTarihi { get; set; }
 
-        [DisplayName("Ayrılma Tarihi")]
+        [DisplayName("Ayrilma Tarihi")]
         public DateTime? AyrilmaTarihi { get; set; } = null;
 
         public string AyrilmaSebebi { get; set; } = ProjeConstants.MTSAYRILMASEBEBI_BOS;
@@ -49,7 +49,7 @@ namespace Model.MTS
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
 
         }
@@ -107,7 +107,7 @@ namespace Model.MTS
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
         }
         public MTSKurumGorev Select(int id)

@@ -1,4 +1,4 @@
-﻿using DAO.Ortak;
+using DAO.Ortak;
 using Model.Ortak;
 using Model.TBYS;
 using System;
@@ -123,7 +123,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                             AdiLbl.Text = kiraci == null ? "" : kiraci.Adi + " " + kiraci.Soyadi;
                         }
                         OdemeBilgileriniDoldur(kiraEkstreAktarma);
-                        TabloOlustur(kiraEkstreAktarma);//aktarıldı ise buttonları göstermesin
+                        TabloOlustur(kiraEkstreAktarma);//aktarildi ise buttonlari g�stermesin
                         if (kiraEkstreAktarma.AktarildiMi)
                         {
                             DisableAllButtons();
@@ -131,7 +131,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Ödeme Bulunamadı.", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("�deme Bulunamadi.", ProjeConstants.MESAJ_HATA);
                     }
                 }
             }
@@ -158,7 +158,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                 {
                     if (!kiraEkstreAktarma.AktarildiMi)
                         OdemeyiSozlesmelereBolBtn.Visible = true;
-                    //ekstreAktarmaListItem.KiraciAdi = "<a herf=# class='btn btn-outline-danger text-left' style='white-space:normal'  onclick=OpenModalOdemeBolustur(" + ekstreAktarmaListItem.KiraEkstreAktarmaId + ");> Böl ve Öde</a>";
+                    //ekstreAktarmaListItem.KiraciAdi = "<a herf=# class='btn btn-outline-danger text-left' style='white-space:normal'  onclick=OpenModalOdemeBolustur(" + ekstreAktarmaListItem.KiraEkstreAktarmaId + ");> B�l ve �de</a>";
                 }
                 else
                 {
@@ -172,8 +172,8 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
         #region CustomDataTable 
         private void TabloOlustur(KiraEkstreAktarma kiraEkstreAktarma)
         {
-            var jsonData = TabloJson(kiraEkstreAktarma); //veri çekilip json a çeviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = TabloJson(kiraEkstreAktarma); //veri �ekilip json a �eviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string TabloJson(KiraEkstreAktarma kiraEkstreAktarma)
@@ -226,12 +226,12 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                     odemeListItem.KiraEkstreAktarmaId = kiraEkstreAktarma.Id;
                     odemeListItem.KiraSozlesmeId = SozlesmeGetir(kiraciId, OdemeTarihiLbl.Text.ConvertToDatetime());
                     odemeListItem.OdemeId = kiraEkstreAktarma.OdemeId;
-                    odemeListItem.Kiraci = kiraci +"(KiraciNo:"+kiraciId+" SözleşmeNo:"+ odemeListItem.KiraSozlesmeId+")";
+                    odemeListItem.Kiraci = kiraci +"(KiraciNo:"+kiraciId+" S�zlesmeNo:"+ odemeListItem.KiraSozlesmeId+")";
 
                     OdemeAyristirmaListQS.Add(odemeListItem);
                     if (ToplamlariDuzenle(kiraEkstreAktarma.AktarildiMi))
                     {
-                        OdemeAyristirmaListQS.Remove(odemeListItem);//ödenen tutar aşıldı ise listeden çıkar
+                        OdemeAyristirmaListQS.Remove(odemeListItem);//�denen tutar asildi ise listeden �ikar
                     }
                 }
             }
@@ -248,9 +248,9 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
                 jQuery(document).ready(function () {
                     jQuery('#CustomDataTable').DataTable({
-                        'initComplete': function (settings, json) {//tablo yüklendiğinde
+                        'initComplete': function (settings, json) {//tablo y�klendiginde
                             var api = this.api();
-                            var row = api.row(function (idx, data, node) { //secilen toplantıya gider
+                            var row = api.row(function (idx, data, node) { //secilen toplantiya gider
                                 return data['Secildi'] == true;
                             });
                             if (row.length > 0) {
@@ -315,7 +315,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                     OdemeAyristirma odemeAyristirma = new OdemeAyristirma();
                     if (item.OdemeSebebiId == ProjeConstants.ODEMESEBEBI_KIRA_INT)
                     {
-                        #region Kira Ödemesi
+                        #region Kira �demesi
                         Odeme kiraOdemesi = new Odeme();
                         kiraOdemesi.Aciklama = item.Aciklama;
                         kiraOdemesi.KiraciId = item.KiraciId;
@@ -397,7 +397,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                 
                 if (kiraEkstreAktarma != null)
                 {
-                    kiraEkstreAktarma.Aciklama += "--Ödeme Ayrıştırıldı--";
+                    kiraEkstreAktarma.Aciklama += "--�deme Ayristirildi--";
                     kiraEkstreAktarma.AktarildiMi = true;
                     kiraEkstreAktarma.Degistiren = UtilityHelper.GetCurrentUserName();
 
@@ -412,11 +412,11 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                 List<DBObject> savedDBOList = db.ExecuteTransaction();
                 if (savedDBOList.Count > 0)
                 {
-                    MessageHelper.PublishMessage("Ödeme Bilgileri Kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("�deme Bilgileri Kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Ödeme Bilgileri Kaydedilemedi", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("�deme Bilgileri Kaydedilemedi", ProjeConstants.MESAJ_HATA);
                 }
                 #endregion
                 
@@ -451,11 +451,11 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
 
         protected void KiraOdemesiEkleBtn_Click(object sender, EventArgs e)
         {
-            OdemeEkleModalAc(ProjeConstants.ODEMESEBEBI_KIRA, ProjeConstants.ODEMESEBEBI_KIRA_INT, "Kira Ödemesi Eklenecek");
+            OdemeEkleModalAc(ProjeConstants.ODEMESEBEBI_KIRA, ProjeConstants.ODEMESEBEBI_KIRA_INT, "Kira �demesi Eklenecek");
         }
         protected void OdemeyiSozlesmelereBolBtn_Click(object sender, EventArgs e)
         {
-            OdemeEkleModalAc(ProjeConstants.ODEMESEBEBI_KIRA, ProjeConstants.ODEMESEBEBI_KIRA_INT, "Kira Ödemesi Eklenecek");
+            OdemeEkleModalAc(ProjeConstants.ODEMESEBEBI_KIRA, ProjeConstants.ODEMESEBEBI_KIRA_INT, "Kira �demesi Eklenecek");
         }
 
         private void OdemeEkleModalAc(string odemeSebebi, int odemeSebebiId, string title)
@@ -499,7 +499,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                             {
                                 KiraciDDL.Enabled = true;
                                 string sozlesme = kiraSozlesme.SozBasTar.ConvertToDatetimeEmptyIfNull() + "-" + kiraSozlesme.SozBitTar.ConvertToDatetimeEmptyIfNull();
-                                string kiraciBilgisi = "* " +(item.Adi + " " + item.Soyadi).Trim() + " (" + item.Adres + ")" + " (Sözlesme:" + sozlesme + ", Kira Bedeli:"+kiraSozlesme.KiraBedeli.ToString("N", culturInfo)+")";
+                                string kiraciBilgisi = "* " +(item.Adi + " " + item.Soyadi).Trim() + " (" + item.Adres + ")" + " (S�zlesme:" + sozlesme + ", Kira Bedeli:"+kiraSozlesme.KiraBedeli.ToString("N", culturInfo)+")";
                                 //KiraciDDL.Items.Add(new ListItem(kiraciBilgisi, item.Id.ToString()));
                                 ListItem li1= new ListItem (kiraciBilgisi, item.Id.ToString());
                                 li1.Attributes.Add("title", kiraciBilgisi);
@@ -533,11 +533,11 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
 
         protected void KesinTeminatEkleBtn_Click(object sender, EventArgs e)
         {
-            OdemeEkleModalAc(ProjeConstants.ODEMESEBEBI_KESINTEMINAT, ProjeConstants.ODEMESEBEBI_KESINTEMINAT_INT, "Kesin Teminat Ödemesi Eklenecek");
+            OdemeEkleModalAc(ProjeConstants.ODEMESEBEBI_KESINTEMINAT, ProjeConstants.ODEMESEBEBI_KESINTEMINAT_INT, "Kesin Teminat �demesi Eklenecek");
         } 
         protected void GeciciTeminatEkleBtn_Click(object sender, EventArgs e)
         {
-            OdemeEkleModalAc(ProjeConstants.ODEMESEBEBI_GECICITEMINAT, ProjeConstants.ODEMESEBEBI_GECICITEMINAT_INT, "Geçici Teminat Ödemesi Eklenecek");
+            OdemeEkleModalAc(ProjeConstants.ODEMESEBEBI_GECICITEMINAT, ProjeConstants.ODEMESEBEBI_GECICITEMINAT_INT, "Ge�ici Teminat �demesi Eklenecek");
         }
         protected void ListeyeEkleNowBtn_Click(object sender, EventArgs e)
         {
@@ -555,7 +555,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                     if (kiraci != null)
                     {
                         odemeListItem.KiraciId = kiraci.Id;
-                        odemeListItem.Kiraci = (kiraci.Adi + " " + kiraci.Soyadi).Trim() + " (" + kiraci.Adres + ")" + " (Kiracı No:" + kiraci.Id + ")";
+                        odemeListItem.Kiraci = (kiraci.Adi + " " + kiraci.Soyadi).Trim() + " (" + kiraci.Adres + ")" + " (Kiraci No:" + kiraci.Id + ")";
                     }
 
 
@@ -573,7 +573,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                     
                     if (!kiraEkstreAktarma.AktarildiMi)
                     {
-                        odemeListItem.Duzenle = "<a href='#' class='btn btn-outline-primary' onclick=GuncelleModalDoldur('" + odemeListItem.GuId + "');>Düzenle</a>";
+                        odemeListItem.Duzenle = "<a href='#' class='btn btn-outline-primary' onclick=GuncelleModalDoldur('" + odemeListItem.GuId + "');>D�zenle</a>";
                         odemeListItem.Sil = "<a href='#' class='btn btn-outline-danger' onclick=SatirSil('" + odemeListItem.GuId + "')>Sil</a>";
                     }
                     
@@ -581,12 +581,12 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                     OdemeAyristirmaListQS.Add(odemeListItem);
                     if (ToplamlariDuzenle(kiraEkstreAktarma.AktarildiMi)) 
                     {
-                        OdemeAyristirmaListQS.Remove(odemeListItem);//ödenen tutar aşıldı ise listeden çıkar
+                        OdemeAyristirmaListQS.Remove(odemeListItem);//�denen tutar asildi ise listeden �ikar
                     }
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Ödenen tutarı aştınız.", ProjeConstants.MESAJ_HATA, 2000);
+                    MessageHelper.PublishMessage("�denen tutari astiniz.", ProjeConstants.MESAJ_HATA, 2000);
                 } 
             }
             TabloOlustur(kiraEkstreAktarma);
@@ -624,12 +624,12 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
                 UtilityHelper.SetDDLValue(KiraciDDL, odemeListItem.KiraciId.ToString());
                 KiraciDDL.Enabled = false;
                 KaydetVeyaGuncelleHdn.Value = ProjeConstants.GUNCELLE;
-                ModalTitleLbl.Text = "Ödeme Güncellenecek";
+                ModalTitleLbl.Text = "�deme G�ncellenecek";
                 UtilityHelper.ScriptCalistir("OpenOdemeEkleModal();");
             }
             else
             {
-                MessageHelper.PublishMessage("Kayıt bulunamadı", ProjeConstants.MESAJ_HATA, 2000);
+                MessageHelper.PublishMessage("Kayit bulunamadi", ProjeConstants.MESAJ_HATA, 2000);
             }
 
         }
@@ -654,12 +654,12 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
 
                 if (ToplamlariDuzenle(kiraEkstreAktarma==null || kiraEkstreAktarma.AktarildiMi))
                 {
-                    odemeListItem.Tutar = oncekiTutar;//ödenen tutar aşıldı ise eski tutara dön
+                    odemeListItem.Tutar = oncekiTutar;//�denen tutar asildi ise eski tutara d�n
                 }
             }
             else
             {
-                MessageHelper.PublishMessage("Ödenen tutarı aştınız.", ProjeConstants.MESAJ_HATA, 2000);
+                MessageHelper.PublishMessage("�denen tutari astiniz.", ProjeConstants.MESAJ_HATA, 2000);
             }
             TabloOlustur(kiraEkstreAktarma);
             UtilityHelper.ScriptCalistir("CloseModal()");
@@ -700,7 +700,7 @@ namespace TBYS_WebParts.OdemeAyristirmaWP
             if (fark < 0)
             {
                 toplamAsildiMi = true;
-                MessageHelper.PublishMessage("Toplam ödenen tutarı aştınız, girdiğiniz tutar listeye eklenmedi.", ProjeConstants.MESAJ_HATA, 2000);
+                MessageHelper.PublishMessage("Toplam �denen tutari astiniz, girdiginiz tutar listeye eklenmedi.", ProjeConstants.MESAJ_HATA, 2000);
             }
             else
             {

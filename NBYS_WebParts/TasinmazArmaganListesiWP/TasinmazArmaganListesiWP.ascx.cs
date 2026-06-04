@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -74,8 +74,8 @@ namespace NBYS_WebParts.TasinmazArmaganListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = TabloJson(); //veri �ekilip json a �eviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string TabloJson()
@@ -122,7 +122,7 @@ namespace NBYS_WebParts.TasinmazArmaganListesiWP
                             { type: 'turkish', targets: [1, 2, 3] },
                             " + duzenleGorunsun + @"
                         ],
-                        'order': [[6, 'desc'], [1, 'desc']],//Tarih Sıralı
+                        'order': [[6, 'desc'], [1, 'desc']],//Tarih Sirali
                         'language': {
                             'url': '" + UtilityHelper.TurkishTxtURLGetir() + @"',
                             'decimal': ',',
@@ -273,26 +273,26 @@ namespace NBYS_WebParts.TasinmazArmaganListesiWP
                 {
                     if (!string.IsNullOrEmpty(armaganId))
                     {
-                        bagisciItem.Armagan = "<a href=" + ProjeConstants.PAGE_TASINMAZARMAGAN_DUZENLE + @"?DestinationApp=BD&BagisId=" + bagisId + " class=\'btn btn-outline-primary\'>Armağan Belgesi</a>";
+                        bagisciItem.Armagan = "<a href=" + ProjeConstants.PAGE_TASINMAZARMAGAN_DUZENLE + @"?DestinationApp=BD&BagisId=" + bagisId + " class=\'btn btn-outline-primary\'>Armagan Belgesi</a>";
                     }
                     else
                     {
-                        bagisciItem.Armagan = "<a href=" + ProjeConstants.PAGE_TASINMAZARMAGAN_DUZENLE + @"?DestinationApp=BD&BagisId=" + bagisId + " class=\'btn btn-outline-success \'>Armağan Oluştur</a>";
+                        bagisciItem.Armagan = "<a href=" + ProjeConstants.PAGE_TASINMAZARMAGAN_DUZENLE + @"?DestinationApp=BD&BagisId=" + bagisId + " class=\'btn btn-outline-success \'>Armagan Olustur</a>";
                     }
                 }
                 else
                 {
                     if (!string.IsNullOrEmpty(armaganId))
                     {
-                        bagisciItem.Armagan = "Armağan Belgesi oluşturuldu";
+                        bagisciItem.Armagan = "Armagan Belgesi olusturuldu";
                     }
                     else
                     {
-                        bagisciItem.Armagan = "Armağan Belgesi oluşturulmadı";
+                        bagisciItem.Armagan = "Armagan Belgesi olusturulmadi";
                     }
 
                 }
-                bagisciItem.BagisciKarti = "<a target='_blank' href=" + ProjeConstants.PAGE_TASINMAZBAGISCI_KARTI + "?SenderApp=TBL&BagisciId=" + tasinmazBagisciId + " class='btn btn-outline-info'>Taşınmaz Bağışçı Kartı</a>";
+                bagisciItem.BagisciKarti = "<a target='_blank' href=" + ProjeConstants.PAGE_TASINMAZBAGISCI_KARTI + "?SenderApp=TBL&BagisciId=" + tasinmazBagisciId + " class='btn btn-outline-info'>Tasinmaz Bagis�i Karti</a>";
 
                 bool gizli = row["Gizli"].ReturnEmptyIfNull().ConvertToBool();
                 if (gizli)

@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.Collections.Generic;
@@ -108,7 +108,7 @@ namespace TBYS_WebParts.YilBazindaSozlesmeWP
 
         private string CreateDataTable(string jsonData, string sozlesmeTahliye)
         {
-            string sozlesmeTahliyeSutunu = sozlesmeTahliye.Equals("Sözleşme") ? "{ data: 'SozlesmeTarihi', 'width': '10%' },"
+            string sozlesmeTahliyeSutunu = sozlesmeTahliye.Equals("S�zlesme") ? "{ data: 'SozlesmeTarihi', 'width': '10%' },"
                : "{ Data: 'DurumDegismeTar', 'width': '10%' },";
             string tableString = @"
                 if ( jQuery.fn.DataTable.isDataTable('#CustomDataTable') ) {
@@ -119,9 +119,9 @@ namespace TBYS_WebParts.YilBazindaSozlesmeWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY');//sort date
                 jQuery(document).ready(function () {
                     jQuery('#CustomDataTable').DataTable({
-                        'initComplete': function (settings, json) {//tablo yüklendiğinde
+                        'initComplete': function (settings, json) {//tablo y�klendiginde
                             var api = this.api();
-                            var row = api.row(function (idx, data, node) { //secilen toplantıya gider
+                            var row = api.row(function (idx, data, node) { //secilen toplantiya gider
                                 return data['Secildi'] == true;
                             });
                             if (row.length > 0) {
@@ -156,7 +156,7 @@ namespace TBYS_WebParts.YilBazindaSozlesmeWP
                                 {
                                     var sirano=parseInt(row.Sirano);
                                     var currentPage=Math.ceil(sirano/8);
-                                    return ('<a href=" + ProjeConstants.PAGE_KIRASOZLESMESI + @"?DestinationApp=KS&SenderApp=KSL&KiraSozlesmeId='+row.SozlesmeId +'" + @" class=\'btn btn-outline-primary \'>Sözleşme</a>');
+                                    return ('<a href=" + ProjeConstants.PAGE_KIRASOZLESMESI + @"?DestinationApp=KS&SenderApp=KSL&KiraSozlesmeId='+row.SozlesmeId +'" + @" class=\'btn btn-outline-primary \'>S�zlesme</a>');
                                             
                                 }
                             },
@@ -241,14 +241,14 @@ namespace TBYS_WebParts.YilBazindaSozlesmeWP
         }
         private void SozlesmeTahliyeDDLDoldur()
         {
-            SozlesmeTahliyeDDL.Items.Add(new ListItem("Sözleşme", "Sözleşme"));
+            SozlesmeTahliyeDDL.Items.Add(new ListItem("S�zlesme", "S�zlesme"));
             SozlesmeTahliyeDDL.Items.Add(new ListItem("Tahliye", "Tahliye"));
         }
         private void TabloOlustur()
         {
             string sozlesmeTahliye = SozlesmeTahliyeDDL.SelectedItem.Value;
-            var jsonData = TabloJson(sozlesmeTahliye); //veri çekilip json a çeviriliyor
-            var jsString = CreateDataTable(jsonData,sozlesmeTahliye); //javascript kodu hazırlanıyor.
+            var jsonData = TabloJson(sozlesmeTahliye); //veri �ekilip json a �eviriliyor
+            var jsString = CreateDataTable(jsonData,sozlesmeTahliye); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         protected void ExcelBtn_Click(object sender, EventArgs e)
@@ -317,7 +317,7 @@ namespace TBYS_WebParts.YilBazindaSozlesmeWP
 
             DataTable dataTableSozlesme = kiraSozlesme.SelectSozlesmeListByYilReturnDT(YilDDL.SelectedItem.Value.ConvertToInt());
             DataTable dataTableTahliye = kiraSozlesme.SelectBitenSozlesmeListByYilReturnDT(YilDDL.SelectedItem.Value.ConvertToInt());
-            DataTable dataTable = sozlesmeTahliye.Equals("Sözleşme") ? dataTableSozlesme : dataTableTahliye;
+            DataTable dataTable = sozlesmeTahliye.Equals("S�zlesme") ? dataTableSozlesme : dataTableTahliye;
 
             int SiraNo = 1;
             string tempIli = string.Empty;
@@ -370,7 +370,7 @@ namespace TBYS_WebParts.YilBazindaSozlesmeWP
                     sozlesmeItem.SozlesmeBasTar = sozBasTar.ConvertToDatetimeEmptyIfNull();
                     sozlesmeItem.SozlesmeBitTar = sozBitTar.ConvertToDatetimeEmptyIfNull();
                     sozlesmeItem.SozlesmeDurumu = string.IsNullOrEmpty(sozlesmeDurumu) ? "" : sozlesmeDurumu;
-                    sozlesmeItem.Aktif = aktif == 0 ? "Aktif Değil" : "Aktif";
+                    sozlesmeItem.Aktif = aktif == 0 ? "Aktif Degil" : "Aktif";
                     sozlesmeItem.TarihAraligi = sozBasTar.ConvertToDatetimeEmptyIfNull() + "-" + sozBitTar.ConvertToDatetimeEmptyIfNull();
                     sozlesmeItem.OdemeSekli = odemeSekli;
                     sozlesmeItem.KiraBedeli = kiraBedeli.ToString("N", culturInfo);

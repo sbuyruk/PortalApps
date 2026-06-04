@@ -1,4 +1,4 @@
-ï»¿using Model.MTS;
+using Model.MTS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -45,7 +45,7 @@ namespace MTS_WebParts.FaaliyetListesiROWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri Ã§ekilip json a Ã§eviriliyor
+            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
             UtilityHelper.ScriptCalistir("setDataSet(" + jsonData + ");");
         }
         private string TabloJson()

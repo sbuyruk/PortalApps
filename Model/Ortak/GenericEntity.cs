@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Text;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
@@ -258,7 +258,7 @@ namespace Model.Ortak
                 object typestr = GetInsertValues(value, dataType, extId, pi.Name);
                 if (pi.Name.Equals("Id"))
                 {
-                    if (extId.Contains("{") && extId.Contains("}"))//ID degeri transaction icinde sonradan beli olacak ise burada Id={0} şeklinde olsun
+                    if (extId.Contains("{") && extId.Contains("}"))//ID degeri transaction icinde sonradan beli olacak ise burada Id={0} seklinde olsun
                     {
                         idstr.AppendFormat("{0}={1} ", pi.Name, extId.ToString());
                     }

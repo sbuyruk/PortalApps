@@ -1,4 +1,4 @@
-﻿using Model.MTS;
+using Model.MTS;
 using Model.Ortak;
 using Model.Portal;
 using System;
@@ -69,8 +69,8 @@ namespace Portal_WebParts.ToplantiParametreGirisiWP
         }
         private void TabloOlustur(List<ToplantiParametre> toplantiParametreList)
         {
-            var jsonData = TabloJson(toplantiParametreList); //veri çekilip json a çeviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = TabloJson(toplantiParametreList); //veri �ekilip json a �eviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler,
                 typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), jsString, true);
         }
@@ -130,7 +130,7 @@ namespace Portal_WebParts.ToplantiParametreGirisiWP
                 pItem.Id = item.Id.ToString();
                 pItem.Grup = item.Grup;
                 pItem.Deger = item.Deger;
-                pItem.Duzenle = "<a href='#' class='btn btn-outline-primary' onclick=DuzenleSilModalAc(" + item.Id + "," + ProjeConstants.GUNCELLE.ReturnQuotedValue() + ")>Düzenle</a>";
+                pItem.Duzenle = "<a href='#' class='btn btn-outline-primary' onclick=DuzenleSilModalAc(" + item.Id + "," + ProjeConstants.GUNCELLE.ReturnQuotedValue() + ")>D�zenle</a>";
                 pItem.Sil = "<a href='#' class='btn btn-outline-danger' onclick=DuzenleSilModalAc(" + item.Id + "," + ProjeConstants.SIL.ReturnQuotedValue() + ")>Sil</a>";
                 parametreList.Add(pItem);
             }
@@ -171,7 +171,7 @@ namespace Portal_WebParts.ToplantiParametreGirisiWP
                     {
                         ParametreTxt.Text = rp.Deger;
                         SiraTxt.Text = rp.Sira.ToString();
-                        ModalLbl.Text = "Parametre Düzenleme";
+                        ModalLbl.Text = "Parametre D�zenleme";
                         SilDiv.Attributes["style"] = "display:none";
                         DuzenleDiv.Attributes["style"] = "display:block";
                         ModalLbl.CssClass = "col-form-label text-primary fw-bold";
@@ -181,12 +181,12 @@ namespace Portal_WebParts.ToplantiParametreGirisiWP
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Parametre bulunamadı", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Parametre bulunamadi", ProjeConstants.MESAJ_HATA);
                     }
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Parametre bulunamadı", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Parametre bulunamadi", ProjeConstants.MESAJ_HATA);
                 }
 
             }
@@ -221,7 +221,7 @@ namespace Portal_WebParts.ToplantiParametreGirisiWP
                 else
                 {
                     ModalLbl.Text = "Parametre Silinemez";
-                    MessageLbl.Text = "Silmek istediğiniz parametreyi kullanan randevular bulunmaktadır.";
+                    MessageLbl.Text = "Silmek istediginiz parametreyi kullanan randevular bulunmaktadir.";
                     SilDiv.Attributes["style"] = "display:block";
                     DuzenleDiv.Attributes["style"] = "display:none";
                     ModalLbl.CssClass = "col-form-label text-info fw-bold";
@@ -251,11 +251,11 @@ namespace Portal_WebParts.ToplantiParametreGirisiWP
                         break;
                     }
                 }
-                if (varMi)//aynı Deger'li parametre varsa güncellemesin 
+                if (varMi)//ayni Deger'li parametre varsa g�ncellemesin 
                 {
                     CloseModal();
                     TabloyuGuncelle();
-                    MessageHelper.PublishMessage("Güncellenmedi, aynı isimde parametre zaten var.", ProjeConstants.MESAJ_HATA, 2000);
+                    MessageHelper.PublishMessage("G�ncellenmedi, ayni isimde parametre zaten var.", ProjeConstants.MESAJ_HATA, 2000);
                 }
                 else
                 {
@@ -264,18 +264,18 @@ namespace Portal_WebParts.ToplantiParametreGirisiWP
                     if (toplantiParametre.Update())
                     {
                         CloseModal();
-                        MessageHelper.PublishMessage("Parametre güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        MessageHelper.PublishMessage("Parametre g�ncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                         TabloyuGuncelle();
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Parametre güncellenemedi!", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Parametre g�ncellenemedi!", ProjeConstants.MESAJ_HATA);
                     }
                 }
             }
             else
             {
-                MessageHelper.PublishMessage("Parametre bulunamadı!", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Parametre bulunamadi!", ProjeConstants.MESAJ_HATA);
             }
         }
 
@@ -305,7 +305,7 @@ namespace Portal_WebParts.ToplantiParametreGirisiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Parametre bulunamadı!", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Parametre bulunamadi!", ProjeConstants.MESAJ_HATA);
             }
 
         }
@@ -320,7 +320,7 @@ namespace Portal_WebParts.ToplantiParametreGirisiWP
                     if (list.Count > 0)
                     {
                         TabloyuGuncelle();
-                        MessageHelper.PublishMessage("Kaydedilemedi, aynı isimde bir parametre zaten var.", ProjeConstants.MESAJ_HATA, 2000);
+                        MessageHelper.PublishMessage("Kaydedilemedi, ayni isimde bir parametre zaten var.", ProjeConstants.MESAJ_HATA, 2000);
                     }
                     else
                     {
@@ -345,7 +345,7 @@ namespace Portal_WebParts.ToplantiParametreGirisiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Yeni kayıt yapabilmek için parametre grubunu seçmelisiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                MessageHelper.PublishMessage("Yeni kayit yapabilmek i�in parametre grubunu se�melisiniz.", ProjeConstants.MESAJ_BILGI, 2000);
             }
 
         }

@@ -1,4 +1,4 @@
-﻿using Model.NBYS;
+using Model.NBYS;
 using Model.Ortak;
 using Model.TBYS;
 using System;
@@ -159,8 +159,8 @@ namespace TBYS_WebParts.TasinmazListesiWP
         #region DataTable
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = TabloJson(); //veri �ekilip json a �eviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string TabloJson()
@@ -203,9 +203,9 @@ namespace TBYS_WebParts.TasinmazListesiWP
                         .appendTo('#CustomDataTable thead');
 
                       var table =  $('#CustomDataTable').DataTable({
-                        'initComplete': function (settings, json) {//tablo yüklendiğinde
+                        'initComplete': function (settings, json) {//tablo y�klendiginde
                                 var api = this.api();
-                                var row = api.row(function (idx, data, node) { //secilen satıra gider
+                                var row = api.row(function (idx, data, node) { //secilen satira gider
                                     return data['Id'] == " + SecilenIdQS + @";
                                 });
                                 if (row.length > 0) {
@@ -237,7 +237,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
                             { data: 'ArsaPayi' },
                             { data: 'VakifHissesi' },
                         ],
-                        'order': [[0, 'asc']],//Id Sıralı
+                        'order': [[0, 'asc']],//Id Sirali
                         columnDefs:
                             [
                             " + duzenleGorunsun + @"
@@ -393,7 +393,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
                 tasinmazListesiListItem.Bagisci = bagisci;
                 tasinmazListesiListItem.BagisYili = bagisYili.Trim();
 
-                tasinmazListesiListItem.TasinmazKarti = "<a target='_blank' href=" + ProjeConstants.PAGE_TASINMAZ_KARTI + "?SenderApp=TL&TasinmazId=" + tasinmazId + " class='btn btn-outline-info'>Taşınmaz Kartı</a>";
+                tasinmazListesiListItem.TasinmazKarti = "<a target='_blank' href=" + ProjeConstants.PAGE_TASINMAZ_KARTI + "?SenderApp=TL&TasinmazId=" + tasinmazId + " class='btn btn-outline-info'>Tasinmaz Karti</a>";
                 tasinmazListesiListItem.Resimler = "<a target='_blank' href=" + ProjeConstants.PAGE_TASINMAZ_RESIMLER + "?TasinmazId=" + tasinmazId + " class='btn btn-outline-info'>Resimler/Belgeler</a>";
 
                 bool duzenleGorunsunMu = !string.IsNullOrEmpty(AuthQS) ||
@@ -401,7 +401,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
                     (BolgeIdQS != ProjeConstants.HEPSI_INT && BolgeIdQS != ProjeConstants.BOLGE_GENELMUDURLUK_INT);
                 if (duzenleGorunsunMu)
                 {
-                    tasinmazListesiListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_TASINMAZ_GIRIS + "?DestinationApp=TD&TasinmazId=" + tasinmazId + " class='btn btn-outline-primary'>Düzenle</a>"; 
+                    tasinmazListesiListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_TASINMAZ_GIRIS + "?DestinationApp=TD&TasinmazId=" + tasinmazId + " class='btn btn-outline-primary'>D�zenle</a>"; 
                 }
                 else
                 {
@@ -451,8 +451,8 @@ namespace TBYS_WebParts.TasinmazListesiWP
         private void ModalTabloOlustur()
         {
 
-            var jsonData = ModalTabloJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateModalDataTable(jsonData); //javascript kodu hazırlanıyor.
+            var jsonData = ModalTabloJson(); //veri �ekilip json a �eviriliyor
+            var jsString = CreateModalDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string ModalTabloJson()
@@ -485,7 +485,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY');//sort date
                 jQuery(document).ready(function () {
                     jQuery('#CustomModalDataTable').DataTable({
-                        'initComplete': function (settings, json) {//tablo yüklendiğinde
+                        'initComplete': function (settings, json) {//tablo y�klendiginde
                             var api = this.api();
                             var row = api.row(function (idx, data, node) { //secilen kayda gider
                                 return data['Secildi'] == true;
@@ -539,7 +539,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
                 string adi0 = row0["Adi"].ToString();
                 string soyadi0 = row0["Soyadi"].ToString();
                 
-                BagisciLbl.Text = "Bağışçı : "+ (adi0 + " " + soyadi0).Trim() ;
+                BagisciLbl.Text = "Bagis�i : "+ (adi0 + " " + soyadi0).Trim() ;
                 AdresLbl.Text = "Adres : "+ adres +" " +ilce+"/"+il ;
                 foreach (DataRow row in dataTable.Rows)
                 {

@@ -1,4 +1,4 @@
-﻿using Model.NBYS;
+using Model.NBYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
@@ -192,8 +192,8 @@ namespace NBYS_WebParts.SMSAylikCizelgeReadOnlyWP
 
 
         /// <summary>
-        /// LinkButton Düzenle excele aktarırken hata verdiğinden 
-        /// CizelgeyiDoldur() metodu ile aynı işlemi Linkbutton olmadan yapıyor
+        /// LinkButton D�zenle excele aktarirken hata verdiginden 
+        /// CizelgeyiDoldur() metodu ile ayni islemi Linkbutton olmadan yapiyor
         /// </summary>
         /// <param name="yil"></param>
         private void ExcelIcinCizelgeyiDoldur(int yil)

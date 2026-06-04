@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -36,7 +36,7 @@ namespace Model.Ortak
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
         }
         public override int Save()
@@ -54,7 +54,7 @@ namespace Model.Ortak
             catch (Exception ex)
             {
 
-                throw ex;
+                throw;
             }
 
         }

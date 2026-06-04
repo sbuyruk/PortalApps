@@ -1,4 +1,4 @@
-﻿using Microsoft.Web.Hosting.Administration;
+using Microsoft.Web.Hosting.Administration;
 using Model.IKYS;
 using Model.MTS;
 using System;
@@ -218,7 +218,7 @@ namespace MTS_WebParts.FaaliyetViewerCustomWP
             TableHeaderCell baslikCell = new TableHeaderCell();
 
 
-            baslikCell.Text = "Aralık 2022";
+            baslikCell.Text = "Aralik 2022";
             baslikCell.Font.Bold = true;
             baslikCell.ColumnSpan = 7;
             thbaslik.HorizontalAlign = HorizontalAlign.Center;

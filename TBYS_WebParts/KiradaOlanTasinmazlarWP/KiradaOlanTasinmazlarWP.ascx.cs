@@ -1,4 +1,4 @@
-﻿using Model.Ortak;
+using Model.Ortak;
 using Model.TBYS;
 using System;
 using System.ComponentModel;
@@ -160,7 +160,7 @@ namespace TBYS_WebParts.KiradaOlanTasinmazlarWP
             TableCell KvAptIstCell = new TableCell();
             KvAptIstCell.Text = (IstApt + IstIshani).ToString();
             row1.Controls.Add(KvAptIstCell);
-            //İzm
+            //Izm
             TableCell KvAptIzmCell = new TableCell();
             KvAptIzmCell.Text = (IzmApt + IzmIshani).ToString();
             row1.Controls.Add(KvAptIzmCell);
@@ -178,9 +178,9 @@ namespace TBYS_WebParts.KiradaOlanTasinmazlarWP
             row1.Controls.Add(KvAptTopCell);
 
             KiradaOlanTasinmazlarTable.Controls.Add(row1);
-            //birinci satır toplam bitti
+            //birinci satir toplam bitti
 
-            //ikinci Satır
+            //ikinci Satir
             TableRow row2 = new TableRow();
             row2.HorizontalAlign = HorizontalAlign.Center;
 
@@ -214,14 +214,14 @@ namespace TBYS_WebParts.KiradaOlanTasinmazlarWP
             row2.Controls.Add(KvMesTopCell);
 
             KiradaOlanTasinmazlarTable.Controls.Add(row2);
-            //Mesken satır bitti
+            //Mesken satir bitti
 
             //M.Ev
             TableRow row3 = new TableRow();
             row3.HorizontalAlign = HorizontalAlign.Center;
 
             TableCell KvMevCell = new TableCell();
-            KvMevCell.Text = "Müstakil Ev";
+            KvMevCell.Text = "M�stakil Ev";
             row3.Controls.Add(KvMevCell);
 
             TableCell KvMevAnkCell = new TableCell();
@@ -252,12 +252,12 @@ namespace TBYS_WebParts.KiradaOlanTasinmazlarWP
             KiradaOlanTasinmazlarTable.Controls.Add(row3);
             //Mev bitti
 
-            //İsyeri Satır
+            //Isyeri Satir
             TableRow row4 = new TableRow();
             row4.HorizontalAlign = HorizontalAlign.Center;
 
             TableCell KvIsyCell = new TableCell();
-            KvIsyCell.Text = "İşyeri";
+            KvIsyCell.Text = "Isyeri";
             row4.Controls.Add(KvIsyCell);
 
             TableCell KvIsyAnkCell = new TableCell();
@@ -286,9 +286,9 @@ namespace TBYS_WebParts.KiradaOlanTasinmazlarWP
             row4.Controls.Add(KvIsyTopCell);
 
             KiradaOlanTasinmazlarTable.Controls.Add(row4);
-            //İsyeri satır bitti
+            //Isyeri satir bitti
 
-            //Arsa satır
+            //Arsa satir
             TableRow row5 = new TableRow();
             row5.HorizontalAlign = HorizontalAlign.Center;
 
@@ -322,9 +322,9 @@ namespace TBYS_WebParts.KiradaOlanTasinmazlarWP
             row5.Controls.Add(KvArsTopCell);
 
             KiradaOlanTasinmazlarTable.Controls.Add(row5);
-            //Arsa satır bitti
+            //Arsa satir bitti
 
-            //Tarla satır
+            //Tarla satir
             TableRow row7 = new TableRow();
             row7.HorizontalAlign = HorizontalAlign.Center;
 
@@ -358,11 +358,11 @@ namespace TBYS_WebParts.KiradaOlanTasinmazlarWP
             row7.Controls.Add(KvTarTopCell);
 
             KiradaOlanTasinmazlarTable.Controls.Add(row7);
-            //Tarla satır bitti
+            //Tarla satir bitti
 
 
 
-            //toplam satır
+            //toplam satir
             TableRow row8 = new TableRow();
             row8.HorizontalAlign = HorizontalAlign.Center;
 
