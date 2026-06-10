@@ -154,7 +154,7 @@ namespace TBYS_WebParts.KiraSozlesmesiWP
                 kiraSozlesme = kiraSozlesme.Select(KiraSozlesmeIdQS.ConvertToInt());
                 if (kiraSozlesme == null)
                 {
-                    MessageHelper.PublishMessage("Sözlesme Bulunamadi",ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("SÃ¶zleÅŸme BulunamadÄ±",ProjeConstants.MESAJ_HATA);
                 }else
                 {
                     string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
@@ -212,7 +212,7 @@ namespace TBYS_WebParts.KiraSozlesmesiWP
 
                 if (!string.IsNullOrEmpty(KiraSozlesmeIdQS))
                 {
-                    IdLbl.Text = "(Sözlesme NO: " + kiraSozlesme.Id.ToString() +" Dosya No:"+ kiraSozlesme.DosyaNo + ") ";
+                    IdLbl.Text = "(SÃ¶zleÅŸme NO: " + kiraSozlesme.Id.ToString() +" Dosya No:"+ kiraSozlesme.DosyaNo + ") ";
                     Kiraci kiraci = new Kiraci();
                     kiraci = kiraci.Select<Kiraci>(kiraSozlesme.KiraciId);
                     if (kiraci != null)
@@ -230,16 +230,16 @@ namespace TBYS_WebParts.KiraSozlesmesiWP
                     }
                     else if (kiraSozlesme.SozBitTar < today)// tarihler dolu fakat eski ise
                     {
-                        UyariLbl.Text = @"Sözlesmenin süresi doldu. 
-Bu kiraci ve tasinmazlar için yeniden sözlesme yapmak için SÖZLESMEYI YENILE dügmesine basiniz ";
+                        UyariLbl.Text = @"SÃ¶zleÅŸmenin sÃ¼resi doldu. 
+Bu kiracÄ± ve taÅŸÄ±nmazlar iÃ§in yeniden sÃ¶zleÅŸme yapmak iÃ§in SÃ–ZLEÅžMEYÄ° YENÄ°LE dÃ¼ÄŸmesine basÄ±nÄ±z ";
                         SozlesmeYenileBtn.Visible = true;
                         SozlesmeyiBitirBtn.Visible = true;
                         UpdateBtn.Visible = false;
                         DeleteBtn.Visible = false;
-                        OdemePlaniGoruntuleBtn.Visible = true;// TODO geçici olarak true Yapildi false olmali;
+                        OdemePlaniGoruntuleBtn.Visible = true;// TODO geÃ§ici olarak true Yapildi false olmali;
                         KiraciTasinmazDegistirBtn.Visible = false;
                     }
-                    else//tarihler dolu sözlesme devam ediyorsa
+                    else//tarihler dolu sÃ¶zlesme devam ediyorsa
                     {
                         OdemePlaniGoruntuleBtn.Visible = true;// GecerliOdemePlaniVarMi(kiraSozlesme);
                         UpdateBtn.Visible = true;
@@ -255,15 +255,15 @@ Bu kiraci ve tasinmazlar için yeniden sözlesme yapmak için SÖZLESMEYI YENILE düg
                         SozlesmeyiBitirBtn.Visible = false;
                         SozlesmeyiFeshetBtn.Visible = false;
                         OdemePlaniGoruntuleBtn.Visible = false;
-                        UyariLbl.Text = "Sözlesme Bitmistir.";
+                        UyariLbl.Text = "SÃ¶zleÅŸme BitmiÅŸtir.";
                         UyariLbl.Font.Bold = true;
                     }
                     DateTime ikiAySonra = today.AddMonths(2);
                     DateTime gelecekAySonGun = (new DateTime(ikiAySonra.Year, ikiAySonra.Month, 1)).AddDays(-1);
                     kiraSozlesme.SozBitTar = (kiraSozlesme.SozBitTar < ProjeConstants.REFERANS_TARIHI) ? SozBitTarTxt.Value.ConvertToDatetime() : kiraSozlesme.SozBitTar;
-                    if (kiraSozlesme.SozBitTar <= gelecekAySonGun)// sözlesme bitimine 1 ay kalmis ise
+                    if (kiraSozlesme.SozBitTar <= gelecekAySonGun)// sÃ¶zlesme bitimine 1 ay kalmis ise
                     {
-                        UyariLbl.Text = @"Sözlesmenin süresi doldu. " + System.Environment.NewLine + "Bu kiraci ve tasinmazlar için yeniden sözlesme yapmak için SÖZLESMEYI YENILE dügmesine basiniz ";
+                        UyariLbl.Text = @"SÃ¶zleÅŸmenin sÃ¼resi doldu. " + System.Environment.NewLine + "Bu kiracÄ± ve taÅŸÄ±nmazlar iÃ§in yeniden sÃ¶zleÅŸme yapmak iÃ§in SÃ–ZLEÅžMEYÄ° YENÄ°LE dÃ¼ÄŸmesine basÄ±nÄ±z ";
                         SozlesmeYenileBtn.Visible = true;
                     }
                 }
@@ -280,7 +280,7 @@ Bu kiraci ve tasinmazlar için yeniden sözlesme yapmak için SÖZLESMEYI YENILE düg
 
                 if (kiraSozlesme != null && !kiraSozlesme.Aktif)
                 {
-                    IdLbl.Text = "(Sözlesme NO: " + kiraSozlesme.Id.ToString() + " Dosya No:" + kiraSozlesme.DosyaNo + ") ";
+                    IdLbl.Text = "(SÃ¶zleÅŸme NO: " + kiraSozlesme.Id.ToString() + " Dosya No:" + kiraSozlesme.DosyaNo + ") ";
                     Kiraci kiraci = new Kiraci();
                     kiraci = kiraci.Select<Kiraci>(kiraSozlesme.KiraciId);
                     if (kiraci != null)
@@ -326,7 +326,7 @@ Bu kiraci ve tasinmazlar için yeniden sözlesme yapmak için SÖZLESMEYI YENILE düg
         private void SozlesmeTasinmazTablosunuDoldur(KiraSozlesme kiraSozlesme)
         {
             KiralikTable.Rows.Clear();
-            string[] headers = { "Sira", "Adres" };
+            string[] headers = { "SÄ±ra", "Adres" };
             UtilityHelper.SetTableHeaders(KiralikTable,headers);
             SozlesmeTasinmaz st = new SozlesmeTasinmaz();
             DataTable dataTable = st.SelectBySozlesmeIdReturnDataTable(kiraSozlesme.Id);
@@ -401,10 +401,10 @@ Bu kiraci ve tasinmazlar için yeniden sözlesme yapmak için SÖZLESMEYI YENILE düg
         }
 
         /// <summary>
-        /// Sözlesmede kritik alanlar :  sözlesme baslama ve bitis tarihi, kira bedeli, taksit sayisi
+        /// SÃ¶zlesmede kritik alanlar :  sÃ¶zlesme baslama ve bitis tarihi, kira bedeli, taksit sayisi
         /// Devir Anapara ve Devir Faiz Tutari degisti ise;
         ///     burada dikkate alinmaz, 
-        ///     sözlesme güncelleme sirasinda ödeme planinda devir anapara ve devir faiz tutarini günceller
+        ///     sÃ¶zlesme gÃ¼ncelleme sirasinda Ã¶deme planinda devir anapara ve devir faiz tutarini gÃ¼nceller
         ///     bakiniz : 
         /// </summary>
         /// <param name="kiraSozlesme"></param>
@@ -452,26 +452,26 @@ Bu kiraci ve tasinmazlar için yeniden sözlesme yapmak için SÖZLESMEYI YENILE düg
                     if (kiraSozlesme != null)
                     {
                         issaved = true;
-                        MessageHelper.PublishMessage("Kira Sözlesmesi Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        MessageHelper.PublishMessage("Kira SÃ¶zleÅŸmesi GÃ¼ncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
 
                     }
                     else
                     {
                         issaved = false;
-                        MessageHelper.PublishMessage("Kira Kayit islemi basarisiz oldu.", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Kira SÃ¶zleÅŸmesi KayÄ±t iÅŸlemi baÅŸarÄ±sÄ±z oldu.", ProjeConstants.MESAJ_HATA);
                     }
                 }
                 catch (Exception)
                 {
                     issaved = false;
-                    MessageHelper.PublishMessage(" Geçerli bir Kira Bedeli girmediniz!", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage(" GeÃ§erli bir Kira Bedeli girmediniz!", ProjeConstants.MESAJ_HATA);
                 }
 
             }
             else
             {
                 issaved = false;
-                MessageHelper.PublishMessage("Sözlesme Baslangiç ve Bitis Tarihleri ile Kira Bedeli alanlari dolu olmalidir", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("SÃ¶zleÅŸme BaÅŸlangÄ±Ã§ ve BitiÅŸ Tarihleri ile Kira Bedeli alanlarÄ± dolu olmalÄ±dÄ±r", ProjeConstants.MESAJ_HATA);
             }
             return issaved;
         }
@@ -519,7 +519,7 @@ Bu kiraci ve tasinmazlar için yeniden sözlesme yapmak için SÖZLESMEYI YENILE düg
             bool guncellendiMi = kiraSozlesme.Update();
             if (guncellendiMi)
             {
-                //devirAnaPara, devirFaiz, devirFaizliBakiye degisti ise OdemePlanini güncelle
+                //devirAnaPara, devirFaiz, devirFaizliBakiye degisti ise OdemePlanini gÃ¼ncelle
                 OdemePlani odemePlani = new OdemePlani();
                 odemePlani = odemePlani.SelectBySozlesmeIdSira(kiraSozlesme.Id, 0);
                 if (odemePlani != null)
@@ -659,7 +659,7 @@ Bu kiraci ve tasinmazlar için yeniden sözlesme yapmak için SÖZLESMEYI YENILE düg
         private bool GecerliOdemePlaniVarMi(KiraSozlesme kiraSozlesme)
         {
             bool odemePlaniVar = false;
-            //halen devam eden bir ödeme plani var mi
+            //halen devam eden bir Ã¶deme plani var mi
             OdemePlani odemePlaniDao = new OdemePlani();
             List<OdemePlani> list = odemePlaniDao.SelectBySozlesmeId(kiraSozlesme.Id);
             if (list.Count > 0)
@@ -678,7 +678,7 @@ Bu kiraci ve tasinmazlar için yeniden sözlesme yapmak için SÖZLESMEYI YENILE düg
             ExceptionHelper exHelper = new ExceptionHelper();
             try
             {
-                //halen devam eden bir ödeme plani var mi
+                //halen devam eden bir Ã¶deme plani var mi
                 OdemePlani odemePlani = new OdemePlani();
                 if (isSozlesmeyiBitir)
                 {
@@ -692,7 +692,7 @@ Bu kiraci ve tasinmazlar için yeniden sözlesme yapmak için SÖZLESMEYI YENILE düg
                 if (odemePlani == null)
                 {
 
-                    exHelper.Exceptions.Add(new Exception("Ödeme Plani Bulunamadi"));
+                    exHelper.Exceptions.Add(new Exception("Ã–deme PlanÄ± BulunamadÄ±"));
                 }
                 else
                 {
@@ -770,7 +770,7 @@ Bu kiraci ve tasinmazlar için yeniden sözlesme yapmak için SÖZLESMEYI YENILE düg
             kiraSozlesme = kiraSozlesme.Select<KiraSozlesme>(KiraSozlesmeIdQS.ConvertToInt());
             if (string.IsNullOrEmpty(kiraSozlesme.SozBasTar.ConvertToDatetimeEmptyIfNull()) || string.IsNullOrEmpty(kiraSozlesme.SozBitTar.ConvertToDatetimeEmptyIfNull()))
             {
-                MessageHelper.PublishMessage("Ödeme plani Açilamiyor.Lütfen sözlesmenin baslama ve bitis tarihlerini girerek tekrar deneyin.", ProjeConstants.MESAJ_BILGI, 2000);
+                MessageHelper.PublishMessage("Ã–deme planÄ± AÃ§Ä±lamÄ±yor. LÃ¼tfen sÃ¶zleÅŸmenin baÅŸlama ve bitiÅŸ tarihlerini girerek tekrar deneyin.", ProjeConstants.MESAJ_BILGI, 2000);
             }
             else if (kiraSozlesme != null)
             {
@@ -813,7 +813,7 @@ Bu kiraci ve tasinmazlar için yeniden sözlesme yapmak için SÖZLESMEYI YENILE düg
             {
                 ExceptionHelper exHelper = new ExceptionHelper();
                 exHelper.Exceptions.Add(e);
-                exHelper.Exceptions.Add(new Exception("Hukuki Takip Baslatilamadi"));
+                exHelper.Exceptions.Add(new Exception("Hukuki Takip BaÅŸlatÄ±lamadÄ±"));
             }
             return islemBaslatildi;
         }
@@ -838,7 +838,7 @@ Bu kiraci ve tasinmazlar için yeniden sözlesme yapmak için SÖZLESMEYI YENILE düg
             {
                 ExceptionHelper exHelper = new ExceptionHelper();
                 exHelper.Exceptions.Add(e);
-                exHelper.Exceptions.Add(new Exception("Hukuki Takip Baslatilamadi"));
+                exHelper.Exceptions.Add(new Exception("Hukuki Takip BaÅŸlatÄ±lamadÄ±"));
             }
             return islemBaslatildi;
         }
@@ -874,12 +874,12 @@ Bu kiraci ve tasinmazlar için yeniden sözlesme yapmak için SÖZLESMEYI YENILE düg
                 RedirectToPage(ProjeConstants.PAGE_KIRASOZLESME_LIST + "?SozlesmeId=" + KiraSozlesmeIdQS);
             }
         }
-        private void SOzlesmeyiYenile()
+        private void SozlesmeyiYenile()
         {
             int yeniId = 0;
             try
             {
-                //mevcut Sözlesmeyi bitir
+                //mevcut SÃ¶zlesmeyi bitir
                 int eskiKiraSozlesmeId = KiraSozlesmeIdQS.ConvertToInt();
                 KiraSozlesme kiraSozlesme = new KiraSozlesme();
                 kiraSozlesme = kiraSozlesme.Select<KiraSozlesme>(eskiKiraSozlesmeId);
@@ -888,7 +888,7 @@ Bu kiraci ve tasinmazlar için yeniden sözlesme yapmak için SÖZLESMEYI YENILE düg
                     kiraSozlesme.Degistiren = CurrentUserName;
                     // TO DO SB atomic
                     kiraSozlesme.UpdateAktifDurum(ProjeConstants.KIRASOZLESME_DURUMU_YENILENDI, ModalDurumDegismeTarTxt.Text, ProjeConstants.KIRASOZLESME_AKTIFDEGILBOOL);
-                    //yeni Sözlesmeyi kaydet
+                    //yeni SÃ¶zlesmeyi kaydet
                     KiraSozlesme yeniSozlesme = new KiraSozlesme();
                     yeniSozlesme = kiraSozlesme;
                     //yeniSozlesme.Id = yeniId;
@@ -912,10 +912,10 @@ Bu kiraci ve tasinmazlar için yeniden sözlesme yapmak için SÖZLESMEYI YENILE düg
                     yeniSozlesme.BolgeId = BolgeIdGetir(yeniSozlesme);
                     yeniId = yeniSozlesme.Save();
                     yeniSozlesme.Id = yeniId;
-                    //eski sözlesme tasinmaz bilgilerini al
+                    //eski sÃ¶zlesme tasinmaz bilgilerini al
                     SozlesmeTasinmaz st = new SozlesmeTasinmaz();
                     List<SozlesmeTasinmaz> stlist = st.SelectBySozlesmeId(eskiKiraSozlesmeId);
-                    //yeni sözlesmeye aktar ve kaydet
+                    //yeni sÃ¶zlesmeye aktar ve kaydet
                     foreach (SozlesmeTasinmaz item in stlist)
                     {
                         SozlesmeTasinmaz yeniST = new SozlesmeTasinmaz();
@@ -925,7 +925,7 @@ Bu kiraci ve tasinmazlar için yeniden sözlesme yapmak için SÖZLESMEYI YENILE düg
                         yeniST.Save();
                     }
                 }
-                //yeni sözlesmeye git
+                //yeni sÃ¶zlesmeye git
                 string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                 string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/")) + "/" + ProjeConstants.PAGE_KIRASOZLESMESI + "?KiraSozlesmeId=" + yeniId;
                 Page.Response.Redirect(newUrl);
@@ -1026,7 +1026,7 @@ Bu kiraci ve tasinmazlar için yeniden sözlesme yapmak için SÖZLESMEYI YENILE düg
         }
         protected void SozlesmeYenileBtn_Click(object sender, EventArgs e)
         {
-            ModalLbl.Text = "Sözlesme Yenilenecek";
+            ModalLbl.Text = "SÃ¶zleÅŸme Yenilenecek";
             ModalDurumDegismeTarTxt.Text = DateTime.Today.ConvertToDatetimeEmptyIfNull();
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
             kiraSozlesme = kiraSozlesme.Select<KiraSozlesme>(KiraSozlesmeIdQS.ConvertToInt());
@@ -1043,26 +1043,26 @@ Bu kiraci ve tasinmazlar için yeniden sözlesme yapmak için SÖZLESMEYI YENILE düg
                     faizliBakiye = BorcuVarMi(kiraSozlesme, true);
                 }
 
-                // Sözlesmenin borcu var mi
-                // Yoksa güncellemeyi yap
+                // SÃ¶zlesmenin borcu var mi
+                // Yoksa gÃ¼ncellemeyi yap
 
                 if (faizliBakiye < 0)
                 {
                     SenderHF.Value = "YenileBorcuDevret";
                     OdemePlaniBtn.Visible = true;
-                    OnaylaBtn.Text = "Sözlesmeyi Yenile ve Borcu Devret";
+                    OnaylaBtn.Text = "SÃ¶zleÅŸmeyi Yenile ve Borcu Devret";
                     MessageLbl.Text = @"
-                        Sözlesmeye ait ödenmemis " + (faizliBakiye * -1).ToString("N", culturInfo) + @"TL borç bulunmaktadir. Sözlesmeyi yenilemeden önce ödeme yapmak için ÖDEME PLANI gidebilirsiniz veya
-                        Sözlesmeye ait kira borcunu yeni sözlesmeye devredebilirsiniz";
+                        SÃ¶zleÅŸmeye ait Ã¶denmemiÅŸ " + (faizliBakiye * -1).ToString("N", culturInfo) + @"TL borÃ§ bulunmaktadir. SÃ¶zleÅŸmeyi yenilemeden Ã¶nce Ã¶deme yapmak iÃ§in Ã–DEME PLANI gidebilirsiniz veya
+                        SÃ¶zleÅŸmeye ait kira borcunu yeni sÃ¶zleÅŸmeye devredebilirsiniz";
                     UtilityHelper.ScriptCalistir("OpenModal();");
                 }
                 else// borcu yok bakiye=0, faiz tutari= 0
                 {
                     SenderHF.Value = "Yenile";
                     OdemePlaniBtn.Visible = true;
-                    OnaylaBtn.Text = "Sözlesmeyi Yenile";
+                    OnaylaBtn.Text = "SÃ¶zleÅŸmeyi Yenile";
                     MessageLbl.Text = @"
-                        Sözlesmeye ait ödenmemis borç bulunmamaktadir. Onayladiginiz takdirde müteakip yil için sözlesme yenilenecek. ";
+                        SÃ¶zleÅŸmeye ait Ã¶denmemiÅŸ borÃ§ bulunmamaktadir. Onayladiginiz takdirde mÃ¼teakip yil iÃ§in sÃ¶zleÅŸme yenilenecek. ";
                     UtilityHelper.ScriptCalistir("OpenModal();");
 
                 }
@@ -1076,7 +1076,7 @@ Bu kiraci ve tasinmazlar için yeniden sözlesme yapmak için SÖZLESMEYI YENILE düg
                 {
                     ArtisOraniTxt.Text = ProjeConstants.SINIRLIKIRAARTISI_ORANI.ToString();
                     YeniKiraBedeliTxt.Text = (kiraSozlesme.KiraBedeli + kiraSozlesme.KiraBedeli * ProjeConstants.SINIRLIKIRAARTISI_ORANI / 100).ToString("N", culturInfo);
-                    ArtisOraniLbl.Text = "%" + ProjeConstants.SINIRLIKIRAARTISI_ORANI + " Uygulamasi kapsamindadir.";
+                    ArtisOraniLbl.Text = "%" + ProjeConstants.SINIRLIKIRAARTISI_ORANI + " UygulamasÄ± kapsamÄ±ndadÄ±r.";
                     ArtisOraniLbl.ForeColor = System.Drawing.Color.Blue;
                 }
                 else
@@ -1090,7 +1090,7 @@ Bu kiraci ve tasinmazlar için yeniden sözlesme yapmak için SÖZLESMEYI YENILE düg
                         decimal yeniKiraBedeli = kiraSozlesme.KiraBedeli + kiraSozlesme.KiraBedeli * tufe / 100;
                         ArtisOraniTxt.Text = tufe.ToString();
                         YeniKiraBedeliTxt.Text = yeniKiraBedeli.ToString("N", culturInfo);
-                        ArtisOraniLbl.Text = "%" + ProjeConstants.SINIRLIKIRAARTISI_ORANI + " uygulamasi kapsaminda degildir.";
+                        ArtisOraniLbl.Text = "%" + ProjeConstants.SINIRLIKIRAARTISI_ORANI + " uygulamasÄ± kapsamÄ±nda deÄŸildir.";
                         ArtisOraniLbl.ForeColor = System.Drawing.Color.Black;
                     }
 
@@ -1101,21 +1101,21 @@ Bu kiraci ve tasinmazlar için yeniden sözlesme yapmak için SÖZLESMEYI YENILE düg
 
 
             //borcu var mi kontrol et
-            //borcu yoksa sözlesmeyi bitir
-            //borcu varsa Popup Aç
-            // (a) Borcu ödemesi için odeme planina link olsun .
-            // ÖdemePlani.aspx açilsin
-            // (b) Sözlesmeyi Yenile ve Borcu Yeni sözlesmeye Devret butonu olsun
-            // sözlesmeyi bitir
-            // yeni sözlesme olustur
-            // son odeme planindaki anapara(Bakiye) ve FaizTutarini yeni sözlesmeye yaz
+            //borcu yoksa sÃ¶zlesmeyi bitir
+            //borcu varsa Popup AÃ§
+            // (a) Borcu Ã¶demesi iÃ§in odeme planina link olsun .
+            // Ã–demePlani.aspx aÃ§ilsin
+            // (b) SÃ¶zlesmeyi Yenile ve Borcu Yeni sÃ¶zlesmeye Devret butonu olsun
+            // sÃ¶zlesmeyi bitir
+            // yeni sÃ¶zlesme olustur
+            // son odeme planindaki anapara(Bakiye) ve FaizTutarini yeni sÃ¶zlesmeye yaz
         }
         protected void SozlesmeyiBitirBtn_Click(object sender, EventArgs e)
         {
             ArtisOraniDiv.Attributes["style"] = "display:none";
             YeniKiraBedeliDiv.Attributes["style"] = "display:none";
 
-            ModalLbl.Text = "Sözlesme Bitirilecek";
+            ModalLbl.Text = "SÃ¶zleÅŸme Bitirilecek";
             ModalDurumDegismeTarTxt.Text = DateTime.Today.ConvertToDatetimeEmptyIfNull();
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
             kiraSozlesme = kiraSozlesme.Select<KiraSozlesme>(KiraSozlesmeIdQS.ConvertToInt());
@@ -1128,26 +1128,26 @@ Bu kiraci ve tasinmazlar için yeniden sözlesme yapmak için SÖZLESMEYI YENILE düg
                     faizliBakiye = BorcuVarMi(kiraSozlesme, true);
                 }
 
-                // Sözlesmenin borcu var mi
-                // Yoksa güncellemeyi yap
+                // SÃ¶zlesmenin borcu var mi
+                // Yoksa gÃ¼ncellemeyi yap
 
                 if (faizliBakiye < 0)
                 {
                     SenderHF.Value = "SozlesmeBittiHukukiIslem";
                     OdemePlaniBtn.Visible = true;
-                    OnaylaBtn.Text = "Sözlesmeyi Feshet ve Hukuki Islemlere Ekle";
+                    OnaylaBtn.Text = "SÃ¶zleÅŸmeyi Feshet ve Hukuki Ä°ÅŸlemlere Ekle";
                     MessageLbl.Text = @"
-                        Sözlesmeye ait ödenmemis " + (faizliBakiye * -1).ToString("N", culturInfo) + @"TL borç bulunmaktadir. Sözlesmeyi bitirmeden önce ödeme yapmak için ÖDEME PLANI'na gidebilirsiniz veya
-                        Sözlesmeyi 'Hukuki Islem Gören Sözlesmeler' arasina ekleyebilirsiniz";
+                        SÃ¶zleÅŸmeye ait Ã¶denmemiÅŸ " + (faizliBakiye * -1).ToString("N", culturInfo) + @"TL borÃ§ bulunmaktadir. SÃ¶zleÅŸmeyi bitirmeden Ã¶nce Ã¶deme yapmak iÃ§in Ã–DEME PLANI'na gidebilirsiniz veya
+                        SÃ¶zleÅŸmeyi 'Hukuki Ä°ÅŸlem GÃ¶ren SÃ¶zleÅŸmeler' arasina ekleyebilirsiniz";
                     UtilityHelper.ScriptCalistir("OpenModal();");
                 }
                 else// borcu yok bakiye=0, faiz tutari= 0
                 {
                     SenderHF.Value = "SozlesmeyiBitir";
                     OdemePlaniBtn.Visible = true;
-                    OnaylaBtn.Text = "Sözlesmeyi Bitir";
+                    OnaylaBtn.Text = "SÃ¶zleÅŸmeyi Bitir";
                     MessageLbl.Text = @"
-                        Sözlesmeye ait borç bulunmamaktadir. Sözlesmeyi bitir dügmesine bastiginizda, bu sözlesme arsive alinacaktir.";
+                        SÃ¶zleÅŸmeye ait borÃ§ bulunmamaktadir. SÃ¶zleÅŸmeyi bitir dÃ¼gmesine bastiginizda, bu sÃ¶zleÅŸme arsive alinacaktir.";
                     UtilityHelper.ScriptCalistir("OpenModal();");
                 }
             }
@@ -1157,7 +1157,7 @@ Bu kiraci ve tasinmazlar için yeniden sözlesme yapmak için SÖZLESMEYI YENILE düg
             ArtisOraniDiv.Attributes["style"] = "display:none";
             YeniKiraBedeliDiv.Attributes["style"] = "display:none";
 
-            ModalLbl.Text = "Sözlesme Feshedilecek";
+            ModalLbl.Text = "SÃ¶zleÅŸme Feshedilecek";
             ModalDurumDegismeTarTxt.Text = DateTime.Today.ConvertToDatetimeEmptyIfNull();
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
@@ -1171,28 +1171,28 @@ Bu kiraci ve tasinmazlar için yeniden sözlesme yapmak için SÖZLESMEYI YENILE düg
                     faizliBakiye = DevirFaizliBakiyeHesapla(kiraSozlesme);//BorcuVarMi(kiraSozlesme,false);
                 }
 
-                // Sözlesmenin borcu var mi
-                // Yoksa güncellemeyi yap
+                // SÃ¶zlesmenin borcu var mi
+                // Yoksa gÃ¼ncellemeyi yap
 
                 if (faizliBakiye < 0)
                 {
                     SenderHF.Value = "FesihHukukiIslem";
                     OdemePlaniBtn.Visible = true;
-                    OnaylaBtn.Text = "Sözlesmeyi Feshet";
+                    OnaylaBtn.Text = "SÃ¶zleÅŸmeyi Feshet";
                     MessageLbl.Text = string.Format(@"
-                        <br> * Sözlesmeye ait ödenmemis {0} TL  borç bulunmaktadir. 
-                        <br> * Sözlesmeyi feshetmeden önce ödeme yapmak için ÖDEME PLANI'na gidebilirsiniz veya
-                        <br> * Sözlesmeyi Feshet dügmesine basarak 'Hukuki Islem Gören Sözlesmeler' arasina ekleyebilirsiniz.", (faizliBakiye * -1).ToString("N", culturInfo));
+                        <br> * SÃ¶zleÅŸmeye ait Ã¶denmemiÅŸ {0} TL  borÃ§ bulunmaktadir. 
+                        <br> * SÃ¶zleÅŸmeyi feshetmeden Ã¶nce Ã¶deme yapmak iÃ§in Ã–DEME PLANI'na gidebilirsiniz veya
+                        <br> * SÃ¶zleÅŸmeyi Feshet dÃ¼gmesine basarak 'Hukuki Ä°ÅŸlem GÃ¶ren SÃ¶zleÅŸmeler' arasina ekleyebilirsiniz.", (faizliBakiye * -1).ToString("N", culturInfo));
                     ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "OpenModal();", true);
                 }
                 else// borcu yok bakiye=0, faiz tutari= 0
                 {
                     SenderHF.Value = "SozlesmeyiFeshet";
                     OdemePlaniBtn.Visible = true;
-                    OnaylaBtn.Text = "Sözlesmeyi Feshet";
+                    OnaylaBtn.Text = "SÃ¶zleÅŸmeyi Feshet";
                     MessageLbl.Text = @"
-                         <br> * Sözlesmeye ait borç bulunmamaktadir. 
-                         <br> * Sözlesmeyi Feshet dügmesine bastiginizda, bu sözlesmenin ödeme planindaki vadesi gelmemis kira bedelleri '0' (sifir) yapilacak ve sözlesme arsive alinacaktir.";
+                         <br> * SÃ¶zleÅŸmeye ait borÃ§ bulunmamaktadir. 
+                         <br> * SÃ¶zleÅŸmeyi Feshet dÃ¼gmesine bastiginizda, bu sÃ¶zleÅŸmenin Ã¶deme planindaki vadesi gelmemis kira bedelleri '0' (sifir) yapilacak ve sÃ¶zleÅŸme arsive alinacaktir.";
                     ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "OpenModal();", true);
                 }
 
@@ -1200,7 +1200,7 @@ Bu kiraci ve tasinmazlar için yeniden sözlesme yapmak için SÖZLESMEYI YENILE düg
         }
         protected void UpdateBtn_Click(object sender, EventArgs e)
         {
-            ModalLbl.Text = "Sözlesme Güncellenecek";
+            ModalLbl.Text = "SÃ¶zleÅŸme GÃ¼ncellenecek";
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
             kiraSozlesme = kiraSozlesme.Select<KiraSozlesme>(KiraSozlesmeIdQS.ConvertToInt());
             if (kiraSozlesme != null)
@@ -1208,16 +1208,16 @@ Bu kiraci ve tasinmazlar için yeniden sözlesme yapmak için SÖZLESMEYI YENILE düg
                 ArtisOraniDiv.Attributes["style"] = "display:none";
                 YeniKiraBedeliDiv.Attributes["style"] = "display:none";
 
-                // Sözlesmenin kritik bilgilerinde degisiklik var mi (Sozbastar,sozbittar,taksitsayisi,kirabedeli)
-                // Yoksa güncellemeyi yap
+                // SÃ¶zleÅŸmenin kritik bilgilerinde degisiklik var mi (Sozbastar,sozbittar,taksitsayisi,kirabedeli)
+                // Yoksa gÃ¼ncellemeyi yap
                 bool sozlesmeDegisti = SozlesmedeKritikAlanlarDegistiMi(kiraSozlesme);
                 if (sozlesmeDegisti)
                 {
                     SenderHF.Value = "Update";
-                    MessageLbl.Text = @"Onayladiginiz takdirde, bu sözlesme güncellenmeden önce sözlesmeye ait ÖDEME PLANI silinecek.
-Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabilir.
-Ayrica sözlesme güncellendikten sonra yeni ödeme plani olusturmalisiniz.";
-                    OnaylaBtn.Text = " Sözlesmeyi Güncelle ";
+                    MessageLbl.Text = @"OnayladÄ±ÄŸÄ±nÄ±z takdirde, bu sÃ¶zleÅŸme gÃ¼ncellenmeden Ã¶nce sÃ¶zleÅŸmeye ait Ã–DEME PLANI silinecek.
+Bu durumda daha Ã¶nce yapilan Ã¶deme var ise silinmesi bilgi kaybina yolaÃ§abilir.
+Ayrica sÃ¶zleÅŸme gÃ¼ncellendikten sonra yeni Ã¶deme plani olusturmalisiniz.";
+                    OnaylaBtn.Text = " SÃ¶zleÅŸmeyi GÃ¼ncelle ";
                     UtilityHelper.ScriptCalistir( "OpenModal();");
                 }
                 else
@@ -1235,11 +1235,11 @@ Ayrica sözlesme güncellendikten sonra yeni ödeme plani olusturmalisiniz.";
         {
             ArtisOraniDiv.Attributes["style"] = "display:none";
             YeniKiraBedeliDiv.Attributes["style"] = "display:none";
-            ModalLbl.Text = "Sözlesme Silinecek";
+            ModalLbl.Text = "SÃ¶zleÅŸme Silinecek";
             SenderHF.Value = "Delete";
-            MessageLbl.Text = @"Onayladiginiz takdirde bu sözlesme ve bu sözlesmeye ait ÖDEME PLANI silinecek. 
-Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabilir.";
-            OnaylaBtn.Text = " Sözlesmeyi Sil ";
+            MessageLbl.Text = @"OnayladÄ±ÄŸÄ±nÄ±z takdirde bu sÃ¶zleÅŸme ve bu sÃ¶zleÅŸmeye ait Ã–DEME PLANI silinecek. 
+Bu durumda daha Ã¶nce yapilan Ã¶deme var ise silinmesi bilgi kaybina yolaÃ§abilir.";
+            OnaylaBtn.Text = " SÃ¶zleÅŸmeyi Sil ";
             UtilityHelper.ScriptCalistir("OpenModal();");
             KiraSozlesme kiraSozlesme = new KiraSozlesme();
             kiraSozlesme = kiraSozlesme.Select<KiraSozlesme>(KiraSozlesmeIdQS.ConvertToInt());
@@ -1285,12 +1285,12 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabilir."
                 else if (SenderHF.Value.Equals("YenileBorcuDevret"))
                 {
 
-                    SOzlesmeyiYenile();
+                    SozlesmeyiYenile();
                 }
                 else if (SenderHF.Value.Equals("Yenile"))
                 {
 
-                    SOzlesmeyiYenile();
+                    SozlesmeyiYenile();
                 }
                 else if (SenderHF.Value.Equals("SozlesmeyiBitir"))
                 {
@@ -1360,7 +1360,7 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabilir."
                 hukukiTakip.BorcFaiz = DevirFaizTutariHesapla(kiraSozlesme);
                 hukukiTakip.IslemTarihi = DateTime.Today;
                 hukukiTakip.Aktif = true;
-                hukukiTakip.Aciklama = "Takip baslatildi.";
+                hukukiTakip.Aciklama = "Takip baÅŸlatÄ±ldÄ±.";
                 hukukiTakip.Olusturan = CurrentUserName;
                 int hukukitakipId = hukukiTakip.Save();
                 islemBaslatildi = hukukitakipId > 0;
@@ -1369,7 +1369,7 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabilir."
             {
                 ExceptionHelper exHelper = new ExceptionHelper();
                 exHelper.Exceptions.Add(e);
-                exHelper.Exceptions.Add(new Exception("Hukuki Takip Baslatilamadi"));
+                exHelper.Exceptions.Add(new Exception("Hukuki Takip BaÅŸlatÄ±lamadÄ±"));
             }
             return islemBaslatildi;
         }
@@ -1474,7 +1474,7 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabilir."
                     string dosyaAdi = kiraSozlesme.SozlesmePDFDosyasi; 
                     if (string.IsNullOrEmpty(dosyaAdi))
                     {
-                        MessageHelper.PublishMessage("Silinecek dosya bulunamadi", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Silinecek dosya bulunamadÄ±", ProjeConstants.MESAJ_HATA);
                         return;
                     }
                     if (UtilityHelper.DeleteFileFromSharePointLib(ProjeConstants.PATH_TBYS_URL, ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi))
@@ -1531,7 +1531,7 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabilir."
             }
             catch (Exception exception)
             {
-                Exception ex = new Exception("Dosya Yüklenemedi");
+                Exception ex = new Exception("Dosya YÃ¼klenemedi");
                 ExceptionHelper exhelper = new ExceptionHelper(exception);
                 exhelper.Exceptions.Add(ex);
                 exhelper.PublishException();
@@ -1548,7 +1548,7 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabilir."
                     bool dosyaVarMi = UtilityHelper.DosyaVarMi(UtilityHelper.TbysBelgelerURLGetir(), ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi);
                     if (dosyaVarMi)
                     {
-                        string belgePdfLink = @"'<a class=\'btn btn-secondary\' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + dosyaUrl + @"> Sözlesme Görüntüle </a>'";
+                        string belgePdfLink = @"'<a class=\'btn btn-secondary\' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + dosyaUrl + @"> SÃ¶zleÅŸme GÃ¶rÃ¼ntÃ¼le </a>'";
 
                         DosyaLnk.Target = "_blank";
                         DosyaLnk.HRef = dosyaUrl;
@@ -1567,13 +1567,13 @@ Bu durumda daha önce yapilan ödeme var ise silinmesi bilgi kaybina yolaçabilir."
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Sözlesme bulunamadi.", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("SÃ¶zleÅŸme bulunamadÄ±.", ProjeConstants.MESAJ_HATA);
                 }
 
             }
             catch (Exception exception)
             {
-                Exception ex = new Exception("PDF Yüklenemedi");
+                Exception ex = new Exception("PDF YÃ¼klenemedi");
                 ExceptionHelper exhelper = new ExceptionHelper(exception);
                 exhelper.Exceptions.Add(ex);
                 exhelper.PublishException();

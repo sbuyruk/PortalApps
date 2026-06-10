@@ -178,9 +178,9 @@ namespace NBYS_WebParts.DuzenliBagisciBelgesiBasimiWP
         {
             DateTime bugun = DateTime.Today;
 
-            ImzalayanTxt.Text = @"Bilal TOP�U";
+            ImzalayanTxt.Text = @"Bilal TOPÇU";
             ImzalayanUnvanTxt.Text = string.Empty;
-            ImzalayanMakamTxt.Text = @"Genel M�d�r";
+            ImzalayanMakamTxt.Text = @"Genel Müdür";
             EvrakTarihiTxt.Text = bugun.ToString("dd") + " " + bugun.ToString("MMMM") + " " + bugun.Year;
         }
         private void FillDropDownList()
@@ -194,17 +194,17 @@ namespace NBYS_WebParts.DuzenliBagisciBelgesiBasimiWP
 
             AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Hepsi", "0"));
             AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Ocak", "1"));
-            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Subat", "2"));
+            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Şubat", "2"));
             AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Mart", "3"));
             AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Nisan", "4"));
-            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Mayis", "5"));
+            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Mayıs", "5"));
             AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Haziran", "6"));
             AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Temmuz", "7"));
-            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Agustos", "8"));
-            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Eyl�l", "9"));
+            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Ağustos", "8"));
+            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Eylül", "9"));
             AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Ekim", "10"));
-            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Kasim", "11"));
-            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Aralik", "12"));
+            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Kasım", "11"));
+            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Aralık", "12"));
 
         }
         private void YilDDLDoldur()
@@ -283,7 +283,7 @@ namespace NBYS_WebParts.DuzenliBagisciBelgesiBasimiWP
 
             if (yil == 0)
             {
-                // Hepsi: son 3 yili kapsa
+                // Hepsi: son 3 yılı kapsa
                 bastar = new DateTime(DateTime.Today.Year - 2, 1, 1);
                 bittar = new DateTime(DateTime.Today.Year, 12, 31);
             }
@@ -303,19 +303,19 @@ namespace NBYS_WebParts.DuzenliBagisciBelgesiBasimiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = GetData(); //veri �ekilip json a �eviriliyor
+            var jsonData = GetData(); //veri çekilip json'a çevriliyor
 
             bool jasonDataBosMu = string.IsNullOrWhiteSpace(jsonData.Replace("[", "").Replace("]", "").Replace("{", "").Replace("}", ""));
             if (!jasonDataBosMu)
             {
                 DosyaOlusturBtn.Visible = true;
                 AdresOlusturBtn.Visible = true;
-                var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
+                var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
                 UtilityHelper.ScriptCalistir(jsString);
             }
             else
             {
-                TableDataLbl.Text = "D�zenli Bagis�i Belgesi bulunmamaktadir.";
+                TableDataLbl.Text = "Düzenli Bağışçı Belgesi bulunmamaktadır.";
                 DosyaOlusturBtn.Visible = false;
                 AdresOlusturBtn.Visible = false;
             }
@@ -329,7 +329,7 @@ namespace NBYS_WebParts.DuzenliBagisciBelgesiBasimiWP
             DateTime bittar = GetBitTar();
 
             var json = armagan.SelectByDurumTarih(ProjeConstants.DURUM_KONTROLEDILDI, bastar, bittar, ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID.ToString(), ref rowCount, BolgeDDL.SelectedItem.Value.ConvertToInt(), ProjeConstants.HEPSI_INT);
-            TableDataLbl.Text = rowCount + " adet D�zenli Bagis�i Belgesi mevcut";
+            TableDataLbl.Text = rowCount + " adet Düzenli Bağışçı Belgesi mevcut";
             if (rowCount > 0)
             {
                 DosyaOlusturBtn.Visible = true;
@@ -502,16 +502,16 @@ namespace NBYS_WebParts.DuzenliBagisciBelgesiBasimiWP
                 bool isYaziOlusturuldu = DuzenliBagisciBelgesiDosyasiOlustur(yaziDosyaAdi);
                 if (isYaziOlusturuldu)
                 {
-                    MessageHelper.PublishMessage("D�zenli Bagis�i belgeleri hazirlandi, Dosya ismine basarak yaziyi indirebilirsiniz.", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Düzenli Bağışçı belgeleri hazırlandı, Dosya ismine basarak yazıyı indirebilirsiniz.", ProjeConstants.MESAJ_BASARILI, 2000);
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("D�zenli Bagis�i belgeleri olusturulamadi.", ProjeConstants.MESAJ_HATA, 3000);
+                    MessageHelper.PublishMessage("Düzenli Bağışçı belgeleri oluşturulamadı.", ProjeConstants.MESAJ_HATA, 3000);
                 }
             }
             catch (Exception ex)
             {
-                Exception ex1 = new Exception("Belge olusturmada hata");
+                Exception ex1 = new Exception("Belge oluşturmada hata");
                 ExceptionHelper exh = new ExceptionHelper(ex);
                 exh.PublishException();
             }
@@ -527,15 +527,15 @@ namespace NBYS_WebParts.DuzenliBagisciBelgesiBasimiWP
 
                 bool etiketOlustuMu = YeniAdresEtiketDosyasiOlustur(etiketDosyaAdi);
                 if (etiketOlustuMu)
-                    MessageHelper.PublishMessage("TAdres etiketleri hazirlandi, Dosya ismine basarak yaziyi indirebilirsiniz.", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Adres etiketleri hazırlandı, Dosya ismine basarak yazıyı indirebilirsiniz.", ProjeConstants.MESAJ_BASARILI, 2000);
                 else
                 {
-                    MessageHelper.PublishMessage("Adres etiketleri olusturulamadi.", ProjeConstants.MESAJ_HATA, 3000);
+                    MessageHelper.PublishMessage("Adres etiketleri oluşturulamadı.", ProjeConstants.MESAJ_HATA, 3000);
                 }
             }
             catch (Exception ex)
             {
-                Exception ex1 = new Exception("Yazi ve Adres olusturmada hata");
+                Exception ex1 = new Exception("Yazı ve Adres oluşturmada hata");
                 ExceptionHelper exh = new ExceptionHelper(ex);
                 exh.PublishException();
             }
@@ -640,7 +640,7 @@ namespace NBYS_WebParts.DuzenliBagisciBelgesiBasimiWP
                         bool isUpdated = armagan.UpdateDurumByBolge(ProjeConstants.DURUM_KONTROLEDILDI, ProjeConstants.DURUM_GONDERILDI, SecilenBastarQS, SecilenBittarQS, ProjeConstants.ARMAGAN_DUZENLIBAGISCIBELGESIID, ProjeConstants.BOLGE_HEPSI_INT);
                         if (isUpdated)
                         {
-                            MessageHelper.PublishMessage("Belgelerin durumu '" + ProjeConstants.DURUM_GONDERILDI + "' olarak degistirildi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                            MessageHelper.PublishMessage("Belgelerin durumu '" + ProjeConstants.DURUM_GONDERILDI + "' olarak değiştirildi.", ProjeConstants.MESAJ_BASARILI, 2000);
                         }
                     }
                     catch (Exception ex)
@@ -698,7 +698,7 @@ namespace NBYS_WebParts.DuzenliBagisciBelgesiBasimiWP
                     //destinationStream = SearchAndReplace(templateStream, keyValues);
 
                     destinationStream = CopyAndSearchAndReplace(templateStream, templateParagraphs, keyValues);
-                    // Dok�manin sonuna bos sayfa yani fazladan sayfa atiyor
+                    // Dokümanin sonuna bos sayfa yani fazladan sayfa atiyor
                     if (row != dataTable.Rows[dataTable.Rows.Count - 1])
                     {
                         destinationStream = AddParagraph2DestinationStream(destinationStream, templateParagraphs);
@@ -817,7 +817,7 @@ namespace NBYS_WebParts.DuzenliBagisciBelgesiBasimiWP
                 if (uzunAdresliler.Count > 0)
                 {
                     string message = string.Join(Environment.NewLine, uzunAdresliler);
-                    MessageHelper.PublishMessage(message + " adresi �ok uzun oldugundan kesilerek kisaltildi. L�tfen etiketini kontrol ediniz. ", ProjeConstants.MESAJ_BILGI);
+                    MessageHelper.PublishMessage(message + " adresi çok uzun olduğundan kesilerek kısaltıldı. Lütfen etiketini kontrol ediniz. ", ProjeConstants.MESAJ_BILGI);
                 }
             }
 
@@ -905,7 +905,7 @@ namespace NBYS_WebParts.DuzenliBagisciBelgesiBasimiWP
             }
             catch (Exception ex)
             {
-                Exception e1 = new Exception("GetTemplateStream() hatasi");
+                Exception e1 = new Exception("GetTemplateStream() hatası");
                 ExceptionHelper eh = new ExceptionHelper(ex);
                 eh.Exceptions.Add(e1);
                 eh.PublishException();

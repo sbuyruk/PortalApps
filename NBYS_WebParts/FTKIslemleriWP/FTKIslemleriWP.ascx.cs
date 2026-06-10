@@ -149,7 +149,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
         {
             try
             {
-                if (!Page.IsPostBack) // sayfa ilk kez a�iliyorsa (bu sayfanin i�indeki butona basilma ani hari�)
+                if (!Page.IsPostBack) // sayfa ilk kez açiliyorsa (bu sayfanin içindeki butona basilma ani hariç)
                 {
 
                     YonergeLnk.HRef = UtilityHelper.YonergeURLGetir(ProjeConstants.PARAM_FTKYONERGE, ProjeConstants.NBYSBELGELERI_LIB, ProjeConstants.PAGE_FTKISLEMLERI);
@@ -236,7 +236,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
             FTKListesiniVeriTabanindanDoldur();
             if (string.IsNullOrEmpty(FTKIslemIdQS))
             {
-                MessageHelper.PublishMessage("Yeni FTK bilgilerini girerek kayit yapabilirsiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                MessageHelper.PublishMessage("Yeni FTK bilgilerini girerek kayıt yapabilirsiniz.", ProjeConstants.MESAJ_BILGI, 2000);
             }
         }
         private void FTKListesiniVeriTabanindanDoldur()
@@ -245,8 +245,8 @@ namespace NBYS_WebParts.FTKIslemleriWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri �ekilip json a �eviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
+            var jsonData = TabloJson(); //veri çekilip json'a çevriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string CreateDataTable(string jsonData)
@@ -349,7 +349,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
 
                     katilimciItem.UyelikDurumu = uyelikDurumu;
 
-                    katilimciItem.Duzenle = "<a href='#' class='btn btn-outline-primary' onclick=FTKKisiDuzenleBtnClick(" + ftkkisiId + ")>D�zenle</a>";
+                    katilimciItem.Duzenle = "<a href='#' class='btn btn-outline-primary' onclick=FTKKisiDuzenleBtnClick(" + ftkkisiId + ")>Düzenle</a>";
 
                     //FTK ftk = new FTK();
                     //List<FTK> ftkList = ftk.SelectSonFTKListesiByIliIlcesiReturnList(ili, ilcesi);
@@ -403,7 +403,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
             else
             {
                 GirisiAc();
-                MessageHelper.PublishMessage("Toplanti bulunamadi. Yeni toplanti girebilirsiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                MessageHelper.PublishMessage("Toplantı bulunamadı. Yeni toplantı girebilirsiniz.", ProjeConstants.MESAJ_BILGI, 2000);
             }
         }
         private void FTKIslemleriFormunuDoldur()
@@ -434,7 +434,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
             else
             {
                 FTKIslemIdQS = ftkislemleri.Id.ToString();
-                TitleLbl.Text = "FTK Islemleri D�zenle";
+                TitleLbl.Text = "FTK İşlemleri Düzenle";
                 IdLbl.Text = " ( FTK No: " + ftkislemleri.Id.ToString() + " )";
                 SorumluBolgeTxt.Enabled = false;
                 BolgeIdTxt.Enabled = false;
@@ -476,7 +476,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
             }
             else
             {
-                MessageHelper.PublishMessage("�nce Il se�iniz", ProjeConstants.MESAJ_BILGI, 2000);
+                MessageHelper.PublishMessage("Önce İl seçiniz", ProjeConstants.MESAJ_BILGI, 2000);
             }
 
             return adiSoyadi;
@@ -512,8 +512,8 @@ namespace NBYS_WebParts.FTKIslemleriWP
         {
             ModalKurulusTarihiLbl.Text = FTKKurulusTarihiTxt.Text;
             ModalGuncellemeTarihiLbl.Text = FTKGuncellemeTarihiTxt.Text;
-            var jsonData = ModalTabloJson(aktifMi); //veri �ekilip json a �eviriliyor
-            var jsString = CreateModalDataTable(jsonData); //javascript kodu hazirlaniyor.
+            var jsonData = ModalTabloJson(aktifMi); //veri çekilip json'a çevriliyor
+            var jsString = CreateModalDataTable(jsonData); //javascript kodu hazırlanıyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string CreateModalDataTable(string jsonData)
@@ -576,9 +576,9 @@ namespace NBYS_WebParts.FTKIslemleriWP
         private void KaydetVeyaGuncelle()
         {
             /***
-             * 1 Se�ilen il ve se�ilen il�e i�in FTKIslem_Table'da kayit var mi
+             * 1 Seçilen il ve seçilen ilçe için FTKIslem_Table'da kayıt var mı
              *  Varsa
-             *      2 G�ncelleme yap
+             *      2 Güncelleme yap
              *  Yoksa 
              *      3 kaydet 
              ***/
@@ -589,7 +589,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
             if ((ftkDao != null)
                 && (!KayitDuzeltmesiChk.Checked))
             {
-                MessageHelper.PublishMessage("Bu FTK " + FTKGuncellemeTarihiTxt.Text + " tarihinde zaten g�ncellenmistir. FTK listesinde kayit d�zeltmek istiyorsaniz, 'Bu Bir Kayit D�zeltmesidir' hanesini se�ili hale getiriniz.", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Bu FTK " + FTKGuncellemeTarihiTxt.Text + " tarihinde zaten güncellenmiştir. FTK listesinde kayıt düzeltmek istiyorsanız, 'Bu Bir Kayıt Düzeltmesidir' hanesini seçili hale getiriniz.", ProjeConstants.MESAJ_HATA);
             }
             else
             {
@@ -638,7 +638,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
                             if (FTKTablosunaKaydetveyaGuncelle(ftkIslemleri))
                             {
                                 DuzenleAc();
-                                MessageHelper.PublishMessage("FTK Islemi g�ncellendi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                                MessageHelper.PublishMessage("FTK Islemi güncellendi.", ProjeConstants.MESAJ_BASARILI, 2000);
                             }
                         }
                     }
@@ -663,7 +663,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
 
                 if (list.Count < 1)
                 {
-                    MessageHelper.PublishMessage("D�zeltmesi yapilacak bir FTK kaydi bulunamadi.", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Düzeltmesi yapılacak bir FTK kaydı bulunamadı.", ProjeConstants.MESAJ_HATA);
                 }
                 else
                 {
@@ -690,7 +690,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
             string aciklama = string.Empty;
             if (sayac > 0)
             {
-                aciklama = DateTime.Now.ConvertToTimeSpanReturnInHHmm() + " tarihinde " + UtilityHelper.GetCurrentUserLoginName() + " tarafindan kayit d�zeltmesi yapildi.";
+                aciklama = DateTime.Now.ConvertToTimeSpanReturnInHHmm() + " tarihinde " + UtilityHelper.GetCurrentUserLoginName() + " tarafından kayıt düzeltmesi yapıldı.";
             }
             sayac = sayac > 0 ? sayac : SayacHesapla(ftkIslem.Ili, ftkIslem.Ilcesi) + 1;
 
@@ -744,7 +744,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
 
                 if (string.IsNullOrEmpty(IliDDL.SelectedItem.ToString()))
                 {
-                    MessageHelper.PublishMessage("Il Bos Olamaz.", ProjeConstants.MESAJ_HATA, 2000);
+                    MessageHelper.PublishMessage("İl boş olamaz.", ProjeConstants.MESAJ_HATA, 2000);
                 }
                 else
                 {
@@ -756,7 +756,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
                         if (FTKTablosunaKaydetveyaGuncelle(ftkIslemleri))
                         {
                             DuzenleAc();
-                            MessageHelper.PublishMessage("FTK Islemi kaydedildi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                            MessageHelper.PublishMessage("FTK İşlemi kaydedildi.", ProjeConstants.MESAJ_BASARILI, 2000);
                         }
 
                     }
@@ -807,15 +807,15 @@ namespace NBYS_WebParts.FTKIslemleriWP
             {
                 TitleLbl.Text = IliDDL.SelectedItem.Text + " " + IlcesiDDL.SelectedItem.Text + " FTK ";
                 TitleLbl.CssClass = "col-form-label text-primary fw-bold mb-1";
-                KaydetBtn.Text = IliDDL.SelectedItem.Text + " " + IlcesiDDL.SelectedItem.Text + " FTK G�ncelle";
+                KaydetBtn.Text = IliDDL.SelectedItem.Text + " " + IlcesiDDL.SelectedItem.Text + " FTK Güncelle";
                 KaydetBtn.CssClass = "btn btn-outline-primary fw-bold ";
                 FTKYazilariBtn.Visible = true;
                 KaydetBtn.Visible = true;
                 UyelerinGoreviniSonlandirBtn.Visible = true;
 
-                ModalFTKListesiBaslikLbl.Text = IliDDL.SelectedItem.Text + " " + IlcesiDDL.SelectedItem.Text + " FTK Listesi G�ncellenecek";
+                ModalFTKListesiBaslikLbl.Text = IliDDL.SelectedItem.Text + " " + IlcesiDDL.SelectedItem.Text + " FTK Listesi Güncellenecek";
                 ModalFTKListesiBaslikLbl.CssClass = "col-form-label text-primary fw-bold mb-1";
-                KaydetNowBtn.Text = IliDDL.SelectedItem.Text + " " + IlcesiDDL.SelectedItem.Text + " FTK G�ncelle";
+                KaydetNowBtn.Text = IliDDL.SelectedItem.Text + " " + IlcesiDDL.SelectedItem.Text + " FTK Güncelle";
                 KaydetNowBtn.CssClass = "btn btn-outline-primary fw-bold ";
                 KayitDuzeltmeDiv.Attributes["style"] = "display:block";
             }
@@ -823,15 +823,15 @@ namespace NBYS_WebParts.FTKIslemleriWP
             {
                 TitleLbl.Text = IliDDL.SelectedItem.Text + " " + IlcesiDDL.SelectedItem.Text + " FTK ";
                 TitleLbl.CssClass = "col-form-label text-success fw-bold mb-1";
-                KaydetBtn.Text = IliDDL.SelectedItem.Text + " " + IlcesiDDL.SelectedItem.Text + " FTK Olustur";
+                KaydetBtn.Text = IliDDL.SelectedItem.Text + " " + IlcesiDDL.SelectedItem.Text + " FTK Oluştur";
                 KaydetBtn.CssClass = "btn btn-outline-success fw-bold ";
                 FTKYazilariBtn.Visible = false;
                 KaydetBtn.Visible = true;
                 UyelerinGoreviniSonlandirBtn.Visible = true;
 
-                ModalFTKListesiBaslikLbl.Text = IliDDL.SelectedItem.Text + " " + IlcesiDDL.SelectedItem.Text + " FTK Listesi Olusturulacak";
+                ModalFTKListesiBaslikLbl.Text = IliDDL.SelectedItem.Text + " " + IlcesiDDL.SelectedItem.Text + " FTK Listesi Oluşturulacak";
                 ModalFTKListesiBaslikLbl.CssClass = "col-form-label text-success fw-bold mb-1";
-                KaydetNowBtn.Text = IliDDL.SelectedItem.Text + " " + IlcesiDDL.SelectedItem.Text + " FTK Olustur";
+                KaydetNowBtn.Text = IliDDL.SelectedItem.Text + " " + IlcesiDDL.SelectedItem.Text + " FTK Oluştur";
                 KaydetNowBtn.CssClass = "btn btn-outline-success fw-bold ";
 
                 KayitDuzeltmeDiv.Attributes["style"] = "display:none";
@@ -840,15 +840,15 @@ namespace NBYS_WebParts.FTKIslemleriWP
             {
                 TitleLbl.Text = IliDDL.SelectedItem.Text + " " + IlcesiDDL.SelectedItem.Text + " FTK ";
                 TitleLbl.CssClass = "col-form-label text-danger fw-bold mb-1";
-                KaydetBtn.Text = IliDDL.SelectedItem.Text + " " + IlcesiDDL.SelectedItem.Text + " FTK Olustur";
+                KaydetBtn.Text = IliDDL.SelectedItem.Text + " " + IlcesiDDL.SelectedItem.Text + " FTK Oluştur";
                 KaydetBtn.CssClass = "btn btn-outline-danger fw-bold ";
                 FTKYazilariBtn.Visible = false;
                 KaydetBtn.Visible = false;
                 UyelerinGoreviniSonlandirBtn.Visible = false;
 
-                ModalFTKListesiBaslikLbl.Text = IliDDL.SelectedItem.Text + " " + IlcesiDDL.SelectedItem.Text + " FTK Listesi Olusturulacak";
+                ModalFTKListesiBaslikLbl.Text = IliDDL.SelectedItem.Text + " " + IlcesiDDL.SelectedItem.Text + " FTK Listesi Oluşturulacak";
                 ModalFTKListesiBaslikLbl.CssClass = "col-form-label text-danger fw-bold mb-1";
-                KaydetNowBtn.Text = IliDDL.SelectedItem.Text + " " + IlcesiDDL.SelectedItem.Text + " FTK Olustur";
+                KaydetNowBtn.Text = IliDDL.SelectedItem.Text + " " + IlcesiDDL.SelectedItem.Text + " FTK Oluştur";
                 KaydetNowBtn.CssClass = "btn btn-outline-danger fw-bold ";
 
                 KayitDuzeltmeDiv.Attributes["style"] = "display:none";
@@ -933,11 +933,11 @@ namespace NBYS_WebParts.FTKIslemleriWP
                 if (guncellendi)
                 {
                     FTKListesiniVeriTabanindanDoldur();
-                    MessageHelper.PublishMessage("�yelerin g�revleri sonlandirildi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Üyelerin görevleri sonlandirildi.", ProjeConstants.MESAJ_BASARILI, 2000);
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("�yelerin g�revleri sonlandirilamadi.", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Üyelerin görevleri sonlandirilamadi.", ProjeConstants.MESAJ_HATA);
                 }
             }
         }
@@ -954,7 +954,7 @@ namespace NBYS_WebParts.FTKIslemleriWP
             ModalTarihDiv.Attributes["style"] = "display:none";
             KaydetNowBtn.Visible = false;
             TumununGoreviniSonlandirNowBtn.Visible = true;
-            ModalFTKListesiBaslikLbl.Text = "�yelerin G�revi Sonlandirilacak";
+            ModalFTKListesiBaslikLbl.Text = "Üyelerin Görevi Sonlandirilacak";
             ModalTabloOlustur(true);
             UtilityHelper.ScriptCalistir("ModalFTKListesiAc()");
         }

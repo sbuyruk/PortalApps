@@ -303,7 +303,7 @@ namespace IKYS_WebParts.AylikYoklamaRaporuWP
             TableHeaderRow thbaslik = new TableHeaderRow();
             TableHeaderCell baslikCell = new TableHeaderCell();
             DateTime secilenTarih = new DateTime(SecilenYilQS.ConvertToInt(), SecilenAyQS.ConvertToInt(), 1);
-            baslikCell.Text = "GÜN IÇINDE VAKIF DISINDA BULUNAN PERSONEL LISTESI (" + secilenTarih.ToString("MMMM").ToUpper() + " " + secilenTarih.ToString("yyyy") + ")";
+            baslikCell.Text = "GÃœN IÃ‡INDE VAKIF DISINDA BULUNAN PERSONEL LISTESI (" + secilenTarih.ToString("MMMM").ToUpper() + " " + secilenTarih.ToString("yyyy") + ")";
             baslikCell.ColumnSpan = 10;
             thbaslik.CssClass = "alert-secondary text-center";
             thbaslik.Controls.Add(baslikCell);
@@ -323,17 +323,17 @@ namespace IKYS_WebParts.AylikYoklamaRaporuWP
             baslangicSaatiCell.Text = "Gidis Saati";
 
             TableHeaderCell bitisSaatiCell = new TableHeaderCell();
-            bitisSaatiCell.Text = "Dönüs Saati";
+            bitisSaatiCell.Text = "DÃ¶nÃ¼s Saati";
             TableHeaderCell sureCell = new TableHeaderCell();
-            sureCell.Text = "Süre";
+            sureCell.Text = "SÃ¼re";
 
             TableHeaderCell aciklamaCell = new TableHeaderCell();
-            aciklamaCell.Text = "Açiklama";
+            aciklamaCell.Text = "AÃ§iklama";
 
             TableHeaderCell mesaiyeGelisSaatiCell = new TableHeaderCell();
             mesaiyeGelisSaatiCell.Text = "Mesaiye Gelis";
             TableHeaderCell mesaidenCikisSaatiCell = new TableHeaderCell();
-            mesaidenCikisSaatiCell.Text = "Mesaiden Çikis";
+            mesaidenCikisSaatiCell.Text = "Mesaiden Ã‡ikis";
 
             baslikCell.BorderWidth = 1;
             siraCell.BorderWidth = 1;
@@ -377,17 +377,17 @@ namespace IKYS_WebParts.AylikYoklamaRaporuWP
         private void AyDDLDoldur()
         {
             AyDDL.Items.Add(new ListItem("Ocak", "1"));
-            AyDDL.Items.Add(new ListItem("Subat", "2"));
+            AyDDL.Items.Add(new ListItem("Åžubat", "2"));
             AyDDL.Items.Add(new ListItem("Mart", "3"));
             AyDDL.Items.Add(new ListItem("Nisan", "4"));
-            AyDDL.Items.Add(new ListItem("Mayis", "5"));
+            AyDDL.Items.Add(new ListItem("MayÄ±s", "5"));
             AyDDL.Items.Add(new ListItem("Haziran", "6"));
             AyDDL.Items.Add(new ListItem("Temmuz", "7"));
-            AyDDL.Items.Add(new ListItem("Agustos", "8"));
-            AyDDL.Items.Add(new ListItem("Eylül", "9"));
+            AyDDL.Items.Add(new ListItem("AÄŸustos", "8"));
+            AyDDL.Items.Add(new ListItem("EylÃ¼l", "9"));
             AyDDL.Items.Add(new ListItem("Ekim", "10"));
-            AyDDL.Items.Add(new ListItem("Kasim", "11"));
-            AyDDL.Items.Add(new ListItem("Aralik", "12"));
+            AyDDL.Items.Add(new ListItem("KasÄ±m", "11"));
+            AyDDL.Items.Add(new ListItem("AralÄ±k", "12"));
 
         }
         private void SetDDLValues()
@@ -437,7 +437,7 @@ namespace IKYS_WebParts.AylikYoklamaRaporuWP
             int yil = SecilenYilQS.ConvertToInt();
             DateTime basTar = new DateTime(yil, ay, 1);
             DateTime bitTar = basTar.AddMonths(1).AddDays(-1) + ProjeConstants.MESAI_BITIS_SAATI;
-            string bulunmamaSebebiIds = "2,3";//hastanede, görevli
+            string bulunmamaSebebiIds = "2,3";//hastanede, gÃ¶revli
             dataTable = yoklamaDao.SelectByTarihReturnDataTable(bulunmamaSebebiIds, basTar, bitTar);
             List<AylikYoklamaListItem> yoklamaList = new List<AylikYoklamaListItem>();
             if (dataTable != null)
@@ -513,7 +513,7 @@ namespace IKYS_WebParts.AylikYoklamaRaporuWP
                 gun++;
                 saat = 0;
             }
-            string gunStr = gun > 0 ? gun + " Gün " : "";
+            string gunStr = gun > 0 ? gun + " GÃ¼n " : "";
             string saatstr = saat > 0 ? saat + " Saat" : "";
             if (gun > 0)
                 sure = gunStr + saatstr;

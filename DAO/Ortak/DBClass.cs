@@ -142,7 +142,7 @@ namespace DAO.Ortak
         }
         public bool DeleteFromDb<T>(string sqlString, T objectToDelete)
         {
-            string eskiDeger = "Silinen Kayit: " +GetEskiDeger(objectToDelete);
+            string eskiDeger = "Silinen Kayıt: " +GetEskiDeger(objectToDelete);
             bool isDeleted = false;
             string connectString = DBProcess.getConnectString();
             SqlConnection con = new SqlConnection(connectString);

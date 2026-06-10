@@ -360,8 +360,8 @@ namespace NBYS_WebParts.NakitBagisciAdresListesiWP
             Page.Response.AddHeader("content-disposition",
              "attachment;filename=BagisciListesi_" + BasTarQS.ConvertToDatetimeEmptyIfNull() + "_" + BitTarQS.ConvertToDatetimeEmptyIfNull() + ".xls");
 
-            //T�rk�e karakter sorunu d�zeltmek i�in
-            //buradan basladi
+            //Türkçe karakter sorunu düzeltmek için
+            //buradan başladı
             //Page.Response.ContentEncoding = System.Text.Encoding.GetEncoding("windows-1254");
             //Page.Response.Charset = "ISO-8859-9";//"windows-1254"
             //Page.Response.ContentType = "application/vnd.ms-excel";
@@ -369,7 +369,7 @@ namespace NBYS_WebParts.NakitBagisciAdresListesiWP
             Page.Response.ContentType = "application/ms-excel";
             Page.Response.ContentEncoding = System.Text.Encoding.Unicode;
             Page.Response.BinaryWrite(System.Text.Encoding.Unicode.GetPreamble());
-            ///buraya kadar degisti 
+            ///buraya kadar değişti 
             StringWriter sw = new StringWriter();
             HtmlTextWriter hw = new HtmlTextWriter(sw);
 
@@ -408,7 +408,7 @@ namespace NBYS_WebParts.NakitBagisciAdresListesiWP
 
                     if (nb.Update())
                     {
-                        MessageHelper.PublishMessage(nb.Adi + " Adli bagis�iya dergi g�nderilmeyecek.", ProjeConstants.MESAJ_BASARILI, 2000);
+                        MessageHelper.PublishMessage(nb.Adi + " Adlı bağışçıya dergi gönderilmeyecek.", ProjeConstants.MESAJ_BASARILI, 2000);
 
                         string paramStr = "&BagisciSayisi=" + BagisciSayisiQS + "&BasTar=" + BasTarQS + "&BitTar=" + BitTarQS + "&UlasilamayanlarHaric=" + UlasilamayanlarHaricQS +
                             "&BelgeIstemeyenlerHaric=" + BelgeIstemeyenlerHaricQS + "&AdresiBosOlanlarHaric=" + AdresiBosOlanlarHaricQS +
@@ -417,18 +417,18 @@ namespace NBYS_WebParts.NakitBagisciAdresListesiWP
                     }
                     else
                     {
-                        MessageHelper.PublishMessage(" Bagis�i bilgisi degistirilemedi.", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage(" Bağışçı bilgisi değiştirilemedi.", ProjeConstants.MESAJ_HATA);
                     }
                 }
                 else
                 {
-                    MessageHelper.PublishMessage(" Bagis�i bulunamadi.", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage(" Bağışçı bulunamadı.", ProjeConstants.MESAJ_HATA);
                 }
             }
             catch (Exception ex)
             {
                 ExceptionHelper exh = new ExceptionHelper();
-                exh.Exceptions.Add(new Exception("Dergi G�nderme durumu degistirilemedi. "));
+                exh.Exceptions.Add(new Exception("Dergi Gönderme durumu değiştirilemedi. "));
                 exh.Exceptions.Add(ex);
                 exh.PublishException();
             }
@@ -450,8 +450,8 @@ namespace NBYS_WebParts.NakitBagisciAdresListesiWP
         #region Bagisci CustomDataTable
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri �ekilip json a �eviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
+            var jsonData = TabloJson(); //veri çekilip json'a çeviriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string TabloJson()
@@ -512,10 +512,10 @@ namespace NBYS_WebParts.NakitBagisciAdresListesiWP
                 nakitBagisciItem.Ili = ili;
                 nakitBagisciItem.DergiGonderilmesin = dergiGonderilmesin.ConvertToBool().ToString();
                 nakitBagisciItem.TuzelKisi = tuzelKisi.ConvertToBool().ToString();
-                nakitBagisciItem.Duzenle = "<a class='btn btn-outline-primary' href=NakitBagisciEdit.aspx?SenderApp=NBAL&NakitBagisciId=" + nakitBagisciId + paramsStr + " >D�zenle</a>";
+                nakitBagisciItem.Duzenle = "<a class='btn btn-outline-primary' href=NakitBagisciEdit.aspx?SenderApp=NBAL&NakitBagisciId=" + nakitBagisciId + paramsStr + " >Düzenle</a>";
                 string dergiStr = dergiGonderilmesin ?
-                    "<a href=# onclick=CallButtonClick(" + nakitBagisciId + ",'gonder'); class='btn btn-outline-success'>Dergi G�nder</a>" :
-                    "<a href=# onclick=CallButtonClick(" + nakitBagisciId + ",'gonderme'); class='btn btn-outline-danger'>Dergi G�nderme</a>";
+                    "<a href=# onclick=CallButtonClick(" + nakitBagisciId + ",'gonder'); class='btn btn-outline-success'>Dergi Gönder</a>" :
+                    "<a href=# onclick=CallButtonClick(" + nakitBagisciId + ",'gonderme'); class='btn btn-outline-danger'>Dergi Gönderme</a>";
                 nakitBagisciItem.DergiGonderilmesin = dergiStr;
                 nakitBagisciItem.Secildi = SecilenIdQS.Equals(nakitBagisciItem.NakitBagisciId); ;
                 list.Add(nakitBagisciItem);
@@ -528,9 +528,9 @@ namespace NBYS_WebParts.NakitBagisciAdresListesiWP
             jQuery(document).ready(function() {
 
                 jQuery('#CustomDataTable').DataTable({
-                    'initComplete': function(settings, json) {//tablo y�klendiginde
+                    'initComplete': function(settings, json) {//tablo yüklendiğinde
                         var api = this.api();
-                        var row = api.row(function(idx, data, node) { //secilen Id'ye gider
+                        var row = api.row(function(idx, data, node) { //seçilen Id'ye gider
                             return data['Secildi'] == true;
                         });
                         if (row.length > 0)
@@ -576,8 +576,8 @@ namespace NBYS_WebParts.NakitBagisciAdresListesiWP
         #region Modal
         private void TabloModalOlustur(string nakitBagisciId)
         {
-            var jsonData = GetModalDataJson(nakitBagisciId); //veri �ekilip json a �eviriliyor
-            var jsString = CreateModalDataTable(jsonData, nakitBagisciId.ConvertToInt()); //javascript kodu hazirlaniyor.
+            var jsonData = GetModalDataJson(nakitBagisciId); //veri çekilip json'a çeviriliyor
+            var jsString = CreateModalDataTable(jsonData, nakitBagisciId.ConvertToInt()); //javascript kodu hazırlanıyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string CreateModalDataTable(string jsonData, int nakitBagisciId)
@@ -671,8 +671,8 @@ namespace NBYS_WebParts.NakitBagisciAdresListesiWP
             var json = nbh.SelectByBagisciIdReturnJSon(nakitBagisciId, ref rowCount);
             decimal toplamTutar = nbh.GetSumBagisMiktariByNakitBagisciIdBetweenBasTarBitTar(
                 ProjeConstants.BAGIS_SORGU_BASTAR.ConvertToDatetime(), DateTime.Today, nakitBagisciId.ConvertToInt());
-            BagisBilgileriLbl.Text = rowCount < 1 ? "Bagis bulunmamaktadir" :
-                "Bagis�inin " + rowCount + " defada yaptigi toplam " + toplamTutar.ToString("N", culturInfo) + "TL bagisi bulunmaktadir";
+            BagisBilgileriLbl.Text = rowCount < 1 ? "Bağış bulunmamaktadır" :
+                "Bağışçının " + rowCount + " defada yaptığı toplam " + toplamTutar.ToString("N", culturInfo) + "TL bağışı bulunmaktadır";
             return json;
         }
         protected void ModalDoldurBtn_Click(object sender, EventArgs e)
@@ -730,7 +730,7 @@ namespace NBYS_WebParts.NakitBagisciAdresListesiWP
                         IlIlceCell.Text += " " + ilce.IlceAdi.ReturnEmptyIfNull().ToString();
                     }
                     TelefonCell.Text = nakitBagisci.Telefon1.ReturnEmptyIfNull().ToString();
-                    TuzelKisiCell.Text = nakitBagisci.TuzelKisi.ConvertToBool() ? "Evet" : "Hayir";
+                    TuzelKisiCell.Text = nakitBagisci.TuzelKisi.ConvertToBool() ? "Evet" : "Hayır";
                     row.Controls.Add(AdiCell);
                     row.Controls.Add(TCKimlikNoCell);
                     row.Controls.Add(AdresCell);

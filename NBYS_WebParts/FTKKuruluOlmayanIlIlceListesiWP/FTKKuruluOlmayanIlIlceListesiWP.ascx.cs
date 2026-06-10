@@ -191,8 +191,8 @@ namespace NBYS_WebParts.FTKKuruluOlmayanIlIlceListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri �ekilip json a �eviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
+            var jsonData = TabloJson(); //veri çekilip json'a çevriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string TabloJson()

@@ -215,7 +215,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            //önceki sayfayi tut, geri tusuna basildiginda gerekli
+            //Ã¶nceki sayfayi tut, geri tusuna basildiginda gerekli
             if (!Page.IsPostBack)
             {
                 Bolge bolge = IKYSOrtak.BolgeGetirByUserName(CurrentUserName);
@@ -265,7 +265,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             PrevBtn.Visible = true;
 
             TitleLbl.Attributes["Class"] = "text-success";
-            TitleLbl.Text = "Sigorta Güncelleme";
+            TitleLbl.Text = "Sigorta GÃ¼ncelleme";
 
             Sigorta sigorta = new Sigorta();
             sigorta = sigorta.Select<Sigorta>(SigortaIdQS.ConvertToInt());
@@ -282,7 +282,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                 }
                 else if (sigortaBitisTarihi <= DateTime.Today.AddMonths(1))
                 {
-                    MessageHelper.PublishMessage("Sigorta Vadesi " + sigorta.SigortaBitTar.ToString("dd.MM.yyyy") + " Tarihinde dolacaktir", ProjeConstants.MESAJ_BILGI);
+                    MessageHelper.PublishMessage("Sigorta Vadesi " + sigorta.SigortaBitTar.ToString("dd.MM.yyyy") + " Tarihinde dolacaktÄ±r", ProjeConstants.MESAJ_BILGI);
                 }
             }
 
@@ -321,7 +321,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                 if (tasinmaz != null)
                 {
                     AdiLbl.Text = tasinmaz.KullanimSekli + " - " + tasinmaz.Adres + " - " + tasinmaz.Ilcesi + "/" + tasinmaz.Ili;
-                    BrutYuzolcumuTxt.Text = string.IsNullOrEmpty(sigorta.BrutYuzolcumu) ? tasinmaz.Nitelik : sigorta.BrutYuzolcumu; //nitelik Bolumunde yuzolcumu bilgisi kayitli oldugindan onun yüzolcumune yazmasi için
+                    BrutYuzolcumuTxt.Text = string.IsNullOrEmpty(sigorta.BrutYuzolcumu) ? tasinmaz.Nitelik : sigorta.BrutYuzolcumu; //nitelik Bolumunde yuzolcumu bilgisi kayitli oldugindan onun yÃ¼zolcumune yazmasi iÃ§in
                     BulunduguKatTxt.Text = string.IsNullOrEmpty(tasinmaz.BulunduguKat) ? sigorta.BulunduguKat : tasinmaz.BulunduguKat;
                     MetrekareTxt.Text = string.IsNullOrEmpty(tasinmaz.Metrekare.ToString()) ? sigorta.Metrekare : tasinmaz.Metrekare.ToString() ;
                     TapuTasinmazNoTxt.Text = tasinmaz.TapuTasinmazNo;
@@ -383,7 +383,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                        
                     else {
                         BagimsizBolumNoTxt.Text = string.Empty;
-                        MessageHelper.PublishMessage("Tasinmazin ALTBÖLÜMÜ VAR seçilmesine ragmen tasinmaza ait bölüm tanimlanmamistir.", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("TaÅŸÄ±nmazÄ±n ALTBÃ–LÃœMÃœ VAR seÃ§ilmesine raÄŸmen taÅŸÄ±nmaza ait bÃ¶lÃ¼m tanÄ±mlanmamÄ±ÅŸtÄ±r.", ProjeConstants.MESAJ_HATA);
                     }
                     
                 }
@@ -499,7 +499,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             teminatListesi += JeneratorChk.Checked ? "5," : "";
             teminatListesi += AsansorChk.Checked ? "6," : "";
             teminatListesi += KazanChk.Checked ? "7," : "";
-            teminatListesi = string.IsNullOrEmpty(teminatListesi) ? "" : teminatListesi.Substring(0, teminatListesi.Length - 1); // sondaki virgülü at
+            teminatListesi = string.IsNullOrEmpty(teminatListesi) ? "" : teminatListesi.Substring(0, teminatListesi.Length - 1); // sondaki virgÃ¼lÃ¼ at
             return teminatListesi;
         }
         private string SecilenTeminatAciklamalariniGetir()
@@ -561,7 +561,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             try
             {
                 Sigorta sigorta = SaveSigorta();
-                if (sigorta != null) //kaydettikten sonra önceki sayfaya dön
+                if (sigorta != null) //kaydettikten sonra Ã¶nceki sayfaya dÃ¶n
                 {
                     MessageHelper.PublishMessage("Sigorta Kaydedildi", ProjeConstants.MESAJ_BASARILI, 2000);
                     RedirectToPage(ProjeConstants.PAGE_TASINMAZSIGORTA_LIST + "?Mesaj=true");
@@ -569,7 +569,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Bagisçi Kaydedilemedi", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("BaÄŸÄ±ÅŸÃ§Ä± Kaydedilemedi", ProjeConstants.MESAJ_HATA);
                 }
 
 
@@ -591,11 +591,11 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                     bool guncellendiMi = UpdateSigorta(sigorta);
                     if (guncellendiMi)
                     {
-                        MessageHelper.PublishMessage("Sigorta Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                        MessageHelper.PublishMessage("Sigorta GÃ¼ncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Sigorta Güncellenemedi", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Sigorta GÃ¼ncellenemedi", ProjeConstants.MESAJ_HATA);
                     } 
                 }
                 PDFKaydet(sigorta);
@@ -616,7 +616,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             {
                 Tasinmaz tasinmaz = new Tasinmaz();
                 string adres = tasinmaz.SelectByIdBolumId(sigorta.TasinmazId, sigorta.BolumId);
-                SilmeMesajiLbl.Text = adres + " adresindeki tasinmaza ait Sigorta silinecek";
+                SilmeMesajiLbl.Text = adres + " adresindeki taÅŸÄ±nmaza ait Sigorta silinecek";
                 ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "ModalOnay();", true);
             }
 
@@ -752,7 +752,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                     }
                     else
                     {
-                        MessageHelper.PublishMessage(dosyaAdi + " Bulunamadi", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage(dosyaAdi + " BulunamadÄ±", ProjeConstants.MESAJ_HATA);
                     }
 
 
@@ -798,7 +798,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             }
             catch (Exception exception)
             {
-                Exception ex = new Exception("Dosya Yüklenemedi");
+                Exception ex = new Exception("Dosya YÃ¼klenemedi");
                 ExceptionHelper exhelper = new ExceptionHelper(exception);
                 exhelper.Exceptions.Add(ex);
                 exhelper.PublishException();
@@ -815,7 +815,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                     bool dosyaVarMi = UtilityHelper.DosyaVarMi(UtilityHelper.TbysBelgelerURLGetir(), ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi);
                     if (dosyaVarMi)
                     {
-                        string belgePdfLink = @"'<a class=\'btn btn-secondary\' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + dosyaUrl + @"> Poliçe Görüntüle </a>'";
+                        string belgePdfLink = @"'<a class=\'btn btn-secondary\' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + dosyaUrl + @"> PoliÃ§e GÃ¶rÃ¼ntÃ¼le </a>'";
 
                         DosyaLnk.Target = "_blank";
                         DosyaLnk.HRef = dosyaUrl;
@@ -834,13 +834,13 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Poliçe bulunamadi.", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("PoliÃ§e bulunamadÄ±.", ProjeConstants.MESAJ_HATA);
                 }
 
             }
             catch (Exception exception)
             {
-                Exception ex = new Exception("PDF Yüklenemedi");
+                Exception ex = new Exception("PDF YÃ¼klenemedi");
                 ExceptionHelper exhelper = new ExceptionHelper(exception);
                 exhelper.Exceptions.Add(ex);
                 exhelper.PublishException();

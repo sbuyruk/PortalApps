@@ -149,11 +149,11 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
             hakedilenArmaganTanim = hakedilenArmaganTanim.SelectByTutar(toplamBagisTutari, tuzelKisiMi);
             if (hakedilenArmaganTanim != null)
             {
-                //Daha �nce aldigi armaganlar
+                //Daha Önce aldigi armaganlar
                 Armagan aldigiArmagan = new Armagan();
                 List<Armagan> aldigiArmaganlar = aldigiArmagan.SelectByBagisciId(nakitBagisciId);
 
-                //Tesekk�rse dikkate alma, zaten g�nderilmistir.
+                //Tesekkürse dikkate alma, zaten gönderilmistir.
                 if (hakedilenArmaganTanim.Id == ProjeConstants.ARMAGAN_TESEKKURID)
                 {
                     oncelik = 5;
@@ -169,32 +169,32 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
                     {
                         oncelik = 1;
                         //Altin madalya almamis ama genel toplamda hak etms
-                        retval = "<a href=# onclick=\"OpenArmaganModal(" + nakitBagisciId + "," + hakedilenArmaganTanim.Id + ",\'" + sonBagisTarihi + "\');\" class=\'btn btn-outline-warning \'>Altin Madalya Olustur</a>";
+                        retval = "<a href=# onclick=\"OpenArmaganModal(" + nakitBagisciId + "," + hakedilenArmaganTanim.Id + ",\'" + sonBagisTarihi + "\');\" class=\'btn btn-outline-warning \">Altın Madalya Oluştur</a>";
                     }
                     else
                     {
                         oncelik = 6;
-                        retval = aldigiAltin.Tarih.ConvertToDatetimeEmptyIfNull() + " Tarihinde " + " Altin Madalya Verilmistir. ( Durumu :" + aldigiAltin.Durum + ")";
+                        retval = aldigiAltin.Tarih.ConvertToDatetimeEmptyIfNull() + " Tarihinde " + " Altın Madalya Verilmiştir. ( Durumu :" + aldigiAltin.Durum + ")";
                     }
 
                 }
                 else if (hakedilenArmaganTanim.Id == ProjeConstants.ARMAGAN_GUMUSID)
                 {
-                    //G�m�s Hakediyor
-                    //G�m�s Madalya almis mi
+                    //Gümüs Hakediyor
+                    //Gümüs Madalya almis mi
                     Armagan aldigiMadalya = aldigiArmaganlar.FirstOrDefault(arm => arm.ArmaganTanimId == ProjeConstants.ARMAGAN_GUMUSID);
 
                     if (aldigiMadalya == null)
                     {
-                        //G�m�s madalya almamis ama genel toplamda hak etms
-                        //retval = "<a href=" + ProjeConstants.PAGE_SIRADISIARMAGAN_DUZENLE + @"?DestinationApp=BD&NakitBagisciId=" + nakitBagisciId + " class=\'btn btn-outline-secondary \'>G�m�s Madalya Olustur</a>";
+                        //Gümüs madalya almamis ama genel toplamda hak etms
+                        //retval = "<a href=" + ProjeConstants.PAGE_SIRADISIARMAGAN_DUZENLE + @"?DestinationApp=BD&NakitBagisciId=" + nakitBagisciId + " class=\'btn btn-outline-secondary \'>Gümüş Madalya Oluştur</a>";
                         oncelik = 2;
-                        retval = "<a href=# onclick=\"OpenArmaganModal(" + nakitBagisciId + "," + hakedilenArmaganTanim.Id + ",\'" + sonBagisTarihi + "\');\" class=\'btn btn-outline-secondary \'>G�m�s Madalya Olustur</a>";
+                        retval = "<a href=# onclick=\"OpenArmaganModal(" + nakitBagisciId + "," + hakedilenArmaganTanim.Id + ",\'" + sonBagisTarihi + "\');\" class=\'btn btn-outline-secondary \'>Gümüş Madalya Oluştur</a>";
                     }
                     else
                     {
                         oncelik = 7;
-                        retval = aldigiMadalya.Tarih.ConvertToDatetimeEmptyIfNull() + " Tarihinde " + " G�m�s Madalya Verilmistir. ( Durumu :" + aldigiMadalya.Durum + ")";
+                        retval = aldigiMadalya.Tarih.ConvertToDatetimeEmptyIfNull() + " Tarihinde " + " Gümüş Madalya Verilmiştir. ( Durumu :" + aldigiMadalya.Durum + ")";
                     }
 
                 }
@@ -208,12 +208,12 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
                     {
                         //Bronz madalya almamis ama genel toplamda hak etms
                         oncelik = 3;
-                        retval = "<a href=# onclick=\"OpenArmaganModal(" + nakitBagisciId + "," + hakedilenArmaganTanim.Id + ",\'" + sonBagisTarihi + "\');\" class=\'btn btn-outline-info \'>Bronz Madalya Olustur</a>";
+                        retval = "<a href=# onclick=\"OpenArmaganModal(" + nakitBagisciId + "," + hakedilenArmaganTanim.Id + ",\'" + sonBagisTarihi + "\');\" class=\'btn btn-outline-info \">Bronz Madalya Oluştur</a>";
                     }
                     else
                     {
                         oncelik = 8;
-                        retval = aldigiMadalya.Tarih.ConvertToDatetimeEmptyIfNull() + " Tarihinde " + " Bronz Madalya Verilmistir. ( Durumu :" + aldigiMadalya.Durum + ")";
+                        retval = aldigiMadalya.Tarih.ConvertToDatetimeEmptyIfNull() + " Tarihinde " + " Bronz Madalya Verilmiştir. ( Durumu :" + aldigiMadalya.Durum + ")";
                     }
 
                 }
@@ -252,13 +252,13 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Bagis�inin armagan hakki bulunmamaktadir.", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Bağışçının armağan hakkı bulunmamaktadır.", ProjeConstants.MESAJ_HATA);
                     }
                 }
             }
             else
             {
-                MessageHelper.PublishMessage("Bagis�i Bulunamadi", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Bağışçı Bulunamadı", ProjeConstants.MESAJ_HATA);
             }
             return armaganId ;
         }
@@ -269,7 +269,7 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
             jQuery(document).ready(function () {
 
             jQuery('#CustomDataTable').DataTable({
-                'initComplete': function (settings, json) {//tablo y�klendiginde
+                'initComplete': function (settings, json) {//tablo yüklendiginde
                     var api = this.api();
                     var row = api.row(function(idx, data, node) { //secilen satira gider
                         return data['NakitBagisciId'] ==" + SecilenIdQS + @";
@@ -408,7 +408,7 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
             jQuery(document).ready(function () {
 
             jQuery('#CustomDataTableVerilen').DataTable({
-                'initComplete': function (settings, json) {//tablo y�klendiginde
+                'initComplete': function (settings, json) {//tablo yüklendiginde
                     var api = this.api();
                     var row = api.row(function(idx, data, node) { //secilen satira gider
                         return data['NakitBagisciId'] ==" + SecilenIdQS + @";
@@ -502,7 +502,7 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
        
         private void TabloModalOlustur(string nakitBagisciId)
         {
-            var jsonData = GetModalDataJson(nakitBagisciId); //veri �ekilip json a �eviriliyor
+            var jsonData = GetModalDataJson(nakitBagisciId); //veri çekilip json a çeviriliyor
             var jsString = CreateModalDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -553,8 +553,8 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
             var json = nbh.SelectByBagisciIdReturnJSon(nakitBagisciId, ref rowCount);
             decimal toplamTutar = nbh.GetSumBagisMiktariByNakitBagisciIdBetweenBasTarBitTar(
                 ProjeConstants.BAGIS_SORGU_BASTAR.ConvertToDatetime(), DateTime.Today, nakitBagisciId.ConvertToInt());
-            BagisBilgileriLbl.Text = rowCount < 1 ? "Bagis bulunmamaktadir" :
-                "Bagis�inin " + rowCount + " defada yaptigi toplam " + toplamTutar.ToString("N", culturInfo) + "TL bagisi bulunmaktadir";
+            BagisBilgileriLbl.Text = rowCount < 1 ? "Bağış bulunmamaktadır" :
+                "Bağışçının " + rowCount + " defada yaptığı toplam " + toplamTutar.ToString("N", culturInfo) + " TL bağışı bulunmaktadır";
             return json;
         }
         protected void ExcelBtn_Click(object sender, EventArgs e)
@@ -612,18 +612,18 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
                 if (armaganTanim != null)
                 {
                     ArmaganOlusturNowBtn.Visible = true;
-                    ArmaganOlusturMessageTxt.Text = nakitBagisci.Adi + " " + nakitBagisci.Soyadi + " adli bagis�i i�in " + armaganTanim.Armagan + " olusturulmasini istiyor musunuz?";
+                    ArmaganOlusturMessageTxt.Text = nakitBagisci.Adi + " " + nakitBagisci.Soyadi + " adlı bağışçı için " + armaganTanim.Armagan + " oluşturulmasını istiyor musunuz?";
                 }
                 else
                 {
                     ArmaganOlusturNowBtn.Visible = false;
-                    ArmaganOlusturMessageTxt.Text = nakitBagisci.Adi + " " + nakitBagisci.Soyadi + " adli bagis�i i�in Armagan tanimi bulunamadigindan armagan berati olusturulamiyor";
+                    ArmaganOlusturMessageTxt.Text = nakitBagisci.Adi + " " + nakitBagisci.Soyadi + " adlı bağışçı için armağan tanımı bulunamadığından armağan beratı oluşturulamıyor";
                 }
             }
             else
             {
                 ArmaganOlusturNowBtn.Visible = false;
-                ArmaganOlusturMessageTxt.Text = hiddenNakitBagisciId.Value + " numarali bagis�i armagan berati olusturulamiyor";
+                ArmaganOlusturMessageTxt.Text = hiddenNakitBagisciId.Value + " numaralı bağışçı için armağan beratı oluşturulamıyor";
             }
         }
         protected void ArmaganOlusturNowBtn_Click(object sender, EventArgs e)
@@ -636,7 +636,7 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
                 if (armaganId > 0)
                     RedirectToPage(ProjeConstants.PAGE_ARMAGAN_EDIT + "?ArmaganId=" + armaganId + "&NakitBagisciId=" + hiddenNakitBagisciId.Value.ConvertToInt());
                 else
-                    MessageHelper.PublishMessage("Armagan Olusturulamadi", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Armağan Oluşturulamadı", ProjeConstants.MESAJ_HATA);
             }
             catch (Exception exception)
             {
@@ -715,7 +715,7 @@ namespace NBYS_WebParts.CokDefaBagisYapanBagisciListesiWP
                         IlIlceCell.Text += " " + ilce.IlceAdi.ReturnEmptyIfNull().ToString();
                     }
                     TelefonCell.Text = nakitBagisci.Telefon1.ReturnEmptyIfNull().ToString();
-                    TuzelKisiCell.Text = nakitBagisci.TuzelKisi.ConvertToBool() ? "Evet" : "Hayir";
+                    TuzelKisiCell.Text = nakitBagisci.TuzelKisi.ConvertToBool() ? "Evet" : "Hayır";
                     row.Controls.Add(AdiCell);
                     row.Controls.Add(TCKimlikNoCell);
                     row.Controls.Add(AdresCell);

@@ -106,26 +106,16 @@ namespace NBYS_WebParts.FTKYazilariWP
             EvrakSayisiTxt.Text = "TSKGV.62-14-" + bugun.Year + "/";
             EvrakTarihiTxt.Text = bugun.ToString("dd") + " " + bugun.ToString("MMMM").ToUpper() + " " + bugun.Year;
 
-            ImzalayanTxt.Text = @"Erhan SIPAHIOGLU";
-            ImzalayanUnvanTxt.Text = string.Empty;// @"(E)T�mgeneral";
-            ImzalayanMakamTxt.Text = @"Genel M�d�r Yardimcisi";
+            ImzalayanTxt.Text = "Erhan SİPAHİOĞLU";
+            ImzalayanUnvanTxt.Text = "Genel Müdür Yardımcısı";
+            ImzalayanMakamTxt.Text = string.Empty;
 
-            string parafe1 = NBYSOrtak.ParametreGetir(ProjeConstants.PARAM_FTKYAZI, ProjeConstants.PARAM_FTKYAZI_PARAFE1);
-            string parafe2 = NBYSOrtak.ParametreGetir(ProjeConstants.PARAM_FTKYAZI, ProjeConstants.PARAM_FTKYAZI_PARAFE2);
+            EkImzaTxt.Text = "Murat DİRİCAN";
+            EkImzaUnvanTxt.Text = "B.H.Direktörü";
+
             string irtibat = NBYSOrtak.ParametreGetir(ProjeConstants.PARAM_FTKYAZI, ProjeConstants.PARAM_FTKYAZI_IRTIBAT);
-            string imza1 = NBYSOrtak.ParametreGetir(ProjeConstants.PARAM_FTKYAZI, ProjeConstants.PARAM_FTKYAZI_IMZAADSOYAD);
-            string imza2 = NBYSOrtak.ParametreGetir(ProjeConstants.PARAM_FTKYAZI, ProjeConstants.PARAM_FTKYAZI_IMZAUNVAN);
-            string imza3 = NBYSOrtak.ParametreGetir(ProjeConstants.PARAM_FTKYAZI, ProjeConstants.PARAM_FTKYAZI_IMZAMAKAM);
+            IrtibatNoktasiTxt.Text = string.IsNullOrEmpty(irtibat) ? "Dorukhan GÜNDÜR (Dâhili Tel:261)" : irtibat;
 
-            string parafeTarihi = ".../" + DateTime.Today.ToString("MM") + "/" + DateTime.Today.ToString("yyyy");
-
-            Parafe1Txt.Text = string.IsNullOrEmpty(parafe1) ? string.Empty : parafeTarihi + (string.IsNullOrEmpty(parafe1) ? "" : " " + parafe1);
-            Parafe2Txt.Text = string.IsNullOrEmpty(parafe2) ? string.Empty : parafeTarihi + (string.IsNullOrEmpty(parafe2) ? "" : " " + parafe2);
-
-            IrtibatNoktasiTxt.Text = string.IsNullOrEmpty(irtibat) ? "Dorukhan G�ND�R (D�hili Tel:261)" : irtibat;
-            ImzalayanTxt.Text = string.IsNullOrEmpty(imza1) ? "Erhan SIPAHIOGLU" : imza1;
-            ImzalayanUnvanTxt.Text = string.IsNullOrEmpty(imza2) ? string.Empty: imza2;
-            ImzalayanMakamTxt.Text = string.IsNullOrEmpty(imza3) ? string.Empty: imza3;
         }
 
         private void IlDDLDoldur()
@@ -248,13 +238,13 @@ namespace NBYS_WebParts.FTKYazilariWP
             keyValues.Add("BelgeSayisiVar", EvrakSayisiTxt.Text);
             keyValues.Add("BelgeTarihiVar", EvrakTarihiTxt.Text);
 
-            string ilgiVar = (ilceAdi.Equals(ProjeConstants.VALILIK) ? ilAdi + " Valiliginin " : ilceAdi + " Kaymakamligi'nin ") + IlgiTarihiTxt.Text + " tarih ve " + IlgiSayisiTxt.Text + " sayili yazisi.";
+            string ilgiVar = (ilceAdi.Equals(ProjeConstants.VALILIK) ? ilAdi + " Valiliğinin " : ilceAdi + " Kaymakamlığının ") + IlgiTarihiTxt.Text + " tarih ve " + IlgiSayisiTxt.Text + " sayılı yazısı.";
             keyValues.Add("IlgiVar", ilgiVar);
 
             keyValues.Add("BaslikDosyaVar", "(DOSYA)");
             keyValues.Add("BaslikIlceVar", ilceAdiBuyukHarf + " KAYMAKAMLIK MAKAMINA ");
-            keyValues.Add("BaslikIlVar", ilAdiBuyukHarf + " VALILIK MAKAMINA ");
-            keyValues.Add("BaslikBolgeVar", bolge.ToUpper() + " B�LGE TEMSILCILIGINE ");
+            keyValues.Add("BaslikIlVar", ilAdiBuyukHarf + " VALİLİK MAKAMINA ");
+            keyValues.Add("BaslikBolgeVar", bolge.ToUpper() + " BÖLGE TEMSİLCİLİĞİNE ");
 
             keyValues.Add("IlAdiVar", ilAdi);
             keyValues.Add("IlBuyukHarfVar", ilAdiBuyukHarf);
@@ -269,8 +259,8 @@ namespace NBYS_WebParts.FTKYazilariWP
             keyValues.Add("FTKBskVar", ftkBaskaniAdi);
 
             keyValues.Add("IrtibatVar", IrtibatNoktasiTxt.Text);
-            keyValues.Add("ParafeVakHizVar", Parafe1Txt.Text);
-            keyValues.Add("ParafeBTHIVar", Parafe2Txt.Text);
+            keyValues.Add("EkImzaVar", EkImzaTxt.Text);
+            keyValues.Add("EkImzaUnvanVar", EkImzaUnvanTxt.Text);
 
             keyValues.Add("ImzaVar", ImzalayanTxt.Text);
             keyValues.Add("UnvanVar", ImzalayanUnvanTxt.Text);
@@ -340,14 +330,14 @@ namespace NBYS_WebParts.FTKYazilariWP
                     string kartnoVar = string.IsNullOrEmpty(kartno) ? "" : kartno;
 
                     Table table1 = doc.Body.Descendants<Table>().ElementAt(0);
-                    Table table2 = doc.Body.Descendants<Table>().ElementAt(1);
+                    //Table table2 = doc.Body.Descendants<Table>().ElementAt(1);
                     //Table table3 = doc.Body.Descendants<Table>().ElementAt(2);
 
 
                     TabloyaUyeEkle(table1, ftkGoreviVar, adiSoyadiVar, unvaniVar, kartnoVar);
-                    TabloyaUyeEkle(table2, ftkGoreviVar, adiSoyadiVar, unvaniVar, kartnoVar);
+                    //TabloyaUyeEkle(table2, ftkGoreviVar, adiSoyadiVar, unvaniVar, kartnoVar);
                     //TabloyaUyeEkle(table3, ftkGoreviVar, adiSoyadiVar, unvaniVar, kartnoVar);
-                    //B�lgelere yazi gitmeyecek o y�zden kapatildi 05.06.2024
+                    //Bölgelere yazi gitmeyecek o yüzden kapatildi 05.06.2024
                     //if (!bolge.Equals(ProjeConstants.BOLGE_GENELMUDURLUK))
                     //{
                     //    Table table4 = doc.Body.Descendants<Table>().ElementAt(3);
@@ -428,7 +418,7 @@ namespace NBYS_WebParts.FTKYazilariWP
             //{
             //    //swallow
             //}
-            runProperties.AppendChild(new RunFonts() { Ascii = fontname, HighAnsi = fontname, ComplexScript = fontname });//t�rk�e karakterler d�zg�n �iksin diye
+            runProperties.AppendChild(new RunFonts() { Ascii = fontname, HighAnsi = fontname, ComplexScript = fontname });//türkçe karakterler düzgün çiksin diye
             runProperties.AppendChild(new FontSize() { Val = fontSize });
             runProperties.AppendChild(new Languages() { Val = "tr-TR" });
 
@@ -547,12 +537,12 @@ namespace NBYS_WebParts.FTKYazilariWP
                         {
                             if (NBYSOrtak.FTKOlusturmaEPostasiGonder(IliIdQS, IlcesiIdQS))
                             {
-                                MessageHelper.PublishMessage("Kurulum Yazisi hazirlandi ve e-posta g�nderildi. Dosya ismine basarak yaziyi indirebilirsiniz.", ProjeConstants.MESAJ_BASARILI, 3000);
+                                MessageHelper.PublishMessage("Kurulum Yazisi hazirlandi ve e-posta gönderildi. Dosya ismine basarak yaziyi indirebilirsiniz.", ProjeConstants.MESAJ_BASARILI, 3000);
                             }
                         }
                         else
                         {
-                            MessageHelper.PublishMessage("Kurulum Yazisi hazirlandi, Dosya ismine basarak yaziyi indirebilirsiniz. (E-posta G�nderilmedi)", ProjeConstants.MESAJ_BASARILI, 2000);
+                            MessageHelper.PublishMessage("Kurulum Yazisi hazirlandi, Dosya ismine basarak yaziyi indirebilirsiniz. (E-posta Gönderilmedi)", ProjeConstants.MESAJ_BASARILI, 2000);
                         }
                     }
                     //else
@@ -592,12 +582,12 @@ namespace NBYS_WebParts.FTKYazilariWP
                     {
                         if (NBYSOrtak.FTKOlusturmaEPostasiGonder(IliIdQS, IlcesiIdQS))
                         {
-                            MessageHelper.PublishMessage("Kurulum Yazisi hazirlandi ve e-posta g�nderildi. Dosya ismine basarak yaziyi indirebilirsiniz.", ProjeConstants.MESAJ_BASARILI, 3000);
+                            MessageHelper.PublishMessage("Kurulum Yazisi hazirlandi ve e-posta gönderildi. Dosya ismine basarak yaziyi indirebilirsiniz.", ProjeConstants.MESAJ_BASARILI, 3000);
                         }
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Kurulum Yazisi hazirlandi, Dosya ismine basarak yaziyi indirebilirsiniz. (E-posta G�nderilmedi)", ProjeConstants.MESAJ_BASARILI, 2000);
+                        MessageHelper.PublishMessage("Kurulum Yazisi hazirlandi, Dosya ismine basarak yaziyi indirebilirsiniz. (E-posta Gönderilmedi)", ProjeConstants.MESAJ_BASARILI, 2000);
                     }
                 }
             }

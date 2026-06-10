@@ -85,9 +85,9 @@ namespace TBYS_WebParts.BagisciTalepleriWP
             TableHeaderCell TarihCell = new TableHeaderCell();
             TarihCell.Text = "Uygulanacagi Zaman";
             TableHeaderCell AciklamaCell = new TableHeaderCell();
-            AciklamaCell.Text = "A�iklama";
+            AciklamaCell.Text = "Açiklama";
             TableHeaderCell DuzenleCell = new TableHeaderCell();
-            DuzenleCell.Text = "D�zenle";
+            DuzenleCell.Text = "Düzenle";
             TableHeaderCell SilCell = new TableHeaderCell();
             SilCell.Text = "Sil";
 
@@ -102,7 +102,7 @@ namespace TBYS_WebParts.BagisciTalepleriWP
         }
         private void BagisciTalepleriTablosunuDoldur(TasinmazBagisci bagisci)
         {
-            AdiLbl.Text = " Bagis�i : " + bagisci.Adi + " " + bagisci.Soyadi;
+            AdiLbl.Text = " Bağışçı : " + bagisci.Adi + " " + bagisci.Soyadi;
             BagisciIdLbl.Text = bagisci.Id + "";
             //Column headers
             BagisciTalepleriTableHeaders();
@@ -136,7 +136,7 @@ namespace TBYS_WebParts.BagisciTalepleriWP
                 row.Controls.Add(AciklamaCell);
 
                 TableCell DuzenleCell = new TableCell();
-                string duzenleLink = "<a href=# onclick=OpenModalTalep("+item.Id+ "); class=\'btn btn-outline-primary \'> D�zenle</a>";
+                string duzenleLink = "<a href=# onclick=OpenModalTalep("+item.Id+ "); class=\'btn btn-outline-primary \'> Düzenle</a>";
                 DuzenleCell.Text=duzenleLink;
                 row.Controls.Add(DuzenleCell);
                 TableCell SilCell = new TableCell();

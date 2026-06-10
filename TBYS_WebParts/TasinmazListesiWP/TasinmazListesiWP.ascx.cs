@@ -159,7 +159,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
         #region DataTable
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            var jsonData = TabloJson(); //veri Ã§ekilip json a Ã§eviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -203,7 +203,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
                         .appendTo('#CustomDataTable thead');
 
                       var table =  $('#CustomDataTable').DataTable({
-                        'initComplete': function (settings, json) {//tablo yüklendiginde
+                        'initComplete': function (settings, json) {//tablo yÃ¼klendiginde
                                 var api = this.api();
                                 var row = api.row(function (idx, data, node) { //secilen satira gider
                                     return data['Id'] == " + SecilenIdQS + @";
@@ -401,7 +401,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
                     (BolgeIdQS != ProjeConstants.HEPSI_INT && BolgeIdQS != ProjeConstants.BOLGE_GENELMUDURLUK_INT);
                 if (duzenleGorunsunMu)
                 {
-                    tasinmazListesiListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_TASINMAZ_GIRIS + "?DestinationApp=TD&TasinmazId=" + tasinmazId + " class='btn btn-outline-primary'>Düzenle</a>"; 
+                    tasinmazListesiListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_TASINMAZ_GIRIS + "?DestinationApp=TD&TasinmazId=" + tasinmazId + " class='btn btn-outline-primary'>DÃ¼zenle</a>"; 
                 }
                 else
                 {
@@ -451,7 +451,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
         private void ModalTabloOlustur()
         {
 
-            var jsonData = ModalTabloJson(); //veri çekilip json a çeviriliyor
+            var jsonData = ModalTabloJson(); //veri Ã§ekilip json a Ã§eviriliyor
             var jsString = CreateModalDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -485,7 +485,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY');//sort date
                 jQuery(document).ready(function () {
                     jQuery('#CustomModalDataTable').DataTable({
-                        'initComplete': function (settings, json) {//tablo yüklendiginde
+                        'initComplete': function (settings, json) {//tablo yÃ¼klendiginde
                             var api = this.api();
                             var row = api.row(function (idx, data, node) { //secilen kayda gider
                                 return data['Secildi'] == true;
@@ -539,7 +539,7 @@ namespace TBYS_WebParts.TasinmazListesiWP
                 string adi0 = row0["Adi"].ToString();
                 string soyadi0 = row0["Soyadi"].ToString();
                 
-                BagisciLbl.Text = "Bagisçi : "+ (adi0 + " " + soyadi0).Trim() ;
+                BagisciLbl.Text = "BaÄŸÄ±ÅŸÃ§Ä± : "+ (adi0 + " " + soyadi0).Trim() ;
                 AdresLbl.Text = "Adres : "+ adres +" " +ilce+"/"+il ;
                 foreach (DataRow row in dataTable.Rows)
                 {

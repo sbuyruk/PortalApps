@@ -133,15 +133,15 @@ namespace NBYS_WebParts.NakitBagisciByTarihWP
 
             TableHeaderRow th = new TableHeaderRow();
             TableHeaderCell bolgeThCell = new TableHeaderCell();
-            bolgeThCell.Text = "B�lge";
+            bolgeThCell.Text = "Bölge";
             bolgeThCell.RowSpan = 2;
 
             TableHeaderCell bagisciCell = new TableHeaderCell();
-            bagisciCell.Text = "Bagis�i Sayisi";
+            bagisciCell.Text = "Bağışçı Sayısı";
             bagisciCell.ColumnSpan = 3;
 
             TableHeaderCell bagiMiktariCell = new TableHeaderCell();
-            bagiMiktariCell.Text = "Bagis Miktari";
+            bagiMiktariCell.Text = "Bağış Miktarı";
             bagiMiktariCell.ColumnSpan = 3;
 
             th.Controls.Add(bolgeThCell);
@@ -308,10 +308,10 @@ namespace NBYS_WebParts.NakitBagisciByTarihWP
 
         //    TableHeaderRow th = new TableHeaderRow();
         //    TableHeaderCell smsOperatorThCell = new TableHeaderCell();
-        //    smsOperatorThCell.Text = "GSM Operat�r�";
+        //    smsOperatorThCell.Text = "GSM Operatörü";
 
         //    TableHeaderCell bagisciCell = new TableHeaderCell();
-        //    bagisciCell.Text = "Bagis�i Sayisi";
+        //    bagisciCell.Text = "Bagisçi Sayisi";
 
         //    TableHeaderCell tutarCell = new TableHeaderCell();
         //    tutarCell.Text = "Bagis Tutari";

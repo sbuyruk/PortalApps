@@ -106,7 +106,7 @@ namespace BTYS_Webparts.BolgeTasinmazBagisciListesiWP
                 BolgeQS = IKYSOrtak.PersonelinBolgesiniGetir_Deprecated(CurrentUserName);
                 if (!string.IsNullOrEmpty(BolgeQS))
                 {
-                    TitleLbl.Text = "Bagis�i Listesi" + " (" + BolgeQS + " B�lgesi)";
+                    TitleLbl.Text = "Bağışçı Listesi" + " (" + BolgeQS + " Bölgesi)";
 
                 }
                 TabloOlustur();
@@ -132,7 +132,7 @@ namespace BTYS_Webparts.BolgeTasinmazBagisciListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri �ekilip json a �eviriliyor
+            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -183,11 +183,11 @@ namespace BTYS_Webparts.BolgeTasinmazBagisciListesiWP
                 tasinmazBagisciListItem.Bolge = bolge;
                 tasinmazBagisciListItem.IlIlce = ilIlce.Trim();
 
-                tasinmazBagisciListItem.TasinmazBagisciKarti = "<a target='_blank' href=" + ProjeConstants.PAGE_TASINMAZBAGISCI_KARTI + "?SenderApp=TBL&BagisciId=" + tasinmazBagisciId + " class='btn btn-outline-info'>Bagis�i Karti</a>";
+                tasinmazBagisciListItem.TasinmazBagisciKarti = "<a target='_blank' href=" + ProjeConstants.PAGE_TASINMAZBAGISCI_KARTI + "?SenderApp=TBL&BagisciId=" + tasinmazBagisciId + " class='btn btn-outline-info'>Bağışçı Kartı</a>";
 
-                tasinmazBagisciListItem.BagisciBilgiFormu = FormLinkiGetir(bagisciBilgiFormuDosyalari, ProjeConstants.DOSYA_BAGISBILGIVETALEP_FORMU, tasinmazBagisciId, "Bagis�i Bilgi ve Talep Formu", "btn btn-outline-secondary");
+                tasinmazBagisciListItem.BagisciBilgiFormu = FormLinkiGetir(bagisciBilgiFormuDosyalari, ProjeConstants.DOSYA_BAGISBILGIVETALEP_FORMU, tasinmazBagisciId, "Bağışçı Bilgi ve Talep Formu", "btn btn-outline-secondary");
                 tasinmazBagisciListItem.TaahhutFormu = FormLinkiGetir(bagisciTaahhutFormuDosyalari, ProjeConstants.DOSYA_TAAHHUT_FORMU, tasinmazBagisciId, "Taahhut Formu", "btn btn-outline-secondary");
-                tasinmazBagisciListItem.Duzenle = "<a href=" + pageUrl + @"?DestinationApp=TBD&BagisciId=" + tasinmazBagisciId + "  class='btn btn-outline-primary'>D�zenle</a>";
+                tasinmazBagisciListItem.Duzenle = "<a href=" + pageUrl + @"?DestinationApp=TBD&BagisciId=" + tasinmazBagisciId + "  class='btn btn-outline-primary'>Düzenle</a>";
                 tasinmazBagisciListItem.Secildi = SecilenIdQS.Equals(tasinmazBagisciListItem.TasinmazBagisciId);
                 list.Add(tasinmazBagisciListItem);
             }
@@ -200,7 +200,7 @@ namespace BTYS_Webparts.BolgeTasinmazBagisciListesiWP
             jQuery(document).ready(function() {
 
                 jQuery('#CustomDataTable').DataTable({
-                    'initComplete': function(settings, json) {//tablo y�klendiginde
+                    'initComplete': function(settings, json) {//tablo yüklendiginde
                         var api = this.api();
                         var row = api.row(function(idx, data, node) { //secilen Id'ye gider
                             return data['Secildi'] == true;
@@ -298,7 +298,7 @@ namespace BTYS_Webparts.BolgeTasinmazBagisciListesiWP
         //    bool dosyaVarMi = UtilityHelper.DosyaVarMi(UtilityHelper.TbysBelgelerURLGetir() , ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi);
         //    if (dosyaVarMi)
         //    {
-        //        belgePdfLink = @"<a class='btn btn-outline-secondary' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + dosyaUrl + @">Bagis�i Bilgi ve Talep Formu</a>";
+        //        belgePdfLink = @"<a class='btn btn-outline-secondary' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + dosyaUrl + @">Bağışçı Bilgi ve Talep Formu</a>";
         //    }
         //    return belgePdfLink;
         //}
@@ -311,7 +311,7 @@ namespace BTYS_Webparts.BolgeTasinmazBagisciListesiWP
             bool dosyaVarMi = UtilityHelper.DosyaVarMi(UtilityHelper.TbysBelgelerURLGetir(), ProjeConstants.TBYSBELGELERI_LIB, dosyaAdi);
             if (dosyaVarMi)
             {
-                belgePdfLink = @"<a class='btn btn-outline-secondary' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + dosyaUrl + @">Taahh�t Formu</a>";
+                belgePdfLink = @"<a class='btn btn-outline-secondary' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + dosyaUrl + @">Taahhüt Formu</a>";
             }
             return belgePdfLink;
         }

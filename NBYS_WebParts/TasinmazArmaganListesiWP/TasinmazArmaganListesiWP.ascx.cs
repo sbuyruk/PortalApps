@@ -74,7 +74,7 @@ namespace NBYS_WebParts.TasinmazArmaganListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri �ekilip json a �eviriliyor
+            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -292,7 +292,7 @@ namespace NBYS_WebParts.TasinmazArmaganListesiWP
                     }
 
                 }
-                bagisciItem.BagisciKarti = "<a target='_blank' href=" + ProjeConstants.PAGE_TASINMAZBAGISCI_KARTI + "?SenderApp=TBL&BagisciId=" + tasinmazBagisciId + " class='btn btn-outline-info'>Tasinmaz Bagis�i Karti</a>";
+                bagisciItem.BagisciKarti = "<a target='_blank' href=" + ProjeConstants.PAGE_TASINMAZBAGISCI_KARTI + "?SenderApp=TBL&BagisciId=" + tasinmazBagisciId + " class='btn btn-outline-info'>Taşınmaz Bağışçı Kartı</a>";
 
                 bool gizli = row["Gizli"].ReturnEmptyIfNull().ConvertToBool();
                 if (gizli)

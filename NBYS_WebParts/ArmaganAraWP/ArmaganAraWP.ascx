@@ -1,4 +1,4 @@
-﻿<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
+<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
 <%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %> 
 <%@ Register Tagprefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %> 
 <%@ Register Tagprefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
@@ -42,7 +42,7 @@
             </div>
             <div class="form-group">
                 <asp:Label CssClass="text-danger fw-bold" runat="server">Armağan Belge Numaraları Nisan 2018 tarihinde NBYS yazılımının devreye girmesinden itibaren düzenli olarak verilmektedir. 
-                    Daha eski tarihli belgelere ait numaralar manüel verilmiştir ve farklılık gösterebilir.
+                    Daha eski tarihli belgelere ait numaralar manuel verilmiştir ve farklılık gösterebilir.
                 </asp:Label>
             </div>
             <div class="form-group">

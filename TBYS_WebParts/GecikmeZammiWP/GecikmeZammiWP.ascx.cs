@@ -94,7 +94,7 @@ namespace TBYS_WebParts.GecikmeZammiWP
 
                 TableCell GuncelleCell = new TableCell();
                 LinkButton GuncelleBtn = new LinkButton();
-                GuncelleBtn.Text = "G�ncelle";
+                GuncelleBtn.Text = "Güncelle";
                 GuncelleBtn.CssClass = "btn btn-outline-primary";
                 GuncelleBtn.ID = "GuncelleBtn" + sira;
                 GuncelleBtn.Click += delegate
@@ -102,7 +102,7 @@ namespace TBYS_WebParts.GecikmeZammiWP
                     try
                     {
                         ///
-                        /// Bundan �nceki kaydi bul,
+                        /// Bundan önceki kaydi bul,
                         ///     Bitis tarihini degistir (bu kaydin baslangic tarihi - 1 Gun yap)
                         ///Bundan Sonraki kaydi bul
                         ///     Bu kaydin bitis tarihini Sonrakinin baslangic tarihi olarak degistir
@@ -132,7 +132,7 @@ namespace TBYS_WebParts.GecikmeZammiWP
 
                         if (item.Update())
                         {
-                            MessageHelper.PublishMessage("Kayit G�ncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                            MessageHelper.PublishMessage("Kayıt Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                             string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
                             newUrl += "/" + ProjeConstants.PAGE_GECIKMEZAMMI;
@@ -143,7 +143,7 @@ namespace TBYS_WebParts.GecikmeZammiWP
                     catch (Exception)
                     {
 
-                        MessageHelper.PublishMessage("Gecikme Zammi Kaydedilemedi", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Gecikme Zammı Kaydedilemedi", ProjeConstants.MESAJ_HATA);
                     }
                 };
                 GuncelleCell.Controls.Add(GuncelleBtn);
@@ -169,7 +169,7 @@ namespace TBYS_WebParts.GecikmeZammiWP
 
                         if (item.Delete())
                         {
-                            MessageHelper.PublishMessage("Kayit Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
+                            MessageHelper.PublishMessage("Kayıt Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
                             string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                             string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
                             newUrl += "/" + ProjeConstants.PAGE_GECIKMEZAMMI;
@@ -179,7 +179,7 @@ namespace TBYS_WebParts.GecikmeZammiWP
                     catch (Exception)
                     {
 
-                        MessageHelper.PublishMessage("Faiz Oranlari Kaydedilemedi", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Faiz Oranları Kaydedilemedi", ProjeConstants.MESAJ_HATA);
                     }
                 };
                 SilCell.Controls.Add(SilBtn);
@@ -227,7 +227,7 @@ namespace TBYS_WebParts.GecikmeZammiWP
 
             GecikmeZammi oncekiTarihliFO = new GecikmeZammi();
             oncekiTarihliFO = oncekiTarihliFO.SelectOncekiGecikmeZammi(YeniBaslangicTarihiTxt.Value.ConvertToDatetime());
-            //�ncekinin biti tarihini degistir
+            //öncekinin biti tarihini degistir
             if (oncekiTarihliFO != null)
             {
                 oncekiTarihliFO.BitisTarihi = YeniBaslangicTarihiTxt.Value.ConvertToDatetime().AddDays(-1);

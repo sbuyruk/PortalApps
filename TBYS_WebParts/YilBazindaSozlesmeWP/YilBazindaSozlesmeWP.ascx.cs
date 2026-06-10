@@ -108,7 +108,7 @@ namespace TBYS_WebParts.YilBazindaSozlesmeWP
 
         private string CreateDataTable(string jsonData, string sozlesmeTahliye)
         {
-            string sozlesmeTahliyeSutunu = sozlesmeTahliye.Equals("Sözlesme") ? "{ data: 'SozlesmeTarihi', 'width': '10%' },"
+            string sozlesmeTahliyeSutunu = sozlesmeTahliye.Equals("SÃ¶zlesme") ? "{ data: 'SozlesmeTarihi', 'width': '10%' },"
                : "{ Data: 'DurumDegismeTar', 'width': '10%' },";
             string tableString = @"
                 if ( jQuery.fn.DataTable.isDataTable('#CustomDataTable') ) {
@@ -119,7 +119,7 @@ namespace TBYS_WebParts.YilBazindaSozlesmeWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY');//sort date
                 jQuery(document).ready(function () {
                     jQuery('#CustomDataTable').DataTable({
-                        'initComplete': function (settings, json) {//tablo yüklendiginde
+                        'initComplete': function (settings, json) {//tablo yÃ¼klendiginde
                             var api = this.api();
                             var row = api.row(function (idx, data, node) { //secilen toplantiya gider
                                 return data['Secildi'] == true;
@@ -156,7 +156,7 @@ namespace TBYS_WebParts.YilBazindaSozlesmeWP
                                 {
                                     var sirano=parseInt(row.Sirano);
                                     var currentPage=Math.ceil(sirano/8);
-                                    return ('<a href=" + ProjeConstants.PAGE_KIRASOZLESMESI + @"?DestinationApp=KS&SenderApp=KSL&KiraSozlesmeId='+row.SozlesmeId +'" + @" class=\'btn btn-outline-primary \'>Sözlesme</a>');
+                                    return ('<a href=" + ProjeConstants.PAGE_KIRASOZLESMESI + @"?DestinationApp=KS&SenderApp=KSL&KiraSozlesmeId='+row.SozlesmeId +'" + @" class=\'btn btn-outline-primary \'>SÃ¶zlesme</a>');
                                             
                                 }
                             },
@@ -241,13 +241,13 @@ namespace TBYS_WebParts.YilBazindaSozlesmeWP
         }
         private void SozlesmeTahliyeDDLDoldur()
         {
-            SozlesmeTahliyeDDL.Items.Add(new ListItem("Sözlesme", "Sözlesme"));
+            SozlesmeTahliyeDDL.Items.Add(new ListItem("SÃ¶zleÅŸme", "SÃ¶zleÅŸme"));
             SozlesmeTahliyeDDL.Items.Add(new ListItem("Tahliye", "Tahliye"));
         }
         private void TabloOlustur()
         {
             string sozlesmeTahliye = SozlesmeTahliyeDDL.SelectedItem.Value;
-            var jsonData = TabloJson(sozlesmeTahliye); //veri çekilip json a çeviriliyor
+            var jsonData = TabloJson(sozlesmeTahliye); //veri Ã§ekilip json a Ã§eviriliyor
             var jsString = CreateDataTable(jsonData,sozlesmeTahliye); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -317,7 +317,7 @@ namespace TBYS_WebParts.YilBazindaSozlesmeWP
 
             DataTable dataTableSozlesme = kiraSozlesme.SelectSozlesmeListByYilReturnDT(YilDDL.SelectedItem.Value.ConvertToInt());
             DataTable dataTableTahliye = kiraSozlesme.SelectBitenSozlesmeListByYilReturnDT(YilDDL.SelectedItem.Value.ConvertToInt());
-            DataTable dataTable = sozlesmeTahliye.Equals("Sözlesme") ? dataTableSozlesme : dataTableTahliye;
+            DataTable dataTable = sozlesmeTahliye.Equals("SÃ¶zlesme") ? dataTableSozlesme : dataTableTahliye;
 
             int SiraNo = 1;
             string tempIli = string.Empty;

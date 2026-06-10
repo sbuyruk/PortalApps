@@ -27,7 +27,7 @@ namespace DAO.Ortak
 
         public static string FindTable(string sqlString)
         {
-            string retval = "Bulunamadi!";
+            string retval = "Bulunamadı!";
             var punctuation = sqlString.Where(Char.IsPunctuation).Distinct().ToArray();
             var words = sqlString.Split().Select(x => x.Trim(punctuation));
             foreach (string item in words)

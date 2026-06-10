@@ -116,7 +116,7 @@ namespace TBYS_WebParts.YasalFaizWP
             catch (Exception)
             {
 
-                MessageHelper.PublishMessage("Faiz oranlari olusturulamadi", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Faiz oranları oluşturulamadı", ProjeConstants.MESAJ_HATA);
             }
         }
         private bool BuYilinTablosuVarMi()
@@ -435,7 +435,7 @@ namespace TBYS_WebParts.YasalFaizWP
         //        TableCell AciklamaCell = new TableCell();
         //        AciklamaCell.Text = faizOrani.ToString();
 
-        //        TableCell G�ncelleCell = new TableCell();
+        //        TableCell GüncelleCell = new TableCell();
         //        {
         //            Button GuncelleBtn = new Button();
         //            GuncelleBtn.ID = "SaveBtn" + sira++;
@@ -451,7 +451,7 @@ namespace TBYS_WebParts.YasalFaizWP
         //                        yasalFaiz.Degistiren = CurrentUserName;
         //                        if (yasalFaiz.Update())
         //                        {
-        //                            MessageHelper.PublishMessage("Kayit G�ncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+        //                            MessageHelper.PublishMessage("Kayit Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
         //                            string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
         //                            string newUrl = currentUrl.Substring(0, currentUrl.LastIndexOf("/"));
         //                            newUrl += "/" + ProjeConstants.PAGE_YASALFAIZ;
@@ -467,13 +467,13 @@ namespace TBYS_WebParts.YasalFaizWP
 
 
         //            };
-        //            G�ncelleCell.Controls.Add(GuncelleBtn);
+        //            GüncelleCell.Controls.Add(GuncelleBtn);
 
         //            row.Controls.Add(AyCell);
         //            row.Controls.Add(AyAdiCell);
         //            row.Controls.Add(YilCell);
         //            row.Controls.Add(FaizOraniCell);
-        //            row.Controls.Add(G�ncelleCell);
+        //            row.Controls.Add(GüncelleCell);
         //            AyrintiTable.Controls.Add(row);
         //        }
         //    }
@@ -537,7 +537,7 @@ namespace TBYS_WebParts.YasalFaizWP
             catch (Exception)
             {
 
-                MessageHelper.PublishMessage("Faiz Oranlari Kaydedilemedi", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Faiz Oranları Kaydedilemedi", ProjeConstants.MESAJ_HATA);
             }
         }
         protected void Kaydet1Btn_Click(object sender, EventArgs e)
@@ -648,7 +648,7 @@ namespace TBYS_WebParts.YasalFaizWP
                         string ufex = ((TextBox)this.FindControl(faizOraniTxtStr)).Text;
 
 
-                        string aciklamaTxtStr = "Aciklama" + i + "Txt";
+                        string aciklamaTxtStr = "Açıklama" + i + "Txt";
                         string aciklama = ((TextBox)this.FindControl(aciklamaTxtStr)).Text;
                         YasalFaiz yasalFaiz = new YasalFaiz();
                         yasalFaiz = yasalFaiz.SelectByYilAy(yil.ConvertToInt(), ay.ConvertToInt());

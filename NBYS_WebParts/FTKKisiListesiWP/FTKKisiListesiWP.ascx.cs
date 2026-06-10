@@ -46,7 +46,7 @@ namespace NBYS_WebParts.FTKKisiListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            var jsonData = TabloJson(); //veri Ã§ekilip json'a Ã§evriliyor
             UtilityHelper.ScriptCalistir("setDataSet(" + jsonData + ");");
         }
         private string TabloJson()
@@ -97,7 +97,7 @@ namespace NBYS_WebParts.FTKKisiListesiWP
                 {
                     bool vali = row["Vali"].ReturnFalseIfNull().ConvertToBool();
                     bool kaymakam = row["Kaymakam"].ReturnFalseIfNull().ConvertToBool();
-                    if (vali || kaymakam)//Vali ve kaymakamlari bu listede gösterme
+                    if (vali || kaymakam)//Vali ve kaymakamlarÄ± bu listede gÃ¶sterme
                     {
                         continue;
                     }
@@ -131,7 +131,7 @@ namespace NBYS_WebParts.FTKKisiListesiWP
 
                         if (duzenleVarmi)
                         {
-                            uyeItem.Duzenle = "<a href=" + pageUrl + "?FTKKisiId=" + kisiId + " class='btn btn-outline-primary'>Düzenle</a>";
+                            uyeItem.Duzenle = "<a href=" + pageUrl + "?FTKKisiId=" + kisiId + " class='btn btn-outline-primary'>DÃ¼zenle</a>";
                         }
 
 

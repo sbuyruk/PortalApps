@@ -121,7 +121,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
                 ViewState["SenderApp"] = value;
             }
         }
-        private string ParamQS//nakit bagisci d�zenlemeden d�n�yorsa aranan texti tekrar arasin
+        private string ParamQS//nakit bağışçı düzenlemeden dönüyorsa aranan metni tekrar arasın
         {
             get
             {
@@ -176,7 +176,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
         {
             //CardHeader.Attributes["Class"] = "btn-primary";
             KaydetBtn.CssClass = "btn btn-outline-primary m-2";
-            KaydetBtn.Text = "G�ncelle";
+            KaydetBtn.Text = "Güncelle";
             if (SenderAppQS.Equals("EkstreListesi") || SenderAppQS.Equals("NBE"))
             {
                 EslestirBtn.Visible = true;
@@ -193,7 +193,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
         {
             //CardHeader.Attributes["Class"] = "btn-success";
             KaydetBtn.CssClass = "btn btn-outline-success float-left";
-            KaydetBtn.Text = "Kaydet";
+            KaydetBtn.Text = "Güncelle";
             DateTime today = DateTime.Now;
             IslemTarihiTxt.Text = today.ToString(ProjeConstants.DATE_TR);
             NakitBagisciIdLbl.Text = "0";
@@ -393,7 +393,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
                 bool isSaved = false;
                 if (string.IsNullOrWhiteSpace(AdiTxt.Text))
                 {
-                    MessageHelper.PublishMessage("Bagis�i Adi bos olamaz. L�tfen bagis�i adini giriniz.", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Bağışçı Adı boş olamaz. Lütfen bağışçı adını giriniz.", ProjeConstants.MESAJ_HATA);
                 }
                 else
                 {
@@ -429,7 +429,7 @@ namespace NBYS_WebParts.EkstreAktarmaEditWP
                 else
                 {
                     //System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "Alert.danger('Ekstre Aktarma Bilgisi Kaydedilemedi.')", true);
-                    MessageHelper.PublishMessage("Ekstre Aktarma Bilgisi Kaydedilemedi.", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Baðýþçý Adý boþ olamaz. Lütfen baðýþçý adýný giriniz.", ProjeConstants.MESAJ_HATA);
                 }
             }
             catch (Exception ex)

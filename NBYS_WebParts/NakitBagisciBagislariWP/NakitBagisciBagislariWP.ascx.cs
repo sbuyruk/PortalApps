@@ -30,7 +30,7 @@ namespace NBYS_WebParts.NakitBagisciBagislariWP
             InitializeControl();
             this.ChromeType = PartChromeType.None;
         }
-        private string ParamQS//nakit bagisci d�zenlemeden d�n�yorsa aranan texti tekrar arasin
+        private string ParamQS//nakit bağışçı düzenlemeden dönüyorsa aranan metni tekrar arasın
         {
             get
             {
@@ -126,8 +126,8 @@ namespace NBYS_WebParts.NakitBagisciBagislariWP
         {
             if (!string.IsNullOrEmpty(BagisciAraTxt.Text) && BagisciAraTxt.Text.Length > 3)
             {
-                var jsonData = BagisciTabloJson(); //veri �ekilip json a �eviriliyor
-                var jsString = BagisciCreateDataTable(jsonData); //javascript kodu hazirlaniyor.
+                var jsonData = BagisciTabloJson(); //veri çekilip json'a çeviriliyor
+                var jsString = BagisciCreateDataTable(jsonData); //javascript kodu hazırlanıyor.
                 UtilityHelper.ScriptCalistir(jsString);
                 BagisciSecTableDiv.Attributes["style"] = "display:block";
 
@@ -171,7 +171,7 @@ namespace NBYS_WebParts.NakitBagisciBagislariWP
                     string telefon = row["Telefon1"].ToString();
                     string adres = row["Adres"].ToString();
 
-                    string secUrl = "<a class='btn btn-outline-info' onclick=BagisListesiGoster(" + nakitBagisciId + ");>Se�</>";
+                    string secUrl = "<a class='btn btn-outline-info' onclick=BagisListesiGoster(" + nakitBagisciId + ");>Seç</>";
 
                     NakitBagisciListItem nakitBagisciListItem = new NakitBagisciListItem();
                     nakitBagisciListItem.NakitBagisciId = nakitBagisciId;
@@ -212,9 +212,9 @@ namespace NBYS_WebParts.NakitBagisciBagislariWP
                 jQuery(document).ready(function() {
 
                     jQuery('#CustomDataTable').DataTable({
-                        'initComplete': function(settings, json) {//tablo y�klendiginde
+                        'initComplete': function(settings, json) {//tablo yüklendiğinde
                             var api = this.api();
-                            var row = api.row(function(idx, data, node) { //secilen Id'ye gider
+                            var row = api.row(function(idx, data, node) { //seçilen Id'ye gider
                                 return data['Secildi'] == true;
                             });
                             if (row.length > 0)
@@ -259,8 +259,8 @@ namespace NBYS_WebParts.NakitBagisciBagislariWP
         #region Bagis listesi
         private void BagisTablosuOlustur(string nakitBagisciId)
         {
-            var jsonData = BagisDataJson(nakitBagisciId); //veri �ekilip json a �eviriliyor
-            var jsString = CreateBagisDataTable(jsonData, nakitBagisciId.ConvertToInt()); //javascript kodu hazirlaniyor.
+            var jsonData = BagisDataJson(nakitBagisciId); //veri çekilip json'a çeviriliyor
+            var jsString = CreateBagisDataTable(jsonData, nakitBagisciId.ConvertToInt()); //javascript kodu hazırlanıyor.
             UtilityHelper.ScriptCalistir(jsString);
             BagisciSecTableDiv.Attributes["style"] = "display:none";
             BagisTableDiv.Attributes["style"] = "display:block";
@@ -319,10 +319,8 @@ namespace NBYS_WebParts.NakitBagisciBagislariWP
             decimal toplamTutar = nbh.GetSumBagisMiktariByNakitBagisciIdBetweenBasTarBitTar(
                 ProjeConstants.BAGIS_SORGU_BASTAR.ConvertToDatetime(), DateTime.Today, nakitBagisciId.ConvertToInt());
 
-
-
-            BagisBilgileriLbl.Text = rowCount < 1 ? "Bagis bulunmamaktadir." :
-                "(Bagis�inin " + rowCount + " defada yaptigi toplam " + toplamTutar.ToString("N", culturInfo) + "TL bagisi bulunmaktadir.)";
+            BagisBilgileriLbl.Text = rowCount < 1 ? "Bağış bulunmamaktadır." :
+                "(Bağışçının " + rowCount + " defada yaptığı toplam " + toplamTutar.ToString("N", culturInfo) + "TL bağışı bulunmaktadır.)";
             return json;
         }
         protected void BagisListesiGosterBtn_Click(object sender, EventArgs e)

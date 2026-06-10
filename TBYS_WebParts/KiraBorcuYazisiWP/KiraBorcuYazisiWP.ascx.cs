@@ -179,17 +179,17 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
         {
 
             AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Ocak", "1"));
-            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Subat", "2"));
+            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Şubat", "2"));
             AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Mart", "3"));
             AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Nisan", "4"));
-            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Mayis", "5"));
+            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Mayıs", "5"));
             AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Haziran", "6"));
             AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Temmuz", "7"));
-            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Agustos", "8"));
-            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Eyl�l", "9"));
+            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Ağustos", "8"));
+            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Eylül", "9"));
             AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Ekim", "10"));
-            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Kasim", "11"));
-            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Aralik", "12"));
+            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Kasım", "11"));
+            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Aralık", "12"));
 
         }
         private void YilDDLDoldur()
@@ -253,10 +253,10 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
             DateTime buAyIlkGun = new DateTime(bugun.Year, bugun.Month, 1);
             DateTime buAySonGun = new DateTime(bugun.Year, bugun.Month, 1).AddMonths(1).AddDays(-1);
 
-            Parafe1Txt.Text = @"�./" + bugun.ToString("MM") + @"/" + bugun.Year + " Eml.Ynt.Kd.Uzm.Z.�ALIS";
-            Parafe2Txt.Text = @"�./" + bugun.ToString("MM") + @"/" + bugun.Year + " Ins.Eml.Ynt.Dir.M.TASKALDIRAN";
-            ImzalayanTxt.Text = @"Emrah SENG�L";
-            ImzalayanMakamTxt.Text = @"TSKGV Bas Hukuk M�saviri";
+            Parafe1Txt.Text = @"…./" + bugun.ToString("MM") + @"/" + bugun.Year + " Eml.Ynt.Kd.Uzm.Z.ÇALIŞ";
+            Parafe2Txt.Text = @"…./" + bugun.ToString("MM") + @"/" + bugun.Year + " Ins.Eml.Ynt.Dir.M.TAŞKALDIRAN";
+            ImzalayanTxt.Text = @"Emrah S,ŞENGÜL";
+            ImzalayanMakamTxt.Text = @"TSKGV Baş Hukuk Müşaviri";
             EvrakTarihiTxt.Text = bugun.ToString("dd") + " " + bugun.ToString("MMMM") + " " + bugun.Year;
             GecerlilikTarihiTxt.Text = buAyIlkGun.ToString("dd") + " " + buAyIlkGun.ToString("MMMM") + " " + buAyIlkGun.Year;
             
@@ -266,7 +266,7 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = GetData(); //veri �ekilip json a �eviriliyor
+            var jsonData = GetData(); //veri çekilip json a çeviriliyor
 
             bool jasonDataBosMu = string.IsNullOrWhiteSpace(jsonData.Replace("[", "").Replace("]", "").Replace("{", "").Replace("}", ""));
             if (!jasonDataBosMu)
@@ -277,7 +277,7 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
             }
             else
             {
-                TableDataLbl.Text = "Kira borcu olan kiraci bulunmamaktadir.";
+                TableDataLbl.Text = "Kira borcu olan kiracı bulunmamaktadır.";
                 YaziyiOlusturBtn.Visible = false;
             }
         }
@@ -376,14 +376,14 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
                 if (isYaziOlusturuldu)
                 {
                     YeniAdresEtiketDosyasiOlustur(etiketDosyaAdi);
-                    MessageHelper.PublishMessage("Dosyalar hazirlandi, Dosya ismine basarak yaziyi indirebilirsiniz", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Dosyalar hazırlandı, Dosya ismine basarak yazıyı indirebilirsiniz", ProjeConstants.MESAJ_BASARILI, 2000);
                 }
                 else
-                    MessageHelper.PublishMessage("Hata Olustu", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Hata Oluştu", ProjeConstants.MESAJ_HATA);
             }
             catch (Exception ex)
             {
-                Exception ex1 = new Exception("Yazi ve Adres olusturmada hata");
+                Exception ex1 = new Exception("Yazi ve Adres oluşturulmada hata");
                 ExceptionHelper exh = new ExceptionHelper(ex);
                 exh.PublishException();
             }
@@ -598,7 +598,7 @@ namespace TBYS_WebParts.KiraBorcuYazisiWP
                 {
                     string message = string.Join(Environment.NewLine, uzunAdresliler);
                     MessageHelper.PublishMessage(message + Environment.NewLine +
-                        " adresi �ok uzun oldugundan kesilerek kisaltildi. L�tfen etiketini kontrol ediniz. ", ProjeConstants.MESAJ_BILGI);
+                        " adresi çok uzun olduğundan kesilerek kısaltıldı. Lütfen etiketini kontrol ediniz. ", ProjeConstants.MESAJ_BILGI);
                 }
             }
             return destinationStream;

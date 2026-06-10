@@ -89,7 +89,7 @@ namespace IKYS_WebParts.IzinTalepListesiWP
         #region Liste Olusturma
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            var jsonData = TabloJson(); //veri Ã§ekilip json a Ã§eviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -161,7 +161,7 @@ namespace IKYS_WebParts.IzinTalepListesiWP
 
                 if (onayDurumuId == ProjeConstants.ONAYDURUMU_ISLEM_INT || onayDurumuId == ProjeConstants.ONAYDURUMU_DILEKCE_INT)
                 {
-                    izinTalepListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_IZINTALEP_GIRIS + "?DestinationApp=TD&IzinTalepId=" + izinTalepId + "&PersonelId=" + personelId + "&IzinTanimId=" + izinTipiId + " class='btn btn-outline-primary'>Düzenle</a>";
+                    izinTalepListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_IZINTALEP_GIRIS + "?DestinationApp=TD&IzinTalepId=" + izinTalepId + "&PersonelId=" + personelId + "&IzinTanimId=" + izinTipiId + " class='btn btn-outline-primary'>DÃ¼zenle</a>";
                 }
                 else
                 {
@@ -174,7 +174,7 @@ namespace IKYS_WebParts.IzinTalepListesiWP
                 }
                 else if (onayDurumuId == ProjeConstants.ONAYDURUMU_KONTROL_INT)
                 {
-                    izinTalepListItem.KayitKontrolRed = "<a href=# onclick=OpenModal('onay'," + izinTalepId + "," + personelId + "); class=\'btn btn-outline-success \'>Kayit/Red</a>";
+                    izinTalepListItem.KayitKontrolRed = "<a href=# onclick=OpenModal('onay'," + izinTalepId + "," + personelId + "); class=\'btn btn-outline-success \'>KayÄ±t/Red</a>";
                 }
                 else
                 {
@@ -203,7 +203,7 @@ namespace IKYS_WebParts.IzinTalepListesiWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY');//sort date
 
                 jQuery('#CustomDataTable').DataTable({
-                    'initComplete': function (settings, json) {//tablo yüklendiginde
+                    'initComplete': function (settings, json) {//tablo yÃ¼klendiginde
                         var api = this.api();
                         var row = api.row(function(idx, data, node) { //secilen toplantiya gider
                             return data['Secildi'] == true;
@@ -278,7 +278,7 @@ namespace IKYS_WebParts.IzinTalepListesiWP
                 if (izinDonem != null)
                 {
                     DateTime izinDonemiSonu = izinDonem != null ? izinDonem.BitisTarihi : today.AddMonths(1);
-                    //DataTable dataTable = izinHareket.SelectByIzinDonemiReturnDataTable(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT, izinDonemiBasi, threeMonthsLater);//3 ay içinde yeni izin dönemi basliyor olabilir
+                    //DataTable dataTable = izinHareket.SelectByIzinDonemiReturnDataTable(personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT, izinDonemiBasi, threeMonthsLater);//3 ay iÃ§inde yeni izin dÃ¶nemi basliyor olabilir
                     DataTable dataTable = izinHareket.SelectByIzinDonemiReturnDataTable(izinDonem.Id, personel.Id, ProjeConstants.IZINTIPI_UCRETLI_INT);
                     int SiraNo = 1;
                     if (dataTable == null)
@@ -286,7 +286,7 @@ namespace IKYS_WebParts.IzinTalepListesiWP
                         IzinHareketTable.Rows.Clear();
                         TableRow tr = new TableRow();
                         TableCell tc = new TableCell();
-                        tc.Text = "Henüz izin kullanilmamis.";
+                        tc.Text = "HenÃ¼z izin kullanilmamis.";
                         tr.Controls.Add(tc);
                         IzinHareketTable.Controls.Add(tr);
                     }
@@ -326,7 +326,7 @@ namespace IKYS_WebParts.IzinTalepListesiWP
 
                             row.Controls.Add(SureCell);
 
-                            if (bastar > izinDonemiSonu) //gelecek izin dönemine aitse farkli renk yazdir
+                            if (bastar > izinDonemiSonu) //gelecek izin dÃ¶nemine aitse farkli renk yazdir
                             {
                                 SiraNoCell.ForeColor = System.Drawing.Color.Red;
                                 IzinTipiCell.ForeColor = System.Drawing.Color.Red;
@@ -335,7 +335,7 @@ namespace IKYS_WebParts.IzinTalepListesiWP
                                 BitTarCell.ForeColor = System.Drawing.Color.Red;
                                 SureCell.ForeColor = System.Drawing.Color.Red;
 
-                                row.ToolTip = "Yeni Izin Dönemi";
+                                row.ToolTip = "Yeni Izin DÃ¶nemi";
                             }
 
                             IzinHareketTable.Controls.Add(row);
@@ -404,11 +404,11 @@ namespace IKYS_WebParts.IzinTalepListesiWP
             TableHeaderCell izintipiCell = new TableHeaderCell();
             izintipiCell.Text = "Izin Tipi";
             TableHeaderCell bastarCell = new TableHeaderCell();
-            bastarCell.Text = "Baslangiç tarihi";
+            bastarCell.Text = "BaslangiÃ§ tarihi";
             TableHeaderCell bittarCell = new TableHeaderCell();
             bittarCell.Text = "Bitis tarihi";
             TableHeaderCell sureCell = new TableHeaderCell();
-            sureCell.Text = "Izinli Süre";
+            sureCell.Text = "Izinli SÃ¼re";
             TableHeaderCell yazdirCell = new TableHeaderCell();
             yazdirCell.Text = "Yazdir";
             th.Controls.Add(siraCell);
@@ -423,7 +423,7 @@ namespace IKYS_WebParts.IzinTalepListesiWP
             IzinBilgileriTable.Rows.Clear();
             TableHeaderRow th = new TableHeaderRow();
             TableHeaderCell donemCell = new TableHeaderCell();
-            donemCell.Text = "Izin Dönemi";
+            donemCell.Text = "Izin DÃ¶nemi";
             TableHeaderCell hakCell = new TableHeaderCell();
             hakCell.Text = "Izin Hakki";
             TableHeaderCell kullanilanCell = new TableHeaderCell();
@@ -460,7 +460,7 @@ namespace IKYS_WebParts.IzinTalepListesiWP
                         bool izinHareketTablosundaVarMi = IzinHareketTablosundaVarMI(izinTalep.Id);
                         if (izinHareketTablosundaVarMi)
                         {
-                            MessageHelper.PublishMessage("Bu Talep daha önce zaten onaylanmistir.", ProjeConstants.MESAJ_HATA);
+                            MessageHelper.PublishMessage("Bu Talep daha Ã¶nce zaten onaylanmistir.", ProjeConstants.MESAJ_HATA);
                         }
                         else
                         {
@@ -512,7 +512,7 @@ namespace IKYS_WebParts.IzinTalepListesiWP
                                         if ((personel != null) && (!personel.Asker_sivil.Equals(ProjeConstants.PER_ASKER_INT)))//asker degilse islem yap
                                         {
 
-                                            int sureDays = ih.BitisTarihi.Subtract(ih.BaslangicTarihi).Days + 1; // +1 eklendi aksi halde 1 gün eksik yapiyor SB 23.03.2020
+                                            int sureDays = ih.BitisTarihi.Subtract(ih.BaslangicTarihi).Days + 1; // +1 eklendi aksi halde 1 gÃ¼n eksik yapiyor SB 23.03.2020
                                             DateTime izinDonemiBasTar = izinDonemiBasTarStr.ConvertToDatetime();//ib.IzinDonemiBasTar;
                                             DateTime yeniIzinDonemiBastar = izinDonemiBasTar.AddDays(sureDays);
                                             ib.IzinDonemiBasTar = yeniIzinDonemiBastar;
@@ -522,20 +522,20 @@ namespace IKYS_WebParts.IzinTalepListesiWP
                                                 if (issaved)
                                                 {
 
-                                                    MessageHelper.PublishMessage(izinDonemiBasTar + " olan Izin Dönemi Baslangiç Tarihi " +
+                                                    MessageHelper.PublishMessage(izinDonemiBasTar + " olan Izin DÃ¶nemi BaslangiÃ§ Tarihi " +
                                                     yeniIzinDonemiBastar + " olarak degistirilmistir.", ProjeConstants.MESAJ_BASARILI);
                                                 }
 
                                             }
                                             catch (Exception)
                                             {
-                                                MessageHelper.PublishMessage("Izin Dönemi Baslangiç Tarihi Ücretsiz izin Süresi Kadar Ertelenemedi", ProjeConstants.MESAJ_HATA);
+                                                MessageHelper.PublishMessage("Izin DÃ¶nemi BaslangiÃ§ Tarihi Ãœcretsiz izin SÃ¼resi Kadar Ertelenemedi", ProjeConstants.MESAJ_HATA);
                                             }
                                         }
                                     }
                                     else
                                     {
-                                        MessageHelper.PublishMessage("Ise Baslama Tarihi (Izin Dönemi Baslangiç Tarihi) bos oldugundan, Izin Dönemi Baslangiç Tarihi Ücretsiz izin Süresi Kadar Ertelenemedi", ProjeConstants.MESAJ_HATA);
+                                        MessageHelper.PublishMessage("Ise Baslama Tarihi (Izin DÃ¶nemi BaslangiÃ§ Tarihi) bos oldugundan, Izin DÃ¶nemi BaslangiÃ§ Tarihi Ãœcretsiz izin SÃ¼resi Kadar Ertelenemedi", ProjeConstants.MESAJ_HATA);
                                     }
                                 }
                             }

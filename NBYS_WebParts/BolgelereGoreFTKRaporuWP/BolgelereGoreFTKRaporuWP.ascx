@@ -1,4 +1,4 @@
-﻿<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
+<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
 <%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
@@ -34,7 +34,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="form-group col-3">
-                    <asp:Label CssClass="col-from-label" runat="server" Text="FTK Kurulus Tarihi"></asp:Label>
+                    <asp:Label CssClass="col-from-label" runat="server" Text="FTK Kuruluş Tarihi"></asp:Label>
                     <asp:TextBox ID="KurulusTarihiTxt" CssClass="form-control DateTimePickerV1 input-date" placeholder="dd.mm.yyyy" runat="server" Text="" ClientIDMode="Static" AutoPostBack="True" OnTextChanged="FTKGuncellemeTarihiTxt_TextChanged"></asp:TextBox>
                 </div>
                 <div class="form-group col-3">

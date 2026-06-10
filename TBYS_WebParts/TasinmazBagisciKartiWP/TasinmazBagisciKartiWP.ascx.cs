@@ -130,7 +130,7 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
             headerRow.CssClass = "table-dark";
             TableHeaderCell TabloBaslikCell = new TableHeaderCell();
             TabloBaslikCell.ColumnSpan = 4;
-            TabloBaslikCell.Text = "Bagis�i Bilgileri";
+            TabloBaslikCell.Text = "Bağışçı Bilgileri";
             headerRow.Controls.Add(TabloBaslikCell);
 
             headerRow.Controls.Add(TabloBaslikCell);
@@ -177,8 +177,8 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
             r3c2.Text = "TC Kimlik No : " + bagisci.TCKimlikNo;
 
             r1c3.Text = SagVefatGetir(bagisci);// "Sag mi : " + bagisci.Sag_vefat;
-            r2c3.Text = "Dogum Tarihi : " + bagisci.DogumTarihi.ConvertToDatetimeEmptyIfNull();
-            r3c3.Text = "Dogum Yeri : " + bagisci.DogumYeri;
+            r2c3.Text = "Doğum Tarihi : " + bagisci.DogumTarihi.ConvertToDatetimeEmptyIfNull();
+            r3c3.Text = "Doğum Yeri : " + bagisci.DogumYeri;
 
             BagisciBilgileriTable.Controls.Add(headerRow);
             BagisciBilgileriTable.Controls.Add(row1);
@@ -201,7 +201,7 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
                 string definBilgisi = string.IsNullOrEmpty(bagisci.DefinIli.Trim()+bagisci.DefinIlcesi.Trim()+bagisci.DefinYeri.Trim() + bagisci.DefinAciklama.Trim()) ? 
                     string.Empty :
                     "<br>" + "Defin Bilgisi: " + bagisci.Ili + " - " + bagisci.Ilcesi + " " + bagisci.DefinYeri + " " + bagisci.Aciklama;
-                retval = "Sag mi : Vefat " + vefatTar + definBilgisi;
+                retval = "Sağ mı : Vefat " + vefatTar + definBilgisi;
             }
             return retval;
         }
@@ -214,7 +214,7 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
             headerRow.CssClass = "table-dark";
             TableHeaderCell TabloBaslikCell = new TableHeaderCell();
             TabloBaslikCell.ColumnSpan = 4;
-            TabloBaslikCell.Text = "Bagislanan Tasinmazlar";
+            TabloBaslikCell.Text = "Bağışlanan Taşınmazlar";
             headerRow.Controls.Add(TabloBaslikCell);
             TableHeaderRow headerRow1 = new TableHeaderRow();
 
@@ -222,19 +222,19 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
             //siranoCell.Text = "Sirano";
 
             TableHeaderCell cinsiCell = new TableHeaderCell();
-            cinsiCell.Text = "Cinsi / Kullanim Sekli";
+            cinsiCell.Text = "Cinsi / Kullanım Şekli";
             
             TableHeaderCell iliCell = new TableHeaderCell();
-            iliCell.Text = "Il-Il�e";
+            iliCell.Text = "İl-İlçe";
 
             TableHeaderCell adresCell = new TableHeaderCell();
             adresCell.Text = "Adres";
 
             TableHeaderCell mulkiyetCell = new TableHeaderCell();
-            mulkiyetCell.Text = "M�lkiyet Sekli";
+            mulkiyetCell.Text = "Mülkiyet Şekli";
 
             TableHeaderCell kullanimCell = new TableHeaderCell();
-            kullanimCell.Text = "M�lk.Sekli/Kira Durumu";
+            kullanimCell.Text = "Mülkiyet Şekli/Kira Durumu";
 
             //headerRow1.Controls.Add(siranoCell);
             headerRow1.Controls.Add(cinsiCell);
@@ -250,7 +250,7 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
         private IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
         private void TasinmazListesiniDoldur(TasinmazBagisci bagisci)
         {
-            TitleLbl.Text = bagisci.Adi + " " + bagisci.Soyadi + " Bagis�i Bilgileri";
+            TitleLbl.Text = bagisci.Adi + " " + bagisci.Soyadi + " Bağışçı Bilgileri";
 
             Bagis bagis = new Bagis();
             DataTable dataTable = bagis.SelectTasinmazByBagisciIdReturnDT(bagisci.Id);
@@ -303,7 +303,7 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
                 footerRow.CssClass = "table-dark";
                 TableCell tahminiRayicCell = new TableCell();
                 tahminiRayicCell.ColumnSpan = 4;
-                tahminiRayicCell.Text = "Tahmini Rayi� Bedelleri Toplami : " + bagis.SelectSumTahminiRayicByBagisciId(bagisci.Id).ReturnZeroIfNull().ConvertToDecimal().ToString("N", culturInfo);
+                tahminiRayicCell.Text = "Tahmini Rayiç Bedelleri Toplamı : " + bagis.SelectSumTahminiRayicByBagisciId(bagisci.Id).ReturnZeroIfNull().ConvertToDecimal().ToString("N", culturInfo);
                 footerRow.Controls.Add(tahminiRayicCell);
                 TasinmazTable.Controls.Add(footerRow);
             }
@@ -318,13 +318,13 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
             headerRow.CssClass = "table-dark";
             TableHeaderCell TabloBaslikCell = new TableHeaderCell();
             TabloBaslikCell.ColumnSpan = 4;
-            TabloBaslikCell.Text = "Bagis�i Talepleri";
+            TabloBaslikCell.Text = "Bağışçı Talepleri";
             headerRow.Controls.Add(TabloBaslikCell);
             TableHeaderRow headerRow1 = new TableHeaderRow();
             if (bagisciListesi.Count < 1)
             {
                 TableHeaderCell cell1 = new TableHeaderCell();
-                cell1.Text = "Bagis�i talebi bulunmamaktadir.";
+                cell1.Text = "Bağışçı talebi bulunmamaktadır.";
                 headerRow1.Controls.Add(cell1);
             }
             else
@@ -332,11 +332,11 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
                 TableHeaderCell cell1 = new TableHeaderCell();
                 cell1.Text = "Talep";
                 TableHeaderCell cell2 = new TableHeaderCell();
-                cell2.Text = "Irtibat";
+                cell2.Text = "İrtibat";
                 TableHeaderCell cell3 = new TableHeaderCell();
-                cell3.Text = "Uyg.Zamani";
+                cell3.Text = "Uyg.Zamanı";
                 TableHeaderCell cell4 = new TableHeaderCell();
-                cell4.Text = "A�iklama";
+                cell4.Text = "Açıklama";
                 headerRow1.Controls.Add(cell1);
                 headerRow1.Controls.Add(cell2);
                 headerRow1.Controls.Add(cell3);
@@ -374,13 +374,13 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
             headerRow.CssClass = "table-dark";
             TableHeaderCell TabloBaslikCell = new TableHeaderCell();
             TabloBaslikCell.ColumnSpan = 4;
-            TabloBaslikCell.Text = "Bagis�i Yakinlari";
+            TabloBaslikCell.Text = "Bağışçı Yakınları";
             headerRow.Controls.Add(TabloBaslikCell);
             TableHeaderRow headerRow1 = new TableHeaderRow();
             if (bagisciListesi.Count < 1)
             {
                 TableHeaderCell cell1 = new TableHeaderCell();
-                cell1.Text = "Bagis�i yakinlarina ait bilgi bulunmamaktadir.";
+                cell1.Text = "Bağışçı yakınlarına ait bilgi bulunmamaktadır.";
                 headerRow1.Controls.Add(cell1);
             }
             else
@@ -388,7 +388,7 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
                 TableHeaderCell cell1 = new TableHeaderCell();
                 cell1.Text = "Ad-Soyad";
                 TableHeaderCell cell2 = new TableHeaderCell();
-                cell2.Text = "Yakinlik Derecesi";
+                cell2.Text = "Yakınlık Derecesi";
                 TableHeaderCell cell3 = new TableHeaderCell();
                 cell3.Text = "Telefon";
                 headerRow1.Controls.Add(cell1);
@@ -425,25 +425,25 @@ namespace TBYS_WebParts.TasinmazBagisciKartiWP
             headerRow.CssClass = "table-dark";
             TableHeaderCell TabloBaslikCell = new TableHeaderCell();
             TabloBaslikCell.ColumnSpan = 4;
-            TabloBaslikCell.Text = "Bagis�iya Verilen Taahh�tler";
+            TabloBaslikCell.Text = "Bağışçıya Verilen Taahhütler";
             headerRow.Controls.Add(TabloBaslikCell);
             TableHeaderRow headerRow1 = new TableHeaderRow();
             if (taahhutListesi.Count < 1)
             {
                 TableHeaderCell cell1 = new TableHeaderCell();
-                cell1.Text = "Taahh�t bulunmamaktadir.";
+                cell1.Text = "Taahhüt bulunmamaktadır.";
                 headerRow1.Controls.Add(cell1);
             }
             else
             {
                 TableHeaderCell cell1 = new TableHeaderCell();
-                cell1.Text = "Adi Soyadi";
+                cell1.Text = "Adı Soyadı";
                 TableHeaderCell cell2 = new TableHeaderCell();
-                cell2.Text = "Il-Il�e";
+                cell2.Text = "İl-İlçe";
                 TableHeaderCell cell3 = new TableHeaderCell();
                 cell3.Text = "Adres";
                 TableHeaderCell cell4 = new TableHeaderCell();
-                cell4.Text = "A�iklama";
+                cell4.Text = "Açıklama";
                 headerRow1.Controls.Add(cell1);
                 headerRow1.Controls.Add(cell2);
                 headerRow1.Controls.Add(cell3);

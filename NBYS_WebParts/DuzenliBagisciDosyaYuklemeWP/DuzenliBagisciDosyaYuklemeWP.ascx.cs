@@ -121,7 +121,7 @@ namespace NBYS_WebParts.DuzenliBagisciDosyaYuklemeWP
                 {
                     DosyaFU.Enabled = false;
                     KaydetBtn.Enabled = false;
-                    MessageHelper.PublishMessage("Dosya basariyla yüklendi.", ProjeConstants.MESAJ_BASARILI,2000);
+                    MessageHelper.PublishMessage("Dosya baþarýyla yüklendi.", ProjeConstants.MESAJ_BASARILI,2000);
                 }
 
             }
@@ -178,10 +178,10 @@ namespace NBYS_WebParts.DuzenliBagisciDosyaYuklemeWP
                                         {
 
 
-                                            //Bagisçi bulunamadi
-                                            //Bu durumda yeni bagisçi olusturmak dogru degil, çünkü 12 aydir bagis yaptigina göre mutlaka bir kaydi vardir.
+                                            //Baðýþçý bulunamadý
+                                            //Bu durumda yeni baðýþçý oluþturmak doðru deðil, çünkü 12 aydýr baðýþ yaptýðýna göre mutlaka bir kaydý vardýr.
                                             bagisciId = -1;
-                                            eslesmeBilgisi = " # Bagisçi Bulunamadi ";
+                                            eslesmeBilgisi = " # Baðýþçý Bulunamadý ";
                                         }
                                         else
                                         {
@@ -215,7 +215,7 @@ namespace NBYS_WebParts.DuzenliBagisciDosyaYuklemeWP
                             bool saved = false;
                             bool updated = false;   
 
-                            //Aktif düzenli bagisçi kaydi yoksa
+                            //Aktif düzenli baðýþçý kaydý yoksa
                             if (duzenliNakitBagisci == null)
                             {
                                 duzenliNakitBagisci = new DuzenliNakitBagisci();
@@ -234,8 +234,8 @@ namespace NBYS_WebParts.DuzenliBagisciDosyaYuklemeWP
                                 int id = duzenliNakitBagisci.Save();
                                 if (id < 1)
                                 {
-                                    aciklamaStr= string.IsNullOrEmpty(aciklama) ? " Yeni Düzenli Bagisçi yaratilamadi -> " + adi : aciklama;
-                                    Exception exception = new Exception(string.Format("HATA SATIRI {0}:{1} -> Düzenli bagisçi kaydi olusturulamadi.", ProjeConstants.PAGE_DUZENLIBAGISCI_YUKLEME, aciklamaStr));
+                                    aciklamaStr= string.IsNullOrEmpty(aciklama) ? " Yeni Düzenli Baðýþçý yaratýlamadý -> " + adi : aciklama;
+                                    Exception exception = new Exception(string.Format("HATA SATIRI {0}:{1} -> Düzenli baðýþçý kaydý oluþturulamadý.", ProjeConstants.PAGE_DUZENLIBAGISCI_YUKLEME, aciklamaStr));
                                     exceptionHelper.Exceptions.Add(exception);
                                 }
                             }

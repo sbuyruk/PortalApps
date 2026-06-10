@@ -177,9 +177,9 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
         {
             DateTime bugun = DateTime.Today;
 
-            ImzalayanTxt.Text = @"Bilal TOPÇU";
+            ImzalayanTxt.Text = @"Bilal TOPÃ‡U";
             ImzalayanUnvanTxt.Text = string.Empty;
-            ImzalayanMakamTxt.Text = @"Genel Müdür";
+            ImzalayanMakamTxt.Text = @"Genel MÃ¼dÃ¼r";
             EvrakTarihiTxt.Text = bugun.ToString("dd") + " " + bugun.ToString("MMMM") + " " + bugun.Year;
         }
         private void FillDropDownList()
@@ -192,17 +192,17 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
         {
 
             AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Ocak", "1"));
-            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Subat", "2"));
+            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Åžubat", "2"));
             AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Mart", "3"));
             AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Nisan", "4"));
-            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Mayis", "5"));
+            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("MayÄ±s", "5"));
             AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Haziran", "6"));
             AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Temmuz", "7"));
-            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Agustos", "8"));
-            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Eylül", "9"));
+            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("AÄŸustos", "8"));
+            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("EylÃ¼l", "9"));
             AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Ekim", "10"));
-            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Kasim", "11"));
-            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("Aralik", "12"));
+            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("KasÄ±m", "11"));
+            AyDDL.Items.Add(new System.Web.UI.WebControls.ListItem("AralÄ±k", "12"));
 
         }
         private void YilDDLDoldur()
@@ -296,7 +296,7 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = GetData(); //veri çekilip json a çeviriliyor
+            var jsonData = GetData(); //veri Ã§ekilip json a Ã§eviriliyor
 
             bool jasonDataBosMu = string.IsNullOrWhiteSpace(jsonData.Replace("[", "").Replace("]", "").Replace("{", "").Replace("}", ""));
             if (!jasonDataBosMu)
@@ -307,7 +307,7 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
             }
             else
             {
-                TableDataLbl.Text = "Tesekkür Belgesi bulunmamaktadir.";
+                TableDataLbl.Text = "TesekkÃ¼r Belgesi bulunmamaktadir.";
                 DosyaOlusturBtn.Visible = false;
             }
         }
@@ -320,7 +320,7 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
             DateTime bittar = GetBitTar();
 
             var json = armagan.SelectByDurumTarih(ProjeConstants.DURUM_KONTROLEDILDI, bastar, bittar, ProjeConstants.ARMAGAN_TESEKKURID.ToString(), ref rowCount, BolgeDDL.SelectedItem.Value.ConvertToInt(), ProjeConstants.HEPSI_INT);
-            TableDataLbl.Text = rowCount + " adet Tesekkür Belgesi mevcut";
+            TableDataLbl.Text = rowCount + " adet TesekkÃ¼r Belgesi mevcut";
             if (rowCount > 0)
             {
                 DosyaOlusturBtn.Visible = true;
@@ -505,11 +505,11 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
                 bool isYaziOlusturuldu = TesekkurBelgesiDosyasiOlustur(yaziDosyaAdi);
                 if (isYaziOlusturuldu)
                 {
-                    MessageHelper.PublishMessage("Tesekkür belgeleri hazirlandi, Dosya ismine basarak yaziyi indirebilirsiniz.", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("TesekkÃ¼r belgeleri hazirlandi, Dosya ismine basarak yaziyi indirebilirsiniz.", ProjeConstants.MESAJ_BASARILI, 2000);
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Tesekkür belgeleri olusturulamadi.", ProjeConstants.MESAJ_HATA, 3000);
+                    MessageHelper.PublishMessage("TesekkÃ¼r belgeleri olusturulamadi.", ProjeConstants.MESAJ_HATA, 3000);
                 }
             }
             catch (Exception ex)
@@ -683,7 +683,7 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
                     string nakitBagisciTC = row["NakitBagisciTC"].ToString();
                     DateTime tarih = row["Tarih"].ConvertToDatetime();
                     string cokluBagis = row["CokluBagis"].ToString();
-                    string tarihstr = tarih.ToString("dd.MM.yyyy") + (cokluBagis.Equals("Çoklu Bagis") ? " tarihine kadar" : " tarihinde");
+                    string tarihstr = tarih.ToString("dd.MM.yyyy") + (cokluBagis.Equals("Ã‡oklu Bagis") ? " tarihine kadar" : " tarihinde");
 
                     decimal tutar = row["Tutar"].ConvertToDecimal();
                     string tutarStr = bagisMiktariYazmasin ? string.Empty : tutar.ToString("N", culturInfo) + " TL'lik";
@@ -798,7 +798,7 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
                 if (uzunAdresliler.Count > 0)
                 {
                     string message = string.Join(Environment.NewLine, uzunAdresliler);
-                    MessageHelper.PublishMessage(message + " adresi çok uzun oldugundan kesilerek kisaltildi. Lütfen etiketini kontrol ediniz. ", ProjeConstants.MESAJ_BILGI);
+                    MessageHelper.PublishMessage(message + " adresi Ã§ok uzun oldugundan kesilerek kisaltildi. LÃ¼tfen etiketini kontrol ediniz. ", ProjeConstants.MESAJ_BILGI);
                 }
             }
 

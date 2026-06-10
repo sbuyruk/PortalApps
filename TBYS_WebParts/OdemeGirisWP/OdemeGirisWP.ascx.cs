@@ -250,7 +250,7 @@ namespace TBYS_WebParts.OdemeGirisWP
                 SecilenYilQS=BastarQS.ConvertToDatetime().Year.ToString();
                 if (OdemeIdQS.ConvertToInt() > 0)
                 {
-                    //odeme düzenleme
+                    //odeme dÃ¼zenleme
                     OdemeDuzenleAc();
                 }
                 else
@@ -263,7 +263,7 @@ namespace TBYS_WebParts.OdemeGirisWP
 
         private void OdemeGirisiAc()
         {
-            TitleLbl.Text = "Yeni Ödeme Girisi";
+            TitleLbl.Text = "Yeni Ã–deme GiriÅŸi";
             TitleLbl.CssClass = "col-form-label text-success fw-bold mb-1";
             KaydetBtn.Visible = false;
             GuncelleBtn.Visible = false;
@@ -306,7 +306,7 @@ namespace TBYS_WebParts.OdemeGirisWP
                     KaydetBtn.Visible = false;
                     GuncelleBtn.Visible = false;
                     SilBtn.Visible = false;
-                    MessageHelper.PublishMessage("Ödeme yapmak için bir kiraci seçmelisiniz.", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Ã–deme yapmak iÃ§in bir kiracÄ± seÃ§melisiniz.", ProjeConstants.MESAJ_HATA);
                 }
             }
             catch (Exception exception)
@@ -319,7 +319,7 @@ namespace TBYS_WebParts.OdemeGirisWP
 
         private void OdemeDuzenleAc()
         {
-            TitleLbl.Text = "Ödeme Düzenleme";
+            TitleLbl.Text = "Ã–deme DÃ¼zenleme";
             TitleLbl.CssClass = "col-form-label text-primary fw-bold mb-1";
             KaydetBtn.Visible = false;
             GuncelleBtn.Visible = false;
@@ -351,7 +351,7 @@ namespace TBYS_WebParts.OdemeGirisWP
                         KaydetBtn.Visible = false;
                         GuncelleBtn.Visible = false;
                         SilBtn.Visible = false;
-                        MessageHelper.PublishMessage("Ödeme yapmak için bir kiraci seçmelisiniz.", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Ã–deme yapmak iÃ§in bir kiracÄ± seÃ§melisiniz.", ProjeConstants.MESAJ_HATA);
                     }
                 }
             }
@@ -423,7 +423,7 @@ namespace TBYS_WebParts.OdemeGirisWP
             }
             else
             {
-                throw new Exception("Geçerli bir sozlesme bulunamadi");
+                throw new Exception("GeÃ§erli bir sÃ¶zleÅŸme bulunamadÄ±");
                 
             }
         }
@@ -454,15 +454,15 @@ namespace TBYS_WebParts.OdemeGirisWP
                 string odenenTutarStr = OdemeTutariTxt.Text.ConvertToDecimal().ToString("N", cultureInfo);
 
                 kaydetGuncelleSilHdn.Value = ProjeConstants.KAYDET;
-                MessageLbl.Text = @"Ödeme tarihi=" + odemeTarihiStr + ", Ödeme Tutari=" + odenenTutarStr + " seklinde kaydedilecek ve " +
+                MessageLbl.Text = @"Ã–deme tarihi=" + odemeTarihiStr + ", Ã–deme TutarÄ±=" + odenenTutarStr + " ÅŸeklinde kaydedilecek ve " +
            @"
-                        " + sozlesmeStr + " tarihli Kira Sözlesmesinin " + odemePlaniStr + " Son Ödeme Tarihli Ödeme Planina islenecektir.";
+                        " + sozlesmeStr + " tarihli Kira SÃ¶zleÅŸmesinin " + odemePlaniStr + " Son Ã–deme Tarihli Ã–deme PlanÄ±na iÅŸlenecektir.";
                 ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "OpenModalOnay();", true);
 
             }
             else
             {
-                MessageHelper.PublishMessage("Sözlesme Bulunamadi", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("SÃ¶zleÅŸme BulunamadÄ±", ProjeConstants.MESAJ_HATA);
             }
         }
         protected void GuncelleBtn_Click(object sender, EventArgs e)
@@ -479,15 +479,15 @@ namespace TBYS_WebParts.OdemeGirisWP
                 string odenenTutarStr = OdemeTutariTxt.Text.ConvertToDecimal().ToString("N", cultureInfo);
 
                 kaydetGuncelleSilHdn.Value = ProjeConstants.GUNCELLE;
-                MessageLbl.Text = @"Ödeme tarihi=" + odemeTarihiStr + ", Ödeme Tutari=" + odenenTutarStr + " seklinde güncellenecek ve " +
+                MessageLbl.Text = @"Ã–deme tarihi=" + odemeTarihiStr + ", Ã–deme TutarÄ±=" + odenenTutarStr + " ÅŸeklinde gÃ¼ncellenecek ve " +
            @"
-                        " + sozlesmeStr + " tarihli Kira Sözlesmesinin " + odemePlaniStr + " Son Ödeme Tarihli Ödeme Planina kaydedilecektir";
+                        " + sozlesmeStr + " tarihli Kira SÃ¶zleÅŸmesinin " + odemePlaniStr + " Son Ã–deme Tarihli Ã–deme PlanÄ±na kaydedilecektir";
                 ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "OpenModalOnay();", true);
 
             }
             else
             {
-                MessageHelper.PublishMessage("Sözlesme Bulunamadi", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("SÃ¶zleÅŸme BulunamadÄ±", ProjeConstants.MESAJ_HATA);
             }
         }
         protected void SilBtn_Click(object sender, EventArgs e)
@@ -497,22 +497,22 @@ namespace TBYS_WebParts.OdemeGirisWP
             kiraSozlesme = kiraSozlesme.Select(sozlesmeId);
             if (kiraSozlesme != null)
             {
-                ModalLbl.Text = "Ödeme Silinecek";
+                ModalLbl.Text = "Ã–deme Silinecek";
                 ModalLbl.CssClass = "col-form-label text-primary fw-bold";
                 string sozlesmeStr = SozlesmeDDL.SelectedItem.Text;
                 string odemePlaniStr = OdemePlaniDDL.SelectedItem.Text;
                 string odemeTarihiStr = OdemeTarihiTxt.Text.ConvertToDatetime().ConvertToDatetimeEmptyIfNull();
                 string odemeTutariStr = OdemeTutariTxt.Text.ConvertToDecimal().ToString("N", cultureInfo);
                 kaydetGuncelleSilHdn.Value = ProjeConstants.SIL;
-                MessageLbl.Text = @"Ödeme tarihi=" + odemeTarihiStr + ", Ödeme Tutari=" + odemeTutariStr + " seklinde silinecek ve " +
+                MessageLbl.Text = @"Ã–deme tarihi=" + odemeTarihiStr + ", Ã–deme TutarÄ±=" + odemeTutariStr + " ÅŸeklinde silinecek ve " +
            @"
-                        " + sozlesmeStr + " tarihli Kira Sözlesmesinin " + odemePlaniStr + " Son Ödeme Tarihli Ödeme Planina islenecektir.";
+                        " + sozlesmeStr + " tarihli Kira SÃ¶zleÅŸmesinin " + odemePlaniStr + " Son Ã–deme Tarihli Ã–deme PlanÄ±na iÅŸlenecektir.";
                 ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "OpenModalOnay();", true);
 
             }
             else
             {
-                MessageHelper.PublishMessage("Sözlesme Bulunamadi", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("SÃ¶zleÅŸme BulunamadÄ±", ProjeConstants.MESAJ_HATA);
             }
         }
         protected void OnaylaBtn_Click(object sender, EventArgs e)
@@ -542,7 +542,7 @@ namespace TBYS_WebParts.OdemeGirisWP
                 }
                 else if (kaydetGuncelleSilHdn.Value.Equals(ProjeConstants.GUNCELLE))
                 {
-                    ModalLbl.Text = "Ödeme Güncellenecek";
+                    ModalLbl.Text = "Ã–deme GÃ¼ncellenecek";
                     ModalLbl.CssClass= "col-form-label text-primary fw-bold";
                     Odeme oncekiOdeme = new Odeme();
                     oncekiOdeme = oncekiOdeme.Select(OdemeIdQS.ConvertToInt());
@@ -579,7 +579,7 @@ namespace TBYS_WebParts.OdemeGirisWP
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Sözlesme Bulunamadi", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("SÃ¶zleÅŸme BulunamadÄ±", ProjeConstants.MESAJ_HATA);
                     }
                 }
 
@@ -587,7 +587,7 @@ namespace TBYS_WebParts.OdemeGirisWP
             }
             else
             {
-                MessageHelper.PublishMessage("Sözlesme Bulunamadi", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("SÃ¶zleÅŸme BulunamadÄ±", ProjeConstants.MESAJ_HATA);
             }
 
             ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler, typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), "CloseModalOnay();", true);
@@ -599,7 +599,7 @@ namespace TBYS_WebParts.OdemeGirisWP
         }
         private void TabloModalOlustur()
         {
-            var jsonData = GetKiraciData(); //veri çekilip json a çeviriliyor
+            var jsonData = GetKiraciData(); //veri Ã§ekilip json a Ã§eviriliyor
             var jsString = CreateModalDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -623,7 +623,7 @@ namespace TBYS_WebParts.OdemeGirisWP
                 },
             columnDefs:[
                 {targets:5, render:function(data, type, row, meta){
-                    var link='<a CausesValidation=\'false\' href=# onclick=CallButtonClick('+row.KiraciId + '); class=\'btn btn-outline-primary \'>Seç</a>';
+                    var link='<a CausesValidation=\'false\' href=# onclick=CallButtonClick('+row.KiraciId + '); class=\'btn btn-outline-primary \'>SeÃ§</a>';
     
                     return link;
                 }}],   
@@ -702,7 +702,7 @@ namespace TBYS_WebParts.OdemeGirisWP
                 kiraSozlesme = kiraSozlesme.SelectBitenSozlesmeByKiraciId(KiraciIdQS.ConvertToInt());
 
                 if (kiraSozlesme == null)
-                    MessageHelper.PublishMessage("Kiraciya ait bir Kira Sözlesmesi bulunamadi.", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("KiracÄ±ya ait bir Kira SÃ¶zleÅŸmesi bulunamadÄ±.", ProjeConstants.MESAJ_HATA);
             }
         }
         protected void OdemePlaniBtn_Click(object sender, EventArgs e)
@@ -717,12 +717,12 @@ namespace TBYS_WebParts.OdemeGirisWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("OdemePlani Bulunamadi", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Ã–deme PlanÄ± BulunamadÄ±", ProjeConstants.MESAJ_HATA);
                 }
             }
             else
             {
-                MessageHelper.PublishMessage("Kira Sözlesmesi Bulunamadi", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Kira SÃ¶zleÅŸmesi BulunamadÄ±", ProjeConstants.MESAJ_HATA);
             }
 
         }

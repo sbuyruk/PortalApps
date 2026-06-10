@@ -161,7 +161,7 @@ namespace TBYS_WebParts.TasinmazKartiWP
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Tasinmaz Bulunamadi", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Taşınmaz Bulunamadı", ProjeConstants.MESAJ_HATA);
                     }
 
 
@@ -207,7 +207,7 @@ namespace TBYS_WebParts.TasinmazKartiWP
                     bool emlakBeyaniDosyaVarMi = UtilityHelper.DosyaVarMi(UtilityHelper.TbysBelgelerURLGetir(), ProjeConstants.TBYSBELGELERI_LIB, emlakBeyaniDosyaAdi);
                     if (emlakBeyaniDosyaVarMi)
                     {
-                        string belgePdfLink = @"'<a class=\'btn btn-secondary\' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + emlakBeyaniDosyaUrl + @"> Belge G�r�nt�le </a>'";
+                        string belgePdfLink = @"'<a class=\'btn btn-secondary\' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + emlakBeyaniDosyaUrl + @"> Belge Görüntüle </a>'";
 
                         EmlakBeyaniDosyaLnk.Target = "_blank";
                         EmlakBeyaniDosyaLnk.HRef = emlakBeyaniDosyaUrl;
@@ -217,14 +217,14 @@ namespace TBYS_WebParts.TasinmazKartiWP
                     else
                     {
                         EmlakBeyaniDosyaLnk.Visible = false;
-                        MessageHelper.PublishMessage("L�tfen Emlak Beyan Formunu pdf olarak y�kleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                        MessageHelper.PublishMessage("Lütfen Emlak Beyan Formunu pdf olarak yükleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
                     }
                     string yapiKayitDosyaAdi = ProjeConstants.DOSYA_YAPIKAYIT_BELGESI + tasinmazId + ".pdf";
                     string yapiKayitDosyaUrl = UtilityHelper.TbysBelgelerURLGetir() + "/" + yapiKayitDosyaAdi;
                     bool yapiKayitdosyaVarMi = UtilityHelper.DosyaVarMi(UtilityHelper.TbysBelgelerURLGetir(), ProjeConstants.TBYSBELGELERI_LIB, yapiKayitDosyaAdi);
                     if (yapiKayitdosyaVarMi)
                     {
-                        string belgePdfLink = @"'<a class=\'btn btn-secondary\' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + yapiKayitDosyaUrl + @"> Belge G�r�nt�le </a>'";
+                        string belgePdfLink = @"'<a class=\'btn btn-secondary\' data-fancybox data-type=pdf data-width=960 data-height=720 href=" + yapiKayitDosyaUrl + @"> Belge Görüntüle </a>'";
 
                         YapiKayitDosyaLnk.Target = "_blank";
                         YapiKayitDosyaLnk.HRef = yapiKayitDosyaUrl;
@@ -234,18 +234,18 @@ namespace TBYS_WebParts.TasinmazKartiWP
                     else
                     {
                         YapiKayitDosyaLnk.Visible = false;
-                        MessageHelper.PublishMessage("L�tfen Yapi Kayit Belgesini pdf olarak y�kleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                        MessageHelper.PublishMessage("Lütfen Yapı Kayıt Belgesini pdf olarak yükleyiniz.", ProjeConstants.MESAJ_BILGI, 2000);
                     }
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Bagis�i bulunamadi.", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Bağışçı bulunamadı.", ProjeConstants.MESAJ_HATA);
                 }
 
             }
             catch (Exception exception)
             {
-                Exception ex = new Exception("PDF Y�klenemedi");
+                Exception ex = new Exception("PDF Yüklenemedi");
                 ExceptionHelper exhelper = new ExceptionHelper(exception);
                 exhelper.Exceptions.Add(ex);
                 exhelper.PublishException();
@@ -284,7 +284,7 @@ namespace TBYS_WebParts.TasinmazKartiWP
             headerRow.BackColor = System.Drawing.Color.LightGray; ;
             TableHeaderCell TabloBaslikCell = new TableHeaderCell();
             TabloBaslikCell.ColumnSpan = 4;
-            TabloBaslikCell.Text = "Tasinmaz Bilgileri";
+            TabloBaslikCell.Text = "Taşınmaz Bilgileri";
             headerRow.Controls.Add(TabloBaslikCell);
 
             TableHeaderRow headerRow1 = new TableHeaderRow();
@@ -343,26 +343,26 @@ namespace TBYS_WebParts.TasinmazKartiWP
             row5.Controls.Add(r5c3);
             row5.Controls.Add(r5c4);
 
-            r1c1.Text = "B�lge : " + UtilityHelper.BolgeGetir(tasinmaz.IlId);
-            r2c1.Text = "M�lkiyet Sekli : " + tasinmaz.MulkiyetSekli;
+            r1c1.Text = "Bölge : " + UtilityHelper.BolgeGetir(tasinmaz.IlId);
+            r2c1.Text = "Mülkiyet Şekli : " + tasinmaz.MulkiyetSekli;
             r3c1.Text = "" + tasinmaz.KiraDurumu;
             r4c1.Text = "Sigorta : " + tasinmaz.SigortaDurumu;
-            r5c1.Text = "Kat M�lkiyeti : " + (tasinmaz.KatMulkiyeti?"Var":"Yok");
+            r5c1.Text = "Kat Mülkiyeti : " + (tasinmaz.KatMulkiyeti?"Var":"Yok");
 
             r1c2.Text = "Env.Gir.Tar. : " + tasinmaz.EnvantereGirisTarihi.ConvertToDatetimeEmptyIfNull();
-            r2c2.Text = "Bagis Yili : " + tasinmaz.BagisYili;
+            r2c2.Text = "Bağış Yılı : " + tasinmaz.BagisYili;
             r3c2.Text = "Eml.Sic.No : " + tasinmaz.EmlakSicilNo;
             r4c2.Text = "Muh.Kay.Deg. : " + tasinmaz.MuhasebeyeKayitliDeger.ReturnZeroIfNull().ConvertToDecimal().ToString("N", culturInfo);
-            r5c2.Text = "T.Rayi� Deg. : " + tasinmaz.TahminiRayicDegeri.ReturnZeroIfNull().ConvertToDecimal().ToString("N", culturInfo);
+            r5c2.Text = "T.Rayiç Deg. : " + tasinmaz.TahminiRayicDegeri.ReturnZeroIfNull().ConvertToDecimal().ToString("N", culturInfo);
 
             r1c3.Text = "Tapu Tarihi : " + tasinmaz.TapuTarihi.ConvertToDatetimeEmptyIfNull();
             r2c3.Text = "Ada No : " + tasinmaz.AdaNo;
             r3c3.Text = "Parsel No : " + tasinmaz.ParselNo;
             r4c3.Text = "Pafta No : " + tasinmaz.PaftaNo;
-            r5c3.Text = "Y�z�l��m� : " + tasinmaz.Yuzolcumu;
+            r5c3.Text = "Yüzölçümü : " + tasinmaz.Yuzolcumu;
 
-            r1c4.Text = "Arsa Payi : " + tasinmaz.ArsaPayi;
-            r2c4.Text = "Vakif Hissesi : ".PadRight(15, '-') + tasinmaz.VakifHissesi;
+            r1c4.Text = "Arsa Payı : " + tasinmaz.ArsaPayi;
+            r2c4.Text = "Vakıf Hissesi : ".PadRight(15, '-') + tasinmaz.VakifHissesi;
             r3c4.Text = "Yevmiye No : " + tasinmaz.YevmiyeNo;
             r4c4.Text = "Cilt No : " + tasinmaz.CiltNo;
             r5c4.Text = "Sahife No : " + tasinmaz.SahifeNo;
@@ -429,7 +429,7 @@ namespace TBYS_WebParts.TasinmazKartiWP
             headerRow.BackColor = System.Drawing.Color.LightGray; ;
             TableHeaderCell TabloBaslikCell = new TableHeaderCell();
             TabloBaslikCell.ColumnSpan = 4;
-            TabloBaslikCell.Text = "Bagis�i Bilgileri";
+            TabloBaslikCell.Text = "Bağışçı Bilgileri";
             headerRow.Controls.Add(TabloBaslikCell);
 
             TableRow row1 = new TableRow();
@@ -496,9 +496,9 @@ namespace TBYS_WebParts.TasinmazKartiWP
             r2c2.Text = "Telefon2: " + bagisci.Telefon2;
             r3c2.Text = "TC Kimlik No : " + bagisci.TCKimlikNo;
 
-            r1c3.Text = "Sag mi : " + bagisci.Sag_vefat;
-            r2c3.Text = "Dogum Tarihi : " + bagisci.DogumTarihi.ConvertToDatetimeEmptyIfNull();
-            r3c3.Text = "Dogum Yeri : " + bagisci.DogumYeri;
+            r1c3.Text = "Sağ mı : " + bagisci.Sag_vefat;
+            r2c3.Text = "Doğum Tarihi : " + bagisci.DogumTarihi.ConvertToDatetimeEmptyIfNull();
+            r3c3.Text = "Doğum Yeri : " + bagisci.DogumYeri;
 
             BorderEkle(row1);
             BorderEkle(row2);
@@ -534,17 +534,17 @@ namespace TBYS_WebParts.TasinmazKartiWP
             if (kiraSozlesmeListesi == null)
             {
                 TableHeaderCell cell1 = new TableHeaderCell();
-                cell1.Text = "Kiraci bulunmamaktadir.";
+                cell1.Text = "Kiracı bulunmamaktadır.";
                 headerRow1.Controls.Add(cell1);
             }
             else
             {
                 TableHeaderCell cell1 = new TableHeaderCell();
-                cell1.Text = "Adi Soyadi";
+                cell1.Text = "Adı Soyadı";
                 TableHeaderCell cell2 = new TableHeaderCell();
                 cell2.Text = "Kira Bedeli";
                 TableHeaderCell cell3 = new TableHeaderCell();
-                cell3.Text = "S�zlesme Tarihi";
+                cell3.Text = "Sözleşme Tarihi";
                 TableHeaderCell cell4 = new TableHeaderCell();
                 cell4.Text = "Adresi";
                 headerRow1.Controls.Add(cell1);
@@ -583,7 +583,7 @@ namespace TBYS_WebParts.TasinmazKartiWP
             headerRow.BackColor = System.Drawing.Color.LightGray; ;
             TableHeaderCell TabloBaslikCell = new TableHeaderCell();
             TabloBaslikCell.ColumnSpan = 4;
-            TabloBaslikCell.Text = "Onarim Bilgileri";
+            TabloBaslikCell.Text = "Onarım Bilgileri";
             headerRow.Controls.Add(TabloBaslikCell);
             TableHeaderRow headerRow1 = new TableHeaderRow();
             OnarimTable.Controls.Add(headerRow);
@@ -594,15 +594,15 @@ namespace TBYS_WebParts.TasinmazKartiWP
             if (onarimListesi == null)
             {
                 TableHeaderCell cell1 = new TableHeaderCell();
-                cell1.Text = "Onarim bulunmamaktadir.";
+                cell1.Text = "Onarım bulunmamaktadır.";
                 headerRow1.Controls.Add(cell1);
             }
             else
             {
                 TableHeaderCell cell1 = new TableHeaderCell();
-                cell1.Text = "Yapilan Is";
+                cell1.Text = "Yapılan İş";
                 TableHeaderCell cell2 = new TableHeaderCell();
-                cell2.Text = "Harcama Usul�";
+                cell2.Text = "Harcama Usulü";
                 TableHeaderCell cell3 = new TableHeaderCell();
                 cell3.Text = "Onay Tarihi";
                 TableHeaderCell cell4 = new TableHeaderCell();
@@ -643,7 +643,7 @@ namespace TBYS_WebParts.TasinmazKartiWP
             headerRow.BackColor = System.Drawing.Color.LightGray; ;
             TableHeaderCell TabloBaslikCell = new TableHeaderCell();
             TabloBaslikCell.ColumnSpan = 4;
-            TabloBaslikCell.Text = "Tasinmaz Resimleri";
+            TabloBaslikCell.Text = "Taşınmaz Resimleri";
             headerRow.Controls.Add(TabloBaslikCell);
 
             TableRow row0 = new TableRow();
@@ -794,7 +794,7 @@ namespace TBYS_WebParts.TasinmazKartiWP
                 ExportToExcel();
             }
             else
-                MessageHelper.PublishMessage("Tasinmaz bulunamadi", ProjeConstants.MESAJ_HATA, 2000);
+                MessageHelper.PublishMessage("Taşınmaz bulunamadı", ProjeConstants.MESAJ_HATA, 2000);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
+<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
 <%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %> 
 <%@ Register Tagprefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %> 
 <%@ Register Tagprefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
@@ -121,7 +121,7 @@
                         <td style="width: 20%">İstanbul Bölge Md. </td>
 
                         <td style="background-color: orange; width: 5%;"></td>
-                        <td style="width: 20%">İzmir Bölge M. </td>
+                        <td style="width: 20%">İzmir Bölge Md. </td>
 
                         <td style="background-color: dodgerblue; width: 5%;"></td>
                         <td style="width: 20%">Mersin Bölge Md. </td>

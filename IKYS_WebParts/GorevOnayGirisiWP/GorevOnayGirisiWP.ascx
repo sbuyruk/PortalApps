@@ -1,4 +1,4 @@
-﻿<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
+<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
 <%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
@@ -380,7 +380,7 @@
 
                     <asp:LinkButton ID="UpdateBtn" CssClass="btn btn-primary col-2 me-5" runat="server" Text="Güncelle" OnClick="UpdateBtn_Click" Visible="false" />
                     <asp:LinkButton ID="DeleteBtn" CssClass="btn btn-danger col-2 me-5" runat="server" Text="Sil" OnClick="DeleteBtn_Click" />
-                    <label class="form-label fw-semibold text-danger" for="YevmiyeTxt">(Yaptığınız değişiklerin geçerli olması için lütfen Kaydet veya Güncelle düğmesine basınız.)</label>
+                    <label class="form-label fw-semibold text-danger" for="YevmiyeTxt">(Yaptığınız değişikliklerin geçerli olması için lütfen Kaydet veya Güncelle düğmesine basınız.)</label>
 
                     <asp:LinkButton ID="RaporAlBtn" CssClass="btn btn-secondary col-2 float-end" runat="server" Text="Rapor Al" OnClick="RaporAlBtn_Click" Visible="false" />
                     <asp:LinkButton CssClass="btn btn-secondary col-2 float-end " ID="GorevOnayListesiBtn" runat="server" Text="Görev Onay Listesi" CausesValidation="false" OnClick="GorevOnayListesiBtn_Click" />

@@ -1,4 +1,4 @@
-﻿<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
+<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
 <%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %> 
 <%@ Register Tagprefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %> 
 <%@ Register Tagprefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
@@ -8,7 +8,7 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="BagisaVesileOlanTesekkurListesiWP.ascx.cs" Inherits="NBYS_WebParts.BagisaVesileOlanTesekkurListesiWP.BagisaVesileOlanTesekkurListesiWP" %>
 
 <script type="text/javascript">
-    //excele export ettikten donup sonra kalmasın diye
+    //excele export ettikten dönüp sonra kalmasın diye
     function setFormSubmitToFalse() {
         setTimeout(function () { _spFormOnSubmitCalled = false; }, 3000);
         return true;

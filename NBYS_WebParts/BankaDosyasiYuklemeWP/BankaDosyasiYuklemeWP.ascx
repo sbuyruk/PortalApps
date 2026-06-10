@@ -1,4 +1,4 @@
-﻿<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
+<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
 <%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
@@ -41,7 +41,7 @@
                             <asp:Label ID="FinansbankOkLbl" runat="server" Text="" Font-Size="X-Large" Font-Bold="True" ForeColor="#33CC33"></asp:Label>
                         </div>
                         <div class="card-body">
-                            <asp:FileUpload ID="FinansbankFU" runat="server" CssClass="form-control" disabled="" />
+                            <asp:FileUpload ID="FinansbankFU" runat="server" CssClass="form-control" />
                         </div>
 
                     </div>
@@ -90,7 +90,7 @@
                 <div class="col">
                     <div class="card  mt-3">
                         <div class="card-header">
-                            <asp:Label ID="VakifbankGunlukLbl" runat="server" Text="Vakıfbank(Günlük)" Font-Size="X-Large" Font-Bold="True" ForeColor="orange"></asp:Label>
+                            <asp:Label ID="VakifbankGunlukLbl" runat="server" Text="Vakıfbank (Günlük)" Font-Size="X-Large" Font-Bold="True" ForeColor="orange"></asp:Label>
                             <asp:Label ID="VakifbankGunlukOkLbl" runat="server" Font-Size="X-Large" Font-Bold="True" ForeColor="#33CC33"></asp:Label>
                         </div>
                         <div class="card-body">
@@ -192,7 +192,7 @@
 
                     <div class="card  mt-3">
                         <div class="card-header">
-                            <asp:Label ID="Vakifbank2Lbl" runat="server" Text="VakıfBank 2" Font-Size="X-Large" Font-Bold="True" ForeColor="orange"></asp:Label>
+                            <asp:Label ID="Vakifbank2Lbl" runat="server" Text="Vakıfbank 2" Font-Size="X-Large" Font-Bold="True" ForeColor="orange"></asp:Label>
                             <asp:Label ID="Vakifbank2OkLbl" runat="server" Text="" Font-Size="X-Large" Font-Bold="True" ForeColor="#33CC33"></asp:Label>
                         </div>
                         <div class="card-body">
@@ -205,10 +205,10 @@
                     <div class="card  mt-3">
                         <div class="card-header">
                             <asp:Label ID="VakifKatilimLbl" runat="server" Text="VAKIF KATILIM" Font-Size="X-Large" Font-Bold="True" ForeColor="Fuchsia"></asp:Label>
-                            <asp:Label ID="VakifKatilimOk" runat="server" Text="" Font-Size="X-Large" Font-Bold="True" ForeColor="#33CC33"></asp:Label>
+                            <asp:Label ID="VakifKatilimOkLbl" runat="server" Text="" Font-Size="X-Large" Font-Bold="True" ForeColor="#33CC33"></asp:Label>
                         </div>
                         <div class="card-body">
-                            <asp:FileUpload ID="VakifKatilimFU" runat="server" CssClass="form-control" ToolTip="Vakıfbank dosya yükleme aktif değil" />
+                            <asp:FileUpload ID="VakifKatilimFU" runat="server" CssClass="form-control" />
                         </div>
                     </div>
                     <div class="card  mt-3">

@@ -1,11 +1,11 @@
-﻿<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
+<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
 <%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="asp" Namespace="System.Web.UI" Assembly="System.Web.Extensions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" %>
 <%@ Import Namespace="Microsoft.SharePoint" %>
 <%@ Register TagPrefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
-<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="TasinmazGirisiWP.ascx.cs" Inherits="TBYS_WebParts.TasinmazGirisiWP.TasinmazGirisiWP" %>
+<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="TasinmazGirisiWP.ascx.cs" Inherits="TBYS_WebParts.TasinmazGirisiWP.TasinmazGirisiWP" %> 
 <script type="text/javascript">
     function OpenModal() {
         var myModalInstance = bootstrap.Modal.getOrCreateInstance(document.getElementById('ModalOnayDiv'));
@@ -21,6 +21,9 @@
             bootstrap.Tab.getOrCreateInstance(tabTrigger).show();
         }
     }
+    // function SetActiveTab(activeTab) {
+    //     $("#" + activeTab).tab("show");
+    // }
     function DuzenleSilModalAc(parametreId, islemTipi) {
         document.getElementById('<%= parametreIdLbl.ClientID%>').value = parametreId;
         document.getElementById('<%= paramIslemTipiLbl.ClientID%>').value = islemTipi;
@@ -37,6 +40,7 @@
     <asp:UpdatePanel ID="TableUpdatePanel" runat="server">
         <ContentTemplate>
             <div class="card shadow">
+                <%--Sayfa başlığı--%>
                 <div class="card-header" id="CardHeader" runat="server">
                     <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
                     <h3 class="mb-2">
@@ -44,6 +48,9 @@
                         <asp:Label CssClass="form-label " ID="AdiLbl" runat="server"></asp:Label>
                         <div class="form-group m-0 float-end me-2">
                             <asp:Label CssClass="form-control fw-semibold" ID="IdLbl" runat="server"></asp:Label>
+                        </div>
+                        <div class="form-group m-0 text-muted">
+                            <asp:Label CssClass="form-control fw-semibold" ID="AdresLbl" runat="server"></asp:Label>
                         </div>
                         <div class="form-group m-0 float-end">
                             <asp:Label CssClass="form-control fw-semibold" ID="SorumluBolgeTxt" runat="server"></asp:Label>
@@ -53,6 +60,7 @@
                         </div>
                     </h3>
                 </div>
+                <%-- Sekmeler --%>
                 <div class="card-body" id="MainCardDiv" runat="server">
 
                     <!-- Nav tabs -->
@@ -307,6 +315,23 @@
                                                         </div>
                                                         <asp:LinkButton ID="BagimsizBolumBtn" CssClass="btn btn-outline-warning" runat="server" Text="Alt Bölümler" Visible="false" OnClick="BagimsizBolumBtn_Click" />
                                                     </div>
+                                                    <asp:Panel ID="BagimsizBolumTableDiv" runat="server" Visible="false">
+                                                        <div class="form-group m-0">
+                                                            <label class="form-label fw-semibold">Alt Bölüm Listesi</label>
+                                                            <asp:GridView ID="BagimsizBolumGridView" runat="server" CssClass="table table-striped table-hover" AutoGenerateColumns="False" EmptyDataText="Alt bölüm kaydı bulunamadı">
+                                                                <Columns>
+                                                                    <asp:BoundField DataField="BolumNo" HeaderText="Bölüm No" />
+                                                                    <asp:BoundField DataField="KullanimAmaci" HeaderText="Kullanım Amacı" />
+                                                                    <asp:BoundField DataField="Nitelik" HeaderText="Nitelik" />
+                                                                    <asp:BoundField DataField="Metrekare" HeaderText="Metrekare" DataFormatString="{0:N2}" />
+                                                                    <asp:BoundField DataField="MuhasebeyeKayitliDeger" HeaderText="Muhasebey Kaydı Değeri" DataFormatString="{0:C2}" />
+                                                                    <asp:BoundField DataField="TahminiRayicDegeri" HeaderText="Tahmini Rayiç Değeri" DataFormatString="{0:C2}" />
+                                                                    <asp:BoundField DataField="EmlakBeyanDegeri" HeaderText="Emlak Beyan Değeri" DataFormatString="{0:C2}" />
+                                                                    <asp:BoundField DataField="YaklasikPiyasaDegeri" HeaderText="Yaklaşık Piyasa Değeri" DataFormatString="{0:C2}" />
+                                                                </Columns>
+                                                            </asp:GridView>
+                                                        </div>
+                                                    </asp:Panel>
                                                     <div class="form-group m-0 ">
                                                         <label class="form-label fw-semibold" for="ZeminTipiTxt">Zemin Tipi</label>
                                                         <input class="form-control" id="ZeminTipiTxt" name="ZeminTipiTxt" runat="server" tooltip="Zemin tipi" />
@@ -468,7 +493,7 @@
                             <div class="row p-1">
                                 <div class="col-2 ">
                                     <div class="form-group m-0 ">
-                                        <label class="form-label fw-semibold" for="MahKoyDegTxt">Muhs.Kayt.Değ.</label>
+                                        <label class="form-label fw-semibold" for="MuhasebeyeKayitliDegerTxt">Muhs.Kayt.Değ.</label>
                                         <input class="form-control input-money text-end" id="MuhasebeyeKayitliDegerTxt" runat="server" />
                                     </div>
                                     <div class="form-group m-0 ">
@@ -484,7 +509,31 @@
                                         <input class="form-control input-money text-end" id="TahminiRayicDegeriTxt" runat="server" />
                                     </div>
                                 </div>
-
+                                <div class="col-10" id="BagimsizBolumTabloContainer" runat="server" visible="false">
+                                    <div class="form-group">
+                                        <table id="CustomDataTable" class="table table-sm table-striped table-bordered" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>Bölüm No</th>
+                                                    <th>Kullanım Amacı</th>
+                                                    <th>Nitelik</th>
+                                                    <th>Metrekare</th>
+                                                    <th>Muhasebe Değ.</th>
+                                                    <th>Tahmini Rayiç</th>
+                                                    <th>Emlak Beyan</th>
+                                                    <th>Yaklaşık Piyasa</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row p-1">
+                                <div class="col pt-2">
+                                    <asp:LinkButton ID="KayitliDegerGetirBtn" CssClass="btn btn-outline-secondary" runat="server" CausesValidation="false" Text="Kayıtlı Değerleri Getir" Visible="true" OnClick="KayitliDegerGetirBtn_Click" />
+                                    <asp:LinkButton ID="AltBolumlerdenDegerAlBtn" CssClass="btn btn-outline-danger" runat="server" CausesValidation="false" Text="Alt Bölümlerden Değer Al" Visible="false" OnClick="AltBolumlerdenDegerAlBtn_Click" />
+                                    <asp:LinkButton ID="DegerleriKaydetBtn" CssClass="btn btn-outline-success" runat="server" CausesValidation="false" Text="Değerleri Kaydet" Visible="false" OnClick="DegerleriKaydetBtn_Click" />
+                                </div>
                             </div>
 
                         </div>
@@ -492,6 +541,7 @@
                     </div>
 
                 </div>
+                <%-- Butonlar --%>
                 <div class="card-footer">
                     <asp:LinkButton CssClass="btn btn-outline-secondary float-end mr-2" ID="BackBtn" runat="server" Text="Geri" CausesValidation="false" OnClick="BackBtn_Click" />
                     <asp:LinkButton ID="SaveBtn" CssClass="btn btn-outline-success" runat="server" Text="Kaydet" OnClick="SaveBtn_Click" />
@@ -601,6 +651,7 @@
                     </div>
                 </div>
             </div>
+            <asp:HiddenField ID="ActiveTabHiddenField" runat="server" />
         </ContentTemplate>
     </asp:UpdatePanel>
 </div>

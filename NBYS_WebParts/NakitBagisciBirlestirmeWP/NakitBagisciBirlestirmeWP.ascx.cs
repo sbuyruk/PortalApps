@@ -57,7 +57,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
                 ViewState["SecilenId"] = value;
             }
         }
-        private string ParamQS//nakit bagisci d�zenlemeden d�n�yorsa aranan texti tekrar arasin
+        private string ParamQS//nakit bagisci düzenlemeden dönüyorsa aranan texti tekrar arasin
         {
             get
             {
@@ -106,11 +106,11 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
             }
         }
         /***
-         * �nce Master yani �zerinde birlesme olacak kisi(bagis�i se�ilir)
-         *  Master (asil) bagis�i sabitlenir
-         * Listeden birlesecek kisi se�ilir
-         * TAMAM'a basildiginda Birlestirmek istiyorum radio butonu g�r�n�r
-         * Birlestirmek istiyorum radio butonu se�ildiginde Birlestir Butonu g�r�n�r.
+         * Önce Master yani üzerinde birlesme olacak kisi(bagisçi seçilir)
+         *  Master (asil) bagisçi sabitlenir
+         * Listeden birlesecek kisi seçilir
+         * TAMAM'a basildiginda Birlestirmek istiyorum radio butonu görünür
+         * Birlestirmek istiyorum radio butonu seçildiginde Birlestir Butonu görünür.
          * Birlestir butonuna basildiginda
          *      * 
          *      ***/
@@ -138,7 +138,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
         #region AsilBagisci CustomDataTable
         private void AsilBagisciTabloOlustur(bool isSelectable)
         {
-            var jsonData = AsilBagisciTabloJson(isSelectable); //veri �ekilip json a �eviriliyor
+            var jsonData = AsilBagisciTabloJson(isSelectable); //veri çekilip json a çeviriliyor
             var jsString = AsilBagisciCreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
             BagisciSecTableDiv.Attributes["style"] = "display:block";
@@ -180,7 +180,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
 
                     string duzenleUrl = ProjeConstants.PAGE_NAKITBAGISCI_EDIT + "?SenderApp=BB&NakitBagisciId=" + nakitBagisciId + "&Param=" + AsilBagisciAraTxt.Text;
 
-                    string secUrl = "<a class='btn btn-outline-info' onclick=FillAsilBagisciTable(" + nakitBagisciId + ");>Se�</>";
+                    string secUrl = "<a class='btn btn-outline-info' onclick=FillAsilBagisciTable(" + nakitBagisciId + ");>Seç</>";
 
                     NakitBagisciListItem nakitBagisciListItem = new NakitBagisciListItem();
                     nakitBagisciListItem.NakitBagisciId = nakitBagisciId;
@@ -191,7 +191,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
                     nakitBagisciListItem.Telefon = telefon;
                     nakitBagisciListItem.Adres = adres;
 
-                    nakitBagisciListItem.Duzenle = "<a href=" + duzenleUrl + @"?DestinationApp=TBD&BagisciId=" + nakitBagisciId + "  class='btn btn-outline-primary'>D�zenle</a>";
+                    nakitBagisciListItem.Duzenle = "<a href=" + duzenleUrl + @"?DestinationApp=TBD&BagisciId=" + nakitBagisciId + "  class='btn btn-outline-primary'>Düzenle</a>";
                     if (isSelectable)
                         nakitBagisciListItem.Sec = adi.IndexOf("BILINMEYEN") >= 0 ? string.Empty : secUrl;
 
@@ -217,7 +217,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
             jQuery(document).ready(function() {
 
                 jQuery('#CustomDataTable').DataTable({
-                    'initComplete': function(settings, json) {//tablo y�klendiginde
+                    'initComplete': function(settings, json) {//tablo yüklendiginde
                         var api = this.api();
                         var row = api.row(function(idx, data, node) { //secilen Id'ye gider
                             return data['Secildi'] == true;
@@ -264,7 +264,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
         #region BirlesecekBagisci CustomDataTable
         private void BirlesecekBagisciTabloOlustur()
         {
-            var jsonData = BirlesecekBagisciTabloJson(); //veri �ekilip json a �eviriliyor
+            var jsonData = BirlesecekBagisciTabloJson(); //veri çekilip json a çeviriliyor
             var jsString = BirlesecekBagisciCreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
             BagisciSecTableDiv.Attributes["style"] = "display:block";
@@ -322,7 +322,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
             }
             else
             {
-                MessageHelper.PublishMessage("Kayit bulunamadi", ProjeConstants.MESAJ_BILGI,2000);
+                MessageHelper.PublishMessage("Kayıt bulunamadı", ProjeConstants.MESAJ_BILGI,2000);
             }
             return list;
         }
@@ -342,7 +342,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
             jQuery(document).ready(function() {
 
                 jQuery('#CustomDataTable').DataTable({
-                    'initComplete': function(settings, json) {//tablo y�klendiginde
+                    'initComplete': function(settings, json) {//tablo yüklendiginde
                         var api = this.api();
                         var row = api.row(function(idx, data, node) { //secilen Id'ye gider
                             return data['Secildi'] == true;
@@ -435,7 +435,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
             TableHeaderCell AdresCell = new TableHeaderCell();
             AdresCell.Text = "Adres";
             TableHeaderCell IlIlceCell = new TableHeaderCell();
-            IlIlceCell.Text = "Il-Il�e";
+            IlIlceCell.Text = "Il-Ilçe";
 
             th.Controls.Add(AdiCell);
             th.Controls.Add(TCKimlikNoCell);
@@ -497,7 +497,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
             TableHeaderRow th = new TableHeaderRow();
 
             TableHeaderCell AdiCell = new TableHeaderCell();
-            AdiCell.Text = "Adi";
+            AdiCell.Text = "Adı";
             TableHeaderCell TCKimlikNoCell = new TableHeaderCell();
             TCKimlikNoCell.Text = "TC Kimlik No";
             TableHeaderCell TelefonCell = new TableHeaderCell();
@@ -505,7 +505,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
             TableHeaderCell AdresCell = new TableHeaderCell();
             AdresCell.Text = "Adres";
             TableHeaderCell IlIlceCell = new TableHeaderCell();
-            IlIlceCell.Text = "Il-Il�e";
+            IlIlceCell.Text = "İl-İlçe";
 
             th.Controls.Add(AdiCell);
             th.Controls.Add(TCKimlikNoCell);
@@ -569,7 +569,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
             asilBagisci = asilBagisci.Select<NakitBagisci>(SecilenAsilBagisciId.ConvertToInt());
             if (asilBagisci == null || SecilenAsilBagisciId.ConvertToInt() == 0)
             {
-                MessageHelper.PublishMessage("Se�tiginiz Asil Bagis�i Bulunamadi.", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Seçtiğiniz Asıl Bağışçı Bulunamadı.", ProjeConstants.MESAJ_HATA);
                 return;
             }
 
@@ -586,7 +586,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
                     {
                         if (birlesecekBagisci == null || birlesecekBagisciId.ConvertToInt() == 0)
                         {
-                            MessageHelper.PublishMessage("Birlesecek Bagis�i Bulunamadi. Bagis�i=" + birlesecekBagisci.Adi + " #Id: " + birlesecekBagisciId, ProjeConstants.MESAJ_BILGI);
+                            MessageHelper.PublishMessage("Birleşecek Bağışçı Bulunamadı. Bağışçı=" + birlesecekBagisci.Adi + " #Id: " + birlesecekBagisciId, ProjeConstants.MESAJ_BILGI);
                             continue;
                         }
                         else
@@ -594,7 +594,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
                             try
                             {
                                 DbClass db = new DbClass();
-                                #region  birlesecek bagis�iya ait Hareket listesini al
+                                #region  birlesecek bagisçiya ait Hareket listesini al
                                 //NakitBagisHareketiDuzenle();
 
                                 NakitBagisHareket nbhList = new NakitBagisHareket();
@@ -606,7 +606,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
                                     foreach (NakitBagisHareket item in listofBagisHareket)
                                     {
                                         string bagisciIdOnceki = item.BagisciId.ToString();
-                                        item.Aciklama = item.Aciklama + "(" + item.BagisciId + " tarafindan yapilan bagis birlestirildi) ";
+                                        item.Aciklama = item.Aciklama + "(" + item.BagisciId + " tarafından yapılan bağış birleştirildi) ";
                                         item.BagisciId = SecilenAsilBagisciId.ConvertToInt();
                                         bagiscisiDegisenNbhs += "," + item.Id;
                                         item.Degistiren = UtilityHelper.GetCurrentUserLoginName();
@@ -620,12 +620,12 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
                                         #region SilinenKayit_Table'a yaz
                                         SilinenKayit skNBH = new SilinenKayit();
                                         skNBH.Silen = currentUser;
-                                        skNBH.SilinmeSebebi = "Bagis Birlestirme";
+                                        skNBH.SilinmeSebebi = "Bağış Birleştirme";
                                         skNBH.TabloAdi = "NakitBagisHareket_Table";
                                         skNBH.SilinmeTarihi = DateTime.Now.ReturnTRDateFormat();
-                                        skNBH.SilinenKayitBilgisi = " #BagisciId=" + bagisciIdOnceki + " numarali bagisciya ait " +
-                                            item.Id + " numarali nakit bagis  ( Bagis Tarihi=" + item.BagisTarihi + " #BagisMiktari=" + item.BagisMiktari + ") " +
-                                            item.BagisciId + " numarali bagis�iya birlestirilmistir.";
+                                        skNBH.SilinenKayitBilgisi = " #BağışçıId=" + bagisciIdOnceki + " numaralı bağışçıya ait " +
+                                            item.Id + " numaralı nakit bağış  ( Bağış Tarihi=" + item.BagisTarihi + " #Bağış Miktarı=" + item.BagisMiktari + ") " +
+                                            item.BagisciId + " numaralı bağışçıya birleştirilmiştir.";
 
                                         DBObject skNBHDbo = new DBObject();
                                         skNBHDbo.SQLString = skNBH.GetInsertSQL("");
@@ -643,7 +643,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
 
 
                                 #endregion
-                                #region birlesecek bagis�iya ait Armagan listesini al
+                                #region birlesecek bagisçiya ait Armagan listesini al
                                 string mesaj = string.Empty;
                                 try
                                 {
@@ -667,12 +667,12 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
                                         #region SilinenKayit_Table'a yaz
                                         SilinenKayit skNBH = new SilinenKayit();
                                         skNBH.Silen = currentUser;
-                                        skNBH.SilinmeSebebi = "Bagis Birlestirme";
+                                        skNBH.SilinmeSebebi = "Bağış Birleştirme";
                                         skNBH.TabloAdi = "Armagan_Table";
                                         skNBH.SilinmeTarihi = DateTime.Now.ReturnTRDateFormat();
-                                        skNBH.SilinenKayitBilgisi = " #BagisciId=" + bagisciIdOnceki + " numarali bagisciya ait " +
-                                            item.Id + " numarali armagan " +
-                                            item.BagisciId + " numarali bagis�iya birlestirilmistir.";
+                                        skNBH.SilinenKayitBilgisi = " #BağışçıId=" + bagisciIdOnceki + " numaralı bağışçıya ait " +
+                                            item.Id + " numaralı armağan " +
+                                            item.BagisciId + " numaralı bağışçıya birleştirilmiştir.";
 
                                         DBObject skArmaganDbo = new DBObject();
                                         skArmaganDbo.SQLString = skNBH.GetInsertSQL("");
@@ -682,7 +682,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
                                         #endregion
 
                                     }
-                                    //mesaj = string.Format(@"Se�ilen Asil Bagis�i={0} ; Birlesecek Bagis�i={1} ; Armaganlar:{2} ",
+                                    //mesaj = string.Format(@"Seçilen Asıl Bağışçı={0} ; Birleşecek Bağışçı={1} ; Armağanlar:{2} ",
                                     //    SecilenAsilBagisciId, birlesecekBagisciId, bagiscisiDegisenArmagans);
                                     //silinenBilgileriKaydet(mesaj, "Armagan_Table");
                                 }
@@ -719,12 +719,12 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
                                         skBagisci.SilinmeSebebi = "Bagis Birlestirme";
                                         skBagisci.TabloAdi = "NakitBagisci_Table";
                                         skBagisci.SilinmeTarihi = DateTime.Now.ReturnTRDateFormat();
-                                        skBagisci.SilinenKayitBilgisi = " #Bagis�i=" + silinecekBagisci.Adi + " " + silinecekBagisci.Soyadi + " #BagisciId=" + silinecekBagisci.Id + " numarali bagis�i silindi.";
+                                        skBagisci.SilinenKayitBilgisi = " #Bağışçı=" + silinecekBagisci.Adi + " " + silinecekBagisci.Soyadi + " #BağışçıId=" + silinecekBagisci.Id + " numaralı bağışçı silindi.";
                                     }
                                     List<DBObject> bagisciDBOList = db.ExecuteTransaction();
                                     #endregion
 
-                                    MessageHelper.PublishMessage("Birlestirme Tamamlandi", ProjeConstants.MESAJ_BASARILI, 2000);
+                                    MessageHelper.PublishMessage("Birleştirme Tamamlandı", ProjeConstants.MESAJ_BASARILI, 2000);
                                     ParamQS = AsilBagisciAraTxt.Text;
                                     AsilBagisciTabloOlustur(false);
                                     BirlestirSubDiv.Visible = false;
@@ -823,7 +823,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
 
         private void TabloModalOlustur(string nakitBagisciId)
         {
-            var jsonData = GetModalDataJson(nakitBagisciId); //veri �ekilip json a �eviriliyor
+            var jsonData = GetModalDataJson(nakitBagisciId); //veri çekilip json a çeviriliyor
             var jsString = CreateModalDataTable(jsonData, nakitBagisciId.ConvertToInt()); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -919,7 +919,7 @@ namespace NBYS_WebParts.NakitBagisciBirlestirmeWP
             decimal toplamTutar = nbh.GetSumBagisMiktariByNakitBagisciIdBetweenBasTarBitTar(
                 ProjeConstants.BAGIS_SORGU_BASTAR.ConvertToDatetime(), DateTime.Today, nakitBagisciId.ConvertToInt());
             BagisBilgileriLbl.Text = rowCount < 1 ? "Bagis bulunmamaktadir" :
-                "Bagis�inin " + rowCount + " defada yaptigi toplam " + toplamTutar.ToString("N", culturInfo) + "TL bagisi bulunmaktadir";
+                "Bagisçinin " + rowCount + " defada yaptigi toplam " + toplamTutar.ToString("N", culturInfo) + "TL bagisi bulunmaktadir";
             return json;
         }
         protected void ModalDoldurBtn_Click(object sender, EventArgs e)

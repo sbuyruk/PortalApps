@@ -221,7 +221,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
         {
             try
             {
-                if (!Page.IsPostBack) // sayfa ilk kez a�iliyorsa (bu sayfanin i�indeki butona basilma ani hari�)
+                if (!Page.IsPostBack) // sayfa ilk kez açiliyorsa (bu sayfanin içindeki butona basilma ani hariç)
                 {
                     ToplantiYeriDoldurDDL();
 
@@ -269,9 +269,9 @@ namespace Portal_WebParts.ToplantiGirisiWP
             toplanti = toplanti.Select(ToplantiIdQS.ConvertToInt());
             if (toplanti != null)
             {
-                TitleLbl.Text = "Toplanti D�zenleme";
+                TitleLbl.Text = "Toplantı Düzenleme";
                 TitleLbl.CssClass = "col-form-label text-primary fw-bold mb-1";
-                IdLbl.Text = " ( Toplanti No: " + toplanti.Id.ToString() + " )";
+                IdLbl.Text = " ( Toplantı No: " + toplanti.Id.ToString() + " )";
                 KatilimciBilgileriDiv.Attributes["style"] = "display:block";
                 KaydetBtn.Visible = false;
                 GuncelleBtn.Visible = true;
@@ -322,7 +322,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
                 GuncelleBtn.Visible = false;
                 ToplantiKatilimTutanagiBtn.Visible = false;
                 ToplantiSilBtn.Visible = false;
-                TitleLbl.Text = "Yeni Toplanti";
+                TitleLbl.Text = "Yeni Toplantı";
                 TitleLbl.CssClass = "col-form-label text-success fw-bold mb-1";
                 BaslangicTarihiTxt.Text = DateTime.Today.ConvertToDatetimeEmptyIfNull();
                 BitisTarihiTxt.Text = DateTime.Today.ConvertToDatetimeEmptyIfNull();
@@ -330,10 +330,10 @@ namespace Portal_WebParts.ToplantiGirisiWP
                 BitisSaatiDDLDoldur();
                 if (!string.IsNullOrEmpty(MesajQS))
                 {
-                    MessageHelper.PublishMessage("Toplanti Silindi, e-posta g�nderildi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Toplantı Silindi, e-posta gönderildi.", ProjeConstants.MESAJ_BASARILI, 2000);
                     MesajQS = string.Empty;
                 }
-                //dummy tabloda p.no g�z�kmesin diye
+                //dummy tabloda p.no gözükmesin diye
                 KatilimciBilgileriniDoldur();
             }
             else
@@ -360,7 +360,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
             ToplantiKatilimTutanagiBtn.Visible = false;
             ToplantiSilBtn.Visible = false;
             KatilimciModalAcBtn.Visible = false;
-            MessageHelper.PublishMessage("Toplanti islemleri i�in yetkilendirilmediginizden dolayi islem yapamazsiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+            MessageHelper.PublishMessage("Toplantı işlemleri için yetkilendirilmediğinizden dolayı işlem yapamazsınız.", ProjeConstants.MESAJ_BILGI, 2000);
         }
         private bool ToplantiyaYetkiliMi()
         {
@@ -389,7 +389,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
                 else
                 {
                     GirisiAc();
-                    MessageHelper.PublishMessage("Toplanti bulunamadi. Yeni toplanti girebilirsiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                    MessageHelper.PublishMessage("Toplantı bulunamadı. Yeni toplantı girebilirsiniz.", ProjeConstants.MESAJ_BILGI, 2000);
                 }
             }
             else
@@ -420,7 +420,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
             {
                 ListItem li0 = new ListItem(string.Empty);
                 BasSaatDDL.Items.Add(li0);
-                ListItem li1 = new ListItem("�nce Toplanti Yeri Se�iniz...");
+                ListItem li1 = new ListItem("Önce Toplantı Yeri Seçiniz...");
                 BasSaatDDL.Items.Add(li1);
                 li1.Attributes.Add("class", ".warning-item");
                 li1.Attributes["disabled"] = "disabled";
@@ -470,7 +470,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
 
                         if ((kayitliToplanti != null) && (kayitliToplanti.ToplantiYeri != ProjeConstants.PARAM_DIGER_INT))
                         {
-                            if (kayitliToplanti.Id != ToplantiIdQS.ConvertToInt()) //toplanti d�zenlemesi yapilan toplantinin saatlerini disable etmesin
+                            if (kayitliToplanti.Id != ToplantiIdQS.ConvertToInt()) //toplanti düzenlemesi yapilan toplantinin saatlerini disable etmesin
                             //if (!toplanti.Id.ToString().Equals(ToplantiYeriDDL.SelectedItem.Value.ConvertToInt()))
                             {
                                 item.Attributes.Add("class", "disabled-item");
@@ -521,7 +521,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
 
                             if ((toplanti != null) && (toplanti.ToplantiYeri != ProjeConstants.PARAM_DIGER_INT))
                             {
-                                if (!toplanti.Id.ToString().Equals(ToplantiIdQS)) //kendisi hari� toplantilar
+                                if (!toplanti.Id.ToString().Equals(ToplantiIdQS)) //kendisi hariç toplantilar
                                 {
                                     break;
                                 }
@@ -705,12 +705,12 @@ namespace Portal_WebParts.ToplantiGirisiWP
             DateTime toplantiBitisi = UtilityHelper.TariheSaatEkle(BitisTarihiTxt.Text.ConvertToDatetime(), BitSaatDDL.SelectedItem.Value);
             if (toplantiBaslangici < DateTime.Now)
             {
-                KaydetMesajBasligiLbl.Text = "Toplanti baslangi� saati ge�ti.";
-                KaydetMesajiLbl.Text = "Toplanti baslangi� saati ge�ti. Kayit islemini iptal edip saati degistirebilirsiniz. Degisiklik yapmadan kaydetmek istiyor musunuz?";
+                KaydetMesajBasligiLbl.Text = "Toplantı başlangıç saati geçti.";
+                KaydetMesajiLbl.Text = "Toplantı başlangıç saati geçti. Kayıt işlemini iptal edip saati değiştirebilirsiniz. Değişiklik yapmadan kaydetmek istiyor musunuz?";
             }
             else
             {
-                KaydetMesajBasligiLbl.Text = "Toplanti kaydedilecek";
+                KaydetMesajBasligiLbl.Text = "Toplantı kaydedilecek";
                 KaydetMesajiLbl.Text =string.Empty;
 
             }
@@ -731,12 +731,12 @@ namespace Portal_WebParts.ToplantiGirisiWP
             DateTime toplantiBaslangici = UtilityHelper.TariheSaatEkle(BaslangicTarihiTxt.Text.ConvertToDatetime(), BasSaatDDL.SelectedItem.Value);
             if (toplantiBaslangici < DateTime.Now)
             {
-                KaydetMesajBasligiLbl.Text = "Toplanti baslangi� saati ge�ti.";
-                KaydetMesajiLbl.Text = "Toplanti baslangi� saati ge�ti. G�ncelleme islemini iptal edip saati degistirebilirsiniz. Degisiklik yapmadan g�ncellemek istiyor musunuz?";
+                KaydetMesajBasligiLbl.Text = "Toplantı başlangıç saati geçti.";
+                KaydetMesajiLbl.Text = "Toplantı başlangıç saati geçti. Güncelleme işlemini iptal edip saati değiştirebilirsiniz. Değişiklik yapmadan güncellemek istiyor musunuz?";
             }
             else
             {
-                KaydetMesajBasligiLbl.Text = "Toplanti g�ncellenecek";
+                KaydetMesajBasligiLbl.Text = "Toplantı güncellenecek";
                 KaydetMesajiLbl.Text = string.Empty;
 
             }
@@ -785,7 +785,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
 
                 if (string.IsNullOrEmpty(ToplantiKonusuTxt.Text))
                 {
-                    MessageHelper.PublishMessage("Toplanti Konusu Bos Olamaz.", ProjeConstants.MESAJ_HATA, 2000);
+                    MessageHelper.PublishMessage("Toplantı Konusu Boş Olamaz.", ProjeConstants.MESAJ_HATA, 2000);
                 }
                 else
                 {
@@ -807,7 +807,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Toplanti Kaydedilemedi.", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Toplantı Kaydedilemedi.", ProjeConstants.MESAJ_HATA);
                     }
                 }
             }
@@ -843,7 +843,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
                 toplanti.Degistiren = UtilityHelper.GetCurrentUserName();
                 if (toplanti == null)
                 {
-                    MessageHelper.PublishMessage("Toplanti bulunamadi", ProjeConstants.MESAJ_HATA, 5000);
+                    MessageHelper.PublishMessage("Toplantı bulunamadı", ProjeConstants.MESAJ_HATA, 5000);
                 }
                 else
                 {
@@ -868,7 +868,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
                     toplanti.Degistiren = UtilityHelper.GetCurrentUserName();
                     if (string.IsNullOrEmpty(ToplantiKonusuTxt.Text))
                     {
-                        MessageHelper.PublishMessage("Toplanti Konusu Bos Olamaz.", ProjeConstants.MESAJ_HATA, 2000);
+                        MessageHelper.PublishMessage("Toplantı Konusu Boş Olamaz.", ProjeConstants.MESAJ_HATA, 2000);
                     }
                     else
                     {
@@ -885,7 +885,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
                                 List<ToplantiKatilim> oncekiKatilimciListesi = toplantiKatilim.SelectBytoplantiId(toplanti.Id);
                                 KatilimcilariVeriTabaninaKaydet(toplanti.Id);
                                 tar5 = DateTime.Now;
-                                MessageHelper.PublishMessage("Toplanti g�ncellendi, e-posta g�nderildi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                                MessageHelper.PublishMessage("Toplantı güncellendi, e-posta gönderildi.", ProjeConstants.MESAJ_BASARILI, 2000);
                                 tar6 = DateTime.Now;
                                 EPostaIslemleri(toplanti, ProjeConstants.GUNCELLE, oncekiKatilimciListesi);
                                 tar7 = DateTime.Now;
@@ -896,14 +896,14 @@ namespace Portal_WebParts.ToplantiGirisiWP
                             }
                             else
                             {
-                                MessageHelper.PublishMessage("Toplanti g�ncellenemedi", ProjeConstants.MESAJ_HATA, 5000);
+                                MessageHelper.PublishMessage("Toplanti güncellenemedi", ProjeConstants.MESAJ_HATA, 5000);
 
                             }
                         }
                         else
                         {
                             RedirectToPage(ProjeConstants.PAGE_TOPLANTI_LIST + "?SecilenToplantiId=" + toplanti.Id);
-                            MessageHelper.PublishMessage("Toplantida hen�z degisiklik yapmadiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                            MessageHelper.PublishMessage("Toplantıda henüz değişiklik yapmadınız.", ProjeConstants.MESAJ_BILGI, 2000);
                         }
                     }
                 }
@@ -911,7 +911,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
             catch (Exception ex)
             {
                 ExceptionHelper exhelper = new ExceptionHelper(ex);
-                exhelper.Exceptions.Add(new Exception("Toplanti g�ncellenemedi."));
+                exhelper.Exceptions.Add(new Exception("Toplantı güncellenemedi."));
                 exhelper.PublishException();
             }
             //MessageHelper.PublishMessage(
@@ -929,8 +929,8 @@ namespace Portal_WebParts.ToplantiGirisiWP
             ParamVnLbl.Text = ToplantiIdQS;
             string openModal = "OpenSilModal();";
             SilMesajiLbl.Visible = true;
-            SilMesajiLbl.Text = "Toplantiya ait t�m bilgiler silinecek ve toplanti katilimcilarina iptal e-postasi g�nderilecektir. </br>Silmek istediginizden eminmisiniz?";
-            SilModalBaslikLbl.Text = "Toplanti Silinecek";
+            SilMesajiLbl.Text = "Toplantıya ait tüm bilgiler silinecek ve toplantı katılımcılarına iptal e-postası gönderilecektir. </br>Silmek istediğinizden emin misiniz?";
+            SilModalBaslikLbl.Text = "Toplantı Silinecek";
             ToplantiSilNowBtn.Visible = true;
             UtilityHelper.ScriptCalistir(openModal);
         }
@@ -948,7 +948,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
             catch (Exception e1)
             {
                 ExceptionHelper eh = new ExceptionHelper();
-                Exception e2 = new Exception("Kisi silinemedi");
+                Exception e2 = new Exception("Katılımcı silinemedi");
                 eh.Exceptions.Add(e2);
                 eh.Exceptions.Add(e1);
                 eh.PublishException();
@@ -981,13 +981,13 @@ namespace Portal_WebParts.ToplantiGirisiWP
                 }
                 if (!silindi)
                 {
-                    MessageHelper.PublishMessage("Toplanti Silinemedi", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Toplantı Silinemedi", ProjeConstants.MESAJ_HATA);
                 }
             }
             catch (Exception e1)
             {
                 ExceptionHelper eh = new ExceptionHelper();
-                Exception e2 = new Exception("Toplanti silinemedi");
+                Exception e2 = new Exception("Toplantı silinemedi");
                 eh.Exceptions.Add(e2);
                 eh.Exceptions.Add(e1);
                 eh.PublishException();
@@ -1024,12 +1024,12 @@ namespace Portal_WebParts.ToplantiGirisiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Katilimci Bulunamadi", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Katılımcı Bulunamadı", ProjeConstants.MESAJ_HATA);
             }
 
             KatilimciBilgileriniDoldur();
         }
-        // Katilimci Se�me ve Ekleme
+        // Katılımcı Seçme ve Ekleme
         protected void KatilimciModalAcBtn_Click(object sender, EventArgs e)
         {
             TabloModalOlustur();
@@ -1059,7 +1059,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Katilimci Bulunamadi", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Katılımcı Bulunamadı", ProjeConstants.MESAJ_HATA);
             }
 
             KatilimciBilgileriniDoldur();
@@ -1067,7 +1067,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
         }
         private void TabloModalOlustur()
         {
-            var jsonData = TabloModalJson(); //veri �ekilip json a �eviriliyor
+            var jsonData = TabloModalJson(); //veri çekilip json a çeviriliyor
             var jsString = CreateModalDataTable(jsonData); //javascript kodu hazirlaniyor.
             System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler,
                 typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), jsString, true);
@@ -1142,7 +1142,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
         }
         private void TabloOlustur(bool veritabanindanMi)
         {
-            var jsonData = TabloJson(veritabanindanMi); //veri �ekilip json a �eviriliyor
+            var jsonData = TabloJson(veritabanindanMi); //veri çekilip json a çeviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -1225,9 +1225,9 @@ namespace Portal_WebParts.ToplantiGirisiWP
                     katilimciItem.SiraNo = SiraNo++.ToString();
                     katilimciItem.ProtokolSiraNo = protokolsirano;
                     katilimciItem.KatilimciId = katilimciId;
-                    katilimciItem.BilgiSec = bilgi ? "Bilgi" : "Katilimci";
+                    katilimciItem.BilgiSec = bilgi ? "Bilgi" : "Katılımcı";
                     katilimciItem.AdiSoyadi = adi + " " + soyadi;
-                    katilimciItem.Cikar = "<a href='#' class='btn btn-outline-danger' onclick=KatilimciCikarBtnClick(" + katilimciId + ")>�ikar</a>";
+                    katilimciItem.Cikar = "<a href='#' class='btn btn-outline-danger' onclick=KatilimciCikarBtnClick(" + katilimciId + ")>Çıkar</a>";
 
                     list.Add(katilimciItem);
                     KatilimciIdListQS.Add(katilimciItem.KatilimciId.ConvertToInt());
@@ -1259,9 +1259,9 @@ namespace Portal_WebParts.ToplantiGirisiWP
                     if (BilgiIdListQS.Contains(katilimciId))
                         katilimciItem.BilgiSec = "Bilgi";
                     else
-                        katilimciItem.BilgiSec = "Katilimci";
+                        katilimciItem.BilgiSec = "Katılımcı";
                     //katilimciItem.ProtokolSiraNo = protokolsirano;
-                    katilimciItem.Cikar = "<a href='#' class='btn btn-outline-danger' onclick=KatilimciCikarBtnClick(" + katilimciId + ")>�ikar</a>";
+                    katilimciItem.Cikar = "<a href='#' class='btn btn-outline-danger' onclick=KatilimciCikarBtnClick(" + katilimciId + ")>Çıkar</a>";
                     list.Add(katilimciItem);
                 }
             }
@@ -1295,7 +1295,7 @@ namespace Portal_WebParts.ToplantiGirisiWP
                         katilimciItem.KatilimciId = katilimciId.ToString();
                         katilimciItem.AdiSoyadi = (adi + " " + soyadi.Trim());
 
-                        katilimciItem.KatilimciSec = "<a href='#' class='btn btn-outline-primary' onclick=KatilimciSecildiBtnClick($(this).parents('tr')," + katilimciId + "," + "false" + ");>Toplantiya Ekle</a>";
+                        katilimciItem.KatilimciSec = "<a href='#' class='btn btn-outline-primary' onclick=KatilimciSecildiBtnClick($(this).parents('tr')," + katilimciId + "," + "false" + ");>Toplantıya Ekle</a>";
                         katilimciItem.BilgiSec = "<a href='#' class='btn btn-outline-secondary' onclick=KatilimciSecildiBtnClick($(this).parents('tr')," + katilimciId + "," + "true" + ");>Bilgi Ver</a>";
 
 

@@ -16,6 +16,10 @@ namespace Model.TBYS
         public string Nitelik{ get; set; }
         public decimal Metrekare { get; set; }
         public string KullanimAmaci { get; set; }
+        public decimal MuhasebeyeKayitliDeger { get; set; }
+        public decimal TahminiRayicDegeri { get; set; }
+        public decimal EmlakBeyanDegeri { get; set; }
+        public decimal YaklasikPiyasaDegeri { get; set; }
         public string Aciklama { get; set; }
 
         public override T Select<T>(int id)

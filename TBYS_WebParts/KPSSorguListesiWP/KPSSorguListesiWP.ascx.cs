@@ -66,7 +66,7 @@ namespace TBYS_WebParts.KPSSorguListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            var jsonData = TabloJson(); //veri Ã§ekilip json a Ã§eviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -101,8 +101,8 @@ namespace TBYS_WebParts.KPSSorguListesiWP
                 Soyadi = a.Soyadi,
                 DogumTarihi = a.DogumTarihi,
                 SagVefat=a.Sag_vefat,
-                Sorgulanan= "Bagisçi",
-                Cikar = "<a class='btn btn-outline-danger' onclick=CikarButtonClick(" + a.TCKimlikNo + ");>ÇIKAR</a>"
+                Sorgulanan= "BaÄŸÄ±ÅŸÃ§Ä±",
+                Cikar = "<a class='btn btn-outline-danger' onclick=CikarButtonClick(" + a.TCKimlikNo + ");>Ã‡IKAR</a>"
             }).ToList();
             var sorgulanacakTaahhutList = new List<SorgulanacakKisi>();
             if (TaahhutChk.Checked)
@@ -119,8 +119,8 @@ namespace TBYS_WebParts.KPSSorguListesiWP
                     DogumTarihi = a.DogumTarihi,
                     SagVefat = a.Sag_vefat,
                     VefatTarihi=a.VefatTarihi,
-                    Sorgulanan = "Taahhüt Verilen Kisi",
-                    Cikar= "<a class='btn btn-outline-danger' onclick=CikarButtonClick(" + a.TCKimlikNo + ");>ÇIKAR</a>"
+                    Sorgulanan = "TaahhÃ¼t Verilen Kisi",
+                    Cikar= "<a class='btn btn-outline-danger' onclick=CikarButtonClick(" + a.TCKimlikNo + ");>Ã‡IKAR</a>"
             }).ToList();
 
 
@@ -141,8 +141,8 @@ namespace TBYS_WebParts.KPSSorguListesiWP
                     DogumTarihi = a.DogumTarihi,
                     SagVefat = a.SagVefat,
                     VefatTarihi = a.VefatTarihi,
-                    Sorgulanan = "Vasiyetçi",
-                    Cikar = "<a class='btn btn-outline-danger' onclick=CikarButtonClick(" + a.TCKimlikNo + ");>ÇIKAR</a>"
+                    Sorgulanan = "VasiyetÃ§i",
+                    Cikar = "<a class='btn btn-outline-danger' onclick=CikarButtonClick(" + a.TCKimlikNo + ");>Ã‡IKAR</a>"
                 }).ToList();
 
 

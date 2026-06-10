@@ -217,7 +217,7 @@ namespace NBYS_WebParts.NakitBagisciByBankaWP
             NakitBagisciTable.Rows.Clear();
             TableHeaderRow headerThRow = new TableHeaderRow();
             TableHeaderCell headerCell = new TableHeaderCell();
-            headerCell.Text = AyDDL.SelectedItem.Text + " " + YilDDL.SelectedItem.Text + " Nakit Bagis ve Bagis�i Durumu";
+            headerCell.Text = AyDDL.SelectedItem.Text + " " + YilDDL.SelectedItem.Text + " Nakit Bağış ve Bağışçı Durumu";
             headerCell.ColumnSpan = 8;
             headerThRow.Controls.Add(headerCell);
             NakitBagisciTable.Controls.Add(headerThRow);
@@ -228,11 +228,11 @@ namespace NBYS_WebParts.NakitBagisciByBankaWP
             bankaThCell.RowSpan = 2;
 
             TableHeaderCell bagisciCell = new TableHeaderCell();
-            bagisciCell.Text = "Bagis�i Sayisi";
+            bagisciCell.Text = "Bağışçı Sayısı";
             bagisciCell.ColumnSpan = 3;
 
             TableHeaderCell bagiMiktariCell = new TableHeaderCell();
-            bagiMiktariCell.Text = "Bagis Miktari";
+            bagiMiktariCell.Text = "Bağış Miktarı";
             bagiMiktariCell.ColumnSpan = 3;
 
             th.Controls.Add(bankaThCell);
@@ -254,7 +254,7 @@ namespace NBYS_WebParts.NakitBagisciByBankaWP
             TableHeaderCell toplamBagisMiktariCell = new TableHeaderCell();
             toplamBagisMiktariCell.Text = "Toplam";
             TableHeaderCell enYuksekBagisCell = new TableHeaderCell();
-            enYuksekBagisCell.Text = "En Y�ksek Bagis";
+            enYuksekBagisCell.Text = "En Yüksek Bağış";
 
             th1.Controls.Add(eskiBagisciCell);
             th1.Controls.Add(yeniBagisciCell);
@@ -422,10 +422,10 @@ namespace NBYS_WebParts.NakitBagisciByBankaWP
 
         //    TableHeaderRow th = new TableHeaderRow();
         //    TableHeaderCell smsOperatorThCell = new TableHeaderCell();
-        //    smsOperatorThCell.Text = "GSM Operat�r�";
+        //    smsOperatorThCell.Text = "GSM Operatörü";
 
         //    TableHeaderCell bagisciCell = new TableHeaderCell();
-        //    bagisciCell.Text = "Bagis�i Sayisi";
+        //    bagisciCell.Text = "Bagisçi Sayisi";
 
         //    TableHeaderCell tutarCell = new TableHeaderCell();
         //    tutarCell.Text = "Bagis Tutari";
@@ -514,17 +514,17 @@ namespace NBYS_WebParts.NakitBagisciByBankaWP
         {
 
             AyDDL.Items.Add(new ListItem("Ocak", "1"));
-            AyDDL.Items.Add(new ListItem("Subat", "2"));
+            AyDDL.Items.Add(new ListItem("Şubat", "2"));
             AyDDL.Items.Add(new ListItem("Mart", "3"));
             AyDDL.Items.Add(new ListItem("Nisan", "4"));
-            AyDDL.Items.Add(new ListItem("Mayis", "5"));
+            AyDDL.Items.Add(new ListItem("Mayıs", "5"));
             AyDDL.Items.Add(new ListItem("Haziran", "6"));
             AyDDL.Items.Add(new ListItem("Temmuz", "7"));
-            AyDDL.Items.Add(new ListItem("Agustos", "8"));
-            AyDDL.Items.Add(new ListItem("Eyl�l", "9"));
+            AyDDL.Items.Add(new ListItem("Ağustos", "8"));
+            AyDDL.Items.Add(new ListItem("Eylül", "9"));
             AyDDL.Items.Add(new ListItem("Ekim", "10"));
-            AyDDL.Items.Add(new ListItem("Kasim", "11"));
-            AyDDL.Items.Add(new ListItem("Aralik", "12"));
+            AyDDL.Items.Add(new ListItem("Kasım", "11"));
+            AyDDL.Items.Add(new ListItem("Aralık", "12"));
             AyDDL.Items.Add(new ListItem("Hepsi", "0"));
 
 

@@ -142,7 +142,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                             KiraciIdQS = kiraci.Id.ToString();
                             AdiLbl.Text = kiraci == null ? "" : kiraci.Adi + " " + kiraci.Soyadi ;
                             SozlesmeTasinmazTablosunuDoldur(kiraSozlesme);
-                            SozlesmeLbl.Text = " ( " +kiraSozlesme.SozBasTar.ConvertToDatetimeEmptyIfNull() + " - " + kiraSozlesme.SozBitTar.ConvertToDatetimeEmptyIfNull() + " Tarihli S�zlesme )";
+                            SozlesmeLbl.Text = " ( " +kiraSozlesme.SozBasTar.ConvertToDatetimeEmptyIfNull() + " - " + kiraSozlesme.SozBitTar.ConvertToDatetimeEmptyIfNull() + " Tarihli Sözleşme )";
                         }
                         TBYSOrtak.TeminatIslemleriniHesaplaVeKaydet(kiraSozlesme);
                         IslemTipiDDLDoldur();
@@ -152,7 +152,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Kira S�zlesmesi Bulunamadi.", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Kira Sözleşmesi Bulunamadı.", ProjeConstants.MESAJ_HATA);
                     }
                 }
                 TabloOlustur(kiraSozlesme.KiraciId);
@@ -182,7 +182,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
         private void SozlesmeTasinmazTablosunuDoldur(KiraSozlesme kiraSozlesme)
         {
             TasinmazAdresTable.Rows.Clear();
-            string[] headers = { "Sira", "Tasinmaz Adresi" };
+            string[] headers = { "Sıra", "Taşınmaz Adresi" };
             UtilityHelper.SetTableHeaders(TasinmazAdresTable, headers);
             SozlesmeTasinmaz st = new SozlesmeTasinmaz();
             DataTable dataTable = st.SelectBySozlesmeIdReturnDataTable(kiraSozlesme.Id);
@@ -205,7 +205,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                         TableCell siraCell1 = new TableCell();
                         siraCell1.Text = "...";
                         TableCell adresCell1 = new TableCell();
-                        adresCell1.Text = " +"+(dataTable.Rows.Count-3)+" Tasinmaz daha... (Toplam "+ dataTable.Rows.Count+" Tasinmaz.)";
+                        adresCell1.Text = " +"+(dataTable.Rows.Count-3)+" Taşınmaz daha... (Toplam "+ dataTable.Rows.Count+" Taşınmaz.)";
                         tableRow1.Controls.Add(siraCell1);
                         tableRow1.Controls.Add(adresCell1);
                         TasinmazAdresTable.Rows.Add(tableRow1);
@@ -262,7 +262,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
         #region Tablo
         private void TabloOlustur(int kiraciId)
         {
-            var jsonData = TabloJson(kiraciId); //veri �ekilip json a �eviriliyor
+            var jsonData = TabloJson(kiraciId); //veri çekilip json a çeviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -301,7 +301,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                 bool isVisible = BolgeIdQS == ProjeConstants.HEPSI_INT || BolgeIdQS == ProjeConstants.BOLGE_GENELMUDURLUK_INT ? true : false;
                 if (isVisible)
                 {
-                    item2.Duzenle = "<a href=# onclick=GuncelleModalDoldur('" + item.Id + "'); class=\'btn btn-outline-primary \'>D�zenle</a>";
+                    item2.Duzenle = "<a href=# onclick=GuncelleModalDoldur('" + item.Id + "'); class=\'btn btn-outline-primary \'>Düzenle</a>";
                     item2.Sil = "<a href=# onclick=DeleteModalDoldur('" + item.Id + "'); class=\'btn btn-outline-danger \'>Sil</a>";
                 }
                 else 
@@ -330,7 +330,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
                 jQuery(document).ready(function () {
                     jQuery('#CustomDataTable').DataTable({
-                        'initComplete': function (settings, json) {//tablo y�klendiginde
+                        'initComplete': function (settings, json) {//tablo yüklendiginde
                             var api = this.api();
                             var row = api.row(function (idx, data, node) { //secilen toplantiya gider
                                 return data['Secildi'] == true;
@@ -395,11 +395,11 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                     bool guncellendiMi = kiraSozlesme.Update();
                     if (guncellendiMi)
                     {
-                        MessageHelper.PublishMessage("Teminat bilgileri g�ncellendi.", ProjeConstants.MESAJ_BASARILI);
+                        MessageHelper.PublishMessage("Teminat bilgileri güncellendi.", ProjeConstants.MESAJ_BASARILI);
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Teminat bilgileri g�ncellenemedi.", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Teminat bilgileri güncellenemedi.", ProjeConstants.MESAJ_HATA);
                     }
                 }
                 catch (Exception exception)
@@ -411,7 +411,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
             }
             else
             {
-                MessageHelper.PublishMessage("Kira S�zlesmesi Bulunamadi ", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Kira Sözleşmesi Bulunamadı ", ProjeConstants.MESAJ_HATA);
             }
 
         }
@@ -434,7 +434,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
             }
             else
             {
-                MessageHelper.PublishMessage("S�zlesme Bulunamadi", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Sözleşme Bulunamadı", ProjeConstants.MESAJ_HATA);
             }
         }
         protected void ModalEkleBtn_Click(object sender, EventArgs e)
@@ -445,7 +445,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
             {
                 IslemTipiDDL.Visible = true;
                 IslemTipiTxt.Visible = false;
-                ModalTitleLbl.Text = "Teminat Islemi Eklenecek";
+                ModalTitleLbl.Text = "Teminat İşlemi Eklenecek";
 
                 IslemTarihiTxt.Value = kiraSozlesme.TeminatOdemeTarihi.ConvertToDatetimeEmptyIfNull();
                 IslemSaatiTxt.Value = kiraSozlesme.TeminatOdemeTarihi.ToString("HH:mm");
@@ -468,7 +468,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                 //IslemTipiDDLDoldur();
                 IslemTipiDDL.Visible = false;
                 IslemTipiTxt.Visible = true;
-                ModalTitleLbl.Text = "Teminat Islemi Degistirilecek";
+                ModalTitleLbl.Text = "Teminat İşlemi Değiştirilecek";
                 ModalEkleNowBtn.Visible = false;
                 ModalGuncelleNowBtn.Visible = true;
                 IslemTipiTxt.Text = teminatIslem.IslemTipi;
@@ -488,7 +488,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
             teminatIslem = teminatIslem.Select(TeminatIslemIdSilLbl.Value.ConvertToInt());
             if (teminatIslem != null)
             {
-                SilmeMesajiLbl.Text = teminatIslem.IslemTarihi.ConvertToDatetimeEmptyIfNull() + " tarihli ve " + teminatIslem.IslemTutari.ToString("N", culturInfo) + " tutarli '" + teminatIslem.IslemTipi + "' islemi silinecek.";
+                SilmeMesajiLbl.Text = teminatIslem.IslemTarihi.ConvertToDatetimeEmptyIfNull() + " tarihli ve " + teminatIslem.IslemTutari.ToString("N", culturInfo) + " tutarlı '" + teminatIslem.IslemTipi + "' işlemi silinecek.";
                 UtilityHelper.ScriptCalistir("OpenDeleteModalOnay();");
             }
         }
@@ -532,7 +532,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Mahsup edilecek bir s�zlesme bulunamadi", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Mahsup edilecek bir sözleşme bulunamadı", ProjeConstants.MESAJ_HATA);
                 }
 
             }
@@ -565,7 +565,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                             TBYSOrtak.TeminatIslemleriniHesaplaVeKaydet(kiraSozlesme);
                             TeminatBilgileriniDoldur(kiraSozlesme);
                             TabloOlustur(kiraSozlesme.KiraciId);
-                            MessageHelper.PublishMessage("Teminat Islemi G�ncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                            MessageHelper.PublishMessage("Teminat İşlemi Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                             if (teminatIslem.IslemTipi.Equals(ProjeConstants.TEMINAT_KIRAYAMAHSUP))
                             {
                                 OdemeyiGuncelle(mahsupEdilecekKiraSozlesme, teminatIslem.IslemTarihi, teminatIslem.IslemTutari, teminatIslem.OdemeId, teminatIslem.Aciklama);
@@ -575,13 +575,13 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Teminata ait s�zlesme bulunamadi!", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("Teminata ait sözleşme bulunamadı!", ProjeConstants.MESAJ_HATA);
                     }
                 }
             }
             else
             {
-                MessageHelper.PublishMessage("Teminat Islemi bulunamadi!", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Teminat İşlemi bulunamadı!", ProjeConstants.MESAJ_HATA);
             }
 
         }
@@ -611,16 +611,16 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                     TBYSOrtak.TeminatIslemleriniHesaplaVeKaydet(kiraSozlesme);
                     TeminatBilgileriniDoldur(kiraSozlesme);
                     TabloOlustur(kiraSozlesme.KiraciId);
-                    MessageHelper.PublishMessage("Teminat Islemi Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Teminat İşlemi Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Teminat Islemi Silindi. Teminata ait s�zlesme bulunamadi!", ProjeConstants.MESAJ_BILGI, 4000);
+                    MessageHelper.PublishMessage("Teminat İşlemi Silindi. Teminata ait sözleşme bulunamadı!", ProjeConstants.MESAJ_BILGI, 4000);
                 }
             }
             else
             {
-                MessageHelper.PublishMessage("Teminat Islemi bulunamadi!", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Teminat İşlemi bulunamadı!", ProjeConstants.MESAJ_HATA);
             }
         }
 
@@ -682,7 +682,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
             }
             else
             {
-                MessageHelper.PublishMessage("S�zlesme kaydi bulunamadi", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Sözleşme kaydı bulunamadı", ProjeConstants.MESAJ_HATA);
             }
         }
         protected void OdemePlaninaGitBtn_Click(object sender, EventArgs e)
@@ -700,7 +700,7 @@ namespace TBYS_WebParts.TeminatIslemleriWP
                     Page.Response.Redirect(newUrl, true);
                 }
                 else
-                    MessageHelper.PublishMessage("Bu kiraciya ait s�zlesme kaydi bulunamadi", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Bu kiracıya ait sözleşme kaydı bulunamadı", ProjeConstants.MESAJ_HATA);
 
             }
             catch (Exception ex)

@@ -1,4 +1,4 @@
-﻿<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
+<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
 <%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
@@ -13,7 +13,7 @@
 </style>
 
 <script>
-    //excele export ettikten donup sonra kalmasın diye
+    //Excel'e export ettikten sonra dönüp kalmasın diye
     function setFormSubmitToFalse() {
         setTimeout(function () { _spFormOnSubmitCalled = false; }, 3000);
         return true;
@@ -80,7 +80,7 @@
                                 <asp:CheckBox ID="AdresiBosOlanlarHaricChk" AutoPostBack="true" runat="server" CssClass="form-control" OnCheckedChanged="BagisTarihiTxt_TextChanged" Text=" Adresi Boş Olanlar Hariç" Checked="True" />
                             </div>
                             <div class="col form-group">
-                                <asp:CheckBox ID="BelgesiPostadanIadeEdilenlerHaricChk" AutoPostBack="true" runat="server" CssClass="form-control" OnCheckedChanged="BagisTarihiTxt_TextChanged" Text=" Belgesi Postadan İade edilenler Hariç" Checked="True" />
+                                <asp:CheckBox ID="BelgesiPostadanIadeEdilenlerHaricChk" AutoPostBack="true" runat="server" CssClass="form-control" OnCheckedChanged="BagisTarihiTxt_TextChanged" Text=" Belgesi Postadan İade Edilenler Hariç" Checked="True" />
                                 <asp:CheckBox ID="DergiGonderilmesinlerHaricChk" AutoPostBack="true" runat="server" CssClass="form-control" OnCheckedChanged="BagisTarihiTxt_TextChanged" Text=" Dergi Gönderilmeyecek Olanlar Hariç" Checked="True" />
                                 <asp:CheckBox ID="SadeceYeniBagiscilarChk" AutoPostBack="true" runat="server" CssClass="form-control" OnCheckedChanged="BagisTarihiTxt_TextChanged" Text=" Sadece Yeni Bağışçılar" Checked="false" />
                             </div>
@@ -103,7 +103,7 @@
                                         <th>İli</th>
                                         <th>İlçesi</th>
                                         <th>Telefon</th>
-                                        <th>Duzenle</th>
+                                        <th>Düzenle</th>
                                         <th>Dergi</th>
                                     </tr>
                                 </thead>
@@ -112,7 +112,7 @@
                     </div>
                 </div>
                 <div class="card-footer">
-                    <asp:LinkButton CssClass="btn btn-outline-success float-end" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excele Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
+                    <asp:LinkButton CssClass="btn btn-outline-success float-end" ID="ExcelBtn" ClientIDMode="Static" runat="server" Text="Excel'e Aktar" OnClick="ExcelBtn_Click" OnClientClick="javascript:setFormSubmitToFalse()" />
                 </div>
             </div>
 <%--        </ContentTemplate>

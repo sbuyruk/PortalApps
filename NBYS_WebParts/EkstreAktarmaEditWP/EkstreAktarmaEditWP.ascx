@@ -1,4 +1,4 @@
-﻿<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
+<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
 <%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
@@ -116,7 +116,7 @@
                                     <div class="form-group border border-dark p-2" id="DovizDiv" runat="server" style="display: none">
                                         <div class="row">
                                             <div class="col form-group ">
-                                                <label class="col-form-label">Dözviz Tutarı</label>
+                                                <label class="col-form-label">Döviz Tutarı</label>
                                                 <asp:TextBox ID="DovizTutariTxt" runat="server" CssClass="form-control input-money text-end" AutoPostBack="true" OnTextChanged="HesaplaBtn_Click" type="text" />
                                             </div>
                                             <div class="col form-group ">
@@ -193,7 +193,7 @@
                         </ProgressTemplate>
                     </asp:UpdateProgress>
                     <div class="form-group ">
-                        <label class="col-form-label">Aciklama</label>
+                        <label class="col-form-label">Açıklama</label>
                         <asp:TextBox ID="AciklamaTxt" TextMode="MultiLine" Rows="3" runat="server" CssClass="form-control" type="text" />
                     </div>
                 </div>

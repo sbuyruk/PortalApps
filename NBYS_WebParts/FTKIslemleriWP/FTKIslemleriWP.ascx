@@ -1,4 +1,4 @@
-﻿<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
+<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
 <%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
@@ -195,7 +195,7 @@
                     
                     <asp:LinkButton ID="FTKListesiBtn" runat="server" CssClass="btn btn-outline-secondary float-end" Text="FTK Listesi" OnClick="FTKListesiBtn_Click"></asp:LinkButton>
                     <asp:LinkButton ID="BolgelereGoreFTKRaporuBtn" runat="server" CssClass="btn btn-outline-secondary float-end mr-2" Text="Bölgelere göre FTK Dağılımı" OnClick="BolgelereGoreFTKRaporuBtn_Click" CausesValidation="False"></asp:LinkButton>
-                    <asp:LinkButton ID="FTKYazilariBtn" runat="server" CssClass="btn btn-outline-secondary float-end mr-2" Text="FTK Yazisi" OnClick="FTKYazilariBtnBtn_Click" CausesValidation="False" Visible="False"></asp:LinkButton>
+                    <asp:LinkButton ID="FTKYazilariBtn" runat="server" CssClass="btn btn-outline-secondary float-end mr-2" Text="FTK Yazısı" OnClick="FTKYazilariBtnBtn_Click" CausesValidation="False" Visible="False"></asp:LinkButton>
                 </ContentTemplate>
                 <Triggers>
                     <asp:AsyncPostBackTrigger ControlID="IlcesiDDL" EventName="SelectedIndexChanged" />
@@ -229,7 +229,7 @@
                                 <asp:Label ID="ModalKurulusTarihiLbl" CssClass="form-control" runat="server"></asp:Label>
                             </div>
                             <div class="form-group col">
-                                <asp:Label CssClass="col-from-label fw-bold" runat="server" Text="FTK Guncelleme Tarihi"></asp:Label>
+                                <asp:Label CssClass="col-from-label fw-bold" runat="server" Text="FTK Güncelleme Tarihi"></asp:Label>
                                 <asp:Label ID="ModalGuncellemeTarihiLbl" CssClass="form-control" runat="server"></asp:Label>
                             </div>
                         </div>

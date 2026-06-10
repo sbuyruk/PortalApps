@@ -181,7 +181,7 @@ namespace NBYS_WebParts.EkstreListesiWP
             ScriptManager sm = ScriptManager.GetCurrent(this.Page);
             if (sm != null)
             {
-                sm.AsyncPostBackTimeout = 600; // saniye cinsinden (�rnek: 5 dakika)
+                sm.AsyncPostBackTimeout = 600; // saniye cinsinden (örnek: 5 dakika)
             }
             try
                 {
@@ -193,16 +193,16 @@ namespace NBYS_WebParts.EkstreListesiWP
                             if (IslemQS.ToLower().Equals("silme"))
                             {
                                 if (MesajQS.ToLower().Equals("true"))
-                                    MessageHelper.PublishMessage("Kayit Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
+                                    MessageHelper.PublishMessage("Kayıt Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
                                 else
-                                    MessageHelper.PublishMessage("Kayit Silinemedi", ProjeConstants.MESAJ_HATA);
+                                    MessageHelper.PublishMessage("Kayıt Silinemedi", ProjeConstants.MESAJ_HATA);
                             }
                             else if (IslemQS.ToLower().Equals("kaydet"))
                             {
                                 if (MesajQS.ToLower().Equals("true"))
-                                    MessageHelper.PublishMessage("Aktarma tamamlandi.", ProjeConstants.MESAJ_BASARILI, 2000);
+                                    MessageHelper.PublishMessage("Aktarma tamamlandı.", ProjeConstants.MESAJ_BASARILI, 2000);
                                 else
-                                    MessageHelper.PublishMessage("Aktarma yapilamadi.", ProjeConstants.MESAJ_HATA);
+                                    MessageHelper.PublishMessage("Aktarma yapılamadı.", ProjeConstants.MESAJ_HATA);
                             }
                             MesajQS = string.Empty;
                         }
@@ -248,18 +248,21 @@ namespace NBYS_WebParts.EkstreListesiWP
             FinansbankEkstreLbl.Text = ProjeConstants.BANKA_FINANSBANKEKSTRE;
             EDevletLbl.Text = ProjeConstants.BANKA_EDEVLETBAGIS;
             GarantiLbl.Text = ProjeConstants.BANKA_GARANTI;
+            GarantiEkstreLbl.Text = ProjeConstants.BANKA_GARANTIEKSTRE;
             HalkbankLbl.Text = ProjeConstants.BANKA_HALKBANK;
             Halkbank2Lbl.Text = ProjeConstants.BANKA_HALKBANK2;
             IsbankLbl.Text = ProjeConstants.BANKA_ISBANK;
-            YKBEkstreLbl.Text = ProjeConstants.BANKA_YKBEKSTRE_KISA;
+            IsbankEkstreLbl.Text = ProjeConstants.BANKA_ISBANKEKSTRE;
+            KartIleLbl.Text = ProjeConstants.BANKA_KARTILEBAGIS;
+            KioskLbl.Text = ProjeConstants.BANKA_KIOSK;
+            VakifbankLbl.Text = ProjeConstants.BANKA_VAKIF;
+            Vakifbank2Lbl.Text = ProjeConstants.BANKA_VAKIF2;
+            KioskLbl.Text = ProjeConstants.BANKA_KIOSK;
+            SMSVakifLbl.Text = ProjeConstants.BANKA_SMSVAKIF;
+            TebLbl.Text = ProjeConstants.BANKA_TEB;
             ZiraatBankLbl.Text = ProjeConstants.BANKA_ZIRAAT;
             ZiraatBankEkstreLbl.Text = ProjeConstants.BANKA_ZIRAATEKSTRE;
             ZiraatKatilimLbl.Text = ProjeConstants.BANKA_ZIRAAT_KATILIM;
-            VakifbankLbl.Text = ProjeConstants.BANKA_VAKIF;
-            Vakifbank2Lbl.Text = ProjeConstants.BANKA_VAKIF2;
-            KartIleLbl.Text = ProjeConstants.BANKA_KARTILEBAGIS;
-            SMSVakifLbl.Text = ProjeConstants.BANKA_SMSVAKIF;
-            KioskLbl.Text = ProjeConstants.BANKA_KIOSK;
 
             AkbankOkLbl.Text = string.Empty;
             AkbankEkstreOkLbl.Text = string.Empty;
@@ -268,16 +271,21 @@ namespace NBYS_WebParts.EkstreListesiWP
             FinansbankEkstreOkLbl.Text = string.Empty;
             EDevletOkLbl.Text = string.Empty;
             GarantiOkLbl.Text = string.Empty;
+            GarantiEkstreOkLbl.Text = string.Empty;
             HalkbankOkLbl.Text = string.Empty;
             Halkbank2OkLbl.Text = string.Empty;
             IsbankOkLbl.Text = string.Empty;
+            IsbankEkstreOkLbl.Text = string.Empty;
+            KartIleOkLbl.Text = string.Empty;
+            KioskOkLbl.Text = string.Empty;
+            SMSVakifOkLbl.Text = string.Empty;
+            TebOkLbl.Text = string.Empty;
+            VakifbankOkLbl.Text = string.Empty;
+            Vakifbank2OkLbl.Text = string.Empty;
             YKBEkstreOkLbl.Text = string.Empty;
             ZiraatBankOkLbl.Text = string.Empty;
             ZiraatBankEkstreOkLbl.Text = string.Empty;
             ZiraatKatilimOkLbl.Text = string.Empty;
-            KartIleOkLbl.Text = string.Empty;
-            SMSVakifOkLbl.Text = string.Empty;
-            KioskOkLbl.Text = string.Empty;
 
         }
         private void AktarilanBankalariOkLe(DateTime islemTarihi)
@@ -294,6 +302,17 @@ namespace NBYS_WebParts.EkstreListesiWP
             {
                 AkbankOkLbl.ForeColor = System.Drawing.Color.Red;
                 AkbankOkLbl.Text = "X";
+            }
+            bool isAkbankEkstreAktarildi = ekstreAktarma.CheckIsExistByBankaAdiAndIslemTarihi(ProjeConstants.BANKA_AKBANKEKSTRE , islemTarihi);
+            if (isAkbankEkstreAktarildi)
+            {
+                AkbankEkstreOkLbl.ForeColor = System.Drawing.Color.Green;
+                AkbankEkstreOkLbl.Text = "  " + ((char)0x221A).ToString();
+            }
+            else
+            {
+                AkbankEkstreOkLbl.ForeColor = System.Drawing.Color.Red;
+                AkbankEkstreOkLbl.Text = "X";
             }
             bool isAlbarakaAktarildi = ekstreAktarma.CheckIsExistByBankaAdiAndIslemTarihi(ProjeConstants.BANKA_ALBARAKA, islemTarihi);
             if (isAlbarakaAktarildi)
@@ -547,7 +566,7 @@ namespace NBYS_WebParts.EkstreListesiWP
                 if (aktarilmayanlar.Count > 0)
                 {
                     //var numbers = value?.Split(',')?.Select(Int32.Parse)?.ToList();
-                    var exceptionHelper = EkstreAktarma.SaveAll(aktarilmayanlar, currentUser); //se�ilenler diger tablolara dagitiliyor
+                    var exceptionHelper = EkstreAktarma.SaveAll(aktarilmayanlar, currentUser); //seçilenler diğer tablolara dağıtılıyor
                    
                     if (exceptionHelper.Exceptions.Count > 0)
                     {
@@ -558,14 +577,14 @@ namespace NBYS_WebParts.EkstreListesiWP
                     {
                         UtilityHelper.ScriptCalistir("CloseModalOnay();");
                         ScriptManager.RegisterStartupScript(this, this.GetType(), "HideLoader", "$('#customLoader').hide();", true);
-                        //RedirectToPage(ProjeConstants.PAGE_EKSTRE_LIST + "?Mesaj=true&Islem=kaydet&basarili=true&IslemTarihi=" + IslemTarihiQS + "&AktarilanlarHaric=" + AktarilanlarHaricQS + "&Banka=" + BankaQS);
+                        RedirectToPage(ProjeConstants.PAGE_EKSTRE_LIST + "?Mesaj=true&Islem=kaydet&basarili=true&IslemTarihi=" + IslemTarihiQS + "&AktarilanlarHaric=" + AktarilanlarHaricQS + "&Banka=" + BankaQS);
                     }
-                    RedirectToPage(ProjeConstants.PAGE_EKSTRE_LIST);
+                    //RedirectToPage(ProjeConstants.PAGE_EKSTRE_LIST);
                 }
             }
             else
             {
-                MessageHelper.PublishMessage("Hi� kayit se�ilmedi. Devam etmek i�in en az bir kayit se�iniz.", ProjeConstants.MESAJ_BILGI);
+                MessageHelper.PublishMessage("Hiç kayıt seçilmedi. Devam etmek için en az bir kayıt seçiniz.", ProjeConstants.MESAJ_BILGI);
             }
         }
         protected void SecilenListeyiSil()
@@ -590,7 +609,7 @@ namespace NBYS_WebParts.EkstreListesiWP
                     {
                         mesaj += " #" + counter + ":" + item.Adi;// + " BagisTarihi:" + item.BagisTarihi + " BagisMiktari:" + item.Tutar + " IslemTarihi:" + item.IslemTarihi.ConvertToDatetimeEmptyIfNull();
                         item.Delete();
-
+                        counter++; 
                     }
                     SilinenKayit sk = new SilinenKayit();
                     sk.Silen = currentUser;
@@ -615,14 +634,14 @@ namespace NBYS_WebParts.EkstreListesiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Hi� kayit se�ilmedi. Devam etmek i�in en az bir kayit se�iniz.", ProjeConstants.MESAJ_BILGI);
+                MessageHelper.PublishMessage("Hiç kayıt seçilmedi. Devam etmek için en az bir kayıt seçiniz.", ProjeConstants.MESAJ_BILGI);
             }
         }
         private void BankaDDLDoldur()
         {
             List<EkstreAktarmaListItem> returnlist = new List<EkstreAktarmaListItem>();
 
-            if (BankaDDL.SelectedItem == null)
+            if (BankaDDL.Items.Count == 0)
             {
                 BankaDDL.Items.Clear();
                 ListItem li = new ListItem(ProjeConstants.HEPSI, ProjeConstants.HEPSI_INT.ToString());
@@ -652,7 +671,7 @@ namespace NBYS_WebParts.EkstreListesiWP
             string banka = BankaDDL.SelectedItem.Text;
             DataTable dataTable = ea.SelectByIslemTarihi(islemTarihiDateTime, ref rowCount, AktarilanlarHaricQS.ConvertToBool(), banka);
 
-            //RowCountLbl.Text = "Kayit Sayisi : " + rowCount.ToString();
+            //RowCountLbl.Text = "Kayıt Sayısı : " + rowCount.ToString();
             List<EkstreAktarmaListItem> returnlist = new List<EkstreAktarmaListItem>();
             if (dataTable != null)
             {
@@ -682,8 +701,8 @@ namespace NBYS_WebParts.EkstreListesiWP
                         ekstreAktarmaListItem.DovizKuru = dovizKuru > 0 ? dovizKuru.ToString("N", culturInfo) : "";
                         ekstreAktarmaListItem.KurTarihi = dataRow["KurTarihi"].ToString().ConvertToDatetimeEmptyIfNull();
                     }
-                    ekstreAktarmaListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_EKSTRE_AKTARMAEDIT + "?SenderApp=KD&SenderApp=KL&EkstreAktarmaId=" + ekstreAktarmaListItem.EkstreAktarmaId + " class='btn btn-outline-primary'>D�zenle</a>";
-                    ekstreAktarmaListItem.Eslestir = "<a href=" + ProjeConstants.PAGE_NAKITBAGISCI_ESLESTIR + "?SenderApp=KD&SenderApp=KL&EkstreAktarmaId=" + ekstreAktarmaListItem.EkstreAktarmaId + " class='btn btn-outline-primary'>Eslestir</a>";
+                    ekstreAktarmaListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_EKSTRE_AKTARMAEDIT + "?SenderApp=KD&SenderApp=KL&EkstreAktarmaId=" + ekstreAktarmaListItem.EkstreAktarmaId + " class='btn btn-outline-primary'>Düzenle</a>";
+                    ekstreAktarmaListItem.Eslestir = "<a href=" + ProjeConstants.PAGE_NAKITBAGISCI_ESLESTIR + "?SenderApp=KD&SenderApp=KL&EkstreAktarmaId=" + ekstreAktarmaListItem.EkstreAktarmaId + " class='btn btn-outline-primary'>Eşleştir</a>";
 
                    bool aktarildiMi = dataRow["AktarildiMi"].ConvertToBool();
                     ekstreAktarmaListItem.AktarildiMi = aktarildiMi.ToString();
@@ -842,16 +861,21 @@ namespace NBYS_WebParts.EkstreListesiWP
         {
 
             string value = paramArray.Value;
+            if (string.IsNullOrEmpty(value))
+            {
+                MessageHelper.PublishMessage("Silmek için kayıt seçiniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                return;
+            }
             string[] idList = value.Split(',');
             if (idList.Length < 1)
             {
-                MessageHelper.PublishMessage("Silmek i�in kayit se�iniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                MessageHelper.PublishMessage("Silmek için kayıt seçiniz.", ProjeConstants.MESAJ_BILGI, 2000);
             }
             else
             {
-                ModalTitleLbl.Text = "Se�ilen Kayitlar Silinecek";
-                ModalSubTitleLbl.Text = idList.Length + " Adet kaydi silmek i�in se�tiniz.";
-                UyariMesajiLbl.Text = "L�tfen silmeden �nce dikkatle inceleyiniz.";
+                ModalTitleLbl.Text = "Seçilen Kayıtlar Silinecek";
+                ModalSubTitleLbl.Text = idList.Length + " adet kaydı silmek için seçtiniz.";
+                UyariMesajiLbl.Text = "Lütfen silmeden önce dikkatle inceleyiniz.";
                 SilNowBtn.Visible = true;
                 KaydetNowBtn.Visible = false;
                 var openPopup = "OpenModalOnay();";
@@ -871,8 +895,8 @@ namespace NBYS_WebParts.EkstreListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri �ekilip json a �eviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
+            var jsonData = TabloJson(); //veri çekilip json'a çevriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string TabloJson()
@@ -905,7 +929,7 @@ namespace NBYS_WebParts.EkstreListesiWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
                 jQuery(document).ready(function () {
                     jQuery('#CustomDataTable').DataTable({
-                        'initComplete': function (settings, json) {//tablo y�klendiginde
+                        'initComplete': function (settings, json) {//tablo yüklendiğinde
                             var api = this.api();
                             var row = api.row(function (idx, data, node) { //secilen toplantiya gider
                                 return data['Secildi'] == true;
@@ -995,13 +1019,13 @@ namespace NBYS_WebParts.EkstreListesiWP
 
             if (idList.Length < 1)
             {
-                MessageHelper.PublishMessage("Kaydetmek i�in kayit se�iniz.", ProjeConstants.MESAJ_BILGI, 2000);
+                MessageHelper.PublishMessage("Kaydetmek için kayıt seçiniz.", ProjeConstants.MESAJ_BILGI, 2000);
             }
             else
             {
-                ModalTitleLbl.Text = "Se�ilen Kayitlar Aktarilacak";
-                ModalSubTitleLbl.Text = idList.Length + " Adet satiri kaydetmek i�in se�tiniz.";
-                UyariMesajiLbl.Text = "L�tfen kaydetmeden �nce dikkatle inceleyiniz.";
+                ModalTitleLbl.Text = "Seçilen Kayıtlar Aktarılacak";
+                ModalSubTitleLbl.Text = idList.Length + " adet satırı kaydetmek için seçtiniz.";
+                UyariMesajiLbl.Text = "Lütfen kaydetmeden önce dikkatle inceleyiniz.";
                 KaydetNowBtn.Visible = true;
                 var openPopup = "OpenModalOnay();";
                 UtilityHelper.ScriptCalistir(openPopup);

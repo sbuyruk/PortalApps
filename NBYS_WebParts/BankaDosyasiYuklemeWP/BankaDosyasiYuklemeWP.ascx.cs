@@ -37,7 +37,6 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
         bool isIsbankAktarildi = false;
         bool isIsbankEkstreAktarildi = false;
         bool isYKBEkstreAktarildi = false;
-        bool isVakifBankAktarildi = false;
         bool isVakifBankGunlukAktarildi = false;
         bool isVakifBank2Aktarildi = false;
         bool isZiraatAktarildi = false;
@@ -109,13 +108,15 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
                         IslemTarihiTxt.Text = today.ToString(ProjeConstants.DATE_TR);
                     }
                     checkSavedFiles(IslemTarihiTxt.Text.ConvertToDatetime());
-                    NextBtn.Visible = (isAkbankAktarildi || isAkbankEkstreAktarildi ||isFinansbankAktarildi || isFinansbankEkstreAktarildi
-                        || isGarantiAktarildi || isGarantiEkstreAktarildi || isHalkBankAktarildi || isHalkbank2Aktarildi 
-                        || isIsbankAktarildi || isIsbankEkstreAktarildi
-                        || isVakifBankAktarildi || isVakifBankGunlukAktarildi || isVakifBank2Aktarildi
-                        || isVakifKatilimAktarildi || isTEBAktarildi 
-                        || isZiraatAktarildi || isZiraatEkstreAktarildi || isZiraatKatilimAktarildi) || isYKBEkstreAktarildi || isEDevletAktarildi
-                        || isSMSVakifAktarildi ; //isZiraatMT940Aktarildi || 
+
+                    NextBtn.Visible = isAkbankAktarildi || isAkbankEkstreAktarildi || isFinansbankAktarildi
+                        || isFinansbankEkstreAktarildi || isGarantiAktarildi || isGarantiEkstreAktarildi
+                        || isHalkBankAktarildi || isHalkbank2Aktarildi || isIsbankAktarildi
+                        || isIsbankEkstreAktarildi || isYKBEkstreAktarildi
+                        || isVakifBankGunlukAktarildi || isVakifBank2Aktarildi
+                        || isVakifKatilimAktarildi || isTEBAktarildi
+                        || isZiraatAktarildi || isZiraatEkstreAktarildi || isZiraatKatilimAktarildi
+                        || isEDevletAktarildi || isSMSVakifAktarildi || isAlbarakaAktarildi;
                 }
 
             }
@@ -169,7 +170,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
             VakifbankGunlukOkLbl.Text = string.Empty;
             Vakifbank2OkLbl.Text = string.Empty;
             Halkbank2OkLbl.Text = string.Empty;
-            VakifKatilimOk.Text = string.Empty;
+            VakifKatilimOkLbl.Text = string.Empty;
             ZiraatKatilimOkLbl.Text = string.Empty;
             AlbarakaOkLbl.Text = string.Empty;
         }
@@ -260,7 +261,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
             if (isVakifKatilimAktarildi)
             {
                 VakifKatilimFU.Enabled = false;
-                VakifKatilimOk.Text = "  " + ((char)0x221A).ToString();
+                VakifKatilimOkLbl.Text = "  " + ((char)0x221A).ToString();
             }
             isZiraatAktarildi = ekstreAktarma.CheckIsExistByBankaAdiAndIslemTarihi(ProjeConstants.BANKA_ZIRAAT, islemTarihi);
             if (isZiraatAktarildi)
@@ -360,8 +361,8 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
                 AlbarakaSave();
                 checkSavedFiles(IslemTarihiTxt.Text.ConvertToDatetime());
                 NextBtn.Visible = (isAkbankAktarildi || isFinansbankAktarildi || isGarantiAktarildi || isGarantiEkstreAktarildi 
-                    || isHalkBankAktarildi || isIsbankAktarildi || isIsbankEkstreAktarildi | isYKBEkstreAktarildi
-                    || isVakifBankAktarildi || isVakifBankGunlukAktarildi || isVakifBank2Aktarildi || isTEBAktarildi
+                    || isHalkBankAktarildi || isIsbankAktarildi || isIsbankEkstreAktarildi || isYKBEkstreAktarildi
+                    || isVakifBankGunlukAktarildi || isVakifBank2Aktarildi || isTEBAktarildi
                     || isHalkbank2Aktarildi || isVakifKatilimAktarildi || isZiraatAktarildi || isZiraatEkstreAktarildi 
                     || isZiraatKatilimAktarildi || isEDevletAktarildi
                     || isSMSVakifAktarildi || isAlbarakaAktarildi);
@@ -686,19 +687,21 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
         }
         private void VakifKatilimSave()
         {
-            if (!isVakifBankAktarildi && VakifKatilimFU.HasFile)
+            if (!isVakifKatilimAktarildi && VakifKatilimFU.HasFile)
             {
                 var exceptionHelper = EkstreAktarma.SaveVakifKatilimFile(VakifKatilimFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
                 if (exceptionHelper.Exceptions.Count > 0)
                 {
                     VakifKatilimFU.Enabled = true;
-                    VakifKatilimOk.Text = "X";
+                    VakifKatilimOkLbl.ForeColor = System.Drawing.Color.Red;
+                    VakifKatilimOkLbl.Text = "X";
                     exceptionHelper.PublishException();
                 }
                 else
                 {
                     VakifKatilimFU.Enabled = false;
-                    VakifKatilimOk.Text = "  " + ((char)0x221A).ToString();
+                    VakifKatilimOkLbl.ForeColor = System.Drawing.Color.Green;
+                    VakifKatilimOkLbl.Text = "  " + ((char)0x221A).ToString();
                 }
             }
         }
@@ -751,7 +754,7 @@ namespace NBYS_WebParts.BankaDosyasiYuklemeWP
                 var exceptionHelper = EkstreAktarma.SaveZiraatKatilimFile(ZiraatKatilimFU.FileContent, IslemTarihiTxt.Text.ConvertToDatetime(), CurrentUserName);
                 if (exceptionHelper.Exceptions.Count > 0)
                 {
-                    ZiraatKatilimFU.Enabled = false;
+                    ZiraatKatilimFU.Enabled = true;
                     ZiraatKatilimOkLbl.ForeColor = System.Drawing.Color.Red;
                     ZiraatKatilimOkLbl.Text = "X";
                     exceptionHelper.PublishException();

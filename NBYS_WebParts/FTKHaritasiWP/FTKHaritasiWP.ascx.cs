@@ -42,15 +42,15 @@ namespace NBYS_WebParts.FTKHaritasiWP
         private void FTKUyeTableHeaders()
         {
             TableCell siraNoCell = new TableCell();
-            siraNoCell.Text = "Sira";
+            siraNoCell.Text = "S覺ra";
             FTKUyeTableHeader.Controls.Add(siraNoCell);
 
             TableCell adiSoyadiCell = new TableCell();
-            adiSoyadiCell.Text = "Adi/Soyadi";
+            adiSoyadiCell.Text = "Ad覺/Soyad覺";
             FTKUyeTableHeader.Controls.Add(adiSoyadiCell);
 
             TableCell goreviCell = new TableCell();
-            goreviCell.Text = "G顤evi";
+            goreviCell.Text = "G繹revi";
             FTKUyeTableHeader.Controls.Add(goreviCell);
 
         }
@@ -67,9 +67,9 @@ namespace NBYS_WebParts.FTKHaritasiWP
 
                 TableRow row = new TableRow();
 
-                TableCell SiraCell = new TableCell();
-                SiraCell.Text = (sira++).ToString();
-                row.Controls.Add(SiraCell);
+                TableCell S覺raCell = new TableCell();
+                S覺raCell.Text = (sira++).ToString();
+                row.Controls.Add(S覺raCell);
 
                 TableCell AdiSoyadiCell = new TableCell();
                 AdiSoyadiCell.Text = adiSoyadi;
@@ -109,7 +109,7 @@ namespace NBYS_WebParts.FTKHaritasiWP
                 string ingIlAdi = paramLbl.Value;
                 Il il = new Il();
                 il = il.SelectByIngAdi(ingIlAdi);
-                FTKUyeTitleLbl.Text = il.IlAdi + " Ilinde Bulunan FTK 閍eleri";
+                FTKUyeTitleLbl.Text = il.IlAdi + " linde Bulunan FTK ��yeleri";
                 FTKUyeTableDoldur(il);
                 //ShowModal("Test");
                 ScriptManager.RegisterStartupScript(this, this.GetType(), System.Guid.NewGuid().ToString(), "OpenModal();", true);

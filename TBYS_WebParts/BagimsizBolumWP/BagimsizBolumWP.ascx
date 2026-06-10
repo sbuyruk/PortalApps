@@ -1,4 +1,4 @@
-﻿<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
+<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
 <%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
@@ -14,7 +14,7 @@
     }
 </script>
 
-<div class="container">
+<div class="col-xl">
     <div class="card shadow">
         <div class="card-header ">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
@@ -59,19 +59,19 @@
                                 
                                 <div class="col">
                                     <div class="form-group">
-                                        <asp:Label CssClass="col-form-label fw-bold" runat="server" Text="Bölüm No"></asp:Label>
+                                        <asp:Label CssClass="form-label fw-bold" runat="server" Text="Bölüm No"></asp:Label>
                                         <asp:TextBox ID="BolumNoTxt" runat="server" class="form-control"></asp:TextBox>
                                     </div>
                                 </div> 
                                 <div class="col">
                                     <div class="form-group">
-                                        <asp:Label CssClass="col-form-label fw-bold" runat="server" Text="Nitelik"></asp:Label>
+                                        <asp:Label CssClass="form-label fw-bold" runat="server" Text="Nitelik"></asp:Label>
                                         <asp:TextBox ID="NitelikTxt" runat="server" class="form-control"></asp:TextBox>
                                     </div>
                                 </div>
                                 <div class="col">
                                     <div class="form-group">
-                                        <asp:Label CssClass="col-form-label fw-bold" runat="server" Text="Metrekare"></asp:Label>
+                                        <asp:Label CssClass="form-label fw-bold" runat="server" Text="Metrekare"></asp:Label>
                                         <asp:TextBox ID="MetrekareTxt" runat="server" class="form-control"></asp:TextBox>
                                     </div>
                                 </div>
@@ -88,20 +88,46 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="form-group">
-                                        <asp:Label CssClass="col-form-label fw-bold" runat="server" Text="Adres"></asp:Label>
+                                        <asp:Label class="form-label fw-bold" runat="server" Text="Muhs.Kayt.Değ."></asp:Label>
+                                        <asp:TextBox ID="MuhasebeyeKayitliDegerTxt" class="form-control input-money text-end" runat="server" />
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <asp:Label class="form-label fw-bold text-end" runat="server" Text="Tah.Rayiç Değ."></asp:Label>
+                                        <asp:TextBox ID="TahminiRayicDegeriTxt" class="form-control input-money text-end" runat="server" />
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <asp:Label class="form-label fw-bold" runat="server" Text="Eml.Bey.Değ."></asp:Label>
+                                        <asp:TextBox ID="EmlakBeyanDegeriTxt" class="form-control input-money text-end" runat="server" />
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <asp:Label class="form-label fw-bold" runat="server" Text="Yak.Piyasa Değ."></asp:Label>
+                                        <asp:TextBox ID="YaklasikPiyasaDegeriTxt" class="form-control input-money text-end" runat="server" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <div class="form-group">
+                                        <asp:Label CssClass="form-label fw-bold" runat="server" Text="Adres"></asp:Label>
                                         <asp:TextBox ID="AdresTxt" runat="server" class="form-control" TextMode="MultiLine" Rows="3" ReadOnly="true"></asp:TextBox>
                                     </div>
                                 </div>
 
                                 <div class="col">
                                     <div class="form-group">
-                                        <asp:Label CssClass="col-form-label fw-bold" runat="server" Text="Açıklama"></asp:Label>
+                                        <asp:Label CssClass="form-label fw-bold" runat="server" Text="Açıklama"></asp:Label>
                                         <asp:TextBox ID="AciklamaTxt" CssClass="form-control" runat="server" Text="" TextMode="MultiLine" Rows="3"></asp:TextBox>
                                     </div>
                                 </div>
                             </div>
                             <div>
-                                <asp:Label ID="MessageLbl" runat="server" class="col-form-label"></asp:Label>
+                                <asp:Label ID="MessageLbl" runat="server" CssClass="form-label"></asp:Label>
                             </div>
                         </div>
                     </div>

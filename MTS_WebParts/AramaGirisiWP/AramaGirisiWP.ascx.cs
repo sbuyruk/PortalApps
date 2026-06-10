@@ -119,7 +119,7 @@ namespace MTS_WebParts.AramaGirisiWP
                 //FaaliyetBtnEnable();
                 if (AramaGorusmeIdQS.ConvertToInt() > 0)
                 {
-                    //düzenleme
+                    //dÃ¼zenleme
                     DuzenleAc();
                 }
                 else
@@ -132,7 +132,7 @@ namespace MTS_WebParts.AramaGirisiWP
         }
         private void GirisiAc()
         {
-            TitleLbl.Text = "Yeni Arama/Görüsme Girisi";
+            TitleLbl.Text = "Yeni Arama/GÃ¶rÃ¼sme Girisi";
             TitleLbl.CssClass = "col-form-label text-success fw-bold mb-1";
             KaydetBtn.Visible = false;
             GuncelleBtn.Visible = false;
@@ -152,14 +152,14 @@ namespace MTS_WebParts.AramaGirisiWP
                 KaydetBtn.Visible = false;
                 GuncelleBtn.Visible = false;
                 SilBtn.Visible = false;
-                MessageHelper.PublishMessage("Arama/Görüsme kaydetmek için bir kisi seçmelisiniz.", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Arama/GÃ¶rÃ¼sme kaydetmek iÃ§in bir kisi seÃ§melisiniz.", ProjeConstants.MESAJ_HATA);
             }
         }
         private void DuzenleAc()
         {
-            TitleLbl.Text = "Arama/Görüsme Düzenleme";
+            TitleLbl.Text = "Arama/GÃ¶rÃ¼sme DÃ¼zenleme";
             TitleLbl.CssClass = "col-form-label text-primary fw-bold mb-1";
-            IdLbl.Text = "( Arama/Görüsme No: " + AramaGorusmeIdQS + " )";
+            IdLbl.Text = "( Arama/GÃ¶rÃ¼sme No: " + AramaGorusmeIdQS + " )";
             KaydetBtn.Visible = false;
             GuncelleBtn.Visible = false;
             SilBtn.Visible = false;
@@ -192,7 +192,7 @@ namespace MTS_WebParts.AramaGirisiWP
                     KaydetBtn.Visible = false;
                     GuncelleBtn.Visible = false;
                     SilBtn.Visible = false;
-                    MessageHelper.PublishMessage("Arama/Görüsme kaydetmek için bir katilimci seçmelisiniz.", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Arama/GÃ¶rÃ¼sme kaydetmek iÃ§in bir katilimci seÃ§melisiniz.", ProjeConstants.MESAJ_HATA);
                 }
             }
             else
@@ -262,7 +262,7 @@ namespace MTS_WebParts.AramaGirisiWP
         }
         protected void FaaliyetBtn_Click(object sender, EventArgs e)
         {
-            //faaliyet ilgisi var mi bak (varsa popup ? olarak faaliyet bilgilerini göster faaliyetya git butonina basarak o faaliyetya git) 
+            //faaliyet ilgisi var mi bak (varsa popup ? olarak faaliyet bilgilerini gÃ¶ster faaliyetya git butonina basarak o faaliyetya git) 
             //
             //yoksa yeni faaliyet yaratayim mi diye sor, evetse yeni faaliyet yarat, yeni faaliyetnun irtibat kisisine bu kisiyi ekle
             if (FaaliyetIdQS.ConvertToInt() > 0)
@@ -273,7 +273,7 @@ namespace MTS_WebParts.AramaGirisiWP
             {
                 ModalLbl.Text = "Yeni Faaliyet Olusturulacak";
                 ModalLbl.CssClass = "col-form-label text-success fw-bold";
-                MessageLbl.Text = "Bu arama/görüsme ile iliskilendirilmis bir faaliyet bulunmamaktadir. Yeni faaliyet olusturulmasini onayliyor musunuz.";
+                MessageLbl.Text = "Bu arama/gÃ¶rÃ¼sme ile iliskilendirilmis bir faaliyet bulunmamaktadir. Yeni faaliyet olusturulmasini onayliyor musunuz.";
                 OnaylaBtn.Text = "Yeni Faaliyet Olustur";
                 OnaylaBtn.CssClass = "btn btn-outline-success";
 
@@ -350,7 +350,7 @@ namespace MTS_WebParts.AramaGirisiWP
                 if (guncellendiMi)
                 {
                     FaaliyetBtnEnable();
-                    MessageHelper.PublishMessage("Kayit Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("KayÄ±t GÃ¼ncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                 }
 
             }
@@ -362,7 +362,7 @@ namespace MTS_WebParts.AramaGirisiWP
             aramaGorusme = aramaGorusme.Select(AramaGorusmeIdQS.ConvertToInt());
             if (aramaGorusme != null)
             {
-                ModalLbl.Text = "Arama/Görüsme Kaydi Silinecek";
+                ModalLbl.Text = "Arama/GÃ¶rÃ¼sme Kaydi Silinecek";
                 ModalLbl.CssClass = "col-form-label text-danger fw-bold";
                 if (aramaGorusme.FaaliyetId > 0)
                 {
@@ -370,12 +370,12 @@ namespace MTS_WebParts.AramaGirisiWP
                     faaliyet = faaliyet.Select(aramaGorusme.FaaliyetId);
                     if (faaliyet != null)
                     {
-                        MessageLbl.Text = "Bu arama/görüsme ile iliskilendirilmis bir faaliyet bulunmaktadir. Arama kaydini silseniz de Faaliyet silinmeyecektir.";
+                        MessageLbl.Text = "Bu arama/gÃ¶rÃ¼sme ile iliskilendirilmis bir faaliyet bulunmaktadir. Arama kaydini silseniz de Faaliyet silinmeyecektir.";
                     }
                 }
-                MessageLbl.Text = "Bu arama/görüsme ile iliskilendirilmis bir faaliyet bulunmamaktadir. ";
-                MessageLbl.Text += " Arama/Görüsme kaydinin silinmesini onayliyor musunuz.";
-                OnaylaBtn.Text = "Aramayi/Görüsmeyi Sil";
+                MessageLbl.Text = "Bu arama/gÃ¶rÃ¼sme ile iliskilendirilmis bir faaliyet bulunmamaktadir. ";
+                MessageLbl.Text += " Arama/GÃ¶rÃ¼sme kaydinin silinmesini onayliyor musunuz.";
+                OnaylaBtn.Text = "Aramayi/GÃ¶rÃ¼smeyi Sil";
                 OnaylaBtn.CssClass = "btn btn-outline-danger";
 
                 kaydetGuncelleSilHdn.Value = ProjeConstants.SIL;
@@ -496,7 +496,7 @@ namespace MTS_WebParts.AramaGirisiWP
                         }
                         else
                         {
-                            MessageHelper.PublishMessage("Arama/Görüsme kaydi Bulunamadi", ProjeConstants.MESAJ_HATA);
+                            MessageHelper.PublishMessage("Arama/GÃ¶rÃ¼sme kaydi Bulunamadi", ProjeConstants.MESAJ_HATA);
                         }
                     }
                 }
@@ -506,7 +506,7 @@ namespace MTS_WebParts.AramaGirisiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Arama/Görüsme kaydi", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Arama/GÃ¶rÃ¼sme kaydi", ProjeConstants.MESAJ_HATA);
             }
 
             UtilityHelper.ScriptCalistir("CloseModalOnay();");
@@ -515,7 +515,7 @@ namespace MTS_WebParts.AramaGirisiWP
         {
             RedirectToPage(ProjeConstants.PAGE_KISI_GIRIS);
         }
-        #region Katilimci Seçimi
+        #region Katilimci SeÃ§imi
         protected void KatilimciSecBtn_Click(object sender, EventArgs e)
         {
             KatilimciModalAc();
@@ -527,7 +527,7 @@ namespace MTS_WebParts.AramaGirisiWP
         }
         private void TabloModalOlustur()
         {
-            var jsonData = TabloModalJson(); //veri çekilip json a çeviriliyor
+            var jsonData = TabloModalJson(); //veri Ã§ekilip json a Ã§eviriliyor
             var jsString = CreateModalDataTable(jsonData); //javascript kodu hazirlaniyor.
             System.Web.UI.ScriptManager.RegisterStartupScript((System.Web.UI.Page)System.Web.HttpContext.Current.Handler,
                 typeof(System.Web.UI.Page), System.Guid.NewGuid().ToString(), jsString, true);
@@ -617,7 +617,7 @@ namespace MTS_WebParts.AramaGirisiWP
                     katilimciItem.Kurumu = kurumu;
                     katilimciItem.KatilimciTipi = katilimciTipi.ToString();
 
-                    katilimciItem.KatilimciSec = "<a href='#' class='btn btn-outline-primary' onclick=KatilimciSecildiBtnClick(" + katilimciId + ")>SEÇ</a>";
+                    katilimciItem.KatilimciSec = "<a href='#' class='btn btn-outline-primary' onclick=KatilimciSecildiBtnClick(" + katilimciId + ")>SEÃ‡</a>";
 
                     list.Add(katilimciItem);
                 }

@@ -129,7 +129,7 @@ namespace TBYS_WebParts.OdemePlaniWP
                 kiraSozlesme = kiraSozlesme.Select(KiraSozlesmeIdQS.ConvertToInt());
                 if (kiraSozlesme != null)
                 {
-                    AdiLbl.Text = KiraciGetir(kiraSozlesme.KiraciId) + "( S�zlesme : " + kiraSozlesme.SozBasTar.ConvertToDatetimeEmptyIfNull() + " - " + kiraSozlesme.SozBitTar.ConvertToDatetimeEmptyIfNull() + ")";
+                    AdiLbl.Text = KiraciGetir(kiraSozlesme.KiraciId) + "( Sözleşme : " + kiraSozlesme.SozBasTar.ConvertToDatetimeEmptyIfNull() + " - " + kiraSozlesme.SozBitTar.ConvertToDatetimeEmptyIfNull() + ")";
                     if (string.IsNullOrEmpty(KiraciIdQS))
                         KiraciIdQS = kiraSozlesme.KiraciId.ToString();
                     if (!Page.IsPostBack)
@@ -137,11 +137,11 @@ namespace TBYS_WebParts.OdemePlaniWP
                         TBYSOrtak.BakiyeBorcHesapla(kiraSozlesme);
                         if (kiraSozlesme.GecikmeZammiTipi.Equals(ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_GUNLUK))
                         {
-                            GecikmeZammiTipiLbl.Text = "Gecikme Zammi : " + ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_GUNLUK;
+                            GecikmeZammiTipiLbl.Text = "Gecikme Zammı : " + ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_GUNLUK;
                         }
                         else
                         {
-                            GecikmeZammiTipiLbl.Text = "Gecikme Zammi : " + ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_AYLIK;
+                            GecikmeZammiTipiLbl.Text = "Gecikme Zammı : " + ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_AYLIK;
 
                         }
                         GecikmeZammmiGunlukBtn.Visible = !kiraSozlesme.GecikmeZammiTipi.Equals(ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_GUNLUK);
@@ -153,7 +153,7 @@ namespace TBYS_WebParts.OdemePlaniWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Kira S�zlesmesi Bulunamadi", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Kira Sözleşmesi Bulunamadı", ProjeConstants.MESAJ_HATA);
                 }
             }
 
@@ -260,7 +260,7 @@ namespace TBYS_WebParts.OdemePlaniWP
                     GecikmeZammiOraniBtn.CssClass = "btn btn-link text-end";
                     GecikmeZammiOraniBtn.Click += delegate
                     {
-                        PopupMesajLbl.Text = "Gecikme Zammi Orani";
+                        PopupMesajLbl.Text = "Gecikme Zammı Oranı";
                         GecikmeZammiBilgileriniDoldur(op.Id);
                         KiraBedeliDegistirDiv.Attributes["style"] = "display: none";
                         VadeGosterDiv.Attributes["style"] = "display: none";
@@ -287,7 +287,7 @@ namespace TBYS_WebParts.OdemePlaniWP
                     GecikmeZammiTutariBtn.CssClass = "btn btn-link text-end";
                     GecikmeZammiTutariBtn.Click += delegate
                     {
-                        PopupMesajLbl.Text = "Gecikme Zammi Tutari";
+                        PopupMesajLbl.Text = "Gecikme Zammı Tutarı";
                         GecikmeZammiBilgileriniDoldur(op.Id);
                         KiraBedeliDegistirDiv.Attributes["style"] = "display: none";
                         VadeGosterDiv.Attributes["style"] = "display: none";
@@ -318,7 +318,7 @@ namespace TBYS_WebParts.OdemePlaniWP
                 if (op.OdenenTutar > 0)
                 {
                     LinkButton OdemeListesiBtn = new LinkButton();
-                    OdemeListesiBtn.Text = "�demeler";
+                    OdemeListesiBtn.Text = "Ödemeler";
                     OdemeListesiBtn.CssClass = "btn btn-outline-primary";
                     OdemeListesiBtn.Click += delegate
                     {
@@ -368,7 +368,7 @@ namespace TBYS_WebParts.OdemePlaniWP
             }
             else
             {
-                MessageHelper.PublishMessage("Kira S�zlesmesi Bulunamadi", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Kira Sözleşmesi Bulunamadı", ProjeConstants.MESAJ_HATA);
             }
         }
         protected void KiraciKartiBtn_Click(object sender, EventArgs e)
@@ -385,12 +385,12 @@ namespace TBYS_WebParts.OdemePlaniWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Kiraci Bulunamadi", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Kiracı Bulunamadı", ProjeConstants.MESAJ_HATA);
                 }
             }
             else
             {
-                MessageHelper.PublishMessage("Kiraci Bulunamadi", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Kiracı Bulunamadı", ProjeConstants.MESAJ_HATA);
             }
         }
         protected void KiraciBtn_Click(object sender, EventArgs e)
@@ -407,12 +407,12 @@ namespace TBYS_WebParts.OdemePlaniWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Kiraci Bulunamadi", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Kiracı Bulunamadı", ProjeConstants.MESAJ_HATA);
                 }
             }
             else
             {
-                MessageHelper.PublishMessage("Kiraci Bulunamadi", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Kiracı Bulunamadı", ProjeConstants.MESAJ_HATA);
             }
 
         }
@@ -448,7 +448,7 @@ namespace TBYS_WebParts.OdemePlaniWP
             // kira sozlesmesinin sozbastar ve sozbittar alanlari dolu degilse 
             if (string.IsNullOrEmpty(kiraSozlesme.SozBasTar.ConvertToDatetimeEmptyIfNull()) || string.IsNullOrEmpty(kiraSozlesme.SozBitTar.ConvertToDatetimeEmptyIfNull()))
             {
-                MessageHelper.PublishMessage("Bu s�zlesme i�in �deme Plani olusturulamaz. �deme Plani olusturabilmek i�in, L�tfen Kira S�zlesmesinde S�zlesme Baslangi� ve Bitis tarihini giriniz", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Bu sözleşme için ödeme Plani oluşturulamaz. Ödeme Plani oluşturabilmek için, Lütfen Kira Sözleşmesinde Sözleşme Başlangıç ve Bitiş tarihini giriniz", ProjeConstants.MESAJ_HATA);
             }
             else
             {
@@ -474,7 +474,7 @@ namespace TBYS_WebParts.OdemePlaniWP
                 OdemePlaniEkleBtn.Visible = false;
                 OdemePlaniSilBtn.Visible = false;
                 //TumunuOdeBtn.Visible = false;
-                MessageHelper.PublishMessage("�deme plani olusturulamiyor. L�tfen s�zlesmenin baslama ve bitis tarihlerini girerek tekrar deneyin.", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Ödeme planı oluşturulamıyor. Lütfen sözleşmenin başlama ve bitiş tarihlerini girerek tekrar deneyin.", ProjeConstants.MESAJ_HATA);
             }
             else //if (SozlesmeGecerli(kiraSozlesme.SozBitTar))
             {
@@ -493,7 +493,7 @@ namespace TBYS_WebParts.OdemePlaniWP
                     GecikmeZammmiAylikBtn.Visible = !kiraSozlesme.GecikmeZammiTipi.Equals(ProjeConstants.KIRASOZLESME_GECIKMEZAMMI_AYLIK);
                 }
             }
-            if (!kiraSozlesme.Aktif)//bitmis bir kira s�zlesmesi
+            if (!kiraSozlesme.Aktif)//bitmis bir kira sözlesmesi
             {
                 TitleLbl.CssClass = "col-form-label text-secondary fw-bold mb-1";
                 AdiLbl.CssClass = "col-form-label text-secondary";
@@ -520,13 +520,13 @@ namespace TBYS_WebParts.OdemePlaniWP
                 }
                 else// odeme plani var
                 {
-                    MessageHelper.PublishMessage("�deme Plani Olusturulamaz. Zaten ge�erli bir �deme plani mevcut.", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Ödeme planı oluşturulamaz. Zaten geçerli bir ödeme planı mevcut.", ProjeConstants.MESAJ_HATA);
                 }
             }
 
             if (isSaved)
             {
-                MessageHelper.PublishMessage("�deme Plani Olusturuldu. �deme plani ge�erlilik Tarihi" + kiraSozlesme.SozBitTar + " -" + kiraSozlesme.SozBitTar, ProjeConstants.MESAJ_BASARILI, 2000);
+                MessageHelper.PublishMessage("Ödeme planı oluşturuldu. Ödeme planı geçerlilik tarihi " + kiraSozlesme.SozBitTar + " -" + kiraSozlesme.SozBitTar, ProjeConstants.MESAJ_BASARILI, 2000);
             }
             return isSaved;
         }
@@ -626,13 +626,13 @@ namespace TBYS_WebParts.OdemePlaniWP
                 }
                 else
                 {
-                    throw (new Exception("Kira S�zlesmesi mevcut degil."));
+                    throw (new Exception("Kira Sözleşmesi mevcut değil."));
                 }
             }
             catch (Exception exception)
             {
                 ExceptionHelper exHelper = new ExceptionHelper(exception);
-                exHelper.Exceptions.Add(new Exception("�deme Yapilamadi."));
+                exHelper.Exceptions.Add(new Exception("Ödeme Yapılamadı."));
                 exHelper.PublishException();
             }
 
@@ -652,18 +652,18 @@ namespace TBYS_WebParts.OdemePlaniWP
             //        {
             //            OdemePlani odemePlani = list[1];//ilk taksit, lits[0] da devir kaydi var
 
-            //            if (odemeTarihi < odemePlani.OdemeBasTar)// �deme baslama tarihinden �nce �deme yapilmis
+            //            if (odemeTarihi < odemePlani.OdemeBasTar)// ödeme baslama tarihinden önce ödeme yapilmis
             //            {
             //                odemePlani = odemePlani.SelectIlkOdemePlaniBySozlesmeId(kiraSozlesme.Id);//odemeyi ilk OdemePlanina kaydet 
             //                Odeme odeme = new Odeme();
             //                odeme = odeme.OdemeyiKaydetOdemePlaniniGuncelle(kiraSozlesme, odemePlani, OdemeTarihiTxt.Value.ConvertToDatetime(), OdenenTutarTxt.Value.ConvertToDecimal(), AciklamaTxt.Text, CurrentUserName);
             //                RedirectToPage(ProjeConstants.PAGE_ODEMEPLANI + "?SenderApp=" + SenderAppQS + "&KiraSozlesmeId=" + kiraSozlesme.Id);
             //            }
-            //            else if (odemeTarihi > odemePlani.OdemeBitTar)//�deme bitis tarihinden sonra �deme yapilmis
+            //            else if (odemeTarihi > odemePlani.OdemeBitTar)//ödeme bitis tarihinden sonra ödeme yapilmis
             //            {
             //                //
             //                // Taksit SB
-            //                // s�zlesme yilliksa ve �deme s�zlesme bitmeden yapilmissa
+            //                // sözlesme yilliksa ve ödeme sözlesme bitmeden yapilmissa
             //                if ((kiraSozlesme.OdemeSekli == ProjeConstants.KIRA_ODMSEKLI_YILLIK) &&
             //                    odemeTarihi < kiraSozlesme.SozBitTar)
             //                {
@@ -671,12 +671,12 @@ namespace TBYS_WebParts.OdemePlaniWP
             //                    {
             //                        odemePlani = odemePlani.SelectBySozlesmeIdOdemeTarihi(kiraSozlesme.Id, OdemeTarihiTxt.Value.ConvertToDatetime());
             //                    }
-            //                    else //1 taksitte �denenlerde odemem plani tarihe g�re bulunanamayabiliyor o y�zden son takside eklesin
+            //                    else //1 taksitte ödenenlerde odemem plani tarihe göre bulunanamayabiliyor o yüzden son takside eklesin
             //                    {
             //                        odemePlani = odemePlani.SelectSonOdemePlaniBySozlesmeId(kiraSozlesme.Id);  //odemeyi son OdemePlanina kaydet   
             //                    }
             //                    if (odemePlani == null)
-            //                        throw (new Exception("�deme Plani mevcut degil."));
+            //                        throw (new Exception("Ödeme Plani mevcut degil."));
             //                    else
             //                    {
             //                        Odeme odeme = new Odeme();
@@ -688,7 +688,7 @@ namespace TBYS_WebParts.OdemePlaniWP
             //                else
 
             //                {
-            //                    //throw (new Exception("�deme Tarihi S�zlesme bitisinden sonra olamaz."));
+            //                    //throw (new Exception("Ödeme Tarihi Sözlesme bitisinden sonra olamaz."));
             //                    odemePlani = odemePlani.SelectSonOdemePlaniBySozlesmeId(kiraSozlesme.Id);  //odemeyi son OdemePlanina kaydet   
             //                    if (odemePlani != null)
             //                    {
@@ -698,7 +698,7 @@ namespace TBYS_WebParts.OdemePlaniWP
             //                    }
             //                    else
             //                    {
-            //                        throw (new Exception("�deme Plani Bulunamadi."));
+            //                        throw (new Exception("Ödeme Plani Bulunamadi."));
             //                    }
 
             //                }
@@ -712,7 +712,7 @@ namespace TBYS_WebParts.OdemePlaniWP
             //                    odemePlani = odemePlani.SelectSonOdemePlaniBySozlesmeId(kiraSozlesme.Id);  //odemeyi son OdemePlanina kaydet   
             //                }
             //                if (odemePlani == null)
-            //                    throw (new Exception("�deme Plani mevcut degil."));
+            //                    throw (new Exception("Ödeme Plani mevcut degil."));
             //                else
             //                {
             //                    Odeme odeme = new Odeme();
@@ -723,14 +723,14 @@ namespace TBYS_WebParts.OdemePlaniWP
             //            }
 
             //        }
-            //        throw (new Exception("�deme Plani mevcut degil."));
+            //        throw (new Exception("Ödeme Plani mevcut degil."));
             //    }
-            //    throw (new Exception("Kira S�zlesmesi mevcut degil."));
+            //    throw (new Exception("Kira Sözlesmesi mevcut degil."));
             //}
             //catch (Exception ex)
             //{
             //    ExceptionHelper exHelper = new ExceptionHelper(ex);
-            //    exHelper.Exceptions.Add(new Exception("�deme Yapilamadi."));
+            //    exHelper.Exceptions.Add(new Exception("Ödeme Yapilamadi."));
             //    exHelper.PublishException();
             //}
         }
@@ -739,7 +739,7 @@ namespace TBYS_WebParts.OdemePlaniWP
             IFormatProvider culturInfo = new CultureInfo(ProjeConstants.CULTUREINFO, true);
             Kiraci kiraci = new Kiraci();
             kiraci = kiraci.Select<Kiraci>(kiraSozlesme.KiraciId);
-            BaslikLbl.Text = "Kiraci: " + kiraci.Adi + " " + kiraci.Soyadi;
+            BaslikLbl.Text = "Kiracı: " + kiraci.Adi + " " + kiraci.Soyadi;
             DateTime tarih = new DateTime(yil, ay, 1);
             TarihLbl.Text = "(" + tarih.ToString("MMMM") + " " + yil + ")";
             int SiraNo = 1;

@@ -209,29 +209,29 @@ namespace IKYS_WebParts.YoklamaGirisiWP
                     {
                         PersonelDiv.Attributes["style"] = "display:block";
                         YoklamaListesiBtn.Visible = false;
-                        SelectDDLByText(BulunmamaSebebiDDL, "Görevli");
+                        SelectDDLByText(BulunmamaSebebiDDL, "GÃ¶revli");
                         AciklamaTxt.Enabled = true;
                         BulunmamaSebebiDDL.Enabled = false;
-                        TitleLbl.Text = "Sehir Içi Görev Formu";
+                        TitleLbl.Text = "Sehir IÃ§i GÃ¶rev Formu";
                     }
                     else
                     {
                         //personelDiv display:none yap
                         PersonelDiv.Attributes["style"] = "display:none";
 
-                        SelectDDLByText(BulunmamaSebebiDDL, "Görevli");
+                        SelectDDLByText(BulunmamaSebebiDDL, "GÃ¶revli");
                         AciklamaTxt.Enabled = true;
                         BulunmamaSebebiDDL.Enabled = false;
-                        TitleLbl.Text = "Sehir Içi Görev Formu";
+                        TitleLbl.Text = "Sehir IÃ§i GÃ¶rev Formu";
                     }
                     if (UzaktanCalismaQS.Equals("true"))
                     {
 
-                        SelectDDLByText(BulunmamaSebebiDDL, "Görevli");
-                        AciklamaTxt.Text = "Uzaktan Çalisma";
+                        SelectDDLByText(BulunmamaSebebiDDL, "GÃ¶revli");
+                        AciklamaTxt.Text = "Uzaktan Ã‡alisma";
                         AciklamaTxt.Enabled = false;
                         BulunmamaSebebiDDL.Enabled = false;
-                        TitleLbl.Text = "Uzaktan Çalisma Görev Formu";
+                        TitleLbl.Text = "Uzaktan Ã‡alisma GÃ¶rev Formu";
                         IletisimBilgileri ib = new IletisimBilgileri();
                         ib = ib.SelectByPersonelId(PersonelIdQS.ConvertToInt());
                         if (ib != null)
@@ -258,15 +258,15 @@ namespace IKYS_WebParts.YoklamaGirisiWP
                     {
                         AciklamaTxt.Enabled = true;
                         if (AuthQS.Equals("IKYS"))
-                            RaporAlBtn.Visible = true;//imzali nüsha Gn.Md.tarafindan kaldirildi
+                            RaporAlBtn.Visible = true;//imzali nÃ¼sha Gn.Md.tarafindan kaldirildi
                     }
                     if (UzaktanCalismaQS.Equals("true"))
                     {
-                        SelectDDLByText(BulunmamaSebebiDDL, "Görevli");
-                        AciklamaTxt.Text = "Uzaktan Çalisma";
+                        SelectDDLByText(BulunmamaSebebiDDL, "GÃ¶revli");
+                        AciklamaTxt.Text = "Uzaktan Ã‡alisma";
                         AciklamaTxt.Enabled = false;
                         BulunmamaSebebiDDL.Enabled = false;
-                        TitleLbl.Text = "Uzaktan Çalisma Görev Formu";
+                        TitleLbl.Text = "Uzaktan Ã‡alisma GÃ¶rev Formu";
                         RaporAlBtn.Visible = true;
                     }
                 }
@@ -284,7 +284,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
             DeleteBtn.Visible = true;
             UpdateBtn.Visible = true;
             TitleLbl.CssClass = "col-form-primary  btn-outline-primary mb-1";
-            TitleLbl.Text = "Yoklama Düzenleme";
+            TitleLbl.Text = "Yoklama DÃ¼zenleme";
             Personel personel = PersonelGetir();
             if (!Page.IsPostBack)
             {
@@ -509,7 +509,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
         /// <summary>
         /// QueryString'den gelen YoklamaIdQS ile Yoklama_Table'dan kayit getir
         /// Bu bilgileri forma doldur
-        /// Güncelle butonunu aç
+        /// GÃ¼ncelle butonunu aÃ§
         /// Kaydet butonunu sakla
         /// </summary>
         private void YoklamaFormunuDoldur()
@@ -532,7 +532,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Kayit bulunamadi", ProjeConstants.MESAJ_BILGI);
+                MessageHelper.PublishMessage("KayÄ±t bulunamadÄ±", ProjeConstants.MESAJ_BILGI);
             }
         }
         private string SelectDDLValue(DropDownList ddlList, string value)
@@ -611,7 +611,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
                             if ((BulunmamaSebebiDDL.SelectedItem.Value.ConvertToInt() == ProjeConstants.BULUNMAMASEBEBI_GOREVLI_INT)
                                 && AciklamaTxt.Text.Contains(ProjeConstants.BULUNMAMASEBEBI_GOREVLI_UZAKTANCALISMA))
                             {
-                                MessageHelper.PublishMessage("Görev Kaydedildi. Formun çiktisini 'Rapor Al' dügmesine tiklayarak alabilirsiniz", ProjeConstants.MESAJ_BASARILI, 4000);
+                                MessageHelper.PublishMessage("GÃ¶rev Kaydedildi. Formun Ã§Ä±ktÄ±sÄ±nÄ± 'Rapor Al' dÃ¼ÄŸmesine tÄ±klayarak alabilirsiniz", ProjeConstants.MESAJ_BASARILI, 4000);
                                 RaporAlBtn.Visible = true;
                             }
                             else
@@ -623,12 +623,12 @@ namespace IKYS_WebParts.YoklamaGirisiWP
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Lütfen bilgileri tamamlayiniz.", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("LÃ¼tfen bilgileri tamamlayÄ±nÄ±z.", ProjeConstants.MESAJ_HATA);
                     }
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Personel Bulunamadi!", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Personel BulunamadÄ±!", ProjeConstants.MESAJ_HATA);
                 }
 
             }
@@ -645,7 +645,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
             Yoklama yoklama = new Yoklama();
             if (CakismaVarMi(0))
             {
-                MessageHelper.PublishMessage("Kaydedilemedi. Girilen tarihle çakisan bir görev bulunmaktadir. ", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Kaydedilemedi. Girilen tarihle Ã§akisan bir gÃ¶rev bulunmaktadir. ", ProjeConstants.MESAJ_HATA);
             }
             else
             {
@@ -746,12 +746,12 @@ namespace IKYS_WebParts.YoklamaGirisiWP
                         bool isUpdated = Guncelle();
                         if (isUpdated)
                         {
-                            MessageHelper.PublishMessage("Güncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
+                            MessageHelper.PublishMessage("GÃ¼ncellendi", ProjeConstants.MESAJ_BASARILI, 2000);
                         }
                     }
                     else
                     {
-                        MessageHelper.PublishMessage("Lütfen bilgileri tamamlayiniz.", ProjeConstants.MESAJ_HATA);
+                        MessageHelper.PublishMessage("LÃ¼tfen bilgileri tamamlayiniz.", ProjeConstants.MESAJ_HATA);
                     }
                 }
                 else
@@ -763,7 +763,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
             catch (Exception exception)
             {
                 ExceptionHelper exceptionHelper = new ExceptionHelper(exception);
-                Exception exceptionInfo = new Exception("Güncellenemedi");
+                Exception exceptionInfo = new Exception("GÃ¼ncellenemedi");
                 exceptionHelper.Exceptions.Add(exceptionInfo);
                 exceptionHelper.PublishException();
             }
@@ -775,7 +775,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
 
             if (CakismaVarMi(YoklamaIdQS.ConvertToInt()))
             {
-                MessageHelper.PublishMessage("Kaydedilemedi. Girilen tarihle çakisan bir görev bulunmaktadir. ", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Kaydedilemedi. Girilen tarihle Ã§akisan bir gÃ¶rev bulunmaktadir. ", ProjeConstants.MESAJ_HATA);
             }
             else
             {
@@ -848,7 +848,7 @@ namespace IKYS_WebParts.YoklamaGirisiWP
         }
         protected void DeleteBtn_Click(object sender, EventArgs e)
         {
-            SilLbl.Text = "Lütfen Dikkat: Yoklama Kaydi Silinecek";
+            SilLbl.Text = "LÃ¼tfen Dikkat: Yoklama Kaydi Silinecek";
             SilmeMesajiLbl.Text = "Yoklama Kaydini Silmek Istediginizden Emin misiniz?";
             DeleteNowBtn.Visible = true;
             var openPopup = "OpenModal();";

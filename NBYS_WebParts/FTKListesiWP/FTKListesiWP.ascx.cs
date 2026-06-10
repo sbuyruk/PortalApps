@@ -280,8 +280,8 @@ namespace NBYS_WebParts.FTKListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
+            var jsonData = TabloJson(); //veri Ã§ekilip json'a Ã§evriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazÄ±rlanÄ±yor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string TabloJson()
@@ -323,13 +323,13 @@ namespace NBYS_WebParts.FTKListesiWP
 
                     if (GrupDDL.SelectedItem.Value.ConvertToInt() == ProjeConstants.FTK_GRUPLAMA_IL_ILCEYE_GORE_INT)
                     {
-                        if ((IlcesiIdQS.ConvertToInt() == ProjeConstants.VALILIK_INT) && (iliId == tempIlId))// sadece il seçili ise
+                        if ((IlcesiIdQS.ConvertToInt() == ProjeConstants.VALILIK_INT) && (iliId == tempIlId))// sadece il seï¿½ili ise
                         {
                             tempIlceId = ilcesiId;
                             tempIlId = iliId;
                             continue;
                         }
-                        if ((iliId == tempIlId) && (ilcesiId == tempIlceId))//sadece ilçe seçili ise
+                        if ((iliId == tempIlId) && (ilcesiId == tempIlceId))//sadece ilï¿½e seï¿½ili ise
                         {
                             tempIlceId = ilcesiId;
                             tempIlId = iliId;

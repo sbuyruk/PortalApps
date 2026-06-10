@@ -138,7 +138,7 @@ namespace TBYS_WebParts.BorcluKiracilarByBolgeWP
             HyperLinkEkle(ProjeConstants.PAGE_MEVCUTKIRACI_LIST, TopKiraciSayisiCell, adetGT.ToString(), ProjeConstants.BOLGE_HEPSI_INT, ProjeConstants.HEPSI_INT, ProjeConstants.HEPSI_INT);
 
             DateTime secilenTarih = new DateTime(yil, ay, 1);
-            #region içinde bulundugumuz ay için bugünü esas alsin
+            #region iÃ§inde bulundugumuz ay iÃ§in bugÃ¼nÃ¼ esas alsin
             //DateTime buAyIlkGun = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
             //if (secilenTarih == buAyIlkGun)
             //{
@@ -236,7 +236,7 @@ namespace TBYS_WebParts.BorcluKiracilarByBolgeWP
 
 
 
-            //Genel Müdürlük
+            //Genel MÃ¼dÃ¼rlÃ¼k
             HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Ank1AyCell, birAyBorcluAnk.ToString(), ProjeConstants.BOLGE_ANKARA_INT, birAyBorcluOlanlar, birAyBorcluOlanlar);
             HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Ank2AyCell, ikiAyBorcluAnk.ToString(), ProjeConstants.BOLGE_ANKARA_INT, ikiAyBorcluOlanlar, ikiAyBorcluOlanlar);
             HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Ank3AyCell, ucAyBorcluAnk.ToString(), ProjeConstants.BOLGE_ANKARA_INT, ucAyBorcluOlanlar, ucAyBorcluOlanlar);
@@ -266,14 +266,14 @@ namespace TBYS_WebParts.BorcluKiracilarByBolgeWP
             HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Erz3AyCell, ucAyBorcluErz.ToString(), ProjeConstants.BOLGE_ERZURUM_INT, ucAyBorcluOlanlar, ucAyBorcluOlanlar);
             HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Erz4AyCell, dortAyBorcluErz.ToString(), ProjeConstants.BOLGE_ERZURUM_INT, dortAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
 
-            //bölge toplamlari
+            //bÃ¶lge toplamlari
             HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Top1AyCell, birAyBorcluTop.ToString(), ProjeConstants.BOLGE_HEPSI_INT, birAyBorcluOlanlar, birAyBorcluOlanlar);
             HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Top2AyCell, ikiAyBorcluTop.ToString(), ProjeConstants.BOLGE_HEPSI_INT, ikiAyBorcluOlanlar, ikiAyBorcluOlanlar);
             HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Top3AyCell, ucAyBorcluTop.ToString(), ProjeConstants.BOLGE_HEPSI_INT, ucAyBorcluOlanlar, ucAyBorcluOlanlar);
             HyperLinkEkle(ProjeConstants.PAGE_BORCLUKIRACI_LIST, Top4AyCell, dortAyBorcluTop.ToString(), ProjeConstants.BOLGE_HEPSI_INT, dortAyBorcluOlanlar, sonsuzAyBorcluOlanlar);
 
 
-            //ay bölge toplamlari --en sag sütun
+            //ay bÃ¶lge toplamlari --en sag sÃ¼tun
             string AnkTop = (birAyBorcluAnk + ikiAyBorcluAnk + ucAyBorcluAnk + dortAyBorcluAnk).ToString();
             string istTop = (birAyBorcluIst + ikiAyBorcluIst + ucAyBorcluIst + dortAyBorcluIst).ToString();
             string izmTop = (birAyBorcluIzm + ikiAyBorcluIzm + ucAyBorcluIzm + dortAyBorcluIzm).ToString();
@@ -337,17 +337,17 @@ namespace TBYS_WebParts.BorcluKiracilarByBolgeWP
         private void AyDDLDoldur()
         {
             AyDDL.Items.Add(new ListItem("Ocak", "1"));
-            AyDDL.Items.Add(new ListItem("Subat", "2"));
+            AyDDL.Items.Add(new ListItem("Åžubat", "2"));
             AyDDL.Items.Add(new ListItem("Mart", "3"));
             AyDDL.Items.Add(new ListItem("Nisan", "4"));
-            AyDDL.Items.Add(new ListItem("Mayis", "5"));
+            AyDDL.Items.Add(new ListItem("MayÄ±s", "5"));
             AyDDL.Items.Add(new ListItem("Haziran", "6"));
             AyDDL.Items.Add(new ListItem("Temmuz", "7"));
-            AyDDL.Items.Add(new ListItem("Agustos", "8"));
-            AyDDL.Items.Add(new ListItem("Eylül", "9"));
+            AyDDL.Items.Add(new ListItem("AÄŸustos", "8"));
+            AyDDL.Items.Add(new ListItem("EylÃ¼l", "9"));
             AyDDL.Items.Add(new ListItem("Ekim", "10"));
-            AyDDL.Items.Add(new ListItem("Kasim", "11"));
-            AyDDL.Items.Add(new ListItem("Aralik", "12"));
+            AyDDL.Items.Add(new ListItem("KasÄ±m", "11"));
+            AyDDL.Items.Add(new ListItem("AralÄ±k", "12"));
 
         }
         private void YilDDLDoldur()
@@ -363,7 +363,7 @@ namespace TBYS_WebParts.BorcluKiracilarByBolgeWP
         protected void ExportToExcel()
         {
             string filename = "BorcluKiracilarRaporu" + DateTime.Now.Day.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Year.ToString() + ".xls";
-            //Türkçe sorunu yok
+            //TÃ¼rkÃ§e sorunu yok
             Page.Response.Clear();
             Page.Response.AddHeader("content-disposition", "attachment;filename=" + filename + "");
             Page.Response.ContentType = "application/ms-excel";

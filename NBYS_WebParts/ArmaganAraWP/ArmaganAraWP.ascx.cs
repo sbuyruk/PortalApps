@@ -52,7 +52,7 @@ namespace NBYS_WebParts.ArmaganAraWP
                 ViewState["SecilenId"] = value;
             }
         }
-        private string ParamQS//nakit bagisci d�zenlemeden d�n�yorsa aranan texti tekrar arasin
+        private string ParamQS//nakit bağışçı düzenlemeden dönüyorsa aranan metni tekrar arasın
         {
             get
             {
@@ -108,8 +108,8 @@ namespace NBYS_WebParts.ArmaganAraWP
         }
         private void TabloOlustur()
         {
-            var jsonData = GetArmaganData(); //veri �ekilip json a �eviriliyor
-            var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
+            var jsonData = GetArmaganData(); //veri çekilip json'a çevriliyor
+            var jsString = CreateDataTable(jsonData); //javascript kodu hazırlanıyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string CreateDataTable(string jsonData)
@@ -118,9 +118,9 @@ namespace NBYS_WebParts.ArmaganAraWP
             jQuery(document).ready(function () {
 
             jQuery('#CustomDataTable').DataTable({
-                'initComplete': function (settings, json) {//tablo y�klendiginde
+                'initComplete': function (settings, json) {//tablo yüklendiğinde
                     var api = this.api();
-                    var row = api.row(function(idx, data, node) { //secilen satira gider
+                    var row = api.row(function(idx, data, node) { //seçilen satıra gider
                         return data['ArmaganId'] ==" + SecilenIdQS + @";
                     });
                     if (row.length > 0)
@@ -248,8 +248,8 @@ namespace NBYS_WebParts.ArmaganAraWP
         }
         private void TabloModalOlustur(string nakitBagisciId)
         {
-            var jsonData = GetModalDataJson(nakitBagisciId); //veri �ekilip json a �eviriliyor
-            var jsString = CreateModalDataTable(jsonData, nakitBagisciId.ConvertToInt()); //javascript kodu hazirlaniyor.
+            var jsonData = GetModalDataJson(nakitBagisciId); //veri çekilip json'a çevriliyor
+            var jsString = CreateModalDataTable(jsonData, nakitBagisciId.ConvertToInt()); //javascript kodu hazırlanıyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
         private string CreateModalDataTable(string jsonData, int nakitBagisciId)
@@ -343,8 +343,8 @@ namespace NBYS_WebParts.ArmaganAraWP
             var json = nbh.SelectByBagisciIdReturnJSon(nakitBagisciId, ref rowCount);
             decimal toplamTutar = nbh.GetSumBagisMiktariByNakitBagisciIdBetweenBasTarBitTar(
                 ProjeConstants.BAGIS_SORGU_BASTAR.ConvertToDatetime(), DateTime.Today, nakitBagisciId.ConvertToInt());
-            BagisBilgileriLbl.Text = rowCount < 1 ? "Bagis bulunmamaktadir" :
-                "Bagis�inin " + rowCount + " defada yaptigi toplam " + toplamTutar.ToString("N", culturInfo) + "TL bagisi bulunmaktadir";
+            BagisBilgileriLbl.Text = rowCount < 1 ? "Bağış bulunmamaktadır" :
+                "Bağışçının " + rowCount + " defada yaptığı toplam " + toplamTutar.ToString("N", culturInfo) + " TL bağışı bulunmaktadır";
             return json;
         }
         protected void ModalDoldurBtn_Click(object sender, EventArgs e)
@@ -402,7 +402,7 @@ namespace NBYS_WebParts.ArmaganAraWP
                         IlIlceCell.Text += " " + ilce.IlceAdi.ReturnEmptyIfNull().ToString();
                     }
                     TelefonCell.Text = nakitBagisci.Telefon1.ReturnEmptyIfNull().ToString();
-                    TuzelKisiCell.Text = nakitBagisci.TuzelKisi.ConvertToBool() ? "Evet" : "Hayir";
+                    TuzelKisiCell.Text = nakitBagisci.TuzelKisi.ConvertToBool() ? "Evet" : "Hayır";
                     row.Controls.Add(AdiCell);
                     row.Controls.Add(TCKimlikNoCell);
                     row.Controls.Add(AdresCell);

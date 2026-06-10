@@ -179,7 +179,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
                 }
                 else
                 {
-                    MessageHelper.PublishMessage("Kiraci Bulunamadi", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Kiracı Bulunamadı", ProjeConstants.MESAJ_HATA);
                 }
                 if (BolgeIdQS.ConvertToInt() == ProjeConstants.BOLGE_HEPSI_INT || BolgeIdQS.ConvertToInt() == ProjeConstants.BOLGE_GENELMUDURLUK_INT)
                 {
@@ -249,7 +249,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
             try
             {
                 List<OdemeListItem> list = new List<OdemeListItem>();
-                var jsonData = GetJsonData(); //veri �ekilip json a �eviriliyor
+                var jsonData = GetJsonData(); //veri çekilip json a çeviriliyor
                                               //var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
                 UtilityHelper.ScriptCalistir("setDataSet(" + jsonData + ");");
                 ToplamLbl.Text = "Toplam: " + GetToplamOdeme();
@@ -312,7 +312,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
             }
             else
             {
-                MessageHelper.PublishMessage("S�zlesme Bulunamadi", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Sözleşme Bulunamadı", ProjeConstants.MESAJ_HATA);
             }
         }
         protected void CloseBtn_Click(object sender, EventArgs e)
@@ -344,7 +344,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
             }
             else
             {
-                MessageHelper.PublishMessage("Kiraci Bulunamadi", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Kiracı Bulunamadı", ProjeConstants.MESAJ_HATA);
             }
 
 
@@ -362,7 +362,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
                 kiraSozlesme = kiraSozlesme.SelectBitenSozlesmeByKiraciId(KiraciIdQS.ConvertToInt());
 
                 if (kiraSozlesme == null)
-                    MessageHelper.PublishMessage("Kiraciya ait bir Kira S�zlesmesi bulunamadi.", ProjeConstants.MESAJ_HATA);
+                    MessageHelper.PublishMessage("Kiracıya ait bir Kira Sözleşmesi bulunamadı.", ProjeConstants.MESAJ_HATA);
             }
         }
         protected void SozlesmeListBtn_Click(object sender, EventArgs e)
@@ -414,7 +414,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
             }
             else
             {
-                MessageHelper.PublishMessage("Kira S�zlesmesi Bulunamadi", ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Kira Sözlesmesi Bulunamadi", ProjeConstants.MESAJ_HATA);
             }
 
         }
@@ -453,7 +453,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
         }
         private void TabloModalOlustur()
         {
-            var jsonData = GetKiraciData(); //veri �ekilip json a �eviriliyor
+            var jsonData = GetKiraciData(); //veri çekilip json a çeviriliyor
             var jsString = CreateModalDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -477,7 +477,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
                 },
             columnDefs:[
                 {targets:5, render:function(data, type, row, meta){
-                    var link='<a href=# onclick=CallButtonClick('+row.KiraciId + '); class=\'btn btn-outline-primary \'>Se�</a>';
+                    var link='<a href=# onclick=CallButtonClick('+row.KiraciId + '); class=\'btn btn-outline-primary \'>Seç</a>';
     
                     return link;
                 }}],   
@@ -642,7 +642,7 @@ namespace TBYS_WebParts.KiraciAylikOdemeWP
                         if (duzenleGorunsunMu)
                         {
                             item.KiraciAdiSoyadi = "<a href=" + ProjeConstants.PAGE_ODEMEPLANI + "?KiraSozlesmeId=" + sozlesmeId + "&Bastar=" + BastarQS + "&Bittar=" + BittarQS + " class='btn-link'>" + (adi + " " + soyadi).Trim() + "</a>";
-                            item.Duzenle = "<a href=" + ProjeConstants.PAGE_ODEME_GIRIS + "?OdemeId=" + odemeId + "&Bastar=" + BastarQS + "&Bittar=" + BittarQS+ " class='btn btn-outline-primary'>D�zenle</a>";
+                            item.Duzenle = "<a href=" + ProjeConstants.PAGE_ODEME_GIRIS + "?OdemeId=" + odemeId + "&Bastar=" + BastarQS + "&Bittar=" + BittarQS+ " class='btn btn-outline-primary'>Düzenle</a>";
                             if (teminatId.ConvertToInt() > 0)
                             {
                                 item.Duzenle = "<a href=" + ProjeConstants.PAGE_TEMINAT_ISLEMLERI + "?KiraSozlesmeId=" + sozlesmeId + "&Bastar=" + BastarQS + "&Bittar=" + BittarQS + " class='btn btn-outline-secondary'>Teminat</a>";
