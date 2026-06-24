@@ -653,7 +653,7 @@ namespace Utility.ProjeGlobal
         public const string BANKA_GARANTI = "Garanti Bankası";
         public const string BANKA_GARANTIEKSTRE = "Garanti Bankası (Ekstre)";
 
-        public const int BANKA_GARANTIEKSTRE_ILKKACSATIRHARIC = 10;
+        public const int BANKA_GARANTIEKSTRE_ILKKACSATIRHARIC = 15;
         public const int BANKA_GARANTIEKSTRE_SONKACSATIRHARIC = 0;
         public const string IMAGE_PATH_GARANTI = "/" + IMAGE_PATH + "/garanti.png";
 

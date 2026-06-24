@@ -7,14 +7,14 @@
 <%@ Register Tagprefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="BagisaVesileOlanTesekkurGirisiWP.ascx.cs" Inherits="NBYS_WebParts.BagisaVesileOlanTesekkurGirisiWP.BagisaVesileOlanTesekkurGirisiWP" %>
 
-<div class="container shadow">
+<div class="container">
     <asp:UpdatePanel runat="server" ID="UpdatePanel">
         <ContentTemplate>
-            <div class="card">
+            <div class="card shadow">
                 <div class="card-header">
                     <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
                     <h3 class="mb-2">
-                        <asp:Label CssClass="form-label text-danger fw-semibold mb-1" ID="TitleLbl" runat="server" Text="Bağışa Vesile Olanlara Teşekkür Belgesi Oluşturma"></asp:Label>
+                        <asp:Label CssClass="form-label text-danger fw-semibold mb-1" ID="TitleLbl" runat="server" Text=" Bağışa Vesile Olanlara Teşekkür Belgesi Oluşturma"></asp:Label>
                         <asp:Label CssClass="form-label text-white" ID="IdLbl" runat="server"></asp:Label>
                         <asp:Label CssClass="form-label " ID="AdiLbl" runat="server"></asp:Label>
                     </h3>

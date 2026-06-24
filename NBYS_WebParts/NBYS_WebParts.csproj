@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -119,11 +119,13 @@
     </Compile>
     <Compile Include="BagisaVesileOlanTesekkurGirisiWP\BagisaVesileOlanTesekkurGirisiWP.ascx.cs">
       <DependentUpon>BagisaVesileOlanTesekkurGirisiWP.ascx</DependentUpon>
+      <SubType>Code</SubType>
     </Compile>
     <Compile Include="BagisaVesileOlanTesekkurGirisiWP\BagisaVesileOlanTesekkurGirisiWP.ascx.g.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
       <DependentUpon>BagisaVesileOlanTesekkurGirisiWP.ascx</DependentUpon>
+      <SubType>Code</SubType>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="BagisaVesileOlanTesekkurListesiWP\BagisaVesileOlanTesekkurListesiWP.ascx.cs">
       <DependentUpon>BagisaVesileOlanTesekkurListesiWP.ascx</DependentUpon>
@@ -540,7 +542,7 @@
     </None>
     <None Include="BagisaVesileOlanTesekkurGirisiWP\BagisaVesileOlanTesekkurGirisiWP.webpart" />
     <None Include="BagisaVesileOlanTesekkurGirisiWP\SharePointProjectItem.spdata">
-      <SharePointProjectItemId>{cbc4d3e5-48eb-4dfd-94f0-f2a9e8a32b09}</SharePointProjectItemId>
+      <SharePointProjectItemId>{a54652d0-b476-4458-9a29-22e4913bfb0b}</SharePointProjectItemId>
     </None>
     <None Include="BagisaVesileOlanTesekkurListesiWP\BagisaVesileOlanTesekkurListesiWP.webpart" />
     <None Include="BagisaVesileOlanTesekkurListesiWP\SharePointProjectItem.spdata">
@@ -716,6 +718,9 @@
     </None>
     <None Include="Package\Package.Template.xml">
       <DependentUpon>Package.package</DependentUpon>
+    </None>
+    <None Include="SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{4bdba876-f0bc-48bf-913d-5f7974f6ddfd}</SharePointProjectItemId>
     </None>
     <None Include="SMSAylikBagisCizelgesi\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{f8055777-7468-48da-a5ce-f2b302eaac3b}</SharePointProjectItemId>

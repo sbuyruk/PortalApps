@@ -18,7 +18,7 @@ namespace Utility.HelperClasses
                 dataTable = ConvertToDatetable(spreadSheetDocument, hasTitle);
 
             }
-            if (hasTitle) //il satir veri içermiyor. baslik içeriyorsa
+            if (hasTitle) //il satir veri iÃ§ermiyor. baslik iÃ§eriyorsa
             {
                 dataTable.Rows.RemoveAt(0);
             }
@@ -46,7 +46,7 @@ namespace Utility.HelperClasses
                 dataTable = ConvertToDatetableKartIle(spreadSheetDocument, ilkKacSatirHaric, sonKacSatirHaric);
 
             }
-            if (hasTitle) //il satir veri içermiyor. baslik içeriyorsa
+            if (hasTitle) //il satir veri iÃ§ermiyor. baslik iÃ§eriyorsa
             {
                 dataTable.Rows.RemoveAt(0);
             }
@@ -60,7 +60,7 @@ namespace Utility.HelperClasses
             {
                 dataTable = ConvertToDatetable(spreadSheetDocument, hasTitle);
             }
-            if (hasTitle) //il satir veri içermiyor. baslik içeriyorsa
+            if (hasTitle) //il satir veri iÃ§ermiyor. baslik iÃ§eriyorsa
             {
                 dataTable.Rows.RemoveAt(0);
             }
@@ -82,7 +82,7 @@ namespace Utility.HelperClasses
             int count = 0;
             foreach (Cell cell in rows.ElementAt(0))
             {
-                if (hasTitle) //il satir veri içermiyor. baslik içeriyorsa
+                if (hasTitle) //il satir veri iÃ§ermiyor. baslik iÃ§eriyorsa
                 {
                     dataTable.Columns.Add(GetCellValue(spreadSheetDocument, cell));
                 }
@@ -99,7 +99,7 @@ namespace Utility.HelperClasses
                 for (int i = 0; i < row.Descendants<Cell>().Count(); i++)
                 {
                     dataRow[i] = GetCellValue(spreadSheetDocument, row.Descendants<Cell>().ElementAt(i));
-                    //SB bos hücreyi atlama sorununu düzeltmek için asagisi eklendi, üstteki satir kaldirildi
+                    //SB bos hÃ¼creyi atlama sorununu dÃ¼zeltmek iÃ§in asagisi eklendi, Ã¼stteki satir kaldirildi
                     //Cell cell = row.Descendants<Cell>().ElementAt(i);
                     //int actualCellIndex = CellReferenceToIndex(cell);
                     //dataRow[actualCellIndex] = GetCellValue(spreadSheetDocument, cell);
@@ -140,7 +140,7 @@ namespace Utility.HelperClasses
             Worksheet workSheet = worksheetPart.Worksheet;
             SheetData sheetData = workSheet.GetFirstChild<SheetData>();
             IEnumerable<Row> rows = sheetData.Descendants<Row>();
-            // Bos satirlar XML'de bulunmadigindan element-count yerine gerçek Excel satir numarasiyla filtrele
+            // Bos satirlar XML'de bulunmadigindan element-count yerine gerÃ§ek Excel satir numarasiyla filtrele
             if (ilkKacSatirHaric > 0)
             {
                 var rowsToRemoveFirst = rows.Where(r => r.RowIndex != null && r.RowIndex.Value <= (uint)ilkKacSatirHaric).ToList();
@@ -172,7 +172,7 @@ namespace Utility.HelperClasses
                 if (hasTitle && headerCell != null)
                 {
                     string cellValue = GetCellValue(spreadSheetDocument, headerCell);
-                    dataTable.Columns.Add(cellValue.Equals("0") ? "Col_" + col : cellValue);
+                    dataTable.Columns.Add(cellValue.Equals("0") ? "Col_" + col : cellValue + "_" + col);
                 }
                 else
                 {
@@ -186,7 +186,7 @@ namespace Utility.HelperClasses
                 for (int i = 0; i < row.Descendants<Cell>().Count(); i++)
                 {
                     //dataRow[i] = GetCellValue(spreadSheetDocument, row.Descendants<Cell>().ElementAt(i));
-                    //SB bos hücreyi atlama sorununu düzeltmek için asagisi eklendi, üstteki satir kaldirildi
+                    //SB bos hÃ¼creyi atlama sorununu dÃ¼zeltmek iÃ§in asagisi eklendi, Ã¼stteki satir kaldirildi
                     Cell cell = row.Descendants<Cell>().ElementAt(i);
                     int actualCellIndex = CellReferenceToIndex(cell);
                     dataRow[actualCellIndex] = GetCellValue(spreadSheetDocument, cell);
@@ -208,7 +208,7 @@ namespace Utility.HelperClasses
             Worksheet workSheet = worksheetPart.Worksheet;
             SheetData sheetData = workSheet.GetFirstChild<SheetData>();
             IEnumerable<Row> rows = sheetData.Descendants<Row>();
-            // Bos satirlar XML'de bulunmadigindan element-count yerine gerçek Excel satir numarasiyla filtrele
+            // Bos satirlar XML'de bulunmadigindan element-count yerine gerÃ§ek Excel satir numarasiyla filtrele
             if (ilkKacSatirHaric > 0)
             {
                 var rowsToRemoveFirst = rows.Where(r => r.RowIndex != null && r.RowIndex.Value <= (uint)ilkKacSatirHaric).ToList();
@@ -234,7 +234,7 @@ namespace Utility.HelperClasses
                 for (int i = 0; i < row.Descendants<Cell>().Count(); i++)
                 {
                     //dataRow[i] = GetCellValue(spreadSheetDocument, row.Descendants<Cell>().ElementAt(i));
-                    //SB bos hücreyi atlama sorununu düzeltmek için asagisi eklendi, üstteki satir kaldirildi
+                    //SB bos hÃ¼creyi atlama sorununu dÃ¼zeltmek iÃ§in asagisi eklendi, Ã¼stteki satir kaldirildi
                     Cell cell = row.Descendants<Cell>().ElementAt(i);
                     int actualCellIndex = CellReferenceToIndex(cell);
                     dataRow[actualCellIndex] = GetCellValue(spreadSheetDocument, cell);

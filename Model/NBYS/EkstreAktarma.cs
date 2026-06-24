@@ -480,7 +480,19 @@ namespace Model.NBYS
                             string adi = string.Empty;
                             var adres = string.Empty;// adres bilgisi gelmiyor
 
-                            if (detay.Contains("CEP ŞUBE-HVL-Bağış -"))
+                            if (detay.Contains("--HVL-CEP ŞUBE"))
+                            {
+                                adi = detay.Substring(0, detay.IndexOf("--HVL-CEP ŞUBE")).Trim();
+                            }
+                            else if (detay.Contains("-FAST-"))
+                            {
+                                adi = detay.Substring(0, detay.IndexOf("-FAST-")).Trim();
+                            }
+                            else if (detay.Contains("-bağış-HVL-CEP ŞUBE"))
+                            {
+                                adi = detay.Substring(0, detay.IndexOf("-bağış-HVL-CEP ŞUBE")).Trim();
+                            }
+                            else if (detay.Contains("CEP ŞUBE-HVL-Bağış -"))
                             {
                                 var splitText = new string[] { "CEP ŞUBE-HVL-Bağış -" };
                                 var holder = detay.Split(splitText, StringSplitOptions.None);
@@ -1485,19 +1497,45 @@ namespace Model.NBYS
                             var tutar = row[2].ReturnZeroIfNull().ToString().Replace(".", ",");
                             var adres = string.Empty;// adres bilgisi gelmiyor
 
+                            
+                            if (detay.Contains("198700 - 1 no")) //vakıf hesabına transfer
+                            {
+                                continue;
+                            }
                             string ayrac1 = "Genel Bağış";
-
+                            string ayrac2 = "Amir: ";
+                            string ayrac3 = "Amir= ";
                             if (detay.Contains(ayrac1))
                             {
                                 char splitText = ',';
                                 var holder = detay.Split(splitText);
                                 var nameHolder = holder[1].ReturnEmptyIfNull().ToString().Trim();
-                                var telefonHolder = holder[2].ReturnEmptyIfNull().ToString().Trim();
+                                var telefonHolder = holder.Count()>2 ? holder[2].ReturnEmptyIfNull().ToString().Trim() : string.Empty;
                                 ekstreAktarma.Adi = nameHolder.ReturnEmptyIfNull().ToString().Trim().ToUpper(culturInfo);
                                 ekstreAktarma.Telefon1 = UtilityHelper.TelefonFormatla(telefonHolder.ReturnEmptyIfNull().ToString());
                             }
+                            else if (detay.Contains(ayrac2))
+                            {
+                                string sonAyirac = " - Lehdar: ";
+                                int baslangic = detay.IndexOf(ayrac2) + ayrac2.Length;
+                                int bitis = detay.IndexOf(sonAyirac, baslangic);
 
+                                if (bitis > baslangic)
+                                {
+                                    ekstreAktarma.Adi = detay.Substring(baslangic, bitis - baslangic).Trim();
+                                }
+                            }
+                            else if (detay.Contains(ayrac3))
+                            {
+                                string sonAyirac = " Aciklama=";
+                                int baslangic = detay.IndexOf(ayrac3) + ayrac3.Length;
+                                int bitis = detay.IndexOf(sonAyirac, baslangic);
 
+                                if (bitis > baslangic)
+                                {
+                                    ekstreAktarma.Adi = detay.Substring(baslangic, bitis - baslangic).Trim();
+                                }
+                            }
                             ekstreAktarma.Tutar = tutar.ConvertToDecimal();
                             ekstreAktarma.BagisTarihi = bagisTarihi.ConvertToDatetime();
                             ekstreAktarma.Aciklama = detay;
