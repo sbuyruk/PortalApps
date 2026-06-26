@@ -133,7 +133,7 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
             {
                 if (!string.IsNullOrEmpty(MesajQS))
                 {
-                    MessageHelper.PublishMessage("Bagis Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
+                    MessageHelper.PublishMessage("Bağış Silindi", ProjeConstants.MESAJ_BASARILI, 2000);
                     MesajQS = string.Empty;
                 }
                 if (!Page.IsPostBack)
@@ -165,7 +165,7 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
         }
         private void TabloOlustur()
         {
-            var jsonData = BagisHareketListesiJson(); //veri �ekilip json a �eviriliyor
+            var jsonData = BagisHareketListesiJson(); //veri çekilip json a çeviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -205,12 +205,12 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
                     targets: 7,
                     render: function(data, type, row, meta) {
                         var today = moment();
-                        var isLinkVisible =today.diff(row.BagisTarihi, 'days') <= 240; // 240 g�nden eski kayitlar i�in linki gizle
+                        var isLinkVisible =today.diff(row.BagisTarihi, 'days') <= 240; // 240 günden eski kayitlar için linki gizle
 
                         if (isLinkVisible) {
                             return '<a href=""#"" onclick=""CallButtonClick(' + data + ');"" class=""btn btn-outline-danger"">Kayit Sil</a>';
                         } else {
-                            return 'Silme s�resi dolmus';
+                            return 'Silme süresi dolmus';
                         }
                     }
                 },
@@ -293,7 +293,7 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
         {
             AyDDL.Items.Clear();
             DateTime today = DateTime.Today;
-            DateTime basay = DateTime.Today.AddMonths(-12); // Baslangi� ayi
+            DateTime basay = DateTime.Today.AddMonths(-12); // Baslangiç ayi
             DateTime bitay = today; // Bitis ayi
 
 
@@ -332,8 +332,8 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
 
                 NakitBagisci nb = new NakitBagisci();
                 nb = nb.Select<NakitBagisci>(nbh.BagisciId);
-                string bagisciAdi = nb == null ? "" : nb.Adi + " " + nb.Soyadi + " tarafindan bagislanan ";
-                string silmeMsg = bagisciAdi + nbh.BagisMiktari.ToString("N", culturInfo) + " " + nbh.DovizCinsi + " silinecek. (Hatirlatma: Silme yerine 'Bagis Iadesi' de yapabilirsiniz.) ";
+                string bagisciAdi = nb == null ? "" : nb.Adi + " " + nb.Soyadi + " tarafından bağışlanan ";
+                string silmeMsg = bagisciAdi + nbh.BagisMiktari.ToString("N", culturInfo) + " " + nbh.DovizCinsi + " silinecek. (Hatırlatma: Silme yerine 'Bağış İadesi' de yapabilirsiniz.) ";
                 Armagan armagan = new Armagan();
                 armagan = armagan.Select<Armagan>(nbh.ArmaganId);
 
@@ -346,11 +346,11 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
                     string armaganTanim = at == null ? "" : " Bu bagisa ait " + at.Armagan + " bulunmaktadir.";
                     if (armagan.Durum.Equals(ProjeConstants.DURUM_GONDERILMEDI))
                     {
-                        armaganiVarMsg = armaganTanim + " (Armagan Durumu: '" + armagan.Durum + "'). Onayladiginiz takdirde armagan silinecektir.";
+                        armaganiVarMsg = armaganTanim + " (Armagan Durumu: '" + armagan.Durum + "'). Onayladığınız takdirde armağan silinecektir.";
                     }
                     else 
                     {
-                        armaganiVarMsg = armaganTanim + " Armagan Durumu: '" + armagan.Durum + "' oldugundan, silmeniz durumunda bu armagan silinmeyecektir.";
+                        armaganiVarMsg = armaganTanim + " Armagan Durumu: '" + armagan.Durum + "' olduğundan, silmeniz durumunda bu armağan silinmeyecektir.";
                     }
                 }
                 SilmeMesajiLbl.Text = silmeMsg + armaganiVarMsg;
@@ -359,7 +359,7 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
             else
             {
                 SilmeSebebiTxt.Visible = false;
-                SilmeMesajiLbl.Text = " Se�ilen bagis bilgilerine ulasilamadi";
+                SilmeMesajiLbl.Text = " Seçilen bağış bilgilerine ulaşılamadı";
                 BagisSilNowBtn.Visible = false;
                 UtilityHelper.ScriptCalistir("ModalOnay();");
 
@@ -449,12 +449,12 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
                     string mesaj = string.Empty;
                     if (isBagisSilindi)
                     {
-                        //bagis silindi ise bagis�inin da baska bagisi yoksa bagis�iyi da sil
+                        //bagis silindi ise bagisçinin da baska bagisi yoksa bagisçiyi da sil
                         NakitBagisci bagisci = new NakitBagisci();
                         bagisci = bagisci.SelectBagisiOlmayanBagisciById(nbh.BagisciId);
                         if (bagisci != null)
                         {
-                            //silinen bagis�i bilgilerini silinenKayit_Table'a yaz
+                            //silinen bagisçi bilgilerini silinenKayit_Table'a yaz
                             SilinenKayit skBagisci = new SilinenKayit();
                             skBagisci.Silen = currentUser;
                             skBagisci.SilinmeSebebi = "Bagis silindiginden";
@@ -517,7 +517,7 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
         }
         private void TabloModalOlustur(string nakitBagisciId)
         {
-            var jsonData = GetModalDataJson(nakitBagisciId); //veri �ekilip json a �eviriliyor
+            var jsonData = GetModalDataJson(nakitBagisciId); //veri çekilip json a çeviriliyor
             var jsString = CreateModalDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -569,8 +569,8 @@ namespace NBYS_WebParts.NakitBagisHareketSilmeWP
             var json = nbh.SelectByBagisciIdReturnJSon(nakitBagisciId, ref rowCount);
             decimal toplamTutar = nbh.GetSumBagisMiktariByNakitBagisciIdBetweenBasTarBitTar(
                 ProjeConstants.BAGIS_SORGU_BASTAR.ConvertToDatetime(), DateTime.Today, nakitBagisciId.ConvertToInt());
-            BagisBilgileriLbl.Text = rowCount < 1 ? "Bagis bulunmamaktadir" :
-                "Bagis�inin " + rowCount + " defada yaptigi toplam " + toplamTutar.ToString("N", culturInfo) + "TL bagisi bulunmaktadir";
+            BagisBilgileriLbl.Text = rowCount < 1 ? "Bağış bulunmamaktadır" :
+                "Bağışçının " + rowCount + " defada yaptığı toplam " + toplamTutar.ToString("N", culturInfo) + "TL bağışı bulunmaktadır";
             return json;
         }
         protected void ModalDoldurBtn_Click(object sender, EventArgs e)

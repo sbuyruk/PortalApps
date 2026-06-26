@@ -44,7 +44,7 @@
                         <div class="form-group col-5 border border-dark  border-right-0">
                             <div class="form-group ">
                                 <label for="BelgeMetni1Txt" class="col-form-label">Belge Metni (1nci Paragraf)</label>
-                                <asp:TextBox ID="BelgeMetni1Txt" runat="server" TextMode="MultiLine" Rows="9" class="form-control" type="text" Text="    TSK Güçlendirme Vakfı, ülkemize kazandırdığı ASELSAN, TUSAŞ, ROKETSAN, HAVELSAN, İŞBİR ve ASPİLSAN gibi şirketler ile Türk Silahlı Kuvvetlerinin güçlendirilmesi ve Milli Savunma Sanayiimizin geliştirilmesine öncülük etmenin haklı gururunu yaşamaktadır. Vakıf kurulduğu 1987 yılından beri, Türk Milleti ile TSK arasında var olan gönül bağını güçlendirmek amacıyla yüce milletinden aldığı maddi ve manevi destek sayesinde faaliyetlerini sürdürmektedir.
+                                <asp:TextBox ID="BelgeMetni1Txt" runat="server" TextMode="MultiLine" Rows="9" class="form-control" type="text" Text="    TSK Güçlendirme Vakfı, ülkemize kazandırdığı ASELSAN, TUSAŞ, ROKETSAN, HAVELSAN, İŞBİR ve ASPİLSAN gibi şirketler ile Türk Silahlı Kuvvetlerinin güçlendirilmesi ve Milli Savunma Sanayiimizin geliştirilmesine öncülük etmenin haklı gururunu yaşamaktadır. Vakıf kurulduğu 1987 yılından itibaren, Türk Milleti ile TSK arasında var olan gönül bağını güçlendirmek amacıyla yüce milletinden aldığı maddi ve manevi destek sayesinde faaliyetlerini sürdürmektedir.
 
                                     " />
                             </div>

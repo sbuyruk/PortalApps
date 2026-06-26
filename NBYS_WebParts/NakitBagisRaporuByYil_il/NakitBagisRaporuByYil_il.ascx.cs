@@ -119,7 +119,7 @@ namespace NBYS_WebParts.NakitBagisRaporuByYil_il
             TableHeaderRow tableHeaderRow1 = new TableHeaderRow();
 
             TableHeaderCell bolgeHeaderCell = new TableHeaderCell();
-            bolgeHeaderCell.Text = "B�lge";
+            bolgeHeaderCell.Text = "Bölge";
             bolgeHeaderCell.RowSpan = 2;
             TableHeaderCell ilHeaderCell = new TableHeaderCell();
             ilHeaderCell.Text = "Il";
@@ -135,7 +135,7 @@ namespace NBYS_WebParts.NakitBagisRaporuByYil_il
                 TableHeaderCell adetHeaderCell = new TableHeaderCell();
                 adetHeaderCell.Text = "Adet";
                 TableHeaderCell bagisMiktariHeaderCell = new TableHeaderCell();
-                bagisMiktariHeaderCell.Text = "Bagis Miktari";
+                bagisMiktariHeaderCell.Text = "Bağış Miktarı";
                 tableHeaderRow1.Controls.Add(adetHeaderCell);
                 tableHeaderRow1.Controls.Add(bagisMiktariHeaderCell);
             }

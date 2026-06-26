@@ -1,4 +1,4 @@
-﻿<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
+<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
 <%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
@@ -30,7 +30,7 @@
                                     <asp:TextBox ID="BelgedeYazanIsimTxt" runat="server" class="form-control" type="text" />
                                 </div>
                                 <div class="form-group m-0 ">
-                                    <label class="col-form-label">Bağış Miktarı</label>
+                                    <label class="col-form-label">Bağış Miktarı </label>
                                     <asp:TextBox ID="BagisMiktariTxt" runat="server" class="form-control input-money text-end" type="text" />
                                 </div>
                             </div>

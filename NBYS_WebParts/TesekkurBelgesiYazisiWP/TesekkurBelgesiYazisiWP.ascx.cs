@@ -683,7 +683,7 @@ namespace NBYS_WebParts.TesekkurBelgesiYazisiWP
                     string nakitBagisciTC = row["NakitBagisciTC"].ToString();
                     DateTime tarih = row["Tarih"].ConvertToDatetime();
                     string cokluBagis = row["CokluBagis"].ToString();
-                    string tarihstr = tarih.ToString("dd.MM.yyyy") + (cokluBagis.Equals("Çoklu Bagis") ? " tarihine kadar" : " tarihinde");
+                    string tarihstr = tarih.ToString("dd.MM.yyyy") + (cokluBagis.Equals("Çoklu Bağış") ? " tarihine kadar" : " tarihinde");
 
                     decimal tutar = row["Tutar"].ConvertToDecimal();
                     string tutarStr = bagisMiktariYazmasin ? string.Empty : tutar.ToString("N", culturInfo) + " TL'lik";

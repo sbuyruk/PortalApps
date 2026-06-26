@@ -1,4 +1,4 @@
-﻿<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
+<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
 <%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %> 
 <%@ Register Tagprefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %> 
 <%@ Register Tagprefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
@@ -7,7 +7,7 @@
 <%@ Register Tagprefix="WebPartPages" Namespace="Microsoft.SharePoint.WebPartPages" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="KiraBankaEkstreListesiWP.ascx.cs" Inherits="TBYS_WebParts.KiraBankaEkstreListesiWP.KiraBankaEkstreListesiWP" %>
 
-<style>
+<%--<style>
     .uyari {
         color:red;
     }
@@ -30,8 +30,36 @@
     .small-font{
         font-size:small;
     }
-</style>
+</style>--%>
+<style>
+    #CustomDataTable tbody tr.uyari > td {
+        color: red !important;
+    }
 
+    #CustomDataTable tbody tr.ekstre-aktarildi > td {
+        color: grey !important;
+    }
+
+    #CustomDataTable tbody tr.ekstre-aktarilmadi > td {
+        color: black !important;
+    }
+
+    #CustomDataTable tbody tr.ekstre-aktarilabilir > td {
+        color: green !important;
+    }
+
+    #CustomDataTable tbody tr.cakisma-var > td {
+        color: red !important;
+        font-weight: bold;
+    }
+
+    #CustomDataTable tbody tr.small-font > td {
+        font-size: small !important;
+    }
+
+
+
+</style>
 <%--Kaydet modal aç vs--%>
 <script type="text/javascript">
     //excele export ettikten donup sonra kalmasın diye

@@ -666,8 +666,8 @@ namespace Model.NBYS
             string sqlString = string.Format(@"        
                                 SELECT COUNT(H.Id) Adet,SUM(BagisMiktari) Toplam, B.BankaGrup Banka 
                                 FROM NakitBagisHareket_Table H
-                                    --bu sefer de Vakifta sorun oldu INNER JOIN NakitBagisci_Table A ON A.Id= H.BagisciId    --LEFT OUTER is bankasi toplami hatali çiktigi için degistirildi
-                                    INNER JOIN NakitBagisci_Table A ON A.Id= H.BagisciId --bi daa açtim bakalim hayirlisi
+                                    --bu sefer de Vakifta sorun oldu INNER JOIN NakitBagisci_Table A ON A.Id= H.BagisciId    --LEFT OUTER is bankasi toplami hatali Ã§iktigi iÃ§in degistirildi
+                                    INNER JOIN NakitBagisci_Table A ON A.Id= H.BagisciId --bi daa aÃ§tim bakalim hayirlisi
 									INNER JOIN BankaTanim_Table B ON B.Id= H.BankaId        --LEFT OUTER 
                                 WHERE BagisTarihi BETWEEN {0} AND {1}
                                 GROUP BY B.BankaGrup 
@@ -683,7 +683,7 @@ namespace Model.NBYS
                     B.Id NakitBagisciId, B.Adi, B.Soyadi, B.Telefon1, B.Telefon2, B.Adres, B.BelgeIstemiyor,
 					C.IlAdi Ili,D.IlceAdi Ilcesi,
 					F.Armagan, E.Durum,
-IIF(E.DuzenliBagis=1, 'Düzenli Bagis', IIF(E.CokluBagis=1, 'Çoklu Bagis', 'Bagis')) AS CokluBagis
+IIF(E.DuzenliBagis=1, 'DÃ¼zenli BaÄŸÄ±ÅŸ', IIF(E.CokluBagis=1, 'Ã‡oklu BaÄŸÄ±ÅŸ', 'BaÄŸÄ±ÅŸ')) AS CokluBagis
                 FROM NakitBagisHareket_Table A
                 LEFT JOIN NakitBagisci_Table B ON B.Id=A.BagisciId
                 INNER JOIN Il_Table C ON C.Id=B.Ili
@@ -714,7 +714,7 @@ IIF(E.DuzenliBagis=1, 'Düzenli Bagis', IIF(E.CokluBagis=1, 'Çoklu Bagis', 'Bagis
                     B.Id NakitBagisciId, B.Adi, B.Soyadi, B.Telefon1, B.Telefon2, B.Adres, B.BelgeIstemiyor,
 					C.IlAdi Ili,D.IlceAdi Ilcesi,
 					F.Armagan, E.Durum,
-            IIF(E.DuzenliBagis=1, 'Düzenli Bagis', IIF(E.CokluBagis=1, 'Çoklu Bagis', 'Bagis')) AS CokluBagis
+            IIF(E.DuzenliBagis=1, 'DÃ¼zenli Bagis', IIF(E.CokluBagis=1, 'Ã‡oklu Bagis', 'Bagis')) AS CokluBagis
                 FROM NakitBagisHareket_Table A
                 LEFT JOIN NakitBagisci_Table B ON B.Id=A.BagisciId
                 INNER JOIN Il_Table C ON C.Id=B.Ili

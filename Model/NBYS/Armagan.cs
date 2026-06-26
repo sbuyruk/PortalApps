@@ -225,7 +225,7 @@ namespace Model.NBYS
         //            {
         //                Durum = durum;
         //            }
-        //            Update(); //TODO burasi armagan.Update() olmali veya �stsatirda Durum=durum; olmali
+        //            Update(); //TODO burasi armagan.Update() olmali veya üstsatirda Durum=durum; olmali
         //            armaganId = armagan.Id;
         //        }
         //        else
@@ -260,7 +260,7 @@ namespace Model.NBYS
                     {
                         Durum = durum;
                     }
-                    Update(); //TODO burasi armagan.Update() olmali veya �stsatirda Durum=durum; olmali
+                    Update(); //TODO burasi armagan.Update() olmali veya üstsatirda Durum=durum; olmali
                     armaganId = armagan.Id;
                 }
                 else
@@ -365,7 +365,7 @@ namespace Model.NBYS
         /// <param name="bittar"></param>
         /// <param name="armaganTanimId"></param>
         /// <param name="rowCount"></param>
-        /// Parasi iade edilen armaganlari da g�stersin diye BelgeGecersizMi kontrolu burada yok
+        /// Parasi iade edilen armaganlari da göstersin diye BelgeGecersizMi kontrolu burada yok
         /// <returns></returns>
         public string SelectByDurumTarih(string durum, DateTime bastar, DateTime bittar, string armaganTanimId, ref int rowCount, int bolgeId, int ili)
         {
@@ -380,7 +380,7 @@ namespace Model.NBYS
         public DataTable SelectByDurumTarihReturnDT(string durum, DateTime bastar, DateTime bittar, string armaganTanimId, int bolgeId, int ili)
         {
             var durumQuery = string.Empty;
-            if (!durum.Equals(ProjeConstants.HEPSI)) //eger bos ise query'e hi� eklenmesin
+            if (!durum.Equals(ProjeConstants.HEPSI)) //eger bos ise query'e hiç eklenmesin
             {
                 durumQuery = string.Format("Durum = '{0}' AND", durum);
             }
@@ -418,8 +418,8 @@ namespace Model.NBYS
                     ,A.Durum
                     ,ISNULL(BelgedeYazanIsim, '') BelgedeYazanIsim
                     ,A.BelgeGecersizMi, A.IadeMiktari, A.DovizCinsi,A.BagisMiktariYazmasin, 
-                    --IIF(A.CokluBagis=1,'�oklu Bagis','Bagis') CokluBagis
-                     IIF(A.DuzenliBagis=1, 'D�zenli Bagis', IIF(A.CokluBagis=1, '�oklu Bagis', 'Bagis')) AS CokluBagis
+                    --IIF(A.CokluBagis=1,'Çoklu Bagis','Bagis') CokluBagis
+                     IIF(A.DuzenliBagis=1, 'Düzenli Bağış', IIF(A.CokluBagis=1, 'Çoklu Bağış', 'Bağış')) AS CokluBagis
                 FROM Armagan_Table A
                     INNER JOIN NakitBagisci_Table B ON B.Id=A.BagisciId
                     LEFT OUTER JOIN ArmaganTanim_Table D ON D.Id=A.ArmaganTanimId
@@ -486,7 +486,7 @@ namespace Model.NBYS
         /// </summary>
         /// <param name="filter"></param>
         /// <param name="eksiId"></param>
-        /// Parasi iade edilen armaganlari da g�stermesin
+        /// Parasi iade edilen armaganlari da göstermesin
         /// <returns></returns>
         public string SelectByFilter(string filter, int eksiId)
         {
@@ -529,7 +529,7 @@ namespace Model.NBYS
 
         public DataTable SelectVerilenArmaganlarGroupByBagisciReturnList()
         {
-            //Armagan_Table'dan CokliNagis=true olan kayitlari se�
+            //Armagan_Table'dan CokliNagis=true olan kayitlari seç
             string sqlString = string.Format(@"
                 SELECT A.BagisciId,B.Adi, B.Soyadi, D.Armagan, COUNT(C.Id) BagisAdedi, SUM(C.BagisMiktari) ToplamBagis,A.Tarih
                 FROM Armagan_Table A

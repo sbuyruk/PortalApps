@@ -1,4 +1,4 @@
-﻿<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
+<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
 <%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
@@ -26,7 +26,7 @@
                 <div class="card-header ">
                     <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
                     <h3 class="mb-1">
-                        <asp:Label CssClass="col-form-label btn-outline-success" runat="server" Text="Nakit Bağışçı Eşleştirme"></asp:Label>
+                        <asp:Label CssClass="col-form-label btn-outline-success" runat="server" Text="Nakit Bağışçı Eşleştirme "></asp:Label>
                     </h3>
                 </div>
                 <div class="card-body border border-default" runat="server" id="PUTableDiv">

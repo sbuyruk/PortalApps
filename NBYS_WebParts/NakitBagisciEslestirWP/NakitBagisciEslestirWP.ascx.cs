@@ -275,7 +275,7 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP
         #region Bagisci CustomDataTable
         private void TabloOlustur(bool isSelectable)
         {
-            var jsonData = TabloJson(isSelectable); //veri �ekilip json a �eviriliyor
+            var jsonData = TabloJson(isSelectable); //veri çekilip json a çeviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
             BagisciSecTableDiv.Attributes["style"] = "display:block";
@@ -315,8 +315,8 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP
                     string ilcesi = row["Ilcesi"].ToString();
                     string telefon = row["Telefon1"].ToString();
                     string adres = row["Adres"].ToString();
-                    string secUrl = !string.IsNullOrEmpty(EkstreAktarmaIdQS) ?"<a href=EkstreAktarmaEdit.aspx?SenderApp=NBE&EkstreAktarmaId=" + EkstreAktarmaIdQS + "&NakitBagisciId=" + nakitBagisciId + "&Param=" + spaceStr + "class='btn btn-outline-success'>Se�</a>"
-                        : "<a href=DuzenliNakitBagisciListesi.aspx?SenderApp=NBE&NakitBagisciId=" + nakitBagisciId + "&DuzenliBagisciId=" + DuzenliBagisciIdQS + "&Param=" + spaceStr + "class='btn btn-outline-success'>Se�</a>";
+                    string secUrl = !string.IsNullOrEmpty(EkstreAktarmaIdQS) ?"<a href=EkstreAktarmaEdit.aspx?SenderApp=NBE&EkstreAktarmaId=" + EkstreAktarmaIdQS + "&NakitBagisciId=" + nakitBagisciId + "&Param=" + spaceStr + "class='btn btn-outline-success'>Seç</a>"
+                        : "<a href=DuzenliNakitBagisciListesi.aspx?SenderApp=NBE&NakitBagisciId=" + nakitBagisciId + "&DuzenliBagisciId=" + DuzenliBagisciIdQS + "&Param=" + spaceStr + "class='btn btn-outline-success'>Seç</a>";
 
 
                     NakitBagisciListItem nakitBagisciListItem = new NakitBagisciListItem();
@@ -352,7 +352,7 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP
             jQuery(document).ready(function() {
 
                 jQuery('#CustomDataTable').DataTable({
-                    'initComplete': function(settings, json) {//tablo y�klendiginde
+                    'initComplete': function(settings, json) {//tablo yüklendiginde
                         var api = this.api();
                         var row = api.row(function(idx, data, node) { //secilen Id'ye gider
                             return data['Secildi'] == true;
@@ -398,7 +398,7 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP
         #region modal
         private void TabloModalOlustur(string nakitBagisciId)
         {
-            var jsonData = GetModalDataJson(nakitBagisciId); //veri �ekilip json a �eviriliyor
+            var jsonData = GetModalDataJson(nakitBagisciId); //veri çekilip json a çeviriliyor
             var jsString = CreateModalDataTable(jsonData, nakitBagisciId.ConvertToInt()); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -493,8 +493,8 @@ namespace NBYS_WebParts.NakitBagisciEslestirWP
             var json = nbh.SelectByBagisciIdReturnJSon(nakitBagisciId, ref rowCount);
             decimal toplamTutar = nbh.GetSumBagisMiktariByNakitBagisciIdBetweenBasTarBitTar(
                 ProjeConstants.BAGIS_SORGU_BASTAR.ConvertToDatetime(), DateTime.Today, nakitBagisciId.ConvertToInt());
-            BagisBilgileriLbl.Text = rowCount < 1 ? "Bagis bulunmamaktadir" :
-                "Bagis�inin " + rowCount + " defada yaptigi toplam " + toplamTutar.ToString("N", culturInfo) + "TL bagisi bulunmaktadir";
+            BagisBilgileriLbl.Text = rowCount < 1 ? "Bağış bulunmamaktadır" :
+                "Bağışçının " + rowCount + " defada yaptığı toplam " + toplamTutar.ToString("N", culturInfo) + "TL bağışı bulunmaktadır";
             return json;
         }
         protected void ModalDoldurBtn_Click(object sender, EventArgs e)

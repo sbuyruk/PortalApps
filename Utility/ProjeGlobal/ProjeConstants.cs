@@ -420,6 +420,24 @@ namespace Utility.ProjeGlobal
         public static string SERH = "Şerh";
         public static string BEYAN = "Beyan";
         public static string IRTIFAK = "İrtifak";
+        //Edinme şekli
+        public static string EDINMESEKLI_BAGIS = "Bağış"; 
+        public static string EDINMESEKLI_VASIYETIN_TENFIZI = "Vasiyetin Tenfizi"; 
+        public static string EDINMESEKLI_MAHKEME_KARARI = "Mahkeme Kararı"; 
+        public static string EDINMESEKLI_SATIN_ALMA = "Satın Alma"; 
+        public static string EDINMESEKLI_TASHIH_CINS_TASHIHI = "Tashih/Cins Tashihi"; 
+        public static string EDINMESEKLI_IMAR_UYGULAMASI = "İmar Uygulaması"; 
+        public static string EDINMESEKLI_KADASTRO_YENILEME = "Kadastro (Yenileme)"; 
+        public static string EDINMESEKLI_TRAMPA_TAKAS = "Trampa/Takas"; 
+        public static string EDINMESEKLI_IFRAZ = "Ifraz"; 
+        public static string EDINMESEKLI_TOPLULASTIRMA = "Toplulaştırma"; 
+        public static string EDINMESEKLI_TEVHIT = "Tevhit"; 
+        public static string EDINMESEKLI_KATMULKIYETI = "Kat Mülkiyeti";
+        public static string EDINMESEKLI_KAMULASTIRMA_TUMU = "Kamulaştırma (Tümü)";
+        public static string EDINMESEKLI_KAMULASTIRMA_KISMI = "Kamulaştırma (Kısmi)";
+        public static string EDINMESEKLI_TURK_KARA_KUVVETI_VAKFI = "TÜRK KARA KUV.GÜÇ.VAKFI";
+        public static string EDINMESEKLI_TURK_DENIZ_KUVVETI_VAKFI = "TÜRK DENIZ KUV.GÜÇ.VAKFI";
+        public static string EDINMESEKLI_TURK_HAVA_KUVVETI_VAKFI = "TÜRK HAVA KUV.GÜÇ.VAKFI";
 
         //Kira Sözlesme Ödeme plani
         public const string KIRA_ODMSEKLI_AYLIK = "Aylık";
@@ -790,6 +808,8 @@ namespace Utility.ProjeGlobal
         public const string DOVIZ_EURO = "Euro";
         public const string DOVIZ_USD = "USD";
         public const string DOVIZ_GBP = "GBP";
+
+        public const string BAGIS_BIRLESTIRME = "Bağış Birleştirme";
         //Yönerge Parametre
         public const string PARAM_NBYSYONERGE = "NBYS Yönergeleri";
         public const string PARAM_FTKYONERGE = "FTK Yönergeleri";
@@ -1194,5 +1214,6 @@ namespace Utility.ProjeGlobal
         public static string AVRUPA { get; set; } = "Avrupa";
         public static string INGILTERE { get; set; } = "İngiltere";
         public static string AVRUPA_HARICI { get; set; } = "Avrupa Harici";
+        
     }
 }

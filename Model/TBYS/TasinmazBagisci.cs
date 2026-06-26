@@ -321,10 +321,10 @@ namespace Model.TBYS
                     LEFT JOIN Tasinmaz_Table D on D.Id=C.TasinmazId AND D.EnvanterdeMi=1
 					LEFT JOIN Il_Table E on E.IlAdi=A.Ili 
 					LEFT JOIN Armagan_Table F on F.Id=A.Ili 
-                WHERE D.EdinmeSekli='Bagis'
+                WHERE D.EdinmeSekli='{1}'
                 {0}
 				ORDER BY C.BagisTarihi DESC                               
-                ", gizliBagiscilarHaricStr);
+                ", gizliBagiscilarHaricStr,ProjeConstants.EDINMESEKLI_BAGIS);
 
             DataTable dataTable = null;
             try

@@ -1,4 +1,4 @@
-﻿<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
+<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
 <%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %> 
 <%@ Register Tagprefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %> 
 <%@ Register Tagprefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
@@ -21,7 +21,7 @@
             <div class="form-group">
                 <div class="row">
                     <div class="col-2">
-                        <label for="AyDDL" class="col-form-label fw-bold">Bağış Ayı: </label>
+                        <label for="AyDDL" class="col-form-label fw-bold">Bağış Ayı:</label>
                         <asp:DropDownList ID="AyDDL" runat="server" CssClass="form-control" Style="height: auto" OnSelectedIndexChanged="AyDDL_SelectedIndexChanged" AutoPostBack="True"></asp:DropDownList>
                     </div>
                     <div class="col-2">

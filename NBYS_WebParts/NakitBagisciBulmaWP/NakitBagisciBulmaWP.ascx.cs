@@ -51,7 +51,7 @@ namespace NBYS_WebParts.NakitBagisciBulmaWP
                 ViewState["SecilenId"] = value;
             }
         }
-        private string ParamQS//nakit bagisci düzenlemeden dönüyorsa aranan texti tekrar arasin
+        private string ParamQS//nakit bagisci dÃ¼zenlemeden dÃ¶nÃ¼yorsa aranan texti tekrar arasin
         {
             get
             {
@@ -107,7 +107,7 @@ namespace NBYS_WebParts.NakitBagisciBulmaWP
         }
         private void TabloOlustur()
         {
-            var jsonData = GetBagisciData(); //veri çekilip json a çeviriliyor
+            var jsonData = GetBagisciData(); //veri Ã§ekilip json a Ã§eviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -117,7 +117,7 @@ namespace NBYS_WebParts.NakitBagisciBulmaWP
             jQuery(document).ready(function () {
 
             jQuery('#CustomDataTable').DataTable({
-                'initComplete': function (settings, json) {//tablo yüklendiginde
+                'initComplete': function (settings, json) {//tablo yÃ¼klendiginde
                     var api = this.api();
                     var row = api.row(function(idx, data, node) { //secilen satira gider
                         return data['NakitBagisciId'] ==" + SecilenIdQS + @";
@@ -152,12 +152,12 @@ namespace NBYS_WebParts.NakitBagisciBulmaWP
                 }},
                 {
                     targets: 7, render: function(data, type, row, meta) {
-                    var link= '<a href=' + '" + ProjeConstants.PAGE_NAKITBAGISCI_EDIT + @"?NakitBagisciId=' + row.NakitBagisciId + ' class=\' btn btn-outline-primary\' >Düzenle</a>';
+                    var link= '<a href=' + '" + ProjeConstants.PAGE_NAKITBAGISCI_EDIT + @"?NakitBagisciId=' + row.NakitBagisciId + ' class=\' btn btn-outline-primary\' >DÃ¼zenle</a>';
                     return link;
                 }},
                 {
                     targets: 8, render: function(data, type, row, meta) {
-                    var link= '<a href=' + '" + ProjeConstants.PAGE_EKSTRE_AKTARMAEDIT + @"?NakitBagisciId=' + row.NakitBagisciId + ' class=\' btn btn-outline-success\' >Bagis Gir</a>';
+                    var link= '<a href=' + '" + ProjeConstants.PAGE_EKSTRE_AKTARMAEDIT + @"?NakitBagisciId=' + row.NakitBagisciId + ' class=\' btn btn-outline-success\' >BaÄŸÄ±ÅŸ Gir</a>';
                     return link;
                 }},
 
@@ -258,7 +258,7 @@ namespace NBYS_WebParts.NakitBagisciBulmaWP
         }
         private void TabloModalOlustur(string nakitBagisciId)
         {
-            var jsonData = GetModalDataJson(nakitBagisciId); //veri çekilip json a çeviriliyor
+            var jsonData = GetModalDataJson(nakitBagisciId); //veri Ã§ekilip json a Ã§eviriliyor
             var jsString = CreateModalDataTable(jsonData, nakitBagisciId.ConvertToInt()); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -354,7 +354,7 @@ namespace NBYS_WebParts.NakitBagisciBulmaWP
             decimal toplamTutar = nbh.GetSumBagisMiktariByNakitBagisciIdBetweenBasTarBitTar(
                 ProjeConstants.BAGIS_SORGU_BASTAR.ConvertToDatetime(), DateTime.Today, nakitBagisciId.ConvertToInt());
             BagisBilgileriLbl.Text = rowCount < 1 ? "Bagis bulunmamaktadir" :
-                "Bagisçinin " + rowCount + " defada yaptigi toplam " + toplamTutar.ToString("N", culturInfo) + "TL bagisi bulunmaktadir";
+                "BagisÃ§inin " + rowCount + " defada yaptigi toplam " + toplamTutar.ToString("N", culturInfo) + "TL bagisi bulunmaktadir";
             return json;
         }
         protected void ModalDoldurBtn_Click(object sender, EventArgs e)

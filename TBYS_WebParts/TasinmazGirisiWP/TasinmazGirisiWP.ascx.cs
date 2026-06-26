@@ -316,23 +316,23 @@ namespace TBYS_WebParts.TasinmazGirisiWP
         private void EdinmeSekliDDLDoldur()
         {
             EdinmeSekliDDL.Items.Clear();
-            EdinmeSekliDDL.Items.Add("Bağış");
-            EdinmeSekliDDL.Items.Add("Vasiyetin Tenfizi");
-            EdinmeSekliDDL.Items.Add("Mahkeme Kararı");
-            EdinmeSekliDDL.Items.Add("Satın Alma");
-            EdinmeSekliDDL.Items.Add("Tashih/Cins Tashihi");
-            EdinmeSekliDDL.Items.Add("İmar Uygulaması");
-            EdinmeSekliDDL.Items.Add("Kadastro (Yenileme)");
-            EdinmeSekliDDL.Items.Add("Trampa/Takas");
-            EdinmeSekliDDL.Items.Add("Ifraz");
-            EdinmeSekliDDL.Items.Add("Toplulaştırma");
-            EdinmeSekliDDL.Items.Add("Tevhit");
-            EdinmeSekliDDL.Items.Add("Kat Mülkiyeti");
-            EdinmeSekliDDL.Items.Add("Kamulaştırma (Tümü)");
-            EdinmeSekliDDL.Items.Add("Kamulaştırma (Kısmi)");
-            EdinmeSekliDDL.Items.Add("TÜRK KARA KUV.GÜÇ.VAKFI");
-            EdinmeSekliDDL.Items.Add("TÜRK DENIZ KUV.GÜÇ.VAKFI");
-            EdinmeSekliDDL.Items.Add("TÜRK HAVA KUV.GÜÇ.VAKFI");
+            EdinmeSekliDDL.Items.Add(ProjeConstants.EDINMESEKLI_BAGIS);
+            EdinmeSekliDDL.Items.Add(ProjeConstants.EDINMESEKLI_VASIYETIN_TENFIZI);
+            EdinmeSekliDDL.Items.Add(ProjeConstants.EDINMESEKLI_MAHKEME_KARARI);
+            EdinmeSekliDDL.Items.Add(ProjeConstants.EDINMESEKLI_SATIN_ALMA);
+            EdinmeSekliDDL.Items.Add(ProjeConstants.EDINMESEKLI_TASHIH_CINS_TASHIHI);
+            EdinmeSekliDDL.Items.Add(ProjeConstants.EDINMESEKLI_IMAR_UYGULAMASI);
+            EdinmeSekliDDL.Items.Add(ProjeConstants.EDINMESEKLI_KADASTRO_YENILEME);
+            EdinmeSekliDDL.Items.Add(ProjeConstants.EDINMESEKLI_TRAMPA_TAKAS);
+            EdinmeSekliDDL.Items.Add(ProjeConstants.EDINMESEKLI_IFRAZ);
+            EdinmeSekliDDL.Items.Add(ProjeConstants.EDINMESEKLI_TOPLULASTIRMA);
+            EdinmeSekliDDL.Items.Add(ProjeConstants.EDINMESEKLI_TEVHIT);
+            EdinmeSekliDDL.Items.Add(ProjeConstants.EDINMESEKLI_KATMULKIYETI);
+            EdinmeSekliDDL.Items.Add(ProjeConstants.EDINMESEKLI_KAMULASTIRMA_TUMU);
+            EdinmeSekliDDL.Items.Add(ProjeConstants.EDINMESEKLI_KAMULASTIRMA_KISMI);
+            EdinmeSekliDDL.Items.Add(ProjeConstants.EDINMESEKLI_TURK_KARA_KUVVETI_VAKFI);
+            EdinmeSekliDDL.Items.Add(ProjeConstants.EDINMESEKLI_TURK_DENIZ_KUVVETI_VAKFI);
+            EdinmeSekliDDL.Items.Add(ProjeConstants.EDINMESEKLI_TURK_HAVA_KUVVETI_VAKFI);
         }
         private void KiraDurumuDDLDoldur()
         {

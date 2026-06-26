@@ -272,7 +272,7 @@ namespace NBYS_WebParts.BagisaVesileOlanTesekkurGirisiWP {
             @__ctrl.Rows = 9;
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("class", "form-control");
             ((System.Web.UI.IAttributeAccessor)(@__ctrl)).SetAttribute("type", "text");
-            @__ctrl.Text = @"    TSK Güçlendirme Vakfı, ülkemize kazandırdığı ASELSAN, TUSAŞ, ROKETSAN, HAVELSAN, İŞBİR ve ASPİLSAN gibi şirketler ile Türk Silahlı Kuvvetlerinin güçlendirilmesi ve Milli Savunma Sanayiimizin geliştirilmesine öncülük etmenin haklı gururunu yaşamaktadır. Vakıf kurulduğu 1987 yılından beri, Türk Milleti ile TSK arasında var olan gönül bağını güçlendirmek amacıyla yüce milletinden aldığı maddi ve manevi destek sayesinde faaliyetlerini sürdürmektedir.
+            @__ctrl.Text = @"    TSK Güçlendirme Vakfı, ülkemize kazandırdığı ASELSAN, TUSAŞ, ROKETSAN, HAVELSAN, İŞBİR ve ASPİLSAN gibi şirketler ile Türk Silahlı Kuvvetlerinin güçlendirilmesi ve Milli Savunma Sanayiimizin geliştirilmesine öncülük etmenin haklı gururunu yaşamaktadır. Vakıf kurulduğu 1987 yılından itibaren, Türk Milleti ile TSK arasında var olan gönül bağını güçlendirmek amacıyla yüce milletinden aldığı maddi ve manevi destek sayesinde faaliyetlerini sürdürmektedir.
 
                                     ";
             return @__ctrl;
