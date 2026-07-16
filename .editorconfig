@@ -1,0 +1,4 @@
+root = true
+
+[*.{cs,csproj,ascx,aspx,js,css,html,xml,config,txt,md}]
+charset = utf-8

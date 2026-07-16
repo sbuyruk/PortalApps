@@ -12,7 +12,7 @@
         <div class="card-header">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-1">
-                <asp:Label CssClass="form-label text-info" runat="server" Text="Banka Dosyası Yükleme"></asp:Label>
+                <asp:Label CssClass="form-label text-info" runat="server" Text="Banka Dosyası Yükleme "></asp:Label>
             </h3>
         </div>
         <div class="form-group m-3">

@@ -9,13 +9,13 @@ namespace DAO.Ortak
         public int ReturnId { get; set; }
         public bool UseReturnIdAsParam { get; set; }
         public int DbObjectParamIndex { get; set; }
-        //sql c�nlesinde parametrenin yeri.. gelecekte kullanmak �zere planlandi
+        //sql cümlesinde parametrenin yeri.. gelecekte kullanmak üzere planlandı
         public int SQLStringParamIndex { get; set; } = 0;
-        //ka� kayit etkilendi
+        //kaç kayıt etkilendi
         public int RowsAffected { get; set; }
-        //�alistiktan sonra basarili oldu mu
+        //çalıştıktan sonra başarılı oldu mu
         public bool Success { get; set; }
-        //dbobject dolduruldugunda true yapilmasi gerekir
+        //dbobject doldurulduğunda true yapılması gerekir
         public bool IsFilled { get; set; }
         public string Message { get; set; }
         public HashSet<DbParam> QueryParams { get; set; }

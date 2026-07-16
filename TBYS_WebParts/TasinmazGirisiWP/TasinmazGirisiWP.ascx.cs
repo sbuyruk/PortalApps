@@ -462,6 +462,10 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 AnaTasinmazNitelikTxt.Text = tasinmaz.AnaTasinmazNitelik;
                 BagimsizBolumSayisiTxt.Text = tasinmaz.BagimsizBolumSayisi.ToString();
                 MalikSayisiTxt.Text = tasinmaz.MalikSayisi.ToString();
+                YapiTarziTxt.Text = tasinmaz.YapiTarzi;
+                InsaatinSinifiTxt.Text = tasinmaz.InsaatinSinifi;
+                ArazininCinsiTxt.Text = tasinmaz.ArazininCinsi;
+    
                 formDolduMu = true;
             }
             catch (Exception ex)
@@ -543,6 +547,9 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             tasinmaz.AnaTasinmazNitelik = AnaTasinmazNitelikTxt.Text;
             tasinmaz.BagimsizBolumSayisi = BagimsizBolumSayisiTxt.Text.ConvertToInt();
             tasinmaz.MalikSayisi = MalikSayisiTxt.Text.ConvertToInt();
+            tasinmaz.YapiTarzi = YapiTarziTxt.Text;
+            tasinmaz.InsaatinSinifi = InsaatinSinifiTxt.Text;
+            tasinmaz.ArazininCinsi = ArazininCinsiTxt.Text;
 
             int id = tasinmaz.Save();
             tasinmaz.Id = id;
@@ -654,6 +661,9 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                 tasinmaz.ToplamMetrekare = ToplamMetrekareTxt.Text.ConvertToDecimal();
                 tasinmaz.BBNitelik = BBNitelikTxt.Text;
                 tasinmaz.AnaTasinmazNitelik = AnaTasinmazNitelikTxt.Text;
+                tasinmaz.YapiTarzi = YapiTarziTxt.Text;
+                tasinmaz.InsaatinSinifi = InsaatinSinifiTxt.Text;
+                tasinmaz.ArazininCinsi = ArazininCinsiTxt.Text;
                 tasinmaz.BagimsizBolumSayisi = BagimsizBolumSayisiTxt.Text.ConvertToInt();
                 tasinmaz.MalikSayisi = MalikSayisiTxt.Text.ConvertToInt();
 

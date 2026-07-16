@@ -1,3 +1,4 @@
+
 <%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
 <%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
@@ -48,9 +49,9 @@
                         <asp:Label CssClass="form-label " ID="AdiLbl" runat="server"></asp:Label>
                         <div class="form-group m-0 float-end me-2">
                             <asp:Label CssClass="form-control fw-semibold" ID="IdLbl" runat="server"></asp:Label>
-                        </div>
-                        <div class="form-group m-0 text-muted">
+                        <div class="form-group m-0 float-end">
                             <asp:Label CssClass="form-control fw-semibold" ID="AdresLbl" runat="server"></asp:Label>
+                        </div>
                         </div>
                         <div class="form-group m-0 float-end">
                             <asp:Label CssClass="form-control fw-semibold" ID="SorumluBolgeTxt" runat="server"></asp:Label>
@@ -478,6 +479,20 @@
                                     <div class="form-group m-0 ">
                                         <label class="form-label fw-semibold" for="NitelikTxt">Malik Sayısı</label>
                                         <asp:TextBox ID="MalikSayisiTxt" runat="server" class="form-control" ToolTip="Kat Maliki kaç kişi">1</asp:TextBox>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="form-group m-0 ">
+                                        <label class="form-label fw-semibold" for="YapiTarziTxt">Yapı Tarzı</label>
+                                        <asp:TextBox ID="YapiTarziTxt" runat="server" class="form-control" ToolTip="Yapının tarzı"></asp:TextBox>
+                                    </div>
+                                    <div class="form-group m-0 ">
+                                        <label class="form-label fw-semibold" for="InsaatinSinifiTxt">İnşaatın Sınıfı</label>
+                                        <asp:TextBox ID="InsaatinSinifiTxt" runat="server" class="form-control" ToolTip="İnşaatın sınıfı"></asp:TextBox>
+                                    </div>
+                                    <div class="form-group m-0 ">
+                                        <label class="form-label fw-semibold" for="ArazininCinsiTxt">Arazinin Cinsi</label>
+                                        <asp:TextBox ID="ArazininCinsiTxt" runat="server" class="form-control" ToolTip="Arazinin cinsi"></asp:TextBox>
                                     </div>
                                 </div>
                             </div>

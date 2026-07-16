@@ -121,7 +121,7 @@ namespace NBYS_WebParts.DuzenliBagisciDosyaYuklemeWP
                 {
                     DosyaFU.Enabled = false;
                     KaydetBtn.Enabled = false;
-                    MessageHelper.PublishMessage("Dosya baþarýyla yüklendi.", ProjeConstants.MESAJ_BASARILI,2000);
+                    MessageHelper.PublishMessage("Dosya baÅŸarÄ±yla yÃ¼klendi.", ProjeConstants.MESAJ_BASARILI,2000);
                 }
 
             }
@@ -140,7 +140,7 @@ namespace NBYS_WebParts.DuzenliBagisciDosyaYuklemeWP
                     foreach (DataRow row in data.Rows)
                     {
                         string aciklamaStr = string.Empty;
-                        var tutar = row[6].ReturnZeroIfNull().ToString().Replace("?","").ConvertToDecimal();
+                        var tutar = row[6].ReturnZeroIfNull().ToString().Replace("â‚º","").ConvertToDecimal();
                         if (tutar < 1)
                         {
                             continue; //tutar 1 den azsa atla
@@ -152,7 +152,7 @@ namespace NBYS_WebParts.DuzenliBagisciDosyaYuklemeWP
                         var TCKimlikNo = row[4].ReturnEmptyIfNull().ConvertToLong();
                         var adres = row[5].ReturnEmptyIfNull().ConvertToLong();
                         var bagisadedi = row[7].ReturnZeroIfNull().ConvertToInt();
-                        var toplambagis = row[8].ReturnZeroIfNull().ToString().Replace("?", "").ConvertToDecimal();
+                        var toplambagis = row[8].ReturnZeroIfNull().ToString().Replace("â‚º", "").ConvertToDecimal();
                         var baslamaTarihi = row[9].ReturnEmptyIfNull().ConvertToDatetime();
 
                         try
@@ -178,10 +178,10 @@ namespace NBYS_WebParts.DuzenliBagisciDosyaYuklemeWP
                                         {
 
 
-                                            //Baðýþçý bulunamadý
-                                            //Bu durumda yeni baðýþçý oluþturmak doðru deðil, çünkü 12 aydýr baðýþ yaptýðýna göre mutlaka bir kaydý vardýr.
+                                            //BaÄŸÄ±ÅŸÃ§Ä± bulunamadÄ±
+                                            //Bu durumda yeni baÄŸÄ±ÅŸÃ§Ä± oluÅŸturmak doÄŸru deÄŸil, Ã§Ã¼nkÃ¼ 12 aydÄ±r baÄŸÄ±ÅŸ yaptÄ±ÄŸÄ±na gÃ¶re mutlaka bir kaydÄ± vardÄ±r.
                                             bagisciId = -1;
-                                            eslesmeBilgisi = " # Baðýþçý Bulunamadý ";
+                                            eslesmeBilgisi = " # BaÄŸÄ±ÅŸÃ§Ä± BulunamadÄ± ";
                                         }
                                         else
                                         {
@@ -215,7 +215,7 @@ namespace NBYS_WebParts.DuzenliBagisciDosyaYuklemeWP
                             bool saved = false;
                             bool updated = false;   
 
-                            //Aktif düzenli baðýþçý kaydý yoksa
+                            //Aktif dÃ¼zenli baÄŸÄ±ÅŸÃ§Ä± kaydÄ± yoksa
                             if (duzenliNakitBagisci == null)
                             {
                                 duzenliNakitBagisci = new DuzenliNakitBagisci();
@@ -234,8 +234,8 @@ namespace NBYS_WebParts.DuzenliBagisciDosyaYuklemeWP
                                 int id = duzenliNakitBagisci.Save();
                                 if (id < 1)
                                 {
-                                    aciklamaStr= string.IsNullOrEmpty(aciklama) ? " Yeni Düzenli Baðýþçý yaratýlamadý -> " + adi : aciklama;
-                                    Exception exception = new Exception(string.Format("HATA SATIRI {0}:{1} -> Düzenli baðýþçý kaydý oluþturulamadý.", ProjeConstants.PAGE_DUZENLIBAGISCI_YUKLEME, aciklamaStr));
+                                    aciklamaStr= string.IsNullOrEmpty(aciklama) ? " Yeni DÃ¼zenli BaÄŸÄ±ÅŸÃ§Ä± yaratÄ±lmadÄ± -> " + adi : aciklama;
+                                    Exception exception = new Exception(string.Format("HATA SATIRI {0}:{1} -> DÃ¼zenli baÄŸÄ±ÅŸÃ§Ä± kaydÄ± oluÅŸturulamadÄ±.", ProjeConstants.PAGE_DUZENLIBAGISCI_YUKLEME, aciklamaStr));
                                     exceptionHelper.Exceptions.Add(exception);
                                 }
                             }

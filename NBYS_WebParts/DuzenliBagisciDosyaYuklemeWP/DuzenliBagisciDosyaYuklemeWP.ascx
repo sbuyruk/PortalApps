@@ -1,4 +1,4 @@
-﻿<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
+<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
 <%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %> 
 <%@ Register Tagprefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %> 
 <%@ Register Tagprefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
@@ -19,7 +19,7 @@
                     href="">
                     <i class="fa fa-book" aria-hidden="true"></i>
                 </a>
-                <asp:Label CssClass="col-form-label text-danger" runat="server" Text="Düzenli Bağışçı Listesi Yükleme"></asp:Label>
+                <asp:Label CssClass="col-form-label text-danger" runat="server" Text="Düzenli Bağışçı Listesi Yükleme "></asp:Label>
             </h3>
         </div>
 

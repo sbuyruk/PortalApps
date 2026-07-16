@@ -47,7 +47,7 @@ namespace BTYS_Webparts.DavaDurusmaListesiWP
         }
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            var jsonData = TabloJson(); //veri Ã§ekilip json a Ã§eviriliyor
             var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir(jsString);
         }
@@ -80,7 +80,7 @@ namespace BTYS_Webparts.DavaDurusmaListesiWP
                     {
                         if (web != null)
                         {
-                            SPList list = web.Lists["Dava Durusma Listesi"];
+                            SPList list = web.Lists["Dava DuruÅŸma Listesi"];
 
                             SPQuery query = new SPQuery();
                             query.Query = string.Format(@"
@@ -146,7 +146,7 @@ namespace BTYS_Webparts.DavaDurusmaListesiWP
                 jQuery.fn.dataTable.moment('DD.MM.YYYY HH:mm');//sort date
                 jQuery(document).ready(function () {
                     jQuery('#CustomDataTable').DataTable({
-                        'initComplete': function (settings, json) {//tablo yüklendiginde
+                        'initComplete': function (settings, json) {//tablo yÃ¼klendiginde
                             var api = this.api();
                             var row = api.row(function (idx, data, node) { //secilen toplantiya gider
                                 return data['Secildi'] == true;

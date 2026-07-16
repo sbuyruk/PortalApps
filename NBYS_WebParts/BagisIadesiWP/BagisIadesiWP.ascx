@@ -81,7 +81,7 @@
                     href="">
                     <i class="fa fa-book" aria-hidden="true"></i>
                 </a>
-                <asp:Label CssClass="col-form-label bagis-text-color" runat="server" Text="Bağış İadesi "></asp:Label>
+                <asp:Label CssClass="col-form-label bagis-text-color" runat="server" Text="Bağış İadesi"></asp:Label>
             </h3>
         </div>
         <div class="card-body">

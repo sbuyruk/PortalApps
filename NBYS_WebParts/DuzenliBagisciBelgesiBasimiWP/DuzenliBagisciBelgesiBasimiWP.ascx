@@ -21,7 +21,7 @@
                             href="">
                             <i class="fa fa-book" aria-hidden="true"></i>
                         </a>
-                        <asp:Label CssClass="col-form-label text-danger fw-bold mb-1" ID="TitleLbl" runat="server" Text="Düzenli Bağışçı Belgesi Oluşturma"></asp:Label>
+                        <asp:Label CssClass="col-form-label text-danger fw-bold mb-1" ID="TitleLbl" runat="server" Text="Düzenli Bağışçı Belgesi Oluşturma "></asp:Label>
                     </h3>
                 </div>
                 <div class="card-body">
@@ -43,7 +43,7 @@
                         </div>
                         <div class="form-group col-3 border border-dark  border-right-0">
                             <div class="form-group">
-                                <label for="ImzalayanTxt" class="col-form-label">İmza (Adi Soyadı)</label>
+                                <label for="ImzalayanTxt" class="col-form-label">İmza (Adı Soyadı)</label>
                                 <asp:TextBox ID="ImzalayanTxt" runat="server" CssClass="form-control"></asp:TextBox>
                             </div>
                             <div class="form-group">

@@ -1,4 +1,4 @@
-﻿<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
+<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
 <%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
@@ -39,13 +39,13 @@
                 if (izinTipi == "1") {//ücretli
                     maxSure = 45;//26 max izin + 10 gün hafta sonu + 9 gün bayram vs
                 } else if (izinTipi == "4") {//Evlenme
-                    maxSure = 14; //3 +2 hafta sonu+ 9 bayram vs
+                    maxSure = 2;//aslında 3 Sadece Takvim günleri // 14; //3 +2 hafta sonu+ 9 bayram vs
                 } else if (izinTipi == "5") {//Doğum
                     maxSure = 140;//18 hafta + 2gun haftasonu +9 bayram vs
                 } else if (izinTipi == "6") {//Babalık
-                    maxSure = 18;//5 + 4 haftasonu +9 bayram vs
+                    maxSure = 9//aslında 10 Sadece Takvim günleri // 18;//5 + 4 haftasonu +9 bayram vs
                 } else if (izinTipi == "7") {//Ölüm
-                    maxSure = 14;//3 +2 hafta sonu+ 9 bayram vs
+                    maxSure = 2;//aslında 3. Sadece Takvim günleri // 14; //3 +2 hafta sonu+ 9 bayram vs
                 }
                 var newDate = new Date($('.DateTimePickerV1').datepicker('getDate'));
                 newDate.setDate(newDate.getDate() + maxSure);
@@ -87,7 +87,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="form-group col" id="PersonelDiv" runat="server" style="display: block;">
-                    <asp:DropDownList ID="PersonelDDL" runat="server" class="form-control col-6" AutoPostBack="True" OnSelectedIndexChanged="PersonelDDL_SelectedIndexChanged" style="height:auto" />
+                    <asp:DropDownList ID="PersonelDDL" runat="server" class="col-3 form-control form-select form-select-lg fw-semibold form-select form-select-lg" AutoPostBack="True" OnSelectedIndexChanged="PersonelDDL_SelectedIndexChanged" style="height:auto" />
                 </div>
                 <div class="form-group col checkbox" id="EPostaDiv" runat="server" style="display: block;" >
                     <label>
@@ -107,7 +107,7 @@
                             <div id="IzinTipiDDLDiv" class="form-group col" runat="server" style="display: none">
                                 <label class="col-form-label" for="IzinTipiDDL">İzin Tipi</label>
                                 <%--<asp:RequiredFieldValidator runat="server" ControlToValidate="IzinTanimDDL" ForeColor="Red" ErrorMessage="Zorunlu Alan"> </asp:RequiredFieldValidator>--%>
-                                <asp:DropDownList ID="IzinTanimDDL" runat="server" class="form-control" OnSelectedIndexChanged="IzinTanimDDL_SelectedIndexChanged" AutoPostBack="true" style="height:auto" />
+                                <asp:DropDownList ID="IzinTanimDDL" runat="server" class="form-control form-select form-select-lg fw-semibold" OnSelectedIndexChanged="IzinTanimDDL_SelectedIndexChanged" AutoPostBack="true" style="height:auto" />
                             </div>
                             <div id="IzinTipiLblDiv" class="form-group col" runat="server" style="display: none">
                                 <label class="col-form-label" for="IzinTipiLbl">İzin Tipi</label>
@@ -121,7 +121,7 @@
                             <div class="form-group col" id="IzinBasSaatDiv" runat="server" style="display: none">
                                 <label class="col-form-label" for="IzinBasSaatDDL">Başlangıç Saati</label>
                                 <%--<asp:RequiredFieldValidator runat="server" ControlToValidate="IzinTanimDDL" ForeColor="Red" ErrorMessage="Zorunlu Alan"> </asp:RequiredFieldValidator>--%>
-                                <asp:DropDownList ID="IzinBasSaatDDL" runat="server" class="form-control " OnSelectedIndexChanged="IzinBasSaatDDL_SelectedIndexChanged" AutoPostBack="true" style="height:auto" />
+                                <asp:DropDownList ID="IzinBasSaatDDL" runat="server" class="form-control form-select form-select-lg fw-semibold " OnSelectedIndexChanged="IzinBasSaatDDL_SelectedIndexChanged" AutoPostBack="true" style="height:auto" />
                             </div>
                             <div class="form-group col" id="IzinBitTarDiv" runat="server" style="display: block;">
                                 <label class="col-form-label" for="IzinBitTarTxt">Bitiş Tarihi</label>
@@ -131,7 +131,7 @@
                             <div class="form-group col" id="IzinBitSaatDiv" runat="server" style="display: none">
                                 <label class="col-form-label" for="IzinBitSaatDDL">Bitiş Saati</label>
                                 <%--<asp:RequiredFieldValidator runat="server" ControlToValidate="IzinTanimDDL" ForeColor="Red" ErrorMessage="Zorunlu Alan"> </asp:RequiredFieldValidator>--%>
-                                <asp:DropDownList ID="IzinBitSaatDDL" runat="server" CssClass="form-control " OnSelectedIndexChanged="IzinBitSaatDDL_SelectedIndexChanged" AutoPostBack="true" style="height:auto" />
+                                <asp:DropDownList ID="IzinBitSaatDDL" runat="server" CssClass="form-control form-select form-select-lg fw-semibold " OnSelectedIndexChanged="IzinBitSaatDDL_SelectedIndexChanged" AutoPostBack="true" style="height:auto" />
                             </div>
 
                         </div>
@@ -139,16 +139,16 @@
                             <div class="form-group col-4" id="VekilDiv" runat="server" style="display: block;">
                                 <label class="col-form-label" for="VekilImzaDDL">Vekil</label>
                                 <%--<asp:RequiredFieldValidator ID="VekilImzaDDLRequiredFieldValidator"  runat="server" ControlToValidate="VekilImzaDDL" ForeColor="Red" ErrorMessage="Zorunlu Alan"> </asp:RequiredFieldValidator>--%>
-                                <asp:DropDownList ID="VekilImzaDDL" runat="server" class="form-control" style="height:auto" />
+                                <asp:DropDownList ID="VekilImzaDDL" runat="server" class="form-control form-select form-select-lg fw-semibold" style="height:auto" />
                             </div>
                             <div class="form-group col-4" id="AmirDiv" runat="server" style="display: block;">
                                 <label class="col-form-label" for="AmirImzaDDL">Amir</label>
-                                <asp:DropDownList ID="AmirImzaDDL" runat="server" class="form-control" style="height:auto" />
+                                <asp:DropDownList ID="AmirImzaDDL" runat="server" class="form-control form-select form-select-lg fw-semibold" style="height:auto" />
                                 <%--<asp:RequiredFieldValidator ID="AmirImzaDDLRequiredFieldValidator"  runat="server" ControlToValidate="VekilImzaDDL" ForeColor="Red" ErrorMessage="Zorunlu Alan"> </asp:RequiredFieldValidator>--%>
                             </div>
                             <%-- <div class="form-group col-4" id="OnayDiv" runat="server" style="display: block;">
                                 <label class="col-form-label" for="OnayImzaDDL">Onay</label>
-                                <asp:DropDownList ID="OnayImzaDDL" runat="server" class="form-control" style="height:auto" />
+                                <asp:DropDownList ID="OnayImzaDDL" runat="server" class="form-control form-select form-select-lg fw-semibold" style="height:auto" />
                             </div>--%>
                         </div>
                         <div class="row">

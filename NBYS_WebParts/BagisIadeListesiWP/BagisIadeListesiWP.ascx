@@ -19,7 +19,7 @@
         <div class="card-header" id="CardHeader" runat="server">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-2">
-                <asp:Label CssClass="col-form-label text-info fw-bold mb-1" ID="TitleLbl" runat="server" Text="İade Edilen Bağışlar Listesi "></asp:Label>
+                <asp:Label CssClass="col-form-label text-info fw-bold mb-1" ID="TitleLbl" runat="server" Text="İade Edilen Bağışlar Listesi"></asp:Label>
             </h3>
         </div>
         <asp:UpdatePanel ID="upPanel" runat="server">

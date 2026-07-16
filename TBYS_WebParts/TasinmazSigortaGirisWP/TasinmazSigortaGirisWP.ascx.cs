@@ -311,7 +311,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                 IdLbl.Text = sigorta.Id + " #TasinmazId:" + sigorta.TasinmazId.ToString();
                 SigortaBedeliTxt.Text = sigorta.SigortaBedeli.ToString();
                 PrimTxt.Text = sigorta.Prim.ToString();
-                YapiTarziTxt.Text = sigorta.YapiTarzi;
+                
                 TeminatListCheckBoxDoldur(sigorta.TeminatListesi);
                 AciklamaTxt.Text = sigorta.Aciklama;
                
@@ -325,6 +325,7 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                     BulunduguKatTxt.Text = string.IsNullOrEmpty(tasinmaz.BulunduguKat) ? sigorta.BulunduguKat : tasinmaz.BulunduguKat;
                     MetrekareTxt.Text = string.IsNullOrEmpty(tasinmaz.Metrekare.ToString()) ? sigorta.Metrekare : tasinmaz.Metrekare.ToString() ;
                     TapuTasinmazNoTxt.Text = tasinmaz.TapuTasinmazNo;
+                    YapiTarziTxt.Text = string.IsNullOrEmpty(sigorta.YapiTarzi) ? tasinmaz.YapiTarzi : sigorta.YapiTarzi;
                 }
 
             }

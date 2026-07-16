@@ -32,7 +32,7 @@ namespace Model.Ortak
         //IKYS
         //Izin Hesaplari
         /// <summary>
-        /// Kullanilan izin süresini hesaplarken Cumartesi-Pazar günülerini ve Resmi Tatilleri dikkate alir
+        /// Kullanilan izin sÃ¼resini hesaplarken Cumartesi-Pazar gÃ¼nÃ¼lerini ve Resmi Tatilleri dikkate alir
         /// </summary>
         /// <param name="izinTipi"></param>
         /// <param name="bastar"></param>
@@ -41,17 +41,37 @@ namespace Model.Ortak
         public static string IzinSuresiHesapla(int izinTipi, DateTime bastar, DateTime bittar)
         {
             string sureStr = string.Empty;
-            if ((izinTipi == ProjeConstants.IZINTIPI_UCRETLI_INT) ||
-                (izinTipi == ProjeConstants.IZINTIPI_BABALIK_INT) ||
+            if ((izinTipi == ProjeConstants.IZINTIPI_BABALIK_INT) ||
                 (izinTipi == ProjeConstants.IZINTIPI_EVLENME_INT) ||
                 (izinTipi == ProjeConstants.IZINTIPI_OLUM_INT))
+            {
+                //YeÅŸim hanÄ±mÄ±n  talebi
+                //babalÄ±k, evlenme ve Ã¶lÃ¼m izinlerinde Takvim gÃ¼nleri dikkate alinir. Cumartesi ve Pazar gÃ¼nleri izinden sayilir. Resmi tatiller izinden sayilir.02.07.2026
+                //ResmiTatil resmiTatil = new ResmiTatil();
+                DateTime date = bastar;
+                int sure = 0;
+                do
+                {
+                    //Cumartesi ve Pazar GÃ¼nlerini izinden sayma
+                    //if (!date.DayOfWeek.Equals(DayOfWeek.Sunday) && !date.DayOfWeek.Equals(DayOfWeek.Saturday))
+                    //{
+                    //    bool tatil = resmiTatil.ResmiTatilMi(date);
+                    //    if (!tatil)
+                    sure++;
+
+                    //}
+                    date = date.AddDays(1);
+                } while (date <= bittar);
+                sureStr = sure.ToString();
+            }
+            else if (izinTipi == ProjeConstants.IZINTIPI_UCRETLI_INT)
             {
                 ResmiTatil resmiTatil = new ResmiTatil();
                 DateTime date = bastar;
                 int sure = 0;
                 do
                 {
-                    //Cumartesi ve Pazar Günlerini izinden sayma
+                    //Cumartesi ve Pazar GÃ¼nlerini izinden sayma
                     if (!date.DayOfWeek.Equals(DayOfWeek.Sunday) && !date.DayOfWeek.Equals(DayOfWeek.Saturday))
                     {
                         bool tatil = resmiTatil.ResmiTatilMi(date);
@@ -69,7 +89,7 @@ namespace Model.Ortak
                 TimeSpan ogleArasi = new TimeSpan(1, 0, 0);
                 DateTime ogleArasiBasTar = new DateTime(bastar.Year, bastar.Month, bastar.Day, 12, 0, 0);
                 DateTime ogleArasiBitTar = ogleArasiBasTar.AddHours(1);
-                if ((bastar <= ogleArasiBasTar) && (bittar >= ogleArasiBitTar))//ögle arasini izinden sayma
+                if ((bastar <= ogleArasiBasTar) && (bittar >= ogleArasiBitTar))//Ã¶gle arasini izinden sayma
                 {
                     kullanilan = kullanilan.Subtract(ogleArasi);
                 }
@@ -79,63 +99,13 @@ namespace Model.Ortak
                    (izinTipi == ProjeConstants.IZINTIPI_DOGUM_INT) ||
                    (izinTipi == ProjeConstants.IZINTIPI_SUTIZNI_INT))
             {
-                TimeSpan sureTs = bittar.AddDays(1).Subtract(bastar);//basladigi ve bittigi gün dahil
+                TimeSpan sureTs = bittar.AddDays(1).Subtract(bastar);//basladigi ve bittigi gÃ¼n dahil
                 sureStr = sureTs.Days.ToString();//tam gun sayisi
             }
             return sureStr;
         }
 
-        /// <summary>
-        /// Kullanilan izin süresini hesaplarken Pazar gününü ve Resmi Tatilleri dikkate alir
-        /// </summary>
-        /// <param name="izinTipi"></param>
-        /// <param name="bastar"></param>
-        /// <param name="bittar"></param>
-        /// <returns></returns>
-        public static string IzinSuresiHesaplaPazarHaricTut(int izinTipi, DateTime bastar, DateTime bittar)
-        {
-            string sureStr = string.Empty;
-            if ((izinTipi == ProjeConstants.IZINTIPI_UCRETLI_INT) ||
-                (izinTipi == ProjeConstants.IZINTIPI_BABALIK_INT) ||
-                (izinTipi == ProjeConstants.IZINTIPI_EVLENME_INT) ||
-                (izinTipi == ProjeConstants.IZINTIPI_OLUM_INT))
-            {
-                ResmiTatil resmiTatil = new ResmiTatil();
-                DateTime date = bastar;
-                int sure = 0;
-                do
-                {
-                    if (!date.DayOfWeek.Equals(DayOfWeek.Saturday) && !date.DayOfWeek.Equals(DayOfWeek.Sunday))
-                    {
-                        bool tatil = resmiTatil.ResmiTatilMi(date);
-                        if (!tatil)
-                            sure++;
 
-                    }
-                    date = date.AddDays(1);
-                } while (date <= bittar);
-                sureStr = sure.ToString();
-            }
-            else if (izinTipi == ProjeConstants.IZINTIPI_MAZERET_INT)
-            {
-                TimeSpan kullanilan = bittar.Subtract(bastar);
-                TimeSpan ogleArasi = new TimeSpan(1, 0, 0);
-                DateTime ogleArasiBasTar = new DateTime(bastar.Year, bastar.Month, bastar.Day, 12, 0, 0);
-                DateTime ogleArasiBitTar = ogleArasiBasTar.AddHours(1);
-                if ((bastar <= ogleArasiBasTar) && (bittar >= ogleArasiBitTar))//ögle arasini izinden sayma
-                {
-                    kullanilan = kullanilan.Subtract(ogleArasi);
-                }
-                sureStr = kullanilan.ToString();
-            }
-            else if ((izinTipi == ProjeConstants.IZINTIPI_UCRETSIZ_INT) ||
-                   (izinTipi == ProjeConstants.IZINTIPI_DOGUM_INT))
-            {
-                TimeSpan sureTs = bittar.AddDays(1).Subtract(bastar);//basladigi ve bittigi gün dahil
-                sureStr = sureTs.Days.ToString();//tam gun sayisi
-            }
-            return sureStr;
-        }
         public static string IzinHakkiHesapla(Personel personel, int izinTipi, DateTime izinDonemiBasi, DateTime izinDonemBasTar)
         {
             string izinHakiiSaatVeyaGun = string.Empty;
@@ -154,7 +124,7 @@ namespace Model.Ortak
             int hakEdilenIzinGunSayisi = ProjeConstants.IZIN_SURESI_1_5;
             int ilkcalistigiYilSayisi = izinDonemiBasi.Year - izinDonemBasTar.Year;
 
-            //ilk yil izin hakki 0 gün
+            //ilk yil izin hakki 0 gÃ¼n
             if (ilkcalistigiYilSayisi < 1)
             {
                 hakEdilenIzinGunSayisi = ProjeConstants.IZIN_SURESI_0;
@@ -179,7 +149,7 @@ namespace Model.Ortak
 
                             if (izinDonemiBasi < izinDonemBasTar)
                             {
-                                Exception ex = new Exception("Izin Dönemi Basi Ise baslama tarihinden küçük olamaz");
+                                Exception ex = new Exception("Izin DÃ¶nemi Basi Ise baslama tarihinden kÃ¼Ã§Ã¼k olamaz");
                                 throw (ex);
 
                             }
@@ -193,9 +163,9 @@ namespace Model.Ortak
                                 calistigiYilSayisi += ekGun;
                             }
                             /*
-                                (1)  1 – 5 yil olanlara (5 yil dâhil) 14 is günü, 
-                                (2)  6 – 15 yil olanlara 20 is günü, 
-                                (3)  15 yil ve daha fazla olanlara 26 is günü, yillik ücretli izin verilir. 
+                                (1)  1 â€“ 5 yil olanlara (5 yil dÃ¢hil) 14 is gÃ¼nÃ¼, 
+                                (2)  6 â€“ 15 yil olanlara 20 is gÃ¼nÃ¼, 
+                                (3)  15 yil ve daha fazla olanlara 26 is gÃ¼nÃ¼, yillik Ã¼cretli izin verilir. 
                             */
 
                             if ((calistigiYilSayisi >= 1) && (calistigiYilSayisi <= 5))
@@ -282,9 +252,9 @@ namespace Model.Ortak
                     }
 
                     //string userbody = bastarBittar + " tarihleri arasinda talep ettiginiz " + izintipiStr + " izniniz kontrol edilmistir.<br>"
-                    //    + " Lütfen " + userurl + " talep belgenizi bastirip imzalatarak Personel Kismina teslim ediniz.";
+                    //    + " LÃ¼tfen " + userurl + " talep belgenizi bastirip imzalatarak Personel Kismina teslim ediniz.";
                     //string body = personel.Adi + " " + personel.Soyadi + " tarafindan " + bastarBittar + " tarihleri arasinda talep edilen " + izintipiStr
-                    //    + " kontrol edilmistir.<br>Ayrintili bilgi için " + url + " sayfasina gidiniz";
+                    //    + " kontrol edilmistir.<br>Ayrintili bilgi iÃ§in " + url + " sayfasina gidiniz";
                     string currentUrl = System.Web.HttpContext.Current.Request.Url.ToString();
                     string rawUrl = System.Web.HttpContext.Current.Request.RawUrl.ToString();
                     int index = currentUrl.IndexOf(rawUrl);
@@ -318,17 +288,17 @@ namespace Model.Ortak
                     }
 
 
-                    string userbody = bastarBittar + " tarihleri arasinda talep ettiginiz " + izintipiStr + " izniniz kontrol edilmistir.<br>Döküm almak için "
-                        + " lütfen <a href ='" + izinBelgesiUrl + "'>IZIN BELGESI</a>ni bastirip imzalatarak Personel Kismina teslim ediniz.";
+                    string userbody = bastarBittar + " tarihleri arasinda talep ettiginiz " + izintipiStr + " izniniz kontrol edilmistir.<br>DÃ¶kÃ¼m almak iÃ§in "
+                        + " lÃ¼tfen <a href ='" + izinBelgesiUrl + "'>IZIN BELGESI</a>ni bastirip imzalatarak Personel Kismina teslim ediniz.";
                     string body = personel.Adi + " " + personel.Soyadi + " tarafindan " + bastarBittar + " tarihleri arasinda talep edilen " + izintipiStr
-                        + " kontrol edilmistir.<br>Ayrintili bilgi için " + url + " sayfasina gidiniz";
+                        + " kontrol edilmistir.<br>Ayrintili bilgi iÃ§in " + url + " sayfasina gidiniz";
 
                     /////////////////////
                     if (kabulRedOnay.Equals("Red"))
                     {
-                        userbody = bastarBittar + " tarihleri arasinda talep ettiginiz " + izintipiStr + " izniniz reddedilmistir.<br> Personel Kismi açiklamasi:" + izinTalep.Aciklama;
+                        userbody = bastarBittar + " tarihleri arasinda talep ettiginiz " + izintipiStr + " izniniz reddedilmistir.<br> Personel Kismi aÃ§iklamasi:" + izinTalep.Aciklama;
                         body = personel.Adi + " " + personel.Soyadi + " tarafindan " + bastarBittar + " tarihleri arasinda talep edilen " + izintipiStr + " reddedilmistir.<br>" +
-                            " Ayrintili bilgi için " + url + " sayfasina gidiniz";
+                            " Ayrintili bilgi iÃ§in " + url + " sayfasina gidiniz";
                     }
                     else if (kabulRedOnay.Equals("Onay"))
                     {
@@ -375,7 +345,7 @@ namespace Model.Ortak
                 string subject = bastarBittar + " tarihleri arasindaki " + izintipiStr + " Izin talebiniz. ";
                 string userurl = "<a href = 'http://tskgv-portal/KullaniciUygulamalari/Sayfalar/KisiselSayfa.aspx'>kisisel sayfanizdan </a>";
 
-                string body = izintipiStr + " Izin talebiniz olusturulmustur. <br>Lütfen " + userurl + " talebinizin durumunu takip ediniz.";
+                string body = izintipiStr + " Izin talebiniz olusturulmustur. <br>LÃ¼tfen " + userurl + " talebinizin durumunu takip ediniz.";
 
                 IletisimBilgileri ib = new IletisimBilgileri();
                 ib = ib.SelectByPersonelId(personel.Id);
@@ -383,11 +353,11 @@ namespace Model.Ortak
                 {
                     to = ib.IntranetEPosta;
                 }
-                //Izin sahibine eposta gönder
+                //Izin sahibine eposta gÃ¶nder
                 string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL);
                 MailHelper.EPostaGonder(from, to, subject, body, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
 
-                //IKYS Onay grubuna eposta gönder
+                //IKYS Onay grubuna eposta gÃ¶nder
                 to = "izinonaymailgrubu@tskgv.local";
                 subject = personel.Adi + " " + personel.Soyadi + " Yeni " + izintipiStr + " izin talebi ";
                 string url = "<a href = 'http://tskgv-portal/YonetimBirimleri/PersonelVeIdariIslerSubesi/Sayfalar/IzinTalepListesi.aspx'>Izin Talepleri </a>";
@@ -395,7 +365,7 @@ namespace Model.Ortak
                 {
                     url = "<a href = 'http://tskgv-portal/YonetimBirimleri/PersonelVeIdariIslerSubesi/Sayfalar/MazeretIzinTalepListesi.aspx'>Izin Talepleri </a>";
                 }
-                body = personel.Adi + " " + personel.Soyadi + " " + bastarBittar + " tarihleri arasinda " + izintipiStr + " izin talebinde bulunmustur. <br>Lütfen kontrol-red islemleri için " + url + " sayfasina gidiniz";
+                body = personel.Adi + " " + personel.Soyadi + " " + bastarBittar + " tarihleri arasinda " + izintipiStr + " izin talebinde bulunmustur. <br>LÃ¼tfen kontrol-red islemleri iÃ§in " + url + " sayfasina gidiniz";
                 MailHelper.EPostaGonder(from, to, subject, body, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
             }
 
@@ -415,9 +385,9 @@ namespace Model.Ortak
                 if (yoklama != null)
                 {
                     string bastarBittar = yoklama.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + "-" + yoklama.BitisTarihi.ConvertToDatetimeEmptyIfNull();
-                    subject = personel.Adi + " " + personel.Soyadi + " tarafindan " + bastarBittar + " tarihleri arasinda Sehir Içi Görev girilmistir. ";
+                    subject = personel.Adi + " " + personel.Soyadi + " tarafindan " + bastarBittar + " tarihleri arasinda Sehir IÃ§i GÃ¶rev girilmistir. ";
                     url = "<a href = 'http://tskgv-portal/YonetimBirimleri/PersonelVeIdariIslerSubesi/Sayfalar/YoklamaListesi.aspx'>Yoklama Listesi </a>";
-                    body = personel.Adi + " " + personel.Soyadi + " tarafindan " + bastarBittar + " tarihleri arasinda Sehir Içi Görev Onayi girilmistir. <br>Yoklama islemlerini " + url + " sayfasindan yapabilirsiniz.";
+                    body = personel.Adi + " " + personel.Soyadi + " tarafindan " + bastarBittar + " tarihleri arasinda Sehir IÃ§i GÃ¶rev Onayi girilmistir. <br>Yoklama islemlerini " + url + " sayfasindan yapabilirsiniz.";
 
                     string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL);
                     MailHelper.EPostaGonder(from, to, subject, body, smtpAdresi ?? ProjeConstants.PARAM_ALTERNATIVE_SMTP_IP_ADRESI);
@@ -431,9 +401,9 @@ namespace Model.Ortak
                 if (gorevOnay != null)
                 {
                     string bastarBittar = gorevOnay.BaslangicTarihi.ConvertToDatetimeEmptyIfNull() + "-" + gorevOnay.BitisTarihi.ConvertToDatetimeEmptyIfNull();
-                    subject = personel.Adi + " " + personel.Soyadi + " tarafindan " + bastarBittar + " tarihleri arasinda Yurt Içi/Yurt Disi Görev Onayi girilmistir. ";
-                    url = "<a href = 'http://tskgv-portal/YonetimBirimleri/PersonelVeIdariIslerSubesi/Sayfalar/GorevOnayListesi.aspx'>Görev Onay Listesi </a>";
-                    body = personel.Adi + " " + personel.Soyadi + " tarafindan " + bastarBittar + " tarihleri arasinda Yurt Içi/Yurt Disi Görev Onayi girilmistir. <br>Görev onay islemlerini " + url + " sayfasindan yapabilirsiniz.";
+                    subject = personel.Adi + " " + personel.Soyadi + " tarafindan " + bastarBittar + " tarihleri arasinda Yurt IÃ§i/Yurt Disi GÃ¶rev Onayi girilmistir. ";
+                    url = "<a href = 'http://tskgv-portal/YonetimBirimleri/PersonelVeIdariIslerSubesi/Sayfalar/GorevOnayListesi.aspx'>GÃ¶rev Onay Listesi </a>";
+                    body = personel.Adi + " " + personel.Soyadi + " tarafindan " + bastarBittar + " tarihleri arasinda Yurt IÃ§i/Yurt Disi GÃ¶rev Onayi girilmistir. <br>GÃ¶rev onay islemlerini " + url + " sayfasindan yapabilirsiniz.";
                     StringBuilder tabloSB = EpostaTablosunuOlustur(gorevOnay);
                     body += "</br>" + tabloSB.ToString();
                     string smtpAdresi = UtilityHelper.ParametreDegeriSorgula(ProjeConstants.PARAM_SMTP_ADRESI_LBL);
@@ -469,18 +439,18 @@ namespace Model.Ortak
 
             sb.Append("<table>");
             sb.Append("<tr>");
-            sb.Append("<th colspan='2' style='text-align: center; background-color: #dddddd'>Görev Bilgileri</th>");
+            sb.Append("<th colspan='2' style='text-align: center; background-color: #dddddd'>GÃ¶rev Bilgileri</th>");
             sb.Append("</tr>");
             sb.Append("<tr>");
-            sb.Append("<th>Görev Kayit Numarasi</th>");
+            sb.Append("<th>GÃ¶rev Kayit Numarasi</th>");
             sb.Append("<td>" + gorevOnay.Id + "</td>");
             sb.Append("</tr>");
             sb.Append("<tr>");
-            sb.Append("<th>Görevin Sebebi</th>");
+            sb.Append("<th>GÃ¶revin Sebebi</th>");
             sb.Append("<td>" + gorevOnay.GorevinSebebi + "</td>");
             sb.Append("</tr>");
             sb.Append("<tr>");
-            sb.Append("<th>Baslangiç Zamani</th>");
+            sb.Append("<th>BaslangiÃ§ Zamani</th>");
             sb.Append("<td>" + gorevOnay.BaslangicTarihi.ToString("dd.MM.yyyy HH:mm") + "</td>");
             sb.Append("</tr>");
             sb.Append("<tr>");
@@ -488,7 +458,7 @@ namespace Model.Ortak
             sb.Append("<td>" + gorevOnay.BitisTarihi.ToString("dd.MM.yyyy HH:mm") + "</td>");
             sb.Append("</tr>");
             sb.Append("<tr>");
-            sb.Append("<th>Görevin Yeri</th>");
+            sb.Append("<th>GÃ¶revin Yeri</th>");
             sb.Append("<td>" + gorevOnay.GorevinYeri + "</td>");
             sb.Append("</tr>");
             sb.Append("<tr>");
@@ -496,13 +466,13 @@ namespace Model.Ortak
             sb.Append("<td>" + gorevOnay.UlasimAraci + "</td>");
             sb.Append("</tr>");
             sb.Append("<tr>");
-            sb.Append("<th>Açiklama</th>");
+            sb.Append("<th>AÃ§iklama</th>");
             sb.Append("<td>" + gorevOnay.Aciklama + "</td>");
             sb.Append("</tr>");
 
             sb.Append("</table><br/><br/>");
             sb.Append("<p>");
-            sb.Append("Insan Kaynaklari Yönetim Sistemi</br>" + DateTime.Now.ToString("dd.MM.yyyy HH:mm"));
+            sb.Append("Insan Kaynaklari YÃ¶netim Sistemi</br>" + DateTime.Now.ToString("dd.MM.yyyy HH:mm"));
             sb.Append("</p>");
             sb.Append("<p style='color:gray; font-family: arial;font-size:xx-small;'>IKYS &trade; Bilgi Sistemleri Kismi </p> ");
             return sb;
@@ -516,7 +486,7 @@ namespace Model.Ortak
 
 
             string grupAdi = userto.Split('@')[0];
-            bool grupMu = UtilityHelper.IsGroup("TSKGV", grupAdi);//böyle bir grup var mi
+            bool grupMu = UtilityHelper.IsGroup("TSKGV", grupAdi);//bÃ¶yle bir grup var mi
             if (grupMu)// varsa
             {
                 List<UserPrincipal> uplist = UtilityHelper.GetGroupMembers("TSKGV", grupAdi);
@@ -582,7 +552,7 @@ namespace Model.Ortak
             sb.Append("<th>Birimi</th>");
             sb.Append("<td>" + personelItem.IsBilgileriItem.Birim?.Adi + "</td>");
             sb.Append("</tr>");
-            sb.Append("<th>Ünvani</th>");
+            sb.Append("<th>Ãœnvani</th>");
             sb.Append("<td>" + personelItem.IsBilgileriItem.Unvan?.Adi+ "</td>");
             sb.Append("</tr>");
            

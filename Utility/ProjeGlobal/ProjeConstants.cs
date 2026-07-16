@@ -971,6 +971,10 @@ namespace Utility.ProjeGlobal
         public static string IZINTIPI_BABALIK = "Babalık";
         public static string IZINTIPI_OLUM = "Ölüm";
         public static string IZINTIPI_SUTIZNI = "Süt İzni";
+
+        public static int IZINSURESI_BABALIK= 10;
+        public static int IZINSURESI_DOGUMEVLENMEOLUM= 3;
+
         //Izin Birimleri
         public const string IZIN_BIRIMI_GUN = "Gün";
         public const string IZIN_BIRIMI_SAAT = "Saat";

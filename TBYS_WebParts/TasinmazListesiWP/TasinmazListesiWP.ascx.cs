@@ -373,7 +373,9 @@ namespace TBYS_WebParts.TasinmazListesiWP
                 string vakifHissesi = row["VakifHissesi"].ToString();
                 string emlakBeyanDegeri = row["EmlakBeyanDegeri"].ReturnZeroIfNull().ConvertToDecimal().ToString("N", culturInfo);
                 string tahminiRayicDegeri = row["TahminiRayicDegeri"].ReturnZeroIfNull().ConvertToDecimal().ToString("N", culturInfo);
-
+                string yapiTarzi = row["YapiTarzi"].ToString();
+                string insaatinSinifi = row["InsaatinSinifi"].ToString();
+                string arazininCinsi = row["ArazininCinsi"].ToString();
 
                 TasinmazListesiListItem tasinmazListesiListItem = new TasinmazListesiListItem();
                 tasinmazListesiListItem.Id = tasinmazId;
@@ -426,8 +428,9 @@ namespace TBYS_WebParts.TasinmazListesiWP
                 tasinmazListesiListItem.Yuzolcumu = yuzolcumu;
                 tasinmazListesiListItem.ArsaPayi = arsaPayi;
                 tasinmazListesiListItem.VakifHissesi = vakifHissesi;
-
-
+                tasinmazListesiListItem.YapiTarzi = yapiTarzi;
+                tasinmazListesiListItem.InsaatinSinifi = insaatinSinifi;
+                tasinmazListesiListItem.ArazininCinsi = arazininCinsi;
 
                 list.Add(tasinmazListesiListItem);
             }
@@ -662,6 +665,9 @@ namespace TBYS_WebParts.TasinmazListesiWP
             public string Yuzolcumu { get; set; }
             public string ArsaPayi { get; set; }
             public string VakifHissesi { get; set; }
+            public string YapiTarzi { get; set; }
+            public string InsaatinSinifi { get; set; }
+            public string ArazininCinsi { get; set; }
         }
         private class BagimsizBolumListItem
         {

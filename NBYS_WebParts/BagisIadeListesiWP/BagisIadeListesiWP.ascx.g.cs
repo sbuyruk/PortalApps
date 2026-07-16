@@ -104,7 +104,7 @@ namespace NBYS_WebParts.BagisIadeListesiWP {
             @__ctrl.ApplyStyleSheetSkin(this.Page);
             @__ctrl.CssClass = "col-form-label text-info fw-bold mb-1";
             @__ctrl.ID = "TitleLbl";
-            @__ctrl.Text = "İade Edilen Bağışlar Listesi ";
+            @__ctrl.Text = "İade Edilen Bağışlar Listesi";
             return @__ctrl;
         }
         

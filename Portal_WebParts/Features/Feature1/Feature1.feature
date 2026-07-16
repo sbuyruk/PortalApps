@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<feature xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="ca53c2a4-4d6d-4cfe-978b-3f7cadcfa04c" alwaysForceInstall="true" featureId="ca53c2a4-4d6d-4cfe-978b-3f7cadcfa04c" imageUrl="" scope="Site" solutionId="00000000-0000-0000-0000-000000000000" title="Portal_WebParts Feature1" version="" deploymentPath="$SharePoint.Project.FileNameWithoutExtension$_$SharePoint.Feature.FileNameWithoutExtension$" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/FeatureModel">
+<feature xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" dslVersion="1.0.0.0" Id="ca53c2a4-4d6d-4cfe-978b-3f7cadcfa04c" alwaysForceInstall="true" featureId="ca53c2a4-4d6d-4cfe-978b-3f7cadcfa04c" imageUrl="" scope="Site" solutionId="00000000-0000-0000-0000-000000000000" title="Portal_WebParts Feature1" deploymentPath="$SharePoint.Project.FileNameWithoutExtension$_$SharePoint.Feature.FileNameWithoutExtension$" xmlns="http://schemas.microsoft.com/VisualStudio/2008/SharePointTools/FeatureModel">
   <projectItems>
     <projectItemReference itemId="00c68a23-86c8-4adc-895f-912f3c0aabe9" />
     <projectItemReference itemId="37dfe298-d0c2-40e2-885d-34a747a435b8" />
@@ -15,5 +15,6 @@
     <projectItemReference itemId="89a5928e-6950-46b1-a456-cd1e800f86f2" />
     <projectItemReference itemId="b027d8f1-e00b-49b9-89fe-d9ffd3ffac33" />
     <projectItemReference itemId="358828e8-118b-4de0-af1c-563197f6803f" />
+    <projectItemReference itemId="bfe67a2a-5e69-4c84-b335-54cef1fe3de3" />
   </projectItems>
 </feature>
