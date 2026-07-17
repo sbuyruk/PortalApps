@@ -1,21 +1,16 @@
 using Microsoft.SharePoint;
-using Microsoft.SharePoint.Client;
-using Microsoft.Web.Hosting.Administration;
-using Model.NBYS;
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Text.RegularExpressions;
 using System.Web.Script.Serialization;
 using System.Web.UI.WebControls;
 using System.Web.UI.WebControls.WebParts;
 using Utility.HelperClasses;
 using Utility.ProjeGlobal;
-using ListItem = System.Web.UI.WebControls.ListItem;
 
-namespace BTYS_Webparts.DavaDurusmaListesiWP
+namespace Portal_WebParts.DavaDurusmaListesiWP
 {
     [ToolboxItemAttribute(false)]
     public partial class DavaDurusmaListesiWP : WebPart
@@ -43,7 +38,7 @@ namespace BTYS_Webparts.DavaDurusmaListesiWP
                 DavaDurumuDDLDoldur();
                 TabloOlustur();
             }
-                
+
         }
         private void TabloOlustur()
         {
@@ -88,7 +83,7 @@ namespace BTYS_Webparts.DavaDurusmaListesiWP
                                     <Where>
                                     <Eq>
                                         <FieldRef Name='Sonu_x00e7_' />
-                                        <Value Type='Text'>" + DavaDurumuDDL.SelectedItem.Value+ @" </Value>
+                                        <Value Type='Text'>" + DavaDurumuDDL.SelectedItem.Value + @" </Value>
                                     </Eq>
                                     </Where>
                                     <OrderBy>
@@ -97,7 +92,7 @@ namespace BTYS_Webparts.DavaDurusmaListesiWP
                                 ");
                             SPListItemCollection davalar = list.GetItems(query);
                             DataTable dataTable = davalar.GetDataTable();
-                            if (dataTable!=null)
+                            if (dataTable != null)
                             {
                                 foreach (DataRow datarow in dataTable.Rows)
                                 {

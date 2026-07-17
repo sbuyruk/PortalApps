@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace BTYS_Webparts.DavaDurusmaListesiWP {
+namespace Portal_WebParts.DavaDurusmaListesiWP {
     using System.Web.UI.WebControls.Expressions;
     using System.Web.UI.HtmlControls;
     using System.Collections;
@@ -227,7 +227,7 @@ namespace BTYS_Webparts.DavaDurusmaListesiWP {
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Never)]
         [GeneratedCodeAttribute("Microsoft.VisualStudio.SharePoint.ProjectExtensions.CodeGenerators.SharePointWebP" +
             "artCodeGenerator", "18.0.0.0")]
-        private void @__BuildControlTree(global::BTYS_Webparts.DavaDurusmaListesiWP.DavaDurusmaListesiWP @__ctrl) {
+        private void @__BuildControlTree(global::Portal_WebParts.DavaDurusmaListesiWP.DavaDurusmaListesiWP @__ctrl) {
             System.Web.UI.IParserAccessor @__parser = ((System.Web.UI.IParserAccessor)(@__ctrl));
             @__parser.AddParsedSubObject(new System.Web.UI.LiteralControl("\r\n\r\n<div class=\"col-xl\">\r\n    <div class=\"card shadow\">\r\n        <div class=\"card" +
                         "-header\">\r\n            "));

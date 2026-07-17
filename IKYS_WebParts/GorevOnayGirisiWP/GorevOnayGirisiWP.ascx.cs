@@ -311,6 +311,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                     OnayImzaDDLDoldur();
 
                     UlkeDDLDoldur(personel);
+                    TransferDDLDoldur();
                     GorevGrubuTxt.Text = GorevGrubuGetir(personel);
                     // Form alanlarini set eder (tarih/saat dahil).
                     FillGorevOnayForm(gorevOnay,personel);
@@ -375,6 +376,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 }
                 PersonelDDLDoldur(personel);
                 UlkeDDLDoldur(personel);
+                TransferDDLDoldur();
                 GorevGrubuTxt.Text = GorevGrubuGetir(personel);
                 // JS çalismadan önce süre alanlarini server-side doldur.
                 SetSureFieldsFromInputs();
@@ -635,6 +637,14 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
 
             //    }
             //}
+        }
+        private void TransferDDLDoldur()
+        {
+            TransferDDL.Items.Clear();
+            TransferDDL.Items.Add(new ListItem(ProjeConstants.BOS));
+            TransferDDL.Items.Add(new ListItem(ProjeConstants.TOPLUTASIMA));
+            TransferDDL.Items.Add(new ListItem(ProjeConstants.TAKSI));
+            TransferDDL.Items.Add(new ListItem(ProjeConstants.DIGER));
         }
 
 
@@ -1229,6 +1239,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             {
                 PersonelAdiLbl.Text = personel.Adi + " " + personel.Soyadi;
                 UlkeDDLDoldur(personel);
+                TransferDDLDoldur();
                 GorevGrubuTxt.Text = GorevGrubuGetir(personel);
             }
 
@@ -1250,6 +1261,14 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
         {
 
             HarcirahHesapla();
+        }
+        protected void TransferDDL_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string selectedTransfer = TransferDDL.SelectedItem.Text;
+            if (selectedTransfer.Equals(ProjeConstants.TAKSI)) 
+            {
+                MessageHelper.PublishMessage("Taksi alabilmeniz için Direktörünüzün onayılaması gerekmektedir.", ProjeConstants.MESAJ_BILGI);
+            }
         }
         protected void GorevOnayListesiBtn_Click(object sender, EventArgs e)
         {

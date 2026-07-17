@@ -1218,6 +1218,9 @@ namespace Utility.ProjeGlobal
         public static string AVRUPA { get; set; } = "Avrupa";
         public static string INGILTERE { get; set; } = "İngiltere";
         public static string AVRUPA_HARICI { get; set; } = "Avrupa Harici";
-        
+        //Transfer
+        public static string TOPLUTASIMA { get; set; }="Toplu Taşıma";
+        public static string TAKSI { get; set; }= "Taksi";
+        public static string DIGER { get; set; }= "Diğer";
     }
 }

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.3.32825.248
+# Visual Studio Version 18
+VisualStudioVersion = 18.7.11925.98 stable
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAO", "DAO\DAO.csproj", "{1FA61ADE-6FB6-4FEA-95F1-D99C7523D18A}"
 EndProject
@@ -31,8 +31,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MTS_WebParts", "MTS_WebPart
 	ProjectSection(ProjectDependencies) = postProject
 		{1FA61ADE-6FB6-4FEA-95F1-D99C7523D18A} = {1FA61ADE-6FB6-4FEA-95F1-D99C7523D18A}
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BTYS_Webparts", "BTYS_Webparts\BTYS_Webparts.csproj", "{CD9B3725-5547-4A6A-96A3-FE0B0000A9C8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utility", "Utility\Utility.csproj", "{552062B0-D288-47F2-9B32-F556498254FE}"
 EndProject
@@ -161,20 +159,6 @@ Global
 		{4BB30692-604D-4C8D-ADF7-3A049AD260F3}.Release|x64.Build.0 = Release|Any CPU
 		{4BB30692-604D-4C8D-ADF7-3A049AD260F3}.Release|x86.ActiveCfg = Release|Any CPU
 		{4BB30692-604D-4C8D-ADF7-3A049AD260F3}.Release|x86.Build.0 = Release|Any CPU
-		{CD9B3725-5547-4A6A-96A3-FE0B0000A9C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CD9B3725-5547-4A6A-96A3-FE0B0000A9C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CD9B3725-5547-4A6A-96A3-FE0B0000A9C8}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{CD9B3725-5547-4A6A-96A3-FE0B0000A9C8}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{CD9B3725-5547-4A6A-96A3-FE0B0000A9C8}.Debug|x64.Build.0 = Debug|Any CPU
-		{CD9B3725-5547-4A6A-96A3-FE0B0000A9C8}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{CD9B3725-5547-4A6A-96A3-FE0B0000A9C8}.Debug|x86.Build.0 = Debug|Any CPU
-		{CD9B3725-5547-4A6A-96A3-FE0B0000A9C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CD9B3725-5547-4A6A-96A3-FE0B0000A9C8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CD9B3725-5547-4A6A-96A3-FE0B0000A9C8}.Release|Any CPU.Deploy.0 = Release|Any CPU
-		{CD9B3725-5547-4A6A-96A3-FE0B0000A9C8}.Release|x64.ActiveCfg = Release|Any CPU
-		{CD9B3725-5547-4A6A-96A3-FE0B0000A9C8}.Release|x64.Build.0 = Release|Any CPU
-		{CD9B3725-5547-4A6A-96A3-FE0B0000A9C8}.Release|x86.ActiveCfg = Release|Any CPU
-		{CD9B3725-5547-4A6A-96A3-FE0B0000A9C8}.Release|x86.Build.0 = Release|Any CPU
 		{552062B0-D288-47F2-9B32-F556498254FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{552062B0-D288-47F2-9B32-F556498254FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{552062B0-D288-47F2-9B32-F556498254FE}.Debug|x64.ActiveCfg = Debug|Any CPU

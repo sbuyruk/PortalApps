@@ -183,7 +183,7 @@
         }
     });
 </script>
-<div class="container w-75 ">
+<div class="container">
     <asp:UpdatePanel ID="TableUpdatePanel" runat="server">
         <ContentTemplate>
             <div class="card shadow">
@@ -196,7 +196,7 @@
                     </h3>
                 </div>
                 <div class="card-body">
-                    <div class="row gap-3 m-0">
+                    <div class="row gap-3 m-2">
                         <div class="row form-group p-1 col-4 m-0" id="PersonelDiv" runat="server">
                             <label class="col form-label fw-semibold p-1" for="PersonelDDL">Personel Seçimi</label>
                             <asp:DropDownList ID="PersonelDDL" runat="server" CssClass="col form-control form-select form-select-lg" OnSelectedIndexChanged="PersonelDDL_SelectedIndexChanged" AutoPostBack="true" />
@@ -208,12 +208,16 @@
                                 Harcırah Hesaplansın
                             </label>
                         </div>
+                        <div class="row form-group p-1 col-4 m-0" id="GorevGrubuDiv" runat="server">
+                            <label class="col form-label fw-semibold p-1" for="GorevGrubuTxt">Harcırah Grubu</label>
+                            <asp:TextBox ID="GorevGrubuTxt" runat="server" CssClass="form-control" ReadOnly="True" />
+                        </div>
                     </div>
-                    <div class="form-group p-2 m-0">
+                    <div class="form-group p-2 m-2">
                         <div class="row m-0">
                             <div class="col border p-2 m-0">
                                 <div class="row">
-                                    <div class="col-5">
+                                    <div class="col-4">
                                         <div class="form-group form-label">
                                             <label class="form-label fw-semibold w-sem" for="BaslangicTarihi">Başlangıç Tarihi</label>
                                             <asp:TextBox ID="BaslangicTarihiTxt" runat="server" CssClass="form-control disabled-look"
@@ -269,8 +273,8 @@
 
                             <div class="col-3 border p-2 m-0">
                                 <div class="form-group form-label">
-                                    <label class="form-label fw-semibold" for="GorevGrubuTxt">Harcırah Grubu</label>
-                                    <asp:TextBox ID="GorevGrubuTxt" runat="server" CssClass="form-control" ReadOnly="True" />
+                                     <label class="form-label fw-semibold" for="TransferDDL">Transfer</label>
+                                    <asp:DropDownList ID="TransferDDL" runat="server" CssClass="form-control form-select form-select-lg" OnSelectedIndexChanged="TransferDDL_SelectedIndexChanged" AutoPostBack="true" />
                                 </div>
                                 <div class="form-group form-label">
                                     <label class="form-label fw-semibold" for="UlkeDDL">Ülke</label>
@@ -304,6 +308,7 @@
                                 </div>
 
                             </div>
+
                             <div class="col-3 border p-2 m-0">
                                 <div class="row">
                                     <div class="col">
@@ -327,7 +332,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row m-0">
+                    <div class="row m-2">
                         <div class="col-6 form-group m-0">
                             <label class="col-form-label fw-semibold" for="GorevinSebebiTxt">Görevin Sebebi</label>
                             <asp:TextBox ID="GorevinSebebiTxt" runat="server" TextMode="MultiLine" Rows="3" CssClass="form-control" ClientIDMode="Static" />
@@ -343,7 +348,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row gap-3 m-0">
+                    <div class="row gap-3 m-2">
 
                         <!-- Harcırah Hesaplanan bölüm-->
                         <div class="col-8 border p-2 text-center m-0">
@@ -382,8 +387,8 @@
                     <asp:LinkButton ID="DeleteBtn" CssClass="btn btn-danger col-2 me-5" runat="server" Text="Sil" OnClick="DeleteBtn_Click" />
                     <label class="form-label fw-semibold text-danger" for="YevmiyeTxt">(Yaptığınız değişikliklerin geçerli olması için lütfen Kaydet veya Güncelle düğmesine basınız.)</label>
 
-                    <asp:LinkButton ID="RaporAlBtn" CssClass="btn btn-secondary col-2 float-end" runat="server" Text="Rapor Al" OnClick="RaporAlBtn_Click" Visible="false" />
-                    <asp:LinkButton CssClass="btn btn-secondary col-2 float-end " ID="GorevOnayListesiBtn" runat="server" Text="Görev Onay Listesi" CausesValidation="false" OnClick="GorevOnayListesiBtn_Click" />
+                    <asp:LinkButton ID="RaporAlBtn" CssClass="btn btn-secondary col-2 float-end m-2" runat="server" Text="Rapor Al" OnClick="RaporAlBtn_Click" Visible="false" />
+                    <asp:LinkButton CssClass="btn btn-secondary col-2 float-end m-2" ID="GorevOnayListesiBtn" runat="server" Text="Görev Onay Listesi" CausesValidation="false" OnClick="GorevOnayListesiBtn_Click" />
                 </div>
             </div>
             <div class="modal" id="ModalOnayDiv" role="dialog">

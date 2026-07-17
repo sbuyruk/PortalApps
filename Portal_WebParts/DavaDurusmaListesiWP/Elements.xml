@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Elements xmlns="http://schemas.microsoft.com/sharepoint/" >
   <Module Name="DavaDurusmaListesiWP" List="113" Url="_catalogs/wp">
-    <File Path="DavaDurusmaListesiWP\DavaDurusmaListesiWP.webpart" Url="BTYS_Webparts_DavaDurusmaListesiWP.webpart" Type="GhostableInLibrary" >
+    <File Path="DavaDurusmaListesiWP\DavaDurusmaListesiWP.webpart" Url="Portal_WebParts_DavaDurusmaListesiWP.webpart" Type="GhostableInLibrary" >
       <Property Name="Group" Value="Custom" />
     </File>
   </Module>
