@@ -532,7 +532,6 @@
                                                     <th>Bölüm No</th>
                                                     <th>Kullanım Amacı</th>
                                                     <th>Nitelik</th>
-                                                    <th>Metrekare</th>
                                                     <th>Muhasebe Değ.</th>
                                                     <th>Tahmini Rayiç</th>
                                                     <th>Emlak Beyan</th>

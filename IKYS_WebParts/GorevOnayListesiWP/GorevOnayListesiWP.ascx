@@ -1,4 +1,4 @@
-﻿<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
+<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
 <%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %> 
 <%@ Register Tagprefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %> 
 <%@ Register Tagprefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
@@ -69,7 +69,7 @@
         myjsons = myset;
     }
     var myjsons = [{
-        "SecChk": "","AdiSoyadi": "", "GorevinSebebi": "","BaslangicTarihi": "", "BitisTarihi": "", "GorevinYeri": "", "RaporAl": "", "Duzenle": ""
+        "SecChk": "","AdiSoyadi": "", "GorevinSebebi": "","BaslangicTarihi": "", "BitisTarihi": "", "GorevinYeri": "", "AmirOnayi": "", "RaporAl": "", "Duzenle": ""
     }];
 
     jQuery(document).ready(function () {
@@ -94,6 +94,7 @@
                 { data: "BaslangicTarihi" },
                 { data: "BitisTarihi" },
                 { data: "GorevinYeri" },
+                { data: "AmirOnayi" },
                 { data: "RaporAl" },
                 { data: "Duzenle" },
 
@@ -212,13 +213,12 @@
 
  
 </script>
-<div class="container">
+<div class="container small">
     <div class="card shadow">
         <div class="card-header ">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
             <h3 class="mb-1">
                 <asp:Label CssClass="form-label fw-semibold  btn-outline-primary" Id="TitleLbl" runat="server" Text="Görev Onay Listesi"></asp:Label>
-                <asp:Label CssClass="form-label fw-semibold text-secondary float-end" ID="EkranNo" Text="30" runat="server" ></asp:Label>
             </h3>
 
         </div>
@@ -235,6 +235,7 @@
                                     <th>Gidiş Tarihi</th>
                                     <th>Dönüş Tarihi</th>
                                     <th>Görevin Yeri</th>
+                                    <th>Amir Onayı</th>
                                     <th>Rapor Al</th>
                                     <th>Düzenle</th>
                                 </tr>

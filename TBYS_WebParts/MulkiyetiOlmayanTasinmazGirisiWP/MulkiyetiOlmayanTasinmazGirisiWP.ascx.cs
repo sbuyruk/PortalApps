@@ -338,7 +338,8 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
                 KoyTxt.Text = tasinmaz.Koy;
                 CaddeTxt.Text = tasinmaz.Cadde;
                 SokakTxt.Text = tasinmaz.Sokak;
-                MetrekareTxt.Text = tasinmaz.Metrekare.ToString();
+                BBNetAlanTxt.Text = tasinmaz.BBNetAlan.ToString();
+                BBBrutAlanTxt.Text = tasinmaz.BBBrutAlan.ToString();
                 NitelikTxt.Text = tasinmaz.Nitelik;
 
 
@@ -377,7 +378,8 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
             tasinmaz.Koy = KoyTxt.Text;
             tasinmaz.Cadde = CaddeTxt.Text;
             tasinmaz.Sokak = SokakTxt.Text;
-            tasinmaz.Metrekare = MetrekareTxt.Text.ConvertToDecimal();
+            tasinmaz.BBNetAlan = BBNetAlanTxt.Text.ConvertToDecimal();
+            tasinmaz.BBBrutAlan = BBBrutAlanTxt.Text.ConvertToDecimal();
             tasinmaz.Nitelik = NitelikTxt.Text;
             tasinmaz.EnvanterdeMi = ProjeConstants.MULKIYETTE_OLMAYAN_TASINMAZ;
             int id = tasinmaz.Save();
@@ -434,7 +436,8 @@ namespace TBYS_WebParts.MulkiyetiOlmayanTasinmazGirisiWP
                 tasinmaz.Koy = KoyTxt.Text;
                 tasinmaz.Cadde = CaddeTxt.Text;
                 tasinmaz.Sokak = SokakTxt.Text;
-                tasinmaz.Metrekare = MetrekareTxt.Text.ConvertToDecimal();
+                tasinmaz.BBNetAlan = BBNetAlanTxt.Text.ConvertToDecimal();
+                tasinmaz.BBBrutAlan = BBBrutAlanTxt.Text.ConvertToDecimal();
                 tasinmaz.Nitelik = NitelikTxt.Text;
                 tasinmaz.EnvanterdeMi = ProjeConstants.MULKIYETTE_OLMAYAN_TASINMAZ;
                 isSaved = tasinmaz.Update();

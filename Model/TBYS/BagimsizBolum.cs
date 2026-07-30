@@ -14,7 +14,8 @@ namespace Model.TBYS
         public int TasinmazId { get; set; }
         public string BolumNo { get; set; }
         public string Nitelik{ get; set; }
-        public decimal Metrekare { get; set; }
+        public decimal BBBrutAlan { get; set; }
+        public decimal BBNetAlan { get; set; }
         public string KullanimAmaci { get; set; }
         public decimal MuhasebeyeKayitliDeger { get; set; }
         public decimal TahminiRayicDegeri { get; set; }

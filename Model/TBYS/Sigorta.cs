@@ -22,8 +22,8 @@ namespace Model.TBYS
         public string InsaYili { get; set; }
         public string BulunduguKat { get; set; }
         public string ToplamKatSayisi { get; set; }
-        public string Metrekare { get; set; }
-        public string BrutYuzolcumu { get; set; }
+        public string BBNetAlan { get; set; }
+        public string BBBrutAlan { get; set; }
         public decimal SigortaBedeli { get; set; }
         public decimal Prim { get; set; }
         public string DaskPoliceNo { get; set; }
@@ -206,7 +206,7 @@ namespace Model.TBYS
         {
             string sqlString = string.Format(@"
                 SELECT A.Id SigortaId, E.KisaAdi SorumluBolge, A.TasinmazId,B.SorumluBolge,A.SigortaCinsi,A.AdresKodu,A.PoliceNo,A.SigortaBasTar,A.SigortaBitTar,A.YapiTarzi,A.InsaYili,
-                    A.BulunduguKat,A.ToplamKatSayisi, A.Metrekare, A.BrutYuzolcumu, A.SigortaBedeli, A.Prim,A.DaskPoliceNo,
+                    A.BulunduguKat,A.ToplamKatSayisi, A.BBNetAlan, A.BBBrutAlan, A.SigortaBedeli, A.Prim,A.DaskPoliceNo,
                     B.Adres+ISNULL(F.BolumNo,'') +' '+ D.IlceAdi +'-'+ C.IlAdi Adres, C.IlAdi,D.IlceAdi, D.IlceAdi +' '+ C.IlAdi IliIlcesi, 
                     B.KullanimSekli, B.Cinsi, B.PaftaNo,B.AdaNo,B.ParselNo,B.SahifeNo,F.BolumNo,
                     B.TapuTasinmazNo,
@@ -275,7 +275,7 @@ namespace Model.TBYS
             
             string sqlString = string.Format(@"
                 SELECT A.Id SigortaId, B.SorumluBolge,E.KisaAdi Bolge, A.TasinmazId,B.SorumluBolge,A.SigortaCinsi,A.AdresKodu,A.PoliceNo,A.SigortaBasTar,A.SigortaBitTar,
-	                A.YapiTarzi,A.InsaYili, A.BulunduguKat,B.BulunduguKat, A.ToplamKatSayisi,B.ToplamKatSayisi, A.Metrekare, B.Metrekare ,A.BrutYuzolcumu, B.Yuzolcumu,
+	                A.YapiTarzi,A.InsaYili, A.BulunduguKat,B.BulunduguKat, A.ToplamKatSayisi,B.ToplamKatSayisi, A.BBNetAlan, B.BBNetAlan ,A.BBBrutAlan, B.BBBrutAlan,
 	                A.SigortaBedeli, A.Prim,A.DaskPoliceNo,A.BagimsizBolumNo,A.PDFDosyasi,A.Prim,
                     B.Adres+ISNULL(F.BolumNo,'') Adres, B.Ili,B.Ilcesi, B.Ilcesi +' '+ B.Ili IliIlcesi, B.KullanimSekli, B.Cinsi, B.PaftaNo,B.AdaNo,B.ParselNo,B.SahifeNo,F.BolumNo,
                     A.TeminatListesi,A.TeminatAciklama,A.Aciklama,B.EnvanterdeMi,
@@ -379,7 +379,7 @@ namespace Model.TBYS
         {
             string sqlString = string.Format(@"
                 SELECT A.Id SigortaId, A.Id Id, A.TasinmazId,A.SigortaCinsi,A.AdresKodu,A.PoliceNo,A.SigortaBasTar,A.SigortaBitTar,A.YapiTarzi,A.InsaYili,
-                    A.BulunduguKat,A.ToplamKatSayisi, A.Metrekare ,A.BrutYuzolcumu,
+                    A.BulunduguKat,A.ToplamKatSayisi, A.BBNetAlan ,A.BBBrutAlan,
                     A.SigortaBedeli SigortaBedeli, A.Prim Prim,A.DaskPoliceNo
                 FROM Sigorta_Table A
                 INNER JOIN Tasinmaz_Table B ON B.Id=A.TasinmazId

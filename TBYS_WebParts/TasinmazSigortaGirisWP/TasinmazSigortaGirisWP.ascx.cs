@@ -298,9 +298,9 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
 
                 AdresKoduTxt.Text = sigorta.AdresKodu.ToString();
                 AdresKoduQS = AdresKoduTxt.Text;
-                BrutYuzolcumuTxt.Text = sigorta.BrutYuzolcumu;
+                BBBrutAlanTxt.Text = sigorta.BBBrutAlan;
                 BulunduguKatTxt.Text = sigorta.BulunduguKat;
-                MetrekareTxt.Text = sigorta.Metrekare;
+                BBNetAlanTxt.Text = sigorta.BBNetAlan;
                 ToplamKatSayisiTxt.Text = sigorta.ToplamKatSayisi;
                 InsaYiliTxt.Text = sigorta.InsaYili;
                 PoliceNoTxt.Text = sigorta.PoliceNo.ToString();
@@ -321,11 +321,34 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
                 if (tasinmaz != null)
                 {
                     AdiLbl.Text = tasinmaz.KullanimSekli + " - " + tasinmaz.Adres + " - " + tasinmaz.Ilcesi + "/" + tasinmaz.Ili;
-                    BrutYuzolcumuTxt.Text = string.IsNullOrEmpty(sigorta.BrutYuzolcumu) ? tasinmaz.Nitelik : sigorta.BrutYuzolcumu; //nitelik Bolumunde yuzolcumu bilgisi kayitli oldugindan onun yüzolcumune yazmasi için
-                    BulunduguKatTxt.Text = string.IsNullOrEmpty(tasinmaz.BulunduguKat) ? sigorta.BulunduguKat : tasinmaz.BulunduguKat;
-                    MetrekareTxt.Text = string.IsNullOrEmpty(tasinmaz.Metrekare.ToString()) ? sigorta.Metrekare : tasinmaz.Metrekare.ToString() ;
+                    int sigortaBagimsizBolumNo= sigorta.BolumId.ConvertToInt();
+
+                    BulunduguKatTxt.Text = string.IsNullOrEmpty(sigorta.BulunduguKat) ? tasinmaz.BulunduguKat : sigorta.BulunduguKat;
                     TapuTasinmazNoTxt.Text = tasinmaz.TapuTasinmazNo;
                     YapiTarziTxt.Text = string.IsNullOrEmpty(sigorta.YapiTarzi) ? tasinmaz.YapiTarzi : sigorta.YapiTarzi;
+                    
+                    if (sigortaBagimsizBolumNo > 0) // Bu siorta Bağımsız bölüme ait
+                    {
+                        BagimsizBolum bagimsizBolum = new BagimsizBolum();
+                        bagimsizBolum = bagimsizBolum.Select<BagimsizBolum>(sigortaBagimsizBolumNo);
+                        if (bagimsizBolum != null)
+                        {
+                            KullanimAmaciTxt.Text = bagimsizBolum.KullanimAmaci;
+                            BBBrutAlanTxt.Text = string.IsNullOrEmpty(sigorta.BBBrutAlan) ? bagimsizBolum.BBBrutAlan.ToString("N", new System.Globalization.CultureInfo("tr-TR"))
+                                : sigorta.BBBrutAlan;
+                            BBNetAlanTxt.Text = string.IsNullOrEmpty(sigorta.BBNetAlan) ? bagimsizBolum.BBNetAlan.ToString("N", new System.Globalization.CultureInfo("tr-TR"))
+                                : sigorta.BBNetAlan;
+                        }
+                    }
+                    else
+                    {
+                        KullanimAmaciTxt.Text = tasinmaz.KullanimSekli;
+                        BBBrutAlanTxt.Text = string.IsNullOrEmpty(sigorta.BBBrutAlan) ? tasinmaz.BBBrutAlan.ToString("N", new System.Globalization.CultureInfo("tr-TR"))
+                            : sigorta.BBBrutAlan;
+
+                        BBNetAlanTxt.Text = string.IsNullOrEmpty(sigorta.BBNetAlan) ? tasinmaz.BBNetAlan.ToString("N", new System.Globalization.CultureInfo("tr-TR"))
+                            : sigorta.BBNetAlan;
+                    }
                 }
 
             }
@@ -409,9 +432,9 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             {
                 sigorta.AdresKodu = AdresKoduTxt.Text;
                 AdresKoduQS = AdresKoduTxt.Text;
-                sigorta.BrutYuzolcumu = BrutYuzolcumuTxt.Text;
+                sigorta.BBBrutAlan = BBBrutAlanTxt.Text;
                 sigorta.BulunduguKat = BulunduguKatTxt.Text;
-                sigorta.Metrekare = MetrekareTxt.Text;
+                sigorta.BBNetAlan = BBNetAlanTxt.Text;
                 sigorta.ToplamKatSayisi = ToplamKatSayisiTxt.Text;
                 sigorta.InsaYili = InsaYiliTxt.Text;
                 sigorta.PoliceNo = PoliceNoTxt.Text;
@@ -449,9 +472,9 @@ namespace TBYS_WebParts.TasinmazSigortaGirisWP
             Sigorta sigorta = new Sigorta();
             sigorta.AdresKodu = AdresKoduTxt.Text;
             AdresKoduQS = AdresKoduTxt.Text;
-            sigorta.BrutYuzolcumu = BrutYuzolcumuTxt.Text;
+            sigorta.BBBrutAlan = BBBrutAlanTxt.Text;
             sigorta.BulunduguKat = BulunduguKatTxt.Text;
-            sigorta.Metrekare = MetrekareTxt.Text;
+            sigorta.BBNetAlan = BBNetAlanTxt.Text;
             sigorta.ToplamKatSayisi = ToplamKatSayisiTxt.Text;
             sigorta.InsaYili = InsaYiliTxt.Text;
             sigorta.PoliceNo = PoliceNoTxt.Text;

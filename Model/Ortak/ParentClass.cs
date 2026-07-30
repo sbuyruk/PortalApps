@@ -86,8 +86,11 @@ namespace Model.Ortak
                                 }
                                 else if (propertyInfos.PropertyType == typeof(decimal))
                                 {
+                                    //sb 30.07.2026
+                                    //propertyInfos.SetValue
+                                    //(classObj, ConvertToDecimal(dataRow[dtField.Name]), null);
                                     propertyInfos.SetValue
-                                    (classObj, ConvertToDecimal(dataRow[dtField.Name]), null);
+                                    (classObj, dataRow[dtField.Name].ReturnZeroIfNull().ConvertToDecimal(), null);
                                 }
                                 else if (propertyInfos.PropertyType == typeof(String))
                                 {
@@ -174,13 +177,13 @@ namespace Model.Ortak
                 return DateTime.MinValue;
             }
 
-            // Eger zaten DateTime ise, direkt dön
+            // Eger zaten DateTime ise, direkt dÃ¶n
             if (date is DateTime)
             {
                 return (DateTime)date;
             }
 
-            // String ise, Invariant Culture ile parse et (Türkçe tarih problemi çözümü)
+            // String ise, Invariant Culture ile parse et (TÃ¼rkÃ§e tarih problemi Ã§Ã¶zÃ¼mÃ¼)
             try
             {
                 var dateTime = Convert.ToDateTime(date, System.Globalization.CultureInfo.InvariantCulture);
@@ -189,7 +192,7 @@ namespace Model.Ortak
             }
             catch
             {
-                // Fallback: Türkçe locale deneyisim, sonra InvariantCulture
+                // Fallback: TÃ¼rkÃ§e locale deneyisim, sonra InvariantCulture
                 try
                 {
                     var dateTime = DateTime.Parse(date.ToString(), System.Globalization.CultureInfo.GetCultureInfo("tr-TR"));
@@ -198,8 +201,8 @@ namespace Model.Ortak
                 }
                 catch
                 {
-                    // Son çare: String'i format etmeye çalis
-                    throw new Exception($"Tarih parsing hatasi: '{date}' - Geçersiz tarih formati");
+                    // Son Ã§are: String'i format etmeye Ã§alis
+                    throw new Exception($"Tarih parsing hatasi: '{date}' - GeÃ§ersiz tarih formati");
                 }
             }
         }

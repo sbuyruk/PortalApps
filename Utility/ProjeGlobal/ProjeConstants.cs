@@ -1221,6 +1221,9 @@ namespace Utility.ProjeGlobal
         //Transfer
         public static string TOPLUTASIMA { get; set; }="Toplu Taşıma";
         public static string TAKSI { get; set; }= "Taksi";
+        public static string VAKIFARACI { get; set; }= "Vakıf Aracı";
         public static string DIGER { get; set; }= "Diğer";
+        public static string KONAKLAMALIMIT_ASIMI { get; set; } = "Limit Aşımı";
+        public static string KONAKLAMALIMIT_DAHILINDE { get; set; } = "Limit Dahilinde";
     }
 }

@@ -352,8 +352,8 @@ namespace TBYS_WebParts.TasinmazKartiWP
             r1c2.Text = "Env.Gir.Tar. : " + tasinmaz.EnvantereGirisTarihi.ConvertToDatetimeEmptyIfNull();
             r2c2.Text = "Bağış Yılı : " + tasinmaz.BagisYili;
             r3c2.Text = "Eml.Sic.No : " + tasinmaz.EmlakSicilNo;
-            r4c2.Text = "Muh.Kay.Deg. : " + tasinmaz.MuhasebeyeKayitliDeger.ReturnZeroIfNull().ConvertToDecimal().ToString("N", culturInfo);
-            r5c2.Text = "T.Rayiç Deg. : " + tasinmaz.TahminiRayicDegeri.ReturnZeroIfNull().ConvertToDecimal().ToString("N", culturInfo);
+            r4c2.Text = "Eml.Bey.Değ. : " + tasinmaz.EmlakBeyanDegeri.ReturnZeroIfNull().ConvertToDecimal().ToString("N", culturInfo);
+            r5c2.Text = "Yak.Piyasa Değ. : " + tasinmaz.YaklasikPiyasaDegeri.ReturnZeroIfNull().ConvertToDecimal().ToString("N", culturInfo);
 
             r1c3.Text = "Tapu Tarihi : " + tasinmaz.TapuTarihi.ConvertToDatetimeEmptyIfNull();
             r2c3.Text = "Ada No : " + tasinmaz.AdaNo;

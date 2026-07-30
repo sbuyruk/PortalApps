@@ -1,6 +1,7 @@
 using Model.Ortak;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Linq;
 using Utility.HelperClasses;
@@ -10,6 +11,24 @@ namespace Model.IKYS
 {
     public class GorevOnay : ParentClass
     {
+        public enum AmirOnayDurumu
+        {
+            [Display(Name = "Amirin Onayı Gerekli")]
+            OnayBekliyor = 0,
+
+            [Display(Name = "Onaylandı")]
+            Onaylandi = 1,
+
+            [Display(Name = "Reddedildi")]
+            Reddedildi = 2,
+
+            [Display(Name = "Onay Gerekmiyor")]
+            OnayGerekmez = 3,
+
+            [Display(Name = "Diğer")]
+            Diger = 4
+        }
+
         private DateTime Since = DateTime.Today.AddYears(-1);
 
         public int PersonelId { get; set; }
@@ -35,6 +54,9 @@ namespace Model.IKYS
         public string Aciklama { get; set; }
         public bool Secildi { get; set; }
         public bool Odendi { get; set; }
+        public int AmirOnayi { get; set; }
+        public string Transfer { get; set; }
+        public string Konaklama { get; set; }
         public override T Select<T>(int id)
         {
             GenericEntity<GorevOnay> genericEntity = new GenericEntity<GorevOnay>(ProjeConstants.SQL_SELECT);
@@ -250,7 +272,9 @@ namespace Model.IKYS
             string sqlstr = string.Format(@" 
                     SELECT A.Id GorevOnayId, P.Adi+' '+P.Soyadi AdiSoyadi, A.Secildi,A.UlasimAraci,
                         A.PersonelId,A.GorevinSebebi,A.GorevinYeri,A.BaslangicTarihi,A.BitisTarihi,A.Sure,A.Avans,A.Yevmiye,A.ParaBirimi,
-                        A.AracTahsisi,A.AracPlakasi,A.PerSubeImza,A.PerSubeVekil,A.OnayImza,A.OnayMakam,A.OnayMakamVekil,A.GMImza,A.GMVekil, A.Aciklama
+                        A.AracTahsisi,A.AracPlakasi,A.PerSubeImza,A.PerSubeVekil,A.OnayImza,A.OnayMakam,A.OnayMakamVekil,
+                        A.UlasimAraci,A.Transfer,A.Konaklama,
+                        A.AmirOnayi,A.GMImza,A.GMVekil, A.Aciklama
                     FROM GorevOnay_Table A
                         INNER JOIN Personel_Table P On A.PersonelId=P.Id 
                     WHERE A.BitisTarihi>={0}
@@ -272,14 +296,33 @@ namespace Model.IKYS
             return list;
         }
 
+        public DataTable SelectBekleyenAmirOnayiByBirimIdsReturnDataTable(string birimIdListStr)
+        {
+            string sqlString = string.Format(@"
+                SELECT A.Id GorevOnayId, A.PersonelId, P.Adi+' '+P.Soyadi AdiSoyadi,
+                    A.GorevinSebebi, A.GorevinYeri, A.BaslangicTarihi, A.BitisTarihi, A.Sure, A.Aciklama, 
+                    A.UlasimAraci, A.Transfer, A.Konaklama
+                FROM GorevOnay_Table A
+                    INNER JOIN Personel_Table P ON A.PersonelId=P.Id
+                    INNER JOIN IsBilgileri_Table I ON I.PersonelId=P.Id
+                WHERE A.AmirOnayi={0} AND I.BirimId IN ({1})
+                ORDER BY A.BaslangicTarihi DESC, A.BitisTarihi DESC ",
+                (int)AmirOnayDurumu.OnayBekliyor, birimIdListStr);
+
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+
+            return dataTable;
+        }
+
         public bool GorevOnayVarMi(int personelId, DateTime basTarih, DateTime bitTarih, int gorevOnayId)
         {
-           // bu personelId i�in bu tarihler arasinda onay var mi?
+           // bu personelId için bu tarihler arasinda onay var mi?
             string sqlString = string.Format(@"
                 SELECT TOP 1 *
                 FROM GorevOnay_Table
-                WHERE PersonelId={0} AND BitisTarihi>={1} AND BaslangicTarihi<={2} AND Id <> {3}",
-                personelId, basTarih.ReturnTRDateFormat(), bitTarih.ReturnTRDateFormat(), gorevOnayId);
+                WHERE PersonelId={0} AND AmirOnayi!={4}
+                    AND BitisTarihi>={1} AND BaslangicTarihi<={2} AND Id <> {3}",
+                personelId, basTarih.ReturnTRDateFormat(), bitTarih.ReturnTRDateFormat(), gorevOnayId, (int)AmirOnayDurumu.Reddedildi);
             DataTable dataTable = dao.SelectFromDb(sqlString,"");
 
             return dataTable!=null;

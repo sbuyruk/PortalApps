@@ -101,8 +101,10 @@ namespace TBYS_WebParts.BagimsizBolumWP
             BolumCell.Text = "Bölüm No";
             TableHeaderCell NitelikCell = new TableHeaderCell();
             NitelikCell.Text = "Nitelik";
-            TableHeaderCell MetrekareCell = new TableHeaderCell();
-            MetrekareCell.Text = "Metrekare";
+            TableHeaderCell BBBrutAlanCell = new TableHeaderCell();
+            BBBrutAlanCell.Text = "Brüt Alan";
+            TableHeaderCell BBNetAlanCell = new TableHeaderCell();
+            BBNetAlanCell.Text = "Net Alan";
             TableHeaderCell KullanimAmaciCell = new TableHeaderCell();
             KullanimAmaciCell.Text = "Kullanim Amaci";
             TableHeaderCell AciklamaCell = new TableHeaderCell();
@@ -125,7 +127,8 @@ namespace TBYS_WebParts.BagimsizBolumWP
             th.Controls.Add(AdresCell);
             th.Controls.Add(BolumCell);
             th.Controls.Add(NitelikCell);
-            th.Controls.Add(MetrekareCell);
+            th.Controls.Add(BBBrutAlanCell);
+            th.Controls.Add(BBNetAlanCell);
             th.Controls.Add(KullanimAmaciCell);
             th.Controls.Add(AciklamaCell);
             th.Controls.Add(MuhasebeyeKayitliDegerCell);
@@ -166,9 +169,13 @@ namespace TBYS_WebParts.BagimsizBolumWP
                 NitelikCell.Text = bagimsizBolum.Nitelik;
                 row.Controls.Add(NitelikCell);
                 
-                TableCell MetrekareCell = new TableCell();
-                MetrekareCell.Text = bagimsizBolum.Metrekare.ToString("N", TrCulture);
-                row.Controls.Add(MetrekareCell);
+                TableCell BBBrutAlanCell = new TableCell();
+                BBBrutAlanCell.Text = bagimsizBolum.BBBrutAlan.ToString("N", TrCulture);
+                row.Controls.Add(BBBrutAlanCell);
+
+                TableCell BBNetAlanCell = new TableCell();
+                BBNetAlanCell.Text = bagimsizBolum.BBNetAlan.ToString("N", TrCulture);
+                row.Controls.Add(BBNetAlanCell);
 
                 TableCell KullanimAmaciCell = new TableCell();
                 KullanimAmaciCell.Text = bagimsizBolum.KullanimAmaci;
@@ -272,7 +279,8 @@ namespace TBYS_WebParts.BagimsizBolumWP
             BagimsizBolumHeaderLbl.InnerText = "Bagimsiz Bölüm Ekleme";
             AdresTxt.Text = tasinmaz.Adres;
             BolumNoTxt.Text = string.Empty;
-            MetrekareTxt.Text = string.Empty;
+            BBBrutAlanTxt.Text = string.Empty;
+            BBNetAlanTxt.Text = string.Empty;
             UtilityHelper.SetDDLValue(KullanimAmaciDDL, ProjeConstants.KIRALAMAAMACI_MESKEN);
             AciklamaTxt.Text = string.Empty;
 
@@ -293,7 +301,8 @@ namespace TBYS_WebParts.BagimsizBolumWP
             AdresTxt.Text = tasinmaz.Adres;
             BolumNoTxt.Text = bagimsizBolum.BolumNo;
             NitelikTxt.Text = bagimsizBolum.Nitelik;
-            MetrekareTxt.Text = bagimsizBolum.Metrekare.ToString("N", TrCulture);
+            BBBrutAlanTxt.Text = bagimsizBolum.BBBrutAlan.ToString("N", TrCulture);
+            BBNetAlanTxt.Text = bagimsizBolum.BBNetAlan.ToString("N", TrCulture);
             KullanimAmaciDDL.SelectedValue = bagimsizBolum.KullanimAmaci;
             AciklamaTxt.Text = bagimsizBolum.Aciklama;
             MuhasebeyeKayitliDegerTxt.Text = bagimsizBolum.MuhasebeyeKayitliDeger.ToString("N", TrCulture);
@@ -330,7 +339,8 @@ namespace TBYS_WebParts.BagimsizBolumWP
             AdresTxt.Text = tasinmaz.Adres;
             BolumNoTxt.Text = bagimsizBolum.BolumNo;
             NitelikTxt.Text = bagimsizBolum.Nitelik;
-            MetrekareTxt.Text = bagimsizBolum.Metrekare.ToString("N", TrCulture) ;
+            BBBrutAlanTxt.Text = bagimsizBolum.BBBrutAlan.ToString("N", TrCulture);
+            BBNetAlanTxt.Text = bagimsizBolum.BBNetAlan.ToString("N", TrCulture);
             KullanimAmaciDDL.SelectedValue = bagimsizBolum.KullanimAmaci;
             AciklamaTxt.Text = bagimsizBolum.Aciklama;
             MuhasebeyeKayitliDegerTxt.Text = bagimsizBolum.MuhasebeyeKayitliDeger.ToString("N", TrCulture);
@@ -379,7 +389,8 @@ namespace TBYS_WebParts.BagimsizBolumWP
             BagimsizBolum bagimsizBolum = new BagimsizBolum();
             bagimsizBolum.BolumNo = BolumNoTxt.Text;
             bagimsizBolum.Nitelik = NitelikTxt.Text;
-            bagimsizBolum.Metrekare= MetrekareTxt.Text.ConvertToDecimal();
+            bagimsizBolum.BBBrutAlan = BBBrutAlanTxt.Text.ConvertToDecimal();
+            bagimsizBolum.BBNetAlan = BBNetAlanTxt.Text.ConvertToDecimal();
             bagimsizBolum.KullanimAmaci=KullanimAmaciDDL.SelectedItem.Text ;
             bagimsizBolum.Aciklama = AciklamaTxt.Text;
             bagimsizBolum.TasinmazId = TasinmazIdQS.ConvertToInt();
@@ -406,7 +417,8 @@ namespace TBYS_WebParts.BagimsizBolumWP
             {
                 bagimsizBolum.BolumNo = BolumNoTxt.Text;
                 bagimsizBolum.Nitelik = NitelikTxt.Text;
-                bagimsizBolum.Metrekare = MetrekareTxt.Text.ConvertToDecimal();
+                bagimsizBolum.BBBrutAlan = BBBrutAlanTxt.Text.ConvertToDecimal();
+                bagimsizBolum.BBNetAlan = BBNetAlanTxt.Text.ConvertToDecimal();
                 bagimsizBolum.KullanimAmaci = KullanimAmaciDDL.SelectedItem.Text;
                 bagimsizBolum.Aciklama = AciklamaTxt.Text;
                 bagimsizBolum.TasinmazId = TasinmazIdQS.ConvertToInt();

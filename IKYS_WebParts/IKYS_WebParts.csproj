@@ -122,6 +122,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AylikYoklamaRaporuWP.ascx</DependentUpon>
     </Compile>
+    <Compile Include="BekleyenIslemlerWP\BekleyenIslemlerWP.ascx.cs">
+      <DependentUpon>BekleyenIslemlerWP.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="BekleyenIslemlerWP\BekleyenIslemlerWP.ascx.g.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BekleyenIslemlerWP.ascx</DependentUpon>
+    </Compile>
     <Compile Include="BirimListesiWP\BirimListesiWP.ascx.cs">
       <DependentUpon>BirimListesiWP.ascx</DependentUpon>
     </Compile>
@@ -471,6 +479,10 @@
     <None Include="AylikYoklamaRaporuWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{b50f34ac-b558-41cc-a5f0-62045ebd497c}</SharePointProjectItemId>
     </None>
+    <None Include="BekleyenIslemlerWP\BekleyenIslemlerWP.webpart" />
+    <None Include="BekleyenIslemlerWP\SharePointProjectItem.spdata">
+      <SharePointProjectItemId>{e9520978-680f-46a5-88fd-cedd27542a24}</SharePointProjectItemId>
+    </None>
     <None Include="BirimListesiWP\BirimListesiWP.webpart" />
     <None Include="BirimListesiWP\SharePointProjectItem.spdata">
       <SharePointProjectItemId>{69d5c92f-cf3f-4181-b3da-09806fd73975}</SharePointProjectItemId>
@@ -662,6 +674,11 @@
       <LastGenOutput>AylikYoklamaRaporuWP.ascx.g.cs</LastGenOutput>
     </Content>
     <Content Include="AylikYoklamaRaporuWP\Elements.xml" />
+    <Content Include="BekleyenIslemlerWP\BekleyenIslemlerWP.ascx">
+      <Generator>SharePointWebPartCodeGenerator</Generator>
+      <LastGenOutput>BekleyenIslemlerWP.ascx.g.cs</LastGenOutput>
+    </Content>
+    <Content Include="BekleyenIslemlerWP\Elements.xml" />
     <Content Include="BirimListesiWP\BirimListesiWP.ascx">
       <Generator>SharePointWebPartCodeGenerator</Generator>
       <LastGenOutput>BirimListesiWP.ascx.g.cs</LastGenOutput>

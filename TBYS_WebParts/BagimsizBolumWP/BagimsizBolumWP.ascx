@@ -14,7 +14,7 @@
     }
 </script>
 
-<div class="col-xl">
+<div class="col-xl small">
     <div class="card shadow">
         <div class="card-header ">
             <asp:LinkButton ID="CloseBtn" class="close" runat="server" OnClick="CloseBtn_Click">&times;</asp:LinkButton>
@@ -71,8 +71,14 @@
                                 </div>
                                 <div class="col">
                                     <div class="form-group">
-                                        <asp:Label CssClass="form-label fw-bold" runat="server" Text="Metrekare"></asp:Label>
-                                        <asp:TextBox ID="MetrekareTxt" runat="server" class="form-control"></asp:TextBox>
+                                        <asp:Label CssClass="form-label fw-bold" runat="server" Text="Brüt Alan"></asp:Label>
+                                        <asp:TextBox ID="BBBrutAlanTxt" runat="server" class="form-control"></asp:TextBox>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <asp:Label CssClass="form-label fw-bold" runat="server" Text="Net Alan"></asp:Label>
+                                        <asp:TextBox ID="BBNetAlanTxt" runat="server" class="form-control"></asp:TextBox>
                                     </div>
                                 </div>
                                 <div class="col">

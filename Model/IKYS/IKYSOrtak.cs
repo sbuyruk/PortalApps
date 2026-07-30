@@ -469,6 +469,18 @@ namespace Model.Ortak
             sb.Append("<th>Açiklama</th>");
             sb.Append("<td>" + gorevOnay.Aciklama + "</td>");
             sb.Append("</tr>");
+            sb.Append("<tr>");
+            sb.Append("<th>Transfer</th>");
+            sb.Append("<td>" + gorevOnay.Transfer + "</td>");
+            sb.Append("</tr>");
+            sb.Append("<tr>");
+            sb.Append("<th>Konaklama</th>");
+            sb.Append("<td>" + gorevOnay.Konaklama + "</td>");
+            sb.Append("</tr>");
+            sb.Append("<tr>");
+            sb.Append("<th>Amir Onayi</th>");
+            sb.Append("<td>" + ((GorevOnay.AmirOnayDurumu)gorevOnay.AmirOnayi) + "</td>");
+            sb.Append("</tr>");
 
             sb.Append("</table><br/><br/>");
             sb.Append("<p>");

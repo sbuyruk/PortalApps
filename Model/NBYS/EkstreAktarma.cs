@@ -1008,7 +1008,7 @@ namespace Model.NBYS
                             string islemTipi = row[7].ReturnEmptyIfNull().ToString();
                             string tutar = row[3].ReturnZeroIfNull().ToString().Replace(".", ",");
                             if ((islemTipi.Equals("Havale") 
-                                || islemTipi.Equals("Para Transferi") //para transferi yazanlar günlük dosyada geliyor
+                                //|| islemTipi.Equals("Para Transferi") //para transferi yazanlar günlük dosyada geliyor
                                 || islemTipi.Equals("EFT")
                                 || islemTipi.Equals("FAST"))
                                 && tutar.ConvertToDecimal() > 0)

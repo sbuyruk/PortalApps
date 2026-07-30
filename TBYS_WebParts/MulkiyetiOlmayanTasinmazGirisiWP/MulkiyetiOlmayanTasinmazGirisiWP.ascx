@@ -1,4 +1,4 @@
-﻿<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
+<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
 <%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %> 
 <%@ Register Tagprefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %> 
 <%@ Register Tagprefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
@@ -75,8 +75,12 @@
                                     <asp:DropDownList ID="KiraDurumuDDL" runat="server" class="form-control form-select form-select-lg" ></asp:DropDownList>
                                 </div>
                                 <div class="form-group m-0 ">
-                                    <label class="form-label fw-semibold" for="MetrekareTxt">Metrekare</label>
-                                    <asp:TextBox ID="MetrekareTxt" runat="server" class="form-control input-money" ToolTip="Metrekaresi"></asp:TextBox>
+                                    <label class="form-label fw-semibold" for="BBBrutAlanTxt">Brut Alan</label>
+                                    <asp:TextBox ID="BBBrutAlanTxt" runat="server" class="form-control input-money" ToolTip="Brut Alan"></asp:TextBox>
+                                </div>
+                                <div class="form-group m-0 ">
+                                    <label class="form-label fw-semibold" for="BBNetAlanTxt">Net Alan</label>
+                                    <asp:TextBox ID="BBNetAlanTxt" runat="server" class="form-control input-money" ToolTip="Net Alan"></asp:TextBox>
                                 </div>
                             </div>
                             <div class="form-group col">

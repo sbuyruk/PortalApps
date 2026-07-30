@@ -37,6 +37,11 @@ namespace Model.NBYS
         {
             try
             {
+                DateTime minTarih = new DateTime(1987, 9, 1);
+                if (BagisTarihi == default(DateTime) || BagisTarihi < minTarih)
+                {
+                    throw new ArgumentException("BagisTarihi boş olamaz ve 01.09.1987 tarihinden önce olamaz.");
+                }
                 GenericEntity<NakitBagisHareket> genericEntity = new GenericEntity<NakitBagisHareket>(ProjeConstants.SQL_INSERT);
                 OlusturmaTarihi = DateTime.Now;
                 Olusturan = UtilityHelper.GetCurrentUserName();

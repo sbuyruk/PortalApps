@@ -117,9 +117,9 @@ namespace IKYS_WebParts.GorevOnayListesiWP
         }
 
         /// <summary>
-        /// GorevOnay.Secildi kolonu sadece toplu Rapor Alimi için kullanilir
-        /// SSRS Select ... IN (parametre) seklindeki sorgularda "," ile ayrilmis parametreleri desteklemedigi için tabloya Secildi alani eklendi
-        /// Bu nedenle her açilista tüm secildi kolonlari false yapilir
+        /// GorevOnay.Secildi kolonu sadece toplu Rapor Alimi iÃ§in kullanilir
+        /// SSRS Select ... IN (parametre) seklindeki sorgularda "," ile ayrilmis parametreleri desteklemedigi iÃ§in tabloya Secildi alani eklendi
+        /// Bu nedenle her aÃ§ilista tÃ¼m secildi kolonlari false yapilir
         /// </summary>
         private void SecildiFalseYap()
         {
@@ -138,7 +138,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
 
         private void TabloOlustur()
         {
-            var jsonData = TabloJson(); //veri çekilip json a çeviriliyor
+            var jsonData = TabloJson(); //veri Ã§ekilip json a Ã§eviriliyor
             //var jsString = CreateDataTable(jsonData); //javascript kodu hazirlaniyor.
             UtilityHelper.ScriptCalistir("setDataSet(" + jsonData + ");");
         }
@@ -180,7 +180,11 @@ namespace IKYS_WebParts.GorevOnayListesiWP
                 string baslangicTarihi = row["BaslangicTarihi"].ReturnEmptyIfNull().ConvertToDatetime().ToString("dd.MM.yyyy HH:mm");
                 string bitisTarihi = row["BitisTarihi"].ReturnEmptyIfNull().ConvertToDatetime().ToString("dd.MM.yyyy HH:mm");
                 string gorevinYeri = row["GorevinYeri"].ToString();
+                string ulasimAraci = row["UlasimAraci"].ToString();
+                string transfer = row["Transfer"].ToString();
+                string konaklama = row["Konaklama"].ToString();
                 int personelId = row["PersonelId"].ConvertToInt();
+                int amirOnayi = row["AmirOnayi"].ConvertToInt();
 
                 string sure = row["Sure"].ToString();
                 string yevmiye = row["Yevmiye"].ToString();
@@ -203,6 +207,10 @@ namespace IKYS_WebParts.GorevOnayListesiWP
                 gorevOnayListItem.BaslangicTarihi = baslangicTarihi;
                 gorevOnayListItem.BitisTarihi = bitisTarihi;
                 gorevOnayListItem.GorevinYeri = gorevinYeri;
+                gorevOnayListItem.AmirOnayi = UtilityHelper.GetEnumDisplayName((GorevOnay.AmirOnayDurumu)amirOnayi).ToString();
+                gorevOnayListItem.UlasimAraci = ulasimAraci;
+                gorevOnayListItem.Transfer = transfer;
+                gorevOnayListItem.Konaklama = konaklama;
                 gorevOnayListItem.Secildi = SecilenIdQS.Equals(gorevOnayId);
                 if (OdendiYapChk.Checked)
                 {
@@ -213,7 +221,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
                 if (AuthQS.Equals(ProjeConstants.IKYS_YETKILI_BIRIM))
                 {
                     gorevOnayListItem.RaporAl = "<a href=" + ProjeConstants.RAPOR_GOREVONAYBELGESI_URL + "?Auth="+AuthQS+"&GorevOnayId=" + gorevOnayId + " class='btn btn-outline-primary'>Rapor Al</a>";
-                    gorevOnayListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_GOREVONAY_GIRIS + "?Auth="+AuthQS+"&GorevOnayId=" + gorevOnayId + " class='btn btn-outline-primary'>Düzenle</a>";
+                    gorevOnayListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_GOREVONAY_GIRIS + "?Auth="+AuthQS+"&GorevOnayId=" + gorevOnayId + " class='btn btn-outline-primary'>DÃ¼zenle</a>";
                     list.Add(gorevOnayListItem);
                 }else if (personel.Id == personelId)
                 {
@@ -222,7 +230,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
                     if (!string.IsNullOrEmpty(baslangicTarihi) && fark<4)
                     {
                         gorevOnayListItem.RaporAl = "<a href=" + ProjeConstants.RAPOR_GOREVONAYBELGESI_URL + "?GorevOnayId=" + gorevOnayId + " class='btn btn-outline-primary'>Rapor Al</a>";
-                        gorevOnayListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_GOREVONAY_GIRIS + "?GorevOnayId=" + gorevOnayId + " class='btn btn-outline-primary'>Düzenle</a>"; 
+                        gorevOnayListItem.Duzenle = "<a href=" + ProjeConstants.PAGE_GOREVONAY_GIRIS + "?GorevOnayId=" + gorevOnayId + " class='btn btn-outline-primary'>DÃ¼zenle</a>"; 
                     }
                     list.Add(gorevOnayListItem);
                 }
@@ -245,7 +253,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
 
                 var bastar = gorevOnay.BaslangicTarihi;
                 var bittar = gorevOnay.BitisTarihi;
-                decimal sure = (gorevOnay.Sure).Replace("gün", "").Replace("Gün", "").ConvertToDecimal();
+                decimal sure = (gorevOnay.Sure).Replace("gÃ¼n", "").Replace("GÃ¼n", "").ConvertToDecimal();
                 decimal yevmiye = gorevOnay.Yevmiye.Replace(".", "").ConvertToDecimal(); 
 
                 double dakika = (bittar - bastar).TotalMinutes;
@@ -254,7 +262,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
 
                 double artan = (double)(saat == 0 ? 0 : (saat > 12 ? 1 : 0.5m));
 
-                // önce ham degeri hesapla
+                // Ã¶nce ham degeri hesapla
                 decimal hesaplananSure = (decimal)(artan + gun);
 
                 // veritabanindan gelen 'sure' ve 'yevmiye' string degerlerini karsilastir
@@ -285,7 +293,7 @@ namespace IKYS_WebParts.GorevOnayListesiWP
             }
             else
             {
-                MessageHelper.PublishMessage("Toplu rapor almak için görevleri seçmeniz gerekli, henüz hiç görev seçmediniz",ProjeConstants.MESAJ_HATA);
+                MessageHelper.PublishMessage("Toplu rapor almak iÃ§in gÃ¶revleri seÃ§meniz gerekli, henÃ¼z hiÃ§ gÃ¶rev seÃ§mediniz",ProjeConstants.MESAJ_HATA);
             }
             
         }
@@ -335,6 +343,10 @@ namespace IKYS_WebParts.GorevOnayListesiWP
             public string BaslangicTarihi { get; set; }
             public string BitisTarihi { get; set; }
             public string GorevinSebebi { get; set; }
+            public string AmirOnayi { get; set; }
+            public string UlasimAraci { get; set; }
+            public string Transfer { get; set; }
+            public string Konaklama { get; set; }
             public string RaporAl { get; set; }
             public string Duzenle { get; set; }
             public bool Secildi { get; set; }

@@ -1,4 +1,4 @@
-﻿<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
+<%@ Assembly Name="$SharePoint.Project.AssemblyFullName$" %>
 <%@ Assembly Name="Microsoft.Web.CommandUI, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="SharePoint" Namespace="Microsoft.SharePoint.WebControls" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
 <%@ Register TagPrefix="Utilities" Namespace="Microsoft.SharePoint.Utilities" Assembly="Microsoft.SharePoint, Version=16.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c" %>
@@ -80,17 +80,19 @@
                         <label class="col-form-label " for="YapiTarziTxt">Yapı Tarzı</label>
                         <asp:TextBox ID="YapiTarziTxt" runat="server" CssClass="form-control"></asp:TextBox>
                     </div>
+
+
                     <div class="form-group">
-                        <label class="col-form-label " for="InsaYiliTxt">Bina İnşa Yılı</label>
-                        <asp:TextBox ID="InsaYiliTxt" runat="server" CssClass="form-control" ToolTip=" Bina İnşa Yılı"></asp:TextBox>
+                        <label class="col-form-label " for="BBBrutAlanTxt">Brüt Alan</label>
+                        <asp:TextBox ID="BBBrutAlanTxt" runat="server" CssClass="form-control"></asp:TextBox>
                     </div>
                     <div class="form-group">
-                        <label class="col-form-label " for="MetrekareTxt">Metrekare</label>
-                        <asp:TextBox ID="MetrekareTxt" runat="server" CssClass="form-control" ToolTip="Dairenin metrekaresi"></asp:TextBox>
-                    </div>                    
+                        <label class="col-form-label " for="BBNetAlanTxt">Net Alan</label>
+                        <asp:TextBox ID="BBNetAlanTxt" runat="server" CssClass="form-control"></asp:TextBox>
+                    </div>
                     <div class="row">
                         <div class="col form-group">
-                            <label class="col-form-label " for="MetrekareTxt">Kullanım Amacı</label>
+                            <label class="col-form-label " for="KullanimAmaciTxt">Kullanım Amacı</label>
                             <asp:TextBox ID="KullanimAmaciTxt" runat="server" CssClass="form-control" ToolTip="Kullanım Amacı"></asp:TextBox>
                         </div>
                         <div class="col form-group">
@@ -109,8 +111,8 @@
                         <asp:TextBox ID="ToplamKatSayisiTxt" runat="server" CssClass="form-control"></asp:TextBox>
                     </div>
                     <div class="form-group">
-                        <label class="col-form-label " for="BrutYuzolcumuTxt">Brüt Yüzölçümü</label>
-                        <asp:TextBox ID="BrutYuzolcumuTxt" runat="server" CssClass="form-control"></asp:TextBox>
+                        <label class="col-form-label " for="InsaYiliTxt">Bina İnşa Yılı</label>
+                        <asp:TextBox ID="InsaYiliTxt" runat="server" CssClass="form-control" ToolTip=" Bina İnşa Yılı"></asp:TextBox>
                     </div>
                     <div class="form-group">
                         <label class="col-form-label " for="SigortaBedeliTxt">Sigorta Bedeli</label>

@@ -570,7 +570,8 @@ namespace NBYS_WebParts.EkstreListesiWP
                    
                     if (exceptionHelper.Exceptions.Count > 0)
                     {
-                       
+                        TabloOlustur();
+
                         exceptionHelper.PublishException();
                     }
                     else

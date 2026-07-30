@@ -287,7 +287,15 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
 
             if (gorevOnay != null)
             {
+                if (gorevOnay.Odendi)
+                {
+                    UpdateBtn.Visible = false;
+                    DeleteBtn.Visible = false;
+                    OdendiLbl.Visible = true;
+                }
+
                 GorevOnayIdLbl.Text = gorevOnay.Id.ReturnEmptyIfNull().ToString();
+                AmirOnayiLbl.Text = " (" + UtilityHelper.GetEnumDisplayName((GorevOnay.AmirOnayDurumu)gorevOnay.AmirOnayi) + ")";
                 Personel personel = PersonelGetir(gorevOnay.PersonelId);
                 if (personel != null)
                 {
@@ -312,9 +320,9 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
 
                     UlkeDDLDoldur(personel);
                     TransferDDLDoldur();
-                    GorevGrubuTxt.Text = GorevGrubuGetir(personel);
-                    // Form alanlarini set eder (tarih/saat dahil).
                     FillGorevOnayForm(gorevOnay,personel);
+                    GorevGrubuDoldur(personel);
+                    // Form alanlarini set eder (tarih/saat dahil).
 
 
                     // JS çalismadan önce süre alanlarini server-side doldur.
@@ -326,17 +334,17 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             }
         }
 
-        private string GorevGrubuGetir(Personel personel)
+        private void GorevGrubuDoldur(Personel personel)
         {
             if (personel != null)
             {
                 Harcirah harcirah = HarcirahGetir(personel.Id, BaslangicTarihiTxt.Text.ConvertToDatetime());
                 if (harcirah != null)
                 {
-                    return harcirah.KadroGrubu;
+                    GorevGrubuIdTxt.Text = harcirah.KadroGrupId.ReturnZeroIfNull().ToString();
+                    GorevGrubuTxt.Text = harcirah.KadroGrubu;
                 }
             }
-            return string.Empty;
         }
 
         private void OpenGiris()
@@ -377,7 +385,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 PersonelDDLDoldur(personel);
                 UlkeDDLDoldur(personel);
                 TransferDDLDoldur();
-                GorevGrubuTxt.Text = GorevGrubuGetir(personel);
+                GorevGrubuDoldur(personel);
                 // JS çalismadan önce süre alanlarini server-side doldur.
                 SetSureFieldsFromInputs();
 
@@ -404,7 +412,6 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             }
             else
             {
-                personel = PersonelGetir(PersonelIdQS.ConvertToInt());
                 if (personel != null)
                 {
                     list.Add(personel);
@@ -417,10 +424,10 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 PersonelDDL.Items.Add(li);
             }
 
-            string secilenPer = !string.IsNullOrEmpty(PersonelIdQS) ? PersonelIdQS : "0";
-            ListItem perItem = new ListItem();
-            if (!string.IsNullOrEmpty(secilenPer))
-                perItem = PersonelDDL.Items.FindByValue(secilenPer);
+            int secilenPersonelId = PersonelIdQS.ReturnZeroIfNull().ConvertToInt();
+            ListItem perItem = null;
+            if (secilenPersonelId > 0)
+                perItem = PersonelDDL.Items.FindByValue(secilenPersonelId.ToString());
 
             if (perItem != null)
             {
@@ -642,6 +649,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
         {
             TransferDDL.Items.Clear();
             TransferDDL.Items.Add(new ListItem(ProjeConstants.BOS));
+            TransferDDL.Items.Add(new ListItem(ProjeConstants.VAKIFARACI));
             TransferDDL.Items.Add(new ListItem(ProjeConstants.TOPLUTASIMA));
             TransferDDL.Items.Add(new ListItem(ProjeConstants.TAKSI));
             TransferDDL.Items.Add(new ListItem(ProjeConstants.DIGER));
@@ -675,6 +683,15 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 YevmiyeParaBirimiTxt.Text = gorevOnay.ParaBirimi.ToString();
                 UtilityHelper.SetDDLValue(PersonelDDL, gorevOnay.PersonelId.ToString());
                 UtilityHelper.SetDDLValue(UlasimAraciDDL, gorevOnay.UlasimAraci.ToString());
+                UtilityHelper.SetDDLValue(TransferDDL, gorevOnay.Transfer.ToString());
+                //null ise de Limit Dahilinde olarak kabul edilecek
+                if (string.IsNullOrEmpty(gorevOnay.Konaklama))
+                {
+                    gorevOnay.Konaklama = ProjeConstants.KONAKLAMALIMIT_DAHILINDE;
+                }
+
+                KonaklamaLimitDahilindeRB.Checked = gorevOnay.Konaklama == ProjeConstants.KONAKLAMALIMIT_DAHILINDE;
+                KonaklamaLimitAsimiRB.Checked = gorevOnay.Konaklama == ProjeConstants.KONAKLAMALIMIT_ASIMI;
                 string bassaat = gorevOnay.BaslangicTarihi.ToString("HH:mm");
                 SelectDDLByText(BasSaatDDL, bassaat);
                 string bitsaat = gorevOnay.BitisTarihi.ToString("HH:mm");
@@ -693,7 +710,6 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 AvansTxt.Text = gorevOnay.Avans.ReturnEmptyIfNull().ToString();
                 YevmiyeTxt.Text = gorevOnay.Yevmiye.ReturnEmptyIfNull().ToString();
                 GunlukYevmiyeTxt.Text = gorevOnay.GunlukYevmiye.ReturnEmptyIfNull().ToString();
-                UlasimAraciDDL.SelectedItem.Text = gorevOnay.UlasimAraci;
                 AracPlakasiTxt.Text = gorevOnay.AracPlakasi.ReturnEmptyIfNull().ToString();
                 Harcirah harcirah = new Harcirah();
                 harcirah= harcirah.SelectByParaBirimi(gorevOnay.ParaBirimi);
@@ -728,7 +744,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
         {
             Personel personel = new Personel();
 
-            if (!string.IsNullOrEmpty(PersonelIdQS))
+            if (PersonelIdQS.ReturnZeroIfNull().ConvertToInt() > 0)
             {
                 personel = personel.Select<Personel>(PersonelIdQS.ConvertToInt());
 
@@ -741,6 +757,20 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
             }
 
             return personel;
+        }
+
+        private GorevOnay.AmirOnayDurumu AmirOnayiHesapla()
+        {
+            int gorevGrubuId = GorevGrubuIdTxt.Text.ConvertToInt();
+            if (gorevGrubuId == 1 || gorevGrubuId == 2)
+            {
+                return GorevOnay.AmirOnayDurumu.Reddedildi;
+            }
+            else if (gorevGrubuId == 3)
+            {
+                return GorevOnay.AmirOnayDurumu.OnayBekliyor;
+            }
+            return GorevOnay.AmirOnayDurumu.OnayBekliyor;
         }
 
         private GorevOnay Kaydet()
@@ -758,8 +788,19 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
 
                 gorevOnay.Aciklama = AciklamaTxt.Text;
                 gorevOnay.AracPlakasi = AracPlakasiTxt.Text;
-                //gorevOnay.AracTahsisi = AracTahsisiChk.Checked;
-                gorevOnay.UlasimAraci = UlasimAraciDDL.SelectedItem.Text;
+                gorevOnay.UlasimAraci = UlasimAraciDDL.SelectedItem == null ? "" : UlasimAraciDDL.SelectedItem.Value;
+                gorevOnay.Transfer = TransferDDL.SelectedItem.Text;
+                //KonaklamaLimitAsimiRB ve KonaklamaLimitDahilindeRB'den hangisi seçili ise gorevOnay.Konaklama içine onun texti yazılacak.
+                //KonaklamaLimitAsimiRB.Checked ise "Limit Aşımı", KonaklamaLimitDahilindeRB.Checked ise "Limit Dahilinde" yazılacak.
+                if (KonaklamaLimitAsimiRB.Checked)
+                {
+                    gorevOnay.Konaklama = ProjeConstants.KONAKLAMALIMIT_ASIMI;
+                }
+                else if (KonaklamaLimitDahilindeRB.Checked)
+                {
+                    gorevOnay.Konaklama = ProjeConstants.KONAKLAMALIMIT_DAHILINDE;
+                }
+
                 gorevOnay.Avans = AvansTxt.Text;
                 gorevOnay.BaslangicTarihi = bastar;
                 gorevOnay.BitisTarihi = bittar;
@@ -767,7 +808,6 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 gorevOnay.Olusturan = CurrentUserName;
                 gorevOnay.OnayImza = OnayImzaDDL.SelectedItem == null ? 0 : OnayImzaDDL.SelectedItem.Value.ConvertToInt();
                 gorevOnay.ParaBirimi = ParaBirimiTxt.Text;
-                gorevOnay.UlasimAraci = UlasimAraciDDL.SelectedItem == null ? "" : UlasimAraciDDL.SelectedItem.Value;
                 gorevOnay.PersonelId = personel.Id;
                 gorevOnay.PerSubeImza = PerSubeImzaDDL.SelectedItem == null ? 0 : PerSubeImzaDDL.SelectedItem.Value.ConvertToInt();
                 gorevOnay.PerSubeVekil = PersubeVekilChk.Checked;
@@ -775,6 +815,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 gorevOnay.Sure = SureTxt.Text;
                 gorevOnay.Yevmiye = YevmiyeTxt.Text;
                 gorevOnay.GunlukYevmiye = GunlukYevmiyeTxt.Text;
+                gorevOnay.AmirOnayi = (int)AmirOnayiHesapla();
                 gorevOnay.Id = gorevOnay.Save();
 
             }
@@ -858,6 +899,8 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 gorevOnay.AracPlakasi = AracPlakasiTxt.Text;
                 gorevOnay.AracTahsisi = UlasimAraciDDL.SelectedItem.Text == ProjeConstants.ULASIMARACI_UCAK;
                 gorevOnay.UlasimAraci = UlasimAraciDDL.SelectedItem.Text;
+                gorevOnay.Transfer = TransferDDL.SelectedItem.Text;
+                gorevOnay.Konaklama = KonaklamaLimitAsimiRB.Checked ? ProjeConstants.KONAKLAMALIMIT_ASIMI : ProjeConstants.KONAKLAMALIMIT_DAHILINDE;
                 gorevOnay.Avans = AvansTxt.Text;
                 gorevOnay.BaslangicTarihi = bastar;
                 gorevOnay.BitisTarihi = bittar;
@@ -867,12 +910,15 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 gorevOnay.OnayImza = OnayImzaDDL.SelectedItem == null ? 0 : OnayImzaDDL.SelectedItem.Value.ConvertToInt();
                 gorevOnay.ParaBirimi = ParaBirimiTxt.Text;
                 gorevOnay.UlasimAraci = UlasimAraciDDL.SelectedItem == null ? "" : UlasimAraciDDL.SelectedItem.Value;
+                gorevOnay.Transfer = TransferDDL.SelectedItem.Text;
+                gorevOnay.Konaklama = KonaklamaLimitAsimiRB.Checked ? ProjeConstants.KONAKLAMALIMIT_ASIMI : ProjeConstants.KONAKLAMALIMIT_DAHILINDE;
                 gorevOnay.PerSubeImza = PerSubeImzaDDL.SelectedItem == null ? 0 : PerSubeImzaDDL.SelectedItem.Value.ConvertToInt();
                 gorevOnay.PerSubeVekil = PersubeVekilChk.Checked;
                 gorevOnay.GorevinSebebi = GorevinSebebiTxt.Text;
                 gorevOnay.Sure = SureTxt.Text;
                 gorevOnay.Yevmiye = YevmiyeTxt.Text;
                 gorevOnay.GunlukYevmiye = GunlukYevmiyeTxt.Text;
+                gorevOnay.AmirOnayi = (int)AmirOnayiHesapla();
                 isUpdated = gorevOnay.Update();
             }
             return isUpdated;
@@ -1171,10 +1217,10 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                     if (!AuthQS.Equals("IKYS"))
                     {
                         Personel personel = new Personel();
-                        personel = personel.Select<Personel>(PersonelIdQS.ConvertToInt());
+                        personel = personel.Select<Personel>(PersonelIdQS.ReturnZeroIfNull().ConvertToInt());
                         if (personel != null)
                         {
-                            IKYSOrtak.GorevOnayEPostasiGonder(personel, gorevOnay.Id, "YurtIçi/YurtDisi");
+                            //IKYSOrtak.GorevOnayEPostasiGonder(personel, gorevOnay.Id, "YurtIçi/YurtDisi");
                         }
                     }
                     RedirectToPage(ProjeConstants.PAGE_GOREVONAY_LIST + "?Mesaj=true" + "&SecilenId=" + gorevOnay.Id + (string.IsNullOrEmpty(AuthQS) ? string.Empty : "&Auth=" + ProjeConstants.IKYS_YETKILI_BIRIM));
@@ -1240,7 +1286,7 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
                 PersonelAdiLbl.Text = personel.Adi + " " + personel.Soyadi;
                 UlkeDDLDoldur(personel);
                 TransferDDLDoldur();
-                GorevGrubuTxt.Text = GorevGrubuGetir(personel);
+                GorevGrubuDoldur(personel);
             }
 
             HarcirahHesapla();
@@ -1261,14 +1307,6 @@ namespace IKYS_WebParts.GorevOnayGirisiWP
         {
 
             HarcirahHesapla();
-        }
-        protected void TransferDDL_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            string selectedTransfer = TransferDDL.SelectedItem.Text;
-            if (selectedTransfer.Equals(ProjeConstants.TAKSI)) 
-            {
-                MessageHelper.PublishMessage("Taksi alabilmeniz için Direktörünüzün onayılaması gerekmektedir.", ProjeConstants.MESAJ_BILGI);
-            }
         }
         protected void GorevOnayListesiBtn_Click(object sender, EventArgs e)
         {

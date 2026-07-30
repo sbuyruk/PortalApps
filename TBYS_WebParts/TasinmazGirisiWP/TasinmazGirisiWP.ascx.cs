@@ -1215,7 +1215,6 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                         { data: 'BolumNo' },
                         { data: 'KullanimAmaci' },
                         { data: 'Nitelik' },
-                        { data: 'Metrekare' },
                         { data: 'MuhasebeyeKayitliDeger' },
                         { data: 'TahminiRayicDegeri' },
                         { data: 'EmlakBeyanDegeri' },
@@ -1247,7 +1246,8 @@ namespace TBYS_WebParts.TasinmazGirisiWP
                     BolumNo = bb.BolumNo,
                     KullanimAmaci = bb.KullanimAmaci,
                     Nitelik = bb.Nitelik,
-                    Metrekare = bb.Metrekare.ToString("N2"),
+                    BBBrutAlan = bb.BBBrutAlan.ToString("N2"),
+                    BBNetAlan = bb.BBNetAlan.ToString("N2"),
                     MuhasebeyeKayitliDeger = bb.MuhasebeyeKayitliDeger.ToString("C2", new System.Globalization.CultureInfo("tr-TR")),
                     TahminiRayicDegeri = bb.TahminiRayicDegeri.ToString("C2", new System.Globalization.CultureInfo("tr-TR")),
                     EmlakBeyanDegeri = bb.EmlakBeyanDegeri.ToString("C2", new System.Globalization.CultureInfo("tr-TR")),
@@ -1575,7 +1575,8 @@ namespace TBYS_WebParts.TasinmazGirisiWP
             public string BolumNo { get; set; }
             public string KullanimAmaci { get; set; }
             public string Nitelik { get; set; }
-            public string Metrekare { get; set; }
+            public string BBBrutAlan { get; set; }
+            public string BBNetAlan { get; set; }
             public string MuhasebeyeKayitliDeger { get; set; }
             public string TahminiRayicDegeri { get; set; }
             public string EmlakBeyanDegeri { get; set; }

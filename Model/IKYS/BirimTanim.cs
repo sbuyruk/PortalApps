@@ -138,6 +138,18 @@ namespace Model.IKYS
 
             return (List<T>)Convert.ChangeType(list, typeof(List<T>));
         }
+        public List<BirimTanim> SelectByAmirId(int amirId)
+        {
+            string sqlString = string.Format(@"SELECT *
+                               FROM BirimTanim_Table 
+                               WHERE AmirId={0}
+                               ORDER BY ParentId, Sira", amirId);
+
+            DataTable dataTable = dao.SelectFromDb(sqlString, "");
+            List<BirimTanim> list = ToList<BirimTanim>(dataTable);
+
+            return list;
+        }
         public List<BirimTanim> SelectByBirimKaldirildi(bool birimKaldirildiMi)
         {
             string birimKaldirildiMiStr= string.Format(" WHERE BirimKaldirildi={0}", birimKaldirildiMi ? 1 : 0); 
